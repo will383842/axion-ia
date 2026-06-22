@@ -531,6 +531,7 @@ export default async function PressePage({ params }: Props) {
             tagMilestone: t("tagMilestone"),
             read: t("releasesRead"),
             empty: t("releasesEmpty"),
+            downloadPdf: isFr ? "Télécharger le PDF" : "Download PDF",
           }}
         />
       </Section>

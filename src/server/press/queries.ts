@@ -30,6 +30,8 @@ export interface PressReleaseCard {
   tag: PressReleaseTag;
   title: string;
   dek: string;
+  /** URL de téléchargement du PDF (route publique) ou `null` (legacy fixtures). */
+  pdfUrl: string | null;
 }
 
 /** Communiqué complet — page détail `/presse/[slug]`. */
@@ -39,7 +41,13 @@ export interface PressReleaseFull {
   tag: PressReleaseTag;
   title: string;
   dek: string;
+  /**
+   * Corps texte — legacy fixtures uniquement. Les communiqués PDF n'ont plus de
+   * `body` (null) ; l'affichage se fait via `pdfUrl`.
+   */
   body: string;
+  /** URL du PDF (route publique) ou `null` (legacy fixtures texte). */
+  pdfUrl: string | null;
 }
 
 /** Élément kit média — grille `PressKit`. */
@@ -71,7 +79,15 @@ const FIXTURE_KIND_TO_PRISMA: Record<FixturePressKitAsset["kind"], PressMediaKin
 // ─────────────────────────────────────────────────────────────────
 function fixtureToCard(r: FixturePressRelease, locale: Locale): PressReleaseCard {
   const t = r[locale];
-  return { slug: r.slug, publishedAt: r.publishedAt, tag: r.tag, title: t.title, dek: t.dek };
+  return {
+    slug: r.slug,
+    publishedAt: r.publishedAt,
+    tag: r.tag,
+    title: t.title,
+    dek: t.dek,
+    // Fixtures legacy = communiqués texte, pas de PDF.
+    pdfUrl: null,
+  };
 }
 
 function fixtureToFull(r: FixturePressRelease, locale: Locale): PressReleaseFull {
@@ -83,6 +99,7 @@ function fixtureToFull(r: FixturePressRelease, locale: Locale): PressReleaseFull
     title: t.title,
     dek: t.dek,
     body: t.body,
+    pdfUrl: null,
   };
 }
 
@@ -118,6 +135,7 @@ export async function getPublishedPressReleases(locale: Locale): Promise<PressRe
       tag: row.tag,
       title: t.title,
       dek: t.dek ?? "",
+      pdfUrl: row.pdfStoragePath ? `/api/presse/communique/${row.id}` : null,
     });
   }
 
@@ -151,7 +169,10 @@ export async function getPressReleaseBySlug(
       tag: t.release.tag,
       title: t.title,
       dek: t.dek ?? "",
-      body: t.body,
+      // `body` est désormais optionnel (PDF-based) → fallback "" pour les
+      // communiqués PDF (le rendu utilise `pdfUrl` à la place).
+      body: t.body ?? "",
+      pdfUrl: t.release.pdfStoragePath ? `/api/presse/communique/${t.release.id}` : null,
     };
   }
 
