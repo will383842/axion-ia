@@ -225,6 +225,19 @@ label : ${config.recommendedCtaLabel}
       continue;
     }
 
+    // keyword-in-H1 hard-gate (parité blog_from_keywords, 2026-06-22) — le H1
+    // rendu de la page = `parsed.title` (le sanitizer interdit un <h1> dans le
+    // body). Si le primary keyword n'apparaît pas textuellement dans le titre,
+    // on rejette et on re-génère (au lieu d'un simple soft-score non bloquant).
+    if (input.primaryKeyword) {
+      const kw = input.primaryKeyword.toLowerCase();
+      if (!(parsed.title ?? "").toLowerCase().includes(kw)) {
+        prevFeedback = `Le titre "${parsed.title ?? "(absent)"}" (= H1 de la page) ne contient pas le mot-clé "${input.primaryKeyword}". Il DOIT y figurer textuellement.`;
+        if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+        continue;
+      }
+    }
+
     parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
     // Round 4 — section Sources d'autorité déterministe (citations garanties).
     parsed.bodyHtml = appendSourcesSection(parsed.bodyHtml, externalLinksCtx.links);
