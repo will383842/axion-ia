@@ -28,6 +28,8 @@ import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { ArticleSources } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
+import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
+import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransparencyBlock";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { getVille } from "@/content/villes";
@@ -388,6 +390,10 @@ export default async function BlogArticle({ params }: Props) {
 
   return (
     <>
+      {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de progression de
+          lecture (CSS scroll-driven, 0 JS, dégrade proprement via @supports). */}
+      <div className="reading-progress" aria-hidden="true" />
+
       {/* P1-17 — alternate format markdown brut pour LLM ingestion. */}
       <link
         rel="alternate"
@@ -541,6 +547,11 @@ export default async function BlogArticle({ params }: Props) {
         </Container>
       </Section>
 
+      {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
+          le lien. URL absolue (pageUrl) pour X/LinkedIn/mailto. Server, l'îlot
+          clipboard est isolé dans CopyLinkButton ("use client"). */}
+      <ArticleShareBar url={pageUrl} title={view.title} locale={loc} />
+
       {/* Chantier templates 2026-06-21 — citation d'expert nommé (levier AEO
           le plus fort), rendue seulement si une vraie citation est renseignée. */}
       <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
@@ -560,6 +571,15 @@ export default async function BlogArticle({ params }: Props) {
         items={view.citations}
         locale={loc}
         lastVerified={view.updatedAt ?? view.publishedAt}
+      />
+
+      {/* Refonte templates 2026-06-22 (Chantier 2b) — bloc de transparence
+          E-E-A-T : dernière vérification + cycle de mise à jour (signal de
+          fraîcheur Google/IA). Cycle aligné sur la doctrine de re-publication. */}
+      <ArticleTransparencyBlock
+        lastVerified={view.updatedAt ?? view.publishedAt}
+        updateCycleDays={90}
+        locale={loc}
       />
 
       {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
