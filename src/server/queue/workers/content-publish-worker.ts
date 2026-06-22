@@ -46,6 +46,8 @@ import { trackExternalLinksUsage, detectHallucinations } from "@/data/external-l
 // Chantier 2026-06-22 — persistance des citations structurées (ExternalReference +
 // ContentCitation) lues par le bloc public « Sources & méthodologie » + JSON-LD isBasedOn.
 import { persistArticleCitations } from "@/server/content-gen/links/persist-citations";
+// Chantier perfection 2026-06-22 — gate de complétude qualité avant publication.
+import { validateDataQuality } from "@/server/content-gen/quality/data-quality-gate";
 // Refonte templates 2026-06-22 — images Unsplash intercalées dans le corps
 // (best-effort, doctrine « Unsplash uniquement », attribution CGU §6).
 import { injectBodyImages } from "@/server/content-gen/images/inject-body-images";
@@ -335,6 +337,44 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
           text: expertQuoteRaw.text.trim(),
         }
       : null;
+  // ── P0 perfection 2026 — Gate de complétude qualité ───────────────────────
+  // Avant ce gate, un article sans réponse directe / FAQ ≥4 / point clé / avis
+  // d'expert / ≥2 citations était publié quand même (champs coercés vers null) →
+  // articles « à trous » indexés, zéro Position 0 / AI Overview / citation LLM.
+  // On valide AVANT l'insert. Flag-gated (pattern maison, cf. QUALITY_PROFILES) :
+  //   - CONTENT_QUALITY_GATE_ENABLED !== "true" → on LOG seulement (zéro
+  //     changement de comportement au deploy : observabilité du taux de rejet) ;
+  //   - === "true" → refus de publication (status `failed` + errorMessage) + stop.
+  // citationCount dérivé de detectHallucinations(bodyHtml).valid (fonction pure,
+  // recalculée plus bas pour le tracking — sans effet de bord ici).
+  {
+    const gateCitationCount = detectHallucinations(bodyHtml).valid.length;
+    const gate = validateDataQuality({
+      contentType: cgJob.contentType,
+      keyTakeaway,
+      expertQuote: expertQuote ? { name: expertQuote.name, text: expertQuote.text } : null,
+      faqJson,
+      directAnswer,
+      citationCount: gateCitationCount,
+    });
+    if (!gate.ok) {
+      const enforced = process.env.CONTENT_QUALITY_GATE_ENABLED === "true";
+      await logStepError(
+        cgJob.id,
+        "quality_gate",
+        `Complétude insuffisante (${enforced ? "BLOQUÉ" : "log seul"}): ${gate.reasons.join(" ; ")}`,
+        { reasons: gate.reasons, enforced, content_type: cgJob.contentType },
+      );
+      if (enforced) {
+        await markPublishJobFailed(
+          reviewQueueId,
+          `quality_gate: ${gate.reasons.join(" ; ")}`,
+        );
+        return;
+      }
+    }
+  }
+
   // Refonte 2026-06-22 — RÉGÉNÉRATION EN PLACE. Si le job porte `refreshArticleId`
   // dans inputPayload (créé par l'action regenerateArticle), on MET À JOUR
   // l'article existant au lieu d'en créer un nouveau : le slug FR est PRÉSERVÉ

@@ -124,6 +124,18 @@ function resolveLocalizedPath(path: string, locale: Locale): string {
   return path;
 }
 
+/**
+ * Borne une meta description à 158 caractères (anti-troncature SERP Google).
+ * Coupe au dernier mot complet sous la limite + ellipse. Perfection 2026 :
+ * démontre un contrôle éditorial et évite les « … » imposés par le moteur.
+ */
+export function truncateMetaDescription(d: string, max = 158): string {
+  if (d.length <= max) return d;
+  const slice = d.slice(0, max - 1);
+  const lastSpace = slice.lastIndexOf(" ");
+  return `${(lastSpace > 60 ? slice.slice(0, lastSpace) : slice).trimEnd()}…`;
+}
+
 export function buildProductMetadata({
   locale,
   path,
@@ -163,6 +175,8 @@ export function buildProductMetadata({
   const frNorm = normalizePath(fr);
   const enNorm = normalizePath(en);
   const pathNorm = normalizePath(path);
+  // Perfection 2026 — description bornée 158 car (SERP/OG/Twitter cohérents).
+  const metaDescription = truncateMetaDescription(description);
   const languages: Record<string, string> = {
     fr: `/fr${frNorm}`,
     "x-default": `/fr${frNorm}`,
@@ -172,7 +186,7 @@ export function buildProductMetadata({
   }
   return {
     title: resolvedTitle,
-    description,
+    description: metaDescription,
     alternates: {
       canonical: `/${locale}${pathNorm}`,
       languages,
@@ -182,7 +196,7 @@ export function buildProductMetadata({
       locale: locale === "fr" ? "fr_FR" : "en_US",
       url: `${SITE_URL}/${locale}${pathNorm}`,
       title,
-      description,
+      description: metaDescription,
       siteName: "Axion-IA",
       images: [
         {
@@ -196,7 +210,7 @@ export function buildProductMetadata({
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: metaDescription,
       images: [resolvedOgImage],
     },
     // Refonte AEO 2026-06-22 — directives fines : snippets illimités (réponses
@@ -388,6 +402,10 @@ export function buildFaqJsonLd({ items, speakable = true, dateModified }: FaqJso
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    // Perfection 2026 — publisher/author rattachés (E-E-A-T pour Perplexity/Claude :
+    // une FAQPage orpheline d'éditeur pèse moins en attribution).
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
     // dateModified émis seulement si fourni (audit fraîcheur 2026-06-08 : retrait
     // du défaut BUILD_DATE qui avançait à chaque deploy). FAQPage ⊂ WebPage ⊂
     // CreativeWork → dateModified valide quand on a une vraie date stable.
