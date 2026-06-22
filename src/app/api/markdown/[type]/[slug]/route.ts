@@ -44,7 +44,14 @@ interface RouteParams {
   params: Promise<{ type: string; slug: string }>;
 }
 
-const ALLOWED_TYPES = new Set(["blog", "actualites", "cas-concrets", "centre-aide", "faq"]);
+const ALLOWED_TYPES = new Set([
+  "blog",
+  "actualites",
+  "guides",
+  "cas-concrets",
+  "centre-aide",
+  "faq",
+]);
 
 interface MarkdownContent {
   readonly title: string;
@@ -98,6 +105,28 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
       body: translation.bodyText ?? translation.body,
       updatedAt: translation.updatedAt,
       canonicalSegment: type,
+    };
+  }
+
+  // Refonte 2026-06-22 — les guides partagent le modèle Article/ArticleTranslation
+  // (comme blog), discriminés par le préfixe slug `guide-` (et isNews=false).
+  // Parité MD avec /blog et /actualites pour l'ingestion LLM.
+  if (type === "guides") {
+    const translation = await prisma.articleTranslation.findFirst({
+      where: {
+        locale: "fr",
+        slug,
+        article: { isNews: false, status: "published" },
+      },
+      include: { article: true },
+    });
+    if (!translation) return null;
+    return {
+      title: translation.title,
+      excerpt: translation.excerpt,
+      body: translation.bodyText ?? translation.body,
+      updatedAt: translation.updatedAt,
+      canonicalSegment: "guides",
     };
   }
 

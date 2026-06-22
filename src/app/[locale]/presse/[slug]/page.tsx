@@ -28,7 +28,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, Mail } from "lucide-react";
+import { ArrowLeft, Calendar, Download, Mail } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -41,12 +41,13 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { PressImageBank } from "@/components/sections/PressImageBank";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { type PressReleaseTag } from "@/content/press";
+// Salle de presse 2026-06-22 — communiqué lu depuis la DB (fallback fixtures).
 import {
-  PRESS_RELEASES,
-  getPressRelease,
-  getAllPressReleaseSlugs,
-  type PressReleaseTag,
-} from "@/content/press";
+  getPressReleaseBySlug,
+  getAllPublishedPressReleaseSlugs,
+  getPublishedPressReleases,
+} from "@/server/press/queries";
 import { fmtDate } from "@/lib/intl";
 
 interface Props {
@@ -98,18 +99,23 @@ const TAG_LABEL_EN: Record<PressReleaseTag, string> = {
 };
 
 export async function generateStaticParams() {
-  const slugs = getAllPressReleaseSlugs();
-  return slugs.flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
+  const params: Array<{ locale: string; slug: string }> = [];
+  for (const locale of routing.locales) {
+    const slugs = await getAllPublishedPressReleaseSlugs(locale);
+    for (const slug of slugs) params.push({ locale, slug });
+  }
+  return params;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const release = getPressRelease(slug);
-  if (!release) return {};
   const loc = locale as Locale;
+  const release = await getPressReleaseBySlug(loc, slug);
+  if (!release) return {};
   const isFr = loc === "fr";
-  const copy = isFr ? release.fr : release.en;
+  // Communiqué déjà résolu dans la locale (plat) — plus de release.fr/.en.
+  const copy = release;
 
   // Description ≤ 160 chars (cap SERP Google).
   const desc = copy.dek.length > 160 ? `${copy.dek.slice(0, 157).trim()}…` : copy.dek;
@@ -124,8 +130,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { fr: `/presse/${slug}`, en: `/press/${slug}` },
   });
 
-  // Anti-doorway HCU 2024 : noindex si body < 250 mots.
-  if (countWords(copy.body) < MIN_BODY_WORDS) {
+  // Anti-doorway HCU 2024 : noindex si body < seuil. Les communiqués PDF (body
+  // vide, contenu = le PDF embarqué) sont indexables → on saute le check.
+  if (!release.pdfUrl && countWords(copy.body) < MIN_BODY_WORDS) {
     return {
       ...meta,
       robots: {
@@ -141,13 +148,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PressReleaseDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  const release = getPressRelease(slug);
+  const loc = locale as Locale;
+  const release = await getPressReleaseBySlug(loc, slug);
   if (!release) notFound();
   setRequestLocale(locale);
-  const loc = locale as Locale;
   const isFr = loc === "fr";
-  const copy = isFr ? release.fr : release.en;
+  // Communiqué déjà résolu dans la locale (plat) — plus de release.fr/.en.
+  const copy = release;
   const tagLabel = isFr ? TAG_LABEL_FR[release.tag] : TAG_LABEL_EN[release.tag];
+  // Autres communiqués (maillage interne) — lus depuis la DB (fallback fixtures).
+  const otherReleases = await getPublishedPressReleases(loc);
 
   const presseHubLabel = isFr ? "Espace presse" : "Press room";
   const presseHubPath = "/presse";
@@ -182,7 +192,8 @@ export default async function PressReleaseDetailPage({ params }: Props) {
     .filter((p) => p.length > 0);
 
   const wordCount = countWords(copy.body);
-  const isThin = wordCount < MIN_BODY_WORDS;
+  // Communiqué PDF = jamais "thin" (le contenu est dans le PDF, pas le body).
+  const isThin = !release.pdfUrl && wordCount < MIN_BODY_WORDS;
 
   // NewsArticle JSON-LD — signal Google News + Top Stories + AI Overviews
   // citation. Publisher = Axion-IA (cohérence avec /presse/page.tsx +
@@ -303,14 +314,35 @@ export default async function PressReleaseDetailPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* CORPS — paragraphes structurés (lisible + scrap-friendly LLMs). */}
-      <Section>
-        <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
-          {paragraphs.map((p, idx) => (
-            <p key={`p-${idx}`}>{p}</p>
-          ))}
-        </Container>
-      </Section>
+      {/* CORPS — communiqué PDF (embed + téléchargement) OU, pour les fixtures
+          legacy texte, paragraphes structurés. */}
+      {release.pdfUrl ? (
+        <Section>
+          <Container className="max-w-4xl space-y-4">
+            <iframe
+              src={release.pdfUrl}
+              className="border-border h-[80vh] w-full rounded-xl border"
+              title={
+                isFr ? `Communiqué — ${copy.title}` : `Press release — ${copy.title}`
+              }
+            />
+            <Button asChild size="lg" shape="pill">
+              <a href={release.pdfUrl} target="_blank" rel="noopener">
+                <Download className="h-4 w-4" aria-hidden="true" />
+                {isFr ? "Télécharger le PDF" : "Download PDF"}
+              </a>
+            </Button>
+          </Container>
+        </Section>
+      ) : (
+        <Section>
+          <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
+            {paragraphs.map((p, idx) => (
+              <p key={`p-${idx}`}>{p}</p>
+            ))}
+          </Container>
+        </Section>
+      )}
 
       {/* KIT MÉDIAS / BANQUE D'IMAGES — rappel au journaliste qu'il y a des
           assets téléchargeables sur /presse. Réutilise PressImageBank avec
@@ -403,14 +435,15 @@ export default async function PressReleaseDetailPage({ params }: Props) {
 
       {/* AUTRES COMMUNIQUÉS — mesh interne. On affiche les 2 plus récents
           autres que celui en cours (signal autorité topique + crawl path). */}
-      {PRESS_RELEASES.length > 1 ? (
+      {otherReleases.length > 1 ? (
         <Section tone="canvas" eyebrow={isFr ? "Autres communiqués" : "Other releases"}>
           <Container className="max-w-4xl">
             <ul className="grid gap-4 sm:grid-cols-2">
-              {PRESS_RELEASES.filter((r) => r.slug !== slug)
+              {otherReleases
+                .filter((r) => r.slug !== slug)
                 .slice(0, 2)
                 .map((other) => {
-                  const otherCopy = isFr ? other.fr : other.en;
+                  const otherCopy = other;
                   return (
                     <li
                       key={other.slug}

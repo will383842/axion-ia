@@ -38,7 +38,7 @@ export function CopyLinkButton({ url, label, copiedLabel }: CopyLinkButtonProps)
       type="button"
       onClick={handleCopy}
       aria-label={copied ? copiedLabel : label}
-      className="border-border text-fg-soft hover:border-terracotta hover:text-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors"
+      className="border-border text-fg-soft hover:border-terracotta hover:text-terracotta focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       {copied ? (
         <Check className="text-terracotta size-4" aria-hidden="true" />

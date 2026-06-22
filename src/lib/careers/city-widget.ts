@@ -10,13 +10,10 @@
 import { HUB_VILLES } from "@/content/recrutement/satellites";
 import type { JobOffer } from "../../../prisma/generated/client";
 
-// Villes proposées dans le configurateur — mêmes 41 que le hub /carrieres :
-// Saint-Marcellin (siège) + les 40 hubs (population ≥ 100 000). Liste curée
+// Villes proposées dans le configurateur — mêmes 40 que le hub /carrieres :
+// les 40 hubs (population ≥ 100 000), Grenoble (siège) inclus. Liste curée
 // (pas dérivée des offres) → stable, pas de valeurs parasites.
-export const CAREER_WIDGET_CITIES: ReadonlyArray<string> = [
-  "Saint-Marcellin",
-  ...HUB_VILLES.map((v) => v.nameFr),
-];
+export const CAREER_WIDGET_CITIES: ReadonlyArray<string> = [...HUB_VILLES.map((v) => v.nameFr)];
 
 /** Normalise pour comparaison : minuscules, sans accents, séparateurs → espace. */
 function normalizeCity(s: string): string {

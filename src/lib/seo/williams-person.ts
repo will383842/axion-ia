@@ -16,37 +16,35 @@
  */
 
 import { SITE_URL } from "@/lib/seo";
+import { FOUNDER } from "@/lib/brand";
 
-export const WILLIAMS_LINKEDIN = "https://www.linkedin.com/in/williamsjullin/";
+// Audit E-E-A-T 2026-06-22 (P1) — identité (nom, fonction, LinkedIn, knowsAbout)
+// dérivée du SSOT `FOUNDER` (lib/brand.ts). Seules la bio longue + la photo
+// restent propres à cette page d'autorité d'entité.
+export const WILLIAMS_LINKEDIN = FOUNDER.linkedin;
 const WILLIAMS_PHOTO = "/illustrations/home-founder-william.avif";
 
-const WILLIAMS_BIO_MD = `**Williams Jullin** est le fondateur et CEO d'Axion-IA, cabinet de conseil en intelligence artificielle pour les TPE, PME et ETI françaises.
+const WILLIAMS_BIO_MD = `**${FOUNDER.fullName}** est le fondateur et CEO d'Axion-IA, cabinet de conseil en intelligence artificielle pour les TPE, PME et ETI françaises.
 
 Axion-IA accompagne les entreprises sur l'audit IA, la formation, l'implémentation de solutions IA opérationnelles et la conduite du changement, avec une approche centrée sur des résultats concrets et mesurables.
 
 Profil LinkedIn : ${WILLIAMS_LINKEDIN}`;
 
-const WILLIAMS_KNOWS_ABOUT = [
-  "Stratégie IA en entreprise",
-  "Direction et création d'entreprise",
-  "Audit et implémentation IA",
-  "Transformation digitale TPE PME ETI",
-  "Conduite du changement",
-];
+const WILLIAMS_KNOWS_ABOUT = [...FOUNDER.knowsAbout];
 
 /**
  * Profil statique exposé à la page `/equipe/[slug]` (mêmes champs que ceux lus
  * sur un `AuthorProfile`). isPersona/aiGenerated = false (personne réelle).
  */
 export const WILLIAMS_PROFILE = {
-  slug: "williams",
-  displayName: "Williams Jullin",
-  jobTitle: "Fondateur & CEO d'Axion-IA",
+  slug: FOUNDER.slug,
+  displayName: FOUNDER.fullName,
+  jobTitle: FOUNDER.jobTitleFr,
   bioMd: WILLIAMS_BIO_MD,
   photoUrl80: WILLIAMS_PHOTO,
   photoUrl256: WILLIAMS_PHOTO,
   photoUrl1024: WILLIAMS_PHOTO,
-  photoAlt: "Williams Jullin — Fondateur & CEO d'Axion-IA",
+  photoAlt: `${FOUNDER.fullName} — ${FOUNDER.jobTitleFr}`,
   knowsAbout: WILLIAMS_KNOWS_ABOUT,
   isPersona: false,
   aiGenerated: false,
@@ -60,8 +58,8 @@ export function buildPersonWilliamsJsonLd(locale: string = "fr"): Record<string,
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": `${SITE_URL}/${locale}/equipe/williams#person`,
-    name: "Williams Jullin",
-    jobTitle: "Fondateur & CEO d'Axion-IA",
+    name: FOUNDER.fullName,
+    jobTitle: FOUNDER.jobTitleFr,
     url: `${SITE_URL}/${locale}/equipe/williams`,
     image: `${SITE_URL}${WILLIAMS_PHOTO}`,
     sameAs: [WILLIAMS_LINKEDIN],

@@ -11,6 +11,7 @@ import { Container } from "@/components/layout/Container";
 import { Illustration } from "@/components/visual/Illustration";
 import { Link } from "@/i18n/navigation";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
+import { FOUNDER } from "@/lib/brand";
 
 interface FounderTrustSectionProps {
   isFr: boolean;
@@ -77,11 +78,7 @@ export async function FounderTrustSection({ isFr }: FounderTrustSectionProps) {
                   src="/illustrations/home-founder-william.avif"
                   aspectRatio="4:5"
                   filenameTarget="public/illustrations/home-founder-william.avif"
-                  caption={
-                    isFr
-                      ? "Williams — Fondateur & CEO Axion-IA"
-                      : "Williams — Founder & CEO Axion-IA"
-                  }
+                  caption={`${FOUNDER.displayName} — ${isFr ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn}`}
                   alt={t("founderPhotoAlt")}
                 />
                 <div className="mt-4 text-center">

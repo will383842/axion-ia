@@ -6,6 +6,7 @@ import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 // SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { FOUNDER } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
@@ -124,6 +125,18 @@ function resolveLocalizedPath(path: string, locale: Locale): string {
   return path;
 }
 
+/**
+ * Borne une meta description à 158 caractères (anti-troncature SERP Google).
+ * Coupe au dernier mot complet sous la limite + ellipse. Perfection 2026 :
+ * démontre un contrôle éditorial et évite les « … » imposés par le moteur.
+ */
+export function truncateMetaDescription(d: string, max = 158): string {
+  if (d.length <= max) return d;
+  const slice = d.slice(0, max - 1);
+  const lastSpace = slice.lastIndexOf(" ");
+  return `${(lastSpace > 60 ? slice.slice(0, lastSpace) : slice).trimEnd()}…`;
+}
+
 export function buildProductMetadata({
   locale,
   path,
@@ -163,6 +176,8 @@ export function buildProductMetadata({
   const frNorm = normalizePath(fr);
   const enNorm = normalizePath(en);
   const pathNorm = normalizePath(path);
+  // Perfection 2026 — description bornée 158 car (SERP/OG/Twitter cohérents).
+  const metaDescription = truncateMetaDescription(description);
   const languages: Record<string, string> = {
     fr: `/fr${frNorm}`,
     "x-default": `/fr${frNorm}`,
@@ -172,7 +187,7 @@ export function buildProductMetadata({
   }
   return {
     title: resolvedTitle,
-    description,
+    description: metaDescription,
     alternates: {
       canonical: `/${locale}${pathNorm}`,
       languages,
@@ -182,7 +197,7 @@ export function buildProductMetadata({
       locale: locale === "fr" ? "fr_FR" : "en_US",
       url: `${SITE_URL}/${locale}${pathNorm}`,
       title,
-      description,
+      description: metaDescription,
       siteName: "Axion-IA",
       images: [
         {
@@ -196,7 +211,7 @@ export function buildProductMetadata({
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: metaDescription,
       images: [resolvedOgImage],
     },
     // Refonte AEO 2026-06-22 — directives fines : snippets illimités (réponses
@@ -388,6 +403,10 @@ export function buildFaqJsonLd({ items, speakable = true, dateModified }: FaqJso
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    // Perfection 2026 — publisher/author rattachés (E-E-A-T pour Perplexity/Claude :
+    // une FAQPage orpheline d'éditeur pèse moins en attribution).
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
     // dateModified émis seulement si fourni (audit fraîcheur 2026-06-08 : retrait
     // du défaut BUILD_DATE qui avançait à chaque deploy). FAQPage ⊂ WebPage ⊂
     // CreativeWork → dateModified valide quand on a une vraie date stable.
@@ -701,13 +720,20 @@ export function buildOrganizationJsonLd({
       },
     },
     // Fondateur — E-E-A-T : un humain nommé identifiable derrière l'entité
-    // (Williams, LinkedIn réel). Renforce la confiance Google + la citabilité LLM.
+    // (Williams Jullin, LinkedIn réel). Renforce la confiance Google + la
+    // citabilité LLM. Audit E-E-A-T 2026-06-22 (P1) — identité dérivée du SSOT
+    // `FOUNDER` (lib/brand.ts) et consolidée sur l'entité canonique
+    // `/equipe/williams` : `@id` aligné sur le nœud Person émis par
+    // `buildPersonWilliamsJsonLd()` → une seule entité Person fusionnée par
+    // Google (avant : nom « Williams » + url `/a-propos#will` divergeaient de la
+    // page d'autorité `/equipe/williams`).
     founder: {
       "@type": "Person",
-      name: "Williams",
-      jobTitle: isFr ? "Fondateur · lead consultant IA" : "Founder · lead AI consultant",
-      url: `${SITE_URL}/${isFr ? "fr/a-propos" : "en/about"}#will`,
-      sameAs: ["https://www.linkedin.com/in/williamsjullin/"],
+      "@id": `${SITE_URL}/fr/equipe/williams#person`,
+      name: FOUNDER.fullName,
+      jobTitle: isFr ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn,
+      url: `${SITE_URL}/fr/equipe/williams`,
+      sameAs: [FOUNDER.linkedin],
     },
     areaServed: ["FR", "EU"],
     knowsLanguage: ["fr", "en"],
@@ -836,10 +862,14 @@ const PERSONA_SLUGS = new Set(["manon"]);
 export function buildPersonJsonLd({
   locale,
   slug = "will",
-  name = "Williams",
+  // Audit E-E-A-T 2026-06-22 (P1) — identité par défaut dérivée du SSOT `FOUNDER`
+  // (lib/brand.ts) au lieu de littéraux divergents. `name` = nom complet d'entité
+  // (« Williams Jullin »), cohérent avec `Organization.founder` + la page
+  // `/equipe/williams`. Un appelant peut toujours surcharger name/jobTitle/sameAs.
+  name = FOUNDER.fullName,
   jobTitle,
   image,
-  sameAs = ["https://www.linkedin.com/in/williamsjullin/"],
+  sameAs = [FOUNDER.linkedin],
 }: PersonJsonLdInput) {
   if (PERSONA_SLUGS.has(slug)) {
     throw new Error(
@@ -848,8 +878,7 @@ export function buildPersonJsonLd({
     );
   }
   const isFr = locale === "fr";
-  const resolvedJobTitle =
-    jobTitle ?? (isFr ? "Fondateur · lead consultant IA" : "Founder · lead AI consultant");
+  const resolvedJobTitle = jobTitle ?? (isFr ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn);
   const resolvedImage = image ?? `${SITE_URL}/opengraph-image`;
   return {
     "@context": "https://schema.org",
@@ -989,15 +1018,10 @@ export function buildArticleJsonLd({
       name: authorName,
       url: `${SITE_URL}/${locale}/${isFr ? "a-propos" : "about"}#${authorSlug}`,
     },
-    publisher: {
-      "@type": "Organization",
-      name: "Axion-IA",
-      legalName: "Axion-IA SAS",
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/opengraph-image`,
-      },
-    },
+    // Perfection 2026 — référence le nœud Organization complet du layout
+    // (@id #organization : adresse, vatID, sameAs) au lieu d'un Organization
+    // partiel inline → cohérence @id cross-type (JSON-LD reste valide).
+    publisher: { "@id": `${SITE_URL}/#organization` },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: locale,
     ...(articleBody ? { articleBody } : {}),

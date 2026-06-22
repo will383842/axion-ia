@@ -31,6 +31,13 @@ interface ArticleSourcesProps {
  */
 export function ArticleSources({ items, locale, lastVerified }: ArticleSourcesProps) {
   if (!items || items.length === 0) return null;
+  // Refonte AEO 2026-06-22 — ne garder que les sources avec une URL http(s)
+  // valide ET un libellé non vide. Évite un bloc « Sources » contenant des
+  // entrées cassées (lien mort / titre absent). 0 item valide → pas de bloc.
+  const validItems = items.filter(
+    (s) => /^https?:\/\//.test(s.url?.trim() ?? "") && (s.name?.trim().length ?? 0) > 0,
+  );
+  if (validItems.length === 0) return null;
   const isFr = locale === "fr";
 
   return (
@@ -40,7 +47,7 @@ export function ArticleSources({ items, locale, lastVerified }: ArticleSourcesPr
           {isFr ? "Sources & méthodologie" : "Sources & methodology"}
         </h2>
         <ol className="text-fg-muted marker:text-terracotta mt-6 list-decimal space-y-2 pl-6 text-base marker:font-semibold">
-          {items.map((source, i) => {
+          {validItems.map((source, i) => {
             // Refonte AEO 2026-06-22 — rel dérivé du trust-tier (cohérence avec
             // le sanitizer inline) : sources d'autorité (.gouv.fr, europa.eu,
             // ISO…) en dofollow, tout le reste en nofollow. Défaut sûr nofollow.

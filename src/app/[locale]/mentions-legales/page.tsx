@@ -9,6 +9,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildQualiopiCertificationsSection } from "@/components/qualiopi/certifications-section";
+import { resolveLegalIdentity, buildLegalIdentitySections } from "@/lib/legal-identity";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -47,11 +48,17 @@ export default async function MentionsLegales({ params }: Props) {
   const isFr = loc === "fr";
   const p = getLegal(SLUG);
   const copy = p[loc];
+  // Sections d'identité (« Éditeur » + « Directeur de la publication ») résolues
+  // au runtime depuis le SiteSetting `legal_overrides` (même clé que les
+  // factures). Préfixées aux sections statiques. ISR `revalidate=3600` →
+  // mise à jour < 1 h dès que Will renseigne l'identité en console admin.
+  const identity = await resolveLegalIdentity();
+  const identitySections = buildLegalIdentitySections(identity, isFr);
   // Section « Certifications & agréments » dérivée de la config Qualiopi —
   // `null` hors Phase B (cf. buildQualiopiCertificationsSection). Append aux
   // sections statiques sans muter `content/legal.ts`.
   const certifs = await buildQualiopiCertificationsSection(isFr);
-  const sections = certifs ? [...copy.sections, certifs] : copy.sections;
+  const sections = [...identitySections, ...copy.sections, ...(certifs ? [certifs] : [])];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: isFr ? p.pathFr : p.pathEn, label: copy.title }];
@@ -78,6 +85,10 @@ export default async function MentionsLegales({ params }: Props) {
           {
             href: "/politique-confidentialite",
             label: isFr ? "Politique de confidentialité" : "Privacy policy",
+          },
+          {
+            href: "/accessibilite",
+            label: isFr ? "Déclaration d'accessibilité" : "Accessibility statement",
           },
           { href: "/contact", label: isFr ? "Contact" : "Contact" },
         ]}

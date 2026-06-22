@@ -29,7 +29,7 @@ import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
 import { ArticleTOC, type TocItem } from "@/components/seo/ArticleTOC";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
@@ -178,103 +178,124 @@ export default async function GuidePiliersPage({ params }: Props) {
       {/* Refonte templates 2026-06-22 — barre de progression de lecture (CSS, 0 JS). */}
       <div className="reading-progress" aria-hidden="true" />
 
+      {/* P1-17 — alternate format markdown brut pour LLM ingestion (parité /blog). */}
+      <link
+        rel="alternate"
+        type="text/markdown"
+        href={`/api/markdown/guides/${slug}`}
+        title={`${guide.title} (markdown)`}
+      />
+
       <JsonLd data={jsonLd} />
+      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: locale as Locale,
+          items: breadcrumbItems.map((b) => ({ name: b.label, href: b.href })),
+        })}
+        scriptId="jsonld-breadcrumb-guide"
+      />
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      <Section className="bg-cream">
-        <Container className="max-w-3xl">
-          {tocItems.length >= 2 && (
-            <ArticleTOC items={tocItems} pageUrl={pageUrl} locale="fr" sticky={false} />
-          )}
-          <div className="mb-6 flex items-center gap-3">
-            <Badge variant="accent" className="tracking-wide">
-              Guide pilier
-            </Badge>
-            <span className="text-muted text-sm">{guide.readingTimeMinutes} min de lecture</span>
-          </div>
+      {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
+          cible du skip-link sont portés par <main id="main"> du layout :
+          NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
+      <article>
+        <Section className="bg-cream">
+          <Container className="max-w-3xl">
+            {tocItems.length >= 2 && (
+              <ArticleTOC items={tocItems} pageUrl={pageUrl} locale="fr" sticky={false} />
+            )}
+            <div className="mb-6 flex items-center gap-3">
+              <Badge variant="accent" className="tracking-wide">
+                Guide pilier
+              </Badge>
+              <span className="text-muted text-sm">{guide.readingTimeMinutes} min de lecture</span>
+            </div>
 
-          <h1 className="display-editorial text-ink text-4xl md:text-5xl lg:text-6xl">
-            {guide.title}
-          </h1>
+            <h1 className="display-editorial text-ink text-4xl md:text-5xl lg:text-6xl">
+              {guide.title}
+            </h1>
 
-          {guide.excerpt && (
-            <p className="text-muted mt-6 text-lg leading-relaxed">{guide.excerpt}</p>
-          )}
+            {guide.excerpt && (
+              <p className="text-muted mt-6 text-lg leading-relaxed">{guide.excerpt}</p>
+            )}
 
-          {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
-          <AuthorByline
-            authorName="Manon"
-            authorSlug="manon"
-            {...(manonByline
-              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
-              : {})}
-            publishedAt={guide.publishedAt ? new Date(guide.publishedAt) : null}
-            lastReviewedAt={guide.updatedAt ? new Date(guide.updatedAt) : null}
-            emitJsonLd={false}
-            locale="fr"
-          />
+            {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
+            <AuthorByline
+              authorName="Manon"
+              authorSlug="manon"
+              {...(manonByline
+                ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+                : {})}
+              publishedAt={guide.publishedAt ? new Date(guide.publishedAt) : null}
+              lastReviewedAt={guide.updatedAt ? new Date(guide.updatedAt) : null}
+              emitJsonLd={false}
+              locale="fr"
+            />
 
-          {/* Chantier templates 2026-06-21 — héros Unsplash (avant : aucune
+            {/* Chantier templates 2026-06-21 — héros Unsplash (avant : aucune
               image sur /guides). LCP priority, ratio 16/9 réservé (CLS=0). */}
-          {guide.featuredImage ? (
-            <div className="mt-8">
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-                <Image
-                  src={guide.featuredImage}
-                  alt={guide.featuredImageAlt ?? guide.title}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 768px"
-                  className="object-cover"
+            {guide.featuredImage ? (
+              <div className="mt-8">
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                  <Image
+                    src={guide.featuredImage}
+                    alt={guide.featuredImageAlt ?? guide.title}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 768px"
+                    className="object-cover"
+                  />
+                </div>
+                <UnsplashCredit
+                  photographerName={guide.photographerName}
+                  photographerUrl={guide.photographerUrl}
                 />
               </div>
-              <UnsplashCredit
-                photographerName={guide.photographerName}
-                photographerUrl={guide.photographerUrl}
-              />
-            </div>
-          ) : null}
+            ) : null}
 
-          <div className="mt-12 space-y-6">
-            {guide.hasStructuredSteps ? (
-              guide.steps.map((step) => (
-                <section
-                  key={step.position}
-                  aria-labelledby={`step-${step.position}`}
-                  className="border-border rounded-lg border bg-white p-6"
-                >
-                  <h2
-                    id={`step-${step.position}`}
-                    className="text-ink text-xl font-semibold md:text-2xl"
+            <div className="mt-12 space-y-6">
+              {guide.hasStructuredSteps ? (
+                guide.steps.map((step) => (
+                  <section
+                    key={step.position}
+                    aria-labelledby={`step-${step.position}`}
+                    className="border-border rounded-lg border bg-white p-6"
                   >
-                    <span className="text-terracotta mr-2">{step.position}.</span>
-                    {step.name}
-                  </h2>
-                  <div className="text-ink mt-3 leading-relaxed whitespace-pre-line">
-                    {step.text}
-                  </div>
-                </section>
-              ))
-            ) : guideBodyHtml ? (
-              <div
-                className="prose prose-axionia text-ink max-w-none leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: guideBodyHtml }}
-              />
-            ) : (
-              paragraphs.map((p, idx) => (
-                <p key={idx} className="text-ink leading-relaxed">
-                  {p.trim()}
-                </p>
-              ))
-            )}
-          </div>
+                    <h2
+                      id={`step-${step.position}`}
+                      className="text-ink text-xl font-semibold md:text-2xl"
+                    >
+                      <span className="text-terracotta mr-2">{step.position}.</span>
+                      {step.name}
+                    </h2>
+                    <div className="text-ink mt-3 leading-relaxed whitespace-pre-line">
+                      {step.text}
+                    </div>
+                  </section>
+                ))
+              ) : guideBodyHtml ? (
+                <div
+                  className="prose prose-axionia text-ink max-w-none leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: guideBodyHtml }}
+                />
+              ) : (
+                paragraphs.map((p, idx) => (
+                  <p key={idx} className="text-ink leading-relaxed">
+                    {p.trim()}
+                  </p>
+                ))
+              )}
+            </div>
 
-          <AiContentDisclaimer locale="fr" className="mt-10" />
-        </Container>
-      </Section>
+            <AiContentDisclaimer locale="fr" className="mt-10" />
+          </Container>
+        </Section>
+      </article>
 
       {/* Chantier templates 2026-06-21 — point clé + citation expert (rendus
           seulement si renseignés). Hors de la section cream pour éviter une
@@ -299,7 +320,8 @@ export default async function GuidePiliersPage({ params }: Props) {
       />
 
       {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur). */}
-      <ArticleTransparencyBlock lastVerified={guide.updatedAt} updateCycleDays={90} locale="fr" />
+      {/* Cadence de revue par type (audit perfection 2026-06-22) — guides = 60 j. */}
+      <ArticleTransparencyBlock lastVerified={guide.updatedAt} updateCycleDays={60} locale="fr" />
 
       {/* Refonte 2026-06-22 — People Also Ask (parité /blog). */}
       <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />

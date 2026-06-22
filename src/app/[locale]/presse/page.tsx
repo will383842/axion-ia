@@ -22,12 +22,13 @@ import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import {
   PRESS_PITCH,
   PRESS_FACTS,
-  PRESS_KIT_ASSETS,
-  PRESS_RELEASES,
   PRESS_MEDIA_COVERAGE,
   PRESS_SPOKESPERSONS,
   PRESS_FAQ,
 } from "@/content/press";
+// Salle de presse 2026-06-22 — communiqués + kit média lus depuis la DB
+// (fallback fixtures si DB vide / build stub). Édités via la console admin.
+import { getPublishedPressReleases, getPublishedPressMedia } from "@/server/press/queries";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   buildProductMetadata,
@@ -99,22 +100,9 @@ export default async function PressePage({ params }: Props) {
     value: f[loc].value,
   }));
 
-  const kitItems = PRESS_KIT_ASSETS.map((k) => ({
-    id: k.id,
-    kind: k.kind,
-    fileUrl: k.fileUrl,
-    format: k.format,
-    title: k[loc].title,
-    description: k[loc].description,
-  }));
+  const kitItems = await getPublishedPressMedia(loc);
 
-  const releases = PRESS_RELEASES.map((r) => ({
-    slug: r.slug,
-    publishedAt: r.publishedAt,
-    tag: r.tag,
-    title: r[loc].title,
-    dek: r[loc].dek,
-  }));
+  const releases = await getPublishedPressReleases(loc);
 
   const coverage = PRESS_MEDIA_COVERAGE.map((m) => ({
     id: m.id,
@@ -543,6 +531,7 @@ export default async function PressePage({ params }: Props) {
             tagMilestone: t("tagMilestone"),
             read: t("releasesRead"),
             empty: t("releasesEmpty"),
+            downloadPdf: isFr ? "Télécharger le PDF" : "Download PDF",
           }}
         />
       </Section>

@@ -20,7 +20,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -32,7 +32,7 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
@@ -433,18 +433,23 @@ export default async function NewsArticlePage({ params }: Props) {
         </Container>
       ) : null}
 
-      <Section>
-        <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
-          {bodyHtmlFallback ? (
-            <div
-              className="prose prose-axionia max-w-none"
-              dangerouslySetInnerHTML={{ __html: bodyHtmlFallback }}
-            />
-          ) : (
-            paragraphs.map((p, idx) => <p key={`p-${idx}`}>{p}</p>)
-          )}
-        </Container>
-      </Section>
+      {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
+          cible du skip-link sont portés par <main id="main"> du layout :
+          NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
+      <article>
+        <Section>
+          <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
+            {bodyHtmlFallback ? (
+              <div
+                className="prose prose-axionia max-w-none"
+                dangerouslySetInnerHTML={{ __html: bodyHtmlFallback }}
+              />
+            ) : (
+              paragraphs.map((p, idx) => <p key={`p-${idx}`}>{p}</p>)
+            )}
+          </Container>
+        </Section>
+      </article>
 
       {/* Refonte templates 2026-06-22 — barre de partage + copier le lien. */}
       <ArticleShareBar url={pageUrl} title={t.title} locale="fr" />
@@ -461,10 +466,11 @@ export default async function NewsArticlePage({ params }: Props) {
         lastVerified={updatedIso}
       />
 
-      {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur). */}
+      {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur).
+          Cadence de revue par type (audit perfection 2026-06-22) — actualités = 30 j. */}
       <ArticleTransparencyBlock
         lastVerified={article.updatedAt ?? article.publishedAt}
-        updateCycleDays={90}
+        updateCycleDays={30}
         locale="fr"
       />
 
@@ -510,6 +516,14 @@ export default async function NewsArticlePage({ params }: Props) {
       />
 
       {newsJsonLd ? <JsonLd data={newsJsonLd} /> : null}
+      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: locale as Locale,
+          items: breadcrumbItems.map((b) => ({ name: b.label, href: b.href })),
+        })}
+        scriptId="jsonld-breadcrumb-news"
+      />
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );

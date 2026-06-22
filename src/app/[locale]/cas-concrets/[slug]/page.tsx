@@ -14,7 +14,7 @@ import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { Badge } from "@/components/ui/badge";
 import { getCaseStudy, getAllSlugs } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildArticleJsonLd, buildReviewJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildArticleJsonLd } from "@/lib/seo";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
 import { splitTitleEm } from "@/lib/title";
@@ -90,17 +90,15 @@ export default async function CaseStudyPage({ params }: Props) {
     additionalType: "https://schema.org/AIGeneratedContent",
   };
 
-  // Review JSON-LD via factory — star rating Google SERP rich results.
-  const reviewJsonLd = buildReviewJsonLd({
-    authorName: copy.testimonialAuthor,
-    authorRole: copy.testimonialRole,
-    ratingValue: 5,
-    reviewBody: copy.testimonialQuote,
-    itemReviewed: {
-      type: "Service",
-      name: isFr ? "Conseil IA opérationnel Axion-IA" : "Axion-IA operational AI consulting",
-    },
-  });
+  // Audit E-E-A-T 2026-06-22 (P0) — Review JSON-LD RETIRÉ.
+  // Raison : ces cas concrets sont anonymisés (testimonialAuthor = initiales
+  // « C. Lambert ») et IA-assistés (articleJsonLd.aiGenerated = true). Émettre
+  // un `Review` `ratingValue: 5` self-serving (l'entité note son propre service)
+  // depuis des avis non vérifiables viole les règles de données structurées
+  // Google (avis self-serving inéligibles + risque « données factices »).
+  // Cohérent avec la décision déjà prise sur la home (cf. `app/[locale]/page.tsx`
+  // « AggregateRating + Review[] JSON-LD RETIRÉS »). Le témoignage reste affiché
+  // (TestimonialCard) comme preuve sociale, sans balisage trompeur.
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -235,13 +233,9 @@ export default async function CaseStudyPage({ params }: Props) {
         tone="dark"
       />
 
-      {/* V-04 P1 — Article inline (SEO racine), Review déféré afterInteractive. */}
+      {/* Article inline (SEO racine). Review JSON-LD retiré (audit E-E-A-T P0,
+          cf. commentaire plus haut) — pas d'avis self-serving non vérifiable. */}
       <JsonLd data={articleJsonLd} />
-      <JsonLd
-        data={reviewJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-cas-concret-review"
-      />
     </>
   );
 }
