@@ -112,6 +112,33 @@ changements **NON COMMITTÉS** dans le working tree :
   + blocs à /guides, /actualites (TOC manquante), /comparaisons ; câblage
   PrevNext/PAA (loader.ts NON modifié par l'autre effort).
 
+## MISE À JOUR FINALE (2026-06-22, suite session)
+
+Décisions Will : experts INTERNES (Manon + Williams seulement, extensible) ;
+committer le chantier citations parallèle pour débloquer. Faits depuis :
+- `01f76332` — committé le chantier citations parallèle (persist-citations + worker
+  + v7-phase8 + log) après inspection (zéro citation inventée, best-effort) → débloque.
+- `0363b9e4` — fondation `expert-bank.ts` (Manon + Williams, anti-fabrication :
+  nom/titre fixés, LLM rédige le texte) + `GeneratorOutput` keyTakeaway/expertQuote
+  + persistance worker + `blog-article` émet.
+- `11f101ca` — fleet : émission keyTakeaway/expertTake sur les 8 autres générateurs
+  (guide-pilier, comparison, blog-from-*, qa, faq, barometer, v7-phase8) ; typecheck 0.
+- `4eefa100` — PrevNext + PeopleAlsoAsk câblés sur /blog (loadAdjacentArticles +
+  loadPeopleAlsoAsk dans le loader ; PAA = vraies questions d'autres FAQ).
+- `ba816140` — /comparaisons réécrit (modèle enrichi via fleet 3 agents, fidèle
+  au body, zéro chiffre inventé) : answer-first + tableau comparatif + verdicts
+  spécifiques + FAQPage + JSON-LD enrichi (auteur Manon, dateModified, Speakable).
+
+**État : tous les items demandés FAITS.** Seul reste DÉFÉRÉ : images intercalées
+dans le corps (le plus dur — le LLM ne peut pas inventer d'URL d'image ; il faut
+intégrer l'image-bank pour assigner 2-3 images contextuelles par article — chantier
+dédié). 13 commits sur `feat/blog-templates-refonte`, NON poussés, typecheck 0 partout.
+
+⚠️ 3 efforts PARALLÈLES ont coexisté dans le working tree (citations [committé par
+moi sur décision Will] ; copie home/Footer/messages [PAS touché, laissé] ;
+backfill-article-citations.ts untracked [laissé]). Mes commits = `git add` ciblé,
+jamais embarqué le travail des autres.
+
 ## Reste Will (hors code)
 
 - Revue visuelle sur prod/preview, puis `git push` → PR → merge.
