@@ -252,8 +252,9 @@ export default async function ConnaissanceDetail({ params }: Props) {
       {/* Corps de l'article */}
       <Section tone="paper" className="pt-12 pb-16 lg:pt-16 lg:pb-24">
         <Container>
-          {/* A11y WCAG 2.4.1/1.3.1 — cible du skip-link + landmark de contenu
-              éditorial principal (un seul id="main-content" par page). */}
+          {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et
+              la cible du skip-link sont portés par <main id="main"> du layout :
+              NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
           <article className="max-w-3xl">
             {keyFact ? <KeyFactCard fact={keyFact} /> : null}
             <KbToc items={toc} />

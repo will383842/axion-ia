@@ -433,8 +433,9 @@ export default async function NewsArticlePage({ params }: Props) {
         </Container>
       ) : null}
 
-      {/* A11y WCAG 2.4.1/1.3.1 — cible du skip-link + landmark de contenu
-          éditorial principal (un seul id="main-content" par page). */}
+      {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
+          cible du skip-link sont portés par <main id="main"> du layout :
+          NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
       <article>
         <Section>
           <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">

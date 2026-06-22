@@ -833,15 +833,10 @@ export function buildArticleJsonLd({
       name: authorName,
       url: `${SITE_URL}/${locale}/${isFr ? "a-propos" : "about"}#${authorSlug}`,
     },
-    publisher: {
-      "@type": "Organization",
-      name: "Axion-IA",
-      legalName: "Axion-IA SAS",
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/opengraph-image`,
-      },
-    },
+    // Perfection 2026 — référence le nœud Organization complet du layout
+    // (@id #organization : adresse, vatID, sameAs) au lieu d'un Organization
+    // partiel inline → cohérence @id cross-type (JSON-LD reste valide).
+    publisher: { "@id": `${SITE_URL}/#organization` },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: locale,
     ...(articleBody ? { articleBody } : {}),
