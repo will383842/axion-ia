@@ -248,21 +248,29 @@ jobs:
             DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
             REDIS_URL=redis://stub.invalid:6379
             BUILD_SSG_VILLES_INDEXABLE_ONLY=true
-          # Cache GH Actions natif (gratuit, plus rapide que registry cache).
-          # Sprint recovery 2026-05-16 : cache-to mode=min (au lieu de max)
-          # pour limiter le peak disque pendant l'export du cache (~10-20 GB
-          # économisés). Trade-off : builds successifs moins rapides (mode
-          # min cache que les layers finaux). Quand le pipeline est stable,
-          # repasser à mode=max.
+          # Cache de layers Docker en REGISTRY (GHCR) — ré-activé 2026-06-22.
           #
-          # Audit verif-fix-deploy 2026-05-18 : 8 deploys consécutifs failed
-          # depuis fea4b2e (last success 2026-05-17 13:40 UTC). Build die at
-          # ~38 min sans log flush sur step 8 = pattern OOM kill runner.
-          # Hypothèse : cache restore + cache export pendant le build saturent
-          # le runner 16 GB RAM. Désactivation temporaire pour valider.
-          # Si succès → re-activer cache-from puis cache-to en validation.
-          cache-from: type=gha
-          # cache-to disabled — fix verif-fix-deploy 2026-05-18 OOM-kill investigation
+          # Historique : `cache-to type=gha` (inline) construisait un gros tarball
+          # de cache EN RAM pendant le build → saturait le runner 16 GB →
+          # 8 deploys OOM-kill en mai 2026 → cache-to désactivé en urgence
+          # (le `cache-from: type=gha` restant lit un cache GELÉ depuis le
+          # 2026-05-18, d'où le « cache froid » et des builds de plus en plus lents).
+          #
+          # Réparation : on ré-active le cache via le backend REGISTRY. Il STREAME
+          # les blobs de layers vers GHCR au lieu d'un tarball RAM → peak mémoire
+          # bas (pas le pattern OOM du type=gha) et ZÉRO coût disque runner
+          # (le cache vit dans GHCR, pas sur la partition du build → pas d'ENOSPC).
+          # `mode=max` cache aussi les layers du stage `deps` (pnpm install, keyé
+          # sur le lockfile → hit la plupart des builds). 1er build après merge :
+          # légèrement plus lent (peuple le cache) ; suivants : layers chauds.
+          #
+          # ⚠️ Gain réel = MODÉRÉ (réchauffe install/deps/base ~quelques min).
+          # Le coût dominant (compile SSG des ~17k routes) n'est PAS adressé par
+          # un cache de layers : ça demande + de cœurs (runner plus gros) ou ISR.
+          # Validé par la Gate C (Docker smoke) sur la PR avant tout merge.
+          # Revert = `cache-from: type=gha` + retirer la ligne `cache-to`.
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/axion-ia:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/axion-ia:buildcache,mode=max
           # Désactive le provenance attestation (génère 50 MB extra de
           # metadata SLSA inutile pour notre cas).
           provenance: false
