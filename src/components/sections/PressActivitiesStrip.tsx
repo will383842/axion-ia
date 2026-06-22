@@ -56,7 +56,9 @@ export function PressActivitiesStrip({ isFr, blurbs, discoverLabel }: PressActiv
                   aria-hidden="true"
                 />
               </span>
-              <span className="text-fg-soft mt-2 text-xs leading-relaxed">{blurbs[service.id]}</span>
+              <span className="text-fg-soft mt-2 text-xs leading-relaxed">
+                {blurbs[service.id]}
+              </span>
             </Link>
           </li>
         );

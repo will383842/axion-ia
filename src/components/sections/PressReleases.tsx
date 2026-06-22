@@ -84,43 +84,43 @@ export function PressReleases({ releases, locale, labels }: PressReleasesProps) 
             />
           </Link>
           <div className="flex flex-1 flex-col p-7">
-          <div className="mb-5 flex items-center justify-between gap-3">
-            <span className="bg-terracotta-soft text-terracotta-deep rounded-full px-3 py-1 text-[11px] font-semibold tracking-wider uppercase">
-              {tagLabel[release.tag]}
-            </span>
-            <time
-              dateTime={release.publishedAt}
-              className="text-fg-muted inline-flex items-center gap-1.5 text-xs"
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <span className="bg-terracotta-soft text-terracotta-deep rounded-full px-3 py-1 text-[11px] font-semibold tracking-wider uppercase">
+                {tagLabel[release.tag]}
+              </span>
+              <time
+                dateTime={release.publishedAt}
+                className="text-fg-muted inline-flex items-center gap-1.5 text-xs"
+              >
+                <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
+                {formatDate(release.publishedAt, locale)}
+              </time>
+            </div>
+            <h3
+              className="text-fg mb-3 text-xl leading-snug font-medium"
+              style={{ fontFamily: "var(--font-serif)" }}
             >
-              <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
-              {formatDate(release.publishedAt, locale)}
-            </time>
-          </div>
-          <h3
-            className="text-fg mb-3 text-xl leading-snug font-medium"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            <Link
-              href={`/presse/${release.slug}` as never}
-              className="hover:text-terracotta-deep transition"
-            >
-              {release.title}
-            </Link>
-          </h3>
-          <p className="text-fg-soft flex-1 text-sm leading-relaxed">{release.dek}</p>
-          {release.pdfUrl ? (
-            <a
-              href={release.pdfUrl}
-              target="_blank"
-              rel="noopener"
-              className="text-terracotta-deep hover:text-terracotta mt-6 inline-flex items-center gap-2 text-sm font-semibold transition"
-            >
-              <Download className="h-4 w-4" aria-hidden="true" />
-              {labels.downloadPdf}
-            </a>
-          ) : (
-            <p className="text-fg-muted mt-6 text-xs italic">— {labels.read}</p>
-          )}
+              <Link
+                href={`/presse/${release.slug}` as never}
+                className="hover:text-terracotta-deep transition"
+              >
+                {release.title}
+              </Link>
+            </h3>
+            <p className="text-fg-soft flex-1 text-sm leading-relaxed">{release.dek}</p>
+            {release.pdfUrl ? (
+              <a
+                href={release.pdfUrl}
+                target="_blank"
+                rel="noopener"
+                className="text-terracotta-deep hover:text-terracotta mt-6 inline-flex items-center gap-2 text-sm font-semibold transition"
+              >
+                <Download className="h-4 w-4" aria-hidden="true" />
+                {labels.downloadPdf}
+              </a>
+            ) : (
+              <p className="text-fg-muted mt-6 text-xs italic">— {labels.read}</p>
+            )}
           </div>
         </li>
       ))}

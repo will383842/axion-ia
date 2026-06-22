@@ -10,10 +10,7 @@
 
 import { prisma } from "@/lib/prisma";
 import type { Locale } from "@/i18n/routing";
-import type {
-  ImageAsset,
-  ImageAssetTranslation,
-} from "../../../prisma/generated/client";
+import type { ImageAsset, ImageAssetTranslation } from "../../../prisma/generated/client";
 import {
   PRESS_RELEASES,
   PRESS_KIT_ASSETS,

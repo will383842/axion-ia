@@ -564,43 +564,43 @@ export default async function PressePage({ params }: Props) {
           <PressImageBank
             labels={{
               primaryCta: t("imageBankCta"),
-            licenseNote: t("imageBankLicenseNote"),
-            categories: [
-              {
-                id: "ia-operationnelle",
-                iconKind: "image",
-                title: t("imageBankCat1Title"),
-                description: t("imageBankCat1Description"),
-                previewUrl:
-                  "/images/axion-ia-graphique-ia-imperatif-performance-fosse-concurrentiel-dataviz.webp",
-                previewAlt: isFr
-                  ? "Graphique IA — impératif de performance et fossé concurrentiel 2024"
-                  : "AI chart — performance imperative and competitive gap 2024",
-              },
-              {
-                id: "equipe",
-                iconKind: "camera",
-                title: t("imageBankCat2Title"),
-                description: t("imageBankCat2Description"),
-                previewUrl:
-                  "/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp",
-                previewAlt: isFr
-                  ? "Équipe Axion-IA — cabinet IA opérationnel France"
-                  : "Axion-IA team — operational AI consultancy France",
-              },
-              {
-                id: "cas-concrets",
-                iconKind: "scanline",
-                title: t("imageBankCat3Title"),
-                description: t("imageBankCat3Description"),
-                previewUrl:
-                  "/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp",
-                previewAlt: isFr
-                  ? "Comparatif actions humaines vs automatisation IA — 7 étapes"
-                  : "Comparison human actions vs AI automation — 7 steps",
-              },
-            ],
-          }}
+              licenseNote: t("imageBankLicenseNote"),
+              categories: [
+                {
+                  id: "ia-operationnelle",
+                  iconKind: "image",
+                  title: t("imageBankCat1Title"),
+                  description: t("imageBankCat1Description"),
+                  previewUrl:
+                    "/images/axion-ia-graphique-ia-imperatif-performance-fosse-concurrentiel-dataviz.webp",
+                  previewAlt: isFr
+                    ? "Graphique IA — impératif de performance et fossé concurrentiel 2024"
+                    : "AI chart — performance imperative and competitive gap 2024",
+                },
+                {
+                  id: "equipe",
+                  iconKind: "camera",
+                  title: t("imageBankCat2Title"),
+                  description: t("imageBankCat2Description"),
+                  previewUrl:
+                    "/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp",
+                  previewAlt: isFr
+                    ? "Équipe Axion-IA — cabinet IA opérationnel France"
+                    : "Axion-IA team — operational AI consultancy France",
+                },
+                {
+                  id: "cas-concrets",
+                  iconKind: "scanline",
+                  title: t("imageBankCat3Title"),
+                  description: t("imageBankCat3Description"),
+                  previewUrl:
+                    "/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp",
+                  previewAlt: isFr
+                    ? "Comparatif actions humaines vs automatisation IA — 7 étapes"
+                    : "Comparison human actions vs AI automation — 7 steps",
+                },
+              ],
+            }}
           />
         )}
       </Section>
