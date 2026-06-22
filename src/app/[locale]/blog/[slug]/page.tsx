@@ -19,7 +19,13 @@ import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
 import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
+import {
+  loadBlogArticleForView,
+  loadAdjacentArticles,
+  loadPeopleAlsoAsk,
+} from "@/server/content-gen/blog/loader";
+import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
+import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
@@ -379,6 +385,13 @@ export default async function BlogArticle({ params }: Props) {
     limit: 4,
   });
 
+  // Refonte templates 2026-06-22 — maillage séquentiel (précédent/suivant) +
+  // People Also Ask (vraies questions issues des FAQ d'autres articles).
+  const [adjacent, peopleAlsoAsk] = await Promise.all([
+    loadAdjacentArticles(slug, loc, view.categorySlug),
+    loadPeopleAlsoAsk(slug, loc),
+  ]);
+
   // Maillage ville (2026-06-21) — lien RETOUR article → page locale, si l'article
   // est ancré sur une ville indexable. Complète le maillage bidirectionnel (la
   // page ville liste déjà ses articles). `getVille` donne region + nom.
@@ -606,6 +619,10 @@ export default async function BlogArticle({ params }: Props) {
         </Container>
       </Section>
 
+      {/* Refonte templates 2026-06-22 — People Also Ask (vraies questions
+          d'autres articles, distinct de « articles connexes »). */}
+      <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale={loc} />
+
       <SuggestedContent
         variant="articles"
         items={related.map((r) => ({
@@ -620,6 +637,9 @@ export default async function BlogArticle({ params }: Props) {
         tone="sand"
         emitJsonLd
       />
+
+      {/* Refonte templates 2026-06-22 — article précédent / suivant (série). */}
+      <ArticlePrevNext prev={adjacent.prev} next={adjacent.next} locale={loc} />
 
       <CtaBlock
         title={isFr ? "Mettre en pratique" : "Put it to work"}

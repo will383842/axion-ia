@@ -293,3 +293,76 @@ function estimateReadingTimeFromBody(body: string): string {
   const minutes = Math.max(1, Math.round(words / 200));
   return `${minutes} min`;
 }
+
+/** Lien minimal vers un article (titre + href interne). */
+export interface ArticleLink {
+  readonly title: string;
+  readonly href: string;
+}
+
+/**
+ * Refonte templates 2026-06-22 — article précédent/suivant (maillage séquentiel,
+ * `<ArticlePrevNext>`). Cherche les voisins chronologiques dans la MÊME catégorie
+ * (fallback : tous les articles si la catégorie en compte moins de 2). La liste
+ * `loadBlogIndexForView` est triée par date DESC : voisin plus récent = suivant,
+ * plus ancien = précédent. Retourne `{ prev: null, next: null }` si l'article est
+ * introuvable (le composant ne rend alors rien).
+ */
+export async function loadAdjacentArticles(
+  currentSlug: string,
+  locale: Locale,
+  categorySlug: string | null,
+): Promise<{ prev: ArticleLink | null; next: ArticleLink | null }> {
+  const all = await loadBlogIndexForView(locale).catch(() => []);
+  const scoped =
+    categorySlug != null ? all.filter((a) => a.categorySlug === categorySlug) : [...all];
+  const list = scoped.length >= 2 ? scoped : all;
+  const idx = list.findIndex((a) => a.slug === currentSlug);
+  if (idx === -1) return { prev: null, next: null };
+  const toLink = (a: BlogArticleView | undefined): ArticleLink | null =>
+    a ? { title: a.title, href: `/blog/${a.slug}` } : null;
+  return {
+    // Liste DESC : index+1 = plus ancien (précédent), index-1 = plus récent (suivant).
+    prev: toLink(list[idx + 1]),
+    next: toLink(list[idx - 1]),
+  };
+}
+
+/**
+ * Refonte templates 2026-06-22 — « People Also Ask » (`<ArticlePeopleAlsoAsk>`).
+ * Distinct de la FAQ inline ET des « articles connexes » : ce sont de VRAIES
+ * questions issues des FAQ d'AUTRES articles publiés (indexables), chaque
+ * question pointant vers la page où elle est répondue. Renforce le maillage
+ * interne thématique. Vide si aucune FAQ exploitable (composant non rendu).
+ */
+export async function loadPeopleAlsoAsk(
+  currentSlug: string,
+  locale: Locale,
+  limit = 5,
+): Promise<ReadonlyArray<{ question: string; href: string }>> {
+  const rows = await prisma.articleTranslation
+    .findMany({
+      where: {
+        locale,
+        slug: { not: currentSlug },
+        article: { status: "published", indexationTier: { not: "tier_3_noindex_nofollow" } },
+      },
+      select: { slug: true, article: { select: { faqJson: true } } },
+      orderBy: { article: { publishedAt: "desc" } },
+      take: 24,
+    })
+    .catch(() => []);
+  const out: Array<{ question: string; href: string }> = [];
+  const seen = new Set<string>();
+  for (const r of rows) {
+    const faq = parseFaqItems(r.article?.faqJson);
+    const first = faq[0];
+    if (!first) continue;
+    const key = first.question.trim().toLowerCase();
+    if (key.length === 0 || seen.has(key)) continue;
+    seen.add(key);
+    out.push({ question: first.question.trim(), href: `/blog/${r.slug}` });
+    if (out.length >= limit) break;
+  }
+  return out;
+}
