@@ -51,6 +51,7 @@ import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
@@ -72,6 +73,9 @@ courts (1-2 phrases par section).
 Cible : 8-15 sections (idéalement 10-12). Chaque section couvre un sous-thème
 distinct, avec progression logique débutant→intermédiaire→avancé.
 
+- "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
+- "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
+
 Output STRICT JSON (zéro prose hors JSON) :
 {
   "title": "string (60-90 chars)",
@@ -83,7 +87,9 @@ Output STRICT JSON (zéro prose hors JSON) :
     {"position": 1, "title": "string", "brief": "1-2 phrases résumé"}
   ],
   "tags": ["..."],
-  "faq": [{"q": "...", "a": "..."}]
+  "faq": [{"q": "...", "a": "..."}],
+  "keyTakeaway": "...",
+  "expertTake": "..."
 }`);
 
 const SYSTEM_PROMPT_SECTION =
@@ -96,7 +102,13 @@ sur-promesses (pas de "garanti", "révolutionnaire", etc.).
 
 Output STRICT HTML inline (pas de wrapper <section>, pas de <h2> — l'header
 est ajouté par l'assembly). Format : 2-4 paragraphes <p>, optionnellement
-1 liste <ul>/<ol> ou 1 mini-table HTML si pertinent. Pas de scripts.`);
+1 liste <ul>/<ol> ou 1 mini-table HTML si pertinent. Pas de scripts.
+
+Règles de structure du corps :
+- Commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
+- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
+- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.`);
 
 interface OutlineSection {
   readonly position: number;
@@ -113,6 +125,8 @@ interface ParsedOutline {
   readonly sections: ReadonlyArray<OutlineSection>;
   readonly tags: ReadonlyArray<string>;
   readonly faq: ReadonlyArray<{ q: string; a: string }>;
+  readonly keyTakeaway?: string;
+  readonly expertTake?: string;
 }
 
 const PLACEHOLDER_SECTION_HTML =
@@ -187,6 +201,15 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
     });
     const safeVille = input.anchorVilleSlug ? escapeSlugInput(input.anchorVilleSlug) : null;
 
+    // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT
+    // (nom/titre fixés depuis la banque ; le LLM ne rédige que le texte).
+    const expert = pickInternalExpert({
+      contentType: input.contentType,
+      templateVariant: input.templateVariant,
+      audienceSize: input.targetAudienceSize,
+      topic: input.primaryKeyword ?? "IA en entreprise",
+    });
+
     // Sprint External Links Database 2026-05-22 — 5 sources d'autorité (guide long-form).
     const externalLinksCtx = injectExternalLinks(input, { count: 5, minAuthority: 4 });
 
@@ -215,7 +238,9 @@ Intent : ${safeIntent}
 ${kbContext}
 ${externalLinksCtx.markdownSection}${localEconomicContext}${improvementSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
-Rappel : 8-15 sections, output JSON strict (cf. system prompt).`;
+## Avis d'expert
+"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
+Rappel : 8-15 sections, output JSON strict (cf. system prompt) incluant keyTakeaway, expertTake.`;
 
     const outlineResult = await routerGenerate({
       jobId: input.jobId,
@@ -338,6 +363,8 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
     // Pénalité section failures (chaque placeholder pénalise -10 pts max -50)
     qualityScore = Math.max(0, qualityScore - Math.min(50, sectionFailures * 10));
 
+    const expertQuote = buildExpertQuote(expert, outline.expertTake);
+
     return {
       title: outline.title,
       metaTitle: outline.metaTitle,
@@ -356,6 +383,11 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
         faq: outline.faq ?? [],
       },
       tags: outline.tags ?? [],
+      // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le
+      // nom/titre sont fixés par la banque (jamais le LLM) ; buildExpertQuote
+      // renvoie undefined si le texte est vide → bloc non rendu.
+      ...(outline.keyTakeaway?.trim() ? { keyTakeaway: outline.keyTakeaway.trim() } : {}),
+      ...(expertQuote ? { expertQuote } : {}),
       indexationTier:
         doctrine.passed && qualityScore >= QUALITY_THRESHOLD && qualityScore >= 70
           ? "tier_2_noindex_follow"

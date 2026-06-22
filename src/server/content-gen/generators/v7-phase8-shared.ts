@@ -39,6 +39,7 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { computeReadabilityFr, readabilityFitScore } from "../quality/readability";
 import { seoContentKind } from "./seo-content-kind";
 import { appendSourcesSection } from "../quality/article-quality";
@@ -85,6 +86,8 @@ interface ParsedOutput {
   bodyHtml: string;
   faq: ReadonlyArray<{ q: string; a: string }>;
   tags: ReadonlyArray<string>;
+  keyTakeaway?: string;
+  expertTake?: string;
 }
 
 /**
@@ -99,6 +102,16 @@ export async function runV7Phase8Pipeline(
   const safeVilleSlug = input.anchorVilleSlug
     ? escapeLlmInput(input.anchorVilleSlug, { maxLen: 60 })
     : "";
+
+  // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT
+  // (nom/titre fixés depuis la banque ; le LLM ne rédige que le texte). Le sujet
+  // dérive du primaryKeyword (sinon du label humain du type Phase-8).
+  const expert = pickInternalExpert({
+    contentType: input.contentType,
+    templateVariant: input.templateVariant,
+    audienceSize: input.targetAudienceSize,
+    topic: input.primaryKeyword ?? config.humanLabel,
+  });
 
   // 1. KB retrieve top 8 chunks (audit 2026-05-24 — Phase 8 v7 maintenant RAG-enabled)
   // P0-6 audit KB 2026-05-29 — bride anti-collapse : on ne grounde QUE sur du
@@ -155,6 +168,10 @@ ${config.userPromptFocusSection}
 ## CONTRAINTES STRICTES (re-gen si non-respect)
 - Body HTML : ${MIN_WORD_COUNT}-2000 mots minimum (anti-doorway HCU 2024)
 - Structure : ≥ 6 balises <h2> + ≥ 10 balises <h3>
+- Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
+- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
+- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - FAQ : 8-12 paires Q/R substantielles (réponses ≥ 2 lignes)
 - ≥ 4 liens externes <a> vers sources d'autorité (INSEE, DARES, BPI, EU AI Act…)
 - ≥ 3 liens internes vers /audit, /interventions/essentielle, /implementations, /un-a-un
@@ -170,8 +187,15 @@ ${externalLinksCtx.markdownSection}${feedbackSection}
 href : ${config.recommendedCtaHref}
 label : ${config.recommendedCtaLabel}
 
+## Avis d'expert
+"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
+
+## Champs synthèse (AEO)
+- "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
+- "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé ci-dessus.
+
 ## Output attendu (JSON strict, sans balise markdown)
-{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8-12], tags:[string×4-8] }`;
+{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8-12], tags:[string×4-8], keyTakeaway, expertTake }`;
 
     lastPromptHash = hashPrompt(systemPromptWithBrandVoice + userPrompt);
 
@@ -199,6 +223,27 @@ label : ${config.recommendedCtaLabel}
         "La réponse précédente n'était pas du JSON valide. Retourne UNIQUEMENT un objet JSON, sans balise markdown.";
       if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
       continue;
+    }
+
+    // keyword-in-H1 hard-gate (parité blog_from_keywords, 2026-06-22) — le H1
+    // rendu de la page = `parsed.title` (le sanitizer interdit un <h1> dans le
+    // body). Si le primary keyword n'apparaît pas textuellement dans le titre,
+    // on rejette et on re-génère (au lieu d'un simple soft-score non bloquant).
+    if (input.primaryKeyword) {
+      const kw = input.primaryKeyword.toLowerCase();
+      if (!(parsed.title ?? "").toLowerCase().includes(kw)) {
+        prevFeedback = `Le titre "${parsed.title ?? "(absent)"}" (= H1 de la page) ne contient pas le mot-clé "${input.primaryKeyword}". Il DOIT y figurer textuellement.`;
+        if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+        continue;
+      }
+      // metaTitle gate (2026-06-22) — le metaTitle ne doit pas être vide et doit
+      // contenir le mot-clé (snippet SERP/AEO). Lenient sur la longueur exacte.
+      const mt = (parsed.metaTitle ?? "").trim();
+      if (mt.length < 15 || !mt.toLowerCase().includes(input.primaryKeyword.toLowerCase())) {
+        prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit contenir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
+        if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+        continue;
+      }
     }
 
     parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
@@ -370,6 +415,8 @@ label : ${config.recommendedCtaLabel}
         ? "tier_2_noindex_follow"
         : "tier_3_noindex_nofollow";
 
+  const expertQuote = buildExpertQuote(expert, parsed.expertTake);
+
   return {
     title: parsed.title,
     metaTitle: parsed.metaTitle,
@@ -380,6 +427,11 @@ label : ${config.recommendedCtaLabel}
     bodyText: finalBodyText,
     faq: parsed.faq.map((q) => ({ question: q.q, answer: q.a })),
     tags: parsed.tags,
+    // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le
+    // nom/titre sont fixés par la banque (jamais le LLM) ; buildExpertQuote
+    // renvoie undefined si le texte est vide → bloc non rendu.
+    ...(parsed.keyTakeaway?.trim() ? { keyTakeaway: parsed.keyTakeaway.trim() } : {}),
+    ...(expertQuote ? { expertQuote } : {}),
     indexationTier,
     qualityScore,
     seoScore: bestExtras.seoScore,
@@ -389,6 +441,10 @@ label : ${config.recommendedCtaLabel}
     totalTokens: lastTokensInput + lastTokensOutput,
     totalCostUsd: accumulatedCostUsd + originalityCostUsd,
     citations: lastCitations,
+    // External Links DB — IDs des liens d'autorité injectés (propagés au worker
+    // pour tracking rotation + persistance des citations structurées). Les 12 types
+    // Phase 8 les omettaient : le tracking ne reposait que sur la détection body.
+    selectedExternalLinkIds: externalLinksCtx.ids,
     promptHash: lastPromptHash,
     // H2 — traçabilité KB : quels faits ont nourri ce contenu Phase 8.
     kbEntryIds: kbChunks.map((c) => c.entryId),

@@ -8,14 +8,15 @@
 //   - `train-specific-models` : whitelist par éditeur (OpenAI, Anthropic, …)
 //   - `train-disallowed` : refus explicite
 //
-// Doctrine Axion-IA 2026 :
-//   - Cabinet IA opérationnel ne refuse pas d'être ingéré par les LLMs
-//     (le contenu pédagogique enrichit l'écosystème).
-//   - Conformité commerciale : interdiction d'utilisation directe à des fins
-//     concurrentielles (factory IA Custom) sans accord écrit.
+// Doctrine Axion-IA (révisée 2026-06-22 — alignée sur robots.txt) :
+//   - TRAINING refusé : le contenu éditorial n'a pas à entraîner gratuitement
+//     les modèles (GPTBot/ClaudeBot/Google-Extended/Applebot-Extended bloqués).
+//   - CITATION autorisée : les bots de search/answer (OAI-SearchBot/Claude-Web/
+//     PerplexityBot/Bingbot) citent en temps réel = visibilité AEO/GEO.
+//   - Conformité commerciale : réutilisation concurrentielle sans accord écrit
+//     interdite.
 //
-// Cf. `robots.txt` route.ts pour la liste détaillée bot par bot et la
-// stratégie AEO/GEO (allow ClaudeBot/GPTBot/Google-Extended/Applebot-Extended
+// Cf. `robots.txt` route.ts (même doctrine : block training / allow citation,
 // + block Bytespider/CCBot/Diffbot/omgili).
 
 import { SITE_URL } from "@/lib/seo";
@@ -32,37 +33,47 @@ export function GET() {
 User-Agent: *
 Allow: /
 
-# Autorisation de réutiliser le contenu textuel public à des fins
-# d'entraînement de modèles de langage. Le contenu est sous licence éditoriale
-# Axion-IA (axion-ia.com) — voir mentions légales pour les conditions.
-ai-training: allow
+# Le contenu public peut être CITÉ en temps réel par les moteurs de réponse,
+# mais NON réutilisé pour l'ENTRAÎNEMENT de modèles sans accord (licence
+# éditoriale Axion-IA, axion-ia.com — voir mentions légales).
+ai-training: disallow
 
-# ─── Allowlist explicite IA search-time (citation real-time) ──────────────
-# Bots cités en temps réel par ChatGPT / Claude / Perplexity / Gemini.
-# Doctrine AEO/GEO 2026 : citation = nouveau « rang #1 ».
-User-Agent: ClaudeBot
-ai-training: allow
+# ─── Bots de CITATION (search-time) — autorisés ───────────────────────────
+# Cités en temps réel par ChatGPT Search / Claude / Perplexity / Bing Copilot.
+# Doctrine AEO/GEO 2026 : citation = nouveau « rang #1 ». Distincts des bots de
+# training (≠ GPTBot/ClaudeBot), donc citation autorisée SANS autoriser le train.
+User-Agent: OAI-SearchBot
+ai-training: disallow
 ai-citation: allow
 
-User-Agent: OAI-SearchBot
-ai-training: allow
+User-Agent: Claude-Web
+ai-training: disallow
+ai-citation: allow
+
+User-Agent: Claude-SearchBot
+ai-training: disallow
 ai-citation: allow
 
 User-Agent: PerplexityBot
-ai-training: allow
+ai-training: disallow
 ai-citation: allow
 
-User-Agent: GPTBot
-ai-training: allow
+User-Agent: Bingbot
+ai-training: disallow
 ai-citation: allow
+
+# ─── Bots de TRAINING — refusés ───────────────────────────────────────────
+User-Agent: GPTBot
+ai-training: disallow
+
+User-Agent: ClaudeBot
+ai-training: disallow
 
 User-Agent: Google-Extended
-ai-training: allow
-ai-citation: allow
+ai-training: disallow
 
 User-Agent: Applebot-Extended
-ai-training: allow
-ai-citation: allow
+ai-training: disallow
 
 # ─── Disallowlist scrapers/aggregators non-cooperatifs ────────────────────
 # Scrapers connus pour ignorer robots.txt et revendre datasets sans accord.

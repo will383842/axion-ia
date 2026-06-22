@@ -29,6 +29,7 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
@@ -50,9 +51,15 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.
 - Le keyword principal DOIT apparaître textuellement dans le H1. Sans cela l'article sera rejeté.
 - Inclure OBLIGATOIREMENT ≥ 2 liens externes vers des sources d'autorité FR (INSEE, DARES, BPI France, France Num, rapport McKinsey, Stanford AI Index, EU AI Act eur-lex.europa.eu, etc.) avec rel="noopener noreferrer". Les AI Overviews Google et Perplexity citent prioritairement les articles sourcés.
+- Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
+- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
+- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`);
+- "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
+- "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags, keyTakeaway, expertTake }`);
 
 export const blogFromKeywordsGenerator: Generator = {
   contentType: "blog_from_keywords",
@@ -68,6 +75,15 @@ export const blogFromKeywordsGenerator: Generator = {
     const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
     const secondaryList = (input.secondaryKeywords ?? []).slice(0, 5).join(", ");
+
+    // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT
+    // (nom/titre fixés depuis la banque ; le LLM ne rédige que le texte).
+    const expert = pickInternalExpert({
+      contentType: input.contentType,
+      templateVariant: input.templateVariant,
+      audienceSize: input.targetAudienceSize,
+      topic: input.primaryKeyword,
+    });
 
     // 1. KB retrieve — hybride FTS centré sur le keyword + secteur
     const kbChunks = await kbRetrieve({
@@ -102,6 +118,8 @@ export const blogFromKeywordsGenerator: Generator = {
       bodyHtml: string;
       faq: ReadonlyArray<{ q: string; a: string }>;
       tags: ReadonlyArray<string>;
+      keyTakeaway?: string;
+      expertTake?: string;
     };
     let parsed: BlogFromKeywordsParsed | null = null;
     let lastTokensInput = 0;
@@ -129,8 +147,10 @@ ${secondaryList ? `Keywords secondaires : ${secondaryList}.` : ""}
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
+## Avis d'expert
+"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
 ## Output attendu (JSON)
-{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
+{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags, keyTakeaway, expertTake }`;
 
       const effectiveSystem = applySystemPromptOverride(
         SYSTEM_PROMPT,
@@ -186,6 +206,17 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         const h1Text = (h1Match?.[1] ?? "").replace(/<[^>]+>/g, "").toLowerCase();
         if (!h1Text.includes(kw)) {
           prevFeedback = `H1 "${h1Match?.[1] ?? "(absent)"}" ne contient pas le keyword "${input.primaryKeyword}". Le keyword DOIT apparaître textuellement dans le H1.`;
+          if (accumulatedCostUsd >= BUDGET_CAP_USD || iteration >= MAX_QUALITY_ITERATIONS) break;
+          continue;
+        }
+      }
+
+      // Gate metaTitle LENIENT — snippet SERP : le metaTitle ne doit pas être
+      // vide et doit contenir le mot-clé principal (sinon SERP faible).
+      if (input.primaryKeyword) {
+        const mt = (parsed.metaTitle ?? "").trim();
+        if (mt.length < 15 || !mt.toLowerCase().includes(input.primaryKeyword.toLowerCase())) {
+          prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit contenir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
           if (accumulatedCostUsd >= BUDGET_CAP_USD || iteration >= MAX_QUALITY_ITERATIONS) break;
           continue;
         }
@@ -321,6 +352,8 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
           ? "tier_2_noindex_follow"
           : "tier_3_noindex_nofollow";
 
+    const expertQuote = buildExpertQuote(expert, parsed.expertTake);
+
     return {
       title: parsed.title ?? "",
       metaTitle: parsed.metaTitle ?? "",
@@ -331,6 +364,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       bodyText,
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
+      // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le
+      // nom/titre sont fixés par la banque (jamais le LLM) ; buildExpertQuote
+      // renvoie undefined si le texte est vide → bloc non rendu.
+      ...(parsed.keyTakeaway?.trim() ? { keyTakeaway: parsed.keyTakeaway.trim() } : {}),
+      ...(expertQuote ? { expertQuote } : {}),
       indexationTier,
       qualityScore,
       seoScore: seo.score,

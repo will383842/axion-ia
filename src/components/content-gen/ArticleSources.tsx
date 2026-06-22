@@ -1,6 +1,11 @@
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import type { Locale } from "@/i18n/routing";
+import {
+  computeTrustTier,
+  extractDomain,
+  relAttrForExternalLink,
+} from "@/server/content-gen/links/trust-tier";
 
 export interface ArticleSourceItem {
   readonly name: string;
@@ -35,18 +40,25 @@ export function ArticleSources({ items, locale, lastVerified }: ArticleSourcesPr
           {isFr ? "Sources & méthodologie" : "Sources & methodology"}
         </h2>
         <ol className="text-fg-muted marker:text-terracotta mt-6 list-decimal space-y-2 pl-6 text-base marker:font-semibold">
-          {items.map((source, i) => (
-            <li key={i} className="pl-1">
-              <a
-                href={source.url}
-                target="_blank"
-                rel="nofollow noopener noreferrer"
-                className="hover:text-terracotta-deep break-words underline underline-offset-2 transition"
-              >
-                {source.name.trim().length > 0 ? source.name : source.url}
-              </a>
-            </li>
-          ))}
+          {items.map((source, i) => {
+            // Refonte AEO 2026-06-22 — rel dérivé du trust-tier (cohérence avec
+            // le sanitizer inline) : sources d'autorité (.gouv.fr, europa.eu,
+            // ISO…) en dofollow, tout le reste en nofollow. Défaut sûr nofollow.
+            const domain = extractDomain(source.url);
+            const rel = relAttrForExternalLink(domain ? computeTrustTier(domain) : "standard");
+            return (
+              <li key={i} className="pl-1">
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel={rel}
+                  className="hover:text-terracotta-deep break-words underline underline-offset-2 transition"
+                >
+                  {source.name.trim().length > 0 ? source.name : source.url}
+                </a>
+              </li>
+            );
+          })}
         </ol>
         {lastVerified ? (
           <p className="text-fg-muted mt-4 text-sm">

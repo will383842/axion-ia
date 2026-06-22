@@ -1,15 +1,17 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 
-// Doctrine AI bots 2026 (cert C1+C2+C6 2026-05-08) :
-// - ALLOW les LLM bots de search/answer (visibilité AEO/GEO + citations)
-// - ALLOW les LLM bots de training Big Tech (signal cooperatif)
+// Doctrine AI bots 2026 (révisée Will 2026-06-22 — « bloquer training / garder citation ») :
+// - ALLOW les LLM bots de SEARCH/CITATION (visibilité AEO/GEO + citations directes)
+// - DISALLOW les LLM bots de TRAINING (le contenu éditorial n'a pas à entraîner
+//   gratuitement les modèles ; les bots de citation sont DISTINCTS des bots de
+//   training, donc bloquer le training ne coûte AUCUNE citation)
 // - DISALLOW les scrapers parasites sans valeur retour (omgili, Diffbot…)
 //
-// La logique : on veut être cité dans Perplexity / Claude.ai / ChatGPT
-// Search / Bing Copilot / Google SGE → ces bots doivent crawler. Bytespider
-// (TikTok) et CCBot (CommonCrawl indiscriminé) sont bloqués car aucun
-// retour de visibilité direct.
+// Pourquoi sans perte de citation : OAI-SearchBot (≠ GPTBot), Claude-Web/
+// Claude-SearchBot (≠ ClaudeBot), PerplexityBot, Bingbot crawlent pour CITER.
+// Les AI Overviews Google citent via l'index Search (Googlebot), PAS via
+// Google-Extended → bloquer Google-Extended ne retire pas des AI Overviews.
 const COMMON_DISALLOW = [
   "/api/",
   "/_next/",
@@ -74,16 +76,13 @@ const COMMON_DISALLOW = [
 const COMMON_ALLOW = ["/", "/api/og", "/_next/image"];
 
 const AI_BOTS_ALLOWED = [
-  "GPTBot", // OpenAI training
-  "OAI-SearchBot", // ChatGPT Search
-  "ChatGPT-User", // ChatGPT browsing
-  "ClaudeBot", // Anthropic training
-  "anthropic-ai", // legacy Anthropic
+  // SEARCH / CITATION uniquement (ces UA citent, ils n'entraînent pas) :
+  "OAI-SearchBot", // ChatGPT Search (≠ GPTBot training)
+  "ChatGPT-User", // ChatGPT browsing (action utilisateur)
   "Claude-Web", // Claude.ai citations
+  "Claude-SearchBot", // Anthropic search/citation (UA distinct du ClaudeBot training)
   "PerplexityBot", // Perplexity
   "Perplexity-User", // Perplexity browsing
-  "Google-Extended", // Google AI training (Gemini, SGE)
-  "Applebot-Extended", // Apple Intelligence training
   "Mistral-User", // Mistral chat
   "Bingbot", // Bing + Copilot
   "Meta-ExternalAgent", // Meta AI
@@ -97,6 +96,17 @@ const AI_BOTS_ALLOWED = [
   // des images marketing (visibilité Google Images). Déjà couvert par la règle `*`
   // mais explicite pour cohérence avec la doctrine AI bots.
   "Googlebot-Image",
+];
+
+// Bots de TRAINING LLM — bloqués (doctrine 2026-06-22 : protéger le contenu
+// éditorial de l'entraînement gratuit, sans perdre les citations qui passent
+// par les UA de search ci-dessus).
+const AI_BOTS_TRAINING_DISALLOWED = [
+  "GPTBot", // OpenAI training
+  "ClaudeBot", // Anthropic training
+  "anthropic-ai", // legacy Anthropic training
+  "Google-Extended", // Google AI training (Gemini) — ≠ Googlebot (Search/AI Overviews)
+  "Applebot-Extended", // Apple Intelligence training — ≠ Applebot (Search)
 ];
 
 const AI_BOTS_DISALLOWED = [
@@ -140,7 +150,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: COMMON_ALLOW,
         disallow: dynamicDisallow,
       })),
-      ...AI_BOTS_DISALLOWED.map((userAgent) => ({
+      ...[...AI_BOTS_TRAINING_DISALLOWED, ...AI_BOTS_DISALLOWED].map((userAgent) => ({
         userAgent,
         disallow: "/",
       })),

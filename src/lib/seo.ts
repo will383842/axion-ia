@@ -199,7 +199,20 @@ export function buildProductMetadata({
       description,
       images: [resolvedOgImage],
     },
-    robots: { index: true, follow: true },
+    // Refonte AEO 2026-06-22 — directives fines : snippets illimités (réponses
+    // directes citées par Google/AI Overviews) + vignettes large (Discover/Images)
+    // + previews vidéo. Sans ça Google peut tronquer le snippet et limiter l'image.
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-snippet": -1,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+      },
+    },
   };
 }
 
@@ -330,12 +343,12 @@ export function buildServiceJsonLd({
           },
         }
       : {}),
-    // Speakable specification — Sprint perfection AEO 2026-05-28 (Will).
-    // Centralisé sur toutes les pages services (default `true`). Selectors
-    // par défaut h1/h2/[data-speakable] couvrent les zones critiques (titre,
-    // sous-titre, contenus vocaux). Pass `speakable: false` pour bypass, ou
-    // `{ selectors: [...] }` pour custom.
-    ...(speakable !== false
+    // Speakable specification — OPT-IN depuis 2026-06-22 (révision AEO Will).
+    // Speakable est pertinent pour le CONTENU-RÉPONSE (articles/news/FAQ), pas
+    // pour les pages services/villes/tarifs où la valeur vocale est nulle et où
+    // Google l'ignore de toute façon. Donc default OFF ici : on n'émet Speakable
+    // que si le caller le demande explicitement (`speakable:true` ou selectors).
+    ...(speakable === true || (typeof speakable === "object" && speakable.selectors)
       ? {
           speakable: buildSpeakableSpecification({
             selectors:
@@ -848,14 +861,22 @@ export function buildArticleJsonLd({
         }
       : {}),
     // AEO 2026 — Speakable pour citation vocale / AI Overviews. h2 d'article DB
-    // portent déjà `data-speakable` (buildToc) ; AnswerCard porte `data-answer`.
+    // portent déjà `data-speakable` (buildToc) ; AnswerCard porte `data-answer` ;
+    // les réponses 40-60 mots sous chaque H2 portent `data-aeo="answer"` (2026-06-22).
     ...(speakable !== false
       ? {
           speakable: buildSpeakableSpecification({
             selectors:
               typeof speakable === "object" && speakable.selectors
                 ? speakable.selectors
-                : ["h1", "h2", "[data-speakable]", "[data-answer]", "[data-faq-a]"],
+                : [
+                    "h1",
+                    "h2",
+                    "[data-speakable]",
+                    "[data-answer]",
+                    '[data-aeo="answer"]',
+                    "[data-faq-a]",
+                  ],
           }),
         }
       : {}),

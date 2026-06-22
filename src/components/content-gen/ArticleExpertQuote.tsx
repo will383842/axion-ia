@@ -1,6 +1,9 @@
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import type { Locale } from "@/i18n/routing";
+import { JsonLd } from "@/components/marketing/JsonLd";
+import { SITE_URL } from "@/lib/seo";
+import { expertKeyFromName } from "@/server/content-gen/brand/expert-bank";
 
 export interface ExpertQuoteData {
   readonly name: string;
@@ -32,6 +35,31 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
   const title = quote.title?.trim() ?? "";
   const isFr = locale === "fr";
 
+  // Refonte AEO 2026-06-22 — désambiguïsation d'entité : nœud Person + Quotation
+  // pour l'expert cité (résout l'attribution visible en entité réelle, levier
+  // E-E-A-T). N'émet un @id que pour un expert interne CONNU (slug non null) —
+  // jamais d'entité inventée.
+  const slug = expertKeyFromName(name);
+  // Seuls les experts ayant une VRAIE page /equipe/<slug> (AuthorProfile) ont
+  // un @id pointant vers cette page. Sinon (ex. Williams, page à créer), on
+  // ancre l'@id au domaine racine (#person-<slug>, toujours 200) pour déclarer
+  // l'entité Person SANS introduire de lien /equipe qui renverrait 404.
+  const EQUIPE_PAGE_SLUGS = new Set(["manon", "williams"]);
+  const hasEquipePage = slug != null && EQUIPE_PAGE_SLUGS.has(slug);
+  const personJsonLd = slug
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": hasEquipePage
+          ? `${SITE_URL}/${locale}/equipe/${slug}#person`
+          : `${SITE_URL}/#person-${slug}`,
+        name,
+        ...(title.length > 0 ? { jobTitle: title } : {}),
+        ...(hasEquipePage ? { url: `${SITE_URL}/${locale}/equipe/${slug}` } : {}),
+        worksFor: { "@id": `${SITE_URL}/#organization` },
+      }
+    : null;
+
   return (
     <Section>
       <Container className="max-w-3xl">
@@ -48,6 +76,7 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
             {title.length > 0 ? `, ${title}` : ""}
           </figcaption>
         </figure>
+        {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
       </Container>
     </Section>
   );

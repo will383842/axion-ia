@@ -84,6 +84,22 @@ export interface GeneratorOutput {
   readonly bodyText: string;
   readonly faq: ReadonlyArray<GeneratedFaqItem>;
   readonly faqJson?: unknown;
+  /**
+   * Refonte templates 2026-06-22 — « Point clé » (ai_summary) : synthèse 1-2
+   * phrases rendue par `<ArticleKeyTakeaway>`. Optionnel (absent → bloc non rendu).
+   */
+  readonly keyTakeaway?: string;
+  /**
+   * Refonte templates 2026-06-22 — avis d'expert INTERNE (levier AEO +41 %),
+   * rendu par `<ArticleExpertQuote>`. Le nom/titre viennent de la banque interne
+   * (`brand/expert-bank.ts`), jamais du LLM (anti-fabrication) ; seul `text` est
+   * rédigé par le LLM. Optionnel (absent → bloc non rendu).
+   */
+  readonly expertQuote?: {
+    readonly name: string;
+    readonly title: string;
+    readonly text: string;
+  };
   readonly heroImage?: UnsplashSelectedPhoto;
   readonly tags: ReadonlyArray<string>;
   readonly indexationTier: IndexationTier;

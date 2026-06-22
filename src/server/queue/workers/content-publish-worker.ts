@@ -43,6 +43,14 @@ import { persistArticleEmbedding } from "@/server/content-gen/dedup/persist-arti
 // Sprint External Links Database 2026-05-22 — Validation post-publish (≥ 2 liens
 // externes + détection hallucinations URL hors catalogue) + tracking usage.
 import { trackExternalLinksUsage, detectHallucinations } from "@/data/external-links/helpers";
+// Chantier 2026-06-22 — persistance des citations structurées (ExternalReference +
+// ContentCitation) lues par le bloc public « Sources & méthodologie » + JSON-LD isBasedOn.
+import { persistArticleCitations } from "@/server/content-gen/links/persist-citations";
+// Refonte templates 2026-06-22 — images Unsplash intercalées dans le corps
+// (best-effort, doctrine « Unsplash uniquement », attribution CGU §6).
+import { injectBodyImages } from "@/server/content-gen/images/inject-body-images";
+// Refonte 2026-06-22 — liens internes profonds article->article (best-effort).
+import { injectDeepArticleLinks } from "@/server/content-gen/links/inject-deep-links";
 // Sprint Final P1-14 — Release global keyword lock Redis (Fl-08 multi-campagnes).
 import { releaseKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 import { resolveCategoryIdForSector } from "@/server/content-gen/lib/category-mapper";
@@ -305,6 +313,28 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     : [];
   const directAnswer = typeof output.directAnswer === "string" ? output.directAnswer : null;
   const faqJson = output.faqJson ?? output.faq ?? null;
+  // Refonte templates 2026-06-22 — « Point clé » + avis d'expert interne.
+  // Le nom/titre de l'expert proviennent de la banque interne (expert-bank.ts),
+  // jamais du LLM (anti-fabrication) ; on persiste tel quel si présent.
+  const keyTakeaway =
+    typeof output.keyTakeaway === "string" && output.keyTakeaway.trim().length > 0
+      ? output.keyTakeaway.trim()
+      : null;
+  const expertQuoteRaw = output.expertQuote as
+    | { name?: unknown; title?: unknown; text?: unknown }
+    | undefined;
+  const expertQuote =
+    expertQuoteRaw &&
+    typeof expertQuoteRaw.name === "string" &&
+    typeof expertQuoteRaw.text === "string" &&
+    expertQuoteRaw.name.trim().length > 0 &&
+    expertQuoteRaw.text.trim().length > 0
+      ? {
+          name: expertQuoteRaw.name.trim(),
+          title: typeof expertQuoteRaw.title === "string" ? expertQuoteRaw.title.trim() : null,
+          text: expertQuoteRaw.text.trim(),
+        }
+      : null;
   const slugCandidate =
     typeof output.slug === "string" && output.slug.length > 0
       ? output.slug
@@ -429,6 +459,24 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         .slice(0, 8)
     : [];
 
+  // Refonte templates 2026-06-22 — images Unsplash intercalées dans le corps.
+  // Calculé HORS transaction (appel réseau) et APRÈS lecture de `bodyHtml`
+  // d'origine : la détection de citations/liens (plus bas) tourne sur `bodyHtml`
+  // brut, donc les liens d'attribution Unsplash ne sont jamais comptés comme
+  // citations. Best-effort : `bodyHtml` inchangé si Unsplash indisponible.
+  const bodyHtmlWithImages = await injectBodyImages(bodyHtml, {
+    jobId: cgJob.id,
+    contentType: cgJob.contentType,
+    topicHint: primaryKeyword ?? title,
+  });
+  // Liens internes profonds vers d'autres articles tier-1 (maillage thématique),
+  // après les images. Best-effort, sur la même chaîne persistée. Internal links
+  // → n'affecte pas la détection de citations (qui tourne sur `bodyHtml` brut).
+  const bodyHtmlForPersist = await injectDeepArticleLinks(bodyHtmlWithImages, {
+    currentSlug: slugCandidate,
+    locale: "fr",
+  });
+
   const article = await prisma.$transaction(async (tx) => {
     const a = await tx.article.create({
       data: {
@@ -451,6 +499,15 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         ...(resolvedCategoryId ? { categoryId: resolvedCategoryId } : {}),
         ...(directAnswer ? { directAnswer } : {}),
         ...(faqJson ? { faqJson: faqJson as never } : {}),
+        // Refonte templates 2026-06-22 — point clé + avis d'expert interne.
+        ...(keyTakeaway ? { keyTakeaway } : {}),
+        ...(expertQuote
+          ? {
+              expertQuoteName: expertQuote.name,
+              expertQuoteTitle: expertQuote.title,
+              expertQuoteText: expertQuote.text,
+            }
+          : {}),
         templateVariant: cgJob.templateId ?? null,
         searchIntent: cgJob.targetSearchIntent,
         isNews,
@@ -512,7 +569,7 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         locale: "fr",
         title,
         slug: slugCandidate,
-        body: bodyHtml,
+        body: bodyHtmlForPersist,
         ...(bodyText ? { bodyText } : {}),
         metaTitle,
         ...(metaDescription ? { metaDescription } : {}),
@@ -578,6 +635,23 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     if (linksToTrack.length > 0) {
       await trackExternalLinksUsage(linksToTrack);
     }
+
+    // Chantier 2026-06-22 — persiste les citations structurées à partir des liens
+    // RÉELLEMENT présents dans le body (detection.valid, déjà filtrés contre le
+    // catalogue → zéro citation inventée). Alimente le bloc « Sources & méthodologie »
+    // + le JSON-LD isBasedOn (ces tables n'avaient aucun writer jusqu'ici → vides).
+    const citationResult = await persistArticleCitations({
+      articleId: article.id,
+      jobId: cgJob.id,
+      linkIds: detection.valid,
+      bodyHtml,
+    });
+    await logStep(
+      cgJob.id,
+      "citations_persist",
+      `Citations structurées persistées : ${citationResult.persisted}`,
+      { persisted: citationResult.persisted, source_link_ids: detection.valid.slice(0, 10) },
+    );
   } catch (err) {
     // Best-effort : on ne re-throw pas. Le worker continue.
     console.warn(

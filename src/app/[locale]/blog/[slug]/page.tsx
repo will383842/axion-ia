@@ -19,7 +19,14 @@ import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
 import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
+import {
+  loadBlogArticleForView,
+  loadAdjacentArticles,
+  loadPeopleAlsoAsk,
+} from "@/server/content-gen/blog/loader";
+import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
+import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
+import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
@@ -28,6 +35,8 @@ import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { ArticleSources } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
+import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
+import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransparencyBlock";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { getVille } from "@/content/villes";
@@ -377,6 +386,13 @@ export default async function BlogArticle({ params }: Props) {
     limit: 4,
   });
 
+  // Refonte templates 2026-06-22 — maillage séquentiel (précédent/suivant) +
+  // People Also Ask (vraies questions issues des FAQ d'autres articles).
+  const [adjacent, peopleAlsoAsk] = await Promise.all([
+    loadAdjacentArticles(slug, loc, view.categorySlug),
+    loadPeopleAlsoAsk(slug, loc),
+  ]);
+
   // Maillage ville (2026-06-21) — lien RETOUR article → page locale, si l'article
   // est ancré sur une ville indexable. Complète le maillage bidirectionnel (la
   // page ville liste déjà ses articles). `getVille` donne region + nom.
@@ -388,6 +404,10 @@ export default async function BlogArticle({ params }: Props) {
 
   return (
     <>
+      {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de progression de
+          lecture (CSS scroll-driven, 0 JS, dégrade proprement via @supports). */}
+      <div className="reading-progress" aria-hidden="true" />
+
       {/* P1-17 — alternate format markdown brut pour LLM ingestion. */}
       <link
         rel="alternate"
@@ -510,7 +530,7 @@ export default async function BlogArticle({ params }: Props) {
       )}
 
       <Section>
-        <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
+        <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
           {dbBodyHtml ? (
             // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
             // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
@@ -541,6 +561,11 @@ export default async function BlogArticle({ params }: Props) {
         </Container>
       </Section>
 
+      {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
+          le lien. URL absolue (pageUrl) pour X/LinkedIn/mailto. Server, l'îlot
+          clipboard est isolé dans CopyLinkButton ("use client"). */}
+      <ArticleShareBar url={pageUrl} title={view.title} locale={loc} />
+
       {/* Chantier templates 2026-06-21 — citation d'expert nommé (levier AEO
           le plus fort), rendue seulement si une vraie citation est renseignée. */}
       <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
@@ -560,6 +585,15 @@ export default async function BlogArticle({ params }: Props) {
         items={view.citations}
         locale={loc}
         lastVerified={view.updatedAt ?? view.publishedAt}
+      />
+
+      {/* Refonte templates 2026-06-22 (Chantier 2b) — bloc de transparence
+          E-E-A-T : dernière vérification + cycle de mise à jour (signal de
+          fraîcheur Google/IA). Cycle aligné sur la doctrine de re-publication. */}
+      <ArticleTransparencyBlock
+        lastVerified={view.updatedAt ?? view.publishedAt}
+        updateCycleDays={90}
+        locale={loc}
       />
 
       {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
@@ -586,6 +620,10 @@ export default async function BlogArticle({ params }: Props) {
         </Container>
       </Section>
 
+      {/* Refonte templates 2026-06-22 — People Also Ask (vraies questions
+          d'autres articles, distinct de « articles connexes »). */}
+      <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale={loc} />
+
       <SuggestedContent
         variant="articles"
         items={related.map((r) => ({
@@ -600,6 +638,13 @@ export default async function BlogArticle({ params }: Props) {
         tone="sand"
         emitJsonLd
       />
+
+      {/* Refonte templates 2026-06-22 — article précédent / suivant (série). */}
+      <ArticlePrevNext prev={adjacent.prev} next={adjacent.next} locale={loc} />
+
+      {/* Refonte templates 2026-06-22 — capture newsletter (réutilise l'inscription
+          existante du site, double opt-in + Turnstile). */}
+      <ArticleNewsletterInline locale={loc} />
 
       <CtaBlock
         title={isFr ? "Mettre en pratique" : "Put it to work"}

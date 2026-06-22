@@ -33,6 +33,10 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
+import { loadPeopleAlsoAsk, loadAdjacentArticlesByType } from "@/server/content-gen/blog/loader";
+import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
+import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
+import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
@@ -40,6 +44,8 @@ import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { ArticleSources } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
+import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
+import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransparencyBlock";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
@@ -124,6 +130,10 @@ export default async function GuidePiliersPage({ params }: Props) {
   // Chantier templates 2026-06-21 — byline enrichie (photo/rôle/LinkedIn depuis
   // AuthorProfile). emitJsonLd={false} : le Person riche est personJsonLd ci-dessus.
   const manonByline = await getManonByline();
+  // Refonte 2026-06-22 — People Also Ask aussi sur /guides (parité maillage avec
+  // /blog) : vraies questions issues des FAQ d'autres articles publiés.
+  const peopleAlsoAsk = await loadPeopleAlsoAsk(slug, locale as Locale);
+  const adjacent = await loadAdjacentArticlesByType(slug, locale as Locale, "guides");
 
   const breadcrumbItems = [
     { href: "/guides", label: "Guides" },
@@ -165,6 +175,9 @@ export default async function GuidePiliersPage({ params }: Props) {
 
   return (
     <>
+      {/* Refonte templates 2026-06-22 — barre de progression de lecture (CSS, 0 JS). */}
+      <div className="reading-progress" aria-hidden="true" />
+
       <JsonLd data={jsonLd} />
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
       <Container className="border-border border-b py-3">
@@ -269,6 +282,9 @@ export default async function GuidePiliersPage({ params }: Props) {
       <ArticleKeyTakeaway text={guide.keyTakeaway} locale="fr" />
       <ArticleExpertQuote quote={guide.expertQuote} locale="fr" />
 
+      {/* Refonte templates 2026-06-22 — barre de partage + copier le lien. */}
+      <ArticleShareBar url={pageUrl} title={guide.title} locale="fr" />
+
       {/* Chantier templates 2026-06-21 — FAQ + Sources (briques partagées,
           mêmes composants que /blog). guide.updatedAt = Date → ISO court. */}
       <ArticleFaq
@@ -281,6 +297,12 @@ export default async function GuidePiliersPage({ params }: Props) {
         locale="fr"
         lastVerified={guide.updatedAt.toISOString().slice(0, 10)}
       />
+
+      {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur). */}
+      <ArticleTransparencyBlock lastVerified={guide.updatedAt} updateCycleDays={90} locale="fr" />
+
+      {/* Refonte 2026-06-22 — People Also Ask (parité /blog). */}
+      <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />
 
       {/* V-14 sprint UX 2026-05-22 — section Articles connexes (auparavant absente sur /guides/[slug] → dead-end + bounce maximal). */}
       <SuggestedContent
@@ -299,6 +321,12 @@ export default async function GuidePiliersPage({ params }: Props) {
         tone="sand"
         emitJsonLd
       />
+
+      {/* Refonte 2026-06-22 — précédent / suivant (parité /blog). */}
+      <ArticlePrevNext prev={adjacent.prev} next={adjacent.next} locale="fr" />
+
+      {/* Refonte 2026-06-22 — newsletter (parité /blog). */}
+      <ArticleNewsletterInline locale="fr" />
 
       <CtaBlock
         title="Besoin d'un accompagnement opérationnel ?"

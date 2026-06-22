@@ -83,14 +83,12 @@ export function GET() {
 - [Île-de-France](${SITE_URL}/fr/implantations/ile-de-france) — Paris pilote ${SITE_URL}/fr/implantations/ile-de-france/paris.
 - [Audit par ville](${SITE_URL}/fr/audit/par-ville/paris) — services localisés (audit / interventions / implementation / un-a-un / sites-web-augmentes × ville).
 
-## Couverture géographique Sprint A (2026-05-25)
+## Couverture géographique
 
-- 2 150 communes françaises × 5 verticales IA : ${SITE_URL}/fr/implantations/{region}/{ville}/{verticale}
-- Verticales : audit / interventions / implementation / un-a-un / sites-web-augmentes
-- Tier 1 (≥ 500 000 hab) : Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille, Rennes, Reims, Le Havre
-- Tier 2 (15 000 – 500 000 hab) : ~350 communes pilotes (préfectures + sous-préfectures + bassins industriels)
-- Tier 3 (< 15 000 hab) : ~1 800 communes (couverture longue traîne, indexation progressive anti-doorway HCU 2024)
-- Sitemap dédié : ${SITE_URL}/sitemap/implantations-villes-verticales.xml (~500 routes SSG top-100 villes × 5 verticales)
+- Hub par ville : ${SITE_URL}/fr/implantations/{region}/{ville} — page locale (services IA, écosystème, secteurs, FAQ) par commune.
+- Secteurs × activités : ${SITE_URL}/fr/secteurs/{secteur}/{activite} — pages métier croisées (constat, avant/après, KPI), anti-doorway HCU.
+- Services localisés par ville : ${SITE_URL}/fr/audit/par-ville/{ville} (idem interventions / implementation / un-a-un / sites-web-augmentes).
+- ~2 150 communes couvertes, Tier 1 grandes métropoles (Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille…) → Tier 3 longue traîne (indexation progressive).
 
 ## Recrutement — réseau commercial indépendant
 
@@ -107,7 +105,6 @@ export function GET() {
 
 - [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml
 - [Centre d'aide](${SITE_URL}/fr/centre-aide) — articles support classés par catégorie.
-- [Plan du site](${SITE_URL}/fr/plan-du-site) — sitemap humain navigable.
 
 ## Contact & presse
 
@@ -120,7 +117,7 @@ export function GET() {
 - Notifications Telegram + emails automatiques (PowerMTA self-hosted, pas de SaaS tiers).
 - Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
 - Pas de mensualité, pas d'engagement, devis fixe.
-- Hébergement Hetzner Nuremberg (UE) — pas de Stripe payment, pas de Resend, pas de Vercel.
+- Hébergement Hetzner (UE) — pas de Stripe payment, pas de Resend, pas de Vercel.
 
 ## Optional
 
@@ -133,7 +130,6 @@ export function GET() {
 - [Image Sitemap Villes T2](${SITE_URL}/sitemap-images-villes-t2.xml) — villes 50K–100K hab (template Sharp auto).
 - [Image Sitemap Villes T3/T4](${SITE_URL}/sitemap-images-villes-t3-t4.xml) — 2 034 villes 5K–50K hab.
 - [Google News Sitemap](${SITE_URL}/sitemap-news.xml) — actualités fenêtre 48 h glissante.
-- [Plan du site humain](${SITE_URL}/fr/plan-du-site) — navigation hiérarchique.
 
 ## Excluded
 

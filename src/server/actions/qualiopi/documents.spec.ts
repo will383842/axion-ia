@@ -13,7 +13,7 @@
  *   kit_opco, reglement_interieur + stub-aware.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mocks déclarés avant les imports (hoisting Vitest)

@@ -449,6 +449,348 @@
   }
 }
 /* =============================================================
+ * Article prose — `.prose-axionia`
+ * Couche typographique éditoriale du CORPS des contenus générés
+ * (/blog, /guides, /actualites, /connaissances). Rendu via
+ * `<div class="prose prose-axionia" dangerouslySetInnerHTML>`.
+ *
+ * Contexte (refonte templates blog, juin 2026) : `@tailwindcss/typography`
+ * n'est PAS installé et aucune règle `.prose` n'existait → le corps des
+ * articles s'affichait avec les marges navigateur par défaut (« bloc de
+ * texte sans mise en page »). Cette couche restaure le rythme vertical, la
+ * hiérarchie Hn, les listes/citations/tableaux/figures chartés.
+ *
+ * Contraintes : tokens uniquement (anti-hex exclut globals.css), 100 % CSS
+ * (0 JS / 0 CLS), aligné sur le design system « Editorial Premium Light »
+ * (Manrope semibold sur Hn comme les <Section>, accents terracotta, Fraunces
+ * italique sur citations). Largeur de lecture pilotée par le conteneur parent.
+ * =============================================================*/
+@layer components {
+  .prose-axionia {
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 1.125rem; /* 18px — body anchor du design system */
+    line-height: 1.75;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+  }
+
+  /* Rythme vertical : pas de marge en tête/pied du bloc */
+  .prose-axionia > :first-child {
+    margin-top: 0;
+  }
+  .prose-axionia > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* Paragraphes */
+  .prose-axionia p {
+    margin: 0 0 1.25rem;
+  }
+  .prose-axionia :where(p, li) {
+    overflow-wrap: break-word;
+  }
+
+  /* Titres de section — Manrope semibold (parité avec les <Section>) */
+  .prose-axionia :where(h2, h3, h4) {
+    font-family: var(--font-sans);
+    color: var(--color-fg);
+    font-weight: 650;
+    text-wrap: balance;
+  }
+  .prose-axionia h2 {
+    font-size: 2rem; /* 32px */
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    margin: 2.75rem 0 0.85rem;
+  }
+  .prose-axionia h3 {
+    font-size: 1.5rem; /* 24px */
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    margin: 2.1rem 0 0.6rem;
+  }
+  .prose-axionia h4 {
+    font-size: 1.1875rem; /* 19px */
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin: 1.6rem 0 0.45rem;
+  }
+
+  /* Emphases */
+  .prose-axionia strong {
+    font-weight: 650;
+    color: var(--color-fg);
+  }
+  .prose-axionia em {
+    font-style: italic;
+  }
+
+  /* Liens inline — bleu primary, soulignement raffiné, hover terracotta */
+  .prose-axionia a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition:
+      color var(--duration-fast) var(--ease-out-editorial),
+      text-decoration-color var(--duration-fast) var(--ease-out-editorial);
+  }
+  .prose-axionia a:hover {
+    color: var(--color-terracotta);
+    text-decoration-color: var(--color-terracotta);
+  }
+
+  /* Listes — puces/numéros terracotta */
+  .prose-axionia :where(ul, ol) {
+    margin: 0 0 1.5rem;
+    padding-left: 1.5rem;
+  }
+  .prose-axionia ul {
+    list-style: disc;
+  }
+  .prose-axionia ol {
+    list-style: decimal;
+  }
+  .prose-axionia li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
+  }
+  .prose-axionia li::marker {
+    color: var(--color-terracotta);
+    font-weight: 600;
+  }
+  .prose-axionia :where(ul, ol) :where(ul, ol) {
+    margin: 0.5rem 0 0.5rem;
+  }
+
+  /* Citations — Fraunces italique, filet terracotta */
+  .prose-axionia blockquote {
+    margin: 1.85rem 0;
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    border-left: 3px solid var(--color-terracotta);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1875rem;
+    line-height: 1.6;
+    color: var(--color-fg-soft);
+  }
+  .prose-axionia blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Tableaux — en-tête sable, zébrage doux */
+  .prose-axionia table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.85rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .prose-axionia :where(th, td) {
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .prose-axionia th {
+    background: var(--color-sand-deep);
+    font-weight: 650;
+    border-bottom: 2px solid var(--color-border-strong);
+  }
+  .prose-axionia td {
+    border-top: 1px solid var(--color-border);
+  }
+  .prose-axionia tbody tr:nth-child(even) {
+    background: var(--color-sand);
+  }
+
+  /* Figures & images intercalées */
+  .prose-axionia :where(figure, img) {
+    margin: 1.85rem 0;
+  }
+  .prose-axionia img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius-lg);
+  }
+  .prose-axionia figcaption {
+    margin-top: 0.6rem;
+    text-align: center;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-fg-muted);
+  }
+
+  /* Code */
+  .prose-axionia :not(pre) > code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-sand);
+    color: var(--color-terracotta-deep);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+  }
+  .prose-axionia pre {
+    margin: 1.6rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--color-mocha);
+    color: var(--color-mocha-fg);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+  .prose-axionia pre code {
+    font-family: var(--font-mono);
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  /* Séparateur éditorial */
+  .prose-axionia hr {
+    border: 0;
+    height: 1px;
+    margin: 2.5rem 0;
+    background: linear-gradient(to right, transparent, var(--color-border-strong), transparent);
+  }
+
+  /* Encadrés sémantiques (callouts) — aérent le corps, structurent l'info.
+     Contrat HTML émis par le générateur (survit au sanitizer : aside + class) :
+       <aside class="callout callout-warning">
+         <p class="callout-label">Attention</p>
+         <p>…</p>
+       </aside>
+     Variantes : info / note (« Bon à savoir ») / warning (« Attention ») /
+     danger (« Erreurs à éviter »). 100 % CSS, icône via ::before. */
+  .prose-axionia aside.callout {
+    margin: 1.85rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-sand);
+  }
+  .prose-axionia aside.callout > :first-child {
+    margin-top: 0;
+  }
+  .prose-axionia aside.callout > :last-child {
+    margin-bottom: 0;
+  }
+  .prose-axionia .callout-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.4rem;
+    font-weight: 650;
+    font-size: 0.9375rem;
+    letter-spacing: 0.005em;
+  }
+  .prose-axionia .callout-label::before {
+    font-size: 1.05em;
+    line-height: 1;
+  }
+  .prose-axionia .callout-info {
+    border-left-color: var(--color-primary);
+    background: var(--color-primary-soft);
+  }
+  .prose-axionia .callout-info .callout-label {
+    color: var(--color-primary);
+  }
+  .prose-axionia .callout-info .callout-label::before {
+    content: "ℹ️";
+  }
+  .prose-axionia .callout-note {
+    border-left-color: var(--color-sage);
+    background: var(--color-sage-soft);
+  }
+  .prose-axionia .callout-note .callout-label {
+    color: var(--color-sage);
+  }
+  .prose-axionia .callout-note .callout-label::before {
+    content: "💡";
+  }
+  .prose-axionia .callout-warning {
+    border-left-color: var(--color-terracotta);
+    background: var(--color-terracotta-soft);
+  }
+  .prose-axionia .callout-warning .callout-label {
+    color: var(--color-terracotta-deep);
+  }
+  .prose-axionia .callout-warning .callout-label::before {
+    content: "⚠️";
+  }
+  .prose-axionia .callout-danger {
+    border-left-color: var(--color-error);
+    background: var(--color-terracotta-soft);
+  }
+  .prose-axionia .callout-danger .callout-label {
+    color: var(--color-error);
+  }
+  .prose-axionia .callout-danger .callout-label::before {
+    content: "🚫";
+  }
+
+  /* Glossaire inline — terme défini, tooltip natif via `title` (0 JS).
+     Contrat : <span class="glossary-term" title="définition…">terme</span> */
+  .prose-axionia :where(dfn, .glossary-term) {
+    font-style: normal;
+    border-bottom: 1px dashed var(--color-border-strong);
+    cursor: help;
+    text-decoration: none;
+  }
+
+  /* Surlignage doux (mise en avant d'un fragment) */
+  .prose-axionia mark {
+    background: var(--color-terracotta-soft);
+    color: inherit;
+    padding: 0.05em 0.25em;
+    border-radius: var(--radius-xs);
+  }
+}
+
+/* =============================================================
+ * Barre de progression de lecture — `.reading-progress`
+ * Filet terracotta en haut de page qui se remplit au scroll. 100 % CSS via
+ * scroll-driven animation (0 JS). Garde `@supports` : sur un navigateur sans
+ * `animation-timeline: scroll()`, la barre reste à scaleX(0) (invisible) →
+ * dégradation propre, jamais de barre pleine parasite. Masquée en
+ * prefers-reduced-motion.
+ * =============================================================*/
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: var(--color-terracotta);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  @keyframes reading-progress-grow {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  .reading-progress {
+    animation: reading-progress-grow linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress {
+    display: none;
+  }
+}
+
+/* =============================================================
  * ⚠️ GARDE — NE PAS réintroduire de classes `.admin-*` ici.
  * Les ~1250 lignes de classes utilitaires `.admin-*` ont été relocalisées
  * dans src/app/admin.css (Étape 1 unification design console, juin 2026,
