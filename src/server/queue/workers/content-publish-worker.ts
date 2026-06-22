@@ -335,10 +335,37 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
           text: expertQuoteRaw.text.trim(),
         }
       : null;
+  // Refonte 2026-06-22 — RÉGÉNÉRATION EN PLACE. Si le job porte `refreshArticleId`
+  // dans inputPayload (créé par l'action regenerateArticle), on MET À JOUR
+  // l'article existant au lieu d'en créer un nouveau : le slug FR est PRÉSERVÉ
+  // (URL inchangée → zéro 301, zéro doublon SEO). On résout ici le slug d'origine
+  // pour que injectDeepArticleLinks (self-link exclusion) + les logs l'utilisent.
+  const refreshArticleId =
+    typeof inputPayloadRaw?.refreshArticleId === "string" &&
+    inputPayloadRaw.refreshArticleId.length > 0
+      ? inputPayloadRaw.refreshArticleId
+      : null;
+  let refreshTranslationId: string | null = null;
+  let refreshPreservedSlug: string | null = null;
+  if (refreshArticleId) {
+    const existingTr = await prisma.articleTranslation.findFirst({
+      where: { articleId: refreshArticleId, locale: "fr" },
+      select: { id: true, slug: true },
+    });
+    if (!existingTr) {
+      // La cible de régénération n'a plus de traduction FR : on refuse plutôt
+      // que de créer un doublon (il n'y a plus d'URL à préserver).
+      throw new Error(`refresh target article ${refreshArticleId} has no fr translation — abort`);
+    }
+    refreshTranslationId = existingTr.id;
+    refreshPreservedSlug = existingTr.slug;
+  }
+
   const slugCandidate =
-    typeof output.slug === "string" && output.slug.length > 0
+    refreshPreservedSlug ??
+    (typeof output.slug === "string" && output.slug.length > 0
       ? output.slug
-      : slugify(title) || `article-${cgJob.id.slice(0, 8)}`;
+      : slugify(title) || `article-${cgJob.id.slice(0, 8)}`);
   const wordCount = typeof output.wordCount === "number" ? output.wordCount : null;
   const readingTimeMinutes =
     typeof output.readingTimeMinutes === "number" ? output.readingTimeMinutes : null;
@@ -478,66 +505,123 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   });
 
   const article = await prisma.$transaction(async (tx) => {
-    const a = await tx.article.create({
-      data: {
-        status: "published",
-        publishedAt: new Date(),
-        ...(readingTimeMinutes !== null ? { readingTime: readingTimeMinutes } : {}),
-        indexationTier,
-        ...(cgJob.qualityScore !== null ? { qualityScore: cgJob.qualityScore } : {}),
-        ...(cgJob.seoScore !== null ? { seoScore: cgJob.seoScore } : {}),
-        ...(cgJob.readabilityScore !== null ? { readabilityScore: cgJob.readabilityScore } : {}),
-        ...(cgJob.plagiarismScore !== null ? { plagiarismScore: cgJob.plagiarismScore } : {}),
-        // P4 (2026-06-21) — `promotedAt` N'EST PLUS posé au publish (cf. bloc tier
-        // ci-dessus) : la naissance tier-1 est conservée mais l'article devient
-        // éligible à la démotion par performance (lifecycle CTR). Reste null →
-        // réservé à une future protection éditoriale manuelle.
-        generatedByJobId: cgJob.id,
-        // P0-6 — Traçabilité directe campagne → article.
-        ...(cgJob.campaignId ? { campaignId: cgJob.campaignId } : {}),
-        // Catégorisation 2026-06-16 — catégorie de blog dérivée du serviceSector du job.
-        ...(resolvedCategoryId ? { categoryId: resolvedCategoryId } : {}),
-        ...(directAnswer ? { directAnswer } : {}),
-        ...(faqJson ? { faqJson: faqJson as never } : {}),
-        // Refonte templates 2026-06-22 — point clé + avis d'expert interne.
-        ...(keyTakeaway ? { keyTakeaway } : {}),
-        ...(expertQuote
-          ? {
-              expertQuoteName: expertQuote.name,
-              expertQuoteTitle: expertQuote.title,
-              expertQuoteText: expertQuote.text,
-            }
-          : {}),
-        templateVariant: cgJob.templateId ?? null,
-        searchIntent: cgJob.targetSearchIntent,
-        isNews,
-        ...(isNews && rssSourceUrl ? { newsSourceUrl: rssSourceUrl } : {}),
-        ...(isNews && rssSourceName ? { newsSourceName: rssSourceName } : {}),
-        // Sprint S+2 City Domination — Phase C strat ville (hotfix audit
-        // 2026-05-18). Sans ce spread, l'Article était inséré avec
-        // mentioned_cities=[] (default Prisma) → hub ville getBlogArticlesByVille
-        // retournait [] même pour villes explicitement mentionnées par le
-        // generator (forceInclude=anchorVilleSlug landing-ville). Désormais
-        // câblé : les villes extraites/forcées sont persistées en DB et
-        // l'index GIN articles_mentioned_cities_idx permet le filter
-        // performant côté hub ville.
-        ...(mentionedCities.length > 0 ? { mentionedCities } : {}),
-        // E7 (traçabilité AI-Act) — IDs des entrées KB injectées via kbRetrieve()
-        // (source: GeneratorOutput.kbEntryIds). Default schema = [] si vide.
-        ...(kbChunkIds.length > 0 ? { kbChunkIds } : {}),
-        // B.6 P0-4 — Hero image image-bank (URL filePath ou null si pas de match).
-        ...(heroImageFilePath ? { featuredImage: heroImageFilePath } : {}),
-        // VIS-08 — Alt sémantique hero (FR ; EN miroir non requis, locale FR canonique).
-        ...(heroImageAlt ? { featuredImageAltFr: heroImageAlt } : {}),
-        // Unsplash hero (Option A 2026-06-16) — attribution CGU §6 (Unsplash only).
-        ...(heroPhotographerName ? { featuredImagePhotographerName: heroPhotographerName } : {}),
-        ...(heroPhotographerUrl ? { featuredImagePhotographerUrl: heroPhotographerUrl } : {}),
-        // B.7 P0-6 — Outline SimHash (couche dedup 3, persiste pour future comparaison).
-        ...(outlineSimhash ? { outlineSimhash } : {}),
-        // #2 2026-06-14 — Fingerprint sémantique (dedup cross-entry topic).
-        ...(topicFingerprint ? { topicFingerprint } : {}),
-      },
-    });
+    // Régénération en place (refreshArticleId présent) → UPDATE de l'article
+    // existant : on NE touche PAS status/publishedAt/indexationTier/promotedAt
+    // (l'article reste publié, même tier, même date d'origine ; updatedAt posé
+    // auto via @updatedAt). Les champs « best-effort » du generator gardent leur
+    // valeur d'origine s'ils ne sont pas reproduits (spreads conditionnels, comme
+    // au create) — body/title/metaTitle sont toujours réécrits (cœur du refresh).
+    const a = refreshArticleId
+      ? await tx.article.update({
+          where: { id: refreshArticleId },
+          data: {
+            ...(readingTimeMinutes !== null ? { readingTime: readingTimeMinutes } : {}),
+            ...(cgJob.qualityScore !== null ? { qualityScore: cgJob.qualityScore } : {}),
+            ...(cgJob.seoScore !== null ? { seoScore: cgJob.seoScore } : {}),
+            ...(cgJob.readabilityScore !== null
+              ? { readabilityScore: cgJob.readabilityScore }
+              : {}),
+            ...(cgJob.plagiarismScore !== null ? { plagiarismScore: cgJob.plagiarismScore } : {}),
+            generatedByJobId: cgJob.id,
+            ...(cgJob.campaignId ? { campaignId: cgJob.campaignId } : {}),
+            ...(resolvedCategoryId ? { categoryId: resolvedCategoryId } : {}),
+            ...(directAnswer ? { directAnswer } : {}),
+            ...(faqJson ? { faqJson: faqJson as never } : {}),
+            ...(keyTakeaway ? { keyTakeaway } : {}),
+            ...(expertQuote
+              ? {
+                  expertQuoteName: expertQuote.name,
+                  expertQuoteTitle: expertQuote.title,
+                  expertQuoteText: expertQuote.text,
+                }
+              : {}),
+            templateVariant: cgJob.templateId ?? null,
+            searchIntent: cgJob.targetSearchIntent,
+            isNews,
+            ...(isNews && rssSourceUrl ? { newsSourceUrl: rssSourceUrl } : {}),
+            ...(isNews && rssSourceName ? { newsSourceName: rssSourceName } : {}),
+            ...(mentionedCities.length > 0 ? { mentionedCities } : {}),
+            ...(kbChunkIds.length > 0 ? { kbChunkIds } : {}),
+            ...(heroImageFilePath ? { featuredImage: heroImageFilePath } : {}),
+            ...(heroImageAlt ? { featuredImageAltFr: heroImageAlt } : {}),
+            ...(heroPhotographerName
+              ? { featuredImagePhotographerName: heroPhotographerName }
+              : {}),
+            ...(heroPhotographerUrl ? { featuredImagePhotographerUrl: heroPhotographerUrl } : {}),
+            ...(outlineSimhash ? { outlineSimhash } : {}),
+            ...(topicFingerprint ? { topicFingerprint } : {}),
+          },
+        })
+      : await tx.article.create({
+          data: {
+            status: "published",
+            publishedAt: new Date(),
+            ...(readingTimeMinutes !== null ? { readingTime: readingTimeMinutes } : {}),
+            indexationTier,
+            ...(cgJob.qualityScore !== null ? { qualityScore: cgJob.qualityScore } : {}),
+            ...(cgJob.seoScore !== null ? { seoScore: cgJob.seoScore } : {}),
+            ...(cgJob.readabilityScore !== null
+              ? { readabilityScore: cgJob.readabilityScore }
+              : {}),
+            ...(cgJob.plagiarismScore !== null ? { plagiarismScore: cgJob.plagiarismScore } : {}),
+            // P4 (2026-06-21) — `promotedAt` N'EST PLUS posé au publish (cf. bloc tier
+            // ci-dessus) : la naissance tier-1 est conservée mais l'article devient
+            // éligible à la démotion par performance (lifecycle CTR). Reste null →
+            // réservé à une future protection éditoriale manuelle.
+            generatedByJobId: cgJob.id,
+            // P0-6 — Traçabilité directe campagne → article.
+            ...(cgJob.campaignId ? { campaignId: cgJob.campaignId } : {}),
+            // Catégorisation 2026-06-16 — catégorie de blog dérivée du serviceSector du job.
+            ...(resolvedCategoryId ? { categoryId: resolvedCategoryId } : {}),
+            ...(directAnswer ? { directAnswer } : {}),
+            ...(faqJson ? { faqJson: faqJson as never } : {}),
+            // Refonte templates 2026-06-22 — point clé + avis d'expert interne.
+            ...(keyTakeaway ? { keyTakeaway } : {}),
+            ...(expertQuote
+              ? {
+                  expertQuoteName: expertQuote.name,
+                  expertQuoteTitle: expertQuote.title,
+                  expertQuoteText: expertQuote.text,
+                }
+              : {}),
+            templateVariant: cgJob.templateId ?? null,
+            searchIntent: cgJob.targetSearchIntent,
+            isNews,
+            ...(isNews && rssSourceUrl ? { newsSourceUrl: rssSourceUrl } : {}),
+            ...(isNews && rssSourceName ? { newsSourceName: rssSourceName } : {}),
+            // Sprint S+2 City Domination — Phase C strat ville (hotfix audit
+            // 2026-05-18). Sans ce spread, l'Article était inséré avec
+            // mentioned_cities=[] (default Prisma) → hub ville getBlogArticlesByVille
+            // retournait [] même pour villes explicitement mentionnées par le
+            // generator (forceInclude=anchorVilleSlug landing-ville). Désormais
+            // câblé : les villes extraites/forcées sont persistées en DB et
+            // l'index GIN articles_mentioned_cities_idx permet le filter
+            // performant côté hub ville.
+            ...(mentionedCities.length > 0 ? { mentionedCities } : {}),
+            // E7 (traçabilité AI-Act) — IDs des entrées KB injectées via kbRetrieve()
+            // (source: GeneratorOutput.kbEntryIds). Default schema = [] si vide.
+            ...(kbChunkIds.length > 0 ? { kbChunkIds } : {}),
+            // B.6 P0-4 — Hero image image-bank (URL filePath ou null si pas de match).
+            ...(heroImageFilePath ? { featuredImage: heroImageFilePath } : {}),
+            // VIS-08 — Alt sémantique hero (FR ; EN miroir non requis, locale FR canonique).
+            ...(heroImageAlt ? { featuredImageAltFr: heroImageAlt } : {}),
+            // Unsplash hero (Option A 2026-06-16) — attribution CGU §6 (Unsplash only).
+            ...(heroPhotographerName
+              ? { featuredImagePhotographerName: heroPhotographerName }
+              : {}),
+            ...(heroPhotographerUrl ? { featuredImagePhotographerUrl: heroPhotographerUrl } : {}),
+            // B.7 P0-6 — Outline SimHash (couche dedup 3, persiste pour future comparaison).
+            ...(outlineSimhash ? { outlineSimhash } : {}),
+            // #2 2026-06-14 — Fingerprint sémantique (dedup cross-entry topic).
+            ...(topicFingerprint ? { topicFingerprint } : {}),
+          },
+        });
+
+    // Régénération en place — on purge d'abord les liens de tags existants pour
+    // refléter la nouvelle taxonomie (sinon d'anciens tags survivent au refresh).
+    if (refreshArticleId) {
+      await tx.articleTagOnArticle.deleteMany({ where: { articleId: a.id } });
+    }
 
     // Catégorisation 2026-06-16 — persiste les tags générés par le LLM
     // (upsert ArticleTag par slug puis liens article↔tag). Fail-soft.
@@ -562,22 +646,37 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
       }
     }
 
-    // Translation FR (en V1 — EN exclu doctrine v1.2)
-    await tx.articleTranslation.create({
-      data: {
-        articleId: a.id,
-        locale: "fr",
-        title,
-        slug: slugCandidate,
-        body: bodyHtmlForPersist,
-        ...(bodyText ? { bodyText } : {}),
-        metaTitle,
-        ...(metaDescription ? { metaDescription } : {}),
-        // wordCount n'est pas persisté : article_translations n'a pas de colonne
-        // word_count ; les pages /blog et /actualites le recalculent à la volée
-        // depuis le body (et le JSON-LD le reçoit via wordCount ci-dessous).
-      },
-    });
+    // Translation FR (en V1 — EN exclu doctrine v1.2).
+    // Régénération : UPDATE la traduction existante (slug PRÉSERVÉ → URL stable).
+    if (refreshArticleId) {
+      await tx.articleTranslation.update({
+        where: { id: refreshTranslationId! },
+        data: {
+          title,
+          // slug volontairement NON modifié (préservation de l'URL).
+          body: bodyHtmlForPersist,
+          ...(bodyText ? { bodyText } : {}),
+          metaTitle,
+          ...(metaDescription ? { metaDescription } : {}),
+        },
+      });
+    } else {
+      await tx.articleTranslation.create({
+        data: {
+          articleId: a.id,
+          locale: "fr",
+          title,
+          slug: slugCandidate,
+          body: bodyHtmlForPersist,
+          ...(bodyText ? { bodyText } : {}),
+          metaTitle,
+          ...(metaDescription ? { metaDescription } : {}),
+          // wordCount n'est pas persisté : article_translations n'a pas de colonne
+          // word_count ; les pages /blog et /actualites le recalculent à la volée
+          // depuis le body (et le JSON-LD le reçoit via wordCount ci-dessous).
+        },
+      });
+    }
 
     // Lien retour ContentGenJob
     await tx.contentGenJob.update({
