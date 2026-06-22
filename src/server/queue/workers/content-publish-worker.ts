@@ -43,6 +43,9 @@ import { persistArticleEmbedding } from "@/server/content-gen/dedup/persist-arti
 // Sprint External Links Database 2026-05-22 — Validation post-publish (≥ 2 liens
 // externes + détection hallucinations URL hors catalogue) + tracking usage.
 import { trackExternalLinksUsage, detectHallucinations } from "@/data/external-links/helpers";
+// Chantier 2026-06-22 — persistance des citations structurées (ExternalReference +
+// ContentCitation) lues par le bloc public « Sources & méthodologie » + JSON-LD isBasedOn.
+import { persistArticleCitations } from "@/server/content-gen/links/persist-citations";
 // Sprint Final P1-14 — Release global keyword lock Redis (Fl-08 multi-campagnes).
 import { releaseKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 import { resolveCategoryIdForSector } from "@/server/content-gen/lib/category-mapper";
@@ -578,6 +581,23 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     if (linksToTrack.length > 0) {
       await trackExternalLinksUsage(linksToTrack);
     }
+
+    // Chantier 2026-06-22 — persiste les citations structurées à partir des liens
+    // RÉELLEMENT présents dans le body (detection.valid, déjà filtrés contre le
+    // catalogue → zéro citation inventée). Alimente le bloc « Sources & méthodologie »
+    // + le JSON-LD isBasedOn (ces tables n'avaient aucun writer jusqu'ici → vides).
+    const citationResult = await persistArticleCitations({
+      articleId: article.id,
+      jobId: cgJob.id,
+      linkIds: detection.valid,
+      bodyHtml,
+    });
+    await logStep(
+      cgJob.id,
+      "citations_persist",
+      `Citations structurées persistées : ${citationResult.persisted}`,
+      { persisted: citationResult.persisted, source_link_ids: detection.valid.slice(0, 10) },
+    );
   } catch (err) {
     // Best-effort : on ne re-throw pas. Le worker continue.
     console.warn(

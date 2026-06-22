@@ -389,6 +389,10 @@ label : ${config.recommendedCtaLabel}
     totalTokens: lastTokensInput + lastTokensOutput,
     totalCostUsd: accumulatedCostUsd + originalityCostUsd,
     citations: lastCitations,
+    // External Links DB — IDs des liens d'autorité injectés (propagés au worker
+    // pour tracking rotation + persistance des citations structurées). Les 12 types
+    // Phase 8 les omettaient : le tracking ne reposait que sur la détection body.
+    selectedExternalLinkIds: externalLinksCtx.ids,
     promptHash: lastPromptHash,
     // H2 — traçabilité KB : quels faits ont nourri ce contenu Phase 8.
     kbEntryIds: kbChunks.map((c) => c.entryId),
