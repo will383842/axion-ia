@@ -355,6 +355,14 @@ jobs:
           # prod au build, et la DB/Redis stub.invalid court-circuite les appels
           # Prisma/Redis au build. La VRAIE validation env tourne au runtime
           # (étape « Run container » ci-dessous, avec les 8 secrets factices).
+          # BUILD_SSG_VILLES_INDEXABLE_ONLY=true : ALIGNÉ sur deploy-coolify.yml:250.
+          # Sans ce flag, le SSG pré-rendait les ~6 450 villes COMPLÈTES → `.next/server`
+          # gonflé, puis la copie `.next/standalone` (qui DUPLIQUE `.next/server`) saturait
+          # même les ~65 GB de /mnt → « ENOSPC: no space left on device » au copyfile
+          # (échec chronique Gate C, ex. saint-pryve-saint-mesmin.segments). Le déploiement
+          # réel build de toute façon en indexable-only (~1 776 villes) : le smoke test doit
+          # valider le MÊME artefact (Dockerfile + boot + healthz), pas une SSG plus large.
+          # (Fix ENOSPC Gate C 2026-06-22.)
           docker build \
             --build-arg NEXT_PUBLIC_SITE_URL=https://smoke.test \
             --build-arg NEXT_PUBLIC_APP_ENV=production \
@@ -362,6 +370,7 @@ jobs:
             --build-arg DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub \
             --build-arg REDIS_URL=redis://stub.invalid:6379 \
             --build-arg BULLMQ_DISABLED=true \
+            --build-arg BUILD_SSG_VILLES_INDEXABLE_ONLY=true \
             -t axion-ia:smoke .
 
       - name: Run container with smoke env
