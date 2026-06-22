@@ -35,6 +35,7 @@ import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
 import { loadPeopleAlsoAsk } from "@/server/content-gen/blog/loader";
 import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
+import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
@@ -318,6 +319,9 @@ export default async function GuidePiliersPage({ params }: Props) {
         tone="sand"
         emitJsonLd
       />
+
+      {/* Refonte 2026-06-22 — newsletter (parité /blog). */}
+      <ArticleNewsletterInline locale="fr" />
 
       <CtaBlock
         title="Besoin d'un accompagnement opérationnel ?"
