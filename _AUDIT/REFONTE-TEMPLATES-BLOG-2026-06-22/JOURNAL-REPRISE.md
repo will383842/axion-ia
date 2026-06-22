@@ -147,6 +147,39 @@ moi sur décision Will] ; copie home/Footer/messages [PAS touché, laissé] ;
 backfill-article-citations.ts untracked [laissé]). Mes commits = `git add` ciblé,
 jamais embarqué le travail des autres.
 
+## VÉRIFICATION GEO/AEO + QUICK WINS (2026-06-22, 2e passe)
+
+Vérif profonde 6 agents adversariaux. Scores AVANT quick wins : GEO citation 5,5 ·
+schema 7 · méta/H1/keyword 7,5 · liens/RAG 7,5 · infra 8 · sections 5,5. Pas
+« parfait » : socle solide, 2 dimensions faibles (citation IA + sections produites).
+
+Quick wins livrés (commits `39033bfa`→`0bc09779`) :
+- `39033bfa` — meta robots fines (googleBot max-snippet:-1/max-image-preview:large,
+  centralisé seo.ts+layout → ~17k pages) + **robots.txt bloque le TRAINING**
+  (GPTBot/ClaudeBot/anthropic-ai/Google-Extended/Applebot-Extended) et garde la
+  CITATION (OAI-SearchBot/Claude-Web/+Claude-SearchBot/PerplexityBot/Bingbot).
+  Décision Will : bloquer training / garder citation (UA distincts → 0 perte).
+- `4bb24ea3` — ArticleSources rel via trust-tier (autorité dofollow) + nœud Person
+  sur l'avis d'expert (@id /equipe/<slug>#person + worksFor Org) = désambiguïsation.
+- `0c0dc458` — fleet 9 générateurs : **réponse 40-60 mots sous chaque H2** (`<p
+  data-aeo="answer">`, levier citation IA #1) + stats sourcées inline imposées +
+  définitions `<dfn>` + callouts `<aside class="callout">`. Effet à la prochaine génération.
+- `34b8d6b6` — Speakable opt-in sur services/villes/tarifs (recentré sur le
+  contenu-réponse) + sélecteur `[data-aeo="answer"]` (réponses par H2).
+- `0bc09779` — keyword-in-H1 hard-gate étendu aux 12 types Phase-8 (avant : soft-score).
+
+**Clés données par Will (à poser en Coolify, PAS dans le repo)** : `UNSPLASH_ACCESS_KEY`
+(images corps) + `VOYAGE_API_KEY` (RAG vectoriel), scope web+worker.
+
+**RESTE (honnête, non fait)** :
+- Double signature « Vérifié par X » → NON fait volontairement : auto-tamponner un
+  humain sur du contenu généré non relu = fausse allégation E-E-A-T. Capability à
+  brancher sur un VRAI process de relecture (décision Will).
+- ImageObject sur images de corps · validation schema CI (stub) · content-refresh-worker
+  7-14j (stub) · newsletter/Trustpilot · /equipe/williams (photo/bio réelles requises) ·
+  liens internes profonds article→article (catalogue statique) · gate longueur+keyword
+  metaTitle runtime · peupler la KB publique.
+
 ## Reste Will (hors code)
 
 - Revue visuelle sur prod/preview, puis `git push` → PR → merge.
