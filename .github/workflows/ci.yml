@@ -206,6 +206,13 @@ jobs:
         # (Fix OOM Gate B 2026-06-14.)
         env:
           NODE_OPTIONS: --max-old-space-size=6144
+          # ENOSPC fix 2026-06-22 : aligné sur deploy-coolify.yml + Gate C. Le build de
+          # TOUTES les villes par-service en FR ET EN dépassait /mnt à la copie
+          # .next/standalone (« ENOSPC » sur /en/sites-web-augmentes/par-ville/...). On
+          # build en indexable-only (~1 776 villes), comme l'artefact réellement déployé.
+          # Le flag ne gate QUE VilleServicePageTemplate (pages service×ville) : les URLs
+          # Lighthouse (pages HUB /implantations/<region>/<ville>) restent construites.
+          BUILD_SSG_VILLES_INDEXABLE_ONLY: "true"
         run: pnpm exec next build --webpack
       # Sprint Final P1-8 (audit final 2026-05-22) — Bundle delta + LHCI passés
       # en STRICT (continue-on-error retiré) pour enforcer le contrat AGENTS.md :
