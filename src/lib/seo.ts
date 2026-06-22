@@ -199,7 +199,20 @@ export function buildProductMetadata({
       description,
       images: [resolvedOgImage],
     },
-    robots: { index: true, follow: true },
+    // Refonte AEO 2026-06-22 — directives fines : snippets illimités (réponses
+    // directes citées par Google/AI Overviews) + vignettes large (Discover/Images)
+    // + previews vidéo. Sans ça Google peut tronquer le snippet et limiter l'image.
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-snippet": -1,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+      },
+    },
   };
 }
 

@@ -153,7 +153,19 @@ export async function generateMetadata({
       siteName: "Axion-IA",
     },
     twitter: { card: "summary_large_image" },
-    robots: { index: true, follow: true },
+    // Refonte AEO 2026-06-22 — directives fines (snippet/-image/-video preview)
+    // pour toutes les pages héritant du layout racine (cohérent buildProductMetadata).
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-snippet": -1,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+      },
+    },
     // D3 cert 2026-05-08 — verification meta GSC + Bing Webmaster Tools.
     // En prod 2026-05-13 : GSC vérifié par DNS TXT, Bing par Import OAuth GSC
     // → ces meta restent ici en fallback si on bascule en méthode meta tag.
