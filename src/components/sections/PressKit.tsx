@@ -3,7 +3,9 @@ import { Download, FileText, Image as ImageIcon, Palette, Type, FileCode } from 
 
 interface PressKitItem {
   id: string;
-  kind: "logo" | "wordmark" | "photo" | "brand-book" | "boilerplate";
+  /** Catégorie d'asset. Accepte les libellés fixtures (hyphen) ET l'enum DB
+   *  (underscore : brand_book, color_charter, graphic_charter). Icône à fallback. */
+  kind: string;
   fileUrl: string | null;
   format: string;
   title: string;
@@ -21,12 +23,15 @@ interface PressKitProps {
   };
 }
 
-const kindIcon: Record<PressKitItem["kind"], React.ComponentType<{ className?: string }>> = {
+const kindIcon: Record<string, React.ComponentType<{ className?: string }>> = {
   logo: Palette,
   wordmark: Type,
   photo: ImageIcon,
   "brand-book": FileText,
+  brand_book: FileText,
   boilerplate: FileCode,
+  color_charter: Palette,
+  graphic_charter: FileText,
 };
 
 // Press kit grid — éditorial v3, cards en bg-paper sur surface sand.
@@ -35,7 +40,7 @@ export function PressKit({ items, labels }: PressKitProps) {
   return (
     <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => {
-        const Icon = kindIcon[item.kind];
+        const Icon = kindIcon[item.kind] ?? FileText;
         const isAvailable = item.fileUrl !== null;
         return (
           <li

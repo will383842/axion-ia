@@ -41,12 +41,13 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { PressImageBank } from "@/components/sections/PressImageBank";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { type PressReleaseTag } from "@/content/press";
+// Salle de presse 2026-06-22 — communiqué lu depuis la DB (fallback fixtures).
 import {
-  PRESS_RELEASES,
-  getPressRelease,
-  getAllPressReleaseSlugs,
-  type PressReleaseTag,
-} from "@/content/press";
+  getPressReleaseBySlug,
+  getAllPublishedPressReleaseSlugs,
+  getPublishedPressReleases,
+} from "@/server/press/queries";
 import { fmtDate } from "@/lib/intl";
 
 interface Props {
@@ -98,18 +99,23 @@ const TAG_LABEL_EN: Record<PressReleaseTag, string> = {
 };
 
 export async function generateStaticParams() {
-  const slugs = getAllPressReleaseSlugs();
-  return slugs.flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
+  const params: Array<{ locale: string; slug: string }> = [];
+  for (const locale of routing.locales) {
+    const slugs = await getAllPublishedPressReleaseSlugs(locale);
+    for (const slug of slugs) params.push({ locale, slug });
+  }
+  return params;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const release = getPressRelease(slug);
-  if (!release) return {};
   const loc = locale as Locale;
+  const release = await getPressReleaseBySlug(loc, slug);
+  if (!release) return {};
   const isFr = loc === "fr";
-  const copy = isFr ? release.fr : release.en;
+  // Communiqué déjà résolu dans la locale (plat) — plus de release.fr/.en.
+  const copy = release;
 
   // Description ≤ 160 chars (cap SERP Google).
   const desc = copy.dek.length > 160 ? `${copy.dek.slice(0, 157).trim()}…` : copy.dek;
@@ -141,13 +147,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PressReleaseDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  const release = getPressRelease(slug);
+  const loc = locale as Locale;
+  const release = await getPressReleaseBySlug(loc, slug);
   if (!release) notFound();
   setRequestLocale(locale);
-  const loc = locale as Locale;
   const isFr = loc === "fr";
-  const copy = isFr ? release.fr : release.en;
+  // Communiqué déjà résolu dans la locale (plat) — plus de release.fr/.en.
+  const copy = release;
   const tagLabel = isFr ? TAG_LABEL_FR[release.tag] : TAG_LABEL_EN[release.tag];
+  // Autres communiqués (maillage interne) — lus depuis la DB (fallback fixtures).
+  const otherReleases = await getPublishedPressReleases(loc);
 
   const presseHubLabel = isFr ? "Espace presse" : "Press room";
   const presseHubPath = "/presse";
@@ -402,14 +411,15 @@ export default async function PressReleaseDetailPage({ params }: Props) {
 
       {/* AUTRES COMMUNIQUÉS — mesh interne. On affiche les 2 plus récents
           autres que celui en cours (signal autorité topique + crawl path). */}
-      {PRESS_RELEASES.length > 1 ? (
+      {otherReleases.length > 1 ? (
         <Section tone="canvas" eyebrow={isFr ? "Autres communiqués" : "Other releases"}>
           <Container className="max-w-4xl">
             <ul className="grid gap-4 sm:grid-cols-2">
-              {PRESS_RELEASES.filter((r) => r.slug !== slug)
+              {otherReleases
+                .filter((r) => r.slug !== slug)
                 .slice(0, 2)
                 .map((other) => {
-                  const otherCopy = isFr ? other.fr : other.en;
+                  const otherCopy = other;
                   return (
                     <li
                       key={other.slug}

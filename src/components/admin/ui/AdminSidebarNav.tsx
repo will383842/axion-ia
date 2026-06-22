@@ -127,6 +127,7 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   "documents-interventions": FolderOpen,
   "coaching-1to1": GraduationCap,
   "image-bank": Images,
+  presse: Newspaper,
   chatbot: Bot,
   engagement: Megaphone,
   ops: Gauge,
