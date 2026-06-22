@@ -39,6 +39,7 @@ export type GenerationLogStep =
   | "validation"
   | "publish"
   | "quality_check"
+  | "quality_gate"
   | "plagiarism_check"
   | "intent_check"
   | "doctrine_check"
