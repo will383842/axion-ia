@@ -129,10 +129,18 @@ committer le chantier citations parallèle pour débloquer. Faits depuis :
   au body, zéro chiffre inventé) : answer-first + tableau comparatif + verdicts
   spécifiques + FAQPage + JSON-LD enrichi (auteur Manon, dateModified, Speakable).
 
-**État : tous les items demandés FAITS.** Seul reste DÉFÉRÉ : images intercalées
-dans le corps (le plus dur — le LLM ne peut pas inventer d'URL d'image ; il faut
-intégrer l'image-bank pour assigner 2-3 images contextuelles par article — chantier
-dédié). 13 commits sur `feat/blog-templates-refonte`, NON poussés, typecheck 0 partout.
+- `2d348f90` — **images Unsplash intercalées dans le corps** (l'item qui restait).
+  `injectBodyImages` : 1-2 photos Unsplash contextuelles (requête dérivée des
+  titres H2), `<figure>` avant les sections (jamais la 1re, hero prioritaire),
+  attribution CGU §6 (figcaption), trigger download via provider, loading=lazy +
+  width/height (CLS 0), stylées par `.prose-axionia`. Câblé au worker hors
+  transaction, APRÈS la détection citations (liens attribution non comptés).
+  Best-effort (pas de clé/rate-limit/erreur → corps inchangé). 8 tests verts.
+  Doctrine « Unsplash uniquement » (Will). Active dès qu'`UNSPLASH_ACCESS_KEY`
+  est posée + provider activé en DB.
+
+**État : 100 % des items demandés FAITS (images incluses).** 15 commits sur
+`feat/blog-templates-refonte`, NON poussés, typecheck 0 partout, tests verts.
 
 ⚠️ 3 efforts PARALLÈLES ont coexisté dans le working tree (citations [committé par
 moi sur décision Will] ; copie home/Footer/messages [PAS touché, laissé] ;
