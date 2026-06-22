@@ -35,3 +35,52 @@ export const BRAND = {
 } as const;
 
 export type Brand = typeof BRAND;
+
+/**
+ * SSOT identité du fondateur (audit E-E-A-T 2026-06-22, P1).
+ *
+ * Avant : nom / jobTitle / LinkedIn / knowsAbout étaient dupliqués ET divergents
+ * entre `lib/seo.ts` (`buildOrganizationJsonLd.founder` + `buildPersonJsonLd`),
+ * `lib/seo/williams-person.ts` (entité Person + page `/equipe/williams`),
+ * `FounderTrustSection` et `ImplementationFounderBand` :
+ *   - nom : « Williams » vs « Williams Jullin »
+ *   - fonction : « Fondateur · lead consultant IA » vs « Fondateur & CEO »
+ *   - url : `/a-propos#will` vs `/equipe/williams`
+ * Désormais une seule source ici. Tous les consommateurs en dérivent.
+ *
+ * RÈGLE D'AFFICHAGE (cf. doctrine nommage fondateur) :
+ *   - `displayName` (« Williams ») = UI visible, partout.
+ *   - `fullName` (« Williams Jullin ») = entité structurée (JSON-LD `Person.name`,
+ *     `sameAs` LinkedIn) + page d'autorité d'entité `/equipe/williams`.
+ *
+ * La bio longue + le nœud Person JSON-LD restent dans `williams-person.ts`
+ * (qui dérive son identité d'ici). Les copies visibles i18n
+ * (`messages/*.json` → `home.founder*`) restent gérées en traduction.
+ */
+export const FOUNDER = {
+  /** Nom complet canonique — entité Person (JSON-LD, /equipe/williams, sameAs). */
+  fullName: "Williams Jullin",
+  /** Prénom seul — TOUT affichage UI (cartes fondateur, captions). */
+  displayName: "Williams",
+  /** Slug de la page d'autorité d'entité (`/equipe/williams`). */
+  slug: "williams",
+  /** Fonction FR — jobTitle JSON-LD. */
+  jobTitleFr: "Fondateur & CEO d'Axion-IA",
+  /** Fonction EN. */
+  jobTitleEn: "Founder & CEO of Axion-IA",
+  /** Variante courte « · » pour les sous-titres de carte. */
+  roleLineFr: "Fondateur & CEO · Axion-IA",
+  roleLineEn: "Founder & CEO · Axion-IA",
+  /** Profil LinkedIn réel — `sameAs` (vérification d'entité, pas de link juice). */
+  linkedin: "https://www.linkedin.com/in/williamsjullin/",
+  /** Domaines d'expertise — `knowsAbout` JSON-LD (page d'entité). */
+  knowsAbout: [
+    "Stratégie IA en entreprise",
+    "Direction et création d'entreprise",
+    "Audit et implémentation IA",
+    "Transformation digitale TPE PME ETI",
+    "Conduite du changement",
+  ] as const,
+} as const;
+
+export type Founder = typeof FOUNDER;
