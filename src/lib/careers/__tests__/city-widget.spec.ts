@@ -10,14 +10,14 @@ import type { JobOffer } from "../../../../prisma/generated/client";
 const mk = (o: Partial<JobOffer>): JobOffer => o as JobOffer;
 
 describe("resolveWidgetCity", () => {
-  it("inclut Saint-Marcellin (siège) + des hubs", () => {
-    expect(CAREER_WIDGET_CITIES).toContain("Saint-Marcellin");
+  it("inclut Grenoble (siège) + des hubs", () => {
+    expect(CAREER_WIDGET_CITIES).toContain("Grenoble");
     expect(CAREER_WIDGET_CITIES.length).toBeGreaterThan(10);
   });
 
   it("résout casse/accents/séparateurs vers le nom canonique", () => {
-    expect(resolveWidgetCity("saint-marcellin")).toBe("Saint-Marcellin");
-    expect(resolveWidgetCity("SAINT MARCELLIN")).toBe("Saint-Marcellin");
+    expect(resolveWidgetCity("grenoble")).toBe("Grenoble");
+    expect(resolveWidgetCity("GRENOBLE")).toBe("Grenoble");
   });
 
   it("renvoie null pour une ville inconnue ou vide (anti-injection titre)", () => {
