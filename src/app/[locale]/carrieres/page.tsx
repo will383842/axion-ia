@@ -28,7 +28,12 @@ import { HUB_VILLES } from "@/content/recrutement/satellites";
 // 40 villes affichées en badges (info, pas de pages thin) : les 40 hubs T1+T2
 // (population ≥ 100 000), Grenoble (siège) inclus.
 const CAREER_CITIES: ReadonlyArray<string> = [...HUB_VILLES.map((v) => v.nameFr)];
-import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildItemListJsonLd,
+  buildCollectionPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { listPublishedJobOffers } from "@/lib/careers/job-offers";
 import { WORKMODE_LABELS, isNew, salaryLabel } from "@/lib/careers/format";
 import { OffersEmbedPromo } from "@/components/careers/OffersEmbedPromo";
@@ -119,18 +124,13 @@ export default async function CarrieresHubPage({
       {offers.length > 0 ? <JsonLd data={itemList} scriptId="jsonld-carrieres-list" /> : null}
       <JsonLd
         scriptId="jsonld-carrieres-webpage"
-        data={{
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          "@id": `${SITE_URL}/${loc}/carrieres#webpage`,
-          url: `${SITE_URL}/${loc}/carrieres`,
+        data={buildCollectionPageJsonLd({
+          locale: loc,
+          path: "/carrieres",
+          id: `${SITE_URL}/${loc}/carrieres#webpage`,
           name: isFr ? "Carrières · Axion-IA.com" : "Careers · Axion-IA.com",
-          inLanguage: loc,
-          speakable: {
-            "@type": "SpeakableSpecification",
-            cssSelector: ["h1", "[data-speakable]"],
-          },
-        }}
+          speakable: { selectors: ["h1", "[data-speakable]"] },
+        })}
       />
 
       <Container className="border-border border-b py-3">

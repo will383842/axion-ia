@@ -17,7 +17,12 @@ import {
   resolveTier,
   type BlogServiceType,
 } from "@/content/blog";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildBreadcrumbJsonLd,
+  buildCollectionPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -67,12 +72,10 @@ export default async function BlogServicePage({ params }: Props) {
   const canonicalServiceHref =
     slug === "audit" ? "/audit" : slug === "interventions" ? "/interventions" : "/implementation";
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: `/blog/service/${slug}`,
     name: `${label} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
-    url: `${SITE_URL}/${locale}/blog/service/${slug}`,
-    inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     about: {
       "@type": "Service",
@@ -87,7 +90,7 @@ export default async function BlogServicePage({ params }: Props) {
       ...(p.updatedAt ? { dateModified: p.updatedAt } : {}),
       author: { "@type": "Person", name: p.author },
     })),
-  } as const;
+  });
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },

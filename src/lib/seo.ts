@@ -451,6 +451,180 @@ export function buildBreadcrumbJsonLd({ locale, items }: BreadcrumbJsonLdInput) 
   } as const;
 }
 
+// ============================================================
+// WebPage / CollectionPage JSON-LD — factory centrale
+// ============================================================
+//
+// Avant 2026-06-22, le nœud `WebPage`/`CollectionPage` était hand-rollé dans
+// ~30 pages (chacune réécrivant @id/url/isPartOf/publisher/inLanguage/speakable…).
+// Cette factory centralise la construction : 1 source de vérité pour les
+// défauts (isPartOf #website, publisher #organization), le `speakable` (via
+// `buildSpeakableSpecification`), la normalisation d'URL canonique, et les
+// signaux de fraîcheur/E-E-A-T 2026 (`dateModified`, `lastReviewed`,
+// `reviewedBy`). Tous les champs page-spécifiques restent passables en option
+// (mainEntity, hasPart, about, mentions, breadcrumb, potentialAction, abstract,
+// alternativeHeadline) → migration sans perte.
+//
+// Périmètre : nœuds page-level UNIQUEMENT. Les sous-nœuds minimalistes
+// (`Article.mainEntityOfPage = {@id}`, `DefinedTerm.subjectOf`,
+// `Product.subjectOf`) ne passent PAS par ici — ils restent des refs `{@id,url}`.
+
+type WebPageType = "WebPage" | "CollectionPage" | "AboutPage" | "ContactPage" | "ProfilePage";
+
+interface WebPageJsonLdInput {
+  locale: Locale;
+  /** Pathname localisé SANS préfixe de locale (ex. `/sous-processeurs`). */
+  path: string;
+  /** Titre de la page (name schema.org). */
+  name: string;
+  /** Sous-type schema.org. Défaut `WebPage` ; `CollectionPage` pour les listings. */
+  type?: WebPageType;
+  description?: string;
+  /**
+   * `@id` explicite. Défaut : `${url}#webpage` (ou `#collectionpage`). Sert de
+   * point d'ancrage pour les cross-refs `@graph` (breadcrumb, mainEntity…).
+   */
+  id?: string;
+  /** ISO date de publication. */
+  datePublished?: string;
+  /** ISO date de dernière modification (signal de fraîcheur). Omis si absent. */
+  dateModified?: string;
+  /**
+   * ISO date de dernière revue éditoriale/conformité (E-E-A-T 2026). Distinct de
+   * `dateModified` : « contenu vérifié à jour le … ». Omis si absent.
+   */
+  lastReviewed?: string;
+  /** Entité ayant revu la page (paire avec `lastReviewed`). */
+  reviewedBy?: { name: string; type?: "Organization" | "Person"; url?: string };
+  /**
+   * `isPartOf`. Défaut `{ "@id": ${SITE_URL}/#website }`. Passer `null` pour omettre,
+   * ou un objet pour pointer une section/collection parente.
+   */
+  isPartOf?: Record<string, unknown> | null;
+  /**
+   * `publisher`. Défaut `{ "@id": ${SITE_URL}/#organization }`. Passer `null` pour omettre.
+   */
+  publisher?: Record<string, unknown> | null;
+  /**
+   * Speakable AEO. `false`/absent = omis. `true` = selectors par défaut
+   * (`buildSpeakableSpecification`). `{ selectors }` = selectors ciblés.
+   */
+  speakable?: boolean | { selectors: ReadonlyArray<string> };
+  /** `mainEntity` (entité principale décrite par la page). Passthrough. */
+  mainEntity?: unknown;
+  /** `hasPart` (sous-éléments d'une CollectionPage : ListItem, cartes…). Passthrough. */
+  hasPart?: unknown;
+  /** `about` (sujet de la page : Thing / DefinedTerm / Organization). Passthrough. */
+  about?: unknown;
+  /** `mentions` (entités mentionnées). Passthrough. */
+  mentions?: unknown;
+  /** `breadcrumb` — ref `{ "@id": ${url}#breadcrumb }` quand le breadcrumb est dans le même graph. */
+  breadcrumb?: { "@id": string } | string;
+  /** `potentialAction` (ReserveAction, SearchAction…). Passthrough. */
+  potentialAction?: unknown;
+  /** Résumé court answer-ready (schema.org `abstract`). */
+  abstract?: string;
+  /** Titre alternatif (schema.org `alternativeHeadline`). */
+  alternativeHeadline?: string;
+  /** `inLanguage`. Défaut = `locale`. */
+  inLanguage?: string;
+  /** Échappatoire pour champs rares non modélisés (mergé tel quel). */
+  extra?: Record<string, unknown>;
+}
+
+/**
+ * Factory `WebPage` / `CollectionPage` (et sous-types). Centralise les défauts
+ * de marque (isPartOf #website, publisher #organization), le speakable et la
+ * normalisation d'URL. Retourne un objet JSON-LD pur (à passer à `<JsonLd>` ou
+ * `<JsonLdGraph>`).
+ */
+export function buildWebPageJsonLd(input: WebPageJsonLdInput) {
+  const {
+    locale,
+    path,
+    name,
+    type = "WebPage",
+    description,
+    id,
+    datePublished,
+    dateModified,
+    lastReviewed,
+    reviewedBy,
+    isPartOf,
+    publisher,
+    speakable,
+    mainEntity,
+    hasPart,
+    about,
+    mentions,
+    breadcrumb,
+    potentialAction,
+    abstract,
+    alternativeHeadline,
+    inLanguage,
+    extra,
+  } = input;
+
+  // URL canonique normalisée (strip trailing slash sauf racine) — cohérent avec
+  // `buildProductMetadata`.
+  const normPath = path === "/" ? "" : path.replace(/\/+$/, "");
+  const url = `${SITE_URL}/${locale}${normPath}`;
+  const resolvedId = id ?? `${url}#${type === "CollectionPage" ? "collectionpage" : "webpage"}`;
+
+  // isPartOf / publisher : défaut #website / #organization, `null` pour omettre.
+  const resolvedIsPartOf =
+    isPartOf === null ? undefined : (isPartOf ?? { "@id": `${SITE_URL}/#website` });
+  const resolvedPublisher =
+    publisher === null ? undefined : (publisher ?? { "@id": `${SITE_URL}/#organization` });
+
+  const resolvedSpeakable =
+    speakable === true || (typeof speakable === "object" && speakable?.selectors)
+      ? buildSpeakableSpecification(
+          typeof speakable === "object" && speakable.selectors
+            ? { selectors: speakable.selectors }
+            : undefined,
+        )
+      : undefined;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": type,
+    "@id": resolvedId,
+    url,
+    name,
+    inLanguage: inLanguage ?? locale,
+    ...(description ? { description } : {}),
+    ...(abstract ? { abstract } : {}),
+    ...(alternativeHeadline ? { alternativeHeadline } : {}),
+    ...(resolvedIsPartOf ? { isPartOf: resolvedIsPartOf } : {}),
+    ...(resolvedPublisher ? { publisher: resolvedPublisher } : {}),
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    ...(lastReviewed ? { lastReviewed } : {}),
+    ...(reviewedBy
+      ? { reviewedBy: { "@type": reviewedBy.type ?? "Organization", name: reviewedBy.name, ...(reviewedBy.url ? { url: reviewedBy.url } : {}) } }
+      : {}),
+    ...(about !== undefined ? { about } : {}),
+    ...(mentions !== undefined ? { mentions } : {}),
+    ...(mainEntity !== undefined ? { mainEntity } : {}),
+    ...(hasPart !== undefined ? { hasPart } : {}),
+    ...(breadcrumb !== undefined
+      ? { breadcrumb: typeof breadcrumb === "string" ? { "@id": breadcrumb } : breadcrumb }
+      : {}),
+    ...(potentialAction !== undefined ? { potentialAction } : {}),
+    ...(resolvedSpeakable ? { speakable: resolvedSpeakable } : {}),
+    ...(extra ?? {}),
+  } as const;
+}
+
+/**
+ * Convenience wrapper — `CollectionPage` (pages listing : hubs, catégories,
+ * annuaires). Force `type: "CollectionPage"`.
+ */
+export function buildCollectionPageJsonLd(input: Omit<WebPageJsonLdInput, "type">) {
+  return buildWebPageJsonLd({ ...input, type: "CollectionPage" });
+}
+
 interface OrganizationJsonLdInput {
   locale: Locale;
   /** Override default contact email. Defaults to `presse@axion-ia.com`. */

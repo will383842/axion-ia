@@ -39,7 +39,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { PressImageBank } from "@/components/sections/PressImageBank";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { type PressReleaseTag } from "@/content/press";
 // Salle de presse 2026-06-22 — communiqué lu depuis la DB (fallback fixtures).
@@ -251,12 +251,11 @@ export default async function PressReleaseDetailPage({ params }: Props) {
   // Audit fraîcheur 2026-06-08 : dateModified = `release.publishedAt` (un
   // communiqué n'est pas modifié après publication) au lieu de BUILD_DATE, qui
   // glissait à chaque deploy ET contredisait le datePublished figé du même nœud.
-  const webPageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": pageUrl,
-    url: pageUrl,
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: `${isFr ? "/presse" : "/press"}/${slug}`,
     name: copy.title,
+    id: pageUrl,
     description: copy.dek,
     inLanguage: loc,
     isPartOf: {
@@ -265,11 +264,13 @@ export default async function PressReleaseDetailPage({ params }: Props) {
     },
     datePublished: release.publishedAt,
     dateModified: release.publishedAt,
-    primaryImageOfPage: {
-      "@type": "ImageObject",
-      url: ogImage,
+    extra: {
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: ogImage,
+      },
     },
-  } as const;
+  });
 
   return (
     <>

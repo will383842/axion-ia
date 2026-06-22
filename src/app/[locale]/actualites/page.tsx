@@ -27,7 +27,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
-import { SITE_URL, buildProductMetadata } from "@/lib/seo";
+import { SITE_URL, buildProductMetadata, buildCollectionPageJsonLd } from "@/lib/seo";
 
 export const revalidate = 3600;
 
@@ -144,12 +144,11 @@ export default async function ActualitesHub({ params }: Props) {
 
   const items = await fetchPublishedNews();
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": `${SITE_URL}/fr/actualites#collection`,
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: "fr",
+    path: "/actualites",
+    id: `${SITE_URL}/fr/actualites#collection`,
     name: "Actualités IA — Axion-IA",
-    url: `${SITE_URL}/fr/actualites`,
     inLanguage: "fr-FR",
     isPartOf: { "@id": `${SITE_URL}/fr#website` },
     description: "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de PME et ETI.",
@@ -159,7 +158,7 @@ export default async function ActualitesHub({ params }: Props) {
       url: `${SITE_URL}/fr/actualites/${item.slug}`,
       datePublished: item.publishedAt?.toISOString(),
     })),
-  };
+  });
 
   return (
     <>

@@ -3,7 +3,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, buildWebPageJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 
@@ -98,19 +98,16 @@ export function LegalPageTemplate({
   // Émis uniquement si la page fournit canonicalPath + locale (rétro-compatible).
   const webPageJsonLd =
     canonicalPath && locale
-      ? {
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          "@id": `${SITE_URL}/${locale}${canonicalPath}`,
-          url: `${SITE_URL}/${locale}${canonicalPath}`,
+      ? buildWebPageJsonLd({
+          locale,
+          path: canonicalPath,
+          id: `${SITE_URL}/${locale}${canonicalPath}`,
           name: titleEm ? `${title} ${titleEm}` : title,
-          inLanguage: locale,
-          isPartOf: { "@id": `${SITE_URL}/#website` },
-          publisher: { "@id": `${SITE_URL}/#organization` },
+          // isPartOf #website + publisher #organization : défauts de la factory.
           // Audit fraîcheur 2026-06-08 : la date de révision éditoriale réelle
           // (`lastUpdatedIso`, déjà affichée dans le <time>) au lieu de BUILD_DATE.
           ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
-        }
+        })
       : null;
 
   const anchors = buildAnchors(sections);

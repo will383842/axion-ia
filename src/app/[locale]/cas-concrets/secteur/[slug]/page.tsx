@@ -15,7 +15,7 @@ import {
   getCaseStudiesByIndustry,
   getIndustryLabel,
 } from "@/content/case-studies";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 
 interface Props {
@@ -62,11 +62,10 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
   const isFr = loc === "fr";
   const studies = getCaseStudiesByIndustry(slug);
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: `/cas-concrets/secteur/${slug}`,
     name: isFr ? `Cas concrets ${label}` : `${label} case studies`,
-    url: `${SITE_URL}/${locale}/cas-concrets/secteur/${slug}`,
     inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: studies.map((s) => ({
@@ -75,7 +74,7 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
       url: `${SITE_URL}/${locale}/cas-concrets/${s.slug}`,
       about: { "@type": "Thing", name: loc === "fr" ? s.industry : s.industryEn },
     })),
-  } as const;
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

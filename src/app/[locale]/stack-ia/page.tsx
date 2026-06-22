@@ -25,6 +25,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
+  buildCollectionPageJsonLd,
   SITE_EDITORIAL_DATE,
   SITE_URL,
 } from "@/lib/seo";
@@ -184,17 +185,15 @@ export default async function StackIaPage({ params }: Props) {
   // CollectionPage JSON-LD — signal de fraîcheur (dateModified = SITE_EDITORIAL_DATE),
   // distinct de l'ItemList (catalogue) déjà émis. Décrit la page-collection
   // elle-même pour l'AEO/GEO.
-  const collectionPageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: isFr ? "/stack-ia" : "/ai-stack",
     name: isFr
       ? "Stack IA opérationnelle 2026 · cabinet Axion-IA"
       : "Operational AI stack 2026 · Axion-IA consultancy",
-    inLanguage: locale,
-    url: `${SITE_URL}/${locale}/${isFr ? "stack-ia" : "ai-stack"}`,
     dateModified: SITE_EDITORIAL_DATE,
     isPartOf: { "@type": "WebSite", url: SITE_URL, name: "Axion-IA" },
-  } as const;
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

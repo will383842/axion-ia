@@ -15,7 +15,7 @@ import {
   listHelpArticlesByCategory,
   getHelpCategoryLabel,
 } from "@/lib/help-articles/reader";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -60,21 +60,20 @@ export default async function HelpCategoryPage({ params }: Props) {
   const isFr = loc === "fr";
   const articles = await listHelpArticlesByCategory(slug);
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: `/centre-aide/categorie/${slug}`,
     name: `${label} — ${isFr ? "Aide Axion-IA" : "Axion-IA help"}`,
-    url: `${SITE_URL}/${locale}/centre-aide/categorie/${slug}`,
     inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
-    speakable: { cssSelector: ["[data-aeo='category-desc']"] },
+    speakable: { selectors: ["[data-aeo='category-desc']"] },
     hasPart: articles.map((a) => ({
       "@type": "Article",
       headline: a[loc].title,
       description: a[loc].excerpt,
       url: `${SITE_URL}/${locale}/centre-aide/${a.slug}`,
     })),
-  };
+  });
 
   const itemListJsonLd = {
     "@context": "https://schema.org",

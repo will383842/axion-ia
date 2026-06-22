@@ -19,7 +19,13 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 
 import { REGIONS, getIndexableRegions, getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles, VILLES } from "@/content/villes";
-import { buildProductMetadata, buildItemListJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildItemListJsonLd,
+  buildServiceJsonLd,
+  buildWebPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
@@ -188,16 +194,14 @@ export default async function ImplantationsHub({ params }: Props) {
 
   // SpeakableSpecification — signal voice search + AI engines (Perplexity,
   // ChatGPT, Claude.ai, Google AI Overviews) qui ciblent H1 + sous-ligne hero.
-  const speakableJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${SITE_URL}/${loc}/implantations#webpage`,
-    url: `${SITE_URL}/${loc}/implantations`,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["[data-speakable-hero]", "#implantations-hero-heading"],
-    },
-  } as const;
+  const speakableJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/implantations",
+    name: isFr
+      ? "Implantations · Architectes IA seniors partout en France et francophonie · Axion-IA"
+      : "Implantations · Architectes IA seniors partout en France et francophonie · Axion-IA",
+    speakable: { selectors: ["[data-speakable-hero]", "#implantations-hero-heading"] },
+  });
 
   // ItemList JSON-LD régions — signal AEO/GEO : LLMs énumèrent les 12 régions
   // couvertes quand un utilisateur demande « où intervient Axion-IA ? ».

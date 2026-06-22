@@ -17,7 +17,12 @@ import {
   resolveTier,
   type BlogCompanySize,
 } from "@/content/blog";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildBreadcrumbJsonLd,
+  buildCollectionPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
@@ -65,12 +70,10 @@ export default async function BlogCompanySizePage({ params }: Props) {
   const posts = getBlogPostsByCompanySize(slug as BlogCompanySize);
   const tier1Posts = posts.filter((p) => resolveTier(p) === "tier-1-indexable");
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: `/blog/${isFr ? "taille" : "size"}/${slug}`,
     name: `${label} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
-    url: `${SITE_URL}/${locale}/blog/${isFr ? "taille" : "size"}/${slug}`,
-    inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: tier1Posts.map((p) => ({
       "@type": "Article",
@@ -80,7 +83,7 @@ export default async function BlogCompanySizePage({ params }: Props) {
       ...(p.updatedAt ? { dateModified: p.updatedAt } : {}),
       author: { "@type": "Person", name: p.author },
     })),
-  } as const;
+  });
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },

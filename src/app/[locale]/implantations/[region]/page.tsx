@@ -45,6 +45,7 @@ import {
   buildItemListJsonLd,
   buildLocalBusinessJsonLd,
   buildPlaceJsonLd,
+  buildWebPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -172,16 +173,12 @@ export default async function RegionPage({ params }: Props) {
   } as const;
 
   // SpeakableSpecification — voice search + AI engines pour H1 + sous-ligne hero.
-  const speakableJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${SITE_URL}/${loc}/implantations/${region.slug}#webpage`,
-    url: `${SITE_URL}/${loc}/implantations/${region.slug}`,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["[data-speakable-hero]", "#region-hero-heading"],
-    },
-  } as const;
+  const speakableJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: `/implantations/${region.slug}`,
+    name: isFr ? region.metaTitleFr : (region.metaTitleEn ?? region.metaTitleFr),
+    speakable: { selectors: ["[data-speakable-hero]", "#region-hero-heading"] },
+  });
 
   // ItemList — top villes de la région (signal AEO/GEO).
   const villesItemList = buildItemListJsonLd({
