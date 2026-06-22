@@ -314,17 +314,35 @@ export default async function PressReleaseDetailPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* CORPS — communiqué PDF (embed + téléchargement) OU, pour les fixtures
-          legacy texte, paragraphes structurés. */}
-      {release.pdfUrl ? (
+      {/* CORPS — texte (extrait du PDF à l'upload OU fixture legacy) rendu en
+          paragraphes pour le SEO/AEO/Speakable, + PDF original téléchargeable.
+          Fallback iframe uniquement si AUCUN texte n'a pu être extrait (PDF
+          scanné) — évite une landing mince ET un iframe 80vh lourd (Web Vitals). */}
+      {paragraphs.length > 0 ? (
+        <Section>
+          <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
+            {paragraphs.map((p, idx) => (
+              <p key={`p-${idx}`}>{p}</p>
+            ))}
+            {release.pdfUrl ? (
+              <div className="flex flex-wrap gap-3 pt-2">
+                <Button asChild size="lg" shape="pill">
+                  <a href={release.pdfUrl} target="_blank" rel="noopener">
+                    <Download className="h-4 w-4" aria-hidden="true" />
+                    {isFr ? "Télécharger le PDF original" : "Download the original PDF"}
+                  </a>
+                </Button>
+              </div>
+            ) : null}
+          </Container>
+        </Section>
+      ) : release.pdfUrl ? (
         <Section>
           <Container className="max-w-4xl space-y-4">
             <iframe
               src={release.pdfUrl}
               className="border-border h-[80vh] w-full rounded-xl border"
-              title={
-                isFr ? `Communiqué — ${copy.title}` : `Press release — ${copy.title}`
-              }
+              title={isFr ? `Communiqué — ${copy.title}` : `Press release — ${copy.title}`}
             />
             <Button asChild size="lg" shape="pill">
               <a href={release.pdfUrl} target="_blank" rel="noopener">
@@ -334,15 +352,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
             </Button>
           </Container>
         </Section>
-      ) : (
-        <Section>
-          <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
-            {paragraphs.map((p, idx) => (
-              <p key={`p-${idx}`}>{p}</p>
-            ))}
-          </Container>
-        </Section>
-      )}
+      ) : null}
 
       {/* KIT MÉDIAS / BANQUE D'IMAGES — rappel au journaliste qu'il y a des
           assets téléchargeables sur /presse. Réutilise PressImageBank avec
