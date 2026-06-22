@@ -46,6 +46,7 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
@@ -71,7 +72,9 @@ Règles absolues :
 - 4 à 6 questions FAQ réelles avec réponses directes ≥ 2 lignes.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }
+- "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
+- "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags, keyTakeaway, expertTake }
 
 ${getBrandVoiceForContentType("blog_from_rss")}`;
 
@@ -88,6 +91,15 @@ export const blogFromRssGenerator: Generator = {
       maxLen: 30,
     });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
+
+    // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT
+    // (nom/titre fixés depuis la banque ; le LLM ne rédige que le texte).
+    const expert = pickInternalExpert({
+      contentType: input.contentType,
+      templateVariant: input.templateVariant,
+      audienceSize: input.targetAudienceSize,
+      topic,
+    });
 
     // 1. KB retrieve — hybride FTS centré sur le topic RSS + contexte Axion-IA
     const kbChunks = await kbRetrieve({
@@ -145,6 +157,8 @@ export const blogFromRssGenerator: Generator = {
       bodyHtml: string;
       faq: ReadonlyArray<{ q: string; a: string }>;
       tags: ReadonlyArray<string>;
+      keyTakeaway?: string;
+      expertTake?: string;
     };
     let parsed: BlogFromRssParsed | null = null;
     let lastTokensInput = 0;
@@ -169,8 +183,10 @@ ${rssSection ? `\n${rssSection}\n` : ""}
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
+## Avis d'expert
+"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
 ## Output attendu (JSON)
-{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×5], tags }`;
+{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×5], tags, keyTakeaway, expertTake }`;
 
       const effectiveSystem = applySystemPromptOverride(
         SYSTEM_PROMPT,
@@ -388,6 +404,8 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         ? "tier_2_noindex_follow"
         : "tier_3_noindex_nofollow";
 
+    const expertQuote = buildExpertQuote(expert, parsed.expertTake);
+
     return {
       title: parsed.title ?? "",
       metaTitle: parsed.metaTitle ?? "",
@@ -398,6 +416,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       bodyText,
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
+      // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le
+      // nom/titre sont fixés par la banque (jamais le LLM) ; buildExpertQuote
+      // renvoie undefined si le texte est vide → bloc non rendu.
+      ...(parsed.keyTakeaway?.trim() ? { keyTakeaway: parsed.keyTakeaway.trim() } : {}),
+      ...(expertQuote ? { expertQuote } : {}),
       indexationTier,
       qualityScore,
       seoScore: seo.score,

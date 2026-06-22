@@ -39,6 +39,7 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { computeReadabilityFr, readabilityFitScore } from "../quality/readability";
 import { seoContentKind } from "./seo-content-kind";
 import { appendSourcesSection } from "../quality/article-quality";
@@ -85,6 +86,8 @@ interface ParsedOutput {
   bodyHtml: string;
   faq: ReadonlyArray<{ q: string; a: string }>;
   tags: ReadonlyArray<string>;
+  keyTakeaway?: string;
+  expertTake?: string;
 }
 
 /**
@@ -99,6 +102,16 @@ export async function runV7Phase8Pipeline(
   const safeVilleSlug = input.anchorVilleSlug
     ? escapeLlmInput(input.anchorVilleSlug, { maxLen: 60 })
     : "";
+
+  // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT
+  // (nom/titre fixés depuis la banque ; le LLM ne rédige que le texte). Le sujet
+  // dérive du primaryKeyword (sinon du label humain du type Phase-8).
+  const expert = pickInternalExpert({
+    contentType: input.contentType,
+    templateVariant: input.templateVariant,
+    audienceSize: input.targetAudienceSize,
+    topic: input.primaryKeyword ?? config.humanLabel,
+  });
 
   // 1. KB retrieve top 8 chunks (audit 2026-05-24 — Phase 8 v7 maintenant RAG-enabled)
   // P0-6 audit KB 2026-05-29 — bride anti-collapse : on ne grounde QUE sur du
@@ -170,8 +183,15 @@ ${externalLinksCtx.markdownSection}${feedbackSection}
 href : ${config.recommendedCtaHref}
 label : ${config.recommendedCtaLabel}
 
+## Avis d'expert
+"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
+
+## Champs synthèse (AEO)
+- "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
+- "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé ci-dessus.
+
 ## Output attendu (JSON strict, sans balise markdown)
-{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8-12], tags:[string×4-8] }`;
+{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8-12], tags:[string×4-8], keyTakeaway, expertTake }`;
 
     lastPromptHash = hashPrompt(systemPromptWithBrandVoice + userPrompt);
 
@@ -370,6 +390,8 @@ label : ${config.recommendedCtaLabel}
         ? "tier_2_noindex_follow"
         : "tier_3_noindex_nofollow";
 
+  const expertQuote = buildExpertQuote(expert, parsed.expertTake);
+
   return {
     title: parsed.title,
     metaTitle: parsed.metaTitle,
@@ -380,6 +402,11 @@ label : ${config.recommendedCtaLabel}
     bodyText: finalBodyText,
     faq: parsed.faq.map((q) => ({ question: q.q, answer: q.a })),
     tags: parsed.tags,
+    // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le
+    // nom/titre sont fixés par la banque (jamais le LLM) ; buildExpertQuote
+    // renvoie undefined si le texte est vide → bloc non rendu.
+    ...(parsed.keyTakeaway?.trim() ? { keyTakeaway: parsed.keyTakeaway.trim() } : {}),
+    ...(expertQuote ? { expertQuote } : {}),
     indexationTier,
     qualityScore,
     seoScore: bestExtras.seoScore,

@@ -30,6 +30,7 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
@@ -54,7 +55,9 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`);
+- "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
+- "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags, keyTakeaway, expertTake }`);
 
 export const blogFromTitleGenerator: Generator = {
   contentType: "blog_from_title",
@@ -69,6 +72,15 @@ export const blogFromTitleGenerator: Generator = {
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
     const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
+
+    // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT
+    // (nom/titre fixés depuis la banque ; le LLM ne rédige que le texte).
+    const expert = pickInternalExpert({
+      contentType: input.contentType,
+      templateVariant: input.templateVariant,
+      audienceSize: input.targetAudienceSize,
+      topic: mandatoryTitle,
+    });
 
     // 1. KB retrieve — hybride FTS centré sur le titre
     const kbChunks = await kbRetrieve({
@@ -103,6 +115,8 @@ export const blogFromTitleGenerator: Generator = {
       bodyHtml: string;
       faq: ReadonlyArray<{ q: string; a: string }>;
       tags: ReadonlyArray<string>;
+      keyTakeaway?: string;
+      expertTake?: string;
     };
     let parsed: BlogFromTitleParsed | null = null;
     let lastTokensInput = 0;
@@ -126,8 +140,10 @@ Audience cible : ${safeAudienceSize}.
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
+## Avis d'expert
+"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
 ## Output attendu (JSON)
-{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
+{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags, keyTakeaway, expertTake }`;
 
       const effectiveSystem = applySystemPromptOverride(
         SYSTEM_PROMPT,
@@ -305,6 +321,8 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
           ? "tier_2_noindex_follow"
           : "tier_3_noindex_nofollow";
 
+    const expertQuote = buildExpertQuote(expert, parsed.expertTake);
+
     return {
       title: mandatoryTitle,
       metaTitle: parsed.metaTitle ?? "",
@@ -315,6 +333,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       bodyText,
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
+      // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le
+      // nom/titre sont fixés par la banque (jamais le LLM) ; buildExpertQuote
+      // renvoie undefined si le texte est vide → bloc non rendu.
+      ...(parsed.keyTakeaway?.trim() ? { keyTakeaway: parsed.keyTakeaway.trim() } : {}),
+      ...(expertQuote ? { expertQuote } : {}),
       indexationTier,
       qualityScore,
       seoScore: seo.score,
