@@ -322,9 +322,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
             <iframe
               src={release.pdfUrl}
               className="border-border h-[80vh] w-full rounded-xl border"
-              title={
-                isFr ? `Communiqué — ${copy.title}` : `Press release — ${copy.title}`
-              }
+              title={isFr ? `Communiqué — ${copy.title}` : `Press release — ${copy.title}`}
             />
             <Button asChild size="lg" shape="pill">
               <a href={release.pdfUrl} target="_blank" rel="noopener">

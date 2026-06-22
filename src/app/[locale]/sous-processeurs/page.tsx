@@ -391,7 +391,9 @@ export default async function SubprocessorsPage({ params }: Props) {
     breadcrumb: { "@id": breadcrumbId },
     about: {
       "@type": "Thing",
-      name: isFr ? "Sous-traitance des données (RGPD art. 28)" : "Data sub-processing (GDPR art. 28)",
+      name: isFr
+        ? "Sous-traitance des données (RGPD art. 28)"
+        : "Data sub-processing (GDPR art. 28)",
     },
     speakable: { selectors: ["h1", "h2", "[data-answer]", "[data-faq-a]"] },
   });
@@ -405,9 +407,7 @@ export default async function SubprocessorsPage({ params }: Props) {
     <>
       {/* JSON-LD consolidé : 1 seul <script> @graph (parse 1 passe, cross-refs @id).
           Inline = lisible par les bots non-JS (ClaudeBot/GPTBot/Googlebot 1er pass). */}
-      <JsonLdGraph
-        schemas={[collectionPageJsonLd, itemListJsonLd, faqJsonLd, breadcrumbJsonLd]}
-      />
+      <JsonLdGraph schemas={[collectionPageJsonLd, itemListJsonLd, faqJsonLd, breadcrumbJsonLd]} />
 
       <Container className="border-border border-b py-3">
         {/* emitJsonLd=false : le BreadcrumbList est déjà dans le @graph ci-dessus. */}
@@ -556,7 +556,9 @@ export default async function SubprocessorsPage({ params }: Props) {
                   dot: "bg-sage",
                 }}
               />
-              <Pill badge={{ label: "SCC", className: "bg-sand text-fg-soft", dot: "bg-border-strong" }} />
+              <Pill
+                badge={{ label: "SCC", className: "bg-sand text-fg-soft", dot: "bg-border-strong" }}
+              />
               <Pill
                 badge={{
                   label: isFr ? "Adéquation" : "Adequacy",
@@ -620,7 +622,10 @@ export default async function SubprocessorsPage({ params }: Props) {
                                 : "Integration coded; prod activation pending DPA signature and API key addition to env."
                             }
                           >
-                            <span aria-hidden="true" className="bg-terracotta h-1.5 w-1.5 rounded-full" />
+                            <span
+                              aria-hidden="true"
+                              className="bg-terracotta h-1.5 w-1.5 rounded-full"
+                            />
                             {isFr ? "Activation en attente" : "Pending activation"}
                           </span>
                         ) : (
