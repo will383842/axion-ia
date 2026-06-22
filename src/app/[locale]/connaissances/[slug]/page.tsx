@@ -12,7 +12,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -22,7 +22,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 import { fetchPublicKbBySlug } from "@/lib/knowledge/public-fetch";
 import { getServiceForEntrySlug } from "@/lib/knowledge/readers";
@@ -301,6 +301,17 @@ export default async function ConnaissanceDetail({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
+      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: locale as Locale,
+          items: [
+            { name: "Connaissances", href: "/connaissances" },
+            { name: entry.title, href: `/connaissances/${entry.slug}` },
+          ],
+        })}
+        scriptId="jsonld-breadcrumb-connaissance"
+      />
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );

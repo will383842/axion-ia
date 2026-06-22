@@ -17,7 +17,7 @@ import { ArticleTOC, extractTocItems, type TocItem } from "@/components/seo/Arti
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
-import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildArticleJsonLd, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   loadBlogArticleForView,
@@ -660,6 +660,14 @@ export default async function BlogArticle({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
+      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: breadcrumbItems.map((b) => ({ name: b.label, href: b.href })),
+        })}
+        scriptId="jsonld-breadcrumb-blog-article"
+      />
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );

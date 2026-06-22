@@ -20,7 +20,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -32,7 +32,7 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
@@ -510,6 +510,14 @@ export default async function NewsArticlePage({ params }: Props) {
       />
 
       {newsJsonLd ? <JsonLd data={newsJsonLd} /> : null}
+      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: locale as Locale,
+          items: breadcrumbItems.map((b) => ({ name: b.label, href: b.href })),
+        })}
+        scriptId="jsonld-breadcrumb-news"
+      />
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );
