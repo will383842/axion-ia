@@ -133,6 +133,20 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // `sanitizeFaqAnswer` depuis src/server/content-gen/shared : le marqueur
   // "content-gen" vient du seul chemin d'import, pas d'un couplage métier.
   /^src\/components\/content-gen\/ArticleFaq\.tsx$/,
+  // Refonte templates 2026-06-22 (#134) — composants de rendu public qui
+  // CONSOMMENT des briques content-gen partagées (le marqueur vient du seul
+  // chemin d'import, pas d'un couplage métier du pipeline) :
+  // - ArticleExpertQuote importe `expertKeyFromName` (content-gen/brand/expert-bank)
+  // - ArticleSources importe le trust-tier (content-gen/links/trust-tier)
+  // Même exception explicite que ArticleFaq ci-dessus.
+  /^src\/components\/content-gen\/ArticleExpertQuote\.tsx$/,
+  /^src\/components\/content-gen\/ArticleSources\.tsx$/,
+  // /comparaisons : page de rendu public qui importe ArticleFaq + getManonPersonJsonLd
+  // (consommateur, pas producteur). Même cas que /blog, /guides, /actualites.
+  /^src\/app\/\[locale\]\/comparaisons\//,
+  // Test de validation JSON-LD CI — exerce les factories seo-content-gen
+  // (référence le marqueur en commentaire/contexte, pas du code pipeline).
+  /^src\/lib\/__tests__\/jsonld-validation\.spec\.ts$/,
   /^src\/features\/admin-blog\/actions\.ts$/,
   /^src\/i18n\/routing\.ts$/,
   /^src\/lib\/image-utils\.ts$/,
