@@ -602,7 +602,13 @@ export function buildWebPageJsonLd(input: WebPageJsonLdInput) {
     ...(dateModified ? { dateModified } : {}),
     ...(lastReviewed ? { lastReviewed } : {}),
     ...(reviewedBy
-      ? { reviewedBy: { "@type": reviewedBy.type ?? "Organization", name: reviewedBy.name, ...(reviewedBy.url ? { url: reviewedBy.url } : {}) } }
+      ? {
+          reviewedBy: {
+            "@type": reviewedBy.type ?? "Organization",
+            name: reviewedBy.name,
+            ...(reviewedBy.url ? { url: reviewedBy.url } : {}),
+          },
+        }
       : {}),
     ...(about !== undefined ? { about } : {}),
     ...(mentions !== undefined ? { mentions } : {}),
