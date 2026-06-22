@@ -228,6 +228,30 @@ CI réelle · content-refresh-worker 7-14j · liens profonds article→article �
 PrevNext sur guides/actualites · metaTitle gate sur 8 générateurs classiques ·
 social-proof + newsletter sur guides/actualites (faits sur /blog).
 
+## 5e PASSE — backlog data-safe livré (2026-06-22)
+
+- **Newsletter** sur /blog + /guides + /actualités (réutilise NewsletterForm).
+- **Preuve sociale RETIRÉE** (Will : pas d'avis clients) + composant supprimé.
+- **PrevNext** sur /guides + /actualités (`loadAdjacentArticlesByType`).
+- **Gate metaTitle** sur les 8 générateurs classiques (fleet, borné budget).
+- **Liens profonds article→article** (`inject-deep-links.ts`, worker, best-effort,
+  bigramme du titre, 5 tests).
+- **Validation JSON-LD réelle en CI** (`jsonld-validation.spec.ts` + check-schema
+  délègue ; a déjà attrapé un mismatch d'input ; 6 tests).
+- **Williams** /equipe/williams + Person (passes précédentes).
+
+2 items NON faits, avec RAISON :
+- **ImageObject sur images de corps** → NON, volontairement : les images de corps
+  sont des photos UNSPLASH (tierces) ; `buildImageGraphJsonLd` revendique
+  copyright Axion-IA + licence CC-BY → l'émettre reviendrait à revendiquer à tort
+  un copyright sur des photos d'autrui. (Le hero reste une simple association
+  `image`, pas une revendication.) À ne faire QUE si les images deviennent
+  possédées/image-bank.
+- **content-refresh-worker 7-14j** → DÉCISION Will requise : re-générer des
+  articles = coût LLM récurrent + cadence à fixer ; bumper `updatedAt` sans vrai
+  changement = date-gaming (explicitement retiré du projet). À implémenter une
+  fois la cadence + le budget décidés.
+
 ## Reste Will (hors code)
 
 - Revue visuelle sur prod/preview, puis `git push` → PR → merge.
