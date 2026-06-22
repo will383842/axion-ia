@@ -64,21 +64,36 @@ Tous gates pre-commit verts (prettier, anti-hex, use-client, typecheck).
 
 ## RESTE À FAIRE (Chantier 3 + suite) — ordre prévu
 
-1. [ ] **Données dormantes** : ajouter `keyTakeaway?` + `expertQuote?{name,
-   title,text}` à `GeneratorOutput` (types.ts) ; faire émettre par les
-   générateurs (prompt + parse, garde anti-hallucination STRICTE sur l'expert) ;
-   persister dans `content-publish-worker.ts` (article.create). `citations`
-   existe déjà dans output → créer les rows `ContentCitation` (jamais fait).
-2. [ ] **Images intercalées** dans le corps (prompt générateur → `<figure>`),
-   clé pour la proportion texte/images.
-3. [ ] **Câbler ArticlePrevNext** (loader prev/next séquentiel par catégorie) +
-   **ArticlePeopleAlsoAsk** (source questions liées distincte de
-   SuggestedContent).
-4. [ ] **Propager** prose + blocs à `/guides`, `/actualites`, `/comparaisons`.
-5. [ ] Effet secondaire : worker QA-extract `faqList` saute aussi les guides
-   (même cause objet-vs-tableau, worker:~736).
-6. [ ] P0 pipeline optionnels : Zod sur 8 générateurs ; garde resolver
-   anti-stub + vérif SQL prod `content_templates`.
+1. [~] **Sources/citations** : DÉJÀ FAIT par l'effort parallèle (uncommitted) →
+   ne pas dupliquer.
+2. [BLOQUÉ] **keyTakeaway + expertQuote** : ajouter à `GeneratorOutput`
+   (types.ts) + émission générateurs (garde anti-hallucination STRICTE) +
+   persistance `content-publish-worker.ts`. → DÉFÉRÉ : touche worker +
+   v7-phase8 = fichiers du chantier parallèle non committé (décision Will :
+   « continue le sûr, laisse leur code »). À reprendre quand leur travail est
+   committé. ⚠️ expertQuote = DÉCISION Will (ne jamais fabriquer d'expert :
+   soit banque d'experts curée, soit attribution à Manon, soit on n'émet pas).
+3. [BLOQUÉ même raison] **Images intercalées** corps (prompt générateur).
+4. [✅] **Propagation** : `/blog` (C1-2b) + `/actualites` (`0f831ead`) +
+   `/guides` (`01dfe6ee`) FAITS. RESTE `/comparaisons` (gros : l'audit le dit
+   très pauvre, FS statique → migrer vers pipeline OU ajouter answer-first +
+   tableau comparatif + author + dateModified ; pas juste ajouter des blocs).
+5. [ ] **Câbler ArticlePrevNext** (loader prev/next séquentiel par catégorie) +
+   **ArticlePeopleAlsoAsk** (source questions liées) — `blog/loader.ts` est SÛR
+   (non modifié par l'effort parallèle), mais demande de concevoir les requêtes.
+6. [ ] Effet secondaire : worker QA-extract `faqList` saute aussi les guides
+   (même cause objet-vs-tableau, worker:~736) → BLOQUÉ (fichier worker parallèle).
+7. [ ] P0 pipeline optionnels : Zod sur 8 générateurs ; garde resolver
+   anti-stub + vérif SQL prod `content_templates` → BLOQUÉ (worker/generators).
+
+## État session 2026-06-22 (fin de passe)
+
+7 commits sur `feat/blog-templates-refonte` (NON poussés). Tout le travail SÛR
+de refonte frontend est fait (socle typo + blocs + propagation blog/actualites/
+guides). Le reste est soit BLOQUÉ par le chantier citations parallèle non
+committé (worker/generators), soit du design loader (PrevNext/PAA) / rewrite
+(/comparaisons). Reprendre par : (a) faire committer le chantier citations,
+puis keyTakeaway/expertQuote ; (b) OU câbler PrevNext/PAA (sûr).
 
 ## ⚠️ CONCURRENCE DÉTECTÉE (2026-06-22)
 
