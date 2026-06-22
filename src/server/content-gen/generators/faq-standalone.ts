@@ -192,6 +192,17 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         }
       }
 
+      // Gate metaTitle LENIENT — snippet SERP faible si metaTitle vide ou sans
+      // mot-clé. Appliqué uniquement si primaryKeyword est défini.
+      if (input.primaryKeyword) {
+        const mt = (parsed.metaTitle ?? "").trim();
+        if (mt.length < 15 || !mt.toLowerCase().includes(input.primaryKeyword.toLowerCase())) {
+          prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit contenir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
+          if (accumulatedCostUsd >= BUDGET_CAP_USD || iteration >= MAX_QUALITY_ITERATIONS) break;
+          continue;
+        }
+      }
+
       const faqCount = (parsed.faq ?? []).length;
       const bodyText = (parsed.bodyHtml ?? "")
         .replace(/<[^>]+>/g, " ")

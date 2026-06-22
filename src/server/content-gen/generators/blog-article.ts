@@ -206,6 +206,18 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
 
       if (!parsed) continue;
 
+      // Gate metaTitle LENIENT — seulement si un mot-clé principal est garanti
+      // (les articles de campagne n'en ont pas toujours). Un metaTitle vide ou
+      // sans le mot-clé donne un snippet SERP faible → on régénère.
+      if (input.primaryKeyword) {
+        const mt = (parsed.metaTitle ?? "").trim();
+        if (mt.length < 15 || !mt.toLowerCase().includes(input.primaryKeyword.toLowerCase())) {
+          prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit contenir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
+          if (accumulatedCostUsd >= BUDGET_CAP_USD || iteration >= MAX_QUALITY_ITERATIONS) break;
+          continue;
+        }
+      }
+
       const bodyText = (parsed.bodyHtml ?? "")
         .replace(/<[^>]+>/g, " ")
         .replace(/\s+/g, " ")

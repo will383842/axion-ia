@@ -218,6 +218,18 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 
       if (!parsed) continue;
 
+      // Gate metaTitle LENIENT — si un mot-clé principal existe, le metaTitle
+      // ne doit pas être vide et doit contenir le mot-clé (sinon snippet SERP
+      // faible). Borné par MAX_QUALITY_ITERATIONS + BUDGET_CAP_USD (pas de boucle infinie).
+      if (input.primaryKeyword) {
+        const mt = (parsed.metaTitle ?? "").trim();
+        if (mt.length < 15 || !mt.toLowerCase().includes(input.primaryKeyword.toLowerCase())) {
+          prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit contenir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
+          if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+          continue;
+        }
+      }
+
       // Calcul bodyText approximatif pour quality check inline
       const answerText = (parsed.answerHtml ?? "")
         .replace(/<[^>]+>/g, " ")

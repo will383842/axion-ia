@@ -191,6 +191,17 @@ ${externalLinksCtx.markdownSection}${feedbackSection}
       }
       if (!parsed) continue;
 
+      // Gate metaTitle LENIENT — uniquement si un mot-clé principal existe.
+      // Un metaTitle vide ou sans le mot-clé donne un snippet SERP faible.
+      if (input.primaryKeyword) {
+        const mt = (parsed.metaTitle ?? "").trim();
+        if (mt.length < 15 || !mt.toLowerCase().includes(input.primaryKeyword.toLowerCase())) {
+          prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit contenir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
+          if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+          continue;
+        }
+      }
+
       const bodyText = (parsed.bodyHtml ?? "")
         .replace(/<[^>]+>/g, " ")
         .replace(/\s+/g, " ")
