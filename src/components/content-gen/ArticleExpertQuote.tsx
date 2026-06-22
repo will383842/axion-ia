@@ -44,7 +44,7 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
   // un @id pointant vers cette page. Sinon (ex. Williams, page à créer), on
   // ancre l'@id au domaine racine (#person-<slug>, toujours 200) pour déclarer
   // l'entité Person SANS introduire de lien /equipe qui renverrait 404.
-  const EQUIPE_PAGE_SLUGS = new Set(["manon"]);
+  const EQUIPE_PAGE_SLUGS = new Set(["manon", "williams"]);
   const hasEquipePage = slug != null && EQUIPE_PAGE_SLUGS.has(slug);
   const personJsonLd = slug
     ? {

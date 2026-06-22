@@ -24,6 +24,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
+import { WILLIAMS_PROFILE, buildPersonWilliamsJsonLd } from "@/lib/seo/williams-person";
 
 // ISR 24h : bio Manon ne change quasiment jamais (édition via admin
 // /content-gen/author/manon) → cache CDN agressif justifié. `force-dynamic`
@@ -39,6 +40,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   if (locale !== "fr") return {};
+
+  // Williams = fiche fondateur statique (vraie personne, pas une persona DB).
+  if (slug === "williams") {
+    return buildProductMetadata({
+      locale,
+      path: `/equipe/williams`,
+      title: `${WILLIAMS_PROFILE.displayName} · ${WILLIAMS_PROFILE.jobTitle} · Axion-IA`,
+      description: `${WILLIAMS_PROFILE.displayName}, fondateur et CEO d'Axion-IA — cabinet de conseil en intelligence artificielle pour les TPE, PME et ETI françaises.`,
+      alternates: { fr: `/equipe/williams` },
+    });
+  }
 
   const profile = await prisma.authorProfile.findUnique({ where: { slug } });
   if (!profile || !profile.isActive) return { robots: "noindex, nofollow" };
@@ -72,13 +84,19 @@ export default async function PublicAuthorPage({ params }: Props) {
   if (locale !== "fr") notFound();
   setRequestLocale(locale as Locale);
 
-  const profile = await prisma.authorProfile.findUnique({ where: { slug } });
+  // Williams = fiche fondateur statique (vraie personne) ; les autres slugs
+  // viennent de la DB (AuthorProfile, ex. Manon persona IA).
+  const isWilliams = slug === "williams";
+  const dbProfile = isWilliams ? null : await prisma.authorProfile.findUnique({ where: { slug } });
+  const profile = isWilliams ? WILLIAMS_PROFILE : dbProfile;
   if (!profile || !profile.isActive) notFound();
 
-  // V1 : JSON-LD Person seulement pour Manon (factory guard slug==='manon').
-  // V2 : extension multi-auteurs avec factory générique si Will ajoute un 2ᵉ
-  // auteur canonique. Pour les autres slugs on omet le JSON-LD (anti-fuite).
-  const personJsonLd = profile.slug === "manon" ? buildPersonManonJsonLd(profile) : null;
+  // JSON-LD Person : Williams (statique) ou Manon (factory DB). Autres slugs : omis.
+  const personJsonLd = isWilliams
+    ? buildPersonWilliamsJsonLd(locale)
+    : dbProfile && dbProfile.slug === "manon"
+      ? buildPersonManonJsonLd(dbProfile)
+      : null;
 
   return (
     <>
