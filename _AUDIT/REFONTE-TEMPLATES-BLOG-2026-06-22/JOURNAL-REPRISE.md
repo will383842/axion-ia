@@ -180,6 +180,31 @@ Quick wins livrés (commits `39033bfa`→`0bc09779`) :
   liens internes profonds article→article (catalogue statique) · gate longueur+keyword
   metaTitle runtime · peupler la KB publique.
 
+## VÉRIFICATION E2E (no-regression) + FIXES (2026-06-22, 3e passe)
+
+Vérif 5 agents : code mort/orphelin · raccordement · régression 22 commits ·
+mobile/Web Vitals · llms.txt. **Aucune régression bloquante** (robots valide,
+Speakable sans casse, gate borné, inject-body-images n'altère pas la détection,
+imports server sûrs). Fixes appliqués :
+- Williams Person @id ne 404 plus (#person-<slug> ancré domaine quand pas de page
+  /equipe) ; orphelin `isKnownInternalExpert` retiré.
+- `ai.txt` + `.well-known/ai-policy.json` alignés sur robots.txt (training disallow /
+  citation allow) — avant : contradiction (training allowed).
+- `llms.txt` nettoyé : pages ville×verticale supprimées + sitemap mort + /plan-du-site
+  (404) retirés → pointe /implantations + /secteurs ; hébergement générique « Hetzner UE ».
+- **PAA câblé sur /guides + /actualites** (parité maillage, était /blog only).
+- gate **metaTitle** (mot-clé + non vide) sur les 12 types Phase-8.
+
+**llms.txt : UTILE** (riche, découverte LLM) — il était juste périmé, maintenant à jour.
+
+**RESTE backlog (non fait, par priorité)** — data-safe (je peux les faire) :
+ImageObject sur images corps · validation schema CI réelle (stub) · content-refresh-worker
+7-14j (stub, = GSC) · liens profonds article→article (catalogue statique V2) ·
+PrevNext sur guides/actualites (adjacence par type) · gate metaTitle sur les 8
+générateurs classiques (fait sur Phase-8). Besoin données Will : /equipe/williams
+(photo/bio) · Trustpilot (compte) · peupler la KB publique · newsletter inline
+(vérifier action existante). Body tables mobile = mineur (tables rares en corps).
+
 ## Reste Will (hors code)
 
 - Revue visuelle sur prod/preview, puis `git push` → PR → merge.
