@@ -18,12 +18,15 @@
 
 import { describe, it, expect, vi } from "vitest";
 
-// Mock prisma (non utilisé par /presse/[slug] mais imports transitifs lib/seo
-// → service-coverage peuvent y toucher).
+// Mock prisma. `/presse/[slug]` l'utilise via `getAllPublishedPressReleaseSlugs`
+// (generateStaticParams → prisma.pressReleaseTranslation.findMany) : on renvoie []
+// pour déclencher le fallback fixtures `PRESS_RELEASES` testé ici. `lib/seo` +
+// service-coverage touchent aussi `article` / `contentGenConfig` (imports transitifs).
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     article: { findFirst: vi.fn(), findMany: vi.fn() },
     contentGenConfig: { findUnique: vi.fn() },
+    pressReleaseTranslation: { findMany: vi.fn().mockResolvedValue([]) },
   },
 }));
 
@@ -54,7 +57,9 @@ describe("/presse/[slug] · generateStaticParams contract", () => {
     const firstSlug = slugs[0]!;
     expect(params).toContainEqual({ locale: "fr", slug: firstSlug });
     expect(params).toContainEqual({ locale: "en", slug: firstSlug });
-  }, 15_000);
+    // 60s : le 1er import transitif (lib/seo + service-coverage) dépasse 15s sur
+    // un environnement froid / worktree à node_modules jonctionné (CI chaud < 5s).
+  }, 60_000);
 
   it("inclut le slug seed 'lancement-plateforme-axion-ia-2026' (fixture canonique)", async () => {
     const mod = await import("../page");

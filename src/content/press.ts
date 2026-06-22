@@ -340,14 +340,14 @@ export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
       "EU data sovereignty",
     ],
     fr: {
-      name: "Will",
+      name: "Williams",
       role: "Fondateur · lead consultant Axion-IA",
-      bio: "Dix ans en transformation digitale, opérationnel terrain. Will dirige les interventions Axion-IA en entreprise et incarne l'approche opérationnelle du cabinet — démos sur données réelles, plans chiffrés, mise en production rapide. Disponible pour interviews FR + EN, réponse sous 48 h ouvrées.",
+      bio: "Dix ans en transformation digitale, opérationnel terrain. Williams dirige les interventions Axion-IA en entreprise et incarne l'approche opérationnelle du cabinet — démos sur données réelles, plans chiffrés, mise en production rapide. Disponible pour interviews FR + EN, réponse sous 48 h ouvrées.",
     },
     en: {
-      name: "Will",
+      name: "Williams",
       role: "Founder · lead consultant Axion-IA",
-      bio: "Ten years in digital transformation, hands-on field practice. Will leads Axion-IA enterprise engagements and embodies the firm's operational approach — demos on real data, costed plans, fast go-live. Available for FR + EN interviews, response within 48 business hours.",
+      bio: "Ten years in digital transformation, hands-on field practice. Williams leads Axion-IA enterprise engagements and embodies the firm's operational approach — demos on real data, costed plans, fast go-live. Available for FR + EN interviews, response within 48 business hours.",
     },
   },
 ] as const;
@@ -361,12 +361,12 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     fr: {
       question: "Quelle est la structure juridique d'Axion-IA ?",
       answer:
-        "Axion-IA est une société française ([forme juridique à préciser]). La facturation est émise en euros HT avec TVA française (20 %) appliquée selon la résidence du client.",
+        "Axion-IA est une société par actions simplifiée (SAS) française. La facturation est émise en euros, hors taxes, avec la TVA applicable selon le régime en vigueur et la résidence du client.",
     },
     en: {
       question: "What is Axion-IA's legal structure?",
       answer:
-        "Axion-IA is a French company ([legal form to be specified]). Invoicing is in euros (excl. VAT) with French VAT (20%) applied according to the client's residence.",
+        "Axion-IA is a French simplified joint-stock company (SAS). Invoicing is in euros, excluding tax, with VAT applied according to the applicable regime and the client's residence.",
     },
   },
   {
@@ -400,12 +400,12 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     fr: {
       question: "Acceptez-vous les interviews vidéo et podcast ?",
       answer:
-        "Oui. Will, fondateur, est disponible pour interviews écrites, vocales (téléphone, Zoom, Google Meet), vidéo (studio ou visio HD) et podcast. Langues : FR et EN. Délai de coordination : 48 h ouvrées.",
+        "Oui. Williams, fondateur, est disponible pour interviews écrites, vocales (téléphone, Zoom, Google Meet), vidéo (studio ou visio HD) et podcast. Langues : FR et EN. Délai de coordination : 48 h ouvrées.",
     },
     en: {
       question: "Do you accept video and podcast interviews?",
       answer:
-        "Yes. Will, founder, is available for written, voice (phone, Zoom, Google Meet), video (studio or HD video call) and podcast interviews. Languages: FR and EN. Coordination lead time: 48 business hours.",
+        "Yes. Williams, founder, is available for written, voice (phone, Zoom, Google Meet), video (studio or HD video call) and podcast interviews. Languages: FR and EN. Coordination lead time: 48 business hours.",
     },
   },
   {

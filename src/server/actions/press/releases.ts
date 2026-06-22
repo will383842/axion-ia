@@ -32,6 +32,7 @@ import {
   sanitizeConsoleDocFileName,
   CONSOLE_DOC_MAX_BYTES,
 } from "@/server/console-documents/storage";
+import { pdfBufferToText } from "@/server/press/pdf-extract";
 import type { Locale, PublishStatus } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────
@@ -74,6 +75,8 @@ interface StoredPdf {
   pdfFileName: string;
   pdfFileSize: number;
   pdfHashSha256: string;
+  /** Corps HTML extrait du PDF (SEO/AEO landing). "" si extraction impossible. */
+  bodyHtml: string;
 }
 
 /**
@@ -93,11 +96,16 @@ async function validateAndStorePdf(file: FormDataEntryValue | null): Promise<Sto
   const buffer = Buffer.from(await file.arrayBuffer());
   const stored = await storeConsoleDoc(buffer, file.name);
 
+  // Extraction texte (best-effort, jamais bloquant) pour peupler la landing
+  // /presse/[slug] (SEO/AEO). "" si PDF scanné / illisible.
+  const bodyHtml = await pdfBufferToText(buffer);
+
   return {
     pdfStoragePath: stored.storagePath,
     pdfFileName: sanitizeConsoleDocFileName(file.name),
     pdfFileSize: file.size,
     pdfHashSha256: stored.hashSha256,
+    bodyHtml,
   };
 }
 
@@ -173,7 +181,8 @@ export async function createPressRelease(
             locale: "fr",
             title: meta.title,
             slug: frSlug,
-            // `body` n'est plus saisi : laissé null (PDF est le contenu).
+            // `body` = HTML extrait du PDF (SEO/AEO). Null si extraction vide.
+            ...(pdf.bodyHtml ? { body: pdf.bodyHtml } : {}),
             ...(meta.dek ? { dek: meta.dek } : {}),
           },
         },
@@ -239,13 +248,16 @@ export async function updatePressRelease(
         await tx.pressRelease.update({ where: { id }, data: releaseData });
       }
 
-      // Traduction FR (titre + dek). `body` n'est plus touché.
-      const trData: { title?: string; dek?: string; slug?: string } = {};
+      // Traduction FR (titre + dek + body). Sur remplacement du PDF, on
+      // ré-extrait le texte → met à jour `body` (la landing se repeuple).
+      const trData: { title?: string; dek?: string; slug?: string; body?: string } = {};
       if (meta.title !== undefined) {
         trData.title = meta.title;
         trData.slug = await uniqueSlug("fr", meta.title, id);
       }
       if (meta.dek !== undefined) trData.dek = meta.dek;
+      // PDF remplacé avec un texte exploitable → on rafraîchit le corps HTML.
+      if (pdf && pdf.bodyHtml) trData.body = pdf.bodyHtml;
 
       if (Object.keys(trData).length > 0) {
         const existingTr = await tx.pressReleaseTranslation.findUnique({
@@ -265,6 +277,7 @@ export async function updatePressRelease(
               title: trData.title,
               slug: trData.slug ?? (await uniqueSlug("fr", trData.title, id)),
               ...(trData.dek !== undefined ? { dek: trData.dek } : {}),
+              ...(trData.body !== undefined ? { body: trData.body } : {}),
             },
           });
         }

@@ -160,6 +160,7 @@
     "sonner": "^2.0.7",
     "stripe": "^22.1.1",
     "tailwind-merge": "^3.5.0",
+    "unpdf": "^1.6.2",
     "web-vitals": "^5.2.0",
     "zod": "^3.25.76"
   },

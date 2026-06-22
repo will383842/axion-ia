@@ -12,12 +12,15 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { PressFacts } from "@/components/sections/PressFacts";
-import { PressKit } from "@/components/sections/PressKit";
+import { PressImages } from "@/components/sections/PressImages";
 import { PressImageBank } from "@/components/sections/PressImageBank";
 import { PressReleases } from "@/components/sections/PressReleases";
 import { MediaCoverage } from "@/components/sections/MediaCoverage";
 import { PressSpokesperson } from "@/components/sections/PressSpokesperson";
 import { PressContact } from "@/components/sections/PressContact";
+import { PressActivitiesStrip } from "@/components/sections/PressActivitiesStrip";
+import { PressWhatsReallyHappening } from "@/components/sections/PressWhatsReallyHappening";
+import { type ServiceId } from "@/content/services";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import {
   PRESS_PITCH,
@@ -28,7 +31,12 @@ import {
 } from "@/content/press";
 // Salle de presse 2026-06-22 — communiqués + kit média lus depuis la DB
 // (fallback fixtures si DB vide / build stub). Édités via la console admin.
-import { getPublishedPressReleases, getPublishedPressMedia } from "@/server/press/queries";
+import {
+  getPublishedPressReleases,
+  getPublishedPressMedia,
+  getPressGalleryImages,
+} from "@/server/press/queries";
+import { GalleryGrid } from "@/components/galerie/GalleryGrid";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   buildProductMetadata,
@@ -102,6 +110,9 @@ export default async function PressePage({ params }: Props) {
 
   const kitItems = await getPublishedPressMedia(loc);
 
+  // Banque d'images — vrais visuels (vide au build stub → fallback promo).
+  const pressGalleryImages = await getPressGalleryImages(loc, 10);
+
   const releases = await getPublishedPressReleases(loc);
 
   const coverage = PRESS_MEDIA_COVERAGE.map((m) => ({
@@ -126,6 +137,40 @@ export default async function PressePage({ params }: Props) {
     question: f[loc].question,
     answer: f[loc].answer,
   }));
+
+  // Strip « 5 activités » — blurbs i18n mappés par id de service (SSOT services.ts).
+  const activityBlurbs: Record<ServiceId, string> = {
+    formations: t("activitiesBlurbFormations"),
+    unAUn: t("activitiesBlurbUnAUn"),
+    audit: t("activitiesBlurbAudit"),
+    implementation: t("activitiesBlurbImplementation"),
+    sitesWeb: t("activitiesBlurbSitesWeb"),
+  };
+
+  // Section « Que se passe-t-il vraiment » — 3 points d'entrée (ancres internes).
+  const whatsReallyLinks = [
+    {
+      href: "#communiques",
+      iconKind: "releases" as const,
+      title: t("whatsReallyReleasesTitle"),
+      description: t("whatsReallyReleasesDesc"),
+      cta: t("whatsReallyReleasesCta"),
+    },
+    {
+      href: "#press-kit",
+      iconKind: "media" as const,
+      title: t("whatsReallyMediaTitle"),
+      description: t("whatsReallyMediaDesc"),
+      cta: t("whatsReallyMediaCta"),
+    },
+    {
+      href: "#presse-form",
+      iconKind: "contact" as const,
+      title: t("whatsReallyContactTitle"),
+      description: t("whatsReallyContactDesc"),
+      cta: t("whatsReallyContactCta"),
+    },
+  ];
 
   const pressPath = isFr ? "/presse" : "/press";
   const pageUrl = `${SITE_URL}/${loc}${pressPath}`;
@@ -318,13 +363,29 @@ export default async function PressePage({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "L'équipe Axion-IA, cabinet IA opérationnel B2B, pose devant les locaux — 12 collaborateurs."
-                  : "The Axion-IA team, B2B operational AI consultancy, posing at the office — 12 team members."
+                  ? "L'équipe Axion-IA, cabinet IA opérationnel B2B, réunie dans ses locaux."
+                  : "The Axion-IA team, B2B operational AI consultancy, gathered at the office."
               }
               priority
             />
           </div>
         </Container>
+      </Section>
+
+      {/* 5 ACTIVITÉS — strip compact (SSOT services.ts), liens hubs canoniques */}
+      <Section
+        id="activites"
+        eyebrow={t("activitiesEyebrow")}
+        title={t("activitiesTitle")}
+        titleEm={t("activitiesTitleEm")}
+        titleTail={t("activitiesTitleTail")}
+        description={t("activitiesDescription")}
+      >
+        <PressActivitiesStrip
+          isFr={isFr}
+          blurbs={activityBlurbs}
+          discoverLabel={t("activitiesDiscover")}
+        />
       </Section>
 
       {/* PITCH — boilerplate citable + faits clés en aside */}
@@ -350,6 +411,18 @@ export default async function PressePage({ params }: Props) {
           </div>
           <PressFacts eyebrow={t("factsEyebrow")} facts={facts} />
         </div>
+      </Section>
+
+      {/* QUE SE PASSE-T-IL VRAIMENT — section pont (ton sobre), ancres internes */}
+      <Section
+        id="whats-really"
+        tone="sand"
+        eyebrow={t("whatsReallyEyebrow")}
+        title={t("whatsReallyTitle")}
+        titleEm={t("whatsReallyTitleEm")}
+        titleTail={t("whatsReallyTitleTail")}
+      >
+        <PressWhatsReallyHappening intro={t("whatsReallyIntro")} links={whatsReallyLinks} />
       </Section>
 
       {/* OBSERVATOIRE IA 2026 — KPIs presse + CC BY + liens (fallback honnête) */}
@@ -446,11 +519,15 @@ export default async function PressePage({ params }: Props) {
         titleTail={t("kitTitleTail")}
         description={t("kitDescription")}
       >
-        <PressKit
+        <PressImages
           items={kitItems}
           labels={{
             download: t("kitDownload"),
             comingSoon: t("kitComingSoon"),
+            logosTitle: t("imagesLogosTitle"),
+            paletteTitle: t("imagesPaletteTitle"),
+            paletteNote: t("imagesPaletteNote"),
+            documentsTitle: t("imagesDocumentsTitle"),
           }}
         />
       </Section>
@@ -467,47 +544,65 @@ export default async function PressePage({ params }: Props) {
         titleTail={t("imageBankTitleTail")}
         description={t("imageBankDescription")}
       >
-        <PressImageBank
-          labels={{
-            primaryCta: t("imageBankCta"),
-            licenseNote: t("imageBankLicenseNote"),
-            categories: [
-              {
-                id: "ia-operationnelle",
-                iconKind: "image",
-                title: t("imageBankCat1Title"),
-                description: t("imageBankCat1Description"),
-                previewUrl:
-                  "/images/axion-ia-graphique-ia-imperatif-performance-fosse-concurrentiel-dataviz.webp",
-                previewAlt: isFr
-                  ? "Graphique IA — impératif de performance et fossé concurrentiel 2024"
-                  : "AI chart — performance imperative and competitive gap 2024",
-              },
-              {
-                id: "equipe",
-                iconKind: "camera",
-                title: t("imageBankCat2Title"),
-                description: t("imageBankCat2Description"),
-                previewUrl:
-                  "/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp",
-                previewAlt: isFr
-                  ? "Équipe Axion-IA — 12 collaborateurs, cabinet IA opérationnel France"
-                  : "Axion-IA team — 12 staff members, operational AI consultancy France",
-              },
-              {
-                id: "cas-concrets",
-                iconKind: "scanline",
-                title: t("imageBankCat3Title"),
-                description: t("imageBankCat3Description"),
-                previewUrl:
-                  "/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp",
-                previewAlt: isFr
-                  ? "Comparatif actions humaines vs automatisation IA — 7 étapes"
-                  : "Comparison human actions vs AI automation — 7 steps",
-              },
-            ],
-          }}
-        />
+        {pressGalleryImages.length > 0 ? (
+          <div className="flex flex-col gap-10">
+            <GalleryGrid images={pressGalleryImages} locale={loc} firstImagePriority={false} />
+            <div className="border-border-strong bg-paper flex flex-col items-start gap-4 rounded-xl border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+              <p className="text-fg-soft max-w-xl text-sm leading-relaxed">
+                {t("imageBankLicenseNote")}
+              </p>
+              <Link
+                href="/galerie"
+                className="border-terracotta bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border px-5 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                {t("imageBankCta")}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <PressImageBank
+            labels={{
+              primaryCta: t("imageBankCta"),
+              licenseNote: t("imageBankLicenseNote"),
+              categories: [
+                {
+                  id: "ia-operationnelle",
+                  iconKind: "image",
+                  title: t("imageBankCat1Title"),
+                  description: t("imageBankCat1Description"),
+                  previewUrl:
+                    "/images/axion-ia-graphique-ia-imperatif-performance-fosse-concurrentiel-dataviz.webp",
+                  previewAlt: isFr
+                    ? "Graphique IA — impératif de performance et fossé concurrentiel 2024"
+                    : "AI chart — performance imperative and competitive gap 2024",
+                },
+                {
+                  id: "equipe",
+                  iconKind: "camera",
+                  title: t("imageBankCat2Title"),
+                  description: t("imageBankCat2Description"),
+                  previewUrl:
+                    "/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp",
+                  previewAlt: isFr
+                    ? "Équipe Axion-IA — cabinet IA opérationnel France"
+                    : "Axion-IA team — operational AI consultancy France",
+                },
+                {
+                  id: "cas-concrets",
+                  iconKind: "scanline",
+                  title: t("imageBankCat3Title"),
+                  description: t("imageBankCat3Description"),
+                  previewUrl:
+                    "/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp",
+                  previewAlt: isFr
+                    ? "Comparatif actions humaines vs automatisation IA — 7 étapes"
+                    : "Comparison human actions vs AI automation — 7 steps",
+                },
+              ],
+            }}
+          />
+        )}
       </Section>
 
       {/* COMMUNIQUÉS — releases cards */}
@@ -639,8 +734,8 @@ export default async function PressePage({ params }: Props) {
         titleEm={isFr ? "demande presse" : "press request"}
         description={
           isFr
-            ? "Interview, presskit, citation, podcast, fact-check — décrivez votre demande, on revient sous 24 h ouvrées avec une réponse personnalisée."
-            : "Interview, presskit, quote, podcast, fact-check — describe your request and we get back within 24 business hours with a personalized reply."
+            ? "Interview, presskit, citation, podcast, fact-check — décrivez votre demande, on revient sous 48 h ouvrées avec une réponse personnalisée."
+            : "Interview, presskit, quote, podcast, fact-check — describe your request and we get back within 48 business hours with a personalized reply."
         }
       >
         <Container>
