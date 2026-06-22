@@ -236,6 +236,14 @@ label : ${config.recommendedCtaLabel}
         if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
         continue;
       }
+      // metaTitle gate (2026-06-22) — le metaTitle ne doit pas être vide et doit
+      // contenir le mot-clé (snippet SERP/AEO). Lenient sur la longueur exacte.
+      const mt = (parsed.metaTitle ?? "").trim();
+      if (mt.length < 15 || !mt.toLowerCase().includes(input.primaryKeyword.toLowerCase())) {
+        prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit contenir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
+        if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+        continue;
+      }
     }
 
     parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
