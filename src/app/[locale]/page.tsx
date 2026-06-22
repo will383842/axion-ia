@@ -397,11 +397,11 @@ export default async function Home({ params }: HomeProps) {
                 {t("heroDescription")}
               </p>
               {/* Hero CTAs (2026-05-23 Will) : 2 boutons côte à côte
-                  — Primary : réserver un appel (calendrier interne /reserver, équivalent Calendly)
+                  — Primary : échanger 30 min sans engagement (/appel, widget Calendly)
                   — Secondary : formulaire de contact (/contact, réponse 24h) */}
               <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
-                  href="/reserver"
+                  href="/appel"
                   className="bg-terracotta text-paper cta-lift focus-visible:ring-terracotta inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {isFr ? "Réserver un appel" : "Book a call"}
@@ -1761,8 +1761,8 @@ export default async function Home({ params }: HomeProps) {
           Disparaît à 320 px du bottom (laisse place au CTA final natif).
           rAF dedup pour INP < 100 ms (cf. perf budget). */}
       <StickyMobileCta
-        href="/formations"
-        label={t("heroCtaPrimary", { price: interventionEntryPrice })}
+        href="/appel"
+        label={isFr ? "Échanger 30 min — sans engagement" : "Talk 30 min — no commitment"}
         track="home-sticky-mobile"
         threshold={600}
       />

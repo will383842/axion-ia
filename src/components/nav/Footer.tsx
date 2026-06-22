@@ -149,12 +149,14 @@ export async function Footer() {
               {isFr ? (
                 <>
                   Le {BRAND.taglineFr}{" "}
-                  <span className="text-terracotta-soft italic">des dirigeants qui avancent</span>.
+                  <span className="text-terracotta-soft italic">qui vous dit par où commencer</span>
+                  .
                 </>
               ) : (
                 <>
                   The {BRAND.taglineEn}{" "}
-                  <span className="text-terracotta-soft italic">that moves leaders forward</span>.
+                  <span className="text-terracotta-soft italic">that shows you where to start</span>
+                  .
                 </>
               )}
             </p>
