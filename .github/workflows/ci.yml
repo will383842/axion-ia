@@ -206,6 +206,13 @@ jobs:
         # (Fix OOM Gate B 2026-06-14.)
         env:
           NODE_OPTIONS: --max-old-space-size=6144
+          # ENOSPC fix 2026-06-22 : aligné sur deploy-coolify.yml + Gate C. Le build de
+          # TOUTES les villes par-service en FR ET EN dépassait /mnt à la copie
+          # .next/standalone (« ENOSPC » sur /en/sites-web-augmentes/par-ville/...). On
+          # build en indexable-only (~1 776 villes), comme l'artefact réellement déployé.
+          # Le flag ne gate QUE VilleServicePageTemplate (pages service×ville) : les URLs
+          # Lighthouse (pages HUB /implantations/<region>/<ville>) restent construites.
+          BUILD_SSG_VILLES_INDEXABLE_ONLY: "true"
         run: pnpm exec next build --webpack
       # Sprint Final P1-8 (audit final 2026-05-22) — Bundle delta + LHCI passés
       # en STRICT (continue-on-error retiré) pour enforcer le contrat AGENTS.md :
@@ -355,6 +362,14 @@ jobs:
           # prod au build, et la DB/Redis stub.invalid court-circuite les appels
           # Prisma/Redis au build. La VRAIE validation env tourne au runtime
           # (étape « Run container » ci-dessous, avec les 8 secrets factices).
+          # BUILD_SSG_VILLES_INDEXABLE_ONLY=true : ALIGNÉ sur deploy-coolify.yml:250.
+          # Sans ce flag, le SSG pré-rendait les ~6 450 villes COMPLÈTES → `.next/server`
+          # gonflé, puis la copie `.next/standalone` (qui DUPLIQUE `.next/server`) saturait
+          # même les ~65 GB de /mnt → « ENOSPC: no space left on device » au copyfile
+          # (échec chronique Gate C, ex. saint-pryve-saint-mesmin.segments). Le déploiement
+          # réel build de toute façon en indexable-only (~1 776 villes) : le smoke test doit
+          # valider le MÊME artefact (Dockerfile + boot + healthz), pas une SSG plus large.
+          # (Fix ENOSPC Gate C 2026-06-22.)
           docker build \
             --build-arg NEXT_PUBLIC_SITE_URL=https://smoke.test \
             --build-arg NEXT_PUBLIC_APP_ENV=production \
@@ -362,6 +377,7 @@ jobs:
             --build-arg DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub \
             --build-arg REDIS_URL=redis://stub.invalid:6379 \
             --build-arg BULLMQ_DISABLED=true \
+            --build-arg BUILD_SSG_VILLES_INDEXABLE_ONLY=true \
             -t axion-ia:smoke .
 
       - name: Run container with smoke env
