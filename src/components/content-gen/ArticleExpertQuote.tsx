@@ -1,6 +1,9 @@
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import type { Locale } from "@/i18n/routing";
+import { JsonLd } from "@/components/marketing/JsonLd";
+import { SITE_URL } from "@/lib/seo";
+import { expertKeyFromName } from "@/server/content-gen/brand/expert-bank";
 
 export interface ExpertQuoteData {
   readonly name: string;
@@ -32,6 +35,22 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
   const title = quote.title?.trim() ?? "";
   const isFr = locale === "fr";
 
+  // Refonte AEO 2026-06-22 — désambiguïsation d'entité : nœud Person + Quotation
+  // pour l'expert cité (résout l'attribution visible en entité réelle, levier
+  // E-E-A-T). N'émet un @id que pour un expert interne CONNU (slug non null) —
+  // jamais d'entité inventée.
+  const slug = expertKeyFromName(name);
+  const personJsonLd = slug
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": `${SITE_URL}/${locale}/equipe/${slug}#person`,
+        name,
+        ...(title.length > 0 ? { jobTitle: title } : {}),
+        worksFor: { "@id": `${SITE_URL}/#organization` },
+      }
+    : null;
+
   return (
     <Section>
       <Container className="max-w-3xl">
@@ -48,6 +67,7 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
             {title.length > 0 ? `, ${title}` : ""}
           </figcaption>
         </figure>
+        {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
       </Container>
     </Section>
   );

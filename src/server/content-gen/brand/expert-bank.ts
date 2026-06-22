@@ -11,9 +11,11 @@
  * pas à un expert connu est rejeté (`isKnownInternalExpert`). On ne met donc
  * jamais de mots dans la bouche d'une personne fictive ou tierce.
  *
- * Ces personnes ont déjà une entité `Person` (JSON-LD + page `/equipe/<slug>` +
- * LinkedIn `sameAs`) → l'avis d'expert pointe vers une entité réelle et
- * vérifiable, ce qui est exactement ce que valorisent Google/AI Overviews.
+ * Désambiguïsation d'entité : l'avis d'expert émet un nœud `Person` (@id
+ * `/equipe/<key>#person`, worksFor Organization) — voir `ArticleExpertQuote`.
+ * Manon a une page dédiée `/equipe/manon` (AuthorProfile) ; Williams est le
+ * fondateur (nœud Person dans l'Organization). Une page `/equipe/williams`
+ * dédiée reste à créer (photo/bio réelles requises) pour compléter l'entité.
  *
  * Extensible : ajouter un expert = une entrée dans `INTERNAL_EXPERTS`.
  * 2026-06-22 : Manon + Williams (d'autres experts plus tard, décision Will).
@@ -94,6 +96,18 @@ export function pickInternalExpert(opts: {
 export function isKnownInternalExpert(name: string): boolean {
   const n = name.trim().toLowerCase();
   return INTERNAL_EXPERTS.some((e) => e.name.toLowerCase() === n);
+}
+
+/**
+ * Clé (= slug `/equipe/<key>`) d'un expert à partir de son nom affiché.
+ * Sert à relier l'avis d'expert rendu à une entité Person (@id). `null` si le
+ * nom n'est pas un expert interne connu → aucun @id émis (jamais d'entité
+ * inventée).
+ */
+export function expertKeyFromName(name: string): string | null {
+  const n = name.trim().toLowerCase();
+  const found = INTERNAL_EXPERTS.find((e) => e.name.toLowerCase() === n);
+  return found ? found.key : null;
 }
 
 /**
