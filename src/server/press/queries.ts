@@ -10,6 +10,10 @@
 
 import { prisma } from "@/lib/prisma";
 import type { Locale } from "@/i18n/routing";
+import type {
+  ImageAsset,
+  ImageAssetTranslation,
+} from "../../../prisma/generated/client";
 import {
   PRESS_RELEASES,
   PRESS_KIT_ASSETS,
@@ -229,4 +233,31 @@ export async function getPublishedPressMedia(locale: Locale): Promise<PressKitIt
     return PRESS_KIT_ASSETS.map((a) => fixtureToKitItem(a, locale));
   }
   return mapped;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Banque d'images — aperçu pour l'espace presse.
+//
+// Réutilise la MÊME shape `ImageAsset & { translations }` que la galerie publique
+// (`GalleryGrid`) afin de rendre de VRAIS visuels (au lieu de chemins hardcodés).
+// Featured d'abord, puis les plus embarqués. Stub-aware : au build `stub.invalid`
+// le proxy Prisma renvoie [] → la page retombe sur le bloc promo (fallback).
+// ─────────────────────────────────────────────────────────────────
+export type PressGalleryImage = ImageAsset & { translations: ImageAssetTranslation[] };
+
+export async function getPressGalleryImages(
+  locale: Locale,
+  limit = 8,
+): Promise<PressGalleryImage[]> {
+  return prisma.imageAsset.findMany({
+    where: {
+      deletedAt: null,
+      isActive: true,
+      publishedAt: { not: null },
+      translations: { some: { languageCode: locale, isPublished: true } },
+    },
+    orderBy: [{ isFeatured: "desc" }, { embedCount: "desc" }, { publishedAt: "desc" }],
+    take: limit,
+    include: { translations: { where: { languageCode: locale }, take: 1 } },
+  });
 }

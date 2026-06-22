@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { Calendar, Download } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
@@ -61,8 +62,28 @@ export function PressReleases({ releases, locale, labels }: PressReleasesProps) 
       {releases.map((release) => (
         <li
           key={release.slug}
-          className="border-border bg-paper hover:border-terracotta-soft flex flex-col rounded-xl border p-7 transition hover:shadow-[var(--shadow-subtle)]"
+          className="border-border bg-paper hover:border-terracotta-soft flex flex-col overflow-hidden rounded-xl border transition hover:shadow-[var(--shadow-subtle)]"
         >
+          {/* Visuel — image OG brandée (texte du titre sur fond marque), unique
+              par communiqué. `unoptimized` : route dynamique, pas d'optimisation
+              next/image (et build stub safe). Décoratif → alt vide (titre en h3). */}
+          <Link
+            href={`/presse/${release.slug}` as never}
+            aria-hidden="true"
+            tabIndex={-1}
+            className="bg-sand relative block aspect-[1200/630] overflow-hidden"
+          >
+            <Image
+              src={`/api/og?title=${encodeURIComponent(release.title)}`}
+              alt=""
+              fill
+              unoptimized
+              loading="lazy"
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="object-cover transition-transform duration-300 hover:scale-[1.02]"
+            />
+          </Link>
+          <div className="flex flex-1 flex-col p-7">
           <div className="mb-5 flex items-center justify-between gap-3">
             <span className="bg-terracotta-soft text-terracotta-deep rounded-full px-3 py-1 text-[11px] font-semibold tracking-wider uppercase">
               {tagLabel[release.tag]}
@@ -100,6 +121,7 @@ export function PressReleases({ releases, locale, labels }: PressReleasesProps) 
           ) : (
             <p className="text-fg-muted mt-6 text-xs italic">— {labels.read}</p>
           )}
+          </div>
         </li>
       ))}
     </ul>
