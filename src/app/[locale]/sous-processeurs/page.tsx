@@ -29,7 +29,6 @@ import {
 import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
-  buildItemListJsonLd,
   buildCollectionPageJsonLd,
   buildBreadcrumbJsonLd,
   SITE_URL,
@@ -184,6 +183,26 @@ function dpaBadge(s: Subprocessor, isFr: boolean): Badge {
   }
 }
 
+// Code pays ISO 3166-1 alpha-2 dérivé du champ `location` réel de la SSOT
+// (aucune donnée inventée, aucune duplication de la liste prestataires). Ordre
+// spécifique → générique. Alimente `address.addressCountry` des nœuds
+// Organization de l'ItemList (signal entité/GEO).
+const COUNTRY_NAME_TO_ISO: ReadonlyArray<readonly [RegExp, string]> = [
+  [/Allemagne|Germany/i, "DE"],
+  [/Irlande|Ireland/i, "IE"],
+  [/Royaume-Uni|United Kingdom/i, "GB"],
+  [/Canada/i, "CA"],
+  [/Émirats|Emirates/i, "AE"],
+  [/USA|United States|États-Unis/i, "US"],
+];
+
+function isoCountry(location: string): string | undefined {
+  for (const [re, iso] of COUNTRY_NAME_TO_ISO) {
+    if (re.test(location)) return iso;
+  }
+  return undefined;
+}
+
 function formatLastUpdated(iso: string, isFr: boolean): string {
   const d = new Date(`${iso}T00:00:00Z`);
   return d.toLocaleDateString(isFr ? "fr-FR" : "en-GB", {
@@ -329,20 +348,31 @@ export default async function SubprocessorsPage({ params }: Props) {
     ],
   });
 
-  // ItemList des sous-traitants (factory centrale) + @id pour la cross-ref mainEntity.
+  // ItemList enrichi : chaque sous-traitant = nœud Organization (nom + finalité +
+  // pays + lien doc) → réponse entité/GEO précise pour « quels sous-traitants
+  // utilise Axion-IA ? ». @id pour la cross-ref `mainEntity` de la CollectionPage.
   const itemListJsonLd = {
-    ...buildItemListJsonLd({
-      locale: loc,
-      path: isFr ? PATH_FR : PATH_EN,
-      name: isFr ? "Sous-traitants d'Axion-IA" : "Axion-IA subprocessors",
-      items: SUBPROCESSORS.map((s, i) => ({
-        position: i + 1,
-        name: s.name,
-        url: s.documentationUrl ?? pageUrl,
-        description: isFr ? s.purposeFr : s.purposeEn,
-      })),
-    }),
+    "@context": "https://schema.org",
+    "@type": "ItemList",
     "@id": listId,
+    name: isFr ? "Sous-traitants d'Axion-IA" : "Axion-IA subprocessors",
+    url: pageUrl,
+    numberOfItems: SUBPROCESSORS.length,
+    itemListElement: SUBPROCESSORS.map((s, i) => {
+      const iso = isoCountry(s.location);
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        ...(s.documentationUrl ? { url: s.documentationUrl } : {}),
+        item: {
+          "@type": "Organization",
+          name: s.name,
+          description: isFr ? s.purposeFr : s.purposeEn,
+          ...(s.documentationUrl ? { url: s.documentationUrl } : {}),
+          ...(iso ? { address: { "@type": "PostalAddress", addressCountry: iso } } : {}),
+        },
+      };
+    }),
   };
 
   const collectionPageJsonLd = buildCollectionPageJsonLd({
