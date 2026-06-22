@@ -178,6 +178,14 @@ export default async function GuidePiliersPage({ params }: Props) {
       {/* Refonte templates 2026-06-22 — barre de progression de lecture (CSS, 0 JS). */}
       <div className="reading-progress" aria-hidden="true" />
 
+      {/* P1-17 — alternate format markdown brut pour LLM ingestion (parité /blog). */}
+      <link
+        rel="alternate"
+        type="text/markdown"
+        href={`/api/markdown/guides/${slug}`}
+        title={`${guide.title} (markdown)`}
+      />
+
       <JsonLd data={jsonLd} />
       {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
       <JsonLd
@@ -192,6 +200,9 @@ export default async function GuidePiliersPage({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
+      {/* A11y WCAG 2.4.1/1.3.1 — cible du skip-link + landmark de contenu
+          éditorial principal (un seul id="main-content" par page). */}
+      <article>
       <Section className="bg-cream">
         <Container className="max-w-3xl">
           {tocItems.length >= 2 && (
@@ -283,6 +294,7 @@ export default async function GuidePiliersPage({ params }: Props) {
           <AiContentDisclaimer locale="fr" className="mt-10" />
         </Container>
       </Section>
+      </article>
 
       {/* Chantier templates 2026-06-21 — point clé + citation expert (rendus
           seulement si renseignés). Hors de la section cream pour éviter une
@@ -307,7 +319,8 @@ export default async function GuidePiliersPage({ params }: Props) {
       />
 
       {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur). */}
-      <ArticleTransparencyBlock lastVerified={guide.updatedAt} updateCycleDays={90} locale="fr" />
+      {/* Cadence de revue par type (audit perfection 2026-06-22) — guides = 60 j. */}
+      <ArticleTransparencyBlock lastVerified={guide.updatedAt} updateCycleDays={60} locale="fr" />
 
       {/* Refonte 2026-06-22 — People Also Ask (parité /blog). */}
       <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />

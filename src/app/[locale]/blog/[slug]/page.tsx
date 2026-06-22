@@ -529,6 +529,9 @@ export default async function BlogArticle({ params }: Props) {
         </Container>
       )}
 
+      {/* A11y WCAG 2.4.1/1.3.1 — cible du skip-link + landmark de contenu
+          éditorial principal (un seul id="main-content" par page). */}
+      <article>
       <Section>
         <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
           {dbBodyHtml ? (
@@ -560,6 +563,7 @@ export default async function BlogArticle({ params }: Props) {
           )}
         </Container>
       </Section>
+      </article>
 
       {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
           le lien. URL absolue (pageUrl) pour X/LinkedIn/mailto. Server, l'îlot

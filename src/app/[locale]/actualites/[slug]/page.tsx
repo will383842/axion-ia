@@ -433,6 +433,9 @@ export default async function NewsArticlePage({ params }: Props) {
         </Container>
       ) : null}
 
+      {/* A11y WCAG 2.4.1/1.3.1 — cible du skip-link + landmark de contenu
+          éditorial principal (un seul id="main-content" par page). */}
+      <article>
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
           {bodyHtmlFallback ? (
@@ -445,6 +448,7 @@ export default async function NewsArticlePage({ params }: Props) {
           )}
         </Container>
       </Section>
+      </article>
 
       {/* Refonte templates 2026-06-22 — barre de partage + copier le lien. */}
       <ArticleShareBar url={pageUrl} title={t.title} locale="fr" />
@@ -461,10 +465,11 @@ export default async function NewsArticlePage({ params }: Props) {
         lastVerified={updatedIso}
       />
 
-      {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur). */}
+      {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur).
+          Cadence de revue par type (audit perfection 2026-06-22) — actualités = 30 j. */}
       <ArticleTransparencyBlock
         lastVerified={article.updatedAt ?? article.publishedAt}
-        updateCycleDays={90}
+        updateCycleDays={30}
         locale="fr"
       />
 
