@@ -32,7 +32,7 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
@@ -47,6 +47,10 @@ import { ArticleSources } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { ArticleTOC, type TocItem } from "@/components/seo/ArticleTOC";
+import { buildToc } from "@/lib/knowledge/article-enrich";
+import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
+import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransparencyBlock";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
 // hit pour les nouveaux slugs. Ni `force-static` (incompatible avec dynamic
@@ -277,7 +281,16 @@ export default async function NewsArticlePage({ params }: Props) {
   // paragraphes. Si `bodyText` absent, `body` = HTML content-gen → on le rend
   // sanitisé (whitelist anti-XSS) au lieu d'échapper les balises littéralement
   // (bug VIS-01 latent : `<p>{html}</p>` afficherait `<h2>…</h2>` en clair).
-  const bodyHtmlFallback = t.bodyText ? null : sanitizeContentGenHtml(t.body);
+  // Refonte templates 2026-06-22 — TOC + ancres h2 (gap audit confirmé :
+  // /actualites n'avait ni sommaire ni ancres). buildToc injecte les id sur les
+  // h2 du HTML sanitisé et renvoie les items ; ne s'applique qu'au body HTML
+  // content-gen (le bodyText plat n'a pas de headings).
+  const newsBodyToc = t.bodyText ? null : buildToc(sanitizeContentGenHtml(t.body));
+  const bodyHtmlFallback = newsBodyToc ? newsBodyToc.html : null;
+  const tocItems: TocItem[] = newsBodyToc
+    ? newsBodyToc.toc.map((h) => ({ anchor: h.id, title: h.text, level: 2 as const }))
+    : [];
+  const pageUrl = `${SITE_URL}/fr/actualites/${slug}`;
   const paragraphs = (t.bodyText ?? "")
     .split(/\n{2,}/)
     .map((p) => p.trim())
@@ -297,6 +310,9 @@ export default async function NewsArticlePage({ params }: Props) {
 
   return (
     <>
+      {/* Refonte templates 2026-06-22 — barre de progression de lecture (CSS, 0 JS). */}
+      <div className="reading-progress" aria-hidden="true" />
+
       {/* P1-17 — alternate format markdown brut pour LLM ingestion (Cursor /
           Claude Code / Perplexity Spaces). React 19 hoist auto vers <head>. */}
       <link
@@ -403,6 +419,13 @@ export default async function NewsArticlePage({ params }: Props) {
       {/* Chantier templates 2026-06-21 — « Point clé » (si renseigné). */}
       <ArticleKeyTakeaway text={keyTakeaway} locale="fr" />
 
+      {/* Refonte templates 2026-06-22 — sommaire + ancres (gap audit comblé). */}
+      {tocItems.length >= 2 ? (
+        <Container className="max-w-3xl">
+          <ArticleTOC items={tocItems} pageUrl={pageUrl} locale="fr" />
+        </Container>
+      ) : null}
+
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
           {bodyHtmlFallback ? (
@@ -416,6 +439,9 @@ export default async function NewsArticlePage({ params }: Props) {
         </Container>
       </Section>
 
+      {/* Refonte templates 2026-06-22 — barre de partage + copier le lien. */}
+      <ArticleShareBar url={pageUrl} title={t.title} locale="fr" />
+
       {/* Chantier templates 2026-06-21 — citation d'expert nommé (si renseignée). */}
       <ArticleExpertQuote quote={expertQuote} locale="fr" />
 
@@ -426,6 +452,13 @@ export default async function NewsArticlePage({ params }: Props) {
         items={citations.map((c) => ({ name: c.title, url: c.url }))}
         locale="fr"
         lastVerified={updatedIso}
+      />
+
+      {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur). */}
+      <ArticleTransparencyBlock
+        lastVerified={article.updatedAt ?? article.publishedAt}
+        updateCycleDays={90}
+        locale="fr"
       />
 
       <Section>

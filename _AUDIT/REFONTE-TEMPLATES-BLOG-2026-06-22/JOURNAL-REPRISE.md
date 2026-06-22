@@ -46,6 +46,9 @@ Tous gates pre-commit verts (prettier, anti-hex, use-client, typecheck).
   **PAA + PrevNext créés mais PAS câblés** (attendent données loader).
 - `cb7abfe1` C3(début) — fix FAQPage `/guides` (`parseFaqItems` déballe `.faq`
   quand faqJson est un objet) + test `faq-items.test.ts` (6/6 verts).
+- `cc698a17` — test parseFaqItems + ce journal de reprise.
+- (commit suivant) C3 propagation `/actualites` — barre progression + **TOC +
+  ancres (gap audit comblé)** + ShareBar + TransparencyBlock. typecheck 0.
 
 ## Vérification E2E (2026-06-22)
 
@@ -74,6 +77,23 @@ Tous gates pre-commit verts (prettier, anti-hex, use-client, typecheck).
    (même cause objet-vs-tableau, worker:~736).
 6. [ ] P0 pipeline optionnels : Zod sur 8 générateurs ; garde resolver
    anti-stub + vérif SQL prod `content_templates`.
+
+## ⚠️ CONCURRENCE DÉTECTÉE (2026-06-22)
+
+Un effort PARALLÈLE « Option 1 citations » (mémoire `citations-option1-chantier`)
+travaille sur la MÊME branche `feat/blog-templates-refonte` et a laissé des
+changements **NON COMMITTÉS** dans le working tree :
+- untracked : `src/server/content-gen/links/persist-citations.ts` (+ `.test.ts`)
+- modifiés non-committés : `content-publish-worker.ts` (+20), `v7-phase8-shared.ts`
+  (+4), `generation-log.ts` (+1) ; rapport `_AUDIT/CITATIONS-OPTION1-2026-06-22/`.
+- → la persistance `ContentCitation` (item « sources » de mon Chantier 3) est
+  DÉJÀ faite par cet effort. NE PAS dupliquer.
+- → mes commits utilisent `git add` CIBLÉ → je n'ai PAS embarqué leur travail.
+- → keyTakeaway/expertQuote touchent les MÊMES fichiers (worker + v7-phase8) →
+  DÉFÉRÉ tant que leur travail n'est pas committé (sinon collision/entanglement).
+- Items SÛRS (fichiers non en conflit) que je peux continuer : propagation prose
+  + blocs à /guides, /actualites (TOC manquante), /comparaisons ; câblage
+  PrevNext/PAA (loader.ts NON modifié par l'autre effort).
 
 ## Reste Will (hors code)
 
