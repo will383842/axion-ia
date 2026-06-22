@@ -26,6 +26,7 @@ import {
 } from "@/server/content-gen/blog/loader";
 import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
 import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
+import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
@@ -640,6 +641,10 @@ export default async function BlogArticle({ params }: Props) {
 
       {/* Refonte templates 2026-06-22 — article précédent / suivant (série). */}
       <ArticlePrevNext prev={adjacent.prev} next={adjacent.next} locale={loc} />
+
+      {/* Refonte templates 2026-06-22 — capture newsletter (réutilise l'inscription
+          existante du site, double opt-in + Turnstile). */}
+      <ArticleNewsletterInline locale={loc} />
 
       <CtaBlock
         title={isFr ? "Mettre en pratique" : "Put it to work"}
