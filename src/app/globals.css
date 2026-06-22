@@ -656,6 +656,98 @@
     margin: 2.5rem 0;
     background: linear-gradient(to right, transparent, var(--color-border-strong), transparent);
   }
+
+  /* Encadrés sémantiques (callouts) — aérent le corps, structurent l'info.
+     Contrat HTML émis par le générateur (survit au sanitizer : aside + class) :
+       <aside class="callout callout-warning">
+         <p class="callout-label">Attention</p>
+         <p>…</p>
+       </aside>
+     Variantes : info / note (« Bon à savoir ») / warning (« Attention ») /
+     danger (« Erreurs à éviter »). 100 % CSS, icône via ::before. */
+  .prose-axionia aside.callout {
+    margin: 1.85rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-sand);
+  }
+  .prose-axionia aside.callout > :first-child {
+    margin-top: 0;
+  }
+  .prose-axionia aside.callout > :last-child {
+    margin-bottom: 0;
+  }
+  .prose-axionia .callout-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.4rem;
+    font-weight: 650;
+    font-size: 0.9375rem;
+    letter-spacing: 0.005em;
+  }
+  .prose-axionia .callout-label::before {
+    font-size: 1.05em;
+    line-height: 1;
+  }
+  .prose-axionia .callout-info {
+    border-left-color: var(--color-primary);
+    background: var(--color-primary-soft);
+  }
+  .prose-axionia .callout-info .callout-label {
+    color: var(--color-primary);
+  }
+  .prose-axionia .callout-info .callout-label::before {
+    content: "ℹ️";
+  }
+  .prose-axionia .callout-note {
+    border-left-color: var(--color-sage);
+    background: var(--color-sage-soft);
+  }
+  .prose-axionia .callout-note .callout-label {
+    color: var(--color-sage);
+  }
+  .prose-axionia .callout-note .callout-label::before {
+    content: "💡";
+  }
+  .prose-axionia .callout-warning {
+    border-left-color: var(--color-terracotta);
+    background: var(--color-terracotta-soft);
+  }
+  .prose-axionia .callout-warning .callout-label {
+    color: var(--color-terracotta-deep);
+  }
+  .prose-axionia .callout-warning .callout-label::before {
+    content: "⚠️";
+  }
+  .prose-axionia .callout-danger {
+    border-left-color: var(--color-error);
+    background: var(--color-terracotta-soft);
+  }
+  .prose-axionia .callout-danger .callout-label {
+    color: var(--color-error);
+  }
+  .prose-axionia .callout-danger .callout-label::before {
+    content: "🚫";
+  }
+
+  /* Glossaire inline — terme défini, tooltip natif via `title` (0 JS).
+     Contrat : <span class="glossary-term" title="définition…">terme</span> */
+  .prose-axionia :where(dfn, .glossary-term) {
+    font-style: normal;
+    border-bottom: 1px dashed var(--color-border-strong);
+    cursor: help;
+    text-decoration: none;
+  }
+
+  /* Surlignage doux (mise en avant d'un fragment) */
+  .prose-axionia mark {
+    background: var(--color-terracotta-soft);
+    color: inherit;
+    padding: 0.05em 0.25em;
+    border-radius: var(--radius-xs);
+  }
 }
 
 /* =============================================================

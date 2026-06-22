@@ -510,7 +510,7 @@ export default async function BlogArticle({ params }: Props) {
       )}
 
       <Section>
-        <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
+        <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
           {dbBodyHtml ? (
             // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
             // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.

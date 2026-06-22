@@ -40,6 +40,12 @@ const ALLOWED_TAGS = [
   "b",
   "i",
   "u",
+  // Inline éditorial : surlignage, glossaire inline (tooltip natif `title`),
+  // wrapper d'emphase neutre. Inertes (aucun handler) → sûrs.
+  "span",
+  "mark",
+  "dfn",
+  "abbr",
   "code",
   "pre",
   "br",
