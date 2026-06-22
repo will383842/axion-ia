@@ -5,11 +5,11 @@
  * visibilité IA) rendus par `<ArticleExpertQuote>`. Décision Will : experts
  * INTERNES uniquement (jamais d'expert tiers fabriqué par le LLM).
  *
- * GARANTIE ANTI-FABRICATION : le nom + le titre de l'expert sont FIXÉS ici et
- * passés au générateur. Le LLM ne rédige QUE le texte de la prise de position
- * (`expertTake`), jamais le nom. Un nom renvoyé par le LLM qui ne correspond
- * pas à un expert connu est rejeté (`isKnownInternalExpert`). On ne met donc
- * jamais de mots dans la bouche d'une personne fictive ou tierce.
+ * GARANTIE ANTI-FABRICATION : le nom + le titre de l'expert sont FIXÉS ici par
+ * `buildExpertQuote` et passés au rendu. Le LLM ne rédige QUE le texte de la
+ * prise de position (`expertTake`), jamais le nom — un éventuel nom renvoyé par
+ * le LLM est purement et simplement IGNORÉ (jamais lu). On ne met donc jamais
+ * de mots dans la bouche d'une personne fictive ou tierce.
  *
  * Désambiguïsation d'entité : l'avis d'expert émet un nœud `Person` (@id
  * `/equipe/<key>#person`, worksFor Organization) — voir `ArticleExpertQuote`.
@@ -90,12 +90,6 @@ export function pickInternalExpert(opts: {
   const strategicAudience =
     opts.audienceSize === "ETI" || opts.audienceSize === "GRANDE_ENTREPRISE";
   return strategicSignal || strategicAudience ? WILLIAMS : MANON;
-}
-
-/** Garde anti-fabrication : le nom correspond-il à un expert interne connu ? */
-export function isKnownInternalExpert(name: string): boolean {
-  const n = name.trim().toLowerCase();
-  return INTERNAL_EXPERTS.some((e) => e.name.toLowerCase() === n);
 }
 
 /**

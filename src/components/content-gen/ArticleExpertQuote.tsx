@@ -40,13 +40,22 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
   // E-E-A-T). N'émet un @id que pour un expert interne CONNU (slug non null) —
   // jamais d'entité inventée.
   const slug = expertKeyFromName(name);
+  // Seuls les experts ayant une VRAIE page /equipe/<slug> (AuthorProfile) ont
+  // un @id pointant vers cette page. Sinon (ex. Williams, page à créer), on
+  // ancre l'@id au domaine racine (#person-<slug>, toujours 200) pour déclarer
+  // l'entité Person SANS introduire de lien /equipe qui renverrait 404.
+  const EQUIPE_PAGE_SLUGS = new Set(["manon"]);
+  const hasEquipePage = slug != null && EQUIPE_PAGE_SLUGS.has(slug);
   const personJsonLd = slug
     ? {
         "@context": "https://schema.org",
         "@type": "Person",
-        "@id": `${SITE_URL}/${locale}/equipe/${slug}#person`,
+        "@id": hasEquipePage
+          ? `${SITE_URL}/${locale}/equipe/${slug}#person`
+          : `${SITE_URL}/#person-${slug}`,
         name,
         ...(title.length > 0 ? { jobTitle: title } : {}),
+        ...(hasEquipePage ? { url: `${SITE_URL}/${locale}/equipe/${slug}` } : {}),
         worksFor: { "@id": `${SITE_URL}/#organization` },
       }
     : null;
