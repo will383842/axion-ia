@@ -46,6 +46,9 @@ import { trackExternalLinksUsage, detectHallucinations } from "@/data/external-l
 // Chantier 2026-06-22 — persistance des citations structurées (ExternalReference +
 // ContentCitation) lues par le bloc public « Sources & méthodologie » + JSON-LD isBasedOn.
 import { persistArticleCitations } from "@/server/content-gen/links/persist-citations";
+// Refonte templates 2026-06-22 — images Unsplash intercalées dans le corps
+// (best-effort, doctrine « Unsplash uniquement », attribution CGU §6).
+import { injectBodyImages } from "@/server/content-gen/images/inject-body-images";
 // Sprint Final P1-14 — Release global keyword lock Redis (Fl-08 multi-campagnes).
 import { releaseKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 import { resolveCategoryIdForSector } from "@/server/content-gen/lib/category-mapper";
@@ -454,6 +457,17 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         .slice(0, 8)
     : [];
 
+  // Refonte templates 2026-06-22 — images Unsplash intercalées dans le corps.
+  // Calculé HORS transaction (appel réseau) et APRÈS lecture de `bodyHtml`
+  // d'origine : la détection de citations/liens (plus bas) tourne sur `bodyHtml`
+  // brut, donc les liens d'attribution Unsplash ne sont jamais comptés comme
+  // citations. Best-effort : `bodyHtml` inchangé si Unsplash indisponible.
+  const bodyHtmlForPersist = await injectBodyImages(bodyHtml, {
+    jobId: cgJob.id,
+    contentType: cgJob.contentType,
+    topicHint: primaryKeyword ?? title,
+  });
+
   const article = await prisma.$transaction(async (tx) => {
     const a = await tx.article.create({
       data: {
@@ -546,7 +560,7 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         locale: "fr",
         title,
         slug: slugCandidate,
-        body: bodyHtml,
+        body: bodyHtmlForPersist,
         ...(bodyText ? { bodyText } : {}),
         metaTitle,
         ...(metaDescription ? { metaDescription } : {}),
