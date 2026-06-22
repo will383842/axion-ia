@@ -33,6 +33,8 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
+import { loadPeopleAlsoAsk } from "@/server/content-gen/blog/loader";
+import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
@@ -126,6 +128,9 @@ export default async function GuidePiliersPage({ params }: Props) {
   // Chantier templates 2026-06-21 — byline enrichie (photo/rôle/LinkedIn depuis
   // AuthorProfile). emitJsonLd={false} : le Person riche est personJsonLd ci-dessus.
   const manonByline = await getManonByline();
+  // Refonte 2026-06-22 — People Also Ask aussi sur /guides (parité maillage avec
+  // /blog) : vraies questions issues des FAQ d'autres articles publiés.
+  const peopleAlsoAsk = await loadPeopleAlsoAsk(slug, locale as Locale);
 
   const breadcrumbItems = [
     { href: "/guides", label: "Guides" },
@@ -292,6 +297,9 @@ export default async function GuidePiliersPage({ params }: Props) {
 
       {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur). */}
       <ArticleTransparencyBlock lastVerified={guide.updatedAt} updateCycleDays={90} locale="fr" />
+
+      {/* Refonte 2026-06-22 — People Also Ask (parité /blog). */}
+      <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />
 
       {/* V-14 sprint UX 2026-05-22 — section Articles connexes (auparavant absente sur /guides/[slug] → dead-end + bounce maximal). */}
       <SuggestedContent

@@ -37,6 +37,8 @@ import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+import { loadPeopleAlsoAsk } from "@/server/content-gen/blog/loader";
+import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
@@ -271,6 +273,8 @@ export default async function NewsArticlePage({ params }: Props) {
   // VIS-10 — articles connexes (anti dead-end de maillage : la page news n'en
   // avait aucun). Tier-1 only (anti-doorway).
   const related = await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 });
+  // Refonte 2026-06-22 — People Also Ask (parité maillage /blog).
+  const peopleAlsoAsk = await loadPeopleAlsoAsk(slug, "fr");
 
   const breadcrumbItems = [
     { href: "/actualites", label: "Actualités" },
@@ -466,6 +470,9 @@ export default async function NewsArticlePage({ params }: Props) {
           <AiContentDisclaimer locale="fr" />
         </Container>
       </Section>
+
+      {/* Refonte 2026-06-22 — People Also Ask (parité /blog). */}
+      <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />
 
       <SuggestedContent
         variant="articles"
