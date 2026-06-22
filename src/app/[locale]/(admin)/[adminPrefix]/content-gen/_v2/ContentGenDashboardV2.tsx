@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 import { getDashboardKpis, getSectorBreakdownToday } from "@/server/actions/content-gen/dashboard";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
+import { regenerateTier1Corpus } from "@/server/actions/content-gen/regenerate";
 import { getCityCoverageProgress, getOrchestratorStats } from "@/server/actions/content-gen/geo";
 import type { ContentType, SearchIntent } from "../../../../../../../prisma/generated/client";
 
@@ -44,6 +45,20 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
     redirect(`/fr/${adminPrefix}/content-gen/jobs/${result.jobId}`);
   }
 
+  // Régénération EN PLACE (2026-06-22) — relance les N articles tier-1 les plus
+  // anciens avec les blocs de la refonte templates (réponses-par-H2, avis
+  // d'expert, point clé, images de corps, liens profonds). Slug PRÉSERVÉ (pas de
+  // nouvelle URL). À lancer plusieurs fois pour couvrir tout le corpus.
+  // ⚠️ Prérequis : KB seedée (assertKbReady) sinon les jobs bloquent ;
+  // publication throttlée par le drip-window + daily-cap du worker.
+  async function regenCorpus(formData: FormData): Promise<void> {
+    "use server";
+    const parsed = Number.parseInt(String(formData.get("limit") ?? "10"), 10);
+    const limit = Number.isFinite(parsed) ? Math.max(1, Math.min(25, parsed)) : 10;
+    await regenerateTier1Corpus({ limit });
+    redirect(`/fr/${adminPrefix}/content-gen/jobs`);
+  }
+
   // Onboarding zero-state : aucune campagne et aucun job → wizard premier pas
   const zeroCampaigns = orchestrator.activeCampaigns.length === 0 && kpis.jobsRun7d === 0;
 
@@ -67,6 +82,36 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
           </div>
         }
       />
+
+      <AdminCard className="mb-[var(--space-admin-6)]">
+        <h2 className="admin-h2">Régénération en place — refonte templates</h2>
+        <p className="admin-meta">
+          Relance les articles tier-1 les plus anciens avec les nouveaux blocs (réponse sous chaque
+          H2, avis d&apos;expert interne, point clé, images de corps, liens profonds). L&apos;URL
+          est <strong>préservée</strong> (aucun doublon, aucun 301). Relancez plusieurs fois pour
+          couvrir tout le corpus. Prérequis : KB seedée ; publication étalée par le drip-window +
+          cap quotidien.
+        </p>
+        <form
+          action={regenCorpus}
+          className="mt-[var(--space-admin-4)] flex flex-wrap items-end gap-[var(--space-admin-3)]"
+        >
+          <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+            Nombre d&apos;articles (1–25)
+            <input
+              type="number"
+              name="limit"
+              min={1}
+              max={25}
+              defaultValue={10}
+              className="admin-input w-[120px]"
+            />
+          </label>
+          <button type="submit" className="admin-button-cta">
+            Régénérer le lot tier-1 →
+          </button>
+        </form>
+      </AdminCard>
 
       {zeroCampaigns && (
         <AdminCard className="mb-[var(--space-admin-6)] border-2 border-[color:var(--color-admin-terracotta)]">
