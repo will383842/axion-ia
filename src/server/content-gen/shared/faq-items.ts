@@ -17,9 +17,19 @@ export interface FaqItem {
 }
 
 export function parseFaqItems(raw: unknown): ReadonlyArray<FaqItem> {
-  if (!Array.isArray(raw)) return [];
+  // Tolère les générateurs qui enveloppent la FAQ dans un objet audit-trail :
+  // `guide-pilier.ts` persiste `faqJson: { outline, sectionFailures, faq: [...] }`
+  // (un OBJET), donc sans ce déballage parseFaqItems retournait toujours `[]`
+  // pour /guides → FAQPage jamais émis (bug confirmé audit 2026-06-22). Les
+  // autres générateurs persistent déjà un tableau plat → inchangés.
+  let list: unknown = raw;
+  if (list && typeof list === "object" && !Array.isArray(list)) {
+    const inner = (list as Record<string, unknown>).faq;
+    if (Array.isArray(inner)) list = inner;
+  }
+  if (!Array.isArray(list)) return [];
   const out: FaqItem[] = [];
-  for (const entry of raw) {
+  for (const entry of list) {
     if (!entry || typeof entry !== "object") continue;
     const o = entry as Record<string, unknown>;
     const q = typeof o.question === "string" ? o.question : typeof o.q === "string" ? o.q : null;
