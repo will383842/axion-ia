@@ -2,15 +2,23 @@
 
 // Server Actions CRUD « Communiqués de presse » (Salle de presse admin).
 //
+// 2026-06-22 — BASCULE PDF : un communiqué = un PDF uploadé (+ titre, date,
+// tag, dek). Plus de saisie du corps texte (`body`) côté admin. Le PDF est
+// stocké via les helpers `console-documents/storage.ts` (volume hors web-root)
+// et servi publiquement via `/api/presse/communique/[id]`.
+//
 // Doctrine Axion-IA :
 //   - "use server" en tête (Server Actions, pas REST).
-//   - Auth admin via `auth()` NextAuth v5 (mirror du pattern admin-faq).
+//   - Auth admin via `auth()` NextAuth v5.
+//   - Upload via FormData (mirror du pattern `uploadPressMediaAsset`).
 //   - Zod aux frontières.
 //   - `prisma` depuis `@/lib/prisma`, `slugify` depuis `@/lib/slug`.
-//   - FR canonique obligatoire, EN optionnel.
+//   - FR canonique (FR-only ici).
 //   - exactOptionalPropertyTypes : aucun `undefined` injecté dans les data
 //     Prisma → spreads conditionnels.
 //   - Toute mutation revalide `/fr/presse`.
+
+import { extname } from "node:path";
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
@@ -18,6 +26,12 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
+import {
+  storeConsoleDoc,
+  deleteConsoleDocFile,
+  sanitizeConsoleDocFileName,
+  CONSOLE_DOC_MAX_BYTES,
+} from "@/server/console-documents/storage";
 import type { Locale, PublishStatus } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────
@@ -38,27 +52,54 @@ async function requireAdmin(): Promise<void> {
 const tagSchema = z.enum(["launch", "partnership", "study", "product", "milestone"]);
 const statusSchema = z.enum(["draft", "published", "archived"]);
 
-const translationSchema = z.object({
+const metaSchema = z.object({
   title: z.string().min(3).max(255),
   dek: z.string().max(320).optional(),
-  body: z.string().min(1),
-});
-
-const createSchema = z.object({
   tag: tagSchema,
   status: statusSchema.optional(),
-  fr: translationSchema,
-  en: translationSchema.optional(),
 });
 
-const updateSchema = z.object({
-  tag: tagSchema.optional(),
-  fr: translationSchema.partial().optional(),
-  en: translationSchema.partial().optional(),
-});
+// ─────────────────────────────────────────────────────────────────
+// Validation PDF — extension + MIME.
+// ─────────────────────────────────────────────────────────────────
+const PDF_MIME = new Set<string>([
+  "application/pdf",
+  // certains navigateurs envoient un type vide → on tolère et on se rabat sur
+  // l'extension (validée juste avant).
+  "",
+]);
 
-export type CreatePressReleaseInput = z.infer<typeof createSchema>;
-export type UpdatePressReleaseInput = z.infer<typeof updateSchema>;
+interface StoredPdf {
+  pdfStoragePath: string;
+  pdfFileName: string;
+  pdfFileSize: number;
+  pdfHashSha256: string;
+}
+
+/**
+ * Valide + stocke un PDF issu d'un champ FormData. Retourne `null` si aucun
+ * fichier n'est fourni (cas update : conserver le PDF actuel). Throw une Error
+ * (message = code) si le fichier est présent mais invalide.
+ */
+async function validateAndStorePdf(file: FormDataEntryValue | null): Promise<StoredPdf | null> {
+  if (!(file instanceof File) || file.size === 0) return null;
+
+  if (file.size > CONSOLE_DOC_MAX_BYTES) throw new Error("file_too_large");
+
+  const ext = extname(file.name).toLowerCase();
+  if (ext !== ".pdf") throw new Error("unsupported_extension");
+  if (!PDF_MIME.has(file.type)) throw new Error("unsupported_mime");
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const stored = await storeConsoleDoc(buffer, file.name);
+
+  return {
+    pdfStoragePath: stored.storagePath,
+    pdfFileName: sanitizeConsoleDocFileName(file.name),
+    pdfFileSize: file.size,
+    pdfHashSha256: stored.hashSha256,
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────
 // Slug unique par locale (suffixe -2, -3, … en cas de collision).
@@ -92,54 +133,50 @@ function revalidatePresse(): void {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// createPressRelease.
+// createPressRelease — FormData : title, dek?, tag, status?, file (PDF).
 // ─────────────────────────────────────────────────────────────────
 export async function createPressRelease(
-  input: CreatePressReleaseInput,
+  formData: FormData,
 ): Promise<{ ok: boolean; id?: string; error?: string }> {
   try {
     await requireAdmin();
-    const parsed = createSchema.safeParse(input);
+
+    const parsed = metaSchema.safeParse({
+      title: formData.get("title"),
+      dek: formData.get("dek") ?? undefined,
+      tag: formData.get("tag"),
+      status: formData.get("status") ?? undefined,
+    });
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "validation_failed" };
     }
-    const data = parsed.data;
-    const status = data.status ?? "draft";
+    const meta = parsed.data;
+    const status = meta.status ?? "draft";
 
-    const frSlug = await uniqueSlug("fr", data.fr.title);
-    const translations: Array<{
-      locale: Locale;
-      title: string;
-      slug: string;
-      body: string;
-      dek?: string;
-    }> = [
-      {
-        locale: "fr",
-        title: data.fr.title,
-        slug: frSlug,
-        body: data.fr.body,
-        ...(data.fr.dek ? { dek: data.fr.dek } : {}),
-      },
-    ];
+    // PDF requis à la création.
+    const pdf = await validateAndStorePdf(formData.get("file"));
+    if (!pdf) return { ok: false, error: "file_required" };
 
-    if (data.en) {
-      const enSlug = await uniqueSlug("en", data.en.title);
-      translations.push({
-        locale: "en",
-        title: data.en.title,
-        slug: enSlug,
-        body: data.en.body,
-        ...(data.en.dek ? { dek: data.en.dek } : {}),
-      });
-    }
+    const frSlug = await uniqueSlug("fr", meta.title);
 
     const created = await prisma.pressRelease.create({
       data: {
-        tag: data.tag,
+        tag: meta.tag,
         status,
         ...(status === "published" ? { publishedAt: new Date() } : {}),
-        translations: { create: translations },
+        pdfStoragePath: pdf.pdfStoragePath,
+        pdfFileName: pdf.pdfFileName,
+        pdfFileSize: pdf.pdfFileSize,
+        pdfHashSha256: pdf.pdfHashSha256,
+        translations: {
+          create: {
+            locale: "fr",
+            title: meta.title,
+            slug: frSlug,
+            // `body` n'est plus saisi : laissé null (PDF est le contenu).
+            ...(meta.dek ? { dek: meta.dek } : {}),
+          },
+        },
       },
       select: { id: true },
     });
@@ -153,70 +190,91 @@ export async function createPressRelease(
 }
 
 // ─────────────────────────────────────────────────────────────────
-// updatePressRelease.
+// updatePressRelease — FormData : title?, dek?, tag?, file? (PDF optionnel).
+// Si un nouveau PDF est fourni, on remplace l'ancien (best-effort delete).
 // ─────────────────────────────────────────────────────────────────
 export async function updatePressRelease(
   id: string,
-  input: UpdatePressReleaseInput,
+  formData: FormData,
 ): Promise<{ ok: boolean; error?: string }> {
   try {
     await requireAdmin();
-    const parsed = updateSchema.safeParse(input);
+
+    const parsed = metaSchema.partial().safeParse({
+      title: formData.get("title") ?? undefined,
+      dek: formData.get("dek") ?? undefined,
+      tag: formData.get("tag") ?? undefined,
+      status: formData.get("status") ?? undefined,
+    });
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "validation_failed" };
     }
-    const data = parsed.data;
+    const meta = parsed.data;
 
     const existing = await prisma.pressRelease.findFirst({
       where: { id, deletedAt: null },
-      select: { id: true },
+      select: { id: true, pdfStoragePath: true },
     });
     if (!existing) return { ok: false, error: "not_found" };
 
+    // PDF optionnel à l'update (vide = conserver l'actuel).
+    const pdf = await validateAndStorePdf(formData.get("file"));
+
     await prisma.$transaction(async (tx) => {
-      if (data.tag) {
-        await tx.pressRelease.update({ where: { id }, data: { tag: data.tag } });
+      const releaseData: {
+        tag?: z.infer<typeof tagSchema>;
+        pdfStoragePath?: string;
+        pdfFileName?: string;
+        pdfFileSize?: number;
+        pdfHashSha256?: string;
+      } = {};
+      if (meta.tag !== undefined) releaseData.tag = meta.tag;
+      if (pdf) {
+        releaseData.pdfStoragePath = pdf.pdfStoragePath;
+        releaseData.pdfFileName = pdf.pdfFileName;
+        releaseData.pdfFileSize = pdf.pdfFileSize;
+        releaseData.pdfHashSha256 = pdf.pdfHashSha256;
+      }
+      if (Object.keys(releaseData).length > 0) {
+        await tx.pressRelease.update({ where: { id }, data: releaseData });
       }
 
-      for (const locale of ["fr", "en"] as const) {
-        const patch = data[locale];
-        if (!patch) continue;
+      // Traduction FR (titre + dek). `body` n'est plus touché.
+      const trData: { title?: string; dek?: string; slug?: string } = {};
+      if (meta.title !== undefined) {
+        trData.title = meta.title;
+        trData.slug = await uniqueSlug("fr", meta.title, id);
+      }
+      if (meta.dek !== undefined) trData.dek = meta.dek;
 
-        const updateData: { title?: string; body?: string; dek?: string; slug?: string } = {};
-        if (patch.title !== undefined) {
-          updateData.title = patch.title;
-          updateData.slug = await uniqueSlug(locale, patch.title, id);
-        }
-        if (patch.body !== undefined) updateData.body = patch.body;
-        if (patch.dek !== undefined) updateData.dek = patch.dek;
-        if (Object.keys(updateData).length === 0) continue;
-
+      if (Object.keys(trData).length > 0) {
         const existingTr = await tx.pressReleaseTranslation.findUnique({
-          where: { releaseId_locale: { releaseId: id, locale } },
+          where: { releaseId_locale: { releaseId: id, locale: "fr" } },
           select: { id: true },
         });
-
         if (existingTr) {
           await tx.pressReleaseTranslation.update({
-            where: { releaseId_locale: { releaseId: id, locale } },
-            data: updateData,
+            where: { releaseId_locale: { releaseId: id, locale: "fr" } },
+            data: trData,
           });
-        } else {
-          // Création d'une nouvelle traduction (ex. ajout EN) — title + body requis.
-          if (updateData.title === undefined || updateData.body === undefined) continue;
+        } else if (trData.title !== undefined) {
           await tx.pressReleaseTranslation.create({
             data: {
               releaseId: id,
-              locale,
-              title: updateData.title,
-              slug: updateData.slug ?? (await uniqueSlug(locale, updateData.title, id)),
-              body: updateData.body,
-              ...(updateData.dek !== undefined ? { dek: updateData.dek } : {}),
+              locale: "fr",
+              title: trData.title,
+              slug: trData.slug ?? (await uniqueSlug("fr", trData.title, id)),
+              ...(trData.dek !== undefined ? { dek: trData.dek } : {}),
             },
           });
         }
       }
     });
+
+    // Remplacement PDF réussi → retrait best-effort de l'ancien binaire.
+    if (pdf && existing.pdfStoragePath && existing.pdfStoragePath !== pdf.pdfStoragePath) {
+      await deleteConsoleDocFile(existing.pdfStoragePath);
+    }
 
     revalidatePresse();
     return { ok: true };
@@ -263,14 +321,14 @@ export async function setPressReleaseStatus(
 }
 
 // ─────────────────────────────────────────────────────────────────
-// deletePressRelease — soft delete.
+// deletePressRelease — soft delete + suppression PDF best-effort.
 // ─────────────────────────────────────────────────────────────────
 export async function deletePressRelease(id: string): Promise<{ ok: boolean; error?: string }> {
   try {
     await requireAdmin();
     const existing = await prisma.pressRelease.findFirst({
       where: { id, deletedAt: null },
-      select: { id: true },
+      select: { id: true, pdfStoragePath: true },
     });
     if (!existing) return { ok: false, error: "not_found" };
 
@@ -278,6 +336,9 @@ export async function deletePressRelease(id: string): Promise<{ ok: boolean; err
       where: { id },
       data: { deletedAt: new Date(), status: "archived" },
     });
+
+    // Best-effort : retrait du binaire PDF du disque.
+    await deleteConsoleDocFile(existing.pdfStoragePath);
 
     revalidatePresse();
     return { ok: true };

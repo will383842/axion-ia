@@ -7087,6 +7087,13 @@ model PressRelease {
   updatedAt   DateTime        @updatedAt @map("updated_at")
   deletedAt   DateTime?       @map("deleted_at")
 
+  // Communiqué fourni en PDF (upload direct dans l'admin) — le fichier EST le
+  // contenu ; le corps texte (translation.body) devient donc optionnel.
+  pdfStoragePath String? @map("pdf_storage_path") @db.VarChar(500)
+  pdfFileName    String? @map("pdf_file_name") @db.VarChar(255)
+  pdfFileSize    Int?    @map("pdf_file_size")
+  pdfHashSha256  String? @map("pdf_hash_sha256") @db.VarChar(64)
+
   translations PressReleaseTranslation[]
 
   @@index([status, publishedAt])
@@ -7100,7 +7107,7 @@ model PressReleaseTranslation {
   title           String   @db.VarChar(255)
   slug            String   @db.VarChar(255)
   dek             String?  @db.Text
-  body            String   @db.Text
+  body            String?  @db.Text
   metaTitle       String?  @map("meta_title") @db.VarChar(255)
   metaDescription String?  @map("meta_description") @db.VarChar(320)
   createdAt       DateTime @default(now()) @map("created_at")

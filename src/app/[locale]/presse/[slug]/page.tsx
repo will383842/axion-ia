@@ -28,7 +28,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, Mail } from "lucide-react";
+import { ArrowLeft, Calendar, Download, Mail } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -130,8 +130,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { fr: `/presse/${slug}`, en: `/press/${slug}` },
   });
 
-  // Anti-doorway HCU 2024 : noindex si body < 250 mots.
-  if (countWords(copy.body) < MIN_BODY_WORDS) {
+  // Anti-doorway HCU 2024 : noindex si body < seuil. Les communiqués PDF (body
+  // vide, contenu = le PDF embarqué) sont indexables → on saute le check.
+  if (!release.pdfUrl && countWords(copy.body) < MIN_BODY_WORDS) {
     return {
       ...meta,
       robots: {
@@ -191,7 +192,8 @@ export default async function PressReleaseDetailPage({ params }: Props) {
     .filter((p) => p.length > 0);
 
   const wordCount = countWords(copy.body);
-  const isThin = wordCount < MIN_BODY_WORDS;
+  // Communiqué PDF = jamais "thin" (le contenu est dans le PDF, pas le body).
+  const isThin = !release.pdfUrl && wordCount < MIN_BODY_WORDS;
 
   // NewsArticle JSON-LD — signal Google News + Top Stories + AI Overviews
   // citation. Publisher = Axion-IA (cohérence avec /presse/page.tsx +
@@ -311,14 +313,35 @@ export default async function PressReleaseDetailPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* CORPS — paragraphes structurés (lisible + scrap-friendly LLMs). */}
-      <Section>
-        <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
-          {paragraphs.map((p, idx) => (
-            <p key={`p-${idx}`}>{p}</p>
-          ))}
-        </Container>
-      </Section>
+      {/* CORPS — communiqué PDF (embed + téléchargement) OU, pour les fixtures
+          legacy texte, paragraphes structurés. */}
+      {release.pdfUrl ? (
+        <Section>
+          <Container className="max-w-4xl space-y-4">
+            <iframe
+              src={release.pdfUrl}
+              className="border-border h-[80vh] w-full rounded-xl border"
+              title={
+                isFr ? `Communiqué — ${copy.title}` : `Press release — ${copy.title}`
+              }
+            />
+            <Button asChild size="lg" shape="pill">
+              <a href={release.pdfUrl} target="_blank" rel="noopener">
+                <Download className="h-4 w-4" aria-hidden="true" />
+                {isFr ? "Télécharger le PDF" : "Download PDF"}
+              </a>
+            </Button>
+          </Container>
+        </Section>
+      ) : (
+        <Section>
+          <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
+            {paragraphs.map((p, idx) => (
+              <p key={`p-${idx}`}>{p}</p>
+            ))}
+          </Container>
+        </Section>
+      )}
 
       {/* KIT MÉDIAS / BANQUE D'IMAGES — rappel au journaliste qu'il y a des
           assets téléchargeables sur /presse. Réutilise PressImageBank avec

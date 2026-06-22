@@ -1,9 +1,10 @@
 /**
  * Admin — Salle de presse · création d'un communiqué.
  *
- * Formulaire FR-only (titre, dek, corps, catégorie). Poste vers le server action
- * `createPressRelease` du contrat. En cas de succès → redirige vers l'éditeur
- * d'édition du communiqué créé ; sinon réaffiche le formulaire avec l'erreur.
+ * Formulaire FR-only (titre, dek/résumé, catégorie + PDF uploadé). Poste en
+ * multipart vers le server action `createPressRelease(formData)`. En cas de
+ * succès → redirige vers l'éditeur du communiqué créé ; sinon réaffiche le
+ * formulaire avec l'erreur.
  */
 
 import type { Metadata } from "next";
@@ -52,15 +53,10 @@ export default async function NewPressReleasePage({ params, searchParams }: Page
 
   async function create(formData: FormData): Promise<void> {
     "use server";
-    const res = await createPressRelease({
-      tag: (formData.get("tag") as PressReleaseTag) ?? "launch",
-      status: "draft",
-      fr: {
-        title: String(formData.get("title") ?? "").trim(),
-        dek: String(formData.get("dek") ?? "").trim() || undefined,
-        body: String(formData.get("body") ?? "").trim(),
-      },
-    });
+    // Le formulaire poste déjà title / dek / tag / file (PDF) en multipart :
+    // on relaie le FormData tel quel (status forcé en brouillon).
+    formData.set("status", "draft");
+    const res = await createPressRelease(formData);
     if (!res.ok || !res.id) {
       redirect(`${base}/communiques/nouveau?error=${encodeURIComponent(res.error ?? "unknown")}`);
     }
@@ -88,20 +84,37 @@ export default async function NewPressReleasePage({ params, searchParams }: Page
               placeholder="Axion-IA lance…"
             />
             <AdminFormField
-              label="Chapô (dek)"
+              label="Résumé (dek)"
               name="dek"
               type="text"
               hint="Phrase d'accroche affichée sous le titre (optionnel)."
               placeholder="Résumé en une phrase"
             />
-            <AdminFormField
-              label="Corps"
-              name="body"
-              type="textarea"
-              required
-              rows={14}
-              hint="Texte intégral du communiqué."
-            />
+            <div className="admin-form-field flex flex-col gap-[var(--space-admin-2)]">
+              <label
+                htmlFor="press-pdf"
+                className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]"
+              >
+                Communiqué (PDF)
+                <span
+                  aria-hidden="true"
+                  className="ml-[var(--space-admin-2)] text-[color:var(--color-admin-destructive)]"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                id="press-pdf"
+                name="file"
+                type="file"
+                accept="application/pdf,.pdf"
+                required
+                className="w-full rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] py-[var(--space-admin-4)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)] file:mr-[var(--space-admin-4)] file:rounded-[var(--radius-admin-sm)] file:border-0 file:bg-[color:var(--color-admin-info)] file:px-[var(--space-admin-4)] file:py-[var(--space-admin-2)] file:text-[color:var(--color-admin-paper)]"
+              />
+              <small className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                PDF uniquement, 10 Mo maximum.
+              </small>
+            </div>
           </AdminFormSection>
 
           <AdminFormSection title="Classification">

@@ -66,20 +66,13 @@ export default async function EditPressReleasePage({ params, searchParams }: Pag
   }
   const fr = release.translations[0];
   const isPublished = release.status === "published";
-  // Capture hors closure : TS ne propage pas le narrowing non-null de `release`
-  // dans les server actions imbriquées.
-  const currentTag = release.tag;
+  const currentPdfName = release.pdfFileName;
 
   async function update(formData: FormData): Promise<void> {
     "use server";
-    const res = await updatePressRelease(id, {
-      tag: (formData.get("tag") as PressReleaseTag) ?? currentTag,
-      fr: {
-        title: String(formData.get("title") ?? "").trim(),
-        dek: String(formData.get("dek") ?? "").trim() || undefined,
-        body: String(formData.get("body") ?? "").trim(),
-      },
-    });
+    // Le formulaire poste title / dek / tag / file (PDF optionnel) en multipart :
+    // on relaie le FormData tel quel. PDF vide = conserver l'actuel.
+    const res = await updatePressRelease(id, formData);
     if (!res.ok) {
       redirect(`${base}/communiques/${id}?error=${encodeURIComponent(res.error ?? "unknown")}`);
     }
@@ -133,20 +126,39 @@ export default async function EditPressReleasePage({ params, searchParams }: Pag
               defaultValue={fr?.title ?? ""}
             />
             <AdminFormField
-              label="Chapô (dek)"
+              label="Résumé (dek)"
               name="dek"
               type="text"
               defaultValue={fr?.dek ?? ""}
               hint="Phrase d'accroche affichée sous le titre (optionnel)."
             />
-            <AdminFormField
-              label="Corps"
-              name="body"
-              type="textarea"
-              required
-              rows={14}
-              defaultValue={fr?.body ?? ""}
-            />
+            <div className="admin-form-field flex flex-col gap-[var(--space-admin-2)]">
+              <label
+                htmlFor="press-pdf"
+                className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]"
+              >
+                Communiqué (PDF)
+              </label>
+              {currentPdfName ? (
+                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+                  PDF actuel : <strong>{currentPdfName}</strong>
+                </p>
+              ) : (
+                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] italic">
+                  Aucun PDF pour le moment.
+                </p>
+              )}
+              <input
+                id="press-pdf"
+                name="file"
+                type="file"
+                accept="application/pdf,.pdf"
+                className="w-full rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] py-[var(--space-admin-4)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)] file:mr-[var(--space-admin-4)] file:rounded-[var(--radius-admin-sm)] file:border-0 file:bg-[color:var(--color-admin-info)] file:px-[var(--space-admin-4)] file:py-[var(--space-admin-2)] file:text-[color:var(--color-admin-paper)]"
+              />
+              <small className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                Laisser vide pour conserver le PDF actuel. PDF uniquement, 10 Mo maximum.
+              </small>
+            </div>
           </AdminFormSection>
 
           <AdminFormSection title="Classification">
