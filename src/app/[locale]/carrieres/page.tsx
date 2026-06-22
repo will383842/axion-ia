@@ -27,9 +27,7 @@ import { HUB_VILLES } from "@/content/recrutement/satellites";
 
 // 40 villes affichées en badges (info, pas de pages thin) : les 40 hubs T1+T2
 // (population ≥ 100 000), Grenoble (siège) inclus.
-const CAREER_CITIES: ReadonlyArray<string> = [
-  ...HUB_VILLES.map((v) => v.nameFr),
-];
+const CAREER_CITIES: ReadonlyArray<string> = [...HUB_VILLES.map((v) => v.nameFr)];
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { listPublishedJobOffers } from "@/lib/careers/job-offers";
 import { WORKMODE_LABELS, isNew, salaryLabel } from "@/lib/careers/format";
