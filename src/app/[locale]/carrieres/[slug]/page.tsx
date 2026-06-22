@@ -15,7 +15,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
 import { CAREER_VERTICALS } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
@@ -151,18 +151,12 @@ export default async function JobOfferDetailPage({
   const img = careerImage(offer.slug);
 
   const jobPosting = buildJobPostingJsonLd(offer, loc);
-  const webPage = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${SITE_URL}/${loc}/carrieres/${offer.slug}#webpage`,
-    url: `${SITE_URL}/${loc}/carrieres/${offer.slug}`,
+  const webPage = buildWebPageJsonLd({
+    locale: loc,
+    path: `/carrieres/${offer.slug}`,
     name: title,
-    inLanguage: loc,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "[data-speakable]"],
-    },
-  };
+    speakable: { selectors: ["h1", "[data-speakable]"] },
+  });
 
   return (
     <>

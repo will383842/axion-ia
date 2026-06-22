@@ -64,6 +64,7 @@ import {
   buildPlaceJsonLd,
   buildBreadcrumbJsonLd,
   buildServiceJsonLd,
+  buildWebPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -883,11 +884,9 @@ export default async function VilleHubPage({ params }: Props) {
           Speakable est porté ici par le WebPage (selectors hero + direct-answer). */}
       <JsonLdGraph
         schemas={[
-          {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "@id": `${url}#webpage`,
-            url,
+          buildWebPageJsonLd({
+            locale: loc,
+            path,
             name: isFr
               ? `Axion-IA · Architectes IA seniors à ${ville.nameFr}`
               : `Axion-IA · AI experts in ${ville.nameFr}`,
@@ -896,11 +895,7 @@ export default async function VilleHubPage({ params }: Props) {
             isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
             about: { "@type": "City", name: ville.nameFr },
             breadcrumb: { "@id": `${url}#breadcrumb` },
-            primaryImageOfPage: { "@id": `${url}#hero-image` },
-            speakable: {
-              "@type": "SpeakableSpecification",
-              cssSelector: ["[data-speakable-hero]", "#axion-direct-answer"],
-            },
+            speakable: { selectors: ["[data-speakable-hero]", "#axion-direct-answer"] },
             datePublished: "2026-05-26",
             // Audit fraîcheur 2026-06-08 : dateModified figé sur la date de refonte
             // (= datePublished). Le contenu d'une page ville ne change pas entre deux
@@ -908,7 +903,8 @@ export default async function VilleHubPage({ params }: Props) {
             // build, en contradiction avec datePublished figé = empreinte pSEO de masse.
             // Bumper À LA MAIN cette date si le contenu des villes est réellement refondu.
             dateModified: "2026-05-26",
-          } as const,
+            extra: { primaryImageOfPage: { "@id": `${url}#hero-image` } },
+          }),
           serviceJsonLd,
           placeJsonLd,
           localBusinessJsonLd,

@@ -20,7 +20,12 @@ import {
   DB_BLOG_CATEGORY_SLUGS,
 } from "@/server/content-gen/blog/category-loader";
 import { blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildBreadcrumbJsonLd,
+  buildCollectionPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -111,12 +116,10 @@ export default async function BlogCategoryPage({ params }: Props) {
   const isFr = loc === "fr";
   const posts = await loadItems(slug, loc);
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: `/blog/categorie/${slug}`,
     name: `${label} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
-    url: `${SITE_URL}/${locale}/blog/categorie/${slug}`,
-    inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: posts.map((p) => ({
       "@type": "Article",
@@ -125,7 +128,7 @@ export default async function BlogCategoryPage({ params }: Props) {
       datePublished: p.publishedAt,
       author: { "@type": "Person", name: p.author },
     })),
-  } as const;
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

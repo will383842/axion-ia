@@ -24,8 +24,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Link } from "@/i18n/navigation";
-import { SITE_URL, buildProductMetadata } from "@/lib/seo";
-import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { SITE_URL, buildProductMetadata, buildCollectionPageJsonLd } from "@/lib/seo";
 import { fetchPublicKbList } from "@/lib/knowledge/public-fetch";
 
 export const revalidate = 3600;
@@ -70,26 +69,23 @@ export default async function ConnaissancesHub({ params }: Props) {
 
   const items = await fetchPublicKbList({ take: 48 });
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": `${SITE_URL}/fr/connaissances#collection`,
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: "fr",
+    path: "/connaissances",
+    id: `${SITE_URL}/fr/connaissances#collection`,
     name: "Connaissances IA — Axion-IA",
-    url: `${SITE_URL}/fr/connaissances`,
     inLanguage: "fr-FR",
     isPartOf: { "@id": `${SITE_URL}/fr#website` },
     description:
       "Base de connaissances Axion-IA — articles, méthodologies, comparatifs, playbooks et études de cas IA opérationnels.",
-    speakable: buildSpeakableSpecification({
-      selectors: ["[data-aeo='kb-intro']"],
-    }),
+    speakable: { selectors: ["[data-aeo='kb-intro']"] },
     hasPart: items.slice(0, 12).map((item) => ({
       "@type": "Article",
       headline: item.title,
       url: `${SITE_URL}/fr/connaissances/${item.slug}`,
       ...(item.publishedAt ? { datePublished: item.publishedAt.toISOString() } : {}),
     })),
-  };
+  });
 
   const itemListJsonLd = {
     "@context": "https://schema.org",

@@ -37,8 +37,12 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
-import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import {
+  buildProductMetadata,
+  buildItemListJsonLd,
+  buildCollectionPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { loadGuidesIndexForView } from "@/server/content-gen/guides/loader";
 
 // ISR pure : revalidate=3600 → nouveaux guides visibles sous 1h.
@@ -99,17 +103,15 @@ export default async function GuidesHubPage({ params }: Props) {
   const collectionGraph = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "CollectionPage",
-        "@id": `${hubUrl}#collectionpage`,
-        url: hubUrl,
+      buildCollectionPageJsonLd({
+        locale: loc,
+        path: "/guides",
+        id: `${hubUrl}#collectionpage`,
         name: isFr ? "Guides piliers Axion-IA" : "Axion-IA pillar guides",
         inLanguage: locale,
         isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
-        speakable: buildSpeakableSpecification({
-          selectors: ['[data-aeo="guides-hub-intro"]'],
-        }),
-      },
+        speakable: { selectors: ['[data-aeo="guides-hub-intro"]'] },
+      }),
       {
         "@type": "BreadcrumbList",
         "@id": `${hubUrl}#breadcrumb`,

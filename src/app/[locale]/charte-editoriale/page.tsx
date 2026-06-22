@@ -27,7 +27,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { RefreshCw } from "lucide-react";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -36,8 +36,12 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { buildProductMetadata, buildArticleJsonLd, SITE_EDITORIAL_DATE, SITE_URL } from "@/lib/seo";
-import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import {
+  buildProductMetadata,
+  buildArticleJsonLd,
+  buildWebPageJsonLd,
+  SITE_EDITORIAL_DATE,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -72,29 +76,28 @@ export default async function CharteEditorialePage({ params }: Props) {
   setRequestLocale(locale);
   const isFr = locale === "fr";
   const path = isFr ? "/charte-editoriale" : "/editorial-policy";
-  const url = `${SITE_URL}/${locale}${path}`;
 
-  const webPageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${url}#webpage`,
-    url,
+  // isPartOf #website + publisher #organization : défauts de la factory.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: locale as Locale,
+    path,
     name: isFr ? "Charte éditoriale Axion-IA" : "Axion-IA editorial policy",
     description: isFr
       ? "Charte éditoriale publique d'Axion-IA — mission, sources, transparence IA, corrections."
       : "Axion-IA public editorial policy — mission, sources, AI transparency, corrections.",
     inLanguage: isFr ? "fr-FR" : "en-US",
-    isPartOf: { "@id": `${SITE_URL}/#website` },
-    publisher: { "@id": `${SITE_URL}/#organization` },
     datePublished: "2026-05-18",
     // SITE_EDITORIAL_DATE = signal de fraîcheur AEO (re-render ISR quotidien). LAST_REVIEWED
     // reste la date éditoriale affichée en UX (révision substantielle manuelle).
     dateModified: SITE_EDITORIAL_DATE,
-    mainContentOfPage: { "@type": "WebPageElement", cssSelector: "main" },
-    speakable: buildSpeakableSpecification({
+    speakable: {
       selectors: [".tldr-answer", '[data-aeo="tldr"]'],
-    }),
-  } as const;
+    },
+    // `mainContentOfPage` n'est pas modélisé par la factory → passé via `extra`.
+    extra: {
+      mainContentOfPage: { "@type": "WebPageElement", cssSelector: "main" },
+    },
+  });
 
   // Article JSON-LD (EEAT) — la charte EST un document éditorial signé : author
   // Person (Will) + publisher Organization + dateModified SITE_EDITORIAL_DATE. Renforce la

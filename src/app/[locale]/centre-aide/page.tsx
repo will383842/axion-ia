@@ -15,8 +15,7 @@ import { HelpHeroSchema } from "@/components/sections/HelpHeroSchema";
 import { slugify } from "@/content/transversal";
 import { listHelpArticles } from "@/lib/help-articles/reader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
-import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -93,15 +92,12 @@ export default async function HelpCenter({ params }: Props) {
     })),
   } as const;
 
-  const helpWebPageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    url: `${SITE_URL}/${locale}/centre-aide`,
+  const helpWebPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/centre-aide",
     name: isFr ? "Centre d'aide · Axion-IA" : "Help center · Axion-IA",
-    speakable: buildSpeakableSpecification({
-      selectors: ["[data-aeo='help-intro']"],
-    }),
-  } as const;
+    speakable: { selectors: ["[data-aeo='help-intro']"] },
+  });
 
   return (
     <>

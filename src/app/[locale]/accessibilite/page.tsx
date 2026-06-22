@@ -8,7 +8,7 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 import { HANDICAP_PARTENAIRES } from "@/server/qualiopi/legal/legal-mentions";
 
 interface Props {
@@ -107,17 +107,16 @@ export default async function AccessibilityPage({ params }: Props) {
   // d'accessibilité — on utilise WebPage). Le BreadcrumbList est émis par
   // le composant Breadcrumbs ci-dessous, on ne le duplique pas.
   const canonicalPath = isFr ? "/accessibilite" : "/accessibility";
-  const webPageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${SITE_URL}/${loc}${canonicalPath}`,
-    url: `${SITE_URL}/${loc}${canonicalPath}`,
+  // `@id` historique = l'URL sans suffixe `#webpage` → passé explicitement en `id`
+  // pour préserver l'ancre exacte. isPartOf #website + publisher #organization +
+  // inLanguage=locale : défauts de la factory.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: canonicalPath,
+    id: `${SITE_URL}/${loc}${canonicalPath}`,
     name: isFr ? "Déclaration d'accessibilité" : "Accessibility statement",
-    inLanguage: loc,
-    isPartOf: { "@id": `${SITE_URL}/#website` },
-    publisher: { "@id": `${SITE_URL}/#organization` },
     dateModified: SITE_EDITORIAL_DATE,
-  };
+  });
 
   return (
     <>

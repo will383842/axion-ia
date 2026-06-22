@@ -12,7 +12,7 @@
 // Vitals : First Load JS ≤ 75 KB gz, CLS 0).
 
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
@@ -20,7 +20,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
-import { JsonLd } from "@/components/marketing/JsonLd";
+import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import {
   SUBPROCESSORS,
   SUBPROCESSORS_LAST_UPDATED,
@@ -30,6 +30,8 @@ import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
   buildItemListJsonLd,
+  buildCollectionPageJsonLd,
+  buildBreadcrumbJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -312,40 +314,56 @@ export default async function SubprocessorsPage({ params }: Props) {
         },
       ];
 
-  // ── JSON-LD : WebPage (+ speakable), ItemList des sous-traitants, FAQPage (+ speakable)
+  // ── JSON-LD consolidé en un seul @graph (CollectionPage + ItemList + FAQPage +
+  //    BreadcrumbList), cross-référencé par `@id`. Données 100 % SSOT.
   const pageUrl = `${SITE_URL}/${loc}${isFr ? PATH_FR : PATH_EN}`;
-  const pageName = isFr
-    ? "Sous-traitants & sous-processeurs RGPD d'Axion-IA"
-    : "Axion-IA subprocessors & GDPR sub-processing";
-  const webPageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": pageUrl,
-    url: pageUrl,
-    name: pageName,
+  const listId = `${pageUrl}#subprocessor-list`;
+  const breadcrumbId = `${pageUrl}#breadcrumb`;
+
+  const tBread = await getTranslations("breadcrumb");
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd({
+    locale: loc,
+    items: [
+      { name: tBread("home"), href: "/" },
+      { name: isFr ? "Sous-traitants" : "Subprocessors", href: isFr ? PATH_FR : PATH_EN },
+    ],
+  });
+
+  // ItemList des sous-traitants (factory centrale) + @id pour la cross-ref mainEntity.
+  const itemListJsonLd = {
+    ...buildItemListJsonLd({
+      locale: loc,
+      path: isFr ? PATH_FR : PATH_EN,
+      name: isFr ? "Sous-traitants d'Axion-IA" : "Axion-IA subprocessors",
+      items: SUBPROCESSORS.map((s, i) => ({
+        position: i + 1,
+        name: s.name,
+        url: s.documentationUrl ?? pageUrl,
+        description: isFr ? s.purposeFr : s.purposeEn,
+      })),
+    }),
+    "@id": listId,
+  };
+
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: isFr ? PATH_FR : PATH_EN,
+    name: isFr
+      ? "Sous-traitants & sous-processeurs RGPD d'Axion-IA"
+      : "Axion-IA subprocessors & GDPR sub-processing",
     description: isFr
       ? "Liste exhaustive et tenue à jour des sous-traitants ayant accès aux données traitées par Axion-IA (RGPD art. 28)."
       : "Exhaustive, up-to-date list of subprocessors with access to data handled by Axion-IA (GDPR art. 28).",
-    inLanguage: loc,
-    isPartOf: { "@id": `${SITE_URL}/#website` },
-    publisher: { "@id": `${SITE_URL}/#organization` },
     dateModified: SUBPROCESSORS_LAST_UPDATED,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "h2", "[data-answer]", "[data-faq-a]"],
+    lastReviewed: SUBPROCESSORS_LAST_UPDATED,
+    reviewedBy: { type: "Organization", name: "Axion-IA", url: SITE_URL },
+    mainEntity: { "@id": listId },
+    breadcrumb: { "@id": breadcrumbId },
+    about: {
+      "@type": "Thing",
+      name: isFr ? "Sous-traitance des données (RGPD art. 28)" : "Data sub-processing (GDPR art. 28)",
     },
-  };
-
-  const itemListJsonLd = buildItemListJsonLd({
-    locale: loc,
-    path: isFr ? PATH_FR : PATH_EN,
-    name: isFr ? "Sous-traitants d'Axion-IA" : "Axion-IA subprocessors",
-    items: SUBPROCESSORS.map((s, i) => ({
-      position: i + 1,
-      name: s.name,
-      url: s.documentationUrl ?? pageUrl,
-      description: isFr ? s.purposeFr : s.purposeEn,
-    })),
+    speakable: { selectors: ["h1", "h2", "[data-answer]", "[data-faq-a]"] },
   });
 
   const faqJsonLd = buildFaqSpeakableJsonLd({
@@ -355,16 +373,18 @@ export default async function SubprocessorsPage({ params }: Props) {
 
   return (
     <>
-      <JsonLd data={webPageJsonLd} />
-      <JsonLd
-        data={itemListJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-sousproc-itemlist"
+      {/* JSON-LD consolidé : 1 seul <script> @graph (parse 1 passe, cross-refs @id).
+          Inline = lisible par les bots non-JS (ClaudeBot/GPTBot/Googlebot 1er pass). */}
+      <JsonLdGraph
+        schemas={[collectionPageJsonLd, itemListJsonLd, faqJsonLd, breadcrumbJsonLd]}
       />
-      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-sousproc-faq" />
 
       <Container className="border-border border-b py-3">
-        <Breadcrumbs items={[{ href: PATH_FR, label: isFr ? "Sous-traitants" : "Subprocessors" }]} />
+        {/* emitJsonLd=false : le BreadcrumbList est déjà dans le @graph ci-dessus. */}
+        <Breadcrumbs
+          emitJsonLd={false}
+          items={[{ href: PATH_FR, label: isFr ? "Sous-traitants" : "Subprocessors" }]}
+        />
       </Container>
 
       {/* Hero canonique — harmonisé avec tous les hero du site (tone halo-warm
@@ -413,6 +433,32 @@ export default async function SubprocessorsPage({ params }: Props) {
             label={isFr ? "hébergés en UE, sans transfert" : "EU-hosted, no transfer"}
           />
         </dl>
+
+        {/* Sommaire — ancres internes (deep-linking AEO, 0 JS). */}
+        <nav aria-label={isFr ? "Sommaire" : "Table of contents"} className="mt-10">
+          <p className="text-fg-muted mb-3 text-[11px] tracking-[0.16em] uppercase">
+            {isFr ? "Aller à" : "Jump to"}
+          </p>
+          <ul className="flex flex-wrap gap-2">
+            {[
+              ...grouped.map((g) => ({ href: `#sp-${g.category}`, label: lbCategory[g.category] })),
+              {
+                href: "#cadre-reglementaire",
+                label: isFr ? "Cadre réglementaire" : "Regulatory framework",
+              },
+              { href: "#faq", label: isFr ? "Questions fréquentes" : "FAQ" },
+            ].map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="border-border text-fg-soft hover:border-terracotta hover:text-terracotta-deep inline-block rounded-full border px-3 py-1.5 text-sm transition-colors"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </Section>
 
       {/* Comment lire cette liste — légende des badges */}
@@ -497,7 +543,7 @@ export default async function SubprocessorsPage({ params }: Props) {
       <Section tone="canvas">
         <div className="space-y-16">
           {grouped.map((group) => (
-            <div key={group.category}>
+            <div key={group.category} id={`sp-${group.category}`} className="scroll-mt-24">
               <div className="mb-8 flex items-start gap-4">
                 <span
                   aria-hidden="true"
@@ -617,6 +663,7 @@ export default async function SubprocessorsPage({ params }: Props) {
 
       {/* Cadre réglementaire */}
       <Section
+        id="cadre-reglementaire"
         tone="sand"
         titleAs="h2"
         title={isFr ? "Le cadre réglementaire" : "The regulatory framework"}
@@ -678,6 +725,7 @@ export default async function SubprocessorsPage({ params }: Props) {
 
       {/* FAQ — AEO / Speakable */}
       <Section
+        id="faq"
         tone="canvas"
         titleAs="h2"
         title={isFr ? "Questions fréquentes" : "Frequently asked questions"}

@@ -18,7 +18,13 @@ import {
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
 import { getHubLocations } from "@/content/recrutement/satellites";
 import { getRegion } from "@/content/regions";
-import { buildProductMetadata, buildFaqJsonLd, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildFaqJsonLd,
+  buildWebPageJsonLd,
+  SITE_URL,
+  SITE_EDITORIAL_DATE,
+} from "@/lib/seo";
 
 export const revalidate = 3600;
 
@@ -135,15 +141,12 @@ export default async function DevenirCommercialHub({ params }: Props) {
   } as const;
 
   // WebPage + Speakable (AEO vocal : titres + réponses directes lisibles à voix haute).
-  const webpageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${SITE_URL}/${loc}/devenir-commercial-ia#webpage`,
-    url: `${SITE_URL}/${loc}/devenir-commercial-ia`,
+  const webpageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/devenir-commercial-ia",
     name: isFr ? "Devenir commercial IA · Axion-IA" : "Become an AI sales rep · Axion-IA",
-    inLanguage: loc,
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "[data-speakable]"] },
-  } as const;
+    speakable: { selectors: ["h1", "[data-speakable]"] },
+  });
 
   return (
     <>

@@ -24,8 +24,7 @@ import { Illustration } from "@/components/visual/Illustration";
 import { ComparisonsHeroSchema } from "@/components/sections/ComparisonsHeroSchema";
 import { COMPARISONS } from "@/content/comparaisons";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
-import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { buildProductMetadata, SITE_URL, buildCollectionPageJsonLd } from "@/lib/seo";
 import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
@@ -63,23 +62,19 @@ export default async function ComparisonsListPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: "/comparaisons",
     name: isFr ? "Comparaisons Axion-IA" : "Axion-IA comparisons",
-    url: `${SITE_URL}/${locale}/comparaisons`,
-    inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
-    speakable: buildSpeakableSpecification({
-      selectors: ["[data-aeo='comparaisons-intro']"],
-    }),
+    speakable: { selectors: ["[data-aeo='comparaisons-intro']"] },
     hasPart: COMPARISONS.map((c) => ({
       "@type": "Article",
       headline: c[loc].title,
       description: c[loc].excerpt,
       url: `${SITE_URL}/${locale}/comparaisons/${c.slug}`,
     })),
-  } as const;
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

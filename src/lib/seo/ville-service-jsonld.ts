@@ -31,9 +31,9 @@ import {
   buildBreadcrumbJsonLd,
   buildItemListJsonLd,
   buildHowToJsonLd,
+  buildWebPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
-import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -305,43 +305,41 @@ export function buildVilleServiceJsonLdGraph(
     ? directAnswer.slice(0, 160)
     : hero.slice(0, 160) + (hero.length > 160 ? "…" : "");
 
-  schemas.push({
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${url}#webpage`,
-    url,
-    name: isFr
-      ? `${serviceNameFr} à ${ville.nameFr} · Axion-IA`
-      : `${serviceNameEn} in ${ville.nameFr} · Axion-IA`,
-    // abstract = cible extraction position 0 / AI Overviews (< 160 chars answer-ready)
-    abstract: abstractText,
-    // alternativeHeadline = signal requête courte ("audit IA Lyon", "IA Lyon")
-    alternativeHeadline: isFr
-      ? `${serviceNameFr} à ${ville.nameFr}`
-      : `${serviceNameEn} in ${ville.nameFr}`,
-    description: hero.slice(0, 300),
-    inLanguage: locale,
-    isPartOf: { "@id": `${SITE_URL}/#website` },
-    about: [
-      { "@type": "City", name: ville.nameFr },
-      { "@type": "Service", name: isFr ? serviceNameFr : serviceNameEn },
-    ],
-    // Speakable cible le bloc directAnswer + FAQ pour voice search (SGE, Bixby, Google Assistant)
-    // Selector #axion-direct-answer conditionnel (P2-2 Sprint S+5 — drift JSON-LD/DOM fix).
-    speakable: buildSpeakableSpecification({ selectors: speakableSelectors }),
-    breadcrumb: { "@id": `${url}#breadcrumb` },
-    potentialAction: {
-      "@type": "ReserveAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/${locale}/reserver?ville=${ville.slug}&service=${service}`,
+  schemas.push(
+    buildWebPageJsonLd({
+      locale,
+      path,
+      name: isFr
+        ? `${serviceNameFr} à ${ville.nameFr} · Axion-IA`
+        : `${serviceNameEn} in ${ville.nameFr} · Axion-IA`,
+      // abstract = cible extraction position 0 / AI Overviews (< 160 chars answer-ready)
+      abstract: abstractText,
+      // alternativeHeadline = signal requête courte ("audit IA Lyon", "IA Lyon")
+      alternativeHeadline: isFr
+        ? `${serviceNameFr} à ${ville.nameFr}`
+        : `${serviceNameEn} in ${ville.nameFr}`,
+      description: hero.slice(0, 300),
+      about: [
+        { "@type": "City", name: ville.nameFr },
+        { "@type": "Service", name: isFr ? serviceNameFr : serviceNameEn },
+      ],
+      // Speakable cible le bloc directAnswer + FAQ pour voice search (SGE, Bixby, Google Assistant)
+      // Selector #axion-direct-answer conditionnel (P2-2 Sprint S+5 — drift JSON-LD/DOM fix).
+      speakable: { selectors: speakableSelectors },
+      breadcrumb: { "@id": `${url}#breadcrumb` },
+      potentialAction: {
+        "@type": "ReserveAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: `${SITE_URL}/${locale}/reserver?ville=${ville.slug}&service=${service}`,
+        },
+        result: {
+          "@type": "Reservation",
+          name: isFr ? `Réservation ${serviceNameFr}` : `${serviceNameEn} booking`,
+        },
       },
-      result: {
-        "@type": "Reservation",
-        name: isFr ? `Réservation ${serviceNameFr}` : `${serviceNameEn} booking`,
-      },
-    },
-  });
+    }),
+  );
 
   // ── 8. ItemList villes proches ─────────────────────────────────────────────
   if (nearbyVilles.length > 0) {

@@ -16,10 +16,10 @@ import { ObservatoireFilters } from "@/components/observatoire/ObservatoireFilte
 import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
+  buildWebPageJsonLd,
   SITE_URL,
   SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
-import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { KB_SECTOR_TAGS } from "@/content/knowledge/sector-tags";
 import {
   BAROMETER_QUESTIONS,
@@ -203,25 +203,21 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
     },
   };
 
-  const webPageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": pageUrl,
-    url: pageUrl,
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: PAGE_PATH,
+    id: pageUrl,
     name: t("meta.resultsTitle"),
     description: t("meta.resultsDescription"),
-    inLanguage: loc,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
-    speakable: buildSpeakableSpecification({
-      selectors: ["h1", ".direct-answer", "[data-answer]"],
-    }),
+    speakable: { selectors: ["h1", ".direct-answer", "[data-answer]"] },
     about: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "Axion-IA",
       url: SITE_URL,
     },
-  };
+  });
 
   const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqItems });
 

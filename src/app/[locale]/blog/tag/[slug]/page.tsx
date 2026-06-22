@@ -9,7 +9,12 @@ import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getAllBlogTagSlugs, getBlogPostsByTag } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildBreadcrumbJsonLd,
+  buildCollectionPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -45,12 +50,10 @@ export default async function BlogTagPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const collectionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: `/blog/tag/${slug}`,
     name: `#${slug} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
-    url: `${SITE_URL}/${locale}/blog/tag/${slug}`,
-    inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: posts.map((p) => ({
       "@type": "Article",
@@ -59,7 +62,7 @@ export default async function BlogTagPage({ params }: Props) {
       datePublished: p.publishedAt,
       author: { "@type": "Person", name: p.author },
     })),
-  } as const;
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
