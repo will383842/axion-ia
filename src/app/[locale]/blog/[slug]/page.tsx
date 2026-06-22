@@ -17,7 +17,12 @@ import { ArticleTOC, extractTocItems, type TocItem } from "@/components/seo/Arti
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
-import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildArticleJsonLd,
+  buildBreadcrumbJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   loadBlogArticleForView,
@@ -529,37 +534,42 @@ export default async function BlogArticle({ params }: Props) {
         </Container>
       )}
 
-      <Section>
-        <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
-          {dbBodyHtml ? (
-            // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
-            // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
-            // H3 — tokens prix résolus.
-            <div
-              className="prose prose-axionia max-w-none"
-              dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
-            />
-          ) : (
-            blocks!.map((block, idx) => {
-              if (block.kind === "ol") {
-                return (
-                  <ol
-                    key={`b-${idx}`}
-                    className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
-                  >
-                    {block.items.map((it, j) => (
-                      <li key={`i-${j}`} className="pl-1">
-                        {it}
-                      </li>
-                    ))}
-                  </ol>
-                );
-              }
-              return <p key={`b-${idx}`}>{block.text}</p>;
-            })
-          )}
-        </Container>
-      </Section>
+      {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
+          cible du skip-link sont portés par <main id="main"> du layout :
+          NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
+      <article>
+        <Section>
+          <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
+            {dbBodyHtml ? (
+              // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
+              // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
+              // H3 — tokens prix résolus.
+              <div
+                className="prose prose-axionia max-w-none"
+                dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
+              />
+            ) : (
+              blocks!.map((block, idx) => {
+                if (block.kind === "ol") {
+                  return (
+                    <ol
+                      key={`b-${idx}`}
+                      className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
+                    >
+                      {block.items.map((it, j) => (
+                        <li key={`i-${j}`} className="pl-1">
+                          {it}
+                        </li>
+                      ))}
+                    </ol>
+                  );
+                }
+                return <p key={`b-${idx}`}>{block.text}</p>;
+              })
+            )}
+          </Container>
+        </Section>
+      </article>
 
       {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
           le lien. URL absolue (pageUrl) pour X/LinkedIn/mailto. Server, l'îlot
@@ -660,6 +670,14 @@ export default async function BlogArticle({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
+      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: breadcrumbItems.map((b) => ({ name: b.label, href: b.href })),
+        })}
+        scriptId="jsonld-breadcrumb-blog-article"
+      />
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );

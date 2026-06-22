@@ -16,7 +16,37 @@ export interface FaqItem {
   readonly answer: string;
 }
 
-export function parseFaqItems(raw: unknown): ReadonlyArray<FaqItem> {
+// Anti-placeholder : rejette les Q/R bouche-trou produites par un LLM dégradé
+// (audit perfection 2026-06-22). Volontairement conservateur (faux positifs ~0).
+const FAQ_PLACEHOLDER_RE =
+  /\b(todo|à remplir|a remplir|lorem ipsum|placeholder|à compléter|a completer)\b|\{\{|\}\}/i;
+
+/**
+ * Validation STRICTE d'un item FAQ — utilisée par le gate qualité au publish
+ * (P0 perfection 2026) pour refuser un article dont la FAQ est creuse. Le rendu
+ * (parseFaqItems sans `strict`) reste lenient pour ne pas masquer rétroactivement
+ * les FAQ d'articles déjà publiés.
+ */
+export function validateFaqItem(
+  question: string,
+  answer: string,
+): { ok: boolean; reason?: string } {
+  const q = question.trim();
+  const a = answer.trim();
+  if (q.length < 20) return { ok: false, reason: "question < 20 caractères" };
+  if (a.length < 60) return { ok: false, reason: "réponse < 60 caractères" };
+  if (FAQ_PLACEHOLDER_RE.test(q) || FAQ_PLACEHOLDER_RE.test(a)) {
+    return { ok: false, reason: "placeholder détecté" };
+  }
+  return { ok: true };
+}
+
+export interface ParseFaqOptions {
+  /** Applique validateFaqItem + anti-doublon. Réservé au gate publish (P0). */
+  readonly strict?: boolean;
+}
+
+export function parseFaqItems(raw: unknown, opts: ParseFaqOptions = {}): ReadonlyArray<FaqItem> {
   // Tolère les générateurs qui enveloppent la FAQ dans un objet audit-trail :
   // `guide-pilier.ts` persiste `faqJson: { outline, sectionFailures, faq: [...] }`
   // (un OBJET), donc sans ce déballage parseFaqItems retournait toujours `[]`
@@ -29,13 +59,23 @@ export function parseFaqItems(raw: unknown): ReadonlyArray<FaqItem> {
   }
   if (!Array.isArray(list)) return [];
   const out: FaqItem[] = [];
+  const seenAnswers = new Set<string>();
   for (const entry of list) {
     if (!entry || typeof entry !== "object") continue;
     const o = entry as Record<string, unknown>;
     const q = typeof o.question === "string" ? o.question : typeof o.q === "string" ? o.q : null;
     const a = typeof o.answer === "string" ? o.answer : typeof o.a === "string" ? o.a : null;
     if (q && a && q.trim().length > 0 && a.trim().length > 0) {
-      out.push({ question: q.trim(), answer: a.trim() });
+      const question = q.trim();
+      const answer = a.trim();
+      if (opts.strict) {
+        if (!validateFaqItem(question, answer).ok) continue;
+        // Anti-doublon : deux réponses identiques (normalisées) = FAQ gonflée.
+        const key = answer.toLowerCase().replace(/\s+/g, " ");
+        if (seenAnswers.has(key)) continue;
+        seenAnswers.add(key);
+      }
+      out.push({ question, answer });
     }
   }
   return out;

@@ -379,7 +379,10 @@ export async function loadPeopleAlsoAsk(
         slug: { not: currentSlug },
         article: { status: "published", indexationTier: { not: "tier_3_noindex_nofollow" } },
       },
-      select: { slug: true, article: { select: { faqJson: true } } },
+      // Refonte 2026-06-22 — sélectionne le discriminant de type pour router le
+      // href vers le bon segment (le href était hardcodé /blog/<slug> → 404 pour
+      // les items actualites/guides). News = isNews ; guide = slug `guide-*`.
+      select: { slug: true, article: { select: { faqJson: true, isNews: true } } },
       orderBy: { article: { publishedAt: "desc" } },
       take: 24,
     })
@@ -393,8 +396,19 @@ export async function loadPeopleAlsoAsk(
     const key = first.question.trim().toLowerCase();
     if (key.length === 0 || seen.has(key)) continue;
     seen.add(key);
-    out.push({ question: first.question.trim(), href: `/blog/${r.slug}` });
+    out.push({ question: first.question.trim(), href: hrefForArticle(r.slug, r.article?.isNews) });
     if (out.length >= limit) break;
   }
   return out;
+}
+
+/**
+ * Refonte 2026-06-22 — construit le href interne d'un article selon son type.
+ * Discriminants (cf. prisma `Article`) : `isNews` → segment `/actualites`,
+ * slug préfixé `guide-` → `/guides`, sinon (défaut sûr) → `/blog`.
+ */
+function hrefForArticle(slug: string, isNews: boolean | null | undefined): string {
+  if (isNews) return `/actualites/${slug}`;
+  if (slug.startsWith("guide-")) return `/guides/${slug}`;
+  return `/blog/${slug}`;
 }

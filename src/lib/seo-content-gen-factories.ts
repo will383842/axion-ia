@@ -206,6 +206,11 @@ function buildArticleBase(
           image: {
             "@type": "ImageObject",
             url: input.imageUrl,
+            // Rich Results 2026 exige width/height sur l'ImageObject (sinon warning
+            // « image dimensions missing »). Défaut OG standard 1200×630 — les héros
+            // sont des bannières larges ; suffit à valider le rich result.
+            width: 1200,
+            height: 630,
             ...(input.imageAlt ? { caption: input.imageAlt } : {}),
           },
         }
@@ -226,7 +231,20 @@ function buildArticleBase(
     // n'a pas (encore) d'AnswerCard — le sélecteur ne matche simplement
     // rien et Google ignore silencieusement.
     speakable: buildSpeakableSpecification({
-      selectors: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
+      // Perfection 2026 — couverture Speakable étendue (4 → 8) : on rend éligibles
+      // au vocal/AEO le point clé, l'avis d'expert, le PAA et la fraîcheur, en plus
+      // du TL;DR et de la FAQ. Sélecteurs alignés sur les attributs data-aeo des
+      // composants d'article. Inoffensif si un sélecteur ne matche pas (ignoré).
+      selectors: [
+        ".tldr-answer",
+        '[data-aeo="tldr"]',
+        '[data-aeo="answer"]',
+        ".faq-answer",
+        '[data-aeo="key-point"]',
+        '[data-aeo="expert-quote"]',
+        '[data-aeo="people-also-ask"]',
+        '[data-aeo="freshness"]',
+      ],
     }),
   };
 }
