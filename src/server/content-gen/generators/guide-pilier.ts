@@ -102,7 +102,13 @@ sur-promesses (pas de "garanti", "révolutionnaire", etc.).
 
 Output STRICT HTML inline (pas de wrapper <section>, pas de <h2> — l'header
 est ajouté par l'assembly). Format : 2-4 paragraphes <p>, optionnellement
-1 liste <ul>/<ol> ou 1 mini-table HTML si pertinent. Pas de scripts.`);
+1 liste <ul>/<ol> ou 1 mini-table HTML si pertinent. Pas de scripts.
+
+Règles de structure du corps :
+- Commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
+- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
+- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.`);
 
 interface OutlineSection {
   readonly position: number;

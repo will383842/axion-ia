@@ -49,6 +49,10 @@ Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles a
 - directAnswer : 50-80 mots, réponse concise et actionnable (cible Google Featured Snippet).
 - answerHtml : réponse étendue 250-400 mots, HTML valide, enrichie de contexte Axion-IA.
   Structure recommandée : <p> intro + <ul>/<ol> liste points clés + <p> conclusion CTA.
+- Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
+- Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
+- À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
+- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - relatedFaq : 3-5 questions similaires fréquentes avec réponses directes ≥ 1 phrase.
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
