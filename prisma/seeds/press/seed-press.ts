@@ -36,7 +36,9 @@ function mapKind(fixtureKind: string): PressMediaKind {
   }
 }
 
-export async function seedPress(prisma: PrismaClient): Promise<{ releases: number; assets: number }> {
+export async function seedPress(
+  prisma: PrismaClient,
+): Promise<{ releases: number; assets: number }> {
   let releasesCreated = 0;
 
   // ── Communiqués ────────────────────────────────────────────────────────────
