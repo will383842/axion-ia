@@ -44,7 +44,14 @@ interface RouteParams {
   params: Promise<{ type: string; slug: string }>;
 }
 
-const ALLOWED_TYPES = new Set(["blog", "actualites", "guides", "cas-concrets", "centre-aide", "faq"]);
+const ALLOWED_TYPES = new Set([
+  "blog",
+  "actualites",
+  "guides",
+  "cas-concrets",
+  "centre-aide",
+  "faq",
+]);
 
 interface MarkdownContent {
   readonly title: string;

@@ -366,10 +366,7 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         { reasons: gate.reasons, enforced, content_type: cgJob.contentType },
       );
       if (enforced) {
-        await markPublishJobFailed(
-          reviewQueueId,
-          `quality_gate: ${gate.reasons.join(" ; ")}`,
-        );
+        await markPublishJobFailed(reviewQueueId, `quality_gate: ${gate.reasons.join(" ; ")}`);
         return;
       }
     }

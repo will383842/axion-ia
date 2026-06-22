@@ -436,18 +436,18 @@ export default async function NewsArticlePage({ params }: Props) {
       {/* A11y WCAG 2.4.1/1.3.1 — cible du skip-link + landmark de contenu
           éditorial principal (un seul id="main-content" par page). */}
       <article>
-      <Section>
-        <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
-          {bodyHtmlFallback ? (
-            <div
-              className="prose prose-axionia max-w-none"
-              dangerouslySetInnerHTML={{ __html: bodyHtmlFallback }}
-            />
-          ) : (
-            paragraphs.map((p, idx) => <p key={`p-${idx}`}>{p}</p>)
-          )}
-        </Container>
-      </Section>
+        <Section>
+          <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
+            {bodyHtmlFallback ? (
+              <div
+                className="prose prose-axionia max-w-none"
+                dangerouslySetInnerHTML={{ __html: bodyHtmlFallback }}
+              />
+            ) : (
+              paragraphs.map((p, idx) => <p key={`p-${idx}`}>{p}</p>)
+            )}
+          </Container>
+        </Section>
       </article>
 
       {/* Refonte templates 2026-06-22 — barre de partage + copier le lien. */}

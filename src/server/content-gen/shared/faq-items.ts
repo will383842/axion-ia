@@ -18,7 +18,8 @@ export interface FaqItem {
 
 // Anti-placeholder : rejette les Q/R bouche-trou produites par un LLM dégradé
 // (audit perfection 2026-06-22). Volontairement conservateur (faux positifs ~0).
-const FAQ_PLACEHOLDER_RE = /\b(todo|à remplir|a remplir|lorem ipsum|placeholder|à compléter|a completer)\b|\{\{|\}\}/i;
+const FAQ_PLACEHOLDER_RE =
+  /\b(todo|à remplir|a remplir|lorem ipsum|placeholder|à compléter|a completer)\b|\{\{|\}\}/i;
 
 /**
  * Validation STRICTE d'un item FAQ — utilisée par le gate qualité au publish
@@ -26,7 +27,10 @@ const FAQ_PLACEHOLDER_RE = /\b(todo|à remplir|a remplir|lorem ipsum|placeholder
  * (parseFaqItems sans `strict`) reste lenient pour ne pas masquer rétroactivement
  * les FAQ d'articles déjà publiés.
  */
-export function validateFaqItem(question: string, answer: string): { ok: boolean; reason?: string } {
+export function validateFaqItem(
+  question: string,
+  answer: string,
+): { ok: boolean; reason?: string } {
   const q = question.trim();
   const a = answer.trim();
   if (q.length < 20) return { ok: false, reason: "question < 20 caractères" };

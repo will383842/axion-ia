@@ -17,7 +17,12 @@ import { ArticleTOC, extractTocItems, type TocItem } from "@/components/seo/Arti
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
-import { buildProductMetadata, buildArticleJsonLd, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildArticleJsonLd,
+  buildBreadcrumbJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   loadBlogArticleForView,
@@ -532,37 +537,37 @@ export default async function BlogArticle({ params }: Props) {
       {/* A11y WCAG 2.4.1/1.3.1 — cible du skip-link + landmark de contenu
           éditorial principal (un seul id="main-content" par page). */}
       <article>
-      <Section>
-        <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
-          {dbBodyHtml ? (
-            // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
-            // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
-            // H3 — tokens prix résolus.
-            <div
-              className="prose prose-axionia max-w-none"
-              dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
-            />
-          ) : (
-            blocks!.map((block, idx) => {
-              if (block.kind === "ol") {
-                return (
-                  <ol
-                    key={`b-${idx}`}
-                    className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
-                  >
-                    {block.items.map((it, j) => (
-                      <li key={`i-${j}`} className="pl-1">
-                        {it}
-                      </li>
-                    ))}
-                  </ol>
-                );
-              }
-              return <p key={`b-${idx}`}>{block.text}</p>;
-            })
-          )}
-        </Container>
-      </Section>
+        <Section>
+          <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
+            {dbBodyHtml ? (
+              // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
+              // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
+              // H3 — tokens prix résolus.
+              <div
+                className="prose prose-axionia max-w-none"
+                dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
+              />
+            ) : (
+              blocks!.map((block, idx) => {
+                if (block.kind === "ol") {
+                  return (
+                    <ol
+                      key={`b-${idx}`}
+                      className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
+                    >
+                      {block.items.map((it, j) => (
+                        <li key={`i-${j}`} className="pl-1">
+                          {it}
+                        </li>
+                      ))}
+                    </ol>
+                  );
+                }
+                return <p key={`b-${idx}`}>{block.text}</p>;
+              })
+            )}
+          </Container>
+        </Section>
       </article>
 
       {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
