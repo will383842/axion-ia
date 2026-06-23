@@ -7067,6 +7067,15 @@ enum PressReleaseTag {
   milestone
 }
 
+// Taxonomie « ciblage média » (2026-06-24) — permet aux journalistes de filtrer
+// les communiqués par audience visée. Distincte de PressReleaseTag (qui décrit
+// la NATURE de l'annonce). GENERAL = communiqué tout public ; FOUNDER = angle
+// fondateur / portrait dirigeant.
+enum PressReleaseAudience {
+  GENERAL
+  FOUNDER
+}
+
 enum PressMediaKind {
   logo
   wordmark
@@ -7094,9 +7103,22 @@ model PressRelease {
   pdfFileSize    Int?    @map("pdf_file_size")
   pdfHashSha256  String? @map("pdf_hash_sha256") @db.VarChar(64)
 
+  // Taxonomie de ciblage média (2026-06-24) — filtrage public /presse + console.
+  // Toutes additives. SSOTs réutilisés (pas de liste parallèle) :
+  //   - `region`      : slug `src/content/regions.ts` (null ⇒ national / non spécifié)
+  //   - `departement` : code INSEE département en texte libre (null ⇒ non spécifié)
+  //   - `sector`      : slug `src/content/knowledge/sector-tags.ts` (null ⇒ tous secteurs)
+  region      String?              @db.VarChar(64)
+  departement String?              @db.VarChar(8)
+  sector      String?              @db.VarChar(64)
+  audience    PressReleaseAudience @default(GENERAL)
+
   translations PressReleaseTranslation[]
 
   @@index([status, publishedAt])
+  @@index([region])
+  @@index([sector])
+  @@index([audience])
   @@map("press_releases")
 }
 

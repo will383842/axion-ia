@@ -19,6 +19,12 @@ import {
 } from "@/server/actions/press/releases";
 import type { PressReleaseTag } from "../../../../../../../../prisma/generated/client";
 import {
+  PRESS_TAG_OPTIONS,
+  PRESS_REGION_OPTIONS,
+  PRESS_SECTOR_OPTIONS,
+  PRESS_AUDIENCE_OPTIONS,
+} from "@/server/actions/press/taxonomy-options";
+import {
   AdminPageShell,
   AdminPageHeader,
   AdminCard,
@@ -35,13 +41,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const TAG_OPTIONS: ReadonlyArray<{ value: PressReleaseTag; label: string }> = [
-  { value: "launch", label: "Lancement" },
-  { value: "partnership", label: "Partenariat" },
-  { value: "study", label: "Étude" },
-  { value: "product", label: "Produit" },
-  { value: "milestone", label: "Jalon" },
-];
+const TAG_OPTIONS: ReadonlyArray<{ value: PressReleaseTag; label: string }> = PRESS_TAG_OPTIONS;
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
@@ -169,6 +169,42 @@ export default async function EditPressReleasePage({ params, searchParams }: Pag
               required
               defaultValue={release.tag}
               options={TAG_OPTIONS}
+            />
+          </AdminFormSection>
+
+          <AdminFormSection
+            title="Ciblage média"
+            description="Permet aux journalistes de filtrer les communiqués sur /presse (région, secteur, audience). Tous les champs sont optionnels."
+          >
+            <AdminFormField
+              label="Audience"
+              name="audience"
+              type="select"
+              defaultValue={release.audience}
+              options={PRESS_AUDIENCE_OPTIONS}
+              hint="Général = tout public ; Fondateur = angle dirigeant/portrait."
+            />
+            <AdminFormField
+              label="Région"
+              name="region"
+              type="select"
+              defaultValue={release.region ?? ""}
+              options={PRESS_REGION_OPTIONS}
+            />
+            <AdminFormField
+              label="Département (code INSEE)"
+              name="departement"
+              type="text"
+              defaultValue={release.departement ?? ""}
+              placeholder="ex. 75, 2A, 974"
+              hint="Code département en texte libre (optionnel)."
+            />
+            <AdminFormField
+              label="Secteur d'activité"
+              name="sector"
+              type="select"
+              defaultValue={release.sector ?? ""}
+              options={PRESS_SECTOR_OPTIONS}
             />
           </AdminFormSection>
 

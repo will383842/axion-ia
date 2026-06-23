@@ -12,7 +12,12 @@ import { prisma } from "@/lib/prisma";
 import type { Locale } from "@/i18n/routing";
 import type { ImageAsset, ImageAssetTranslation } from "../../../prisma/generated/client";
 import { PRESS_KIT_ASSETS, type PressKitAsset as FixturePressKitAsset } from "@/content/press";
-import type { PressReleaseTag, PressMediaKind } from "../../../prisma/generated/client";
+import type {
+  PressReleaseTag,
+  PressMediaKind,
+  PressReleaseAudience,
+  Prisma,
+} from "../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────
 // Shapes publiques (consommées par les composants UI).
@@ -28,6 +33,27 @@ export interface PressReleaseCard {
   dek: string;
   /** URL de téléchargement du PDF (route publique) ou `null` (legacy fixtures). */
   pdfUrl: string | null;
+  /** Taxonomie ciblage média (2026-06-24). Slug région SSOT ou `null`. */
+  region: string | null;
+  /** Code INSEE département (texte) ou `null`. */
+  departement: string | null;
+  /** Slug secteur SSOT ou `null`. */
+  sector: string | null;
+  /** Audience visée (`GENERAL` | `FOUNDER`). */
+  audience: PressReleaseAudience;
+}
+
+/**
+ * Filtres facettés « ciblage média » pour la grille publique `/presse`.
+ * Chaque clé absente (`undefined`) ⇒ pas de filtre sur cette facette.
+ */
+export interface PressReleaseFilters {
+  /** Slug région SSOT (`src/content/regions.ts`). */
+  region?: string;
+  /** Slug secteur SSOT (`src/content/knowledge/sector-tags.ts`). */
+  sector?: string;
+  /** Audience visée. */
+  audience?: PressReleaseAudience;
 }
 
 /** Communiqué complet — page détail `/presse/[slug]`. */
@@ -89,14 +115,28 @@ function fixtureToKitItem(a: FixturePressKitAsset, locale: Locale): PressKitItem
 // ─────────────────────────────────────────────────────────────────
 // Communiqués publiés (cartes).
 // ─────────────────────────────────────────────────────────────────
-export async function getPublishedPressReleases(locale: Locale): Promise<PressReleaseCard[]> {
+export async function getPublishedPressReleases(
+  locale: Locale,
+  filters: PressReleaseFilters = {},
+): Promise<PressReleaseCard[]> {
   // Communiqués = UNIQUEMENT ceux publiés depuis la console admin (décision Will
   // 2026-06-23). Pas de fallback fixtures : tant que rien n'est publié, la
   // section affiche son état vide. try/catch défensif : une table absente
   // (migration non appliquée) ne doit jamais casser /presse — on rend vide.
+  //
+  // Filtres « ciblage média » (2026-06-24) appliqués côté SQL (AND). Chaque
+  // facette absente ⇒ pas de filtre. Les colonnes filtrées sont indexées.
   try {
+    const where: Prisma.PressReleaseWhereInput = {
+      status: "published",
+      deletedAt: null,
+      ...(filters.region ? { region: filters.region } : {}),
+      ...(filters.sector ? { sector: filters.sector } : {}),
+      ...(filters.audience ? { audience: filters.audience } : {}),
+    };
+
     const rows = await prisma.pressRelease.findMany({
-      where: { status: "published", deletedAt: null },
+      where,
       orderBy: [{ sortOrder: "asc" }, { publishedAt: "desc" }],
       include: { translations: { where: { locale } } },
     });
@@ -112,6 +152,10 @@ export async function getPublishedPressReleases(locale: Locale): Promise<PressRe
         title: t.title,
         dek: t.dek ?? "",
         pdfUrl: row.pdfStoragePath ? `/api/presse/communique/${row.id}` : null,
+        region: row.region ?? null,
+        departement: row.departement ?? null,
+        sector: row.sector ?? null,
+        audience: row.audience,
       });
     }
     return mapped;

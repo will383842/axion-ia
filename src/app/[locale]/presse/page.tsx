@@ -48,9 +48,13 @@ import {
   STUDY_LICENSE_URL,
   BAROMETER_INSIGHT_KEYS,
 } from "@/content/observatoire/study";
+import { REGIONS } from "@/content/regions";
+import { KB_SECTOR_TAGS } from "@/content/knowledge/sector-tags";
+import type { PressReleaseAudience } from "../../../../prisma/generated/client";
 
 interface Props {
   params: Promise<{ locale: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -71,7 +75,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // vide au build stub (témoignages/chiffres), repeuplé au runtime.
 export const revalidate = 3600;
 
-export default async function PressePage({ params }: Props) {
+export default async function PressePage({ params, searchParams }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
@@ -79,6 +83,34 @@ export default async function PressePage({ params }: Props) {
   const isFr = loc === "fr";
   const t = await getTranslations({ locale: loc, namespace: "press" });
   const pitch = PRESS_PITCH[loc];
+
+  // ── Filtres « ciblage média » /presse (2026-06-24) — lus depuis l'URL ──
+  // SSOTs réutilisés (jamais de liste parallèle) : REGIONS (métropole) + secteurs KB.
+  const sp = (await searchParams) ?? {};
+  const firstParam = (v: string | string[] | undefined): string =>
+    (Array.isArray(v) ? v[0] : v)?.trim() ?? "";
+
+  const regionOptions = REGIONS.filter((r) => r.type === "metropole").map((r) => ({
+    value: r.slug,
+    label: r.nameFr,
+  }));
+  const sectorOptions = KB_SECTOR_TAGS.map((s) => ({
+    value: s.slug,
+    label: isFr ? s.labelFr : s.labelEn,
+  }));
+  const audienceOptions: ReadonlyArray<{ value: PressReleaseAudience; label: string }> = [
+    { value: "GENERAL", label: t("filterAudienceGeneral") },
+    { value: "FOUNDER", label: t("filterAudienceFounder") },
+  ];
+
+  // Validation contre les SSOTs : on n'applique un filtre que si la valeur existe.
+  const regionRaw = firstParam(sp.region);
+  const sectorRaw = firstParam(sp.sector);
+  const audienceRaw = firstParam(sp.audience);
+  const activeRegion = regionOptions.some((o) => o.value === regionRaw) ? regionRaw : "";
+  const activeSector = sectorOptions.some((o) => o.value === sectorRaw) ? sectorRaw : "";
+  const activeAudience = audienceRaw === "GENERAL" || audienceRaw === "FOUNDER" ? audienceRaw : "";
+  const hasActiveFilter = Boolean(activeRegion || activeSector || activeAudience);
 
   // Sprint v7 Phase 15 (F5) — consumer real testimonials.
   // Section invisible si aucun real testimonial (return null plus bas).
@@ -105,7 +137,11 @@ export default async function PressePage({ params }: Props) {
   // Banque d'images — vrais visuels (vide au build stub → fallback promo).
   const pressGalleryImages = await getPressGalleryImages(loc, 10);
 
-  const releases = await getPublishedPressReleases(loc);
+  const releases = await getPublishedPressReleases(loc, {
+    ...(activeRegion ? { region: activeRegion } : {}),
+    ...(activeSector ? { sector: activeSector } : {}),
+    ...(activeAudience ? { audience: activeAudience } : {}),
+  });
 
   // Couverture médias réelle (DB admin) — la section est masquée si vide.
   const coverage = await getPublishedMediaCoverage(loc);
@@ -552,7 +588,28 @@ export default async function PressePage({ params }: Props) {
             read: t("releasesRead"),
             empty: t("releasesEmpty"),
             downloadPdf: isFr ? "Télécharger le PDF" : "Download PDF",
+            filterTitle: t("filterTitle"),
+            filterRegion: t("filterRegion"),
+            filterSector: t("filterSector"),
+            filterAudience: t("filterAudience"),
+            filterAllRegions: t("filterAllRegions"),
+            filterAllSectors: t("filterAllSectors"),
+            filterAllAudiences: t("filterAllAudiences"),
+            filterApply: t("filterApply"),
+            filterReset: t("filterReset"),
           }}
+          filterOptions={{
+            regions: regionOptions,
+            sectors: sectorOptions,
+            audiences: audienceOptions,
+          }}
+          active={{
+            region: activeRegion,
+            sector: activeSector,
+            audience: activeAudience,
+          }}
+          hasActiveFilter={hasActiveFilter}
+          formAction={`/${loc}${pressPath}#communiques`}
         />
       </Section>
 

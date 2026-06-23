@@ -52,13 +52,29 @@ async function requireAdmin(): Promise<void> {
 // ─────────────────────────────────────────────────────────────────
 const tagSchema = z.enum(["launch", "partnership", "study", "product", "milestone"]);
 const statusSchema = z.enum(["draft", "published", "archived"]);
+const audienceSchema = z.enum(["GENERAL", "FOUNDER"]);
 
+// Taxonomie « ciblage média » (2026-06-24). region/departement/sector sont des
+// chaînes libres validées par longueur (les slugs valides viennent des SSOTs
+// côté UI ; on accepte aussi "" → null pour « non spécifié »). audience a un
+// défaut GENERAL au niveau DB.
 const metaSchema = z.object({
   title: z.string().min(3).max(255),
   dek: z.string().max(320).optional(),
   tag: tagSchema,
   status: statusSchema.optional(),
+  region: z.string().max(64).optional(),
+  departement: z.string().max(8).optional(),
+  sector: z.string().max(64).optional(),
+  audience: audienceSchema.optional(),
 });
+
+/** "" / undefined → undefined (champ non fourni). Sinon la valeur trimée. */
+function emptyToUndefined(v: FormDataEntryValue | null): string | undefined {
+  if (typeof v !== "string") return undefined;
+  const trimmed = v.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
 
 // ─────────────────────────────────────────────────────────────────
 // Validation PDF — extension + MIME.
@@ -154,6 +170,10 @@ export async function createPressRelease(
       dek: formData.get("dek") ?? undefined,
       tag: formData.get("tag"),
       status: formData.get("status") ?? undefined,
+      region: emptyToUndefined(formData.get("region")),
+      departement: emptyToUndefined(formData.get("departement")),
+      sector: emptyToUndefined(formData.get("sector")),
+      audience: emptyToUndefined(formData.get("audience")),
     });
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "validation_failed" };
@@ -172,6 +192,12 @@ export async function createPressRelease(
         tag: meta.tag,
         status,
         ...(status === "published" ? { publishedAt: new Date() } : {}),
+        // Taxonomie ciblage média — spreads conditionnels (exactOptionalPropertyTypes).
+        // audience absente ⇒ défaut DB GENERAL.
+        ...(meta.region ? { region: meta.region } : {}),
+        ...(meta.departement ? { departement: meta.departement } : {}),
+        ...(meta.sector ? { sector: meta.sector } : {}),
+        ...(meta.audience ? { audience: meta.audience } : {}),
         pdfStoragePath: pdf.pdfStoragePath,
         pdfFileName: pdf.pdfFileName,
         pdfFileSize: pdf.pdfFileSize,
@@ -214,11 +240,23 @@ export async function updatePressRelease(
       dek: formData.get("dek") ?? undefined,
       tag: formData.get("tag") ?? undefined,
       status: formData.get("status") ?? undefined,
+      region: emptyToUndefined(formData.get("region")),
+      departement: emptyToUndefined(formData.get("departement")),
+      sector: emptyToUndefined(formData.get("sector")),
+      audience: emptyToUndefined(formData.get("audience")),
     });
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "validation_failed" };
     }
     const meta = parsed.data;
+
+    // Taxonomie : un champ PRÉSENT dans le form (même vide) signifie « définir »
+    // — vide ⇒ remise à null (« non spécifié »). On distingue donc la présence
+    // de la clé (form édité) de l'absence (autre form / partial update).
+    const regionTouched = formData.has("region");
+    const departementTouched = formData.has("departement");
+    const sectorTouched = formData.has("sector");
+    const audienceTouched = formData.has("audience");
 
     const existing = await prisma.pressRelease.findFirst({
       where: { id, deletedAt: null },
@@ -232,12 +270,21 @@ export async function updatePressRelease(
     await prisma.$transaction(async (tx) => {
       const releaseData: {
         tag?: z.infer<typeof tagSchema>;
+        region?: string | null;
+        departement?: string | null;
+        sector?: string | null;
+        audience?: z.infer<typeof audienceSchema>;
         pdfStoragePath?: string;
         pdfFileName?: string;
         pdfFileSize?: number;
         pdfHashSha256?: string;
       } = {};
       if (meta.tag !== undefined) releaseData.tag = meta.tag;
+      // Taxonomie : présent ⇒ on définit (vide → null). audience vide ⇒ GENERAL.
+      if (regionTouched) releaseData.region = meta.region ?? null;
+      if (departementTouched) releaseData.departement = meta.departement ?? null;
+      if (sectorTouched) releaseData.sector = meta.sector ?? null;
+      if (audienceTouched) releaseData.audience = meta.audience ?? "GENERAL";
       if (pdf) {
         releaseData.pdfStoragePath = pdf.pdfStoragePath;
         releaseData.pdfFileName = pdf.pdfFileName;
