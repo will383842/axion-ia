@@ -25,6 +25,13 @@ type Props = {
    * ne pas concurrencer le LCP de l'image principale — budget Web Vitals strict.
    */
   firstImagePriority?: boolean;
+  /**
+   * `default` = grille hub /galerie (vignettes confortables, jusqu'à 5 col).
+   * `compact` = teaser dense (vignettes plus petites, jusqu'à 6 col) — utilisé
+   * dans l'espace presse où la galerie n'est qu'un aperçu. `sizes` réduit en
+   * conséquence (perf : on ne sert pas une image surdimensionnée).
+   */
+  variant?: "default" | "compact";
 };
 
 /** Résout l'URL d'affichage en fonction du type de stockage.
@@ -42,9 +49,24 @@ function resolveImgSrc(img: ImageWithTranslation, baseUrl: string): string {
   return `${baseUrl}/image-bank/${img.id}/image-md.webp`;
 }
 
-export function GalleryGrid({ images, locale, cdnUrl, firstImagePriority = true }: Props) {
+export function GalleryGrid({
+  images,
+  locale,
+  cdnUrl,
+  firstImagePriority = true,
+  variant = "default",
+}: Props) {
   const baseUrl = cdnUrl ?? process.env.IMAGE_BANK_CDN_URL ?? "";
   const segment = locale === "fr" ? "galerie" : "gallery";
+  const isCompact = variant === "compact";
+  const gridClassName = isCompact
+    ? "grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
+    : "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5";
+  // `sizes` aligné sur la largeur réelle d'une colonne pour ne pas servir une
+  // image trop lourde (budget Web Vitals). Compact = colonnes plus étroites.
+  const imgSizes = isCompact
+    ? "(min-width: 1280px) 16vw, (min-width: 1024px) 20vw, (min-width: 640px) 25vw, 33vw"
+    : "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw";
 
   if (images.length === 0) {
     return (
@@ -58,7 +80,7 @@ export function GalleryGrid({ images, locale, cdnUrl, firstImagePriority = true 
 
   return (
     <ul
-      className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+      className={gridClassName}
       aria-label={locale === "fr" ? "Galerie d'images" : "Image gallery"}
     >
       {images.map((img, idx) => {
@@ -84,7 +106,7 @@ export function GalleryGrid({ images, locale, cdnUrl, firstImagePriority = true 
                     alt={t.alt ?? t.title ?? "Visuel Axion-IA"}
                     fill
                     quality={85}
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    sizes={imgSizes}
                     placeholder={lqipDataUrl ? "blur" : "empty"}
                     {...(lqipDataUrl ? { blurDataURL: lqipDataUrl } : {})}
                     priority={idx === 0 && firstImagePriority}

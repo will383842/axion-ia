@@ -21,7 +21,7 @@ interface PageProps {
 export default async function UploadPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
-  if (!session?.user || session.user.role !== "admin") {
+  if (!session?.user || (session.user.role !== "admin" && session.user.role !== "super_admin")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 

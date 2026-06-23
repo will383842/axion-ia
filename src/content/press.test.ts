@@ -100,13 +100,16 @@ describe("press · media coverage", () => {
 });
 
 describe("press · spokespersons", () => {
-  it("has at least 1 spokesperson with FR + EN copy and LinkedIn URL", () => {
+  it("has at least 1 spokesperson with FR + EN copy, citable quote and LinkedIn URL", () => {
     expect(PRESS_SPOKESPERSONS.length).toBeGreaterThanOrEqual(1);
     for (const p of PRESS_SPOKESPERSONS) {
       expect(p.fr.name.length).toBeGreaterThan(0);
       expect(p.en.name.length).toBeGreaterThan(0);
       expect(p.fr.bio.length).toBeGreaterThan(40);
       expect(p.en.bio.length).toBeGreaterThan(40);
+      // Citation attribuée prête à citer (manque presse comblé 2026-06-23).
+      expect(p.fr.quote.length).toBeGreaterThan(40);
+      expect(p.en.quote.length).toBeGreaterThan(40);
       expect(p.linkedinUrl.startsWith("https://www.linkedin.com/")).toBe(true);
       expect(p.languages.length).toBeGreaterThan(0);
       expect(p.knowsAbout.length).toBeGreaterThan(0);

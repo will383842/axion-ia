@@ -26,7 +26,10 @@ export async function publishTranslationAction(
   input: z.input<typeof PublishSchema>,
 ): Promise<PublishActionResult> {
   const session = await auth();
-  if (!session?.user?.role || session.user.role !== "admin") {
+  if (
+    !session?.user?.role ||
+    (session.user.role !== "admin" && session.user.role !== "super_admin")
+  ) {
     redirect("/api/auth/signin?error=Unauthorized");
   }
 

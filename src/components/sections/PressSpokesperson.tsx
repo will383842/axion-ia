@@ -1,96 +1,154 @@
 import * as React from "react";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
-
-interface SpokespersonCard {
-  id: string;
-  name: string;
-  role: string;
-  bio: string;
-  linkedinUrl: string;
-  /** Languages spoken — short codes ("FR · EN"). */
-  languagesLabel: string;
-  /** Optional photo URL — falls back to serif initial on sand circle. */
-  photoUrl?: string;
-}
+import { ArrowUpRight, Download, Quote, Languages } from "lucide-react";
+import { CopyTextButton } from "./CopyTextButton";
 
 interface PressSpokespersonProps {
-  spokespersons: ReadonlyArray<SpokespersonCard>;
-  /** Localized labels. */
+  /** Spokesperson identity + ready-to-cite copy (déjà localisés par le parent). */
+  person: {
+    name: string;
+    role: string;
+    bio: string;
+    quote: string;
+    linkedinUrl: string;
+    languages: ReadonlyArray<string>;
+    knowsAbout: ReadonlyArray<string>;
+  };
+  /** Portrait haute résolution (déjà localisé). */
+  photo: { src: string; alt: string; width: number; height: number };
+  /** Lien de téléchargement du portrait (asset kit presse). */
+  photoDownloadUrl: string;
+  /** Libellés UI déjà localisés. */
   labels: {
-    /** "Disponible pour interviews" / "Available for interviews" */
-    available: string;
-    /** "Délai de réponse · 48 h ouvrées" / "Response time · 48 business hours" */
-    responseTime: string;
-    /** LinkedIn link aria/visible label. */
-    linkedin: string;
-    /** "Langues" / "Languages" */
+    quoteLabel: string;
+    copyQuote: string;
+    copied: string;
     languagesLabel: string;
+    expertiseLabel: string;
+    linkedin: string;
+    downloadPhoto: string;
+    interviewReady: string;
   };
 }
 
-// Press spokesperson card — éditorial v3, mirrors TeamGrid pattern with extra
-// trust signals (LinkedIn, languages, response SLA). Photo placeholder = serif
-// initial on sand. Phase 2 swaps to real photos via next/image.
-export function PressSpokesperson({ spokespersons, labels }: PressSpokespersonProps) {
+// Porte-parole presse — bio factuelle (copy-paste) + citation attribuée prête à
+// citer (bouton « Copier »), portrait téléchargeable, langues + domaines
+// d'expertise. Conçu pour qu'un journaliste reparte avec bio + citation sans
+// recontacter. Server component ; seul `CopyTextButton` embarque du JS.
+export function PressSpokesperson({
+  person,
+  photo,
+  photoDownloadUrl,
+  labels,
+}: PressSpokespersonProps) {
+  // Citation copy-paste prête à coller (texte brut, guillemets français + tiret).
+  const citableQuote = `« ${person.quote} » — ${person.name}, ${person.role}`;
+
   return (
-    <ul className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-      {spokespersons.map((p) => (
-        <li
-          key={p.id}
-          className="border-border bg-paper flex flex-col rounded-xl border p-7 sm:p-8"
-        >
-          <div className="flex items-center gap-5">
-            <div className="bg-sand text-fg-muted border-border relative flex aspect-square h-20 w-20 items-center justify-center overflow-hidden rounded-full border">
-              {p.photoUrl ? (
-                <Image
-                  src={p.photoUrl}
-                  alt={p.name}
-                  width={80}
-                  height={80}
-                  sizes="80px"
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <span className="text-2xl font-medium" style={{ fontFamily: "var(--font-serif)" }}>
-                  {p.name.charAt(0)}
-                </span>
-              )}
-            </div>
-            <div>
-              <h3
-                className="text-fg text-2xl leading-tight font-medium"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {p.name}
-              </h3>
-              <p className="text-terracotta text-sm italic">{p.role}</p>
-            </div>
-          </div>
-          <p className="text-fg-soft mt-6 text-base leading-relaxed">{p.bio}</p>
-
-          <dl className="border-border text-fg-muted mt-7 space-y-2 border-t pt-6 text-xs">
-            <div className="flex items-baseline justify-between gap-4">
-              <dt>{labels.available}</dt>
-              <dd className="text-fg font-semibold">{labels.responseTime}</dd>
-            </div>
-            <div className="flex items-baseline justify-between gap-4">
-              <dt>{labels.languagesLabel}</dt>
-              <dd className="text-fg font-semibold">{p.languagesLabel}</dd>
-            </div>
-          </dl>
-
+    <div className="grid gap-10 lg:grid-cols-[300px_1fr] lg:items-start lg:gap-14">
+      {/* Colonne portrait + actions */}
+      <figure className="flex flex-col gap-4">
+        <div className="border-border bg-paper relative overflow-hidden rounded-2xl border">
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            width={photo.width}
+            height={photo.height}
+            sizes="(min-width: 1024px) 300px, 100vw"
+            className="h-auto w-full object-cover"
+          />
+        </div>
+        <figcaption className="text-fg-muted text-xs leading-relaxed">
+          {labels.interviewReady}
+        </figcaption>
+        <div className="flex flex-wrap gap-3">
           <a
-            href={p.linkedinUrl}
+            href={person.linkedinUrl}
             target="_blank"
             rel="noopener noreferrer external"
-            className="border-border-strong text-fg hover:border-terracotta hover:text-terracotta focus-visible:ring-terracotta mt-6 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border px-4 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="border-border text-fg-soft hover:border-terracotta hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-[40px] items-center gap-1.5 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {labels.linkedin}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowUpRight className="size-4" aria-hidden="true" />
           </a>
-        </li>
-      ))}
-    </ul>
+          <a
+            href={photoDownloadUrl}
+            download
+            className="border-border text-fg-soft hover:border-terracotta hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-[40px] items-center gap-1.5 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            <Download className="size-4" aria-hidden="true" />
+            {labels.downloadPhoto}
+          </a>
+        </div>
+      </figure>
+
+      {/* Colonne bio + citation + chips */}
+      <div className="flex flex-col gap-8">
+        <div>
+          <p className="text-fg text-2xl font-semibold tracking-tight">{person.name}</p>
+          <p className="text-terracotta mt-1 text-sm font-medium">{person.role}</p>
+          <p className="text-fg-soft mt-5 max-w-2xl text-lg leading-relaxed">{person.bio}</p>
+        </div>
+
+        {/* Citation attribuée prête à citer */}
+        <figure className="border-border bg-paper relative rounded-2xl border p-6 sm:p-8">
+          <Quote className="text-terracotta/30 absolute top-5 right-5 h-8 w-8" aria-hidden="true" />
+          <p className="text-terracotta mb-4 text-[11px] font-semibold tracking-[0.18em] uppercase">
+            {labels.quoteLabel}
+          </p>
+          <blockquote
+            className="text-fg max-w-2xl text-lg leading-relaxed sm:text-xl"
+            style={{ fontFamily: "var(--font-serif)", fontWeight: 400 }}
+          >
+            « {person.quote} »
+          </blockquote>
+          <figcaption className="text-fg-muted mt-4 text-sm">
+            — {person.name}, {person.role}
+          </figcaption>
+          <div className="mt-6">
+            <CopyTextButton
+              text={citableQuote}
+              label={labels.copyQuote}
+              copiedLabel={labels.copied}
+            />
+          </div>
+        </figure>
+
+        {/* Langues + domaines d'expertise */}
+        <dl className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <dt className="text-fg-muted flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] uppercase">
+              <Languages className="text-terracotta size-4" aria-hidden="true" />
+              {labels.languagesLabel}
+            </dt>
+            <dd className="mt-2 flex flex-wrap gap-2">
+              {person.languages.map((lang) => (
+                <span
+                  key={lang}
+                  className="border-border text-fg-soft inline-flex rounded-full border px-3 py-1 text-xs font-medium uppercase"
+                >
+                  {lang}
+                </span>
+              ))}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-fg-muted text-[11px] font-semibold tracking-[0.18em] uppercase">
+              {labels.expertiseLabel}
+            </dt>
+            <dd className="mt-2 flex flex-wrap gap-2">
+              {person.knowsAbout.map((topic) => (
+                <span
+                  key={topic}
+                  className="border-border text-fg-soft inline-flex rounded-full border px-3 py-1 text-xs font-medium"
+                >
+                  {topic}
+                </span>
+              ))}
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
   );
 }

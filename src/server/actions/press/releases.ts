@@ -381,6 +381,125 @@ export async function setPressReleaseStatus(
 }
 
 // ─────────────────────────────────────────────────────────────────
+// movePressRelease — réordonnancement manuel (↑/↓). Normalise `sortOrder`
+// sur 0..n-1 dans l'ordre d'affichage courant puis échange la cible avec son
+// voisin. Réécrit toutes les lignes (≤200) en transaction → ordre déterministe
+// même quand tous les sortOrder valent 0 au départ. L'ordre pilote l'affichage
+// public (la page /presse trie par sortOrder asc).
+// ─────────────────────────────────────────────────────────────────
+export async function movePressRelease(
+  id: string,
+  direction: "up" | "down",
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+    const rows = await prisma.pressRelease.findMany({
+      where: { deletedAt: null },
+      orderBy: [{ sortOrder: "asc" }, { publishedAt: "desc" }, { createdAt: "desc" }],
+      select: { id: true },
+    });
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) return { ok: false, error: "not_found" };
+
+    const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+    // Déjà en bord de liste → no-op silencieux (le bouton devrait être désactivé).
+    if (swapIdx < 0 || swapIdx >= rows.length) return { ok: true };
+
+    const reordered = [...rows];
+    const [moved] = reordered.splice(idx, 1);
+    reordered.splice(swapIdx, 0, moved!);
+
+    await prisma.$transaction(
+      reordered.map((r, i) =>
+        prisma.pressRelease.update({ where: { id: r.id }, data: { sortOrder: i } }),
+      ),
+    );
+
+    revalidatePresse();
+    return { ok: true };
+  } catch (err) {
+    console.error("[movePressRelease]", err);
+    return { ok: false, error: err instanceof Error ? err.message : "move_failed" };
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// bulkCreatePressReleases — création en masse depuis N PDF (multi-upload).
+// FormData : files (N×PDF) + tag commun. Chaque PDF → 1 brouillon, titre
+// pré-rempli = nom du fichier nettoyé (à compléter ensuite via l'éditeur).
+// Best-effort par fichier : un PDF invalide est compté en `failed`, n'arrête
+// pas le lot.
+// ─────────────────────────────────────────────────────────────────
+export async function bulkCreatePressReleases(
+  formData: FormData,
+): Promise<{ ok: boolean; created: number; failed: number; error?: string }> {
+  try {
+    await requireAdmin();
+
+    const tagParsed = tagSchema.safeParse(formData.get("tag"));
+    if (!tagParsed.success) return { ok: false, created: 0, failed: 0, error: "invalid_tag" };
+    const tag = tagParsed.data;
+
+    const files = formData
+      .getAll("files")
+      .filter((f): f is File => f instanceof File && f.size > 0);
+    if (files.length === 0) return { ok: false, created: 0, failed: 0, error: "file_required" };
+
+    let created = 0;
+    let failed = 0;
+    for (const file of files) {
+      try {
+        const stored = await validateAndStorePdf(file);
+        if (!stored) {
+          failed += 1;
+          continue;
+        }
+        const title =
+          file.name
+            .replace(/\.pdf$/i, "")
+            .replace(/[-_]+/g, " ")
+            .trim()
+            .slice(0, 255) || "Communiqué";
+        const frSlug = await uniqueSlug("fr", title);
+        await prisma.pressRelease.create({
+          data: {
+            tag,
+            status: "draft",
+            pdfStoragePath: stored.pdfStoragePath,
+            pdfFileName: stored.pdfFileName,
+            pdfFileSize: stored.pdfFileSize,
+            pdfHashSha256: stored.pdfHashSha256,
+            translations: {
+              create: {
+                locale: "fr",
+                title,
+                slug: frSlug,
+                ...(stored.bodyHtml ? { body: stored.bodyHtml } : {}),
+              },
+            },
+          },
+        });
+        created += 1;
+      } catch (itemErr) {
+        console.error("[bulkCreatePressReleases:item]", itemErr);
+        failed += 1;
+      }
+    }
+
+    revalidatePresse();
+    return { ok: created > 0, created, failed };
+  } catch (err) {
+    console.error("[bulkCreatePressReleases]", err);
+    return {
+      ok: false,
+      created: 0,
+      failed: 0,
+      error: err instanceof Error ? err.message : "bulk_failed",
+    };
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
 // deletePressRelease — soft delete + suppression PDF best-effort.
 // ─────────────────────────────────────────────────────────────────
 export async function deletePressRelease(id: string): Promise<{ ok: boolean; error?: string }> {

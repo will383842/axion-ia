@@ -51,7 +51,7 @@ export default async function PressMediaUploadPage({ params, searchParams }: Pag
   const { locale, adminPrefix } = await params;
   const sp = (await searchParams) ?? {};
   const session = await auth();
-  if (!session?.user || session.user.role !== "admin") {
+  if (!session?.user || (session.user.role !== "admin" && session.user.role !== "super_admin")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
   const base = `/${locale}/${adminPrefix}/presse`;

@@ -65,8 +65,10 @@ export interface PressSpokesperson {
   languages: ReadonlyArray<"fr" | "en">;
   /** Topical expertise areas — used for JSON-LD `knowsAbout`. */
   knowsAbout: ReadonlyArray<string>;
-  fr: { name: string; role: string; bio: string };
-  en: { name: string; role: string; bio: string };
+  /** `bio` = factual 3-line backgrounder (copy-paste). `quote` = an attributable,
+   *  ready-to-cite pull quote for journalists (no recontact needed). */
+  fr: { name: string; role: string; bio: string; quote: string };
+  en: { name: string; role: string; bio: string; quote: string };
 }
 
 export interface PressKitAsset {
@@ -339,11 +341,16 @@ export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
       name: "Williams",
       role: "Fondateur · lead consultant Axion-IA",
       bio: "Dix ans en transformation digitale, opérationnel terrain. Williams dirige les interventions Axion-IA en entreprise et incarne l'approche opérationnelle du cabinet — démos sur données réelles, plans chiffrés, mise en production rapide. Disponible pour interviews FR + EN, réponse sous 48 h ouvrées.",
+      quote:
+        "L'IA en entreprise ne se joue pas sur la technologie, mais sur l'exécution. La plupart des projets échouent parce qu'ils ne dépassent jamais le stade du POC. Notre rôle, c'est de prouver la valeur sur les vraies données du client, puis de la mettre en production — avec un retour sur investissement chiffré, pas une promesse.",
     },
     en: {
       name: "Williams",
       role: "Founder · lead consultant Axion-IA",
       bio: "Ten years in digital transformation, hands-on field practice. Williams leads Axion-IA enterprise engagements and embodies the firm's operational approach — demos on real data, costed plans, fast go-live. Available for FR + EN interviews, response within 48 business hours.",
+      // EN = miroir FR (locale EN désactivée, aucun travail de traduction — Will).
+      quote:
+        "L'IA en entreprise ne se joue pas sur la technologie, mais sur l'exécution. La plupart des projets échouent parce qu'ils ne dépassent jamais le stade du POC. Notre rôle, c'est de prouver la valeur sur les vraies données du client, puis de la mettre en production — avec un retour sur investissement chiffré, pas une promesse.",
     },
   },
 ] as const;
