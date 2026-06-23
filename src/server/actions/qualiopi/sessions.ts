@@ -24,14 +24,13 @@ import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
-import {
-  writeSessionTransition,
-  type WriteSessionTransitionInput,
-} from "@/server/qualiopi/formations/transition-helper";
+import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
 import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
 
-// Ré-export pour la rétrocompatibilité des éventuels callers externes.
-export type { WriteSessionTransitionInput };
+// NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
+// caller externe). Un `export type { … }` dans un module "use server" est
+// mal compilé par Turbopack (Next 16.2) en Server Action runtime → 500.
+// Source du type : @/server/qualiopi/formations/transition-helper.
 
 type ActionResult<T> = { data: T } | { error: string };
 

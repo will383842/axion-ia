@@ -62,10 +62,13 @@ interface Props {
 export const revalidate = 3600;
 
 /**
- * Audit indexation 2026-05-18 — anti soft-404 SSG : slugs hardcode connus,
- * tout slug hors PRESS_RELEASES → notFound() immédiat sans tentative ISR.
+ * Communiqués gérés en console admin (2026-06-23) : les slugs ne sont plus
+ * connus au build (build sous `stub.invalid` → `generateStaticParams` vide).
+ * `dynamicParams = true` permet de rendre à la demande (ISR) un communiqué
+ * publié après le build. Pas de soft-404 : un slug inexistant fait
+ * `getPressReleaseBySlug() === null` → `notFound()` (vrai 404).
  */
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 /**
  * Seuil HCU 2024 anti-doorway : un communiqué de presse digne d'indexation

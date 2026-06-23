@@ -3838,8 +3838,8 @@ model ImageAssetTranslation {
   ogTitle         String? @map("og_title") @db.VarChar(255)
   ogDescription   String? @map("og_description") @db.VarChar(255)
 
-  aiSummary  String? @map("ai_summary") @db.Text
-  embedTitle String? @map("embed_title") @db.VarChar(255)
+  aiSummary    String? @map("ai_summary") @db.Text
+  embedTitle   String? @map("embed_title") @db.VarChar(255)
   // OCR du texte présent DANS l'image (détecté par Claude Vision à l'enrichment).
   // Audit images 2026-06-20 : l'enrichment écrivait déjà `embeddedText` mais la
   // colonne n'existait pas → crash Prisma « Unknown argument » dès qu'une image
@@ -7031,11 +7031,11 @@ model ConsoleDocument {
   description String?           @db.Text
 
   // Fichier — stocké sur volume disque hors web-root (cf. console-documents/storage.ts).
-  fileName    String  @map("file_name") @db.VarChar(255)
-  storagePath String  @map("storage_path") @db.VarChar(512)
-  mimeType    String  @map("mime_type") @db.VarChar(120)
-  sizeBytes   Int     @map("size_bytes")
-  hashSha256  String  @map("hash_sha256") @db.VarChar(64)
+  fileName    String @map("file_name") @db.VarChar(255)
+  storagePath String @map("storage_path") @db.VarChar(512)
+  mimeType    String @map("mime_type") @db.VarChar(120)
+  sizeBytes   Int    @map("size_bytes")
+  hashSha256  String @map("hash_sha256") @db.VarChar(64)
 
   /// Donnée personnelle sensible (ex. casier judiciaire) — accès durci, jamais en cache.
   sensitive Boolean @default(false)
@@ -7153,4 +7153,41 @@ model PressMediaAssetTranslation {
 
   @@unique([assetId, locale])
   @@map("press_media_asset_translations")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Couverture médias — retombées presse externes (articles / interviews) ajoutées
+// depuis l'admin. Miroir des conventions PressRelease (uuid, status, sortOrder,
+// soft-delete, translations). Le contenu reste externe : on stocke l'URL de
+// l'article + le média (outlet) + le titre traduit.
+// ─────────────────────────────────────────────────────────────────────────────
+model MediaCoverage {
+  id          String        @id @default(uuid()) @db.Uuid
+  outlet      String        @db.VarChar(255)
+  url         String        @db.VarChar(2000)
+  publishedAt DateTime      @map("published_at")
+  status      PublishStatus @default(draft)
+  sortOrder   Int           @default(0) @map("sort_order")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  deletedAt   DateTime?     @map("deleted_at")
+
+  translations MediaCoverageTranslation[]
+
+  @@index([status, sortOrder])
+  @@map("media_coverage")
+}
+
+model MediaCoverageTranslation {
+  id         String   @id @default(uuid()) @db.Uuid
+  coverageId String   @map("coverage_id") @db.Uuid
+  locale     Locale
+  title      String   @db.VarChar(255)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  coverage MediaCoverage @relation(fields: [coverageId], references: [id], onDelete: Cascade)
+
+  @@unique([coverageId, locale])
+  @@map("media_coverage_translations")
 }

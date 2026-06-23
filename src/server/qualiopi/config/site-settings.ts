@@ -6,7 +6,8 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { logQualiopiActivity, type AdminSession } from "@/server/actions/qualiopi/_guards";
+import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import {
   QUALIOPI_CONFIG_REGISTRY,
   QUALIOPI_CONFIG_KEY_PREFIX,

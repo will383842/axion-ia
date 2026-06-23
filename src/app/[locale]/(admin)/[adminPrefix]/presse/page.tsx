@@ -32,11 +32,26 @@ export default async function PressOverviewPage({ params }: PageProps) {
   }
   const base = `/${locale}/${adminPrefix}/presse`;
 
-  const [releasesTotal, releasesPublished, mediaTotal, mediaPublished] = await Promise.all([
-    prisma.pressRelease.count({ where: { deletedAt: null } }),
-    prisma.pressRelease.count({ where: { deletedAt: null, status: "published" } }),
-    prisma.pressMediaAsset.count({ where: { deletedAt: null } }),
-    prisma.pressMediaAsset.count({ where: { deletedAt: null, status: "published" } }),
+  const [
+    releasesTotal,
+    releasesPublished,
+    mediaTotal,
+    mediaPublished,
+    coverageTotal,
+    coveragePublished,
+  ] = await Promise.all([
+    // .catch(() => 0) : une table absente (migration non encore appliquée dans
+    // cet environnement) ne doit pas crasher toute la console (cf. error.tsx →
+    // « revenir au tableau de bord » perçu comme un bounce). Même garde que le
+    // layout admin pour `unreadContactsCount`.
+    prisma.pressRelease.count({ where: { deletedAt: null } }).catch(() => 0),
+    prisma.pressRelease.count({ where: { deletedAt: null, status: "published" } }).catch(() => 0),
+    prisma.pressMediaAsset.count({ where: { deletedAt: null } }).catch(() => 0),
+    prisma.pressMediaAsset
+      .count({ where: { deletedAt: null, status: "published" } })
+      .catch(() => 0),
+    prisma.mediaCoverage.count({ where: { deletedAt: null } }).catch(() => 0),
+    prisma.mediaCoverage.count({ where: { deletedAt: null, status: "published" } }).catch(() => 0),
   ]);
 
   return (
@@ -75,6 +90,13 @@ export default async function PressOverviewPage({ params }: PageProps) {
           tone="warning"
           href={`${base}/kit-media`}
         />
+        <AdminStatCard
+          label="Couverture médias"
+          value={coverageTotal}
+          meta={`${coveragePublished} publié${coveragePublished > 1 ? "s" : ""}`}
+          tone="info"
+          href={`${base}/couverture`}
+        />
       </div>
 
       <div className="grid grid-cols-1 gap-[var(--space-admin-5)] md:grid-cols-2">
@@ -110,6 +132,24 @@ export default async function PressOverviewPage({ params }: PageProps) {
             </Link>
             <Link href={`${base}/kit-media/upload`} className="admin-button-secondary">
               + Uploader
+            </Link>
+          </div>
+        </AdminCard>
+
+        <AdminCard variant="interactive">
+          <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+            Couverture médias
+          </h2>
+          <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+            Référencez les articles et interviews publiés par des médias externes (retombées presse)
+            avec leur lien d&apos;origine.
+          </p>
+          <div className="mt-[var(--space-admin-5)] flex gap-[var(--space-admin-3)]">
+            <Link href={`${base}/couverture`} className="admin-button">
+              Voir la couverture
+            </Link>
+            <Link href={`${base}/couverture/nouveau`} className="admin-button-secondary">
+              + Nouvelle
             </Link>
           </div>
         </AdminCard>

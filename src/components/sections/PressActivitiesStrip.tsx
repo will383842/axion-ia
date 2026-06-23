@@ -35,8 +35,11 @@ interface PressActivitiesStripProps {
 
 export function PressActivitiesStrip({ isFr, blurbs, discoverLabel }: PressActivitiesStripProps) {
   return (
-    <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-      {SERVICES.map((service) => {
+    // 5 activités sur UNE seule ligne dès `md` (≥768px) puis maintenues à 5 sur
+    // desktop (demande Will 2026-06-23). 2 colonnes en deçà pour rester lisible.
+    // Server component, zéro JS client, hauteurs de carte égales (items-stretch).
+    <ul className="grid grid-cols-2 gap-4 md:grid-cols-5">
+      {SERVICES.map((service, idx) => {
         const Icon = ACTIVITY_ICON[service.id];
         const name = serviceOfficial(service, isFr);
         return (
@@ -44,15 +47,25 @@ export function PressActivitiesStrip({ isFr, blurbs, discoverLabel }: PressActiv
             <Link
               href={service.href as HrefProp}
               aria-label={`${discoverLabel} : ${name}`}
-              className="group border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta flex min-h-[44px] w-full flex-col rounded-xl border p-5 transition hover:shadow-[var(--shadow-subtle)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="group border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta relative flex w-full flex-col overflow-hidden rounded-2xl border p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-card)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              <span className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full">
-                <Icon className="h-5 w-5" aria-hidden="true" />
+              {/* Liseré d'accent supérieur révélé au survol */}
+              <span
+                aria-hidden="true"
+                className="bg-terracotta absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-200 group-hover:scale-x-100"
+              />
+              <span className="mb-4 flex items-center justify-between">
+                <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-paper inline-flex h-12 w-12 items-center justify-center rounded-xl transition-colors">
+                  <Icon className="h-6 w-6" aria-hidden="true" />
+                </span>
+                <span className="text-fg-muted font-serif text-2xl leading-none font-semibold tabular-nums opacity-30 select-none">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
               </span>
-              <span className="text-fg flex items-start justify-between gap-2 text-sm leading-tight font-semibold">
+              <span className="text-fg flex items-start justify-between gap-2 text-[15px] leading-tight font-semibold">
                 {name}
                 <ArrowUpRight
-                  className="text-fg-muted group-hover:text-terracotta h-4 w-4 shrink-0 transition"
+                  className="text-fg-muted group-hover:text-terracotta mt-0.5 h-4 w-4 shrink-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   aria-hidden="true"
                 />
               </span>

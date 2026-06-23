@@ -9,26 +9,18 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { Illustration } from "@/components/visual/Illustration";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { PressFacts } from "@/components/sections/PressFacts";
 import { PressImages } from "@/components/sections/PressImages";
 import { PressImageBank } from "@/components/sections/PressImageBank";
 import { PressReleases } from "@/components/sections/PressReleases";
 import { MediaCoverage } from "@/components/sections/MediaCoverage";
-import { PressSpokesperson } from "@/components/sections/PressSpokesperson";
 import { PressContact } from "@/components/sections/PressContact";
 import { PressActivitiesStrip } from "@/components/sections/PressActivitiesStrip";
 import { PressWhatsReallyHappening } from "@/components/sections/PressWhatsReallyHappening";
 import { type ServiceId } from "@/content/services";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
-import {
-  PRESS_PITCH,
-  PRESS_FACTS,
-  PRESS_MEDIA_COVERAGE,
-  PRESS_SPOKESPERSONS,
-  PRESS_FAQ,
-} from "@/content/press";
+import { PRESS_PITCH, PRESS_FACTS, PRESS_FAQ } from "@/content/press";
 // Salle de presse 2026-06-22 — communiqués + kit média lus depuis la DB
 // (fallback fixtures si DB vide / build stub). Édités via la console admin.
 import {
@@ -36,6 +28,9 @@ import {
   getPublishedPressMedia,
   getPressGalleryImages,
 } from "@/server/press/queries";
+// Couverture médias — retombées presse externes gérées depuis la console admin
+// (section masquée tant qu'il n'y a aucune entrée publiée).
+import { getPublishedMediaCoverage } from "@/server/press/media-coverage-queries";
 import { GalleryGrid } from "@/components/galerie/GalleryGrid";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
@@ -49,9 +44,6 @@ import { getRealTestimonialsOnly } from "@/server/actions/content-gen/real-testi
 import { Link } from "@/i18n/navigation";
 import { readLatestSnapshot } from "@/server/observatoire/snapshot";
 import {
-  STUDY_SECTOR_COUNT,
-  STUDY_REGION_COUNT,
-  STUDY_QUESTION_COUNT,
   STUDY_LICENSE_LABEL,
   STUDY_LICENSE_URL,
   BAROMETER_INSIGHT_KEYS,
@@ -115,22 +107,8 @@ export default async function PressePage({ params }: Props) {
 
   const releases = await getPublishedPressReleases(loc);
 
-  const coverage = PRESS_MEDIA_COVERAGE.map((m) => ({
-    id: m.id,
-    outlet: m.outlet,
-    url: m.url,
-    publishedAt: m.publishedAt,
-    title: m[loc].title,
-  }));
-
-  const spokespersons = PRESS_SPOKESPERSONS.map((p) => ({
-    id: p.id,
-    name: p[loc].name,
-    role: p[loc].role,
-    bio: p[loc].bio,
-    linkedinUrl: p.linkedinUrl,
-    languagesLabel: p.languages.map((l) => l.toUpperCase()).join(" · "),
-  }));
+  // Couverture médias réelle (DB admin) — la section est masquée si vide.
+  const coverage = await getPublishedMediaCoverage(loc);
 
   const faqItems = PRESS_FAQ.map((f) => ({
     id: f.id,
@@ -191,14 +169,13 @@ export default async function PressePage({ params }: Props) {
     inLanguage: loc,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     speakable: buildSpeakableSpecification({
-      selectors: ["#press-pitch", "#press-boilerplate"],
+      selectors: ["#press-pitch"],
     }),
     about: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "Axion-IA",
       url: SITE_URL,
-      foundingDate: "2024",
       address: {
         "@type": "PostalAddress",
         addressCountry: "FR",
@@ -220,22 +197,6 @@ export default async function PressePage({ params }: Props) {
       sameAs: ["https://www.linkedin.com/company/axion-ia"],
     },
   };
-
-  const personsJsonLd = PRESS_SPOKESPERSONS.map((p) => ({
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: p[loc].name,
-    jobTitle: p[loc].role,
-    description: p[loc].bio,
-    sameAs: [p.linkedinUrl],
-    knowsAbout: [...p.knowsAbout],
-    knowsLanguage: p.languages.map((l) => (l === "fr" ? "French" : "English")),
-    // Consolidation knowledge graph (Sprint AEO 2026-06-03) : on relie chaque
-    // porte-parole à l'entité canonique Organization via son `@id` plutôt qu'un
-    // node Organization inline dupliqué — Google/Claude/Perplexity rattachent
-    // alors le Person au même nœud entité que le reste du site.
-    worksFor: { "@id": `${SITE_URL}/#organization` },
-  }));
 
   const releasesItemList =
     releases.length > 0
@@ -347,31 +308,6 @@ export default async function PressePage({ params }: Props) {
         </div>
       </Section>
 
-      {/* HERO ILLUSTRATION — placeholder Sprint Visual Rhythm 2026 */}
-      <Section>
-        <Container>
-          <div className="mx-auto max-w-4xl">
-            <Illustration
-              slot="PRESSE-01-hero"
-              src="/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp"
-              aspectRatio="16:9"
-              filenameTarget="public/illustrations/presse-hero.avif"
-              caption={
-                isFr
-                  ? "L'équipe Axion-IA — cabinet IA opérationnel France"
-                  : "The Axion-IA team — operational AI consultancy France"
-              }
-              alt={
-                isFr
-                  ? "L'équipe Axion-IA, cabinet IA opérationnel B2B, réunie dans ses locaux."
-                  : "The Axion-IA team, B2B operational AI consultancy, gathered at the office."
-              }
-              priority
-            />
-          </div>
-        </Container>
-      </Section>
-
       {/* 5 ACTIVITÉS — strip compact (SSOT services.ts), liens hubs canoniques */}
       <Section
         id="activites"
@@ -397,16 +333,15 @@ export default async function PressePage({ params }: Props) {
         titleTail={t("pitchTitleTail")}
       >
         <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-start">
-          <div className="max-w-2xl space-y-6">
+          <div className="max-w-2xl">
+            {/* Un seul paragraphe (citable AEO/Speakable) — fini le doublon
+                pitch.short + boilerplate (décision Will 2026-06-23). */}
             <p
               id="press-pitch"
               className="text-fg text-lg leading-relaxed sm:text-xl"
               style={{ fontFamily: "var(--font-serif)", fontWeight: 400 }}
             >
               {pitch.short}
-            </p>
-            <p id="press-boilerplate" className="text-fg-soft text-base leading-relaxed">
-              {pitch.boilerplate}
             </p>
           </div>
           <PressFacts eyebrow={t("factsEyebrow")} facts={facts} />
@@ -425,50 +360,23 @@ export default async function PressePage({ params }: Props) {
         <PressWhatsReallyHappening intro={t("whatsReallyIntro")} links={whatsReallyLinks} />
       </Section>
 
-      {/* OBSERVATOIRE IA 2026 — KPIs presse + CC BY + liens (fallback honnête) */}
+      {/* STATISTIQUES IA — étude indépendante Axion-IA. Honnête : aucun chiffre
+          fabriqué (ni « 30 secteurs / 13 régions » présentés comme des
+          résultats). On n'affiche des KPI que si l'enquête a un échantillon
+          réel ; sinon, cadrage sobre + lien vers l'étude. (Will 2026-06-23) */}
       <Section
         id="observatoire"
         tone="sand"
         eyebrow={isFr ? "Étude indépendante" : "Independent study"}
         title={tObs("press.sectionTitle")}
+        description={
+          isFr
+            ? "Axion-IA mène l'Observatoire de l'IA dans les entreprises françaises, une étude indépendante en données ouvertes (CC BY 4.0) sur la maturité, les usages, les budgets et les freins à l'IA. Les résultats chiffrés sont publiés au fil de l'enquête, une fois l'échantillon significatif."
+            : "Axion-IA runs the AI in French Companies Observatory, an independent open-data study (CC BY 4.0) on AI maturity, use cases, budgets and barriers. Figures are released as the survey progresses, once the sample is significant."
+        }
       >
-        <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-          <div className="border-border bg-canvas rounded-lg border p-5 text-center">
-            <dt className="text-fg-muted text-xs font-medium uppercase">
-              {tObs("press.sampleLabel")}
-            </dt>
-            <dd className="text-fg mt-1 text-2xl font-semibold tabular-nums">
-              {obsTotal.toLocaleString(isFr ? "fr-FR" : "en-US")}
-            </dd>
-          </div>
-          <div className="border-border bg-canvas rounded-lg border p-5 text-center">
-            <dt className="text-fg-muted text-xs font-medium uppercase">
-              {tObs("press.sectorsLabel")}
-            </dt>
-            <dd className="text-fg mt-1 text-2xl font-semibold tabular-nums">
-              {STUDY_SECTOR_COUNT}
-            </dd>
-          </div>
-          <div className="border-border bg-canvas rounded-lg border p-5 text-center">
-            <dt className="text-fg-muted text-xs font-medium uppercase">
-              {tObs("press.regionsLabel")}
-            </dt>
-            <dd className="text-fg mt-1 text-2xl font-semibold tabular-nums">
-              {STUDY_REGION_COUNT}
-            </dd>
-          </div>
-          <div className="border-border bg-canvas rounded-lg border p-5 text-center">
-            <dt className="text-fg-muted text-xs font-medium uppercase">
-              {tObs("press.questionsLabel")}
-            </dt>
-            <dd className="text-fg mt-1 text-2xl font-semibold tabular-nums">
-              {STUDY_QUESTION_COUNT}
-            </dd>
-          </div>
-        </dl>
-
         {obsHasData ? (
-          <ul className="mt-8 grid max-w-3xl gap-3">
+          <ul className="grid max-w-3xl gap-3">
             {BAROMETER_INSIGHT_KEYS.map((key) => {
               const value = obsSnapshot?.insights?.[key];
               if (value == null || value <= 0) return null;
@@ -479,11 +387,7 @@ export default async function PressePage({ params }: Props) {
               );
             })}
           </ul>
-        ) : (
-          <p className="text-fg-soft mt-8 max-w-2xl text-base leading-relaxed">
-            {tObs("results.pending")}
-          </p>
-        )}
+        ) : null}
 
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <a
@@ -500,12 +404,14 @@ export default async function PressePage({ params }: Props) {
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </Button>
-          <Button asChild shape="pill" variant="outline">
-            <a href={obsCsvUrl}>
-              <Download className="h-4 w-4" aria-hidden="true" />
-              {tObs("press.downloadData")}
-            </a>
-          </Button>
+          {obsHasData ? (
+            <Button asChild shape="pill" variant="outline">
+              <a href={obsCsvUrl}>
+                <Download className="h-4 w-4" aria-hidden="true" />
+                {tObs("press.downloadData")}
+              </a>
+            </Button>
+          ) : null}
         </div>
       </Section>
 
@@ -631,27 +537,6 @@ export default async function PressePage({ params }: Props) {
         />
       </Section>
 
-      {/* PORTE-PAROLE */}
-      <Section
-        id="porte-parole"
-        tone="paper"
-        eyebrow={t("spokespersonEyebrow")}
-        title={t("spokespersonTitle")}
-        titleEm={t("spokespersonTitleEm")}
-        titleTail={t("spokespersonTitleTail")}
-        description={t("spokespersonDescription")}
-      >
-        <PressSpokesperson
-          spokespersons={spokespersons}
-          labels={{
-            available: t("spokespersonAvailable"),
-            responseTime: t("spokespersonResponseTime"),
-            linkedin: t("spokespersonLinkedin"),
-            languagesLabel: t("spokespersonLanguages"),
-          }}
-        />
-      </Section>
-
       {/* TÉMOIGNAGES VÉRIFIÉS (Sprint v7 Phase 15 / F5) — section invisible
           si aucun real testimonial n'a été marqué côté admin. Affiche
           uniquement les testimonials avec source vérifiable + consentement
@@ -701,25 +586,30 @@ export default async function PressePage({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* COUVERTURE MÉDIAS */}
-      <Section
-        id="couverture"
-        tone="canvas"
-        eyebrow={t("coverageEyebrow")}
-        title={t("coverageTitle")}
-        titleEm={t("coverageTitleEm")}
-        titleTail={t("coverageTitleTail")}
-        description={t("coverageDescription")}
-      >
-        <MediaCoverage
-          items={coverage}
-          locale={loc}
-          labels={{
-            empty: t("coverageEmpty"),
-            readArticle: t("coverageReadArticle"),
-          }}
-        />
-      </Section>
+      {/* COUVERTURE MÉDIAS — section ENTIÈREMENT masquée tant qu'aucune retombée
+          n'est publiée depuis la console admin (décision Will 2026-06-23 :
+          pas de bloc « à venir » vide). Gérée dans Admin → Salle de presse →
+          Couverture médias. */}
+      {coverage.length > 0 ? (
+        <Section
+          id="couverture"
+          tone="canvas"
+          eyebrow={t("coverageEyebrow")}
+          title={t("coverageTitle")}
+          titleEm={t("coverageTitleEm")}
+          titleTail={t("coverageTitleTail")}
+          description={t("coverageDescription")}
+        >
+          <MediaCoverage
+            items={coverage}
+            locale={loc}
+            labels={{
+              empty: t("coverageEmpty"),
+              readArticle: t("coverageReadArticle"),
+            }}
+          />
+        </Section>
+      ) : null}
 
       {/* DEMANDE PRESSE — formulaire unifié (defaultType=presse, lockType).
           Form v2 2026-05-28 : remplace le mailto historique par une demande
@@ -788,9 +678,6 @@ export default async function PressePage({ params }: Props) {
       {/* JSON-LD payloads — émis une seule fois, en bas de page */}
       <JsonLd data={pressJsonLd} />
       <JsonLd data={faqJsonLd} />
-      {personsJsonLd.map((p, idx) => (
-        <JsonLd key={`person-${idx}`} data={p} />
-      ))}
       {releasesItemList ? <JsonLd data={releasesItemList} /> : null}
       <JsonLd data={pressImagesJsonLd} />
     </>

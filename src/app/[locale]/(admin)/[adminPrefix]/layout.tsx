@@ -35,7 +35,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminNotificationItem } from "@/components/admin/ui";
 import { unstable_cache } from "next/cache";
-import { buildAdminNav } from "@/lib/admin-nav";
+import { buildAdminNav, type AdminNavItem } from "@/lib/admin-nav";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 import { getFailedJobsCount } from "@/server/actions/content-gen/jobs";
 import { prisma } from "@/lib/prisma";
@@ -92,17 +92,18 @@ interface AdminLayoutProps {
 // Refonte admin mai 2026 PR 1 — buildNav() relocalisé dans
 // src/lib/admin-nav.ts (SSOT, consommé aussi par AdminCommandPalette
 // après PR 5). Le wrapper local préserve la signature historique.
-interface NavItem {
-  href: string;
-  label: string;
-  icon: string;
-  group: "main" | "content" | "image-bank" | "engagement" | "ops" | "system";
-}
+// Le type des items de nav = SSOT `AdminNavItem` (src/lib/admin-nav.ts). On
+// réutilise directement le type source pour éviter tout drift de l'union des
+// groupes (l'ancien type local listait 6 groupes et omettait notamment
+// « presse », « qualiopi », etc. — source de confusion, jamais bloquante car
+// `buildAdminNav` reste la SSOT runtime).
+type NavItem = AdminNavItem;
 
 function buildNav(adminPrefix: string): NavItem[] {
   // Délègue à la SSOT (src/lib/admin-nav.ts) pour éviter le drift avec
-  // AdminCommandPalette qui consommera la même source en PR 5.
-  return buildAdminNav(adminPrefix) as NavItem[];
+  // AdminCommandPalette qui consomme la même source. Copie mutable (la SSOT
+  // renvoie un `readonly[]`).
+  return [...buildAdminNav(adminPrefix)];
 }
 
 // Server Action de déconnexion exposée au footer profil de la sidebar (rail
@@ -133,8 +134,11 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
 
   // Sidebar n'apparaît que pour les sessions authentifiées (la page /login a sa
   // propre UI via children — sans session, pas de sidebar).
-  type AdminSession = { user?: { email?: string | null } | null } | null;
-  const session = (await auth()) as AdminSession;
+  // NB : cast inline (PAS de `type AdminSession` local). Turbopack dev (Next
+  // 16.2) capture à tort un alias de type déclaré DANS un module à "use server"
+  // comme une valeur runtime → `ReferenceError: AdminSession is not defined`
+  // (500 sur TOUTE la console admin). L'inliner supprime le binding nommé.
+  const session = (await auth()) as { user?: { email?: string | null } | null } | null;
   const showSidebar = Boolean(session?.user);
   const nav: NavItem[] = buildNav(adminPrefix);
   const adminBase = `/fr/${adminPrefix}`;

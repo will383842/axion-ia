@@ -73,7 +73,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
-import { ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER } from "@/lib/admin-nav";
+import { ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER, findActiveNavHref } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
 
 // Mapping label nav → icône lucide. Fallback FolderOpen si non mappé.
@@ -191,7 +191,8 @@ export function AdminSidebarNav({
   // un flash SSR→client). Se déploie/replie ensuite au clic sur l'onglet.
   const [collapsedGroups, setCollapsedGroups] = useState<Set<AdminNavGroup>>(() => {
     const s = new Set<AdminNavGroup>(ADMIN_NAV_GROUP_ORDER);
-    const hit = items.find((it) => it.href === pathname);
+    const activeHref = findActiveNavHref(items, pathname);
+    const hit = items.find((it) => it.href === activeHref);
     if (hit) s.delete(hit.group);
     return s;
   });
@@ -286,10 +287,16 @@ export function AdminSidebarNav({
 
   // Groupe contenant la route active → toujours déplié (le lien actif ne doit
   // jamais être masqué par un groupe que l'utilisateur a replié).
+  // Href actif par matching de préfixe (cf. findActiveHref) — pilote à la fois
+  // le surlignage de l'item et l'ouverture du groupe parent.
+  const activeHref = useMemo<string | null>(
+    () => findActiveNavHref(items, pathname),
+    [items, pathname],
+  );
   const activeGroup = useMemo<AdminNavGroup | null>(() => {
-    const hit = items.find((it) => it.href === pathname);
+    const hit = items.find((it) => it.href === activeHref);
     return hit ? hit.group : null;
-  }, [items, pathname]);
+  }, [items, activeHref]);
 
   // Auto-ouvre le groupe contenant la page courante (au montage + à chaque
   // navigation), MAIS laisse l'utilisateur le replier librement ensuite (l'effet
@@ -610,7 +617,7 @@ export function AdminSidebarNav({
                   >
                     {groupItems.map((item) => {
                       const Icon = ICON_MAP[item.label] ?? FolderOpen;
-                      const active = pathname === item.href;
+                      const active = item.href === activeHref;
                       const badge = badgeFor(item.href);
                       const level = collapsed ? 0 : itemLevel(item.href);
                       const iconSize = level >= 1 ? 14 : 16;

@@ -29,10 +29,13 @@ import { getClientIp } from "@/lib/client-ip";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
 import { applyTransition, StateMachineError } from "./state-machine";
-import { computeRefundFromCancellation, type RefundCalculation } from "./refund-calc";
+import { computeRefundFromCancellation } from "./refund-calc";
 import type { CancellationWindow } from "../../../prisma/generated/client";
 
-export type { RefundCalculation };
+// NB : le type `RefundCalculation` n'est PAS ré-exporté ici (aucun caller
+// externe). Un `export type { … }` dans un module "use server" est mal compilé
+// par Turbopack (Next 16.2) en Server Action runtime → 500. Source du type :
+// ./refund-calc.
 
 export interface SelfServiceResult {
   ok: boolean;

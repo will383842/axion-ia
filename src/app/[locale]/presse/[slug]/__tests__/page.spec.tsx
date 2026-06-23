@@ -44,31 +44,22 @@ vi.mock("@/i18n/navigation", () => ({
 }));
 
 import { PRESS_RELEASES, getAllPressReleaseSlugs } from "@/content/press";
-import { routing } from "@/i18n/routing";
 
 describe("/presse/[slug] · generateStaticParams contract", () => {
-  it("matérialise tous les slugs PRESS_RELEASES × toutes les locales", async () => {
+  it("admin-only : DB vide (mock) → aucun param pré-rendu (plus de fallback fixtures)", async () => {
     // Import dynamique du module page (lazy) — Vitest applique les vi.mock() avant.
     // Note : le premier import est lent (cold cache lib/seo + service-coverage transitifs).
+    // Communiqués 2026-06-23 = gérés en console admin. `generateStaticParams`
+    // lit `getAllPublishedPressReleaseSlugs` (prisma mocké → []) et NE retombe
+    // plus sur les fixtures `PRESS_RELEASES`. Les communiqués publiés après le
+    // build sont rendus à la demande (dynamicParams=true, cf. test plus bas).
     const mod = await import("../page");
     const params = await mod.generateStaticParams();
-    const slugs = getAllPressReleaseSlugs();
-    expect(params.length).toBe(slugs.length * routing.locales.length);
-    const firstSlug = slugs[0]!;
-    expect(params).toContainEqual({ locale: "fr", slug: firstSlug });
-    expect(params).toContainEqual({ locale: "en", slug: firstSlug });
+    expect(Array.isArray(params)).toBe(true);
+    expect(params.length).toBe(0);
     // 60s : le 1er import transitif (lib/seo + service-coverage) dépasse 15s sur
     // un environnement froid / worktree à node_modules jonctionné (CI chaud < 5s).
   }, 60_000);
-
-  it("inclut le slug seed 'lancement-plateforme-axion-ia-2026' (fixture canonique)", async () => {
-    const mod = await import("../page");
-    const params = await mod.generateStaticParams();
-    expect(params).toContainEqual({
-      locale: "fr",
-      slug: "lancement-plateforme-axion-ia-2026",
-    });
-  });
 });
 
 describe("/presse/[slug] · ISR + dynamicParams contract", () => {
@@ -77,9 +68,9 @@ describe("/presse/[slug] · ISR + dynamicParams contract", () => {
     expect(mod.revalidate).toBe(3600);
   });
 
-  it("dynamicParams = false (anti soft-404 SSG, slugs hardcode connus)", async () => {
+  it("dynamicParams = true (communiqués admin publiés après le build, rendus à la demande)", async () => {
     const mod = await import("../page");
-    expect(mod.dynamicParams).toBe(false);
+    expect(mod.dynamicParams).toBe(true);
   });
 });
 
