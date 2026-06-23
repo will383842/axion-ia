@@ -671,3 +671,36 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/2fa/setup`, label: "2FA — sécurité", icon: "🔐", group: "system" },
   ];
 }
+
+/**
+ * Résout le href de nav « actif » pour un pathname donné, par matching de
+ * PRÉFIXE (le plus spécifique gagne).
+ *
+ * Pourquoi pas un simple `it.href === pathname` : beaucoup de pages admin sont
+ * des sous-routes SANS entrée de nav propre (éditeurs : `/presse/communiques/
+ * nouveau`, `/presse/kit-media/upload`, `/presse/couverture/[id]`…). Avec un
+ * match exact, ces routes ne résolvaient AUCUN item → la sidebar perdait le
+ * groupe actif (« Salle de presse » se refermait / repassait sur « Activité
+ * quotidienne »). En rattachant au parent le plus long (`/presse/communiques`),
+ * le bon item est surligné et le bon groupe reste ouvert.
+ *
+ * Le « Tableau de bord » (href = racine admin `${base}`) matcherait TOUT en
+ * préfixe ; la règle « le plus long gagne » garantit qu'il ne l'emporte que sur
+ * la racine exacte, jamais sur une sous-page.
+ *
+ * Fonction pure (items + pathname → href|null) → testable sans rendu. SSOT
+ * consommée par `<AdminSidebarNav>` (surlignage item + ouverture groupe).
+ */
+export function findActiveNavHref(
+  items: ReadonlyArray<AdminNavItem>,
+  pathname: string | null,
+): string | null {
+  if (!pathname) return null;
+  let best: string | null = null;
+  for (const it of items) {
+    if (pathname === it.href || pathname.startsWith(`${it.href}/`)) {
+      if (best === null || it.href.length > best.length) best = it.href;
+    }
+  }
+  return best;
+}

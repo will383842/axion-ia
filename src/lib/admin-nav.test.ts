@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { buildAdminNav, ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER } from "./admin-nav";
+import {
+  buildAdminNav,
+  findActiveNavHref,
+  ADMIN_NAV_GROUP_LABELS,
+  ADMIN_NAV_GROUP_ORDER,
+} from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
   it("returns 114 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules)", () => {
@@ -33,5 +38,61 @@ describe("buildAdminNav SSOT", () => {
     const hrefs = items.map((it) => it.href);
     const unique = new Set(hrefs);
     expect(unique.size).toBe(hrefs.length);
+  });
+});
+
+describe("findActiveNavHref — résolution sidebar (anti-rebascule)", () => {
+  const items = buildAdminNav("p");
+  const base = "/fr/p";
+  const groupOf = (href: string | null) => items.find((it) => it.href === href)?.group ?? null;
+
+  it("null pathname → null", () => {
+    expect(findActiveNavHref(items, null)).toBeNull();
+  });
+
+  it("racine admin résout le Tableau de bord, pas une sous-page", () => {
+    expect(findActiveNavHref(items, base)).toBe(base);
+    expect(groupOf(findActiveNavHref(items, base))).toBe("main");
+  });
+
+  // ── Bug 2026-06-23 : clic « Communiqués » / « Kit média » rebasculait sur
+  //    « Activité quotidienne » (groupe main) car ces routes ne matchaient
+  //    aucun item en exact. On verrouille : chaque route presse (page ET
+  //    sous-éditeur) reste dans le groupe « presse ».
+  it("pages de liste presse → item exact + groupe presse", () => {
+    for (const sub of [
+      "/presse",
+      "/presse/communiques",
+      "/presse/kit-media",
+      "/presse/couverture",
+    ]) {
+      const active = findActiveNavHref(items, `${base}${sub}`);
+      expect(active).toBe(`${base}${sub}`);
+      expect(groupOf(active)).toBe("presse");
+    }
+  });
+
+  it("éditeurs presse (sans entrée de nav) → rattachés au parent, groupe presse", () => {
+    const cases: Array<[string, string]> = [
+      ["/presse/communiques/nouveau", "/presse/communiques"],
+      ["/presse/communiques/abc-123", "/presse/communiques"],
+      ["/presse/kit-media/upload", "/presse/kit-media"],
+      ["/presse/couverture/nouveau", "/presse/couverture"],
+      ["/presse/couverture/abc-123", "/presse/couverture"],
+    ];
+    for (const [path, expectedParent] of cases) {
+      const active = findActiveNavHref(items, `${base}${path}`);
+      expect(active).toBe(`${base}${expectedParent}`);
+      expect(groupOf(active)).toBe("presse");
+      // Surtout PAS le Tableau de bord (racine) ni le groupe main.
+      expect(active).not.toBe(base);
+      expect(groupOf(active)).not.toBe("main");
+    }
+  });
+
+  it("le plus long préfixe gagne (jamais le parent court)", () => {
+    const active = findActiveNavHref(items, `${base}/presse/communiques/nouveau`);
+    expect(active).toBe(`${base}/presse/communiques`);
+    expect(active).not.toBe(`${base}/presse`);
   });
 });

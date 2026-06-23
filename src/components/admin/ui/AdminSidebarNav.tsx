@@ -73,7 +73,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
-import { ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER } from "@/lib/admin-nav";
+import { ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER, findActiveNavHref } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
 
 // Mapping label nav → icône lucide. Fallback FolderOpen si non mappé.
@@ -141,27 +141,6 @@ const GROUPS_COLLAPSED_LS_KEY = "admin-sidebar-groups-collapsed-v2";
 
 type BadgeTone = "danger" | "warn";
 
-/**
- * Item de nav « actif » pour un pathname donné. Matching par PRÉFIXE (le plus
- * spécifique gagne) : sur une sous-route comme `/presse/communiques/nouveau`
- * — qui n'a pas d'entrée de nav exacte —, on rattache au parent
- * `/presse/communiques`. Sans ça, `activeGroup` tombait à null et le groupe
- * « Salle de presse » se refermait dès qu'on ouvrait un éditeur (bug 2026-06-23).
- */
-function findActiveHref(
-  items: ReadonlyArray<AdminNavItem>,
-  pathname: string | null,
-): string | null {
-  if (!pathname) return null;
-  let best: string | null = null;
-  for (const it of items) {
-    if (pathname === it.href || pathname.startsWith(`${it.href}/`)) {
-      if (best === null || it.href.length > best.length) best = it.href;
-    }
-  }
-  return best;
-}
-
 /** Calcule initiales (max 2 lettres) à partir d'un email pour l'avatar footer. */
 function initialsFromEmail(email: string | undefined): string {
   if (!email) return "·";
@@ -212,7 +191,7 @@ export function AdminSidebarNav({
   // un flash SSR→client). Se déploie/replie ensuite au clic sur l'onglet.
   const [collapsedGroups, setCollapsedGroups] = useState<Set<AdminNavGroup>>(() => {
     const s = new Set<AdminNavGroup>(ADMIN_NAV_GROUP_ORDER);
-    const activeHref = findActiveHref(items, pathname);
+    const activeHref = findActiveNavHref(items, pathname);
     const hit = items.find((it) => it.href === activeHref);
     if (hit) s.delete(hit.group);
     return s;
@@ -311,7 +290,7 @@ export function AdminSidebarNav({
   // Href actif par matching de préfixe (cf. findActiveHref) — pilote à la fois
   // le surlignage de l'item et l'ouverture du groupe parent.
   const activeHref = useMemo<string | null>(
-    () => findActiveHref(items, pathname),
+    () => findActiveNavHref(items, pathname),
     [items, pathname],
   );
   const activeGroup = useMemo<AdminNavGroup | null>(() => {
