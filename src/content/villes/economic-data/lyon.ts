@@ -433,7 +433,13 @@ export const LYON_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  kbSectorTags: ["chimie-pharma", "banque-finance", "sante-biotech", "tourisme-affaires"],
+  kbSectorTags: [
+    "chimie-pharma",
+    "banque-finance",
+    "sante-biotech",
+    "tourisme-affaires",
+    "juridique",
+  ],
 
   capitaleFrenchTech: {
     statut: "capitale",

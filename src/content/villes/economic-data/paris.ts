@@ -449,7 +449,14 @@ export const PARIS_ECONOMIC_DATA: VilleEconomicData = {
   // ─── Couche 2bis — tags KB sectorielles ─────────────────────────────
   // Volontairement vide en V1 : la KB Prisma ne contient pas encore
   // d'entries sectorielles dédiées (Phase B du sprint).
-  kbSectorTags: ["conseil-affaires", "banque-finance", "it-numerique", "mode-luxe-maroquinerie"],
+  kbSectorTags: [
+    "conseil-affaires",
+    "banque-finance",
+    "it-numerique",
+    "mode-luxe-maroquinerie",
+    "immobilier-pro",
+    "juridique",
+  ],
 
   // ─── Optionnels (hors scoring dashboard) ────────────────────────────
   capitaleFrenchTech: {
