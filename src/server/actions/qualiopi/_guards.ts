@@ -25,7 +25,11 @@ import {
 } from "@/server/actions/knowledge/_guards";
 
 export { requireAdminRead, requireAdminWrite, requireAdminPublish, requireAdminDelete };
-export type { AdminSession };
+// NB : PAS de `export type { AdminSession }` ici. Turbopack (Next 16.2) traite à
+// tort un `export type { … }` (re-export specifier) dans un module "use server"
+// comme un Server Action runtime → `registerServerReference(AdminSession, …)` →
+// `ReferenceError: AdminSession is not defined` (500 sur toute la console admin).
+// Les consommateurs importent le type depuis sa source : @/server/actions/knowledge/_guards.
 
 export interface QualiopiActivityInput {
   /** Action canonique ex. "qualiopi.config.set", "qualiopi.formation.publish". */

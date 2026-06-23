@@ -134,8 +134,11 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
 
   // Sidebar n'apparaît que pour les sessions authentifiées (la page /login a sa
   // propre UI via children — sans session, pas de sidebar).
-  type AdminSession = { user?: { email?: string | null } | null } | null;
-  const session = (await auth()) as AdminSession;
+  // NB : cast inline (PAS de `type AdminSession` local). Turbopack dev (Next
+  // 16.2) capture à tort un alias de type déclaré DANS un module à "use server"
+  // comme une valeur runtime → `ReferenceError: AdminSession is not defined`
+  // (500 sur TOUTE la console admin). L'inliner supprime le binding nommé.
+  const session = (await auth()) as { user?: { email?: string | null } | null } | null;
   const showSidebar = Boolean(session?.user);
   const nav: NavItem[] = buildNav(adminPrefix);
   const adminBase = `/fr/${adminPrefix}`;
