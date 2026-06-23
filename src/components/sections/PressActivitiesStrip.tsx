@@ -62,14 +62,14 @@ export function PressActivitiesStrip({ isFr, blurbs, discoverLabel }: PressActiv
                   {String(idx + 1).padStart(2, "0")}
                 </span>
               </span>
-              <span className="text-fg flex items-start justify-between gap-2 text-[15px] leading-tight font-semibold">
+              <span className="text-fg flex items-start justify-between gap-2 text-base leading-tight font-semibold">
                 {name}
                 <ArrowUpRight
                   className="text-fg-muted group-hover:text-terracotta mt-0.5 h-4 w-4 shrink-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   aria-hidden="true"
                 />
               </span>
-              <span className="text-fg-soft mt-2 text-xs leading-relaxed">
+              <span className="text-fg-soft mt-2 text-sm leading-relaxed">
                 {blurbs[service.id]}
               </span>
             </Link>

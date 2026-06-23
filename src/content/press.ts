@@ -144,8 +144,14 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
   },
   {
     id: "modules",
-    fr: { label: "Modules d'intervention", value: "3 (sessions · audit · implémentation)" },
-    en: { label: "Service modules", value: "3 (sessions · audit · implementation)" },
+    fr: {
+      label: "Activités",
+      value: "5 — formations, 1-to-1, audit, implémentation, sites web",
+    },
+    en: {
+      label: "Activities",
+      value: "5 — training, 1-to-1, audit, implementation, websites",
+    },
   },
   {
     id: "starting-price",

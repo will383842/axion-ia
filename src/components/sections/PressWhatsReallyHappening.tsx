@@ -6,8 +6,11 @@ import { Newspaper, ImageDown, Mail, ArrowRight } from "lucide-react";
 // journaliste à parcourir les communiqués, récupérer les visuels de marque et
 // contacter les relations presse. Liens d'ancre internes (même page) → <a href="#">.
 //
-// Server component, zéro JS client. Le wrapper <Section> (eyebrow/titre) est fourni
-// par la page ; ce composant rend le corps (intro citable + 3 points d'entrée).
+// Refonte visuelle 2026-06-23 (Will) : passage à un lead serif pleine largeur +
+// 3 cartes premium alignées sur la grille « 5 activités » (PressActivitiesStrip)
+// — tuile d'icône terracotta, numéro en filigrane, liseré d'accent au survol,
+// lift léger. Server component, zéro JS client (budget Web Vitals), hauteurs de
+// carte égales (items-stretch) → 0 CLS.
 
 interface WhatsReallyLink {
   /** Ancre interne (ex. "#communiques"). */
@@ -33,35 +36,44 @@ const ICON: Record<WhatsReallyLink["iconKind"], React.ComponentType<{ className?
 
 export function PressWhatsReallyHappening({ intro, links }: PressWhatsReallyHappeningProps) {
   return (
-    <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+    <div className="flex flex-col gap-10">
+      {/* Lead citable (AEO/Speakable) — pleine largeur, ton éditorial serif. */}
       <p
         id="press-whats-really"
-        className="text-fg max-w-xl text-lg leading-relaxed sm:text-xl"
+        className="text-fg max-w-3xl text-lg leading-relaxed sm:text-xl"
         style={{ fontFamily: "var(--font-serif)", fontWeight: 400 }}
       >
         {intro}
       </p>
-      <ul className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-        {links.map((link) => {
+
+      {/* 3 points d'entrée — cartes premium alignées sur la grille « 5 activités ». */}
+      <ul className="grid gap-5 sm:grid-cols-3">
+        {links.map((link, idx) => {
           const Icon = ICON[link.iconKind];
           return (
-            <li key={link.href}>
+            <li key={link.href} className="flex">
               <a
                 href={link.href}
-                className="group border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta flex min-h-[44px] items-start gap-4 rounded-xl border p-5 transition hover:shadow-[var(--shadow-subtle)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none lg:items-center"
+                className="group border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta relative flex w-full flex-col overflow-hidden rounded-2xl border p-6 transition duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-card)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
               >
-                <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="text-fg block text-base leading-tight font-semibold">
-                    {link.title}
+                {/* Liseré d'accent supérieur révélé au survol */}
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-200 group-hover:scale-x-100"
+                />
+                <span className="mb-5 flex items-center justify-between">
+                  <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-paper inline-flex h-12 w-12 items-center justify-center rounded-xl transition-colors">
+                    <Icon className="h-6 w-6" aria-hidden="true" />
                   </span>
-                  <span className="text-fg-soft mt-1 block text-sm leading-relaxed">
-                    {link.description}
+                  <span className="text-fg-muted font-serif text-2xl leading-none font-semibold tabular-nums opacity-30 select-none">
+                    {String(idx + 1).padStart(2, "0")}
                   </span>
                 </span>
-                <span className="text-terracotta mt-1 inline-flex shrink-0 items-center gap-1 text-sm font-medium lg:mt-0">
+                <span className="text-fg text-lg leading-tight font-semibold">{link.title}</span>
+                <span className="text-fg-soft mt-2 flex-1 text-sm leading-relaxed">
+                  {link.description}
+                </span>
+                <span className="text-terracotta mt-5 inline-flex items-center gap-1 text-sm font-medium">
                   {link.cta}
                   <ArrowRight
                     className="h-4 w-4 transition group-hover:translate-x-0.5"

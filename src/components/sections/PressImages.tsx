@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { Download, Palette as PaletteIcon, FileText, Image as ImageIcon, Type } from "lucide-react";
 
 // Section « Images presse » — identité de marque téléchargeable, DISTINCTE de la
@@ -68,6 +69,14 @@ const KIND_ICON: Record<string, React.ComponentType<{ className?: string }>> = {
 const LOGO_KINDS = new Set(["logo", "wordmark"]);
 const DOC_KINDS = new Set(["brand_book", "brand-book", "graphic_charter", "boilerplate", "photo"]);
 
+// Formats rendus en aperçu visuel (thumbnail). Le badge `format` est en MAJ
+// (cf. `getPublishedPressMedia` → `.toUpperCase()`), les fixtures en mixte.
+const IMAGE_FORMATS = new Set(["PNG", "JPG", "JPEG", "WEBP", "SVG", "AVIF", "GIF"]);
+
+function isImageAsset(item: PressImageItem): boolean {
+  return item.fileUrl !== null && IMAGE_FORMATS.has(item.format.toUpperCase());
+}
+
 function DownloadCard({
   item,
   labels,
@@ -77,11 +86,27 @@ function DownloadCard({
 }) {
   const Icon = KIND_ICON[item.kind] ?? FileText;
   const isAvailable = item.fileUrl !== null;
+  const showImagePreview = isImageAsset(item);
   return (
     <li className="border-border bg-paper flex flex-col rounded-xl border p-6 transition hover:shadow-[var(--shadow-subtle)]">
-      <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-11 w-11 items-center justify-center rounded-full">
-        <Icon className="h-5 w-5" aria-hidden="true" />
-      </div>
+      {showImagePreview && item.fileUrl ? (
+        // Aperçu visuel de l'asset uploadé (logo / photo) — `object-contain` pour
+        // ne jamais rogner un logo ; fond ivoire pour révéler les PNG transparents.
+        <div className="border-border bg-canvas relative mb-5 aspect-[3/2] overflow-hidden rounded-lg border">
+          <Image
+            src={item.fileUrl}
+            alt={item.title}
+            fill
+            unoptimized
+            sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
+            className="object-contain p-4"
+          />
+        </div>
+      ) : (
+        <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-11 w-11 items-center justify-center rounded-full">
+          <Icon className="h-5 w-5" aria-hidden="true" />
+        </div>
+      )}
       <div className="flex items-start justify-between gap-3">
         <h4 className="text-fg text-base leading-tight font-semibold">{item.title}</h4>
         <span className="border-border-strong text-fg-muted shrink-0 rounded-sm border px-1.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase">

@@ -31,7 +31,7 @@ import {
 // Couverture médias — retombées presse externes gérées depuis la console admin
 // (section masquée tant qu'il n'y a aucune entrée publiée).
 import { getPublishedMediaCoverage } from "@/server/press/media-coverage-queries";
-import { GalleryGrid } from "@/components/galerie/GalleryGrid";
+import { PressImageCarousel } from "@/components/sections/PressImageCarousel";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   buildProductMetadata,
@@ -376,17 +376,36 @@ export default async function PressePage({ params }: Props) {
         }
       >
         {obsHasData ? (
-          <ul className="grid max-w-3xl gap-3">
-            {BAROMETER_INSIGHT_KEYS.map((key) => {
-              const value = obsSnapshot?.insights?.[key];
-              if (value == null || value <= 0) return null;
-              return (
-                <li key={key} className="text-fg text-lg leading-snug">
-                  {tObs(`insights.${key}`, { value })}
-                </li>
-              );
-            })}
-          </ul>
+          <div className="flex flex-col gap-6">
+            {/* KPI en gros chiffres — calculés sur le snapshot RÉEL. Le grand
+                nombre vient de `value` ; la légende réutilise la phrase i18n
+                existante dont on retire le « X % » de tête (pas de doublon, pas
+                de nouvelle clé EN à traduire). */}
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {BAROMETER_INSIGHT_KEYS.map((key) => {
+                const value = obsSnapshot?.insights?.[key];
+                if (value == null || value <= 0) return null;
+                const caption = tObs(`insights.${key}`, { value }).replace(/^\s*\d+\s*%\s*/, "");
+                return (
+                  <li
+                    key={key}
+                    className="border-border bg-paper flex flex-col rounded-2xl border p-6"
+                  >
+                    <span className="text-terracotta font-serif text-5xl leading-none font-semibold tabular-nums">
+                      {value}
+                      <span className="align-top text-2xl">%</span>
+                    </span>
+                    <p className="text-fg-soft mt-3 text-sm leading-snug">{caption}</p>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="text-fg-muted text-sm">
+              {isFr ? "Sur un échantillon de " : "Based on a sample of "}
+              <span className="text-fg font-semibold tabular-nums">{obsTotal}</span>{" "}
+              {tObs("press.sampleLabel")}.
+            </p>
+          </div>
         ) : null}
 
         <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -452,7 +471,7 @@ export default async function PressePage({ params }: Props) {
       >
         {pressGalleryImages.length > 0 ? (
           <div className="flex flex-col gap-10">
-            <GalleryGrid images={pressGalleryImages} locale={loc} firstImagePriority={false} />
+            <PressImageCarousel images={pressGalleryImages} locale={loc} />
             <div className="border-border-strong bg-paper flex flex-col items-start gap-4 rounded-xl border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
               <p className="text-fg-soft max-w-xl text-sm leading-relaxed">
                 {t("imageBankLicenseNote")}
