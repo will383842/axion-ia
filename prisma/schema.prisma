@@ -7008,6 +7008,41 @@ model BarometerSnapshot {
   @@map("barometer_snapshots")
 }
 
+/// Historique des recalculs de snapshot — 1 ligne par recompute. Alimente les
+/// COURBES d'évolution dans le temps de l'observatoire (les insights phares au
+/// fil de l'accumulation des réponses). Append-only ; jamais d'écriture au build.
+model BarometerSnapshotHistory {
+  id             String   @id @default(uuid()) @db.Uuid
+  computedAt     DateTime @default(now()) @map("computed_at")
+  totalResponses Int      @default(0) @map("total_responses")
+  /// { competitors_use_ai, no_formal_strategy, rgpd_concern, investment_intent } (pourcentages entiers)
+  insights       Json
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([computedAt])
+  @@map("barometer_snapshot_history")
+}
+
+/// Synthèse rédigée par LLM, ANCRÉE sur les agrégats réels du snapshot. Mise en
+/// cache (key="latest") et régénérée par le worker d'auto-update. Jamais de
+/// chiffre inventé (grounding doctrine). Affichée sur la page publique + admin.
+model BarometerAnalysis {
+  id           String   @id @default(uuid()) @db.Uuid
+  key          String   @unique @db.VarChar(60)
+  locale       Locale   @default(fr)
+  generatedAt  DateTime @default(now()) @map("generated_at")
+  /// Effectif (réel) sur lequel l'analyse a été ancrée — déclenche la régénération si dérive.
+  basedOnTotal Int      @default(0) @map("based_on_total")
+  model        String?  @db.VarChar(80)
+  costUsd      Float    @default(0) @map("cost_usd")
+  /// { overview, segments:[{dimension,value,label,comment}], takeaways:[], recommendations:[] }
+  payload      Json
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("barometer_analyses")
+}
+
 // ============================================================
 // CONSOLE DOCUMENTS — bibliothèque générique de documents admin
 // (hub « Documents » → sous-onglet « Autres » + buckets « Implémentations »

@@ -15,6 +15,7 @@ import {
   countRealResponses,
   type BarometerSnapshotPayload,
 } from "@/server/observatoire/snapshot";
+import { generateAndPersistAnalysis, readLatestAnalysis } from "@/server/observatoire/analysis";
 import { SNAPSHOT_KEY_LATEST } from "@/content/observatoire/study";
 
 export interface BarometerAdminStats {
@@ -23,23 +24,50 @@ export interface BarometerAdminStats {
   readonly realResponses: number;
   readonly lastComputedAt: string | null;
   readonly snapshot: BarometerSnapshotPayload | null;
+  /** Couverture des breakdowns par segment (nombre de segments publiés par dimension). */
+  readonly segmentCounts: { companySize: number; sector: number; region: number };
+  /** Nombre de points d'historique (courbes d'évolution). */
+  readonly historyCount: number;
+  /** Synthèse LLM en cache (null si jamais générée). */
+  readonly analysis: {
+    generatedAt: string;
+    basedOnTotal: number;
+    overview: string;
+  } | null;
 }
 
-/** Stats admin : effectifs réels vs seedés + snapshot courant. */
+/** Stats admin : effectifs réels vs seedés + snapshot + segments + analyse LLM. */
 export async function getBarometerStats(): Promise<BarometerAdminStats> {
   await requireAdmin();
   try {
-    const [total, seeded, snapshotRow] = await Promise.all([
+    const [total, seeded, snapshotRow, historyCount, analysis] = await Promise.all([
       prisma.barometerResponse.count(),
       prisma.barometerResponse.count({ where: { visitorId: { startsWith: "seed:" } } }),
       prisma.barometerSnapshot.findUnique({ where: { key: SNAPSHOT_KEY_LATEST } }),
+      prisma.barometerSnapshotHistory.count(),
+      readLatestAnalysis(),
     ]);
+    const snapshot = (snapshotRow?.payload as unknown as BarometerSnapshotPayload) ?? null;
+    const seg = snapshot?.segments;
     return {
       totalResponses: total,
       seededResponses: seeded,
       realResponses: total - seeded,
       lastComputedAt: snapshotRow?.computedAt.toISOString() ?? null,
-      snapshot: (snapshotRow?.payload as unknown as BarometerSnapshotPayload) ?? null,
+      snapshot,
+      segmentCounts: {
+        companySize: seg?.companySize?.length ?? 0,
+        sector: seg?.sector?.length ?? 0,
+        region: seg?.region?.length ?? 0,
+      },
+      historyCount,
+      analysis: analysis
+        ? {
+            generatedAt: analysis.generatedAt,
+            basedOnTotal: analysis.basedOnTotal,
+            overview: analysis.payload.overview,
+          }
+        : null,
     };
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "observatoire", action: "getBarometerStats" } });
@@ -49,6 +77,9 @@ export async function getBarometerStats(): Promise<BarometerAdminStats> {
       realResponses: 0,
       lastComputedAt: null,
       snapshot: null,
+      segmentCounts: { companySize: 0, sector: 0, region: 0 },
+      historyCount: 0,
+      analysis: null,
     };
   }
 }
@@ -77,6 +108,40 @@ export async function recomputeBarometerSnapshot(): Promise<RecomputeState> {
 /** Wrapper compatible `<form action>` (ignore le FormData). */
 export async function recomputeBarometerSnapshotForm(_formData: FormData): Promise<void> {
   await recomputeBarometerSnapshot();
+}
+
+export type RegenerateAnalysisState =
+  | { ok: true; regenerated: boolean }
+  | { ok: false; error: string };
+
+/** (Re)génère la synthèse LLM (force) + revalide les pages publiques. */
+export async function regenerateBarometerAnalysis(): Promise<RegenerateAnalysisState> {
+  await requireAdmin();
+  try {
+    const res = await generateAndPersistAnalysis({ force: true });
+    if (!res.ok) {
+      return {
+        ok: false,
+        error:
+          res.reason === "no-real-responses"
+            ? "Aucune réponse réelle — analyse impossible."
+            : `Échec de génération (${res.reason}).`,
+      };
+    }
+    revalidatePath("/fr/observatoire-ia");
+    revalidatePath("/en/observatoire-ia");
+    return { ok: true, regenerated: res.regenerated };
+  } catch (e) {
+    Sentry.captureException(e, {
+      tags: { area: "observatoire", action: "regenerateBarometerAnalysis" },
+    });
+    return { ok: false, error: "La régénération a échoué." };
+  }
+}
+
+/** Wrapper compatible `<form action>`. */
+export async function regenerateBarometerAnalysisForm(_formData: FormData): Promise<void> {
+  await regenerateBarometerAnalysis();
 }
 
 // Lecture directe du snapshot (utilitaire admin).

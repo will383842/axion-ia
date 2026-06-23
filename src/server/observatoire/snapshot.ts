@@ -24,6 +24,24 @@ export interface DistributionEntry {
   readonly pct: number;
 }
 
+/**
+ * Métriques agrégées pour UNE valeur de segment (ex. région "ile-de-france",
+ * secteur "banque-finance", taille "PME"). Compact et borné : alimente les vues
+ * comparatives (heatmaps / classements) « stats par région / secteur / taille ».
+ */
+export interface SegmentMetric {
+  /** Slug/valeur de l'option (ex. "PME", "banque-finance", "ile-de-france"). */
+  readonly value: string;
+  /** Effectif du segment. */
+  readonly total: number;
+  /** Constats phares (mêmes clés que `insights`, pourcentages entiers) pour ce segment. */
+  readonly insights: Record<string, number>;
+  /** Répartition de la maturité (pct entier par niveau) — pour heatmap maturité. */
+  readonly maturity: Record<string, number>;
+  /** Indice de maturité 0-100 (moyenne pondérée des rangs) — pour classements. */
+  readonly maturityScore: number;
+}
+
 export interface BarometerSnapshotPayload {
   readonly totalResponses: number;
   readonly generatedAt: string;
@@ -36,6 +54,12 @@ export interface BarometerSnapshotPayload {
   readonly distributions: Record<string, ReadonlyArray<DistributionEntry>>;
   /** Constats phares (pourcentages entiers). */
   readonly insights: Record<string, number>;
+  /**
+   * Breakdowns par dimension de segment : `companySize` | `sector` | `region`
+   * → liste de `SegmentMetric` (triée par effectif décroissant). Optionnel pour
+   * compat ascendante (snapshots calculés avant l'ajout du dashboard).
+   */
+  readonly segments?: Record<string, ReadonlyArray<SegmentMetric>>;
 }
 
 export interface BarometerFilter {
@@ -70,6 +94,95 @@ const MULTI_COLUMNS: ReadonlyArray<{ key: string; col: string }> = [
 
 function pct(count: number, base: number): number {
   return base > 0 ? Math.round((count / base) * 100) : 0;
+}
+
+/** Effectif minimal d'un segment pour être publié (anti-bruit + anti-réidentification). */
+const MIN_SEGMENT_N = 5;
+
+/** Dimensions de segmentation (clé payload → colonne SQL). Allowlist (anti-injection). */
+const SEGMENT_DIMENSIONS: ReadonlyArray<{ key: string; col: string }> = [
+  { key: "companySize", col: "company_size" },
+  { key: "sector", col: "sector" },
+  { key: "region", col: "region" },
+];
+
+type SegmentRow = {
+  value: string;
+  total: number;
+  competitors_use_ai: number;
+  no_formal_strategy: number;
+  rgpd_concern: number;
+  investment_intent: number;
+  m_none: number;
+  m_exploration: number;
+  m_poc: number;
+  m_production: number;
+  m_scaled: number;
+};
+
+/**
+ * Agrège les métriques phares + la maturité PAR VALEUR d'une dimension de
+ * segment, en UNE requête SQL (COUNT … FILTER). Seuls les segments à effectif
+ * ≥ MIN_SEGMENT_N sont retournés (HAVING). Stub-safe : sous `stub.invalid`,
+ * `$queryRaw` renvoie [] → liste vide.
+ */
+async function aggregateSegment(dimCol: string): Promise<SegmentMetric[]> {
+  const col = Prisma.raw(dimCol);
+  const rows = await prisma.$queryRaw<SegmentRow[]>(Prisma.sql`
+    SELECT ${col}::text AS value,
+      COUNT(*)::int AS total,
+      COUNT(*) FILTER (WHERE competitors_use_ai::text IN ('yes_clearly','probably'))::int AS competitors_use_ai,
+      COUNT(*) FILTER (WHERE has_strategy::text = 'none')::int AS no_formal_strategy,
+      COUNT(*) FILTER (WHERE rgpd_concern::text IN ('very','somewhat'))::int AS rgpd_concern,
+      COUNT(*) FILTER (WHERE investment_intent::text IN ('strong_increase','increase'))::int AS investment_intent,
+      COUNT(*) FILTER (WHERE maturity_level::text = 'none')::int AS m_none,
+      COUNT(*) FILTER (WHERE maturity_level::text = 'exploration')::int AS m_exploration,
+      COUNT(*) FILTER (WHERE maturity_level::text = 'poc')::int AS m_poc,
+      COUNT(*) FILTER (WHERE maturity_level::text = 'production')::int AS m_production,
+      COUNT(*) FILTER (WHERE maturity_level::text = 'scaled')::int AS m_scaled
+    FROM barometer_responses
+    WHERE ${col} IS NOT NULL
+    GROUP BY ${col}
+    HAVING COUNT(*) >= ${MIN_SEGMENT_N}
+  `);
+
+  return rows
+    .map((r): SegmentMetric => {
+      const total = Number(r.total);
+      const mn = Number(r.m_none);
+      const me = Number(r.m_exploration);
+      const mp = Number(r.m_poc);
+      const mpr = Number(r.m_production);
+      const ms = Number(r.m_scaled);
+      const weighted = me * 1 + mp * 2 + mpr * 3 + ms * 4; // none = 0
+      return {
+        value: String(r.value),
+        total,
+        insights: {
+          competitors_use_ai: pct(Number(r.competitors_use_ai), total),
+          no_formal_strategy: pct(Number(r.no_formal_strategy), total),
+          rgpd_concern: pct(Number(r.rgpd_concern), total),
+          investment_intent: pct(Number(r.investment_intent), total),
+        },
+        maturity: {
+          none: pct(mn, total),
+          exploration: pct(me, total),
+          poc: pct(mp, total),
+          production: pct(mpr, total),
+          scaled: pct(ms, total),
+        },
+        maturityScore: total > 0 ? Math.round((weighted / total / 4) * 100) : 0,
+      };
+    })
+    .sort((a, b) => b.total - a.total);
+}
+
+/** Agrège les 3 dimensions de segment (taille, secteur, région). */
+export async function aggregateAllSegments(): Promise<Record<string, SegmentMetric[]>> {
+  const results = await Promise.all(
+    SEGMENT_DIMENSIONS.map(async ({ key, col }) => [key, await aggregateSegment(col)] as const),
+  );
+  return Object.fromEntries(results);
 }
 
 /** Ordre canonique des valeurs pour une question (affichage stable). */
@@ -248,7 +361,9 @@ export async function aggregateBarometer(
  * throw sous le stub, comportement voulu).
  */
 export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPayload> {
-  const payload = await aggregateBarometer();
+  const [base, segments] = await Promise.all([aggregateBarometer(), aggregateAllSegments()]);
+  const payload: BarometerSnapshotPayload = { ...base, segments };
+
   await prisma.barometerSnapshot.upsert({
     where: { key: SNAPSHOT_KEY_LATEST },
     create: {
@@ -262,7 +377,36 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
       computedAt: new Date(),
     },
   });
+
+  // Historisation pour les COURBES d'évolution — append-only, best-effort
+  // (un échec d'historisation ne doit jamais invalider le snapshot publié).
+  try {
+    await prisma.barometerSnapshotHistory.create({
+      data: {
+        totalResponses: payload.totalResponses,
+        insights: payload.insights as unknown as Prisma.InputJsonValue,
+      },
+    });
+  } catch {
+    // no-op : historique non critique.
+  }
+
   return payload;
+}
+
+/** Lit l'historique des recalculs (ordre chronologique) — pour les courbes d'évolution. */
+export async function readSnapshotHistory(
+  limit = 60,
+): Promise<Array<{ computedAt: string; totalResponses: number; insights: Record<string, number> }>> {
+  const rows = await prisma.barometerSnapshotHistory.findMany({
+    orderBy: { computedAt: "asc" },
+    take: limit,
+  });
+  return rows.map((r) => ({
+    computedAt: r.computedAt.toISOString(),
+    totalResponses: r.totalResponses,
+    insights: (r.insights as Record<string, number>) ?? {},
+  }));
 }
 
 /**

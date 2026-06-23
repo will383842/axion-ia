@@ -68,6 +68,8 @@ export type WorkerName =
   | "external-links-monitor"
   // Sprint Final 2026-05-22 (P0-2 audit final) — reset compteurs cost mensuel
   | "cost-cap-reset"
+  // Observatoire IA 2026 — auto-update snapshot + analyse LLM (cron 6 h)
+  | "observatoire-snapshot"
   // Sprint Final 2026-05-22 (P1-2 ratchet Sentry 17/33 → 33/33 audit final)
   | "booking-crons"
   | "google-indexing"

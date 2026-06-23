@@ -5,6 +5,7 @@ import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/u
 import {
   getBarometerStats,
   recomputeBarometerSnapshotForm,
+  regenerateBarometerAnalysisForm,
   generateBarometerArticleForm,
 } from "@/server/actions/observatoire/admin";
 
@@ -81,6 +82,66 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
         <form action={generateBarometerArticleForm} className="mt-[var(--space-admin-4)]">
           <button type="submit" className="admin-btn admin-btn-primary">
             Générer un article
+          </button>
+        </form>
+      </AdminCard>
+
+      <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
+        <h2 className="admin-h2">Segments &amp; auto-update</h2>
+        <p className="admin-help">
+          Breakdowns publiés par dimension (segments ≥ 5 réponses) + historique des courbes
+          d’évolution. Recalcul automatique toutes les 6 h (worker «&nbsp;observatoire-snapshot&nbsp;»).
+        </p>
+        <div className="admin-table-wrapper mt-[var(--space-admin-4)]">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Par taille</th>
+                <th>Par secteur</th>
+                <th>Par région</th>
+                <th>Points d’historique</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{stats.segmentCounts.companySize}</td>
+                <td>{stats.segmentCounts.sector}</td>
+                <td>{stats.segmentCounts.region}</td>
+                <td>{stats.historyCount}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </AdminCard>
+
+      <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
+        <h2 className="admin-h2">Synthèse IA publique</h2>
+        <p className="admin-help">
+          Analyse rédigée par IA, ancrée sur les chiffres vérifiés, affichée sur la page publique.
+          Régénérée automatiquement quand l’effectif change ; bouton ci-dessous pour forcer.
+        </p>
+        {stats.analysis ? (
+          <div className="mt-[var(--space-admin-4)]">
+            <p className="admin-help">
+              Générée le {new Date(stats.analysis.generatedAt).toLocaleString("fr-FR")} · ancrée sur{" "}
+              {stats.analysis.basedOnTotal} réponses
+              {stats.analysis.basedOnTotal !== stats.totalResponses
+                ? ` ⚠️ (effectif actuel : ${stats.totalResponses} — régénération conseillée)`
+                : " ✓ à jour"}
+              .
+            </p>
+            <blockquote className="text-fg-soft mt-[var(--space-admin-3)] border-l-2 pl-3 text-sm italic">
+              {stats.analysis.overview}
+            </blockquote>
+          </div>
+        ) : (
+          <p className="admin-help mt-[var(--space-admin-3)]">
+            Aucune analyse en cache. {stats.realResponses === 0 ? "Aucune réponse réelle." : ""}
+          </p>
+        )}
+        <form action={regenerateBarometerAnalysisForm} className="mt-[var(--space-admin-4)]">
+          <button type="submit" className="admin-btn admin-btn-primary">
+            Régénérer l’analyse
           </button>
         </form>
       </AdminCard>
