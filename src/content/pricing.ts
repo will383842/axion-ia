@@ -546,26 +546,40 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
 // ============================================================================
 //
 // Décision Will Option A 2026-05-18 : naming brand canonique `un-a-un` (URL +
-// breadcrumb) mais sémantique "coaching dirigeant 1-to-1" cohérente avec le
-// tier existant `intervention-dirigeants` (déjà 990 € HT). On EXPOSE ce tier
-// sous le nom `UN_A_UN_TIERS` pour qu'il alimente la 4e card hub ville +
+// breadcrumb) mais sémantique "coaching 1-to-1" cohérente avec les tiers
+// existants `intervention-membre-equipe` (Collaborateur, 990 € HT) et
+// `intervention-dirigeants` (Dirigeant, 1 390 € HT). On EXPOSE ces tiers sous
+// le nom `UN_A_UN_TIERS` pour qu'ils alimentent la 4e card hub ville +
 // VilleServicePageTemplate sans dupliquer la définition.
 //
-// V1 : 1 seul palier (990 € HT, 1 journée 1-to-1 avec le dirigeant). Sprint
-// S+3 pourra étendre avec d'autres formats (½ journée, journée + suivi 1 mois,
-// programme 3 mois multi-sessions) sans casser la signature `Service` JSON-LD.
+// Le prix d'entrée du 1-to-1 = 990 € HT (Collaborateur, premier de la liste).
+// Sprint S+3 pourra étendre avec d'autres formats (½ journée, journée + suivi
+// 1 mois, programme 3 mois) sans casser la signature `Service` JSON-LD.
 
 const INTERVENTION_DIRIGEANTS_TIER = INTERVENTION_TIERS.find(
   (t) => t.id === "intervention-dirigeants",
 );
+const INTERVENTION_MEMBRE_EQUIPE_TIER = INTERVENTION_TIERS.find(
+  (t) => t.id === "intervention-membre-equipe",
+);
 
-if (!INTERVENTION_DIRIGEANTS_TIER) {
+if (!INTERVENTION_DIRIGEANTS_TIER || !INTERVENTION_MEMBRE_EQUIPE_TIER) {
   throw new Error(
-    "pricing.ts invariant violation: intervention-dirigeants tier missing in INTERVENTION_TIERS",
+    "pricing.ts invariant violation: intervention-dirigeants / intervention-membre-equipe tier missing in INTERVENTION_TIERS",
   );
 }
 
-export const UN_A_UN_TIERS: ReadonlyArray<PricingTier> = [INTERVENTION_DIRIGEANTS_TIER];
+// Will 2026-06-23 — le 1-to-1 expose DEUX formules : Collaborateur (990 € HT)
+// et Dirigeant (1 390 € HT). Le tier Collaborateur vient EN PREMIER pour que le
+// prix d'entrée (`getEntryTier` / `getEntryPriceEur` = premier tier chiffré)
+// soit 990 € → « À partir de 990 € » sur la home, les ~400 pages ville, /tarifs
+// et llms.txt. Avant : seul le Dirigeant était exposé, donc depuis que celui-ci
+// est passé de 990 → 1 390 € le 2026-06-13, la home affichait à tort « à partir
+// de 1 390 € » alors que 990 € est le vrai ticket d'entrée du 1-to-1.
+export const UN_A_UN_TIERS: ReadonlyArray<PricingTier> = [
+  INTERVENTION_MEMBRE_EQUIPE_TIER,
+  INTERVENTION_DIRIGEANTS_TIER,
+];
 
 /**
  * Coaching 1-to-1 récurrent (contrat 6/12/24 mois) — Refonte un-a-un 2026-05-30

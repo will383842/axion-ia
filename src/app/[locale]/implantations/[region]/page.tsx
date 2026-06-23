@@ -362,8 +362,8 @@ export default async function RegionPage({ params }: Props) {
               icon: UserCog,
               label: isFr ? "Coaching 1-to-1" : "1-to-1 coaching",
               detail: isFr
-                ? `Journée 1-to-1 dirigeant · ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "fr", { compact: true })} · ROI J+1`
-                : `1-on-1 executive day · ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "en", { compact: true })} · day-one ROI`,
+                ? `Journée 1-to-1 (dirigeant ou collaborateur) · dès ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "fr", { compact: true })} · ROI J+1`
+                : `1-on-1 day (executive or team member) · from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "en", { compact: true })} · day-one ROI`,
               accent: "sage" as const,
             },
             {
