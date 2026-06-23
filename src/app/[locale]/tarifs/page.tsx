@@ -156,23 +156,16 @@ export default async function PricingPage({ params }: Props) {
   ];
 
   // 5 modules tarifés. Plateforme web/SaaS = section custom (sur devis pur).
+  // Ordre voulu par Will (2026-06-23) : Formations et interventions → 1-to-1 →
+  // Audit → Intégration d'agents IA sur-mesure → Plateforme web & SaaS.
   const sections: ReadonlyArray<PricingSectionDef> = [
-    {
-      id: "audits",
-      href: "/audit",
-      eyebrow: isFr ? "Diagnostic" : "Diagnostic",
-      title: t("nav.auditShort"),
-      description: isFr
-        ? "4 niveaux pyramide TPE → ETI. Cartographie de vos opportunités IA chiffrées action par action."
-        : "4-level pyramid SMB → mid-cap. Map of your AI opportunities, costed action by action.",
-      tiers: AUDIT_TIERS,
-      ctaLabel: isFr ? "Voir les 4 audits" : "See the 4 audits",
-    },
     {
       id: "formations",
       href: "/interventions",
       eyebrow: isFr ? "Montée en compétence" : "Upskilling",
-      title: t("nav.formations"),
+      // Titre local (override de nav.formations) : englobe formations
+      // collectives + interventions en entreprise.
+      title: isFr ? "Formations et interventions" : "Trainings & interventions",
       description: isFr
         ? "Formats 4 h, 1, 2 ou 3+ jours. Démos live sur vos vrais documents, vos vrais cas."
         : "Formats 4 h, 1, 2 or 3+ days. Live demos on your real documents, your real cases.",
@@ -189,6 +182,17 @@ export default async function PricingPage({ params }: Props) {
         : "1-on-1 day with the executive or a key team member. Structuring and precise quantification of AI gains.",
       tiers: unAUnDisplayTiers,
       ctaLabel: isFr ? "Voir le coaching 1-to-1" : "See 1-to-1 coaching",
+    },
+    {
+      id: "audits",
+      href: "/audit",
+      eyebrow: isFr ? "Diagnostic" : "Diagnostic",
+      title: t("nav.auditShort"),
+      description: isFr
+        ? "4 niveaux pyramide TPE → ETI. Cartographie de vos opportunités IA chiffrées action par action."
+        : "4-level pyramid SMB → mid-cap. Map of your AI opportunities, costed action by action.",
+      tiers: AUDIT_TIERS,
+      ctaLabel: isFr ? "Voir les 4 audits" : "See the 4 audits",
     },
     {
       id: "implementations",
@@ -209,7 +213,8 @@ export default async function PricingPage({ params }: Props) {
     id: "plateforme",
     href: "/sites-web-augmentes",
     eyebrow: isFr ? "Plateforme custom" : "Custom platform",
-    title: t("nav.platform"),
+    // Titre local (override de nav.platform) : ajout « augmentée à l'IA » (Will 2026-06-23).
+    title: isFr ? "Plateforme web & SaaS augmentée à l'IA" : "AI-augmented web platform & SaaS",
     description: isFr
       ? "Plateforme web IA-native sur mesure ou greffe IA sur votre stack existante (chatbot RAG, search sémantique, automatisations, agents). Toute stack moderne."
       : "AI-native custom web platform or AI graft on your existing stack (RAG chatbot, semantic search, automations, agents). Any modern stack.",
@@ -390,7 +395,7 @@ export default async function PricingPage({ params }: Props) {
         ]}
       />
 
-      {/* 4 SECTIONS pricing.ts (Audits → Formations → 1-to-1 → Implémentations) */}
+      {/* 4 SECTIONS pricing.ts (Formations → 1-to-1 → Audits → Implémentations) */}
       {sections.map((s) => (
         <Section
           key={s.id}
