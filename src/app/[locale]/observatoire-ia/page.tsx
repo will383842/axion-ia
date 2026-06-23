@@ -207,6 +207,17 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
   ];
   const heatmapLabels = { segment: isFr ? "Segment" : "Segment", sample: "n" };
 
+  // Sommaire (TOC) — ancres vers les sections réellement présentes, dans l'ordre.
+  const tocItems: Array<{ href: string; label: string }> = [];
+  if (analysis) tocItems.push({ href: "#decryptage", label: isFr ? "Décryptage" : "Analysis" });
+  if (segments && hasData)
+    tocItems.push({ href: "#segments", label: isFr ? "Par segment" : "By segment" });
+  if (history.length >= 2)
+    tocItems.push({ href: "#evolution", label: isFr ? "Évolution" : "Evolution" });
+  tocItems.push({ href: "#methodologie", label: isFr ? "Méthodologie" : "Methodology" });
+  tocItems.push({ href: "#details", label: isFr ? "Détail par question" : "By question" });
+  tocItems.push({ href: "#faq", label: "FAQ" });
+
   // FAQ (AEO).
   const faqItems = (["q1", "q2", "q3", "q4"] as const).map((k) => ({
     question: t(`faq.${k}.question`),
@@ -339,9 +350,33 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
         )}
       </Section>
 
+      {/* SOMMAIRE — navigation interne (jump-links) vers les sections présentes */}
+      {hasData ? (
+        <Container className="py-4">
+          <nav aria-label={isFr ? "Sommaire" : "Table of contents"}>
+            <p className="text-fg-muted mb-3 text-xs font-semibold tracking-wide uppercase">
+              {isFr ? "Sommaire" : "Contents"}
+            </p>
+            <ul className="flex flex-wrap gap-2">
+              {tocItems.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="border-border bg-canvas text-fg-soft hover:border-terracotta hover:text-terracotta inline-flex rounded-full border px-3 py-1.5 text-sm transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </Container>
+      ) : null}
+
       {/* DÉCRYPTAGE — synthèse rédigée par IA, ancrée sur les chiffres vérifiés */}
       {analysis ? (
         <Section
+          id="decryptage"
           tone="canvas"
           titleAs="h2"
           eyebrow={isFr ? "Décryptage" : "Analysis"}
@@ -390,6 +425,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
       {/* RÉSULTATS PAR SEGMENT — heatmaps taille / secteur / région */}
       {segments && hasData ? (
         <Section
+          id="segments"
           tone="paper"
           titleAs="h2"
           title={isFr ? "Résultats par segment" : "Results by segment"}
@@ -442,6 +478,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
       {/* ÉVOLUTION DANS LE TEMPS — courbe des constats phares */}
       {history.length >= 2 ? (
         <Section
+          id="evolution"
           tone="sand"
           titleAs="h2"
           title={isFr ? "Évolution dans le temps" : "Evolution over time"}
@@ -465,7 +502,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
       ) : null}
 
       {/* MÉTHODOLOGIE */}
-      <Section tone="sand" titleAs="h2" title={t("methodo.title")}>
+      <Section id="methodologie" tone="sand" titleAs="h2" title={t("methodo.title")}>
         <dl className="grid max-w-3xl gap-x-8 gap-y-4 sm:grid-cols-2">
           <div>
             <dt className="text-fg-muted text-sm font-medium">{t("methodo.sample")}</dt>
@@ -513,6 +550,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
 
       {/* RÉSULTATS DÉTAILLÉS — filtres SSR + graphiques */}
       <Section
+        id="details"
         titleAs="h2"
         title={isFr ? "Résultats détaillés par question" : "Detailed results by question"}
       >
@@ -599,7 +637,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
       </Section>
 
       {/* FAQ (AEO) */}
-      <Section tone="canvas" titleAs="h2" title="FAQ">
+      <Section id="faq" tone="canvas" titleAs="h2" title="FAQ">
         <dl className="mx-auto max-w-3xl space-y-6">
           {faqItems.map((f, i) => (
             <div key={i} className="border-border border-b pb-6">
