@@ -39,6 +39,7 @@ import { startBrandVoiceDriftMonitorWorker } from "./workers/brand-voice-drift-m
 import { startKeywordOpportunityDetectorWorker } from "./workers/keyword-opportunity-detector";
 // Sprint Final 2026-05-22 (P0-2 + P0-3 audit final) — 2 workers manquants au bootstrap.
 import { startCostCapResetWorker } from "./workers/cost-cap-reset-worker";
+import { startObservatoireSnapshotWorker } from "./workers/observatoire-snapshot-worker";
 import { startExternalLinksMonitorWorker } from "./workers/external-links-monitor-worker";
 // Sprint Site Explorer Admin 2026-05-22
 import { startSiteRouteInspectorWorker } from "./workers/site-route-inspector-worker";
@@ -107,6 +108,7 @@ async function main() {
     startKeywordOpportunityDetectorWorker(), // Phase 8 Keywords Perfection 2026-05-22 — weekly lundi 06:00 UTC
     // Sprint Final 2026-05-22 (P0-2 + P0-3 audit final pré-prod)
     startCostCapResetWorker(), // P0-2 — Reset compteurs cost mensuel (1er du mois 00:00 UTC)
+    startObservatoireSnapshotWorker(), // Observatoire — auto-update snapshot + analyse LLM toutes les 6 h
     // P0-3 — HEAD check liens externes (1er du mois 02:00 UTC). Env-gated comme
     // GSC/CONTENT_REFRESH/CHATBOT ci-dessous : startExternalLinksMonitorWorker()
     // THROW si EXTERNAL_LINKS_MONITOR_ENABLED!=true (external-links-monitor-worker.ts:368).

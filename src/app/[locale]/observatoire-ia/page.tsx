@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, Download, FileJson } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -13,6 +13,8 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { DistributionChart, type ChartRow } from "@/components/observatoire/DistributionChart";
 import { ObservatoireFilters } from "@/components/observatoire/ObservatoireFilters";
+import { SegmentHeatmap, type HeatmapColumn } from "@/components/observatoire/SegmentHeatmap";
+import { TrendChart, type TrendSeries } from "@/components/observatoire/TrendChart";
 import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
@@ -46,10 +48,12 @@ import {
 } from "@/content/observatoire/study";
 import {
   readLatestSnapshot,
+  readSnapshotHistory,
   aggregateBarometer,
   emptySnapshotPayload,
   type BarometerSnapshotPayload,
 } from "@/server/observatoire/snapshot";
+import { readLatestAnalysis } from "@/server/observatoire/analysis";
 
 export const revalidate = 3600;
 
@@ -60,6 +64,7 @@ interface Props {
 
 const PAGE_PATH = "/observatoire-ia";
 const CSV_URL = `${SITE_URL}/api/observatoire/export-csv`;
+const JSON_URL = `${SITE_URL}/api/observatoire/export-json`;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -119,6 +124,15 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
   const total = payload?.totalResponses ?? 0;
   const hasData = total > 0;
 
+  // Vues GLOBALES (uniquement hors filtre) : breakdowns par segment + synthèse
+  // LLM + historique d'évolution. En vue filtrée, l'utilisateur « creuse » par
+  // question → on masque le dashboard global pour rester lisible.
+  const showGlobal = !hasFilter;
+  const segments = showGlobal ? payload?.segments : undefined;
+  const analysis = showGlobal && !isBuildStub ? await readLatestAnalysis() : null;
+  const history =
+    showGlobal && !isBuildStub ? await readSnapshotHistory(60).catch(() => []) : [];
+
   // Résolution des libellés d'options (SSOT pour secteur/région, i18n sinon).
   const sectorLabel = (slug: string) => {
     const tag = KB_SECTOR_TAGS.find((s) => s.slug === slug);
@@ -128,6 +142,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
     const r = STUDY_REGIONS.find((x) => x.slug === slug);
     return r ? (isFr ? r.nameFr : r.nameEn) : slug;
   };
+  const sizeLabel = (v: string) => t(`questions.companySize.options.${v}`);
   const optionLabel = (questionId: string, source: string, value: string): string => {
     if (source === "sector") return sectorLabel(value);
     if (source === "region") return regionLabel(value);
@@ -151,6 +166,46 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
         value: payload?.insights?.[key] ?? 0,
       })).filter((f) => f.value > 0)
     : [];
+
+  // Colonnes de heatmap (segment × métrique 0-100) + séries de courbe.
+  const heatmapColumns: HeatmapColumn[] = [
+    { key: "maturityScore", label: isFr ? "Maturité" : "Maturity", get: (s) => s.maturityScore },
+    {
+      key: "competitors_use_ai",
+      label: isFr ? "Concurrents IA" : "Competitors w/ AI",
+      get: (s) => s.insights.competitors_use_ai ?? 0,
+    },
+    {
+      key: "no_formal_strategy",
+      label: isFr ? "Sans stratégie" : "No strategy",
+      get: (s) => s.insights.no_formal_strategy ?? 0,
+    },
+    { key: "rgpd_concern", label: "RGPD", get: (s) => s.insights.rgpd_concern ?? 0 },
+    {
+      key: "investment_intent",
+      label: isFr ? "Investir" : "Investing",
+      get: (s) => s.insights.investment_intent ?? 0,
+    },
+  ];
+  const trendSeries: TrendSeries[] = [
+    {
+      key: "competitors_use_ai",
+      label: isFr ? "Concurrents IA" : "Competitors w/ AI",
+      color: "#1a4dd9",
+    },
+    {
+      key: "no_formal_strategy",
+      label: isFr ? "Sans stratégie" : "No strategy",
+      color: "#c24a1b",
+    },
+    { key: "rgpd_concern", label: "RGPD", color: "#0f766e" },
+    {
+      key: "investment_intent",
+      label: isFr ? "Investir" : "Investing",
+      color: "#b45309",
+    },
+  ];
+  const heatmapLabels = { segment: isFr ? "Segment" : "Segment", sample: "n" };
 
   // FAQ (AEO).
   const faqItems = (["q1", "q2", "q3", "q4"] as const).map((k) => ({
@@ -195,12 +250,20 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
       url: SITE_URL,
     },
     ...(hasData ? { numberOfItems: total } : {}),
-    distribution: {
-      "@type": "DataDownload",
-      encodingFormat: "text/csv",
-      contentUrl: CSV_URL,
-      name: `${studyName} — CSV`,
-    },
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/csv",
+        contentUrl: CSV_URL,
+        name: `${studyName} — CSV`,
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: JSON_URL,
+        name: `${studyName} — JSON`,
+      },
+    ],
   };
 
   const webPageJsonLd = buildWebPageJsonLd({
@@ -247,6 +310,12 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
               {t("results.downloadCsv")}
             </a>
           </Button>
+          <Button asChild size="lg" shape="pill" variant="outline">
+            <a href={JSON_URL}>
+              <FileJson className="h-4 w-4" aria-hidden="true" />
+              {isFr ? "Données JSON" : "JSON data"}
+            </a>
+          </Button>
         </div>
       </Section>
 
@@ -269,6 +338,131 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
           <p className="text-fg-soft max-w-2xl text-lg leading-relaxed">{t("results.pending")}</p>
         )}
       </Section>
+
+      {/* DÉCRYPTAGE — synthèse rédigée par IA, ancrée sur les chiffres vérifiés */}
+      {analysis ? (
+        <Section
+          tone="canvas"
+          titleAs="h2"
+          eyebrow={isFr ? "Décryptage" : "Analysis"}
+          title={isFr ? "Ce que révèlent les chiffres" : "What the figures reveal"}
+        >
+          <div className="max-w-3xl space-y-7">
+            <p className="text-fg text-lg leading-relaxed" data-answer="">
+              {analysis.payload.overview}
+            </p>
+
+            {analysis.payload.takeaways.length > 0 ? (
+              <div>
+                <h3 className="text-fg mb-3 text-base font-semibold">
+                  {isFr ? "Points clés" : "Key takeaways"}
+                </h3>
+                <ul className="text-fg-soft list-disc space-y-2 pl-5 leading-relaxed">
+                  {analysis.payload.takeaways.map((tk, i) => (
+                    <li key={i}>{tk}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            {analysis.payload.recommendations.length > 0 ? (
+              <div>
+                <h3 className="text-fg mb-3 text-base font-semibold">
+                  {isFr ? "Recommandations" : "Recommendations"}
+                </h3>
+                <ul className="text-fg-soft list-disc space-y-2 pl-5 leading-relaxed">
+                  {analysis.payload.recommendations.map((r, i) => (
+                    <li key={i}>{r}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            <p className="text-fg-muted text-xs leading-relaxed">
+              {isFr
+                ? "Synthèse générée par IA à partir des seules données vérifiées de l'observatoire (aucun chiffre n'est inventé). Mise à jour automatique au fil des réponses."
+                : "AI-generated summary based solely on the observatory's verified data (no figure is fabricated). Updated automatically as responses come in."}
+            </p>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* RÉSULTATS PAR SEGMENT — heatmaps taille / secteur / région */}
+      {segments && hasData ? (
+        <Section
+          tone="paper"
+          titleAs="h2"
+          title={isFr ? "Résultats par segment" : "Results by segment"}
+          description={
+            isFr
+              ? "Maturité IA et constats clés croisés par taille d'entreprise, secteur d'activité et région. Plus la cellule est foncée, plus la valeur est élevée."
+              : "AI maturity and key findings broken down by company size, sector and region. Darker cells mean higher values."
+          }
+        >
+          <div className="space-y-8">
+            {segments.companySize && segments.companySize.length > 0 ? (
+              <SegmentHeatmap
+                id="seg-size"
+                title={isFr ? "Par taille d'entreprise" : "By company size"}
+                rows={segments.companySize}
+                labelFor={sizeLabel}
+                columns={heatmapColumns}
+                labels={heatmapLabels}
+              />
+            ) : null}
+            {segments.sector && segments.sector.length > 0 ? (
+              <SegmentHeatmap
+                id="seg-sector"
+                title={isFr ? "Par secteur d'activité" : "By sector"}
+                rows={segments.sector}
+                labelFor={sectorLabel}
+                columns={heatmapColumns}
+                labels={heatmapLabels}
+              />
+            ) : null}
+            {segments.region && segments.region.length > 0 ? (
+              <SegmentHeatmap
+                id="seg-region"
+                title={isFr ? "Par région" : "By region"}
+                rows={segments.region}
+                labelFor={regionLabel}
+                columns={heatmapColumns}
+                labels={heatmapLabels}
+              />
+            ) : null}
+            <p className="text-fg-muted text-xs">
+              {isFr
+                ? "Seuls les segments comptant au moins 5 réponses sont affichés (anti-bruit)."
+                : "Only segments with at least 5 responses are shown (noise reduction)."}
+            </p>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* ÉVOLUTION DANS LE TEMPS — courbe des constats phares */}
+      {history.length >= 2 ? (
+        <Section
+          tone="sand"
+          titleAs="h2"
+          title={isFr ? "Évolution dans le temps" : "Evolution over time"}
+          description={
+            isFr
+              ? "Évolution des constats phares au fil de l'accumulation des réponses."
+              : "How the key findings evolve as responses accumulate."
+          }
+        >
+          <TrendChart
+            id="trend"
+            title={isFr ? "Constats phares (%)" : "Key findings (%)"}
+            points={history}
+            series={trendSeries}
+            labels={{
+              date: isFr ? "Date" : "Date",
+              sample: isFr ? "Répondants" : "Respondents",
+            }}
+          />
+        </Section>
+      ) : null}
 
       {/* MÉTHODOLOGIE */}
       <Section tone="sand" titleAs="h2" title={t("methodo.title")}>
@@ -387,11 +581,17 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
           <p className="text-fg font-mono text-sm" data-answer="">
             {STUDY_ATTRIBUTION}
           </p>
-          <div className="mt-5">
+          <div className="mt-5 flex flex-wrap gap-3">
             <Button asChild shape="pill" variant="outline">
               <a href={CSV_URL}>
                 <Download className="h-4 w-4" aria-hidden="true" />
                 {t("results.downloadCsv")}
+              </a>
+            </Button>
+            <Button asChild shape="pill" variant="outline">
+              <a href={JSON_URL}>
+                <FileJson className="h-4 w-4" aria-hidden="true" />
+                {isFr ? "Données JSON" : "JSON data"}
               </a>
             </Button>
           </div>

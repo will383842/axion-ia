@@ -331,6 +331,19 @@ export const costCapResetQueue: Queue | null = connection
   : null;
 
 /**
+ * Observatoire IA 2026 — auto-update du snapshot + synthèse LLM (toutes les 6 h).
+ * Recompute agrégats/segments/historique + régénère l'analyse si l'effectif a
+ * changé + purge CF. Sans ce cron, les chiffres publics ne bougent que sur clic
+ * admin « Recalculer le snapshot ».
+ */
+export const observatoireSnapshotQueue: Queue | null = connection
+  ? new Queue("observatoire-snapshot", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
  * Sprint Final 2026-05-22 (P0-3 audit final) — External links monthly HEAD
  * check cron (1er du mois à 02:00 UTC). Worker existait depuis Sprint External
  * Links Database 2026-05-22 mais n'avait pas de cron déclencheur.
@@ -979,6 +992,20 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-monthly-1st-0000", tick: new Date().toISOString() },
       { repeat: { pattern: "0 0 1 * *" }, jobId: "cost-cap-reset-cron" },
+    );
+  }
+
+  // Observatoire IA 2026 — auto-update snapshot + analyse LLM toutes les 6 h.
+  if (observatoireSnapshotQueue) {
+    await observatoireSnapshotQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 */6 * * *" },
+      "observatoire-snapshot-cron",
+    );
+    await observatoireSnapshotQueue.add(
+      "tick",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "0 */6 * * *" }, jobId: "observatoire-snapshot-cron" },
     );
   }
 
