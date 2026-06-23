@@ -176,11 +176,7 @@ export default async function ParticiperPage({ params }: Props) {
       </Section>
 
       {/* POURQUOI PARTICIPER — contenu éditorial (anti-thin, SEO/AEO) */}
-      <Section
-        tone="paper"
-        titleAs="h2"
-        title={isFr ? "Pourquoi participer ?" : "Why take part?"}
-      >
+      <Section tone="paper" titleAs="h2" title={isFr ? "Pourquoi participer ?" : "Why take part?"}>
         <div className="max-w-3xl space-y-4">
           <p className="text-fg-soft text-lg leading-relaxed" data-answer="">
             {isFr

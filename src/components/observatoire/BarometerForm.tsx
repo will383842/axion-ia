@@ -154,7 +154,7 @@ export function BarometerForm({ questions, locale, maturityGePoc, labels }: Baro
                 key={o.value}
                 className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors sm:text-base ${
                   checked
-                    ? "border-terracotta bg-paper ring-1 ring-terracotta"
+                    ? "border-terracotta bg-paper ring-terracotta ring-1"
                     : "border-border bg-canvas hover:border-terracotta hover:bg-paper"
                 }`}
               >

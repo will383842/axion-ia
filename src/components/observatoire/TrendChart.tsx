@@ -90,7 +90,9 @@ export function TrendChart({ id, title, points, series, labels, className }: Tre
         ))}
         {/* Séries */}
         {series.map((s) => {
-          const pts = points.map((p, i) => `${x(i, n).toFixed(1)},${y(p.insights[s.key] ?? 0).toFixed(1)}`);
+          const pts = points.map(
+            (p, i) => `${x(i, n).toFixed(1)},${y(p.insights[s.key] ?? 0).toFixed(1)}`,
+          );
           const last = points[n - 1]?.insights[s.key] ?? 0;
           return (
             <g key={s.key}>

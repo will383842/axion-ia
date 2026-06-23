@@ -90,7 +90,8 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
         <h2 className="admin-h2">Segments &amp; auto-update</h2>
         <p className="admin-help">
           Breakdowns publiés par dimension (segments ≥ 5 réponses) + historique des courbes
-          d’évolution. Recalcul automatique toutes les 6 h (worker «&nbsp;observatoire-snapshot&nbsp;»).
+          d’évolution. Recalcul automatique toutes les 6 h (worker
+          «&nbsp;observatoire-snapshot&nbsp;»).
         </p>
         <div className="admin-table-wrapper mt-[var(--space-admin-4)]">
           <table className="admin-table">

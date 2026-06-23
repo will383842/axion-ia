@@ -397,7 +397,9 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
 /** Lit l'historique des recalculs (ordre chronologique) — pour les courbes d'évolution. */
 export async function readSnapshotHistory(
   limit = 60,
-): Promise<Array<{ computedAt: string; totalResponses: number; insights: Record<string, number> }>> {
+): Promise<
+  Array<{ computedAt: string; totalResponses: number; insights: Record<string, number> }>
+> {
   const rows = await prisma.barometerSnapshotHistory.findMany({
     orderBy: { computedAt: "asc" },
     take: limit,

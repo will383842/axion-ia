@@ -84,7 +84,9 @@ const INSIGHT_SENTENCE: Record<string, string> = {
 
 /** Construit le bloc de données vérifiées (global + segments notables). */
 function buildVerifiedDataBlock(s: BarometerSnapshotPayload): string {
-  const lines: string[] = [`Échantillon : ${s.totalResponses} répondants (entreprises françaises).`];
+  const lines: string[] = [
+    `Échantillon : ${s.totalResponses} répondants (entreprises françaises).`,
+  ];
 
   for (const [key, sentence] of Object.entries(INSIGHT_SENTENCE)) {
     const v = s.insights?.[key];
@@ -221,7 +223,9 @@ export async function generateAndPersistAnalysis(
             }))
         : [],
       takeaways: Array.isArray(parsed.takeaways)
-        ? parsed.takeaways.filter((t) => typeof t === "string" && t.trim().length > 0).map((t) => t.trim())
+        ? parsed.takeaways
+            .filter((t) => typeof t === "string" && t.trim().length > 0)
+            .map((t) => t.trim())
         : [],
       recommendations: Array.isArray(parsed.recommendations)
         ? parsed.recommendations
