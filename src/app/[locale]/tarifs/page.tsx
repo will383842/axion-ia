@@ -17,11 +17,13 @@ import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
   UN_A_UN_TIERS,
+  UN_A_UN_RECURRING_TIER,
   IMPLEMENTATION_TIERS,
   MAINTENANCE_TIERS,
   formatPrice,
   formatAmount,
   getTierById,
+  getEntryPriceEur,
   type PricingTier,
 } from "@/content/pricing";
 
@@ -54,8 +56,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Tarifs IA · Audits, Formations, Implémentations · Axion-IA"
       : "AI pricing · Audits, Training, Implementations · Axion-IA",
     description: isFr
-      ? `Tous nos tarifs IA en transparence : Audits dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, Formations dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")}, Implémentations dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}, 1-to-1 dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "fr")}, Plateforme web/SaaS sur devis.`
-      : `All our AI pricing, transparent: Audits from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} ex. VAT, Trainings from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Implementations from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, 1-to-1 from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "en", { compact: true })}, Web platform/SaaS on quote.`,
+      ? `Tous nos tarifs IA en transparence : Audits dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, Formations dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")}, Implémentations dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}, 1-to-1 dès ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr")}, Plateforme web/SaaS sur devis.`
+      : `All our AI pricing, transparent: Audits from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} ex. VAT, Trainings from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Implementations from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, 1-to-1 from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, Web platform/SaaS on quote.`,
     alternates: { fr: "/tarifs", en: "/pricing" },
   });
 }
@@ -121,6 +123,38 @@ export default async function PricingPage({ params }: Props) {
     ? "Audits, Formations, Implémentations, 1-to-1 et Plateforme web — tous nos prix publics HT, sans étoile, sans surprise."
     : "Audits, Trainings, Implementations, 1-to-1 and Web platform — all our public prices excl. VAT, no asterisk, no surprise.";
 
+  // — Séparation nette collectif vs 1-to-1 (parité /fr/formations vs /fr/un-a-un).
+  // `INTERVENTION_TIERS` mélange les formats collectifs ET le coaching 1-to-1
+  // individuel (Dirigeant, Collaborateur, Vision IA, variantes 2 j). Sur /tarifs
+  // on ne garde QUE le collectif dans la section Formations ; tout le 1-to-1 est
+  // porté par la section dédiée ci-dessous. Évite la duplication des cartes.
+  const COLLECTIVE_FORMATION_IDS: ReadonlySet<string> = new Set([
+    "intervention-4h",
+    "intervention-essentielle",
+    "intervention-temps",
+    "intervention-approfondie",
+    "intervention-conference",
+    "intervention-claude",
+    "intervention-sur-demande",
+  ]);
+  const collectiveFormationTiers = INTERVENTION_TIERS.filter((tier) =>
+    COLLECTIVE_FORMATION_IDS.has(tier.id),
+  );
+
+  // Section 1-to-1 : grille « Public · Durée » alignée sur /fr/un-a-un —
+  // Collaborateur & Dirigeant × 1 j / 2 j + coaching régulier
+  // (`UN_A_UN_RECURRING_TIER`, 790 €/session, jusqu'ici jamais affiché sur
+  // /tarifs). « Vision IA stratégique » (1 j, 1 390 €) reste un produit de marque
+  // distinct avec sa landing/SEO ; on ne le duplique pas ici (parité /un-a-un qui
+  // le fond dans « Dirigeant · 1 jour »). Labels SSOT depuis pricing.ts (renommés).
+  const unAUnDisplayTiers: ReadonlyArray<PricingTier> = [
+    getTierById(INTERVENTION_TIERS, "intervention-membre-equipe"),
+    getTierById(INTERVENTION_TIERS, "intervention-membre-equipe-2j"),
+    getTierById(INTERVENTION_TIERS, "intervention-dirigeants"),
+    getTierById(INTERVENTION_TIERS, "intervention-dirigeant-vision-2j"),
+    UN_A_UN_RECURRING_TIER,
+  ];
+
   // 5 modules tarifés. Plateforme web/SaaS = section custom (sur devis pur).
   const sections: ReadonlyArray<PricingSectionDef> = [
     {
@@ -142,7 +176,7 @@ export default async function PricingPage({ params }: Props) {
       description: isFr
         ? "Formats 4 h, 1, 2 ou 3+ jours. Démos live sur vos vrais documents, vos vrais cas."
         : "Formats 4 h, 1, 2 or 3+ days. Live demos on your real documents, your real cases.",
-      tiers: INTERVENTION_TIERS,
+      tiers: collectiveFormationTiers,
       ctaLabel: isFr ? "Voir tous les formats" : "See all formats",
     },
     {
@@ -153,7 +187,7 @@ export default async function PricingPage({ params }: Props) {
       description: isFr
         ? "Journée 1-to-1 avec le dirigeant ou un collaborateur clé. Structuration et chiffrage précis des gains IA."
         : "1-on-1 day with the executive or a key team member. Structuring and precise quantification of AI gains.",
-      tiers: UN_A_UN_TIERS,
+      tiers: unAUnDisplayTiers,
       ctaLabel: isFr ? "Voir le coaching 1-to-1" : "See 1-to-1 coaching",
     },
     {
@@ -300,8 +334,8 @@ export default async function PricingPage({ params }: Props) {
         schemaCenterLabel={isFr ? "Tarifs publics" : "Public pricing"}
         schemaAriaLabel={
           isFr
-            ? `Schéma : tarifs publics au centre, entourés des 8 prestations chiffrées Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formation 4 h ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr", { compact: true })}, Formation 1 jour ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, Formation 2 jours ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "fr", { compact: true })}, 1-to-1 ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
-            : `Diagram: public pricing at the center, surrounded by 8 priced Axion-IA services (on-site audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, 4 h training ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, Deep dive ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "en", { compact: true })}, 1-to-1 ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
+            ? `Schéma : tarifs publics au centre, entourés des 8 prestations chiffrées Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formation 4 h ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr", { compact: true })}, Formation 1 jour ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, Formation 2 jours ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "fr", { compact: true })}, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
+            : `Diagram: public pricing at the center, surrounded by 8 priced Axion-IA services (on-site audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, 4 h training ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, Deep dive ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "en", { compact: true })}, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
         }
         schemaNodes={[
           {
@@ -340,10 +374,7 @@ export default async function PricingPage({ params }: Props) {
           },
           {
             label: "1-to-1",
-            benefit: formatAmount(
-              getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
-              "fr",
-            ),
+            benefit: formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr"),
             accent: "primary",
           },
           {

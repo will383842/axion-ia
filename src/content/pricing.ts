@@ -423,7 +423,9 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Plus de CODIR/COMEX : c'est une journée 1-to-1 avec le dirigeant pour
     // structurer l'entreprise et chiffrer précisément les gains d'implémentation IA.
     id: "intervention-dirigeants",
-    labelFr: "Dirigeants",
+    // Will 2026-06-23 — label SSOT « Public · Durée » (aligné sur booking-catalog
+    // qui utilise déjà « Dirigeant · 1 jour »). FR uniquement (EN désactivé).
+    labelFr: "Dirigeant · 1 jour",
     labelEn: "Executives",
     // Will 2026-06-03 — journée 1-to-1 dirigeant portée de 990 à 1 190 € HT.
     // Will 2026-06-13 — harmonisation 1-to-1 (AFEST) : Dirigeant 1 jour fixé à
@@ -447,7 +449,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // 990 € HT (nouveau prix collaborateur ; propagé aux 393 villes + /un-a-un
     // via les tokens de prix).
     id: "intervention-membre-equipe",
-    labelFr: "Membre équipe",
+    // Will 2026-06-23 — label SSOT « Public · Durée » (FR only, EN désactivé).
+    labelFr: "Collaborateur · 1 jour",
     labelEn: "Team member",
     priceFlat: 990,
     durationFr: "1 journée",
@@ -516,7 +519,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Will 2026-06-13 — collaborateur « Optimisation du poste · 2 jours » (AFEST).
     // Prix = 990 × ~1,85. HT.
     id: "intervention-membre-equipe-2j",
-    labelFr: "Membre équipe · 2 jours",
+    // Will 2026-06-23 — label SSOT « Public · Durée » (FR only, EN désactivé).
+    labelFr: "Collaborateur · 2 jours",
     labelEn: "Team member · 2 days",
     priceFlat: 1830,
     durationFr: "2 jours",

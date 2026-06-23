@@ -75,6 +75,19 @@ export function hasPriceToken(text: string): boolean {
 }
 
 /**
+ * Reconnaît `{{label:<tierId>}}` — NOM d'affichage SSOT d'un tier/sous-tier
+ * (libellé `labelFr`/`labelEn` de `pricing.ts`). Permet de tokeniser le nom d'un
+ * format dans la prose (ex « le format {{label:intervention-dirigeants}} ») pour
+ * qu'un renommage dans `pricing.ts` se propage. FR en pratique (EN désactivé).
+ */
+export const LABEL_TOKEN_REGEX = /\{\{label:([a-z0-9-]+)\}\}/g;
+
+/** Détecte la présence d'au moins un token label (non-global, sûr en boucle). */
+export function hasLabelToken(text: string): boolean {
+  return /\{\{label:[a-z0-9-]+\}\}/.test(text);
+}
+
+/**
  * Entrée du registre plat : soit un tier complet, soit un sous-tier (qui n'a
  * qu'un `priceFlat`). On garde la distinction pour formater au plus juste.
  */
@@ -188,6 +201,31 @@ export function resolvePriceTokens(text: string, locale: Locale = "fr"): string 
   });
 }
 
+/** Nom d'affichage SSOT d'une entrée registre selon la locale. */
+function renderEntryLabel(entry: RegistryEntry, locale: Locale): string {
+  if (entry.kind === "subTier") {
+    return locale === "fr" ? entry.subTier.labelFr : entry.subTier.labelEn;
+  }
+  return locale === "fr" ? entry.tier.labelFr : entry.tier.labelEn;
+}
+
+/**
+ * Remplace tous les tokens `{{label:…}}` d'une chaîne par le libellé SSOT du
+ * tier/sous-tier. Id inconnu : laissé en l'état + warning. Renvoie la chaîne
+ * inchangée si aucun token.
+ */
+export function resolveLabelTokens(text: string, locale: Locale = "fr"): string {
+  if (typeof text !== "string" || !hasLabelToken(text)) return text;
+  return text.replace(LABEL_TOKEN_REGEX, (match, rawId: string) => {
+    const entry = PRICE_TOKEN_REGISTRY.get(rawId);
+    if (!entry) {
+      console.warn(`[pricing-tokens] tier inconnu dans le token « ${match} » — laissé en l'état`);
+      return match;
+    }
+    return renderEntryLabel(entry, locale);
+  });
+}
+
 /**
  * Walker récursif : applique `resolvePriceTokens` à toutes les chaînes d'une
  * valeur arbitraire (string / array / objet plain), en profondeur. Conserve la
@@ -198,7 +236,8 @@ export function resolvePriceTokens(text: string, locale: Locale = "fr"): string 
  */
 export function resolvePriceTokensDeep<T>(value: T, locale: Locale = "fr"): T {
   if (typeof value === "string") {
-    return resolvePriceTokens(value, locale) as unknown as T;
+    // Résout d'abord les tokens prix, puis les tokens label (SSOT noms).
+    return resolveLabelTokens(resolvePriceTokens(value, locale), locale) as unknown as T;
   }
   if (Array.isArray(value)) {
     return value.map((item) => resolvePriceTokensDeep(item, locale)) as unknown as T;

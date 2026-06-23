@@ -17,7 +17,9 @@ import {
 } from "./pricing";
 import {
   hasPriceToken,
+  hasLabelToken,
   resolvePriceTokens,
+  resolveLabelTokens,
   resolvePriceTokensDeep,
   PRICE_TOKEN_REGISTRY,
 } from "./pricing-tokens";
@@ -167,5 +169,32 @@ describe("resolvePriceTokensDeep", () => {
     expect(out.keep).toBe(42);
     // immutabilité : l'entrée n'est pas mutée
     expect(input.price).toBe("{{price:audit-flash|flat}}");
+  });
+
+  it("résout aussi les tokens {{label:…}} dans la prose profonde", () => {
+    const dirigeants = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
+    const out = resolvePriceTokensDeep(
+      { phrase: "le format {{label:intervention-dirigeants}}" },
+      "fr",
+    );
+    expect(out.phrase).toBe(`le format ${dirigeants.labelFr}`);
+  });
+});
+
+describe("resolveLabelTokens", () => {
+  it("détecte un token label, ignore le texte sans token", () => {
+    expect(hasLabelToken("format {{label:intervention-dirigeants}}")).toBe(true);
+    expect(hasLabelToken("aucun label ici")).toBe(false);
+  });
+
+  it("résout vers le labelFr SSOT du tier (reste vert si Will renomme)", () => {
+    const dirigeants = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
+    expect(resolveLabelTokens("{{label:intervention-dirigeants}}", "fr")).toBe(dirigeants.labelFr);
+  });
+
+  it("id inconnu → token laissé en l'état", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    expect(resolveLabelTokens("{{label:tier-inexistant}}", "fr")).toBe("{{label:tier-inexistant}}");
+    warn.mockRestore();
   });
 });
