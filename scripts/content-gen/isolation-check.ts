@@ -147,6 +147,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // Test de validation JSON-LD CI — exerce les factories seo-content-gen
   // (référence le marqueur en commentaire/contexte, pas du code pipeline).
   /^src\/lib\/__tests__\/jsonld-validation\.spec\.ts$/,
+  // Observatoire IA dashboard (#149) — analysis.ts CONSOMME le router LLM
+  // partagé de content-gen (`provider-router` + `parse-llm-json`) pour la
+  // synthèse « Décryptage IA ». Le marqueur vient du seul chemin d'import
+  // (consommateur, pas du pipeline de génération). Même cas qu'ArticleFaq.
+  /^src\/server\/observatoire\/analysis\.ts$/,
   /^src\/features\/admin-blog\/actions\.ts$/,
   /^src\/i18n\/routing\.ts$/,
   /^src\/lib\/image-utils\.ts$/,
