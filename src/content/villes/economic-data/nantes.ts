@@ -514,7 +514,7 @@ export const NANTES_ECONOMIC_DATA: VilleEconomicData = {
   // ─── Couche 2bis — tags KB sectorielles ─────────────────────────────
   // Volontairement vide en V1 : la KB Prisma ne contient pas encore
   // d'entries sectorielles dédiées (Phase B du sprint).
-  kbSectorTags: ["aerospatial-defense", "agroalimentaire-igp", "it-numerique"],
+  kbSectorTags: ["aerospatial-defense", "agroalimentaire-igp", "it-numerique", "construction-btp"],
 
   // ─── Optionnels (hors scoring dashboard) ────────────────────────────
   capitaleFrenchTech: {

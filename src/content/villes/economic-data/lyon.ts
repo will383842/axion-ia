@@ -439,6 +439,7 @@ export const LYON_ECONOMIC_DATA: VilleEconomicData = {
     "sante-biotech",
     "tourisme-affaires",
     "juridique",
+    "assurance",
   ],
 
   capitaleFrenchTech: {

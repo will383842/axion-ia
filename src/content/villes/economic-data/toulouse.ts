@@ -402,7 +402,7 @@ export const TOULOUSE_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  kbSectorTags: ["aerospatial-defense", "it-numerique", "agroalimentaire-igp"],
+  kbSectorTags: ["aerospatial-defense", "it-numerique", "agroalimentaire-igp", "construction-btp"],
 
   capitaleFrenchTech: {
     statut: "capitale",
