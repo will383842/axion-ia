@@ -130,8 +130,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
   const showGlobal = !hasFilter;
   const segments = showGlobal ? payload?.segments : undefined;
   const analysis = showGlobal && !isBuildStub ? await readLatestAnalysis() : null;
-  const history =
-    showGlobal && !isBuildStub ? await readSnapshotHistory(60).catch(() => []) : [];
+  const history = showGlobal && !isBuildStub ? await readSnapshotHistory(60).catch(() => []) : [];
 
   // Résolution des libellés d'options (SSOT pour secteur/région, i18n sinon).
   const sectorLabel = (slug: string) => {
@@ -191,18 +190,18 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
     {
       key: "competitors_use_ai",
       label: isFr ? "Concurrents IA" : "Competitors w/ AI",
-      color: "#1a4dd9",
+      color: "#1a4dd9", // hex-ok: palette dataviz courbes observatoire
     },
     {
       key: "no_formal_strategy",
       label: isFr ? "Sans stratégie" : "No strategy",
-      color: "#c24a1b",
+      color: "#c24a1b", // hex-ok: palette dataviz courbes observatoire
     },
-    { key: "rgpd_concern", label: "RGPD", color: "#0f766e" },
+    { key: "rgpd_concern", label: "RGPD", color: "#0f766e" }, // hex-ok: palette dataviz courbes observatoire
     {
       key: "investment_intent",
       label: isFr ? "Investir" : "Investing",
-      color: "#b45309",
+      color: "#b45309", // hex-ok: palette dataviz courbes observatoire
     },
   ];
   const heatmapLabels = { segment: isFr ? "Segment" : "Segment", sample: "n" };

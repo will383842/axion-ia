@@ -22,7 +22,7 @@ interface SegmentHeatmapProps {
   readonly className?: string;
 }
 
-/** Intensité terracotta (#c24a1b) proportionnelle à la valeur 0-100 — SSR, zéro JS. */
+/** Intensité terracotta proportionnelle à la valeur 0-100 — SSR, zéro JS. */
 function cellStyle(value: number): React.CSSProperties {
   const alpha = 0.06 + (Math.max(0, Math.min(100, value)) / 100) * 0.82;
   return { backgroundColor: `rgba(194, 74, 27, ${alpha.toFixed(3)})` };
@@ -67,7 +67,11 @@ export function SegmentHeatmap({
               {labels.sample}
             </th>
             {columns.map((c) => (
-              <th key={c.key} scope="col" className="text-fg-muted px-2 py-2 text-center font-medium">
+              <th
+                key={c.key}
+                scope="col"
+                className="text-fg-muted px-2 py-2 text-center font-medium"
+              >
                 {c.label}
               </th>
             ))}
@@ -89,7 +93,9 @@ export function SegmentHeatmap({
                     style={cellStyle(v)}
                   >
                     {v}
-                    <span className="text-fg-muted">&nbsp;{c.key === "maturityScore" ? "/100" : "%"}</span>
+                    <span className="text-fg-muted">
+                      &nbsp;{c.key === "maturityScore" ? "/100" : "%"}
+                    </span>
                   </td>
                 );
               })}
