@@ -1,8 +1,8 @@
 /**
  * Barrel — KB Entries sectorielles statiques Axion-IA.
  *
- * Sprint S+5 Phase B3 2026-05-20.
- * 31 entries / 6 thématiques / 29 tags sectoriels.
+ * Sprint S+5 Phase B3 2026-05-20 ; expansion couverture 2026-06-23.
+ * 43 entries / 7 thématiques / 31 tags sectoriels (couverture complète).
  *
  * Usage ContentGen :
  *   import { ALL_SECTOR_KB_ENTRIES } from "@/content/knowledge/sector-entries"
@@ -19,6 +19,7 @@ export { COMMERCE_LOGISTIQUE_KB_ENTRIES } from "./commerce-logistique";
 export { IT_CYBER_KB_ENTRIES } from "./it-cyber";
 export { SANTE_AGRO_KB_ENTRIES } from "./sante-agro";
 export { DOCTRINES_CROSS_KB_ENTRIES } from "./doctrines-cross";
+export { EXPANSION_SECTEURS_KB_ENTRIES } from "./expansion-secteurs-2026-06";
 
 import { CONSEIL_FINANCE_KB_ENTRIES } from "./conseil-finance";
 import { INDUSTRIE_KB_ENTRIES } from "./industrie";
@@ -26,6 +27,7 @@ import { COMMERCE_LOGISTIQUE_KB_ENTRIES } from "./commerce-logistique";
 import { IT_CYBER_KB_ENTRIES } from "./it-cyber";
 import { SANTE_AGRO_KB_ENTRIES } from "./sante-agro";
 import { DOCTRINES_CROSS_KB_ENTRIES } from "./doctrines-cross";
+import { EXPANSION_SECTEURS_KB_ENTRIES } from "./expansion-secteurs-2026-06";
 
 /** Toutes les entries sectorielles KB, plate, prête pour le RAG. */
 export const ALL_SECTOR_KB_ENTRIES = [
@@ -35,4 +37,5 @@ export const ALL_SECTOR_KB_ENTRIES = [
   ...IT_CYBER_KB_ENTRIES,
   ...SANTE_AGRO_KB_ENTRIES,
   ...DOCTRINES_CROSS_KB_ENTRIES,
+  ...EXPANSION_SECTEURS_KB_ENTRIES,
 ] as const;

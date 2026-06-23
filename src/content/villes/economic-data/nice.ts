@@ -393,7 +393,7 @@ export const NICE_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  kbSectorTags: ["it-numerique", "tourisme-affaires", "sante-biotech"],
+  kbSectorTags: ["it-numerique", "tourisme-affaires", "sante-biotech", "immobilier-pro"],
 
   capitaleFrenchTech: {
     statut: "capitale",
