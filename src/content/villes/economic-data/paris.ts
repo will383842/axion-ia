@@ -456,6 +456,8 @@ export const PARIS_ECONOMIC_DATA: VilleEconomicData = {
     "mode-luxe-maroquinerie",
     "immobilier-pro",
     "juridique",
+    "communication-medias",
+    "administration-publique",
   ],
 
   // ─── Optionnels (hors scoring dashboard) ────────────────────────────
