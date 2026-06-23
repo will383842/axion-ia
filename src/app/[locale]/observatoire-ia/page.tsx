@@ -308,6 +308,16 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
         title={studyName}
         description={t("hero.subtitle")}
       >
+        {hasData ? (
+          <p className="mb-8 flex items-baseline gap-3" data-answer="">
+            <span className="text-terracotta text-5xl leading-none font-bold tabular-nums sm:text-6xl">
+              {total.toLocaleString("fr-FR")}
+            </span>
+            <span className="text-fg-soft text-lg font-medium">
+              {isFr ? "réponses complètes" : "complete responses"}
+            </span>
+          </p>
+        ) : null}
         <div className="flex flex-wrap gap-4">
           <Button asChild size="lg" shape="pill">
             <Link href="/observatoire-ia/participer">

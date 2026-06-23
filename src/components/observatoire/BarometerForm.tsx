@@ -125,20 +125,25 @@ export function BarometerForm({ questions, locale, maturityGePoc, labels }: Baro
     <div className="border-border bg-canvas mx-auto max-w-xl rounded-lg border p-6 sm:p-8">
       {/* Barre de progression (hauteur fixe → pas de CLS) */}
       <div className="mb-6">
-        <p className="text-fg-muted mb-2 text-xs font-medium">{progress}</p>
-        <div className="bg-sand h-1.5 w-full overflow-hidden rounded-full" aria-hidden="true">
+        <div className="mb-2 flex items-center justify-between">
+          <p className="text-fg-soft text-sm font-semibold">{progress}</p>
+          <span className="text-terracotta text-sm font-bold tabular-nums">
+            {Math.round(((step + 1) / total) * 100)}%
+          </span>
+        </div>
+        <div className="bg-sand h-2 w-full overflow-hidden rounded-full" aria-hidden="true">
           <div
-            className="bg-terracotta h-full rounded-full transition-all"
+            className="bg-terracotta h-full rounded-full transition-all duration-300"
             style={{ width: `${((step + 1) / total) * 100}%` }}
           />
         </div>
       </div>
 
       <fieldset>
-        <legend className="text-fg text-lg font-semibold">{current.label}</legend>
+        <legend className="text-fg text-xl font-semibold">{current.label}</legend>
         {current.hint ? <p className="text-fg-muted mt-1 text-sm">{current.hint}</p> : null}
 
-        <div className="mt-4 space-y-2">
+        <div className="mt-5 space-y-2.5">
           {current.options.map((o) => {
             const isMulti = current.type === "multi";
             const checked = isMulti
@@ -147,8 +152,10 @@ export function BarometerForm({ questions, locale, maturityGePoc, labels }: Baro
             return (
               <label
                 key={o.value}
-                className={`flex cursor-pointer items-center gap-3 rounded-md border px-4 py-2.5 text-sm ${
-                  checked ? "border-terracotta bg-paper" : "border-border bg-canvas"
+                className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors sm:text-base ${
+                  checked
+                    ? "border-terracotta bg-paper ring-1 ring-terracotta"
+                    : "border-border bg-canvas hover:border-terracotta hover:bg-paper"
                 }`}
               >
                 <input
@@ -161,7 +168,7 @@ export function BarometerForm({ questions, locale, maturityGePoc, labels }: Baro
                       ? toggleMulti(current.id, o.value, current.maxSelections)
                       : setSingle(current.id, o.value)
                   }
-                  className="accent-terracotta h-4 w-4"
+                  className="accent-terracotta h-5 w-5 shrink-0"
                 />
                 <span className="text-fg">{o.label}</span>
               </label>
@@ -202,7 +209,7 @@ export function BarometerForm({ questions, locale, maturityGePoc, labels }: Baro
           type="button"
           onClick={goNext}
           disabled={pending}
-          className="bg-terracotta rounded-full px-6 py-2 text-sm font-medium text-white disabled:opacity-60"
+          className="bg-terracotta rounded-full px-6 py-2 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? labels.submitting : step < total - 1 ? labels.next : labels.submit}
         </button>
