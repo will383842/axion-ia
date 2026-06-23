@@ -71,7 +71,10 @@ export type UploadActionResult =
 export async function uploadImageAction(formData: FormData): Promise<UploadActionResult> {
   // 1) Role check
   const session = await auth();
-  if (!session?.user?.role || session.user.role !== "admin") {
+  if (
+    !session?.user?.role ||
+    (session.user.role !== "admin" && session.user.role !== "super_admin")
+  ) {
     redirect("/api/auth/signin?error=Unauthorized");
   }
 

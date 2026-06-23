@@ -24,7 +24,10 @@ export async function translateImageAction(
   input: z.input<typeof TranslateSchema>,
 ): Promise<TranslateActionResult> {
   const session = await auth();
-  if (!session?.user?.role || session.user.role !== "admin") {
+  if (
+    !session?.user?.role ||
+    (session.user.role !== "admin" && session.user.role !== "super_admin")
+  ) {
     redirect("/api/auth/signin?error=Unauthorized");
   }
 

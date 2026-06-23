@@ -29,7 +29,10 @@ export type ForgetIpHashResult =
 
 export async function forgetIpHashAction(formData: FormData): Promise<ForgetIpHashResult> {
   const session = await auth();
-  if (!session?.user?.role || session.user.role !== "admin") {
+  if (
+    !session?.user?.role ||
+    (session.user.role !== "admin" && session.user.role !== "super_admin")
+  ) {
     return { success: false, error: "forbidden" };
   }
 

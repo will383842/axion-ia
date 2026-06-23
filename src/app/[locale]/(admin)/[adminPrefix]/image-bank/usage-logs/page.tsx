@@ -36,7 +36,7 @@ export default async function UsageLogsPage({ params, searchParams }: PageProps)
   const { ipHash: rawIpHash } = await searchParams;
 
   const session = await auth();
-  if (!session?.user || session.user.role !== "admin") {
+  if (!session?.user || (session.user.role !== "admin" && session.user.role !== "super_admin")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 

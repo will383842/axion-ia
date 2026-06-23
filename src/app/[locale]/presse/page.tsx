@@ -18,9 +18,10 @@ import { MediaCoverage } from "@/components/sections/MediaCoverage";
 import { PressContact } from "@/components/sections/PressContact";
 import { PressActivitiesStrip } from "@/components/sections/PressActivitiesStrip";
 import { PressWhatsReallyHappening } from "@/components/sections/PressWhatsReallyHappening";
+import { PressSpokesperson } from "@/components/sections/PressSpokesperson";
 import { type ServiceId } from "@/content/services";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
-import { PRESS_PITCH, PRESS_FACTS, PRESS_FAQ } from "@/content/press";
+import { PRESS_PITCH, PRESS_FACTS, PRESS_FAQ, PRESS_SPOKESPERSONS } from "@/content/press";
 // Salle de presse 2026-06-22 — communiqués + kit média lus depuis la DB
 // (fallback fixtures si DB vide / build stub). Édités via la console admin.
 import {
@@ -131,6 +132,19 @@ export default async function PressePage({ params, searchParams }: Props) {
     label: f[loc].label,
     value: f[loc].value,
   }));
+
+  // Porte-parole interview-ready — fondateur Axion-IA. Bio + citation attribuée
+  // copy-paste (cf. PressSpokesperson). Photo réelle dans /public.
+  const founder = PRESS_SPOKESPERSONS[0]!;
+  const spokesperson = {
+    name: founder[loc].name,
+    role: founder[loc].role,
+    bio: founder[loc].bio,
+    quote: founder[loc].quote,
+    linkedinUrl: founder.linkedinUrl,
+    languages: founder.languages.map((l) => l.toUpperCase()),
+    knowsAbout: [...founder.knowsAbout],
+  };
 
   const kitItems = await getPublishedPressMedia(loc);
 
@@ -277,6 +291,27 @@ export default async function PressePage({ params, searchParams }: Props) {
 
   const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqItems });
 
+  // Person (porte-parole) — expose le fondateur comme source interviewable pour
+  // Google / AI Overviews sur « interview fondateur cabinet IA », « porte-parole
+  // Axion-IA ». Rattaché à l'Organization via worksFor @id.
+  const spokespersonJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/#founder`,
+    name: founder[loc].name,
+    jobTitle: founder[loc].role,
+    description: founder[loc].bio,
+    image: `${SITE_URL}/illustrations/home-founder-william.jpg`,
+    knowsLanguage: founder.languages.map((l) => (l === "fr" ? "French" : "English")),
+    knowsAbout: [...founder.knowsAbout],
+    sameAs: [founder.linkedinUrl],
+    worksFor: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Axion-IA",
+    },
+  };
+
   // ImageObject @graph — Sprint AEO Phase 4 2026-05-28 (Will). Photo
   // équipe + portrait fondateur pour exposition Google Images + AI Overviews
   // sur requêtes « presse Axion-IA », « interview fondateur cabinet IA »,
@@ -382,6 +417,46 @@ export default async function PressePage({ params, searchParams }: Props) {
           </div>
           <PressFacts eyebrow={t("factsEyebrow")} facts={facts} />
         </div>
+      </Section>
+
+      {/* PORTE-PAROLE — bio prête à publier + citation attribuée copy-paste +
+          portrait téléchargeable (manque presse classique comblé 2026-06-23). */}
+      <Section
+        id="porte-parole"
+        tone="canvas"
+        eyebrow={isFr ? "Porte-parole" : "Spokesperson"}
+        title={isFr ? "Fondateur disponible pour" : "Founder available for"}
+        titleEm={isFr ? "interviews" : "interviews"}
+        description={
+          isFr
+            ? "Bio prête à publier et citation attribuée à copier-coller — pour écrire votre papier sans nous recontacter."
+            : "Ready-to-publish bio and an attributable quote to copy-paste — so you can write your piece without getting back to us."
+        }
+      >
+        <PressSpokesperson
+          person={spokesperson}
+          photo={{
+            src: "/illustrations/home-founder-william.avif",
+            alt: isFr
+              ? "Portrait de Williams, fondateur d'Axion-IA, disponible pour interviews presse FR + EN."
+              : "Portrait of Williams, Axion-IA founder, available for FR + EN press interviews.",
+            width: 800,
+            height: 1000,
+          }}
+          photoDownloadUrl="/images/axion-ia-fondateur-williams-jullin-portrait-professionnel.jpg"
+          labels={{
+            quoteLabel: isFr ? "Citation à citer" : "Quote to cite",
+            copyQuote: isFr ? "Copier la citation" : "Copy quote",
+            copied: isFr ? "Copié !" : "Copied!",
+            languagesLabel: isFr ? "Langues d'interview" : "Interview languages",
+            expertiseLabel: isFr ? "Domaines d'expertise" : "Areas of expertise",
+            linkedin: "LinkedIn",
+            downloadPhoto: isFr ? "Télécharger le portrait" : "Download portrait",
+            interviewReady: isFr
+              ? "Portrait haute résolution — libre pour usage éditorial presse."
+              : "High-resolution portrait — free for editorial press use.",
+          }}
+        />
       </Section>
 
       {/* QUE SE PASSE-T-IL VRAIMENT — section pont (ton sobre), ancres internes */}
@@ -754,6 +829,7 @@ export default async function PressePage({ params, searchParams }: Props) {
       {/* JSON-LD payloads — émis une seule fois, en bas de page */}
       <JsonLd data={pressJsonLd} />
       <JsonLd data={faqJsonLd} />
+      <JsonLd data={spokespersonJsonLd} />
       {releasesItemList ? <JsonLd data={releasesItemList} /> : null}
       <JsonLd data={pressImagesJsonLd} />
     </>
