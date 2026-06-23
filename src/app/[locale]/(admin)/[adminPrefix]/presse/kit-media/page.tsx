@@ -60,20 +60,25 @@ export default async function PressMediaListPage({ params }: PageProps) {
   }
   const base = `/${locale}/${adminPrefix}/presse`;
 
-  const assets = await prisma.pressMediaAsset.findMany({
-    where: { deletedAt: null },
-    include: { translations: { where: { locale: "fr" } } },
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-    take: 200,
-  });
-
-  const rows: AssetRow[] = assets.map((a) => ({
-    id: a.id,
-    kind: a.kind,
-    status: a.status,
-    title: a.translations[0]?.title ?? a.fileName ?? "(sans titre)",
-    fileName: a.fileName,
-  }));
+  // try/catch : table absente (migration non appliquée) → liste vide, pas de crash.
+  let rows: AssetRow[] = [];
+  try {
+    const assets = await prisma.pressMediaAsset.findMany({
+      where: { deletedAt: null },
+      include: { translations: { where: { locale: "fr" } } },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+      take: 200,
+    });
+    rows = assets.map((a) => ({
+      id: a.id,
+      kind: a.kind,
+      status: a.status,
+      title: a.translations[0]?.title ?? a.fileName ?? "(sans titre)",
+      fileName: a.fileName,
+    }));
+  } catch {
+    rows = [];
+  }
 
   async function remove(formData: FormData): Promise<void> {
     "use server";

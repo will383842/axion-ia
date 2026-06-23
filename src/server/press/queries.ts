@@ -11,12 +11,7 @@
 import { prisma } from "@/lib/prisma";
 import type { Locale } from "@/i18n/routing";
 import type { ImageAsset, ImageAssetTranslation } from "../../../prisma/generated/client";
-import {
-  PRESS_RELEASES,
-  PRESS_KIT_ASSETS,
-  type PressRelease as FixturePressRelease,
-  type PressKitAsset as FixturePressKitAsset,
-} from "@/content/press";
+import { PRESS_KIT_ASSETS, type PressKitAsset as FixturePressKitAsset } from "@/content/press";
 import type { PressReleaseTag, PressMediaKind } from "../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────
@@ -76,34 +71,9 @@ const FIXTURE_KIND_TO_PRISMA: Record<FixturePressKitAsset["kind"], PressMediaKin
 };
 
 // ─────────────────────────────────────────────────────────────────
-// Fallback mappers (fixtures → shape publique).
+// Fallback mapper kit média (fixtures → shape publique). Conservé pour le kit
+// (vrais logos de marque) ; PLUS de fallback pour les communiqués (admin-only).
 // ─────────────────────────────────────────────────────────────────
-function fixtureToCard(r: FixturePressRelease, locale: Locale): PressReleaseCard {
-  const t = r[locale];
-  return {
-    slug: r.slug,
-    publishedAt: r.publishedAt,
-    tag: r.tag,
-    title: t.title,
-    dek: t.dek,
-    // Fixtures legacy = communiqués texte, pas de PDF.
-    pdfUrl: null,
-  };
-}
-
-function fixtureToFull(r: FixturePressRelease, locale: Locale): PressReleaseFull {
-  const t = r[locale];
-  return {
-    slug: r.slug,
-    publishedAt: r.publishedAt,
-    tag: r.tag,
-    title: t.title,
-    dek: t.dek,
-    body: t.body,
-    pdfUrl: null,
-  };
-}
-
 function fixtureToKitItem(a: FixturePressKitAsset, locale: Locale): PressKitItem {
   const t = a[locale];
   return {
@@ -120,31 +90,34 @@ function fixtureToKitItem(a: FixturePressKitAsset, locale: Locale): PressKitItem
 // Communiqués publiés (cartes).
 // ─────────────────────────────────────────────────────────────────
 export async function getPublishedPressReleases(locale: Locale): Promise<PressReleaseCard[]> {
-  const rows = await prisma.pressRelease.findMany({
-    where: { status: "published", deletedAt: null },
-    orderBy: [{ sortOrder: "asc" }, { publishedAt: "desc" }],
-    include: { translations: { where: { locale } } },
-  });
-
-  const mapped: PressReleaseCard[] = [];
-  for (const row of rows) {
-    const t = row.translations[0];
-    if (!t) continue; // pas de traduction dans cette locale → skip
-    mapped.push({
-      slug: t.slug,
-      publishedAt: (row.publishedAt ?? row.createdAt).toISOString().slice(0, 10),
-      tag: row.tag,
-      title: t.title,
-      dek: t.dek ?? "",
-      pdfUrl: row.pdfStoragePath ? `/api/presse/communique/${row.id}` : null,
+  // Communiqués = UNIQUEMENT ceux publiés depuis la console admin (décision Will
+  // 2026-06-23). Pas de fallback fixtures : tant que rien n'est publié, la
+  // section affiche son état vide. try/catch défensif : une table absente
+  // (migration non appliquée) ne doit jamais casser /presse — on rend vide.
+  try {
+    const rows = await prisma.pressRelease.findMany({
+      where: { status: "published", deletedAt: null },
+      orderBy: [{ sortOrder: "asc" }, { publishedAt: "desc" }],
+      include: { translations: { where: { locale } } },
     });
-  }
 
-  // Fallback fixtures : DB vide (build stub OU pas encore seedée).
-  if (mapped.length === 0) {
-    return PRESS_RELEASES.map((r) => fixtureToCard(r, locale));
+    const mapped: PressReleaseCard[] = [];
+    for (const row of rows) {
+      const t = row.translations[0];
+      if (!t) continue; // pas de traduction dans cette locale → skip
+      mapped.push({
+        slug: t.slug,
+        publishedAt: (row.publishedAt ?? row.createdAt).toISOString().slice(0, 10),
+        tag: row.tag,
+        title: t.title,
+        dek: t.dek ?? "",
+        pdfUrl: row.pdfStoragePath ? `/api/presse/communique/${row.id}` : null,
+      });
+    }
+    return mapped;
+  } catch {
+    return [];
   }
-  return mapped;
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -154,16 +127,16 @@ export async function getPressReleaseBySlug(
   locale: Locale,
   slug: string,
 ): Promise<PressReleaseFull | null> {
-  const t = await prisma.pressReleaseTranslation.findFirst({
-    where: {
-      locale,
-      slug,
-      release: { status: "published", deletedAt: null },
-    },
-    include: { release: true },
-  });
-
-  if (t) {
+  try {
+    const t = await prisma.pressReleaseTranslation.findFirst({
+      where: {
+        locale,
+        slug,
+        release: { status: "published", deletedAt: null },
+      },
+      include: { release: true },
+    });
+    if (!t) return null; // slug inconnu → 404 (plus de fallback fixtures, admin-only)
     return {
       slug: t.slug,
       publishedAt: (t.release.publishedAt ?? t.release.createdAt).toISOString().slice(0, 10),
@@ -175,61 +148,66 @@ export async function getPressReleaseBySlug(
       body: t.body ?? "",
       pdfUrl: t.release.pdfStoragePath ? `/api/presse/communique/${t.release.id}` : null,
     };
+  } catch {
+    return null;
   }
-
-  // Fallback fixtures.
-  const fixture = PRESS_RELEASES.find((r) => r.slug === slug);
-  return fixture ? fixtureToFull(fixture, locale) : null;
 }
 
 // ─────────────────────────────────────────────────────────────────
 // Slugs publiés (generateStaticParams).
 // ─────────────────────────────────────────────────────────────────
 export async function getAllPublishedPressReleaseSlugs(locale: Locale): Promise<string[]> {
-  const rows = await prisma.pressReleaseTranslation.findMany({
-    where: {
-      locale,
-      release: { status: "published", deletedAt: null },
-    },
-    select: { slug: true },
-  });
-
-  if (rows.length === 0) {
-    return PRESS_RELEASES.map((r) => r.slug);
+  try {
+    const rows = await prisma.pressReleaseTranslation.findMany({
+      where: {
+        locale,
+        release: { status: "published", deletedAt: null },
+      },
+      select: { slug: true },
+    });
+    return rows.map((r) => r.slug);
+  } catch {
+    return [];
   }
-  return rows.map((r) => r.slug);
 }
 
 // ─────────────────────────────────────────────────────────────────
 // Kit média publié.
 // ─────────────────────────────────────────────────────────────────
 export async function getPublishedPressMedia(locale: Locale): Promise<PressKitItem[]> {
-  const rows = await prisma.pressMediaAsset.findMany({
-    where: { status: "published", deletedAt: null },
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-    include: { translations: { where: { locale } } },
-  });
-
-  const mapped: PressKitItem[] = [];
-  for (const row of rows) {
-    const t = row.translations[0];
-    if (!t) continue;
-    mapped.push({
-      id: row.id,
-      kind: row.kind,
-      // Fichier uploadé → route publique (créée ailleurs) ; sinon placeholder.
-      fileUrl: row.storagePath ? `/api/presse/media/${row.id}` : null,
-      format: (row.fileFormat ?? "").toUpperCase(),
-      title: t.title,
-      description: t.description ?? "",
+  // Kit média : on GARDE le fallback fixtures (vrais logos/charte de marque, pas
+  // de contenu inventé) tant que rien n'est uploadé en console. try/catch : table
+  // absente → fallback fixtures plutôt que crash.
+  try {
+    const rows = await prisma.pressMediaAsset.findMany({
+      where: { status: "published", deletedAt: null },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+      include: { translations: { where: { locale } } },
     });
-  }
 
-  // Fallback fixtures.
-  if (mapped.length === 0) {
+    const mapped: PressKitItem[] = [];
+    for (const row of rows) {
+      const t = row.translations[0];
+      if (!t) continue;
+      mapped.push({
+        id: row.id,
+        kind: row.kind,
+        // Fichier uploadé → route publique (créée ailleurs) ; sinon placeholder.
+        fileUrl: row.storagePath ? `/api/presse/media/${row.id}` : null,
+        format: (row.fileFormat ?? "").toUpperCase(),
+        title: t.title,
+        description: t.description ?? "",
+      });
+    }
+
+    // Fallback fixtures si rien de publié en console.
+    if (mapped.length === 0) {
+      return PRESS_KIT_ASSETS.map((a) => fixtureToKitItem(a, locale));
+    }
+    return mapped;
+  } catch {
     return PRESS_KIT_ASSETS.map((a) => fixtureToKitItem(a, locale));
   }
-  return mapped;
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -246,15 +224,19 @@ export async function getPressGalleryImages(
   locale: Locale,
   limit = 8,
 ): Promise<PressGalleryImage[]> {
-  return prisma.imageAsset.findMany({
-    where: {
-      deletedAt: null,
-      isActive: true,
-      publishedAt: { not: null },
-      translations: { some: { languageCode: locale, isPublished: true } },
-    },
-    orderBy: [{ isFeatured: "desc" }, { embedCount: "desc" }, { publishedAt: "desc" }],
-    take: limit,
-    include: { translations: { where: { languageCode: locale }, take: 1 } },
-  });
+  try {
+    return await prisma.imageAsset.findMany({
+      where: {
+        deletedAt: null,
+        isActive: true,
+        publishedAt: { not: null },
+        translations: { some: { languageCode: locale, isPublished: true } },
+      },
+      orderBy: [{ isFeatured: "desc" }, { embedCount: "desc" }, { publishedAt: "desc" }],
+      take: limit,
+      include: { translations: { where: { languageCode: locale }, take: 1 } },
+    });
+  } catch {
+    return [];
+  }
 }

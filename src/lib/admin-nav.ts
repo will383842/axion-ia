@@ -643,6 +643,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/presse`, label: "Vue d'ensemble", icon: "📰", group: "presse" },
     { href: `${base}/presse/communiques`, label: "Communiqués", icon: "🗞️", group: "presse" },
     { href: `${base}/presse/kit-media`, label: "Kit média", icon: "🎨", group: "presse" },
+    { href: `${base}/presse/couverture`, label: "Couverture médias", icon: "📡", group: "presse" },
     // ── chatbot (console conversationnelle) ──────────────────────────────
     { href: `${base}/chatbot`, label: "Tableau de bord", icon: "🤖", group: "chatbot" },
     { href: `${base}/chatbot/escalades`, label: "Escalades", icon: "🆘", group: "chatbot" },

@@ -141,6 +141,27 @@ const GROUPS_COLLAPSED_LS_KEY = "admin-sidebar-groups-collapsed-v2";
 
 type BadgeTone = "danger" | "warn";
 
+/**
+ * Item de nav « actif » pour un pathname donné. Matching par PRÉFIXE (le plus
+ * spécifique gagne) : sur une sous-route comme `/presse/communiques/nouveau`
+ * — qui n'a pas d'entrée de nav exacte —, on rattache au parent
+ * `/presse/communiques`. Sans ça, `activeGroup` tombait à null et le groupe
+ * « Salle de presse » se refermait dès qu'on ouvrait un éditeur (bug 2026-06-23).
+ */
+function findActiveHref(
+  items: ReadonlyArray<AdminNavItem>,
+  pathname: string | null,
+): string | null {
+  if (!pathname) return null;
+  let best: string | null = null;
+  for (const it of items) {
+    if (pathname === it.href || pathname.startsWith(`${it.href}/`)) {
+      if (best === null || it.href.length > best.length) best = it.href;
+    }
+  }
+  return best;
+}
+
 /** Calcule initiales (max 2 lettres) à partir d'un email pour l'avatar footer. */
 function initialsFromEmail(email: string | undefined): string {
   if (!email) return "·";
@@ -191,7 +212,8 @@ export function AdminSidebarNav({
   // un flash SSR→client). Se déploie/replie ensuite au clic sur l'onglet.
   const [collapsedGroups, setCollapsedGroups] = useState<Set<AdminNavGroup>>(() => {
     const s = new Set<AdminNavGroup>(ADMIN_NAV_GROUP_ORDER);
-    const hit = items.find((it) => it.href === pathname);
+    const activeHref = findActiveHref(items, pathname);
+    const hit = items.find((it) => it.href === activeHref);
     if (hit) s.delete(hit.group);
     return s;
   });
@@ -286,10 +308,16 @@ export function AdminSidebarNav({
 
   // Groupe contenant la route active → toujours déplié (le lien actif ne doit
   // jamais être masqué par un groupe que l'utilisateur a replié).
+  // Href actif par matching de préfixe (cf. findActiveHref) — pilote à la fois
+  // le surlignage de l'item et l'ouverture du groupe parent.
+  const activeHref = useMemo<string | null>(
+    () => findActiveHref(items, pathname),
+    [items, pathname],
+  );
   const activeGroup = useMemo<AdminNavGroup | null>(() => {
-    const hit = items.find((it) => it.href === pathname);
+    const hit = items.find((it) => it.href === activeHref);
     return hit ? hit.group : null;
-  }, [items, pathname]);
+  }, [items, activeHref]);
 
   // Auto-ouvre le groupe contenant la page courante (au montage + à chaque
   // navigation), MAIS laisse l'utilisateur le replier librement ensuite (l'effet
@@ -610,7 +638,7 @@ export function AdminSidebarNav({
                   >
                     {groupItems.map((item) => {
                       const Icon = ICON_MAP[item.label] ?? FolderOpen;
-                      const active = pathname === item.href;
+                      const active = item.href === activeHref;
                       const badge = badgeFor(item.href);
                       const level = collapsed ? 0 : itemLevel(item.href);
                       const iconSize = level >= 1 ? 14 : 16;

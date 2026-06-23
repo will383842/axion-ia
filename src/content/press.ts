@@ -20,17 +20,6 @@ const auditPme = getTierById(AUDIT_TIERS, "audit-strategique-pme");
 const auditEti = getTierById(AUDIT_TIERS, "audit-strategique-eti");
 const interventionEssentielle = getTierById(INTERVENTION_TIERS, "intervention-essentielle");
 
-function pressPitchShort(loc: "fr" | "en"): string {
-  const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, loc, { compact: true });
-  const flash = formatAmount(auditFlash.priceFlat!, loc, { compact: true });
-  const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
-  const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
-  if (loc === "fr") {
-    return `Axion-IA est un cabinet IA opérationnel pour entreprises de toutes tailles — de l'artisan à l'ETI. Nous intervenons sur site ou à distance pour identifier, démontrer et implémenter des usages IA générant un retour sur investissement mesurable. Trois modules : interventions terrain (à partir de ${formatAmount(interventionEssentielle.priceFlat!, "fr", { compact: true })}, ${interventionsEntry}), audits IA en 4 niveaux (Flash ${flash} → Stratégique ETI dès ${etiFrom}) et implémentations sur mesure (${implEntry}). Hébergement UE par défaut, RGPD strict.`;
-  }
-  return `Axion-IA is an operational AI consultancy for companies of all sizes — from sole traders to mid-caps. We work on site or remotely to identify, demonstrate and implement AI use cases generating measurable return on investment. Three modules: on-site sessions (from ${formatAmount(interventionEssentielle.priceFlat!, "en", { compact: true })}, ${interventionsEntry}), AI audits in 4 tiers (Flash ${flash} → Strategic Mid-cap from ${etiFrom}) and custom implementations (${implEntry}). EU hosting by default, strict GDPR.`;
-}
-
 function pressReleaseLaunchBody(loc: "fr" | "en"): string {
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, loc, { compact: true });
   const flash = formatAmount(auditFlash.priceFlat!, loc, { compact: true });
@@ -113,18 +102,24 @@ export interface PressPitchLocale {
   boilerplate: string;
 }
 
+// Le pitch visible sur la page = `short` (paragraphe punchy orienté journalistes,
+// ~60 mots, citable AEO/Speakable). `boilerplate` = la version « copier-coller »
+// téléchargeable (asset kit presse), volontairement distincte. AUCUNE date de
+// création (choix Will 2026-06-23 : ne pas surfacer l'année de fondation).
 export const PRESS_PITCH: { fr: PressPitchLocale; en: PressPitchLocale } = {
   fr: {
-    eyebrow: "Espace presse",
-    short: pressPitchShort("fr"),
+    eyebrow: "Pitch presse",
+    short:
+      "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle. Il aide les entreprises de toutes tailles — de l'artisan à l'ETI — à passer de l'idée IA à des usages concrets à retour sur investissement mesurable, en quelques semaines : démonstration sur leurs données réelles, plan d'action chiffré, mise en production accompagnée, hébergement en Union européenne conforme au RGPD.",
     boilerplate:
-      "Axion-IA est un cabinet de conseil IA opérationnel fondé en 2024. Le cabinet accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — dans l'identification, la démonstration et l'implémentation d'usages d'intelligence artificielle générant un retour sur investissement mesurable. Méthode : démos sur données réelles, plan d'action chiffré, hébergement UE. Contact presse : presse@axion-ia.com.",
+      "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle qui accompagne les entreprises de toutes tailles, de l'artisan à l'ETI. Le cabinet identifie, démontre puis déploie des usages d'IA à retour sur investissement mesurable — démonstrations sur données réelles, plan d'action chiffré, mise en production rapide, hébergement en Union européenne conforme au RGPD. Contact presse : presse@axion-ia.com.",
   },
   en: {
-    eyebrow: "Press room",
-    short: pressPitchShort("en"),
+    eyebrow: "Press pitch",
+    short:
+      "Axion-IA is an operational artificial intelligence consultancy. It helps companies of all sizes — from sole traders to mid-caps — move from the AI idea to concrete use cases with measurable return on investment, in a matter of weeks: demonstration on their real data, costed action plan, supported go-live, hosting in the European Union compliant with the GDPR.",
     boilerplate:
-      "Axion-IA is an operational AI consultancy founded in 2024. The firm helps companies of all sizes — from sole traders to mid-caps — identify, demonstrate and implement artificial intelligence use cases that deliver measurable return on investment. Method: demos on real data, costed action plan, EU hosting. Press contact: presse@axion-ia.com.",
+      "Axion-IA is an operational artificial intelligence consultancy serving companies of all sizes, from sole traders to mid-caps. The firm identifies, demonstrates and deploys AI use cases with measurable return on investment — demos on real data, costed action plan, fast go-live, hosting in the European Union compliant with the GDPR. Press contact: presse@axion-ia.com.",
   },
 };
 
@@ -132,11 +127,6 @@ export const PRESS_PITCH: { fr: PressPitchLocale; en: PressPitchLocale } = {
 // FAITS clés — chiffres factuels pour journalistes (carte fact-sheet).
 // ─────────────────────────────────────────────────────────────────
 export const PRESS_FACTS: ReadonlyArray<PressFact> = [
-  {
-    id: "founded",
-    fr: { label: "Année de fondation", value: "2024" },
-    en: { label: "Year founded", value: "2024" },
-  },
   {
     id: "scope",
     fr: { label: "Périmètre", value: "Entreprises FR + UE" },
