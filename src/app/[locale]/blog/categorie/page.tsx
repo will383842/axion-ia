@@ -2,7 +2,16 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  GraduationCap,
+  MessagesSquare,
+  ClipboardCheck,
+  Workflow,
+  Globe,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -55,6 +64,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   return base;
 }
+
+// Visuel par catégorie : icône thématique + pastille de couleur (rend la grille
+// moins textuelle / plus moderne). Server-rendered, zéro image à charger.
+const CATEGORY_VISUAL: Record<string, { Icon: LucideIcon; tile: string; icon: string }> = {
+  "blog-formations-ia": {
+    Icon: GraduationCap,
+    tile: "bg-terracotta-soft",
+    icon: "text-terracotta",
+  },
+  "blog-coaching-1-to-1": { Icon: MessagesSquare, tile: "bg-primary-soft", icon: "text-primary" },
+  "blog-audits-ia": { Icon: ClipboardCheck, tile: "bg-sage-soft", icon: "text-sage" },
+  "blog-implementations-ia": { Icon: Workflow, tile: "bg-sand", icon: "text-mocha" },
+  "blog-sites-web-augmentes": { Icon: Globe, tile: "bg-terracotta-soft", icon: "text-terracotta" },
+};
+const FALLBACK_VISUAL = { Icon: Sparkles, tile: "bg-sand", icon: "text-mocha" } as const;
 
 export default async function BlogCategoriesHub({ params }: Props) {
   const { locale } = await params;
@@ -149,35 +173,35 @@ export default async function BlogCategoriesHub({ params }: Props) {
         <Container>
           {/* Cartes catégorie modernisées : accent couleur + compteur + flèche. */}
           <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((cat, i) => {
-              const accentDot = ["bg-terracotta", "bg-primary", "bg-sage", "bg-mocha"][
-                i % 4
-              ] as string;
+            {categories.map((cat) => {
+              const visual = CATEGORY_VISUAL[cat.slug] ?? FALLBACK_VISUAL;
+              const { Icon } = visual;
               return (
                 <li key={cat.slug}>
                   <a
                     href={`/${locale}${categoryBase}/${cat.slug}`}
                     className="group border-border bg-paper hover:border-border-strong focus-visible:ring-primary shadow-subtle hover:shadow-card flex h-full flex-col gap-3 rounded-xl border p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                   >
-                    <span className="flex items-center justify-between gap-3">
-                      <span className="flex items-center gap-2.5">
-                        <span
-                          aria-hidden="true"
-                          className={`${accentDot} inline-block h-2.5 w-2.5 rounded-full`}
-                        />
-                        <span
-                          className="text-fg group-hover:text-terracotta-deep text-lg font-semibold transition"
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {cat.label}
-                        </span>
+                    {/* Pastille-icône thématique + compteur (visuel, moins textuel). */}
+                    <span className="flex items-start justify-between gap-3">
+                      <span
+                        aria-hidden="true"
+                        className={`inline-flex h-12 w-12 items-center justify-center rounded-xl transition group-hover:scale-105 ${visual.tile}`}
+                      >
+                        <Icon className={`h-6 w-6 ${visual.icon}`} strokeWidth={1.75} />
                       </span>
-                      <span className="text-fg-muted text-xs tabular-nums">
+                      <span className="border-border text-fg-muted rounded-full border px-2.5 py-1 text-xs tabular-nums">
                         {cat.count}{" "}
                         {isFr
                           ? `article${cat.count > 1 ? "s" : ""}`
                           : `article${cat.count > 1 ? "s" : ""}`}
                       </span>
+                    </span>
+                    <span
+                      className="text-fg group-hover:text-terracotta-deep mt-1 text-lg font-semibold transition"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {cat.label}
                     </span>
                     {cat.description ? (
                       <span className="text-fg-soft line-clamp-3 text-sm leading-relaxed">
