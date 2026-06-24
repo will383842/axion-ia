@@ -90,7 +90,8 @@ export function CategoryArticlesFilter({ items, isFr }: Props) {
       </div>
 
       {shown > 0 ? (
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        // 3 colonnes max (cartes plus larges) — md/lg (on évite `sm:`, buggé ici).
+        <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => (
             <li key={p.slug}>
               <ArticleCard

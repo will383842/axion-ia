@@ -337,8 +337,8 @@ export default async function BlogListing({ params, searchParams }: Props) {
               ) : null}
             </>
           ) : null}
-          {/* Grille dense compacte (jusqu'à 4 col) — harmonisation hubs Will 2026-06-24. */}
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {/* 3 colonnes max (cartes plus larges) — md/lg (sm est buggé dans ce thème). */}
+          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {paginatedPosts.map((post) => (
               <li key={post.slug}>
                 <ArticleCard

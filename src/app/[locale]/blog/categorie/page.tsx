@@ -148,7 +148,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
       >
         <Container>
           {/* Cartes catégorie modernisées : accent couleur + compteur + flèche. */}
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {categories.map((cat, i) => {
               const accentDot = ["bg-terracotta", "bg-primary", "bg-sage", "bg-mocha"][
                 i % 4

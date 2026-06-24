@@ -186,18 +186,11 @@
   --duration-base: 250ms;
   --duration-slow: 400ms;
 
-  /* ----- Breakpoints (479/640/768/992/1280/1536) -----
-     IMPORTANT : définir TOUTES les bornes explicitement et dans l'ordre. Tailwind
-     v4 — si on n'override que md/lg/xl, le `sm` (640) hérité par défaut est émis
-     hors-ordre et ÉCRASE `lg:`/`xl:` (ex. `sm:grid-cols-2 lg:grid-cols-3` rendait
-     2 colonnes en desktop). En posant sm + 2xl ici, l'ordre min-width est correct
-     et les grilles responsive fonctionnent (fix 2026-06-24). */
+  /* ----- Breakpoints (479/768/992/1280) ----- */
   --breakpoint-xs: 479px;
-  --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
 }
 
 /* =============================================================

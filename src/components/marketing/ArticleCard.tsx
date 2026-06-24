@@ -39,11 +39,10 @@ export function ArticleCard({
   compact = false,
   className,
 }: ArticleCardProps) {
-  // `sizes` réaliste : grilles hub jusqu'à 4 col en xl → la plus grande largeur
-  // réellement demandée est ~25vw (compact) / ~33vw (standard). Évite de charger
-  // la variante 1080px Unsplash inutilement (perf + Web Vitals).
+  // `sizes` réaliste : grilles hub à 3 col max (md:2 / lg:3) → largeur demandée
+  // ~33vw au plus. Évite de charger la variante 1080px Unsplash inutilement.
   const imageSizes = compact
-    ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+    ? "(max-width: 768px) 100vw, (max-width: 992px) 50vw, 33vw"
     : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
 
   return (
