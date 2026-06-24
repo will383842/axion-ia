@@ -18,6 +18,12 @@ interface ArticleCardProps {
    */
   imageUrl?: string | null;
   imageAlt?: string | null;
+  /**
+   * Variante dense pour les grilles de hub (jusqu'à 4 colonnes) — réduit padding,
+   * taille du titre/extrait et marges. Demande Will 2026-06-24 (« blocs trop gros »).
+   * Ajuste aussi `sizes` (images plus petites → chargement plus rapide).
+   */
+  compact?: boolean;
   className?: string;
 }
 
@@ -30,8 +36,16 @@ export function ArticleCard({
   readingTime,
   imageUrl,
   imageAlt,
+  compact = false,
   className,
 }: ArticleCardProps) {
+  // `sizes` réaliste : grilles hub jusqu'à 4 col en xl → la plus grande largeur
+  // réellement demandée est ~25vw (compact) / ~33vw (standard). Évite de charger
+  // la variante 1080px Unsplash inutilement (perf + Web Vitals).
+  const imageSizes = compact
+    ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+    : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+
   return (
     <Link
       href={href as never}
@@ -49,25 +63,32 @@ export function ArticleCard({
               alt={imageAlt ?? title}
               fill
               loading="lazy"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              sizes={imageSizes}
               className="object-cover"
             />
           </div>
         ) : null}
-        <CardHeader>
+        <CardHeader className={compact ? "space-y-1.5 p-4" : undefined}>
           <CardTitle
-            className="text-2xl leading-[1.2] font-medium"
+            className={cn(
+              compact ? "text-lg leading-snug font-medium" : "text-2xl leading-[1.2] font-medium",
+            )}
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {title}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <CardDescription className="line-clamp-3 text-base leading-relaxed">
+        <CardContent className={compact ? "p-4 pt-0" : undefined}>
+          <CardDescription
+            className={cn(
+              "leading-relaxed",
+              compact ? "line-clamp-2 text-sm" : "line-clamp-3 text-base",
+            )}
+          >
             {excerpt}
           </CardDescription>
           {publishedAt || readingTime ? (
-            <p className="text-fg-muted mt-5 text-xs">
+            <p className={cn("text-fg-muted text-xs", compact ? "mt-3" : "mt-5")}>
               {publishedAt ? <time dateTime={publishedAt}>{publishedAt}</time> : null}
               {publishedAt && readingTime ? <span aria-hidden="true"> · </span> : null}
               {readingTime}

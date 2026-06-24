@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, FileText, Clock, RefreshCw, Tag } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { ServiceHero } from "@/components/sections/ServiceHero";
+import { FaqBlock } from "@/components/sections/FaqBlock";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -21,7 +23,13 @@ import {
 } from "@/server/content-gen/blog/category-loader";
 import { blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
 import { categoryDescription } from "@/server/content-gen/lib/category-descriptions";
-import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
+import { getCategoryHubContent } from "@/server/content-gen/lib/category-hub-content";
+import {
+  buildProductMetadata,
+  buildCollectionPageJsonLd,
+  buildItemListJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -122,6 +130,7 @@ export default async function BlogCategoryPage({ params }: Props) {
   setRequestLocale(locale);
   const isFr = loc === "fr";
   const posts = await loadItems(slug, loc);
+  const hub = getCategoryHubContent(slug, loc);
 
   // Maillage croisé (C, 2026-06-24) — les AUTRES catégories content-gen, pour
   // une navigation latérale entre hubs (renforce le maillage interne).
@@ -129,7 +138,25 @@ export default async function BlogCategoryPage({ params }: Props) {
   const otherCategories = DB_BLOG_CATEGORY_SLUGS.filter((s) => s !== slug).map((s) => ({
     slug: s,
     label: blogCategoryLabel(s, loc) ?? s,
+    description: categoryDescription(s, loc) ?? null,
   }));
+
+  // ItemList AEO/GEO (audit SEO 2026-06-24) — énumération ordonnée des articles
+  // de la catégorie : les LLMs (AI Overviews) l'utilisent pour lister le contenu.
+  const itemListJsonLd =
+    posts.length > 0
+      ? buildItemListJsonLd({
+          locale: loc,
+          path: `/blog/categorie/${slug}`,
+          name: `${label} — ${isFr ? "Articles" : "Articles"}`,
+          items: posts.map((p, i) => ({
+            position: i + 1,
+            name: p.title,
+            url: `${SITE_URL}/${locale}/${p.route}/${p.slug}`,
+            ...(p.excerpt ? { description: p.excerpt } : {}),
+          })),
+        })
+      : null;
 
   const collectionJsonLd = buildCollectionPageJsonLd({
     locale: loc,
@@ -162,38 +189,21 @@ export default async function BlogCategoryPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      <Section
-        titleAs="h1"
-        eyebrow={isFr ? "Catégorie" : "Category"}
-        title={isFr ? "Catégorie" : "Category"}
+      {/* Héro 2 colonnes avec schéma orbital (parité /audit, /un-a-un) — Will
+          2026-06-24 « un graphique dans le héro de chaque hub ». */}
+      <ServiceHero
+        eyebrow={isFr ? "Catégorie · Blog" : "Category · Blog"}
+        title={isFr ? "Thématique" : "Topic"}
         titleEm={label}
         description={
-          isFr
-            ? `${posts.length} article${posts.length > 1 ? "s" : ""} dans cette catégorie. Méthodologie & cas d'usage IA testés en mission.`
-            : `${posts.length} article${posts.length > 1 ? "s" : ""} in this category. Field-tested AI methodology & use cases.`
+          (categoryDescription(slug, loc) ??
+            (isFr
+              ? `Méthodologie & cas d'usage IA testés en mission.`
+              : `Field-tested AI methodology & use cases.`)) +
+          ` ${posts.length} article${posts.length > 1 ? "s" : ""}.`
         }
-      >
-        <Container className="mt-8 max-w-2xl">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
-            {[
-              { icon: FileText, label: `${posts.length} ${isFr ? "articles" : "articles"}` },
-              { icon: Tag, label: label },
-              { icon: Clock, label: isFr ? "Lecture 6-12 min" : "6-12 min read" },
-              { icon: RefreshCw, label: isFr ? "MAJ mensuelle" : "Monthly updates" },
-            ].map((pill) => {
-              const Icon = pill.icon;
-              return (
-                <li
-                  key={pill.label}
-                  className="text-fg-soft inline-flex items-center gap-2 text-sm"
-                >
-                  <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
-                  <span>{pill.label}</span>
-                </li>
-              );
-            })}
-          </ul>
-          <div className="mt-7 flex flex-wrap items-center gap-4">
+        ctas={
+          <>
             <Cta href="/blog" size="lg">
               {isFr ? "Voir tous les articles" : "See all articles"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -201,12 +211,17 @@ export default async function BlogCategoryPage({ params }: Props) {
             <Cta href="/formations" variant="outline" size="lg">
               {isFr ? "Voir nos formations" : "See our trainings"}
             </Cta>
-          </div>
-        </Container>
-      </Section>
+          </>
+        }
+        schemaCenterLabel={hub.centerLabel}
+        schemaNodes={hub.nodes}
+        schemaAriaLabel={hub.schemaAriaLabel}
+      />
       <Section>
         <Container>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Grille dense (jusqu'à 4 col en xl) + cartes compactes — Will
+              2026-06-24 « blocs trop gros, réduire de moitié ». */}
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {posts.map((p) => (
               <li key={p.slug}>
                 <ArticleCard
@@ -217,13 +232,27 @@ export default async function BlogCategoryPage({ params }: Props) {
                   readingTime={p.readingTime}
                   imageUrl={p.featuredImage}
                   imageAlt={p.featuredImageAlt}
+                  compact
                 />
               </li>
             ))}
           </ul>
         </Container>
       </Section>
-      {/* Maillage croisé (C) — navigation vers les autres thématiques + le hub. */}
+      {/* FAQ visible + FAQPage JSON-LD (AEO / featured snippets / AI Overviews). */}
+      {hub.faq.length > 0 ? (
+        <FaqBlock
+          tone="paper"
+          title={isFr ? "Questions" : "Questions"}
+          titleEm={isFr ? "fréquentes" : "& answers"}
+          items={hub.faq.map((f, i) => ({
+            id: `cat-faq-${i}`,
+            question: f.question,
+            answer: f.answer,
+          }))}
+        />
+      ) : null}
+      {/* Maillage croisé (C) — refonte cartes (Will 2026-06-24 « design vieillot »). */}
       {otherCategories.length > 0 ? (
         <Section
           tone="sand"
@@ -231,24 +260,45 @@ export default async function BlogCategoryPage({ params }: Props) {
           title={isFr ? "Autres thématiques" : "Other topics"}
         >
           <Container>
-            <ul className="flex flex-wrap gap-3">
-              {otherCategories.map((c) => (
-                <li key={c.slug}>
-                  <a
-                    href={`/${locale}${categoryBase}/${c.slug}`}
-                    className="border-border bg-paper text-fg-soft hover:border-border-strong hover:text-fg focus-visible:ring-primary inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                  >
-                    <Tag
-                      aria-hidden="true"
-                      className="text-terracotta h-3.5 w-3.5"
-                      strokeWidth={2}
-                    />
-                    {c.label}
-                  </a>
-                </li>
-              ))}
+            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {otherCategories.map((c, i) => {
+                // Mapping littéral (Tailwind JIT ne détecte pas `bg-${var}`).
+                const accentDot = ["bg-terracotta", "bg-primary", "bg-sage", "bg-mocha"][
+                  i % 4
+                ] as string;
+                return (
+                  <li key={c.slug}>
+                    <a
+                      href={`/${locale}${categoryBase}/${c.slug}`}
+                      className="group border-border bg-paper hover:border-border-strong focus-visible:ring-primary shadow-subtle hover:shadow-card flex h-full flex-col gap-3 rounded-xl border p-5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                    >
+                      <span className="flex items-center gap-2.5">
+                        <span
+                          aria-hidden="true"
+                          className={`${accentDot} inline-block h-2.5 w-2.5 rounded-full`}
+                        />
+                        <span className="text-fg group-hover:text-terracotta-deep text-base font-semibold transition">
+                          {c.label}
+                        </span>
+                      </span>
+                      {c.description ? (
+                        <span className="text-fg-soft line-clamp-2 text-sm leading-relaxed">
+                          {c.description}
+                        </span>
+                      ) : null}
+                      <span className="text-terracotta-deep mt-auto inline-flex items-center gap-1.5 text-sm font-medium">
+                        {isFr ? "Lire les articles" : "Read articles"}
+                        <ArrowRight
+                          className="h-4 w-4 transition group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
-            <div className="mt-7">
+            <div className="mt-8">
               <Cta href="/blog/categorie" variant="outline" size="md">
                 {isFr ? "Toutes les catégories" : "All categories"}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -261,6 +311,7 @@ export default async function BlogCategoryPage({ params }: Props) {
           « Accueil », positions correctes). Ne PAS le ré-émettre ici — deux
           BreadcrumbList partageant le même @id = schéma ambigu (audit 2026-06-24). */}
       <JsonLd data={collectionJsonLd} />
+      {itemListJsonLd ? <JsonLd data={itemListJsonLd} /> : null}
     </>
   );
 }
