@@ -20,11 +20,8 @@ import {
   DB_BLOG_CATEGORY_SLUGS,
 } from "@/server/content-gen/blog/category-loader";
 import { blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
-import {
-  buildProductMetadata,
-  buildCollectionPageJsonLd,
-  SITE_URL,
-} from "@/lib/seo";
+import { categoryDescription } from "@/server/content-gen/lib/category-descriptions";
+import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -87,13 +84,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const label = await resolveLabel(slug, locale as Locale);
   if (!label) return {};
   const isFr = locale === "fr";
+  // Description éditoriale riche (110-140 car., SSOT partagé avec le hub) plutôt
+  // qu'une meta thin/générique identique sur 5 pages (audit SEO 2026-06-24).
+  // Fallback générique pour les catégories FS legacy hors content-gen.
+  const richDescription = categoryDescription(slug, locale as Locale);
   const base = buildProductMetadata({
     locale,
     path: `/blog/categorie/${slug}`,
     title: isFr ? `${label} · Articles Axion-IA` : `${label} · Axion-IA articles`,
-    description: isFr
-      ? `Articles Axion-IA dans la catégorie ${label}.`
-      : `Axion-IA articles in the ${label} category.`,
+    description:
+      richDescription ??
+      (isFr
+        ? `Articles Axion-IA dans la catégorie ${label}.`
+        : `Axion-IA articles in the ${label} category.`),
   });
   // Anti-thin (audit e2e 2026-06-17) : noindex une catégorie réellement vide
   // (runtime, hors build stub) pour éviter qu'une page hub sans article soit
@@ -132,7 +135,9 @@ export default async function BlogCategoryPage({ params }: Props) {
     locale: loc,
     path: `/blog/categorie/${slug}`,
     name: `${label} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
-    isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
+    // isPartOf omis → référence le nœud canonique `#website` (audit SEO 2026-06-24).
+    // Speakable : intro answer-ready (h1 + description) citable voix/AI-Overview.
+    speakable: true,
     hasPart: posts.map((p) => ({
       "@type": "Article",
       headline: p.title,
@@ -233,7 +238,11 @@ export default async function BlogCategoryPage({ params }: Props) {
                     href={`/${locale}${categoryBase}/${c.slug}`}
                     className="border-border bg-paper text-fg-soft hover:border-border-strong hover:text-fg focus-visible:ring-primary inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                   >
-                    <Tag aria-hidden="true" className="text-terracotta h-3.5 w-3.5" strokeWidth={2} />
+                    <Tag
+                      aria-hidden="true"
+                      className="text-terracotta h-3.5 w-3.5"
+                      strokeWidth={2}
+                    />
                     {c.label}
                   </a>
                 </li>

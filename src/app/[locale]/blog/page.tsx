@@ -14,7 +14,7 @@ import { BlogHeroSchema } from "@/components/sections/BlogHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { loadBlogIndexForView } from "@/server/content-gen/blog/loader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
 import { BlogSearch } from "@/components/blog/BlogSearch";
 
 // ISR Next 16 — pré-rendue au build, revalidée toutes les heures pour que les
@@ -120,18 +120,38 @@ export default async function BlogListing({ params, searchParams }: Props) {
   // (BlogPosting per article + BlogPosting JSON-LD individuel sur /blog/[slug]
   // déjà émis ailleurs). @id (2026-06-21) : ancre la collection pour la citation
   // LLM (Perplexity/Claude « selon le blog Axion-IA »).
+  // ItemList aligné sur le CONTENU VISIBLE de la page courante (audit SEO
+  // 2026-06-24) : avant, il annonçait les ~300 posts alors que la page n'en rend
+  // que 20 (mismatch schéma/contenu = risque rich-results). `position` reste
+  // globalement cohérent (offset + index). @id page-aware pour ne pas partager
+  // le même @id entre /blog et /blog?page=N. Discovery profonde = sitemap.
+  const pagePath = currentPage > 1 ? `/blog?page=${currentPage}` : "/blog";
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "@id": `${SITE_URL}/${locale}/blog#itemlist`,
+    "@id": `${SITE_URL}/${locale}${pagePath}#itemlist`,
     name: isFr ? "Articles Axion-IA · ligne éditoriale" : "Axion-IA articles · editorial line",
-    itemListElement: sortedPosts.map((post, index) => ({
+    itemListElement: paginatedPosts.map((post, index) => ({
       "@type": "ListItem",
-      position: index + 1,
+      position: offset + index + 1,
       url: `${SITE_URL}/${locale}/blog/${post.slug}`,
       name: post.title,
     })),
   } as const;
+
+  // CollectionPage — la page index devient une entité collection adressable,
+  // reliée au graphe du site (isPartOf #website par défaut) + Speakable
+  // (intro answer-ready). Parité avec les pages /blog/categorie/* (audit SEO
+  // 2026-06-24, qui n'avaient ce nœud que côté catégorie).
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: pagePath,
+    name: isFr
+      ? "Blog Axion-IA · méthodologie & cas d'usage IA"
+      : "Axion-IA blog · methodology & AI use cases",
+    speakable: true,
+    mainEntity: { "@id": `${SITE_URL}/${locale}${pagePath}#itemlist` },
+  });
 
   // Pills réassurance (count dynamique)
   const pills = isFr
@@ -378,13 +398,10 @@ export default async function BlogListing({ params, searchParams }: Props) {
         tone="dark"
       />
 
-      <JsonLd
-        data={buildBreadcrumbJsonLd({
-          locale: loc,
-          items: [{ name: "Blog", href: "/blog" }],
-        })}
-        scriptId="jsonld-breadcrumb-blog"
-      />
+      {/* NB : le BreadcrumbList JSON-LD est émis par <Breadcrumbs> (source unique,
+          avec « Accueil »). Ne PAS le ré-émettre ici — deux BreadcrumbList au même
+          @id = schéma ambigu (audit E2E 2026-06-24). */}
+      <JsonLd data={collectionJsonLd} />
       <JsonLd data={itemListJsonLd} />
     </>
   );

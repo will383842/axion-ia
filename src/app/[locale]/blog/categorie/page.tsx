@@ -10,11 +10,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import {
-  BLOG_CATEGORY_SLUGS,
-  blogCategoryLabel,
-} from "@/server/content-gen/lib/category-mapper";
+import { BLOG_CATEGORY_SLUGS, blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
 import { getBlogCategoryCounts } from "@/server/content-gen/blog/category-loader";
+import { CATEGORY_DESCRIPTIONS } from "@/server/content-gen/lib/category-descriptions";
 import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
 
 // Hub des catégories de blog (2026-06-24). Liste STABLE des 5 catégories
@@ -26,44 +24,29 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-/** Descriptions éditoriales courtes par catégorie (FR/EN). */
-const CATEGORY_DESCRIPTIONS: Record<string, { readonly fr: string; readonly en: string }> = {
-  "blog-formations-ia": {
-    fr: "Monter en compétence sur l'IA : méthodologie de formation, quick-wins et cas d'usage testés en mission.",
-    en: "Upskilling on AI: training methodology, quick-wins and field-tested use cases.",
-  },
-  "blog-coaching-1-to-1": {
-    fr: "Accompagnement individuel : trancher une décision IA, débloquer un projet, structurer une pratique.",
-    en: "One-on-one support: settling an AI decision, unblocking a project, structuring a practice.",
-  },
-  "blog-audits-ia": {
-    fr: "Diagnostiquer le potentiel IA d'une organisation : cadrage, priorisation, ROI et feuille de route.",
-    en: "Diagnosing an organisation's AI potential: scoping, prioritisation, ROI and roadmap.",
-  },
-  "blog-implementations-ia": {
-    fr: "Déployer et automatiser : intégration concrète, mise en production et industrialisation de l'IA.",
-    en: "Deploying and automating: concrete integration, production rollout and AI industrialisation.",
-  },
-  "blog-sites-web-augmentes": {
-    fr: "Sites web augmentés par l'IA : contenu, conversion, SEO/AEO et expérience utilisateur.",
-    en: "AI-enhanced websites: content, conversion, SEO/AEO and user experience.",
-  },
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
-  return buildProductMetadata({
+  const base = buildProductMetadata({
     locale,
     path: "/blog/categorie",
-    title: isFr
-      ? "Catégories du blog · Axion-IA"
-      : "Blog categories · Axion-IA",
+    title: isFr ? "Catégories du blog · Axion-IA" : "Blog categories · Axion-IA",
     description: isFr
       ? "Toutes les thématiques du blog Axion-IA : formations, coaching, audits, implémentation et sites web augmentés par l'IA."
       : "All Axion-IA blog topics: training, coaching, audits, implementation and AI-enhanced websites.",
   });
+  // Anti-thin (audit SEO 2026-06-24) — parité avec la page catégorie : si AUCUN
+  // article (toutes catégories vides) en runtime réel (hors build stub, où la DB
+  // renvoie 0 → l'ISR repeuple sous 1 h), noindex/follow pour ne pas indexer un
+  // hub sans contenu. En prod (1000+ articles) ce cas ne se produit pas.
+  const isStubBuild = process.env.DATABASE_URL?.includes("stub.invalid") ?? false;
+  if (!isStubBuild) {
+    const counts = await getBlogCategoryCounts();
+    const total = Object.values(counts).reduce((acc, n) => acc + n, 0);
+    if (total === 0) return { ...base, robots: { index: false, follow: true } };
+  }
+  return base;
 }
 
 export default async function BlogCategoriesHub({ params }: Props) {
@@ -93,9 +76,13 @@ export default async function BlogCategoriesHub({ params }: Props) {
     locale: loc,
     path: "/blog/categorie",
     name: isFr ? "Catégories du blog Axion-IA" : "Axion-IA blog categories",
-    isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
+    // isPartOf omis → la factory référence le nœud canonique `#website`
+    // (évite de créer un second WebSite inline plus faible — audit SEO 2026-06-24).
+    // Speakable : l'intro answer-ready (h1 + description) devient citable voix/AI-Overview.
+    speakable: true,
     hasPart: categories.map((c) => ({
       "@type": "CollectionPage",
+      "@id": `${SITE_URL}/${locale}${categoryBase}/${c.slug}#collectionpage`,
       name: c.label,
       url: `${SITE_URL}/${locale}${categoryBase}/${c.slug}`,
       description: c.description,
@@ -168,7 +155,9 @@ export default async function BlogCategoriesHub({ params }: Props) {
                       </CardTitle>
                       <CardDescription>
                         {cat.count}{" "}
-                        {isFr ? `article${cat.count > 1 ? "s" : ""}` : `article${cat.count > 1 ? "s" : ""}`}
+                        {isFr
+                          ? `article${cat.count > 1 ? "s" : ""}`
+                          : `article${cat.count > 1 ? "s" : ""}`}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>

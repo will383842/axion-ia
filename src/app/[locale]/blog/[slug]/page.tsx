@@ -17,12 +17,7 @@ import { ArticleTOC, extractTocItems, type TocItem } from "@/components/seo/Arti
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
-import {
-  buildProductMetadata,
-  buildArticleJsonLd,
-  buildBreadcrumbJsonLd,
-  SITE_URL,
-} from "@/lib/seo";
+import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   loadBlogArticleForView,
@@ -366,8 +361,13 @@ export default async function BlogArticle({ params }: Props) {
   // byline pour ne pas dupliquer le Person riche (personJsonLd ci-dessus).
   const manonByline = isDbHtml ? await getManonByline() : null;
 
+  // Breadcrumb : inclut le niveau catégorie quand il est connu (maillage
+  // article → hub catégorie, hiérarchie alignée — audit nav 2026-06-24).
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
+    ...(view.categorySlug
+      ? [{ href: `/blog/categorie/${view.categorySlug}`, label: view.category }]
+      : []),
     { href: `/blog/${slug}`, label: view.title },
   ];
 
@@ -670,14 +670,10 @@ export default async function BlogArticle({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
-      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
-      <JsonLd
-        data={buildBreadcrumbJsonLd({
-          locale: loc,
-          items: breadcrumbItems.map((b) => ({ name: b.label, href: b.href })),
-        })}
-        scriptId="jsonld-breadcrumb-blog-article"
-      />
+      {/* NB : le BreadcrumbList JSON-LD (chaîne d'attribution Claude/Perplexity/SGE)
+          est émis par <Breadcrumbs> (source unique, avec « Accueil » + niveau
+          catégorie). Ne PAS le ré-émettre ici — deux BreadcrumbList au même @id =
+          schéma ambigu (audit E2E 2026-06-24). */}
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );

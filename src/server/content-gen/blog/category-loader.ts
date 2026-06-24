@@ -46,7 +46,10 @@ export async function getBlogCategoryCounts(): Promise<Record<string, number>> {
     BLOG_CATEGORY_SLUGS.map((slug) => [slug, 0]),
   );
   const cats = await prisma.category
-    .findMany({ where: { slug: { in: [...BLOG_CATEGORY_SLUGS] } }, select: { id: true, slug: true } })
+    .findMany({
+      where: { slug: { in: [...BLOG_CATEGORY_SLUGS] } },
+      select: { id: true, slug: true },
+    })
     .catch(() => []);
   if (cats.length === 0) return counts;
   const idToSlug = new Map(cats.map((c) => [c.id, c.slug]));
@@ -106,7 +109,10 @@ export async function getDbArticlesByCategorySlug(
         slug: t.slug,
         title: t.title,
         excerpt: t.excerpt ?? "",
-        publishedAt: a.publishedAt ? a.publishedAt.toISOString() : "",
+        // Date seule (YYYY-MM-DD) : affichée telle quelle dans <time> par
+        // ArticleCard (audit SEO 2026-06-24 — évite l'ISO brut « …T07:00:00.000Z »
+        // visible à l'écran) ; reste un datePublished valide en JSON-LD.
+        publishedAt: a.publishedAt ? a.publishedAt.toISOString().slice(0, 10) : "",
         readingTime: a.readingTime ? `${a.readingTime} min` : "6 min",
         route: resolveArticleRoute({
           isNews: a.isNews,

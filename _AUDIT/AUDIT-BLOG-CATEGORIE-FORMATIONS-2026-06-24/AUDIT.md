@@ -90,6 +90,49 @@ JSON-LD conservé.
 - Section « Autres thématiques » en bas de page : les **4 autres catégories** en chips cliquables
   + bouton vers le hub. Statique, stub-safe, renforce le maillage interne entre hubs.
 
+## 5. Audit E2E multi-agents (5 agents) + correctifs lot 2 — 2026-06-24
+
+Vérification E2E (navigation, SEO/AEO/GEO, Speakable, métadonnées, rich results,
+liens internes/externes, correction/régressions, runtime `:3001`). **Aucun bug
+P0/P1 dans le diff initial.** Correctifs de perfectionnement appliqués :
+
+- **Meta description catégorie** : remplacement de la meta thin/générique (« Articles
+  Axion-IA dans la catégorie X », ~45 car., identique ×5) par les descriptions
+  éditoriales riches (110-140 car.) — SSOT nouveau `lib/category-descriptions.ts`
+  partagé entre le hub (cartes) et la meta des pages catégorie.
+- **Speakable** : `speakable: true` sur les `CollectionPage` du hub, des catégories
+  ET de l'index `/blog` (intro answer-ready citable voix / AI-Overview).
+- **Hub anti-thin** : noindex/follow runtime si 0 article total (parité page catégorie ;
+  jamais déclenché en prod).
+- **`isPartOf`** : suppression du WebSite inline → référence le nœud canonique `#website`
+  (hub + catégorie). `hasPart` du hub : `@id` ajouté sur chaque catégorie (consolidation).
+- **Date** : `category-loader` tronque la date à `YYYY-MM-DD` (l'ISO brut
+  « …T07:00:00.000Z » s'affichait dans `<time>`).
+- **Doublon `BreadcrumbList` (bug pré-existant, même classe)** : supprimé sur **`/blog`**
+  ET **`/blog/[slug]`** (deux `BreadcrumbList` au même `@id`, un malformé). `<Breadcrumbs>`
+  reste la source unique partout.
+- **`/blog` index** : ItemList aligné sur le contenu visible (20) au lieu de ~300
+  (mismatch schéma/contenu) + `@id` page-aware ; ajout d'un nœud `CollectionPage`
+  (parité avec les pages catégorie).
+- **Breadcrumb article** : niveau catégorie inséré (`Accueil > Blog > {catégorie} >
+  {titre}`) → maillage montant article → hub catégorie.
+
+Vérifié au runtime (`:3001`) : 1 seul `BreadcrumbList` par page, Speakable présent,
+`CollectionPage` hub = 1+5, meta descriptions riches uniques, noindex hub/catégorie
+vides correct. typecheck + lint + 64 tests verts.
+
+### Réponses navigation (questions Will)
+- **News** : hub `/actualites` (48 max, RSS, sitemap-news) — **sans pagination, filtre
+  ni recherche** ; isolé du blog.
+- **Filtrer par type d'offre** (audit/formation/1-to-1/impl/sites web) : ✅ via les hubs
+  catégorie (DB) + le nouveau hub.
+- **Filtrer par secteur d'activité / taille / tag / auteur** : routes existantes
+  (`/blog/secteur|taille|tag|auteur/[slug]`) mais **(a) non découvrables** (aucun lien
+  depuis le blog/nav) et **(b) alimentées uniquement par les 3 articles FS legacy** — les
+  articles DB de prod n'y apparaissent pas. → chantier séparé recommandé.
+- **Filtrer par ville/département** : pas de route `/blog/ville/...` ; seulement
+  l'inverse (page `/implantations/<region>/<ville>` liste 3 articles `mentionedCities`).
+
 ## Reste (hors périmètre, non bloquant)
 
 - H1 « Catégorie » + eyebrow « Catégorie » légèrement redondants (nit design, non corrigé).
