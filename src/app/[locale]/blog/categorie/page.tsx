@@ -67,18 +67,48 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // Visuel par catégorie : icône thématique + pastille de couleur (rend la grille
 // moins textuelle / plus moderne). Server-rendered, zéro image à charger.
-const CATEGORY_VISUAL: Record<string, { Icon: LucideIcon; tile: string; icon: string }> = {
+// `bar` = barre colorée en haut de carte (identité couleur par catégorie → contraste).
+const CATEGORY_VISUAL: Record<
+  string,
+  { Icon: LucideIcon; tile: string; icon: string; bar: string }
+> = {
   "blog-formations-ia": {
     Icon: GraduationCap,
     tile: "bg-terracotta-soft",
     icon: "text-terracotta",
+    bar: "border-t-terracotta",
   },
-  "blog-coaching-1-to-1": { Icon: MessagesSquare, tile: "bg-primary-soft", icon: "text-primary" },
-  "blog-audits-ia": { Icon: ClipboardCheck, tile: "bg-sage-soft", icon: "text-sage" },
-  "blog-implementations-ia": { Icon: Workflow, tile: "bg-sand", icon: "text-mocha" },
-  "blog-sites-web-augmentes": { Icon: Globe, tile: "bg-terracotta-soft", icon: "text-terracotta" },
+  "blog-coaching-1-to-1": {
+    Icon: MessagesSquare,
+    tile: "bg-primary-soft",
+    icon: "text-primary",
+    bar: "border-t-primary",
+  },
+  "blog-audits-ia": {
+    Icon: ClipboardCheck,
+    tile: "bg-sage-soft",
+    icon: "text-sage",
+    bar: "border-t-sage",
+  },
+  "blog-implementations-ia": {
+    Icon: Workflow,
+    tile: "bg-sand",
+    icon: "text-mocha",
+    bar: "border-t-mocha",
+  },
+  "blog-sites-web-augmentes": {
+    Icon: Globe,
+    tile: "bg-terracotta-soft",
+    icon: "text-terracotta",
+    bar: "border-t-terracotta",
+  },
 };
-const FALLBACK_VISUAL = { Icon: Sparkles, tile: "bg-sand", icon: "text-mocha" } as const;
+const FALLBACK_VISUAL = {
+  Icon: Sparkles,
+  tile: "bg-sand",
+  icon: "text-mocha",
+  bar: "border-t-mocha",
+} as const;
 
 export default async function BlogCategoriesHub({ params }: Props) {
   const { locale } = await params;
@@ -180,7 +210,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
                 <li key={cat.slug}>
                   <a
                     href={`/${locale}${categoryBase}/${cat.slug}`}
-                    className="group border-border bg-paper hover:border-border-strong focus-visible:ring-primary shadow-subtle hover:shadow-card flex h-full flex-col gap-3 rounded-xl border p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                    className={`group border-border bg-paper hover:border-border-strong focus-visible:ring-primary shadow-subtle hover:shadow-card flex h-full flex-col gap-3 rounded-xl border border-t-4 p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${visual.bar}`}
                   >
                     {/* Pastille-icône thématique + compteur (visuel, moins textuel). */}
                     <span className="flex items-start justify-between gap-3">
