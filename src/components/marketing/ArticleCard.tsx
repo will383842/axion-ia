@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -8,16 +9,27 @@ interface ArticleCardProps {
   excerpt: string;
   publishedAt?: string;
   readingTime?: string;
+  /**
+   * Miniature 16/9 (Article.featuredImage — hero Unsplash/image-bank, cf. loader).
+   * Optionnelle : si absente, AUCUN bloc n'est rendu (carte texte classique, choix
+   * Will 2026-06-24 — pas de placeholder générique). Réservée au ratio 16/9 pour
+   * un CLS = 0 (budget Web Vitals 2026). Lazy (pas de `priority`) : ces cartes
+   * sont sous la ligne de flottaison.
+   */
+  imageUrl?: string | null;
+  imageAlt?: string | null;
   className?: string;
 }
 
-// Editorial v3 — title in serif, sober meta line.
+// Editorial v3 — miniature 16/9 en tête (si photo), title in serif, sober meta line.
 export function ArticleCard({
   href,
   title,
   excerpt,
   publishedAt,
   readingTime,
+  imageUrl,
+  imageAlt,
   className,
 }: ArticleCardProps) {
   return (
@@ -28,7 +40,20 @@ export function ArticleCard({
         className,
       )}
     >
-      <Card className="h-full">
+      <Card className="flex h-full flex-col overflow-hidden">
+        {/* Miniature — rendue UNIQUEMENT si une photo existe (ratio 16/9, anti-CLS). */}
+        {imageUrl ? (
+          <div className="bg-halo-warm relative aspect-[16/9] w-full overflow-hidden">
+            <Image
+              src={imageUrl}
+              alt={imageAlt ?? title}
+              fill
+              loading="lazy"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover"
+            />
+          </div>
+        ) : null}
         <CardHeader>
           <CardTitle
             className="text-2xl leading-[1.2] font-medium"

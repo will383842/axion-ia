@@ -216,6 +216,8 @@ describe("loadBlogIndexForView", () => {
         author: { slug: "manon", name: "Manon" },
         category: null,
         indexationTier: "tier_1_indexable",
+        featuredImage: "https://images.unsplash.com/photo-db-only",
+        featuredImageAlt: "Illustration DB only",
       },
     ]);
 
@@ -224,6 +226,9 @@ describe("loadBlogIndexForView", () => {
     expect(list).toHaveLength(2);
     expect(list[0]?.source).toBe("db");
     expect(list[0]?.slug).toBe("db-only-post");
+    // Miniatures (audit 2026-06-24) — la hero remonte jusqu'à la vue liste.
+    expect(list[0]?.featuredImage).toBe("https://images.unsplash.com/photo-db-only");
+    expect(list[0]?.featuredImageAlt).toBe("Illustration DB only");
     expect(list[1]?.source).toBe("fs");
     expect(list[1]?.slug).toBe("fixture-fs-post");
   });
@@ -240,6 +245,8 @@ describe("loadBlogIndexForView", () => {
         author: { slug: "manon", name: "Manon" },
         category: null,
         indexationTier: "tier_1_indexable",
+        featuredImage: null,
+        featuredImageAlt: null,
       },
     ]);
 
@@ -280,6 +287,8 @@ describe("loadBlogIndexForView", () => {
         author: null,
         category: null,
         indexationTier: "tier_1_indexable",
+        featuredImage: null,
+        featuredImageAlt: null,
       },
       {
         id: "u2",
@@ -291,6 +300,8 @@ describe("loadBlogIndexForView", () => {
         author: null,
         category: null,
         indexationTier: "tier_1_indexable",
+        featuredImage: null,
+        featuredImageAlt: null,
       },
     ]);
 

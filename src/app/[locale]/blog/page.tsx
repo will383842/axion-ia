@@ -286,6 +286,13 @@ export default async function BlogListing({ params, searchParams }: Props) {
                 </li>
               ))}
             </ul>
+            {/* Lien vers le hub des catégories (navigation taxonomique, 2026-06-24). */}
+            <div className="mt-7">
+              <Cta href="/blog/categorie" variant="outline" size="md">
+                {isFr ? "Toutes les catégories" : "All categories"}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Cta>
+            </div>
           </Container>
         </Section>
       ) : null}
@@ -317,6 +324,8 @@ export default async function BlogListing({ params, searchParams }: Props) {
                   excerpt={post.excerpt}
                   publishedAt={post.publishedAt}
                   readingTime={post.readingTime}
+                  imageUrl={post.featuredImage}
+                  imageAlt={post.featuredImageAlt}
                 />
               </li>
             ))}

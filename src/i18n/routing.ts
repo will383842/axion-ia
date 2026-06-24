@@ -220,6 +220,9 @@ export const routing = defineRouting({
     // + confidentiality=public. FR-only par doctrine v1.2 (KB V1 = FR only).
     "/connaissances": { fr: "/connaissances", en: "/connaissances" },
     "/connaissances/[slug]": { fr: "/connaissances/[slug]", en: "/connaissances/[slug]" },
+    // Hub des catégories (2026-06-24) — page d'atterrissage taxonomique listant
+    // les 5 catégories de blog (navigation + maillage interne).
+    "/blog/categorie": { fr: "/blog/categorie", en: "/blog/category" },
     "/blog/categorie/[slug]": { fr: "/blog/categorie/[slug]", en: "/blog/category/[slug]" },
     "/blog/tag/[slug]": "/blog/tag/[slug]",
     "/blog/auteur/[slug]": { fr: "/blog/auteur/[slug]", en: "/blog/author/[slug]" },

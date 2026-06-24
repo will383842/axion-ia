@@ -269,10 +269,10 @@ export async function loadBlogIndexForView(
     tags: [],
     tier: "tier-2-noindex-follow",
     source: "db",
-    // P2-3 — Index n'expose pas featuredImage (non sélectionné dans listPublishedArticles).
-    featuredImage: null,
-    // VIS-08/03 — La vue liste n'a pas besoin de l'alt ni du directAnswer (détail page).
-    featuredImageAlt: null,
+    // Miniatures cartes (audit 2026-06-24) — listPublishedArticles expose désormais
+    // la hero (legacy Article path) ; null pour le backend KB unifié / articles FS.
+    featuredImage: a.featuredImage,
+    featuredImageAlt: a.featuredImageAlt,
     directAnswer: null,
     photographerName: null,
     photographerUrl: null,

@@ -22,7 +22,6 @@ import {
 import { blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
 import {
   buildProductMetadata,
-  buildBreadcrumbJsonLd,
   buildCollectionPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
@@ -46,6 +45,8 @@ interface CategoryItem {
   readonly readingTime: string;
   readonly author: string;
   readonly route: "blog" | "actualites" | "guides";
+  readonly featuredImage: string | null;
+  readonly featuredImageAlt: string | null;
 }
 
 export async function generateStaticParams() {
@@ -68,6 +69,9 @@ async function loadItems(slug: string, locale: Locale): Promise<CategoryItem[]> 
     readingTime: p.readingTime,
     author: p.author,
     route: "blog",
+    // Articles FS legacy (hardcodés) : pas de hero → placeholder de marque.
+    featuredImage: null,
+    featuredImageAlt: null,
   }));
   const dbArticles: CategoryItem[] = (await getDbArticlesByCategorySlug(slug, locale)).map((a) => ({
     ...a,
@@ -116,6 +120,14 @@ export default async function BlogCategoryPage({ params }: Props) {
   const isFr = loc === "fr";
   const posts = await loadItems(slug, loc);
 
+  // Maillage croisé (C, 2026-06-24) — les AUTRES catégories content-gen, pour
+  // une navigation latérale entre hubs (renforce le maillage interne).
+  const categoryBase = isFr ? "/blog/categorie" : "/blog/category";
+  const otherCategories = DB_BLOG_CATEGORY_SLUGS.filter((s) => s !== slug).map((s) => ({
+    slug: s,
+    label: blogCategoryLabel(s, loc) ?? s,
+  }));
+
   const collectionJsonLd = buildCollectionPageJsonLd({
     locale: loc,
     path: `/blog/categorie/${slug}`,
@@ -131,9 +143,12 @@ export default async function BlogCategoryPage({ params }: Props) {
   });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // est ajouté automatiquement par le composant. Hiérarchie alignée sur l'URL
+  // (`/blog/categorie/<slug>`) : le niveau hub « Catégories » est inclus →
+  // reflète la structure + ajoute un lien montant vers le hub (maillage).
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
+    { href: "/blog/categorie", label: isFr ? "Catégories" : "Categories" },
     { href: `/blog/categorie/${slug}`, label },
   ];
 
@@ -195,22 +210,47 @@ export default async function BlogCategoryPage({ params }: Props) {
                   excerpt={p.excerpt}
                   publishedAt={p.publishedAt}
                   readingTime={p.readingTime}
+                  imageUrl={p.featuredImage}
+                  imageAlt={p.featuredImageAlt}
                 />
               </li>
             ))}
           </ul>
         </Container>
       </Section>
-      <JsonLd
-        data={buildBreadcrumbJsonLd({
-          locale: loc,
-          items: [
-            { name: "Blog", href: "/blog" },
-            { name: label, href: `/blog/categorie/${slug}` },
-          ],
-        })}
-        scriptId="jsonld-breadcrumb-blog-categorie"
-      />
+      {/* Maillage croisé (C) — navigation vers les autres thématiques + le hub. */}
+      {otherCategories.length > 0 ? (
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Naviguer" : "Browse"}
+          title={isFr ? "Autres thématiques" : "Other topics"}
+        >
+          <Container>
+            <ul className="flex flex-wrap gap-3">
+              {otherCategories.map((c) => (
+                <li key={c.slug}>
+                  <a
+                    href={`/${locale}${categoryBase}/${c.slug}`}
+                    className="border-border bg-paper text-fg-soft hover:border-border-strong hover:text-fg focus-visible:ring-primary inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  >
+                    <Tag aria-hidden="true" className="text-terracotta h-3.5 w-3.5" strokeWidth={2} />
+                    {c.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-7">
+              <Cta href="/blog/categorie" variant="outline" size="md">
+                {isFr ? "Toutes les catégories" : "All categories"}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Cta>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+      {/* NB : le BreadcrumbList JSON-LD est émis par <Breadcrumbs> (avec l'item
+          « Accueil », positions correctes). Ne PAS le ré-émettre ici — deux
+          BreadcrumbList partageant le même @id = schéma ambigu (audit 2026-06-24). */}
       <JsonLd data={collectionJsonLd} />
     </>
   );

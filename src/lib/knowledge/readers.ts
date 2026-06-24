@@ -369,6 +369,10 @@ export interface ArticleSummary {
    * Articles éditoriaux KB = tier-1 par nature.
    */
   readonly indexationTier: IndexationTier;
+  /** Miniature 16/9 (Article.featuredImage) — null si absente / backend KB unifié. */
+  readonly featuredImage: string | null;
+  /** Alt sémantique per-locale de la miniature (Article.featuredImageAlt{Fr,En}). */
+  readonly featuredImageAlt: string | null;
 }
 
 /**
@@ -402,6 +406,9 @@ export async function listPublishedArticles(locale: Locale): Promise<readonly Ar
         // VIS-10 — tier réel de l'Article (le leak tier-2 dans les suggestions
         // venait de l'absence de ce filtre).
         indexationTier: a.indexationTier,
+        // Miniatures cartes (audit 2026-06-24) — déjà chargé via `include`.
+        featuredImage: a.featuredImage ?? null,
+        featuredImageAlt: (locale === "fr" ? a.featuredImageAltFr : a.featuredImageAltEn) ?? null,
       };
     });
   }
@@ -434,6 +441,9 @@ export async function listPublishedArticles(locale: Locale): Promise<readonly Ar
       // VIS-10 — KnowledgeEntry (articles éditoriaux) n'a pas de colonne tier ;
       // éditorial = indexable par nature.
       indexationTier: "tier_1_indexable",
+      // KnowledgeEntry n'expose pas featuredImage en V1 → placeholder de marque.
+      featuredImage: null,
+      featuredImageAlt: null,
     };
   });
 }
