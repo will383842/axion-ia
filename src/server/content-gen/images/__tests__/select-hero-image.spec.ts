@@ -122,6 +122,24 @@ describe("selectHeroImage — Unsplash uniquement (fallback bank opt-in)", () =>
     expect(assignHeroImageMock).not.toHaveBeenCalled();
   });
 
+  it("cascade : 1ère requête 0 résultat → fallback élargi trouve une photo (Will 2026-06-24)", async () => {
+    process.env.UNSPLASH_ACCESS_KEY = "test-key";
+    // 1er appel (requête spécifique) : aucune photo exploitable (hotlinkUrl vide) ;
+    // 2e appel (requête élargie / générique) : photo valide → source unsplash.
+    generateMock
+      .mockResolvedValueOnce({ output: JSON.stringify({ hotlinkUrl: "", attribution: null }) })
+      .mockResolvedValueOnce({ output: unsplashOutput() });
+    const res = await selectHeroImage({
+      jobId: "job-1",
+      contentType: "blog_article",
+      // Titre long avec région → la requête brute échoue, l'élargissement sauve.
+      primaryKeyword: "optimiser agence web auvergne rhone alpes grace intelligence",
+    });
+    expect(generateMock).toHaveBeenCalledTimes(2);
+    expect(res?.source).toBe("unsplash");
+    expect(assignHeroImageMock).not.toHaveBeenCalled();
+  });
+
   it("avec clé mais Unsplash throw + fallback OFF → null, bank jamais appelé", async () => {
     process.env.UNSPLASH_ACCESS_KEY = "test-key";
     generateMock.mockRejectedValue(new Error("rate limited"));
