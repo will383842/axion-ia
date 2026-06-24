@@ -141,7 +141,11 @@ export default async function BlogCategoriesHub({ params }: Props) {
         schemaNodes={hubHero.nodes}
         schemaAriaLabel={hubHero.schemaAriaLabel}
       />
-      <Section>
+      {/* h2 d'introduction → hiérarchie propre h1→h2 (cartes = liens, pas headings). */}
+      <Section
+        eyebrow={isFr ? "Thématiques" : "Topics"}
+        title={isFr ? "Les 5 catégories" : "The 5 categories"}
+      >
         <Container>
           {/* Cartes catégorie modernisées : accent couleur + compteur + flèche. */}
           <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

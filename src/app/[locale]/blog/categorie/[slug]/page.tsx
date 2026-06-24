@@ -99,7 +99,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const base = buildProductMetadata({
     locale,
     path: `/blog/categorie/${slug}`,
-    title: isFr ? `${label} · Articles Axion-IA` : `${label} · Axion-IA articles`,
+    // Pas de « Axion-IA » ici : le template `%s · Axion-IA` l'appose (sinon doublon).
+    title: isFr ? `${label} · Articles` : `${label} · Articles`,
     description:
       richDescription ??
       (isFr
@@ -217,7 +218,12 @@ export default async function BlogCategoryPage({ params }: Props) {
         schemaNodes={hub.nodes}
         schemaAriaLabel={hub.schemaAriaLabel}
       />
-      <Section>
+      {/* h2 d'introduction du contenu principal → hiérarchie propre h1→h2→h3
+          (les cartes d'article sont des h3). Évite le saut h1→h3. */}
+      <Section
+        eyebrow={isFr ? "Articles" : "Articles"}
+        title={isFr ? "Tous les articles" : "All articles"}
+      >
         <Container>
           {/* Recherche texte + tri (client) + grille dense compacte (jusqu'à 4 col).
               Will 2026-06-24 : « barre de recherche » + « blocs trop gros ». */}
