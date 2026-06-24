@@ -492,3 +492,82 @@ export function getBlogHubHero(locale: Locale): BlogHubHero {
       "Diagram: “AI blog” at the center, surrounded by the 5 topics and 3 cross-cutting threads of the blog.",
   };
 }
+
+/** FAQ du hub /blog/categorie (orientée organisation des thématiques). */
+export function getBlogHubFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
+  if (locale === "fr") {
+    return [
+      {
+        question: "Comment le blog Axion-IA est-il organisé ?",
+        answer:
+          "En 5 thématiques : Formations IA, Coaching 1-to-1, Audits IA, Implémentation & automatisation, et Sites web augmentés. Chaque thématique regroupe méthodologie et cas d'usage concrets.",
+      },
+      {
+        question: "Par où commencer si je débute avec l'IA ?",
+        answer:
+          "Par la thématique « Formations IA » pour les fondamentaux, puis « Audits IA » pour identifier les opportunités à plus fort ROI dans votre activité.",
+      },
+      {
+        question: "Les articles sont-ils mis à jour ?",
+        answer:
+          "Oui : les contenus sont revus régulièrement pour rester alignés sur les meilleures pratiques IA du moment.",
+      },
+    ];
+  }
+  return [
+    {
+      question: "How is the Axion-IA blog organized?",
+      answer:
+        "Into 5 topics: AI training, 1-to-1 coaching, AI audits, Implementation & automation, and AI-augmented websites. Each topic gathers methodology and concrete use cases.",
+    },
+    {
+      question: "Where should I start if I'm new to AI?",
+      answer:
+        "With the “AI training” topic for fundamentals, then “AI audits” to spot the highest-ROI opportunities in your business.",
+    },
+    {
+      question: "Are the articles kept up to date?",
+      answer: "Yes: content is reviewed regularly to stay aligned with current AI best practices.",
+    },
+  ];
+}
+
+/** FAQ de l'accueil /blog (orientée ligne éditoriale & confiance). */
+export function getBlogHomeFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
+  if (locale === "fr") {
+    return [
+      {
+        question: "Qui écrit les articles du blog Axion-IA ?",
+        answer:
+          "Les contenus sont produits et relus par l'équipe Axion-IA (Manon, Williams) à partir de missions réelles : méthodologie testée en mission, pas de théorie générique.",
+      },
+      {
+        question: "À quelle fréquence publiez-vous ?",
+        answer:
+          "Régulièrement, avec une mise à jour des articles existants pour qu'ils restent exacts et alignés sur les meilleures pratiques IA du moment.",
+      },
+      {
+        question: "Comment passer de la lecture à l'action ?",
+        answer:
+          "Chaque thématique mène à un format concret : un audit IA pour cadrer les opportunités, une formation pour monter en compétences, ou un coaching individuel.",
+      },
+    ];
+  }
+  return [
+    {
+      question: "Who writes the Axion-IA blog?",
+      answer:
+        "Content is produced and reviewed by the Axion-IA team (Manon, Williams) from real engagements: field-tested methodology, not generic theory.",
+    },
+    {
+      question: "How often do you publish?",
+      answer:
+        "Regularly, with updates to existing articles so they stay accurate and aligned with current AI best practices.",
+    },
+    {
+      question: "How do I move from reading to action?",
+      answer:
+        "Each topic leads to a concrete format: an AI audit to frame opportunities, a training to upskill, or 1-to-1 coaching.",
+    },
+  ];
+}

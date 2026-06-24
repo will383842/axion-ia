@@ -9,9 +9,11 @@ import { Container } from "@/components/layout/Container";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { FaqBlock } from "@/components/sections/FaqBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { BlogHeroSchema } from "@/components/sections/BlogHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { getBlogHomeFaq } from "@/server/content-gen/lib/category-hub-content";
 import { loadBlogIndexForView } from "@/server/content-gen/blog/loader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
@@ -398,6 +400,18 @@ export default async function BlogListing({ params, searchParams }: Props) {
           </Cta>
         }
         tone="dark"
+      />
+
+      {/* FAQ visible + FAQPage JSON-LD (AEO / featured snippets / AI Overviews). */}
+      <FaqBlock
+        tone="paper"
+        title={isFr ? "Questions" : "Questions"}
+        titleEm={isFr ? "fréquentes" : "& answers"}
+        items={getBlogHomeFaq(loc).map((f, i) => ({
+          id: `blog-faq-${i}`,
+          question: f.question,
+          answer: f.answer,
+        }))}
       />
 
       {/* NB : le BreadcrumbList JSON-LD est émis par <Breadcrumbs> (source unique,

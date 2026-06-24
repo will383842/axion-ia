@@ -7,13 +7,14 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
+import { FaqBlock } from "@/components/sections/FaqBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { BLOG_CATEGORY_SLUGS, blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
 import { getBlogCategoryCounts } from "@/server/content-gen/blog/category-loader";
 import { CATEGORY_DESCRIPTIONS } from "@/server/content-gen/lib/category-descriptions";
-import { getBlogHubHero } from "@/server/content-gen/lib/category-hub-content";
+import { getBlogHubHero, getBlogHubFaq } from "@/server/content-gen/lib/category-hub-content";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -193,6 +194,17 @@ export default async function BlogCategoriesHub({ params }: Props) {
           </ul>
         </Container>
       </Section>
+      {/* FAQ visible + FAQPage JSON-LD (AEO / featured snippets / AI Overviews). */}
+      <FaqBlock
+        tone="paper"
+        title={isFr ? "Questions" : "Questions"}
+        titleEm={isFr ? "fréquentes" : "& answers"}
+        items={getBlogHubFaq(loc).map((f, i) => ({
+          id: `hub-faq-${i}`,
+          question: f.question,
+          answer: f.answer,
+        }))}
+      />
       <JsonLd data={collectionJsonLd} />
       <JsonLd data={itemListJsonLd} />
     </>
