@@ -430,6 +430,29 @@ export default async function BlogArticle({ params }: Props) {
         title={titleParts.lead}
         titleEm={titleParts.em}
         description={view.excerpt}
+        // P2-3 — Photo hero À DROITE du titre (Will 2026-06-24 : « pas sous le
+        // héro »). LCP critique → priority. Ratio 4/3 réservé (CLS = 0). Rendue
+        // uniquement si Article.featuredImage existe (articles FS → décoration SVG).
+        media={
+          view.featuredImage ? (
+            <figure className="m-0">
+              <div className="border-border/60 relative aspect-[4/3] w-full overflow-hidden rounded-2xl border shadow-sm">
+                <Image
+                  src={view.featuredImage}
+                  alt={view.featuredImageAlt ?? view.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                />
+              </div>
+              <UnsplashCredit
+                photographerName={view.photographerName}
+                photographerUrl={view.photographerUrl}
+              />
+            </figure>
+          ) : undefined
+        }
       >
         <Container className="text-fg-muted mt-8 flex flex-wrap items-center gap-3 text-sm">
           <Badge variant="neutral">{view.category}</Badge>
@@ -492,28 +515,8 @@ export default async function BlogArticle({ params }: Props) {
         </Container>
       </Section>
 
-      {/* P2-3 — Image hero article (LCP critique : priority obligatoire).
-          Rendu uniquement si Article.featuredImage est renseigné en DB.
-          Les articles FS (hardcodés) retournent null → bloc non rendu.
-          Ratio 16/9 standard, object-cover pour éviter CLS. */}
-      {view.featuredImage ? (
-        <Container className="max-w-4xl">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-            <Image
-              src={view.featuredImage}
-              alt={view.featuredImageAlt ?? view.title}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-              className="object-cover"
-            />
-          </div>
-          <UnsplashCredit
-            photographerName={view.photographerName}
-            photographerUrl={view.photographerUrl}
-          />
-        </Container>
-      ) : null}
+      {/* Photo hero déplacée DANS le <Section> ci-dessus (colonne droite, prop
+          `media`) — Will 2026-06-24 « image à droite, pas sous le héro ». */}
 
       {tldrText ? (
         <Section>

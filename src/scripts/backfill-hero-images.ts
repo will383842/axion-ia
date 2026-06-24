@@ -13,6 +13,9 @@
  *
  *   Local (DB Docker)  :  pnpm tsx src/scripts/backfill-hero-images.ts
  *   Dry-run (preview)  :  BACKFILL_DRY_RUN=1 pnpm tsx src/scripts/backfill-hero-images.ts
+ *   Remplacer bank     :  BACKFILL_REPLACE_BANK=1 pnpm tsx src/scripts/backfill-hero-images.ts
+ *                         → convertit AUSSI les anciens héros image-bank (chemin
+ *                           local) en photo Unsplash ; préserve les URLs Unsplash.
  *   Prod (env injecté) :  DATABASE_URL=<prod> UNSPLASH_ACCESS_KEY=<key> pnpm tsx src/scripts/backfill-hero-images.ts
  *                         (ou dans le container : docker exec <app> pnpm tsx src/scripts/backfill-hero-images.ts)
  *
@@ -20,6 +23,9 @@
  * Rate limit Unsplash : provider auto-throttle ~45/h ; throttle additionnel 1,5 s/article.
  * Post-run : l'ISR (revalidate 3600) republie les `/blog/<slug>` sous 1 h.
  */
+
+// Type-only (effacé à la compilation → n'affecte pas l'ordre de chargement env).
+import type { Prisma } from "../../prisma/generated/client";
 
 // Charge .env.local UNIQUEMENT en local (DATABASE_URL non exporté). En prod,
 // l'env est injecté par Coolify → on n'y touche pas. DOIT précéder l'import du
@@ -49,11 +55,25 @@ async function main(): Promise<void> {
   const { selectHeroImage } = await import("../server/content-gen/images/select-hero-image");
 
   const dryRun = process.env.BACKFILL_DRY_RUN === "1";
+  // Doctrine « Unsplash uniquement » : par défaut on ne touche QUE les articles
+  // sans hero. Avec BACKFILL_REPLACE_BANK=1, on remplace AUSSI les anciens héros
+  // image-bank (chemin local `/images/...`, donc non `http`) par une vraie photo
+  // Unsplash — les URLs Unsplash existantes (`https://images.unsplash.com/...`)
+  // sont toujours préservées (Will 2026-06-24 : « tout en Unsplash, pas la bank »).
+  const replaceBank = process.env.BACKFILL_REPLACE_BANK === "1";
+
+  const where: Prisma.ArticleWhereInput = replaceBank
+    ? {
+        status: "published",
+        OR: [{ featuredImage: null }, { NOT: { featuredImage: { startsWith: "http" } } }],
+      }
+    : { status: "published", featuredImage: null };
 
   const articles = await prisma.article.findMany({
-    where: { status: "published", featuredImage: null },
+    where,
     select: {
       id: true,
+      featuredImage: true,
       generatedByJobId: true,
       mentionedCities: true,
       translations: { where: { locale: "fr" }, select: { slug: true, title: true }, take: 1 },
@@ -62,7 +82,8 @@ async function main(): Promise<void> {
   });
 
   console.log(
-    `[backfill-hero] ${articles.length} article(s) publié(s) sans hero. dryRun=${dryRun}`,
+    `[backfill-hero] ${articles.length} article(s) publié(s) cible(s)` +
+      ` (mode=${replaceBank ? "sans-hero + remplace-bank" : "sans-hero"}). dryRun=${dryRun}`,
   );
 
   let updated = 0;
@@ -133,8 +154,9 @@ async function main(): Promise<void> {
     }
 
     updated++;
+    const verb = a.featuredImage ? "REPLACE bank→unsplash" : "NEW";
     console.log(
-      `[backfill-hero] ${dryRun ? "DRY " : "OK  "}${slug} → ${hero.url}  (📷 ${hero.photographerName ?? "?"})`,
+      `[backfill-hero] ${dryRun ? "DRY " : "OK  "}${verb} ${slug} → ${hero.url}  (📷 ${hero.photographerName ?? "?"})`,
     );
     // Throttle doux (en plus de l'auto-throttle ~45/h du provider).
     await new Promise((r) => setTimeout(r, 1500));
