@@ -2,18 +2,24 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Layers, FileText, RefreshCw } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ServiceHero } from "@/components/sections/ServiceHero";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { BLOG_CATEGORY_SLUGS, blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
 import { getBlogCategoryCounts } from "@/server/content-gen/blog/category-loader";
 import { CATEGORY_DESCRIPTIONS } from "@/server/content-gen/lib/category-descriptions";
-import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
+import { getBlogHubHero } from "@/server/content-gen/lib/category-hub-content";
+import {
+  buildProductMetadata,
+  buildCollectionPageJsonLd,
+  buildItemListJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 
 // Hub des catégories de blog (2026-06-24). Liste STABLE des 5 catégories
 // content-gen (depuis BLOG_CATEGORY_SLUGS, pas dérivée de la DB) → toujours
@@ -66,6 +72,21 @@ export default async function BlogCategoriesHub({ params }: Props) {
     count: counts[slug] ?? 0,
   }));
   const totalArticles = categories.reduce((acc, c) => acc + c.count, 0);
+  const hubHero = getBlogHubHero(loc);
+
+  // ItemList AEO/GEO (audit SEO 2026-06-24) — énumération ordonnée des 5 hubs de
+  // catégorie (manquait sur le hub : seul hasPart était émis).
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/blog/categorie",
+    name: isFr ? "Catégories du blog Axion-IA" : "Axion-IA blog categories",
+    items: categories.map((c, i) => ({
+      position: i + 1,
+      name: c.label,
+      url: `${SITE_URL}/${locale}${categoryBase}/${c.slug}`,
+      ...(c.description ? { description: c.description } : {}),
+    })),
+  });
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
@@ -94,37 +115,18 @@ export default async function BlogCategoriesHub({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      <Section
-        titleAs="h1"
+      {/* Héro 2 colonnes avec schéma orbital (parité /audit, /un-a-un). */}
+      <ServiceHero
         eyebrow={isFr ? "Blog" : "Blog"}
-        title={isFr ? "Toutes les " : "All "}
+        title={isFr ? "Toutes les" : "All"}
         titleEm={isFr ? "thématiques" : "topics"}
         description={
           isFr
             ? `${categories.length} catégories, ${totalArticles} article${totalArticles > 1 ? "s" : ""} au total. Choisissez une thématique pour explorer la méthodologie & les cas d'usage IA correspondants.`
             : `${categories.length} categories, ${totalArticles} article${totalArticles > 1 ? "s" : ""} total. Pick a topic to explore the matching AI methodology & use cases.`
         }
-      >
-        <Container className="mt-8 max-w-2xl">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
-            {[
-              { icon: Layers, label: `${categories.length} ${isFr ? "catégories" : "categories"}` },
-              { icon: FileText, label: `${totalArticles} ${isFr ? "articles" : "articles"}` },
-              { icon: RefreshCw, label: isFr ? "MAJ mensuelle" : "Monthly updates" },
-            ].map((pill) => {
-              const Icon = pill.icon;
-              return (
-                <li
-                  key={pill.label}
-                  className="text-fg-soft inline-flex items-center gap-2 text-sm"
-                >
-                  <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
-                  <span>{pill.label}</span>
-                </li>
-              );
-            })}
-          </ul>
-          <div className="mt-7 flex flex-wrap items-center gap-4">
+        ctas={
+          <>
             <Cta href="/blog" size="lg">
               {isFr ? "Voir tous les articles" : "See all articles"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -132,48 +134,67 @@ export default async function BlogCategoriesHub({ params }: Props) {
             <Cta href="/formations" variant="outline" size="lg">
               {isFr ? "Voir nos formations" : "See our trainings"}
             </Cta>
-          </div>
-        </Container>
-      </Section>
+          </>
+        }
+        schemaCenterLabel={hubHero.centerLabel}
+        schemaNodes={hubHero.nodes}
+        schemaAriaLabel={hubHero.schemaAriaLabel}
+      />
       <Section>
         <Container>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((cat) => (
-              <li key={cat.slug}>
-                <a
-                  href={`/${locale}${categoryBase}/${cat.slug}`}
-                  className="focus-visible:ring-primary group block h-full rounded-xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <Card className="cta-lift h-full">
-                    <CardHeader>
-                      <CardTitle className="flex items-start justify-between gap-3">
-                        <span>{cat.label}</span>
-                        <ArrowRight
-                          className="text-fg-muted group-hover:text-primary mt-1 h-4 w-4 shrink-0 transition"
+          {/* Cartes catégorie modernisées : accent couleur + compteur + flèche. */}
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((cat, i) => {
+              const accentDot = ["bg-terracotta", "bg-primary", "bg-sage", "bg-mocha"][
+                i % 4
+              ] as string;
+              return (
+                <li key={cat.slug}>
+                  <a
+                    href={`/${locale}${categoryBase}/${cat.slug}`}
+                    className="group border-border bg-paper hover:border-border-strong focus-visible:ring-primary shadow-subtle hover:shadow-card flex h-full flex-col gap-3 rounded-xl border p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  >
+                    <span className="flex items-center justify-between gap-3">
+                      <span className="flex items-center gap-2.5">
+                        <span
                           aria-hidden="true"
+                          className={`${accentDot} inline-block h-2.5 w-2.5 rounded-full`}
                         />
-                      </CardTitle>
-                      <CardDescription>
+                        <span
+                          className="text-fg group-hover:text-terracotta-deep text-lg font-semibold transition"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {cat.label}
+                        </span>
+                      </span>
+                      <span className="text-fg-muted text-xs tabular-nums">
                         {cat.count}{" "}
                         {isFr
                           ? `article${cat.count > 1 ? "s" : ""}`
                           : `article${cat.count > 1 ? "s" : ""}`}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-fg-soft text-sm leading-relaxed">{cat.description}</p>
-                      <p className="text-primary mt-4 text-sm font-medium">
-                        {isFr ? "Voir les articles" : "See articles"} →
-                      </p>
-                    </CardContent>
-                  </Card>
-                </a>
-              </li>
-            ))}
+                      </span>
+                    </span>
+                    {cat.description ? (
+                      <span className="text-fg-soft line-clamp-3 text-sm leading-relaxed">
+                        {cat.description}
+                      </span>
+                    ) : null}
+                    <span className="text-terracotta-deep mt-auto inline-flex items-center gap-1.5 text-sm font-medium">
+                      {isFr ? "Voir les articles" : "See articles"}
+                      <ArrowRight
+                        className="h-4 w-4 transition group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </Container>
       </Section>
       <JsonLd data={collectionJsonLd} />
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }

@@ -447,3 +447,48 @@ const GENERIC: Record<Locale, CategoryHubContent> = {
 export function getCategoryHubContent(slug: string, locale: Locale): CategoryHubContent {
   return CATALOG[slug]?.[locale] ?? GENERIC[locale];
 }
+
+export interface BlogHubHero {
+  readonly centerLabel: string;
+  readonly nodes: ReadonlyArray<HeroSchemaNode>;
+  readonly schemaAriaLabel: string;
+}
+
+/**
+ * Schéma orbital du hub /blog/categorie — 8 satellites = les 5 catégories +
+ * 3 fils transverses. Centre « Blog IA ».
+ */
+export function getBlogHubHero(locale: Locale): BlogHubHero {
+  if (locale === "fr") {
+    return {
+      centerLabel: "Blog IA",
+      nodes: buildNodes([
+        ["Formations IA", "Monter en compétences"],
+        ["Coaching 1-to-1", "Accompagnement"],
+        ["Audits IA", "Opportunités"],
+        ["Implémentation", "Automatisation"],
+        ["Sites web", "SEO & AEO"],
+        ["Quick-wins", "Gains rapides"],
+        ["ROI", "Impact chiffré"],
+        ["Méthode", "Cadre éprouvé"],
+      ]),
+      schemaAriaLabel:
+        "Schéma : « Blog IA » au centre, entouré des 5 thématiques et 3 fils transverses du blog.",
+    };
+  }
+  return {
+    centerLabel: "AI blog",
+    nodes: buildNodes([
+      ["AI training", "Upskilling"],
+      ["1-to-1 coaching", "Guidance"],
+      ["AI audits", "Opportunities"],
+      ["Implementation", "Automation"],
+      ["Websites", "SEO & AEO"],
+      ["Quick wins", "Fast gains"],
+      ["ROI", "Measured impact"],
+      ["Method", "Proven framework"],
+    ]),
+    schemaAriaLabel:
+      "Diagram: “AI blog” at the center, surrounded by the 5 topics and 3 cross-cutting threads of the blog.",
+  };
+}

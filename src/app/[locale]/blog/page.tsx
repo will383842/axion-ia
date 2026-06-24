@@ -335,7 +335,8 @@ export default async function BlogListing({ params, searchParams }: Props) {
               ) : null}
             </>
           ) : null}
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Grille dense compacte (jusqu'à 4 col) — harmonisation hubs Will 2026-06-24. */}
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {paginatedPosts.map((post) => (
               <li key={post.slug}>
                 <ArticleCard
@@ -346,6 +347,7 @@ export default async function BlogListing({ params, searchParams }: Props) {
                   readingTime={post.readingTime}
                   imageUrl={post.featuredImage}
                   imageAlt={post.featuredImageAlt}
+                  compact
                 />
               </li>
             ))}
