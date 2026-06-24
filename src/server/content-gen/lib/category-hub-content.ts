@@ -320,7 +320,7 @@ const CATALOG: Catalog = {
 
   "blog-sites-web-augmentes": {
     fr: {
-      centerLabel: "Site augmenté",
+      centerLabel: "Sites web & SaaS",
       nodes: buildNodes([
         ["SEO", "Visibilité Google"],
         ["AEO / GEO", "Cité par les IA"],
@@ -352,7 +352,7 @@ const CATALOG: Catalog = {
       ],
     },
     en: {
-      centerLabel: "Augmented site",
+      centerLabel: "Websites & SaaS",
       nodes: buildNodes([
         ["SEO", "Google visibility"],
         ["AEO / GEO", "Cited by AIs"],

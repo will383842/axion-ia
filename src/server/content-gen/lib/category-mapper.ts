@@ -31,7 +31,7 @@ export const BLOG_CATEGORY_LABELS: Record<string, { readonly fr: string; readonl
     fr: "Implémentation & automatisation IA",
     en: "AI implementation & automation",
   },
-  "blog-sites-web-augmentes": { fr: "Sites web augmentés", en: "AI-enhanced Websites" },
+  "blog-sites-web-augmentes": { fr: "Sites web & SaaS IA", en: "AI Websites & SaaS" },
 };
 
 export function blogCategoryLabel(slug: string, locale: "fr" | "en"): string | null {
