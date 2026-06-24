@@ -67,7 +67,7 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
           actuelles.
         </p>
         <form action={recomputeBarometerSnapshotForm} className="mt-[var(--space-admin-4)]">
-          <button type="submit" className="admin-btn admin-btn-primary">
+          <button type="submit" className="admin-button-cta">
             Recalculer maintenant
           </button>
         </form>
@@ -80,7 +80,7 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
           (review-queue). Refusé si aucun échantillon réel.
         </p>
         <form action={generateBarometerArticleForm} className="mt-[var(--space-admin-4)]">
-          <button type="submit" className="admin-btn admin-btn-primary">
+          <button type="submit" className="admin-button-cta">
             Générer un article
           </button>
         </form>
@@ -141,7 +141,7 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
           </p>
         )}
         <form action={regenerateBarometerAnalysisForm} className="mt-[var(--space-admin-4)]">
-          <button type="submit" className="admin-btn admin-btn-primary">
+          <button type="submit" className="admin-button-cta">
             Régénérer l’analyse
           </button>
         </form>

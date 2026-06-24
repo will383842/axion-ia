@@ -234,13 +234,10 @@ export async function CitiesCoverageV2({
               <option value="non">À couvrir</option>
             </select>
           </div>
-          <button type="submit" className="admin-btn admin-btn-primary">
+          <button type="submit" className="admin-button-cta">
             Filtrer
           </button>
-          <a
-            href={`/fr/${adminPrefix}/content-gen/cities-coverage`}
-            className="admin-btn admin-btn-secondary"
-          >
+          <a href={`/fr/${adminPrefix}/content-gen/cities-coverage`} className="admin-button">
             Réinitialiser
           </a>
         </form>
@@ -275,7 +272,7 @@ export async function CitiesCoverageV2({
                 <a
                   key={p}
                   href={href}
-                  className={`admin-btn ${p === page ? "admin-btn-primary" : "admin-btn-secondary"}`}
+                  className={`admin-button ${p === page ? "admin-button-active" : ""}`}
                 >
                   {p}
                 </a>
