@@ -8,7 +8,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import { FaqBlock } from "@/components/sections/FaqBlock";
-import { ArticleCard } from "@/components/marketing/ArticleCard";
+import { CategoryArticlesFilter } from "@/components/blog/CategoryArticlesFilter";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -219,24 +219,21 @@ export default async function BlogCategoryPage({ params }: Props) {
       />
       <Section>
         <Container>
-          {/* Grille dense (jusqu'à 4 col en xl) + cartes compactes — Will
-              2026-06-24 « blocs trop gros, réduire de moitié ». */}
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {posts.map((p) => (
-              <li key={p.slug}>
-                <ArticleCard
-                  href={`/${p.route}/${p.slug}`}
-                  title={p.title}
-                  excerpt={p.excerpt}
-                  publishedAt={p.publishedAt}
-                  readingTime={p.readingTime}
-                  imageUrl={p.featuredImage}
-                  imageAlt={p.featuredImageAlt}
-                  compact
-                />
-              </li>
-            ))}
-          </ul>
+          {/* Recherche texte + tri (client) + grille dense compacte (jusqu'à 4 col).
+              Will 2026-06-24 : « barre de recherche » + « blocs trop gros ». */}
+          <CategoryArticlesFilter
+            isFr={isFr}
+            items={posts.map((p) => ({
+              slug: p.slug,
+              title: p.title,
+              excerpt: p.excerpt,
+              publishedAt: p.publishedAt,
+              readingTime: p.readingTime,
+              route: p.route,
+              featuredImage: p.featuredImage,
+              featuredImageAlt: p.featuredImageAlt,
+            }))}
+          />
         </Container>
       </Section>
       {/* FAQ visible + FAQPage JSON-LD (AEO / featured snippets / AI Overviews). */}
