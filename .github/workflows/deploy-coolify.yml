@@ -493,57 +493,14 @@ jobs:
           }
           echo "Cloudflare cache purged ✓"
 
-      # Audit indexation 2026-06-20 : `purge_everything` vide TOUT le cache edge à
-      # chaque deploy → mesuré live `cf-cache-status: MISS` sur 100% du HTML jusqu'à
-      # ce qu'un visiteur (ou Googlebot) re-render chaque page. Sur un domaine jeune
-      # à faible trafic, Googlebot tape alors l'origine VPS mono-instance → crawl-rate
-      # plafonné. Ce warmer re-render + re-cache immédiatement les URLs stratégiques
-      # juste après la purge, pour que les crawlers retombent sur `HIT` (origine non
-      # sollicitée). Best-effort : n'échoue jamais le deploy (warming = optimisation).
-      - name: Warm Cloudflare edge cache (top URLs)
-        if: success()
-        env:
-          SITE: "https://axion-ia.com"
-        run: |
-          set -uo pipefail
-          # Liste curée des pages à plus fort enjeu SEO (hubs + top villes + clés).
-          # Volontairement bornée (~40 URLs) pour rester rapide ; le reste se réchauffe
-          # au fil du trafic organique + des crawls.
-          PATHS=(
-            "/fr"
-            "/fr/audit" "/fr/formations" "/fr/implementation" "/fr/un-a-un"
-            "/fr/sites-web" "/fr/a-propos" "/fr/contact" "/fr/presse" "/fr/carrieres"
-            "/fr/implantations"
-            "/fr/implantations/ile-de-france" "/fr/implantations/auvergne-rhone-alpes"
-            "/fr/implantations/provence-alpes-cote-d-azur" "/fr/implantations/occitanie"
-            "/fr/implantations/nouvelle-aquitaine" "/fr/implantations/hauts-de-france"
-            "/fr/implantations/grand-est" "/fr/implantations/pays-de-la-loire"
-            "/fr/implantations/bretagne" "/fr/implantations/normandie"
-            "/fr/implantations/bourgogne-franche-comte" "/fr/implantations/centre-val-de-loire"
-            "/fr/implantations/ile-de-france/paris"
-            "/fr/implantations/auvergne-rhone-alpes/lyon"
-            "/fr/implantations/provence-alpes-cote-d-azur/marseille"
-            "/fr/implantations/occitanie/toulouse"
-            "/fr/implantations/nouvelle-aquitaine/bordeaux"
-            "/fr/implantations/hauts-de-france/lille"
-            "/fr/implantations/auvergne-rhone-alpes/grenoble"
-            "/fr/implantations/pays-de-la-loire/nantes"
-            "/fr/implantations/grand-est/strasbourg"
-            "/fr/implantations/occitanie/montpellier"
-            "/fr/implantations/bretagne/rennes"
-            "/sitemap-index.xml" "/robots.txt"
-          )
-          ok=0; miss=0
-          for p in "${PATHS[@]}"; do
-            # UA neutre + 2 hits espacés : le 1er render+cache, le 2e confirme HIT.
-            curl -sS -o /dev/null -m 20 -A "AxionIA-CacheWarmer/1.0" "${SITE}${p}" || true
-            status=$(curl -sS -o /dev/null -m 20 -A "AxionIA-CacheWarmer/1.0" \
-              -w "%{http_code}" -D /tmp/h.txt "${SITE}${p}" || echo "000")
-            cc=$(grep -i '^cf-cache-status:' /tmp/h.txt | tr -d '\r' | awk '{print $2}')
-            echo "  ${status} ${cc:-?}  ${p}"
-            [ "${cc}" = "HIT" ] && ok=$((ok+1)) || miss=$((miss+1))
-          done
-          echo "::notice::Cache warm — HIT:${ok} non-HIT:${miss} (best-effort, non bloquant)"
+      # Cache warming (edge) — Audit indexation 2026-06-20, ÉTENDU 2026-06-23.
+      # Déplacé dans le job dédié `warm` (voir fin de fichier) et passé de ~40 URLs
+      # curées à TOUTE la surface indexable (~1816 villes + hubs + sections, énumérée
+      # depuis le sitemap). Raison du job séparé : la chauffe complète prend plusieurs
+      # minutes ; la laisser ici allongerait la section critique SÉRIALISÉE
+      # `deploy-coolify` (cf. doctrine P0-01 en tête de fichier). Le job `warm`
+      # (`needs: deploy`) tourne donc APRÈS le deploy (et après la purge CF ci-dessus),
+      # sur son propre runner, best-effort.
 
   # ───────────────────────────────────────────────────────────────────────
   # Lighthouse CI hard fail post-deploy — Audit E2E 2026-05-11 P0-CONF-17.
@@ -691,3 +648,105 @@ jobs:
           # Le script gère lui-même l'absence de clé (no-op exit 0) et n'échoue pas
           # le pipeline ; `|| true` en ceinture-bretelles.
           pnpm exec tsx scripts/indexnow-ping.ts || true
+
+  # ───────────────────────────────────────────────────────────────────────
+  # Cache warmer post-deploy — Audit indexation 2026-06-20, ÉTENDU 2026-06-23.
+  #
+  # PROBLÈME (vérifié) : `purge_everything` (step du job deploy) vide TOUT le
+  # cache edge Cloudflare à chaque deploy → 100% `cf-cache-status: MISS` sur le
+  # HTML. Sur un domaine jeune à faible trafic, c'est alors l'origine VPS
+  # mono-instance qui rend CHAQUE page au 1er hit de Googlebot → réponses lentes
+  # → crawl-rate plafonné (cause #3 de l'audit). L'ancien warmer ne couvrait que
+  # ~40 URLs sur les ~1816 villes indexables ⇒ le gros de la surface restait froid.
+  #
+  # CE JOB fait deux choses, dans l'ordre :
+  #   1. Revalidation ISR des pages d'INDEX DB-dependent (actualites / connaissances
+  #      / ressources / galerie). Sous le stub de build, ces pages sont pré-rendues
+  #      avec une LISTE VIDE et l'ISR (`revalidate=3600`) les tient « fraîches » 1h →
+  #      un simple GET cacherait le vide. `revalidatePath` force la régén immédiate
+  #      avec la vraie DB ; le GET de l'étape 2 met ensuite en cache la version peuplée.
+  #      Gated sur le secret REVALIDATE_SECRET (no-op propre si absent).
+  #   2. Chauffe GET de TOUTE la surface indexable, énumérée depuis le sitemap
+  #      (villes + hubs + sections) → 1er hit = MISS (CF re-cache depuis l'origine),
+  #      les hits suivants (Googlebot, visiteurs) = HIT, origine non sollicitée.
+  #
+  # Best-effort : ce job n'échoue JAMAIS le verdict pipeline (warming = optimisation,
+  # pas un critère de santé du deploy). Job SÉPARÉ (pas un step de `deploy`) pour
+  # ne pas allonger la section critique sérialisée (P0-01).
+  # ⚠️ Concurrence GET volontairement modérée : l'origine est mono-instance et vient
+  # de redémarrer ; les villes sont du SSG (lecture disque rapide) donc -P 6 est sûr.
+  warm:
+    name: Warm edge cache (full indexable surface)
+    needs: deploy
+    if: needs.deploy.result == 'success'
+    # Si un deploy plus récent arrive, son warmer annule celui-ci (inutile de
+    # chauffer 2× en parallèle → ménage l'origine).
+    concurrency:
+      group: warm-edge-cache
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SITE: "https://axion-ia.com"
+      REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+    steps:
+      - name: Revalidate DB-dependent index pages (anti-empty-ISR)
+        run: |
+          set -uo pipefail
+          if [ -z "${REVALIDATE_SECRET:-}" ]; then
+            echo "::warning::REVALIDATE_SECRET absent côté GitHub Actions — revalidation ISR des index DB SKIP. Ces pages se ré-hydratent quand même d'elles-mêmes sous 1h (revalidate=3600). Ajoute le secret (= REVALIDATE_SECRET du runtime Coolify) pour combler la fenêtre vide post-deploy."
+            exit 0
+          fi
+          # Ces pages d'index lisent la DB → pré-rendues VIDES sous le stub de build.
+          PATHS='["/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie"]'
+          echo "POST /api/internal/revalidate paths=${PATHS}"
+          code=$(curl -sS -o /tmp/reval.json -w "%{http_code}" -m 30 -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-Revalidate-Secret: ${REVALIDATE_SECRET}" \
+            --data "{\"paths\":${PATHS}}" \
+            "${SITE}/api/internal/revalidate" || echo "000")
+          echo "  HTTP ${code} — $(cat /tmp/reval.json 2>/dev/null || echo '(no body)')"
+          if [ "${code}" != "200" ]; then
+            echo "::warning::Revalidation index DB non confirmée (HTTP ${code}) — non bloquant. Vérifie que REVALIDATE_SECRET côté GitHub == côté Coolify (RUN)."
+          fi
+
+      - name: Warm full indexable surface from sitemap
+        run: |
+          set -uo pipefail
+          tmp=$(mktemp -d)
+          UA="AxionIA-CacheWarmer/1.0"
+          # 1. sitemap-index → liste des sous-sitemaps (exclut les sitemaps IMAGES :
+          #    on chauffe des pages HTML, pas des assets ; fallback /sitemap.xml).
+          curl -sS -m 30 -A "${UA}" "${SITE}/sitemap-index.xml" -o "${tmp}/index.xml" || true
+          grep -oE '<loc>[^<]+</loc>' "${tmp}/index.xml" 2>/dev/null \
+            | sed -E 's#</?loc>##g' | grep -vi 'image' > "${tmp}/submaps.txt" || true
+          [ -s "${tmp}/submaps.txt" ] || echo "${SITE}/sitemap.xml" > "${tmp}/submaps.txt"
+          echo "Sous-sitemaps détectés : $(wc -l < "${tmp}/submaps.txt" | tr -d ' ')"
+          # 2. chaque sous-sitemap → URLs de pages.
+          : > "${tmp}/urls.txt"
+          while IFS= read -r sm; do
+            [ -z "${sm}" ] && continue
+            curl -sS -m 30 -A "${UA}" "${sm}" -o "${tmp}/sm.xml" || continue
+            grep -oE '<loc>[^<]+</loc>' "${tmp}/sm.xml" 2>/dev/null \
+              | sed -E 's#</?loc>##g' >> "${tmp}/urls.txt" || true
+          done < "${tmp}/submaps.txt"
+          # dédup + retire les .xml résiduels (on veut des pages, pas des sitemaps).
+          sort -u "${tmp}/urls.txt" | grep -vE '\.xml$' > "${tmp}/pages.txt" || true
+          total=$(wc -l < "${tmp}/pages.txt" | tr -d ' ')
+          # Garde-fou : borne le nombre d'origin-renders post-deploy. ~1816 villes +
+          # hubs ≈ 2000 ; 4000 couvre large. Au-delà (gros volume blog), le reste se
+          # réchauffe au fil du trafic + des crawls — JAMAIS bloquant.
+          cap=4000
+          echo "::notice::Warmer — ${total} URLs indexables (cap ${cap}, concurrence 6)"
+          if [ "${total}" -eq 0 ]; then
+            echo "::warning::0 URL extraite du sitemap — warmer no-op (sitemap vide/indisponible ?)."
+            exit 0
+          fi
+          # 3. chauffe à concurrence modérée. Chaque GET passe par Cloudflare :
+          #    MISS → CF rend depuis l'origine et met en cache ; hits suivants = HIT.
+          head -n "${cap}" "${tmp}/pages.txt" \
+            | xargs -P 6 -I {} curl -sS -o /dev/null -m 25 -A "${UA}" "{}" || true
+          if [ "${total}" -gt "${cap}" ]; then
+            echo "::warning::Warmer capé ${cap}/${total} — surplus chauffé par trafic/crawl."
+          fi
+          echo "::notice::Warm terminé (best-effort, non bloquant)."
