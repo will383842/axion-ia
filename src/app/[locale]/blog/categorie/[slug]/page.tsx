@@ -140,6 +140,17 @@ export default async function BlogCategoryPage({ params }: Props) {
   // Coaching→/un-a-un, Audits→/audit, etc.) — Will 2026-06-24.
   const activityCta = getCategoryCta(slug, loc);
 
+  // Fraîcheur (audit AEO 2026-06-25) — date du dernier article de la catégorie
+  // (max publishedAt, déjà chargé). Parité avec le hub /blog/categorie. Guard
+  // ISO : si aucune date exploitable, les champs date sont omis (pas de crash).
+  const latestDate = posts.reduce((max, p) => (p.publishedAt > max ? p.publishedAt : max), "");
+  const hasIsoDate = /^\d{4}-\d{2}-\d{2}$/.test(latestDate);
+  const latestDateLabel = hasIsoDate
+    ? new Intl.DateTimeFormat(isFr ? "fr-FR" : "en-GB", { dateStyle: "long" }).format(
+        new Date(`${latestDate}T00:00:00Z`),
+      )
+    : null;
+
   // Maillage croisé (C, 2026-06-24) — les AUTRES catégories content-gen, pour
   // une navigation latérale entre hubs (renforce le maillage interne).
   const categoryBase = isFr ? "/blog/categorie" : "/blog/category";
@@ -170,8 +181,25 @@ export default async function BlogCategoryPage({ params }: Props) {
     locale: loc,
     path: `/blog/categorie/${slug}`,
     name: `${label} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
+    // Résumé answer-ready (schema.org `abstract`) — excerptable par Perplexity /
+    // Claude / AI Overviews (audit AEO 2026-06-25, parité hub).
+    abstract: isFr
+      ? `${label} sur le blog Axion-IA : méthodologie et cas d'usage IA concrets pour TPE et PME françaises (${posts.length} article${posts.length > 1 ? "s" : ""}).`
+      : `${label} on the Axion-IA blog: concrete AI methodology and use cases for French SMBs (${posts.length} article${posts.length > 1 ? "s" : ""}).`,
+    // Fraîcheur + E-E-A-T (audit AEO 2026-06-25) — date du dernier article +
+    // revue éditoriale rattachée au nœud Person canonique du fondateur (référence
+    // `@id`, pas de duplication d'identité). Omis si aucune date ISO exploitable.
+    ...(hasIsoDate
+      ? {
+          dateModified: latestDate,
+          lastReviewed: latestDate,
+          extra: {
+            reviewedBy: { "@id": `${SITE_URL}/${locale}/equipe/williams#person` },
+          },
+        }
+      : {}),
     // isPartOf omis → référence le nœud canonique `#website` (audit SEO 2026-06-24).
-    // Speakable : intro answer-ready (h1 + description) citable voix/AI-Overview.
+    // Speakable : intro answer-ready (#axion-direct-answer) citable voix/AI-Overview.
     speakable: true,
     hasPart: posts.map((p) => ({
       "@type": "Article",
@@ -317,6 +345,38 @@ export default async function BlogCategoryPage({ params }: Props) {
           </Container>
         </Section>
       ) : null}
+      {/* Synthèse answer-ready (#axion-direct-answer) + byline E-E-A-T en BAS de
+          page (audit AEO 2026-06-25, parité hub) — contrat speakable position-
+          indépendant, texte distinct du héro. */}
+      <Container className="pb-2">
+        <div className="border-border bg-paper shadow-subtle border-l-terracotta max-w-3xl rounded-xl border border-l-4 p-6">
+          <p
+            id="axion-direct-answer"
+            data-answer="true"
+            className="text-fg text-base leading-relaxed md:text-lg"
+          >
+            {isFr
+              ? `Les articles « ${label} » d'Axion-IA réunissent une méthodologie éprouvée et des cas d'usage IA concrets, issus de missions réelles auprès des TPE et PME françaises. Parcourez les ${posts.length} article${posts.length > 1 ? "s" : ""} ci-dessous ou affinez votre recherche par mots-clés.`
+              : `Axion-IA's « ${label} » articles bundle a proven methodology and concrete AI use cases drawn from real field missions with French SMBs. Browse the ${posts.length} article${posts.length > 1 ? "s" : ""} below or refine your search by keywords.`}
+          </p>
+          <p className="text-fg-muted mt-4 text-sm">
+            {isFr ? "Sélection éditoriale supervisée par " : "Editorial selection overseen by "}
+            <a
+              href={`/${locale}/equipe/williams`}
+              className="text-terracotta-deep font-medium underline-offset-2 hover:underline"
+            >
+              Williams Jullin
+            </a>
+            {isFr ? ", fondateur d'Axion-IA" : ", founder of Axion-IA"}
+            {latestDateLabel
+              ? isFr
+                ? ` · Mis à jour le ${latestDateLabel}`
+                : ` · Updated ${latestDateLabel}`
+              : ""}
+            .
+          </p>
+        </div>
+      </Container>
       {/* CTA de conversion ADAPTÉ à l'activité de la catégorie (Will 2026-06-24). */}
       <CtaBlock
         eyebrow={isFr ? "Passer à l'action" : "Take action"}

@@ -32,7 +32,7 @@ export interface CategoryHubContent {
   readonly nodes: ReadonlyArray<HeroSchemaNode>;
   /** aria-label complet du schéma (a11y). */
   readonly schemaAriaLabel: string;
-  /** 3-4 questions/réponses (FAQ visible + FAQPage JSON-LD). */
+  /** 4-6 questions/réponses (FAQ visible + FAQPage JSON-LD). */
   readonly faq: ReadonlyArray<CategoryFaqItem>;
 }
 
@@ -81,6 +81,16 @@ const CATALOG: Catalog = {
           answer:
             "La plupart des participants appliquent les premiers cas d'usage dès la première session ; l'autonomie sur un workflow complet se construit en quelques semaines de pratique.",
         },
+        {
+          question: "Les formations IA sont-elles en présentiel ou à distance ?",
+          answer:
+            "Les deux : présentiel, distanciel ou format hybride selon vos contraintes ; le contenu reste centré sur vos cas d'usage métier.",
+        },
+        {
+          question: "Quels outils IA apprend-on concrètement ?",
+          answer:
+            "Les outils réellement utiles à votre activité (ChatGPT, Claude, automatisations…), choisis selon vos besoins plutôt qu'un catalogue générique.",
+        },
       ],
     },
     en: {
@@ -112,6 +122,16 @@ const CATALOG: Catalog = {
           question: "How long until I'm autonomous with AI?",
           answer:
             "Most participants apply their first use cases in the very first session; full-workflow autonomy builds over a few weeks of practice.",
+        },
+        {
+          question: "Are the trainings in person or remote?",
+          answer:
+            "Both: in person, remote or hybrid depending on your constraints; the content stays focused on your business use cases.",
+        },
+        {
+          question: "Which AI tools do we actually learn?",
+          answer:
+            "The tools genuinely useful to your work (ChatGPT, Claude, automations…), chosen for your needs rather than a generic catalog.",
         },
       ],
     },
@@ -148,6 +168,16 @@ const CATALOG: Catalog = {
           answer:
             "Non. L'accompagnement part de votre métier et de vos outils actuels ; aucune compétence technique préalable n'est requise.",
         },
+        {
+          question: "Combien de séances de coaching faut-il ?",
+          answer:
+            "En général quelques séances ciblées suffisent pour ancrer un usage concret ; le rythme s'adapte à votre objectif et à votre disponibilité.",
+        },
+        {
+          question: "Le coaching 1-to-1 se fait-il à distance ?",
+          answer:
+            "Oui, en visio ou en présentiel : l'essentiel est de travailler directement sur vos outils et vos cas réels.",
+        },
       ],
     },
     en: {
@@ -179,6 +209,16 @@ const CATALOG: Catalog = {
           question: "Do I need technical skills?",
           answer:
             "No. Coaching starts from your job and current tools; no prior technical skill is required.",
+        },
+        {
+          question: "How many coaching sessions are needed?",
+          answer:
+            "Usually a few targeted sessions are enough to embed concrete usage; the pace adapts to your goal and availability.",
+        },
+        {
+          question: "Is 1-to-1 coaching available remotely?",
+          answer:
+            "Yes, by video or in person: what matters is working directly on your tools and real cases.",
         },
       ],
     },
@@ -215,6 +255,16 @@ const CATALOG: Catalog = {
           answer:
             "Une cartographie des opportunités, une priorisation par ROI/effort, les risques (RGPD, IA Act) et un plan d'action chiffré.",
         },
+        {
+          question: "À qui s'adresse un audit IA ?",
+          answer:
+            "Aux TPE et PME qui veulent savoir où l'IA apporte un ROI réel avant d'investir, sans se disperser sur des outils inutiles.",
+        },
+        {
+          question: "Combien coûte un audit IA ?",
+          answer:
+            "Le tarif dépend du périmètre ; un appel de cadrage gratuit permet de définir le bon format et d'obtenir un devis clair.",
+        },
       ],
     },
     en: {
@@ -246,6 +296,16 @@ const CATALOG: Catalog = {
           question: "What does the audit deliver?",
           answer:
             "An opportunity map, ROI/effort prioritization, risks (GDPR, AI Act) and a costed action plan.",
+        },
+        {
+          question: "Who is an AI audit for?",
+          answer:
+            "For small and mid-sized companies that want to know where AI delivers real ROI before investing, without spreading thin on useless tools.",
+        },
+        {
+          question: "How much does an AI audit cost?",
+          answer:
+            "Pricing depends on scope; a free scoping call defines the right format and gives you a clear quote.",
         },
       ],
     },
@@ -282,6 +342,16 @@ const CATALOG: Catalog = {
           answer:
             "Par un cadrage des cas d'usage, une mise en place progressive et un accompagnement au changement avec mesure des gains.",
         },
+        {
+          question: "Combien de temps prend une implémentation IA ?",
+          answer:
+            "De quelques jours à quelques semaines selon le périmètre ; on privilégie des quick-wins livrés tôt, puis l'industrialisation.",
+        },
+        {
+          question: "Faut-il remplacer mes outils existants ?",
+          answer:
+            "Non : on s'intègre d'abord à votre stack actuelle ; un outil n'est remplacé que si le gain le justifie clairement.",
+        },
       ],
     },
     en: {
@@ -313,6 +383,16 @@ const CATALOG: Catalog = {
           question: "How do you ensure team adoption?",
           answer:
             "By scoping use cases, rolling out gradually and supporting change management with measured gains.",
+        },
+        {
+          question: "How long does an AI implementation take?",
+          answer:
+            "From a few days to a few weeks depending on scope; we favor quick wins delivered early, then industrialization.",
+        },
+        {
+          question: "Do I have to replace my existing tools?",
+          answer:
+            "No: we first integrate with your current stack; a tool is replaced only when the gain clearly justifies it.",
         },
       ],
     },
@@ -349,6 +429,16 @@ const CATALOG: Catalog = {
           answer:
             "Pas nécessairement : on augmente l'existant (structure, contenu, données structurées, performance) plutôt que de repartir de zéro quand c'est possible.",
         },
+        {
+          question: "Combien de temps pour voir des résultats SEO/AEO ?",
+          answer:
+            "Les gains techniques (vitesse, données structurées) sont immédiats ; la visibilité SEO/AEO se construit sur quelques semaines à quelques mois selon la concurrence.",
+        },
+        {
+          question: "L'IA peut-elle produire le contenu à ma place ?",
+          answer:
+            "Oui, à l'échelle et avec relecture humaine : le contenu est généré puis vérifié pour rester exact, utile et aligné sur votre marque.",
+        },
       ],
     },
     en: {
@@ -380,6 +470,16 @@ const CATALOG: Catalog = {
           question: "Do I need to rebuild my whole site?",
           answer:
             "Not necessarily: we augment the existing site (structure, content, structured data, performance) rather than starting from scratch when possible.",
+        },
+        {
+          question: "How long before SEO/AEO results show?",
+          answer:
+            "Technical gains (speed, structured data) are immediate; SEO/AEO visibility builds over a few weeks to months depending on competition.",
+        },
+        {
+          question: "Can AI produce the content for me?",
+          answer:
+            "Yes, at scale and with human review: content is generated then checked to stay accurate, useful and on-brand.",
         },
       ],
     },
@@ -558,6 +658,16 @@ export function getBlogHubFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
         answer:
           "Oui : les contenus sont revus régulièrement pour rester alignés sur les meilleures pratiques IA du moment.",
       },
+      {
+        question: "À qui s'adresse le blog Axion-IA ?",
+        answer:
+          "Aux dirigeants, équipes et indépendants de TPE et PME qui veulent des usages concrets de l'IA, sans jargon — chaque thématique part de cas réels testés en mission.",
+      },
+      {
+        question: "Le blog Axion-IA est-il gratuit ?",
+        answer:
+          "Oui : tous les articles sont en accès libre, sans inscription. Vous passez à l'action via un audit, une formation ou un coaching quand vous le souhaitez.",
+      },
     ];
   }
   return [
@@ -574,6 +684,16 @@ export function getBlogHubFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
     {
       question: "Are the articles kept up to date?",
       answer: "Yes: content is reviewed regularly to stay aligned with current AI best practices.",
+    },
+    {
+      question: "Who is the Axion-IA blog for?",
+      answer:
+        "For leaders, teams and freelancers in small and mid-sized companies who want concrete AI usage, with no jargon — each topic starts from real, field-tested cases.",
+    },
+    {
+      question: "Is the Axion-IA blog free?",
+      answer:
+        "Yes: every article is freely accessible, no signup. You move to action via an audit, a training or coaching whenever you want.",
     },
   ];
 }
