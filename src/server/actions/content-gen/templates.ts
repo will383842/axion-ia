@@ -13,6 +13,7 @@ import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { recordTemplateHistory } from "@/server/content-gen/template-history";
 import type { ContentType, ExpansionMode } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
 
@@ -219,6 +220,20 @@ export async function upsertTemplate(input: UpsertTemplateInput): Promise<string
     if (input.id) {
       const existing = await prisma.contentTemplate.findUnique({ where: { id: input.id } });
       const nextVersion = (existing?.version ?? 0) + 1;
+      // Snapshot append-only des prompts PRE-édition (rollback/diff admin).
+      // Best-effort fail-open : un échec ici NE bloque PAS l'update du template.
+      if (existing) {
+        await recordTemplateHistory({
+          templateId: existing.id,
+          systemPrompt: existing.systemPrompt,
+          userPromptTemplate: existing.userPromptTemplate,
+          outputSchemaZod: existing.outputSchemaZod,
+          model: existing.defaultModel,
+          defaultTemperature: existing.defaultTemperature?.toString() ?? null,
+          defaultMaxTokens: existing.defaultMaxTokens,
+          changedBy: session.userId,
+        });
+      }
       const r = await prisma.contentTemplate.update({
         where: { id: input.id },
         data: { ...data, version: nextVersion },

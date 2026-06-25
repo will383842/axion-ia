@@ -131,3 +131,85 @@ function isLikelyPiiKey(key: string): boolean {
   const lower = key.toLowerCase();
   return PII_EMAIL_FIELDS.has(lower) || PII_NAME_FIELDS.has(lower) || PII_PHONE_FIELDS.has(lower);
 }
+
+/* -------------------------------------------------------------------------- */
+/* Value-level scrubbing (RGPD + secret-leak prevention) — audit 2026-06-25.  */
+/*                                                                            */
+/* `redactGenerationMetadata()` ci-dessus est key-based (whitelist de noms de */
+/* champ). Mais `message` est du texte libre, et un metadata value arbitraire */
+/* peut embarquer un email, un numéro de téléphone ou — pire — une clé API    */
+/* (sk-…, sk-ant-…, sk-proj-…) ou un secret hex/base64 ≥ 32 chars qui a fuité */
+/* dans un message d'erreur upstream. On scrubbe donc le CONTENU, pas le nom. */
+/*                                                                            */
+/* Ordre des passes = important : on retire les secrets AVANT les patterns    */
+/* PII génériques (un token base64 ne doit pas matcher le pattern email).     */
+/* -------------------------------------------------------------------------- */
+
+/** Clés API style provider : sk-…, sk-ant-…, sk-proj-…, et variantes longues. */
+const API_KEY_RE = /\bsk-(?:ant-|proj-|live-|test-)?[A-Za-z0-9_-]{16,}\b/g;
+
+/** Secrets génériques hex ou base64/base64url ≥ 32 chars (clés, tokens, hash). */
+const LONG_SECRET_RE = /\b[A-Za-z0-9+/_-]{32,}={0,2}\b/g;
+
+/** Emails (sous-ensemble RFC, suffisant pour un filet de sécurité). */
+const EMAIL_RE = /\b[\w.+-]+@[\w-]+\.[\w.-]+\b/g;
+
+/**
+ * Téléphones FR + internationaux. Couvre `+33 6 12 34 56 78`, `06 12 34 56 78`,
+ * `0033612345678`, formats avec `.` ou `-`. On exige ≥ 9 chiffres au total pour
+ * éviter de matcher des nombres courts (durées, scores, comptes de tokens).
+ */
+const PHONE_RE = /(?:\+|00)?\d[\d\s.-]{7,}\d/g;
+
+/** Masque purement secret (pas une PII réversible — on jette l'info). */
+const SECRET_MASK = "[redacted-secret]";
+
+/**
+ * Scrubbe une chaîne de texte libre : retire les secrets (clés API, tokens) et
+ * masque les PII (emails, téléphones). Pure, sans I/O, sans throw attendu.
+ *
+ * Filet de sécurité best-effort — pas un DLP exhaustif. Idempotent sur du texte
+ * déjà propre. Préserve la longueur globale du message au mieux (remplacements
+ * inline), l'appelant applique son propre cap.
+ */
+export function redactSensitiveText(raw: string | null | undefined): string {
+  if (raw === null || raw === undefined) return "";
+  if (typeof raw !== "string" || raw.length === 0) return String(raw ?? "");
+  let text = raw;
+  // 1) Secrets d'abord (sinon une clé sk-… ou un base64 matcherait email/phone).
+  text = text.replace(API_KEY_RE, SECRET_MASK);
+  text = text.replace(LONG_SECRET_RE, (m) =>
+    // Ne masque que si ça « ressemble » à un secret : présence de chiffres ET
+    // de lettres (un mot anglais de 32+ lettres pures n'est pas un secret).
+    /\d/.test(m) && /[A-Za-z]/.test(m) ? SECRET_MASK : m,
+  );
+  // 2) PII réversibles-symboliques.
+  text = text.replace(EMAIL_RE, (m) => redactEmail(m));
+  text = text.replace(PHONE_RE, (m) => redactPhone(m));
+  return text;
+}
+
+/**
+ * Variante deep pour metadata : applique `redactGenerationMetadata()` (key-based)
+ * PUIS scrubbe le contenu de toute valeur string restante (value-based), y compris
+ * dans les objets/arrays imbriqués. Fail-open géré par l'appelant.
+ */
+export function redactGenerationMetadataDeep(
+  raw: Record<string, unknown> | null | undefined,
+): Record<string, unknown> {
+  const keyRedacted = redactGenerationMetadata(raw);
+  return scrubValues(keyRedacted) as Record<string, unknown>;
+}
+
+function scrubValues(value: unknown): unknown {
+  if (typeof value === "string") return redactSensitiveText(value);
+  if (Array.isArray(value)) return value.map(scrubValues);
+  if (value !== null && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      out[k] = scrubValues(v);
+    }
+    return out;
+  }
+  return value;
+}

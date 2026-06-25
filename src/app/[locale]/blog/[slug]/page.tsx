@@ -17,7 +17,12 @@ import { ArticleTOC, extractTocItems, type TocItem } from "@/components/seo/Arti
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
-import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildArticleJsonLd,
+  ensureArticleMetaDescription,
+  SITE_URL,
+} from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   loadBlogArticleForView,
@@ -98,11 +103,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // V-07 sprint UX 2026-05-22 — préfère DB metaTitle/metaDescription si fournis
   // (champs SEO-tunés au moment de la rédaction Manon ou via factory content-gen).
   // Fallback : title + excerpt rétrocompatible articles FS.
+  // P0 qualité 2026-06-25 — plancher 140-160 car sur la meta description ARTICLE.
+  // `ensureArticleMetaDescription` (seo.ts) garde la metaDescription DB si déjà
+  // assez longue, sinon retombe sur excerpt/directAnswer puis tronque proprement.
+  const articleDescription = ensureArticleMetaDescription(view.metaDescription ?? view.excerpt, {
+    excerpt: view.excerpt,
+    directAnswer: view.directAnswer,
+  });
   const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
     title: view.metaTitle ?? view.title,
-    description: view.metaDescription ?? view.excerpt,
+    description: articleDescription,
     ogType: "article", // VIS-05/SEO-05
     // D2 (VIS-08) — utilise la hero réelle comme og:image quand dispo (au lieu
     // de la carte /api/og générique) pour les partages sociaux + previews LLM.

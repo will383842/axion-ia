@@ -28,7 +28,10 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { redactGenerationMetadata } from "@/server/content-gen/lib/pii-safe";
+import {
+  redactGenerationMetadataDeep,
+  redactSensitiveText,
+} from "@/server/content-gen/lib/pii-safe";
 
 export type GenerationLogLevel = "debug" | "info" | "warn" | "error";
 
@@ -91,18 +94,34 @@ export interface LogGenerationArgs {
  * Append-only, swallow errors (observable pas critique).
  */
 export async function logGeneration(args: LogGenerationArgs): Promise<void> {
-  // Audit B5 P1-1 — PII redaction filet : tout metadata passe par
-  // redactGenerationMetadata() avant insert DB. Cheap (whitelist Object.entries)
-  // et idempotent : si l'appelant n'a pas mis de PII, le résultat est identique.
-  const safeMetadata =
-    args.metadata !== undefined ? redactGenerationMetadata(args.metadata) : undefined;
+  // Audit B5 P1-1 + audit 2026-06-25 — PII/secret redaction filet :
+  //  - `message` (texte libre) passe par redactSensitiveText() : scrubbe emails,
+  //    téléphones, clés API (sk-/sk-ant-/sk-proj-) et secrets hex/base64 ≥ 32 chars.
+  //  - `metadata` passe par redactGenerationMetadataDeep() : redaction key-based
+  //    (whitelist champs PII connus) PUIS scan value-based récursif (mêmes patterns).
+  // FAIL-OPEN : si la redaction throw (regex catastrophique, input exotique), on
+  // retombe sur les valeurs d'origine. On ne perd JAMAIS un log et on ne throw
+  // JAMAIS depuis l'audit trail (RGPD = best-effort, observabilité = critique).
+  let safeMessage = args.message;
+  let safeMetadata = args.metadata;
+  try {
+    safeMessage = redactSensitiveText(args.message);
+  } catch {
+    safeMessage = args.message;
+  }
+  try {
+    safeMetadata =
+      args.metadata !== undefined ? redactGenerationMetadataDeep(args.metadata) : undefined;
+  } catch {
+    safeMetadata = args.metadata;
+  }
   try {
     await prisma.generationLog.create({
       data: {
         jobId: args.jobId,
         level: args.level,
         step: args.step,
-        message: args.message.slice(0, 5000), // hard cap message size
+        message: safeMessage.slice(0, 5000), // hard cap message size
         ...(safeMetadata !== undefined ? { metadata: safeMetadata as never } : {}),
       },
     });
