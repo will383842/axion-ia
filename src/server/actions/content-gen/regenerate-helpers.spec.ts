@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildRegenerationJobData,
+  deriveSourceJobFromArticle,
   REGENERABLE_CONTENT_TYPES,
   type RegenSourceJob,
 } from "./regenerate-helpers";
@@ -122,5 +123,36 @@ describe("buildRegenerationJobData", () => {
     expect(REGENERABLE_CONTENT_TYPES.has("blog_article")).toBe(true);
     expect(REGENERABLE_CONTENT_TYPES.has("guide_pilier")).toBe(true);
     expect(REGENERABLE_CONTENT_TYPES.has("landing_ville")).toBe(false);
+  });
+});
+
+describe("deriveSourceJobFromArticle (Option B — job source purgé)", () => {
+  it("dérive le primaryKeyword depuis le lead du titre (avant « : »)", () => {
+    const s = deriveSourceJobFromArticle({
+      searchIntent: "informational",
+      title: "Audit IA à Grenoble : Optimisez votre entreprise",
+    });
+    expect((s.inputPayload as { primaryKeyword: string }).primaryKeyword).toBe(
+      "Audit IA à Grenoble",
+    );
+    expect(s.contentType).toBe("blog_from_keywords");
+    expect(s.targetSearchIntent).toBe("informational");
+    expect(s.targetLocale).toBe("fr");
+  });
+
+  it("titre sans séparateur → mot-clé = titre entier ; intent par défaut si null", () => {
+    const s = deriveSourceJobFromArticle({
+      searchIntent: null,
+      title: "Comparatif des intégrateurs IA",
+    });
+    expect((s.inputPayload as { primaryKeyword: string }).primaryKeyword).toBe(
+      "Comparatif des intégrateurs IA",
+    );
+    expect(s.targetSearchIntent).toBe("informational");
+  });
+
+  it("le job dérivé est toujours d'un type régénérable", () => {
+    const s = deriveSourceJobFromArticle({ searchIntent: "local", title: "Sujet" });
+    expect(REGENERABLE_CONTENT_TYPES.has(s.contentType)).toBe(true);
   });
 });

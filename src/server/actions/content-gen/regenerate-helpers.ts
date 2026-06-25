@@ -116,3 +116,44 @@ export function buildRegenerationJobData(params: {
 
   return { idempotencyKey, inputPayload, data };
 }
+
+/**
+ * Option B (2026-06-25) — dérive un `RegenSourceJob` depuis l'ARTICLE quand le job
+ * source a été purgé (`content_gen_job` supprimé après complétion → 0 article
+ * régénérable autrement). Rend TOUT article régénérable, jobs purgés inclus.
+ *
+ * Dérivation volontairement conservatrice (l'article ne stocke ni le mot-clé, ni
+ * les anchors, ni le secteur — seulement search_intent + titre) :
+ * - contentType = `blog_from_keywords` : fallback universel qui ne requiert QUE
+ *   `primaryKeyword` (les autres types ont des dépendances : RSS source, etc.).
+ * - primaryKeyword = « lead » du titre (partie avant « : » / « – » / « | »).
+ * - intent = celui de l'article (défaut informational) ; locale fr ; providers défaut.
+ *
+ * Les anchors/secteur d'origine sont perdus → acceptable : le but est de
+ * RE-GÉNÉRER un contenu de qualité (grounding KB + prompts durcis) sur le même
+ * sujet, en PRÉSERVANT le slug (URL stable). Si le job source existe encore, on
+ * l'utilise (params exacts) — ce fallback ne sert qu'aux jobs disparus.
+ */
+export function deriveSourceJobFromArticle(article: {
+  searchIntent: SearchIntent | null;
+  title: string | null;
+}): RegenSourceJob {
+  const rawTitle = (article.title ?? "").trim();
+  const lead = rawTitle.split(/\s[:–—|-]\s/)[0]?.trim() ?? rawTitle;
+  const primaryKeyword =
+    lead.length >= 3 ? lead : rawTitle || "intelligence artificielle entreprise";
+  return {
+    contentType: "blog_from_keywords",
+    targetSearchIntent: article.searchIntent ?? "informational",
+    targetLocale: "fr",
+    anchorVilleSlug: null,
+    anchorRegionSlug: null,
+    anchorDepartementCode: null,
+    templateId: null,
+    serviceSector: null,
+    campaignId: null,
+    primaryProvider: "anthropic",
+    fallbackProvider: "openai",
+    inputPayload: { primaryKeyword },
+  };
+}
