@@ -59,6 +59,7 @@ Produis un comparatif structuré. Règles absolues :
 - La section Axion-IA est présente comme une option parmi d'autres, évaluée factuellement.
 - Conclusion : recommandation motivée par taille entreprise + cas d'usage (PME, ETI, etc.)
 - 100 % factuel : pas de superlatif sans preuve concrète.
+- GROUNDING OBLIGATOIRE : appuie le comparatif sur les « Sources internes Axion-IA » fournies (faits KB) pour la partie Axion-IA — méthodologie, livrables, ROI RÉELS, pas une description générique. INTERDIT de fabriquer un cas client (« Entreprise Anonyme »…) ; n'utilise que les cas réels fournis.
 - Le keyword principal DOIT apparaître textuellement dans le H1.
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
@@ -367,7 +368,9 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 
     const indexationTier: GeneratorOutput["indexationTier"] = soft404.isSoft404
       ? "tier_3_noindex_nofollow"
-      : doctrine.passed && qualityScore >= 75
+      : // Gate de substance (2026-06-25) : pas d'indexation tier_1 sans grounding
+        // KB réel (kbChunks > 0) → un comparatif non ancré reste noindex (anti-HCU).
+        doctrine.passed && qualityScore >= 75 && kbChunks.length > 0
         ? "tier_1_indexable"
         : doctrine.passed && qualityScore >= 55
           ? "tier_2_noindex_follow"

@@ -43,6 +43,9 @@ const SYSTEM_PROMPT =
   injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
 Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues :
 - 100 % centré Axion-IA : chaque paragraphe ancre une valeur ou preuve concrète.
+- GROUNDING OBLIGATOIRE : construis CHAQUE section À PARTIR des « Sources internes Axion-IA » fournies (faits KB) — décris la méthodologie, les étapes, les livrables et le ROI RÉELS d'Axion-IA tels qu'énoncés dans ces faits, PAS une définition générique/Wikipédia du concept. Si un fait précis manque, reste général et factuel SANS rien inventer.
+- INTERDIT : fabriquer un cas client (« Entreprise Anonyme », « une PME de la région »…) — n'utilise QUE les cas réels présents dans les faits fournis ; à défaut, n'invente aucun exemple chiffré.
+- INTERDIT : une section purement définitionnelle (« Qu'est-ce qu'un X »). L'angle est TOUJOURS ce qu'Axion-IA fait concrètement.
 - Angle opérationnel : cas d'usage réels, bénéfices mesurables, retour terrain.
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
@@ -326,7 +329,9 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
 
     const indexationTier: GeneratorOutput["indexationTier"] = soft404.isSoft404
       ? "tier_3_noindex_nofollow"
-      : doctrine.passed && qualityScore >= 70
+      : // Gate de substance (2026-06-25) : pas d'indexation tier_1 sans grounding
+        // KB réel (kbChunks > 0) → un article non ancré reste noindex (anti-HCU).
+        doctrine.passed && qualityScore >= 70 && kbChunks.length > 0
         ? "tier_1_indexable"
         : doctrine.passed && qualityScore >= 55
           ? "tier_2_noindex_follow"
