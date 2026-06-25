@@ -33,19 +33,24 @@ export function ArticleShareBar({ url, title, locale }: ArticleShareBarProps) {
   const linkedInHref = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
   const mailHref = `mailto:?subject=${encodedTitle}&body=${encodedTitle}%0A${encodedUrl}`;
 
-  const linkClass =
-    "border-border text-fg-soft hover:border-terracotta hover:text-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors";
+  // Pills modernes : icône SVG + libellé, hover de marque (transition douce).
+  const base =
+    "inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-medium transition-colors";
+  const xClass = `${base} border-border text-fg-soft hover:border-fg hover:bg-fg hover:text-bg`;
+  const inClass = `${base} border-border text-fg-soft hover:border-primary hover:bg-primary hover:text-white`;
+  const mailClass = `${base} border-border text-fg-soft hover:border-terracotta hover:bg-terracotta hover:text-white`;
 
   return (
     <Section>
-      <Container className="max-w-3xl">
+      <Container className="max-w-[46rem]">
         <nav
           data-aeo="share-bar"
           aria-label={isFr ? "Partager cet article" : "Share this article"}
-          className="flex flex-wrap items-center gap-2"
+          className="border-border bg-paper flex flex-wrap items-center gap-2.5 rounded-2xl border p-4"
         >
-          <span className="text-fg-muted mr-1 text-sm font-semibold">
-            {isFr ? "Partager" : "Share"}
+          <span className="text-fg mr-1 inline-flex items-center gap-2 text-sm font-semibold">
+            <span aria-hidden="true" className="bg-terracotta h-3.5 w-1 rounded-full" />
+            {isFr ? "Partager cet article" : "Share this article"}
           </span>
 
           <a
@@ -53,11 +58,11 @@ export function ArticleShareBar({ url, title, locale }: ArticleShareBarProps) {
             target="_blank"
             rel="noopener noreferrer nofollow"
             aria-label={isFr ? "Partager sur X (Twitter)" : "Share on X (Twitter)"}
-            className={linkClass}
+            className={xClass}
           >
-            <span aria-hidden="true" className="font-semibold">
-              𝕏
-            </span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
+            </svg>
             <span>X</span>
           </a>
 
@@ -66,20 +71,30 @@ export function ArticleShareBar({ url, title, locale }: ArticleShareBarProps) {
             target="_blank"
             rel="noopener noreferrer nofollow"
             aria-label={isFr ? "Partager sur LinkedIn" : "Share on LinkedIn"}
-            className={linkClass}
+            className={inClass}
           >
-            <span aria-hidden="true" className="font-semibold">
-              in
-            </span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+              <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" />
+            </svg>
             <span>LinkedIn</span>
           </a>
 
           <a
             href={mailHref}
             aria-label={isFr ? "Partager par e-mail" : "Share by email"}
-            className={linkClass}
+            className={mailClass}
           >
-            <span aria-hidden="true">✉</span>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="h-4 w-4"
+            >
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+            </svg>
             <span>{isFr ? "E-mail" : "Email"}</span>
           </a>
 

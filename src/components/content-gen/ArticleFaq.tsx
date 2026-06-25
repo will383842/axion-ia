@@ -60,15 +60,16 @@ export function ArticleFaq({ items, locale, dateModified }: ArticleFaqProps) {
 
   return (
     <Section>
-      <Container className="max-w-3xl">
-        <h2 className="text-fg text-2xl font-semibold tracking-tight">
+      <Container className="max-w-[46rem]">
+        <h2 className="text-fg inline-flex items-center gap-2.5 text-2xl font-semibold tracking-tight">
+          <span aria-hidden="true" className="bg-terracotta h-5 w-1 rounded-full" />
           {isFr ? "Questions fréquentes" : "Frequently asked questions"}
         </h2>
         <div className="mt-6 space-y-3">
           {prepared.map((p, i) => (
             <details
               key={i}
-              className="group border-border bg-sand-50 rounded-lg border px-4 py-3 open:pb-4"
+              className="group border-border bg-paper hover:border-border-strong open:shadow-subtle rounded-xl border px-4 py-3.5 transition-colors open:pb-4"
             >
               <summary
                 data-faq-q

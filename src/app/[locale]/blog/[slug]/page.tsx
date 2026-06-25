@@ -499,20 +499,8 @@ export default async function BlogArticle({ params }: Props) {
             </span>
           </div>
         </Container>
-        {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
-        <Container className="mt-2 max-w-3xl">
-          <AuthorByline
-            authorName={view.author}
-            authorSlug={view.author.toLowerCase()}
-            {...(manonByline
-              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
-              : {})}
-            publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
-            lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
-            emitJsonLd={!isDbHtml}
-            locale={loc}
-          />
-        </Container>
+        {/* AuthorByline E-E-A-T déplacée EN BAS de l'article (Will 2026-06-25 :
+            « le portrait de Manon serait mieux en bas »). Voir après </article>. */}
       </Section>
 
       {/* Photo hero déplacée DANS le <Section> ci-dessus (colonne droite, prop
@@ -542,7 +530,7 @@ export default async function BlogArticle({ params }: Props) {
           NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
       <article>
         <Section>
-          <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
+          <Container className="text-fg max-w-[46rem] space-y-6 text-lg leading-relaxed">
             {dbBodyHtml ? (
               // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
               // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
@@ -573,6 +561,24 @@ export default async function BlogArticle({ params }: Props) {
           </Container>
         </Section>
       </article>
+
+      {/* Carte auteur E-E-A-T déplacée EN BAS (Will 2026-06-25) — clôt l'article
+          juste après le corps, pattern éditorial standard (bio auteur en fin). */}
+      <Section>
+        <Container className="max-w-[46rem]">
+          <AuthorByline
+            authorName={view.author}
+            authorSlug={view.author.toLowerCase()}
+            {...(manonByline
+              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+              : {})}
+            publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
+            lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
+            emitJsonLd={!isDbHtml}
+            locale={loc}
+          />
+        </Container>
+      </Section>
 
       {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
           le lien. URL absolue (pageUrl) pour X/LinkedIn/mailto. Server, l'îlot

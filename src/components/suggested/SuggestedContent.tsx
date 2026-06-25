@@ -103,7 +103,7 @@ export function SuggestedContent({
       >
         <Container>
           {variant === "articles" ? (
-            <ul className="grid gap-4 sm:grid-cols-2">
+            <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {items.map((item) => (
                 <li key={item.href}>
                   <ArticleCard

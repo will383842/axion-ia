@@ -125,7 +125,7 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
         aria-label={label}
         className={
           sticky
-            ? "not-prose hidden lg:sticky lg:top-24 lg:block lg:w-56 lg:shrink-0 lg:self-start"
+            ? "not-prose border-border bg-paper shadow-subtle hidden rounded-xl border p-4 lg:sticky lg:top-24 lg:block lg:w-60 lg:shrink-0 lg:self-start"
             : "not-prose"
         }
       >
