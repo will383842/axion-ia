@@ -511,7 +511,11 @@ export default async function BlogArticle({ params }: Props) {
           (le <details> Sommaire de ArticleTOC s'empile en haut, le rail desktop
           est masqué). align-items par défaut (stretch) → la cellule gauche fait
           la hauteur du contenu, ce qui permet au nav `lg:sticky` de coller. */}
-      <Container className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
+      <Container
+        className={
+          tocItems.length >= 2 ? "lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12" : ""
+        }
+      >
         <div className="lg:col-start-1 lg:row-start-1">
           {tocItems.length >= 2 ? (
             <ArticleTOC items={tocItems} pageUrl={pageUrl} locale={loc} />

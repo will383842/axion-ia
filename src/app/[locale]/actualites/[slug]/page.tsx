@@ -28,13 +28,14 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
+import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
-import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
+import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { loadPeopleAlsoAsk, loadAdjacentArticlesByType } from "@/server/content-gen/blog/loader";
@@ -271,6 +272,7 @@ export default async function NewsArticlePage({ params }: Props) {
   // VIS-05 — co-émet le nœud Person Manon pour résoudre l'author @id du
   // NewsArticle (sinon @id orphelin → warning Rich Results + perte E-E-A-T).
   const personJsonLd = await getManonPersonJsonLd();
+  const manonByline = await getManonByline();
 
   // VIS-10 — articles connexes (anti dead-end de maillage : la page news n'en
   // avait aucun). Tier-1 only (anti-doorway).
@@ -409,79 +411,102 @@ export default async function NewsArticlePage({ params }: Props) {
         </Container>
       ) : null}
 
-      {tldrText ? (
-        <Section>
-          <Container className="max-w-3xl">
-            <AnswerCard
-              locale="fr"
-              {...(sourceName ? { sourceLabel: sourceName } : {})}
-              {...(sourceUrl ? { sourceUrl } : {})}
-            >
-              {tldrText}
-            </AnswerCard>
-          </Container>
-        </Section>
-      ) : null}
+      {/* Layout 2 colonnes (parité blog 2026-06-25) : rail SOMMAIRE sticky à
+          GAUCHE + colonne de lecture à droite. Mobile-first : sous lg une seule
+          colonne (le <details> Sommaire s'empile en haut). */}
+      <Container
+        className={
+          tocItems.length >= 2 ? "lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12" : ""
+        }
+      >
+        <div className="lg:col-start-1 lg:row-start-1">
+          {tocItems.length >= 2 ? (
+            <ArticleTOC items={tocItems} pageUrl={pageUrl} locale="fr" />
+          ) : null}
+        </div>
 
-      {/* Chantier templates 2026-06-21 — « Point clé » (si renseigné). */}
-      <ArticleKeyTakeaway text={keyTakeaway} locale="fr" />
+        <div className="min-w-0 lg:col-start-2 lg:row-start-1">
+          {tldrText ? (
+            <Section>
+              <Container className="max-w-3xl">
+                <AnswerCard
+                  locale="fr"
+                  {...(sourceName ? { sourceLabel: sourceName } : {})}
+                  {...(sourceUrl ? { sourceUrl } : {})}
+                >
+                  {tldrText}
+                </AnswerCard>
+              </Container>
+            </Section>
+          ) : null}
 
-      {/* Refonte templates 2026-06-22 — sommaire + ancres (gap audit comblé). */}
-      {tocItems.length >= 2 ? (
-        <Container className="max-w-3xl">
-          <ArticleTOC items={tocItems} pageUrl={pageUrl} locale="fr" />
-        </Container>
-      ) : null}
+          {/* « Point clé » (si renseigné). */}
+          <ArticleKeyTakeaway text={keyTakeaway} locale="fr" />
 
-      {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
-          cible du skip-link sont portés par <main id="main"> du layout :
-          NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
-      <article>
-        <Section>
-          <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
-            {bodyHtmlFallback ? (
-              <div
-                className="prose prose-axionia max-w-none"
-                dangerouslySetInnerHTML={{ __html: bodyHtmlFallback }}
+          {/* A11y — <article> sémantique (contenu éditorial). */}
+          <article>
+            <Section>
+              <Container className="text-fg max-w-[52rem] space-y-6 text-lg leading-relaxed">
+                {bodyHtmlFallback ? (
+                  <div
+                    className="prose prose-axionia max-w-none"
+                    dangerouslySetInnerHTML={{ __html: bodyHtmlFallback }}
+                  />
+                ) : (
+                  paragraphs.map((p, idx) => <p key={`p-${idx}`}>{p}</p>)
+                )}
+              </Container>
+            </Section>
+          </article>
+
+          {/* Carte auteur E-E-A-T EN BAS (parité blog). */}
+          <Section>
+            <Container className="max-w-[52rem]">
+              <AuthorByline
+                authorName={article.author?.name ?? "Manon"}
+                authorSlug={article.author?.slug ?? "manon"}
+                {...(manonByline
+                  ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+                  : {})}
+                publishedAt={article.publishedAt ?? null}
+                lastReviewedAt={article.updatedAt ?? null}
+                emitJsonLd={false}
+                locale="fr"
               />
-            ) : (
-              paragraphs.map((p, idx) => <p key={`p-${idx}`}>{p}</p>)
-            )}
-          </Container>
-        </Section>
-      </article>
+            </Container>
+          </Section>
 
-      {/* Refonte templates 2026-06-22 — barre de partage + copier le lien. */}
-      <ArticleShareBar url={pageUrl} title={t.title} locale="fr" />
+          {/* Barre de partage + copier le lien. */}
+          <ArticleShareBar url={pageUrl} title={t.title} locale="fr" />
 
-      {/* Chantier templates 2026-06-21 — citation d'expert nommé (si renseignée). */}
-      <ArticleExpertQuote quote={expertQuote} locale="fr" />
+          {/* Citation d'expert nommé (si renseignée). */}
+          <ArticleExpertQuote quote={expertQuote} locale="fr" />
 
-      {/* Chantier templates 2026-06-21 — FAQ + Sources (briques partagées).
-          citations (déjà chargées) mappées vers {name, url}. */}
-      <ArticleFaq items={faqItems} locale="fr" dateModified={updatedIso} />
-      <ArticleSources
-        items={citations.map((c) => ({ name: c.title, url: c.url }))}
-        locale="fr"
-        lastVerified={updatedIso}
-      />
+          {/* FAQ + Sources (briques partagées). */}
+          <ArticleFaq items={faqItems} locale="fr" dateModified={updatedIso} />
+          <ArticleSources
+            items={citations.map((c) => ({ name: c.title, url: c.url }))}
+            locale="fr"
+            lastVerified={updatedIso}
+          />
 
-      {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur).
-          Cadence de revue par type (audit perfection 2026-06-22) — actualités = 30 j. */}
-      <ArticleTransparencyBlock
-        lastVerified={article.updatedAt ?? article.publishedAt}
-        updateCycleDays={30}
-        locale="fr"
-      />
+          {/* Transparence E-E-A-T (fraîcheur) — actualités = 30 j. */}
+          <ArticleTransparencyBlock
+            lastVerified={article.updatedAt ?? article.publishedAt}
+            updateCycleDays={30}
+            locale="fr"
+          />
 
-      <Section>
-        <Container className="max-w-3xl">
-          <AiContentDisclaimer locale="fr" />
-        </Container>
-      </Section>
+          <Section>
+            <Container className="max-w-3xl">
+              <AiContentDisclaimer locale="fr" />
+            </Container>
+          </Section>
 
-      {/* Refonte 2026-06-22 — People Also Ask (parité /blog). */}
-      <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />
+          {/* People Also Ask (parité /blog). */}
+          <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />
+        </div>
+      </Container>
 
       <SuggestedContent
         variant="articles"
