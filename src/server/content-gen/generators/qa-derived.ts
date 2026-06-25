@@ -326,12 +326,16 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       faqCount: safeRelatedFaq.length,
     });
 
-    // Politique Q/R : tier_2 par défaut (AEO pages = modération avant promotion)
+    // Politique Q/R (2026-06-25, décision Will) — alignée sur faq-standalone pour
+    // MAXIMISER l'indexation sans être trop strict : auto-indexation (tier_1) dès
+    // que la page passe les garde-fous réels — pas soft-404, doctrine OK, et
+    // qualityScore ≥ 55 (l'anti-thin ≥ 300 mots est déjà imposé par la quality
+    // loop ci-dessus). Les pages qui échouent restent en tier_2 (noindex/follow).
     const indexationTier: GeneratorOutput["indexationTier"] = soft404.isSoft404
       ? "tier_3_noindex_nofollow"
       : doctrine.passed && qualityScore >= QUALITY_THRESHOLD
-        ? "tier_2_noindex_follow"
-        : "tier_3_noindex_nofollow";
+        ? "tier_1_indexable"
+        : "tier_2_noindex_follow";
 
     const expertQuote = buildExpertQuote(expert, parsed.expertTake);
 

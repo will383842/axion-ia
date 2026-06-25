@@ -69,27 +69,27 @@ const CATALOG: Catalog = {
         {
           question: "À qui s'adressent les formations IA Axion-IA ?",
           answer:
-            "Aux dirigeants, équipes et indépendants qui veulent passer de la théorie à un usage concret de l'IA dans leur métier, sans prérequis technique.",
+            "Les formations IA Axion-IA s'adressent aux dirigeants, équipes et indépendants de TPE et PME, sans aucun prérequis technique. L'objectif est de passer de la théorie à un usage concret de l'IA dans votre métier, en partant directement de vos cas d'usage réels.",
         },
         {
           question: "Les formations IA sont-elles finançables ?",
           answer:
-            "Oui : Axion-IA est un organisme de formation et les parcours peuvent être financés (OPCO, plan de développement des compétences) selon votre situation.",
+            "Oui, les formations IA Axion-IA sont finançables car Axion-IA est un organisme de formation déclaré. Selon votre situation, le parcours peut être pris en charge par votre OPCO ou via le plan de développement des compétences de l'entreprise.",
         },
         {
           question: "Combien de temps pour être autonome sur l'IA ?",
           answer:
-            "La plupart des participants appliquent les premiers cas d'usage dès la première session ; l'autonomie sur un workflow complet se construit en quelques semaines de pratique.",
+            "La plupart des participants appliquent leurs premiers cas d'usage dès la première session de formation. L'autonomie sur un workflow complet se construit ensuite sur quelques semaines de pratique régulière, accompagnée d'un suivi pour ancrer durablement les bons réflexes.",
         },
         {
           question: "Les formations IA sont-elles en présentiel ou à distance ?",
           answer:
-            "Les deux : présentiel, distanciel ou format hybride selon vos contraintes ; le contenu reste centré sur vos cas d'usage métier.",
+            "Les formations IA Axion-IA se déroulent en présentiel, à distance ou en format hybride, selon vos contraintes d'organisation. Quel que soit le format choisi, le contenu reste centré sur vos cas d'usage métier réels plutôt que sur de la théorie générique.",
         },
         {
           question: "Quels outils IA apprend-on concrètement ?",
           answer:
-            "Les outils réellement utiles à votre activité (ChatGPT, Claude, automatisations…), choisis selon vos besoins plutôt qu'un catalogue générique.",
+            "Vous apprenez les outils réellement utiles à votre activité, comme ChatGPT, Claude ou des automatisations adaptées. Ils sont sélectionnés selon vos besoins métier plutôt que présentés comme un catalogue générique, pour un transfert directement applicable à votre poste.",
         },
       ],
     },
@@ -111,27 +111,27 @@ const CATALOG: Catalog = {
         {
           question: "Who are Axion-IA's AI trainings for?",
           answer:
-            "For leaders, teams and freelancers who want to move from theory to concrete AI use in their work, with no technical prerequisite.",
+            "Axion-IA's AI trainings are for leaders, teams and freelancers in small and mid-sized companies, with no technical prerequisite. The goal is to move from theory to concrete AI use in your work, starting directly from your own real-world use cases.",
         },
         {
           question: "Can the AI trainings be funded?",
           answer:
-            "Yes: Axion-IA is a registered training provider and programs can be funded depending on your situation.",
+            "Yes, the AI trainings can be funded because Axion-IA is a registered training provider. Depending on your situation, the program may be covered through your training fund or the company's skills development plan, easing the financial side of upskilling.",
         },
         {
           question: "How long until I'm autonomous with AI?",
           answer:
-            "Most participants apply their first use cases in the very first session; full-workflow autonomy builds over a few weeks of practice.",
+            "Most participants apply their first use cases in the very first training session. Full-workflow autonomy then builds over a few weeks of regular practice, supported by follow-up so the right reflexes become lasting habits in your daily work.",
         },
         {
           question: "Are the trainings in person or remote?",
           answer:
-            "Both: in person, remote or hybrid depending on your constraints; the content stays focused on your business use cases.",
+            "Axion-IA's AI trainings run in person, remotely or in a hybrid format, depending on your organizational constraints. Whichever format you choose, the content stays focused on your real business use cases rather than generic theory, so it applies directly to your work.",
         },
         {
           question: "Which AI tools do we actually learn?",
           answer:
-            "The tools genuinely useful to your work (ChatGPT, Claude, automations…), chosen for your needs rather than a generic catalog.",
+            "You learn the tools genuinely useful to your work, such as ChatGPT, Claude or tailored automations. They are selected for your business needs rather than presented as a generic catalog, so the skills transfer directly to your role.",
         },
       ],
     },
@@ -156,27 +156,27 @@ const CATALOG: Catalog = {
         {
           question: "Comment se déroule un coaching IA individuel ?",
           answer:
-            "En séances individuelles centrées sur vos cas réels : on diagnostique vos besoins, on choisit les bons outils IA et on les met en place sur votre poste, avec un suivi.",
+            "Un coaching IA individuel se déroule en séances personnalisées centrées sur vos cas réels. On diagnostique d'abord vos besoins, puis on sélectionne les bons outils IA et on les met en place directement sur votre poste, avec un suivi pour ancrer l'usage.",
         },
         {
           question: "Le coaching 1-to-1 est-il finançable (AFEST) ?",
           answer:
-            "Oui : le coaching peut être structuré en AFEST (action de formation en situation de travail) et financé via votre OPCO selon votre éligibilité.",
+            "Oui, le coaching 1-to-1 peut être finançable lorsqu'il est structuré en AFEST, l'action de formation en situation de travail. Dans ce cadre, il peut être pris en charge par votre OPCO selon votre éligibilité, comme un véritable parcours de formation.",
         },
         {
           question: "Faut-il des connaissances techniques ?",
           answer:
-            "Non. L'accompagnement part de votre métier et de vos outils actuels ; aucune compétence technique préalable n'est requise.",
+            "Non, aucune connaissance technique préalable n'est requise pour suivre un coaching IA individuel. L'accompagnement part de votre métier et des outils que vous utilisez déjà au quotidien, puis avance à votre rythme vers des usages IA concrets et utiles.",
         },
         {
           question: "Combien de séances de coaching faut-il ?",
           answer:
-            "En général quelques séances ciblées suffisent pour ancrer un usage concret ; le rythme s'adapte à votre objectif et à votre disponibilité.",
+            "En général, quelques séances ciblées suffisent pour ancrer un usage concret de l'IA sur votre poste. Le nombre exact et le rythme s'adaptent à votre objectif et à votre disponibilité, l'idée étant d'aller à l'essentiel plutôt que de multiplier les rendez-vous.",
         },
         {
           question: "Le coaching 1-to-1 se fait-il à distance ?",
           answer:
-            "Oui, en visio ou en présentiel : l'essentiel est de travailler directement sur vos outils et vos cas réels.",
+            "Oui, le coaching 1-to-1 peut se faire à distance en visio comme en présentiel, selon ce qui vous convient le mieux. L'essentiel est de travailler directement sur vos propres outils et vos cas réels, afin que chaque séance produise un résultat immédiatement applicable.",
         },
       ],
     },
@@ -198,27 +198,27 @@ const CATALOG: Catalog = {
         {
           question: "How does individual AI coaching work?",
           answer:
-            "Through one-on-one sessions focused on your real cases: we diagnose your needs, pick the right AI tools and set them up in your role, with follow-up.",
+            "Individual AI coaching works through one-on-one sessions focused on your real cases. We first diagnose your needs, then pick the right AI tools and set them up directly in your role, with follow-up to make sure the new usage actually sticks.",
         },
         {
           question: "Can 1-to-1 coaching be funded?",
           answer:
-            "Yes: coaching can be structured as on-the-job training and funded through your provider depending on eligibility.",
+            "Yes, 1-to-1 coaching can be funded when it is structured as on-the-job training. In that setup it may be covered through your training provider depending on your eligibility, just like a formal upskilling program rather than a one-off service.",
         },
         {
           question: "Do I need technical skills?",
           answer:
-            "No. Coaching starts from your job and current tools; no prior technical skill is required.",
+            "No, no prior technical skill is required to follow individual AI coaching. The coaching starts from your job and the tools you already use every day, then progresses at your own pace toward concrete, genuinely useful AI usage.",
         },
         {
           question: "How many coaching sessions are needed?",
           answer:
-            "Usually a few targeted sessions are enough to embed concrete usage; the pace adapts to your goal and availability.",
+            "Usually a few targeted sessions are enough to embed concrete AI usage in your role. The exact number and pace adapt to your goal and availability, with the aim of getting to the essentials rather than multiplying meetings.",
         },
         {
           question: "Is 1-to-1 coaching available remotely?",
           answer:
-            "Yes, by video or in person: what matters is working directly on your tools and real cases.",
+            "Yes, 1-to-1 coaching is available remotely by video as well as in person, whichever suits you best. What matters is working directly on your own tools and real cases, so each session produces a result you can apply right away.",
         },
       ],
     },
@@ -243,27 +243,27 @@ const CATALOG: Catalog = {
         {
           question: "Qu'est-ce qu'un audit IA Axion-IA ?",
           answer:
-            "Un état des lieux de vos processus, données et outils pour identifier les cas d'usage IA à plus fort ROI, avec une feuille de route priorisée.",
+            "Un audit IA Axion-IA est un état des lieux de vos processus, données et outils visant à identifier les cas d'usage IA à plus fort ROI. Il aboutit à une feuille de route priorisée, qui distingue les quick-wins immédiats des chantiers de fond à planifier.",
         },
         {
           question: "Combien de temps dure un audit IA ?",
           answer:
-            "Selon le périmètre, un audit se mène en quelques jours à quelques semaines, et aboutit à des quick-wins activables immédiatement.",
+            "Selon le périmètre étudié, un audit IA se mène en quelques jours à quelques semaines. Il reste volontairement court pour aboutir rapidement à des quick-wins activables, tout en posant une feuille de route claire pour les chantiers suivants.",
         },
         {
           question: "Que livre concrètement l'audit ?",
           answer:
-            "Une cartographie des opportunités, une priorisation par ROI/effort, les risques (RGPD, IA Act) et un plan d'action chiffré.",
+            "L'audit livre une cartographie des opportunités IA et une priorisation par ROI et effort. Il y ajoute une analyse des risques de conformité, notamment RGPD et IA Act, ainsi qu'un plan d'action chiffré que vous pouvez suivre étape par étape.",
         },
         {
           question: "À qui s'adresse un audit IA ?",
           answer:
-            "Aux TPE et PME qui veulent savoir où l'IA apporte un ROI réel avant d'investir, sans se disperser sur des outils inutiles.",
+            "Un audit IA s'adresse aux TPE et PME qui veulent savoir où l'IA apporte un ROI réel avant d'investir. Il aide à concentrer le budget sur les cas d'usage à fort impact plutôt que de se disperser sur des outils à la mode et peu utiles.",
         },
         {
           question: "Combien coûte un audit IA ?",
           answer:
-            "Le tarif dépend du périmètre ; un appel de cadrage gratuit permet de définir le bon format et d'obtenir un devis clair.",
+            "Le coût d'un audit IA dépend du périmètre à étudier et de vos objectifs. Un appel de cadrage gratuit permet de définir le bon format puis d'obtenir un devis clair, sans engagement, adapté à la taille et à la maturité de votre organisation.",
         },
       ],
     },
@@ -285,27 +285,27 @@ const CATALOG: Catalog = {
         {
           question: "What is an Axion-IA AI audit?",
           answer:
-            "A review of your processes, data and tools to identify the highest-ROI AI use cases, with a prioritized roadmap.",
+            "An Axion-IA AI audit is a review of your processes, data and tools to identify the highest-ROI AI use cases. It results in a prioritized roadmap that separates immediate quick wins from the deeper projects you should plan for later.",
         },
         {
           question: "How long does an AI audit take?",
           answer:
-            "Depending on scope, an audit runs from a few days to a few weeks and surfaces quick wins you can act on immediately.",
+            "Depending on the scope studied, an AI audit runs from a few days to a few weeks. It is deliberately kept short to surface quick wins you can act on immediately, while still laying out a clear roadmap for the next projects.",
         },
         {
           question: "What does the audit deliver?",
           answer:
-            "An opportunity map, ROI/effort prioritization, risks (GDPR, AI Act) and a costed action plan.",
+            "The audit delivers an opportunity map and a prioritization by ROI and effort. It also includes a compliance risk analysis, notably GDPR and the AI Act, plus a costed action plan you can follow step by step.",
         },
         {
           question: "Who is an AI audit for?",
           answer:
-            "For small and mid-sized companies that want to know where AI delivers real ROI before investing, without spreading thin on useless tools.",
+            "An AI audit is for small and mid-sized companies that want to know where AI delivers real ROI before investing. It helps focus the budget on high-impact use cases instead of spreading thin on trendy, low-value tools.",
         },
         {
           question: "How much does an AI audit cost?",
           answer:
-            "Pricing depends on scope; a free scoping call defines the right format and gives you a clear quote.",
+            "The cost of an AI audit depends on the scope to be studied and your objectives. A free scoping call defines the right format and then gives you a clear, no-commitment quote, sized to the maturity and needs of your organization.",
         },
       ],
     },
@@ -330,27 +330,27 @@ const CATALOG: Catalog = {
         {
           question: "Qu'est-ce qu'une implémentation IA réussie ?",
           answer:
-            "Une automatisation intégrée à vos outils existants, fiable sur la durée, adoptée par les équipes et dont les gains sont mesurés.",
+            "Une implémentation IA réussie est une automatisation intégrée à vos outils existants, fiable sur la durée et réellement adoptée par les équipes. Ses gains sont mesurés concrètement, ce qui permet de prouver l'impact et de décider sereinement des étapes suivantes.",
         },
         {
           question: "Mes outils actuels sont-ils compatibles ?",
           answer:
-            "Le plus souvent oui : on s'intègre à votre stack (CRM, ERP, suite bureautique…) plutôt que de tout remplacer.",
+            "Le plus souvent oui, vos outils actuels sont compatibles avec une implémentation IA. On s'intègre à votre stack existante, comme votre CRM, votre ERP ou votre suite bureautique, plutôt que de tout remplacer, ce qui limite les coûts et la conduite du changement.",
         },
         {
           question: "Comment garantir l'adoption par l'équipe ?",
           answer:
-            "Par un cadrage des cas d'usage, une mise en place progressive et un accompagnement au changement avec mesure des gains.",
+            "L'adoption par l'équipe se garantit par un cadrage précis des cas d'usage et une mise en place progressive. On y ajoute un accompagnement au changement et une mesure des gains, pour que chacun voie l'intérêt concret de l'outil dans son travail quotidien.",
         },
         {
           question: "Combien de temps prend une implémentation IA ?",
           answer:
-            "De quelques jours à quelques semaines selon le périmètre ; on privilégie des quick-wins livrés tôt, puis l'industrialisation.",
+            "Une implémentation IA prend de quelques jours à quelques semaines selon le périmètre visé. On privilégie des quick-wins livrés tôt pour créer de la valeur rapidement, avant d'industrialiser progressivement les workflows une fois leur intérêt prouvé sur le terrain.",
         },
         {
           question: "Faut-il remplacer mes outils existants ?",
           answer:
-            "Non : on s'intègre d'abord à votre stack actuelle ; un outil n'est remplacé que si le gain le justifie clairement.",
+            "Non, il n'est pas nécessaire de remplacer vos outils existants pour déployer l'IA. On s'intègre d'abord à votre stack actuelle, et un outil n'est remplacé que si le gain le justifie clairement, jamais par principe ni par effet de mode.",
         },
       ],
     },
@@ -372,27 +372,27 @@ const CATALOG: Catalog = {
         {
           question: "What is a successful AI implementation?",
           answer:
-            "An automation integrated into your existing tools, reliable over time, adopted by teams and with measured gains.",
+            "A successful AI implementation is an automation integrated into your existing tools, reliable over time and genuinely adopted by teams. Its gains are measured concretely, which proves the impact and makes it easy to decide on the next steps with confidence.",
         },
         {
           question: "Are my current tools compatible?",
           answer:
-            "Usually yes: we integrate with your stack (CRM, ERP, office suite…) rather than replacing everything.",
+            "Usually yes, your current tools are compatible with an AI implementation. We integrate with your existing stack, such as your CRM, ERP or office suite, rather than replacing everything, which keeps costs and change management to a minimum.",
         },
         {
           question: "How do you ensure team adoption?",
           answer:
-            "By scoping use cases, rolling out gradually and supporting change management with measured gains.",
+            "Team adoption is ensured by carefully scoping the use cases and rolling them out gradually. We add change-management support and measured gains, so everyone can see the concrete value of the tool in their day-to-day work.",
         },
         {
           question: "How long does an AI implementation take?",
           answer:
-            "From a few days to a few weeks depending on scope; we favor quick wins delivered early, then industrialization.",
+            "An AI implementation takes from a few days to a few weeks depending on the targeted scope. We favor quick wins delivered early to create value fast, then gradually industrialize the workflows once their value has been proven in the field.",
         },
         {
           question: "Do I have to replace my existing tools?",
           answer:
-            "No: we first integrate with your current stack; a tool is replaced only when the gain clearly justifies it.",
+            "No, you do not have to replace your existing tools to deploy AI. We first integrate with your current stack, and a tool is replaced only when the gain clearly justifies it, never on principle or to follow a trend.",
         },
       ],
     },
@@ -417,27 +417,27 @@ const CATALOG: Catalog = {
         {
           question: "Qu'est-ce qu'un site web « augmenté par l'IA » ?",
           answer:
-            "Un site pensé pour être trouvé (SEO) ET cité par les IA (AEO/GEO), rapide (Web Vitals), avec du contenu produit à l'échelle et optimisé pour la conversion.",
+            "Un site web augmenté par l'IA est pensé pour être trouvé par Google (SEO) et cité par les IA (AEO/GEO). Il est rapide au sens des Web Vitals, alimenté par du contenu produit à l'échelle et optimisé pour transformer ses visiteurs en leads.",
         },
         {
           question: "Quelle différence entre SEO et AEO/GEO ?",
           answer:
-            "Le SEO vise le classement dans Google ; l'AEO/GEO vise à être cité dans les réponses des IA (AI Overviews, ChatGPT, Claude) — les deux sont complémentaires.",
+            "Le SEO vise le classement de votre site dans les résultats Google, tandis que l'AEO/GEO vise à le faire citer dans les réponses des IA comme AI Overviews, ChatGPT ou Claude. Les deux approches sont complémentaires et se renforcent mutuellement.",
         },
         {
           question: "Faut-il refaire tout mon site ?",
           answer:
-            "Pas nécessairement : on augmente l'existant (structure, contenu, données structurées, performance) plutôt que de repartir de zéro quand c'est possible.",
+            "Non, il n'est pas nécessaire de refaire tout votre site dans la plupart des cas. Quand c'est possible, on augmente l'existant en travaillant la structure, le contenu, les données structurées et la performance, plutôt que de repartir d'une page blanche.",
         },
         {
           question: "Combien de temps pour voir des résultats SEO/AEO ?",
           answer:
-            "Les gains techniques (vitesse, données structurées) sont immédiats ; la visibilité SEO/AEO se construit sur quelques semaines à quelques mois selon la concurrence.",
+            "Les gains techniques comme la vitesse et les données structurées sont immédiats après la mise en place. La visibilité SEO/AEO, elle, se construit sur quelques semaines à quelques mois selon la concurrence de votre marché et la fréquence de publication.",
         },
         {
           question: "L'IA peut-elle produire le contenu à ma place ?",
           answer:
-            "Oui, à l'échelle et avec relecture humaine : le contenu est généré puis vérifié pour rester exact, utile et aligné sur votre marque.",
+            "Oui, l'IA peut produire votre contenu à l'échelle, mais toujours avec une relecture humaine. Chaque texte est généré puis vérifié pour rester exact, réellement utile à vos lecteurs et aligné sur le ton et le positionnement de votre marque.",
         },
       ],
     },
@@ -459,27 +459,27 @@ const CATALOG: Catalog = {
         {
           question: "What is an “AI-augmented” website?",
           answer:
-            "A site built to be found (SEO) AND cited by AIs (AEO/GEO), fast (Web Vitals), with content produced at scale and optimized for conversion.",
+            "An AI-augmented website is built to be found by Google (SEO) and cited by AIs (AEO/GEO). It is fast in terms of Web Vitals, fed by content produced at scale, and optimized to turn its visitors into qualified leads.",
         },
         {
           question: "What's the difference between SEO and AEO/GEO?",
           answer:
-            "SEO targets Google rankings; AEO/GEO targets being cited in AI answers (AI Overviews, ChatGPT, Claude) — they are complementary.",
+            "SEO targets your site's ranking in Google's search results, while AEO/GEO targets getting it cited in AI answers such as AI Overviews, ChatGPT or Claude. The two approaches are complementary and reinforce each other.",
         },
         {
           question: "Do I need to rebuild my whole site?",
           answer:
-            "Not necessarily: we augment the existing site (structure, content, structured data, performance) rather than starting from scratch when possible.",
+            "No, in most cases you do not need to rebuild your whole site. When possible, we augment what already exists by improving the structure, content, structured data and performance, rather than starting again from a blank page.",
         },
         {
           question: "How long before SEO/AEO results show?",
           answer:
-            "Technical gains (speed, structured data) are immediate; SEO/AEO visibility builds over a few weeks to months depending on competition.",
+            "Technical gains such as speed and structured data are immediate once they are in place. SEO/AEO visibility, however, builds over a few weeks to a few months depending on your market's competition and how often you publish.",
         },
         {
           question: "Can AI produce the content for me?",
           answer:
-            "Yes, at scale and with human review: content is generated then checked to stay accurate, useful and on-brand.",
+            "Yes, AI can produce your content at scale, but always with human review. Each piece is generated and then checked to stay accurate, genuinely useful to your readers, and aligned with your brand's tone and positioning.",
         },
       ],
     },
@@ -505,12 +505,12 @@ const GENERIC: Record<Locale, CategoryHubContent> = {
       {
         question: "Que trouve-t-on dans cette catégorie ?",
         answer:
-          "Des articles concrets — méthodologie, cas d'usage et retours de terrain — pour passer à l'action sur l'IA dans votre métier.",
+          "Cette catégorie rassemble des articles concrets sur l'IA appliquée à votre métier. Vous y trouvez de la méthodologie, des cas d'usage et des retours de terrain, pensés pour passer rapidement de la lecture à l'action plutôt que de rester dans la théorie.",
       },
       {
         question: "Les contenus sont-ils mis à jour ?",
         answer:
-          "Oui : les articles sont revus régulièrement pour rester alignés sur les meilleures pratiques IA du moment.",
+          "Oui, les contenus de cette catégorie sont mis à jour régulièrement. Les articles existants sont revus pour rester exacts et alignés sur les meilleures pratiques IA du moment, car les outils et les usages évoluent vite dans ce domaine.",
       },
     ],
   },
@@ -532,12 +532,12 @@ const GENERIC: Record<Locale, CategoryHubContent> = {
       {
         question: "What's in this category?",
         answer:
-          "Concrete articles — methodology, use cases and field feedback — to take action on AI in your work.",
+          "This category gathers concrete articles about AI applied to your work. You will find methodology, use cases and field feedback, designed to help you move quickly from reading to action rather than staying in the theory.",
       },
       {
         question: "Is the content kept up to date?",
         answer:
-          "Yes: articles are reviewed regularly to stay aligned with current AI best practices.",
+          "Yes, the content in this category is kept up to date. Existing articles are reviewed regularly to stay accurate and aligned with current AI best practices, since tools and usage evolve quickly in this field.",
       },
     ],
   },
@@ -646,27 +646,27 @@ export function getBlogHubFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
       {
         question: "Comment le blog Axion-IA est-il organisé ?",
         answer:
-          "En 5 thématiques : Formations IA, Coaching 1-to-1, Audits IA, Implémentation & automatisation, et Sites web augmentés. Chaque thématique regroupe méthodologie et cas d'usage concrets.",
+          "Le blog Axion-IA est organisé en 5 thématiques : Formations IA, Coaching 1-to-1, Audits IA, Implémentation & automatisation, et Sites web augmentés. Chaque thématique regroupe de la méthodologie et des cas d'usage concrets issus de missions réelles.",
       },
       {
         question: "Par où commencer si je débute avec l'IA ?",
         answer:
-          "Par la thématique « Formations IA » pour les fondamentaux, puis « Audits IA » pour identifier les opportunités à plus fort ROI dans votre activité.",
+          "Si vous débutez avec l'IA, commencez par la thématique « Formations IA » pour acquérir les fondamentaux. Enchaînez ensuite avec « Audits IA » pour identifier, dans votre propre activité, les opportunités à plus fort retour sur investissement.",
       },
       {
         question: "Les articles sont-ils mis à jour ?",
         answer:
-          "Oui : les contenus sont revus régulièrement pour rester alignés sur les meilleures pratiques IA du moment.",
+          "Oui, les articles du blog Axion-IA sont mis à jour régulièrement. Les contenus existants sont revus pour rester exacts et alignés sur les meilleures pratiques IA du moment, l'IA évoluant trop vite pour se contenter de textes figés.",
       },
       {
         question: "À qui s'adresse le blog Axion-IA ?",
         answer:
-          "Aux dirigeants, équipes et indépendants de TPE et PME qui veulent des usages concrets de l'IA, sans jargon — chaque thématique part de cas réels testés en mission.",
+          "Le blog Axion-IA s'adresse aux dirigeants, équipes et indépendants de TPE et PME qui cherchent des usages concrets de l'IA, sans jargon. Chaque thématique part de cas réels testés en mission, pour offrir des repères directement applicables à votre activité.",
       },
       {
         question: "Le blog Axion-IA est-il gratuit ?",
         answer:
-          "Oui : tous les articles sont en accès libre, sans inscription. Vous passez à l'action via un audit, une formation ou un coaching quand vous le souhaitez.",
+          "Oui, le blog Axion-IA est entièrement gratuit : tous les articles sont en accès libre, sans inscription. Vous pouvez ensuite passer à l'action quand vous le souhaitez, via un audit, une formation ou un coaching individuel.",
       },
     ];
   }
@@ -674,26 +674,27 @@ export function getBlogHubFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
     {
       question: "How is the Axion-IA blog organized?",
       answer:
-        "Into 5 topics: AI training, 1-to-1 coaching, AI audits, Implementation & automation, and AI-augmented websites. Each topic gathers methodology and concrete use cases.",
+        "The Axion-IA blog is organized into 5 topics: AI training, 1-to-1 coaching, AI audits, Implementation & automation, and AI-augmented websites. Each topic gathers methodology and concrete use cases drawn from real client engagements.",
     },
     {
       question: "Where should I start if I'm new to AI?",
       answer:
-        "With the “AI training” topic for fundamentals, then “AI audits” to spot the highest-ROI opportunities in your business.",
+        "If you're new to AI, start with the “AI training” topic to build the fundamentals. Then move on to “AI audits” to spot, within your own business, the opportunities that offer the highest return on investment.",
     },
     {
       question: "Are the articles kept up to date?",
-      answer: "Yes: content is reviewed regularly to stay aligned with current AI best practices.",
+      answer:
+        "Yes, the Axion-IA blog articles are kept up to date. Existing content is reviewed regularly to stay accurate and aligned with current AI best practices, since AI evolves too fast to rely on fixed, never-updated articles.",
     },
     {
       question: "Who is the Axion-IA blog for?",
       answer:
-        "For leaders, teams and freelancers in small and mid-sized companies who want concrete AI usage, with no jargon — each topic starts from real, field-tested cases.",
+        "The Axion-IA blog is for leaders, teams and freelancers in small and mid-sized companies who want concrete AI usage, with no jargon. Each topic starts from real, field-tested cases, giving you guidance you can apply directly to your business.",
     },
     {
       question: "Is the Axion-IA blog free?",
       answer:
-        "Yes: every article is freely accessible, no signup. You move to action via an audit, a training or coaching whenever you want.",
+        "Yes, the Axion-IA blog is completely free: every article is freely accessible, with no signup required. You can then move to action whenever you want, through an audit, a training program or individual coaching.",
     },
   ];
 }
@@ -705,17 +706,17 @@ export function getBlogHomeFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
       {
         question: "Qui écrit les articles du blog Axion-IA ?",
         answer:
-          "Les contenus sont produits et relus par l'équipe Axion-IA (Manon, Williams) à partir de missions réelles : méthodologie testée en mission, pas de théorie générique.",
+          "Les articles du blog Axion-IA sont produits et relus par l'équipe Axion-IA, dont Manon et Williams, à partir de missions réelles. La méthodologie partagée est testée sur le terrain, plutôt que tirée d'une théorie générique éloignée du quotidien des entreprises.",
       },
       {
         question: "À quelle fréquence publiez-vous ?",
         answer:
-          "Régulièrement, avec une mise à jour des articles existants pour qu'ils restent exacts et alignés sur les meilleures pratiques IA du moment.",
+          "Nous publions régulièrement de nouveaux articles sur le blog Axion-IA. Nous mettons aussi à jour les contenus existants pour qu'ils restent exacts et alignés sur les meilleures pratiques IA du moment, l'objectif étant la justesse autant que la fraîcheur.",
       },
       {
         question: "Comment passer de la lecture à l'action ?",
         answer:
-          "Chaque thématique mène à un format concret : un audit IA pour cadrer les opportunités, une formation pour monter en compétences, ou un coaching individuel.",
+          "Pour passer de la lecture à l'action, chaque thématique du blog mène vers un format concret. Vous pouvez choisir un audit IA pour cadrer les opportunités, une formation pour monter en compétences, ou un coaching individuel pour avancer sur vos propres cas.",
       },
     ];
   }
@@ -723,17 +724,17 @@ export function getBlogHomeFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
     {
       question: "Who writes the Axion-IA blog?",
       answer:
-        "Content is produced and reviewed by the Axion-IA team (Manon, Williams) from real engagements: field-tested methodology, not generic theory.",
+        "The Axion-IA blog is written and reviewed by the Axion-IA team, including Manon and Williams, based on real client engagements. The methodology shared is field-tested rather than drawn from generic theory disconnected from everyday business reality.",
     },
     {
       question: "How often do you publish?",
       answer:
-        "Regularly, with updates to existing articles so they stay accurate and aligned with current AI best practices.",
+        "We publish new articles on the Axion-IA blog regularly. We also update existing content so it stays accurate and aligned with current AI best practices, because we care as much about correctness as about freshness.",
     },
     {
       question: "How do I move from reading to action?",
       answer:
-        "Each topic leads to a concrete format: an AI audit to frame opportunities, a training to upskill, or 1-to-1 coaching.",
+        "To move from reading to action, each blog topic leads to a concrete format. You can choose an AI audit to frame your opportunities, a training program to upskill your team, or 1-to-1 coaching to progress on your own real cases.",
     },
   ];
 }
