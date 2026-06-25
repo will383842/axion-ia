@@ -71,6 +71,35 @@ export async function getBlogCategoryCounts(): Promise<Record<string, number>> {
   return counts;
 }
 
+/**
+ * Date ISO (YYYY-MM-DD) du dernier article de blog mis à jour, toutes catégories
+ * confondues — signal de fraîcheur `dateModified` pour le hub `/blog/categorie`
+ * (audit SEO/AEO 2026-06-25). Stub-safe (ADR 0026) : DB vide / build stub → null
+ * (le hub n'émet alors pas de `dateModified`). Préfère `updatedAt` (dernière
+ * révision) ; ne considère que les articles publiés non-news.
+ */
+export async function getBlogLatestArticleDate(): Promise<string | null> {
+  const cats = await prisma.category
+    .findMany({
+      where: { slug: { in: [...BLOG_CATEGORY_SLUGS] } },
+      select: { id: true },
+    })
+    .catch(() => []);
+  if (cats.length === 0) return null;
+  const agg = await prisma.article
+    .aggregate({
+      where: {
+        categoryId: { in: cats.map((c) => c.id) },
+        status: "published",
+        isNews: false,
+      },
+      _max: { updatedAt: true },
+    })
+    .catch(() => null);
+  const max = agg?._max.updatedAt;
+  return max ? max.toISOString().slice(0, 10) : null;
+}
+
 /** Articles content-gen publiés (non-news) d'une catégorie, traduits dans `locale`. */
 export async function getDbArticlesByCategorySlug(
   slug: string,
