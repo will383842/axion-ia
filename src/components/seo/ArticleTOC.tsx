@@ -84,6 +84,43 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
   return (
     <>
       <JsonLd data={itemListJsonLd} />
+      {/* Mobile (< lg) : sommaire repliable natif (<details>, 0 JS) — mobile-first,
+          absent auparavant. Rendu seulement en mode sticky (le mode inline gère
+          déjà son propre affichage). */}
+      {sticky ? (
+        <details className="not-prose group border-border bg-paper mb-6 rounded-xl border p-4 lg:hidden">
+          <summary className="text-fg flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold">
+            <span className="inline-flex items-center gap-2">
+              <span aria-hidden="true" className="bg-terracotta h-3.5 w-1 rounded-full" />
+              {label}
+            </span>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="text-fg-muted h-4 w-4 shrink-0 transition-transform group-open:rotate-180"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </summary>
+          <ol className="border-border mt-3 space-y-1.5 border-t pt-3">
+            {items.map((item) => (
+              <li key={item.anchor} className={item.level === 3 ? "pl-3" : ""}>
+                <a
+                  href={`#${item.anchor}`}
+                  className="text-fg-muted hover:text-terracotta-deep text-sm leading-tight transition-colors"
+                >
+                  {item.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </details>
+      ) : null}
       <nav
         aria-label={label}
         className={
@@ -92,7 +129,10 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
             : "not-prose"
         }
       >
-        <p className="text-fg mb-2 text-sm font-semibold">{label}</p>
+        <p className="text-fg mb-2 inline-flex items-center gap-2 text-sm font-semibold">
+          <span aria-hidden="true" className="bg-terracotta h-3.5 w-1 rounded-full" />
+          {label}
+        </p>
         <ol className="space-y-1">
           {items.map((item) => (
             <li key={item.anchor} className={item.level === 3 ? "pl-3" : ""}>
