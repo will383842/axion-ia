@@ -32,6 +32,7 @@ import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo";
 import { buildKbPublicUrl } from "@/content/knowledge/routes";
+import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 
 export interface KnowledgeSitemapEntry {
   readonly url: string; // canonical FR
@@ -193,8 +194,12 @@ export async function buildKnowledgeSitemapChunk(
   const start = (chunkIdx - 1) * chunkSize;
   const slice = all.slice(start, start + chunkSize);
   const out: MetadataRoute.Sitemap = [];
+  const enDisabled = isEnLocaleDisabled();
   for (const e of slice) {
-    const langs = { fr: e.url, en: e.urlEn, "x-default": e.url };
+    // hreflang : on omet `en` quand EN désactivé (pointerait vers un 301→FR).
+    const langs = enDisabled
+      ? { fr: e.url, "x-default": e.url }
+      : { fr: e.url, en: e.urlEn, "x-default": e.url };
     // Priority/changeFreq : Google ignore depuis 2017 mais on garde cohérence
     // avec les autres builders. `deprecated` priority basse (signal interne).
     const priority = e.status === "deprecated" ? 0.3 : 0.6;
@@ -205,7 +210,10 @@ export async function buildKnowledgeSitemapChunk(
       priority,
       alternates: { languages: langs },
     });
-    if (e.urlEn !== e.url) {
+    // EN désactivé (2026-05-16) : ne pas émettre l'URL EN (elle 301→FR). Symétrique
+    // du Route Handler public `app/sitemap-knowledge.xml/route.ts` + `filterEnIfDisabled`.
+    // Réversible : EN_LOCALE_ENABLED=true ré-émet la paire FR+EN.
+    if (!enDisabled && e.urlEn !== e.url) {
       out.push({
         url: e.urlEn,
         lastModified: e.lastModified,

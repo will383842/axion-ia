@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
@@ -60,7 +60,7 @@ interface CategoryItem {
 
 export async function generateStaticParams() {
   const slugs = Array.from(new Set([...getAllBlogCategorySlugs(), ...DB_BLOG_CATEGORY_SLUGS]));
-  return slugs.flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
+  return slugs.flatMap((slug) => STATIC_LOCALES.map((locale) => ({ locale, slug })));
 }
 
 async function resolveLabel(slug: string, locale: Locale): Promise<string | null> {

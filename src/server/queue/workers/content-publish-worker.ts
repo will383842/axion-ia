@@ -275,9 +275,22 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     throw new Error(`ContentGenJob ${cgJob.id} has no outputJsonRaw`);
   }
 
-  const title = typeof output.title === "string" ? output.title : "Sans titre";
-  const metaTitle = typeof output.metaTitle === "string" ? output.metaTitle : title.slice(0, 70);
-  const metaDescription = typeof output.metaDescription === "string" ? output.metaDescription : "";
+  // Troncature défensive aux limites des colonnes DB (article_translations :
+  // title varchar(255), meta_title varchar(70), meta_description varchar(160)).
+  // 2026-06-25 : un LLM produisant un metaDescription > 160 car faisait crasher
+  // tout le publish (P2000 « value too long ») → article jamais publié. Dernière
+  // ligne de défense couvrant TOUS les content types, quel que soit le prompt.
+  const truncate = (s: string, max: number): string =>
+    s.length <= max ? s : s.slice(0, max).trimEnd();
+  const title = truncate(typeof output.title === "string" ? output.title : "Sans titre", 255);
+  const metaTitle = truncate(
+    typeof output.metaTitle === "string" ? output.metaTitle : title.slice(0, 70),
+    70,
+  );
+  const metaDescription = truncate(
+    typeof output.metaDescription === "string" ? output.metaDescription : "",
+    160,
+  );
   const bodyHtml = typeof output.bodyHtml === "string" ? output.bodyHtml : "";
   const bodyText = typeof output.bodyText === "string" ? output.bodyText : "";
 

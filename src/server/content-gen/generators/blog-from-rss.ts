@@ -35,8 +35,12 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
-import { computeSeoScore } from "../quality/seo-score";
-import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
+import { computeSeoScore, buildAuxBodyText } from "../quality/seo-score";
+import {
+  articlePageSeoDefaults,
+  qualityFromScores,
+  appendSourcesSection,
+} from "../quality/article-quality";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { checkRssSimilarity } from "../quality/plagiarism";
@@ -68,7 +72,7 @@ Règles absolues :
 - CTA discret en fin d'article uniquement : "Axion-IA accompagne les entreprises (TPE, PME, ETI, grands comptes) dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
-- Longueur : vise une longueur COMPARABLE à celle de la matière source fournie ci-dessous (≈ ±25 %), avec un minimum de 450 mots. Si la source est courte, reste concis ; si elle est longue/détaillée, développe d'autant. N'INVENTE PAS de faits pour rallonger : enrichis uniquement avec le contexte marché et l'angle Axion-IA (section finale). Article d'actualité = plus court qu'un guide.
+- Longueur : vise 550-750 mots (digest d'actualité commenté). Minimum STRICT 550 mots. Si la source est courte, développe l'analyse de marché et l'angle opérationnel Axion-IA (impacts concrets pour TPE/PME/ETI, ce que ça change pour un dirigeant). N'INVENTE JAMAIS de faits pour rallonger : enrichis uniquement avec le contexte marché vérifiable et l'angle Axion-IA (section finale). Reste plus court qu'un guide, mais suffisamment développé pour être autonome et utile.
 - 4 à 6 questions FAQ réelles optimisées Featured Snippet — réponse answer-first : 1ère phrase directe autonome (≤ 25 mots, citable seule), puis 1-2 phrases ; 40 à 55 mots au total.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
 - Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
@@ -76,6 +80,7 @@ Règles absolues :
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
+- INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags, keyTakeaway, expertTake }
@@ -268,6 +273,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         metaDescription: parsed.metaDescription ?? "",
         bodyHtml: parsed.bodyHtml ?? "",
         bodyText,
+        auxBodyText: buildAuxBodyText({
+          directAnswer: parsed.directAnswer,
+          faq: parsed.faq,
+          keyTakeaway: parsed.keyTakeaway,
+        }),
         directAnswer: parsed.directAnswer,
         faqCount: (parsed.faq ?? []).length,
         internalLinkCount,
@@ -352,6 +362,12 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
     }
 
     parsed = { ...parsed, bodyHtml: sanitizeContentGenHtml(parsed.bodyHtml ?? "") };
+    // Citations déterministes (2026-06-25) : sécurise l'intent informational
+    // (≥3 citations) même si le LLM n'intègre aucun lien d'autorité. Idempotent.
+    parsed = {
+      ...parsed,
+      bodyHtml: appendSourcesSection(parsed.bodyHtml, externalLinksCtx.links),
+    };
     // P1-12 — Injection liens internes contextuels post-LLM.
     if (input.primaryKeyword ?? topic) {
       parsed = {
@@ -378,6 +394,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       metaDescription: parsed.metaDescription ?? "",
       bodyHtml: parsed.bodyHtml,
       bodyText,
+      auxBodyText: buildAuxBodyText({
+        directAnswer: parsed.directAnswer,
+        faq: parsed.faq,
+        keyTakeaway: parsed.keyTakeaway,
+      }),
       directAnswer: parsed.directAnswer,
       faqCount: (parsed.faq ?? []).length,
       internalLinkCount: finalInternalLinkCount,

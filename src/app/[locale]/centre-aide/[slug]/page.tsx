@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { Compass, Clock, RefreshCw, Quote } from "lucide-react";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -50,7 +50,7 @@ export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const slugs = await listHelpArticleSlugs();
-  return slugs.flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
+  return slugs.flatMap((slug) => STATIC_LOCALES.map((locale) => ({ locale, slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

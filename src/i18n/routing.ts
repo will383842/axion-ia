@@ -351,3 +351,22 @@ export const routing = defineRouting({
 });
 
 export type Locale = (typeof routing.locales)[number];
+
+// Locales réellement PRÉ-RENDUES au build (SSG / generateStaticParams).
+//
+// EN désactivé (2026-05-16) → on ne pré-rend plus `/en/*` : le proxy 301 les
+// redirige au runtime (src/proxy.ts) et les sitemaps/hreflang les excluent déjà
+// (filterEnIfDisabled). Pré-rendre EN ne faisait que (a) doubler le SSG (~17 k
+// routes) et (b) laisser des fichiers HTML EN latents sur le CDN. On les retire
+// donc du build = défense en profondeur « zéro anglais indexé ».
+//
+// ⚠️ NE PAS confondre avec `routing.locales` : celui-ci DOIT rester ["fr","en"]
+// pour (1) la validation runtime `hasLocale`, (2) la table `pathnames`, (3) la
+// réactivation EN par flag. Seul le PRÉ-RENDU est restreint ici.
+//
+// Réversibilité : `EN_LOCALE_ENABLED=true` ré-inclut EN au PROCHAIN BUILD. Sans
+// rebuild, EN reste servi à la demande (dynamicParams=true) — la réactivation
+// fonctionne, simplement sans pré-rendu. Symétrique de `effectiveLocales`
+// (src/app/sitemap.ts).
+export const STATIC_LOCALES: readonly Locale[] =
+  process.env["EN_LOCALE_ENABLED"] === "true" ? routing.locales : (["fr"] as const);

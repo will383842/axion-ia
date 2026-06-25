@@ -26,6 +26,12 @@ export interface SeoScoreInput {
   readonly metaDescription: string;
   readonly bodyHtml: string;
   readonly bodyText: string;
+  /**
+   * Texte rendu EN PLUS du body : réponses FAQ + directAnswer + keyTakeaway.
+   * Compté par `scoreWordCount` car la page les rend (contenu indexable Google).
+   * Sans ce champ, seul `bodyText` est compté (rétrocompat).
+   */
+  readonly auxBodyText?: string;
   readonly directAnswer?: string;
   readonly faqCount?: number;
   readonly internalLinkCount?: number;
@@ -45,7 +51,7 @@ export interface SeoScoreInput {
   readonly primaryKeyword?: string;
   readonly searchIntent?: SearchIntent;
   /** Type de contenu pour ajuster seuils (article/guide). */
-  readonly contentKind?: "article" | "guide" | "landing" | "faq" | "comparison";
+  readonly contentKind?: "article" | "guide" | "landing" | "faq" | "comparison" | "news";
 }
 
 export interface SeoScoreResult {
@@ -140,13 +146,33 @@ function scoreInternalLinks(count: number | undefined): { got: number; reason?: 
 function scoreWordCount(
   bodyText: string,
   kind: SeoScoreInput["contentKind"],
+  auxBodyText?: string,
 ): { got: number; reason?: string } {
-  const words = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
+  // CORRECTIF MESURE 2026-06-25 : le scorer ne comptait que `bodyText` (le body
+  // HTML strippé), alors que la page REND aussi le directAnswer, les 8 réponses
+  // FAQ et le keyTakeaway — ~430 mots de contenu indexable que Google voit et
+  // que `bodyText` ignore. Un article au body 390 + 8 FAQ denses rend ~870 mots
+  // mais était noté 0/10 (« trop court ») sur 390 → seoScore plombé → quality
+  // sous le seuil 75 → needs_review à tort. On compte donc le contenu réellement
+  // rendu (body + aux). Rétrocompatible : sans `auxBodyText`, comportement inchangé.
+  const fullText = auxBodyText ? `${bodyText} ${auxBodyText}` : bodyText;
+  const words = fullText.split(/\s+/).filter((w) => w.length > 0).length;
   // Cible de longueur par type : un guide pilier est long, une FAQ géo est
   // volontairement plus concise (intro + Q/R). Sans le cas "faq", les FAQ
   // étaient notées sur la cible article (800) → 0 pt malgré une longueur
-  // appropriée à leur format.
-  const target = kind === "guide" ? 2000 : kind === "landing" ? 1500 : kind === "faq" ? 600 : 800;
+  // appropriée à leur format. Idem "news" (digest RSS d'actualité) : conçu
+  // court (≈550 mots, calé sur la matière source) — le noter sur 800 le
+  // pénalisait à tort (même classe de correctif que "faq" 2026-06-17).
+  const target =
+    kind === "guide"
+      ? 2000
+      : kind === "landing"
+        ? 1500
+        : kind === "faq"
+          ? 600
+          : kind === "news"
+            ? 550
+            : 800;
   if (words >= target) return { got: 10 };
   if (words >= target * 0.7) return { got: 5, reason: `${words} mots (cible ${target}+)` };
   return { got: 0, reason: `${words} mots — trop court (cible ${target}+)` };
@@ -225,6 +251,28 @@ function checkIntentAlignment(input: SeoScoreInput): boolean {
   }
 }
 
+/**
+ * Construit le `auxBodyText` (contenu rendu HORS body : directAnswer, réponses
+ * FAQ, keyTakeaway) à passer à `computeSeoScore` pour que `scoreWordCount`
+ * reflète la longueur réellement indexée. Helper partagé par tous les générateurs.
+ */
+export function buildAuxBodyText(parts: {
+  directAnswer?: string | null | undefined;
+  faq?: ReadonlyArray<{ q?: string | null; a?: string | null }> | null | undefined;
+  keyTakeaway?: string | null | undefined;
+}): string {
+  const segments: string[] = [];
+  if (parts.directAnswer) segments.push(parts.directAnswer);
+  if (parts.faq) {
+    for (const item of parts.faq) {
+      if (item?.q) segments.push(item.q);
+      if (item?.a) segments.push(item.a);
+    }
+  }
+  if (parts.keyTakeaway) segments.push(parts.keyTakeaway);
+  return segments.join(" ").replace(/\s+/g, " ").trim();
+}
+
 export function computeSeoScore(input: SeoScoreInput): SeoScoreResult {
   const checks = [
     { criterion: "Title 50-60 chars", max: 10, ...scoreTitle(input.title) },
@@ -239,7 +287,11 @@ export function computeSeoScore(input: SeoScoreInput): SeoScoreResult {
     { criterion: "Direct answer 40-80 mots", max: 8, ...scoreDirectAnswer(input.directAnswer) },
     { criterion: "FAQ 4+", max: 8, ...scoreFaq(input.faqCount) },
     { criterion: "Internal links 3+", max: 6, ...scoreInternalLinks(input.internalLinkCount) },
-    { criterion: "Word count", max: 10, ...scoreWordCount(input.bodyText, input.contentKind) },
+    {
+      criterion: "Word count",
+      max: 10,
+      ...scoreWordCount(input.bodyText, input.contentKind, input.auxBodyText),
+    },
     { criterion: "Images alt + caption", max: 6, ...scoreImages(input) },
     {
       criterion: "Citations intent-aware",

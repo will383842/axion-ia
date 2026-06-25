@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -25,7 +25,7 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return AUTOMATISATIONS.flatMap((cat) =>
-    routing.locales.map((locale) => ({
+    STATIC_LOCALES.map((locale) => ({
       locale,
       slug: (locale === "fr" ? cat.pathFr : cat.pathEn).split("/").pop()!,
     })),

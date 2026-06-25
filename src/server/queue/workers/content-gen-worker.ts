@@ -36,7 +36,11 @@ import {
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 // B.5 P1.5 — Rotation 747 keyword seeds.
-import { selectKeyword, validateKeywordInTitle } from "@/server/content-gen/keyword-selector";
+import {
+  selectKeywordRich,
+  resolveEffectiveIntent,
+  validateKeywordInTitle,
+} from "@/server/content-gen/keyword-selector";
 // B.6 P1.5 P0-4 — Assignment hero image depuis image-bank (read-only).
 import { selectHeroImage } from "@/server/content-gen/images/select-hero-image";
 // B.7 P1.5 P0-6 — Outline SimHash dedup (couche A.3 post-IA).
@@ -232,7 +236,12 @@ async function resolveTemplateById(
 }
 
 async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
-  const { contentGenJobId, contentType, targetSearchIntent, inputPayload } = job.data;
+  const { contentGenJobId, contentType, inputPayload } = job.data;
+  // Intent EFFECTIF du job — réassignable. Le garde-fou (plus bas, après la
+  // sélection du mot-clé) peut le remplacer par l'intent NATIF du mot-clé si la
+  // campagne n'a pas forcé d'intent (`inputPayload.allowKeywordIntent`). Toutes
+  // les étapes en aval (generator input + gates) lisent cette variable.
+  let targetSearchIntent = job.data.targetSearchIntent;
   // B4 (CONTENT-GEN-UX 2026) — template explicitement testé : payload BullMQ en
   // priorité, sinon `ContentGenJob.templateId` (persisté par enqueueDirectGen).
   const explicitTemplateId = job.data.templateId;
@@ -366,17 +375,34 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // P1-8 — Passer campaignId pour log structuré keyword_select_exhausted
       // et préparer l'isolation future des pools par campagne.
       // Note: spread conditionnel requis (exactOptionalPropertyTypes: true).
-      const selected = await selectKeyword({
+      const selected = await selectKeywordRich({
         vertical: campaignSector,
         contentType,
         ...(cityRef ? { city: cityRef } : {}),
         ...(dbJob.campaignId ? { campaignId: dbJob.campaignId } : {}),
       });
       if (selected) {
-        resolvedKeyword = selected;
-        await logStep(contentGenJobId, "keyword_select", `Keyword selected: ${selected}`, {
+        resolvedKeyword = selected.term;
+        // Garde-fou intent (2026-06-25) : si la campagne n'a PAS forcé d'intent
+        // (flag posé par l'orchestrateur) ET le mot-clé porte un intent natif
+        // valide, il prime → le contenu est généré pour l'intent RÉEL du mot-clé
+        // (commercial → tableau, informational → citations…) au lieu du défaut
+        // campagne. Sinon (campagne avec distribution d'intent) : aucun override.
+        const allowKeywordIntent = inputPayload["allowKeywordIntent"] === true;
+        const effectiveIntent = resolveEffectiveIntent(
+          targetSearchIntent,
+          selected.searchIntent,
+          allowKeywordIntent,
+          contentType,
+        );
+        const intentOverridden = effectiveIntent !== targetSearchIntent;
+        targetSearchIntent = effectiveIntent;
+        await logStep(contentGenJobId, "keyword_select", `Keyword selected: ${selected.term}`, {
           vertical: campaignSector,
           source: "keyword-selector",
+          ...(selected.clusterId ? { clusterId: selected.clusterId } : {}),
+          ...(selected.searchIntent ? { keywordIntent: selected.searchIntent } : {}),
+          ...(intentOverridden ? { intentOverriddenTo: effectiveIntent } : {}),
         });
       }
     }

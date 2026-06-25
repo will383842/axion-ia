@@ -135,6 +135,7 @@ export const openaiProvider: IProvider = {
     let tokensOutput = 0;
     let fullText = "";
     let contentFilterTriggered = false;
+    let truncatedByLength = false;
 
     const executeCall = async () => {
       const stream = await client.chat.completions.create({
@@ -154,6 +155,12 @@ export const openaiProvider: IProvider = {
         const finishReason = chunk.choices[0]?.finish_reason;
         if (finishReason === "content_filter") {
           contentFilterTriggered = true;
+        }
+        // Troncature LLM (audit 2026-06-25) : finish_reason="length" = sortie coupée
+        // (maxTokens atteint). On NE throw PAS (les gates word-count en aval gèrent),
+        // mais on rend la troncature OBSERVABLE au lieu de la persister en silence.
+        if (finishReason === "length") {
+          truncatedByLength = true;
         }
         const delta = chunk.choices[0]?.delta?.content;
         if (delta) {
@@ -190,6 +197,13 @@ export const openaiProvider: IProvider = {
     }
     if (!fullText) {
       throw new ProviderError("OpenAI returned empty content", "invalid_response", "openai", false);
+    }
+    if (truncatedByLength) {
+      console.warn(
+        `[openai] ⚠️ sortie TRONQUÉE (finish_reason="length", model=${model}, ` +
+          `maxTokens=${req.maxTokens ?? "default"}, ${tokensOutput} tokens) — ` +
+          `contenu potentiellement incomplet ; les gates word-count en aval s'appliquent.`,
+      );
     }
 
     const costUsd = computeCost(model, tokensInput, tokensOutput);

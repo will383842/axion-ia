@@ -126,7 +126,10 @@ export function buildRegenerationJobData(params: {
  * les anchors, ni le secteur — seulement search_intent + titre) :
  * - contentType = `blog_from_keywords` : fallback universel qui ne requiert QUE
  *   `primaryKeyword` (les autres types ont des dépendances : RSS source, etc.).
- * - primaryKeyword = « lead » du titre (partie avant « : » / « – » / « | »).
+ * - primaryKeyword = « lead » du titre (partie avant « : » / « – » / « | »),
+ *   CONDENSÉ (« Intelligence Artificielle » → « IA ») pour rester un mot-clé SEO
+ *   court et compatible avec les gates metaTitle/H1 (un mot-clé de 40+ car. ne
+ *   tient pas dans un metaTitle de 50-60 car. → boucle qualité bloquée).
  * - intent = celui de l'article (défaut informational) ; locale fr ; providers défaut.
  *
  * Les anchors/secteur d'origine sont perdus → acceptable : le but est de
@@ -140,8 +143,14 @@ export function deriveSourceJobFromArticle(article: {
 }): RegenSourceJob {
   const rawTitle = (article.title ?? "").trim();
   const lead = rawTitle.split(/\s[:–—|-]\s/)[0]?.trim() ?? rawTitle;
-  const primaryKeyword =
-    lead.length >= 3 ? lead : rawTitle || "intelligence artificielle entreprise";
+  // Condense « Intelligence Artificielle » → « IA » : mot-clé SEO court qui tient
+  // dans un metaTitle 50-60 car. (sinon les gates metaTitle/H1 échouent à chaque
+  // passe et la boucle qualité n'atteint jamais l'enforcement de longueur).
+  const condensed = lead
+    .replace(/intelligence artificielle/gi, "IA")
+    .replace(/\s+/g, " ")
+    .trim();
+  const primaryKeyword = condensed.length >= 3 ? condensed : rawTitle || "IA entreprise";
   return {
     contentType: "blog_from_keywords",
     targetSearchIntent: article.searchIntent ?? "informational",

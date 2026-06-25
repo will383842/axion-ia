@@ -3,7 +3,7 @@ import { Manrope, Inconsolata, Fraunces } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, STATIC_LOCALES } from "@/i18n/routing";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
@@ -92,9 +92,10 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
-// Pre-render every supported locale at build time.
+// Pre-render only the build-time locales (FR ; EN exclu tant que désactivé —
+// voir STATIC_LOCALES). Les pages enfant sans locale propre héritent de ce set.
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
+  return STATIC_LOCALES.map((locale) => ({ locale }));
 }
 
 // Viewport SSOT — audit perfection SEO 2026-05-12. Next 16 sépare

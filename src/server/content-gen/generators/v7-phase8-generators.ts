@@ -96,7 +96,8 @@ const ALTERNATIVE_TO_CONFIG = buildConfig(
   `## Focus ALTERNATIVE TO
 Liste 3-5 alternatives à un outil/service IA cité. Axion-IA en position 1
 (plus opérationnelle), 4-5 concurrents avec forces/limites neutres.
-FAQ × 6. CTA audit personnalisé.`,
+<table> récapitulatif comparatif OBLIGATOIRE (alternatives × critères — intent
+commercial, Featured Snippet 2026). FAQ × 6. CTA audit personnalisé.`,
   "/audit",
   "Faire un audit IA personnalisé",
 );
@@ -107,7 +108,9 @@ const TOP_X_IN_Y_CONFIG = buildConfig(
   `## Focus TOP X IN Y
 Liste numérotée 10 éléments (outils IA, agences IA, cas d'usage, etc.) dans
 le contexte Y (ville française ou secteur métier). Critères clairs en intro.
-Axion-IA en position raisonnable (pas systématique #1). FAQ × 6.`,
+<table> récapitulatif OBLIGATOIRE (les 10 éléments × critères — intent
+commercial, Featured Snippet 2026). Axion-IA en position raisonnable (pas
+systématique #1). FAQ × 6.`,
   "/audit",
   "Découvrir Axion-IA",
 );

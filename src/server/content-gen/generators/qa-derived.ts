@@ -21,8 +21,12 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
-import { computeSeoScore } from "../quality/seo-score";
-import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
+import { computeSeoScore, buildAuxBodyText } from "../quality/seo-score";
+import {
+  articlePageSeoDefaults,
+  qualityFromScores,
+  appendSourcesSection,
+} from "../quality/article-quality";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
@@ -47,21 +51,22 @@ const SYSTEM_PROMPT =
 Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles absolues :
 - La question principale est fournie par l'utilisateur — tu DOIS y répondre directement.
 - directAnswer : 50-80 mots, réponse concise et actionnable (cible Google Featured Snippet).
-- answerHtml : réponse étendue 250-400 mots, HTML valide, enrichie de contexte Axion-IA.
-  Structure recommandée : <p> intro + <ul>/<ol> liste points clés + <p> conclusion CTA.
+- answerHtml : réponse étendue 350-550 mots, HTML valide, enrichie de contexte Axion-IA.
+  Structure : <p> intro answer-first + 2-3 <h2> sections thématiques (chacune avec son <p data-aeo="answer">) + <ul>/<ol> points clés + <p> conclusion CTA. Développe réellement chaque section (pas de remplissage) : enjeux concrets, exemple opérationnel TPE/PME, ce que ça change pour un dirigeant.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
 - Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
-- relatedFaq : 3-5 questions similaires fréquentes avec réponses directes ≥ 1 phrase.
+- relatedFaq : 4-5 questions similaires fréquentes avec réponses directes de 40-60 mots chacune (2-3 phrases, citables hors contexte).
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
+- INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
 - Output JSON strict :
-  { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×3-5], tags, keyTakeaway, expertTake }`);
+  { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×4-5], tags, keyTakeaway, expertTake }`);
 
 /** Injecte le QAPage JSON-LD + structure Speakable dans le bodyHtml final. */
 function buildQABodyHtml(
@@ -288,7 +293,12 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       safeRelatedFaq,
       finalSlug,
     );
-    const bodyHtml = injectInternalLinks(rawBodyHtml, question);
+    // Citations déterministes (2026-06-25) : l'intent informational exige ≥3
+    // citations ; sans liens d'autorité dans le body → needs_review. Idempotent.
+    const bodyHtml = appendSourcesSection(
+      injectInternalLinks(rawBodyHtml, question),
+      externalLinksCtx.links,
+    );
 
     const bodyText = bodyHtml
       .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "") // exclure JSON-LD du bodyText
@@ -309,6 +319,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       metaDescription: parsed.metaDescription ?? "",
       bodyHtml,
       bodyText,
+      auxBodyText: buildAuxBodyText({
+        directAnswer: parsed.directAnswer,
+        faq: safeRelatedFaq,
+        keyTakeaway: parsed.keyTakeaway,
+      }),
       directAnswer: parsed.directAnswer,
       faqCount: safeRelatedFaq.length,
       internalLinkCount: finalInternalLinkCount,

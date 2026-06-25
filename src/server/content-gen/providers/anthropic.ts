@@ -224,11 +224,16 @@ export const anthropicProvider: IProvider = {
       throw err instanceof ProviderError ? err : mapAnthropicError(err);
     }
 
-    if (
-      stopReason === "stop_sequence" ||
-      stopReason === "max_tokens" ||
-      stopReason === "end_turn"
-    ) {
+    if (stopReason === "max_tokens") {
+      // Troncature LLM (audit 2026-06-25) : la sortie a atteint max_tokens = coupée.
+      // On NE throw PAS (les gates word-count en aval gèrent) mais on rend la
+      // troncature OBSERVABLE au lieu de la persister en silence (avant : « OK »).
+      console.warn(
+        `[anthropic] ⚠️ sortie TRONQUÉE (stop_reason="max_tokens", model=${model}, ` +
+          `maxTokens=${req.maxTokens ?? 4096}, ${tokensOutput} tokens) — ` +
+          `contenu potentiellement incomplet ; gates word-count en aval appliquées.`,
+      );
+    } else if (stopReason === "stop_sequence" || stopReason === "end_turn") {
       // OK
     } else if (stopReason === "tool_use" || stopReason === "pause_turn") {
       // OK pour V1 (tool_use pas utilisé V1)

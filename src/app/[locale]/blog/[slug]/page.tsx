@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, redirect, permanentRedirect } from "next/navigation";
 import Image from "next/image";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -69,7 +69,7 @@ export async function generateStaticParams() {
   // V1 : seulement les slugs FS connus. Les slugs DB sont rendus on-demand
   // (Next 16 ISR fallback="blocking" implicite quand dynamicParams=true).
   const slugs = getAllBlogSlugs();
-  return routing.locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+  return STATIC_LOCALES.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
