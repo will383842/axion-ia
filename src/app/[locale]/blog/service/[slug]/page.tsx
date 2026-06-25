@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight, FileText } from "lucide-react";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
@@ -35,7 +35,7 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return getAllBlogServiceTypeSlugs().flatMap((slug) =>
-    routing.locales.map((locale) => ({ locale, slug })),
+    STATIC_LOCALES.map((locale) => ({ locale, slug })),
   );
 }
 

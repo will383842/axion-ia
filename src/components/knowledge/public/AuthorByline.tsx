@@ -50,7 +50,7 @@ export function AuthorByline(props: AuthorBylineProps) {
   };
 
   return (
-    <aside className="border-border my-6 flex flex-wrap items-start gap-3 rounded border p-4">
+    <aside className="border-border bg-paper shadow-subtle my-6 flex flex-wrap items-start gap-4 rounded-2xl border p-5 md:p-6">
       {authorAvatarUrl ? (
         // Sprint Final P1-6 (audit 2026-05-22) — `<img>` conservé car
         // `authorAvatarUrl` est une URL remote arbitraire (DB) et
@@ -62,40 +62,62 @@ export function AuthorByline(props: AuthorBylineProps) {
         <img
           src={authorAvatarUrl}
           alt={isFr ? `Portrait de ${authorName}` : `Portrait of ${authorName}`}
-          width={56}
-          height={56}
+          width={64}
+          height={64}
           loading="lazy"
           decoding="async"
-          className="rounded-full"
+          className="ring-border h-16 w-16 shrink-0 rounded-full object-cover ring-1"
         />
       ) : null}
       <div className="min-w-0 flex-1">
-        <p className="text-fg text-sm font-semibold">{authorName}</p>
-        {authorBio ? <p className="text-fg-soft text-sm leading-snug">{authorBio}</p> : null}
-        <p className="text-fg-soft mt-2 text-xs">
+        <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
+          {isFr ? "Auteur" : "Author"}
+        </p>
+        <p
+          className="text-fg mt-1 text-lg leading-tight font-semibold"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          {authorName}
+        </p>
+        {authorBio ? (
+          <p className="text-fg-soft mt-1.5 text-sm leading-relaxed">{authorBio}</p>
+        ) : null}
+        <p className="text-fg-muted mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
           {publishedAt ? (
-            <>
+            <span>
               {isFr ? "Publié le " : "Published "}
-              <time dateTime={publishedAt.toISOString()}>
+              <time dateTime={publishedAt.toISOString()} className="tabular-nums">
                 {publishedAt.toISOString().slice(0, 10)}
               </time>
-            </>
+            </span>
           ) : null}
           {lastReviewedAt ? (
             <>
-              {publishedAt ? " · " : ""}
-              {isFr ? "Dernière revue " : "Last reviewed "}
-              <time dateTime={lastReviewedAt.toISOString()}>
-                {lastReviewedAt.toISOString().slice(0, 10)}
-              </time>
+              {publishedAt ? <span aria-hidden="true">·</span> : null}
+              <span>
+                {isFr ? "Dernière revue " : "Last reviewed "}
+                <time dateTime={lastReviewedAt.toISOString()} className="tabular-nums">
+                  {lastReviewedAt.toISOString().slice(0, 10)}
+                </time>
+              </span>
             </>
           ) : null}
           {factChecked ? (
-            <span className="bg-primary/10 text-primary ml-2 rounded px-1.5 py-0.5 text-xs font-medium">
+            <span className="bg-primary/10 text-primary inline-flex items-center rounded-full px-2 py-0.5 font-medium">
               ✓ {isFr ? "Vérifié" : "Fact-checked"}
             </span>
           ) : null}
         </p>
+        {authorLinkedinUrl ? (
+          <a
+            href={authorLinkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:text-terracotta-deep mt-2 inline-flex items-center gap-1 text-xs font-medium transition-colors"
+          >
+            LinkedIn <span aria-hidden="true">↗</span>
+          </a>
+        ) : null}
       </div>
       {emitJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </aside>

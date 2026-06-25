@@ -10,8 +10,12 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
-import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
-import { computeSeoScore } from "../quality/seo-score";
+import {
+  articlePageSeoDefaults,
+  qualityFromScores,
+  appendSourcesSection,
+} from "../quality/article-quality";
+import { computeSeoScore, buildAuxBodyText } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
@@ -44,8 +48,10 @@ Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles abs
 - Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
-- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
-- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
+- "metaTitle": "OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60."
+- "metaDescription": "OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète avec bénéfice clair + keyword naturel. NE JAMAIS sous 140 caractères : développe jusqu'à la fourchette. NE PAS dépasser 160."
+- "directAnswer": "OBLIGATOIREMENT 40 à 80 mots (ni moins, ni plus), réponse directe autonome citable seule par une IA. NE JAMAIS sous 40 mots."
+- INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×10-15], tags, keyTakeaway, expertTake }`);
@@ -237,6 +243,13 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
     }
 
     parsed = { ...parsed, bodyHtml: sanitizeContentGenHtml(parsed.bodyHtml ?? "") };
+    // Citations déterministes (2026-06-25) : sans liens d'autorité dans le body,
+    // l'intent informational échoue (« 0/3 citations ») → needs_review. On pose
+    // la section Sources comme pour blog-from-keywords. Idempotent.
+    parsed = {
+      ...parsed,
+      bodyHtml: appendSourcesSection(parsed.bodyHtml, externalLinksCtx.links),
+    };
     // P1-12 — Liens internes contextuels.
     if (input.primaryKeyword ?? topic) {
       parsed = {
@@ -251,6 +264,13 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const faqCount = (parsed.faq ?? []).length;
+    // Mesure 2026-06-25 : le body REND des liens internes (injectInternalLinks +
+    // appendSourcesSection ci-dessus) mais leur compte n'était pas transmis au
+    // scorer → 0/6 « Internal links » à tort (même classe de bug que le word-count).
+    // Miroir exact de qa-derived/blog-from-rss : <a href="/…"> + markdown […](/…).
+    const finalInternalLinkCount =
+      (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
+      (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
     const mentionedCities = extractMentionedCitiesFromText(bodyText, { maxCities: 20 });
     const readingTimeMinutes = Math.max(1, Math.round((wordCount + faqCount * 50) / 200));
 
@@ -261,8 +281,14 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       metaDescription: parsed.metaDescription ?? "",
       bodyHtml: parsed.bodyHtml,
       bodyText,
+      auxBodyText: buildAuxBodyText({
+        directAnswer: parsed.directAnswer,
+        faq: parsed.faq,
+        keyTakeaway: parsed.keyTakeaway,
+      }),
       directAnswer: parsed.directAnswer,
       faqCount,
+      internalLinkCount: finalInternalLinkCount,
       primaryKeyword: input.primaryKeyword ?? topic,
       searchIntent: input.targetSearchIntent,
       ...articlePageSeoDefaults(parsed.slug ?? "", "faq_standalone"),

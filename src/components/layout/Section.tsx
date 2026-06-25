@@ -13,6 +13,13 @@ interface SectionProps extends Omit<ComponentPropsWithoutRef<"section">, "title"
   /** Trailing portion of the title after `titleEm` (so the eyebrow → title → em → tail flow stays inline). */
   titleTail?: ReactNode;
   description?: ReactNode;
+  /**
+   * Optional media (ex. photo hero Unsplash) rendue À DROITE du titre sur les
+   * page heros (`titleAs="h1"`), en grille 2 colonnes dès `lg`. Empilée sous le
+   * titre sur mobile. Quand fournie, remplace la décoration SVG abstraite.
+   * Will 2026-06-24 — « l'image doit être à droite dans le héro, pas dessous ».
+   */
+  media?: ReactNode;
   className?: string;
   contentClassName?: string;
   children?: ReactNode;
@@ -218,6 +225,7 @@ export function Section({
   titleEm,
   titleTail,
   description,
+  media,
   className,
   contentClassName,
   children,
@@ -228,7 +236,81 @@ export function Section({
   // Auto-default : h1 = halo-warm (page hero), sinon canvas.
   const resolvedTone: SectionTone = tone ?? (titleAs === "h1" ? "halo-warm" : "canvas");
   const isPageHero = titleAs === "h1";
+  // Héro illustré : grille 2 colonnes (titre à gauche, media à droite). La photo
+  // remplace la décoration SVG abstraite (sinon redondance visuelle).
+  const hasHeroMedia = isPageHero && Boolean(media);
   const TitleTag = titleAs;
+
+  const headerNode =
+    (eyebrow ?? title ?? description) ? (
+      <header
+        className={cn(
+          "space-y-5",
+          // Hero : marge plus généreuse en bas pour aérer le hero du contenu.
+          // En héro illustré, pas de max-width (la colonne grille la borne).
+          isPageHero
+            ? hasHeroMedia
+              ? "mb-0"
+              : "mb-0 max-w-3xl lg:max-w-2xl xl:max-w-3xl"
+            : "mb-16 max-w-3xl",
+        )}
+      >
+        {eyebrow ? (
+          <p
+            className={cn(
+              "text-[13px] font-medium tracking-[0.16em] uppercase",
+              eyebrowClasses[resolvedTone],
+            )}
+          >
+            {/* Dot terracotta — signature visuelle orange dans chaque hero */}
+            <span
+              aria-hidden="true"
+              className={cn(
+                "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
+                resolvedTone === "mocha" ? "bg-terracotta-soft" : "bg-terracotta",
+              )}
+            />
+            {eyebrow}
+          </p>
+        ) : null}
+        {title ? (
+          <TitleTag
+            className={cn(
+              // Hero (h1) : typo display editorial Fraunces géante (cohérence
+              // home + tous les hero du site). Sections (h2/h3) : sans-serif
+              // semibold conservé pour hiérarchie visuelle interne.
+              isPageHero
+                ? "display-editorial"
+                : "text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight",
+              titleClasses[resolvedTone],
+            )}
+          >
+            {title}
+            {titleEm ? (
+              <span
+                className={cn("mx-2 italic", emClasses[resolvedTone])}
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {titleEm}
+              </span>
+            ) : null}
+            {titleTail}
+          </TitleTag>
+        ) : null}
+        {description ? (
+          <p
+            className={cn(
+              "leading-relaxed",
+              isPageHero ? "mt-6 max-w-2xl text-lg sm:text-xl" : "max-w-2xl text-lg sm:text-xl",
+              descriptionClasses[resolvedTone],
+            )}
+          >
+            {description}
+          </p>
+        ) : null}
+      </header>
+    ) : null;
+
   return (
     <section
       id={id}
@@ -242,73 +324,21 @@ export function Section({
       )}
       {...rest}
     >
-      {/* Décoration visuelle sur les page hero (h1) — anneaux + halos + particules */}
-      {isPageHero ? <PageHeroDecoration /> : null}
+      {/* Décoration visuelle sur les page hero (h1) — anneaux + halos + particules.
+          Masquée quand une photo hero est fournie (la photo prend sa place). */}
+      {isPageHero && !hasHeroMedia ? <PageHeroDecoration /> : null}
 
       <Container className={cn("relative", contentClassName)}>
-        {(eyebrow ?? title ?? description) ? (
-          <header
-            className={cn(
-              "space-y-5",
-              // Hero : marge plus généreuse en bas pour aérer le hero du contenu
-              isPageHero ? "mb-0 max-w-3xl lg:max-w-2xl xl:max-w-3xl" : "mb-16 max-w-3xl",
-            )}
-          >
-            {eyebrow ? (
-              <p
-                className={cn(
-                  "text-[13px] font-medium tracking-[0.16em] uppercase",
-                  eyebrowClasses[resolvedTone],
-                )}
-              >
-                {/* Dot terracotta — signature visuelle orange dans chaque hero */}
-                <span
-                  aria-hidden="true"
-                  className={cn(
-                    "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
-                    resolvedTone === "mocha" ? "bg-terracotta-soft" : "bg-terracotta",
-                  )}
-                />
-                {eyebrow}
-              </p>
-            ) : null}
-            {title ? (
-              <TitleTag
-                className={cn(
-                  // Hero (h1) : typo display editorial Fraunces géante (cohérence
-                  // home + tous les hero du site). Sections (h2/h3) : sans-serif
-                  // semibold conservé pour hiérarchie visuelle interne.
-                  isPageHero
-                    ? "display-editorial"
-                    : "text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight",
-                  titleClasses[resolvedTone],
-                )}
-              >
-                {title}
-                {titleEm ? (
-                  <span
-                    className={cn("mx-2 italic", emClasses[resolvedTone])}
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {titleEm}
-                  </span>
-                ) : null}
-                {titleTail}
-              </TitleTag>
-            ) : null}
-            {description ? (
-              <p
-                className={cn(
-                  "leading-relaxed",
-                  isPageHero ? "mt-6 max-w-2xl text-lg sm:text-xl" : "max-w-2xl text-lg sm:text-xl",
-                  descriptionClasses[resolvedTone],
-                )}
-              >
-                {description}
-              </p>
-            ) : null}
-          </header>
-        ) : null}
+        {/* Héro illustré : grille 2 colonnes (titre | photo) dès lg, empilé avant.
+            Sinon, header rendu directement (DOM inchangé pour tous les autres heros). */}
+        {hasHeroMedia ? (
+          <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+            {headerNode}
+            <div className="min-w-0">{media}</div>
+          </div>
+        ) : (
+          headerNode
+        )}
         {/* Children sous le hero — espacement plus généreux pour respiration */}
         {children ? <div className={isPageHero ? "mt-14" : ""}>{children}</div> : null}
       </Container>

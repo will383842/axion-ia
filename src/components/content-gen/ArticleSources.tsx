@@ -42,26 +42,49 @@ export function ArticleSources({ items, locale, lastVerified }: ArticleSourcesPr
 
   return (
     <Section>
-      <Container className="max-w-3xl">
-        <h2 className="text-fg text-2xl font-semibold tracking-tight">
+      <Container className="max-w-[52rem]">
+        <h2 className="text-fg inline-flex items-center gap-2.5 text-2xl font-semibold tracking-tight">
+          <span aria-hidden="true" className="bg-terracotta h-5 w-1 rounded-full" />
           {isFr ? "Sources & méthodologie" : "Sources & methodology"}
         </h2>
-        <ol className="text-fg-muted marker:text-terracotta mt-6 list-decimal space-y-2 pl-6 text-base marker:font-semibold">
+        {/* Liens externes en blocs : nom + domaine + icône (hover). Numéro en
+            pastille terracotta. rel dérivé du trust-tier (dofollow autorités). */}
+        <ol className="mt-6 grid gap-3 md:grid-cols-2">
           {validItems.map((source, i) => {
-            // Refonte AEO 2026-06-22 — rel dérivé du trust-tier (cohérence avec
-            // le sanitizer inline) : sources d'autorité (.gouv.fr, europa.eu,
-            // ISO…) en dofollow, tout le reste en nofollow. Défaut sûr nofollow.
             const domain = extractDomain(source.url);
             const rel = relAttrForExternalLink(domain ? computeTrustTier(domain) : "standard");
             return (
-              <li key={i} className="pl-1">
+              <li key={i}>
                 <a
                   href={source.url}
                   target="_blank"
                   rel={rel}
-                  className="hover:text-terracotta-deep break-words underline underline-offset-2 transition"
+                  className="group border-border bg-paper hover:border-border-strong hover:shadow-subtle flex h-full items-start gap-3 rounded-xl border p-3.5 transition"
                 >
-                  {source.name.trim().length > 0 ? source.name : source.url}
+                  <span
+                    aria-hidden="true"
+                    className="bg-terracotta-soft text-terracotta-deep inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold tabular-nums"
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="text-fg group-hover:text-terracotta-deep block text-sm leading-snug font-medium break-words transition-colors">
+                      {source.name.trim().length > 0 ? source.name : source.url}
+                    </span>
+                    {domain ? (
+                      <span className="text-fg-muted mt-0.5 block truncate text-xs">{domain}</span>
+                    ) : null}
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="text-fg-muted group-hover:text-terracotta-deep mt-0.5 h-4 w-4 shrink-0 transition-colors"
+                  >
+                    <path d="M7 17 17 7M9 7h8v8" />
+                  </svg>
                 </a>
               </li>
             );

@@ -43,7 +43,8 @@ import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { computeReadabilityFr, readabilityFitScore } from "../quality/readability";
 import { seoContentKind } from "./seo-content-kind";
 import { appendSourcesSection } from "../quality/article-quality";
-import { computeSeoScore } from "../quality/seo-score";
+import { computeSeoScore, buildAuxBodyText } from "../quality/seo-score";
+import { keywordPresentInText } from "@/server/content-gen/shared/keyword-match";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { injectExternalLinks } from "../links/external-links-injector";
@@ -176,8 +177,9 @@ ${config.userPromptFocusSection}
 - ≥ 4 liens externes <a> vers sources d'autorité (INSEE, DARES, BPI, EU AI Act…)
 - ≥ 3 liens internes vers /audit, /interventions/essentielle, /implementations, /un-a-un
 - Le primary keyword DOIT apparaître textuellement dans le <h1> ET début du metaTitle.
-- metaTitle : 50-60 caractères MAX
-- metaDescription : 140-155 caractères MAX, phrase complète
+- metaTitle : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces). NE JAMAIS descendre sous 50 : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60.
+- metaDescription : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète. NE JAMAIS descendre sous 140 : développe jusqu'à la fourchette. NE PAS dépasser 160.
+- INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre.
 
 ## Sources internes Axion-IA (à citer en priorité)
 ${kbContext}
@@ -230,17 +232,20 @@ label : ${config.recommendedCtaLabel}
     // body). Si le primary keyword n'apparaît pas textuellement dans le titre,
     // on rejette et on re-génère (au lieu d'un simple soft-score non bloquant).
     if (input.primaryKeyword) {
-      const kw = input.primaryKeyword.toLowerCase();
-      if (!(parsed.title ?? "").toLowerCase().includes(kw)) {
-        prevFeedback = `Le titre "${parsed.title ?? "(absent)"}" (= H1 de la page) ne contient pas le mot-clé "${input.primaryKeyword}". Il DOIT y figurer textuellement.`;
+      // Matching robuste par tokens (IA⇄intelligence artificielle) — un titre SEO
+      // de 50-60 car ne peut pas contenir verbatim un mot-clé long ; l'ancien
+      // `.includes(kw)` faisait échouer le gate à CHAQUE passe pour les mots-clés
+      // longs (« aucun output valide après 3 itérations »). 2026-06-25.
+      if (!keywordPresentInText(input.primaryKeyword, parsed.title ?? "")) {
+        prevFeedback = `Le titre "${parsed.title ?? "(absent)"}" (= H1 de la page) doit couvrir le mot-clé "${input.primaryKeyword}" (chaque mot significatif ; « IA » accepté pour « intelligence artificielle »).`;
         if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
         continue;
       }
       // metaTitle gate (2026-06-22) — le metaTitle ne doit pas être vide et doit
-      // contenir le mot-clé (snippet SERP/AEO). Lenient sur la longueur exacte.
+      // couvrir le mot-clé (snippet SERP/AEO). Matching par tokens.
       const mt = (parsed.metaTitle ?? "").trim();
-      if (mt.length < 15 || !mt.toLowerCase().includes(input.primaryKeyword.toLowerCase())) {
-        prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit contenir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
+      if (mt.length < 15 || !keywordPresentInText(input.primaryKeyword, mt)) {
+        prevFeedback = `Le metaTitle "${mt || "(vide)"}" doit couvrir le mot-clé "${input.primaryKeyword}" (50-60 caractères, mot-clé au début).`;
         if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
         continue;
       }
@@ -263,6 +268,11 @@ label : ${config.recommendedCtaLabel}
       metaDescription: parsed.metaDescription,
       bodyHtml: parsed.bodyHtml,
       bodyText,
+      auxBodyText: buildAuxBodyText({
+        directAnswer: parsed.directAnswer,
+        faq: parsed.faq,
+        keyTakeaway: parsed.keyTakeaway,
+      }),
       directAnswer: parsed.directAnswer,
       faqCount: parsed.faq.length,
       internalLinkCount,

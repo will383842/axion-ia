@@ -11,7 +11,7 @@ import {
   ArrowLeft,
   ArrowRight,
 } from "lucide-react";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -48,7 +48,7 @@ const FAQ_LAST_REVIEWED = "2026-06-01";
 export async function generateStaticParams() {
   // KB-6.3 : utilise le reader unifié (FAQ_GLOBAL en mode legacy).
   const faqs = await listFaqs();
-  return faqs.flatMap((f) => routing.locales.map((locale) => ({ locale, slug: f.slug })));
+  return faqs.flatMap((f) => STATIC_LOCALES.map((locale) => ({ locale, slug: f.slug })));
 }
 
 function getCopy(item: FaqItem, locale: Locale): { question: string; answer: string } {

@@ -41,6 +41,7 @@
     "lhci",
     "_AUDIT",
     "_AUDIT/**",
-    "**/_AUDIT/**"
+    "**/_AUDIT/**",
+    "**/*-tmp.ts"
   ]
 }

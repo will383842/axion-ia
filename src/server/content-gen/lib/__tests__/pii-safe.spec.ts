@@ -12,6 +12,8 @@ import { describe, expect, it } from "vitest";
 import {
   redactPromptForTelegram,
   redactGenerationMetadata,
+  redactGenerationMetadataDeep,
+  redactSensitiveText,
   safeTelegramContext,
 } from "../pii-safe";
 
@@ -129,5 +131,98 @@ describe("safeTelegramContext", () => {
   it("returns empty string pour null input", () => {
     expect(safeTelegramContext(null)).toBe("");
     expect(safeTelegramContext(undefined)).toBe("");
+  });
+});
+
+describe("redactSensitiveText (value-level scrub — RGPD + secret-leak)", () => {
+  it("returns '' pour null/undefined", () => {
+    expect(redactSensitiveText(null)).toBe("");
+    expect(redactSensitiveText(undefined)).toBe("");
+  });
+
+  it("preserve un texte propre sans PII ni secret", () => {
+    const clean = "Generated 1024 words, seoScore 78, published OK";
+    expect(redactSensitiveText(clean)).toBe(clean);
+  });
+
+  it("masque une clé API OpenAI sk-…", () => {
+    const out = redactSensitiveText("auth failed with key sk-abcdef0123456789ABCDEF");
+    expect(out).not.toContain("sk-abcdef0123456789ABCDEF");
+    expect(out).toContain("[redacted-secret]");
+  });
+
+  it("masque une clé Anthropic sk-ant-… et sk-proj-…", () => {
+    const ant = redactSensitiveText("sk-ant-api03-aB12cD34eF56gH78iJ90kL12mN34");
+    expect(ant).not.toContain("sk-ant-api03-aB12cD34eF56gH78iJ90kL12mN34");
+    expect(ant).toContain("[redacted-secret]");
+    const proj = redactSensitiveText("token=sk-proj-ZZ11yy22XX33ww44VV55uu66TT77");
+    expect(proj).not.toContain("sk-proj-ZZ11yy22XX33ww44VV55uu66TT77");
+    expect(proj).toContain("[redacted-secret]");
+  });
+
+  it("masque un secret hex/base64 ≥ 32 chars (lettres + chiffres)", () => {
+    const hex = "db error: token a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2";
+    const out = redactSensitiveText(hex);
+    expect(out).not.toContain("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2");
+    expect(out).toContain("[redacted-secret]");
+  });
+
+  it("ne masque PAS un mot anglais long sans chiffre (faux positif évité)", () => {
+    const word = "abcdefghijklmnopqrstuvwxyzabcdef"; // 32 lettres pures
+    expect(redactSensitiveText(word)).toBe(word);
+  });
+
+  it("redacte un email inline dans du texte libre", () => {
+    const out = redactSensitiveText("RSS author contact jane.roe@news.fr in feed");
+    expect(out).not.toContain("jane.roe@news.fr");
+    expect(out).toContain("j****@news.fr");
+  });
+
+  it("redacte un téléphone FR/intl inline", () => {
+    const fr = redactSensitiveText("rappeler le 06 12 34 56 78 demain");
+    expect(fr).not.toContain("06 12 34 56 78");
+    const intl = redactSensitiveText("appel +33 6 12 34 56 78 urgent");
+    expect(intl).not.toContain("+33 6 12 34 56 78");
+  });
+
+  it("scrubbe secret AVANT email (un base64 n'est pas pris pour un email)", () => {
+    const out = redactSensitiveText("leak sk-live-AAAA1111BBBB2222CCCC3333DDDD");
+    expect(out).toContain("[redacted-secret]");
+  });
+});
+
+describe("redactGenerationMetadataDeep (key-based + value-based récursif)", () => {
+  it("returns {} pour null/undefined", () => {
+    expect(redactGenerationMetadataDeep(null)).toEqual({});
+    expect(redactGenerationMetadataDeep(undefined)).toEqual({});
+  });
+
+  it("applique la redaction key-based (champs PII connus)", () => {
+    const out = redactGenerationMetadataDeep({ email: "user@example.com" });
+    expect(out.email).toBe("u****@example.com");
+  });
+
+  it("scrubbe une clé API cachée dans une valeur string arbitraire", () => {
+    const out = redactGenerationMetadataDeep({
+      error_message: "request failed: Bearer sk-abcdef0123456789ABCDEFGHIJ",
+    });
+    expect(String(out.error_message)).not.toContain("sk-abcdef0123456789ABCDEFGHIJ");
+    expect(String(out.error_message)).toContain("[redacted-secret]");
+  });
+
+  it("scrubbe récursivement objets et arrays imbriqués", () => {
+    const out = redactGenerationMetadataDeep({
+      nested: { note: "ping ops@axion-ia.com" },
+      list: ["sk-proj-XX11yy22ZZ33ww44VV55uu66"],
+    });
+    const nested = out.nested as { note: string };
+    expect(nested.note).not.toContain("ops@axion-ia.com");
+    expect((out.list as string[])[0]).toContain("[redacted-secret]");
+  });
+
+  it("preserve les valeurs non-string (numbers, booleans)", () => {
+    const out = redactGenerationMetadataDeep({ cost_usd: 0.05, ok: true });
+    expect(out.cost_usd).toBe(0.05);
+    expect(out.ok).toBe(true);
   });
 });

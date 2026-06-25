@@ -20,6 +20,7 @@ import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { validateIntentDistribution } from "@/server/content-gen/intent-distribution-schema";
 import {
   computeAntiBurstSchedule,
   msSinceStartOfDay,
@@ -222,6 +223,14 @@ async function createJobForSlot(opts: {
   targetSecteur: string | null;
   aud: { size: CompanySize; org: OrganisationType } | null;
   searchIntent: SearchIntent | "informational";
+  /**
+   * Garde-fou intent (2026-06-25) : true quand l'intent de CE slot est le défaut
+   * hardcodé "informational" (ni `searchIntentMix` campagne ni config globale).
+   * Propagé au worker (`inputPayload.allowKeywordIntent`) qui pourra alors laisser
+   * l'intent NATIF du mot-clé sélectionné primer. Si la campagne a choisi une
+   * distribution d'intent, false → l'intent campagne gagne (zéro régression).
+   */
+  allowKeywordIntent: boolean;
   anchorVilleSlug?: string;
   anchorDepartementCode?: string;
   anchorRegionSlug?: string;
@@ -234,6 +243,7 @@ async function createJobForSlot(opts: {
     targetSecteur,
     aud,
     searchIntent,
+    allowKeywordIntent,
     anchorVilleSlug,
     anchorDepartementCode,
     anchorRegionSlug,
@@ -273,6 +283,10 @@ async function createJobForSlot(opts: {
           // `targetSecteur` (secteur client) réveille la pain-matrix sectorielle
           // (cf. prompt-augmentation.ts, gated QUALITY_PROFILES_ENABLED + commercial).
           ...(targetSecteur ? { targetSecteur } : {}),
+          // Garde-fou intent : on ne pose le flag QUE quand l'intent est le défaut
+          // (campagne sans distribution) → le worker laisse alors l'intent natif du
+          // mot-clé primer. Absent sinon = l'intent campagne reste souverain.
+          ...(allowKeywordIntent ? { allowKeywordIntent: true } : {}),
         },
         targetLocale: "fr",
         ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
@@ -457,6 +471,9 @@ async function processSequentialCampaign(
       targetSecteur,
       aud,
       searchIntent: (searchIntent ?? "informational") as SearchIntent,
+      // !intentMix = même condition que le défaut "informational" ci-dessus :
+      // ni mix campagne ni config globale → l'intent du mot-clé pourra primer.
+      allowKeywordIntent: !intentMix,
       anchorVilleSlug: currentCitySlug,
       slotIndex,
     });
@@ -568,6 +585,8 @@ async function processParallelCampaign(
       targetSecteur,
       aud,
       searchIntent: (searchIntent ?? "informational") as SearchIntent,
+      // !intentMix = même condition que le défaut "informational" ci-dessus.
+      allowKeywordIntent: !intentMix,
       ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
       ...(anchorDepartementCode ? { anchorDepartementCode } : {}),
       ...(anchorRegionSlug ? { anchorRegionSlug } : {}),
@@ -608,19 +627,24 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   // dépourvues de mix propre (leur mix per-campagne reste prioritaire).
   // Lecture directe de la config (clé `search_intent_distribution`) — PAS via
   // policies.ts (use-server → tire next-auth, casse le worker). Même clé/défauts.
-  const intentDist = await readContentGenConfig<{
-    informational?: number;
-    commercial?: number;
-    local?: number;
-    transactional?: number;
-    navigational?: number;
-  }>("search_intent_distribution", {
+  const rawIntentDist = await readContentGenConfig<unknown>("search_intent_distribution", {
     informational: 50,
     commercial: 25,
     local: 15,
     transactional: 5,
     navigational: 5,
   });
+  // Robustesse intent (P1) — valide les clés contre l'ensemble connu (enum
+  // SearchIntent + alias FR/simplifiés). FAIL-OPEN : une clé inconnue/typo
+  // (ex. "commercia") est warn + ignorée, jamais throw — l'orchestration
+  // continue avec les clés valides. Préserve le comportement nominal.
+  const intentDist: {
+    informational?: number;
+    commercial?: number;
+    local?: number;
+    transactional?: number;
+    navigational?: number;
+  } = validateIntentDistribution(rawIntentDist);
   const globalIntentMix: Partial<Record<SearchIntent, number>> = {
     informational: intentDist.informational ?? 0,
     commercial_investigation: intentDist.commercial ?? 0,

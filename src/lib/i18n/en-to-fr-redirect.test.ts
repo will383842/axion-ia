@@ -175,6 +175,17 @@ describe("mapEnToFr", () => {
     });
   });
 
+  describe("blog/category — hub + slug (FR ≠ EN, 2026-06-24)", () => {
+    it("/en/blog/category (hub, sans slash) → /fr/blog/categorie", () => {
+      expect(mapEnToFr("/en/blog/category")).toBe("/fr/blog/categorie");
+    });
+    it("/en/blog/category/blog-formations-ia → /fr/blog/categorie/blog-formations-ia", () => {
+      expect(mapEnToFr("/en/blog/category/blog-formations-ia")).toBe(
+        "/fr/blog/categorie/blog-formations-ia",
+      );
+    });
+  });
+
   describe("fallback — slugs identiques FR/EN (swap préfixe seulement)", () => {
     it("/en/blog → /fr/blog", () => {
       expect(mapEnToFr("/en/blog")).toBe("/fr/blog");

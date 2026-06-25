@@ -23,6 +23,9 @@ vi.mock("@/lib/prisma", () => ({
 
 import {
   selectKeyword,
+  selectKeywordRich,
+  resolveEffectiveIntent,
+  normalizeKeywordIntent,
   validateKeywordInTitle,
   __resetInMemoryCounters,
 } from "../keyword-selector";
@@ -84,6 +87,121 @@ describe("selectKeyword — fallback in-memory rotation", () => {
     // Le pool transversal peut etre vide → fallback __all retourne un seed quelconque.
     expect(result).not.toBeNull();
     expect(typeof result).toBe("string");
+  });
+});
+
+describe("selectKeywordRich — métadonnées intent + cluster", () => {
+  it("retourne term + searchIntent + clusterId depuis la DB (rotation cluster-aware)", async () => {
+    queryRawMock.mockResolvedValueOnce([
+      {
+        term: "comparatif integrateurs IA PME",
+        search_intent: "commercial_investigation",
+        cluster_id: "implementation-comparatifs",
+      },
+    ]);
+    const r = await selectKeywordRich({ vertical: "implementations" });
+    expect(r).toEqual({
+      term: "comparatif integrateurs IA PME",
+      searchIntent: "commercial_investigation",
+      clusterId: "implementation-comparatifs",
+    });
+  });
+
+  it("normalise search_intent/cluster_id absents en null", async () => {
+    queryRawMock.mockResolvedValueOnce([
+      { term: "audit IA RGPD", search_intent: null, cluster_id: null },
+    ]);
+    const r = await selectKeywordRich({ vertical: "audits" });
+    expect(r).toEqual({ term: "audit IA RGPD", searchIntent: null, clusterId: null });
+  });
+
+  it("fallback in-memory → métadonnées null (seeds sans intent/cluster)", async () => {
+    queryRawMock.mockRejectedValueOnce(new Error("DB unavailable"));
+    const r = await selectKeywordRich({ vertical: "audits" });
+    expect(r).not.toBeNull();
+    expect(typeof r?.term).toBe("string");
+    expect(r?.searchIntent).toBeNull();
+    expect(r?.clusterId).toBeNull();
+  });
+
+  it("selectKeyword reste rétro-compatible (string) en déléguant à rich", async () => {
+    queryRawMock.mockResolvedValueOnce([
+      { term: "formation IA Lyon", search_intent: "local", cluster_id: "c1" },
+    ]);
+    const r = await selectKeyword({ vertical: "interventions_formations" });
+    expect(r).toBe("formation IA Lyon");
+  });
+});
+
+describe("normalizeKeywordIntent — vocabulaire seed → enum", () => {
+  it("mappe le vocabulaire FR/custom de la table keywords", () => {
+    expect(normalizeKeywordIntent("transactionnel")).toBe("transactional");
+    expect(normalizeKeywordIntent("informationnel")).toBe("informational");
+    expect(normalizeKeywordIntent("comparatif")).toBe("commercial_investigation");
+    expect(normalizeKeywordIntent("aeo")).toBe("ai_overview");
+  });
+  it("identité sur les valeurs déjà-enum", () => {
+    expect(normalizeKeywordIntent("commercial_investigation")).toBe("commercial_investigation");
+    expect(normalizeKeywordIntent("local")).toBe("local");
+  });
+  it("retourne null pour les angles de contenu (pas un intent) + valeurs inconnues", () => {
+    for (const v of ["sectoriel", "benefice", "partenaire", "bogus", "", null]) {
+      expect(normalizeKeywordIntent(v)).toBeNull();
+    }
+  });
+});
+
+describe("resolveEffectiveIntent — garde-fou intent (allow + safe-for-type)", () => {
+  it("campagne a forcé un intent (allow=false) → intent campagne TOUJOURS (zéro régression)", () => {
+    expect(resolveEffectiveIntent("informational", "comparatif", false, "comparison")).toBe(
+      "informational",
+    );
+    expect(resolveEffectiveIntent("local", "transactionnel", false, "blog_article")).toBe("local");
+  });
+
+  it("comparatif + content-type à table (comparison) → commercial_investigation (gate <table> garanti)", () => {
+    for (const ct of ["comparison", "vs_comparator", "alternative_to", "top_x_in_y"]) {
+      expect(resolveEffectiveIntent("informational", "comparatif", true, ct)).toBe(
+        "commercial_investigation",
+      );
+    }
+  });
+
+  it("comparatif + content-type SANS table (blog_article) → reste informational (anti-rétrogradation noindex)", () => {
+    expect(resolveEffectiveIntent("informational", "comparatif", true, "blog_article")).toBe(
+      "informational",
+    );
+  });
+
+  it("aeo → ai_overview pour TOUT type (gate citations toujours satisfait)", () => {
+    expect(resolveEffectiveIntent("informational", "aeo", true, "blog_article")).toBe(
+      "ai_overview",
+    );
+  });
+
+  it("transactionnel → JAMAIS d'override (gate CTA non garanti → risque noindex)", () => {
+    expect(resolveEffectiveIntent("informational", "transactionnel", true, "comparison")).toBe(
+      "informational",
+    );
+    expect(resolveEffectiveIntent("informational", "transactionnel", true, "blog_article")).toBe(
+      "informational",
+    );
+  });
+
+  it("local / featured_snippet / voice_search → pas d'override (gate structurel non garanti)", () => {
+    expect(resolveEffectiveIntent("informational", "local", true, "blog_article")).toBe(
+      "informational",
+    );
+    expect(resolveEffectiveIntent("informational", "featured_snippet", true, "blog_article")).toBe(
+      "informational",
+    );
+  });
+
+  it("angles de contenu (sectoriel/benefice) + null → garde l'intent du job", () => {
+    expect(resolveEffectiveIntent("informational", "sectoriel", true, "comparison")).toBe(
+      "informational",
+    );
+    expect(resolveEffectiveIntent("informational", null, true, "comparison")).toBe("informational");
   });
 });
 

@@ -46,23 +46,26 @@ import {
   getComparableStackTools,
 } from "@/content/stack-ia-details";
 import { STACK_TOOLS } from "@/content/stack-ia";
+import { STATIC_LOCALES } from "@/i18n/routing";
 import { buildProductJsonLd, buildBreadcrumbJsonLd, buildFaqSpeakableJsonLd } from "@/lib/seo";
 
 describe("/stack-ia/[tool] · generateStaticParams", () => {
-  it("retourne 22 entries (11 outils × 2 locales)", async () => {
+  // EN désactivé (2026-05-16) → pré-rendu FR seul (STATIC_LOCALES). Le test suit
+  // le flag : 11 outils × len(STATIC_LOCALES). Réactivation EN → re-prérend les 2.
+  it("retourne 11 outils × STATIC_LOCALES (FR seul tant qu'EN désactivé)", async () => {
     const params = await generateStaticParams();
-    expect(params.length).toBe(22);
+    expect(params.length).toBe(11 * STATIC_LOCALES.length);
     const slugs = new Set(params.map((p) => p.tool));
     expect(slugs.size).toBe(11);
     const locales = new Set(params.map((p) => p.locale));
     expect(locales.has("fr")).toBe(true);
-    expect(locales.has("en")).toBe(true);
+    expect(locales.has("en")).toBe(STATIC_LOCALES.includes("en"));
   });
 
-  it("inclut tous les slugs de STACK_TOOL_DETAILS pour chaque locale", async () => {
+  it("inclut tous les slugs de STACK_TOOL_DETAILS pour chaque locale pré-rendue", async () => {
     const params = await generateStaticParams();
     const detailSlugs = STACK_TOOL_DETAILS.map((d) => d.id);
-    for (const locale of ["fr", "en"]) {
+    for (const locale of STATIC_LOCALES) {
       for (const slug of detailSlugs) {
         expect(
           params.some((p) => p.locale === locale && p.tool === slug),

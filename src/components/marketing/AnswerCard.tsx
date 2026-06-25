@@ -68,7 +68,7 @@ export function AnswerCard({
   className,
 }: AnswerCardProps) {
   const isFr = locale === "fr";
-  const headingLabel = isFr ? "TL;DR" : "In short";
+  const headingLabel = isFr ? "Réponse rapide" : "Quick answer";
   const sourcePrefix = isFr ? "Source" : "Source";
 
   return (

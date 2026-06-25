@@ -180,6 +180,91 @@ export async function generateEmbedding(
 }
 
 /**
+ * Résultat d'un health-check du provider d'embeddings (observabilité RAG P1).
+ * Ne throw jamais : destiné à un endpoint admin de diagnostic.
+ */
+export interface EmbeddingHealth {
+  readonly ok: boolean;
+  readonly provider: "voyage" | "stub";
+  readonly model: string;
+  readonly dimension: number;
+  /** true = clé absente OU build stub (stub.invalid) → embedding non sémantique. */
+  readonly stub: boolean;
+  readonly latencyMs: number;
+  readonly error?: string;
+}
+
+/**
+ * Health-check du provider d'embeddings (P1 observabilité RAG).
+ *
+ * Fait un appel d'embedding réel minimal (1 court texte) avec timeout court pour
+ * vérifier que Voyage répond et renvoie la bonne dimension. Réutilise
+ * `generateEmbedding` (pas de réimplémentation de l'appel Voyage).
+ *
+ * - `VOYAGE_API_KEY` absente OU build stub (`stub.invalid`) → `{ ok:false, stub:true }`
+ *   sans throw (l'embedding renvoyé serait le stub SHA-256, non sémantique).
+ * - Appel réussi avec dimension correcte → `{ ok:true, stub:false }`.
+ * - Erreur réseau / HTTP / timeout → `{ ok:false, stub:false, error }`.
+ */
+export async function checkEmbeddingHealth(timeoutMs = 5000): Promise<EmbeddingHealth> {
+  const startedAt = Date.now();
+  const base = {
+    model: EMBEDDING_MODEL_NAME,
+    dimension: EMBEDDING_DIMENSION,
+  } as const;
+
+  const isBuildStub = process.env.DATABASE_URL?.includes("stub.invalid") ?? false;
+  const hasKey = Boolean(process.env.VOYAGE_API_KEY);
+
+  // Clé absente ou contexte build (stub.invalid) → stub déterministe, non sémantique.
+  if (!hasKey || isBuildStub) {
+    return {
+      ...base,
+      ok: false,
+      provider: "stub",
+      stub: true,
+      latencyMs: Date.now() - startedAt,
+      error: isBuildStub
+        ? "build stub (stub.invalid) — appel Voyage volontairement court-circuité"
+        : "VOYAGE_API_KEY absente — RAG vectoriel dégradé en FTS (lexical)",
+    };
+  }
+
+  // Timeout court : on ne veut pas que le diagnostic hang sur un Voyage lent/down.
+  const timeout = new Promise<never>((_, reject) => {
+    setTimeout(() => reject(new Error(`timeout après ${timeoutMs}ms`)), timeoutMs);
+  });
+
+  try {
+    const result = (await Promise.race([generateEmbedding("ping"), timeout])) as EmbeddingResult;
+    const isStub = result.modelVersion.endsWith("-stub");
+    const dimOk = result.dimensionality === EMBEDDING_DIMENSION;
+    return {
+      model: result.model,
+      dimension: result.dimensionality,
+      ok: !isStub && dimOk,
+      provider: isStub ? "stub" : "voyage",
+      stub: isStub,
+      latencyMs: Date.now() - startedAt,
+      ...(dimOk
+        ? {}
+        : {
+            error: `dimension inattendue : ${result.dimensionality} (attendu ${EMBEDDING_DIMENSION})`,
+          }),
+    };
+  } catch (err) {
+    return {
+      ...base,
+      ok: false,
+      provider: "voyage",
+      stub: false,
+      latencyMs: Date.now() - startedAt,
+      error: (err as Error).message,
+    };
+  }
+}
+
+/**
  * Calcule la similarité cosine entre 2 vecteurs (assumés L2-normalisés).
  * Pour vecteurs non normalisés : retourne le produit scalaire / (norm1 * norm2).
  */

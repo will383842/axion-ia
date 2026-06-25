@@ -116,3 +116,53 @@ export function buildRegenerationJobData(params: {
 
   return { idempotencyKey, inputPayload, data };
 }
+
+/**
+ * Option B (2026-06-25) — dérive un `RegenSourceJob` depuis l'ARTICLE quand le job
+ * source a été purgé (`content_gen_job` supprimé après complétion → 0 article
+ * régénérable autrement). Rend TOUT article régénérable, jobs purgés inclus.
+ *
+ * Dérivation volontairement conservatrice (l'article ne stocke ni le mot-clé, ni
+ * les anchors, ni le secteur — seulement search_intent + titre) :
+ * - contentType = `blog_from_keywords` : fallback universel qui ne requiert QUE
+ *   `primaryKeyword` (les autres types ont des dépendances : RSS source, etc.).
+ * - primaryKeyword = « lead » du titre (partie avant « : » / « – » / « | »),
+ *   CONDENSÉ (« Intelligence Artificielle » → « IA ») pour rester un mot-clé SEO
+ *   court et compatible avec les gates metaTitle/H1 (un mot-clé de 40+ car. ne
+ *   tient pas dans un metaTitle de 50-60 car. → boucle qualité bloquée).
+ * - intent = celui de l'article (défaut informational) ; locale fr ; providers défaut.
+ *
+ * Les anchors/secteur d'origine sont perdus → acceptable : le but est de
+ * RE-GÉNÉRER un contenu de qualité (grounding KB + prompts durcis) sur le même
+ * sujet, en PRÉSERVANT le slug (URL stable). Si le job source existe encore, on
+ * l'utilise (params exacts) — ce fallback ne sert qu'aux jobs disparus.
+ */
+export function deriveSourceJobFromArticle(article: {
+  searchIntent: SearchIntent | null;
+  title: string | null;
+}): RegenSourceJob {
+  const rawTitle = (article.title ?? "").trim();
+  const lead = rawTitle.split(/\s[:–—|-]\s/)[0]?.trim() ?? rawTitle;
+  // Condense « Intelligence Artificielle » → « IA » : mot-clé SEO court qui tient
+  // dans un metaTitle 50-60 car. (sinon les gates metaTitle/H1 échouent à chaque
+  // passe et la boucle qualité n'atteint jamais l'enforcement de longueur).
+  const condensed = lead
+    .replace(/intelligence artificielle/gi, "IA")
+    .replace(/\s+/g, " ")
+    .trim();
+  const primaryKeyword = condensed.length >= 3 ? condensed : rawTitle || "IA entreprise";
+  return {
+    contentType: "blog_from_keywords",
+    targetSearchIntent: article.searchIntent ?? "informational",
+    targetLocale: "fr",
+    anchorVilleSlug: null,
+    anchorRegionSlug: null,
+    anchorDepartementCode: null,
+    templateId: null,
+    serviceSector: null,
+    campaignId: null,
+    primaryProvider: "anthropic",
+    fallbackProvider: "openai",
+    inputPayload: { primaryKeyword },
+  };
+}

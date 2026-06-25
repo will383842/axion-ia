@@ -26,7 +26,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight, Check, Info, MinusCircle, ShieldCheck } from "lucide-react";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
@@ -68,7 +68,7 @@ interface Props {
 export async function generateStaticParams(): Promise<Array<{ locale: string; tool: string }>> {
   const slugs = getAllStackToolSlugs();
   const out: Array<{ locale: string; tool: string }> = [];
-  for (const locale of routing.locales) {
+  for (const locale of STATIC_LOCALES) {
     for (const tool of slugs) {
       out.push({ locale, tool });
     }

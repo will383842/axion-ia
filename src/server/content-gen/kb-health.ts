@@ -103,7 +103,16 @@ export async function getKbHealth(): Promise<KbHealthSnapshot> {
       (("code" in err && (err as { code: string }).code === "P2021") ||
         err.constructor.name === "PrismaClientInitializationError")
     ) {
-      // DB pas accessible (test sans DB / table pas migrée) → mode dégradé
+      // DB pas accessible (test sans DB / table pas migrée) → mode dégradé.
+      // ⚠️ Observabilité (audit 2026-06-25) : ce bypass laissait passer le
+      // content-gen SANS KB → RAG vide → risque d'hallucinations SILENCIEUSES.
+      // On log désormais explicitement pour qu'un incident DB worker soit visible
+      // (au build stub.invalid, prisma renvoie 0 sans throw → ce chemin ne s'active pas).
+      console.warn(
+        "[kb-health] ⚠️ DB inaccessible (P2021/PrismaInit) → bypass dégradé : " +
+          "content-gen tourne SANS garde KB (RAG potentiellement vide). " +
+          "Vérifier la connexion DB / migrations du worker.",
+      );
       return {
         publishedTotal: 0,
         publicPublished: 0,

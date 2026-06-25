@@ -81,6 +81,11 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/about", "/fr/a-propos"],
   ["/en/press", "/fr/presse"],
   ["/en/blog/category/", "/fr/blog/categorie/"],
+  // Hub des catégories (2026-06-24) — SANS slash final : le préfixe `/category/`
+  // ci-dessus ne matche pas `/en/blog/category` (hub), qui sans cette entrée
+  // tomberait dans le fallback `/fr/blog/category` (404, route FR = `/categorie`).
+  // Placé APRÈS la version slug pour que `/en/blog/category/<slug>` matche d'abord.
+  ["/en/blog/category", "/fr/blog/categorie"],
   ["/en/blog/author/", "/fr/blog/auteur/"],
   ["/en/blog/sector/", "/fr/blog/secteur/"],
   ["/en/blog/size/", "/fr/blog/taille/"],

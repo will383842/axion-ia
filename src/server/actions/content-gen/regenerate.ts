@@ -27,6 +27,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "./_auth";
 import {
   buildRegenerationJobData,
+  deriveSourceJobFromArticle,
   NON_TERMINAL_STATUSES,
   REGENERABLE_CONTENT_TYPES,
   type RegenSourceJob,
@@ -61,7 +62,8 @@ async function enqueueRegeneration(
       id: true,
       status: true,
       generatedByJobId: true,
-      translations: { where: { locale: "fr" }, select: { slug: true } },
+      searchIntent: true,
+      translations: { where: { locale: "fr" }, select: { slug: true, title: true } },
     },
   });
   if (!article) {
@@ -70,34 +72,39 @@ async function enqueueRegeneration(
   if (article.status !== "published") {
     return { ok: false, articleId, skippedReason: `not_published:${article.status}` };
   }
-  if (!article.generatedByJobId) {
-    // Article rédigé à la main (pas de job source) → on ne peut pas dériver les
-    // paramètres de génération. Hors périmètre de la régénération automatique.
-    return { ok: false, articleId, skippedReason: "no_source_job" };
-  }
 
-  const sourceJob = await prisma.contentGenJob.findUnique({
-    where: { id: article.generatedByJobId },
-    select: {
-      contentType: true,
-      targetSearchIntent: true,
-      targetLocale: true,
-      anchorVilleSlug: true,
-      anchorRegionSlug: true,
-      anchorDepartementCode: true,
-      templateId: true,
-      serviceSector: true,
-      campaignId: true,
-      primaryProvider: true,
-      fallbackProvider: true,
-      inputPayload: true,
-    },
-  });
-  if (!sourceJob) {
-    return { ok: false, articleId, skippedReason: "source_job_not_found" };
+  // Job source d'origine si encore présent → params EXACTS. Sinon → Option B
+  // (2026-06-25) : on dérive un job source depuis l'article. Les content_gen_jobs
+  // sont purgés après complétion ; sans ce fallback, un article ancien renvoie
+  // « source_job_not_found » et n'est JAMAIS régénérable (constaté : 0/18 en local).
+  let sourceJob: RegenSourceJob | null = null;
+  if (article.generatedByJobId) {
+    const found = await prisma.contentGenJob.findUnique({
+      where: { id: article.generatedByJobId },
+      select: {
+        contentType: true,
+        targetSearchIntent: true,
+        targetLocale: true,
+        anchorVilleSlug: true,
+        anchorRegionSlug: true,
+        anchorDepartementCode: true,
+        templateId: true,
+        serviceSector: true,
+        campaignId: true,
+        primaryProvider: true,
+        fallbackProvider: true,
+        inputPayload: true,
+      },
+    });
+    if (found && REGENERABLE_CONTENT_TYPES.has(found.contentType)) {
+      sourceJob = found as RegenSourceJob;
+    }
   }
-  if (!REGENERABLE_CONTENT_TYPES.has(sourceJob.contentType)) {
-    return { ok: false, articleId, skippedReason: `type_not_regenerable:${sourceJob.contentType}` };
+  if (!sourceJob) {
+    sourceJob = deriveSourceJobFromArticle({
+      searchIntent: article.searchIntent,
+      title: article.translations[0]?.title ?? null,
+    });
   }
 
   // Anti-doublon en vol : un refresh non terminal cible déjà cet article ?

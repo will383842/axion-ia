@@ -30,7 +30,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Download, Mail } from "lucide-react";
 
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
@@ -103,7 +103,7 @@ const TAG_LABEL_EN: Record<PressReleaseTag, string> = {
 
 export async function generateStaticParams() {
   const params: Array<{ locale: string; slug: string }> = [];
-  for (const locale of routing.locales) {
+  for (const locale of STATIC_LOCALES) {
     const slugs = await getAllPublishedPressReleaseSlugs(locale);
     for (const slug of slugs) params.push({ locale, slug });
   }

@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, redirect, permanentRedirect } from "next/navigation";
 import Image from "next/image";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -20,7 +20,7 @@ import { getAllBlogSlugs } from "@/content/transversal";
 import {
   buildProductMetadata,
   buildArticleJsonLd,
-  buildBreadcrumbJsonLd,
+  ensureArticleMetaDescription,
   SITE_URL,
 } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
@@ -74,7 +74,7 @@ export async function generateStaticParams() {
   // V1 : seulement les slugs FS connus. Les slugs DB sont rendus on-demand
   // (Next 16 ISR fallback="blocking" implicite quand dynamicParams=true).
   const slugs = getAllBlogSlugs();
-  return routing.locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+  return STATIC_LOCALES.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -103,11 +103,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // V-07 sprint UX 2026-05-22 — préfère DB metaTitle/metaDescription si fournis
   // (champs SEO-tunés au moment de la rédaction Manon ou via factory content-gen).
   // Fallback : title + excerpt rétrocompatible articles FS.
+  // P0 qualité 2026-06-25 — plancher 140-160 car sur la meta description ARTICLE.
+  // `ensureArticleMetaDescription` (seo.ts) garde la metaDescription DB si déjà
+  // assez longue, sinon retombe sur excerpt/directAnswer puis tronque proprement.
+  const articleDescription = ensureArticleMetaDescription(view.metaDescription ?? view.excerpt, {
+    excerpt: view.excerpt,
+    directAnswer: view.directAnswer,
+  });
   const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
     title: view.metaTitle ?? view.title,
-    description: view.metaDescription ?? view.excerpt,
+    description: articleDescription,
     ogType: "article", // VIS-05/SEO-05
     // D2 (VIS-08) — utilise la hero réelle comme og:image quand dispo (au lieu
     // de la carte /api/og générique) pour les partages sociaux + previews LLM.
@@ -366,8 +373,13 @@ export default async function BlogArticle({ params }: Props) {
   // byline pour ne pas dupliquer le Person riche (personJsonLd ci-dessus).
   const manonByline = isDbHtml ? await getManonByline() : null;
 
+  // Breadcrumb : inclut le niveau catégorie quand il est connu (maillage
+  // article → hub catégorie, hiérarchie alignée — audit nav 2026-06-24).
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
+    ...(view.categorySlug
+      ? [{ href: `/blog/categorie/${view.categorySlug}`, label: view.category }]
+      : []),
     { href: `/blog/${slug}`, label: view.title },
   ];
 
@@ -430,6 +442,29 @@ export default async function BlogArticle({ params }: Props) {
         title={titleParts.lead}
         titleEm={titleParts.em}
         description={view.excerpt}
+        // P2-3 — Photo hero À DROITE du titre (Will 2026-06-24 : « pas sous le
+        // héro »). LCP critique → priority. Ratio 4/3 réservé (CLS = 0). Rendue
+        // uniquement si Article.featuredImage existe (articles FS → décoration SVG).
+        media={
+          view.featuredImage ? (
+            <figure className="m-0">
+              <div className="border-border/60 shadow-card relative aspect-[16/10] w-full overflow-hidden rounded-2xl border">
+                <Image
+                  src={view.featuredImage}
+                  alt={view.featuredImageAlt ?? view.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                />
+              </div>
+              <UnsplashCredit
+                photographerName={view.photographerName}
+                photographerUrl={view.photographerUrl}
+              />
+            </figure>
+          ) : undefined
+        }
       >
         <Container className="text-fg-muted mt-8 flex flex-wrap items-center gap-3 text-sm">
           <Badge variant="neutral">{view.category}</Badge>
@@ -476,163 +511,160 @@ export default async function BlogArticle({ params }: Props) {
             </span>
           </div>
         </Container>
-        {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
-        <Container className="mt-2 max-w-3xl">
-          <AuthorByline
-            authorName={view.author}
-            authorSlug={view.author.toLowerCase()}
-            {...(manonByline
-              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
-              : {})}
-            publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
-            lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
-            emitJsonLd={!isDbHtml}
-            locale={loc}
-          />
-        </Container>
+        {/* AuthorByline E-E-A-T déplacée EN BAS de l'article (Will 2026-06-25 :
+            « le portrait de Manon serait mieux en bas »). Voir après </article>. */}
       </Section>
 
-      {/* P2-3 — Image hero article (LCP critique : priority obligatoire).
-          Rendu uniquement si Article.featuredImage est renseigné en DB.
-          Les articles FS (hardcodés) retournent null → bloc non rendu.
-          Ratio 16/9 standard, object-cover pour éviter CLS. */}
-      {view.featuredImage ? (
-        <Container className="max-w-4xl">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-            <Image
-              src={view.featuredImage}
-              alt={view.featuredImageAlt ?? view.title}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-              className="object-cover"
-            />
-          </div>
-          <UnsplashCredit
-            photographerName={view.photographerName}
-            photographerUrl={view.photographerUrl}
-          />
-        </Container>
-      ) : null}
+      {/* Photo hero déplacée DANS le <Section> ci-dessus (colonne droite, prop
+          `media`) — Will 2026-06-24 « image à droite, pas sous le héro ». */}
 
-      {tldrText ? (
-        <Section>
-          <Container className="max-w-3xl">
-            <AnswerCard locale={loc}>{tldrText}</AnswerCard>
-          </Container>
-        </Section>
-      ) : null}
+      {/* Layout 2 colonnes (Will 2026-06-25) : rail SOMMAIRE sticky à GAUCHE +
+          colonne de lecture à droite. Mobile-first : sous lg, une seule colonne
+          (le <details> Sommaire de ArticleTOC s'empile en haut, le rail desktop
+          est masqué). align-items par défaut (stretch) → la cellule gauche fait
+          la hauteur du contenu, ce qui permet au nav `lg:sticky` de coller. */}
+      <Container
+        className={
+          tocItems.length >= 2 ? "lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12" : ""
+        }
+      >
+        <div className="lg:col-start-1 lg:row-start-1">
+          {tocItems.length >= 2 ? (
+            <ArticleTOC items={tocItems} pageUrl={pageUrl} locale={loc} />
+          ) : null}
+        </div>
 
-      {/* Chantier templates 2026-06-21 — encadré « Point clé » (distinct du
-          TL;DR), rendu seulement si Article.keyTakeaway est renseigné. */}
-      <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
+        <div className="min-w-0 lg:col-start-2 lg:row-start-1">
+          {tldrText ? (
+            <Section>
+              <Container className="max-w-3xl">
+                <AnswerCard locale={loc}>{tldrText}</AnswerCard>
+              </Container>
+            </Section>
+          ) : null}
 
-      {/* P3 TOC Featured Snippets — rendu si article > 1500 mots et headings détectés. */}
-      {tocItems.length >= 2 && (
-        <Container className="max-w-3xl">
-          <ArticleTOC items={tocItems} pageUrl={pageUrl} locale={loc} />
-        </Container>
-      )}
+          {/* Encadré « Point clé » (distinct de la Réponse rapide). */}
+          <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
 
-      {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
+          {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
           cible du skip-link sont portés par <main id="main"> du layout :
           NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
-      <article>
-        <Section>
-          <Container className="text-fg max-w-[42rem] space-y-6 text-lg leading-relaxed">
-            {dbBodyHtml ? (
-              // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
-              // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
-              // H3 — tokens prix résolus.
-              <div
-                className="prose prose-axionia max-w-none"
-                dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
-              />
-            ) : (
-              blocks!.map((block, idx) => {
-                if (block.kind === "ol") {
-                  return (
-                    <ol
-                      key={`b-${idx}`}
-                      className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
-                    >
-                      {block.items.map((it, j) => (
-                        <li key={`i-${j}`} className="pl-1">
-                          {it}
-                        </li>
-                      ))}
-                    </ol>
-                  );
-                }
-                return <p key={`b-${idx}`}>{block.text}</p>;
-              })
-            )}
-          </Container>
-        </Section>
-      </article>
+          <article>
+            <Section>
+              <Container className="text-fg max-w-[52rem] space-y-6 text-lg leading-relaxed">
+                {dbBodyHtml ? (
+                  // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
+                  // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
+                  // H3 — tokens prix résolus.
+                  <div
+                    className="prose prose-axionia max-w-none"
+                    dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
+                  />
+                ) : (
+                  blocks!.map((block, idx) => {
+                    if (block.kind === "ol") {
+                      return (
+                        <ol
+                          key={`b-${idx}`}
+                          className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
+                        >
+                          {block.items.map((it, j) => (
+                            <li key={`i-${j}`} className="pl-1">
+                              {it}
+                            </li>
+                          ))}
+                        </ol>
+                      );
+                    }
+                    return <p key={`b-${idx}`}>{block.text}</p>;
+                  })
+                )}
+              </Container>
+            </Section>
+          </article>
 
-      {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
+          {/* Carte auteur E-E-A-T déplacée EN BAS (Will 2026-06-25) — clôt l'article
+          juste après le corps, pattern éditorial standard (bio auteur en fin). */}
+          <Section>
+            <Container className="max-w-[52rem]">
+              <AuthorByline
+                authorName={view.author}
+                authorSlug={view.author.toLowerCase()}
+                {...(manonByline
+                  ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+                  : {})}
+                publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
+                lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
+                emitJsonLd={!isDbHtml}
+                locale={loc}
+              />
+            </Container>
+          </Section>
+
+          {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
           le lien. URL absolue (pageUrl) pour X/LinkedIn/mailto. Server, l'îlot
           clipboard est isolé dans CopyLinkButton ("use client"). */}
-      <ArticleShareBar url={pageUrl} title={view.title} locale={loc} />
+          <ArticleShareBar url={pageUrl} title={view.title} locale={loc} />
 
-      {/* Chantier templates 2026-06-21 — citation d'expert nommé (levier AEO
+          {/* Chantier templates 2026-06-21 — citation d'expert nommé (levier AEO
           le plus fort), rendue seulement si une vraie citation est renseignée. */}
-      <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
+          <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
 
-      {/* Chantier templates 2026-06-21 — FAQ + FAQPage JSON-LD. La donnée
+          {/* Chantier templates 2026-06-21 — FAQ + FAQPage JSON-LD. La donnée
           (Article.faqJson) était déjà écrite par les generators mais jamais
           rendue. Accordéon natif (0 JS), Speakable via data-faq-q/data-faq-a. */}
-      <ArticleFaq
-        items={view.faqItems}
-        locale={loc}
-        dateModified={view.updatedAt ?? view.publishedAt}
-      />
+          <ArticleFaq
+            items={view.faqItems}
+            locale={loc}
+            dateModified={view.updatedAt ?? view.publishedAt}
+          />
 
-      {/* Chantier templates 2026-06-21 — Sources & méthodologie visibles
+          {/* Chantier templates 2026-06-21 — Sources & méthodologie visibles
           (view.citations était émis JSON-LD only). Liens nofollow + date. */}
-      <ArticleSources
-        items={view.citations}
-        locale={loc}
-        lastVerified={view.updatedAt ?? view.publishedAt}
-      />
+          <ArticleSources
+            items={view.citations}
+            locale={loc}
+            lastVerified={view.updatedAt ?? view.publishedAt}
+          />
 
-      {/* Refonte templates 2026-06-22 (Chantier 2b) — bloc de transparence
+          {/* Refonte templates 2026-06-22 (Chantier 2b) — bloc de transparence
           E-E-A-T : dernière vérification + cycle de mise à jour (signal de
           fraîcheur Google/IA). Cycle aligné sur la doctrine de re-publication. */}
-      <ArticleTransparencyBlock
-        lastVerified={view.updatedAt ?? view.publishedAt}
-        updateCycleDays={90}
-        locale={loc}
-      />
+          <ArticleTransparencyBlock
+            lastVerified={view.updatedAt ?? view.publishedAt}
+            updateCycleDays={90}
+            locale={loc}
+          />
 
-      {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
-      {anchorVilleHref ? (
-        <Section>
-          <Container className="max-w-3xl">
-            <p className="text-fg-muted text-sm">
-              {isFr ? "Cet article concerne " : "This article covers "}
-              <Link
-                href={anchorVilleHref as never}
-                className="text-primary font-medium hover:underline"
-              >
-                {isFr ? `l'IA à ${anchorVille?.nameFr}` : `AI in ${anchorVille?.nameFr}`}
-              </Link>
-              {isFr ? " — voir la page locale." : " — see the local page."}
-            </p>
-          </Container>
-        </Section>
-      ) : null}
+          {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
+          {anchorVilleHref ? (
+            <Section>
+              <Container className="max-w-3xl">
+                <p className="text-fg-muted text-sm">
+                  {isFr ? "Cet article concerne " : "This article covers "}
+                  <Link
+                    href={anchorVilleHref as never}
+                    className="text-primary font-medium hover:underline"
+                  >
+                    {isFr ? `l'IA à ${anchorVille?.nameFr}` : `AI in ${anchorVille?.nameFr}`}
+                  </Link>
+                  {isFr ? " — voir la page locale." : " — see the local page."}
+                </p>
+              </Container>
+            </Section>
+          ) : null}
 
-      <Section>
-        <Container className="max-w-3xl">
-          <AiContentDisclaimer locale={loc} />
-        </Container>
-      </Section>
+          <Section>
+            <Container className="max-w-3xl">
+              <AiContentDisclaimer locale={loc} />
+            </Container>
+          </Section>
 
-      {/* Refonte templates 2026-06-22 — People Also Ask (vraies questions
-          d'autres articles, distinct de « articles connexes »). */}
-      <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale={loc} />
+          {/* Refonte templates 2026-06-22 — People Also Ask (vraies questions
+              d'autres articles, distinct de « articles connexes »). */}
+          <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale={loc} />
+        </div>
+      </Container>
 
       <SuggestedContent
         variant="articles"
@@ -670,14 +702,10 @@ export default async function BlogArticle({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
-      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
-      <JsonLd
-        data={buildBreadcrumbJsonLd({
-          locale: loc,
-          items: breadcrumbItems.map((b) => ({ name: b.label, href: b.href })),
-        })}
-        scriptId="jsonld-breadcrumb-blog-article"
-      />
+      {/* NB : le BreadcrumbList JSON-LD (chaîne d'attribution Claude/Perplexity/SGE)
+          est émis par <Breadcrumbs> (source unique, avec « Accueil » + niveau
+          catégorie). Ne PAS le ré-émettre ici — deux BreadcrumbList au même @id =
+          schéma ambigu (audit E2E 2026-06-24). */}
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );

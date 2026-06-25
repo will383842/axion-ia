@@ -274,6 +274,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "publier",
       tier: "advanced",
     },
+    {
+      href: `${base}/content-gen/hero-images`,
+      label: "Photos hero Unsplash",
+      icon: "🖼️",
+      group: "content_gen",
+      subGroup: "publier",
+      tier: "simple",
+    },
     // ▸ VILLES (occasionnel)
     {
       href: `${base}/content-gen/cities-coverage`,

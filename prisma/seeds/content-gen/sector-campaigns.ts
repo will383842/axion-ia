@@ -90,6 +90,26 @@ const DEFAULT_INTENT_MIX: Record<string, number> = {
   local: 5,
 };
 
+// Secteurs CLIENT par défaut (axe 3) — RÉVEILLE la pain-matrix sectorielle.
+// Sans `targetSecteurWeights`, les jobs ne portent pas `targetSecteur` → la
+// pain-matrix (douleur/bénéfice chiffré, profil commercial) ne s'injecte JAMAIS
+// dans les prompts (cf. audit 2026-06-25 §C.1). Les 10 clés = les 10 `Secteur`
+// du SSOT `sector-pain-matrix.ts`. Pondération B2B cabinet (chiffres = % indicatifs,
+// `sampleWeighted` normalise). Will peut surcharger via /admin/content-gen/coverage/[id].
+// ⚠️ INERTE tant que `QUALITY_PROFILES_ENABLED=true` (Coolify) n'est pas posé.
+const DEFAULT_SECTEUR_WEIGHTS: Record<string, number> = {
+  comptabilite_finance: 15,
+  btp_immobilier: 12,
+  commerce_retail: 12,
+  industrie_logistique: 12,
+  sante_medecine: 10,
+  rh_recrutement: 10,
+  juridique: 8,
+  restauration_hotellerie: 8,
+  artisanat_services: 8,
+  collectivites_public: 5,
+};
+
 export async function seedSectorCampaigns(prisma: PrismaClient): Promise<number> {
   let count = 0;
   for (const c of CAMPAIGNS) {
@@ -105,6 +125,7 @@ export async function seedSectorCampaigns(prisma: PrismaClient): Promise<number>
           typeDistribution: c.distribution as never,
           audienceMix: DEFAULT_AUDIENCE_MIX as never,
           searchIntentMix: DEFAULT_INTENT_MIX as never,
+          targetSecteurWeights: DEFAULT_SECTEUR_WEIGHTS as never,
         },
       });
     } else {
@@ -118,6 +139,7 @@ export async function seedSectorCampaigns(prisma: PrismaClient): Promise<number>
           typeDistribution: c.distribution as never,
           audienceMix: DEFAULT_AUDIENCE_MIX as never,
           searchIntentMix: DEFAULT_INTENT_MIX as never,
+          targetSecteurWeights: DEFAULT_SECTEUR_WEIGHTS as never,
           createdBy: "system:seed",
         },
       });

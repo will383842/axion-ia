@@ -74,13 +74,35 @@ function buildUnsplashQuery(input: SelectHeroImageInput): string | null {
 }
 
 /**
- * Tente une photo Unsplash. Retourne null (jamais throw) si la clé est absente,
- * le provider est désactivé, aucune photo libre, ou erreur réseau/parse — le
- * caller bascule alors sur l'image-bank.
+ * Requête générique de dernier recours. Unsplash renvoie toujours des photos
+ * pertinentes pour ce thème → garantit qu'un article a (quasi) TOUJOURS une
+ * illustration, même quand le mot-clé spécifique ne matche rien (Will 2026-06-24,
+ * « tous les articles doivent avoir une photo Unsplash »).
  */
-async function tryUnsplash(input: SelectHeroImageInput): Promise<SelectedHero | null> {
+const GENERIC_FALLBACK_QUERY = "artificial intelligence business";
+
+/**
+ * Réduit une requête à ses 2 premiers tokens significatifs. Les requêtes trop
+ * longues/spécifiques (titre complet, nom de région…) renvoient souvent 0 photo
+ * Unsplash ; un thème court en retrouve. Retourne null si la requête est déjà
+ * courte (≤ 2 tokens → pas de variante utile).
+ */
+function broadenQuery(query: string): string | null {
+  const tokens = query.split(/\s+/).filter((t) => t.length > 2);
+  if (tokens.length <= 2) return null;
+  return tokens.slice(0, 2).join(" ");
+}
+
+/**
+ * Tente une photo Unsplash pour une requête donnée. Retourne null (jamais throw)
+ * si la clé est absente, le provider est désactivé, aucune photo libre, ou erreur
+ * réseau/parse — le caller tente alors la requête suivante de la cascade.
+ */
+async function tryUnsplash(
+  input: SelectHeroImageInput,
+  query: string,
+): Promise<SelectedHero | null> {
   if (!process.env.UNSPLASH_ACCESS_KEY) return null;
-  const query = buildUnsplashQuery(input);
   if (!query) return null;
   try {
     const res = await unsplashProvider.generate({
@@ -101,17 +123,36 @@ async function tryUnsplash(input: SelectHeroImageInput): Promise<SelectedHero | 
       photographerUrl: selected.attribution.photographerUrl,
     };
   } catch {
-    // Provider désactivé / rate-limit / 0 résultat / réseau → fallback bank.
+    // Provider désactivé / rate-limit / 0 résultat / réseau → requête suivante.
     return null;
   }
 }
 
 /**
- * Sélectionne la hero : Unsplash d'abord, image-bank en fallback, null sinon.
+ * Sélectionne la hero : Unsplash d'abord (cascade de requêtes), image-bank en
+ * fallback opt-in, null sinon.
+ *
+ * Cascade Unsplash (Will 2026-06-24) : requête spécifique → thème court (2 tokens)
+ * → requête générique. Garantit qu'un article a quasi toujours une photo (le
+ * mot-clé brut échouait sur ~1 article/lot, ex. titre avec nom de région).
  */
 export async function selectHeroImage(input: SelectHeroImageInput): Promise<SelectedHero | null> {
-  const unsplash = await tryUnsplash(input);
-  if (unsplash) return unsplash;
+  const base = buildUnsplashQuery(input);
+  const candidates: string[] = [];
+  if (base) {
+    candidates.push(base);
+    const broad = broadenQuery(base);
+    if (broad) candidates.push(broad);
+  }
+  candidates.push(GENERIC_FALLBACK_QUERY);
+
+  const tried = new Set<string>();
+  for (const query of candidates) {
+    if (tried.has(query)) continue;
+    tried.add(query);
+    const unsplash = await tryUnsplash(input, query);
+    if (unsplash) return unsplash;
+  }
 
   // Doctrine « Unsplash uniquement » (Will 2026-06-21) : par défaut, PAS de
   // fallback image-bank. Si Unsplash est indisponible (clé absente, rate-limit,
@@ -147,4 +188,4 @@ function normalizeBankPath(filePath: string): string {
 }
 
 /** Test-only — expose les helpers internes pour les specs. */
-export const __testInternals = { buildUnsplashQuery };
+export const __testInternals = { buildUnsplashQuery, broadenQuery, GENERIC_FALLBACK_QUERY };

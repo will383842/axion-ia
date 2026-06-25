@@ -9,12 +9,14 @@ import { Container } from "@/components/layout/Container";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { FaqBlock } from "@/components/sections/FaqBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { BlogHeroSchema } from "@/components/sections/BlogHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { getBlogHomeFaq } from "@/server/content-gen/lib/category-hub-content";
 import { loadBlogIndexForView } from "@/server/content-gen/blog/loader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
 import { BlogSearch } from "@/components/blog/BlogSearch";
 
 // ISR Next 16 — pré-rendue au build, revalidée toutes les heures pour que les
@@ -120,18 +122,38 @@ export default async function BlogListing({ params, searchParams }: Props) {
   // (BlogPosting per article + BlogPosting JSON-LD individuel sur /blog/[slug]
   // déjà émis ailleurs). @id (2026-06-21) : ancre la collection pour la citation
   // LLM (Perplexity/Claude « selon le blog Axion-IA »).
+  // ItemList aligné sur le CONTENU VISIBLE de la page courante (audit SEO
+  // 2026-06-24) : avant, il annonçait les ~300 posts alors que la page n'en rend
+  // que 20 (mismatch schéma/contenu = risque rich-results). `position` reste
+  // globalement cohérent (offset + index). @id page-aware pour ne pas partager
+  // le même @id entre /blog et /blog?page=N. Discovery profonde = sitemap.
+  const pagePath = currentPage > 1 ? `/blog?page=${currentPage}` : "/blog";
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "@id": `${SITE_URL}/${locale}/blog#itemlist`,
+    "@id": `${SITE_URL}/${locale}${pagePath}#itemlist`,
     name: isFr ? "Articles Axion-IA · ligne éditoriale" : "Axion-IA articles · editorial line",
-    itemListElement: sortedPosts.map((post, index) => ({
+    itemListElement: paginatedPosts.map((post, index) => ({
       "@type": "ListItem",
-      position: index + 1,
+      position: offset + index + 1,
       url: `${SITE_URL}/${locale}/blog/${post.slug}`,
       name: post.title,
     })),
   } as const;
+
+  // CollectionPage — la page index devient une entité collection adressable,
+  // reliée au graphe du site (isPartOf #website par défaut) + Speakable
+  // (intro answer-ready). Parité avec les pages /blog/categorie/* (audit SEO
+  // 2026-06-24, qui n'avaient ce nœud que côté catégorie).
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: pagePath,
+    name: isFr
+      ? "Blog Axion-IA · méthodologie & cas d'usage IA"
+      : "Axion-IA blog · methodology & AI use cases",
+    speakable: true,
+    mainEntity: { "@id": `${SITE_URL}/${locale}${pagePath}#itemlist` },
+  });
 
   // Pills réassurance (count dynamique)
   const pills = isFr
@@ -286,6 +308,13 @@ export default async function BlogListing({ params, searchParams }: Props) {
                 </li>
               ))}
             </ul>
+            {/* Lien vers le hub des catégories (navigation taxonomique, 2026-06-24). */}
+            <div className="mt-7">
+              <Cta href="/blog/categorie" variant="outline" size="md">
+                {isFr ? "Toutes les catégories" : "All categories"}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Cta>
+            </div>
           </Container>
         </Section>
       ) : null}
@@ -308,7 +337,8 @@ export default async function BlogListing({ params, searchParams }: Props) {
               ) : null}
             </>
           ) : null}
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* 3 colonnes max (cartes plus larges) — md/lg (sm est buggé dans ce thème). */}
+          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {paginatedPosts.map((post) => (
               <li key={post.slug}>
                 <ArticleCard
@@ -317,6 +347,9 @@ export default async function BlogListing({ params, searchParams }: Props) {
                   excerpt={post.excerpt}
                   publishedAt={post.publishedAt}
                   readingTime={post.readingTime}
+                  imageUrl={post.featuredImage}
+                  imageAlt={post.featuredImageAlt}
+                  compact
                 />
               </li>
             ))}
@@ -369,13 +402,22 @@ export default async function BlogListing({ params, searchParams }: Props) {
         tone="dark"
       />
 
-      <JsonLd
-        data={buildBreadcrumbJsonLd({
-          locale: loc,
-          items: [{ name: "Blog", href: "/blog" }],
-        })}
-        scriptId="jsonld-breadcrumb-blog"
+      {/* FAQ visible + FAQPage JSON-LD (AEO / featured snippets / AI Overviews). */}
+      <FaqBlock
+        tone="paper"
+        title={isFr ? "Questions" : "Questions"}
+        titleEm={isFr ? "fréquentes" : "& answers"}
+        items={getBlogHomeFaq(loc).map((f, i) => ({
+          id: `blog-faq-${i}`,
+          question: f.question,
+          answer: f.answer,
+        }))}
       />
+
+      {/* NB : le BreadcrumbList JSON-LD est émis par <Breadcrumbs> (source unique,
+          avec « Accueil »). Ne PAS le ré-émettre ici — deux BreadcrumbList au même
+          @id = schéma ambigu (audit E2E 2026-06-24). */}
+      <JsonLd data={collectionJsonLd} />
       <JsonLd data={itemListJsonLd} />
     </>
   );

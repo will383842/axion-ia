@@ -52,8 +52,12 @@ const SEEDS: ReadonlyArray<ConfigSeed> = [
   {
     key: "quality_loop",
     value: {
+      // Seuil auto-publication : 70 (filet de sécurité, 2026-06-25). L'archi
+      // 2/3-appels produit des articles 78+ de façon fiable ; 70 laisse passer
+      // les rares 70-74 au lieu de les router en revue, sans descendre dans la
+      // zone « thin content » risquée pour le HCU Google (cf. décision Will).
       enabled: true,
-      minScoreThreshold: 75,
+      minScoreThreshold: 70,
       targetScore: 85,
       maxAttemptsAuto: 2,
       monthlyBudgetCapUsd: 100,

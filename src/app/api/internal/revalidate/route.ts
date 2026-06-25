@@ -12,19 +12,47 @@
  * Body JSON : `{ paths: string[], tags?: string[] }`.
  */
 
+import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+/**
+ * Comparaison constante-temps de deux secrets (anti-timing attack). On hashe
+ * d'abord les deux côtés en SHA-256 (buffers de longueur fixe = 32 octets)
+ * afin d'égaliser les longueurs : `timingSafeEqual` throw si les buffers ont
+ * des tailles différentes, et comparer les longueurs brutes leak déjà de
+ * l'info. Même posture que `verifyKbSignature` (src/lib/knowledge/hmac.ts).
+ */
+function constantTimeEquals(a: string, b: string): boolean {
+  const ha = crypto.createHash("sha256").update(a, "utf8").digest();
+  const hb = crypto.createHash("sha256").update(b, "utf8").digest();
+  return crypto.timingSafeEqual(ha, hb);
+}
 
 export async function POST(req: NextRequest): Promise<Response> {
   const secret = process.env.REVALIDATE_SECRET;
   if (!secret) {
     return new Response("revalidate_secret_missing", { status: 503 });
   }
+
+  // Rate-limit best-effort (sliding window Redis, fail-open si Redis down).
+  // Cap par IP : un worker légitime envoie quelques revalidations/min ; au-delà
+  // c'est un abus/brute-force du secret. Clé par IP forwarded (Caddy/Cloudflare).
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown";
+  const rl = await checkRateLimit(`internal:revalidate:${ip}`, { limit: 60, windowSec: 60 });
+  if (!rl.allowed) {
+    return new Response("rate_limited", { status: 429 });
+  }
+
   const headerSecret = req.headers.get("X-Revalidate-Secret");
-  if (headerSecret !== secret) {
+  if (!headerSecret || !constantTimeEquals(headerSecret, secret)) {
     return new Response("unauthorized", { status: 401 });
   }
 

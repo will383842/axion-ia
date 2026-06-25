@@ -13,14 +13,14 @@ describe("<AnswerCard>", () => {
     expect(aside?.textContent).toContain("Une réponse en 60 mots.");
   });
 
-  it("uses « TL;DR » heading in FR by default", () => {
+  it("uses « Réponse rapide » heading in FR by default", () => {
     render(<AnswerCard>Texte court.</AnswerCard>);
-    expect(screen.getByText("TL;DR")).toBeTruthy();
+    expect(screen.getByText("Réponse rapide")).toBeTruthy();
   });
 
-  it("uses « In short » heading when locale=en", () => {
+  it("uses « Quick answer » heading when locale=en", () => {
     render(<AnswerCard locale="en">Short text.</AnswerCard>);
-    expect(screen.getByText("In short")).toBeTruthy();
+    expect(screen.getByText("Quick answer")).toBeTruthy();
   });
 
   it("renders question line when provided", () => {

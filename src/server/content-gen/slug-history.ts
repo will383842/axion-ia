@@ -16,6 +16,69 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../prisma/generated/client";
+
+/**
+ * Sous-ensemble du PrismaClient suffisant pour `recordSlugChange` : permet de
+ * passer soit le client global, soit un `tx` de transaction (atomicité avec
+ * l'update du slug côté caller). Typé minimalement pour rester compatible des
+ * deux.
+ */
+type SlugHistoryClient = {
+  articleSlugHistory: {
+    upsert: (args: Prisma.ArticleSlugHistoryUpsertArgs) => Promise<unknown>;
+  };
+};
+
+export interface RecordSlugChangeInput {
+  readonly articleId: string;
+  readonly oldSlug: string;
+  readonly newSlug: string;
+  readonly locale: "fr" | "en";
+  readonly reason?: string;
+}
+
+/**
+ * SSOT (2026-06-25) — enregistre un changement de slug d'article dans
+ * `ArticleSlugHistory` pour que les routes publiques `/fr/blog/[slug]` et
+ * `/fr/actualites/[slug]` redirigent l'ANCIEN slug en 301 (au lieu d'un 404).
+ *
+ * Idempotent :
+ *   - no-op si `oldSlug === newSlug` (aucun rename réel) ;
+ *   - upsert sur la clé naturelle `@@unique([oldLocale, oldSlug])` → réappeler
+ *     avec le même ancien slug ne crée pas de doublon (re-publish / retry BullMQ).
+ *
+ * À appeler depuis TOUS les chemins qui mutent le slug d'un article (publish,
+ * refresh/régénération, edit admin). Accepte un `client` optionnel (un `tx`
+ * Prisma) pour s'exécuter dans la même transaction que l'update du slug.
+ *
+ * Le ping IndexNow (ancien URL `URL_DELETED` + nouveau `URL_UPDATED`) reste à la
+ * charge du caller (cf. `updateArticle` dans article.ts).
+ */
+export async function recordSlugChange(
+  input: RecordSlugChangeInput,
+  client: SlugHistoryClient = prisma as unknown as SlugHistoryClient,
+): Promise<void> {
+  const { articleId, oldSlug, newSlug, locale, reason } = input;
+  // Idempotence #1 — aucun rename réel : rien à historiser.
+  if (!oldSlug || oldSlug === newSlug) return;
+  // Idempotence #2 — upsert sur (oldLocale, oldSlug) : re-publish / retry ne
+  // duplique pas. On rattache toujours à l'article courant (l'ancien slug peut
+  // avoir migré d'un article à l'autre dans des cas limites).
+  await client.articleSlugHistory.upsert({
+    where: { oldLocale_oldSlug: { oldLocale: locale, oldSlug } },
+    create: {
+      articleId,
+      oldSlug,
+      oldLocale: locale,
+      ...(reason ? { reason } : {}),
+    },
+    update: {
+      articleId,
+      ...(reason ? { reason } : {}),
+    },
+  });
+}
 
 export interface ArticleSlugRedirect {
   readonly newSlug: string;
