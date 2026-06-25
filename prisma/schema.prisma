@@ -3079,10 +3079,32 @@ model ContentTemplate {
   updatedAt          DateTime @updatedAt
   createdBy          String?
 
-  jobs ContentGenJob[]
+  jobs    ContentGenJob[]
+  history ContentTemplateHistory[]
 
   @@index([contentType, isActive])
   @@map("content_templates")
+}
+
+/// Versionnage des prompts ContentTemplate (snapshot historique des champs prompt/model).
+/// Additif : 1 row par version éditée d'un template. Lecture seule côté audit/rollback.
+model ContentTemplateHistory {
+  id                 String          @id @default(cuid())
+  templateId         String          @map("template_id")
+  template           ContentTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  version            Int
+  systemPrompt       String?         @map("system_prompt") @db.Text
+  userPromptTemplate String?         @map("user_prompt_template") @db.Text
+  outputSchemaZod    String?         @map("output_schema_zod") @db.Text
+  model              String?
+  defaultTemperature Decimal?        @map("default_temperature") @db.Decimal(3, 2)
+  defaultMaxTokens   Int?            @map("default_max_tokens")
+  changedBy          String?         @map("changed_by")
+  createdAt          DateTime        @default(now()) @map("created_at")
+
+  @@unique([templateId, version])
+  @@index([templateId])
+  @@map("content_template_history")
 }
 
 /// Auteur canonique (Manon V1). Lu par buildPersonManonJsonLd() (slug guard).
@@ -3420,6 +3442,7 @@ model GenerationLog {
   timestamp DateTime      @default(now())
 
   @@index([jobId, timestamp])
+  @@index([level, timestamp])
   @@map("generation_logs")
 }
 
@@ -3665,11 +3688,13 @@ model Keyword {
   clusterId      String?   @map("cluster_id") @db.VarChar(60)
   usageCount     Int       @default(0) @map("usage_count")
   lastUsedAt     DateTime? @map("last_used_at")
+  campaignId     String?   @map("campaign_id")
   createdAt      DateTime  @default(now()) @map("created_at")
 
   @@index([vertical])
   @@index([usageCount, lastUsedAt])
   @@index([clusterId])
+  @@index([campaignId])
   @@map("keywords")
 }
 
