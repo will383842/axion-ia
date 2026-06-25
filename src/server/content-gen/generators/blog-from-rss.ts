@@ -69,7 +69,7 @@ Règles absolues :
 - Le keyword principal DOIT apparaître textuellement dans le H1.
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - Longueur : vise une longueur COMPARABLE à celle de la matière source fournie ci-dessous (≈ ±25 %), avec un minimum de 450 mots. Si la source est courte, reste concis ; si elle est longue/détaillée, développe d'autant. N'INVENTE PAS de faits pour rallonger : enrichis uniquement avec le contexte marché et l'angle Axion-IA (section finale). Article d'actualité = plus court qu'un guide.
-- 4 à 6 questions FAQ réelles avec réponses directes ≥ 2 lignes.
+- 4 à 6 questions FAQ réelles optimisées Featured Snippet — réponse answer-first : 1ère phrase directe autonome (≤ 25 mots, citable seule), puis 1-2 phrases ; 40 à 55 mots au total.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
 - Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.

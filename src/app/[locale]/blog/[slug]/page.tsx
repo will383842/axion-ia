@@ -436,7 +436,7 @@ export default async function BlogArticle({ params }: Props) {
         media={
           view.featuredImage ? (
             <figure className="m-0">
-              <div className="border-border/60 relative aspect-[4/3] w-full overflow-hidden rounded-2xl border shadow-sm">
+              <div className="border-border/60 shadow-card relative aspect-[16/10] w-full overflow-hidden rounded-2xl border">
                 <Image
                   src={view.featuredImage}
                   alt={view.featuredImageAlt ?? view.title}
@@ -530,7 +530,7 @@ export default async function BlogArticle({ params }: Props) {
           NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
       <article>
         <Section>
-          <Container className="text-fg max-w-[46rem] space-y-6 text-lg leading-relaxed">
+          <Container className="text-fg max-w-[52rem] space-y-6 text-lg leading-relaxed">
             {dbBodyHtml ? (
               // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
               // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
@@ -565,7 +565,7 @@ export default async function BlogArticle({ params }: Props) {
       {/* Carte auteur E-E-A-T déplacée EN BAS (Will 2026-06-25) — clôt l'article
           juste après le corps, pattern éditorial standard (bio auteur en fin). */}
       <Section>
-        <Container className="max-w-[46rem]">
+        <Container className="max-w-[52rem]">
           <AuthorByline
             authorName={view.author}
             authorSlug={view.author.toLowerCase()}

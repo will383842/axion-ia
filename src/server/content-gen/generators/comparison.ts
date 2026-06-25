@@ -53,6 +53,9 @@ const BUDGET_CAP_USD = 0.12;
 const SYSTEM_PROMPT = `Tu es un expert IA indépendant mandaté pour produire une analyse comparative factuelle en français optimisée SEO 2026.
 Produis un comparatif structuré. Règles absolues :
 - Structure OBLIGATOIRE : une section H2 par critère + une <table> comparatif récapitulatif obligatoire (3-5 colonnes : Option / Avantages / Inconvénients / Coût / Cible). Featured Snippet 2026.
+- GRAPHIQUE À BARRES OBLIGATOIRE quand un critère est quantifiable (score /100, coût relatif, performance, satisfaction) : ajoute un bloc visuel 0-JS. Format EXACT (n'utilise JAMAIS d'attribut style ni de <svg>) — la largeur est portée par la classe ax-bar-N où N = valeur arrondie au multiple de 5 le plus proche (0,5,10,…,100) :
+  <figure class="ax-chart" data-aeo="chart"><figcaption>Titre du graphique (ex. « Rapport qualité-prix /100 »)</figcaption><div class="ax-chart-row"><span class="ax-chart-label">Option A</span><span class="ax-chart-track"><span class="ax-chart-fill ax-bar-80"></span></span><span class="ax-chart-num">80</span></div><div class="ax-chart-row"><span class="ax-chart-label">Option B</span><span class="ax-chart-track"><span class="ax-chart-fill ax-bar-65"></span></span><span class="ax-chart-num">65</span></div></figure>
+  Une ligne (ax-chart-row) par option comparée. Valeurs réelles et factuelles, jamais inventées.
 - La section Axion-IA est présente comme une option parmi d'autres, évaluée factuellement.
 - Conclusion : recommandation motivée par taille entreprise + cas d'usage (PME, ETI, etc.)
 - 100 % factuel : pas de superlatif sans preuve concrète.
@@ -64,7 +67,7 @@ Produis un comparatif structuré. Règles absolues :
 - Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
-- 4 à 6 questions FAQ réelles (People-Also-Ask comparatif) avec réponses directes ≥ 2 lignes.
+- 4 à 6 questions FAQ réelles (People-Also-Ask comparatif) optimisées Featured Snippet — réponse answer-first : 1ère phrase directe autonome (≤ 25 mots, citable seule), puis 1-2 phrases ; 40 à 55 mots au total.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).

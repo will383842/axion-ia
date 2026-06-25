@@ -42,7 +42,7 @@ export function ArticleShareBar({ url, title, locale }: ArticleShareBarProps) {
 
   return (
     <Section>
-      <Container className="max-w-[46rem]">
+      <Container className="max-w-[52rem]">
         <nav
           data-aeo="share-bar"
           aria-label={isFr ? "Partager cet article" : "Share this article"}

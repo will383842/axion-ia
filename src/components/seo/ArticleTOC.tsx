@@ -81,19 +81,52 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
     })),
   };
 
+  // En-tête moderne : icône « liste » dans une pastille terracotta + label.
+  const tocHeader = (
+    <span className="text-fg inline-flex items-center gap-2.5 text-sm font-semibold">
+      <span
+        aria-hidden="true"
+        className="bg-terracotta-soft text-terracotta-deep inline-flex h-6 w-6 items-center justify-center rounded-lg"
+      >
+        <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+          <path d="M3 4.75A.75.75 0 0 1 3.75 4h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 4.75Zm3.25 0A.75.75 0 0 1 7 4h9.25a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1-.75-.75ZM3 10a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 10Zm3.25 0A.75.75 0 0 1 7 9.25h9.25a.75.75 0 0 1 0 1.5H7A.75.75 0 0 1 6.25 10ZM3 15.25a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1-.75-.75Zm3.25 0a.75.75 0 0 1 .75-.75h9.25a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1-.75-.75Z" />
+        </svg>
+      </span>
+      {label}
+    </span>
+  );
+
+  // Items numérotés (01, 02…) avec rail vertical (stepper) + hover sable.
+  const tocList = (
+    <ol className="border-border/70 mt-3 space-y-0.5 border-l pl-3">
+      {items.map((item, i) => (
+        <li key={item.anchor}>
+          <a
+            href={`#${item.anchor}`}
+            className={`group/toc hover:bg-sand flex items-baseline gap-2.5 rounded-lg px-2 py-1.5 transition-colors ${
+              item.level === 3 ? "pl-5" : ""
+            }`}
+          >
+            <span className="text-terracotta-deep/60 group-hover/toc:text-terracotta-deep w-5 shrink-0 text-[11px] font-semibold tabular-nums transition-colors">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span className="text-fg-muted group-hover/toc:text-fg text-sm leading-snug transition-colors">
+              {item.title}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  );
+
   return (
     <>
       <JsonLd data={itemListJsonLd} />
-      {/* Mobile (< lg) : sommaire repliable natif (<details>, 0 JS) — mobile-first,
-          absent auparavant. Rendu seulement en mode sticky (le mode inline gère
-          déjà son propre affichage). */}
+      {/* Mobile (< lg) : sommaire repliable natif (<details>, 0 JS). */}
       {sticky ? (
-        <details className="not-prose group border-border bg-paper mb-6 rounded-xl border p-4 lg:hidden">
-          <summary className="text-fg flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold">
-            <span className="inline-flex items-center gap-2">
-              <span aria-hidden="true" className="bg-terracotta h-3.5 w-1 rounded-full" />
-              {label}
-            </span>
+        <details className="not-prose group border-border bg-paper shadow-subtle mb-6 rounded-2xl border p-5 lg:hidden">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-2">
+            {tocHeader}
             <svg
               aria-hidden="true"
               viewBox="0 0 20 20"
@@ -107,44 +140,19 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
               />
             </svg>
           </summary>
-          <ol className="border-border mt-3 space-y-1.5 border-t pt-3">
-            {items.map((item) => (
-              <li key={item.anchor} className={item.level === 3 ? "pl-3" : ""}>
-                <a
-                  href={`#${item.anchor}`}
-                  className="text-fg-muted hover:text-terracotta-deep text-sm leading-tight transition-colors"
-                >
-                  {item.title}
-                </a>
-              </li>
-            ))}
-          </ol>
+          {tocList}
         </details>
       ) : null}
       <nav
         aria-label={label}
         className={
           sticky
-            ? "not-prose border-border bg-paper shadow-subtle hidden rounded-xl border p-4 lg:sticky lg:top-24 lg:block lg:w-60 lg:shrink-0 lg:self-start"
+            ? "not-prose border-border bg-paper shadow-subtle hidden rounded-2xl border p-5 lg:sticky lg:top-24 lg:block lg:w-64 lg:shrink-0 lg:self-start"
             : "not-prose"
         }
       >
-        <p className="text-fg mb-2 inline-flex items-center gap-2 text-sm font-semibold">
-          <span aria-hidden="true" className="bg-terracotta h-3.5 w-1 rounded-full" />
-          {label}
-        </p>
-        <ol className="space-y-1">
-          {items.map((item) => (
-            <li key={item.anchor} className={item.level === 3 ? "pl-3" : ""}>
-              <a
-                href={`#${item.anchor}`}
-                className="text-fg-muted hover:text-terracotta-deep text-sm leading-tight transition-colors"
-              >
-                {item.title}
-              </a>
-            </li>
-          ))}
-        </ol>
+        {tocHeader}
+        {tocList}
       </nav>
     </>
   );

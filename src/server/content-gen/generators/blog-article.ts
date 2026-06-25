@@ -47,7 +47,7 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Anti-doorway HCU 2024 : minimum 600 mots de contenu substantiel.
-- 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.
+- 6 à 8 questions FAQ réelles (People-Also-Ask) optimisées Featured Snippet — chaque réponse au format answer-first : 1ère phrase = réponse directe autonome (≤ 25 mots, citable seule pour PAA/vocal), puis 1-2 phrases de précision ; 40 à 55 mots au total.
 - Le keyword principal DOIT apparaître textuellement dans le H1. Sans cela l'article sera rejeté.
 - Inclure OBLIGATOIREMENT ≥ 2 liens externes vers des sources d'autorité FR (INSEE, DARES, BPI France, France Num, rapport McKinsey, Stanford AI Index, etc.) avec rel="noopener noreferrer". Les AI Overviews Google et Perplexity citent prioritairement les articles sourcés.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.

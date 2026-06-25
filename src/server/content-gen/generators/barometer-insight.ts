@@ -55,7 +55,7 @@ Règles absolues :
 - 0 délai chiffré, 0 frais de déplacement, 0 prix en dur, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - Anti-doorway HCU 2024 : minimum 600 mots de contenu substantiel, H2 structurants.
 - Chaque H2 d'un constat chiffré commence par le chiffre, en phrase autoportante (ex. « 59 % des entreprises… »).
-- 6 à 8 questions FAQ (People-Also-Ask) avec réponses ≥ 2 lignes.
+- 6 à 8 questions FAQ (People-Also-Ask) optimisées Featured Snippet — réponse answer-first : 1ère phrase directe autonome (≤ 25 mots, citable seule), puis 1-2 phrases ; 40 à 55 mots au total.
 - ≥ 2 liens externes vers des sources d'autorité FR (INSEE, France Num, BPI France, etc.), rel="noopener noreferrer".
 - "metaTitle": 50-60 caractères, "metaDescription": 140-155 caractères.
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
