@@ -17,6 +17,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import { FaqBlock } from "@/components/sections/FaqBlock";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -186,8 +187,8 @@ export default async function BlogCategoriesHub({ params }: Props) {
               {isFr ? "Voir tous les articles" : "See all articles"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href="/formations" variant="outline" size="lg">
-              {isFr ? "Voir nos formations" : "See our trainings"}
+            <Cta href="/reserver" variant="outline" size="lg">
+              {isFr ? "Réserver un appel" : "Book a call"}
             </Cta>
           </>
         }
@@ -234,7 +235,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
                       {cat.label}
                     </span>
                     {cat.description ? (
-                      <span className="text-fg-soft line-clamp-3 text-sm leading-relaxed">
+                      <span className="text-fg-soft line-clamp-2 text-sm leading-relaxed">
                         {cat.description}
                       </span>
                     ) : null}
@@ -262,6 +263,29 @@ export default async function BlogCategoriesHub({ params }: Props) {
           question: f.question,
           answer: f.answer,
         }))}
+      />
+      {/* CTA de conversion en fin de hub (couvre les 5 activités). */}
+      <CtaBlock
+        eyebrow={isFr ? "Passer à l'action" : "Take action"}
+        title={isFr ? "Prêt à activer l'IA dans" : "Ready to bring AI to"}
+        titleEm={isFr ? "votre organisation" : "your organization"}
+        description={
+          isFr
+            ? "Formation, coaching, audit, implémentation ou site augmenté : on vous oriente vers la bonne approche pour votre situation."
+            : "Training, coaching, audit, implementation or augmented site: we point you to the right approach for your situation."
+        }
+        cta={
+          <>
+            <Cta href="/reserver" size="lg">
+              {isFr ? "Réserver un appel" : "Book a call"}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Cta>
+            <Cta href="/tarifs" variant="outline" size="lg">
+              {isFr ? "Voir nos offres" : "See our offers"}
+            </Cta>
+          </>
+        }
+        tone="mocha"
       />
       <JsonLd data={collectionJsonLd} />
       <JsonLd data={itemListJsonLd} />

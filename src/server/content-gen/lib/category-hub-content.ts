@@ -448,6 +448,52 @@ export function getCategoryHubContent(slug: string, locale: Locale): CategoryHub
   return CATALOG[slug]?.[locale] ?? GENERIC[locale];
 }
 
+/**
+ * CTA de conversion ADAPTÉ à l'activité de chaque catégorie (vers la page service
+ * correspondante) — au lieu d'un « Voir nos formations » générique sur les 5.
+ */
+const CATEGORY_CTA: Record<
+  string,
+  { readonly href: string; readonly labelFr: string; readonly labelEn: string }
+> = {
+  "blog-formations-ia": {
+    href: "/formations",
+    labelFr: "Voir nos formations IA",
+    labelEn: "See our AI trainings",
+  },
+  "blog-coaching-1-to-1": {
+    href: "/un-a-un",
+    labelFr: "Découvrir le coaching 1-to-1",
+    labelEn: "Discover 1-to-1 coaching",
+  },
+  "blog-audits-ia": {
+    href: "/audit",
+    labelFr: "Demander un audit IA",
+    labelEn: "Request an AI audit",
+  },
+  "blog-implementations-ia": {
+    href: "/implementation",
+    labelFr: "Voir l'implémentation IA",
+    labelEn: "See AI implementation",
+  },
+  "blog-sites-web-augmentes": {
+    href: "/sites-web-augmentes",
+    labelFr: "Créer un site augmenté",
+    labelEn: "Build an augmented site",
+  },
+};
+
+export function getCategoryCta(slug: string, locale: Locale): { href: string; label: string } {
+  const c = CATEGORY_CTA[slug];
+  if (!c) {
+    return {
+      href: "/reserver",
+      label: locale === "fr" ? "Réserver un appel" : "Book a call",
+    };
+  }
+  return { href: c.href, label: locale === "fr" ? c.labelFr : c.labelEn };
+}
+
 export interface BlogHubHero {
   readonly centerLabel: string;
   readonly nodes: ReadonlyArray<HeroSchemaNode>;

@@ -8,6 +8,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import { FaqBlock } from "@/components/sections/FaqBlock";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 import { CategoryArticlesFilter } from "@/components/blog/CategoryArticlesFilter";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -23,7 +24,10 @@ import {
 } from "@/server/content-gen/blog/category-loader";
 import { blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
 import { categoryDescription } from "@/server/content-gen/lib/category-descriptions";
-import { getCategoryHubContent } from "@/server/content-gen/lib/category-hub-content";
+import {
+  getCategoryHubContent,
+  getCategoryCta,
+} from "@/server/content-gen/lib/category-hub-content";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -132,6 +136,9 @@ export default async function BlogCategoryPage({ params }: Props) {
   const isFr = loc === "fr";
   const posts = await loadItems(slug, loc);
   const hub = getCategoryHubContent(slug, loc);
+  // CTA adapté à l'activité de cette catégorie (Formations→/formations,
+  // Coaching→/un-a-un, Audits→/audit, etc.) — Will 2026-06-24.
+  const activityCta = getCategoryCta(slug, loc);
 
   // Maillage croisé (C, 2026-06-24) — les AUTRES catégories content-gen, pour
   // une navigation latérale entre hubs (renforce le maillage interne).
@@ -209,8 +216,8 @@ export default async function BlogCategoryPage({ params }: Props) {
               {isFr ? "Voir tous les articles" : "See all articles"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href="/formations" variant="outline" size="lg">
-              {isFr ? "Voir nos formations" : "See our trainings"}
+            <Cta href={activityCta.href as never} variant="outline" size="lg">
+              {activityCta.label}
             </Cta>
           </>
         }
@@ -310,6 +317,29 @@ export default async function BlogCategoryPage({ params }: Props) {
           </Container>
         </Section>
       ) : null}
+      {/* CTA de conversion ADAPTÉ à l'activité de la catégorie (Will 2026-06-24). */}
+      <CtaBlock
+        eyebrow={isFr ? "Passer à l'action" : "Take action"}
+        title={isFr ? "Envie d'aller plus loin sur" : "Want to go further on"}
+        titleEm={label}
+        description={
+          isFr
+            ? "Au-delà des articles, transformez ces idées en résultats concrets pour votre organisation."
+            : "Beyond the articles, turn these ideas into concrete results for your organization."
+        }
+        cta={
+          <>
+            <Cta href={activityCta.href as never} size="lg">
+              {activityCta.label}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Cta>
+            <Cta href="/reserver" variant="outline" size="lg">
+              {isFr ? "Réserver un appel" : "Book a call"}
+            </Cta>
+          </>
+        }
+        tone="mocha"
+      />
       {/* NB : le BreadcrumbList JSON-LD est émis par <Breadcrumbs> (avec l'item
           « Accueil », positions correctes). Ne PAS le ré-émettre ici — deux
           BreadcrumbList partageant le même @id = schéma ambigu (audit 2026-06-24). */}
