@@ -506,142 +506,149 @@ export default async function BlogArticle({ params }: Props) {
       {/* Photo hero déplacée DANS le <Section> ci-dessus (colonne droite, prop
           `media`) — Will 2026-06-24 « image à droite, pas sous le héro ». */}
 
-      {tldrText ? (
-        <Section>
-          <Container className="max-w-3xl">
-            <AnswerCard locale={loc}>{tldrText}</AnswerCard>
-          </Container>
-        </Section>
-      ) : null}
+      {/* Layout 2 colonnes (Will 2026-06-25) : rail SOMMAIRE sticky à GAUCHE +
+          colonne de lecture à droite. Mobile-first : sous lg, une seule colonne
+          (le <details> Sommaire de ArticleTOC s'empile en haut, le rail desktop
+          est masqué). align-items par défaut (stretch) → la cellule gauche fait
+          la hauteur du contenu, ce qui permet au nav `lg:sticky` de coller. */}
+      <Container className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
+        <div className="lg:col-start-1 lg:row-start-1">
+          {tocItems.length >= 2 ? (
+            <ArticleTOC items={tocItems} pageUrl={pageUrl} locale={loc} />
+          ) : null}
+        </div>
 
-      {/* Chantier templates 2026-06-21 — encadré « Point clé » (distinct du
-          TL;DR), rendu seulement si Article.keyTakeaway est renseigné. */}
-      <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
+        <div className="min-w-0 lg:col-start-2 lg:row-start-1">
+          {tldrText ? (
+            <Section>
+              <Container className="max-w-3xl">
+                <AnswerCard locale={loc}>{tldrText}</AnswerCard>
+              </Container>
+            </Section>
+          ) : null}
 
-      {/* P3 TOC Featured Snippets — rendu si article > 1500 mots et headings détectés. */}
-      {tocItems.length >= 2 && (
-        <Container className="max-w-3xl">
-          <ArticleTOC items={tocItems} pageUrl={pageUrl} locale={loc} />
-        </Container>
-      )}
+          {/* Encadré « Point clé » (distinct de la Réponse rapide). */}
+          <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
 
-      {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
+          {/* A11y — <article> sémantique (contenu éditorial). Le landmark main et la
           cible du skip-link sont portés par <main id="main"> du layout :
           NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
-      <article>
-        <Section>
-          <Container className="text-fg max-w-[52rem] space-y-6 text-lg leading-relaxed">
-            {dbBodyHtml ? (
-              // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
-              // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
-              // H3 — tokens prix résolus.
-              <div
-                className="prose prose-axionia max-w-none"
-                dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
-              />
-            ) : (
-              blocks!.map((block, idx) => {
-                if (block.kind === "ol") {
-                  return (
-                    <ol
-                      key={`b-${idx}`}
-                      className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
-                    >
-                      {block.items.map((it, j) => (
-                        <li key={`i-${j}`} className="pl-1">
-                          {it}
-                        </li>
-                      ))}
-                    </ol>
-                  );
-                }
-                return <p key={`b-${idx}`}>{block.text}</p>;
-              })
-            )}
-          </Container>
-        </Section>
-      </article>
+          <article>
+            <Section>
+              <Container className="text-fg max-w-[52rem] space-y-6 text-lg leading-relaxed">
+                {dbBodyHtml ? (
+                  // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
+                  // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
+                  // H3 — tokens prix résolus.
+                  <div
+                    className="prose prose-axionia max-w-none"
+                    dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
+                  />
+                ) : (
+                  blocks!.map((block, idx) => {
+                    if (block.kind === "ol") {
+                      return (
+                        <ol
+                          key={`b-${idx}`}
+                          className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
+                        >
+                          {block.items.map((it, j) => (
+                            <li key={`i-${j}`} className="pl-1">
+                              {it}
+                            </li>
+                          ))}
+                        </ol>
+                      );
+                    }
+                    return <p key={`b-${idx}`}>{block.text}</p>;
+                  })
+                )}
+              </Container>
+            </Section>
+          </article>
 
-      {/* Carte auteur E-E-A-T déplacée EN BAS (Will 2026-06-25) — clôt l'article
+          {/* Carte auteur E-E-A-T déplacée EN BAS (Will 2026-06-25) — clôt l'article
           juste après le corps, pattern éditorial standard (bio auteur en fin). */}
-      <Section>
-        <Container className="max-w-[52rem]">
-          <AuthorByline
-            authorName={view.author}
-            authorSlug={view.author.toLowerCase()}
-            {...(manonByline
-              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
-              : {})}
-            publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
-            lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
-            emitJsonLd={!isDbHtml}
-            locale={loc}
-          />
-        </Container>
-      </Section>
+          <Section>
+            <Container className="max-w-[52rem]">
+              <AuthorByline
+                authorName={view.author}
+                authorSlug={view.author.toLowerCase()}
+                {...(manonByline
+                  ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+                  : {})}
+                publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
+                lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
+                emitJsonLd={!isDbHtml}
+                locale={loc}
+              />
+            </Container>
+          </Section>
 
-      {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
+          {/* Refonte templates 2026-06-22 (Chantier 2b) — barre de partage + copier
           le lien. URL absolue (pageUrl) pour X/LinkedIn/mailto. Server, l'îlot
           clipboard est isolé dans CopyLinkButton ("use client"). */}
-      <ArticleShareBar url={pageUrl} title={view.title} locale={loc} />
+          <ArticleShareBar url={pageUrl} title={view.title} locale={loc} />
 
-      {/* Chantier templates 2026-06-21 — citation d'expert nommé (levier AEO
+          {/* Chantier templates 2026-06-21 — citation d'expert nommé (levier AEO
           le plus fort), rendue seulement si une vraie citation est renseignée. */}
-      <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
+          <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
 
-      {/* Chantier templates 2026-06-21 — FAQ + FAQPage JSON-LD. La donnée
+          {/* Chantier templates 2026-06-21 — FAQ + FAQPage JSON-LD. La donnée
           (Article.faqJson) était déjà écrite par les generators mais jamais
           rendue. Accordéon natif (0 JS), Speakable via data-faq-q/data-faq-a. */}
-      <ArticleFaq
-        items={view.faqItems}
-        locale={loc}
-        dateModified={view.updatedAt ?? view.publishedAt}
-      />
+          <ArticleFaq
+            items={view.faqItems}
+            locale={loc}
+            dateModified={view.updatedAt ?? view.publishedAt}
+          />
 
-      {/* Chantier templates 2026-06-21 — Sources & méthodologie visibles
+          {/* Chantier templates 2026-06-21 — Sources & méthodologie visibles
           (view.citations était émis JSON-LD only). Liens nofollow + date. */}
-      <ArticleSources
-        items={view.citations}
-        locale={loc}
-        lastVerified={view.updatedAt ?? view.publishedAt}
-      />
+          <ArticleSources
+            items={view.citations}
+            locale={loc}
+            lastVerified={view.updatedAt ?? view.publishedAt}
+          />
 
-      {/* Refonte templates 2026-06-22 (Chantier 2b) — bloc de transparence
+          {/* Refonte templates 2026-06-22 (Chantier 2b) — bloc de transparence
           E-E-A-T : dernière vérification + cycle de mise à jour (signal de
           fraîcheur Google/IA). Cycle aligné sur la doctrine de re-publication. */}
-      <ArticleTransparencyBlock
-        lastVerified={view.updatedAt ?? view.publishedAt}
-        updateCycleDays={90}
-        locale={loc}
-      />
+          <ArticleTransparencyBlock
+            lastVerified={view.updatedAt ?? view.publishedAt}
+            updateCycleDays={90}
+            locale={loc}
+          />
 
-      {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
-      {anchorVilleHref ? (
-        <Section>
-          <Container className="max-w-3xl">
-            <p className="text-fg-muted text-sm">
-              {isFr ? "Cet article concerne " : "This article covers "}
-              <Link
-                href={anchorVilleHref as never}
-                className="text-primary font-medium hover:underline"
-              >
-                {isFr ? `l'IA à ${anchorVille?.nameFr}` : `AI in ${anchorVille?.nameFr}`}
-              </Link>
-              {isFr ? " — voir la page locale." : " — see the local page."}
-            </p>
-          </Container>
-        </Section>
-      ) : null}
+          {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
+          {anchorVilleHref ? (
+            <Section>
+              <Container className="max-w-3xl">
+                <p className="text-fg-muted text-sm">
+                  {isFr ? "Cet article concerne " : "This article covers "}
+                  <Link
+                    href={anchorVilleHref as never}
+                    className="text-primary font-medium hover:underline"
+                  >
+                    {isFr ? `l'IA à ${anchorVille?.nameFr}` : `AI in ${anchorVille?.nameFr}`}
+                  </Link>
+                  {isFr ? " — voir la page locale." : " — see the local page."}
+                </p>
+              </Container>
+            </Section>
+          ) : null}
 
-      <Section>
-        <Container className="max-w-3xl">
-          <AiContentDisclaimer locale={loc} />
-        </Container>
-      </Section>
+          <Section>
+            <Container className="max-w-3xl">
+              <AiContentDisclaimer locale={loc} />
+            </Container>
+          </Section>
 
-      {/* Refonte templates 2026-06-22 — People Also Ask (vraies questions
-          d'autres articles, distinct de « articles connexes »). */}
-      <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale={loc} />
+          {/* Refonte templates 2026-06-22 — People Also Ask (vraies questions
+              d'autres articles, distinct de « articles connexes »). */}
+          <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale={loc} />
+        </div>
+      </Container>
 
       <SuggestedContent
         variant="articles"

@@ -103,11 +103,11 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
         <li key={item.anchor}>
           <a
             href={`#${item.anchor}`}
-            className={`group/toc hover:bg-sand flex items-baseline gap-2.5 rounded-lg px-2 py-1.5 transition-colors ${
+            className={`group/toc hover:bg-paper flex items-baseline gap-2.5 rounded-lg px-2 py-1.5 transition-colors ${
               item.level === 3 ? "pl-5" : ""
             }`}
           >
-            <span className="text-terracotta-deep/60 group-hover/toc:text-terracotta-deep w-5 shrink-0 text-[11px] font-semibold tabular-nums transition-colors">
+            <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] font-bold tabular-nums">
               {String(i + 1).padStart(2, "0")}
             </span>
             <span className="text-fg-muted group-hover/toc:text-fg text-sm leading-snug transition-colors">
@@ -124,7 +124,7 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
       <JsonLd data={itemListJsonLd} />
       {/* Mobile (< lg) : sommaire repliable natif (<details>, 0 JS). */}
       {sticky ? (
-        <details className="not-prose group border-border bg-paper shadow-subtle mb-6 rounded-2xl border p-5 lg:hidden">
+        <details className="not-prose group border-border bg-sand shadow-card border-border-strong mb-6 rounded-2xl border p-5 lg:hidden">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2">
             {tocHeader}
             <svg
@@ -147,7 +147,7 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
         aria-label={label}
         className={
           sticky
-            ? "not-prose border-border bg-paper shadow-subtle hidden rounded-2xl border p-5 lg:sticky lg:top-24 lg:block lg:w-64 lg:shrink-0 lg:self-start"
+            ? "not-prose border-border bg-sand shadow-card border-border-strong hidden rounded-2xl border p-5 lg:sticky lg:top-24 lg:block lg:w-64 lg:shrink-0 lg:self-start"
             : "not-prose"
         }
       >

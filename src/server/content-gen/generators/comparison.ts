@@ -68,6 +68,7 @@ Produis un comparatif structuré. Règles absolues :
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - 4 à 6 questions FAQ réelles (People-Also-Ask comparatif) optimisées Featured Snippet — réponse answer-first : 1ère phrase directe autonome (≤ 25 mots, citable seule), puis 1-2 phrases ; 40 à 55 mots au total.
+- ANTI-MONOTONIE (lisibilité 2026 — éviter le mur de texte) : en plus du graphique et du tableau, alterne les formats — 1 à 2 encadrés <aside class="callout callout-info|callout-note"><p class="callout-label">…</p><p>…</p></aside> et 1 bloc chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">90/100</span><span class="ax-stat-label">…</span></aside> (chiffre RÉEL, jamais inventé). Jamais plus de 3 paragraphes consécutifs sans élément visuel.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
