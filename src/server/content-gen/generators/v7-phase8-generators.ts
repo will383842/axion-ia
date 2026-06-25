@@ -34,8 +34,9 @@ Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Anti-doorway HCU 2024 : angle unique par contenu
 - Mots bannis : "révolutionner", "disruptif", "game-changer", "innovation", "transformation digitale"
 - FR uniquement (FR-FR + x-default)
-- metaTitle 50-60 chars MAX, keyword principal au début
-- metaDescription 140-155 chars, phrase complète bénéfice clair`;
+- metaTitle OBLIGATOIREMENT 50 à 60 chars (jamais sous 50 : si trop court ajoute une précision utile), keyword principal au début
+- metaDescription OBLIGATOIREMENT 140 à 160 chars (jamais sous 140 : développe jusqu'à la fourchette), phrase complète bénéfice clair
+- directAnswer (quand demandé) OBLIGATOIREMENT 40 à 80 mots, jamais sous 40`;
 
 function buildConfig(
   slug: string,

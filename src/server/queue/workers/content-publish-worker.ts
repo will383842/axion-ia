@@ -56,6 +56,10 @@ import { injectDeepArticleLinks } from "@/server/content-gen/links/inject-deep-l
 // Sprint Final P1-14 — Release global keyword lock Redis (Fl-08 multi-campagnes).
 import { releaseKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 import { resolveCategoryIdForSector } from "@/server/content-gen/lib/category-mapper";
+// SSOT slug-history 2026-06-25 — toute mutation de slug (publish ET refresh)
+// passe par ce helper idempotent pour garantir le 301 (au lieu d'un 404) sur
+// l'ancienne URL indexée. Cf. fiabilité publication P1.
+import { recordSlugChange } from "@/server/content-gen/slug-history";
 
 const QUEUE_NAME = "content-publish";
 
@@ -411,11 +415,23 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     refreshPreservedSlug = existingTr.slug;
   }
 
-  const slugCandidate =
-    refreshPreservedSlug ??
-    (typeof output.slug === "string" && output.slug.length > 0
+  // Slug régénéré par le generator (ou dérivé du titre). Sur le chemin REFRESH,
+  // on PRÉSERVE par défaut le slug d'origine (URL stable = zéro 301), MAIS si le
+  // generator propose explicitement un slug différent, on bascule sur un vrai
+  // rename historisé (cf. plus bas, dans la transaction) → l'ancien slug part en
+  // 301 au lieu de 404.
+  const regeneratedSlug =
+    typeof output.slug === "string" && output.slug.length > 0
       ? output.slug
-      : slugify(title) || `article-${cgJob.id.slice(0, 8)}`);
+      : slugify(title) || `article-${cgJob.id.slice(0, 8)}`;
+  // Rename effectif sur refresh : le generator a proposé un slug différent de
+  // celui préservé. Déterministe → calculé hors transaction pour que tout le
+  // downstream (revalidate, IndexNow, logs) utilise le NOUVEAU slug.
+  const refreshSlugChanged =
+    refreshPreservedSlug !== null && regeneratedSlug !== refreshPreservedSlug;
+  const slugCandidate = refreshSlugChanged
+    ? regeneratedSlug
+    : (refreshPreservedSlug ?? regeneratedSlug);
   const wordCount = typeof output.wordCount === "number" ? output.wordCount : null;
   const readingTimeMinutes =
     typeof output.readingTimeMinutes === "number" ? output.readingTimeMinutes : null;
@@ -424,27 +440,89 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // content-gen-worker pose heroImageFilePath sur outputJsonRaw quand un match
   // image-bank existe. On le propage dans Article.featuredImage (string URL).
   // Si null → Article.featuredImage reste undefined (Will assigne via admin).
-  const heroImageFilePath =
+  const heroImageFilePathRaw =
     typeof output["heroImageFilePath"] === "string"
-      ? (output["heroImageFilePath"] as string)
+      ? (output["heroImageFilePath"] as string).trim()
+      : null;
+  const heroImageSourceRaw =
+    typeof output["heroImageSource"] === "string"
+      ? (output["heroImageSource"] as string).trim()
       : null;
   // VIS-08 (audit visibilité 2026-06-05) — alt sémantique de l'image hero
   // (calculé par assign-hero-image, propagé par content-gen-worker dans
   // outputJsonRaw.heroImageAlt). Avant ce patch il n'était jamais persisté →
   // la page retombait sur alt={title} (signal Google Images faible).
-  const heroImageAlt =
+  const heroImageAltRaw =
     typeof output["heroImageAlt"] === "string" ? (output["heroImageAlt"] as string) : null;
   // Unsplash hero (Option A 2026-06-16) — attribution photographe CGU §6,
   // renseignée uniquement quand la hero est une photo Unsplash hotlinkée
   // (null pour image-bank : le crédit est alors dérivé de l'ImageAsset côté loader).
-  const heroPhotographerName =
+  const heroPhotographerNameRaw =
     typeof output["heroImagePhotographerName"] === "string"
       ? (output["heroImagePhotographerName"] as string)
       : null;
-  const heroPhotographerUrl =
+  const heroPhotographerUrlRaw =
     typeof output["heroImagePhotographerUrl"] === "string"
       ? (output["heroImagePhotographerUrl"] as string)
       : null;
+
+  // ── Fix fiabilité P1 (2026-06-25) — RE-VALIDATION DE FORME de la hero ────────
+  // Avant ce patch, `heroImageFilePath` lu depuis outputJsonRaw était persisté
+  // tel quel dans Article.featuredImage SANS contrôle. Un generator bugué / un
+  // provider Unsplash renvoyant une URL tronquée (`https:/…`, chaîne vide après
+  // trim, chemin relatif sans `/`) écrivait une URL cassée → <Image> throw au
+  // rendu OU og:image/JSON-LD malformés. On valide UNIQUEMENT la FORME (zéro
+  // appel réseau bloquant — pas de HEAD synchrone qui ralentirait le worker) :
+  //   - URL absolue http(s):// bien formée (parsable), OU
+  //   - chemin local commençant par `/` (image-bank normalisée, cf. normalizeBankPath).
+  // Si invalide → on logue un WARN et on persiste null PROPREMENT (le rendu a
+  // déjà un fallback : alt={title}, pas d'image). On NE BLOQUE JAMAIS la
+  // publication. Quand le filePath est nullifié, on droppe aussi alt + crédit
+  // photographe (orphelins sans image).
+  function isValidHeroUrl(value: string): boolean {
+    if (value.startsWith("/")) return !value.startsWith("//"); // chemin local (pas un proto-relatif //host)
+    if (/^https?:\/\//i.test(value)) {
+      try {
+        const u = new URL(value);
+        return u.hostname.length > 0;
+      } catch {
+        return false;
+      }
+    }
+    return false;
+  }
+  let heroImageFilePath: string | null = heroImageFilePathRaw;
+  if (heroImageFilePath !== null) {
+    const formOk = heroImageFilePath.length > 0 && isValidHeroUrl(heroImageFilePath);
+    // Source manquante = signal d'un payload hero incomplet (cf. heroImageSource
+    // posé par content-gen-worker pour toute hero réelle). On loggue mais on ne
+    // nullifie QUE si la forme de l'URL est aussi en cause (tolérance rétrocompat
+    // aux articles antérieurs où la source n'était pas propagée).
+    if (!formOk) {
+      console.warn(
+        JSON.stringify({
+          event: "hero_image_invalid",
+          jobId: cgJob.id,
+          reason: "malformed_url",
+          rawValue: heroImageFilePath.slice(0, 200),
+          source: heroImageSourceRaw,
+        }),
+      );
+      heroImageFilePath = null;
+    } else if (!heroImageSourceRaw) {
+      console.warn(
+        JSON.stringify({
+          event: "hero_image_missing_source",
+          jobId: cgJob.id,
+          rawValue: heroImageFilePath.slice(0, 200),
+        }),
+      );
+    }
+  }
+  // Si la hero a été nullifiée, on droppe les métadonnées orphelines associées.
+  const heroImageAlt = heroImageFilePath ? heroImageAltRaw : null;
+  const heroPhotographerName = heroImageFilePath ? heroPhotographerNameRaw : null;
+  const heroPhotographerUrl = heroImageFilePath ? heroPhotographerUrlRaw : null;
 
   // B.7 P0-6 P1.5 — Outline SimHash propage depuis content-gen-worker.
   const outlineSimhash =
@@ -697,13 +775,29 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     }
 
     // Translation FR (en V1 — EN exclu doctrine v1.2).
-    // Régénération : UPDATE la traduction existante (slug PRÉSERVÉ → URL stable).
+    // Régénération : UPDATE la traduction existante. Slug PRÉSERVÉ par défaut
+    // (URL stable → zéro 301). Si le generator a produit un slug DIFFÉRENT, on
+    // effectue un vrai rename HISTORISÉ dans la même transaction : l'ancien slug
+    // est écrit dans ArticleSlugHistory (helper SSOT idempotent) AVANT l'update
+    // → les routes publiques redirigent l'ancienne URL en 301 au lieu d'un 404.
     if (refreshArticleId) {
+      if (refreshSlugChanged) {
+        await recordSlugChange(
+          {
+            articleId: a.id,
+            oldSlug: refreshPreservedSlug!,
+            newSlug: regeneratedSlug,
+            locale: "fr",
+            reason: `refresh_regen:${cgJob.id}`,
+          },
+          tx,
+        );
+      }
       await tx.articleTranslation.update({
         where: { id: refreshTranslationId! },
         data: {
           title,
-          // slug volontairement NON modifié (préservation de l'URL).
+          ...(refreshSlugChanged ? { slug: regeneratedSlug } : {}),
           body: bodyHtmlForPersist,
           ...(bodyText ? { bodyText } : {}),
           metaTitle,

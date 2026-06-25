@@ -79,10 +79,10 @@ distinct, avec progression logique débutant→intermédiaire→avancé.
 Output STRICT JSON (zéro prose hors JSON) :
 {
   "title": "string (60-90 chars)",
-  "metaTitle": "string (≤ 70 chars)",
-  "metaDescription": "string (140-160 chars)",
+  "metaTitle": "string (OBLIGATOIREMENT 50 à 60 chars, jamais sous 50 : si trop court ajoute une précision utile ; mot-clé au début)",
+  "metaDescription": "string (OBLIGATOIREMENT 140 à 160 chars, jamais sous 140 : développe jusqu'à la fourchette)",
   "slug": "guide-...",
-  "directAnswer": "string (50-80 mots, AEO réponse directe)",
+  "directAnswer": "string (OBLIGATOIREMENT 40 à 80 mots, jamais sous 40, AEO réponse directe)",
   "sections": [
     {"position": 1, "title": "string", "brief": "1-2 phrases résumé"}
   ],

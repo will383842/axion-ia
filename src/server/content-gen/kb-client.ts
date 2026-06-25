@@ -154,17 +154,29 @@ export async function retrieve(opts: KbRetrieveOptions): Promise<KbRetrievedChun
   const mode = opts.mode ?? "fts";
   const k = opts.k ?? 8;
 
+  let chunks: KbRetrievedChunk[];
   if (mode === "fts") {
-    return retrieveFts(opts, k);
-  }
-
-  if (mode === "vector") {
+    chunks = await retrieveFts(opts, k);
+  } else if (mode === "vector") {
     const vector = await retrieveVector(opts, k);
-    return vector.length > 0 ? vector : retrieveFts(opts, k);
+    chunks = vector.length > 0 ? vector : await retrieveFts(opts, k);
+  } else {
+    // hybrid : FTS + vectoriel fusionnés (RRF). Sur-échantillonne chaque canal.
+    const [fts, vector] = await Promise.all([
+      retrieveFts(opts, k * 2),
+      retrieveVector(opts, k * 2),
+    ]);
+    chunks = vector.length === 0 ? fts.slice(0, k) : rrfMerge(fts, vector, k);
   }
 
-  // hybrid : FTS + vectoriel fusionnés (RRF). Sur-échantillonne chaque canal.
-  const [fts, vector] = await Promise.all([retrieveFts(opts, k * 2), retrieveVector(opts, k * 2)]);
-  if (vector.length === 0) return fts.slice(0, k);
-  return rrfMerge(fts, vector, k);
+  // Observabilité RAG (P1) : un retrieval vide = génération SANS grounding KB.
+  // On log seulement (flux et valeur de retour inchangés) pour rendre visible
+  // la dégradation silencieuse (clé Voyage absente / KB non embeddée / FTS sec).
+  if (chunks.length === 0) {
+    console.warn(
+      `[kb-client] retrieval vide — génération sans grounding KB pour query="${opts.query}" (mode=${mode}, locale=${opts.locale})`,
+    );
+  }
+
+  return chunks;
 }

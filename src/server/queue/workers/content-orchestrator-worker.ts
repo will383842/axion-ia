@@ -20,6 +20,7 @@ import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { validateIntentDistribution } from "@/server/content-gen/intent-distribution-schema";
 import {
   computeAntiBurstSchedule,
   msSinceStartOfDay,
@@ -626,19 +627,24 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   // dépourvues de mix propre (leur mix per-campagne reste prioritaire).
   // Lecture directe de la config (clé `search_intent_distribution`) — PAS via
   // policies.ts (use-server → tire next-auth, casse le worker). Même clé/défauts.
-  const intentDist = await readContentGenConfig<{
-    informational?: number;
-    commercial?: number;
-    local?: number;
-    transactional?: number;
-    navigational?: number;
-  }>("search_intent_distribution", {
+  const rawIntentDist = await readContentGenConfig<unknown>("search_intent_distribution", {
     informational: 50,
     commercial: 25,
     local: 15,
     transactional: 5,
     navigational: 5,
   });
+  // Robustesse intent (P1) — valide les clés contre l'ensemble connu (enum
+  // SearchIntent + alias FR/simplifiés). FAIL-OPEN : une clé inconnue/typo
+  // (ex. "commercia") est warn + ignorée, jamais throw — l'orchestration
+  // continue avec les clés valides. Préserve le comportement nominal.
+  const intentDist: {
+    informational?: number;
+    commercial?: number;
+    local?: number;
+    transactional?: number;
+    navigational?: number;
+  } = validateIntentDistribution(rawIntentDist);
   const globalIntentMix: Partial<Record<SearchIntent, number>> = {
     informational: intentDist.informational ?? 0,
     commercial_investigation: intentDist.commercial ?? 0,

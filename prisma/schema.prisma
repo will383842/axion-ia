@@ -3669,6 +3669,7 @@ model Keyword {
 
   @@index([vertical])
   @@index([usageCount, lastUsedAt])
+  @@index([clusterId])
   @@map("keywords")
 }
 

@@ -137,6 +137,66 @@ export function truncateMetaDescription(d: string, max = 158): string {
   return `${(lastSpace > 60 ? slice.slice(0, lastSpace) : slice).trimEnd()}…`;
 }
 
+// ---------------------------------------------------------------------------
+// Filet de sécurité longueur des métadonnées d'ARTICLES (P0 qualité 2026-06-25)
+// ---------------------------------------------------------------------------
+// L'audit a relevé des metaTitle/metaDescription chroniquement trop courts
+// (metaTitle 33-50 car au lieu de 50-60 ; metaDescription 107-144 au lieu de
+// 140-160). Les prompts ont été durcis côté generators ; ici on ajoute un
+// garde-fou DÉTERMINISTE et PUR au rendu, qui ne s'applique QUE lorsque la
+// valeur est manquante ou trop courte (zéro régression sur les valeurs déjà
+// dans la fourchette). Volontairement conservateur : on n'allonge jamais
+// artificiellement avec du remplissage creux — on s'appuie sur des données déjà
+// présentes (title de l'article, suffixe de marque, excerpt/directAnswer).
+
+const TITLE_BRAND_SUFFIX = " · Axion-IA";
+/** En dessous, le metaTitle est considéré absent/cassé → fallback sur le title. */
+const META_TITLE_MISSING_BELOW = 30;
+/** En dessous (mais ≥ MISSING), on suffixe la marque tant que ≤ 60 car. */
+const META_TITLE_SUFFIX_BELOW = 45;
+const META_TITLE_MAX = 60;
+/** En dessous, la metaDescription est considérée trop courte → fallback. */
+const META_DESCRIPTION_MIN = 80;
+
+/**
+ * Garde-fou metaTitle au rendu (articles). Pur/déterministe.
+ * - metaTitle absent ou < 30 car → on prend le `title` de l'article.
+ * - titre retenu < 45 car → on suffixe «  · Axion-IA » SI ça reste ≤ 60 car
+ *   (sinon on laisse tel quel : mieux vaut un titre court qu'un titre tronqué).
+ * Ne touche jamais un metaTitle déjà ≥ 45 car (cas nominal).
+ */
+export function ensureArticleMetaTitle(
+  metaTitle: string | null | undefined,
+  title: string,
+): string {
+  const mt = (metaTitle ?? "").trim();
+  const base = mt.length >= META_TITLE_MISSING_BELOW ? mt : title.trim();
+  if (base.length >= META_TITLE_SUFFIX_BELOW) return base;
+  if (base.endsWith(TITLE_BRAND_SUFFIX)) return base;
+  const suffixed = `${base}${TITLE_BRAND_SUFFIX}`;
+  return suffixed.length <= META_TITLE_MAX ? suffixed : base;
+}
+
+/**
+ * Garde-fou metaDescription au rendu (articles). Pur/déterministe.
+ * - metaDescription absente ou < 80 car → fallback sur le 1er candidat non vide
+ *   ≥ 80 car parmi (excerpt, directAnswer), tronqué proprement par
+ *   `truncateMetaDescription`. Si aucun candidat n'atteint 80 car, on renvoie le
+ *   plus long disponible (jamais pire que l'existant).
+ * Ne touche jamais une metaDescription déjà ≥ 80 car (cas nominal).
+ */
+export function ensureArticleMetaDescription(
+  metaDescription: string | null | undefined,
+  fallbacks: { excerpt?: string | null; directAnswer?: string | null },
+): string {
+  const md = (metaDescription ?? "").trim();
+  if (md.length >= META_DESCRIPTION_MIN) return md;
+  const candidates = [md, (fallbacks.excerpt ?? "").trim(), (fallbacks.directAnswer ?? "").trim()];
+  const acceptable = candidates.find((c) => c.length >= META_DESCRIPTION_MIN);
+  const best = acceptable ?? candidates.reduce((a, b) => (b.length > a.length ? b : a), "");
+  return best ? truncateMetaDescription(best) : md;
+}
+
 export function buildProductMetadata({
   locale,
   path,
@@ -164,9 +224,14 @@ export function buildProductMetadata({
   // le ré-ajoute → « … · Axion-IA · Axion-IA ». On renvoie alors `{ absolute }`
   // (bypass template) ; sinon la string brute (le template appose le suffixe).
   const TITLE_SUFFIX = " · Axion-IA";
-  const resolvedTitle: NonNullable<Metadata["title"]> = title.endsWith(TITLE_SUFFIX)
-    ? { absolute: title }
-    : title;
+  // P0 qualité 2026-06-25 — filet de sécurité longueur titre pour les ARTICLES
+  // uniquement (ogType="article"). Si le titre fourni est court (< 45 car), on le
+  // suffixe «  · Axion-IA » sans dépasser 60 car. Déterministe, ne touche que les
+  // titres courts ; les pages services (ogType="website") restent inchangées.
+  const effectiveTitle = ogType === "article" ? ensureArticleMetaTitle(title, title) : title;
+  const resolvedTitle: NonNullable<Metadata["title"]> = effectiveTitle.endsWith(TITLE_SUFFIX)
+    ? { absolute: effectiveTitle }
+    : effectiveTitle;
   // Sprint Web Vitals fix 2026-05-17 — normalize canonical (strip trailing
   // slash sauf root pour éviter Lighthouse `canonical` audit fail).
   // Next.js 16 defaults trailingSlash=false : `/fr/` doit pointer canonical

@@ -19,6 +19,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   const session = await auth();
-  const role = (session?.user as { role?: string } | undefined)?.role;
+  const sessionUser = session?.user as { id?: string; email?: string; role?: string } | undefined;
+  const role = sessionUser?.role;
   if (!session?.user || (role !== "admin" && role !== "super_admin")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -87,6 +89,33 @@ export async function DELETE(
       { status: 500 },
     );
   }
+
+  // Audit trail RGPD art. 17 / art. 30 — qui (acteur session), quoi (articleId),
+  // quand (timestamp ActivityLog), pourquoi (action canonique). Best-effort :
+  // n'altère JAMAIS la suppression (déjà committée ci-dessus).
+  await logActivity({
+    action: "admin.articles.forget",
+    targetType: "Article",
+    targetId: id,
+    changes: {
+      reason: "RGPD art. 17 — droit à l'effacement",
+      status: article.status,
+      slug: frSlug,
+      cascade: [
+        "ArticleTranslation",
+        "ArticleTagOnArticle",
+        "ArticleSlugHistory",
+        "GenerationProvenance",
+        "ReviewQueue",
+      ],
+      contentGenJobDelinked: true,
+    },
+    session: {
+      userId: sessionUser?.id ?? "unknown",
+      email: sessionUser?.email ?? "unknown",
+      role: role ?? "unknown",
+    },
+  });
 
   // Revalidate cache Next.js (best-effort).
   try {

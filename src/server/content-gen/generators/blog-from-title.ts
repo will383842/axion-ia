@@ -78,9 +78,9 @@ Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps se
 - INTERDIT : angle purement définitionnel. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement.
 - 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (uniquement contact@axion-ia.com).
 - "title" (le H1 affiché) : reproduis EXACTEMENT le titre fourni, sans le modifier ni le tronquer.
-- "metaTitle" : 50-60 caractères MAX, keyword principal au début.
-- "metaDescription" : 140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus.
-- "directAnswer" : **40 à 80 mots** (ni moins, ni plus), réponse autonome et complète au mot-clé, citable seule par une IA (AI Overview / vocal).
+- "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, « pour TPE/PME »…). NE PAS dépasser 60.
+- "metaDescription" : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète avec bénéfice clair + keyword naturel. NE JAMAIS descendre sous 140 caractères : développe jusqu'à atteindre la fourchette. NE PAS dépasser 160.
+- "directAnswer" : OBLIGATOIREMENT **40 à 80 mots** (ni moins, ni plus), réponse autonome et complète au mot-clé, citable seule par une IA (AI Overview / vocal). NE JAMAIS répondre en moins de 40 mots : ajoute le « comment » / « pourquoi » concret jusqu'au plancher.
 - "faq" : 8 questions People-Also-Ask réelles — chaque réponse answer-first : 1ʳᵉ phrase = réponse directe ≤ 25 mots, puis 1-2 phrases ; 40-55 mots au total.
 - "keyTakeaway" : 1-2 phrases = LE point clé à retenir (synthèse autonome citable).
 - "expertTake" : 1-2 phrases = prise de position d'expert, sans statistique inventée.

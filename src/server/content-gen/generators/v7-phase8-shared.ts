@@ -177,8 +177,8 @@ ${config.userPromptFocusSection}
 - ≥ 4 liens externes <a> vers sources d'autorité (INSEE, DARES, BPI, EU AI Act…)
 - ≥ 3 liens internes vers /audit, /interventions/essentielle, /implementations, /un-a-un
 - Le primary keyword DOIT apparaître textuellement dans le <h1> ET début du metaTitle.
-- metaTitle : 50-60 caractères MAX
-- metaDescription : 140-155 caractères MAX, phrase complète
+- metaTitle : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces). NE JAMAIS descendre sous 50 : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60.
+- metaDescription : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète. NE JAMAIS descendre sous 140 : développe jusqu'à la fourchette. NE PAS dépasser 160.
 - INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre.
 
 ## Sources internes Axion-IA (à citer en priorité)
