@@ -49,12 +49,13 @@ export function ArticleCard({
     <Link
       href={href as never}
       className={cn(
-        "focus-visible:ring-primary block focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+        "group focus-visible:ring-primary block focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         className,
       )}
     >
-      <Card className="flex h-full flex-col overflow-hidden">
-        {/* Miniature — rendue UNIQUEMENT si une photo existe (ratio 16/9, anti-CLS). */}
+      <Card className="group-hover:border-border-strong group-hover:shadow-elevated flex h-full flex-col overflow-hidden transition duration-200 ease-out group-hover:-translate-y-1">
+        {/* Miniature — rendue UNIQUEMENT si une photo existe (ratio 16/9, anti-CLS).
+            Zoom doux + voile dégradé au survol (transform only → 0 CLS). */}
         {imageUrl ? (
           <div className="bg-halo-warm relative aspect-[16/9] w-full overflow-hidden">
             <Image
@@ -63,13 +64,18 @@ export function ArticleCard({
               fill
               loading="lazy"
               sizes={imageSizes}
-              className="object-cover"
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
           </div>
         ) : null}
         <CardHeader className={compact ? "space-y-1.5 p-4" : undefined}>
           <CardTitle
             className={cn(
+              "group-hover:text-terracotta-deep transition-colors",
               compact ? "text-lg leading-snug font-medium" : "text-2xl leading-[1.2] font-medium",
             )}
             style={{ fontFamily: "var(--font-serif)" }}
@@ -77,7 +83,7 @@ export function ArticleCard({
             {title}
           </CardTitle>
         </CardHeader>
-        <CardContent className={compact ? "p-4 pt-0" : undefined}>
+        <CardContent className={cn("flex flex-1 flex-col", compact ? "p-4 pt-0" : undefined)}>
           <CardDescription
             className={cn(
               "leading-relaxed",
@@ -86,13 +92,24 @@ export function ArticleCard({
           >
             {excerpt}
           </CardDescription>
-          {publishedAt || readingTime ? (
-            <p className={cn("text-fg-muted text-xs", compact ? "mt-3" : "mt-5")}>
-              {publishedAt ? <time dateTime={publishedAt}>{publishedAt}</time> : null}
-              {publishedAt && readingTime ? <span aria-hidden="true"> · </span> : null}
-              {readingTime}
-            </p>
-          ) : null}
+          <div className={cn("flex items-center justify-between gap-3", compact ? "mt-3" : "mt-5")}>
+            {publishedAt || readingTime ? (
+              <p className="text-fg-muted text-xs">
+                {publishedAt ? <time dateTime={publishedAt}>{publishedAt}</time> : null}
+                {publishedAt && readingTime ? <span aria-hidden="true"> · </span> : null}
+                {readingTime}
+              </p>
+            ) : (
+              <span />
+            )}
+            {/* Affordance de lecture — flèche qui glisse au survol. */}
+            <span
+              aria-hidden="true"
+              className="text-terracotta-deep inline-flex shrink-0 items-center gap-1 text-xs font-medium opacity-0 transition group-hover:opacity-100"
+            >
+              <span className="transition-transform group-hover:translate-x-0.5">→</span>
+            </span>
+          </div>
         </CardContent>
       </Card>
     </Link>
