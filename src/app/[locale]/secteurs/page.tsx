@@ -125,7 +125,7 @@ export default async function SecteursHub({ params }: Props) {
       </Section>
 
       <StickyMobileCta
-        href="/reserver"
+        href="/appel"
         label={isFr ? "Réserver un appel" : "Book a call"}
         track="secteurs-hub-sticky-call"
         threshold={500}

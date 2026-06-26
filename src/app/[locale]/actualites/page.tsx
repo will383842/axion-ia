@@ -228,8 +228,8 @@ export default async function ActualitesHub({ params }: Props) {
         titleEm="concrets"
         description="Réservez une intervention IA — formats 4 h, 1 jour ou 1 mois selon vos enjeux."
         cta={
-          <Cta href="/reserver" size="lg">
-            Réserver une intervention →
+          <Cta href="/appel" size="lg">
+            Réserver un appel →
           </Cta>
         }
         tone="dark"

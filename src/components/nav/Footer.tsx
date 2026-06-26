@@ -49,7 +49,7 @@ export async function Footer() {
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
-    { href: "/reserver", label: isFr ? "Réserver un appel" : "Book a call" },
+    { href: "/appel", label: isFr ? "Réserver un appel" : "Book a call" },
   ];
 
   // Sous-groupe « Carrières » de la colonne Entreprise (intertitre + 2 liens).

@@ -227,8 +227,8 @@ export default async function UnAUnHubPage({ params }: Props) {
       {
         name: isFr ? "Vous réservez" : "You book",
         text: isFr
-          ? "Calendrier en ligne, formulaire de contact ou rendez-vous téléphonique : 3 canaux, vous choisissez celui qui vous convient."
-          : "Online calendar, contact form or phone appointment: 3 channels, you pick the one that suits you.",
+          ? "Réservation d'un appel ou formulaire de contact : 2 canaux, vous choisissez celui qui vous convient."
+          : "Call booking or contact form: 2 channels, you pick the one that suits you.",
       },
       {
         name: isFr ? "On prépare votre journée" : "We prepare your day",

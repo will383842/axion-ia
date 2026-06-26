@@ -18,7 +18,7 @@ const STRATEGIC_PATHS = [
   { path: "/fr/audit", label: "audit" },
   { path: "/fr/interventions", label: "interventions" },
   { path: "/fr/implementation", label: "implementation" },
-  { path: "/fr/reserver", label: "reserver" },
+  { path: "/fr/appel", label: "appel" },
   // Tier 2 — content marketing + AEO/GEO (P1-19 extension 2026-05-15)
   { path: "/fr/cas-concrets", label: "cas-concrets" },
   { path: "/fr/methodologie", label: "methodologie" },
@@ -37,7 +37,7 @@ test.describe("a11y WCAG 2.2 AA @a11y", () => {
   for (const { path, label } of STRATEGIC_PATHS) {
     test(`${label} (${path}) — 0 serious/critical violations @a11y`, async ({ page }) => {
       await page.goto(path);
-      // Wait for hydration + lazy components mount (BookingCalendar on /reserver).
+      // Wait for hydration + lazy components mount (Calendly iframe on /appel).
       await page.waitForLoadState("networkidle");
 
       const results = await new AxeBuilder({ page })

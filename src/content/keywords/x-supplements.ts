@@ -59,7 +59,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
     },
     urlCible: "/fr/coaching-1-to-1/",
     source: "manuel",
-    note: "Intent transactionnel — lier vers /fr/reserver pour conversion directe",
+    note: "Intent transactionnel — lier vers /fr/appel pour conversion directe",
   },
 
   {

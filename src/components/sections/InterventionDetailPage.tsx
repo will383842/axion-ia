@@ -43,8 +43,8 @@ interface Props {
 const TIGHT_X = "lg:px-6 xl:px-10";
 
 // Will (audit /interventions 2026-05-12) — un format à prix fixe doit
-// rediriger sur /reserver (calendrier) plutôt que sur le formulaire de
-// demande. On garde le formulaire pour les formats Sur devis (config sans
+// rediriger sur /appel (réservation d'un appel) plutôt que sur le formulaire
+// de demande. On garde le formulaire pour les formats Sur devis (config sans
 // priceFlatEur) où un cadrage commercial est indispensable.
 const CALENDAR_SUPPORTED_FORMAT_SLUGS: ReadonlySet<string> = new Set([
   "essentielle",
@@ -65,12 +65,10 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
   const isBookable =
     config.priceFlatEur != null && CALENDAR_SUPPORTED_FORMAT_SLUGS.has(config.formatSlug);
   const primaryCtaHref = isBookable
-    ? `/reserver?intervention=${config.formatSlug}`
+    ? "/appel"
     : `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;
-  const primaryCtaLabelFr = isBookable
-    ? "Réserver sur le calendrier"
-    : "Demander cette intervention";
-  const primaryCtaLabelEn = isBookable ? "Book on the calendar" : "Request this session";
+  const primaryCtaLabelFr = isBookable ? "Réserver un appel" : "Demander cette intervention";
+  const primaryCtaLabelEn = isBookable ? "Book a call" : "Request this session";
   // Pour les formats sans schedule fixe (keynote événementielle), on reste
   // toujours sur le formulaire — c'est un cadrage personnalisé.
   const flexibleCtaHref = `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;

@@ -1389,7 +1389,7 @@ export default async function Home({ params }: HomeProps) {
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/reserver"
+                  href="/appel"
                   className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {isFr ? "Réserver un appel" : "Book a call"}

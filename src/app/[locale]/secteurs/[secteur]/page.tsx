@@ -216,7 +216,7 @@ export default async function SecteurPilier({ params }: Props) {
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
-            href={`/${loc}/reserver`}
+            href={`/${loc}/appel`}
             className="bg-terracotta rounded-full px-5 py-2.5 font-semibold text-white hover:opacity-90"
           >
             {isFr ? "Réserver un appel" : "Book a call"}
@@ -231,7 +231,7 @@ export default async function SecteurPilier({ params }: Props) {
       </Section>
 
       <StickyMobileCta
-        href="/reserver"
+        href="/appel"
         label={isFr ? "Réserver un appel" : "Book a call"}
         track={`secteur-${sector.slug}-sticky-call`}
         threshold={500}

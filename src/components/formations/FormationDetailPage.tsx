@@ -88,12 +88,12 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const entryPrice = getFormationV2EntryPrice(f);
   const brackets = getFormationV2Brackets(f);
 
-  // ── Réservabilité calendrier — dérivée du SSOT booking-catalog (même logique
-  //    que les pages détail un-à-un). Les formations 4h/1j/2j sont réservables
-  //    directement (deep-link `?intervention=<slug>` → calendrier pré-sélectionné) ;
-  //    les 3 jours sont « sur devis » (bookable:false) → on bascule sur l'appel.
+  // ── Réservabilité — dérivée du SSOT booking-catalog (même logique que les
+  //    pages détail un-à-un). Toute prise de contact passe désormais par /appel
+  //    (réservation d'un appel) ; `isBookable` ne sert plus qu'à adapter le
+  //    libellé du CTA (« Poser une option » vs « Réserver un appel »).
   const isBookable = Boolean(findBookableBySlug(f.slugFr));
-  const reserveHref = `/reserver?intervention=${f.slugFr}`;
+  const reserveHref = "/appel";
 
   // ── Bandeau prix + effectif (hero) ───────────────────────────────────────────
   const priceLabel =

@@ -20,10 +20,6 @@ const COMMON_DISALLOW = [
   "/mes-donnees/",
   "/fr/mes-donnees/",
   "/en/my-data/",
-  // Funnel booking : UTM tracking + état tunnel utilisateur, hors indexation
-  "/reserver/",
-  "/fr/reserver/",
-  "/en/booking/",
   // Espace admin obfuscé par ADMIN_URL_PREFIX, mais wildcard `/admin*`
   // bloque les conventions usuelles (admin / fr/admin / en/admin) au cas où
   // un ancien path serait découvert via cache externe.

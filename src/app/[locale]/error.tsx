@@ -55,7 +55,7 @@ export default function LocaleError({ error, reset }: ErrorProps) {
             { href: "/interventions", label: t("notFoundLinkInterventions") },
             { href: "/audit", label: t("notFoundLinkAudit") },
             { href: "/cas-concrets", label: t("notFoundLinkCases") },
-            { href: "/reserver", label: t("notFoundLinkBook") },
+            { href: "/appel", label: t("notFoundLinkBook") },
           ].map((s) => (
             <li key={s.href}>
               <Link

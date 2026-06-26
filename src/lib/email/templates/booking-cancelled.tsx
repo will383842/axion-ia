@@ -49,7 +49,10 @@ export function BookingCancelledEmail({
     <EmailLayout
       preview={t.title}
       title={t.title}
-      cta={{ label: t.cta, href: `${baseUrl}/${locale}/${locale === "fr" ? "reserver" : "book"}` }}
+      cta={{
+        label: t.cta,
+        href: `${baseUrl}/${locale}/${locale === "fr" ? "appel" : "book-a-call"}`,
+      }}
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>

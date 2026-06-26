@@ -82,7 +82,7 @@ const CARDS: ReadonlyArray<AudienceCard> = [
     detailHref: "/audit/tpe-1-jour",
     preReserveFr: "Pré-réserver l'audit (1 jour)",
     preReserveEn: "Pre-book the audit (1 day)",
-    preReserveHref: "/reserver",
+    preReserveHref: "/appel",
   },
   {
     segment: "PME",

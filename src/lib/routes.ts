@@ -30,7 +30,6 @@ export const ROUTES = {
   faq: "/faq",
   help: "/centre-aide",
   search: "/recherche",
-  reserve: "/reserver",
   comparisons: "/comparaisons",
   methodology: "/methodologie",
   stackIa: "/stack-ia",

@@ -195,7 +195,7 @@ export const KW_GEO_I: KeywordSeed[] = [
     urlCible: "/fr/ressources/expert-ia-entreprise-france",
     canonicalParent: "/fr/a-propos",
     source: "manuel",
-    note: "GEO: réponse directe §1, JSON-LD Article + speakable + ContactPage mentions. CTA naturel vers /fr/reserver.",
+    note: "GEO: réponse directe §1, JSON-LD Article + speakable + ContactPage mentions. CTA naturel vers /fr/appel.",
   },
 
   // #7

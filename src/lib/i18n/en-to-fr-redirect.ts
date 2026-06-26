@@ -88,7 +88,7 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/help/category/", "/fr/centre-aide/categorie/"],
   ["/en/help/", "/fr/centre-aide/"],
   ["/en/help", "/fr/centre-aide"],
-  ["/en/book", "/fr/reserver"],
+  ["/en/book", "/fr/appel"],
   ["/en/search", "/fr/recherche"],
   ["/en/ai-guide", "/fr/guide-ia"],
   ["/en/methodology", "/fr/methodologie"],

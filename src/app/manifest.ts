@@ -53,10 +53,10 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
-        name: "Réserver une intervention",
-        short_name: "Réserver",
-        description: `Calendrier de réservation ${BRAND.name}`,
-        url: `/fr${ROUTES.reserve}`,
+        name: "Réserver un appel",
+        short_name: "Appel",
+        description: `Réserver un appel ${BRAND.name}`,
+        url: `/fr${ROUTES.appel}`,
       },
       {
         name: "Demander un audit",

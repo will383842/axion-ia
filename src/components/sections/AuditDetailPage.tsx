@@ -7,7 +7,7 @@
 //
 // Spécificité Audit : un bloc « Choisissez votre format » liste les sous-tiers
 // du tier (cartes cliquables), chacune avec son CTA :
-//   - ctaType="calendar" → réservation directe sur /reserver (Flash sur site 890 €)
+//   - ctaType="calendar" → réservation d'un appel sur /appel (Flash sur site 890 €)
 //   - ctaType="contact"  → /audit/demande?objet=<subTierId>
 //   - ctaType="quote"    → /audit/demande?objet=<subTierId> (sur devis)
 
@@ -76,7 +76,7 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
   const featuredSubTier = config.subTiers.find((s) => s.isFeatured) ?? config.subTiers[0]!;
   const heroCtaHref =
     featuredSubTier.ctaType === "calendar"
-      ? `/reserver?intervention=${featuredSubTier.calendarSlug}`
+      ? "/appel"
       : `/audit/demande?objet=${encodeURIComponent(featuredSubTier.contactObject ?? tier)}`;
 
   // JSON-LD — Service (factory centralisée auto-injecte areasServed +
@@ -289,18 +289,18 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
           {config.subTiers.map((sub) => {
             const href =
               sub.ctaType === "calendar"
-                ? `/reserver?intervention=${sub.calendarSlug}`
+                ? "/appel"
                 : `/audit/demande?objet=${encodeURIComponent(sub.contactObject ?? sub.subTierId)}`;
             const Icon =
               sub.ctaType === "calendar" ? Calendar : sub.ctaType === "quote" ? FileText : Mail;
             const ctaLabel = isFr
               ? sub.ctaType === "calendar"
-                ? "Réserver sur le calendrier"
+                ? "Réserver un appel"
                 : sub.ctaType === "quote"
                   ? "Demander un cadrage"
                   : "Pré-réserver cette mission"
               : sub.ctaType === "calendar"
-                ? "Book on the calendar"
+                ? "Book a call"
                 : sub.ctaType === "quote"
                   ? "Request framing"
                   : "Pre-book this mission";

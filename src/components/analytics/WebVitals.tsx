@@ -110,7 +110,7 @@ function inferPageType(pathname: string): string {
   if (head === "connaissances") return "knowledge";
   if (head === "equipe") return "team";
   if (head === "tarifs") return "pricing";
-  if (head === "reserver") return "booking";
+  if (head === "appel" || head === "book-a-call") return "booking";
   return head;
 }
 
