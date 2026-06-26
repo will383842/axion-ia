@@ -636,7 +636,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       hasLocalBusinessJsonLd: targetSearchIntent === "local" && Boolean(dbJob.anchorVilleSlug),
       hasGeoMeta: Boolean(dbJob.anchorVilleSlug || dbJob.anchorRegionSlug),
       hasComparisonTable: /<table[\s>]/i.test(output.bodyHtml),
-      hasPrimaryCta: /(href=["'][^"']*reserver|<button|cta-primary)/i.test(output.bodyHtml),
+      hasPrimaryCta:
+        /(href=["'][^"']*(?:reserver|appel|contact)|<button|cta-primary|cta-internal)/i.test(
+          output.bodyHtml,
+        ),
       // CORRECTIF 2026-06-20 — le tableau `output.citations` n'est rempli que si
       // le LLM remplit explicitement le champ JSON `citations` (quasi jamais), ce
       // qui faisait échouer le hard-gate « Intent informational sans citations »

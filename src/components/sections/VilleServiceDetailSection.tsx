@@ -314,7 +314,7 @@ export function VilleServiceDetailSection({
           <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
         </Cta>
         <Link
-          href={`/reserver?ville=${villeSlug}&service=${service}` as never}
+          href="/appel"
           data-cta-tracking={`ville_service_detail_${service}_book`}
           data-source-ville={villeSlug}
           className="text-terracotta hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full px-5 py-3 text-sm font-semibold underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"

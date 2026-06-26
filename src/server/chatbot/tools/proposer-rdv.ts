@@ -26,6 +26,6 @@ export function proposerRdv(rawInput: unknown): ProposerRdvResult {
       return { url: "/fr/appel", label: "Réserver un échange découverte" };
     case "audit":
     case "formation":
-      return { url: "/fr/reserver", label: "Réserver un créneau" };
+      return { url: "/fr/appel", label: "Réserver un appel" };
   }
 }

@@ -13,8 +13,8 @@ describe("T-15 proposer_rdv", () => {
     expect(isKnownFrUrl(r.url)).toBe(true);
   });
 
-  it("audit/formation → /fr/reserver (route connue)", () => {
-    expect(proposerRdv({ type_rdv: "audit" }).url).toBe("/fr/reserver");
+  it("audit/formation → /fr/appel (route connue)", () => {
+    expect(proposerRdv({ type_rdv: "audit" }).url).toBe("/fr/appel");
     expect(isKnownFrUrl(proposerRdv({ type_rdv: "formation" }).url)).toBe(true);
   });
 

@@ -84,9 +84,7 @@ test.describe("Journey 3 — Mobile 375px Paris hub @sprint-a", () => {
     const viewportWidth = await page.evaluate(() => window.innerWidth);
     expect(bodyScrollWidth).toBeLessThanOrEqual(viewportWidth + 2);
 
-    const ctaLink = page
-      .locator('a[href*="/contact"], a[href*="/appel"], a[href*="/reserver"]')
-      .first();
+    const ctaLink = page.locator('a[href*="/contact"], a[href*="/appel"]').first();
     await expect(ctaLink).toBeVisible();
   });
 });

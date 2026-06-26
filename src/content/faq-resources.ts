@@ -20,11 +20,11 @@ export interface FaqResourceLink {
 // Liens « toujours utiles » servant de complément/fallback (réservation +
 // contact restent pertinents quelle que soit la thématique).
 const RESERVER: FaqResourceLink = {
-  href: "/reserver",
-  labelFr: "Réserver un créneau",
-  labelEn: "Book a slot",
-  descFr: "Choisir une date et démarrer concrètement.",
-  descEn: "Pick a date and get started.",
+  href: "/appel",
+  labelFr: "Réserver un appel",
+  labelEn: "Book a call",
+  descFr: "Échanger avec un expert et démarrer concrètement.",
+  descEn: "Talk to an expert and get started.",
 };
 
 export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLink>> = {

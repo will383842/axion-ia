@@ -52,7 +52,8 @@ interface SpeculationRulesProps {
 const RULES = {
   // prerender — pages à pré-rendre dans un tab caché. `moderate` = déclenche
   // au hover/scroll de plus de 200 ms (économe 4G + lecteurs distraits).
-  // `/reserver` exclu : booking client-heavy, prerender = double-init analytics.
+  // `/appel` exclu du prerender : booking client-heavy (iframe Calendly),
+  // prerender = double-init analytics. Il reste en prefetch ci-dessous.
   prerender: [
     {
       source: "document",
@@ -96,7 +97,7 @@ const RULES = {
           "/{LOCALE}/implantations",
           "/{LOCALE}/implantations/ile-de-france",
           "/{LOCALE}/implantations/ile-de-france/paris",
-          "/{LOCALE}/reserver",
+          "/{LOCALE}/appel",
           "/{LOCALE}/contact",
         ],
       },

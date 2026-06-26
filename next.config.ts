@@ -222,6 +222,24 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // Suppression page /reserver (Will 2026-06-26) — le calendrier de booking
+      // est retiré ; toute prise de contact passe désormais par /appel
+      // (réservation d'un appel) ou /contact. 301 vers /appel pour préserver les
+      // liens entrants (favoris, chatbot historique, backlinks). Le pathname
+      // `/reserver` a été retiré de routing.ts → cette règle edge porte le SEO.
+      {
+        source: "/fr/reserver",
+        destination: "/fr/appel",
+        permanent: true,
+      },
+      // Slug EN legacy de l'ancien /reserver (`/book`) → /appel EN (`/book-a-call`).
+      // Pendant que EN est désactivé, proxy.ts (mapEnToFr) 301 déjà /en/book →
+      // /fr/appel ; cette règle couvre le cas EN réactivé.
+      {
+        source: "/en/book",
+        destination: "/en/book-a-call",
+        permanent: true,
+      },
       // FAQ — slugs legacy faibles → slugs keyword-rich (perfection FAQ 2026-05-31).
       // 301 pour préserver toute URL déjà connue de Google. Cf. FAQ_GLOBAL ids.
       {

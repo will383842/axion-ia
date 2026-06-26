@@ -56,7 +56,7 @@ export const EDITOR_SNIPPETS: readonly EditorSnippet[] = [
     id: "cta-internal-reserver",
     label: "CTA — Réserver",
     trigger: "/cta-reserver",
-    html: `<p class="cta-internal"><a href="/reserver" rel="noopener"><strong>Voir les créneaux disponibles →</strong></a></p>`,
+    html: `<p class="cta-internal"><a href="/appel" rel="noopener"><strong>Réserver un appel →</strong></a></p>`,
   },
   {
     id: "summary-key-points",

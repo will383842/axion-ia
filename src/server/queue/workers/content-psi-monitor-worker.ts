@@ -43,7 +43,7 @@ const TARGET_URLS: ReadonlyArray<string> = [
   "https://axion-ia.com/fr/methodologie",
   "https://axion-ia.com/fr/cas-concrets",
   "https://axion-ia.com/fr/tarifs",
-  "https://axion-ia.com/fr/reserver",
+  "https://axion-ia.com/fr/appel",
   "https://axion-ia.com/fr/contact",
   "https://axion-ia.com/fr/blog",
   "https://axion-ia.com/fr/faq",

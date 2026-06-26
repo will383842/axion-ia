@@ -331,7 +331,7 @@ export function buildVilleServiceJsonLdGraph(
         "@type": "ReserveAction",
         target: {
           "@type": "EntryPoint",
-          urlTemplate: `${SITE_URL}/${locale}/reserver?ville=${ville.slug}&service=${service}`,
+          urlTemplate: `${SITE_URL}/${locale}/appel`,
         },
         result: {
           "@type": "Reservation",

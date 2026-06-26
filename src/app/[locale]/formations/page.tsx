@@ -311,14 +311,14 @@ export default async function FormationsHub({ params }: Props) {
       ? "Comment réserver votre formation IA en entreprise"
       : "How to book your corporate AI training",
     description: isFr
-      ? "3 étapes simples pour réserver et organiser votre formation IA sur site : vous réservez (3 canaux), on prépare votre journée adaptée à votre entreprise, le formateur intervient le jour J."
-      : "3 simple steps to book and organise your on-site AI training: you book (3 channels), we prepare your day tailored to your business, the trainer delivers on the day.",
+      ? "3 étapes simples pour réserver et organiser votre formation IA sur site : vous réservez (2 canaux), on prépare votre journée adaptée à votre entreprise, le formateur intervient le jour J."
+      : "3 simple steps to book and organise your on-site AI training: you book (2 channels), we prepare your day tailored to your business, the trainer delivers on the day.",
     steps: [
       {
         name: isFr ? "Vous réservez" : "You book",
         text: isFr
-          ? "Calendrier en ligne, formulaire de contact ou rendez-vous téléphonique : 3 canaux disponibles, vous choisissez celui qui vous convient."
-          : "Online calendar, contact form or phone appointment: 3 available channels, you pick the one that suits you.",
+          ? "Réservation d'un appel ou formulaire de contact : 2 canaux disponibles, vous choisissez celui qui vous convient."
+          : "Call booking or contact form: 2 available channels, you pick the one that suits you.",
       },
       {
         name: isFr ? "On prépare votre journée" : "We prepare your day",

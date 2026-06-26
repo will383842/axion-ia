@@ -35,7 +35,7 @@ export default async function LocaleNotFound() {
     { href: "/interventions", label: t("notFoundLinkInterventions") },
     { href: "/audit", label: t("notFoundLinkAudit") },
     { href: "/cas-concrets", label: t("notFoundLinkCases") },
-    { href: "/reserver", label: t("notFoundLinkBook") },
+    { href: "/appel", label: t("notFoundLinkBook") },
   ] as const;
 
   // V-04 P0h (Sprint Correctif 2026-05-22) — wrapper min-h-[60vh] pour empêcher

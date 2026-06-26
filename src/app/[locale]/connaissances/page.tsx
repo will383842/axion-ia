@@ -170,8 +170,8 @@ export default async function ConnaissancesHub({ params }: Props) {
         titleEm="qu'un article"
         description="Réservez un audit IA flash terrain ou une intervention sur mesure."
         cta={
-          <Cta href="/reserver" size="lg">
-            Réserver →
+          <Cta href="/appel" size="lg">
+            Réserver un appel →
           </Cta>
         }
         tone="dark"

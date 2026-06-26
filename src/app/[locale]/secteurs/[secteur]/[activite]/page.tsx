@@ -215,7 +215,7 @@ export default async function SecteurActivite({ params }: Props) {
       <Section tone="canvas" titleAs="h2" title={isFr ? "Aller plus loin" : "Go further"}>
         <div className="flex flex-wrap gap-3">
           <Link
-            href={`/${loc}/reserver`}
+            href={`/${loc}/appel`}
             className="bg-terracotta rounded-full px-5 py-2.5 font-semibold text-white hover:opacity-90"
           >
             {isFr ? "Réserver un appel" : "Book a call"}
@@ -257,7 +257,7 @@ export default async function SecteurActivite({ params }: Props) {
       </Section>
 
       <StickyMobileCta
-        href="/reserver"
+        href="/appel"
         label={isFr ? "Réserver un appel" : "Book a call"}
         track={`secteur-${sector.slug}-${service.slug}-sticky-call`}
         threshold={500}

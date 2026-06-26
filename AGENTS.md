@@ -16,7 +16,7 @@ Toute PR qui touche le code frontend doit respecter ces seuils sur les **15 page
 - **TBT** ≤ 150 ms (Lighthouse lab desktop)
 - **First Load JS** ≤ 75 KB gz / route (cible V6)
 
-Exception : `/reserver` (calendrier client-heavy) → INP ≤ 150 ms, First Load ≤ 110 KB gz.
+Exception : `/appel` (réservation d'appel, iframe Calendly client-heavy) → INP ≤ 150 ms, First Load ≤ 110 KB gz.
 
 Tout patch qui dégrade ces seuils requiert un STOP & ASK Will + ADR justifié. Lighthouse CI (`pnpm lhci`) gate les PR. Bundle delta gate (`size-limit`) bloque les PR avec > +5 KB gz vs `main`.
 
