@@ -282,6 +282,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "publier",
       tier: "simple",
     },
+    {
+      href: `${base}/content-gen/citations-backfill`,
+      label: "Backfill citations (Sources)",
+      icon: "🔗",
+      group: "content_gen",
+      subGroup: "publier",
+      tier: "advanced",
+    },
     // ▸ VILLES (occasionnel)
     {
       href: `${base}/content-gen/cities-coverage`,
