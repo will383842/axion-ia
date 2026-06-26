@@ -49,6 +49,196 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
   },
   services: {
+    interventions: {
+      fr: {
+        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
+        whyHere: [
+          "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
+          "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site, sans surcoût de déplacement.",
+          "Le format Essentielle (1 jour, 2 à 30 participants) convient aux PME vitriotes — industrie chimique, construction, commerce de détail, santé — qui veulent une montée en compétences collective en une journée.",
+          "Le format Conférence s'adresse aux grandes plénières des acteurs industriels et de R&D implantés sur la ville, là où une audience large doit être sensibilisée d'un coup.",
+          "Le format Dirigeant (1 jour) cadre la trajectoire IA en huis clos pour les DG et directions d'opérations, sans passer par un comité élargi, avec une feuille de route concrète à la sortie.",
+          "Le tissu vitriot mêle 5 500 établissements actifs et plusieurs ZAC en mutation, notamment autour de l'arrivée de la ligne 15 Sud aux Ardoines : la diversité des profils — du commerce de proximité à la chimie régulée — justifie un calibrage métier session par session.",
+          "Vocabulaire ajusté à votre secteur : R&D régulée, traçabilité documentaire, contraintes RGPD et AI Act pour les structures liées à la bioproduction. Aucune session recyclée d'un autre client.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la formation",
+            detail:
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, votre secteur (industrie chimique, R&D scientifique, construction, commerce) et les cas d'usage prioritaires à Vitry-sur-Seine.",
+          },
+          {
+            step: "Préparation des démos sur vos données",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité — rapports de R&D, fiches produit, bons de commande, emails type — pour construire des démonstrations sur vos données réelles, pas sur des exemples abstraits.",
+          },
+          {
+            step: "Arrivée et installation sur site",
+            detail:
+              "Nos intervenants arrivent en avance dans vos locaux vitriots pour vérifier matériel, projection et accès Wi-Fi. Aucun aléa technique le jour de la formation, que vous soyez aux Ardoines ou au centre-ville.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu, alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers pratiques où chaque participant manipule les outils sur ses propres cas, adaptés à votre secteur.",
+          },
+          {
+            step: "Outils installés et débrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son usage concret — un compte fonctionnel, des modèles de prompts adaptés à son poste, et les premiers automatismes en place. L'objectif est qu'ils soient utilisables dès le lendemain matin, sans assistance extérieure. Un débrief synthétise les cas d'usage retenus et les prochains pas pour ancrer la pratique dans la durée.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2-12)",
+            detail:
+              "Pour artisans, commerçants et indépendants vitriots — galeries du quartier MAC VAL, boutiques du centre-ville, petites structures de services : une demi-journée pour installer un premier outil IA rentable sur les postes.",
+          },
+          {
+            sizeLabel: "PME",
+            price:
+              "Essentielle ({{price:intervention-essentielle|flat}}, 1 j, 2-30) ou Gagner du temps (1 j)",
+            detail:
+              "Pour les PME productives et de services des ZAC Les Ardoines, du Port-à-l'Anglais et de Rouget de Lisle : une journée complète pour outiller le groupe, ou un focus sur un département (qualité, commercial, bureau d'études).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Approfondie (2 j) ou Conférence (sur devis)",
+            detail:
+              "Pour les ETI industrielles et de R&D de Seine-Amont : deux journées consécutives pour une montée en compétences solide, ou une plénière de sensibilisation pour une large audience selon votre objectif.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Dirigeant · 1 jour ({{price:intervention-dirigeants|flat}}) + multi-formats",
+            detail:
+              "Pour les grands acteurs implantés à Vitry — type plateforme R&D Sanofi : cadrage stratégique en huis clos pour le comité de direction, puis cascade vers les équipes en combinaison de formats sur devis.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA Axion-IA à Vitry-sur-Seine ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, l'Essentielle et le format Gagner du temps sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeant se déroulent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous former sur site ?",
+            a: "La Formation 4 heures accueille 2 à 12 participants, l'Essentielle 2 à 30. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
+          },
+          {
+            q: "Les outils installés restent-ils utilisables après la formation ?",
+            a: "Oui. Ce sont des comptes individuels — gratuits ou avec abonnement employé — sur des outils comme ChatGPT, Claude, Mistral, Perplexity ou Notion AI selon le profil. Aucun verrou Axion-IA : vous gardez la main sur vos comptes, vos configurations et vos données, et tout reste opérationnel après notre départ. Vos équipes peuvent faire évoluer leurs prompts en autonomie.",
+          },
+          {
+            q: "Pouvez-vous adapter la formation à un secteur pharma ou R&D régulé ?",
+            a: "Oui. Pour les structures de bioproduction et de R&D présentes à Vitry — autour de la plateforme Sanofi et de son voisinage — nous adaptons vocabulaire, exemples et démos aux contraintes réelles : traçabilité documentaire, hébergement UE, pas de transfert de données hors UE sans validation. Une session pour la chimie régulée diffère d'une session pour un commerce du centre-ville.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos formations sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de montée en compétences. Le devis détaille le format, le nombre de participants et les objectifs. Aucun surcoût n'est appliqué pour le déplacement à Vitry-sur-Seine.",
+          },
+          {
+            q: "Comment traitez-vous la conformité RGPD pendant la formation ?",
+            a: "Les démos sont construites sur des documents anonymisés que vous fournissez, et nous privilégions des outils sans transfert hors UE si requis. Pour les ETI et grandes entreprises liées à la R&D régulée, nous intégrons un volet AI Act. Aucun outil n'est installé sans validation de ces points.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Aucun surcoût de déplacement à Vitry-sur-Seine, hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
+      },
+      en: {
+        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
+        whyHere: [
+          "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
+          "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site, sans surcoût de déplacement.",
+          "Le format Essentielle (1 jour, 2 à 30 participants) convient aux PME vitriotes — industrie chimique, construction, commerce de détail, santé — qui veulent une montée en compétences collective en une journée.",
+          "Le format Conférence s'adresse aux grandes plénières des acteurs industriels et de R&D implantés sur la ville, là où une audience large doit être sensibilisée d'un coup.",
+          "Le format Dirigeant (1 jour) cadre la trajectoire IA en huis clos pour les DG et directions d'opérations, sans passer par un comité élargi, avec une feuille de route concrète à la sortie.",
+          "Le tissu vitriot mêle 5 500 établissements actifs et plusieurs ZAC en mutation, notamment autour de l'arrivée de la ligne 15 Sud aux Ardoines : la diversité des profils — du commerce de proximité à la chimie régulée — justifie un calibrage métier session par session.",
+          "Vocabulaire ajusté à votre secteur : R&D régulée, traçabilité documentaire, contraintes RGPD et AI Act pour les structures liées à la bioproduction. Aucune session recyclée d'un autre client.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la formation",
+            detail:
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, votre secteur (industrie chimique, R&D scientifique, construction, commerce) et les cas d'usage prioritaires à Vitry-sur-Seine.",
+          },
+          {
+            step: "Préparation des démos sur vos données",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité — rapports de R&D, fiches produit, bons de commande, emails type — pour construire des démonstrations sur vos données réelles, pas sur des exemples abstraits.",
+          },
+          {
+            step: "Arrivée et installation sur site",
+            detail:
+              "Nos intervenants arrivent en avance dans vos locaux vitriots pour vérifier matériel, projection et accès Wi-Fi. Aucun aléa technique le jour de la formation, que vous soyez aux Ardoines ou au centre-ville.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu, alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers pratiques où chaque participant manipule les outils sur ses propres cas, adaptés à votre secteur.",
+          },
+          {
+            step: "Outils installés et débrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son usage concret — un compte fonctionnel, des modèles de prompts adaptés à son poste, et les premiers automatismes en place. L'objectif est qu'ils soient utilisables dès le lendemain matin, sans assistance extérieure. Un débrief synthétise les cas d'usage retenus et les prochains pas pour ancrer la pratique dans la durée.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2-12)",
+            detail:
+              "Pour artisans, commerçants et indépendants vitriots — galeries du quartier MAC VAL, boutiques du centre-ville, petites structures de services : une demi-journée pour installer un premier outil IA rentable sur les postes.",
+          },
+          {
+            sizeLabel: "PME",
+            price:
+              "Essentielle ({{price:intervention-essentielle|flat}}, 1 j, 2-30) ou Gagner du temps (1 j)",
+            detail:
+              "Pour les PME productives et de services des ZAC Les Ardoines, du Port-à-l'Anglais et de Rouget de Lisle : une journée complète pour outiller le groupe, ou un focus sur un département (qualité, commercial, bureau d'études).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Approfondie (2 j) ou Conférence (sur devis)",
+            detail:
+              "Pour les ETI industrielles et de R&D de Seine-Amont : deux journées consécutives pour une montée en compétences solide, ou une plénière de sensibilisation pour une large audience selon votre objectif.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Dirigeant · 1 jour ({{price:intervention-dirigeants|flat}}) + multi-formats",
+            detail:
+              "Pour les grands acteurs implantés à Vitry — type plateforme R&D Sanofi : cadrage stratégique en huis clos pour le comité de direction, puis cascade vers les équipes en combinaison de formats sur devis.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA Axion-IA à Vitry-sur-Seine ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, l'Essentielle et le format Gagner du temps sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeant se déroulent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous former sur site ?",
+            a: "La Formation 4 heures accueille 2 à 12 participants, l'Essentielle 2 à 30. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
+          },
+          {
+            q: "Les outils installés restent-ils utilisables après la formation ?",
+            a: "Oui. Ce sont des comptes individuels — gratuits ou avec abonnement employé — sur des outils comme ChatGPT, Claude, Mistral, Perplexity ou Notion AI selon le profil. Aucun verrou Axion-IA : vous gardez la main sur vos comptes, vos configurations et vos données, et tout reste opérationnel après notre départ. Vos équipes peuvent faire évoluer leurs prompts en autonomie.",
+          },
+          {
+            q: "Pouvez-vous adapter la formation à un secteur pharma ou R&D régulé ?",
+            a: "Oui. Pour les structures de bioproduction et de R&D présentes à Vitry — autour de la plateforme Sanofi et de son voisinage — nous adaptons vocabulaire, exemples et démos aux contraintes réelles : traçabilité documentaire, hébergement UE, pas de transfert de données hors UE sans validation. Une session pour la chimie régulée diffère d'une session pour un commerce du centre-ville.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos formations sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de montée en compétences. Le devis détaille le format, le nombre de participants et les objectifs. Aucun surcoût n'est appliqué pour le déplacement à Vitry-sur-Seine.",
+          },
+          {
+            q: "Comment traitez-vous la conformité RGPD pendant la formation ?",
+            a: "Les démos sont construites sur des documents anonymisés que vous fournissez, et nous privilégions des outils sans transfert hors UE si requis. Pour les ETI et grandes entreprises liées à la R&D régulée, nous intégrons un volet AI Act. Aucun outil n'est installé sans validation de ces points.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Aucun surcoût de déplacement à Vitry-sur-Seine, hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
+      },
+    },
     sitesWeb: {
       fr: {
         hero: "Axion-IA conçoit à Vitry-sur-Seine des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique singulier : la plateforme R&D et bioproduction Sanofi héritée des usines Poulenc du Port-à-l'Anglais, les industriels et logisticiens qui se réimplantent dans les ZAC Les Ardoines (Gare Ardoines et Seine Gare Vitry, terrain à 90 % inondable), et l'écosystème culturel-créatif fédéré autour du MAC VAL et de la scène street art vitriote. Nous livrons du code custom — portails métier, e-commerce multi-CMS, chatbot RAG, recherche sémantique — hébergé en UE, sans dépendance à un éditeur unique.",

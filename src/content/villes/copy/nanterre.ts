@@ -49,6 +49,192 @@ export const NANTERRE_COPY: VilleCopy = {
     },
   },
   services: {
+    interventions: {
+      fr: {
+        hero: "La formation IA en entreprise d'Axion-IA à Nanterre se déroule sur site, dans vos locaux, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste de travail, calibrés pour leur métier réel. Dans un bassin où dominent la finance, les sièges sociaux et le conseil — de la frange ouest de La Défense à la ZAC Seine Arche — nous adaptons chaque session au vocabulaire et aux flux documentaires de vos services. Du format quatre heures pour une petite équipe à la conférence plénière, chaque participant est autonome sur ses outils dès le lendemain matin, sans aide extérieure.",
+        whyHere: [
+          "Nanterre concentre des sièges financiers et tertiaires majeurs — Société Générale, Natixis, ainsi que VINCI (QG mondial « L'Archipel », 74 000 m² près de la gare RER E Nanterre-La Folie) et Faurecia Sièges d'Automobile au parc des Champs-Pierreux : autant d'équipes que nous formons par métier, finance, conseil ou production.",
+          "Toute la commune est couverte en présentiel : Nanterre-Préfecture, ZAC Seine Arche, secteur L'Archipel/La Folie, parc des Champs-Pierreux et l'éco-quartier des Groues (76 hectares en chantier, appelés à accueillir 12 000 emplois).",
+          "Le format quatre heures et le format Essentielle conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 30 personnes sans bloquer toute l'organisation.",
+          "Le format Conférence s'adresse aux grandes plénières des sièges de la frange ouest de La Défense ; le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et directions Transformation du bassin Puteaux–Courbevoie–Rueil-Malmaison.",
+          "La proximité de l'Université Paris Nanterre et du laboratoire EconomiX (UMR 7235 CNRS, avenue de la République) alimente un vivier data, économie et gestion : nous ajustons les démos aux usages d'analyse et de reporting des cabinets et services études du 92.",
+          "Vocabulaire calibré sur votre secteur dominant — activités financières et assurances, sièges sociaux et conseil, informatique, R&D : aucune session générique recyclée d'un client à l'autre.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, votre secteur (finance, conseil, R&D, informatique) et les cas d'usage prioritaires — analyse de données, automatisation de reporting, assistance documentaire.",
+          },
+          {
+            step: "Préparation des démos",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité (emails, dossiers d'analyse, reportings, fiches process) pour calibrer les démonstrations sur vos données réelles, pas sur des exemples abstraits.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux à Nanterre — Nanterre-Préfecture, ZAC Seine Arche, secteur La Folie ou Champs-Pierreux — pour vérifier matériel, projection et accès Wi-Fi. Aucun aléa technique le jour J.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu, alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers participatifs adaptés à votre secteur nanterrien et au niveau de vos équipes.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son cas d'usage personnel, utilisables le lendemain matin. Debrief avec votre direction sur les prochaines étapes d'adoption.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 12 personnes)",
+            detail:
+              "Pour indépendants, jeunes structures des Groues et petites équipes de Nanterre-Préfecture : une demi-journée pour installer et prendre en main les premiers outils IA sur les postes, sans bloquer la journée entière.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Format Essentielle ou Gagner du temps (1 journée, 2 à 30 personnes)",
+            detail:
+              "Le format Essentielle pour poser les bases sur un groupe, ou Gagner du temps pour focaliser une journée sur l'automatisation des tâches répétitives d'un service — commercial, finance, qualité, études.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Format Approfondie (2 jours) ou Dirigeants (1 jour)",
+            detail:
+              "Deux journées consécutives pour aller au fond des cas d'usage d'un département, ou un huis-clos comité de direction pour cadrer la trajectoire IA d'un siège du bassin Nanterre/La Défense Ouest.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Format Conférence (sur devis) ou programme multi-formats",
+            detail:
+              "Plénière pour grandes audiences des sièges de la frange ouest de La Défense (type VINCI L'Archipel, directions Société Générale), ou combinaison sur mesure séminaire CODIR puis cascade équipes sur plusieurs sites.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA en entreprise à Nanterre ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle et Gagner du temps sur une journée, le format Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants se déroulent sur une journée. Un programme multi-formats est cadré ensemble en amont.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous former sur site à Nanterre ?",
+            a: "La Formation 4 heures accueille 2 à 12 personnes, les formats journée Essentielle 2 à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
+          },
+          {
+            q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
+            a: "Oui. Ce sont des comptes individuels (gratuits ou avec abonnement employé) sur des outils IA grand public, configurés pour le cas d'usage de chacun. Aucun lock-in Axion-IA : vous gardez la main sur les comptes, les paramétrages et les données.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à un métier financier ou de conseil ?",
+            a: "Oui, systématiquement. Le brief de cadrage permet d'ajuster vocabulaire, exemples et démos. Une session pour les équipes finance d'un siège nanterrien n'a rien à voir avec une session pour un service R&D ou un cabinet de conseil. Les démos s'appuient sur vos propres documents anonymisés.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation de conseil et formation. Le détail des conditions est précisé au devis.",
+          },
+          {
+            q: "Quel délai pour organiser une session à Nanterre ?",
+            a: "Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles. Nanterre est accessible depuis Paris en moins de 20 minutes via le RER A ou le métro, à 4 km de Paris-Saint-Lazare, ce qui simplifie la logistique d'intervention sur site.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation prévue. Vocabulaire ajusté à votre secteur nanterrien — finance, conseil, R&D, informatique — et aux flux documentaires de vos services, aucune session générique recyclée. Devis HT remis avant toute intervention, périmètre et livrables fixés au contrat. Kick-off et formation toujours en présentiel dans vos locaux à Nanterre.",
+      },
+      en: {
+        hero: "La formation IA en entreprise d'Axion-IA à Nanterre se déroule sur site, dans vos locaux, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste de travail, calibrés pour leur métier réel. Dans un bassin où dominent la finance, les sièges sociaux et le conseil — de la frange ouest de La Défense à la ZAC Seine Arche — nous adaptons chaque session au vocabulaire et aux flux documentaires de vos services. Du format quatre heures pour une petite équipe à la conférence plénière, chaque participant est autonome sur ses outils dès le lendemain matin, sans aide extérieure.",
+        whyHere: [
+          "Nanterre concentre des sièges financiers et tertiaires majeurs — Société Générale, Natixis, ainsi que VINCI (QG mondial « L'Archipel », 74 000 m² près de la gare RER E Nanterre-La Folie) et Faurecia Sièges d'Automobile au parc des Champs-Pierreux : autant d'équipes que nous formons par métier, finance, conseil ou production.",
+          "Toute la commune est couverte en présentiel : Nanterre-Préfecture, ZAC Seine Arche, secteur L'Archipel/La Folie, parc des Champs-Pierreux et l'éco-quartier des Groues (76 hectares en chantier, appelés à accueillir 12 000 emplois).",
+          "Le format quatre heures et le format Essentielle conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 30 personnes sans bloquer toute l'organisation.",
+          "Le format Conférence s'adresse aux grandes plénières des sièges de la frange ouest de La Défense ; le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et directions Transformation du bassin Puteaux–Courbevoie–Rueil-Malmaison.",
+          "La proximité de l'Université Paris Nanterre et du laboratoire EconomiX (UMR 7235 CNRS, avenue de la République) alimente un vivier data, économie et gestion : nous ajustons les démos aux usages d'analyse et de reporting des cabinets et services études du 92.",
+          "Vocabulaire calibré sur votre secteur dominant — activités financières et assurances, sièges sociaux et conseil, informatique, R&D : aucune session générique recyclée d'un client à l'autre.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, votre secteur (finance, conseil, R&D, informatique) et les cas d'usage prioritaires — analyse de données, automatisation de reporting, assistance documentaire.",
+          },
+          {
+            step: "Préparation des démos",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité (emails, dossiers d'analyse, reportings, fiches process) pour calibrer les démonstrations sur vos données réelles, pas sur des exemples abstraits.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux à Nanterre — Nanterre-Préfecture, ZAC Seine Arche, secteur La Folie ou Champs-Pierreux — pour vérifier matériel, projection et accès Wi-Fi. Aucun aléa technique le jour J.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu, alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers participatifs adaptés à votre secteur nanterrien et au niveau de vos équipes.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son cas d'usage personnel, utilisables le lendemain matin. Debrief avec votre direction sur les prochaines étapes d'adoption.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 12 personnes)",
+            detail:
+              "Pour indépendants, jeunes structures des Groues et petites équipes de Nanterre-Préfecture : une demi-journée pour installer et prendre en main les premiers outils IA sur les postes, sans bloquer la journée entière.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Format Essentielle ou Gagner du temps (1 journée, 2 à 30 personnes)",
+            detail:
+              "Le format Essentielle pour poser les bases sur un groupe, ou Gagner du temps pour focaliser une journée sur l'automatisation des tâches répétitives d'un service — commercial, finance, qualité, études.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Format Approfondie (2 jours) ou Dirigeants (1 jour)",
+            detail:
+              "Deux journées consécutives pour aller au fond des cas d'usage d'un département, ou un huis-clos comité de direction pour cadrer la trajectoire IA d'un siège du bassin Nanterre/La Défense Ouest.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Format Conférence (sur devis) ou programme multi-formats",
+            detail:
+              "Plénière pour grandes audiences des sièges de la frange ouest de La Défense (type VINCI L'Archipel, directions Société Générale), ou combinaison sur mesure séminaire CODIR puis cascade équipes sur plusieurs sites.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA en entreprise à Nanterre ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle et Gagner du temps sur une journée, le format Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants se déroulent sur une journée. Un programme multi-formats est cadré ensemble en amont.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous former sur site à Nanterre ?",
+            a: "La Formation 4 heures accueille 2 à 12 personnes, les formats journée Essentielle 2 à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
+          },
+          {
+            q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
+            a: "Oui. Ce sont des comptes individuels (gratuits ou avec abonnement employé) sur des outils IA grand public, configurés pour le cas d'usage de chacun. Aucun lock-in Axion-IA : vous gardez la main sur les comptes, les paramétrages et les données.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à un métier financier ou de conseil ?",
+            a: "Oui, systématiquement. Le brief de cadrage permet d'ajuster vocabulaire, exemples et démos. Une session pour les équipes finance d'un siège nanterrien n'a rien à voir avec une session pour un service R&D ou un cabinet de conseil. Les démos s'appuient sur vos propres documents anonymisés.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation de conseil et formation. Le détail des conditions est précisé au devis.",
+          },
+          {
+            q: "Quel délai pour organiser une session à Nanterre ?",
+            a: "Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles. Nanterre est accessible depuis Paris en moins de 20 minutes via le RER A ou le métro, à 4 km de Paris-Saint-Lazare, ce qui simplifie la logistique d'intervention sur site.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation prévue. Vocabulaire ajusté à votre secteur nanterrien — finance, conseil, R&D, informatique — et aux flux documentaires de vos services, aucune session générique recyclée. Devis HT remis avant toute intervention, périmètre et livrables fixés au contrat. Kick-off et formation toujours en présentiel dans vos locaux à Nanterre.",
+      },
+    },
     sitesWeb: {
       fr: {
         hero: "À Nanterre, le tissu B2B se joue sur deux fronts : les grands sièges de la frange ouest de La Défense — VINCI et son QG mondial « L'Archipel » (74 000 m²) qui enjambe la gare RER E Nanterre-La Folie, Faurecia Sièges d'Automobile au parc des Champs-Pierreux, les directions tertiaires de Nanterre-Préfecture — et l'éco-quartier des Groues, 76 hectares en chantier appelés à accueillir 12 000 emplois, PME, startups et fab-labs. Axion-IA conçoit pour ces acteurs des sites web et plateformes SaaS augmentés par l'IA : portails clients, chatbots RAG, recherche sémantique et automatisations métier, en code sur mesure, hébergés en UE et conformes RGPD, sans verrou éditeur.",

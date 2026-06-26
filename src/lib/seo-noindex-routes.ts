@@ -2226,12 +2226,29 @@ const ALL_SERVICE_VILLE_SLUGS: ReadonlyArray<string> = [
   "villeurbanne",
 ];
 
+/**
+ * Villes pilotes ≥20k ayant reçu le bloc `copy.services.interventions` long-form
+ * en plus des 40 métropoles (batch formations V1, 2026-06-26). Sync test :
+ * `seo-noindex-routes.test.ts`. À étendre quand d'autres villes/services reçoivent
+ * leur copy par service.
+ */
+const INTERVENTIONS_EXTRA_VILLE_SLUGS: ReadonlyArray<string> = [
+  "tourcoing",
+  "roubaix",
+  "nanterre",
+  "vitry-sur-seine",
+  "creteil",
+  "avignon",
+  "poitiers",
+  "dunkerque",
+];
+
 const INDEXABLE_SERVICE_VILLE_SLUGS: Record<
   "audit" | "interventions" | "implementation",
   ReadonlySet<string>
 > = {
   audit: new Set(ALL_SERVICE_VILLE_SLUGS),
-  interventions: new Set(ALL_SERVICE_VILLE_SLUGS),
+  interventions: new Set([...ALL_SERVICE_VILLE_SLUGS, ...INTERVENTIONS_EXTRA_VILLE_SLUGS]),
   implementation: new Set(ALL_SERVICE_VILLE_SLUGS),
 };
 
