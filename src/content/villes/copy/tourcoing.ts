@@ -49,6 +49,192 @@ export const TOURCOING_COPY: VilleCopy = {
     },
   },
   services: {
+    interventions: {
+      fr: {
+        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams se déplace dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 12 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
+        whyHere: [
+          "Tourcoing concentre près de 9 500 établissements actifs, avec une forte densité dans le textile-habillement et le commerce de détail : deux secteurs où devis, relances et gestion fournisseurs restent largement manuels. Nos sessions ciblent précisément ces tâches répétitives.",
+          "Le bassin Roubaix-Tourcoing est le berceau de la vente à distance (La Redoute, 3 Suisses) et reste un pôle e-commerce vivant avec Showroomprivé : nous formons les équipes catalogue, marketing et service client à automatiser la rédaction de fiches produit et le tri des demandes entrantes.",
+          "Le quartier de l'Union réunit le CETI et des ateliers de textile technique (UTTI en filature laine, Clubtex en agrotextiles et textiles médicaux) : pour ces équipes industrielles, les démos portent sur la génération de fiches techniques et l'exploitation de la documentation produit.",
+          "Plaine Images rassemble plus de 150 entreprises d'audiovisuel, jeu vidéo, XR, design et marketing digital, à côté du Fresnoy : ces studios et éditeurs sont un public naturel pour des sessions orientées production de contenu, recherche et agents conversationnels.",
+          "Toute la métropole est couverte en présentiel — quartier de l'Union, Parc de la Marlière, centre-ville — desservie par 2 lignes de métro/tram et à 16 km de la gare TGV Lille-Europe : intervention sur site sans contrainte logistique.",
+          "Grands groupes locaux (Kiabi, Auchan Retail, Bonduelle) comme PME du Parc de la Marlière : le format est dimensionné à la taille de l'équipe, du petit groupe de 4 heures à la plénière en Conférence.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre direction ou votre RH pour cibler le profil des participants, votre secteur dominant (textile, commerce, IT, santé) et les cas d'usage prioritaires à Tourcoing.",
+          },
+          {
+            step: "Préparation des démos sur vos données",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité — bons de commande, emails fournisseurs, fiches produit, devis — pour calibrer les démos sur VOS données réelles plutôt que sur des exemples génériques.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nous arrivons en avance dans vos locaux tourquennois pour vérifier matériel, projection et accès Wi-Fi. Aucun aléa technique le jour J ne vient écourter le temps de formation.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format choisi, alternance de théorie courte et de démos longues sur vos données, puis ateliers participatifs adaptés à votre métier — atelier textile, point de vente, service IT ou cabinet.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son propre cas d'usage (relances, génération de devis, tri de mails, fiches produit). Utilisables le lendemain matin sans aide extérieure.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures",
+            detail:
+              "Pour les artisans, commerçants et indépendants du centre-ville de Tourcoing : demi-journée à {{price:intervention-4h|flat}}, de 2 à 12 personnes, pour poser des automatisations concrètes sans y passer la journée.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Essentielle ou Gagner du temps (1 journée)",
+            detail:
+              "Pour les PME textiles, commerciales ou IT du Parc de la Marlière : une journée complète, de 2 à 30 personnes, pour outiller un groupe entier ou un département (commercial, achats, service client).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Approfondie (2 jours) ou Conférence",
+            detail:
+              "Pour les acteurs e-commerce et VAD du bassin (héritiers du modèle La Redoute / Showroomprivé) : deux jours pour aller au fond des cas d'usage, ou plénière en Conférence pour une grande audience.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Conférence + Dirigeant · 1 jour",
+            detail:
+              "Pour les grands sites locaux (Kiabi, Auchan Retail, Bonduelle) : combinaison plénière en Conférence et cadrage en huis-clos avec le format Dirigeant · 1 jour pour le comité de direction.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation Axion-IA à Tourcoing ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée ; les formats Essentielle et Gagner du temps se déroulent sur une journée complète ; le format Approfondie sur deux journées consécutives. La Conférence se cale sur une plénière. Pour un programme combinant plusieurs formats, le rythme est défini ensemble au cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir ?",
+            a: "La Formation 4 heures accueille de 2 à 12 personnes, les formats journée (Essentielle, Gagner du temps) jusqu'à 30 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
+          },
+          {
+            q: "Les outils installés restent-ils utilisables après la session ?",
+            a: "Oui. Ce sont des comptes individuels (gratuits ou avec abonnement employé) sur des outils du marché, configurés pour le cas d'usage de chaque participant. Il n'y a pas de verrou Axion-IA : vous gardez la main et pouvez continuer à les utiliser et les faire évoluer en interne.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à notre secteur, textile ou commerce ?",
+            a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour un atelier de textile technique du quartier de l'Union n'a rien à voir avec une session pour une équipe commerce de détail ou un studio de Plaine Images. Vos documents servent de support aux démos.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Nous ne garantissons pas un dispositif de financement particulier : les modalités dépendent de votre situation et de votre OPCO.",
+          },
+          {
+            q: "Que se passe-t-il en cas d'annulation ?",
+            a: "Plus l'annulation est anticipée, plus elle est neutre. Très en amont, le créneau se reporte ou se rembourse intégralement. Quelques jours avant, une participation partielle aux frais consultant déjà bloqués peut s'appliquer. Très tardivement, la session est reportable une fois sur les semaines suivantes.",
+          },
+        ],
+        guarantees:
+          "Le créneau est garanti dès la confirmation de réservation. Les comptes et outils installés sont les vôtres : hébergement et usages restent sous votre contrôle, sans verrou Axion-IA et sans données transmises à des tiers sans accord explicite, conformément au RGPD. Si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation vous est offerte. Le vocabulaire, les exemples et les démos sont ajustés à votre secteur tourquennois — textile, commerce, IT ou santé — sans session générique recyclée.",
+      },
+      en: {
+        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams se déplace dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 12 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
+        whyHere: [
+          "Tourcoing concentre près de 9 500 établissements actifs, avec une forte densité dans le textile-habillement et le commerce de détail : deux secteurs où devis, relances et gestion fournisseurs restent largement manuels. Nos sessions ciblent précisément ces tâches répétitives.",
+          "Le bassin Roubaix-Tourcoing est le berceau de la vente à distance (La Redoute, 3 Suisses) et reste un pôle e-commerce vivant avec Showroomprivé : nous formons les équipes catalogue, marketing et service client à automatiser la rédaction de fiches produit et le tri des demandes entrantes.",
+          "Le quartier de l'Union réunit le CETI et des ateliers de textile technique (UTTI en filature laine, Clubtex en agrotextiles et textiles médicaux) : pour ces équipes industrielles, les démos portent sur la génération de fiches techniques et l'exploitation de la documentation produit.",
+          "Plaine Images rassemble plus de 150 entreprises d'audiovisuel, jeu vidéo, XR, design et marketing digital, à côté du Fresnoy : ces studios et éditeurs sont un public naturel pour des sessions orientées production de contenu, recherche et agents conversationnels.",
+          "Toute la métropole est couverte en présentiel — quartier de l'Union, Parc de la Marlière, centre-ville — desservie par 2 lignes de métro/tram et à 16 km de la gare TGV Lille-Europe : intervention sur site sans contrainte logistique.",
+          "Grands groupes locaux (Kiabi, Auchan Retail, Bonduelle) comme PME du Parc de la Marlière : le format est dimensionné à la taille de l'équipe, du petit groupe de 4 heures à la plénière en Conférence.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre direction ou votre RH pour cibler le profil des participants, votre secteur dominant (textile, commerce, IT, santé) et les cas d'usage prioritaires à Tourcoing.",
+          },
+          {
+            step: "Préparation des démos sur vos données",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité — bons de commande, emails fournisseurs, fiches produit, devis — pour calibrer les démos sur VOS données réelles plutôt que sur des exemples génériques.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nous arrivons en avance dans vos locaux tourquennois pour vérifier matériel, projection et accès Wi-Fi. Aucun aléa technique le jour J ne vient écourter le temps de formation.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format choisi, alternance de théorie courte et de démos longues sur vos données, puis ateliers participatifs adaptés à votre métier — atelier textile, point de vente, service IT ou cabinet.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son propre cas d'usage (relances, génération de devis, tri de mails, fiches produit). Utilisables le lendemain matin sans aide extérieure.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures",
+            detail:
+              "Pour les artisans, commerçants et indépendants du centre-ville de Tourcoing : demi-journée à {{price:intervention-4h|flat}}, de 2 à 12 personnes, pour poser des automatisations concrètes sans y passer la journée.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Essentielle ou Gagner du temps (1 journée)",
+            detail:
+              "Pour les PME textiles, commerciales ou IT du Parc de la Marlière : une journée complète, de 2 à 30 personnes, pour outiller un groupe entier ou un département (commercial, achats, service client).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Approfondie (2 jours) ou Conférence",
+            detail:
+              "Pour les acteurs e-commerce et VAD du bassin (héritiers du modèle La Redoute / Showroomprivé) : deux jours pour aller au fond des cas d'usage, ou plénière en Conférence pour une grande audience.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Conférence + Dirigeant · 1 jour",
+            detail:
+              "Pour les grands sites locaux (Kiabi, Auchan Retail, Bonduelle) : combinaison plénière en Conférence et cadrage en huis-clos avec le format Dirigeant · 1 jour pour le comité de direction.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation Axion-IA à Tourcoing ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée ; les formats Essentielle et Gagner du temps se déroulent sur une journée complète ; le format Approfondie sur deux journées consécutives. La Conférence se cale sur une plénière. Pour un programme combinant plusieurs formats, le rythme est défini ensemble au cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir ?",
+            a: "La Formation 4 heures accueille de 2 à 12 personnes, les formats journée (Essentielle, Gagner du temps) jusqu'à 30 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
+          },
+          {
+            q: "Les outils installés restent-ils utilisables après la session ?",
+            a: "Oui. Ce sont des comptes individuels (gratuits ou avec abonnement employé) sur des outils du marché, configurés pour le cas d'usage de chaque participant. Il n'y a pas de verrou Axion-IA : vous gardez la main et pouvez continuer à les utiliser et les faire évoluer en interne.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à notre secteur, textile ou commerce ?",
+            a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour un atelier de textile technique du quartier de l'Union n'a rien à voir avec une session pour une équipe commerce de détail ou un studio de Plaine Images. Vos documents servent de support aux démos.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Nous ne garantissons pas un dispositif de financement particulier : les modalités dépendent de votre situation et de votre OPCO.",
+          },
+          {
+            q: "Que se passe-t-il en cas d'annulation ?",
+            a: "Plus l'annulation est anticipée, plus elle est neutre. Très en amont, le créneau se reporte ou se rembourse intégralement. Quelques jours avant, une participation partielle aux frais consultant déjà bloqués peut s'appliquer. Très tardivement, la session est reportable une fois sur les semaines suivantes.",
+          },
+        ],
+        guarantees:
+          "Le créneau est garanti dès la confirmation de réservation. Les comptes et outils installés sont les vôtres : hébergement et usages restent sous votre contrôle, sans verrou Axion-IA et sans données transmises à des tiers sans accord explicite, conformément au RGPD. Si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation vous est offerte. Le vocabulaire, les exemples et les démos sont ajustés à votre secteur tourquennois — textile, commerce, IT ou santé — sans session générique recyclée.",
+      },
+    },
     sitesWeb: {
       fr: {
         hero: "Tourcoing est le berceau français de la vente à distance reconverti à l'ère du numérique : le bassin Roubaix-Tourcoing a vu naître la VPC (La Redoute, 3 Suisses) et héberge aujourd'hui Showroomprivé, un savoir-faire e-commerce de catalogue produit qui imprègne tout le tissu local. Sur les anciennes friches textiles du quartier de l'Union, le CETI (Centre Européen des Textiles Innovants) et Plaine Images — 150+ entreprises d'industries créatives et numériques — incarnent la même mutation : passer de l'usine à la plateforme. Axion-IA conçoit à Tourcoing des sites web et plateformes SaaS augmentés par l'IA pour ces deux mondes — e-commerçants et pure players, ateliers de textile technique (UTTI, Clubtex), studios créatifs et éditeurs de Plaine Images et du Fresnoy. Code sur mesure, UX/UI et mobile, e-commerce multi-CMS, hébergement UE/RGPD, zéro verrou éditeur.",

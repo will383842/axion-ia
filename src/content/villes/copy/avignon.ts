@@ -51,6 +51,192 @@ export const AVIGNON_COPY: VilleCopy = {
     },
   },
   services: {
+    interventions: {
+      fr: {
+        hero: "Les formations IA en entreprise d'Axion-IA à Avignon se déroulent sur site, dans vos locaux, du format de quatre heures aux deux journées. Vos collaborateurs ne repartent pas avec un jeu de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — réservation d'hôtel, billetterie de compagnie du Off, traçabilité agroalimentaire ou gestion de commerce. Nous calibrons chaque session sur les contraintes locales d'Avignon, à commencer par le pic d'été du Festival In et du Off, et par les exigences de la filière agroalimentaire d'Agroparc. La Formation 4 heures démarre à {{price:intervention-4h|flat}} ; les formats Essentielle, Gagner du temps, Approfondie, Conférence et Dirigeant complètent la gamme selon la taille de vos équipes et votre objectif.",
+        whyHere: [
+          "Avignon, cité des Papes classée UNESCO, concentre un tissu de TPE et PME du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), de l'hôtellerie, de la restauration et du commerce : autant de métiers où l'IA s'apprend mieux sur des cas concrets que sur des exemples génériques.",
+          "Le Festival d'Avignon impose une saisonnalité forte : le In réunit environ 130 000 spectateurs et le Off environ 1 780 spectacles répartis sur 248 lieux (chiffres 60e édition). Nous formons vos équipes aux usages utiles pendant ce pic de juillet — réponses multilingues, gestion des réservations et de la billetterie, suivi des demandes.",
+          "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
+          "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à une trentaine de collaborateurs : hôtels, compagnies, cabinets, commerces et PME de terroir.",
+          "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de TPE et PME du Vaucluse.",
+          "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre direction ou votre RH pour cibler le profil des participants, votre secteur (tourisme, hôtellerie, spectacle vivant, agroalimentaire, commerce) et les cas d'usage prioritaires. Pour les acteurs de l'été, on identifie d'emblée les usages liés au Festival et au Off.",
+          },
+          {
+            step: "Préparation des démos",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité avignonnaise — demandes de réservation, emails clients, fiches produit, programmes de spectacle, fiches qualité — pour calibrer les démonstrations sur VOS données réelles plutôt que sur des exemples abstraits.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux pour vérifier matériel, projection et accès Wi-Fi. Objectif : aucun aléa technique le jour de la session, que vous soyez un hôtel du centre, une compagnie ou une entreprise d'Agroparc.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu — 4 heures, journée Essentielle, Gagner du temps, ou deux jours Approfondie — alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers pratiques adaptés à votre métier à Avignon.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son cas d'usage. L'objectif est qu'ils soient utilisables dès le lendemain matin, sans dépendance à Axion-IA, avec un temps de débrief pour répondre aux dernières questions.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures",
+            detail:
+              "La Formation 4 heures à {{price:intervention-4h|flat}}, pour 2 à 12 personnes, convient aux indépendants, hôtels, restaurants, commerces et compagnies du Off d'Avignon qui veulent une première mise en main concrète sur leurs propres dossiers.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Essentielle ou Gagner du temps",
+            detail:
+              "La journée Essentielle (2 à 30 personnes) pour former un groupe entier, ou Gagner du temps (1 jour) pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Approfondie ou Conférence",
+            detail:
+              "Le format Approfondie sur deux journées pour aller plus loin avec plusieurs équipes, ou le format Conférence (sur devis) pour une plénière à destination de grandes audiences sur un site structurant du Vaucluse.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Dirigeant et combinaisons",
+            detail:
+              "Le format Dirigeant (1 jour) pour cadrer la trajectoire IA en comité de direction, combinable avec des sessions équipes pour les acteurs d'Agroparc (type INRAE, Givaudan France Naturals, McCormick France) ou un programme multi-formats.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA Axion-IA à Avignon ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formats Essentielle, Gagner du temps et Dirigeant se déroulent sur une journée. Le format Approfondie s'étale sur deux journées. La Conférence est calée selon votre événement. Le rythme exact est défini ensemble lors du cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir ?",
+            a: "La Formation 4 heures accueille de 2 à 12 personnes, la journée Essentielle de 2 à 30 personnes. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
+          },
+          {
+            q: "Les outils installés restent-ils utilisables après la formation ?",
+            a: "Oui. Ce sont des comptes individuels, gratuits ou avec abonnement employé, sur des outils comme ChatGPT, Claude, Mistral, Notion AI, Gamma ou Perplexity selon le profil. Vous gardez la main : aucun verrou technologique ni dépendance à Axion-IA après la session.",
+          },
+          {
+            q: "Adaptez-vous le contenu au tourisme, au spectacle ou à l'agroalimentaire ?",
+            a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour un hôtel ou une compagnie du Off n'a rien à voir avec une session pour une entreprise agroalimentaire d'Agroparc travaillant la traçabilité et le contrôle qualité.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de conseil. Nous fournissons les pièces utiles à votre dossier.",
+          },
+          {
+            q: "Comment l'IA aide-t-elle pendant le Festival d'Avignon et le Off ?",
+            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sans surcharge.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de votre réservation. En cas de problème technique de notre fait, la session est reportée avec compensation. Nous visons des outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est prévue. Le vocabulaire et les exemples sont ajustés à votre métier à Avignon — tourisme, hôtellerie, spectacle, agroalimentaire ou commerce — sans session générique recyclée. Tarifs publics annoncés à l'avance, sans devis opaque.",
+      },
+      en: {
+        hero: "Les formations IA en entreprise d'Axion-IA à Avignon se déroulent sur site, dans vos locaux, du format de quatre heures aux deux journées. Vos collaborateurs ne repartent pas avec un jeu de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — réservation d'hôtel, billetterie de compagnie du Off, traçabilité agroalimentaire ou gestion de commerce. Nous calibrons chaque session sur les contraintes locales d'Avignon, à commencer par le pic d'été du Festival In et du Off, et par les exigences de la filière agroalimentaire d'Agroparc. La Formation 4 heures démarre à {{price:intervention-4h|flat}} ; les formats Essentielle, Gagner du temps, Approfondie, Conférence et Dirigeant complètent la gamme selon la taille de vos équipes et votre objectif.",
+        whyHere: [
+          "Avignon, cité des Papes classée UNESCO, concentre un tissu de TPE et PME du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), de l'hôtellerie, de la restauration et du commerce : autant de métiers où l'IA s'apprend mieux sur des cas concrets que sur des exemples génériques.",
+          "Le Festival d'Avignon impose une saisonnalité forte : le In réunit environ 130 000 spectateurs et le Off environ 1 780 spectacles répartis sur 248 lieux (chiffres 60e édition). Nous formons vos équipes aux usages utiles pendant ce pic de juillet — réponses multilingues, gestion des réservations et de la billetterie, suivi des demandes.",
+          "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
+          "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à une trentaine de collaborateurs : hôtels, compagnies, cabinets, commerces et PME de terroir.",
+          "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de TPE et PME du Vaucluse.",
+          "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre direction ou votre RH pour cibler le profil des participants, votre secteur (tourisme, hôtellerie, spectacle vivant, agroalimentaire, commerce) et les cas d'usage prioritaires. Pour les acteurs de l'été, on identifie d'emblée les usages liés au Festival et au Off.",
+          },
+          {
+            step: "Préparation des démos",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité avignonnaise — demandes de réservation, emails clients, fiches produit, programmes de spectacle, fiches qualité — pour calibrer les démonstrations sur VOS données réelles plutôt que sur des exemples abstraits.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux pour vérifier matériel, projection et accès Wi-Fi. Objectif : aucun aléa technique le jour de la session, que vous soyez un hôtel du centre, une compagnie ou une entreprise d'Agroparc.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu — 4 heures, journée Essentielle, Gagner du temps, ou deux jours Approfondie — alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers pratiques adaptés à votre métier à Avignon.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son cas d'usage. L'objectif est qu'ils soient utilisables dès le lendemain matin, sans dépendance à Axion-IA, avec un temps de débrief pour répondre aux dernières questions.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures",
+            detail:
+              "La Formation 4 heures à {{price:intervention-4h|flat}}, pour 2 à 12 personnes, convient aux indépendants, hôtels, restaurants, commerces et compagnies du Off d'Avignon qui veulent une première mise en main concrète sur leurs propres dossiers.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Essentielle ou Gagner du temps",
+            detail:
+              "La journée Essentielle (2 à 30 personnes) pour former un groupe entier, ou Gagner du temps (1 jour) pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Approfondie ou Conférence",
+            detail:
+              "Le format Approfondie sur deux journées pour aller plus loin avec plusieurs équipes, ou le format Conférence (sur devis) pour une plénière à destination de grandes audiences sur un site structurant du Vaucluse.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Dirigeant et combinaisons",
+            detail:
+              "Le format Dirigeant (1 jour) pour cadrer la trajectoire IA en comité de direction, combinable avec des sessions équipes pour les acteurs d'Agroparc (type INRAE, Givaudan France Naturals, McCormick France) ou un programme multi-formats.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA Axion-IA à Avignon ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formats Essentielle, Gagner du temps et Dirigeant se déroulent sur une journée. Le format Approfondie s'étale sur deux journées. La Conférence est calée selon votre événement. Le rythme exact est défini ensemble lors du cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir ?",
+            a: "La Formation 4 heures accueille de 2 à 12 personnes, la journée Essentielle de 2 à 30 personnes. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
+          },
+          {
+            q: "Les outils installés restent-ils utilisables après la formation ?",
+            a: "Oui. Ce sont des comptes individuels, gratuits ou avec abonnement employé, sur des outils comme ChatGPT, Claude, Mistral, Notion AI, Gamma ou Perplexity selon le profil. Vous gardez la main : aucun verrou technologique ni dépendance à Axion-IA après la session.",
+          },
+          {
+            q: "Adaptez-vous le contenu au tourisme, au spectacle ou à l'agroalimentaire ?",
+            a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour un hôtel ou une compagnie du Off n'a rien à voir avec une session pour une entreprise agroalimentaire d'Agroparc travaillant la traçabilité et le contrôle qualité.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de conseil. Nous fournissons les pièces utiles à votre dossier.",
+          },
+          {
+            q: "Comment l'IA aide-t-elle pendant le Festival d'Avignon et le Off ?",
+            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sans surcharge.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de votre réservation. En cas de problème technique de notre fait, la session est reportée avec compensation. Nous visons des outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est prévue. Le vocabulaire et les exemples sont ajustés à votre métier à Avignon — tourisme, hôtellerie, spectacle, agroalimentaire ou commerce — sans session générique recyclée. Tarifs publics annoncés à l'avance, sans devis opaque.",
+      },
+    },
     sitesWeb: {
       fr: {
         hero: "Axion-IA conçoit et augmente à Avignon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Deux réalités locales dictent le cahier des charges — le pic d'été du Festival (In et Off) et la filière agroalimentaire/ingrédients naturels d'Agroparc. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Avignon, itérations à distance.",

@@ -50,6 +50,212 @@ export const CRETEIL_COPY: VilleCopy = {
     },
   },
   services: {
+    interventions: {
+      fr: {
+        hero: "Les formations IA en entreprise d'Axion-IA à Créteil se tiennent sur site, dans vos locaux de la préfecture du Val-de-Marne. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel, prêts à servir dès le lendemain matin. Les formats vont de la session de 4 heures à l'accompagnement approfondi sur deux journées, calibrés selon la taille de l'équipe et le secteur dominant — santé humaine et action sociale autour du CHU Henri-Mondor, administration publique, enseignement lié à l'UPEC, activités juridiques ou commerce de détail. Chaque session est ancrée dans votre activité, sans contenu générique recyclé, et le déplacement sur l'ensemble du Val-de-Marne est compris dans la prestation.",
+        whyHere: [
+          "Créteil, préfecture du Val-de-Marne (93 397 habitants en 2023), concentre des organisations à fort potentiel IA : le CHU Henri-Mondor (≈1 000 lits), l'UPEC (plus de 30 000 étudiants) et l'Académie de Créteil, deuxième de France avec 950 000 élèves.",
+          "Le tissu dominant — santé humaine et action sociale, administration publique — génère des volumes documentaires et administratifs importants, terrain concret pour des cas d'usage IA appliqués métier par métier.",
+          "Toutes les zones d'activité sont couvertes en présentiel : Petites-Haies (ouverte en 1970), quartier d'affaires de L'Échat près du CHU, pôle Créteil Soleil et parc Europarc, ainsi que vos bureaux directement.",
+          "Le format collectif convient aux structures cristoliennes de quelques personnes jusqu'à une trentaine de collaborateurs : TPE de services, cabinets juridiques et médicaux, équipes administratives.",
+          "Le format Conférence s'adresse aux grandes plénières d'entreprise et d'établissement public ; le format Dirigeant permet un cadrage stratégique en huis-clos pour un comité de direction.",
+          "Vocabulaire et exemples ajustés à votre secteur dominant — santé, public, enseignement, juridique, commerce — pour que chaque participant reconnaisse ses propres dossiers dans les démonstrations.",
+          "Créteil est desservie par 4 stations de la ligne 8 du métro (L'Échat, Université, Préfecture, Pointe du Lac) et par les RER A et D, ce qui facilite la venue des formateurs comme le regroupement d'équipes réparties sur plusieurs sites du bassin.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre direction ou votre RH pour cibler le profil des participants, votre secteur (santé, administration publique, enseignement, juridique, commerce) et les cas d'usage prioritaires à Créteil.",
+          },
+          {
+            step: "Préparation des démonstrations",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité — courriers, comptes rendus, fiches, rapports — pour calibrer les démonstrations sur vos propres données cristoliennes plutôt que sur des exemples fictifs.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux à Créteil — pôle Mondor/L'Échat, Europarc, UPEC ou vos bureaux — pour vérifier matériel, projection et accès réseau. Aucun aléa technique le jour de la session.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu, alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers participatifs adaptés à votre secteur. Les participants manipulent les outils eux-mêmes, pas seulement le formateur.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec les outils IA installés et configurés pour son cas d'usage personnel, utilisables dès le lendemain matin sans aide extérieure. Un temps de debrief cadre les prochaines étapes pour l'équipe et identifie les usages à approfondir.",
+          },
+          {
+            step: "Suivi après la session",
+            detail:
+              "Un point de suivi à distance permet de lever les blocages rencontrés une fois les outils en usage réel et de consolider les automatisations mises en place. Vous restez autonome : aucun abonnement ni licence Axion-IA n'est imposé pour continuer à utiliser ce qui a été installé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}})",
+            detail:
+              "Pour indépendants, cabinets et commerçants cristoliens jusqu'à une douzaine de personnes : session de 4 heures sur site, de 2 à 12 participants, pour une première prise en main concrète d'outils IA installés sur les postes.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Formation Essentielle ou Gagner du temps (1 jour)",
+            detail:
+              "La formation Essentielle sur une journée (de 2 à 30 participants, {{price:intervention-essentielle|flat}}) pour l'équipe entière, ou le format Gagner du temps (1 jour) pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Formation Approfondie (2 jours) ou Conférence",
+            detail:
+              "La formation Approfondie sur deux journées ({{price:intervention-approfondie|flat}}) pour ancrer durablement les usages, ou le format Conférence (sur devis) en plénière pour de grandes audiences, par exemple un établissement public du Val-de-Marne.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Dirigeant · 1 jour ou programme multi-formats",
+            detail:
+              "Le format Dirigeant sur une journée ({{price:intervention-dirigeants|flat}}) pour un cadrage stratégique en comité de direction, ou une combinaison sur mesure de plusieurs formats pour un déploiement multi-équipes sur le bassin cristolien.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA en entreprise à Créteil ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle, Gagner du temps, Conférence et Dirigeant se déroulent sur une journée, et la formation Approfondie sur deux journées consécutives. Pour un programme combinant plusieurs formats, le rythme est défini ensemble lors du cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir sur site ?",
+            a: "La Formation 4 heures accueille de 2 à 12 participants ; les formats sur une journée (Essentielle, Gagner du temps) montent jusqu'à 30 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
+          },
+          {
+            q: "Les outils installés sur les postes restent-ils utilisables après la formation ?",
+            a: "Oui. Ce sont des comptes individuels, gratuits ou avec abonnement employé, sur des assistants comme ChatGPT, Claude, Mistral ou Perplexity selon le profil. Aucun verrou Axion-IA : vous gardez la main et vos collaborateurs continuent de les utiliser librement sur leurs dossiers réels.",
+          },
+          {
+            q: "Nos données patients ou administratives sont sensibles, comment sont-elles traitées ?",
+            a: "Les documents servant aux démonstrations sont anonymisés en amont. Pour les structures de santé proches du CHU Henri-Mondor, nous appliquons les exigences HDS, et pour les structures publiques ou liées à l'UPEC, les contraintes de marché public. Aucune donnée n'est transmise à un modèle tiers sans accord explicite.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à notre secteur à Créteil ?",
+            a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démonstrations. Une session pour un cabinet juridique proche du tribunal judiciaire de Créteil n'a rien à voir avec une session pour une équipe administrative de la préfecture du Val-de-Marne ou pour un commerce du pôle Créteil Soleil. Les démonstrations reposent sur vos propres documents anonymisés.",
+          },
+          {
+            q: "Vous déplacez-vous dans les communes voisines de Créteil ?",
+            a: "Oui. Nous intervenons à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Aucun surcoût de déplacement n'est appliqué en Île-de-France, et les sessions peuvent aussi se tenir en format hybride selon vos contraintes d'organisation.",
+          },
+          {
+            q: "Ces formations sont-elles éligibles à un financement ?",
+            a: "Nos formations sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de formation ou de conseil. Le devis précise le format retenu et le nombre de participants.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est offerte. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée. Aucun surcoût de déplacement en Île-de-France.",
+      },
+      en: {
+        hero: "Les formations IA en entreprise d'Axion-IA à Créteil se tiennent sur site, dans vos locaux de la préfecture du Val-de-Marne. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel, prêts à servir dès le lendemain matin. Les formats vont de la session de 4 heures à l'accompagnement approfondi sur deux journées, calibrés selon la taille de l'équipe et le secteur dominant — santé humaine et action sociale autour du CHU Henri-Mondor, administration publique, enseignement lié à l'UPEC, activités juridiques ou commerce de détail. Chaque session est ancrée dans votre activité, sans contenu générique recyclé, et le déplacement sur l'ensemble du Val-de-Marne est compris dans la prestation.",
+        whyHere: [
+          "Créteil, préfecture du Val-de-Marne (93 397 habitants en 2023), concentre des organisations à fort potentiel IA : le CHU Henri-Mondor (≈1 000 lits), l'UPEC (plus de 30 000 étudiants) et l'Académie de Créteil, deuxième de France avec 950 000 élèves.",
+          "Le tissu dominant — santé humaine et action sociale, administration publique — génère des volumes documentaires et administratifs importants, terrain concret pour des cas d'usage IA appliqués métier par métier.",
+          "Toutes les zones d'activité sont couvertes en présentiel : Petites-Haies (ouverte en 1970), quartier d'affaires de L'Échat près du CHU, pôle Créteil Soleil et parc Europarc, ainsi que vos bureaux directement.",
+          "Le format collectif convient aux structures cristoliennes de quelques personnes jusqu'à une trentaine de collaborateurs : TPE de services, cabinets juridiques et médicaux, équipes administratives.",
+          "Le format Conférence s'adresse aux grandes plénières d'entreprise et d'établissement public ; le format Dirigeant permet un cadrage stratégique en huis-clos pour un comité de direction.",
+          "Vocabulaire et exemples ajustés à votre secteur dominant — santé, public, enseignement, juridique, commerce — pour que chaque participant reconnaisse ses propres dossiers dans les démonstrations.",
+          "Créteil est desservie par 4 stations de la ligne 8 du métro (L'Échat, Université, Préfecture, Pointe du Lac) et par les RER A et D, ce qui facilite la venue des formateurs comme le regroupement d'équipes réparties sur plusieurs sites du bassin.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre direction ou votre RH pour cibler le profil des participants, votre secteur (santé, administration publique, enseignement, juridique, commerce) et les cas d'usage prioritaires à Créteil.",
+          },
+          {
+            step: "Préparation des démonstrations",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité — courriers, comptes rendus, fiches, rapports — pour calibrer les démonstrations sur vos propres données cristoliennes plutôt que sur des exemples fictifs.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux à Créteil — pôle Mondor/L'Échat, Europarc, UPEC ou vos bureaux — pour vérifier matériel, projection et accès réseau. Aucun aléa technique le jour de la session.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu, alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers participatifs adaptés à votre secteur. Les participants manipulent les outils eux-mêmes, pas seulement le formateur.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec les outils IA installés et configurés pour son cas d'usage personnel, utilisables dès le lendemain matin sans aide extérieure. Un temps de debrief cadre les prochaines étapes pour l'équipe et identifie les usages à approfondir.",
+          },
+          {
+            step: "Suivi après la session",
+            detail:
+              "Un point de suivi à distance permet de lever les blocages rencontrés une fois les outils en usage réel et de consolider les automatisations mises en place. Vous restez autonome : aucun abonnement ni licence Axion-IA n'est imposé pour continuer à utiliser ce qui a été installé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}})",
+            detail:
+              "Pour indépendants, cabinets et commerçants cristoliens jusqu'à une douzaine de personnes : session de 4 heures sur site, de 2 à 12 participants, pour une première prise en main concrète d'outils IA installés sur les postes.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Formation Essentielle ou Gagner du temps (1 jour)",
+            detail:
+              "La formation Essentielle sur une journée (de 2 à 30 participants, {{price:intervention-essentielle|flat}}) pour l'équipe entière, ou le format Gagner du temps (1 jour) pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Formation Approfondie (2 jours) ou Conférence",
+            detail:
+              "La formation Approfondie sur deux journées ({{price:intervention-approfondie|flat}}) pour ancrer durablement les usages, ou le format Conférence (sur devis) en plénière pour de grandes audiences, par exemple un établissement public du Val-de-Marne.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Dirigeant · 1 jour ou programme multi-formats",
+            detail:
+              "Le format Dirigeant sur une journée ({{price:intervention-dirigeants|flat}}) pour un cadrage stratégique en comité de direction, ou une combinaison sur mesure de plusieurs formats pour un déploiement multi-équipes sur le bassin cristolien.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA en entreprise à Créteil ?",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle, Gagner du temps, Conférence et Dirigeant se déroulent sur une journée, et la formation Approfondie sur deux journées consécutives. Pour un programme combinant plusieurs formats, le rythme est défini ensemble lors du cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir sur site ?",
+            a: "La Formation 4 heures accueille de 2 à 12 participants ; les formats sur une journée (Essentielle, Gagner du temps) montent jusqu'à 30 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
+          },
+          {
+            q: "Les outils installés sur les postes restent-ils utilisables après la formation ?",
+            a: "Oui. Ce sont des comptes individuels, gratuits ou avec abonnement employé, sur des assistants comme ChatGPT, Claude, Mistral ou Perplexity selon le profil. Aucun verrou Axion-IA : vous gardez la main et vos collaborateurs continuent de les utiliser librement sur leurs dossiers réels.",
+          },
+          {
+            q: "Nos données patients ou administratives sont sensibles, comment sont-elles traitées ?",
+            a: "Les documents servant aux démonstrations sont anonymisés en amont. Pour les structures de santé proches du CHU Henri-Mondor, nous appliquons les exigences HDS, et pour les structures publiques ou liées à l'UPEC, les contraintes de marché public. Aucune donnée n'est transmise à un modèle tiers sans accord explicite.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à notre secteur à Créteil ?",
+            a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démonstrations. Une session pour un cabinet juridique proche du tribunal judiciaire de Créteil n'a rien à voir avec une session pour une équipe administrative de la préfecture du Val-de-Marne ou pour un commerce du pôle Créteil Soleil. Les démonstrations reposent sur vos propres documents anonymisés.",
+          },
+          {
+            q: "Vous déplacez-vous dans les communes voisines de Créteil ?",
+            a: "Oui. Nous intervenons à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Aucun surcoût de déplacement n'est appliqué en Île-de-France, et les sessions peuvent aussi se tenir en format hybride selon vos contraintes d'organisation.",
+          },
+          {
+            q: "Ces formations sont-elles éligibles à un financement ?",
+            a: "Nos formations sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de formation ou de conseil. Le devis précise le format retenu et le nombre de participants.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est offerte. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée. Aucun surcoût de déplacement en Île-de-France.",
+      },
+    },
     sitesWeb: {
       fr: {
         hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA à Créteil, ancrés dans le tissu réel de la préfecture du Val-de-Marne : l'écosystème santé et sciences du vivant qui gravite autour du CHU Henri-Mondor (AP-HP), de l'Institut Mondor de Recherche Biomédicale (IMRB, Inserm/UPEC, 17 équipes) et de l'incubateur Bio&D au Centre de l'Échat. Nous construisons des plateformes patients, portails cliniques, sites MedTech/HealthTech, espaces e-commerce pour les enseignes du pôle Créteil Soleil et outils métier pour les services publics du Val-de-Marne — chatbot RAG, recherche sémantique, agents conversationnels, parcours UX/UI et mobile. Code custom, hébergement UE/RGPD (option HDS pour les données de santé), zéro dépendance éditeur.",

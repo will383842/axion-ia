@@ -49,6 +49,200 @@ export const ROUBAIX_COPY: VilleCopy = {
     },
   },
   services: {
+    interventions: {
+      fr: {
+        hero: "Axion-IA anime à Roubaix des formations IA en entreprise sur site, dans vos locaux. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste, prêts à servir leur travail réel dès le lendemain. Le tissu roubaisien — héritage VPC reconverti en e-commerce avec La Redoute et Damart, RetailTech de Blanchemaille by EuraTechnologies, datacenters RBX d'OVHcloud et filières textiles de l'écoquartier de l'Union — combine contraintes métier historiques et besoins numériques concrets. Le format d'entrée « Formation 4 heures » démarre à {{price:intervention-4h|flat}} pour 2 à 12 personnes. Différenciateur : chaque démo s'appuie sur vos propres documents anonymisés (relances, devis, fiches produit, reporting), pas sur des cas génériques recyclés.",
+        whyHere: [
+          "Roubaix concentre 8 500 établissements actifs autour du commerce de détail, de l'informatique et du numérique : nos sessions sont calibrées par métier, du marchand en ligne héritier de la VPC au studio de la Plaine Images.",
+          "L'héritage e-commerce est partout — La Redoute (siège et centre logistique automatisé Quai 30), Damart, Auchan Retail, Décathlon, Kiabi : autant de cas d'usage réels pour des ateliers sur relances clients, devis, gestion documentaire et reporting.",
+          "Blanchemaille by EuraTechnologies, incubateur 100 % e-commerce installé dans les anciens locaux de La Redoute, regroupe une cinquantaine de structures du commerce connecté : terrain idéal pour former des équipes RetailTech sur des outils IA opérationnels.",
+          "Avec OVHcloud né à Roubaix et ses datacenters RBX, la souveraineté est un réflexe local : nos formations intègrent les bons gestes RGPD et l'usage d'outils compatibles avec un environnement privé ou cloud souverain.",
+          "L'écoquartier de l'Union (CETI textiles innovants, Plaine Images industries créatives, à cheval Roubaix-Tourcoing-Wattrelos) génère des besoins de formation sur des métiers très variés : production textile, image, jeu vidéo, B2B.",
+          "Présentiel facile à organiser : Roubaix est reliée à Lille par 2 lignes de métro/tram, à 12 km de la Gare de Lille-Europe (TGV) et 14 km de l'Aéroport de Lille-Lesquin, avec l'IUT de Roubaix et l'ENSAIT comme repères de formation du territoire.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, votre secteur dominant à Roubaix (commerce, logistique, textile, numérique) et les cas d'usage prioritaires : relances, devis, gestion documentaire, reporting.",
+          },
+          {
+            step: "Préparation des démos sur vos données",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité roubaisienne — bons de commande, emails clients, fiches produit, rapports — pour calibrer les démos sur vos données réelles et non sur des exemples génériques.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux à Roubaix — bureaux, Blanchemaille ou site de l'écoquartier de l'Union — pour vérifier matériel, projection et accès Wi-Fi. Aucun aléa technique le jour J.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu (4 heures, journée Essentielle, Gagner du temps, Approfondie 2 jours), alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers participatifs adaptés à votre métier.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son cas d'usage personnel, utilisables le lendemain matin sans aide extérieure. Debrief avec la direction sur les chantiers à poursuivre et les bons gestes RGPD.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures — {{price:intervention-4h|flat}}",
+            detail:
+              "Idéal pour indépendants, artisans et petits marchands roubaisiens : format court de 2 à 12 participants pour prendre en main les premiers outils IA sur des cas concrets de votre activité.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Essentielle ou Gagner du temps (1 jour)",
+            detail:
+              "Une journée pour le groupe entier (2 à 30 personnes) ou pour un département ciblé — commercial, ADV, logistique, qualité — héritier de la distribution roubaisienne, avec outils installés sur chaque poste.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Approfondie (2 jours) ou Conférence",
+            detail:
+              "Deux journées pour aller plus loin avec les équipes RetailTech, textile (CETI/Union) ou distribution, ou format Conférence en plénière pour de grandes audiences. Conférence sur devis.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Multi-formats personnalisé",
+            detail:
+              "Combinaisons sur mesure pour grands comptes type La Redoute, OVHcloud ou groupes de distribution de la métropole lilloise : séminaire Dirigeant (1 jour) en huis-clos CODIR puis cascade vers les équipes.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA en entreprise à Roubaix ?",
+            a: "Cela dépend du format. La Formation 4 heures se tient sur une demi-journée, les formats Essentielle et Gagner du temps sur une journée, le format Approfondie sur deux journées consécutives. La Conférence et le format Dirigeant tiennent sur une journée. Le rythme exact est défini ensemble en cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir ?",
+            a: "La Formation 4 heures accueille de 2 à 12 participants, les formats journée (Essentielle, Gagner du temps) de 2 à 30 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
+          },
+          {
+            q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
+            a: "Oui. Ce sont des comptes individuels que vos collaborateurs gardent : aucun verrou Axion-IA. Vous restez maître de vos abonnements et de vos données. La configuration réalisée pendant la session reste en place et reste reprenable par vos équipes.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à notre secteur — commerce, logistique ou textile ?",
+            a: "Oui systématiquement. Le brief de cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour un marchand en ligne héritier de la VPC roubaisienne n'a rien à voir avec une session pour une structure RetailTech de Blanchemaille ou un acteur textile de l'écoquartier de l'Union.",
+          },
+          {
+            q: "Comment garantissez-vous la conformité RGPD pendant la formation ?",
+            a: "Les documents que vous nous transmettez pour calibrer les démos sont anonymisés, et nous n'envoyons aucune donnée client à des modèles tiers sans accord explicite. Avec OVHcloud et ses datacenters RBX à Roubaix, nous savons orienter vos équipes vers des outils compatibles avec un environnement privé ou cloud souverain.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter dans ce cadre. Nous fournissons les éléments administratifs nécessaires au montage du dossier.",
+          },
+          {
+            q: "Que se passe-t-il en cas d'annulation ?",
+            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais de consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation à Roubaix. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés et configurés sur leur poste, séance de remédiation offerte. Démos calibrées sur vos données anonymisées, vocabulaire ajusté à votre secteur roubaisien — commerce, logistique, textile ou numérique — et aucune session générique recyclée. Vous gardez la main sur vos comptes et vos données, sans dépendance Axion-IA.",
+      },
+      en: {
+        hero: "Axion-IA anime à Roubaix des formations IA en entreprise sur site, dans vos locaux. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste, prêts à servir leur travail réel dès le lendemain. Le tissu roubaisien — héritage VPC reconverti en e-commerce avec La Redoute et Damart, RetailTech de Blanchemaille by EuraTechnologies, datacenters RBX d'OVHcloud et filières textiles de l'écoquartier de l'Union — combine contraintes métier historiques et besoins numériques concrets. Le format d'entrée « Formation 4 heures » démarre à {{price:intervention-4h|flat}} pour 2 à 12 personnes. Différenciateur : chaque démo s'appuie sur vos propres documents anonymisés (relances, devis, fiches produit, reporting), pas sur des cas génériques recyclés.",
+        whyHere: [
+          "Roubaix concentre 8 500 établissements actifs autour du commerce de détail, de l'informatique et du numérique : nos sessions sont calibrées par métier, du marchand en ligne héritier de la VPC au studio de la Plaine Images.",
+          "L'héritage e-commerce est partout — La Redoute (siège et centre logistique automatisé Quai 30), Damart, Auchan Retail, Décathlon, Kiabi : autant de cas d'usage réels pour des ateliers sur relances clients, devis, gestion documentaire et reporting.",
+          "Blanchemaille by EuraTechnologies, incubateur 100 % e-commerce installé dans les anciens locaux de La Redoute, regroupe une cinquantaine de structures du commerce connecté : terrain idéal pour former des équipes RetailTech sur des outils IA opérationnels.",
+          "Avec OVHcloud né à Roubaix et ses datacenters RBX, la souveraineté est un réflexe local : nos formations intègrent les bons gestes RGPD et l'usage d'outils compatibles avec un environnement privé ou cloud souverain.",
+          "L'écoquartier de l'Union (CETI textiles innovants, Plaine Images industries créatives, à cheval Roubaix-Tourcoing-Wattrelos) génère des besoins de formation sur des métiers très variés : production textile, image, jeu vidéo, B2B.",
+          "Présentiel facile à organiser : Roubaix est reliée à Lille par 2 lignes de métro/tram, à 12 km de la Gare de Lille-Europe (TGV) et 14 km de l'Aéroport de Lille-Lesquin, avec l'IUT de Roubaix et l'ENSAIT comme repères de formation du territoire.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, votre secteur dominant à Roubaix (commerce, logistique, textile, numérique) et les cas d'usage prioritaires : relances, devis, gestion documentaire, reporting.",
+          },
+          {
+            step: "Préparation des démos sur vos données",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité roubaisienne — bons de commande, emails clients, fiches produit, rapports — pour calibrer les démos sur vos données réelles et non sur des exemples génériques.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux à Roubaix — bureaux, Blanchemaille ou site de l'écoquartier de l'Union — pour vérifier matériel, projection et accès Wi-Fi. Aucun aléa technique le jour J.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format retenu (4 heures, journée Essentielle, Gagner du temps, Approfondie 2 jours), alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers participatifs adaptés à votre métier.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec ses outils IA installés et configurés pour son cas d'usage personnel, utilisables le lendemain matin sans aide extérieure. Debrief avec la direction sur les chantiers à poursuivre et les bons gestes RGPD.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Formation 4 heures — {{price:intervention-4h|flat}}",
+            detail:
+              "Idéal pour indépendants, artisans et petits marchands roubaisiens : format court de 2 à 12 participants pour prendre en main les premiers outils IA sur des cas concrets de votre activité.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Essentielle ou Gagner du temps (1 jour)",
+            detail:
+              "Une journée pour le groupe entier (2 à 30 personnes) ou pour un département ciblé — commercial, ADV, logistique, qualité — héritier de la distribution roubaisienne, avec outils installés sur chaque poste.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Approfondie (2 jours) ou Conférence",
+            detail:
+              "Deux journées pour aller plus loin avec les équipes RetailTech, textile (CETI/Union) ou distribution, ou format Conférence en plénière pour de grandes audiences. Conférence sur devis.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Multi-formats personnalisé",
+            detail:
+              "Combinaisons sur mesure pour grands comptes type La Redoute, OVHcloud ou groupes de distribution de la métropole lilloise : séminaire Dirigeant (1 jour) en huis-clos CODIR puis cascade vers les équipes.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une formation IA en entreprise à Roubaix ?",
+            a: "Cela dépend du format. La Formation 4 heures se tient sur une demi-journée, les formats Essentielle et Gagner du temps sur une journée, le format Approfondie sur deux journées consécutives. La Conférence et le format Dirigeant tiennent sur une journée. Le rythme exact est défini ensemble en cadrage.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir ?",
+            a: "La Formation 4 heures accueille de 2 à 12 participants, les formats journée (Essentielle, Gagner du temps) de 2 à 30 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
+          },
+          {
+            q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
+            a: "Oui. Ce sont des comptes individuels que vos collaborateurs gardent : aucun verrou Axion-IA. Vous restez maître de vos abonnements et de vos données. La configuration réalisée pendant la session reste en place et reste reprenable par vos équipes.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à notre secteur — commerce, logistique ou textile ?",
+            a: "Oui systématiquement. Le brief de cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour un marchand en ligne héritier de la VPC roubaisienne n'a rien à voir avec une session pour une structure RetailTech de Blanchemaille ou un acteur textile de l'écoquartier de l'Union.",
+          },
+          {
+            q: "Comment garantissez-vous la conformité RGPD pendant la formation ?",
+            a: "Les documents que vous nous transmettez pour calibrer les démos sont anonymisés, et nous n'envoyons aucune donnée client à des modèles tiers sans accord explicite. Avec OVHcloud et ses datacenters RBX à Roubaix, nous savons orienter vos équipes vers des outils compatibles avec un environnement privé ou cloud souverain.",
+          },
+          {
+            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter dans ce cadre. Nous fournissons les éléments administratifs nécessaires au montage du dossier.",
+          },
+          {
+            q: "Que se passe-t-il en cas d'annulation ?",
+            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais de consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation à Roubaix. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés et configurés sur leur poste, séance de remédiation offerte. Démos calibrées sur vos données anonymisées, vocabulaire ajusté à votre secteur roubaisien — commerce, logistique, textile ou numérique — et aucune session générique recyclée. Vous gardez la main sur vos comptes et vos données, sans dépendance Axion-IA.",
+      },
+    },
     sitesWeb: {
       fr: {
         hero: "Roubaix est le berceau historique de la vente par correspondance française devenu pôle e-commerce, RetailTech et cloud souverain : La Redoute et Damart y ont leur siège, OVHcloud y est né en 1999 et y exploite ses datacenters RBX, et Blanchemaille by EuraTechnologies — l'incubateur 100 % e-commerce installé dans les anciens locaux de La Redoute — y concentre une cinquantaine de jeunes pousses du commerce connecté. Axion-IA conçoit à Roubaix des sites web et des plateformes SaaS augmentés par l'IA pour ce tissu : marchands en ligne, RetailTech de Blanchemaille, acteurs textile de l'écoquartier de l'Union et PME de distribution. UX/UI, mobile, e-commerce multi-CMS et briques IA (recherche sémantique, chatbot RAG, agents) — code sur mesure, hébergement en Union européenne conforme RGPD, zéro dépendance éditeur.",
