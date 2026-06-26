@@ -32,7 +32,6 @@ type Protection = "suspense" | "ssr-false" | "dynamic-noindex" | "admin";
 const ALLOWLIST: Record<string, Protection> = {
   "components/forms/UnifiedContactForm.tsx": "suspense",
   "app/[locale]/cas-concrets/CaseStudiesFilteredGrid.tsx": "suspense",
-  "components/calendar/BookingCalendar.tsx": "ssr-false",
   "app/[locale]/mes-donnees/export/GdprExportClient.tsx": "dynamic-noindex",
   "components/admin/site-explorer/SiteExplorerFilters.tsx": "admin",
 };
@@ -69,10 +68,6 @@ describe("garde anti-bailout CSR — useSearchParams()", () => {
       if (protection !== "suspense") continue;
       expect(read(rel), `${rel} doit contenir un <Suspense>`).toMatch(/Suspense/);
     }
-  });
-
-  it("BookingCalendar reste chargé en ssr:false (sa seule protection)", () => {
-    expect(read("components/calendar/BookingCalendarLazy.tsx")).toMatch(/ssr:\s*false/);
   });
 
   it("la page /mes-donnees/export reste force-dynamic (sa seule protection)", () => {
