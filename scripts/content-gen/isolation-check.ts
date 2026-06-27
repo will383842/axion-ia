@@ -348,6 +348,28 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/content\/__tests__\/sectors\.spec\.ts$/,
   /^src\/content\/__tests__\/secteurs-pages\.spec\.ts$/,
   /^src\/lib\/search\/site-search\.ts$/,
+  // Exceptions 2026-06-27 — violations PRÉ-EXISTANTES sur main (héritées des
+  // merges #160 admin-nav, blog hub catégories, backfill hero Unsplash, scripts
+  // ops one-shot Will). Révélées seulement maintenant : le Gate A s'arrêtait
+  // avant sur l'étape Prettier ; une fois prettier corrigé, l'isolation-check
+  // s'exécute et flague ces refs BÉNIGNES (commentaires / string de test /
+  // import consommateur / nom de migration). Aucun code pipeline content-gen :
+  // - migration content_template_history : commentaire SQL ContentTemplate
+  //   (additive ; nom ne matche pas le pattern _content_gen_, même cas que
+  //   _add_service_sector / _article_unsplash_credit déjà whitelistés).
+  // - activate-content-gen-value-metier.ts / depublish-en-translations.ts :
+  //   scripts ops one-shot prod (décision Will), refs content-gen en commentaires.
+  // - CategoryArticlesFilter.tsx : UI blog, un seul commentaire « DB content-gen ».
+  // - admin-nav.test.ts : le marqueur est dans la STRING descriptive du snapshot
+  //   de count (admin-nav.ts est déjà whitelisté ci-dessus).
+  // - backfill-hero-images.ts : script ops blog, import consommateur de
+  //   src/server/content-gen/images/backfill-hero (rattrapage hero Unsplash).
+  /^prisma\/migrations\/\d+_content_template_history\/migration\.sql$/,
+  /^scripts\/activate-content-gen-value-metier\.ts$/,
+  /^scripts\/depublish-en-translations\.ts$/,
+  /^src\/components\/blog\/CategoryArticlesFilter\.tsx$/,
+  /^src\/lib\/admin-nav\.test\.ts$/,
+  /^src\/scripts\/backfill-hero-images\.ts$/,
 ];
 
 /**

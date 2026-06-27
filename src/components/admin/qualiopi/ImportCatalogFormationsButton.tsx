@@ -93,8 +93,8 @@ export function ImportCatalogFormationsButton(): React.ReactElement {
           {driftItems.length > 0 && (
             <div className="text-[color:var(--color-admin-warning)]">
               <p className="font-[var(--font-weight-admin-semibold)]">
-                {driftItems.length} formation(s) en écart catalogue — édition admin
-                préservée, à revoir :
+                {driftItems.length} formation(s) en écart catalogue — édition admin préservée, à
+                revoir :
               </p>
               <ul className="mt-[var(--space-admin-1)] list-disc pl-[var(--space-admin-4)] text-left text-[color:var(--color-admin-fg-muted)]">
                 {driftItems.map((item) => (

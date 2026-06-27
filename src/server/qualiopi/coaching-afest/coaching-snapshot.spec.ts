@@ -48,14 +48,20 @@ describe("buildCoachingSnapshot", () => {
   });
 
   it("coerce les heures (Decimal-like ou number) en number", () => {
-    expect(buildCoachingSnapshot({ ...source, heuresPrevuesConvention: 21 }, FIXED).heuresPrevuesConvention).toBe(21);
+    expect(
+      buildCoachingSnapshot({ ...source, heuresPrevuesConvention: 21 }, FIXED)
+        .heuresPrevuesConvention,
+    ).toBe(21);
     // Decimal Prisma expose toString()
     const decimalLike = { toString: () => "10.5" };
     expect(
       buildCoachingSnapshot({ ...source, heuresPrevuesConvention: decimalLike }, FIXED)
         .heuresPrevuesConvention,
     ).toBe(10.5);
-    expect(buildCoachingSnapshot({ ...source, heuresPrevuesConvention: null }, FIXED).heuresPrevuesConvention).toBeNull();
+    expect(
+      buildCoachingSnapshot({ ...source, heuresPrevuesConvention: null }, FIXED)
+        .heuresPrevuesConvention,
+    ).toBeNull();
   });
 
   it("slug inconnu → intitulé = slug (fallback coachingInterventionLabel)", () => {
