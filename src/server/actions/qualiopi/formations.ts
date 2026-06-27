@@ -695,7 +695,9 @@ export async function duplicateFormationAction(
           moyensTechniques: source.moyensTechniques,
           ressourcesPedagogiques: source.ressourcesPedagogiques as never,
           seuilReussitePct: source.seuilReussitePct,
-          ...(source.ratioPratiquePct !== null ? { ratioPratiquePct: source.ratioPratiquePct } : {}),
+          ...(source.ratioPratiquePct !== null
+            ? { ratioPratiquePct: source.ratioPratiquePct }
+            : {}),
           accessibleHandicap: source.accessibleHandicap,
           typesActionQualiopi: source.typesActionQualiopi,
           langueGeneration: source.langueGeneration,

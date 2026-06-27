@@ -16,12 +16,7 @@ import {
   coachingFormulePath,
   coachingFormatPath,
 } from "./coaching-1to1";
-import {
-  INTERVENTION_FORMATS,
-  getFamily,
-  familyPath,
-  formatPath,
-} from "./interventions-taxonomy";
+import { INTERVENTION_FORMATS, getFamily, familyPath, formatPath } from "./interventions-taxonomy";
 import { INTERVENTION_TIERS, UN_A_UN_RECURRING_TIER, getTierById } from "./pricing";
 
 const ALL_TIERS = [...INTERVENTION_TIERS, UN_A_UN_RECURRING_TIER];

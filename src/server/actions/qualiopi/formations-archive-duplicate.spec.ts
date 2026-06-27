@@ -51,7 +51,11 @@ beforeEach(() => {
 
 describe("archiveFormationAction", () => {
   it("passe statut + statutGeneration à archive", async () => {
-    mockPrisma.formation.findUnique.mockResolvedValue({ id: ID, slug: "ia-express", statut: "actif" });
+    mockPrisma.formation.findUnique.mockResolvedValue({
+      id: ID,
+      slug: "ia-express",
+      statut: "actif",
+    });
     const res = await archiveFormationAction(ID);
     expect("data" in res).toBe(true);
     const data = mockPrisma.formation.update.mock.calls[0]![0].data;
@@ -96,9 +100,7 @@ describe("duplicateFormationAction", () => {
 
   it("clone le contenu, réinitialise le cycle de vie + slug -copie", async () => {
     // 1er findUnique = source ; 2e (allocateCopySlug) = slug libre.
-    mockPrisma.formation.findUnique
-      .mockResolvedValueOnce(source)
-      .mockResolvedValueOnce(null);
+    mockPrisma.formation.findUnique.mockResolvedValueOnce(source).mockResolvedValueOnce(null);
 
     const res = await duplicateFormationAction(ID);
     expect("data" in res).toBe(true);
