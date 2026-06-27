@@ -72,8 +72,14 @@ import {
   Cog,
   type LucideIcon,
 } from "lucide-react";
-import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
-import { ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER, findActiveNavHref } from "@/lib/admin-nav";
+import type { AdminNavItem, AdminNavGroup, ContentGenPole } from "@/lib/admin-nav";
+import {
+  ADMIN_NAV_GROUP_LABELS,
+  ADMIN_NAV_GROUP_ORDER,
+  CONTENT_GEN_POLE_LABELS,
+  CONTENT_GEN_POLE_ORDER,
+  findActiveNavHref,
+} from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
 
 // Mapping label nav → icône lucide. Fallback FolderOpen si non mappé.
@@ -138,6 +144,11 @@ const COLLAPSE_LS_KEY = "admin-sidebar-collapsed";
 // v2 : nouveau défaut « tous les groupes fermés » (accordéon). Clé bumpée pour
 // que les utilisateurs existants repartent du nouveau comportement.
 const GROUPS_COLLAPSED_LS_KEY = "admin-sidebar-groups-collapsed-v2";
+// Sous-accordéon par pôle du groupe « Génération de contenu » (2026-06-27).
+// Le groupe content_gen est subdivisé en 6 pôles (Lancer/Suivre/Publier/Villes/
+// Qualité & Coûts/Réglages) repliables indépendamment. Set sérialisé des pôles
+// FERMÉS (défaut : tous fermés sauf celui de la page courante).
+const CONTENT_GEN_POLES_COLLAPSED_LS_KEY = "admin-content-gen-poles-collapsed-v1";
 
 type BadgeTone = "danger" | "warn";
 
@@ -196,6 +207,15 @@ export function AdminSidebarNav({
     if (hit) s.delete(hit.group);
     return s;
   });
+  // Sous-accordéon des pôles content_gen : tous fermés par défaut SAUF le pôle
+  // contenant la page courante (évite un flash + ne masque jamais le lien actif).
+  const [collapsedPoles, setCollapsedPoles] = useState<Set<ContentGenPole>>(() => {
+    const s = new Set<ContentGenPole>(CONTENT_GEN_POLE_ORDER);
+    const activeHref = findActiveNavHref(items, pathname);
+    const hit = items.find((it) => it.href === activeHref);
+    if (hit?.group === "content_gen" && hit.subGroup) s.delete(hit.subGroup);
+    return s;
+  });
   const [search, setSearch] = useState("");
   // Mobile : sidebar masquée par défaut (translate-x-full), ouverte via hamburger.
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -210,6 +230,8 @@ export function AdminSidebarNav({
         if (c === "1") setCollapsed(true);
         const g = window.localStorage.getItem(GROUPS_COLLAPSED_LS_KEY);
         if (g) setCollapsedGroups(new Set(JSON.parse(g) as AdminNavGroup[]));
+        const p = window.localStorage.getItem(CONTENT_GEN_POLES_COLLAPSED_LS_KEY);
+        if (p) setCollapsedPoles(new Set(JSON.parse(p) as ContentGenPole[]));
       } catch {
         // localStorage non disponible : ignore.
       }
@@ -279,6 +301,25 @@ export function AdminSidebarNav({
     });
   };
 
+  // Pliage d'un pôle content_gen — indépendant (plusieurs pôles peuvent rester
+  // ouverts en même temps, contrairement à l'accordéon mono-section des groupes).
+  const togglePole = (pole: ContentGenPole) => {
+    setCollapsedPoles((prev) => {
+      const next = new Set(prev);
+      if (next.has(pole)) next.delete(pole);
+      else next.add(pole);
+      try {
+        window.localStorage.setItem(
+          CONTENT_GEN_POLES_COLLAPSED_LS_KEY,
+          JSON.stringify(Array.from(next)),
+        );
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  };
+
   const filtered = useMemo(() => {
     if (!search.trim()) return items;
     const q = search.trim().toLowerCase();
@@ -297,6 +338,30 @@ export function AdminSidebarNav({
     const hit = items.find((it) => it.href === activeHref);
     return hit ? hit.group : null;
   }, [items, activeHref]);
+  // Pôle content_gen contenant la page courante (null hors content_gen).
+  const activePole = useMemo<ContentGenPole | null>(() => {
+    const hit = items.find((it) => it.href === activeHref);
+    return hit?.group === "content_gen" ? (hit.subGroup ?? null) : null;
+  }, [items, activeHref]);
+
+  // Auto-ouvre le pôle contenant la page courante (au montage + à chaque
+  // navigation), tout en laissant l'utilisateur le replier librement ensuite.
+  useEffect(() => {
+    if (!activePole) return;
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setCollapsedPoles((prev) => {
+        if (!prev.has(activePole)) return prev; // déjà ouvert → no-op
+        const next = new Set(prev);
+        next.delete(activePole);
+        return next;
+      });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [activePole]);
 
   // Auto-ouvre le groupe contenant la page courante (au montage + à chaque
   // navigation), MAIS laisse l'utilisateur le replier librement ensuite (l'effet
@@ -370,6 +435,102 @@ export function AdminSidebarNav({
   };
 
   const initials = initialsFromEmail(userEmail ?? undefined);
+
+  // Rendu d'un onglet (niveaux 2 & 3) — factorisé pour servir au rendu à plat
+  // (groupes standard) ET sous les pôles content_gen.
+  const renderItem = (item: AdminNavItem): React.ReactElement => {
+    const Icon = ICON_MAP[item.label] ?? FolderOpen;
+    const active = item.href === activeHref;
+    const badge = badgeFor(item.href);
+    const level = collapsed ? 0 : itemLevel(item.href);
+    const iconSize = level >= 1 ? 14 : 16;
+    return (
+      <li key={item.href}>
+        <Link
+          href={item.href}
+          {...(active ? { "aria-current": "page" } : {})}
+          title={collapsed ? item.label : undefined}
+          style={
+            !collapsed && level > 0
+              ? { paddingLeft: `calc(var(--space-admin-3) + ${level * 13}px)` }
+              : undefined
+          }
+          className={cn(
+            "group relative flex items-center",
+            "rounded-[var(--radius-admin-md)]",
+            "transition-[background-color,color] duration-[var(--duration-admin-fast)] ease-[var(--easing-admin)]",
+            collapsed
+              ? "justify-center px-0 py-[var(--space-admin-3)]"
+              : "gap-[var(--space-admin-4)] px-[var(--space-admin-3)] py-[var(--space-admin-2)]",
+            "min-h-[30px] font-medium",
+            level >= 2
+              ? "text-[length:var(--text-admin-sm)]"
+              : "text-[length:var(--text-admin-md)]",
+            active
+              ? "bg-[color:var(--color-admin-rail-active-bg)] font-medium text-[color:var(--color-admin-rail-active-fg)]"
+              : level >= 1
+                ? "text-[color:var(--color-admin-rail-fg-muted)] hover:bg-[color:var(--color-admin-rail-hover)] hover:text-[color:var(--color-admin-rail-fg)]"
+                : "text-[color:var(--color-admin-rail-fg-soft)] hover:bg-[color:var(--color-admin-rail-hover)] hover:text-[color:var(--color-admin-rail-fg)]",
+          )}
+        >
+          {/* Barre d'accent à gauche (lien actif) — recouvre la ligne-guide */}
+          {active ? (
+            <span
+              aria-hidden="true"
+              className="absolute top-1/2 left-[-1px] h-[16px] w-[2px] -translate-y-1/2 rounded-full bg-[color:var(--color-admin-rail-accent)]"
+            />
+          ) : null}
+          <span className="relative shrink-0">
+            <Icon
+              size={iconSize}
+              aria-hidden="true"
+              className={cn(
+                "transition-colors",
+                active
+                  ? "text-[color:var(--color-admin-rail-accent)]"
+                  : "text-[color:var(--color-admin-rail-fg-muted)] group-hover:text-[color:var(--color-admin-rail-fg)]",
+              )}
+            />
+            {/* Mode réduit : point d'alerte sur l'icône (pas de badge plein) */}
+            {collapsed && badge ? (
+              <span
+                aria-hidden="true"
+                className="absolute -top-[2px] -right-[2px] h-[7px] w-[7px] rounded-full ring-2 ring-[color:var(--color-admin-rail-bg)]"
+                style={{
+                  backgroundColor:
+                    badge.tone === "danger"
+                      ? "var(--color-admin-rail-badge-danger)"
+                      : "var(--color-admin-rail-badge-warn)",
+                }}
+              />
+            ) : null}
+          </span>
+          {!collapsed ? (
+            <>
+              <span className="truncate">{item.label}</span>
+              {badge ? (
+                <span
+                  className={cn(
+                    "ml-auto rounded-full px-[6px] py-[1px]",
+                    "text-[10px] font-bold text-white tabular-nums",
+                  )}
+                  style={{
+                    backgroundColor:
+                      badge.tone === "danger"
+                        ? "var(--color-admin-rail-badge-danger)"
+                        : "var(--color-admin-rail-badge-warn)",
+                  }}
+                  aria-label={`${badge.count} ${badge.label}`}
+                >
+                  {badge.count > 99 ? "99+" : badge.count}
+                </span>
+              ) : null}
+            </>
+          ) : null}
+        </Link>
+      </li>
+    );
+  };
 
   return (
     <>
@@ -535,8 +696,13 @@ export function AdminSidebarNav({
           className="flex-1 overflow-x-hidden overflow-y-auto px-[var(--space-admin-4)] pb-[var(--space-admin-4)]"
         >
           {ADMIN_NAV_GROUP_ORDER.map((g, gi) => {
-            const groupItems = filtered.filter((it) => it.group === g);
+            // Exclut les items `parent != null` : atteignables par URL/palette
+            // mais volontairement masqués de la sidebar (placeholders non livrés).
+            const groupItems = filtered.filter((it) => it.group === g && it.parent == null);
             if (groupItems.length === 0) return null;
+            // Le groupe « Génération de contenu » est rendu en sous-pôles
+            // (Lancer/Suivre/…) — hors mode réduit et hors recherche.
+            const renderAsPoles = g === "content_gen" && !collapsed && !searchActive;
             const GroupIcon = GROUP_ICON_MAP[g] ?? FolderOpen;
             // Accordéon : fermé par défaut. N'agit qu'en mode étendu et hors
             // recherche. Le groupe actif est auto-ouvert par effet (cf. plus
@@ -606,109 +772,62 @@ export function AdminSidebarNav({
                   </button>
                 ) : null}
 
-                {/* ── Sous-onglets (niveaux 2 & 3) — indentés + ligne-guide ── */}
+                {/* ── Sous-onglets — pôles (content_gen) ou liste plate ── */}
                 {!groupClosed ? (
-                  <ul
-                    className={cn(
-                      "flex flex-col gap-[2px]",
-                      !collapsed &&
-                        "mt-[2px] ml-[calc(var(--space-admin-3)+9px)] border-l border-[color:var(--color-admin-rail-border)] pl-[var(--space-admin-3)]",
-                    )}
-                  >
-                    {groupItems.map((item) => {
-                      const Icon = ICON_MAP[item.label] ?? FolderOpen;
-                      const active = item.href === activeHref;
-                      const badge = badgeFor(item.href);
-                      const level = collapsed ? 0 : itemLevel(item.href);
-                      const iconSize = level >= 1 ? 14 : 16;
-                      return (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            {...(active ? { "aria-current": "page" } : {})}
-                            title={collapsed ? item.label : undefined}
-                            style={
-                              !collapsed && level > 0
-                                ? { paddingLeft: `calc(var(--space-admin-3) + ${level * 13}px)` }
-                                : undefined
-                            }
-                            className={cn(
-                              "group relative flex items-center",
-                              "rounded-[var(--radius-admin-md)]",
-                              "transition-[background-color,color] duration-[var(--duration-admin-fast)] ease-[var(--easing-admin)]",
-                              collapsed
-                                ? "justify-center px-0 py-[var(--space-admin-3)]"
-                                : "gap-[var(--space-admin-4)] px-[var(--space-admin-3)] py-[var(--space-admin-2)]",
-                              "min-h-[30px] font-medium",
-                              level >= 2
-                                ? "text-[length:var(--text-admin-sm)]"
-                                : "text-[length:var(--text-admin-md)]",
-                              active
-                                ? "bg-[color:var(--color-admin-rail-active-bg)] font-medium text-[color:var(--color-admin-rail-active-fg)]"
-                                : level >= 1
-                                  ? "text-[color:var(--color-admin-rail-fg-muted)] hover:bg-[color:var(--color-admin-rail-hover)] hover:text-[color:var(--color-admin-rail-fg)]"
-                                  : "text-[color:var(--color-admin-rail-fg-soft)] hover:bg-[color:var(--color-admin-rail-hover)] hover:text-[color:var(--color-admin-rail-fg)]",
-                            )}
-                          >
-                            {/* Barre d'accent à gauche (lien actif) — recouvre la ligne-guide */}
-                            {active ? (
-                              <span
-                                aria-hidden="true"
-                                className="absolute top-1/2 left-[-1px] h-[16px] w-[2px] -translate-y-1/2 rounded-full bg-[color:var(--color-admin-rail-accent)]"
-                              />
-                            ) : null}
-                            <span className="relative shrink-0">
-                              <Icon
-                                size={iconSize}
+                  renderAsPoles ? (
+                    // Génération de contenu : sous-accordéon par pôle. Chaque
+                    // pôle (Lancer/Suivre/…) est un en-tête repliable au-dessus
+                    // de ses onglets. La page courante ouvre son pôle d'office.
+                    <div className="mt-[2px] ml-[calc(var(--space-admin-3)+9px)] flex flex-col gap-[var(--space-admin-2)] border-l border-[color:var(--color-admin-rail-border)] pl-[var(--space-admin-2)]">
+                      {CONTENT_GEN_POLE_ORDER.map((pole) => {
+                        const poleItems = groupItems.filter((it) => it.subGroup === pole);
+                        if (poleItems.length === 0) return null;
+                        const poleClosed = collapsedPoles.has(pole) && activePole !== pole;
+                        return (
+                          <div key={pole}>
+                            <button
+                              type="button"
+                              onClick={() => togglePole(pole)}
+                              aria-expanded={!poleClosed}
+                              className={cn(
+                                "flex w-full items-center gap-[var(--space-admin-3)]",
+                                "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-2)]",
+                                "min-h-[28px] text-[length:var(--text-admin-xs)] font-bold tracking-wide uppercase",
+                                "text-[color:var(--color-admin-rail-fg-soft)]",
+                                "transition-colors hover:bg-[color:var(--color-admin-rail-hover)] hover:text-[color:var(--color-admin-rail-fg)]",
+                              )}
+                            >
+                              <span className="truncate">{CONTENT_GEN_POLE_LABELS[pole]}</span>
+                              <ChevronRight
+                                size={14}
                                 aria-hidden="true"
                                 className={cn(
-                                  "transition-colors",
-                                  active
-                                    ? "text-[color:var(--color-admin-rail-accent)]"
-                                    : "text-[color:var(--color-admin-rail-fg-muted)] group-hover:text-[color:var(--color-admin-rail-fg)]",
+                                  "ml-auto shrink-0 text-[color:var(--color-admin-rail-fg-muted)]",
+                                  "transition-transform duration-[var(--duration-admin-fast)]",
+                                  !poleClosed && "rotate-90",
                                 )}
                               />
-                              {/* Mode réduit : point d'alerte sur l'icône (pas de badge plein) */}
-                              {collapsed && badge ? (
-                                <span
-                                  aria-hidden="true"
-                                  className="absolute -top-[2px] -right-[2px] h-[7px] w-[7px] rounded-full ring-2 ring-[color:var(--color-admin-rail-bg)]"
-                                  style={{
-                                    backgroundColor:
-                                      badge.tone === "danger"
-                                        ? "var(--color-admin-rail-badge-danger)"
-                                        : "var(--color-admin-rail-badge-warn)",
-                                  }}
-                                />
-                              ) : null}
-                            </span>
-                            {!collapsed ? (
-                              <>
-                                <span className="truncate">{item.label}</span>
-                                {badge ? (
-                                  <span
-                                    className={cn(
-                                      "ml-auto rounded-full px-[6px] py-[1px]",
-                                      "text-[10px] font-bold text-white tabular-nums",
-                                    )}
-                                    style={{
-                                      backgroundColor:
-                                        badge.tone === "danger"
-                                          ? "var(--color-admin-rail-badge-danger)"
-                                          : "var(--color-admin-rail-badge-warn)",
-                                    }}
-                                    aria-label={`${badge.count} ${badge.label}`}
-                                  >
-                                    {badge.count > 99 ? "99+" : badge.count}
-                                  </span>
-                                ) : null}
-                              </>
+                            </button>
+                            {!poleClosed ? (
+                              <ul className="mt-[2px] flex flex-col gap-[2px]">
+                                {poleItems.map(renderItem)}
+                              </ul>
                             ) : null}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <ul
+                      className={cn(
+                        "flex flex-col gap-[2px]",
+                        !collapsed &&
+                          "mt-[2px] ml-[calc(var(--space-admin-3)+9px)] border-l border-[color:var(--color-admin-rail-border)] pl-[var(--space-admin-3)]",
+                      )}
+                    >
+                      {groupItems.map(renderItem)}
+                    </ul>
+                  )
                 ) : null}
               </div>
             );
