@@ -16,7 +16,8 @@
 //   - Mobile hamburger : translate-x (CLS=0), masqué sm/md.
 //
 // Sidebar v2 « rail mocha premium » = composant permanent (flag supprimé
-// 2026-05-20). La V1 (src/components/admin/AdminSidebar.tsx) est obsolète.
+// 2026-05-20). La V1 (src/components/admin/AdminSidebar.tsx) a été SUPPRIMÉE
+// le 2026-06-27 (code mort : aucun import, aucun JSX, styles CSS dédiés morts).
 
 import { useEffect, useState, useMemo } from "react";
 import { usePathname } from "next/navigation";

@@ -7,7 +7,7 @@
 //   risk garanti à chaque ajout/renommage de section (Audit A1 finding #4).
 //
 //   Cette extraction met en place la SOURCE UNIQUE de vérité que :
-//   - le layout admin consomme pour rendre la sidebar (`<AdminSidebar nav={…}>`),
+//   - le layout admin consomme pour rendre la sidebar (`<AdminSidebarNav items={…}>`),
 //   - `AdminCommandPalette` consommera après refonte PR 5 pour ses items,
 //   - `<AdminBreadcrumbs>` (PR 4) utilisera pour résoudre pathname → label.
 //
@@ -51,13 +51,13 @@ export interface AdminNavItem {
   label: string;
   /**
    * Icon string (emoji V1) ou identifiant d'icône `lucide-react` (V2 PR 5).
-   * Format string pour rester compatible avec `<AdminSidebar>` actuel.
+   * Format string pour rester compatible avec `<AdminSidebarNav>` actuel.
    */
   icon: string;
   group: AdminNavGroup;
   /**
    * Pôle (sous-groupe N1) — uniquement renseigné pour `group: "content_gen"`.
-   * Permet à `<AdminSidebar>` de regrouper les items en accordéon par pôle.
+   * Permet à `<AdminSidebarNav>` de regrouper les items en accordéon par pôle.
    * (cf. DECISION-IA.md §1 — refonte UX content-gen 2026-06-16.)
    */
   subGroup?: ContentGenPole;

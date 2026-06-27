@@ -62,8 +62,6 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/layout\.tsx$/,
   // AdminCommandPalette ⌘K — référence routes /image-bank pour navigation rapide
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/AdminCommandPalette\.tsx$/,
-  // AdminSidebar — 9e groupe "image-bank" (patch post-audit V1 P1-3, 2026-05-16)
-  /^src\/components\/admin\/AdminSidebar\.tsx$/,
   // Sitemap principal — référence sub-sitemaps images-*.xml
   /^src\/app\/sitemap\.ts$/,
   // Sitemap-index racine — référence sub-sitemaps images-{fr,en}.xml
