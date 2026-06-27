@@ -186,7 +186,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/content-gen/coverage/presets`,
-      label: "Modèles prêts à l'emploi",
+      label: "Campagnes pré-réglées",
       icon: "✨",
       group: "content_gen",
       subGroup: "lancer",
@@ -371,6 +371,11 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "content_gen",
       subGroup: "qualite",
       tier: "advanced",
+      // Masqué de la sidebar tant que la page est un placeholder (Sprint 4 non
+      // livré). `parent` exclut du rendu sidebar mais conserve la route + la
+      // résolution breadcrumbs + l'accès via la palette (Ctrl+K). Retirer
+      // `parent` quand la page affiche des données réelles.
+      parent: `${base}/content-gen`,
     },
     {
       href: `${base}/content-gen/brand-voice-drift`,
@@ -398,7 +403,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/content-gen/kb-readonly`,
-      label: "Base de connaissances",
+      label: "Base de connaissances (consultation)",
       icon: "📚",
       group: "content_gen",
       subGroup: "qualite",
@@ -423,7 +428,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/content-gen/templates`,
-      label: "Modèles de prompts",
+      label: "Instructions IA (prompts)",
       icon: "📋",
       group: "content_gen",
       subGroup: "reglages",
@@ -436,6 +441,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
+      // Masqué de la sidebar tant que la page est un placeholder (sync GSC/SerpAPI
+      // non câblé, Sprint 12.5). Voir note `parent` sur « Détection de doublons ».
+      parent: `${base}/content-gen`,
     },
     {
       href: `${base}/content-gen/landing-variants`,

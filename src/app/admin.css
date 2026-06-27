@@ -667,38 +667,59 @@
 .admin-nav-mode-toggle:hover {
   background-color: var(--color-bg);
 }
+/* Refonte lisibilité pôles 2026-06-27 : avant correctif, l'en-tête de pôle
+ * (11px, gris muted) était plus petit ET plus pâle que ses propres onglets
+ * (13px, couleur normale) → la hiérarchie « groupe → pôle → onglet » s'écrasait
+ * visuellement et l'utilisateur ne voyait qu'une liste plate (cf. demande Will).
+ * Correctif : en-tête de pôle plus marqué (foncé, fond léger, chevron net et
+ * manifestement cliquable) + onglets clairement indentés sous un filet vertical
+ * + respiration entre pôles. */
 .admin-nav-pole {
-  margin-bottom: 2px;
+  margin-bottom: 10px;
 }
 .admin-nav-pole-toggle {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
-  padding: 4px 10px;
-  min-height: 28px;
+  padding: 6px 10px;
+  min-height: 30px;
   border: 0;
-  background: transparent;
-  color: var(--color-fg-muted);
-  font-size: 11px;
-  font-weight: 600;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.5px;
   cursor: pointer;
   border-radius: 6px;
   text-align: left;
 }
 .admin-nav-pole-toggle:hover {
-  background-color: var(--color-bg);
-  color: var(--color-fg);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
 }
+/* Chevron dans une pastille pour signaler clairement le pliage cliquable. */
 .admin-nav-pole-chevron {
-  font-size: 9px;
-  width: 10px;
-  display: inline-block;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: var(--color-fg-muted);
+  background-color: var(--color-paper);
 }
+.admin-nav-pole-toggle:hover .admin-nav-pole-chevron {
+  color: var(--color-primary);
+}
+/* Onglets clairement rangés sous leur pôle : indentation + filet vertical. */
 .admin-nav-pole .admin-nav-list {
-  margin-left: 6px;
+  margin: 2px 0 0 14px;
+  padding-left: 8px;
+  border-left: 2px solid var(--color-border);
 }
 .admin-input-with-toggle {
   position: relative;
