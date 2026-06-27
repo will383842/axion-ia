@@ -142,7 +142,9 @@ ${factsContext}
       userPrompt,
       maxTokens: 600,
       temperature: iteration === 0 ? 0.4 : 0.25,
-      preferredProvider: "anthropic",
+      // Option B (2026-06-27) — OpenAI primaire ; Claude reste fallback automatique
+      // via le chaînage role:"text" ([openai, anthropic]) du provider-router.
+      preferredProvider: "openai",
     }).catch(() => null);
 
     if (!llmResult) break;
