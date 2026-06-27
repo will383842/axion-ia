@@ -7,6 +7,8 @@
  * publishFormationAction      : publie (nécessite validation humaine + ratio pratique ≥ plancher).
  * publierIndicateursAction    : publie les indicateurs de résultats (off.1/2 Qualiopi).
  * setCertificationAction      : pose les champs RS/RNCP + recalcule cpfEligible (T18 CLUSTER B).
+ * archiveFormationAction      : retire une formation du catalogue actif (WS6).
+ * duplicateFormationAction    : clone une formation en brouillon nouvelle version (WS6).
  *
  * TVA : exonérée 261-4-4° CGI (pas de TVA sur formations).
  * Montants formation : résolus via offre / pricing.ts (jamais hardcodés ici).
@@ -562,4 +564,158 @@ export async function publierIndicateursAction(
   revalidateFormationPages({ slug: formation.slug });
 
   return { data: { id: formationId, indicateursPubliesAt: now } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Archivage + duplication (WS6) — chemin prescrit quand une session verrouille
+// l'édition (cf. WS4 : « archivez puis dupliquez pour une nouvelle version »).
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Archive une formation (statut + statutGeneration → `archive`).
+ *
+ * Non destructif : les sessions et documents existants conservent leur snapshot
+ * légal (WS5). Autorisé même avec des sessions en cours/réalisées — archiver ne
+ * modifie aucun contenu engageant, ça retire seulement la formation du catalogue
+ * actif (plus de nouvelle session possible, cf. canCreateSessionFor).
+ *
+ * Requiert ADMIN_PUBLISH (modification de la disponibilité du référentiel).
+ */
+export async function archiveFormationAction(id: string): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminPublish();
+  const idParsed = z.string().uuid().safeParse(id);
+  if (!idParsed.success) return { error: "Identifiant invalide" };
+
+  const formation = await prisma.formation.findUnique({
+    where: { id: idParsed.data },
+    select: { id: true, slug: true, statut: true },
+  });
+  if (!formation) return { error: "Formation introuvable" };
+  if (formation.statut === "archive") return { data: { id: idParsed.data } };
+
+  await prisma.formation.update({
+    where: { id: idParsed.data },
+    data: { statut: "archive", statutGeneration: "archive" },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.archive",
+    targetType: "Formation",
+    targetId: idParsed.data,
+    changes: { statut: "archive" },
+    session,
+  });
+
+  revalidateFormationPages({ slug: formation.slug });
+
+  return { data: { id: idParsed.data } };
+}
+
+/** Construit un slug libre dérivé de `base` (`-copie`, `-copie-2`, …). */
+async function allocateCopySlug(base: string): Promise<string> {
+  for (let i = 1; i <= 50; i++) {
+    const candidate = i === 1 ? `${base}-copie` : `${base}-copie-${i}`;
+    const exists = await prisma.formation.findUnique({
+      where: { slug: candidate },
+      select: { id: true },
+    });
+    if (!exists) return candidate;
+  }
+  // Repli improbable : suffixe horodaté pour garantir l'unicité.
+  return `${base}-copie-${Date.now()}`;
+}
+
+/**
+ * Duplique une formation en un nouveau brouillon éditable (nouvelle version).
+ *
+ * Copie le CONTENU pédagogique (titre, durée, objectifs, programme, méthodes,
+ * moyens, ressources, accessibilité, ratio, seuil, types d'action, offre). NE
+ * COPIE PAS les éléments propres à l'original : numéro, certification RS/RNCP
+ * (réenregistrement requis), indicateurs de résultats, validation humaine,
+ * historique de version, lien de synchro catalogue. La copie sort en
+ * `intention`/`actif`, non validée, version `1.0` → repasse par le cycle
+ * validation/publication.
+ *
+ * Requiert ADMIN_WRITE.
+ */
+export async function duplicateFormationAction(
+  id: string,
+): Promise<ActionResult<{ id: string; numero: string; slug: string }>> {
+  const session = await requireAdminWrite();
+  const idParsed = z.string().uuid().safeParse(id);
+  if (!idParsed.success) return { error: "Identifiant invalide" };
+
+  const source = await prisma.formation.findUnique({
+    where: { id: idParsed.data },
+    select: {
+      titre: true,
+      slug: true,
+      offreSiteId: true,
+      clientId: true,
+      estSurMesure: true,
+      dureeHeures: true,
+      modalite: true,
+      objectifsPedagogiques: true,
+      programmeDetaille: true,
+      methodesPedagogiques: true,
+      moyensTechniques: true,
+      ressourcesPedagogiques: true,
+      seuilReussitePct: true,
+      ratioPratiquePct: true,
+      accessibleHandicap: true,
+      typesActionQualiopi: true,
+      langueGeneration: true,
+    },
+  });
+  if (!source) return { error: "Formation introuvable" };
+
+  const newSlug = await allocateCopySlug(source.slug);
+
+  let created: { id: string; numero: string };
+  try {
+    created = await withNumberRetry(async () => {
+      const numero = await allocateFormationNumero();
+      return prisma.formation.create({
+        data: {
+          numero,
+          titre: `${source.titre} (copie)`,
+          slug: newSlug,
+          offreSiteId: source.offreSiteId,
+          clientId: source.clientId,
+          estSurMesure: source.estSurMesure,
+          dureeHeures: source.dureeHeures,
+          modalite: source.modalite,
+          objectifsPedagogiques: source.objectifsPedagogiques as never,
+          programmeDetaille: source.programmeDetaille as never,
+          methodesPedagogiques: source.methodesPedagogiques,
+          moyensTechniques: source.moyensTechniques,
+          ressourcesPedagogiques: source.ressourcesPedagogiques as never,
+          seuilReussitePct: source.seuilReussitePct,
+          ...(source.ratioPratiquePct !== null ? { ratioPratiquePct: source.ratioPratiquePct } : {}),
+          accessibleHandicap: source.accessibleHandicap,
+          typesActionQualiopi: source.typesActionQualiopi,
+          langueGeneration: source.langueGeneration,
+          // Réinitialisations : nouveau cycle de vie, non certifié, non validé.
+          statutGeneration: "intention",
+          statut: "actif",
+          versionProgramme: "1.0",
+        },
+        select: { id: true, numero: true },
+      });
+    });
+  } catch {
+    return { error: "Erreur lors de la duplication de la formation" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.duplicate",
+    targetType: "Formation",
+    targetId: created.id,
+    changes: { sourceId: idParsed.data, numero: created.numero, slug: newSlug },
+    session,
+  });
+
+  revalidateFormationPages({ slug: newSlug });
+
+  return { data: { id: created.id, numero: created.numero, slug: newSlug } };
 }
