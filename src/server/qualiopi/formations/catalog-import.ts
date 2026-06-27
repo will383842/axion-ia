@@ -41,6 +41,7 @@ import type { FormationDuree } from "../../../content/pricing";
 import type { FormationV2 } from "../../../content/formations/catalog-v2";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
 import { formatDocumentNumber } from "../numbering/formats";
+import { countLockingSessions } from "./edit-guard";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constantes de mapping (alignées sur catalog-v2-meta + seed offres-v2)
@@ -494,6 +495,25 @@ export async function importCatalogFormations(
         current as FormationReconcileCurrent,
         (catalogSnapshot as CatalogSnapshot | null) ?? null,
       );
+
+      // Alignement WS4 : on n'auto-réécrit JAMAIS le contenu d'une formation dont
+      // une session est en cours/réalisée (contenu Qualiopi figé). Les champs qui
+      // auraient été synchronisés deviennent des écarts (drift) à arbitrer
+      // manuellement (archivage + duplication). La baseline n'est PAS adoptée sur
+      // ces champs → l'écart persiste au prochain import jusqu'à résolution.
+      if (result.syncedFields.length > 0 && (await countLockingSessions(db, id)) > 0) {
+        const baseline = (catalogSnapshot ?? null) as Record<string, unknown> | null;
+        for (const field of result.syncedFields) {
+          delete (result.updates as Record<string, unknown>)[field];
+          if (baseline && field in baseline) {
+            (result.nextSnapshot as Record<string, unknown>)[field] = baseline[field];
+          } else {
+            delete (result.nextSnapshot as Record<string, unknown>)[field];
+          }
+        }
+        result.driftFields.push(...result.syncedFields);
+        result.syncedFields.length = 0;
+      }
 
       if (result.driftFields.length > 0) {
         // Écart non résolu : on persiste la baseline (champs sûrs adoptés) +

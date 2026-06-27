@@ -30,6 +30,13 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
+  countLockingSessions,
+  appendVersionEntry,
+  bumpProgrammeVersion,
+  LOCKED_BY_SESSION_ERROR,
+  type FormationVersionEntry,
+} from "@/server/qualiopi/formations/edit-guard";
+import {
   computeTotauxFacture,
   isRegimeTva,
   REGIME_TVA_DEFAUT,
@@ -503,9 +510,46 @@ export async function setMoyensFormationAction(input: {
 
   if (Object.keys(updateData).length === 0) return { error: "Aucun champ à mettre à jour" };
 
+  // Gardes de conformité (WS4) : moyens/ressources sont du contenu pédagogique
+  // rendu dans les conventions/programmes → mêmes gardes que updateFormationAction.
+  const formation = await prisma.formation.findUnique({
+    where: { id: formationId },
+    select: {
+      id: true,
+      statutGeneration: true,
+      validatedBy: true,
+      versionProgramme: true,
+      versionHistorique: true,
+    },
+  });
+  if (!formation) return { error: "Formation introuvable" };
+
+  if ((await countLockingSessions(prisma, formationId)) > 0) {
+    return { error: LOCKED_BY_SESSION_ERROR };
+  }
+
+  const wasValidated = formation.validatedBy !== null;
+  const wasPublished = formation.statutGeneration === "publie";
+  const requiresRevalidation = wasValidated || wasPublished;
+  const nextVersion = bumpProgrammeVersion(formation.versionProgramme);
+  const entry: FormationVersionEntry = {
+    version: nextVersion,
+    at: new Date().toISOString(),
+    by: adminSession.userId,
+    action: "update",
+    fields: Object.keys(updateData),
+    ...(requiresRevalidation ? { revalidationRequired: true } : {}),
+  };
+
   await prisma.formation.update({
     where: { id: formationId },
-    data: updateData as Parameters<typeof prisma.formation.update>[0]["data"],
+    data: {
+      ...updateData,
+      versionProgramme: nextVersion,
+      versionHistorique: appendVersionEntry(formation.versionHistorique, entry) as never,
+      ...(wasValidated ? { validatedBy: null, validatedAt: null } : {}),
+      ...(wasPublished ? { statutGeneration: "assemble" } : {}),
+    } as Parameters<typeof prisma.formation.update>[0]["data"],
   });
 
   await logQualiopiActivity({

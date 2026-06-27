@@ -96,6 +96,20 @@ describe("updateFormationAction — gardes WS4", () => {
     expect(data.versionProgramme).toBe("1.1");
   });
 
+  it("dépublie une formation PUBLIÉE même sans validatedBy (publiée via le moteur)", async () => {
+    // Cas réel : le moteur peut atteindre statutGeneration=publie sans poser
+    // validatedBy. Éditer le contenu doit quand même la dépublier (AI Act art.50).
+    mockPrisma.formation.findUnique.mockResolvedValue(
+      baseFormation({ validatedBy: null, statutGeneration: "publie" }),
+    );
+
+    await updateFormationAction({ id: FORMATION_ID, titre: "Titre v2" });
+    const data = mockPrisma.formation.update.mock.calls[0]![0].data;
+    expect(data.statutGeneration).toBe("assemble");
+    expect(data).not.toHaveProperty("validatedBy"); // déjà null, rien à reset
+    expect(data.versionHistorique[0].revalidationRequired).toBe(true);
+  });
+
   it("no-op (aucun champ) → pas d'écriture", async () => {
     mockPrisma.formation.findUnique.mockResolvedValue(baseFormation());
     const res = await updateFormationAction({ id: FORMATION_ID });

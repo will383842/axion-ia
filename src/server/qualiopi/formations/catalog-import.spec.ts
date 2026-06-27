@@ -31,6 +31,8 @@ interface FakeDbConfig {
   /** Lignes existantes explicites (pour tester synced/drifted/legacy). */
   existingRows?: Row[];
   missingOffreSlugs?: string[];
+  /** Nombre de sessions verrouillantes (en_cours/realisee) par id de formation. */
+  lockingSessionsByFormationId?: Record<string, number>;
 }
 
 /** Ligne existante alignée sur le catalogue (snapshot = catalogue) → unchanged. */
@@ -77,6 +79,10 @@ function makeFakeDb(config: FakeDbConfig = {}): {
     offreSite: {
       findUnique: async ({ where }: { where: { slug: string } }) =>
         missingOffre.has(where.slug) ? null : { id: `offre-${where.slug}` },
+    },
+    trainingSession: {
+      count: async ({ where }: { where: { formationId: string } }) =>
+        config.lockingSessionsByFormationId?.[where.formationId] ?? 0,
     },
   };
 
@@ -280,6 +286,30 @@ describe("importCatalogFormations", () => {
     expect(item?.driftFields).toContain("titre");
     const write = updates.find((u) => u.id === row.id)!;
     expect(write.data.titre).toBeUndefined();
+  });
+
+  it("NE synchronise PAS une formation à session verrouillante → drift (garde WS4)", async () => {
+    const slug = FORMATIONS_V2[0]!.slugFr;
+    // Catalogue a changé, DB == snapshot (sync sûre EN TEMPS NORMAL)…
+    const row = rowFromCatalog(slug);
+    row.titre = "Ancien titre catalogue";
+    (row.catalogSnapshot as CatalogSnapshot).titre = "Ancien titre catalogue";
+
+    // …mais une session est en cours/réalisée → contenu figé, pas de réécriture.
+    const { db, updates } = makeFakeDb({
+      existingRows: [row],
+      lockingSessionsByFormationId: { [row.id]: 1 },
+    });
+    const report = await importCatalogFormations(db, { now: FIXED_NOW });
+
+    expect(report.synced).toBe(0);
+    expect(report.drifted).toBe(1);
+    const item = report.items.find((i) => i.slug === slug);
+    expect(item?.status).toBe("drifted");
+    expect(item?.driftFields).toContain("titre");
+    // Le titre DB est PRÉSERVÉ (aucune écriture du champ).
+    const write = updates.find((u) => u.id === row.id);
+    expect(write?.data.titre).toBeUndefined();
   });
 
   it("no-op sous l'URL stub (build/SSG) — aucune mutation", async () => {

@@ -293,6 +293,7 @@ export async function reportSessionAction(
     modalite: string;
     nbParticipantsPrevus: number;
     montantHtCents: number;
+    formationSnapshot: unknown;
     clientId: string | null;
     financementType: string | null;
     sessionParentId: string | null;
@@ -311,6 +312,10 @@ export async function reportSessionAction(
         modalite: true,
         nbParticipantsPrevus: true,
         montantHtCents: true,
+        // Snapshot légal (WS5) : la session reportée est la MÊME prestation
+        // vendue → on PROPAGE le snapshot figé de l'originale (pas de re-capture
+        // du catalogue, qui aurait pu dériver entre-temps).
+        formationSnapshot: true,
         clientId: true,
         financementType: true,
         sessionParentId: true,
@@ -355,6 +360,9 @@ export async function reportSessionAction(
           montantHtCents: ancienne!.montantHtCents,
           statut: "planifiee",
           sessionReporteeId: ancienne!.id,
+          ...(ancienne!.formationSnapshot != null
+            ? { formationSnapshot: ancienne!.formationSnapshot as never }
+            : {}),
           ...(ancienne!.clientId !== null ? { clientId: ancienne!.clientId } : {}),
           ...(ancienne!.financementType !== null
             ? { financementType: ancienne!.financementType as FinancementType }

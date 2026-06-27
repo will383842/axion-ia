@@ -221,8 +221,14 @@ export async function updateFormationAction(
   const changedFields = Object.keys(dataChanges);
   if (changedFields.length === 0) return { data: { id } };
 
-  // Garde 2 — toute édition d'une formation validée invalide la validation.
+  // Garde 2 — toute édition substantielle d'une formation PUBLIÉE ou VALIDÉE
+  // invalide la validation et la dépublie (AI Act art.50). On dépublie même si
+  // `validatedBy` est null : une formation peut atteindre `publie` via le moteur
+  // (FileValidation) sans poser validatedBy ; sinon elle resterait publique avec
+  // un contenu modifié non re-validé.
   const wasValidated = formation.validatedBy !== null;
+  const wasPublished = formation.statutGeneration === "publie";
+  const requiresRevalidation = wasValidated || wasPublished;
   const nextVersion = bumpProgrammeVersion(formation.versionProgramme);
   const entry: FormationVersionEntry = {
     version: nextVersion,
@@ -230,7 +236,7 @@ export async function updateFormationAction(
     by: session.userId,
     action: "update",
     fields: changedFields,
-    ...(wasValidated ? { revalidationRequired: true } : {}),
+    ...(requiresRevalidation ? { revalidationRequired: true } : {}),
   };
 
   await prisma.formation.update({
@@ -240,9 +246,7 @@ export async function updateFormationAction(
       versionProgramme: nextVersion,
       versionHistorique: appendVersionEntry(formation.versionHistorique, entry) as never,
       ...(wasValidated ? { validatedBy: null, validatedAt: null } : {}),
-      ...(wasValidated && formation.statutGeneration === "publie"
-        ? { statutGeneration: "assemble" }
-        : {}),
+      ...(wasPublished ? { statutGeneration: "assemble" } : {}),
     },
   });
 
@@ -458,6 +462,8 @@ export async function setCertificationAction(
   );
   if (changedCertFields.length > 0) {
     const wasValidated = formation.validatedBy !== null;
+    const wasPublished = formation.statutGeneration === "publie";
+    const requiresRevalidation = wasValidated || wasPublished;
     const nextVersion = bumpProgrammeVersion(formation.versionProgramme);
     const entry: FormationVersionEntry = {
       version: nextVersion,
@@ -465,7 +471,7 @@ export async function setCertificationAction(
       by: session.userId,
       action: "certification",
       fields: changedCertFields,
-      ...(wasValidated ? { revalidationRequired: true } : {}),
+      ...(requiresRevalidation ? { revalidationRequired: true } : {}),
     };
     await prisma.formation.update({
       where: { id: formationId },
@@ -473,9 +479,7 @@ export async function setCertificationAction(
         versionProgramme: nextVersion,
         versionHistorique: appendVersionEntry(formation.versionHistorique, entry) as never,
         ...(wasValidated ? { validatedBy: null, validatedAt: null } : {}),
-        ...(wasValidated && formation.statutGeneration === "publie"
-          ? { statutGeneration: "assemble" }
-          : {}),
+        ...(wasPublished ? { statutGeneration: "assemble" } : {}),
       },
     });
   }

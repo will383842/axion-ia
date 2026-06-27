@@ -685,6 +685,7 @@ export async function genererGrilleEvaluationAction(input: {
           titreSession: true,
           dateDebut: true,
           coFormateurs: true,
+          formationSnapshot: true,
           formation: { select: { objectifsPedagogiques: true } },
         },
       },
@@ -696,7 +697,9 @@ export async function genererGrilleEvaluationAction(input: {
   const session = enrollment.session;
   const trainee = enrollment.trainee;
   const formateurNom = await resolveFormateurNom(session.coFormateurs, identite.raisonSociale);
-  const rawObjectifs = parseObjectifs(session.formation.objectifsPedagogiques);
+  // Objectifs depuis le snapshot légal (WS5), repli LIVE si legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+  const rawObjectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
   const competences =
     rawObjectifs.length > 0
       ? rawObjectifs.map((libelle) => ({ libelle }))
@@ -822,6 +825,7 @@ export async function genererCertificatRealisationAction(input: {
           dateDebut: true,
           dateFin: true,
           dureeReelleHeures: true,
+          formationSnapshot: true,
           formation: {
             select: {
               dureeHeures: true,
@@ -854,12 +858,15 @@ export async function genererCertificatRealisationAction(input: {
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;
   const trainee = enrollment.trainee;
+  // Durée + intitulé depuis le snapshot légal (WS5), repli LIVE si legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+  const dureePrevue = formationDoc.dureeHeures ?? session.formation.dureeHeures;
 
   // Durée réelle (R.6313-3) : préférer dureeReelleHeures, sinon durée prévue
   // pondérée par le taux de présence si disponible, sinon durée prévue.
-  let dureeHeures = session.dureeReelleHeures ?? session.formation.dureeHeures;
+  let dureeHeures = session.dureeReelleHeures ?? dureePrevue;
   if (session.dureeReelleHeures === null && enrollment.tauxPresencePct !== null) {
-    dureeHeures = Math.round((enrollment.tauxPresencePct * session.formation.dureeHeures) / 100);
+    dureeHeures = Math.round((enrollment.tauxPresencePct * dureePrevue) / 100);
   }
 
   const dirigeant = await getQualiopiConfig("dirigeant_nom");
@@ -889,7 +896,7 @@ export async function genererCertificatRealisationAction(input: {
               ? { fonction: trainee.fonction }
               : {}),
           },
-          intituleAction: session.formation.titre,
+          intituleAction: formationDoc.titre ?? session.formation.titre,
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           // ⚠️ dureeHeures en décimal — formatHeuresCentiemes appelé dans le template
@@ -950,6 +957,7 @@ export async function genererKitOpcoAction(input: {
           session: {
             select: {
               dureeReelleHeures: true,
+              formationSnapshot: true,
               formation: { select: { dureeHeures: true } },
             },
           },
@@ -969,7 +977,9 @@ export async function genererKitOpcoAction(input: {
 
   // Ventilation par participant
   const ventilation = session.enrollments.map((e) => {
-    const dureeH = e.session.dureeReelleHeures ?? e.session.formation.dureeHeures;
+    // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
+    const fd = readFormationForDocs(e.session.formationSnapshot, e.session.formation);
+    const dureeH = e.session.dureeReelleHeures ?? fd.dureeHeures ?? e.session.formation.dureeHeures;
     const prise = Math.round((baremeCents * dureeH) / 100) * 100;
     const prixTotal = session.montantHtCents;
     const parPart =
@@ -1233,10 +1243,14 @@ export async function genererLettreMissionAction(input: {
       dateFin: true,
       modalite: true,
       coFormateurs: true,
+      formationSnapshot: true,
       formation: { select: { dureeHeures: true } },
     },
   });
   if (!session) return { error: "Session introuvable" };
+
+  // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
 
   // Résolution du formateur principal
   const arr = Array.isArray(session.coFormateurs) ? session.coFormateurs : [];
@@ -1300,7 +1314,7 @@ export async function genererLettreMissionAction(input: {
               dateDebut: formatDate(new Date(session.dateDebut)),
               dateFin: formatDate(new Date(session.dateFin)),
               lieuOuModalite: modaliteLabel(session.modalite),
-              dureeHeures: session.formation.dureeHeures,
+              dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
             },
           ],
           tarifJourHt,
