@@ -25,6 +25,10 @@ import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
 import { checkDedup } from "@/server/content-gen/quality/dedup-guard";
 import { checkPlagiarism } from "@/server/content-gen/quality/plagiarism";
 import { validateIntentAlignment } from "@/server/content-gen/quality/search-intent-validator";
+import {
+  enforceIntentRequirements,
+  hasRecognizedCta,
+} from "@/server/content-gen/quality/intent-enforcement";
 import { checkDoctrine } from "@/server/content-gen/quality/doctrine-check";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
@@ -501,7 +505,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     }
 
     const startedAt = Date.now();
-    const output = await generator.generate({
+    let output = await generator.generate({
       jobId: contentGenJobId,
       contentType,
       targetSearchIntent,
@@ -595,6 +599,43 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       total_cost_usd: output.totalCostUsd,
     });
 
+    // 4bis-pre. Intent enforcement déterministe (2026-06-27) — plancher AVANT la
+    // validation d'intent : garantit ≥ 3 sources externes (intents AEO/info) + un
+    // CTA reconnu (transactional). Évite que des contenus par ailleurs bons soient
+    // déviés en needs_review (blockingFail → tier_3) sur des faux positifs de
+    // détection. Fail-open : aucune altération si la sélection échoue. NB : on ne
+    // touche QUE bodyHtml/citations (navigationnel) — bodyText (prose) reste tel
+    // quel pour le plagiat/readability déjà scorés par le generator.
+    try {
+      const enforced = enforceIntentRequirements({
+        intent: targetSearchIntent,
+        bodyHtml: output.bodyHtml,
+        citations: output.citations,
+        ...(output.selectedExternalLinkIds
+          ? { excludeLinkIds: output.selectedExternalLinkIds }
+          : {}),
+        ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
+        ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
+      });
+      if (enforced.changed) {
+        output = { ...output, bodyHtml: enforced.bodyHtml, citations: enforced.citations };
+        await logStep(
+          contentGenJobId,
+          "intent_enforcement",
+          `Plancher intent appliqué (+${enforced.sourcesInjected} sources, CTA=${enforced.ctaInjected})`,
+          {
+            intent: targetSearchIntent,
+            sources_injected: enforced.sourcesInjected,
+            cta_injected: enforced.ctaInjected,
+          },
+        );
+      }
+    } catch (err) {
+      await logStep(contentGenJobId, "intent_enforcement", "Enforcement skipped (fail-open)", {
+        error: err instanceof Error ? err.message : String(err),
+      });
+    }
+
     // 4bis. Anti-plagiarism shingling Jaccard (§ 10.1 master prompt v1.7).
     // Comparaison vs top 50 articles publiés récents. Seuils DB-managed via
     // ContentGenConfig.policies (plagiat 0.30 interne / 0.10 RSS).
@@ -636,10 +677,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       hasLocalBusinessJsonLd: targetSearchIntent === "local" && Boolean(dbJob.anchorVilleSlug),
       hasGeoMeta: Boolean(dbJob.anchorVilleSlug || dbJob.anchorRegionSlug),
       hasComparisonTable: /<table[\s>]/i.test(output.bodyHtml),
-      hasPrimaryCta:
-        /(href=["'][^"']*(?:reserver|appel|contact)|<button|cta-primary|cta-internal)/i.test(
-          output.bodyHtml,
-        ),
+      // SSOT détection CTA — reconnaît les vraies pages de conversion Axion-IA
+      // (/audit, /formations, /interventions, /implementations, /un-a-un…) en plus
+      // de reserver/appel/contact, et le CTA de repli injecté par l'enforcement.
+      hasPrimaryCta: hasRecognizedCta(output.bodyHtml),
       // CORRECTIF 2026-06-20 — le tableau `output.citations` n'est rempli que si
       // le LLM remplit explicitement le champ JSON `citations` (quasi jamais), ce
       // qui faisait échouer le hard-gate « Intent informational sans citations »

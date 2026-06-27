@@ -45,6 +45,7 @@ export type GenerationLogStep =
   | "quality_gate"
   | "plagiarism_check"
   | "intent_check"
+  | "intent_enforcement"
   | "doctrine_check"
   | "kill_switch_check"
   | "dedup_check"
