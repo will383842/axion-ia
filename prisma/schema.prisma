@@ -6656,6 +6656,13 @@ model CoachingSession {
   interEntreprises         Boolean               @default(false) @map("inter_entreprises")
   /// Objectifs pédagogiques : [{ id, libelle }] (miroir Formation.objectifsPedagogiques).
   objectifsPedagogiques    Json                  @default("[]") @map("objectifs_pedagogiques")
+  /// Snapshot légal anti-stale (WS9) — copie figée du contenu pédagogique
+  /// engageant (intitulé résolu, objectifs, heures prévues, modalité, mention
+  /// certifiante) au moment de la PREMIÈRE émission d'un document légal. Garantit
+  /// que protocole/attestation/certificat/kits d'un même parcours restent
+  /// cohérents même si le contenu (ou le libellé catalogue) change ensuite.
+  /// Null = parcours legacy sans document émis → repli lecture LIVE.
+  coachingSnapshot         Json?                 @map("coaching_snapshot")
   conventionSigneeAt       DateTime?             @map("convention_signee_at")
   /// Cache des heures réellement réalisées = Σ CompteRenduSeance.dureeMinutes / 60.
   /// Recalculé à la clôture du parcours. Source de vérité OPCO/attestation.

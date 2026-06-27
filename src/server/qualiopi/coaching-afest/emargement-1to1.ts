@@ -12,7 +12,7 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { Emargement1to1Pdf } from "@/server/qualiopi/documents/templates/emargement-1to1";
 import type { EmargementSeance1to1 } from "@/server/qualiopi/documents/templates/emargement-1to1";
-import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
+import { ensureCoachingSnapshot, COACHING_SNAPSHOT_SELECT } from "./coaching-snapshot";
 import { sumHeuresReelles } from "./heures";
 
 export interface Emargement1to1Generated {
@@ -33,7 +33,8 @@ export async function genererEmargement1to1(
     where: { id: coachingSessionId },
     select: {
       id: true,
-      interventionSlug: true,
+      coachingSnapshot: true,
+      ...COACHING_SNAPSHOT_SELECT,
       beneficiaireNom: true,
       beneficiaireEntreprise: true,
       tuteurEntrepriseNom: true,
@@ -64,6 +65,9 @@ export async function genererEmargement1to1(
     });
     if (existing) return { documentId: existing.id, numero: existing.numero };
   }
+
+  // Snapshot légal (WS9) : fige le contenu engageant à la 1re émission de doc.
+  const snap = await ensureCoachingSnapshot(cs);
 
   const identite = await getOrganismeIdentite();
   const beneficiaire = cs.trainee
@@ -98,7 +102,7 @@ export async function genererEmargement1to1(
           numero,
           dateEmission: formatDate(new Date()),
           identite,
-          intitule: coachingInterventionLabel(cs.interventionSlug),
+          intitule: snap.intitule,
           beneficiaire,
           formateur: `${cs.trainer.prenom} ${cs.trainer.nom}`.trim() || identite.raisonSociale,
           ...(cs.tuteurEntrepriseNom ? { tuteur: cs.tuteurEntrepriseNom } : {}),

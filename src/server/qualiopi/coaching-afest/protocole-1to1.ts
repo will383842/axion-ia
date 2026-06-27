@@ -17,7 +17,7 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { ProtocoleAfestPdf } from "@/server/qualiopi/documents/templates/protocole-afest";
-import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
+import { ensureCoachingSnapshot, COACHING_SNAPSHOT_SELECT } from "./coaching-snapshot";
 
 export interface ProtocoleAfestGenerated {
   documentId: string;
@@ -88,10 +88,9 @@ export async function genererProtocoleAfest(
     where: { id: coachingSessionId },
     select: {
       id: true,
-      interventionSlug: true,
       dateSeance: true,
-      heuresPrevuesConvention: true,
-      objectifsPedagogiques: true,
+      coachingSnapshot: true,
+      ...COACHING_SNAPSHOT_SELECT,
       beneficiaireNom: true,
       beneficiaireEntreprise: true,
       tuteurEntrepriseNom: true,
@@ -117,6 +116,9 @@ export async function genererProtocoleAfest(
     if (existing) return { documentId: existing.id, numero: existing.numero };
   }
 
+  // Snapshot légal (WS9) : fige le contenu engageant à la 1re émission de doc.
+  const snap = await ensureCoachingSnapshot(cs);
+
   const identite = await getOrganismeIdentite();
   const perimetreCertifie = await getQualiopiConfig("afest_perimetre_certifie");
   const token = makeQrToken();
@@ -135,15 +137,14 @@ export async function genererProtocoleAfest(
         ...(cs.beneficiaireEntreprise ? { entreprise: cs.beneficiaireEntreprise } : {}),
       };
 
-  const objectifsRaw = cs.objectifsPedagogiques;
+  const objectifsRaw = snap.objectifsPedagogiques;
   const objectifs = Array.isArray(objectifsRaw)
     ? (objectifsRaw as Array<{ libelle?: string } | string>)
         .map((o) => (typeof o === "string" ? o : (o.libelle ?? "")))
         .filter(Boolean)
     : [];
 
-  const dureePrevueHeures =
-    cs.heuresPrevuesConvention != null ? Number(cs.heuresPrevuesConvention) : 0;
+  const dureePrevueHeures = snap.heuresPrevuesConvention ?? 0;
   const dateRef = formatDate(new Date(cs.dateSeance));
 
   const generated = await generateDocument({
@@ -154,7 +155,7 @@ export async function genererProtocoleAfest(
           numero,
           dateEmission: formatDate(new Date()),
           identite,
-          intitule: coachingInterventionLabel(cs.interventionSlug),
+          intitule: snap.intitule,
           beneficiaire,
           formateurAfest: {
             nom: `${cs.trainer.prenom} ${cs.trainer.nom}`.trim() || identite.raisonSociale,

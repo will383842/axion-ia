@@ -20,7 +20,10 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
-import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
+import {
+  ensureCoachingSnapshot,
+  COACHING_SNAPSHOT_SELECT,
+} from "./coaching-snapshot";
 import { getHeuresReelles1to1, computeTaux1to1 } from "./heures";
 
 export interface AttestationResult {
@@ -74,10 +77,10 @@ export async function genererAttestation1to1(
     select: {
       id: true,
       statut: true,
-      interventionSlug: true,
       dateSeance: true,
-      heuresPrevuesConvention: true,
-      objectifsPedagogiques: true,
+      // Champs source du snapshot légal (WS9) + le snapshot lui-même.
+      coachingSnapshot: true,
+      ...COACHING_SNAPSHOT_SELECT,
       attestationResultat: true,
       attestationDocumentId: true,
       attestationGenereeAt: true,
@@ -106,10 +109,13 @@ export async function genererAttestation1to1(
     return { resultat: "aucune", documentId: null };
   }
 
-  // Heures réelles = Σ durées de séance ; taux vs heures prévues convention.
+  // Snapshot légal (WS9) : fige le contenu engageant à la 1re émission ; les
+  // documents suivants du parcours lisent la même base (repli LIVE si legacy).
+  const snap = await ensureCoachingSnapshot(cs);
+
+  // Heures réelles = Σ durées de séance ; taux vs heures prévues convention (figées).
   const heuresReelles = await getHeuresReelles1to1(coachingSessionId);
-  const heuresPrevues =
-    cs.heuresPrevuesConvention != null ? Number(cs.heuresPrevuesConvention) : null;
+  const heuresPrevues = snap.heuresPrevuesConvention;
   const taux = computeTaux1to1(heuresReelles, heuresPrevues);
 
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
@@ -137,8 +143,8 @@ export async function genererAttestation1to1(
   const beneficiaire = resolveBeneficiaire(cs);
   const formateurNom = `${cs.trainer.prenom} ${cs.trainer.nom}`.trim() || identite.raisonSociale;
 
-  // Objectifs pédagogiques → string lisible.
-  const objectifsRaw = cs.objectifsPedagogiques;
+  // Objectifs pédagogiques (figés) → string lisible.
+  const objectifsRaw = snap.objectifsPedagogiques;
   let objectifsStr = "";
   if (Array.isArray(objectifsRaw)) {
     objectifsStr = (objectifsRaw as Array<{ libelle?: string } | string>)
@@ -176,12 +182,12 @@ export async function genererAttestation1to1(
   // les heures réellement réalisées comme total affiché (évite « X h / 0 h »).
   const heuresTotales = heuresPrevues != null && heuresPrevues > 0 ? heuresPrevues : heuresReelles;
   const formationData = {
-    intitule: coachingInterventionLabel(cs.interventionSlug),
+    intitule: snap.intitule,
     objectifs: objectifsStr,
     dureeHeures: heuresTotales,
     dateDebut,
     dateFin,
-    modalite: "Action de formation en situation de travail (AFEST)",
+    modalite: snap.modalite,
     formateur: formateurNom,
   };
 
