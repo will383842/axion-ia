@@ -42,6 +42,12 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn().mockResolvedValue(0.3),
 }));
 
+// revalidatePath nécessite le static generation store de Next ; on le neutralise
+// (le helper _revalidate est testé via son comportement, pas via Next ici).
+vi.mock("next/cache", () => ({
+  revalidatePath: vi.fn(),
+}));
+
 import { prisma } from "@/lib/prisma";
 import { publierIndicateursAction } from "./formations";
 

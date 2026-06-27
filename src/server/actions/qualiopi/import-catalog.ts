@@ -14,6 +14,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireAdminPublish, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { revalidateFormationPages } from "@/server/actions/qualiopi/_revalidate";
 import {
   importCatalogFormations,
   type CatalogImportReport,
@@ -49,6 +50,9 @@ export async function importCatalogFormationsAction(): Promise<ActionResult<Cata
     },
     session,
   });
+
+  // Invalide la liste admin + les pages publiques (no-op sûr en Phase A).
+  if (report.created > 0) revalidateFormationPages();
 
   return { data: report };
 }

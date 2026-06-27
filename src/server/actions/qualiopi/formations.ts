@@ -25,6 +25,7 @@ import { allocateFormationNumero } from "@/server/qualiopi/formations/numbering"
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { setCertification } from "@/server/qualiopi/formations/certification-service";
+import { revalidateFormationPages } from "@/server/actions/qualiopi/_revalidate";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -150,6 +151,8 @@ export async function createFormationAction(
     session,
   });
 
+  revalidateFormationPages({ slug: v.slug });
+
   return { data: { id: created.id, numero: created.numero } };
 }
 
@@ -165,8 +168,9 @@ export async function updateFormationAction(
   if (!parsed.success) return { error: "Données invalides" };
   const { id, ...fields } = parsed.data;
 
-  await prisma.formation.update({
+  const updated = await prisma.formation.update({
     where: { id },
+    select: { slug: true },
     data: {
       ...(fields.titre !== undefined ? { titre: fields.titre } : {}),
       ...(fields.objectifsPedagogiques !== undefined
@@ -202,6 +206,8 @@ export async function updateFormationAction(
     session,
   });
 
+  revalidateFormationPages({ slug: updated.slug });
+
   return { data: { id } };
 }
 
@@ -218,7 +224,7 @@ export async function validateFormationAction(id: string): Promise<ActionResult<
 
   const formation = await prisma.formation.findUnique({
     where: { id: idParsed.data },
-    select: { id: true, statutGeneration: true },
+    select: { id: true, statutGeneration: true, slug: true },
   });
   if (!formation) return { error: "Formation introuvable" };
 
@@ -237,6 +243,8 @@ export async function validateFormationAction(id: string): Promise<ActionResult<
     changes: { validatedBy: session.userId },
     session,
   });
+
+  revalidateFormationPages({ slug: formation.slug });
 
   return { data: { id: idParsed.data } };
 }
@@ -263,6 +271,7 @@ export async function publishFormationAction(id: string): Promise<ActionResult<{
       statut: true,
       validatedBy: true,
       ratioPratiquePct: true,
+      slug: true,
     },
   });
   if (!formation) return { error: "Formation introuvable" };
@@ -297,6 +306,8 @@ export async function publishFormationAction(id: string): Promise<ActionResult<{
     changes: { statutGeneration: "publie" },
     session,
   });
+
+  revalidateFormationPages({ slug: formation.slug });
 
   return { data: { id: idParsed.data } };
 }
@@ -339,7 +350,7 @@ export async function setCertificationAction(
 
   const formation = await prisma.formation.findUnique({
     where: { id: formationId },
-    select: { id: true },
+    select: { id: true, slug: true },
   });
   if (!formation) return { error: "Formation introuvable" };
 
@@ -386,6 +397,8 @@ export async function setCertificationAction(
     session,
   });
 
+  revalidateFormationPages({ slug: formation.slug });
+
   return { data: result };
 }
 
@@ -427,7 +440,7 @@ export async function publierIndicateursAction(
 
   const formation = await prisma.formation.findUnique({
     where: { id: formationId },
-    select: { id: true, titre: true },
+    select: { id: true, titre: true, slug: true },
   });
   if (!formation) return { error: "Formation introuvable" };
 
@@ -453,6 +466,8 @@ export async function publierIndicateursAction(
     },
     session,
   });
+
+  revalidateFormationPages({ slug: formation.slug });
 
   return { data: { id: formationId, indicateursPubliesAt: now } };
 }
