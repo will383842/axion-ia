@@ -110,11 +110,15 @@ export async function runCitationsBackfill(
     // nextCursor null = dernière page atteinte ⇒ plus rien après.
     const remaining = result.nextCursor ? await countFrArticleTranslations(result.nextCursor) : 0;
 
-    // Les blocs « Sources » sont sur les pages DÉTAIL (ISR revalidate 3600) : elles
-    // se repeupleront sous 1 h. On rafraîchit les listings pour cohérence immédiate.
-    revalidatePath("/[locale]/blog", "page");
-    revalidatePath("/[locale]/actualites", "page");
-    revalidatePath("/[locale]/guides", "page");
+    // Le bloc « Sources » s'affiche sur les pages DÉTAIL : on revalide les routes
+    // détail (toutes les instances du segment dynamique [slug]) pour que le bloc
+    // apparaisse immédiatement, sans attendre la fenêtre ISR (revalidate 3600).
+    // Invalidation paresseuse : les pages se ré-rendent à la prochaine requête.
+    // On rafraîchit aussi les listings pour cohérence (miniatures, etc.).
+    for (const seg of ["blog", "actualites", "guides"] as const) {
+      revalidatePath(`/[locale]/${seg}`, "page");
+      revalidatePath(`/[locale]/${seg}/[slug]`, "page");
+    }
 
     await logActivity({
       action: "content-gen.citations.backfill",
