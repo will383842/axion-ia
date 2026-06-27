@@ -45,14 +45,17 @@ export async function importCatalogFormationsAction(): Promise<ActionResult<Cata
     changes: {
       total: report.total,
       created: report.created,
+      synced: report.synced,
+      drifted: report.drifted,
       skippedExistantes: report.skippedExistantes,
       skippedOffreAbsente: report.skippedOffreAbsente,
     },
     session,
   });
 
-  // Invalide la liste admin + les pages publiques (no-op sûr en Phase A).
-  if (report.created > 0) revalidateFormationPages();
+  // Invalide la liste admin + les pages publiques (no-op sûr en Phase A) dès
+  // qu'une formation a été créée OU re-synchronisée depuis le catalogue.
+  if (report.created > 0 || report.synced > 0) revalidateFormationPages();
 
   return { data: report };
 }

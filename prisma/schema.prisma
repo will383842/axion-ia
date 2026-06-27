@@ -5128,6 +5128,15 @@ model Formation {
   validatedAt              DateTime?                 @map("validated_at")
   /// Prix négocié optionnel (sinon dérivé offre/pricing.ts).
   tarifHtCents             Int?                      @map("tarif_ht_cents")
+  // ── Réconciliation catalogue → DB (WS2) — Formation auto-syncée depuis ──
+  //    catalog-v2.ts (SSOT public). Snapshot 3-way pour ne jamais clobber une
+  //    édition admin : valeurs catalogue à la dernière synchro réussie.
+  /// Valeurs catalogue (7 champs) à la dernière synchro — baseline du merge 3-way.
+  catalogSnapshot          Json?                     @map("catalog_snapshot")
+  /// Dernière synchro catalogue→DB réussie (champs alignés sur le catalogue).
+  catalogSyncedAt          DateTime?                 @map("catalog_synced_at")
+  /// Dernier écart non résolu (édition admin ≠ catalogue qui a bougé) → revue.
+  catalogDriftAt           DateTime?                 @map("catalog_drift_at")
   createdAt                DateTime                  @default(now()) @map("created_at")
   updatedAt                DateTime                  @updatedAt @map("updated_at")
 

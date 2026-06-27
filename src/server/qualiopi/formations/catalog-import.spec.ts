@@ -7,41 +7,71 @@ import { describe, it, expect } from "vitest";
 import type { PrismaClient } from "../../../../prisma/generated/client";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
 import { isValidDocumentNumber } from "../numbering/formats";
-import { buildFormationImportData, importCatalogFormations, premierVerbe } from "./catalog-import";
+import {
+  buildFormationImportData,
+  importCatalogFormations,
+  premierVerbe,
+  reconcileFormationFields,
+  toCatalogSnapshot,
+  type CatalogSnapshot,
+} from "./catalog-import";
 
 const FIXED_NOW = new Date("2026-06-20T10:00:00.000Z");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Faux client Prisma minimal (formation.count/findUnique/create + offreSite)
+// Faux client Prisma (formation.count/findUnique/create/update + offreSite).
+// Stocke des lignes complètes pour exercer la réconciliation 3-way.
 // ─────────────────────────────────────────────────────────────────────────────
 
+type Row = Record<string, unknown> & { id: string; slug: string };
+
 interface FakeDbConfig {
+  /** Slugs déjà en base, pré-remplis comme une création catalogue (→ unchanged). */
   existingFormationSlugs?: string[];
+  /** Lignes existantes explicites (pour tester synced/drifted/legacy). */
+  existingRows?: Row[];
   missingOffreSlugs?: string[];
+}
+
+/** Ligne existante alignée sur le catalogue (snapshot = catalogue) → unchanged. */
+function rowFromCatalog(slug: string): Row {
+  const f = FORMATIONS_V2.find((x) => x.slugFr === slug);
+  if (!f) throw new Error(`slug inconnu: ${slug}`);
+  const data = buildFormationImportData(f, `offre-${slug}`, { now: FIXED_NOW });
+  return { ...data, id: `existing-${slug}`, slug, catalogSnapshot: toCatalogSnapshot(data) };
 }
 
 function makeFakeDb(config: FakeDbConfig = {}): {
   db: PrismaClient;
-  createdRows: Array<Record<string, unknown>>;
+  rows: Map<string, Row>;
+  createdRows: Row[];
+  updates: Array<{ id: string; data: Record<string, unknown> }>;
 } {
-  const existing = new Set(config.existingFormationSlugs ?? []);
   const missingOffre = new Set(config.missingOffreSlugs ?? []);
-  const createdRows: Array<Record<string, unknown>> = [];
-  let count = 0;
+  const rows = new Map<string, Row>();
+  for (const slug of config.existingFormationSlugs ?? []) rows.set(slug, rowFromCatalog(slug));
+  for (const row of config.existingRows ?? []) rows.set(row.slug, row);
+  const createdRows: Row[] = [];
+  const updates: Array<{ id: string; data: Record<string, unknown> }> = [];
+  let count = rows.size;
 
   const db = {
     formation: {
       count: async () => count,
-      findUnique: async ({ where }: { where: { slug: string } }) => {
-        if (existing.has(where.slug)) return { id: `existing-${where.slug}` };
-        const found = createdRows.find((r) => r.slug === where.slug);
-        return found ? { id: found.id as string } : null;
-      },
+      findUnique: async ({ where }: { where: { slug: string } }) => rows.get(where.slug) ?? null,
       create: async ({ data }: { data: Record<string, unknown> }) => {
         count += 1;
-        const row = { id: `id-${count}`, ...data };
+        const row = { id: `id-${count}`, ...data } as Row;
+        rows.set(row.slug, row);
         createdRows.push(row);
         return { id: row.id, numero: data.numero as string };
+      },
+      update: async ({ where, data }: { where: { id: string }; data: Record<string, unknown> }) => {
+        updates.push({ id: where.id, data });
+        for (const row of rows.values()) {
+          if (row.id === where.id) Object.assign(row, data);
+        }
+        return { id: where.id };
       },
     },
     offreSite: {
@@ -50,7 +80,7 @@ function makeFakeDb(config: FakeDbConfig = {}): {
     },
   };
 
-  return { db: db as unknown as PrismaClient, createdRows };
+  return { db: db as unknown as PrismaClient, rows, createdRows, updates };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -153,13 +183,17 @@ describe("importCatalogFormations", () => {
     }
   });
 
-  it("est idempotent : ré-exécution ne crée rien (tout déjà présent)", async () => {
-    const { db } = makeFakeDb({
+  it("est idempotent : ré-exécution ne crée ni ne modifie rien (tout aligné)", async () => {
+    const { db, updates } = makeFakeDb({
       existingFormationSlugs: FORMATIONS_V2.map((f) => f.slugFr),
     });
     const report = await importCatalogFormations(db, { now: FIXED_NOW });
     expect(report.created).toBe(0);
     expect(report.skippedExistantes).toBe(FORMATIONS_V2.length);
+    expect(report.synced).toBe(0);
+    expect(report.drifted).toBe(0);
+    expect(report.items.every((i) => i.status === "unchanged")).toBe(true);
+    expect(updates).toHaveLength(0); // aucune écriture parasite
   });
 
   it("ignore (sans bloquer) une formation dont l'offre V2 manque", async () => {
@@ -171,5 +205,160 @@ describe("importCatalogFormations", () => {
     expect(report.skippedOffreAbsente).toBe(1);
     const item = report.items.find((i) => i.slug === cible);
     expect(item?.status).toBe("skipped_offre_absente");
+  });
+
+  it("auto-synchronise un champ que le catalogue a changé et que l'admin n'a pas touché", async () => {
+    const slug = FORMATIONS_V2[0]!.slugFr;
+    // Ligne existante = catalogue, MAIS titre DB == ancien titre == snapshot
+    // (admin non touché) → catalogue actuel ≠ DB → synchro sûre.
+    const row = rowFromCatalog(slug);
+    row.titre = "Ancien titre catalogue";
+    (row.catalogSnapshot as CatalogSnapshot).titre = "Ancien titre catalogue";
+
+    const { db, updates } = makeFakeDb({ existingRows: [row] });
+    const report = await importCatalogFormations(db, { now: FIXED_NOW });
+
+    expect(report.synced).toBe(1);
+    expect(report.drifted).toBe(0);
+    const item = report.items.find((i) => i.slug === slug);
+    expect(item?.status).toBe("synced");
+    expect(item?.syncedFields).toContain("titre");
+    const write = updates.find((u) => u.id === row.id)!;
+    expect(write.data.titre).toBe(FORMATIONS_V2[0]!.titreFr);
+    expect(write.data.catalogSyncedAt).toBe(FIXED_NOW);
+    expect(write.data.catalogDriftAt).toBeNull();
+  });
+
+  it("préserve l'édition admin et reporte un écart quand catalogue ET admin ont divergé", async () => {
+    const slug = FORMATIONS_V2[0]!.slugFr;
+    const row = rowFromCatalog(slug);
+    // Admin a réécrit le titre (DB ≠ snapshot) ET le catalogue a bougé depuis
+    // (snapshot ≠ catalogue actuel) → conflit.
+    row.titre = "Titre édité par l'admin";
+    (row.catalogSnapshot as CatalogSnapshot).titre = "Titre catalogue d'origine";
+
+    const { db, updates } = makeFakeDb({ existingRows: [row] });
+    const report = await importCatalogFormations(db, { now: FIXED_NOW });
+
+    expect(report.drifted).toBe(1);
+    expect(report.synced).toBe(0);
+    const item = report.items.find((i) => i.slug === slug);
+    expect(item?.status).toBe("drifted");
+    expect(item?.driftFields).toContain("titre");
+    // L'admin est préservé : aucune écriture du champ titre.
+    const write = updates.find((u) => u.id === row.id)!;
+    expect(write.data.titre).toBeUndefined();
+    expect(write.data.catalogDriftAt).toBe(FIXED_NOW);
+  });
+
+  it("backfille la baseline d'une ligne legacy (snapshot null) sans drift quand elle est alignée", async () => {
+    const slug = FORMATIONS_V2[0]!.slugFr;
+    const row = rowFromCatalog(slug);
+    row.catalogSnapshot = null; // ligne créée avant WS2
+
+    const { db, updates } = makeFakeDb({ existingRows: [row] });
+    const report = await importCatalogFormations(db, { now: FIXED_NOW });
+
+    expect(report.skippedExistantes).toBe(1);
+    expect(report.drifted).toBe(0);
+    const write = updates.find((u) => u.id === row.id)!;
+    expect(write.data.catalogSnapshot).toBeDefined();
+    expect(write.data.catalogSyncedAt).toBe(FIXED_NOW);
+  });
+
+  it("legacy (snapshot null) divergente → drift sans écraser (pas de baseline pour trancher)", async () => {
+    const slug = FORMATIONS_V2[0]!.slugFr;
+    const row = rowFromCatalog(slug);
+    row.titre = "Valeur DB divergente";
+    row.catalogSnapshot = null;
+
+    const { db, updates } = makeFakeDb({ existingRows: [row] });
+    const report = await importCatalogFormations(db, { now: FIXED_NOW });
+
+    expect(report.drifted).toBe(1);
+    const item = report.items.find((i) => i.slug === slug);
+    expect(item?.driftFields).toContain("titre");
+    const write = updates.find((u) => u.id === row.id)!;
+    expect(write.data.titre).toBeUndefined();
+  });
+
+  it("no-op sous l'URL stub (build/SSG) — aucune mutation", async () => {
+    const prev = process.env.DATABASE_URL;
+    process.env.DATABASE_URL = "postgresql://stub:stub@stub.invalid:5432/stub";
+    try {
+      const { db, createdRows, updates } = makeFakeDb();
+      const report = await importCatalogFormations(db, { now: FIXED_NOW });
+      expect(report.created).toBe(0);
+      expect(report.items).toHaveLength(0);
+      expect(createdRows).toHaveLength(0);
+      expect(updates).toHaveLength(0);
+    } finally {
+      if (prev === undefined) delete process.env.DATABASE_URL;
+      else process.env.DATABASE_URL = prev;
+    }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// reconcileFormationFields (merge 3-way pur)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("reconcileFormationFields", () => {
+  const base = (): CatalogSnapshot => ({
+    titre: "T",
+    objectifsPedagogiques: [{ id: "obj-1", verbe: "Produire", description: "Produire X" }],
+    programmeDetaille: [],
+    methodesPedagogiques: "M",
+    ratioPratiquePct: 70,
+    accessibleHandicap: true,
+    certificationType: "aucune",
+  });
+
+  it("DB == catalogue → ni update ni drift, baseline = catalogue", () => {
+    const desired = base();
+    const r = reconcileFormationFields(desired, { ...desired }, null);
+    expect(r.syncedFields).toHaveLength(0);
+    expect(r.driftFields).toHaveLength(0);
+    expect(r.updates).toEqual({});
+    expect(r.nextSnapshot.titre).toBe("T");
+  });
+
+  it("catalogue a bougé, DB == snapshot → synchro", () => {
+    const desired = { ...base(), titre: "Nouveau" };
+    const db = base(); // titre = "T"
+    const snapshot = base(); // titre = "T" == DB
+    const r = reconcileFormationFields(desired, db, snapshot);
+    expect(r.syncedFields).toEqual(["titre"]);
+    expect(r.updates.titre).toBe("Nouveau");
+    expect(r.driftFields).toHaveLength(0);
+  });
+
+  it("catalogue a bougé, DB ≠ snapshot → conflit (drift, pas d'update)", () => {
+    const desired = { ...base(), titre: "Catalogue v2" };
+    const db = { ...base(), titre: "Edité admin" };
+    const snapshot = base(); // "T"
+    const r = reconcileFormationFields(desired, db, snapshot);
+    expect(r.driftFields).toEqual(["titre"]);
+    expect(r.updates).toEqual({});
+    expect(r.nextSnapshot.titre).toBe("T"); // baseline NON adoptée sur le conflit
+  });
+
+  it("pas de baseline + divergence → drift sans update", () => {
+    const desired = { ...base(), titre: "Catalogue" };
+    const db = { ...base(), titre: "DB" };
+    const r = reconcileFormationFields(desired, db, null);
+    expect(r.driftFields).toEqual(["titre"]);
+    expect(r.updates).toEqual({});
+  });
+
+  it("compare les Json structurellement (ordre de clés indifférent)", () => {
+    const desired = base();
+    const dbReordered: CatalogSnapshot = {
+      ...desired,
+      objectifsPedagogiques: [{ description: "Produire X", verbe: "Produire", id: "obj-1" }],
+    };
+    const r = reconcileFormationFields(desired, dbReordered, null);
+    expect(r.driftFields).toHaveLength(0);
+    expect(r.syncedFields).toHaveLength(0);
   });
 });
