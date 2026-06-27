@@ -7,6 +7,8 @@
  * publishFormationAction      : publie (nécessite validation humaine + ratio pratique ≥ plancher).
  * publierIndicateursAction    : publie les indicateurs de résultats (off.1/2 Qualiopi).
  * setCertificationAction      : pose les champs RS/RNCP + recalcule cpfEligible (T18 CLUSTER B).
+ * archiveFormationAction      : retire une formation du catalogue actif (WS6).
+ * duplicateFormationAction    : clone une formation en brouillon nouvelle version (WS6).
  *
  * TVA : exonérée 261-4-4° CGI (pas de TVA sur formations).
  * Montants formation : résolus via offre / pricing.ts (jamais hardcodés ici).
@@ -25,6 +27,14 @@ import { allocateFormationNumero } from "@/server/qualiopi/formations/numbering"
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { setCertification } from "@/server/qualiopi/formations/certification-service";
+import { revalidateFormationPages } from "@/server/actions/qualiopi/_revalidate";
+import {
+  countLockingSessions,
+  appendVersionEntry,
+  bumpProgrammeVersion,
+  LOCKED_BY_SESSION_ERROR,
+  type FormationVersionEntry,
+} from "@/server/qualiopi/formations/edit-guard";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -150,12 +160,21 @@ export async function createFormationAction(
     session,
   });
 
+  revalidateFormationPages({ slug: v.slug });
+
   return { data: { id: created.id, numero: created.numero } };
 }
 
 /**
  * Met à jour les champs éditoriaux d'une formation (contenu, seuils, accessibilité).
- * Ne touche PAS au statut ni à la numérotation.
+ * Ne touche PAS à la numérotation.
+ *
+ * Gardes de conformité (WS4) :
+ *   - BLOQUÉ si une session est en cours/réalisée (contenu figé, cf. WS5/WS6).
+ *   - Toute modification substantielle d'une formation VALIDÉE réinitialise la
+ *     validation humaine (`validatedBy`/`validatedAt`) et rétrograde
+ *     `statutGeneration` hors de `publie` (AI Act art. 50).
+ *   - Trace une entrée d'historique (`versionHistorique`) + bump de version.
  */
 export async function updateFormationAction(
   input: z.infer<typeof updateFormationSchema>,
@@ -165,32 +184,69 @@ export async function updateFormationAction(
   if (!parsed.success) return { error: "Données invalides" };
   const { id, ...fields } = parsed.data;
 
+  const formation = await prisma.formation.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      slug: true,
+      statutGeneration: true,
+      validatedBy: true,
+      versionProgramme: true,
+      versionHistorique: true,
+    },
+  });
+  if (!formation) return { error: "Formation introuvable" };
+
+  // Garde 1 — sessions verrouillantes (contenu figé).
+  if ((await countLockingSessions(prisma, id)) > 0) {
+    return { error: LOCKED_BY_SESSION_ERROR };
+  }
+
+  const dataChanges: Record<string, unknown> = {};
+  if (fields.titre !== undefined) dataChanges.titre = fields.titre;
+  if (fields.objectifsPedagogiques !== undefined)
+    dataChanges.objectifsPedagogiques = fields.objectifsPedagogiques as never;
+  if (fields.programmeDetaille !== undefined)
+    dataChanges.programmeDetaille = fields.programmeDetaille as never;
+  if (fields.methodesPedagogiques !== undefined)
+    dataChanges.methodesPedagogiques = fields.methodesPedagogiques;
+  if (fields.seuilReussitePct !== undefined) dataChanges.seuilReussitePct = fields.seuilReussitePct;
+  if (fields.ratioPratiquePct !== undefined) dataChanges.ratioPratiquePct = fields.ratioPratiquePct;
+  if (fields.accessibleHandicap !== undefined)
+    dataChanges.accessibleHandicap = fields.accessibleHandicap;
+  if (fields.certificationType !== undefined)
+    dataChanges.certificationType = fields.certificationType;
+  if (fields.codeCpf !== undefined) dataChanges.codeCpf = fields.codeCpf;
+
+  const changedFields = Object.keys(dataChanges);
+  if (changedFields.length === 0) return { data: { id } };
+
+  // Garde 2 — toute édition substantielle d'une formation PUBLIÉE ou VALIDÉE
+  // invalide la validation et la dépublie (AI Act art.50). On dépublie même si
+  // `validatedBy` est null : une formation peut atteindre `publie` via le moteur
+  // (FileValidation) sans poser validatedBy ; sinon elle resterait publique avec
+  // un contenu modifié non re-validé.
+  const wasValidated = formation.validatedBy !== null;
+  const wasPublished = formation.statutGeneration === "publie";
+  const requiresRevalidation = wasValidated || wasPublished;
+  const nextVersion = bumpProgrammeVersion(formation.versionProgramme);
+  const entry: FormationVersionEntry = {
+    version: nextVersion,
+    at: new Date().toISOString(),
+    by: session.userId,
+    action: "update",
+    fields: changedFields,
+    ...(requiresRevalidation ? { revalidationRequired: true } : {}),
+  };
+
   await prisma.formation.update({
     where: { id },
     data: {
-      ...(fields.titre !== undefined ? { titre: fields.titre } : {}),
-      ...(fields.objectifsPedagogiques !== undefined
-        ? { objectifsPedagogiques: fields.objectifsPedagogiques as never }
-        : {}),
-      ...(fields.programmeDetaille !== undefined
-        ? { programmeDetaille: fields.programmeDetaille as never }
-        : {}),
-      ...(fields.methodesPedagogiques !== undefined
-        ? { methodesPedagogiques: fields.methodesPedagogiques }
-        : {}),
-      ...(fields.seuilReussitePct !== undefined
-        ? { seuilReussitePct: fields.seuilReussitePct }
-        : {}),
-      ...(fields.ratioPratiquePct !== undefined
-        ? { ratioPratiquePct: fields.ratioPratiquePct }
-        : {}),
-      ...(fields.accessibleHandicap !== undefined
-        ? { accessibleHandicap: fields.accessibleHandicap }
-        : {}),
-      ...(fields.certificationType !== undefined
-        ? { certificationType: fields.certificationType }
-        : {}),
-      ...(fields.codeCpf !== undefined ? { codeCpf: fields.codeCpf } : {}),
+      ...dataChanges,
+      versionProgramme: nextVersion,
+      versionHistorique: appendVersionEntry(formation.versionHistorique, entry) as never,
+      ...(wasValidated ? { validatedBy: null, validatedAt: null } : {}),
+      ...(wasPublished ? { statutGeneration: "assemble" } : {}),
     },
   });
 
@@ -198,9 +254,11 @@ export async function updateFormationAction(
     action: "qualiopi.formation.update",
     targetType: "Formation",
     targetId: id,
-    changes: fields,
+    changes: { ...fields, revalidationRequired: wasValidated, version: nextVersion },
     session,
   });
+
+  revalidateFormationPages({ slug: formation.slug });
 
   return { data: { id } };
 }
@@ -218,7 +276,7 @@ export async function validateFormationAction(id: string): Promise<ActionResult<
 
   const formation = await prisma.formation.findUnique({
     where: { id: idParsed.data },
-    select: { id: true, statutGeneration: true },
+    select: { id: true, statutGeneration: true, slug: true },
   });
   if (!formation) return { error: "Formation introuvable" };
 
@@ -237,6 +295,8 @@ export async function validateFormationAction(id: string): Promise<ActionResult<
     changes: { validatedBy: session.userId },
     session,
   });
+
+  revalidateFormationPages({ slug: formation.slug });
 
   return { data: { id: idParsed.data } };
 }
@@ -263,6 +323,7 @@ export async function publishFormationAction(id: string): Promise<ActionResult<{
       statut: true,
       validatedBy: true,
       ratioPratiquePct: true,
+      slug: true,
     },
   });
   if (!formation) return { error: "Formation introuvable" };
@@ -298,6 +359,8 @@ export async function publishFormationAction(id: string): Promise<ActionResult<{
     session,
   });
 
+  revalidateFormationPages({ slug: formation.slug });
+
   return { data: { id: idParsed.data } };
 }
 
@@ -326,6 +389,11 @@ const setCertificationSchema = z.object({
  * Requiert ADMIN_PUBLISH (publication du référentiel certifiant).
  * Trace dans ActivityLog pour auditabilité Qualiopi.
  *
+ * Gardes de conformité (WS4) : bloqué si une session est en cours/réalisée (la
+ * finançabilité CPF/EDOF d'une prestation livrée ne peut être modifiée
+ * rétroactivement) ; réinitialise la validation humaine si la formation était
+ * validée + trace l'historique de version.
+ *
  * Stub-aware : le service setCertification retourne early si stub.invalid
  * (aucune mutation au build SSG).
  */
@@ -339,9 +407,21 @@ export async function setCertificationAction(
 
   const formation = await prisma.formation.findUnique({
     where: { id: formationId },
-    select: { id: true },
+    select: {
+      id: true,
+      slug: true,
+      statutGeneration: true,
+      validatedBy: true,
+      versionProgramme: true,
+      versionHistorique: true,
+    },
   });
   if (!formation) return { error: "Formation introuvable" };
+
+  // Garde — sessions verrouillantes (finançabilité figée).
+  if ((await countLockingSessions(prisma, formationId)) > 0) {
+    return { error: LOCKED_BY_SESSION_ERROR };
+  }
 
   // exactOptionalPropertyTypes : construire l'objet SetCertificationInput
   // explicitement pour éviter le spread de champs undefined.
@@ -375,6 +455,35 @@ export async function setCertificationAction(
 
   const result = await setCertification(serviceInput);
 
+  // Audit + invalidation de la validation humaine (WS4) : le changement de
+  // certification est substantiel (impacte la finançabilité CPF).
+  const changedCertFields = Object.keys(certFields).filter(
+    (k) => (certFields as Record<string, unknown>)[k] !== undefined,
+  );
+  if (changedCertFields.length > 0) {
+    const wasValidated = formation.validatedBy !== null;
+    const wasPublished = formation.statutGeneration === "publie";
+    const requiresRevalidation = wasValidated || wasPublished;
+    const nextVersion = bumpProgrammeVersion(formation.versionProgramme);
+    const entry: FormationVersionEntry = {
+      version: nextVersion,
+      at: new Date().toISOString(),
+      by: session.userId,
+      action: "certification",
+      fields: changedCertFields,
+      ...(requiresRevalidation ? { revalidationRequired: true } : {}),
+    };
+    await prisma.formation.update({
+      where: { id: formationId },
+      data: {
+        versionProgramme: nextVersion,
+        versionHistorique: appendVersionEntry(formation.versionHistorique, entry) as never,
+        ...(wasValidated ? { validatedBy: null, validatedAt: null } : {}),
+        ...(wasPublished ? { statutGeneration: "assemble" } : {}),
+      },
+    });
+  }
+
   await logQualiopiActivity({
     action: "qualiopi.formation.certification.set",
     targetType: "Formation",
@@ -385,6 +494,8 @@ export async function setCertificationAction(
     },
     session,
   });
+
+  revalidateFormationPages({ slug: formation.slug });
 
   return { data: result };
 }
@@ -427,7 +538,7 @@ export async function publierIndicateursAction(
 
   const formation = await prisma.formation.findUnique({
     where: { id: formationId },
-    select: { id: true, titre: true },
+    select: { id: true, titre: true, slug: true },
   });
   if (!formation) return { error: "Formation introuvable" };
 
@@ -454,5 +565,161 @@ export async function publierIndicateursAction(
     session,
   });
 
+  revalidateFormationPages({ slug: formation.slug });
+
   return { data: { id: formationId, indicateursPubliesAt: now } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Archivage + duplication (WS6) — chemin prescrit quand une session verrouille
+// l'édition (cf. WS4 : « archivez puis dupliquez pour une nouvelle version »).
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Archive une formation (statut + statutGeneration → `archive`).
+ *
+ * Non destructif : les sessions et documents existants conservent leur snapshot
+ * légal (WS5). Autorisé même avec des sessions en cours/réalisées — archiver ne
+ * modifie aucun contenu engageant, ça retire seulement la formation du catalogue
+ * actif (plus de nouvelle session possible, cf. canCreateSessionFor).
+ *
+ * Requiert ADMIN_PUBLISH (modification de la disponibilité du référentiel).
+ */
+export async function archiveFormationAction(id: string): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminPublish();
+  const idParsed = z.string().uuid().safeParse(id);
+  if (!idParsed.success) return { error: "Identifiant invalide" };
+
+  const formation = await prisma.formation.findUnique({
+    where: { id: idParsed.data },
+    select: { id: true, slug: true, statut: true },
+  });
+  if (!formation) return { error: "Formation introuvable" };
+  if (formation.statut === "archive") return { data: { id: idParsed.data } };
+
+  await prisma.formation.update({
+    where: { id: idParsed.data },
+    data: { statut: "archive", statutGeneration: "archive" },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.archive",
+    targetType: "Formation",
+    targetId: idParsed.data,
+    changes: { statut: "archive" },
+    session,
+  });
+
+  revalidateFormationPages({ slug: formation.slug });
+
+  return { data: { id: idParsed.data } };
+}
+
+/** Construit un slug libre dérivé de `base` (`-copie`, `-copie-2`, …). */
+async function allocateCopySlug(base: string): Promise<string> {
+  for (let i = 1; i <= 50; i++) {
+    const candidate = i === 1 ? `${base}-copie` : `${base}-copie-${i}`;
+    const exists = await prisma.formation.findUnique({
+      where: { slug: candidate },
+      select: { id: true },
+    });
+    if (!exists) return candidate;
+  }
+  // Repli improbable : suffixe horodaté pour garantir l'unicité.
+  return `${base}-copie-${Date.now()}`;
+}
+
+/**
+ * Duplique une formation en un nouveau brouillon éditable (nouvelle version).
+ *
+ * Copie le CONTENU pédagogique (titre, durée, objectifs, programme, méthodes,
+ * moyens, ressources, accessibilité, ratio, seuil, types d'action, offre). NE
+ * COPIE PAS les éléments propres à l'original : numéro, certification RS/RNCP
+ * (réenregistrement requis), indicateurs de résultats, validation humaine,
+ * historique de version, lien de synchro catalogue. La copie sort en
+ * `intention`/`actif`, non validée, version `1.0` → repasse par le cycle
+ * validation/publication.
+ *
+ * Requiert ADMIN_WRITE.
+ */
+export async function duplicateFormationAction(
+  id: string,
+): Promise<ActionResult<{ id: string; numero: string; slug: string }>> {
+  const session = await requireAdminWrite();
+  const idParsed = z.string().uuid().safeParse(id);
+  if (!idParsed.success) return { error: "Identifiant invalide" };
+
+  const source = await prisma.formation.findUnique({
+    where: { id: idParsed.data },
+    select: {
+      titre: true,
+      slug: true,
+      offreSiteId: true,
+      clientId: true,
+      estSurMesure: true,
+      dureeHeures: true,
+      modalite: true,
+      objectifsPedagogiques: true,
+      programmeDetaille: true,
+      methodesPedagogiques: true,
+      moyensTechniques: true,
+      ressourcesPedagogiques: true,
+      seuilReussitePct: true,
+      ratioPratiquePct: true,
+      accessibleHandicap: true,
+      typesActionQualiopi: true,
+      langueGeneration: true,
+    },
+  });
+  if (!source) return { error: "Formation introuvable" };
+
+  const newSlug = await allocateCopySlug(source.slug);
+
+  let created: { id: string; numero: string };
+  try {
+    created = await withNumberRetry(async () => {
+      const numero = await allocateFormationNumero();
+      return prisma.formation.create({
+        data: {
+          numero,
+          titre: `${source.titre} (copie)`,
+          slug: newSlug,
+          offreSiteId: source.offreSiteId,
+          clientId: source.clientId,
+          estSurMesure: source.estSurMesure,
+          dureeHeures: source.dureeHeures,
+          modalite: source.modalite,
+          objectifsPedagogiques: source.objectifsPedagogiques as never,
+          programmeDetaille: source.programmeDetaille as never,
+          methodesPedagogiques: source.methodesPedagogiques,
+          moyensTechniques: source.moyensTechniques,
+          ressourcesPedagogiques: source.ressourcesPedagogiques as never,
+          seuilReussitePct: source.seuilReussitePct,
+          ...(source.ratioPratiquePct !== null ? { ratioPratiquePct: source.ratioPratiquePct } : {}),
+          accessibleHandicap: source.accessibleHandicap,
+          typesActionQualiopi: source.typesActionQualiopi,
+          langueGeneration: source.langueGeneration,
+          // Réinitialisations : nouveau cycle de vie, non certifié, non validé.
+          statutGeneration: "intention",
+          statut: "actif",
+          versionProgramme: "1.0",
+        },
+        select: { id: true, numero: true },
+      });
+    });
+  } catch {
+    return { error: "Erreur lors de la duplication de la formation" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.duplicate",
+    targetType: "Formation",
+    targetId: created.id,
+    changes: { sourceId: idParsed.data, numero: created.numero, slug: newSlug },
+    session,
+  });
+
+  revalidateFormationPages({ slug: newSlug });
+
+  return { data: { id: created.id, numero: created.numero, slug: newSlug } };
 }

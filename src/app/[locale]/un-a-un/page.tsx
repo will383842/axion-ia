@@ -46,6 +46,7 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { coachingFormulePath, COACHING_1TO1_ISO_DURATION } from "@/content/coaching-1to1";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
@@ -108,10 +109,10 @@ export default async function UnAUnHubPage({ params }: Props) {
     {
       id: "dirigeant",
       accent: "mocha" as const,
-      // path vers le hub famille Dirigeants (3 formats détaillés).
-      hrefFr: "/interventions/dirigeants",
-      hrefEn: "/interventions/executives",
-      iso8601Duration: "PT7H",
+      // path vers le hub famille Dirigeants (SSOT taxonomie, cf. coaching-1to1).
+      hrefFr: coachingFormulePath("dirigeant", "fr"),
+      hrefEn: coachingFormulePath("dirigeant", "en"),
+      iso8601Duration: COACHING_1TO1_ISO_DURATION,
       labelFr: "Coaching dirigeant",
       labelEn: "Executive coaching",
       durationFr: "1 journée en tête-à-tête (7 à 8 h)",
@@ -143,10 +144,10 @@ export default async function UnAUnHubPage({ params }: Props) {
     {
       id: "membre-equipe",
       accent: "terracotta" as const,
-      // path vers le hub famille Coaching individuel (tout poste).
-      hrefFr: "/interventions/individuel",
-      hrefEn: "/interventions/individual",
-      iso8601Duration: "PT7H",
+      // path vers le hub famille Coaching individuel (SSOT taxonomie).
+      hrefFr: coachingFormulePath("membre-equipe", "fr"),
+      hrefEn: coachingFormulePath("membre-equipe", "en"),
+      iso8601Duration: COACHING_1TO1_ISO_DURATION,
       labelFr: "Coaching collaborateur",
       labelEn: "Team-member coaching",
       durationFr: "1 journée de travail à deux (7 à 8 h)",

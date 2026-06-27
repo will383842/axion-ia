@@ -30,6 +30,7 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import type { DemiJourneeLabel, PlateformeLabel } from "@/server/qualiopi/presence/types";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -567,6 +568,7 @@ export async function genererReleveConnexionDocumentAction(input: {
           dateDebut: true,
           dateFin: true,
           coFormateurs: true,
+          formationSnapshot: true,
           formation: { select: { titre: true } },
         },
       },
@@ -630,7 +632,11 @@ export async function genererReleveConnexionDocumentAction(input: {
       React.createElement(ReleveConnexionPdf, {
         data: {
           numero,
-          intituleFormation: releveImport.session!.formation.titre,
+          intituleFormation:
+            readFormationForDocs(
+              releveImport.session!.formationSnapshot,
+              releveImport.session!.formation,
+            ).titre ?? releveImport.session!.formation.titre,
           plateforme: plateformeLabel,
           idReunion,
           date: dateCivile,

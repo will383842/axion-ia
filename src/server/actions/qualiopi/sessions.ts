@@ -26,6 +26,10 @@ import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
 import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
+import {
+  FORMATION_SNAPSHOT_SELECT,
+  buildFormationSnapshot,
+} from "@/server/qualiopi/formations/formation-snapshot";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
 // caller externe). Un `export type { … }` dans un module "use server" est
@@ -95,12 +99,23 @@ export async function createSessionAction(
     return { error: "La date de fin doit être postérieure à la date de début" };
   }
 
-  // Vérifier que la formation est publiée et active
-  let formation: { id: string; statutGeneration: string; statut: string; titre: string } | null;
+  // Vérifier que la formation est publiée et active. On lit aussi les champs du
+  // snapshot légal (WS5) pour les figer dans la session dès sa création.
+  let formation:
+    | ({ id: string; statutGeneration: string; statut: string; titre: string } & {
+        dureeHeures: number;
+        modalite: string;
+        objectifsPedagogiques: unknown;
+        programmeDetaille: unknown;
+        methodesPedagogiques: string;
+        certificationType: string;
+        versionProgramme: string;
+      })
+    | null;
   try {
     formation = await prisma.formation.findUnique({
       where: { id: v.formationId },
-      select: { id: true, statutGeneration: true, statut: true, titre: true },
+      select: { id: true, statutGeneration: true, statut: true, ...FORMATION_SNAPSHOT_SELECT },
     });
   } catch {
     return { error: "Erreur lors de la vérification de la formation" };
@@ -123,6 +138,9 @@ export async function createSessionAction(
   // Titre par défaut si non fourni
   const titreSession = v.titreSession ?? formation.titre;
 
+  // Snapshot légal (WS5) — fige la formation telle que vendue à cette session.
+  const formationSnapshot = buildFormationSnapshot(formation, new Date());
+
   // Créer la session + FormationTransition initiale dans une transaction,
   // avec retry sur collision de numéro (R7 : numéro ré-alloué à chaque tentative).
   let created: { id: string; numero: string };
@@ -142,6 +160,7 @@ export async function createSessionAction(
             modalite: v.modalite,
             nbParticipantsPrevus: v.nbParticipantsPrevus,
             montantHtCents: v.montantHtCents,
+            formationSnapshot: formationSnapshot as never,
             statut: "planifiee",
             ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
             ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),

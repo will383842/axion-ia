@@ -40,6 +40,7 @@ vi.mock("@/lib/prisma", () => ({
     trainingSession: {
       findUnique: vi.fn(),
       update: vi.fn(),
+      count: vi.fn(),
     },
     factureFormation: {
       count: vi.fn(),
@@ -119,6 +120,7 @@ const mockPrisma = prisma as unknown as {
   trainingSession: {
     findUnique: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
+    count: ReturnType<typeof vi.fn>;
   };
   factureFormation: {
     count: ReturnType<typeof vi.fn>;
@@ -682,8 +684,15 @@ describe("setMoyensFormationAction", () => {
     vi.clearAllMocks();
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
     mockLogActivity.mockResolvedValue(undefined);
-    mockPrisma.formation.findUnique.mockResolvedValue({ id: FORMATION_UUID });
+    mockPrisma.formation.findUnique.mockResolvedValue({
+      id: FORMATION_UUID,
+      statutGeneration: "intention",
+      validatedBy: null,
+      versionProgramme: "1.0",
+      versionHistorique: [],
+    });
     mockPrisma.formation.update.mockResolvedValue({ id: FORMATION_UUID });
+    mockPrisma.trainingSession.count.mockResolvedValue(0);
   });
 
   it("retourne { data: { id } } pour une mise à jour valide", async () => {
@@ -727,6 +736,16 @@ describe("setMoyensFormationAction", () => {
     expect("error" in result).toBe(true);
     if (!("error" in result)) return;
     expect(result.error).toBe("Aucun champ à mettre à jour");
+  });
+
+  it("BLOQUE si une session est en cours/réalisée (garde WS4)", async () => {
+    mockPrisma.trainingSession.count.mockResolvedValue(1);
+    const result = await setMoyensFormationAction({
+      formationId: FORMATION_UUID,
+      moyensTechniques: "Salle équipée",
+    });
+    expect("error" in result).toBe(true);
+    expect(mockPrisma.formation.update).not.toHaveBeenCalled();
   });
 
   it("retourne { error } si formationId invalide", async () => {

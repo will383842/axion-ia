@@ -7,8 +7,16 @@
  * admin devrait re-saisir chaque formation à la main avant toute facturation.
  *
  * Propriétés :
- *   - IDEMPOTENT par slug : ne crée que les formations absentes, ne TOUCHE PAS
- *     les formations déjà en base (préserve les éventuelles éditions admin).
+ *   - IDEMPOTENT par slug : ne crée que les formations absentes.
+ *   - AUTO-SYNCÉ (WS2) : sur ré-exécution, réconcilie les 7 champs partagés avec
+ *     le catalogue via un merge 3-way (catalogue vs DB vs `catalogSnapshot`).
+ *     Une formation déjà en base est mise à jour si le catalogue a bougé ET que
+ *     l'admin n'a pas édité le champ ; en cas de conflit (édition admin + champ
+ *     catalogue modifié) le champ admin est PRÉSERVÉ et l'écart est reporté
+ *     (`drifted`) pour revue. Sans baseline (`catalogSnapshot` null, lignes
+ *     créées avant WS2) on ne devine pas une édition admin → on ne réécrit pas,
+ *     on reporte l'écart si catalogue ≠ DB et on adopte le catalogue en baseline
+ *     quand ils coïncident.
  *   - SESSION-READY : les formations créées sortent en `statutGeneration='publie'`
  *     + `statut='actif'` → `canCreateSessionFor()` les accepte immédiatement
  *     (cf. sessions.ts). Le contenu (objectifs, programme, public, durée) est
@@ -33,6 +41,7 @@ import type { FormationDuree } from "../../../content/pricing";
 import type { FormationV2 } from "../../../content/formations/catalog-v2";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
 import { formatDocumentNumber } from "../numbering/formats";
+import { countLockingSessions } from "./edit-guard";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constantes de mapping (alignées sur catalog-v2-meta + seed offres-v2)
@@ -191,6 +200,139 @@ export function buildFormationImportData(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Réconciliation 3-way catalogue ↔ DB ↔ snapshot (pur, testable sans DB)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Les 7 champs qu'un import écrit ET qu'un admin peut éditer : seuls ceux-là
+ * font l'objet du merge 3-way (les autres — numéro, offre, statut… — ne sont
+ * jamais touchés par une re-synchro). Ordre figé = clés du `catalogSnapshot`.
+ */
+export const RECONCILED_FIELDS = [
+  "titre",
+  "objectifsPedagogiques",
+  "programmeDetaille",
+  "methodesPedagogiques",
+  "ratioPratiquePct",
+  "accessibleHandicap",
+  "certificationType",
+] as const;
+
+export type ReconciledField = (typeof RECONCILED_FIELDS)[number];
+
+/** Sous-ensemble catalogue persisté comme baseline du merge. */
+export type CatalogSnapshot = Pick<FormationImportData, ReconciledField>;
+
+/** Valeurs DB courantes des 7 champs réconciliés (lues sur la Formation). */
+export type FormationReconcileCurrent = {
+  [K in ReconciledField]: FormationImportData[K] | null | undefined;
+};
+
+/** Extrait la baseline catalogue (7 champs) des données d'import dérivées. */
+export function toCatalogSnapshot(data: FormationImportData): CatalogSnapshot {
+  return {
+    titre: data.titre,
+    objectifsPedagogiques: data.objectifsPedagogiques,
+    programmeDetaille: data.programmeDetaille,
+    methodesPedagogiques: data.methodesPedagogiques,
+    ratioPratiquePct: data.ratioPratiquePct,
+    accessibleHandicap: data.accessibleHandicap,
+    certificationType: data.certificationType,
+  };
+}
+
+/** Égalité structurelle stable (JSON canonique à clés triées). */
+function deepEqual(a: unknown, b: unknown): boolean {
+  return canonical(a) === canonical(b);
+}
+
+function canonical(value: unknown): string {
+  return JSON.stringify(sortKeys(value));
+}
+
+function sortKeys(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(sortKeys);
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const key of Object.keys(value as Record<string, unknown>).sort()) {
+      out[key] = sortKeys((value as Record<string, unknown>)[key]);
+    }
+    return out;
+  }
+  return value;
+}
+
+export interface ReconcileResult {
+  /** Champs à écrire en DB (catalogue adopté, aucun conflit). */
+  updates: Partial<CatalogSnapshot>;
+  /** Champs auto-synchronisés depuis le catalogue (= clés de `updates`). */
+  syncedFields: ReconciledField[];
+  /** Champs en conflit (édition admin préservée) → revue manuelle. */
+  driftFields: ReconciledField[];
+  /** Nouvelle baseline à persister (catalogue adopté sauf champs en conflit). */
+  nextSnapshot: CatalogSnapshot;
+}
+
+/**
+ * Merge 3-way pur d'une Formation existante.
+ *
+ * Pour chaque champ réconcilié :
+ *   - DB == catalogue → rien à faire (baseline adoptée = catalogue).
+ *   - DB ≠ catalogue, pas de baseline → écart reporté, DB préservée (on ne sait
+ *     pas distinguer édition admin d'une création stale).
+ *   - DB ≠ catalogue, DB == baseline → l'admin n'a pas touché, le catalogue a
+ *     bougé → auto-synchro vers le catalogue.
+ *   - DB ≠ catalogue, DB ≠ baseline → édition admin + catalogue modifié =
+ *     conflit → DB préservée, écart reporté, baseline NON adoptée pour ce champ.
+ */
+export function reconcileFormationFields(
+  desired: CatalogSnapshot,
+  current: FormationReconcileCurrent,
+  snapshot: CatalogSnapshot | null,
+): ReconcileResult {
+  const updates: Partial<CatalogSnapshot> = {};
+  const syncedFields: ReconciledField[] = [];
+  const driftFields: ReconciledField[] = [];
+  const nextSnapshot = { ...(snapshot ?? ({} as CatalogSnapshot)) } as CatalogSnapshot;
+
+  for (const field of RECONCILED_FIELDS) {
+    const d = desired[field];
+    const c = current[field];
+    const hasSnapshot = snapshot !== null && field in snapshot;
+
+    if (deepEqual(d, c)) {
+      // DB déjà aligné sur le catalogue → on adopte le catalogue en baseline.
+      assignSnapshot(nextSnapshot, field, d);
+      continue;
+    }
+    if (!hasSnapshot) {
+      // Pas de baseline → on ne réécrit pas, on signale juste l'écart.
+      driftFields.push(field);
+      continue;
+    }
+    if (deepEqual(c, snapshot[field])) {
+      // Admin n'a pas touché, catalogue a bougé → synchro sûre.
+      assignSnapshot(updates, field, d);
+      assignSnapshot(nextSnapshot, field, d);
+      syncedFields.push(field);
+    } else {
+      // Conflit : édition admin + catalogue modifié → on préserve l'admin.
+      driftFields.push(field);
+    }
+  }
+
+  return { updates, syncedFields, driftFields, nextSnapshot };
+}
+
+function assignSnapshot<T extends Partial<CatalogSnapshot>>(
+  target: T,
+  field: ReconciledField,
+  value: CatalogSnapshot[ReconciledField],
+): void {
+  (target as Record<string, unknown>)[field] = value;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Service d'import (I/O — DB via client injecté)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -199,19 +341,33 @@ export interface CatalogImportOptions {
   now?: Date;
 }
 
-export type CatalogImportStatus = "created" | "skipped_existante" | "skipped_offre_absente";
+export type CatalogImportStatus =
+  | "created"
+  | "unchanged"
+  | "synced"
+  | "drifted"
+  | "skipped_offre_absente";
 
 export interface CatalogImportItemResult {
   slug: string;
   titre: string;
   status: CatalogImportStatus;
   numero?: string;
+  /** Champs auto-synchronisés depuis le catalogue (status `synced`). */
+  syncedFields?: ReconciledField[];
+  /** Champs en écart non résolu (status `drifted`) → revue admin. */
+  driftFields?: ReconciledField[];
 }
 
 export interface CatalogImportReport {
   total: number;
   created: number;
+  /** Existantes alignées sur le catalogue (rien à faire). */
   skippedExistantes: number;
+  /** Existantes auto-synchronisées depuis le catalogue. */
+  synced: number;
+  /** Existantes en écart non résolu (édition admin ≠ catalogue) → revue. */
+  drifted: number;
   skippedOffreAbsente: number;
   items: CatalogImportItemResult[];
 }
@@ -229,8 +385,12 @@ async function createFormationWithNumero(
   db: PrismaClient,
   data: FormationImportData,
   year: number,
+  now: Date,
 ): Promise<{ id: string; numero: string }> {
   let lastErr: unknown;
+  // Baseline 3-way posée dès la création : toute re-synchro future part de l'état
+  // catalogue exact à l'import (cf. reconcileFormationFields).
+  const catalogSnapshot = toCatalogSnapshot(data);
   for (let attempt = 0; attempt < 5; attempt++) {
     const count = await db.formation.count();
     const numero = formatDocumentNumber("formation", year, count + 1);
@@ -238,7 +398,7 @@ async function createFormationWithNumero(
       const created = await db.formation.create({
         // Cast contrôlé : champs Json (objectifs/programme/ressources) + enums
         // string-literaux acceptés par l'UncheckedCreateInput (offreSiteId scalaire).
-        data: { numero, ...data } as never,
+        data: { numero, ...data, catalogSnapshot, catalogSyncedAt: now } as never,
         select: { id: true, numero: true },
       });
       return created;
@@ -251,12 +411,25 @@ async function createFormationWithNumero(
   throw lastErr;
 }
 
+/** Sélection des 7 champs réconciliés + baseline, lue sur une Formation existante. */
+const RECONCILE_SELECT = {
+  id: true,
+  titre: true,
+  objectifsPedagogiques: true,
+  programmeDetaille: true,
+  methodesPedagogiques: true,
+  ratioPratiquePct: true,
+  accessibleHandicap: true,
+  certificationType: true,
+  catalogSnapshot: true,
+} as const;
+
 /**
- * Importe les 17 formations du catalogue V2 dans la table Formation.
+ * Importe les 17 formations du catalogue V2 dans la table Formation, puis
+ * RÉCONCILIE les existantes (merge 3-way, cf. reconcileFormationFields).
  *
- * Idempotent : une formation déjà présente (par slug) est préservée et reportée
- * `skipped_existante`. Une offre V2 absente (seed offres non lancé) → la
- * formation est reportée `skipped_offre_absente` (jamais bloquante).
+ * Une offre V2 absente (seed offres non lancé) → `skipped_offre_absente` (jamais
+ * bloquante). Une existante est reportée `unchanged` / `synced` / `drifted`.
  *
  * @param db          Client Prisma (singleton runtime OU PrismaClient du seed).
  * @param opts.adminUserId  Admin déclencheur (validatedBy + audit). Null en seed.
@@ -265,27 +438,33 @@ export async function importCatalogFormations(
   db: PrismaClient,
   opts: CatalogImportOptions = {},
 ): Promise<CatalogImportReport> {
-  const year = (opts.now ?? new Date()).getFullYear();
+  const now = opts.now ?? new Date();
+  const year = now.getFullYear();
   const ordered = [...FORMATIONS_V2].sort((a, b) => a.numero - b.numero);
+
+  // Garde build/SSG (ADR 0026) : sous l'URL stub, le Proxy Prisma throw sur toute
+  // mutation. Aucune synchro à effectuer hors runtime/seed → rapport vide.
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) {
+    return {
+      total: ordered.length,
+      created: 0,
+      skippedExistantes: 0,
+      synced: 0,
+      drifted: 0,
+      skippedOffreAbsente: 0,
+      items: [],
+    };
+  }
 
   const items: CatalogImportItemResult[] = [];
   let created = 0;
   let skippedExistantes = 0;
+  let synced = 0;
+  let drifted = 0;
   let skippedOffreAbsente = 0;
 
   for (const f of ordered) {
-    // 1) Déjà en base (par slug) → préserver, ne rien toucher.
-    const existing = await db.formation.findUnique({
-      where: { slug: f.slugFr },
-      select: { id: true },
-    });
-    if (existing) {
-      skippedExistantes += 1;
-      items.push({ slug: f.slugFr, titre: f.titreFr, status: "skipped_existante" });
-      continue;
-    }
-
-    // 2) Offre V2 rattachée (liaison obligatoire) — résolue par slug.
+    // 1) Offre V2 rattachée (liaison obligatoire) — résolue par slug.
     const offre = await db.offreSite.findUnique({
       where: { slug: f.slugFr },
       select: { id: true },
@@ -296,12 +475,106 @@ export async function importCatalogFormations(
       continue;
     }
 
-    // 3) Création session-ready.
     const data = buildFormationImportData(f, offre.id, {
       adminUserId: opts.adminUserId ?? null,
-      ...(opts.now !== undefined ? { now: opts.now } : {}),
+      now,
     });
-    const row = await createFormationWithNumero(db, data, year);
+
+    // 2) Déjà en base (par slug) → réconcilier (merge 3-way), jamais clobber.
+    const existing = await db.formation.findUnique({
+      where: { slug: f.slugFr },
+      select: RECONCILE_SELECT,
+    });
+    if (existing) {
+      const { id, catalogSnapshot, ...current } = existing as Record<string, unknown> & {
+        id: string;
+        catalogSnapshot: unknown;
+      };
+      const result = reconcileFormationFields(
+        toCatalogSnapshot(data),
+        current as FormationReconcileCurrent,
+        (catalogSnapshot as CatalogSnapshot | null) ?? null,
+      );
+
+      // Alignement WS4 : on n'auto-réécrit JAMAIS le contenu d'une formation dont
+      // une session est en cours/réalisée (contenu Qualiopi figé). Les champs qui
+      // auraient été synchronisés deviennent des écarts (drift) à arbitrer
+      // manuellement (archivage + duplication). La baseline n'est PAS adoptée sur
+      // ces champs → l'écart persiste au prochain import jusqu'à résolution.
+      if (result.syncedFields.length > 0 && (await countLockingSessions(db, id)) > 0) {
+        const baseline = (catalogSnapshot ?? null) as Record<string, unknown> | null;
+        for (const field of result.syncedFields) {
+          delete (result.updates as Record<string, unknown>)[field];
+          if (baseline && field in baseline) {
+            (result.nextSnapshot as Record<string, unknown>)[field] = baseline[field];
+          } else {
+            delete (result.nextSnapshot as Record<string, unknown>)[field];
+          }
+        }
+        result.driftFields.push(...result.syncedFields);
+        result.syncedFields.length = 0;
+      }
+
+      if (result.driftFields.length > 0) {
+        // Écart non résolu : on persiste la baseline (champs sûrs adoptés) +
+        // l'horodatage de drift, sans toucher aux champs en conflit.
+        drifted += 1;
+        await db.formation.update({
+          where: { id },
+          data: {
+            ...(result.updates as Record<string, unknown>),
+            catalogSnapshot: result.nextSnapshot as never,
+            catalogDriftAt: now,
+            ...(result.syncedFields.length > 0 ? { catalogSyncedAt: now } : {}),
+          } as never,
+        });
+        items.push({
+          slug: f.slugFr,
+          titre: f.titreFr,
+          status: "drifted",
+          driftFields: result.driftFields,
+          ...(result.syncedFields.length > 0 ? { syncedFields: result.syncedFields } : {}),
+        });
+        continue;
+      }
+
+      if (result.syncedFields.length > 0) {
+        // Synchro propre : catalogue adopté, baseline + syncedAt rafraîchis,
+        // drift effacé.
+        synced += 1;
+        await db.formation.update({
+          where: { id },
+          data: {
+            ...(result.updates as Record<string, unknown>),
+            catalogSnapshot: result.nextSnapshot as never,
+            catalogSyncedAt: now,
+            catalogDriftAt: null,
+          } as never,
+        });
+        items.push({
+          slug: f.slugFr,
+          titre: f.titreFr,
+          status: "synced",
+          syncedFields: result.syncedFields,
+        });
+        continue;
+      }
+
+      // Rien à synchroniser. On (re)pose la baseline si elle manquait (ligne
+      // créée avant WS2) pour activer le merge 3-way dès le prochain import.
+      skippedExistantes += 1;
+      if (catalogSnapshot == null) {
+        await db.formation.update({
+          where: { id },
+          data: { catalogSnapshot: result.nextSnapshot as never, catalogSyncedAt: now } as never,
+        });
+      }
+      items.push({ slug: f.slugFr, titre: f.titreFr, status: "unchanged" });
+      continue;
+    }
+
+    // 3) Création session-ready (baseline posée à la création).
+    const row = await createFormationWithNumero(db, data, year, now);
     created += 1;
     items.push({ slug: f.slugFr, titre: f.titreFr, status: "created", numero: row.numero });
   }
@@ -310,6 +583,8 @@ export async function importCatalogFormations(
     total: ordered.length,
     created,
     skippedExistantes,
+    synced,
+    drifted,
     skippedOffreAbsente,
     items,
   };

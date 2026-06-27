@@ -21,6 +21,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import {
   computeTotauxFacture,
   isRegimeTva,
@@ -87,7 +88,10 @@ export async function genererFactureFormation(
   }
 
   // ── Calcul des lignes (forfait ou horaire) ───────────────────────────────
-  const dureeHeures = session.dureeReelleHeures ?? session.formation.dureeHeures;
+  // Durée depuis le snapshot légal (WS5) ; repli LIVE pour les sessions legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+  const dureeHeures =
+    session.dureeReelleHeures ?? formationDoc.dureeHeures ?? session.formation.dureeHeures;
   const nbParticipants = session.nbParticipantsReels ?? session.nbParticipantsPrevus;
 
   let lignes: Array<{ designation: string; quantite: number; prixUnitaireHtCents: number }>;

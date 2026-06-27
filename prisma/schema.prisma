@@ -5128,6 +5128,15 @@ model Formation {
   validatedAt              DateTime?                 @map("validated_at")
   /// Prix négocié optionnel (sinon dérivé offre/pricing.ts).
   tarifHtCents             Int?                      @map("tarif_ht_cents")
+  // ── Réconciliation catalogue → DB (WS2) — Formation auto-syncée depuis ──
+  //    catalog-v2.ts (SSOT public). Snapshot 3-way pour ne jamais clobber une
+  //    édition admin : valeurs catalogue à la dernière synchro réussie.
+  /// Valeurs catalogue (7 champs) à la dernière synchro — baseline du merge 3-way.
+  catalogSnapshot          Json?                     @map("catalog_snapshot")
+  /// Dernière synchro catalogue→DB réussie (champs alignés sur le catalogue).
+  catalogSyncedAt          DateTime?                 @map("catalog_synced_at")
+  /// Dernier écart non résolu (édition admin ≠ catalogue qui a bougé) → revue.
+  catalogDriftAt           DateTime?                 @map("catalog_drift_at")
   createdAt                DateTime                  @default(now()) @map("created_at")
   updatedAt                DateTime                  @updatedAt @map("updated_at")
 
@@ -5162,6 +5171,12 @@ model TrainingSession {
   devis                              Devis?                   @relation(fields: [devisId], references: [id], onDelete: SetNull)
   financementType                    FinancementType?         @map("financement_type")
   montantHtCents                     Int                      @map("montant_ht_cents")
+  /// Snapshot légal (WS5) — copie figée des champs Formation engageants (titre,
+  /// durée, objectifs, programme…) à la création de la session. Les documents
+  /// légaux (convention, attestation, facture) le lisent en priorité pour ne pas
+  /// diverger si la formation évolue après coup. Null = session legacy → fallback
+  /// lecture LIVE de la Formation.
+  formationSnapshot                  Json?                    @map("formation_snapshot")
   opcoStatut                         OpcoStatut               @default(non_demande) @map("opco_statut")
   opcoSubrogation                    Boolean                  @default(false) @map("opco_subrogation")
   conventionTripartiteSigneeAt       DateTime?                @map("convention_tripartite_signee_at")
@@ -6641,6 +6656,13 @@ model CoachingSession {
   interEntreprises         Boolean               @default(false) @map("inter_entreprises")
   /// Objectifs pédagogiques : [{ id, libelle }] (miroir Formation.objectifsPedagogiques).
   objectifsPedagogiques    Json                  @default("[]") @map("objectifs_pedagogiques")
+  /// Snapshot légal anti-stale (WS9) — copie figée du contenu pédagogique
+  /// engageant (intitulé résolu, objectifs, heures prévues, modalité, mention
+  /// certifiante) au moment de la PREMIÈRE émission d'un document légal. Garantit
+  /// que protocole/attestation/certificat/kits d'un même parcours restent
+  /// cohérents même si le contenu (ou le libellé catalogue) change ensuite.
+  /// Null = parcours legacy sans document émis → repli lecture LIVE.
+  coachingSnapshot         Json?                 @map("coaching_snapshot")
   conventionSigneeAt       DateTime?             @map("convention_signee_at")
   /// Cache des heures réellement réalisées = Σ CompteRenduSeance.dureeMinutes / 60.
   /// Recalculé à la clôture du parcours. Source de vérité OPCO/attestation.

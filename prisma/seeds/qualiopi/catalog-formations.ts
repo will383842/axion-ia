@@ -18,7 +18,9 @@ import { importCatalogFormations } from "../../../src/server/qualiopi/formations
 
 export async function seedCatalogFormations(prisma: PrismaClient): Promise<void> {
   const report = await importCatalogFormations(prisma);
-  const parts = [`${report.created} créée(s)`, `${report.skippedExistantes} préservée(s)`];
+  const parts = [`${report.created} créée(s)`, `${report.skippedExistantes} à jour`];
+  if (report.synced > 0) parts.push(`${report.synced} synchronisée(s)`);
+  if (report.drifted > 0) parts.push(`${report.drifted} EN ÉCART (revue admin)`);
   if (report.skippedOffreAbsente > 0) {
     parts.push(`${report.skippedOffreAbsente} SANS offre (seed offres manquant)`);
   }

@@ -26,6 +26,7 @@ import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
+import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { getFinaleReussite } from "./evaluations-service";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
@@ -91,6 +92,8 @@ export async function genererAttestationPourEnrollment(
           dateFin: true,
           modalite: true,
           coFormateurs: true,
+          // Snapshot légal (WS5) prioritaire ; formation LIVE = repli legacy.
+          formationSnapshot: true,
           formation: {
             select: {
               titre: true,
@@ -172,9 +175,10 @@ export async function genererAttestationPourEnrollment(
     return { resultat: "aucune", documentId: null };
   }
 
-  // 5. Construction du PDF
+  // 5. Construction du PDF — données formation depuis le snapshot légal (WS5),
+  //    repli sur la lecture LIVE pour les sessions antérieures à WS5.
   const session = enrollment.session;
-  const formation = session.formation;
+  const formation = readFormationForDocs(session.formationSnapshot, session.formation);
   const trainee = enrollment.trainee;
 
   const identite = await getOrganismeIdentite();
@@ -244,7 +248,7 @@ export async function genererAttestationPourEnrollment(
   };
 
   const formationData = {
-    intitule: formation.titre,
+    intitule: formation.titre ?? "",
     objectifs: objectifsStr,
     dureeHeures,
     dateDebut: session.dateDebut ? formatDate(new Date(session.dateDebut)) : "",

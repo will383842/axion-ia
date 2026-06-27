@@ -34,6 +34,7 @@
 // son slug à INTERVENTION_SLUGS, puis passer `bookable: true` + `durationDays`.
 
 import type { InterventionSlug } from "@/lib/intervention-type";
+import { coachingFormatPath } from "@/content/coaching-1to1";
 import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
@@ -503,8 +504,8 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
           "Vision IA stratégique du secteur + comment le dirigeant se dégage du temps en automatisant son propre travail.",
         previewEn:
           "Strategic AI vision for the sector + how the executive frees up time by automating their own work.",
-        hrefFr: "/interventions/dirigeant-vision-strategique",
-        hrefEn: "/interventions/executive-strategic-vision",
+        hrefFr: coachingFormatPath("dirigeant-vision-strategique", "fr"),
+        hrefEn: coachingFormatPath("dirigeant-vision-strategique", "en"),
       },
       {
         slug: "dirigeant-vision-strategique-2j",
@@ -522,8 +523,8 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
           "Format approfondi : cartographie complète, mises en situation et feuille de route d'optimisation (temps & coûts).",
         previewEn:
           "In-depth format: full mapping, hands-on situations and an optimization roadmap (time & cost).",
-        hrefFr: "/interventions/dirigeant-vision-strategique",
-        hrefEn: "/interventions/executive-strategic-vision",
+        hrefFr: coachingFormatPath("dirigeant-vision-strategique-2j", "fr"),
+        hrefEn: coachingFormatPath("dirigeant-vision-strategique-2j", "en"),
       },
       {
         slug: "coaching-decouverte",
@@ -541,8 +542,8 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
           "1 journée sur votre poste : cartographie du fonctionnement actuel + ce qu'on peut automatiser pour gagner du temps.",
         previewEn:
           "1 day at your workstation: mapping your current workflow + what can be automated to save time.",
-        hrefFr: "/interventions/coaching-decouverte",
-        hrefEn: "/interventions/discovery-coaching",
+        hrefFr: coachingFormatPath("coaching-decouverte", "fr"),
+        hrefEn: coachingFormatPath("coaching-decouverte", "en"),
       },
       {
         slug: "coaching-optimisation-2j",
@@ -560,8 +561,8 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
           "Format approfondi sur 2 jours : cartographie détaillée, irritants et plan d'automatisation personnalisé.",
         previewEn:
           "In-depth 2-day format: detailed mapping, pain points and a personalized automation plan.",
-        hrefFr: "/interventions/coaching-decouverte",
-        hrefEn: "/interventions/discovery-coaching",
+        hrefFr: coachingFormatPath("coaching-optimisation-2j", "fr"),
+        hrefEn: coachingFormatPath("coaching-optimisation-2j", "en"),
       },
       {
         slug: "un-a-un-recurrent",

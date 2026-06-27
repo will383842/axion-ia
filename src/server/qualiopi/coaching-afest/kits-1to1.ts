@@ -28,7 +28,7 @@ import { KitCpfPdf } from "@/server/qualiopi/documents/templates/kit-cpf";
 import { KitFranceTravailPdf } from "@/server/qualiopi/documents/templates/kit-france-travail";
 import { ConventionTripartitePdf } from "@/server/qualiopi/documents/templates/convention-tripartite";
 import { CertificatRealisationPdf } from "@/server/qualiopi/documents/templates/certificat-realisation";
-import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
+import { ensureCoachingSnapshot } from "./coaching-snapshot";
 import { getHeuresReelles1to1 } from "./heures";
 import { computeCoachingFacturation } from "./financement-1to1";
 
@@ -53,6 +53,10 @@ const PARCOURS_SELECT = {
   statut: true,
   interventionSlug: true,
   dateSeance: true,
+  // Snapshot légal (WS9) + champs source pour le bâtir à la 1re émission.
+  coachingSnapshot: true,
+  objectifsPedagogiques: true,
+  heuresPrevuesConvention: true,
   beneficiaireNom: true,
   beneficiaireEntreprise: true,
   certificationType: true,
@@ -165,6 +169,7 @@ export async function genererKitOpcoCoaching(coachingSessionId: string): Promise
 
   const cs = await loadParcours(coachingSessionId);
   if (!cs) throw new Error(`CoachingSession introuvable : ${coachingSessionId}`);
+  const snap = await ensureCoachingSnapshot(cs);
   const contrat = requireContrat(cs);
 
   const identite = await getOrganismeIdentite();
@@ -202,7 +207,7 @@ export async function genererKitOpcoCoaching(coachingSessionId: string): Promise
           identite,
           nomOpco: contrat.client?.opcoIdentifie ?? "OPCO (à préciser)",
           numeroDossier: contrat.numeroDossierOpco ?? "—",
-          intituleFormation: coachingInterventionLabel(cs.interventionSlug),
+          intituleFormation: snap.intitule,
           dateDebut,
           dateFin,
           ventilation,
@@ -225,6 +230,7 @@ export async function genererKitCpfCoaching(coachingSessionId: string): Promise<
 
   const cs = await loadParcours(coachingSessionId);
   if (!cs) throw new Error(`CoachingSession introuvable : ${coachingSessionId}`);
+  const snap = await ensureCoachingSnapshot(cs);
   const contrat = requireContrat(cs);
 
   const identite = await getOrganismeIdentite();
@@ -254,7 +260,7 @@ export async function genererKitCpfCoaching(coachingSessionId: string): Promise<
           identite,
           beneficiaire: { nom: benef.nom, prenom: benef.prenom },
           codeCpf,
-          intituleFormation: coachingInterventionLabel(cs.interventionSlug),
+          intituleFormation: snap.intitule,
           dateDebut,
           dateFin,
           montantCpfCents: montantCpf,
@@ -279,6 +285,7 @@ export async function genererKitFranceTravailCoaching(
 
   const cs = await loadParcours(coachingSessionId);
   if (!cs) throw new Error(`CoachingSession introuvable : ${coachingSessionId}`);
+  const snap = await ensureCoachingSnapshot(cs);
   const contrat = requireContrat(cs);
 
   const identite = await getOrganismeIdentite();
@@ -307,7 +314,7 @@ export async function genererKitFranceTravailCoaching(
           identite,
           dispositif,
           beneficiaire: { nom: benef.nom, prenom: benef.prenom },
-          intituleFormation: coachingInterventionLabel(cs.interventionSlug),
+          intituleFormation: snap.intitule,
           dateDebut,
           dateFin,
           ...(contrat.numeroDossierOpco
@@ -348,6 +355,7 @@ export async function genererConventionTripartiteCoaching(
 
   const cs = await loadParcours(coachingSessionId);
   if (!cs) throw new Error(`CoachingSession introuvable : ${coachingSessionId}`);
+  const snap = await ensureCoachingSnapshot(cs);
   const contrat = requireContrat(cs);
   if (!contrat.client) {
     throw new Error(
@@ -380,8 +388,8 @@ export async function genererConventionTripartiteCoaching(
             contact: contrat.client!.contactNom ?? contrat.client!.contactEmail ?? "—",
           },
           opco: { nom: nomOpco, numeroPriseEnCharge },
-          intitule: coachingInterventionLabel(cs.interventionSlug),
-          objectifs: [coachingInterventionLabel(cs.interventionSlug)],
+          intitule: snap.intitule,
+          objectifs: [snap.intitule],
           publicVise: benef.entreprise
             ? `Bénéficiaire en situation de travail — ${benef.entreprise}`
             : "Bénéficiaire en situation de travail (AFEST)",
@@ -416,6 +424,7 @@ export async function genererCertificat1to1(
 
   const cs = await loadParcours(coachingSessionId);
   if (!cs) throw new Error(`CoachingSession introuvable : ${coachingSessionId}`);
+  const snap = await ensureCoachingSnapshot(cs);
 
   // Idempotence.
   if (cs.certificatGenereeAt && cs.certificatDocumentId && !opts?.force) {
@@ -465,7 +474,7 @@ export async function genererCertificat1to1(
             prenom: benef.prenom,
             ...(benef.fonction ? { fonction: benef.fonction } : {}),
           },
-          intituleAction: coachingInterventionLabel(cs.interventionSlug),
+          intituleAction: snap.intitule,
           dateDebut,
           dateFin,
           // ⚠️ heures en décimal — formatHeuresCentiemes appelé dans le template.

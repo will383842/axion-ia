@@ -32,6 +32,7 @@ import {
 } from "@/content/interventions-taxonomy";
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { coachingFormulePath, coachingFormatPath } from "@/content/coaching-1to1";
 
 // ----------------------------------------------------------------------------
 // Configs spécifiques aux 2 formats — seules variations vs template commun.
@@ -227,14 +228,19 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
 
   // Breadcrumbs : href = clé canonique FR (routing.pathnames) ; next-intl
   // résout la traduction EN automatiquement via le Link.
+  // hrefs/paths 1-to-1 dérivés du SSOT taxonomie (WS7b). Locale figée "fr" : ce
+  // sont des clés canoniques FR (next-intl résout l'EN via <Link> ; les factories
+  // JSON-LD préfixent la locale sur le path FR) → préserve l'URL live à l'octet.
+  const famillePathFr = coachingFormulePath("membre-equipe", "fr");
+  const formatPathFr = coachingFormatPath(slug, "fr");
   const breadcrumbItems = [
     { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
     {
-      href: "/interventions/individuel",
+      href: famillePathFr,
       label: isFr ? family.labelFr : family.labelEn,
     },
     {
-      href: `/interventions/${slug}`,
+      href: formatPathFr,
       label: isFr ? config.titleFr : config.titleEn,
     },
   ];
@@ -242,7 +248,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
   // Service JSON-LD
   const serviceJsonLd = buildServiceJsonLd({
     locale,
-    path: `/interventions/${slug}`,
+    path: formatPathFr,
     name: `${isFr ? config.titleFr : config.titleEn} · Axion-IA`,
     description: isFr ? config.promiseFr : config.promiseEn,
     serviceType: "AI coaching",
@@ -266,7 +272,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
   // les 2 pages coaching individuel sur le standard /implementation.
   const howToJsonLd = buildHowToJsonLd({
     locale,
-    path: `/interventions/${slug}`,
+    path: formatPathFr,
     name: isFr
       ? `Comment se déroule ${config.titleFr.toLowerCase()}`
       : `How ${config.titleEn.toLowerCase()} unfolds`,
@@ -337,7 +343,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                 <Mail aria-hidden="true" className="h-4 w-4" />
                 {isFr ? "Demander ce coaching" : "Request this coaching"}
               </Cta>
-              <Cta href="/interventions/individuel" variant="outline" size="lg">
+              <Cta href={famillePathFr} variant="outline" size="lg">
                 {isFr ? "← Autres coachings individuels" : "← Other individual coachings"}
               </Cta>
             </div>
