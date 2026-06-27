@@ -76,7 +76,6 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // nav admin + sidebar + breadcrumbs + styles globaux référencent les routes
   // /content-gen pour la navigation (légitime, pas de couplage code pipeline).
   /^src\/lib\/admin-nav\.ts$/,
-  /^src\/components\/admin\/AdminSidebar\.tsx$/,
   /^src\/components\/admin\/ui\/AdminBreadcrumbs\.tsx$/,
   /^src\/app\/globals\.css$/,
   // KB readers — content-gen consomme la KB via getKnowledgeReadersForContentGen()
