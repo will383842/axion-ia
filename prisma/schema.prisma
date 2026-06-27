@@ -5171,6 +5171,12 @@ model TrainingSession {
   devis                              Devis?                   @relation(fields: [devisId], references: [id], onDelete: SetNull)
   financementType                    FinancementType?         @map("financement_type")
   montantHtCents                     Int                      @map("montant_ht_cents")
+  /// Snapshot légal (WS5) — copie figée des champs Formation engageants (titre,
+  /// durée, objectifs, programme…) à la création de la session. Les documents
+  /// légaux (convention, attestation, facture) le lisent en priorité pour ne pas
+  /// diverger si la formation évolue après coup. Null = session legacy → fallback
+  /// lecture LIVE de la Formation.
+  formationSnapshot                  Json?                    @map("formation_snapshot")
   opcoStatut                         OpcoStatut               @default(non_demande) @map("opco_statut")
   opcoSubrogation                    Boolean                  @default(false) @map("opco_subrogation")
   conventionTripartiteSigneeAt       DateTime?                @map("convention_tripartite_signee_at")

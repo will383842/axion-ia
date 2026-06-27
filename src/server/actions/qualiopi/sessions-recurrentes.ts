@@ -31,6 +31,10 @@ import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
 import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
+import {
+  FORMATION_SNAPSHOT_SELECT,
+  buildFormationSnapshot,
+} from "@/server/qualiopi/formations/formation-snapshot";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -112,12 +116,23 @@ export async function createRecurringSessionsAction(
     };
   }
 
-  // Vérifier que la formation est publiée et active
-  let formation: { id: string; statutGeneration: string; statut: string; titre: string } | null;
+  // Vérifier que la formation est publiée et active. On lit aussi les champs du
+  // snapshot légal (WS5) pour les figer dans chaque occurrence créée.
+  let formation:
+    | ({ id: string; statutGeneration: string; statut: string; titre: string } & {
+        dureeHeures: number;
+        modalite: string;
+        objectifsPedagogiques: unknown;
+        programmeDetaille: unknown;
+        methodesPedagogiques: string;
+        certificationType: string;
+        versionProgramme: string;
+      })
+    | null;
   try {
     formation = await prisma.formation.findUnique({
       where: { id: v.formationId },
-      select: { id: true, statutGeneration: true, statut: true, titre: true },
+      select: { id: true, statutGeneration: true, statut: true, ...FORMATION_SNAPSHOT_SELECT },
     });
   } catch {
     return { error: "Erreur lors de la vérification de la formation" };
@@ -138,6 +153,9 @@ export async function createRecurringSessionsAction(
   }
 
   const titreSession = v.titreSession ?? formation.titre;
+  // Snapshot légal (WS5) — fige la formation pour TOUTES les occurrences (elles
+  // partagent la même prestation vendue au moment de la planification).
+  const formationSnapshot = buildFormationSnapshot(formation, new Date());
   const deltaMs = v.frequence === "hebdomadaire" ? HEBDO_MS : MENSUEL_MS;
   const dureeDeltaMs = v.dureeHeures * 60 * 60 * 1000;
 
@@ -175,6 +193,7 @@ export async function createRecurringSessionsAction(
           modalite: v.modalite as ModaliteFormation,
           nbParticipantsPrevus: v.nbParticipantsPrevus,
           montantHtCents: v.montantHtCents,
+          formationSnapshot: formationSnapshot as never,
           statut: "planifiee",
         };
         if (i > 0 && parent !== null) {

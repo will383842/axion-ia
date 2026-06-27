@@ -51,6 +51,7 @@ import { KitFranceTravailPdf } from "@/server/qualiopi/documents/templates/kit-f
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
 import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
+import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -160,6 +161,7 @@ export async function genererConventionAction(input: {
       modalite: true,
       nbParticipantsPrevus: true,
       montantHtCents: true,
+      formationSnapshot: true,
       formation: {
         select: {
           objectifsPedagogiques: true,
@@ -183,7 +185,9 @@ export async function genererConventionAction(input: {
     return { error: "Session sans client — impossible de générer la convention" };
 
   const identite = await getOrganismeIdentite();
-  const objectifs = parseObjectifs(session.formation.objectifsPedagogiques);
+  // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+  const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
 
   const doc = await generateDocument({
     type: "convention",
@@ -200,7 +204,7 @@ export async function genererConventionAction(input: {
           intitule: session.titreSession,
           objectifs: objectifs.length > 0 ? objectifs : [session.titreSession],
           publicVise: session.formation.offreSite.publicViseFr,
-          dureeHeures: session.formation.dureeHeures,
+          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           modalite: modaliteLabel(session.modalite),
@@ -255,6 +259,7 @@ export async function genererConventionTripartiteAction(input: {
       opcoSubrogation: true,
       numeroDossierOpco: true,
       priseEnChargeMontantCents: true,
+      formationSnapshot: true,
       formation: {
         select: {
           objectifsPedagogiques: true,
@@ -279,7 +284,9 @@ export async function genererConventionTripartiteAction(input: {
   if (!session.client) return { error: "Session sans client" };
 
   const identite = await getOrganismeIdentite();
-  const objectifs = parseObjectifs(session.formation.objectifsPedagogiques);
+  // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+  const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
   const nomOpco = session.client.opcoIdentifie ?? "OPCO (à préciser)";
   const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
   const montantPrisEnCharge = (session.priseEnChargeMontantCents ?? 0) / 100;
@@ -304,7 +311,7 @@ export async function genererConventionTripartiteAction(input: {
           intitule: session.titreSession,
           objectifs: objectifs.length > 0 ? objectifs : [session.titreSession],
           publicVise: session.formation.offreSite.publicViseFr,
-          dureeHeures: session.formation.dureeHeures,
+          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           modalite: modaliteLabel(session.modalite),
@@ -367,6 +374,7 @@ export async function genererContratFormationAction(input: {
           dateFin: true,
           modalite: true,
           montantHtCents: true,
+          formationSnapshot: true,
           formation: {
             select: {
               objectifsPedagogiques: true,
@@ -382,7 +390,9 @@ export async function genererContratFormationAction(input: {
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;
   const trainee = enrollment.trainee;
-  const objectifs = parseObjectifs(session.formation.objectifsPedagogiques);
+  // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+  const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
   const nomPrenom = `${trainee.prenom} ${trainee.nom}`.trim();
 
   const doc = await generateDocument({
@@ -400,7 +410,7 @@ export async function genererContratFormationAction(input: {
           },
           intitule: session.titreSession,
           objectifs: objectifs.length > 0 ? objectifs : [session.titreSession],
-          dureeHeures: session.formation.dureeHeures,
+          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           modalite: modaliteLabel(session.modalite),
@@ -454,6 +464,7 @@ export async function genererConvocationAction(input: {
           dateDebut: true,
           dateFin: true,
           modalite: true,
+          formationSnapshot: true,
           formation: { select: { dureeHeures: true } },
           coFormateurs: true,
           numeroDossierOpco: true,
@@ -467,6 +478,8 @@ export async function genererConvocationAction(input: {
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;
   const trainee = enrollment.trainee;
+  // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const formateurNom = await resolveFormateurNom(session.coFormateurs, identite.raisonSociale);
 
   const nomStagiaire = `${trainee.prenom} ${trainee.nom}`.trim();
@@ -482,7 +495,7 @@ export async function genererConvocationAction(input: {
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           horaires: "09h00–17h00",
-          dureeHeures: session.formation.dureeHeures,
+          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
           modalite: modaliteLabelLower(session.modalite),
           nomFormateur: formateurNom,
           contactEmail: identite.email,
