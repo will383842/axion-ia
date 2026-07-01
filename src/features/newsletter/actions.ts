@@ -42,10 +42,11 @@ export async function subscribeNewsletterAction(
   // (uniformise avec contact/audit/booking/implementation/option48h)
   if (formData.get("website")) return { ok: true }; // silent succes pour bot
 
-  // 3. Turnstile
+  // 3. Turnstile — SOFT-FAIL (Will 2026-07-01 : zéro friction). On ne bloque
+  // plus si le challenge échoue ; honeypot + rate-limit + double opt-in email
+  // (le lien de confirmation exige un vrai destinataire) protègent déjà.
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;
-  const captchaOk = await verifyTurnstile(turnstileToken, ip);
-  if (!captchaOk) return { ok: false, error: "Captcha échoué." };
+  await verifyTurnstile(turnstileToken, ip).catch(() => false);
 
   // 4. Validation Zod
   const parsed = newsletterSchema.safeParse({

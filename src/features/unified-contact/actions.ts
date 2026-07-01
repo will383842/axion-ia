@@ -131,6 +131,19 @@ function emailTemplateFor(type: UnifiedContactType): EmailJobName {
   }
 }
 
+// `hashIp` throw si IP_HASH_SALT absent en prod (doctrine RGPD). Ce wrapper
+// garantit qu'un souci de config env ne fasse JAMAIS échouer la capture d'un
+// lead : en cas d'échec on logge et on stocke `null` (le hash IP est une
+// donnée secondaire, la capture du contact prime). Décision Will 2026-07-01.
+function safeHashIp(ip: string | null | undefined): string | null {
+  try {
+    return hashIp(ip);
+  } catch (err) {
+    console.error("[unified-contact] hashIp a échoué (IP_HASH_SALT ?):", err);
+    return null;
+  }
+}
+
 // ---- Server action --------------------------------------------------------
 
 export async function submitUnifiedContactAction(
@@ -150,11 +163,14 @@ export async function submitUnifiedContactAction(
     return { ok: true, submissionId: "" };
   }
 
-  // 3. Cloudflare Turnstile
+  // 3. Cloudflare Turnstile — SOFT-FAIL (décision Will 2026-07-01 : zéro
+  // friction client, ne JAMAIS perdre un lead). On vérifie le token pour le
+  // monitoring mais on NE BLOQUE PLUS si le challenge échoue (réseau
+  // restrictif / extension / DNS filtrant challenges.cloudflare.com). Les
+  // couches DURES restent le honeypot (ci-dessus) + le rate-limit (3/10min/IP).
+  // Le résultat est journalisé dans `details.turnstilePassed` pour audit.
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;
-  if (!(await verifyTurnstile(turnstileToken, ip))) {
-    return { ok: false, error: "Captcha échoué." };
-  }
+  const turnstilePassed = await verifyTurnstile(turnstileToken, ip).catch(() => false);
 
   // 4. Zod parse
   const parsed = unifiedContactSchema.safeParse({
@@ -211,10 +227,14 @@ export async function submitUnifiedContactAction(
           timingWeeks: data.timingWeeks,
           source: data.source,
           consentVersion: CONSENT_VERSION,
+          // Turnstile soft-fail : trace si le captcha n'a pas validé (audit abus).
+          ...(turnstilePassed ? {} : { turnstilePassed: false }),
           ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
         } as object,
         ipAddress: ip,
-        ipHash: hashIp(ip),
+        // hashIp défensif : ne doit JAMAIS faire échouer la capture du lead
+        // (throw si IP_HASH_SALT absent). En cas d'échec → null + log.
+        ipHash: safeHashIp(ip),
         userAgent,
       },
     });
@@ -242,29 +262,49 @@ export async function submitUnifiedContactAction(
         : {}),
       locale,
     };
-    await notify({
-      category,
-      payload: notifPayload,
-      dedupKey: submission.id,
-    } as Parameters<typeof notify>[0]);
+    // 7 & 8 = BEST-EFFORT : la notif Telegram et l'email de confirmation NE
+    // DOIVENT PAS faire échouer la soumission (le lead est déjà en base). Un
+    // échec (Redis/BullMQ/Telegram down) est loggé mais l'utilisateur voit
+    // « Succès ». Décision Will 2026-07-01 (robustesse / zéro perte de lead).
+    try {
+      await notify({
+        category,
+        payload: notifPayload,
+        dedupKey: submission.id,
+      } as Parameters<typeof notify>[0]);
+    } catch (notifErr) {
+      console.error("[unified-contact] notify best-effort a échoué:", notifErr);
+      Sentry.captureException(notifErr, {
+        tags: { action: "submitUnifiedContactAction", step: "notify", type: data.type },
+      });
+    }
 
-    // 8. Email confirmation
-    await enqueueEmail(emailTemplateFor(data.type), data.email, locale, {
-      contactName: data.nom,
-      submissionId: submission.id,
-      type: data.type,
-      subType: data.subType,
-      // Champs hérités utilisés par les templates existants (audit-confirmed,
-      // implementation-confirmed, contact-confirmed) — non bloquant si absent.
-      size: data.companySize,
-      industry: data.companySector,
-      auditType: data.subType,
-    });
+    try {
+      await enqueueEmail(emailTemplateFor(data.type), data.email, locale, {
+        contactName: data.nom,
+        submissionId: submission.id,
+        type: data.type,
+        subType: data.subType,
+        // Champs hérités utilisés par les templates existants (audit-confirmed,
+        // implementation-confirmed, contact-confirmed) — non bloquant si absent.
+        size: data.companySize,
+        industry: data.companySector,
+        auditType: data.subType,
+      });
+    } catch (mailErr) {
+      console.error("[unified-contact] enqueueEmail best-effort a échoué:", mailErr);
+      Sentry.captureException(mailErr, {
+        tags: { action: "submitUnifiedContactAction", step: "email", type: data.type },
+      });
+    }
 
     return { ok: true, submissionId: submission.id };
   } catch (err) {
+    // Seul un échec de l'écriture DB (capture du lead) arrive ici = vraie erreur.
+    // On logge le message RÉEL (visible dans les logs Coolify) pour diagnostic.
+    console.error("[unified-contact] échec persistance Submission:", err);
     Sentry.captureException(err, {
-      tags: { action: "submitUnifiedContactAction", type: data.type, locale },
+      tags: { action: "submitUnifiedContactAction", step: "persist", type: data.type, locale },
     });
     return {
       ok: false,

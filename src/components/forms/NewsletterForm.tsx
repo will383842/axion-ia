@@ -46,13 +46,9 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
     widget: turnstileWidget,
     reset: resetTurnstile,
   } = useTurnstileToken("newsletter");
-  const turnstileExpected = Boolean(process.env["NEXT_PUBLIC_TURNSTILE_SITE_KEY"]);
   const [serverError, setServerError] = React.useState<string | null>(null);
 
   const isFr = locale === "fr";
-  const captchaBlockedMsg = isFr
-    ? "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur), puis réessayez."
-    : "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker) and try again.";
   const pageOutdatedMsg = isFr
     ? "Cette page a expiré suite à une mise à jour du site. Rechargez la page (Ctrl+R / ⌘+R) puis réessayez."
     : "This page expired after a site update. Reload the page (Ctrl+R / ⌘+R) and try again.";
@@ -62,11 +58,8 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
   // Audit E2E 2026-05-11 P0-CONF-02 — Turnstile widget client câblé.
   async function onSubmit(values: NewsletterInput) {
     setServerError(null);
-    // Turnstile attendu mais aucun token (script/challenge bloqué) → message clair.
-    if (turnstileExpected && !turnstileToken) {
-      setServerError(captchaBlockedMsg);
-      return;
-    }
+    // Zéro friction (Will 2026-07-01) : on tente toujours l'envoi. Le serveur
+    // soft-fail le captcha (honeypot + rate-limit + double opt-in protègent).
     try {
       const fd = new FormData();
       fd.set("email", values.email);
@@ -77,8 +70,7 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
       const result = await subscribeNewsletterAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
         resetTurnstile();
-        const message =
-          turnstileExpected && !turnstileToken ? captchaBlockedMsg : result.error || labels.failure;
+        const message = result.error || labels.failure;
         setServerError(message);
         throw new Error(message);
       }
