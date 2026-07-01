@@ -182,3 +182,20 @@ const EMBED_PATH_RE = /^\/(?:fr|en)\/carrieres\/widget(?:\/|$)/;
 export function isEmbedPath(pathname: string): boolean {
   return EMBED_PATH_RE.test(pathname);
 }
+
+// Pages qui EMBARQUENT une iframe tierce nécessitant ses cookies/session :
+// `/<locale>/appel` (+ `/book-a-call` EN, redirigé vers FR mais inclus par
+// sûreté) chargent le widget Calendly. `Cross-Origin-Embedder-Policy:
+// credentialless` charge les iframes cross-origin SANS credentials → Calendly
+// ne peut pas établir sa session → « calendly.com refused to connect ». Ces
+// chemins reçoivent donc `COEP: unsafe-none`. Audit 2026-07-01.
+const CREDENTIALED_EMBEDDER_PATH_RE = /^\/(?:fr|en)\/(?:appel|book-a-call)(?:\/|$)/;
+
+/**
+ * `true` si la page embarque une iframe tierce credentialée (Calendly sur
+ * `/appel`) et doit donc RELÂCHER `Cross-Origin-Embedder-Policy` (unsafe-none)
+ * au lieu de `credentialless`. Edge-runtime safe (regex pure).
+ */
+export function isCredentialedEmbedderPath(pathname: string): boolean {
+  return CREDENTIALED_EMBEDDER_PATH_RE.test(pathname);
+}
