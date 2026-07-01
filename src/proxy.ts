@@ -18,7 +18,13 @@ import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
 import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
-import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./lib/csp";
+import {
+  buildCspHeader,
+  generateNonce,
+  isStrictCspPath,
+  isEmbedPath,
+  isCredentialedEmbedderPath,
+} from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
 import { verifyFormateurSession } from "./lib/formateur-session";
@@ -198,7 +204,17 @@ const authPipeline = auth(async (req) => {
     // partielle → composants Motion restent figes a opacity:0 → site "vide".
     // `credentialless` garde l'isolation (SharedArrayBuffer, COOP cross-origin)
     // sans casser le chargement des assets externes.
-    response.headers.set("Cross-Origin-Embedder-Policy", "credentialless");
+    //
+    // EXCEPTION `/appel` (audit 2026-07-01) : cette page embarque le widget
+    // Calendly, qui a besoin de sa session (cookies) DANS l'iframe. Sous
+    // `credentialless`, l'iframe cross-origin est chargee sans credentials →
+    // Calendly refuse (« calendly.com refused to connect »). On y bascule donc
+    // COEP `unsafe-none`. /appel n'utilise pas SharedArrayBuffer, la perte
+    // d'isolation cross-origin y est sans consequence.
+    response.headers.set(
+      "Cross-Origin-Embedder-Policy",
+      isCredentialedEmbedderPath(req.nextUrl.pathname) ? "unsafe-none" : "credentialless",
+    );
     // Audit 2026-05-15 P1-16 — X-* OWASP headers explicites en defense-in-depth.
     // CSP `frame-ancestors 'none'` couvre déjà le clickjacking côté navigateurs
     // modernes, mais X-Frame-Options: DENY garantit le comportement sur les
