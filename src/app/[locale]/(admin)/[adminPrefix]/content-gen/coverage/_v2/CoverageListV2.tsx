@@ -1,4 +1,7 @@
 // Refonte admin mai 2026 — PR 7. P0-1 Sprint P5 — pause/resume icons lucide.
+// Archivage liste (2026-07-01) — vue par défaut = campagnes ACTIVES (les
+// terminées/annulées sont masquées, retrouvables via l'onglet « Archivées ») +
+// pagination 25/page pour la scalabilité.
 
 import Link from "next/link";
 import { Pause, Play, PlayCircle } from "lucide-react";
@@ -17,6 +20,10 @@ import {
   resumeCampaign,
   launchCampaign,
 } from "@/server/actions/content-gen/coverage";
+import {
+  parseCampaignListView,
+  type CampaignListView,
+} from "@/server/actions/content-gen/coverage-status-groups";
 import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
@@ -41,6 +48,14 @@ const STATUSES: ReadonlyArray<CoverageStatus> = [
   "completed",
   "cancelled",
 ];
+
+const VIEW_LABEL: Record<CampaignListView, string> = {
+  active: "Actives",
+  archived: "Archivées",
+  all: "Toutes",
+};
+
+const VIEW_TABS: ReadonlyArray<CampaignListView> = ["active", "archived", "all"];
 
 interface Props {
   adminPrefix: string;
@@ -68,8 +83,37 @@ export async function CoverageListV2({
 }: Props): Promise<React.ReactElement> {
   const status = (sp["status"] as CoverageStatus | undefined) || undefined;
   const sector = (sp["serviceSector"] as ServiceSector | undefined) || undefined;
-  const rows = await listCampaigns(status, sector);
+  const view = parseCampaignListView(sp["view"]);
+  const requestedPage = Number.parseInt(sp["page"] ?? "1", 10);
+  const { rows, total, page, pageSize } = await listCampaigns({
+    view,
+    ...(status ? { status } : {}),
+    ...(sector ? { serviceSector: sector } : {}),
+    page: Number.isFinite(requestedPage) && requestedPage > 0 ? requestedPage : 1,
+  });
   const base = `/fr/${adminPrefix}/content-gen/coverage`;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+  // Construit une URL de la liste en préservant les filtres courants. Les
+  // valeurs par défaut (view=active, page=1) sont omises → URL propre.
+  const buildUrl = (overrides: Record<string, string | number | undefined>): string => {
+    const merged: Record<string, string | number | undefined> = {
+      view,
+      ...(status ? { status } : {}),
+      ...(sector ? { serviceSector: sector } : {}),
+      page,
+      ...overrides,
+    };
+    const params = new URLSearchParams();
+    for (const [k, v] of Object.entries(merged)) {
+      if (v === undefined || v === "") continue;
+      if (k === "view" && v === "active") continue;
+      if (k === "page" && (v === 1 || v === "1")) continue;
+      params.set(k, String(v));
+    }
+    const qs = params.toString();
+    return qs ? `${base}?${qs}` : base;
+  };
 
   type CampaignRow = (typeof rows)[number];
   const columns: ReadonlyArray<AdminTableColumn<CampaignRow>> = [
@@ -103,8 +147,7 @@ export async function CoverageListV2({
     {
       key: "cost",
       header: "Coût est.",
-      cell: (r) =>
-        r.estimatedCostUsd ? `$${Number(r.estimatedCostUsd).toFixed(2)}` : "—",
+      cell: (r) => (r.estimatedCostUsd ? `$${Number(r.estimatedCostUsd).toFixed(2)}` : "—"),
     },
     {
       key: "createdAt",
@@ -117,7 +160,7 @@ export async function CoverageListV2({
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Campagnes de couverture"
-        description={`${rows.length} campagne${rows.length > 1 ? "s" : ""}${status ? ` · ${status}` : ""}${sector ? ` · secteur ${SERVICE_SECTOR_LABELS[sector]}` : ""}`}
+        description={`${total} campagne${total > 1 ? "s" : ""} · ${VIEW_LABEL[view]}${sector ? ` · secteur ${SERVICE_SECTOR_LABELS[sector]}` : ""}${status ? ` · ${STATUS_LABELS_FR[status] ?? status}` : ""}`}
         actions={
           <Link href={`${base}/new`} className="admin-button-cta">
             + Nouvelle campagne
@@ -125,12 +168,33 @@ export async function CoverageListV2({
         }
       />
 
+      {/* Onglets de vue — Actives (défaut) masque les terminées/annulées. */}
+      <div
+        className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
+        role="tablist"
+        aria-label="Filtrer par état"
+      >
+        {VIEW_TABS.map((v) => (
+          <Link
+            key={v}
+            href={buildUrl({ view: v, page: 1 })}
+            role="tab"
+            aria-selected={view === v}
+            className={view === v ? "admin-button" : "admin-button-ghost"}
+          >
+            {VIEW_LABEL[v]}
+          </Link>
+        ))}
+      </div>
+
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
+          {/* Préserve la vue courante lors d'un filtrage. */}
+          <input type="hidden" name="view" value={view} />
           <div className="admin-filters-grid">
             <div className="admin-field">
               <label htmlFor="status" className="admin-label">
-                Statut
+                Statut (exact)
               </label>
               <select
                 id="status"
@@ -177,52 +241,90 @@ export async function CoverageListV2({
       </AdminCard>
 
       {rows.length === 0 ? (
-        <AdminEmptyState title="Aucune campagne. Créez-en une." />
-      ) : (
-        <AdminTable
-          columns={columns}
-          rows={rows}
-          getRowId={(r) => r.id}
-          caption="Liste des campagnes de couverture"
-          rowAction={(r) => (
-            <div className="flex items-center gap-[var(--space-admin-2)]">
-              {r.status === "running" ? (
-                <form action={pauseRow.bind(null, r.id)} className="inline">
-                  <button
-                    type="submit"
-                    title="Mettre en pause"
-                    aria-label="Mettre en pause cette campagne"
-                    className="admin-button-ghost"
-                  >
-                    <Pause size={16} />
-                  </button>
-                </form>
-              ) : r.status === "paused" ? (
-                <form action={resumeRow.bind(null, r.id)} className="inline">
-                  <button
-                    type="submit"
-                    title="Reprendre"
-                    aria-label="Reprendre cette campagne"
-                    className="admin-button-ghost"
-                  >
-                    <Play size={16} />
-                  </button>
-                </form>
-              ) : r.status === "draft" ? (
-                <form action={launchRow.bind(null, r.id)} className="inline">
-                  <button
-                    type="submit"
-                    title="Lancer la campagne"
-                    aria-label="Lancer cette campagne"
-                    className="admin-button-ghost"
-                  >
-                    <PlayCircle size={16} />
-                  </button>
-                </form>
-              ) : null}
-            </div>
-          )}
+        <AdminEmptyState
+          title={
+            view === "archived"
+              ? "Aucune campagne archivée."
+              : view === "all"
+                ? "Aucune campagne. Créez-en une."
+                : "Aucune campagne active. Créez-en une ou consultez les archives."
+          }
         />
+      ) : (
+        <>
+          <AdminTable
+            columns={columns}
+            rows={rows}
+            getRowId={(r) => r.id}
+            caption="Liste des campagnes de couverture"
+            rowAction={(r) => (
+              <div className="flex items-center gap-[var(--space-admin-2)]">
+                {r.status === "running" ? (
+                  <form action={pauseRow.bind(null, r.id)} className="inline">
+                    <button
+                      type="submit"
+                      title="Mettre en pause"
+                      aria-label="Mettre en pause cette campagne"
+                      className="admin-button-ghost"
+                    >
+                      <Pause size={16} />
+                    </button>
+                  </form>
+                ) : r.status === "paused" ? (
+                  <form action={resumeRow.bind(null, r.id)} className="inline">
+                    <button
+                      type="submit"
+                      title="Reprendre"
+                      aria-label="Reprendre cette campagne"
+                      className="admin-button-ghost"
+                    >
+                      <Play size={16} />
+                    </button>
+                  </form>
+                ) : r.status === "draft" ? (
+                  <form action={launchRow.bind(null, r.id)} className="inline">
+                    <button
+                      type="submit"
+                      title="Lancer la campagne"
+                      aria-label="Lancer cette campagne"
+                      className="admin-button-ghost"
+                    >
+                      <PlayCircle size={16} />
+                    </button>
+                  </form>
+                ) : null}
+              </div>
+            )}
+          />
+
+          {totalPages > 1 ? (
+            <div className="mt-[var(--space-admin-4)] flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
+              <span className="admin-meta">
+                Page {page} / {totalPages} · {total} au total
+              </span>
+              <div className="flex items-center gap-[var(--space-admin-2)]">
+                {page > 1 ? (
+                  <Link href={buildUrl({ page: page - 1 })} className="admin-button-ghost">
+                    ← Précédent
+                  </Link>
+                ) : (
+                  <span className="admin-button-ghost opacity-40" aria-disabled="true">
+                    ← Précédent
+                  </span>
+                )}
+                {page < totalPages ? (
+                  <Link href={buildUrl({ page: page + 1 })} className="admin-button-ghost">
+                    Suivant →
+                  </Link>
+                ) : (
+                  <span className="admin-button-ghost opacity-40" aria-disabled="true">
+                    Suivant →
+                  </span>
+                )}
+              </div>
+            </div>
+          ) : null}
+        </>
       )}
     </AdminPageShell>
   );
