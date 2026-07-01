@@ -671,10 +671,14 @@ model Submission {
   address            String?           @db.Text
   employeesCount     String?           @map("employees_count") @db.VarChar(20)
   // Contact
-  contactName        String            @map("contact_name") @db.VarChar(255)
+  // contact_name / contact_phone en TEXT : ces colonnes reçoivent des valeurs
+  // CHIFFRÉES (encryptPii, AES-256-GCM → `enc:v1:iv:ct:tag` ~100+ chars) qui
+  // débordaient VARCHAR(255)/VARCHAR(30) → P2000 « value too long » sur
+  // submission.create dès que PII_ENCRYPTION_KEY est active (audit 2026-07-01).
+  contactName        String            @map("contact_name") @db.Text
   contactRole        String?           @map("contact_role") @db.VarChar(100)
   contactEmail       String            @map("contact_email") @db.Citext
-  contactPhone       String?           @map("contact_phone") @db.VarChar(30)
+  contactPhone       String?           @map("contact_phone") @db.Text
   // Payload form
   details            Json
   // Admin workflow
