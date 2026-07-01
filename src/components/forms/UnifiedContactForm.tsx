@@ -18,7 +18,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useLocale } from "next-intl";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Check, ChevronDown } from "lucide-react";
 import {
@@ -224,27 +224,24 @@ function UnifiedContactFormBody({
   advancedOpenByDefault,
   source,
   className,
-  urlType,
-  urlSubType,
-}: UnifiedContactFormProps & {
-  /** `?type=` lu dans l'URL (null en SSR / dans le fallback Suspense). */
-  urlType: string | null;
-  /** `?subType=` lu dans l'URL (null en SSR / dans le fallback Suspense). */
-  urlSubType: string | null;
-}) {
+}: UnifiedContactFormProps) {
   const locale = (useLocale() === "en" ? "en" : "fr") as "fr" | "en";
   const t = LABELS[locale];
   const pathname = usePathname();
 
-  // ?type= dans l'URL prend le pas sur defaultType si pas locké.
-  const typeFromUrl = (urlType as UnifiedContactType | null) ?? null;
-  const initialType: UnifiedContactType | undefined =
-    !lockType && typeFromUrl && UNIFIED_CONTACT_TYPES.includes(typeFromUrl)
-      ? typeFromUrl
-      : defaultType;
+  // ?type= / ?subType= sont lus APRÈS le montage (useEffect ci-dessous), et non
+  // via useSearchParams() pendant le rendu. useSearchParams() suspendait sur une
+  // page statiquement pré-rendue → frontière Suspense « pending » qui ne se
+  // ré-hydratait PAS au chargement direct (le formulaire restait figé, 0 fiber
+  // React ; seule la navigation interne le rendait interactif). Lecture post-
+  // montage = la page reste statique (aucun bailout CSR, HTML serveur complet)
+  // ET l'îlot s'hydrate normalement au chargement direct. Chantier 2026-07-01.
+  const initialType: UnifiedContactType | undefined = defaultType;
 
   const effectiveSource = source ?? pathname ?? undefined;
-  const effectiveSubType = defaultSubType ?? urlSubType ?? undefined;
+  const [effectiveSubType, setEffectiveSubType] = React.useState<string | undefined>(
+    defaultSubType ?? undefined,
+  );
 
   const {
     register,
@@ -274,6 +271,25 @@ function UnifiedContactFormBody({
   React.useEffect(() => {
     if (isAdvancedType(type)) setAdvancedOpen(true);
   }, [type]);
+
+  // Applique les deep-links ?type= / ?subType= APRÈS le montage (client-only),
+  // en remplacement de useSearchParams()+Suspense (cf. commentaire plus haut).
+  // Équivalent SEO : le SSR n'appliquait déjà pas ?type= (fallback urlType=null) ;
+  // on l'applique ici juste après l'hydratation.
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const sp = new URLSearchParams(window.location.search);
+    const urlType = sp.get("type");
+    const urlSubType = sp.get("subType");
+    if (!lockType && urlType && UNIFIED_CONTACT_TYPES.includes(urlType as UnifiedContactType)) {
+      setValue("type", urlType as UnifiedContactType, { shouldValidate: true });
+    }
+    if (urlSubType && !defaultSubType) {
+      setEffectiveSubType(urlSubType);
+    }
+    // Montage unique : on lit l'URL une fois après hydratation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Type dropdown state — pattern bouton-trigger qui ouvre un popover listbox.
   // Form v2 2026-05-28 : remplace le segmented control 12 boutons par un
@@ -760,43 +776,21 @@ function UnifiedContactFormBody({
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Suspense boundary — isole `useSearchParams()`                              */
-/* -------------------------------------------------------------------------- */
-
 /**
- * Lit `?type=` / `?subType=` côté navigateur et les passe au corps du form.
- * Isolé dans son propre composant pour rester CONTENU dans le `<Suspense>`
- * ci-dessous. Sans ce boundary, `useSearchParams()` force toute la PAGE hôte
- * en rendu client (digest `BAILOUT_TO_CLIENT_SIDE_RENDERING`) → le HTML
- * serveur sort vide (h1/sections absents), ce qui casse l'indexation et
- * l'AEO/GEO des pages /presse, /contact et /audit/demande (pages statiques).
- * Même pattern que `cas-concrets/CaseStudiesFilteredGrid`.
- */
-function UnifiedContactFormWithParams(props: UnifiedContactFormProps) {
-  const searchParams = useSearchParams();
-  return (
-    <UnifiedContactFormBody
-      {...props}
-      urlType={searchParams.get("type")}
-      urlSubType={searchParams.get("subType")}
-    />
-  );
-}
-
-/**
- * Export public. Le `fallback` rend le formulaire COMPLET avec ses valeurs par
- * défaut (sans override `?type=`/`?subType=`) : il est émis tel quel dans le
- * HTML statique (formulaire utilisable sans JS, zéro CLS car markup identique),
- * puis remplacé à l'hydratation par la version qui applique les params d'URL.
- * La page hôte reste statiquement pré-rendue (pas de bailout).
+ * Export public. Le corps rend directement le formulaire complet (utilisable
+ * sans JS, HTML serveur complet → indexation + AEO/GEO préservés).
+ *
+ * IMPORTANT — plus de `useSearchParams()` ni de `<Suspense>` :
+ * l'ancienne version isolait `useSearchParams()` dans un `<Suspense>` pour
+ * éviter le `BAILOUT_TO_CLIENT_SIDE_RENDERING`. Mais sur ces pages statiquement
+ * pré-rendues, ça créait une frontière Suspense « pending » (`<!--$?-->`) qui
+ * ne se ré-hydratait PAS au chargement direct (formulaire figé, 0 fiber ; seule
+ * la navigation interne le rendait interactif). Les deep-links `?type=` /
+ * `?subType=` sont désormais appliqués côté client via `useEffect` dans le corps
+ * (cf. commentaires plus haut) : pas de bailout, pas de frontière pending, et
+ * l'îlot s'hydrate normalement au chargement direct. Chantier 2026-07-01.
+ * Même correctif à appliquer à `cas-concrets/CaseStudiesFilteredGrid`.
  */
 export function UnifiedContactForm(props: UnifiedContactFormProps) {
-  return (
-    <React.Suspense
-      fallback={<UnifiedContactFormBody {...props} urlType={null} urlSubType={null} />}
-    >
-      <UnifiedContactFormWithParams {...props} />
-    </React.Suspense>
-  );
+  return <UnifiedContactFormBody {...props} />;
 }
