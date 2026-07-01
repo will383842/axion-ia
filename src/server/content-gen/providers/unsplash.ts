@@ -25,6 +25,7 @@ import {
 } from "./IProvider";
 import { withRetry } from "../lib/retry";
 import { readProviderConfig } from "../lib/config-reader";
+import { redis } from "@/lib/redis";
 
 /**
  * Réponse partielle Unsplash API /search/photos.
@@ -194,6 +195,68 @@ function selectBest(photos: UnsplashPhoto[]): UnsplashPhoto {
   return candidate;
 }
 
+// ─── Anti-doublon d'images inter-articles (2026-07-01) ───────────────────────
+// Problème : `selectBest` prend toujours la photo n°1 (likes desc) → deux articles
+// du même thème (ex. « formation ia » sur 300 villes) reçoivent la MÊME photo.
+// Correctif en 2 temps, FAIL-OPEN (si Redis indispo, on garde au moins la variation) :
+//   1. Variation par article : on pioche dans le TOP-N (pas juste le n°1), à un
+//      index dérivé d'un seed stable (jobId+query) → chaque article varie.
+//   2. Mémoire des photos récemment servies (sorted set Redis, fenêtre 30 j) :
+//      on saute les photoId déjà utilisés pour ne pas les répéter.
+const RECENT_USED_KEY = "cg:unsplash:recent";
+const RECENT_WINDOW_MS = 30 * 24 * 60 * 60 * 1000; // 30 jours
+const VARIATION_POOL_SIZE = 15;
+
+/** Hash déterministe string → entier positif (seed de rotation). */
+function hashSeed(input: string): number {
+  let h = 0;
+  for (let i = 0; i < input.length; i++) h = (h * 31 + input.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+/**
+ * Sélectionne une photo variée + non récemment servie. Réutilise `selectBest`
+ * pour la validation « aucune photo » (throw cohérent). FAIL-OPEN sur Redis.
+ */
+async function selectWithVariation(photos: UnsplashPhoto[], seed: number): Promise<UnsplashPhoto> {
+  const best = selectBest(photos); // throw si liste vide (contrat inchangé)
+  const sorted = [...photos].sort((a, b) => b.likes - a.likes).slice(0, VARIATION_POOL_SIZE);
+  const landscape = sorted.filter((p) => p.width / p.height > 1.2);
+  const pool = landscape.length > 0 ? landscape : sorted;
+  if (pool.length <= 1) return best;
+
+  // Photos déjà servies récemment (fail-open : Redis indispo/stub → set vide).
+  let recent = new Set<string>();
+  try {
+    const cutoff = Date.now() - RECENT_WINDOW_MS;
+    await redis.zremrangebyscore(RECENT_USED_KEY, 0, cutoff); // purge la fenêtre glissante
+    const members = (await redis.zrange(RECENT_USED_KEY, 0, -1)) as string[] | null;
+    if (Array.isArray(members)) recent = new Set(members);
+  } catch {
+    // Redis indisponible → on conserve la seule variation par seed.
+  }
+
+  const start = seed % pool.length;
+  let chosen: UnsplashPhoto | undefined;
+  for (let i = 0; i < pool.length; i++) {
+    const cand = pool[(start + i) % pool.length];
+    if (cand && !recent.has(cand.id)) {
+      chosen = cand;
+      break;
+    }
+  }
+  // Toutes les photos du pool ont déjà été servies → on retombe sur la rotation
+  // par seed (variée) plutôt que de bloquer.
+  if (!chosen) chosen = pool[start] ?? best;
+
+  try {
+    await redis.zadd(RECENT_USED_KEY, Date.now(), chosen.id);
+  } catch {
+    // best-effort — l'échec d'enregistrement ne doit jamais casser la génération.
+  }
+  return chosen;
+}
+
 /**
  * Trigger l'endpoint /photos/:id/download — OBLIGATION CGU API §6.
  * Non-blocking : si Unsplash répond une erreur, on log mais on continue
@@ -281,7 +344,8 @@ export const unsplashProvider: IProvider = {
     });
 
     const free = filterFreeOnly(search.results);
-    const chosen = selectBest(free);
+    // Variation + anti-doublon inter-articles (seed stable = jobId + requête).
+    const chosen = await selectWithVariation(free, hashSeed(`${req.jobId ?? ""}:${query}`));
 
     // CGU API §6 — trigger download obligatoire (best-effort, n'arrête pas le pipeline)
     await triggerDownloadTracking(chosen.links.download_location, apiKey);

@@ -429,9 +429,34 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // downstream (revalidate, IndexNow, logs) utilise le NOUVEAU slug.
   const refreshSlugChanged =
     refreshPreservedSlug !== null && regeneratedSlug !== refreshPreservedSlug;
-  const slugCandidate = refreshSlugChanged
+  let slugCandidate = refreshSlugChanged
     ? regeneratedSlug
     : (refreshPreservedSlug ?? regeneratedSlug);
+  // Anti-collision slug (2026-07-01) — NOUVEL article uniquement. La contrainte
+  // @@unique([locale, slug]) fait CRASHER le job si deux articles produisent le
+  // même slug (fréquent en campagne multi-villes : le LLM peut omettre la ville
+  // du slug). On suffixe donc -2, -3, … au lieu de laisser le job échouer.
+  // Le chemin REFRESH est intact (rename historisé géré plus bas). NB : une race
+  // rarissime entre ce check et l'insert reste couverte par la contrainte DB (le
+  // job échoue alors comme avant) — l'orchestrateur (dedup + keyword-lock) la rend
+  // très improbable.
+  if (!refreshArticleId) {
+    const baseSlug = slugCandidate;
+    let resolved = false;
+    for (let i = 1; i <= 50; i++) {
+      const trySlug = i === 1 ? baseSlug : `${baseSlug}-${i}`;
+      const clash = await prisma.articleTranslation.findFirst({
+        where: { locale: "fr", slug: trySlug },
+        select: { id: true },
+      });
+      if (!clash) {
+        slugCandidate = trySlug;
+        resolved = true;
+        break;
+      }
+    }
+    if (!resolved) slugCandidate = `${baseSlug}-${Date.now().toString(36).slice(-5)}`;
+  }
   const wordCount = typeof output.wordCount === "number" ? output.wordCount : null;
   const readingTimeMinutes =
     typeof output.readingTimeMinutes === "number" ? output.readingTimeMinutes : null;
