@@ -100,6 +100,11 @@ interface PoliciesConfig {
    * plus grand = détection de quasi-doublons plus large mais latence ↑ (~1ms/art.).
    */
   readonly plagiarismCorpusSize?: number;
+  /**
+   * 2026-07-01 — Interrupteur dédié « auto-publier les news en Actualités ».
+   * Default true (undefined traité comme ON). false → news → review queue.
+   */
+  readonly newsAutoPublish?: boolean;
 }
 
 interface QualityLoopConfig {
@@ -937,13 +942,19 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       score < qualityThreshold &&
       dbJob.qualityImprovementAttempts < qualityMaxAttempts;
 
+    const isRss = contentType === "blog_from_rss";
+
+    // 2026-07-01 — Auto-publication des NEWS pilotée par un interrupteur DÉDIÉ
+    // `policies.newsAutoPublish` (page admin Actualités, pôle Lancer), indépendant
+    // du full-auto global. Remplace l'ancien gate qui dépendait du flag par-source
+    // `inputPayload.autoPublish` : désormais UN seul interrupteur Google News.
+    //   newsAutoPublish=true  → news auto-publiées tier_1 dès score ≥ seuil RSS.
+    //   newsAutoPublish=false → news → review queue (modération humaine).
     const rssAutoPublishMinScore =
       policies.rssAutoPublishMinScore ?? RSS_AUTOPUBLISH_MIN_SCORE_DEFAULT;
+    const newsAutoPublishEnabled = policies.newsAutoPublish !== false; // défaut ON
     const rssAutoPublishRequested =
-      contentType === "blog_from_rss" &&
-      inputPayload["autoPublish"] === true &&
-      !blockingFail &&
-      score >= rssAutoPublishMinScore;
+      isRss && newsAutoPublishEnabled && !blockingFail && score >= rssAutoPublishMinScore;
 
     // 2026-06-14 (décision Will « full auto ») — Publication automatique de TOUS
     // les types de contenu, sans relecture humaine, dès lors que la policy
@@ -964,9 +975,13 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // (ou non scoré) part en needs_review au lieu d'être indexé. Les contenus
     // ≥ seuil restent en full-auto (throughput préservé). RSS garde son propre
     // plancher `rssAutoPublishMinScore` (75).
+    //
+    // 2026-07-01 — Les NEWS (`blog_from_rss`) sont EXCLUES du full-auto global :
+    // elles ont leur gate dédié `rssAutoPublishRequested` (toggle newsAutoPublish).
+    // Sinon une news se publierait via le full-auto même toggle news désactivé.
     const fullAutoPublishEnabled = policies.factoryAutoPublishAllBlogTypes !== false;
     const fullAutoPublishRequested =
-      fullAutoPublishEnabled && !blockingFail && score >= qualityThreshold;
+      !isRss && fullAutoPublishEnabled && !blockingFail && score >= qualityThreshold;
 
     let nextStatus: "quality_improving" | "approved" | "needs_review" = "needs_review";
     if (eligibleQualityLoop) nextStatus = "quality_improving";

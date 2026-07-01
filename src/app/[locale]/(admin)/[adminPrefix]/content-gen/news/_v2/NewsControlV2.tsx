@@ -24,10 +24,12 @@ export function NewsControlV2({
 }: Props): React.ReactElement {
   async function save(formData: FormData) {
     "use server";
-    // On repart de la config complète (closure) et on n'écrase QUE les 2 champs
+    // On repart de la config complète (closure) et on n'écrase QUE les champs
     // news → les autres policies (plagiat, retention, auto-publish…) intactes.
+    // Une case décochée n'est PAS transmise → on lit explicitement le checkbox.
     await updatePolicies({
       ...cfg,
+      newsAutoPublish: formData.get("newsAutoPublish") === "on",
       rssMaxPerDay: Number(formData.get("rssMaxPerDay") ?? cfg.rssMaxPerDay),
       rssMaxAgeDays: Number(formData.get("rssMaxAgeDays") ?? cfg.rssMaxAgeDays),
     });
@@ -82,6 +84,20 @@ export function NewsControlV2({
 
       <AdminCard>
         <form action={save}>
+          <div className="admin-field">
+            <label className="admin-label">
+              <input type="checkbox" name="newsAutoPublish" defaultChecked={cfg.newsAutoPublish} />{" "}
+              Publier automatiquement les actualités (Google News) — décoché = les news partent en
+              file de relecture avant mise en ligne
+            </label>
+            <p className="admin-meta-block">
+              Quand activé, une actualité est publiée dès que son score qualité atteint{" "}
+              <strong>{cfg.rssAutoPublishMinScore}</strong> (réglable dans Policies). En dessous,
+              elle part en relecture. L&apos;anti-plagiat vs source (Jaccard{" "}
+              {cfg.plagiarismJaccardRss}) reste toujours actif.
+            </p>
+          </div>
+
           <div className="admin-field">
             <label htmlFor="rssMaxPerDay" className="admin-label">
               Nombre max d&apos;actualités générées par jour (0 = mettre les news en pause)

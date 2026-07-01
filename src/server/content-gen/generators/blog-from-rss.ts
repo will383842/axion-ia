@@ -13,13 +13,15 @@
  *    - Anti-plagiat RSS source : `checkRssSimilarity(body, rssItemSummary, 0.10)`
  *      bloque toute régurgitation directe du résumé (V-06 P0b).
  * 4. Checks finaux (readability + SEO + doctrine + soft-404)
- * 5. Return GeneratorOutput avec indexationTier=tier_2_noindex_follow par défaut
+ * 5. Return GeneratorOutput avec indexationTier=tier_1_indexable si qualité OK
+ *    (révisé 2026-07-01 : la modération est portée par le toggle policies.
+ *    newsAutoPublish côté worker, plus par un plafond de tier ici)
  *
  * Différences vs blog-from-keywords :
  * - Input enrichi avec métadonnées RSS (titre item, résumé, source)
  * - SYSTEM_PROMPT dédié actualité, sans citation visible
- * - indexationTier : tier_2 si qualité ≥ 55, tier_3 sinon (jamais tier_1 direct
- *   pour RSS — politique éditoriale : modération humaine avant promotion)
+ * - indexationTier : tier_1 si qualité ≥ 55 & anti-plagiat OK, tier_3 sinon
+ *   (modération éventuelle via toggle policies.newsAutoPublish, pas via le tier)
  * - budget plus court ($0.10) — article plus court attendu (500-800 mots)
  *
  * Sprint 5 — wire NewsArticle JSON-LD : la factory `buildNewsArticleJsonLd`
@@ -433,13 +435,16 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       );
     }
 
-    // Politique RSS : jamais tier_1 direct — modération humaine requise avant
-    // promotion. tier_2_noindex_follow max si qualité suffisante ET pas de
-    // régurgitation de la source RSS (V-06 P0b).
+    // Politique RSS (révisée 2026-07-01) : une news de qualité NAÎT tier_1_indexable
+    // (cohérent avec le publish worker qui force tier_1, et avec la stratégie
+    // « veille IA → Google News »). La MODÉRATION éventuelle est portée par
+    // l'interrupteur `policies.newsAutoPublish` côté worker (OFF → review queue),
+    // pas par un plafond de tier ici. Reste tier_3 si soft-404, doctrine KO, ou
+    // régurgitation de la source RSS non résolue (V-06 P0b) — anti-plagiat/HCU.
     const indexationTier: GeneratorOutput["indexationTier"] = soft404.isSoft404
       ? "tier_3_noindex_nofollow"
       : doctrine.passed && qualityScore >= 55 && finalRssSim.passed
-        ? "tier_2_noindex_follow"
+        ? "tier_1_indexable"
         : "tier_3_noindex_nofollow";
 
     const expertQuote = buildExpertQuote(expert, parsed.expertTake);

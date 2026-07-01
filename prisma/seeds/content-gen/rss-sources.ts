@@ -53,7 +53,85 @@ function detectVerticale(source: LegacyRssSource): Verticale | null {
   return null;
 }
 
+/**
+ * Sources RSS par défaut (2026-07-01) — veille IA anglo-saxonne à retraiter en
+ * pont éditorial FR (résumé + analyse business + parallèle PME françaises). Ces
+ * 4 flux (validés RSS 2.0) constituent le socle « Actualités IA ». Idempotent :
+ * upsert par `url`. `language: "en"` = langue SOURCE (l'article généré reste FR).
+ * `autoPublish: false` sur la source : la publication auto des news est pilotée
+ * GLOBALEMENT par la policy `newsAutoPublish` (page admin Actualités / Lancer),
+ * pas par flux — un seul interrupteur Google News.
+ */
+const DEFAULT_RSS_SOURCES: ReadonlyArray<{
+  url: string;
+  name: string;
+  tags: ReadonlyArray<string>;
+  language: string;
+}> = [
+  {
+    url: "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+    name: "MIT Technology Review — Artificial Intelligence",
+    tags: ["ia", "strategie", "transformation", "entreprise"],
+    language: "en",
+  },
+  {
+    url: "https://www.kdnuggets.com/feed",
+    name: "KDnuggets",
+    tags: ["ia", "machine-learning", "data-science", "business"],
+    language: "en",
+  },
+  {
+    url: "https://www.sciencedaily.com/rss/computers_math/artificial_intelligence.xml",
+    name: "ScienceDaily — Artificial Intelligence",
+    tags: ["ia", "recherche", "applications"],
+    language: "en",
+  },
+  {
+    url: "https://openai.com/news/rss.xml",
+    name: "OpenAI — News",
+    tags: ["ia", "llm", "produits", "adoption"],
+    language: "en",
+  },
+];
+
+/**
+ * Upsert des sources par défaut. Toujours exécuté (indépendant de la migration
+ * legacy). `enabled: true` pour qu'elles soient pollées dès le prochain tick ;
+ * le volume reste borné par `policies.rssMaxPerDay`.
+ */
+async function seedDefaultRssSources(prisma: PrismaClient): Promise<number> {
+  let count = 0;
+  for (const src of DEFAULT_RSS_SOURCES) {
+    await prisma.rssSource.upsert({
+      where: { url: src.url },
+      create: {
+        url: src.url,
+        name: src.name,
+        enabled: true,
+        verticale: null,
+        tags: src.tags as never,
+        pollIntervalMin: 60,
+        autoPublish: false,
+        language: src.language,
+      },
+      // Ne PAS écraser `enabled`/`autoPublish` à l'update : Will peut les avoir
+      // ajustés en console. On rafraîchit seulement les métadonnées éditoriales.
+      update: {
+        name: src.name,
+        tags: src.tags as never,
+        language: src.language,
+      },
+    });
+    count += 1;
+  }
+  console.log(`[rss-sources seed] upserted ${count} default AI-watch sources.`);
+  return count;
+}
+
 export async function seedRssSources(prisma: PrismaClient): Promise<number> {
+  // Socle par défaut (veille IA anglo-saxonne) — toujours upserté, idempotent.
+  const defaultCount = await seedDefaultRssSources(prisma);
+
   // Lecture legacy ContentGenConfig (clé V1).
   const legacyConfig = await prisma.contentGenConfig
     .findUnique({ where: { key: "rss_sources" } })
@@ -61,17 +139,15 @@ export async function seedRssSources(prisma: PrismaClient): Promise<number> {
 
   if (!legacyConfig?.value) {
     console.log(
-      '[rss-sources seed] no legacy ContentGenConfig.key="rss_sources" found — skipping (table will be populated via admin UI).',
+      '[rss-sources seed] no legacy ContentGenConfig.key="rss_sources" found — default sources only.',
     );
-    // TODO : si Will fournit une liste de seed minimal (3-5 feeds sectoriels),
-    // l'inscrire ici en upsert. V1 = seeder vide intentionnel.
-    return 0;
+    return defaultCount;
   }
 
   const raw = legacyConfig.value as unknown;
   if (!Array.isArray(raw) || raw.length === 0) {
-    console.log("[rss-sources seed] legacy rss_sources empty — nothing to migrate.");
-    return 0;
+    console.log("[rss-sources seed] legacy rss_sources empty — default sources only.");
+    return defaultCount;
   }
 
   let count = 0;
@@ -103,5 +179,5 @@ export async function seedRssSources(prisma: PrismaClient): Promise<number> {
   }
 
   console.log(`[rss-sources seed] migrated ${count} legacy sources → RssSource table.`);
-  return count;
+  return defaultCount + count;
 }
