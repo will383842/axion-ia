@@ -6,6 +6,8 @@
 // via closure sur `cfg` (aucun reset).
 
 import Link from "next/link";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { updatePolicies, type ContentPolicies } from "@/server/actions/content-gen/policies";
 
@@ -14,6 +16,7 @@ interface Props {
   rssSourceCount: number;
   publishedNewsCount: number;
   adminPrefix: string;
+  saved?: boolean;
 }
 
 export function NewsControlV2({
@@ -21,6 +24,7 @@ export function NewsControlV2({
   rssSourceCount,
   publishedNewsCount,
   adminPrefix,
+  saved = false,
 }: Props): React.ReactElement {
   async function save(formData: FormData) {
     "use server";
@@ -33,6 +37,11 @@ export function NewsControlV2({
       rssMaxPerDay: Number(formData.get("rssMaxPerDay") ?? cfg.rssMaxPerDay),
       rssMaxAgeDays: Number(formData.get("rssMaxAgeDays") ?? cfg.rssMaxAgeDays),
     });
+    // Feedback visible : `updatePolicies` revalide la page Policies (SSOT), pas
+    // celle-ci → on rafraîchit CETTE page + on redirige avec ?saved=1 pour
+    // afficher la confirmation (sinon l'utilisateur croit que « rien ne se passe »).
+    revalidatePath(`/fr/${adminPrefix}/content-gen/news`);
+    redirect(`/fr/${adminPrefix}/content-gen/news?saved=1`);
   }
 
   const base = `/fr/${adminPrefix}/content-gen`;
@@ -43,6 +52,12 @@ export function NewsControlV2({
         title="Actualités / News RSS"
         description="Pilotez le volume d'actualités générées par jour depuis vos sources RSS. Les news sont publiées séparément du blog, sur /actualites."
       />
+
+      {saved ? (
+        <div role="status" className="admin-alert admin-alert-success mb-[var(--space-admin-4)]">
+          ✅ Réglages enregistrés.
+        </div>
+      ) : null}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">État</h2>

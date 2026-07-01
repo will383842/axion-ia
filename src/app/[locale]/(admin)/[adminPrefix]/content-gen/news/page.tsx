@@ -12,10 +12,12 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
+  searchParams: Promise<{ saved?: string }>;
 }
 
-export default async function NewsControlPage({ params }: PageProps) {
+export default async function NewsControlPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
+  const { saved } = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
@@ -35,6 +37,7 @@ export default async function NewsControlPage({ params }: PageProps) {
       rssSourceCount={rssSourceCount}
       publishedNewsCount={publishedNewsCount}
       adminPrefix={adminPrefix}
+      saved={saved === "1"}
     />
   );
 }
