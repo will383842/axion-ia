@@ -212,6 +212,7 @@ ${externalLinksCtx.markdownSection}
         jobId: input.jobId,
         contentType: "barometer_insight",
         role: "text",
+        responseFormatJson: true,
         systemPrompt: planSystem,
         userPrompt:
           planAttempt === 0

@@ -175,11 +175,25 @@ export const anthropicProvider: IProvider = {
     let fullText = "";
     let stopReason: string | null = null;
 
+    // Les modèles Claude 4.7+ (Opus 4.7/4.8, Sonnet 5, Fable 5, Mythos 5) REFUSENT
+    // les paramètres d'échantillonnage : envoyer `temperature` déclenche un
+    // 400 invalid_request_error. On ne transmet donc `temperature` qu'aux modèles
+    // qui l'acceptent encore (Opus 4.6, Sonnet 4.6, Haiku 4.5 et antérieurs).
+    const SAMPLING_PARAM_REJECTING_MODELS = new Set<string>([
+      "claude-opus-4-8",
+      "claude-opus-4-7",
+      "claude-sonnet-5",
+      "claude-fable-5",
+      "claude-mythos-5",
+    ]);
+    const sendTemperature =
+      req.temperature !== undefined && !SAMPLING_PARAM_REJECTING_MODELS.has(model);
+
     const executeCall = async () => {
       const stream = await client.messages.create({
         model,
         max_tokens: req.maxTokens ?? 4096,
-        ...(req.temperature !== undefined ? { temperature: req.temperature } : {}),
+        ...(sendTemperature ? { temperature: req.temperature } : {}),
         // System avec prompt caching (cache 5 min TTL côté Anthropic)
         system: [
           {

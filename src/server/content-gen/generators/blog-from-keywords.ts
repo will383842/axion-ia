@@ -195,6 +195,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         jobId: input.jobId,
         contentType: "blog_from_keywords",
         role: "text",
+        responseFormatJson: true,
         systemPrompt: planSystem,
         userPrompt:
           planAttempt === 0
