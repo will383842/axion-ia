@@ -1,24 +1,28 @@
 "use client";
-// use-client: charge le script tiers Calendly + init programmatique de l'embed
-// inline, avec lien fallback pour les visiteurs dont le navigateur bloque les
-// iframes cross-origin (cookies tiers stricts, extensions anti-tracking, etc.).
+// use-client: embed Calendly inline — chargement ROBUSTE, indépendant de
+// l'hydratation (useEffect voie 2 + preuve d'exécution client).
 //
-// ⚠️ NE PAS rendre d'éléments « hoistables » (<link>, <script>, <noscript>,
-// <meta>, <title>) dans le JSX de CE composant. Audit 2026-07-01 (2e passe) :
-// vérifié en prod que le rendu de <link rel="preconnect"> + <noscript> dans le
-// fragment de ce Client Component FAISAIT ÉCHOUER l'hydratation de l'îlot en
-// React 19 / Next 16 — le conteneur n'obtenait aucun fiber React, donc le
-// useEffect ne s'exécutait JAMAIS (fiber ancêtre le plus proche = <body>, alors
-// que le reste de la page s'hydratait normalement). C'est la cause RACINE du
-// « grand cadre gris vide » : l'ancien <Script strategy="afterInteractive">
-// était lui aussi rendu par ce composant → jamais hydraté → seul le preload
-// était émis. On charge donc script + preconnect PROGRAMMATIQUEMENT dans le
-// useEffect, et le JSX ne contient que des éléments plats (div/p/a).
+// Contexte (audit 2026-07-01, 3 passes) : sur /appel, le contenu de page
+// n'était pas hydraté de façon fiable (l'îlot client n'obtenait aucun fiber
+// React), donc TOUT mécanisme reposant sur un useEffect au chargement initial
+// échouait — c'est pourquoi ni <Script afterInteractive> (PR 171) ni l'injection
+// useEffect (PR 173) n'affichaient le calendrier. Preuve que l'environnement est
+// sain : injecter widget.js à la main + Calendly.initInlineWidget crée l'iframe.
+//
+// Solution DOUBLE VOIE, idempotente (drapeau data-cal-init) :
+//   1. Script INLINE rendu dans le HTML SSR → s'exécute au PARSE du navigateur,
+//      sans dépendre de React/hydratation. Couvre le chargement direct (SEO,
+//      lien direct, refresh) = le cas du bug d'origine.
+//   2. useEffect → couvre la navigation SPA (next/link), où le script inline
+//      n'est pas ré-exécuté par React mais où le composant se rend côté client.
+// Le conteneur porte suppressHydrationWarning : React ne réconcilie pas l'iframe
+// injectée avant l'hydratation. CSP : script-src autorise 'unsafe-inline' (les
+// <script> JSON-LD de la page fonctionnent déjà ainsi ; aucun nonce).
 
 import { useEffect, useRef } from "react";
 
 const CALENDLY_WIDGET_JS = "https://assets.calendly.com/assets/external/widget.js";
-const CALENDLY_PRECONNECT = ["https://assets.calendly.com", "https://calendly.com"] as const;
+const CALENDLY_EMBED_ID = "calendly-inline-embed";
 
 interface CalendlyGlobal {
   initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
@@ -53,55 +57,29 @@ function buildCalendlyUrl(baseUrl: string): string {
 }
 
 /**
- * Ajoute les hints preconnect côté client (idempotent). Fait ici plutôt qu'en
- * JSX pour éviter les <link> hoistables qui cassent l'hydratation (cf. en-tête).
+ * Bootstrap inline (voie 1). Sérialisé dans le HTML SSR, exécuté au parse.
+ * Idempotent via l'attribut data-cal-init. L'URL est lue depuis data-cal-url
+ * (jamais interpolée dans le code JS → aucun risque d'injection).
  */
-function ensurePreconnect(): void {
-  for (const href of CALENDLY_PRECONNECT) {
-    if (document.head.querySelector(`link[rel="preconnect"][href="${href}"]`)) continue;
-    const link = document.createElement("link");
-    link.rel = "preconnect";
-    link.href = href;
-    link.crossOrigin = "anonymous";
-    document.head.appendChild(link);
+const CALENDLY_BOOTSTRAP = `(function(){
+  var id=${JSON.stringify(CALENDLY_EMBED_ID)};
+  var src=${JSON.stringify(CALENDLY_WIDGET_JS)};
+  var el=document.getElementById(id);
+  if(!el||el.getAttribute("data-cal-init")==="1")return;
+  var url=el.getAttribute("data-cal-url");
+  if(!url)return;
+  function init(){
+    if(!window.Calendly)return;
+    el.setAttribute("data-cal-init","1");
+    try{window.Calendly.initInlineWidget({url:url,parentElement:el});}catch(e){}
   }
-}
-
-/**
- * Charge (une seule fois) le script widget.js de Calendly et résout quand
- * `window.Calendly` est disponible. Idempotent : réutilise le tag existant si
- * déjà présent (navigations client, remontage StrictMode en dev).
- */
-function loadCalendlyScript(): Promise<CalendlyGlobal> {
-  return new Promise((resolve, reject) => {
-    if (window.Calendly) {
-      resolve(window.Calendly);
-      return;
-    }
-
-    const existing = document.querySelector<HTMLScriptElement>(
-      `script[src="${CALENDLY_WIDGET_JS}"]`,
-    );
-    if (existing) {
-      existing.addEventListener("load", () => {
-        if (window.Calendly) resolve(window.Calendly);
-        else reject(new Error("Calendly global manquant après chargement du script"));
-      });
-      existing.addEventListener("error", () => reject(new Error("Échec chargement widget.js")));
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = CALENDLY_WIDGET_JS;
-    script.async = true;
-    script.addEventListener("load", () => {
-      if (window.Calendly) resolve(window.Calendly);
-      else reject(new Error("Calendly global manquant après chargement du script"));
-    });
-    script.addEventListener("error", () => reject(new Error("Échec chargement widget.js")));
-    document.head.appendChild(script);
-  });
-}
+  if(window.Calendly){init();return;}
+  var ex=document.querySelector('script[data-calendly-loader]');
+  if(ex){ex.addEventListener("load",init);return;}
+  var s=document.createElement("script");
+  s.src=src;s.async=true;s.setAttribute("data-calendly-loader","");s.onload=init;
+  document.head.appendChild(s);
+})();`;
 
 export function CalendlyInlineWidget({
   calendlyUrl,
@@ -111,33 +89,52 @@ export function CalendlyInlineWidget({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl) : null;
 
+  // Voie 2 : navigation SPA (client). Idempotent avec la voie 1 (data-cal-init).
   useEffect(() => {
-    if (!finalUrl) return;
-    const parent = containerRef.current;
-    if (!parent) return;
+    const el = containerRef.current;
+    if (!el) return;
+    if (el.getAttribute("data-cal-init") === "1") return;
+    const url = el.getAttribute("data-cal-url");
+    if (!url) return;
 
     let cancelled = false;
-    ensurePreconnect();
-
-    void loadCalendlyScript()
-      .then((calendly) => {
-        if (cancelled || !containerRef.current) return;
-        // Nettoyage défensif : évite un double-embed si l'effet se rejoue
-        // (remontage StrictMode en dev, changement d'URL).
-        containerRef.current.replaceChildren();
-        calendly.initInlineWidget({ url: finalUrl, parentElement: containerRef.current });
-      })
-      .catch(() => {
+    const init = () => {
+      if (cancelled || !window.Calendly) return;
+      if (el.getAttribute("data-cal-init") === "1") return;
+      el.setAttribute("data-cal-init", "1");
+      try {
+        window.Calendly.initInlineWidget({ url, parentElement: el });
+      } catch {
         // fail-soft : le lien « Ouvrir Calendly directement » reste visible.
-      });
+      }
+    };
+
+    if (window.Calendly) {
+      init();
+      return;
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>("script[data-calendly-loader]");
+    if (existing) {
+      existing.addEventListener("load", init);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const script = document.createElement("script");
+    script.src = CALENDLY_WIDGET_JS;
+    script.async = true;
+    script.setAttribute("data-calendly-loader", "");
+    script.addEventListener("load", init);
+    document.head.appendChild(script);
 
     return () => {
       cancelled = true;
-      parent.replaceChildren();
     };
-  }, [finalUrl]);
+  }, []);
 
-  if (!calendlyUrl) {
+  if (!calendlyUrl || !finalUrl) {
     return (
       <div
         role="status"
@@ -160,15 +157,19 @@ export function CalendlyInlineWidget({
     );
   }
 
-  // ⚠️ Uniquement des éléments plats ici (div/p/a) — voir en-tête de fichier.
   return (
     <div>
       <div
+        id={CALENDLY_EMBED_ID}
         ref={containerRef}
+        data-cal-url={finalUrl}
+        suppressHydrationWarning
         className="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
         style={{ minWidth: "320px", height: `${height}px` }}
         aria-label={isFr ? "Calendrier de prise de rendez-vous" : "Booking calendar"}
       />
+      {/* Voie 1 : bootstrap inline exécuté au parse (indépendant de l'hydratation). */}
+      <script data-calendly-bootstrap dangerouslySetInnerHTML={{ __html: CALENDLY_BOOTSTRAP }} />
       <div className="mx-auto mt-4 max-w-xl text-center">
         <p className="text-fg-muted text-sm">
           {isFr ? "Le calendrier ne s’affiche pas ?" : "Calendar not showing?"}{" "}
