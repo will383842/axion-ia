@@ -201,12 +201,17 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       tier: "advanced",
     },
     {
+      // Masqué de la sidebar (page de setup one-shot) mais conservée : accessible
+      // par URL directe + command palette, et le breadcrumb résout toujours le
+      // libellé. `parent` défini ⇒ exclu du rendu sidebar (cf. AdminSidebarNav
+      // filtre `it.parent == null`).
       href: `${base}/content-gen/onboarding`,
       label: "Premiers pas",
       icon: "🚀",
       group: "content_gen",
       subGroup: "lancer",
       tier: "simple",
+      parent: `${base}/content-gen`,
     },
     // ▾ SUIVRE (quotidien)
     {
