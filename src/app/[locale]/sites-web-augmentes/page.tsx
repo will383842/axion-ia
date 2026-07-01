@@ -51,7 +51,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildItemListJsonLd,
-  buildImageGraphJsonLd,
+  buildCollectionPageJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
@@ -165,46 +167,37 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
   // ImageObject @graph — Sprint perfection AEO. Photo équipe + portrait fondateur
   // pour visibilité Google Images + citation AI Overviews sur requêtes « site web
   // IA », « plateforme SaaS native IA », « site web augmenté entreprise ».
-  const sitesWebImagesJsonLd = buildImageGraphJsonLd({
+  const sitesWebImagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — création sites web et SaaS native IA"
-          : "Axion-IA team — AI-native websites and SaaS",
-        alt: isFr
-          ? "Équipe Axion-IA en session conception site web augmenté IA — sites vitrines, SaaS métier, plateformes B2B avec agents conversationnels intégrés pour TPE, PME, ETI et grandes entreprises françaises."
-          : "Axion-IA team designing AI-augmented website — showcase sites, business SaaS, B2B platforms with integrated conversational agents for French SMEs, mid-caps and large enterprises.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA et architecte sites web IA"
-          : "Williams — Axion-IA founder and AI website architect",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote la création de sites web augmentés IA et SaaS native IA pour dirigeants TPE, PME, ETI et grandes entreprises françaises — agents conversationnels, recommandations IA, automatisations métier."
-          : "Portrait of Williams, Axion-IA founder. Drives AI-augmented website and AI-native SaaS creation for French SME, mid-cap and large enterprise executives — conversational agents, AI recommendations, business automations.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
+    path: "/sites-web-augmentes",
+  });
+  // CollectionPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
+  const sitesWebPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: "/sites-web-augmentes",
+    name: isFr
+      ? "Sites web & plateformes SaaS augmentés par l'IA · Axion-IA"
+      : "AI-augmented websites & SaaS platforms · Axion-IA",
+    description: isFr
+      ? "Sites web et SaaS augmentés par l'IA : chatbot RAG ancré sur vos contenus, agents, recherche sémantique, automatisations. Toute stack, hébergement UE, devis sous 24-48 h."
+      : "AI-augmented websites and SaaS platforms: RAG chatbot grounded in your content, agents, semantic search, automations. Any stack, EU hosting, quote in 24-48 h.",
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/sites-web-augmentes")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/sites-web-augmentes") } }
+      : {}),
   });
 
   return (
     <>
       {/* Service inline (SEO racine critique), ItemList différé afterInteractive. */}
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={sitesWebPageJsonLd} />
       <JsonLd
         data={itemListJsonLd}
         strategy="afterInteractive"
         scriptId="jsonld-sites-web-augmentes-itemlist"
       />
-      <JsonLd data={sitesWebImagesJsonLd} />
+      {sitesWebImagesJsonLd ? <JsonLd data={sitesWebImagesJsonLd} /> : null}
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />

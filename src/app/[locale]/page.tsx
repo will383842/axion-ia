@@ -37,7 +37,7 @@ import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
   buildLocalBusinessJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -312,45 +312,7 @@ export default async function Home({ params }: HomeProps) {
   // Google Images / Bing / Pinterest + citation AI Overviews / Perplexity /
   // Claude Vision. 3 images stratégiques de la home (hero équipe, bandeau
   // équipe full-bleed, portrait fondateur). Factory centralisée.
-  const homeImagesJsonLd = buildImageGraphJsonLd({
-    locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-hero-equipe.avif",
-        name: isFr
-          ? "L'équipe Axion-IA — cabinet IA pour entreprises"
-          : "The Axion-IA team — AI consultancy for companies",
-        alt: isFr
-          ? "Photo de l'équipe Axion-IA en pulls terracotta sous le logo Axion-IA.com — L'intelligence artificielle au service de l'humain. Cabinet IA pour TPE, PME, ETI et grandes entreprises françaises."
-          : "Photo of the Axion-IA team wearing terracotta sweaters under the Axion-IA.com sign — Artificial intelligence at the service of humans. AI consultancy for French SMEs, mid-caps and large enterprises.",
-        width: 1536,
-        height: 1024,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Bandeau équipe Axion-IA — 4 scènes coworking IA"
-          : "Axion-IA team banner — 4 AI coworking scenes",
-        alt: isFr
-          ? "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant. Cabinet IA opérationnel français pour TPE, PME, ETI."
-          : "Axion-IA.com banner — four team coworking scenes: screen demo, sofa exchange, paired laptop session, smiling portrait. French operational AI consultancy for SMEs, mid-caps.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr ? "Williams — Fondateur & CEO Axion-IA" : "Williams — Founder & CEO Axion-IA",
-        alt: isFr
-          ? "Portrait de Williams, fondateur et CEO d'Axion-IA. Top 1% expertise IA opérationnelle France, accompagne dirigeants TPE, PME, ETI et grandes entreprises sur ChatGPT, Claude, Mistral, agents IA et automatisations métier."
-          : "Portrait of Williams, founder and CEO of Axion-IA. Top 1% France operational AI expertise, advises executives of SMEs, mid-caps and large enterprises on ChatGPT, Claude, Mistral, AI agents and business automations.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
-  });
+  const homeImagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/" });
 
   // 3) VideoObject[] — un schema par vidéo témoignage. Vide si pas de vidéos
   //    (section masquée côté JSX → schema absent aussi, cohérent).
@@ -1752,7 +1714,7 @@ export default async function Home({ params }: HomeProps) {
       <JsonLd data={faqJsonLd} />
       <JsonLd data={localBusinessJsonLd} />
       <JsonLd data={servicesJsonLd} />
-      <JsonLd data={homeImagesJsonLd} />
+      {homeImagesJsonLd ? <JsonLd data={homeImagesJsonLd} /> : null}
       {/* BreadcrumbList JSON-LD ABSENT : home = racine hiérarchique (cf. audit A4 2026-05-24) */}
       {videosJsonLd.length > 0 ? <JsonLd data={videosJsonLd} /> : null}
 

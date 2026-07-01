@@ -30,6 +30,8 @@ import {
   buildServiceJsonLd,
   buildItemListJsonLd,
   buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
+  buildCollectionPageJsonLd,
   buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
@@ -130,6 +132,21 @@ export default async function AuditHub({ params }: Props) {
   // Migré vers le manifeste SSOT `PAGE_IMAGES_MANIFEST["/audit"]` (2026-07-01) :
   // le même manifeste alimente ce JSON-LD ImageObject ET le sitemap images.
   const auditImagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/audit" });
+
+  // CollectionPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
+  // /audit est un hub 4 niveaux → CollectionPage.
+  const auditPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: "/audit",
+    name: isFr ? "Audit IA en entreprise · Axion-IA" : "Enterprise AI audit · Axion-IA",
+    description: isFr
+      ? "Audit IA en entreprise partout en France : on cartographie où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé."
+      : "Enterprise AI audit across France: we map where AI saves you time and money, and you leave with a costed, prioritised action plan.",
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/audit")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/audit") } }
+      : {}),
+  });
 
   // ItemList JSON-LD — 4 tiers d'audit. AEO 2026 : LLMs énumèrent les niveaux
   // d'audit quand quelqu'un demande « quels audits IA propose Axion-IA ? ».
@@ -242,6 +259,7 @@ export default async function AuditHub({ params }: Props) {
       {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — Service inline (SEO racine
           critique), ItemList déféré afterInteractive (-100 à -200 ms TBT). */}
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={auditPageJsonLd} />
       <JsonLd data={itemListJsonLd} strategy="afterInteractive" scriptId="jsonld-audit-itemlist" />
       {auditImagesJsonLd ? <JsonLd data={auditImagesJsonLd} /> : null}
       <JsonLd data={auditHowToJsonLd} />
