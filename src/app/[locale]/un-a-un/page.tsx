@@ -42,7 +42,9 @@ import {
   buildItemListJsonLd,
   buildHowToJsonLd,
   buildCourseJsonLd,
-  buildImageGraphJsonLd,
+  buildCollectionPageJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
@@ -192,7 +194,19 @@ export default async function UnAUnHubPage({ params }: Props) {
     serviceType: isFr ? "Coaching IA individuel" : "Individual AI coaching",
     priceEur: Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE),
     areasServed: buildServiceAreasServed(loc),
+  });
+
+  // CollectionPage — porteur VALIDE du `speakable` (déplacé hors du Service où il
+  // était inerte) + `primaryImageOfPage`. /un-a-un est un hub 2 formules → CollectionPage.
+  const coachingPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path,
+    name: isFr ? "Coaching IA individuel 1-to-1" : "1-to-1 individual AI coaching",
+    description: isFr
+      ? "Hub du coaching IA individuel Axion-IA : deux formules (dirigeant ou collaborateur clé), 1 journée en tête-à-tête, rapport complet sous 7 jours, partout en France métropolitaine."
+      : "Hub of Axion-IA individual AI coaching: two formats (executive or key team member), 1 one-on-one day, complete report within 7 days, across metropolitan France.",
     speakable: true,
+    extra: { primaryImageOfPage: buildPrimaryImageOfPage("/un-a-un") },
   });
 
   const courseJsonLdArray = COACHING_TYPES.map((c) =>
@@ -264,22 +278,8 @@ export default async function UnAUnHubPage({ params }: Props) {
     })),
   });
 
-  const imagesJsonLd = buildImageGraphJsonLd({
-    locale: loc,
-    images: [
-      {
-        src: "/illustrations/william-fondateur-formateur-ia-axion-ia.png",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA et coach IA 1-to-1"
-          : "Williams — Axion-IA founder and 1-to-1 AI coach",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA et coach IA individuel. Accompagne en tête-à-tête dirigeants et collaborateurs clés (secrétariat, comptabilité, achats…) pour gagner du temps avec l'IA, partout en France métropolitaine."
-          : "Portrait of Williams, Axion-IA founder and individual AI coach. Coaches executives and key team members (admin, accounting, purchasing…) one-on-one to save time with AI, across metropolitan France.",
-        width: 800,
-        height: 1000,
-      },
-    ],
-  });
+  // JSON-LD ImageObject depuis le manifeste SSOT (`PAGE_IMAGES_MANIFEST["/un-a-un"]`).
+  const imagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/un-a-un" });
 
   return (
     <>
@@ -1038,8 +1038,9 @@ export default async function UnAUnHubPage({ params }: Props) {
       />
 
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={coachingPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={imagesJsonLd} />
+      {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
       <JsonLd data={howToReserverJsonLd} />
       {courseJsonLdArray.map((course, idx) => (
         <JsonLd key={`course-${idx}`} data={course} />

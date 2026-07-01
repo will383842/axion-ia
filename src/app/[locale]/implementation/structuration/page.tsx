@@ -15,7 +15,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildFaqJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
+  buildWebPageJsonLd,
 } from "@/lib/seo";
 
 interface Props {
@@ -50,36 +52,24 @@ export default async function StructurationPage({ params }: Props) {
   // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
   // + portrait fondateur pour exposition Google Images + AI Overviews sur
   // requêtes « structuration des données IA », « data prep IA entreprise ».
-  const imagesJsonLd = buildImageGraphJsonLd({
+  const imagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — structuration des données pour IA"
-          : "Axion-IA team — data structuring for AI",
-        alt: isFr
-          ? "Équipe Axion-IA structure les données des TPE, PME et ETI françaises pour les rendre exploitables par l'IA — collecte, nettoyage, normalisation, taxonomie, gouvernance, qualité documentée."
-          : "Axion-IA team structures data for French small businesses, SMEs and mid-caps to make it AI-ready — collection, cleaning, normalization, taxonomy, governance, documented quality.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA, expert structuration données IA"
-          : "Williams — Axion-IA founder, AI data structuring expert",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets de structuration de données IA pour dirigeants TPE et PME — audit data, modélisation, gouvernance, mise en qualité progressive."
-          : "Portrait of Williams, Axion-IA founder. Personally drives AI data structuring projects for small business and SME executives — data audit, modeling, governance, progressive quality improvement.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
+    path: "/implementation/structuration",
+  });
+  // Nœud WebPage — porteur du `speakable` (h1/h2 + réponses) et du
+  // `primaryImageOfPage`. Réutilise titre/description meta (pas de réécriture).
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/implementation/structuration",
+    name: copy.metaSeo.title,
+    description: copy.metaSeo.description,
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/implementation/structuration")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/implementation/structuration") } }
+      : {}),
   });
   const jsonLd = [
+    webPageJsonLd,
     buildServiceJsonLd({
       locale: loc,
       path,
@@ -88,7 +78,7 @@ export default async function StructurationPage({ params }: Props) {
       serviceType: "AI implementation · structuration",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    imagesJsonLd,
+    ...(imagesJsonLd ? [imagesJsonLd] : []),
   ];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

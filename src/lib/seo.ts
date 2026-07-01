@@ -9,6 +9,7 @@ import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { FOUNDER } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
 
 // SITE_URL — résolu via env validé (`src/env.ts`).
 //
@@ -1907,6 +1908,12 @@ interface ImageGraphImageInput {
   encodingFormat?: string;
   /** Date de publication ISO. Omise si non fournie (plus de défaut BUILD_DATE). */
   datePublished?: string;
+  /**
+   * `representativeOfPage` — signale à Google Images que l'image représente la
+   * page (candidate vignette/hero). Default `false`. Une seule image par page
+   * devrait être `true`.
+   */
+  representativeOfPage?: boolean;
 }
 
 interface ImageGraphJsonLdInput {
@@ -1941,7 +1948,7 @@ export function buildImageGraphJsonLd({
       ...(typeof img.width === "number" ? { width: img.width } : {}),
       ...(typeof img.height === "number" ? { height: img.height } : {}),
       encodingFormat: img.encodingFormat ?? "image/png",
-      representativeOfPage: false,
+      representativeOfPage: img.representativeOfPage === true,
       license,
       acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
       creator: {
@@ -1973,6 +1980,58 @@ export function buildImageGraphJsonLd({
       inLanguage: locale,
     })),
   } as const;
+}
+
+/** Déduit le MIME `encodingFormat` depuis l'extension du fichier statique. */
+function encodingFormatFromSrc(src: string): string {
+  const ext = src.split(".").pop()?.toLowerCase();
+  switch (ext) {
+    case "avif":
+      return "image/avif";
+    case "webp":
+      return "image/webp";
+    case "jpg":
+    case "jpeg":
+      return "image/jpeg";
+    case "svg":
+      return "image/svg+xml";
+    default:
+      return "image/png";
+  }
+}
+
+/**
+ * Construit le `@graph` d'`ImageObject` d'une page DEPUIS le manifeste SSOT
+ * (`src/lib/seo/page-images.ts`). Retourne `null` si la page n'a aucune image
+ * déclarée — l'appelant omet alors le `<JsonLd>`. C'est le consommateur n°2 du
+ * manifeste (le rendu de la page = n°1, le sitemap images = n°3), ce qui garantit
+ * que le JSON-LD ne diverge jamais des images réellement affichées ni du sitemap.
+ */
+export function buildPageImageGraphJsonLd({ locale, path }: { locale: Locale; path: string }) {
+  const images = getPageImages(path);
+  if (images.length === 0) return null;
+  return buildImageGraphJsonLd({
+    locale,
+    images: images.map((im) => ({
+      src: im.src,
+      name: locale === "fr" ? im.nameFr : im.nameEn,
+      alt: locale === "fr" ? im.altFr : im.altEn,
+      width: im.width,
+      height: im.height,
+      encodingFormat: im.encodingFormat ?? encodingFormatFromSrc(im.src),
+      ...(im.representativeOfPage ? { representativeOfPage: true } : {}),
+    })),
+  });
+}
+
+/**
+ * Nœud `primaryImageOfPage` pour un WebPage/CollectionPage : référence l'`@id`
+ * de l'ImageObject représentatif de la page (déjà émis par
+ * `buildPageImageGraphJsonLd`). Retourne `undefined` si la page n'a pas d'image.
+ */
+export function buildPrimaryImageOfPage(path: string): { "@id": string } | undefined {
+  const rep = getRepresentativePageImage(path);
+  return rep ? { "@id": `${SITE_URL}${rep.src}#image` } : undefined;
 }
 
 interface QAPageJsonLdInput {

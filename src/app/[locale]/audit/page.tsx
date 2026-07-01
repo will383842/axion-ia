@@ -29,7 +29,7 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildItemListJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
   buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
@@ -127,59 +127,9 @@ export default async function AuditHub({ params }: Props) {
   // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
   // équipe + portrait fondateur exposés à Google Images + AI Overviews
   // pour requêtes « audit IA entreprise », « cabinet IA France ».
-  const auditImagesJsonLd = buildImageGraphJsonLd({
-    locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — audit IA stratégique pour entreprises"
-          : "Axion-IA team — strategic AI audit for companies",
-        alt: isFr
-          ? "Équipe Axion-IA en session de cadrage audit IA — cabinet IA opérationnel français pour TPE, PME, ETI et grandes entreprises. Audit sur place, Ciblé, Stratégique PME et ETI."
-          : "Axion-IA team in AI audit scoping session — French operational AI consultancy for SMEs, mid-caps and large enterprises. On-site, Targeted, Strategic SME and mid-cap audits.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA et auditeur IA"
-          : "Williams — Axion-IA founder and AI auditor",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Réalise personnellement les audits IA stratégiques pour dirigeants TPE, PME, ETI et grandes entreprises françaises — cartographie IA, ROI chiffré, roadmap 6-12 mois."
-          : "Portrait of Williams, Axion-IA founder. Personally conducts strategic AI audits for French SME, mid-cap and large enterprise executives — AI mapping, quantified ROI, 6-12 month roadmap.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/methodologie-audit-ia-8-etapes-v5.webp",
-        name: isFr
-          ? "Méthodologie d'audit IA Axion-IA en 8 étapes"
-          : "Axion-IA AI audit methodology in 8 steps",
-        alt: isFr
-          ? "Méthodologie d'audit IA Axion-IA en 8 étapes illustrées : cadrage, entretiens métier, consolidation et analyse, filtrage des options, évaluation et recommandations chiffrées (ROI), restitution et feuille de route, mise en œuvre, adoption et pilotage dans la durée — chaque étape avec son livrable."
-          : "Axion-IA AI audit methodology in 8 illustrated steps: scoping, business interviews, consolidation and analysis, option filtering, evaluation and costed recommendations (ROI), read-out and roadmap, implementation, adoption and long-term steering — each step with its deliverable.",
-        width: 1983,
-        height: 793,
-        encodingFormat: "image/webp",
-      },
-      {
-        src: "/illustrations/audit-segments-entreprise-v2.webp",
-        name: isFr
-          ? "Audit IA en entreprise par taille — TPE, PME, ETI & grandes entreprises"
-          : "Enterprise AI audit by company size — small business, SME, mid-cap & large enterprise",
-        alt: isFr
-          ? "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil."
-          : "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile.",
-        width: 1536,
-        height: 1024,
-        encodingFormat: "image/webp",
-      },
-    ],
-  });
+  // Migré vers le manifeste SSOT `PAGE_IMAGES_MANIFEST["/audit"]` (2026-07-01) :
+  // le même manifeste alimente ce JSON-LD ImageObject ET le sitemap images.
+  const auditImagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/audit" });
 
   // ItemList JSON-LD — 4 tiers d'audit. AEO 2026 : LLMs énumèrent les niveaux
   // d'audit quand quelqu'un demande « quels audits IA propose Axion-IA ? ».
@@ -293,7 +243,7 @@ export default async function AuditHub({ params }: Props) {
           critique), ItemList déféré afterInteractive (-100 à -200 ms TBT). */}
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={itemListJsonLd} strategy="afterInteractive" scriptId="jsonld-audit-itemlist" />
-      <JsonLd data={auditImagesJsonLd} />
+      {auditImagesJsonLd ? <JsonLd data={auditImagesJsonLd} /> : null}
       <JsonLd data={auditHowToJsonLd} />
     </>
   );
