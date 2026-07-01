@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 import { createCampaignFromWizard } from "@/server/actions/content-gen/campaign-wizard";
 import {
   WIZARD_SECTIONS,
+  WIZARD_CONTENT_TYPE_LABELS,
   WIZARD_SERVICE_SECTORS,
   WIZARD_SEARCH_INTENTS,
   WIZARD_COMPANY_SIZES,
@@ -540,8 +541,13 @@ export function CampaignWizardV2({
                             key={ct}
                             className="grid grid-cols-12 items-center gap-2 border-b border-[color:var(--color-admin-border)] py-2"
                           >
-                            <span className="col-span-4 font-mono text-[length:var(--text-admin-sm)]">
-                              {ct}
+                            <span className="col-span-4 flex flex-col">
+                              <span className="text-[length:var(--text-admin-sm)] font-medium">
+                                {WIZARD_CONTENT_TYPE_LABELS[ct as WizardContentType] ?? ct}
+                              </span>
+                              <span className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                                {ct}
+                              </span>
                             </span>
                             <input
                               type="range"

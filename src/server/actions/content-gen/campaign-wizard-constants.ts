@@ -45,6 +45,41 @@ export const WIZARD_CONTENT_TYPES = [
 
 export type WizardContentType = (typeof WIZARD_CONTENT_TYPES)[number];
 
+/**
+ * Libellés FR des types de contenu (affichés dans le wizard à la place des slugs
+ * techniques). L'utilisateur ne devrait jamais avoir à décoder `pain_point_solution`
+ * pour trouver « Résoudre un problème ». Le slug reste affiché en secondaire (petit,
+ * grisé) pour les opérateurs avancés. Clés = WIZARD_CONTENT_TYPES (20 types).
+ */
+export const WIZARD_CONTENT_TYPE_LABELS: Record<WizardContentType, string> = {
+  // Core
+  blog_article: "Article de blog",
+  guide_pilier: "Guide pilier (contenu de fond)",
+  // Sources externes
+  blog_from_rss: "Article depuis une actu (RSS)",
+  blog_from_keywords: "Article depuis mots-clés",
+  blog_from_title: "Article depuis un titre",
+  // Comparatifs
+  comparison: "Comparatif",
+  vs_comparator: "« X contre Y »",
+  alternative_to: "« Alternative à… »",
+  // Q&A
+  qa_derived: "Question / réponse",
+  faq_standalone: "FAQ",
+  faq_geo: "FAQ locale (ville)",
+  // SEO long-tail
+  long_tail_keyword: "Mot-clé longue traîne",
+  top_x_in_y: "« Top X à [ville] »",
+  how_to_x_in_y: "« Comment faire X à [ville] »",
+  best_for_x_in_y: "« Meilleur X pour… »",
+  what_is_x: "« Qu'est-ce que X »",
+  // Conversion locale
+  pain_point_solution: "Résoudre un problème",
+  case_study_local: "Cas client local",
+  calculator_roi: "Calculateur de ROI",
+  glossary_term: "Terme de glossaire",
+};
+
 // ─── Axes multi-axes (2026-06-21) — vocabulaires partagés UI + validation ────
 
 /** Axe 2 — les 5 ACTIVITÉS Axion-IA (clés serviceSectorWeights). */
