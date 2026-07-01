@@ -78,7 +78,12 @@ export function CommercialApplicationForm({
     token: turnstileToken,
     widget: turnstileWidget,
     reset: resetTurnstile,
+    blocked: turnstileBlocked,
   } = useTurnstileToken("commercial-application");
+
+  const captchaBlockedMsg = isFr
+    ? "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur pour ce site), puis réessayez — ou écrivez-nous à contact@axion-ia.com."
+    : "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker for this site) and try again — or email contact@axion-ia.com.";
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setF((prev) => ({ ...prev, [key]: value }));
@@ -132,6 +137,12 @@ export function CommercialApplicationForm({
       );
       return;
     }
+    // Turnstile bloqué (extension/DNS) → message actionnable sans tenter une
+    // soumission vouée au rejet fail-closed.
+    if (turnstileBlocked && !turnstileToken) {
+      setError(captchaBlockedMsg);
+      return;
+    }
     setSubmitting(true);
     try {
       const fd = new FormData();
@@ -151,7 +162,10 @@ export function CommercialApplicationForm({
       const result = await submitUnifiedContactAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
         resetTurnstile();
-        setError(result.error || (isFr ? "Une erreur est survenue." : "Something went wrong."));
+        const fallback = isFr ? "Une erreur est survenue." : "Something went wrong.";
+        setError(
+          turnstileBlocked && !turnstileToken ? captchaBlockedMsg : result.error || fallback,
+        );
         return;
       }
       setDone(result.submissionId || "");

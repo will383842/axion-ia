@@ -112,6 +112,8 @@ const LABELS = {
     success:
       "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 24 h ouvrées. Votre projet a notre entière attention.",
     failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
+    captchaBlocked:
+      "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur pour ce site), puis réessayez — ou écrivez-nous directement à contact@axion-ia.com.",
     typeRequired: "Choisissez un type pour continuer.",
     submitAgain: "Faire une autre demande",
     referenceLabel: "Référence",
@@ -185,6 +187,8 @@ const LABELS = {
     success:
       "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 24 h ouvrées. Votre projet a notre entière attention.",
     failure: "An error occurred. Try again or email contact@axion-ia.com.",
+    captchaBlocked:
+      "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker for this site) and try again — or email us directly at contact@axion-ia.com.",
     typeRequired: "Pick a type to continue.",
     submitAgain: "Send another request",
     referenceLabel: "Reference",
@@ -319,12 +323,20 @@ function UnifiedContactFormBody({
     token: turnstileToken,
     widget: turnstileWidget,
     reset: resetTurnstile,
+    blocked: turnstileBlocked,
   } = useTurnstileToken("unified-contact");
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [submissionId, setSubmissionId] = React.useState<string | null>(null);
 
   async function onSubmit(values: UnifiedContactInput) {
     setServerError(null);
+    // Court-circuit : si Turnstile est bloqué (extension/DNS), la soumission
+    // échouerait côté serveur (fail-closed) avec un message générique. On
+    // affiche directement un message actionnable au lieu de tenter.
+    if (turnstileBlocked && !turnstileToken) {
+      setServerError(t.captchaBlocked);
+      return;
+    }
     try {
       const fd = new FormData();
       fd.set("type", values.type);
@@ -347,8 +359,12 @@ function UnifiedContactFormBody({
       const result = await submitUnifiedContactAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
         resetTurnstile();
-        setServerError(result.error || t.failure);
-        throw new Error(result.error || t.failure);
+        // Si l'échec coïncide avec un Turnstile bloqué (token vide), on
+        // privilégie le message actionnable plutôt que le générique serveur.
+        const message =
+          turnstileBlocked && !turnstileToken ? t.captchaBlocked : result.error || t.failure;
+        setServerError(message);
+        throw new Error(message);
       }
       setSubmissionId(result.submissionId || null);
     } catch (err) {

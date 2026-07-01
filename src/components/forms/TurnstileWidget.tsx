@@ -52,21 +52,37 @@ declare global {
   interface Window {
     turnstile?: TurnstileGlobal;
     __axionTurnstileReady?: boolean;
-    __axionTurnstileReadyQueue?: Array<() => void>;
+    __axionTurnstileReadyQueue?: Array<(ok: boolean) => void>;
   }
 }
 
 const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 const SCRIPT_ID = "axion-turnstile-script";
 
-function loadTurnstileScript(): Promise<void> {
+// Résout `true` si l'API Turnstile est chargée, `false` si le chargement échoue
+// (script bloqué par une extension/DNS, ex. brunhild.challenges.cloudflare.com
+// filtré par un bloqueur → net::ERR_NAME_NOT_RESOLVED). Le `false` permet aux
+// forms d'afficher un message clair au lieu de « Une erreur est survenue ».
+const SCRIPT_LOAD_TIMEOUT_MS = 8000;
+
+function loadTurnstileScript(): Promise<boolean> {
   return new Promise((resolve) => {
-    if (typeof window === "undefined") return resolve();
-    if (window.turnstile) return resolve();
-    if (window.__axionTurnstileReady) return resolve();
+    if (typeof window === "undefined") return resolve(false);
+    if (window.turnstile) return resolve(true);
+    if (window.__axionTurnstileReady) return resolve(true);
+
+    // Timeout de secours : certains bloqueurs avalent la requête sans déclencher
+    // `onerror` → sans ce garde-fou, la promesse ne se résoudrait jamais et le
+    // form soumettrait sans token en silence. `resolve` étant idempotent, un
+    // onload/onerror ultérieur est sans effet.
+    const timer = setTimeout(() => resolve(false), SCRIPT_LOAD_TIMEOUT_MS);
+    const settle = (ok: boolean) => {
+      clearTimeout(timer);
+      resolve(ok);
+    };
 
     window.__axionTurnstileReadyQueue ??= [];
-    window.__axionTurnstileReadyQueue.push(resolve);
+    window.__axionTurnstileReadyQueue.push(settle);
 
     if (document.getElementById(SCRIPT_ID)) return; // already injected
 
@@ -77,7 +93,11 @@ function loadTurnstileScript(): Promise<void> {
     s.defer = true;
     s.onload = () => {
       window.__axionTurnstileReady = true;
-      (window.__axionTurnstileReadyQueue ?? []).forEach((fn) => fn());
+      (window.__axionTurnstileReadyQueue ?? []).forEach((fn) => fn(true));
+      window.__axionTurnstileReadyQueue = [];
+    };
+    s.onerror = () => {
+      (window.__axionTurnstileReadyQueue ?? []).forEach((fn) => fn(false));
       window.__axionTurnstileReadyQueue = [];
     };
     document.head.appendChild(s);
@@ -87,6 +107,13 @@ function loadTurnstileScript(): Promise<void> {
 export interface TurnstileWidgetProps {
   onToken: (token: string) => void;
   onExpire?: () => void;
+  /**
+   * Appelé quand Turnstile ne peut PAS fonctionner : script bloqué
+   * (extension/DNS) ou challenge en échec. Permet au form d'afficher un
+   * message clair (« captcha bloqué par une extension ») plutôt qu'une
+   * erreur générique après une soumission vouée à échouer.
+   */
+  onBlocked?: () => void;
   /** Action label envoyé à CF pour analytics (optionnel). */
   action?: string;
   /** Visible (challenge interactif) ou invisible (managed). Default invisible. */
@@ -103,6 +130,7 @@ export interface TurnstileWidgetProps {
 export function TurnstileWidget({
   onToken,
   onExpire,
+  onBlocked,
   action,
   size = "invisible",
   disabled = false,
@@ -118,9 +146,13 @@ export function TurnstileWidget({
 
     let cancelled = false;
 
-    loadTurnstileScript().then(() => {
+    loadTurnstileScript().then((loaded) => {
       if (cancelled) return;
-      if (!window.turnstile) return;
+      // Script bloqué (extension/DNS) ou API absente → on prévient le form.
+      if (!loaded || !window.turnstile) {
+        onBlocked?.();
+        return;
+      }
       if (!containerRef.current) return;
       if (widgetIdRef.current) return; // already rendered
 
@@ -147,12 +179,16 @@ export function TurnstileWidget({
             onExpire?.();
           },
           "error-callback": () => {
+            // Challenge en échec (souvent le backend CF bloqué par un
+            // bloqueur : brunhild.challenges.cloudflare.com). Le token est
+            // vidé ET on signale le blocage pour un message clair.
             onExpire?.();
+            onBlocked?.();
           },
         });
       } catch {
-        // Render échoue silencieusement : le form garde token vide.
-        // Le serveur appliquera le bypass DEV / fail-closed selon env.
+        // Render échoue (ex. paramètre invalide) : token vide → on signale.
+        onBlocked?.();
       }
     });
 
@@ -167,7 +203,7 @@ export function TurnstileWidget({
         widgetIdRef.current = null;
       }
     };
-  }, [siteKey, size, action, disabled, onToken, onExpire]);
+  }, [siteKey, size, action, disabled, onToken, onExpire, onBlocked]);
 
   // Si pas de site key configurée, on rend juste un placeholder vide.
   // En dev ça permet aux forms de soumettre quand même.
@@ -184,16 +220,23 @@ export function useTurnstileToken(action?: string): {
   token: string;
   widget: React.ReactElement;
   reset: () => void;
+  /** `true` si Turnstile ne peut pas fonctionner (script/challenge bloqué). */
+  blocked: boolean;
 } {
   const [token, setToken] = React.useState<string>("");
+  const [blocked, setBlocked] = React.useState(false);
   const [resetKey, setResetKey] = React.useState(0);
 
   const widget = React.useMemo(
     () => (
       <TurnstileWidget
         key={resetKey}
-        onToken={setToken}
+        onToken={(tok) => {
+          setBlocked(false);
+          setToken(tok);
+        }}
         onExpire={() => setToken("")}
+        onBlocked={() => setBlocked(true)}
         {...(action !== undefined ? { action } : {})}
       />
     ),
@@ -202,8 +245,9 @@ export function useTurnstileToken(action?: string): {
 
   const reset = React.useCallback(() => {
     setToken("");
+    setBlocked(false);
     setResetKey((k) => k + 1);
   }, []);
 
-  return { token, widget, reset };
+  return { token, widget, reset, blocked };
 }
