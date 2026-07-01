@@ -3,18 +3,22 @@
 // inline, avec lien fallback pour les visiteurs dont le navigateur bloque les
 // iframes cross-origin (cookies tiers stricts, extensions anti-tracking, etc.).
 //
-// Pourquoi injection manuelle plutôt que <Script strategy="afterInteractive"> ?
-// Audit 2026-07-01 : en App Router (Next 16 + React 19), le <Script async> était
-// hoisté en `<link rel=preload>` mais le <script> exécutable n'était jamais
-// injecté au runtime → `window.Calendly` restait undefined → le widget ne
-// s'initialisait jamais (grand cadre gris vide en prod). On charge donc le
-// script nous-mêmes dans un useEffect puis on appelle l'API programmatique
-// `Calendly.initInlineWidget`, ce qui est déterministe et indépendant du
-// timing d'auto-scan du DOM et du ScriptLoader de Next.
+// ⚠️ NE PAS rendre d'éléments « hoistables » (<link>, <script>, <noscript>,
+// <meta>, <title>) dans le JSX de CE composant. Audit 2026-07-01 (2e passe) :
+// vérifié en prod que le rendu de <link rel="preconnect"> + <noscript> dans le
+// fragment de ce Client Component FAISAIT ÉCHOUER l'hydratation de l'îlot en
+// React 19 / Next 16 — le conteneur n'obtenait aucun fiber React, donc le
+// useEffect ne s'exécutait JAMAIS (fiber ancêtre le plus proche = <body>, alors
+// que le reste de la page s'hydratait normalement). C'est la cause RACINE du
+// « grand cadre gris vide » : l'ancien <Script strategy="afterInteractive">
+// était lui aussi rendu par ce composant → jamais hydraté → seul le preload
+// était émis. On charge donc script + preconnect PROGRAMMATIQUEMENT dans le
+// useEffect, et le JSX ne contient que des éléments plats (div/p/a).
 
 import { useEffect, useRef } from "react";
 
 const CALENDLY_WIDGET_JS = "https://assets.calendly.com/assets/external/widget.js";
+const CALENDLY_PRECONNECT = ["https://assets.calendly.com", "https://calendly.com"] as const;
 
 interface CalendlyGlobal {
   initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
@@ -46,6 +50,21 @@ function buildCalendlyUrl(baseUrl: string): string {
   url.searchParams.set("text_color", CALENDLY_BRAND.text);
   url.searchParams.set("background_color", CALENDLY_BRAND.background);
   return url.toString();
+}
+
+/**
+ * Ajoute les hints preconnect côté client (idempotent). Fait ici plutôt qu'en
+ * JSX pour éviter les <link> hoistables qui cassent l'hydratation (cf. en-tête).
+ */
+function ensurePreconnect(): void {
+  for (const href of CALENDLY_PRECONNECT) {
+    if (document.head.querySelector(`link[rel="preconnect"][href="${href}"]`)) continue;
+    const link = document.createElement("link");
+    link.rel = "preconnect";
+    link.href = href;
+    link.crossOrigin = "anonymous";
+    document.head.appendChild(link);
+  }
 }
 
 /**
@@ -98,6 +117,7 @@ export function CalendlyInlineWidget({
     if (!parent) return;
 
     let cancelled = false;
+    ensurePreconnect();
 
     void loadCalendlyScript()
       .then((calendly) => {
@@ -140,11 +160,9 @@ export function CalendlyInlineWidget({
     );
   }
 
+  // ⚠️ Uniquement des éléments plats ici (div/p/a) — voir en-tête de fichier.
   return (
-    <>
-      <link rel="preconnect" href="https://assets.calendly.com" />
-      <link rel="preconnect" href="https://calendly.com" />
-      <link rel="dns-prefetch" href="https://calendly.com" />
+    <div>
       <div
         ref={containerRef}
         className="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
@@ -164,13 +182,6 @@ export function CalendlyInlineWidget({
           </a>
         </p>
       </div>
-      <noscript>
-        <div className="bg-sand text-fg-soft mx-auto mt-4 max-w-xl rounded-xl px-6 py-4 text-center text-sm">
-          {isFr
-            ? "Activez JavaScript pour afficher le calendrier de réservation, ou contactez-nous directement."
-            : "Enable JavaScript to display the booking calendar, or contact us directly."}
-        </div>
-      </noscript>
-    </>
+    </div>
   );
 }
