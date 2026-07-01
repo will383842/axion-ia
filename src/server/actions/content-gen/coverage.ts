@@ -25,6 +25,11 @@ import type {
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { BANNED_FROM_EDITORIAL_MIX } from "@/server/content-gen/shared/editorial-mix-rules";
 import { requireAdmin } from "./_auth";
+import {
+  ACTIVE_CAMPAIGN_STATUSES,
+  ARCHIVED_CAMPAIGN_STATUSES,
+  type CampaignListView,
+} from "./coverage-status-groups";
 // Sprint S+4-F 2026-05-18 (audit 06-CROISEMENTS §8.9 P1-1) — chokepoint settings
 // avec rate-limit (60/min/admin/key) + audit log SOC2 diff (oldValue → newValue).
 // Avant : `prisma.contentGenConfig.upsert(...)` direct → bypass rate-limit + audit.
@@ -138,21 +143,69 @@ export interface CampaignDetail extends CampaignRow {
   readonly durationMode: string;
 }
 
-export async function listCampaigns(
-  status?: CoverageStatus,
-  serviceSector?: ServiceSector,
-): Promise<ReadonlyArray<CampaignRow>> {
+/** Options de `listCampaigns` (vue archivage + pagination, 2026-07-01). */
+export interface ListCampaignsOptions {
+  /** Regroupement statut : "active" (défaut) · "archived" · "all". */
+  readonly view?: CampaignListView;
+  /** Statut EXACT — prime sur `view` s'il est fourni (rétro-compat `?status=`). */
+  readonly status?: CoverageStatus;
+  readonly serviceSector?: ServiceSector;
+  /** Page 1-based (défaut 1). */
+  readonly page?: number;
+  /** Taille de page (défaut 25, max 200). */
+  readonly pageSize?: number;
+}
+
+/** Résultat paginé de `listCampaigns`. */
+export interface ListCampaignsResult {
+  readonly rows: ReadonlyArray<CampaignRow>;
+  readonly total: number;
+  readonly page: number;
+  readonly pageSize: number;
+  readonly view: CampaignListView;
+}
+
+const DEFAULT_CAMPAIGN_PAGE_SIZE = 25;
+const MAX_CAMPAIGN_PAGE_SIZE = 200;
+
+export async function listCampaigns(opts: ListCampaignsOptions = {}): Promise<ListCampaignsResult> {
   // Sprint Final P1-3 — Zod runtime validation (optional enums).
-  if (status !== undefined) CoverageStatusSchema.parse(status);
-  if (serviceSector !== undefined) ServiceSectorSchema.parse(serviceSector);
-  const rows = await prisma.coverageCampaign.findMany({
-    where: {
-      ...(status ? { status } : {}),
-      ...(serviceSector ? { serviceSector } : {}),
-    },
-    orderBy: { createdAt: "desc" },
-  });
-  return rows.map(toRow);
+  if (opts.status !== undefined) CoverageStatusSchema.parse(opts.status);
+  if (opts.serviceSector !== undefined) ServiceSectorSchema.parse(opts.serviceSector);
+
+  const view: CampaignListView = opts.view ?? "active";
+  const pageSize =
+    opts.pageSize && opts.pageSize > 0
+      ? Math.min(Math.floor(opts.pageSize), MAX_CAMPAIGN_PAGE_SIZE)
+      : DEFAULT_CAMPAIGN_PAGE_SIZE;
+  const page = opts.page && opts.page > 0 ? Math.floor(opts.page) : 1;
+
+  // Filtre statut : un statut EXACT prime sur la vue ; sinon la vue regroupe
+  // (active = non terminal, archived = terminal, all = aucun filtre statut).
+  const statusFilter = opts.status
+    ? { status: opts.status }
+    : view === "active"
+      ? { status: { in: [...ACTIVE_CAMPAIGN_STATUSES] } }
+      : view === "archived"
+        ? { status: { in: [...ARCHIVED_CAMPAIGN_STATUSES] } }
+        : {};
+
+  const where = {
+    ...statusFilter,
+    ...(opts.serviceSector ? { serviceSector: opts.serviceSector } : {}),
+  };
+
+  const [total, rows] = await Promise.all([
+    prisma.coverageCampaign.count({ where }),
+    prisma.coverageCampaign.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+  ]);
+
+  return { rows: rows.map(toRow), total, page, pageSize, view };
 }
 
 export async function getCampaign(id: string): Promise<CampaignDetail | null> {
