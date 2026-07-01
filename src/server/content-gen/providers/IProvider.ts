@@ -44,6 +44,11 @@ export interface GenerationRequest {
   readonly timeoutMs?: number;
   /// Search recency filter (Perplexity uniquement).
   readonly searchRecencyMonths?: number;
+  /// Force une sortie JSON stricte (OpenAI `response_format: {type:"json_object"}`).
+  /// À poser UNIQUEMENT sur les appels dont la sortie EST du JSON (plans/outlines),
+  /// jamais sur les appels qui renvoient du HTML. Le prompt doit contenir le mot
+  /// « json » (contrainte OpenAI). No-op pour les providers sans JSON mode.
+  readonly responseFormatJson?: boolean;
 }
 
 /**

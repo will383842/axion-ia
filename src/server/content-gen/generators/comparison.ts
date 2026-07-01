@@ -205,6 +205,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         jobId: input.jobId,
         contentType: "comparison",
         role: "text",
+        responseFormatJson: true,
         systemPrompt: planSystem,
         userPrompt:
           planAttempt === 0

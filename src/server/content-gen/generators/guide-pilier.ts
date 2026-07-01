@@ -47,6 +47,7 @@ import {
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
+import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
@@ -250,17 +251,13 @@ Rappel : 8-15 sections, output JSON strict (cf. system prompt) incluant keyTakea
       userPrompt: outlineUserPrompt,
       maxTokens: 2048,
       temperature: 0.6,
+      responseFormatJson: true,
     });
 
     let outline: ParsedOutline;
     try {
-      const json = outlineResult.output;
-      const start = json.indexOf("{");
-      const end = json.lastIndexOf("}");
-      if (start === -1 || end === -1) {
-        throw new Error("no JSON object in outline output");
-      }
-      outline = JSON.parse(json.slice(start, end + 1)) as ParsedOutline;
+      // Parse tolérant (retire les fences ```json … ``` que le LLM ajoute parfois).
+      outline = parseLlmJson<ParsedOutline>(outlineResult.output);
     } catch (err) {
       throw new Error(`guide-pilier STEP 1 outline parse failed: ${String(err)}`);
     }

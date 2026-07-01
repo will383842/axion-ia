@@ -137,6 +137,15 @@ export const openaiProvider: IProvider = {
     let contentFilterTriggered = false;
     let truncatedByLength = false;
 
+    // JSON mode (2026-07-01) : quand un générateur demande explicitement une sortie
+    // JSON (plans/outlines) ET que le modèle le supporte, on force
+    // `response_format: {type:"json_object"}` → GPT ne peut plus renvoyer de prose
+    // hors JSON (cause des « plan invalide » / « outline parse failed »). Les prompts
+    // de plan contiennent déjà « JSON » (contrainte OpenAI). Familles gpt-4o/4.1/4-turbo.
+    const supportsJsonMode =
+      /^gpt-4o/.test(model) || /^gpt-4\.1/.test(model) || /^gpt-4-turbo/.test(model);
+    const useJsonFormat = req.responseFormatJson === true && supportsJsonMode;
+
     const executeCall = async () => {
       const stream = await client.chat.completions.create({
         model,
@@ -148,6 +157,7 @@ export const openaiProvider: IProvider = {
         stream_options: { include_usage: true },
         ...(req.maxTokens !== undefined ? { max_tokens: req.maxTokens } : {}),
         ...(req.temperature !== undefined ? { temperature: req.temperature } : {}),
+        ...(useJsonFormat ? { response_format: { type: "json_object" as const } } : {}),
       });
 
       for await (const chunk of stream) {
