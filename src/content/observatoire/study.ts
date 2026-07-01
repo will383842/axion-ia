@@ -31,10 +31,13 @@ export const STUDY_LICENSE_URL = "https://creativecommons.org/licenses/by/4.0/";
 export const STUDY_LICENSE_LABEL = "CC BY 4.0";
 export const STUDY_ATTRIBUTION = "Source : Observatoire Axion-IA 2026 — axion-ia.com";
 
-/** Période de terrain (ISO 8601 interval pour `temporalCoverage`). */
+/**
+ * Période de terrain — collecte CONTINUE (l'observatoire ne se clôt pas).
+ * `temporalCoverage` est un intervalle ISO 8601 OUVERT (`2026-01-06/..`),
+ * format reconnu par schema.org pour un dataset toujours alimenté.
+ */
 export const STUDY_PERIOD_START = "2026-01-06";
-export const STUDY_PERIOD_END = "2026-02-28";
-export const STUDY_TEMPORAL_COVERAGE = `${STUDY_PERIOD_START}/${STUDY_PERIOD_END}`;
+export const STUDY_TEMPORAL_COVERAGE = `${STUDY_PERIOD_START}/..`;
 export const STUDY_SPATIAL_COVERAGE = "France";
 
 /** Méthode. */

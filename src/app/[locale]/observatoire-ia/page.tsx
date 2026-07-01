@@ -37,7 +37,6 @@ import {
   STUDY_SECTOR_COUNT,
   STUDY_COMPANY_SIZE_COUNT,
   STUDY_PERIOD_START,
-  STUDY_PERIOD_END,
   STUDY_TEMPORAL_COVERAGE,
   STUDY_LICENSE_URL,
   STUDY_LICENSE_LABEL,
@@ -520,10 +519,9 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
           <div>
             <dt className="text-fg-muted text-sm font-medium">{t("methodo.period")}</dt>
             <dd className="text-fg text-base">
-              <time dateTime={STUDY_PERIOD_START}>{isFr ? "6 janvier" : "6 January"}</time>
-              {" – "}
-              <time dateTime={STUDY_PERIOD_END}>
-                {isFr ? "28 février 2026" : "28 February 2026"}
+              {isFr ? "En continu depuis le " : "Ongoing since "}
+              <time dateTime={STUDY_PERIOD_START}>
+                {isFr ? "6 janvier 2026" : "6 January 2026"}
               </time>
             </dd>
           </div>
