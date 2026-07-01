@@ -44,8 +44,10 @@ export function CalendlyEventCapture({
   useEffect(() => {
     const handler = async (e: MessageEvent) => {
       // Origin check strict — Calendly publie depuis calendly.com (et
-      // sous-domaines comme assets.calendly.com).
-      if (!e.origin.endsWith("calendly.com")) return;
+      // sous-domaines comme assets.calendly.com). On matche le domaine exact
+      // ou un vrai sous-domaine, JAMAIS un suffixe (`endsWith("calendly.com")`
+      // laisserait passer `https://evilcalendly.com`).
+      if (e.origin !== "https://calendly.com" && !e.origin.endsWith(".calendly.com")) return;
       if (!isCalendlyEvent(e)) return;
 
       const eventName = (e.data as { event: string }).event;
