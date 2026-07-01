@@ -80,11 +80,6 @@ export function CommercialApplicationForm({
     widget: turnstileWidget,
     reset: resetTurnstile,
   } = useTurnstileToken("commercial-application");
-  const turnstileExpected = Boolean(process.env["NEXT_PUBLIC_TURNSTILE_SITE_KEY"]);
-
-  const captchaBlockedMsg = isFr
-    ? "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur pour ce site), puis réessayez — ou écrivez-nous à contact@axion-ia.com."
-    : "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker for this site) and try again — or email contact@axion-ia.com.";
   const pageOutdatedMsg = isFr
     ? "Cette page a expiré suite à une mise à jour du site. Rechargez la page (Ctrl+R / ⌘+R) puis renvoyez votre candidature."
     : "This page expired after a site update. Reload the page (Ctrl+R / ⌘+R) and resend your application.";
@@ -141,12 +136,8 @@ export function CommercialApplicationForm({
       );
       return;
     }
-    // Turnstile attendu mais aucun token (script/challenge bloqué) → message
-    // actionnable sans tenter une soumission vouée au rejet fail-closed.
-    if (turnstileExpected && !turnstileToken) {
-      setError(captchaBlockedMsg);
-      return;
-    }
+    // Zéro friction (Will 2026-07-01) : on tente toujours l'envoi, même sans
+    // token Turnstile. Le serveur soft-fail le captcha (honeypot + rate-limit).
     setSubmitting(true);
     try {
       const fd = new FormData();
@@ -167,9 +158,7 @@ export function CommercialApplicationForm({
       if (!result.ok) {
         resetTurnstile();
         const fallback = isFr ? "Une erreur est survenue." : "Something went wrong.";
-        setError(
-          turnstileExpected && !turnstileToken ? captchaBlockedMsg : result.error || fallback,
-        );
+        setError(result.error || fallback);
         return;
       }
       setDone(result.submissionId || "");

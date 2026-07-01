@@ -329,22 +329,14 @@ function UnifiedContactFormBody({
     widget: turnstileWidget,
     reset: resetTurnstile,
   } = useTurnstileToken("unified-contact");
-  // Turnstile attendu si une site key est configurée (prod). Inlined au build.
-  const turnstileExpected = Boolean(process.env["NEXT_PUBLIC_TURNSTILE_SITE_KEY"]);
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [submissionId, setSubmissionId] = React.useState<string | null>(null);
 
   async function onSubmit(values: UnifiedContactInput) {
     setServerError(null);
-    // Court-circuit : Turnstile attendu mais AUCUN token produit (script ou
-    // challenge bloqué par une extension/DNS, ex. brunhild.challenges.cloudflare
-    // .com filtré). La soumission échouerait fail-closed → on affiche direct un
-    // message actionnable. Couvre TOUS les cas de token absent (pas seulement
-    // ceux où error-callback a pu tirer).
-    if (turnstileExpected && !turnstileToken) {
-      setServerError(t.captchaBlocked);
-      return;
-    }
+    // Zéro friction (Will 2026-07-01) : on n'empêche PLUS l'envoi si Turnstile
+    // n'a pas produit de token (bloqueur/DNS). Le serveur soft-fail le captcha
+    // (honeypot + rate-limit protègent). On envoie le token s'il existe.
     try {
       const fd = new FormData();
       fd.set("type", values.type);
@@ -367,9 +359,7 @@ function UnifiedContactFormBody({
       const result = await submitUnifiedContactAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
         resetTurnstile();
-        // Token absent → message captcha actionnable ; sinon message serveur.
-        const message =
-          turnstileExpected && !turnstileToken ? t.captchaBlocked : result.error || t.failure;
+        const message = result.error || t.failure;
         setServerError(message);
         throw new Error(message);
       }
