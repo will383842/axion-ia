@@ -156,7 +156,19 @@ ENV BUILD_SHA=${BUILD_SHA:-dev}
 # successifs (webpack rebuild from scratch), gain : ~10-15 GB de peak
 # BuildKit. Le BUILD_TIME reste injecté via ARG, BUILD_TIME stable dans
 # next.config.ts pour figer lastModified sitemap/dateModified.
-RUN BUILD_TIME="${BUILD_TIME:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}" pnpm build
+# NEXT_SERVER_ACTIONS_ENCRYPTION_KEY (audit 2026-07-01) : clé AES stable pour
+# figer les IDs de Server Actions entre les builds → évite « Server Action not
+# found » (deploy-skew) sur les onglets ouverts pendant un déploiement. Passée
+# en SECRET BuildKit (jamais bakée dans l'image GHCR PUBLIQUE) via
+# `--mount=type=secret`. INERTE si le secret est absent : `|| true` laisse la
+# clé vide → Next génère une clé par build (comportement actuel), le build ne
+# casse pas. ⚠️ Pour ACTIVER : poser le MÊME base64 dans le secret GH Actions
+# `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` (build) ET dans l'env RUN Coolify
+# (runtime). Clés différentes build≠runtime = TOUTES les Server Actions cassent.
+RUN --mount=type=secret,id=server_actions_key \
+    BUILD_TIME="${BUILD_TIME:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}" \
+    NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="$(cat /run/secrets/server_actions_key 2>/dev/null || true)" \
+    pnpm build
 
 # -----------------------------------------------------------------------------
 # Audit deploy-unstuck 2026-05-18 — fresh Prisma CLI standalone install.
