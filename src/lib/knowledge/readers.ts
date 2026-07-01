@@ -382,7 +382,12 @@ export interface ArticleSummary {
 export async function listPublishedArticles(locale: Locale): Promise<readonly ArticleSummary[]> {
   if (!isKbBackendUnifiedFor("article")) {
     const legacy = await prisma.article.findMany({
-      where: { status: "published" },
+      // Séparation Actualités (2026-07-01) : les news (`isNews=true`) ont leur
+      // propre hub `/actualites` + sitemap-news. On les EXCLUT du listing blog et
+      // des articles connexes (seuls consommateurs de cette fonction) pour éviter
+      // le mélange éditorial/actualité. Aligné sur `app/sitemap.ts` qui filtre
+      // déjà `isNews: false` pour les URLs `/blog/:slug`.
+      where: { status: "published", isNews: false },
       include: {
         translations: { where: { locale } },
         author: { select: { slug: true, name: true } },

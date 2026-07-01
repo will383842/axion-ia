@@ -15,6 +15,7 @@ interface PoliciesConfig {
   factoryAutoPromoteTier1MinScore: number;
   rssMaxPerDay: number;
   rssMaxAgeDays: number;
+  newsAutoPublish: boolean;
 }
 
 interface Props {
@@ -34,6 +35,7 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
       factoryAutoPromoteTier1MinScore: Number(formData.get("factoryAutoPromoteTier1MinScore") ?? 0),
       rssMaxPerDay: Number(formData.get("rssMaxPerDay") ?? 20),
       rssMaxAgeDays: Number(formData.get("rssMaxAgeDays") ?? 3),
+      newsAutoPublish: formData.get("newsAutoPublish") === "on",
     });
   }
 
@@ -83,6 +85,14 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
               className="admin-input"
               required
             />
+          </div>
+
+          <div className="admin-field">
+            <label className="admin-label">
+              <input type="checkbox" name="newsAutoPublish" defaultChecked={cfg.newsAutoPublish} />{" "}
+              Auto-publier les news en Actualités (Google News) — décoché = review queue (cf. onglet
+              Actualités, pôle Lancer)
+            </label>
           </div>
 
           <div className="admin-field">

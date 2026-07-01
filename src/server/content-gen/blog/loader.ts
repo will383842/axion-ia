@@ -43,6 +43,12 @@ export interface BlogArticleView {
   readonly tier: "tier-1-indexable" | "tier-2-noindex-follow" | "tier-3-noindex-nofollow";
   readonly source: "db" | "fs";
   /**
+   * Séparation Actualités (2026-07-01) — un article `isNews=true` est canonique
+   * sous `/actualites/<slug>`. La route `/blog/[slug]` s'en sert pour rediriger
+   * 308 vers `/actualites/<slug>` (évite l'URL dupliquée blog↔actualites).
+   */
+  readonly isNews: boolean;
+  /**
    * P2-3 — URL de l'image hero (Article.featuredImage DB String? ou null pour FS).
    * Utilisée par /blog/[slug] pour le rendu <Image priority> (LCP critique).
    * null = pas d'image hero disponible (articles FS ou articles DB sans image).
@@ -90,6 +96,8 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     tags: post.tags,
     tier: resolveTier(post),
     source: "fs",
+    // Les articles FS legacy sont éditoriaux (jamais des actualités RSS).
+    isNews: false,
     // P2-3 — Les articles FS (hardcodés) n'ont pas d'image hero.
     featuredImage: null,
     featuredImageAlt: null,
@@ -174,6 +182,9 @@ export async function loadBlogArticleForView(
             expertQuoteName: true,
             expertQuoteTitle: true,
             expertQuoteText: true,
+            // Séparation Actualités (2026-07-01) — discriminant pour le redirect
+            // 308 /blog/<slug> → /actualites/<slug> côté route.
+            isNews: true,
           },
         })
         .catch(() => null),
@@ -200,6 +211,9 @@ export async function loadBlogArticleForView(
       // tier → défaut sûr tier-2-noindex-follow.
       tier: mapIndexationTier(dbArticle.indexationTier),
       source: "db",
+      // Séparation Actualités (2026-07-01) — `catTags` (findUnique Article) porte
+      // `isNews`. KnowledgeEntry unifié → catTags null → false (éditorial).
+      isNews: catTags?.isNews ?? false,
       // P2-3 — Image hero DB article (Article.featuredImage String?).
       featuredImage: dbArticle.featuredImage ?? null,
       // VIS-08 — Alt sémantique image-bank (fallback titre côté page si null).
@@ -269,6 +283,9 @@ export async function loadBlogIndexForView(
     tags: [],
     tier: "tier-2-noindex-follow",
     source: "db",
+    // Séparation Actualités (2026-07-01) — `listPublishedArticles` exclut désormais
+    // les news en amont (isNews:false) ; ce listing blog est donc 100 % éditorial.
+    isNews: false,
     // Miniatures cartes (audit 2026-06-24) — listPublishedArticles expose désormais
     // la hero (legacy Article path) ; null pour le backend KB unifié / articles FS.
     featuredImage: a.featuredImage,

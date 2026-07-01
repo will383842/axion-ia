@@ -284,6 +284,15 @@ export default async function BlogArticle({ params }: Props) {
     permanentRedirect(`/${loc}/guides/${slug}`);
   }
 
+  // Séparation Actualités (2026-07-01) — une actualité (`isNews=true`) est
+  // canonique sous /actualites/[slug]. loadBlogArticleForView sert pourtant
+  // N'IMPORTE quel Article par slug → sans ce redirect, la même news est
+  // indexable sous /blog/x ET /actualites/x (URL dupliquée). 308 vers la
+  // canonique /actualites. Miroir du redirect guides ci-dessus.
+  if (view.isNews) {
+    permanentRedirect(`/${loc}/actualites/${slug}`);
+  }
+
   const wordCount = view.body.trim().split(/\s+/).length;
   // VIS-01 — Les articles DB stockent du bodyHtml (sortie content-gen) ; les
   // articles FS legacy stockent de la prose brute. On rend le HTML sanitisé pour

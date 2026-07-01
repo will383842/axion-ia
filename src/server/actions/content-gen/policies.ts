@@ -60,6 +60,11 @@ const ContentPoliciesSchema = z
     // Fenêtre de fraîcheur (jours) : une news datée plus vieille est abandonnée
     // (jamais générée en news périmée). Sélection = la plus récente d'abord.
     rssMaxAgeDays: z.number().int().min(1).max(30),
+    // 2026-07-01 — Interrupteur DÉDIÉ « publier automatiquement les news en
+    // Actualités (Google News) ». Indépendant du full-auto global : gate propre
+    // aux `blog_from_rss`. true = news auto-publiées tier_1 dès score ≥
+    // rssAutoPublishMinScore ; false = news → review queue (modération humaine).
+    newsAutoPublish: z.boolean(),
   })
   .strict();
 const LlmsTxtSchema = z.string().max(50_000);
@@ -200,6 +205,14 @@ export interface ContentPolicies {
   readonly rssMaxPerDay: number;
   /** Fenêtre de fraîcheur news RSS (jours) : au-delà, la news est abandonnée. */
   readonly rssMaxAgeDays: number;
+  /**
+   * Interrupteur dédié « auto-publier les news en Actualités (Google News) ».
+   * true → news `blog_from_rss` auto-publiées tier_1 dès score ≥
+   * rssAutoPublishMinScore ; false → review queue (modération humaine avant mise
+   * en ligne). Indépendant de `factoryAutoPublishAllBlogTypes` (qui ne concerne
+   * plus les news).
+   */
+  readonly newsAutoPublish: boolean;
 }
 
 const POLICIES_DEFAULTS: ContentPolicies = {
@@ -214,10 +227,18 @@ const POLICIES_DEFAULTS: ContentPolicies = {
   // 2026-06-14 — Cap news RSS/jour (défaut 20) + fenêtre fraîcheur (défaut 3 j).
   rssMaxPerDay: 20,
   rssMaxAgeDays: 3,
+  // 2026-07-01 — Auto-publication des news activée par défaut (aligné sur la
+  // stratégie « veille IA → Google News »). Réversible depuis la page Actualités.
+  newsAutoPublish: true,
 };
 
 export async function getPolicies(): Promise<ContentPolicies> {
-  return readContentGenConfig<ContentPolicies>("policies", POLICIES_DEFAULTS);
+  // Fusion avec les défauts : une config `policies` persistée AVANT l'ajout d'un
+  // champ (ex. `newsAutoPublish` 2026-07-01) ne le contient pas → sans merge,
+  // `cfg.newsAutoPublish` serait `undefined` (case décochée en UI alors que le
+  // worker le traite comme ON). Le merge garantit une valeur définie par champ.
+  const stored = await readContentGenConfig<Partial<ContentPolicies>>("policies", {});
+  return { ...POLICIES_DEFAULTS, ...stored };
 }
 
 export async function updatePolicies(input: ContentPolicies): Promise<void> {
