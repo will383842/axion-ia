@@ -15,7 +15,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildFaqJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
+  buildWebPageJsonLd,
 } from "@/lib/seo";
 
 interface Props {
@@ -50,36 +52,24 @@ export default async function ProcessusPage({ params }: Props) {
   // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
   // + portrait fondateur pour exposition Google Images + AI Overviews sur
   // requêtes « automatisation processus métier IA », « workflow IA back-office ».
-  const imagesJsonLd = buildImageGraphJsonLd({
+  const imagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — automatisation des processus métier par IA"
-          : "Axion-IA team — AI-driven business process automation",
-        alt: isFr
-          ? "Équipe Axion-IA conçoit et déploie des automatisations de processus métier par IA pour TPE, PME et ETI — devis, facturation, support, RH, achats, supply chain, avec garde-fous humains et observabilité."
-          : "Axion-IA team designs and deploys AI-driven business process automations for small businesses, SMEs and mid-caps — quoting, invoicing, support, HR, procurement, supply chain, with human guardrails and observability.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA, expert automatisation processus IA"
-          : "Williams — Axion-IA founder, AI process automation expert",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets d'automatisation de processus IA pour dirigeants TPE et PME — cartographie des flux, ROI par étape, conduite du changement."
-          : "Portrait of Williams, Axion-IA founder. Personally drives AI process automation projects for small business and SME executives — flow mapping, step-by-step ROI, change management.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
+    path: "/implementation/processus",
+  });
+  // Nœud WebPage — porteur du `speakable` (h1/h2 + réponses) et du
+  // `primaryImageOfPage`. Réutilise titre/description meta (pas de réécriture).
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/implementation/processus",
+    name: copy.metaSeo.title,
+    description: copy.metaSeo.description,
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/implementation/processus")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/implementation/processus") } }
+      : {}),
   });
   const jsonLd = [
+    webPageJsonLd,
     buildServiceJsonLd({
       locale: loc,
       path,
@@ -88,7 +78,7 @@ export default async function ProcessusPage({ params }: Props) {
       serviceType: "AI implementation · processus",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    imagesJsonLd,
+    ...(imagesJsonLd ? [imagesJsonLd] : []),
   ];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

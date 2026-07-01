@@ -11,7 +11,12 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildItemListJsonLd,
+  buildCollectionPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import {
   AUDIT_TIERS,
@@ -115,6 +120,15 @@ export default async function PricingPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
   const t = await getTranslations();
+
+  // Titre/description meta réutilisés à l'identique (SSOT avec generateMetadata)
+  // pour le nœud CollectionPage ci-dessous.
+  const metaTitle = isFr
+    ? "Tarifs IA · Audits, Formations, Implémentations · Axion-IA"
+    : "AI pricing · Audits, Training, Implementations · Axion-IA";
+  const metaDescription = isFr
+    ? `Tous nos tarifs IA en transparence : Audits dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, Formations dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")}, Implémentations dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}, 1-to-1 dès ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr")}, Plateforme web/SaaS sur devis.`
+    : `All our AI pricing, transparent: Audits from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} ex. VAT, Trainings from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Implementations from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, 1-to-1 from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, Web platform/SaaS on quote.`;
 
   const heroEyebrow = isFr ? "Tarifs · transparence totale" : "Pricing · full transparency";
   const heroTitle = isFr ? "Nos tarifs IA en" : "Our AI pricing in";
@@ -304,10 +318,21 @@ export default async function PricingPage({ params }: Props) {
     })),
   });
 
+  // Nœud CollectionPage — page catalogue (listing des modules tarifés). Porte
+  // le speakable (cible h1). Pas d'images manifeste → pas de primaryImageOfPage.
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: "/tarifs",
+    name: metaTitle,
+    description: metaDescription,
+    speakable: true,
+  });
+
   const breadcrumbItems = [{ href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" }];
 
   return (
     <>
+      <JsonLd data={collectionPageJsonLd} scriptId="webpage-pricing" />
       <JsonLd data={itemListJsonLd} scriptId="itemlist-pricing" />
 
       <Container className="border-border border-b py-3">
@@ -469,7 +494,7 @@ export default async function PricingPage({ params }: Props) {
         tone="sand"
       >
         <Container>
-          <FaqAccordion items={faqItems} className="mx-auto max-w-3xl" />
+          <FaqAccordion emitJsonLd items={faqItems} className="mx-auto max-w-3xl" />
         </Container>
       </Section>
 

@@ -22,7 +22,13 @@ import { Illustration } from "@/components/visual/Illustration";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildItemListJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildItemListJsonLd,
+  buildPageImageGraphJsonLd,
+  buildCollectionPageJsonLd,
+  buildPrimaryImageOfPage,
+} from "@/lib/seo";
 import {
   AUDIT_TIERS,
   IMPLEMENTATION_TIERS,
@@ -117,37 +123,30 @@ export default async function CaseStudiesListing({ params }: Props) {
     { href: "/cas-concrets", label: isFr ? "Cas concrets" : "Case studies" },
   ];
 
-  // ImageObject @graph — Sprint AEO Phase 4 2026-05-28 (Will). Photo équipe
-  // + portrait fondateur pour exposition Google Images + AI Overviews sur
-  // requêtes « cas clients IA », « références entreprise IA Axion-IA ».
-  const casConcretsImagesJsonLd = buildImageGraphJsonLd({
+  // ImageObject @graph — construit DEPUIS le manifeste SSOT
+  // `@/lib/seo/page-images` (`PAGE_IMAGES_MANIFEST["/cas-concrets"]`). Le MÊME
+  // manifeste alimente le JSON-LD ImageObject ET le sitemap images → aucune
+  // divergence possible (avant : arrays inline + sitemap figé qui avaient dérivé).
+  // Photos « proof social » : équipe + portrait fondateur, pour Google Images +
+  // AI Overviews sur « cas clients IA », « références entreprise IA Axion-IA ».
+  const casConcretsImagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/cas-concrets" });
+
+  // CollectionPage JSON-LD — porteur VALIDE du `speakable` (h1/h2 + réponses) et
+  // du `primaryImageOfPage` (photo équipe représentative). La page /cas-concrets
+  // est un listing (index des cas clients) → CollectionPage. Nœud AJOUTÉ lors de
+  // la centralisation images SSOT (2026-07-01) : la page n'avait pas encore de
+  // nœud WebPage/CollectionPage porteur du primaryImageOfPage.
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — proof social cas clients IA"
-          : "Axion-IA team — case studies social proof",
-        alt: isFr
-          ? "Équipe Axion-IA en session de cadrage cas client IA — cabinet IA opérationnel français accompagnant TPE, PME, ETI et grandes entreprises avec preuves chiffrées et témoignages vérifiés."
-          : "Axion-IA team in client case scoping session — French operational AI consultancy supporting SMEs, mid-caps and large enterprises with quantified proofs and verified testimonials.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA et garant des cas clients"
-          : "Williams — Axion-IA founder, guarantor of client case studies",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les missions cas clients IA et garantit l'authenticité des résultats chiffrés présentés sur Axion-IA — ROI mesuré, témoignages vérifiés."
-          : "Portrait of Williams, Axion-IA founder. Personally drives client AI missions and guarantees the authenticity of quantified results presented on Axion-IA — measured ROI, verified testimonials.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
+    path: "/cas-concrets",
+    name: isFr ? "Cas concrets Axion-IA" : "Axion-IA case studies",
+    description: isFr
+      ? "Études de cas IA opérationnelle : industrie, juridique, retail, banque, artisanat. Résultats chiffrés, témoignages, contexte."
+      : "Operational AI case studies: industry, legal, retail, banking, trades. Numerical results, testimonials, context.",
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/cas-concrets")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/cas-concrets") } }
+      : {}),
   });
 
   // ItemList JSON-LD — expose tous les cas concrets au crawler depuis l'index
@@ -379,8 +378,9 @@ export default async function CaseStudiesListing({ params }: Props) {
         tone="dark"
       />
 
+      <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={casConcretsImagesJsonLd} />
+      {casConcretsImagesJsonLd ? <JsonLd data={casConcretsImagesJsonLd} /> : null}
     </>
   );
 }

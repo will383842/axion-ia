@@ -15,7 +15,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildFaqJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
+  buildWebPageJsonLd,
 } from "@/lib/seo";
 
 interface Props {
@@ -50,36 +52,23 @@ export default async function ChatbotPage({ params }: Props) {
   // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
   // + portrait fondateur pour exposition Google Images + AI Overviews sur
   // requêtes « chatbot IA entreprise », « assistant conversationnel IA TPE PME ».
-  const imagesJsonLd = buildImageGraphJsonLd({
+  const imagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — chatbots IA conversationnels pour entreprises"
-          : "Axion-IA team — conversational AI chatbots for companies",
-        alt: isFr
-          ? "Équipe Axion-IA conçoit et déploie des chatbots IA conversationnels pour TPE, PME et ETI françaises — assistants RAG, support client automatisé, FAQ intelligente, intégration site web et messageries."
-          : "Axion-IA team designs and deploys conversational AI chatbots for French small businesses, SMEs and mid-caps — RAG assistants, automated customer support, smart FAQ, website and messaging integrations.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA, expert chatbots IA"
-          : "Williams — Axion-IA founder, AI chatbots expert",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets de chatbots IA conversationnels pour dirigeants TPE et PME — choix LLM, base de connaissances, garde-fous, mise en production."
-          : "Portrait of Williams, Axion-IA founder. Personally drives conversational AI chatbot projects for small business and SME executives — LLM selection, knowledge base, guardrails, production deployment.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
+    path: "/implementation/chatbot",
+  });
+  // Nœud WebPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/implementation/chatbot",
+    name: copy.metaSeo.title,
+    description: copy.metaSeo.description,
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/implementation/chatbot")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/implementation/chatbot") } }
+      : {}),
   });
   const jsonLd = [
+    webPageJsonLd,
     buildServiceJsonLd({
       locale: loc,
       path,
@@ -88,7 +77,7 @@ export default async function ChatbotPage({ params }: Props) {
       serviceType: "AI implementation · chatbot",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    imagesJsonLd,
+    ...(imagesJsonLd ? [imagesJsonLd] : []),
   ];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

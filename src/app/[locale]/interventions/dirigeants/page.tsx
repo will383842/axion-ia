@@ -21,7 +21,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildItemListJsonLd,
-  buildImageGraphJsonLd,
+  buildWebPageJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
@@ -109,34 +111,22 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
   // fondateur (asset principal de la page hub Dirigeants 1-to-1) + photo
   // équipe pour exposition Google Images + AI Overviews sur requêtes
   // « formation dirigeant IA », « 1-to-1 dirigeant Claude productivité ».
-  const imagesJsonLd = buildImageGraphJsonLd({
+  const imagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA, partenaire 1-to-1 des dirigeants TPE et PME"
-          : "Williams — Axion-IA founder, 1-on-1 partner for small business and SME executives",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Accompagne personnellement les dirigeants TPE et PME en 1-to-1 sur les 2 formats (vision IA stratégique, maîtrise Claude). Confidentialité totale."
-          : "Portrait of Williams, Axion-IA founder. Personally supports small business and SME executives in 1-on-1 on the 2 formats (strategic AI vision, Claude mastery). Total confidentiality.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — accompagnement dirigeants TPE et PME"
-          : "Axion-IA team — small business and SME executive support",
-        alt: isFr
-          ? "Équipe Axion-IA spécialisée dans l'accompagnement 1-to-1 des dirigeants TPE et PME françaises — cadrage personnalisé, méthodologie IA confidentielle, rapport sous 7 jours."
-          : "Axion-IA team specialized in 1-on-1 support for French small business and SME executives — personalized framing, confidential AI methodology, report within 7 days.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-    ],
+    path: "/interventions/dirigeants",
+  });
+  // Nœud WebPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: loc === "fr" ? "/interventions/dirigeants" : "/interventions/executives",
+    name: isFr
+      ? "Accompagnement 1-to-1 des dirigeants · Axion-IA"
+      : "1-on-1 executive AI support · Axion-IA",
+    description: isFr ? family.taglineFr : family.taglineEn,
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/interventions/dirigeants")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/interventions/dirigeants") } }
+      : {}),
   });
 
   // 2 mini-blocs « pour qui » — alignés sur les 2 formats Dirigeants.
@@ -392,8 +382,9 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
       />
 
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={webPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={imagesJsonLd} />
+      {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
     </>
   );
 }

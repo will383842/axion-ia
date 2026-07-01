@@ -15,7 +15,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildFaqJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
+  buildWebPageJsonLd,
 } from "@/lib/seo";
 
 interface Props {
@@ -50,36 +52,23 @@ export default async function CrmErpPage({ params }: Props) {
   // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
   // + portrait fondateur pour exposition Google Images + AI Overviews sur
   // requêtes « intégration IA CRM ERP », « IA HubSpot Salesforce Odoo Sage ».
-  const imagesJsonLd = buildImageGraphJsonLd({
+  const imagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — intégration IA dans CRM et ERP entreprise"
-          : "Axion-IA team — AI integration in CRM and ERP systems",
-        alt: isFr
-          ? "Équipe Axion-IA intègre l'IA dans les CRM et ERP des TPE, PME et ETI françaises — HubSpot, Salesforce, Pipedrive, Odoo, Sage, Cegid, scoring lead, enrichissement, automatisations métier."
-          : "Axion-IA team integrates AI into CRM and ERP systems for French small businesses, SMEs and mid-caps — HubSpot, Salesforce, Pipedrive, Odoo, Sage, Cegid, lead scoring, enrichment, business automation.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA, expert intégration IA CRM/ERP"
-          : "Williams — Axion-IA founder, CRM/ERP AI integration expert",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets d'intégration IA CRM et ERP pour dirigeants TPE et PME — connecteurs, mapping de données, supervision qualité, ROI commercial."
-          : "Portrait of Williams, Axion-IA founder. Personally drives CRM and ERP AI integration projects for small business and SME executives — connectors, data mapping, quality oversight, commercial ROI.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
+    path: "/implementation/crm-erp",
+  });
+  // Nœud WebPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/implementation/crm-erp",
+    name: copy.metaSeo.title,
+    description: copy.metaSeo.description,
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/implementation/crm-erp")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/implementation/crm-erp") } }
+      : {}),
   });
   const jsonLd = [
+    webPageJsonLd,
     buildServiceJsonLd({
       locale: loc,
       path,
@@ -88,7 +77,7 @@ export default async function CrmErpPage({ params }: Props) {
       serviceType: "AI implementation · crm-erp",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    imagesJsonLd,
+    ...(imagesJsonLd ? [imagesJsonLd] : []),
   ];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

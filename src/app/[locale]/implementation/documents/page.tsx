@@ -15,7 +15,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildFaqJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
+  buildWebPageJsonLd,
 } from "@/lib/seo";
 
 interface Props {
@@ -50,36 +52,23 @@ export default async function DocumentsPage({ params }: Props) {
   // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
   // + portrait fondateur pour exposition Google Images + AI Overviews sur
   // requêtes « traitement documents IA », « OCR LLM extraction PDF entreprise ».
-  const imagesJsonLd = buildImageGraphJsonLd({
+  const imagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — traitement de documents par IA"
-          : "Axion-IA team — AI document processing",
-        alt: isFr
-          ? "Équipe Axion-IA conçoit et déploie des pipelines IA de traitement documentaire pour TPE, PME et ETI — OCR, extraction structurée, classification, résumé, RAG sur PDF, contrats, factures, courriers."
-          : "Axion-IA team designs and deploys AI document processing pipelines for small businesses, SMEs and mid-caps — OCR, structured extraction, classification, summarization, RAG on PDFs, contracts, invoices, mail.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA, expert traitement documents IA"
-          : "Williams — Axion-IA founder, AI document processing expert",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets de traitement documentaire IA pour dirigeants TPE et PME — architecture, choix LLM multimodal, qualité d'extraction, supervision humaine."
-          : "Portrait of Williams, Axion-IA founder. Personally drives AI document processing projects for small business and SME executives — architecture, multimodal LLM selection, extraction quality, human oversight.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
+    path: "/implementation/documents",
+  });
+  // Nœud WebPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/implementation/documents",
+    name: copy.metaSeo.title,
+    description: copy.metaSeo.description,
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/implementation/documents")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/implementation/documents") } }
+      : {}),
   });
   const jsonLd = [
+    webPageJsonLd,
     buildServiceJsonLd({
       locale: loc,
       path,
@@ -88,7 +77,7 @@ export default async function DocumentsPage({ params }: Props) {
       serviceType: "AI implementation · documents",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    imagesJsonLd,
+    ...(imagesJsonLd ? [imagesJsonLd] : []),
   ];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

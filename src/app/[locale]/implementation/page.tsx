@@ -25,7 +25,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildItemListJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
+  buildCollectionPageJsonLd,
   buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
@@ -174,42 +176,40 @@ export default async function ImplementationListing({ params }: Props) {
   });
 
   // ImageObject @graph — signal AEO Google Images + AI Overviews (sans prix).
-  // Synchronisé sur les 2 images RÉELLEMENT affichées sur la page (visuel des
-  // 4 piliers + portrait du fondateur), métadonnées exactes (dimensions /
-  // format / alt identiques au rendu).
-  const implementationImagesJsonLd = buildImageGraphJsonLd({
+  // Migré vers le manifeste SSOT `PAGE_IMAGES_MANIFEST["/implementation"]`
+  // (2026-07-01) : le MÊME manifeste alimente ce JSON-LD ImageObject ET le
+  // sitemap images → aucune divergence possible (visuel des 4 piliers +
+  // portrait du fondateur, dimensions/format/alt identiques au rendu).
+  const implementationImagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
-    images: [
-      {
-        src: "/illustrations/implementation-piliers-axion-ia.webp",
-        name: isFr
-          ? "Les 4 piliers de l'implémentation IA Axion-IA"
-          : "The 4 pillars of Axion-IA AI implementation",
-        alt: isFr
-          ? "Les 4 piliers de l'implémentation IA Axion-IA : Implémentation (de la stratégie à la réalité), Agents IA (vos collaborateurs intelligents), Intégration native (dans votre écosystème) et Performance (mesurable, durable, réelle)."
-          : "The 4 pillars of Axion-IA AI implementation: Implementation (from strategy to reality), AI agents (your intelligent coworkers), Native integration (into your ecosystem) and Performance (measurable, lasting, real).",
-        width: 1600,
-        height: 484,
-        encodingFormat: "image/webp",
-      },
-      {
-        src: "/illustrations/william-fondateur-axion-ia.webp",
-        name: isFr ? "Williams — Fondateur & CEO Axion-IA" : "Williams — Founder & CEO Axion-IA",
-        alt: isFr
-          ? "Portrait de Williams, fondateur et CEO d'Axion-IA — pilote les implémentations IA (agents IA, automatisations, RAG, intégrations CRM/ERP) avec une exigence technique et une relation directe et humaine."
-          : "Portrait of Williams, Axion-IA founder and CEO — drives AI implementations (AI agents, automations, RAG, CRM/ERP integrations) with technical rigour and a direct, human relationship.",
-        width: 1000,
-        height: 1000,
-        encodingFormat: "image/webp",
-      },
-    ],
+    path: "/implementation",
+  });
+
+  // CollectionPage JSON-LD — porteur VALIDE du `speakable` (h1/h2 + réponses) et
+  // du `primaryImageOfPage` (visuel des 4 piliers représentatif). Le hub
+  // /implementation est un listing (piliers/offres d'implémentation) →
+  // CollectionPage. Nœud AJOUTÉ lors de la centralisation images SSOT (2026-07-01).
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: "/implementation",
+    name: isFr
+      ? "Implémentation IA & agents IA sur-mesure · Axion-IA"
+      : "Custom AI implementation & AI agents · Axion-IA",
+    description: isFr
+      ? "Implémentation IA sur-mesure pour TPE, PME et ETI : agents IA, chatbots, automatisations, intégrations CRM/ERP. Du vrai code, à vous, sans abonnement."
+      : "Custom AI implementation for every company: AI agents, chatbots, automations, CRM/ERP integrations. Real code, yours, no subscription.",
+    speakable: true,
+    ...(buildPrimaryImageOfPage("/implementation")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/implementation") } }
+      : {}),
   });
 
   return (
     <>
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={implementationImagesJsonLd} />
+      {implementationImagesJsonLd ? <JsonLd data={implementationImagesJsonLd} /> : null}
       <JsonLd data={implementationHowToJsonLd} />
 
       <Container className="border-border border-b py-3">

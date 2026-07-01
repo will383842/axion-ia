@@ -1,5 +1,16 @@
 #!/usr/bin/env tsx
 /**
+ * ⚠️ DÉPRÉCIÉ (2026-07-01) — NE PLUS UTILISER.
+ *
+ * Ce script régénérait un snapshot figé (`service-sitemap-data.ts`) décrivant
+ * l'ancienne architecture `-ia` du site. Ce snapshot a été SUPPRIMÉ et remplacé
+ * par la source unique de vérité `src/lib/seo/page-images.ts` (`PAGE_IMAGES_MANIFEST`),
+ * lue à la fois par le rendu des pages, leur JSON-LD `ImageObject` et le sitemap
+ * images (`app/sitemap-images-services.xml/route.ts`).
+ *
+ * Pour ajouter/retirer une image d'une page : éditer le manifeste, PAS ce script.
+ * Le lancer réintroduirait un fichier orphelin décorrélé des pages réelles.
+ *
  * Extrait les données du 06-sitemap-images-services.xml vers un module TypeScript.
  * Sortie : src/server/image-bank/data/service-sitemap-data.ts
  */

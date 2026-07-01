@@ -15,6 +15,7 @@ import {
   buildProductMetadata,
   buildItemListJsonLd,
   buildBreadcrumbJsonLd,
+  buildCollectionPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -67,6 +68,20 @@ export default async function SecteursHub({ params }: Props) {
       { name: isFr ? "Accueil" : "Home", href: "/" },
       { name: isFr ? "Secteurs" : "Sectors", href: "/secteurs" },
     ],
+  });
+
+  // Nœud CollectionPage page-level — porteur du `speakable` (h1). Réutilise
+  // EXACTEMENT le titre/description de la metadata (pas de réécriture).
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: "/secteurs",
+    name: isFr
+      ? "L'IA par secteur d'activité · cas d'usage métier · Axion-IA"
+      : "AI by business sector · industry use cases · Axion-IA",
+    description: isFr
+      ? "L'intelligence artificielle appliquée à votre secteur : comptabilité, BTP, santé, juridique, commerce, industrie, RH, collectivités… Cas d'usage concrets, bénéfices chiffrés et feuille de route par métier."
+      : "AI applied to your sector: accounting, construction, healthcare, legal, retail, industry, HR, public sector… Concrete use cases, quantified benefits and a roadmap per industry.",
+    speakable: true,
   });
 
   const itemListJsonLd = buildItemListJsonLd({
@@ -131,6 +146,7 @@ export default async function SecteursHub({ params }: Props) {
         threshold={500}
       />
 
+      <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd
         data={itemListJsonLd}

@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -50,8 +51,10 @@ export default async function Contact({ params }: Props) {
   const contactJsonLd = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
+    "@id": `${SITE_URL}/${loc}/contact#webpage`,
     url: `${SITE_URL}/${loc}/contact`,
     inLanguage: loc,
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     name: isFr ? "Contact Axion-IA" : "Contact Axion-IA",
     description: isFr
       ? "Formulaire de contact Axion-IA — réponse sous 48 h ouvrées, sans engagement, données stockées en UE."
@@ -80,6 +83,8 @@ export default async function Contact({ params }: Props) {
         closes: "18:00",
       },
     },
+    // Speakable AEO — ContactPage est un sous-type WebPage : propriété valide.
+    speakable: buildSpeakableSpecification(),
   } as const;
 
   // Masque le Footer global (rendu dans [locale]/layout.tsx) uniquement sur

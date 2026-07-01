@@ -27,9 +27,12 @@ import {
   buildItemListJsonLd,
   buildHowToJsonLd,
   buildCourseJsonLd,
-  buildImageGraphJsonLd,
+  buildCollectionPageJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
+import { getPageImages } from "@/lib/seo/page-images";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 // Sprint uniformisation 2026-05-24 (Will) — alignement template /implementation.
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
@@ -117,91 +120,19 @@ export default async function FormationsHub({ params }: Props) {
     pathEn: `/formations/duree/${m.slug}`,
   }));
 
-  // Sprint photos formation 2026-05-28 (Will) — 4 photos illustratives de
-  // sessions de formation IA en entreprise, insérées entre la section
-  // « Choisissez la durée » et les 4 cards palier durée. Optimisation top
-  // mai 2026 : Next.js Image auto AVIF/WebP au runtime (×5-10 gain poids vs
-  // PNG source), lazy loading (sous le fold du hero), aspect ratio fixe
-  // (CLS=0), sizes responsive, alt textes denses SEO, JSON-LD ImageObject
-  // array émis pour visibilité Google Images + AI Overviews.
-  const PHOTOS_FORMATION = [
-    {
-      src: "/illustrations/formations/formateur-ia-claude-atelier-pme.png",
-      altFr:
-        "Formateur IA expert Axion-IA présentant Claude à des collaborateurs PME française — atelier pratique sur les vrais outils métier en formation IA opérationnelle.",
-      altEn:
-        "Expert Axion-IA AI trainer presenting Claude to French SME team members — hands-on workshop on real business tools in operational AI training.",
-      nameFr: "Formateur IA présentant Claude en atelier PME",
-      nameEn: "AI trainer presenting Claude in SME workshop",
-    },
-    {
-      src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.png",
-      altFr:
-        "Équipe PME engagée en formation IA — apprenants en atelier pratique automatisations métier sur leurs vrais outils, montée en compétence opérationnelle Axion-IA.",
-      altEn:
-        "Engaged SME team in AI training — learners in hands-on business automation workshop on their real tools, operational upskilling by Axion-IA.",
-      nameFr: "Équipe PME engagée en atelier formation IA",
-      nameEn: "Engaged SME team in AI training workshop",
-    },
-    {
-      src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.png",
-      altFr:
-        "Salle de formation IA sur site entreprise — Axion-IA forme les équipes TPE, PME, ETI sur ChatGPT, Claude, Mistral et les outils IA quotidien pour gagner du temps.",
-      altEn:
-        "On-site corporate AI training room — Axion-IA trains SME, mid-cap and large enterprise teams on ChatGPT, Claude, Mistral and daily AI tools for time savings.",
-      nameFr: "Formation IA sur site entreprise",
-      nameEn: "On-site corporate AI training",
-    },
-    {
-      src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.png",
-      altFr:
-        "Bilan de formation IA — équipe entreprise française autonome sur ChatGPT, Claude, Mistral et automatisations métier, gains de temps mesurés après l'intervention Axion-IA.",
-      altEn:
-        "AI training review — autonomous French corporate team on ChatGPT, Claude, Mistral and business automations, measured time savings after Axion-IA intervention.",
-      nameFr: "Bilan formation IA équipe autonome",
-      nameEn: "AI training review with autonomous team",
-    },
-  ];
+  // Photos illustratives de la page — SSOT centralisée `@/lib/seo/page-images`
+  // (`PAGE_IMAGES_MANIFEST["/formations"]`). Le MÊME manifeste alimente le rendu
+  // <Image> (grille + bandeau quadriptyque + portrait), le JSON-LD ImageObject et
+  // le sitemap images → aucune divergence possible (avant : arrays inline + snapshot
+  // sitemap figé qui avaient dérivé, laissant ces photos hors Google Images).
+  // Optimisation Next.js Image conservée au rendu (AVIF/WebP runtime, lazy,
+  // aspect-ratio fixe CLS=0, sizes responsive, alt denses SEO).
+  const gridPhotos = getPageImages("/formations").filter((p) => p.slot === "grid");
 
-  // JSON-LD ImageObject @graph — refactor 2026-05-28 (Will sprint perfection) :
-  // utilise désormais la factory centralisée `buildImageGraphJsonLd` (lib/seo.ts).
-  // Réutilisable cross-site, élimine 70+ lignes de duplication. Émet 6 ImageObject
-  // (4 photos formation + 1 quadriptyque + 1 portrait Williams) avec license
-  // CC BY 4.0, creator/copyrightHolder Axion-IA, datePublished.
-  const photosImageObjectJsonLd = buildImageGraphJsonLd({
-    locale: loc,
-    images: [
-      ...PHOTOS_FORMATION.map((p) => ({
-        src: p.src,
-        name: isFr ? p.nameFr : p.nameEn,
-        alt: isFr ? p.altFr : p.altEn,
-        width: 1024,
-        height: 768,
-      })),
-      {
-        src: "/illustrations/formation-claude-team-quadriptyque.png",
-        name: isFr
-          ? "Séquence formation IA Axion-IA quadriptyque — 4 moments d'intervention"
-          : "Axion-IA AI training sequence quadriptych — 4 intervention moments",
-        alt: isFr
-          ? "Bandeau quadriptyque illustrant 4 moments clés d'une formation IA Axion-IA en entreprise : présentation au tableau, démo écran Claude, équipe collaborative en atelier pratique, salle de formation sur site avec formateur IA expert."
-          : "Quadriptych banner illustrating 4 key moments of an Axion-IA corporate AI training: tableau presentation, Claude screen demo, collaborative team in hands-on workshop, on-site training room with expert AI trainer.",
-        width: 2400,
-        height: 800,
-      },
-      {
-        src: "/illustrations/william-fondateur-formateur-ia-axion-ia.png",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA et formateur IA"
-          : "Williams — Axion-IA founder and AI trainer",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA et formateur IA dédié. Intervient souvent en personne ou avec un formateur de son équipe — forme les équipes TPE, PME, ETI et grandes entreprises partout en France métropolitaine."
-          : "Portrait of Williams, Axion-IA founder and dedicated AI trainer. Often delivers in person or with a trainer from his team — trains French SME, mid-cap and large enterprise teams across metropolitan France.",
-        width: 800,
-        height: 1000,
-      },
-    ],
-  });
+  // JSON-LD ImageObject @graph — construit DEPUIS le manifeste (6 ImageObject :
+  // 4 photos grille + 1 quadriptyque `representativeOfPage` + 1 portrait Williams),
+  // license CC BY 4.0, creator/copyrightHolder Axion-IA `#organization`.
+  const photosImageObjectJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/formations" });
 
   // Features par palier durée — Sprint 14.10.7 (Will 2026-05-11) : enrichir
   // les cards pour qu'elles soient parlantes (3 points de positionnement par
@@ -257,9 +188,10 @@ export default async function FormationsHub({ params }: Props) {
     };
   });
 
-  // Service JSON-LD — Sprint perfection AEO 2026-05-28 (Will) : Speakable
-  // activé pour citation Google Assistant / Claude voice / Alexa. Selectors
-  // par défaut couvrent h1/h2/[data-speakable].
+  // Service JSON-LD — le `speakable` a été DÉPLACÉ sur le nœud CollectionPage
+  // ci-dessous (2026-07-01) : `speakable` est une propriété de WebPage/CreativeWork,
+  // PAS de `Service` (sous-type d'Intangible) → posé sur Service il était ignoré
+  // par Google et les moteurs de réponse.
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/formations",
@@ -272,7 +204,24 @@ export default async function FormationsHub({ params }: Props) {
     serviceType: "AI training",
     priceEur: getFormationCatalogPriceRange().minEur,
     areasServed: buildServiceAreasServed(loc),
+  });
+
+  // CollectionPage JSON-LD — porteur VALIDE du `speakable` (h1/h2 + réponses) et
+  // du `primaryImageOfPage` (quadriptyque représentatif). Le hub /formations est un
+  // listing (4 paliers durée) → CollectionPage. `breadcrumb` relie au fil d'Ariane.
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: "/formations",
+    name: isFr
+      ? "Formations IA en entreprise — 4 durées, sur site"
+      : "Corporate AI trainings — 4 durations, on site",
+    description: isFr
+      ? `Hub des formations IA opérationnelles Axion-IA pour vos équipes sur site : 4 paliers durée de 4 h à 3 j+, formule mensuelle récurrente, dès ${essentielleEntry}.`
+      : `Hub of Axion-IA operational AI trainings for your teams on site: 4 duration tiers from 4 h to 3 d+, recurring monthly programme, from ${essentielleEntry}.`,
     speakable: true,
+    ...(buildPrimaryImageOfPage("/formations")
+      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/formations") } }
+      : {}),
   });
 
   // Course JSON-LD ×4 — Sprint perfection AEO 2026-05-28 (Will). Un Course
@@ -639,13 +588,13 @@ export default async function FormationsHub({ params }: Props) {
             légèrement grossir les photos selon retour Will.
             Pas de zoom/lightbox (Will : « sans possibilité de grossir »). */}
         <div className="mx-auto mt-14 grid max-w-7xl grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4 md:gap-5">
-          {PHOTOS_FORMATION.map((p) => (
+          {gridPhotos.map((p) => (
             <figure key={p.src} className="m-0 overflow-hidden rounded-2xl">
               <Image
                 src={p.src}
                 alt={isFr ? p.altFr : p.altEn}
-                width={1024}
-                height={768}
+                width={p.width}
+                height={p.height}
                 loading="lazy"
                 decoding="async"
                 sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 320px"
@@ -1310,8 +1259,9 @@ export default async function FormationsHub({ params }: Props) {
       />
 
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={photosImageObjectJsonLd} />
+      {photosImageObjectJsonLd ? <JsonLd data={photosImageObjectJsonLd} /> : null}
       <JsonLd data={howToReserverJsonLd} />
       {courseJsonLdArray.map((course, idx) => (
         <JsonLd key={`course-${idx}`} data={course} />

@@ -17,6 +17,7 @@ import {
   buildProductMetadata,
   buildHowToJsonLd,
   buildArticleJsonLd,
+  buildWebPageJsonLd,
   SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
 import { INTERVENTION_TIERS, getTierById } from "@/content/pricing";
@@ -49,6 +50,21 @@ export default async function MethodologyPage({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+
+  // Nœud WebPage page-level — porteur du `speakable` (h1). Réutilise EXACTEMENT
+  // le titre/description de la metadata (pas de réécriture). Coexiste avec
+  // l'Article et le HowTo émis plus bas.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/methodologie",
+    name: isFr
+      ? "Méthodologie Axion-IA · 4 étapes vers le ROI"
+      : "Axion-IA methodology · 4 steps to ROI",
+    description: isFr
+      ? "La méthode Axion-IA en 4 étapes : cartographie terrain, audit en 5 jours, implémentation en 6-8 semaines, ROI mesuré. Découplée du contrat long. Demandez un audit."
+      : "Our methodology: field audit, applied demos, costed plan, piloted implementation.",
+    speakable: true,
+  });
 
   // Article JSON-LD via factory centralisée — porte les signaux E-E-A-T 2026
   // (Author + dateModified + publisher logo + mainEntityOfPage) automatiquement.
@@ -466,6 +482,7 @@ export default async function MethodologyPage({ params }: Props) {
         tone="dark"
       />
 
+      <JsonLd data={webPageJsonLd} />
       <JsonLd data={articleJsonLd} />
       <JsonLd data={howToJsonLd} />
     </>

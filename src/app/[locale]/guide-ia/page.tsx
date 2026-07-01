@@ -12,7 +12,7 @@ import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -93,6 +93,21 @@ export default async function AiGuidePage({ params }: Props) {
       isPartOf: { "@type": "CreativeWork", name: "Guide IA Axion-IA" },
     })),
   } as const;
+
+  // Nœud WebPage page-level — porteur du `speakable` (h1). Réutilise EXACTEMENT
+  // le titre/description de la metadata (pas de réécriture). Coexiste avec le
+  // CreativeWork (PDF) émis plus bas.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/guide-ia",
+    name: isFr
+      ? "Guide IA entreprise · 40 pages · gratuit"
+      : "Enterprise AI guide · 40 pages · free",
+    description: isFr
+      ? "Guide IA opérationnel de 40 pages pour dirigeants et équipes : cas d'usage concrets, coûts réels, calcul du ROI, gouvernance, sécurité et écueils à éviter."
+      : "40-page operational AI guide: use cases, costs, ROI, governance, pitfalls.",
+    speakable: true,
+  });
 
   return (
     <>
@@ -306,6 +321,7 @@ export default async function AiGuidePage({ params }: Props) {
         }
       />
 
+      <JsonLd data={webPageJsonLd} />
       <JsonLd data={guideJsonLd} />
     </>
   );

@@ -11,7 +11,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { RoiSimulator } from "@/components/roi/RoiSimulator";
 import { Illustration } from "@/components/visual/Illustration";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildFaqJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildFaqSpeakableJsonLd, buildWebPageJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 
 interface Props {
@@ -41,6 +41,25 @@ export default async function RoiPage({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+
+  // Titre/description meta réutilisés à l'identique (SSOT avec generateMetadata)
+  // pour le nœud WebPage ci-dessous.
+  const metaTitle = isFr
+    ? "Simulateur gains IA · heures gagnées · Axion-IA"
+    : "AI gains simulator · hours you'll save · Axion-IA";
+  const metaDescription = isFr
+    ? "Combien d'heures votre équipe gagnera après une formation IA ? 2 curseurs simples : heures rendues, jours libérés, emails écrits sans effort. Testez en direct."
+    : "How many hours per day, per person, will your team save after an AI training? 2 simple sliders, concrete gains: hours freed, days back, effortless emails.";
+
+  // Nœud WebPage — page-outil (simulateur ROI). Porte le speakable (cible h1).
+  // Pas d'images manifeste ici → pas de primaryImageOfPage.
+  const webPageJsonLd = buildWebPageJsonLd({
+    locale: loc,
+    path: "/roi",
+    name: metaTitle,
+    description: metaDescription,
+    speakable: true,
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -185,8 +204,10 @@ export default async function RoiPage({ params }: Props) {
         tone="dark"
       />
 
+      <JsonLd data={webPageJsonLd} />
+
       <JsonLd
-        data={buildFaqJsonLd({
+        data={buildFaqSpeakableJsonLd({
           items: isFr
             ? [
                 {

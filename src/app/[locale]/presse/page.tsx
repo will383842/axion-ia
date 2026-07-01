@@ -37,7 +37,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
@@ -316,35 +316,7 @@ export default async function PressePage({ params, searchParams }: Props) {
   // équipe + portrait fondateur pour exposition Google Images + AI Overviews
   // sur requêtes « presse Axion-IA », « interview fondateur cabinet IA »,
   // « press kit IA opérationnelle France ».
-  const pressImagesJsonLd = buildImageGraphJsonLd({
-    locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA disponible pour interviews"
-          : "Williams — Axion-IA founder available for interviews",
-        alt: isFr
-          ? "Portrait haute résolution de Williams, fondateur d'Axion-IA. Disponible pour interviews presse, podcasts, conférences sur l'IA opérationnelle pour TPE, PME, ETI et grandes entreprises françaises."
-          : "High-resolution portrait of Williams, Axion-IA founder. Available for press interviews, podcasts, conferences on operational AI for French SMEs, mid-caps and large enterprises.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — press kit visuels cabinet IA"
-          : "Axion-IA team — AI consultancy press kit visuals",
-        alt: isFr
-          ? "Bandeau équipe Axion-IA — visuels press kit cabinet IA opérationnel français. 4 scènes : démo écran IA, échange canapé, session laptop binôme, portrait souriant."
-          : "Axion-IA team banner — French operational AI consultancy press kit visuals. 4 scenes: AI screen demo, sofa exchange, paired laptop session, smiling portrait.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-    ],
-  });
+  const pressImagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/presse" });
 
   return (
     <>
@@ -831,7 +803,7 @@ export default async function PressePage({ params, searchParams }: Props) {
       <JsonLd data={faqJsonLd} />
       <JsonLd data={spokespersonJsonLd} />
       {releasesItemList ? <JsonLd data={releasesItemList} /> : null}
-      <JsonLd data={pressImagesJsonLd} />
+      {pressImagesJsonLd ? <JsonLd data={pressImagesJsonLd} /> : null}
     </>
   );
 }

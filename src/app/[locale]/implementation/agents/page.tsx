@@ -15,7 +15,9 @@ import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildFaqJsonLd,
-  buildImageGraphJsonLd,
+  buildPageImageGraphJsonLd,
+  buildWebPageJsonLd,
+  buildPrimaryImageOfPage,
 } from "@/lib/seo";
 
 interface Props {
@@ -47,38 +49,12 @@ export default async function AgentsPage({ params }: Props) {
   const copy = a[loc];
   const path = loc === "fr" ? a.pathFr : a.pathEn;
   const isFr = loc === "fr";
-  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
-  // + portrait fondateur pour exposition Google Images + AI Overviews sur
-  // requêtes « agents IA autonomes », « agentic AI entreprise France ».
-  const imagesJsonLd = buildImageGraphJsonLd({
-    locale: loc,
-    images: [
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        name: isFr
-          ? "Équipe Axion-IA — agents IA autonomes pour entreprises"
-          : "Axion-IA team — autonomous AI agents for companies",
-        alt: isFr
-          ? "Équipe Axion-IA conçoit et déploie des agents IA autonomes pour TPE, PME et ETI — workflows multi-étapes, tool use, mémoire longue, supervision humaine, orchestration LangGraph et CrewAI."
-          : "Axion-IA team designs and deploys autonomous AI agents for small businesses, SMEs and mid-caps — multi-step workflows, tool use, long memory, human oversight, LangGraph and CrewAI orchestration.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "Williams — Fondateur Axion-IA, expert agents IA agentiques"
-          : "Williams — Axion-IA founder, agentic AI expert",
-        alt: isFr
-          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets d'agents IA agentiques pour dirigeants TPE et PME — choix framework, orchestration, garde-fous, production sécurisée."
-          : "Portrait of Williams, Axion-IA founder. Personally drives agentic AI projects for small business and SME executives — framework choice, orchestration, guardrails, secure production deployment.",
-        width: 800,
-        height: 1000,
-        encodingFormat: "image/avif",
-      },
-    ],
-  });
+  // ImageObject @graph — SSOT centralisée `@/lib/seo/page-images`
+  // (`PAGE_IMAGES_MANIFEST["/implementation/agents"]`). Photo équipe + portrait
+  // fondateur pour exposition Google Images + AI Overviews sur requêtes
+  // « agents IA autonomes », « agentic AI entreprise France ». Le même manifeste
+  // alimente le JSON-LD ImageObject et le sitemap images → aucune divergence.
+  const imagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/implementation/agents" });
   const jsonLd = [
     buildServiceJsonLd({
       locale: loc,
@@ -88,7 +64,15 @@ export default async function AgentsPage({ params }: Props) {
       serviceType: "AI implementation · agents",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    imagesJsonLd,
+    buildWebPageJsonLd({
+      locale: loc,
+      path,
+      name: copy.title,
+      description: copy.answer,
+      speakable: true,
+      extra: { primaryImageOfPage: buildPrimaryImageOfPage("/implementation/agents") },
+    }),
+    ...(imagesJsonLd ? [imagesJsonLd] : []),
   ];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
