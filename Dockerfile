@@ -57,9 +57,16 @@ WORKDIR /app
 ARG NEXT_PUBLIC_SITE_URL
 ARG NEXT_PUBLIC_APP_ENV
 ARG NEXT_PUBLIC_CALENDLY_APPEL_URL
+# Turnstile site key (publique) — DOIT être inlinée au build (NEXT_PUBLIC_* =
+# bake-time). C'est un composant "use client" : l'env runtime Coolify ne l'atteint
+# pas côté navigateur. Si absente, le widget Turnstile ne se rend pas → aucun token
+# → verifyTurnstile fail-closed en prod → « Captcha échoué. » sur tous les forms
+# publics (contact/audit/presse/…). Cf. build externalisé ADR 0026.
+ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 ENV NEXT_PUBLIC_APP_ENV=${NEXT_PUBLIC_APP_ENV:-production}
 ENV NEXT_PUBLIC_CALENDLY_APPEL_URL=${NEXT_PUBLIC_CALENDLY_APPEL_URL}
+ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Bypass Zod env.ts validation au build (option F.1 recovery 2026-05-16).
