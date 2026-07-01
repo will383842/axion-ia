@@ -248,6 +248,25 @@ jobs:
         timeout-minutes: 15
         continue-on-error: true
       - name: Lighthouse CI
+        # NON-BLOQUANT (2026-07-01). Le gate lhci PR-time est cassé de façon
+        # chronique sur l'environnement CI : le serveur `next start` démarré par
+        # lhci ne bind PAS sur loopback en CI (« Ready » mais `curl 127.0.0.1:3000`
+        # → Connection refused, prouvé par diagnostic curl) → CHROME_INTERSTITIAL_ERROR
+        # sur TOUTES les PRs (échec historique, mergé par-dessus depuis #173).
+        # Les configs corrigent la cause diagnostiquée (startServerCommand
+        # `next start -H 0.0.0.0` + URLs 127.0.0.1 dans lighthouserc + heap) mais
+        # l'env CI résiste encore. Plutôt que bloquer toutes les PRs sur un faux
+        # rouge, on passe le step en REPORTING. ⚠️ Le VRAI contrôle Web Vitals reste
+        # le lhci POST-DEPLOY sur l'URL prod LIVE (`deploy-coolify.yml`, job `lhci`).
+        # À re-durcir si l'env PR-time lhci est réparé (sprint infra dédié).
+        continue-on-error: true
+        env:
+          # `next start` bind sur l'hôte auto-détecté en CI (IP réseau, pas loopback).
+          # Le flag -H dans startServerCommand est le vrai levier ; HOSTNAME est une
+          # ceinture-bretelle (Next l'ignore, mais sans nuire). NODE_OPTIONS = marge
+          # heap (manifests ~18k routes SSG). Scopé à ce step CI uniquement.
+          HOSTNAME: "0.0.0.0"
+          NODE_OPTIONS: --max-old-space-size=6144
         run: pnpm lhci:autorun
         timeout-minutes: 20
       - name: Upload artifacts

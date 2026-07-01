@@ -2,20 +2,20 @@
   "ci": {
     "collect": {
       "url": [
-        "http://localhost:3000/fr",
-        "http://localhost:3000/fr/interventions",
-        "http://localhost:3000/fr/interventions/essentielle",
-        "http://localhost:3000/fr/audit",
-        "http://localhost:3000/fr/implementation",
-        "http://localhost:3000/fr/cas-concrets",
-        "http://localhost:3000/fr/blog",
-        "http://localhost:3000/fr/contact",
-        "http://localhost:3000/fr/galerie",
-        "http://localhost:3000/fr/implantations/ile-de-france/paris",
-        "http://localhost:3000/fr/implantations/auvergne-rhone-alpes/chamonix-mont-blanc",
-        "http://localhost:3000/fr/implantations/provence-alpes-cote-d-azur/simiane-collongue"
+        "http://127.0.0.1:3000/fr",
+        "http://127.0.0.1:3000/fr/interventions",
+        "http://127.0.0.1:3000/fr/interventions/essentielle",
+        "http://127.0.0.1:3000/fr/audit",
+        "http://127.0.0.1:3000/fr/implementation",
+        "http://127.0.0.1:3000/fr/cas-concrets",
+        "http://127.0.0.1:3000/fr/blog",
+        "http://127.0.0.1:3000/fr/contact",
+        "http://127.0.0.1:3000/fr/galerie",
+        "http://127.0.0.1:3000/fr/implantations/ile-de-france/paris",
+        "http://127.0.0.1:3000/fr/implantations/auvergne-rhone-alpes/chamonix-mont-blanc",
+        "http://127.0.0.1:3000/fr/implantations/provence-alpes-cote-d-azur/simiane-collongue"
       ],
-      "startServerCommand": "pnpm start",
+      "startServerCommand": "pnpm exec next start -H 0.0.0.0 -p 3000",
       "startServerReadyPattern": "Ready",
       "numberOfRuns": 3,
       "settings": [{ "preset": "desktop" }, { "preset": "mobile" }]
