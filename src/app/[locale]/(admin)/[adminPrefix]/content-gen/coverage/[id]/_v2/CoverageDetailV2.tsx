@@ -17,6 +17,14 @@ import {
   resumeCampaign,
 } from "@/server/actions/content-gen/coverage";
 
+const STATUS_LABELS_FR: Record<string, string> = {
+  draft: "Brouillon",
+  running: "En cours",
+  paused: "En pause",
+  completed: "Terminée",
+  cancelled: "Annulée",
+};
+
 interface CampaignData {
   id: string;
   name: string;
@@ -96,7 +104,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
     <AdminPageShell>
       <AdminPageHeader
         title={campaign.name}
-        description={`${campaign.scope} · cible ${campaign.totalTargetCount} · statut ${campaign.status} · créée ${campaign.createdAt.toISOString().slice(0, 10)}`}
+        description={`${campaign.scope} · cible ${campaign.totalTargetCount} · statut ${STATUS_LABELS_FR[campaign.status] ?? campaign.status} · créée ${campaign.createdAt.toISOString().slice(0, 10)}`}
         actions={
           <div className="flex flex-wrap gap-[var(--space-admin-3)]">
             {campaign.status === "draft" ? (
@@ -177,7 +185,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
           }}
         />
         <p className="admin-meta-block">
-          Publiés {campaign.publishedCount} · Failed {campaign.failedCount} · Quality re-loop{" "}
+          Publiés {campaign.publishedCount} · Échoués {campaign.failedCount} · Re-boucle qualité{" "}
           {campaign.qualityImprovedCount}
         </p>
         {adminPrefix ? (

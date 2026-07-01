@@ -33,8 +33,8 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
     { key: "phase", header: "Phase", cell: (r) => r.publicationPhase },
     { key: "published", header: "Publié", cell: (r) => r.publishedJobs },
     { key: "running", header: "En cours", cell: (r) => r.runningJobs },
-    { key: "failed", header: "Failed", cell: (r) => r.failedJobs },
-    { key: "review", header: "Review", cell: (r) => r.pendingReviewJobs },
+    { key: "failed", header: "Échecs", cell: (r) => r.failedJobs },
+    { key: "review", header: "Revue", cell: (r) => r.pendingReviewJobs },
   ];
 
   return (
@@ -70,7 +70,7 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
         <AdminStatCard label="Publiés total" value={global.publishedJobs} />
         <AdminStatCard label="En cours" value={global.runningJobs} />
         <AdminStatCard
-          label="Failed"
+          label="Échecs"
           value={global.failedJobs}
           tone={global.failedJobs > 0 ? "warning" : "default"}
         />

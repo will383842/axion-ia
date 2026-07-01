@@ -16,9 +16,14 @@ describe("AdminBadge", () => {
 });
 
 describe("AdminStatusBadge", () => {
-  it("derives label from status when no override", () => {
+  it("derives FR label from status when no override", () => {
     render(<AdminStatusBadge status="in_progress" type="job" />);
-    expect(screen.getByText("in progress")).toBeDefined();
+    expect(screen.getByText("En cours")).toBeDefined();
+  });
+
+  it("falls back to space-separated status for unknown enum values", () => {
+    render(<AdminStatusBadge status="some_unknown_state" type="job" />);
+    expect(screen.getByText("some unknown state")).toBeDefined();
   });
 
   it("uses label override when provided", () => {

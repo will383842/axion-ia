@@ -108,7 +108,7 @@ export function TiptapEditor({ name, initialHtml = "", placeholder }: Props) {
             className={editor.isActive("bulletList") ? "tiptap-btn-active" : ""}
             aria-label="Liste a puces"
           >
-            • List
+            • Liste
           </button>
           <button
             type="button"
@@ -116,7 +116,7 @@ export function TiptapEditor({ name, initialHtml = "", placeholder }: Props) {
             className={editor.isActive("orderedList") ? "tiptap-btn-active" : ""}
             aria-label="Liste numerotee"
           >
-            1. List
+            1. Liste
           </button>
           <button
             type="button"

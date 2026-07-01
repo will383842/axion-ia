@@ -32,10 +32,10 @@ export function QualityV2({ base, images }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Quality review queue"
+        title="File de revue qualité"
         description={`${images.length} image${
           images.length > 1 ? "s" : ""
-        } en attente de validation humaine (validators auto échoués ou taxonomie incertaine).`}
+        } en attente de validation humaine (validateurs auto échoués ou taxonomie incertaine).`}
       />
 
       <section
@@ -44,7 +44,7 @@ export function QualityV2({ base, images }: Props): React.ReactElement {
       >
         <AdminStatCard label="Total à valider" value={images.length} />
         <AdminStatCard
-          label="Validators auto échoués"
+          label="Validateurs auto échoués"
           value={validatorsCount}
           tone={validatorsCount > 0 ? "warning" : "default"}
         />
@@ -58,7 +58,7 @@ export function QualityV2({ base, images }: Props): React.ReactElement {
       {images.length === 0 ? (
         <AdminEmptyState
           title="File vide"
-          description="Toutes les images publiées passent les validators automatiques."
+          description="Toutes les images publiées passent les validateurs automatiques."
         />
       ) : (
         <AdminCard variant="compact">
@@ -75,7 +75,7 @@ export function QualityV2({ base, images }: Props): React.ReactElement {
                   </Link>
                   <p className="admin-meta-small">
                     Score {img.seoScore ?? 0}/100
-                    {img.requiresHumanReview ? " · ⚠ Validators" : null}
+                    {img.requiresHumanReview ? " · ⚠ Validateurs" : null}
                     {img.requiresHumanTaxonomy ? " · ⚠ Taxonomie" : null}
                   </p>
                 </li>

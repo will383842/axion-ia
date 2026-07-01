@@ -110,7 +110,7 @@ export function BookingActions({
   if (!canWrite) {
     return (
       <p className="admin-meta-block">
-        Lecture seule — votre rôle ne permet pas d&apos;agir sur les bookings.
+        Lecture seule — votre rôle ne permet pas d&apos;agir sur les réservations.
       </p>
     );
   }
@@ -215,14 +215,15 @@ function SendContractAndDepositForm({
       <p className="admin-meta-block">
         Crée la facture acompte, le ContractDocument, envoie le contrat via DocuSeal (signature
         séquentielle client → Axion-IA), génère la session Stripe Checkout et envoie l&apos;email
-        payment-link au client. La transition booking passe à <code>contract_payment_sent</code>.
+        lien de paiement au client. La transition de la réservation passe à{" "}
+        <code>contract_payment_sent</code>.
       </p>
       <input type="hidden" name="bookingId" value={bookingId} />
       <input type="hidden" name="adminPrefix" value={adminPrefix} />
 
       <div className="admin-field">
         <label htmlFor={`sc-deposit-${bookingId}`} className="admin-label">
-          Acompte € HT (override — laisser vide pour utiliser booking.depositAmountCents)
+          Acompte € HT (surcharge — laisser vide pour utiliser booking.depositAmountCents)
         </label>
         <input
           id={`sc-deposit-${bookingId}`}
@@ -312,7 +313,7 @@ function SendContractAndDepositForm({
 
       <details>
         <summary className="admin-meta" style={{ cursor: "pointer", padding: "8px 0" }}>
-          Variables interpolées DocuSeal template (clé=valeur, une par ligne)
+          Variables interpolées modèle DocuSeal (clé=valeur, une par ligne)
         </summary>
         <div className="admin-field">
           <textarea
@@ -385,14 +386,14 @@ function CancelBookingForm({ bookingId, adminPrefix }: { bookingId: string; admi
   if (!open) {
     return (
       <button type="button" className="admin-button-ghost" onClick={() => setOpen(true)}>
-        ✕ Annuler le booking…
+        ✕ Annuler la réservation…
       </button>
     );
   }
 
   return (
     <form action={action} className="admin-form admin-form-block">
-      <h3 className="admin-h3">Annulation du booking</h3>
+      <h3 className="admin-h3">Annulation de la réservation</h3>
       <input type="hidden" name="bookingId" value={bookingId} />
       <input type="hidden" name="adminPrefix" value={adminPrefix} />
 
@@ -426,15 +427,15 @@ function CancelBookingForm({ bookingId, adminPrefix }: { bookingId: string; admi
           <option value="auto_cgv">
             Auto grille CGV (J-15+ = 50 % / 15-2j = 0 % / &lt;2j = 0 %)
           </option>
-          <option value="force_majeure">Force majeure (refund 100 %)</option>
+          <option value="force_majeure">Force majeure (remboursement 100 %)</option>
           <option value="keep_deposit">Conserver l&apos;acompte (0 %)</option>
-          <option value="custom">Montant custom (saisir ci-dessous)</option>
+          <option value="custom">Montant personnalisé (saisir ci-dessous)</option>
         </select>
       </div>
 
       <div className="admin-field">
         <label htmlFor={`cb-custom-${bookingId}`} className="admin-label">
-          Montant remboursement € TTC (uniquement si mode &quot;custom&quot;)
+          Montant remboursement € TTC (uniquement si mode «&nbsp;personnalisé&nbsp;»)
         </label>
         <input
           id={`cb-custom-${bookingId}`}
@@ -455,7 +456,7 @@ function CancelBookingForm({ bookingId, adminPrefix }: { bookingId: string; admi
 
       <div className="admin-filters-actions">
         <button type="submit" disabled={pending} className="admin-button admin-button-refuse">
-          {pending ? "Annulation…" : "✕ Annuler le booking"}
+          {pending ? "Annulation…" : "✕ Annuler la réservation"}
         </button>
         <button
           type="button"
@@ -598,18 +599,19 @@ function ResumeForm({ bookingId, adminPrefix }: { bookingId: string; adminPrefix
   if (state.ok) return <FormResult state={state} />;
   return (
     <form action={action} className="admin-form admin-form-block">
-      <h3 className="admin-h3">Reprendre le booking (D61)</h3>
+      <h3 className="admin-h3">Reprendre la réservation (D61)</h3>
       <HiddenInputs bookingId={bookingId} adminPrefix={adminPrefix} />
       <div className="admin-field">
         <label htmlFor={`r-slot-${bookingId}`} className="admin-label">
-          Nouveau slot id (optionnel — laisser vide pour reprise sans changement de date)
+          Nouvel identifiant de créneau (optionnel — laisser vide pour reprise sans changement de
+          date)
         </label>
         <input
           type="text"
           id={`r-slot-${bookingId}`}
           name="newSlotId"
           className="admin-input"
-          placeholder="uuid du slot"
+          placeholder="uuid du créneau"
           disabled={pending}
         />
       </div>
@@ -656,13 +658,13 @@ function MarkNoShowForm({ bookingId, adminPrefix }: { bookingId: string; adminPr
   if (!open) {
     return (
       <button type="button" className="admin-button-ghost" onClick={() => setOpen(true)}>
-        Marquer no-show (super_admin)…
+        Marquer absence (super_admin)…
       </button>
     );
   }
   return (
     <form action={action} className="admin-form admin-form-block">
-      <h3 className="admin-h3">No-show (super_admin)</h3>
+      <h3 className="admin-h3">Absence (super_admin)</h3>
       <HiddenInputs bookingId={bookingId} adminPrefix={adminPrefix} />
       <div className="admin-field">
         <label htmlFor={`ns-reason-${bookingId}`} className="admin-label">
@@ -682,7 +684,7 @@ function MarkNoShowForm({ bookingId, adminPrefix }: { bookingId: string; adminPr
       <FormResult state={state} />
       <div className="admin-filters-actions">
         <button type="submit" disabled={pending} className="admin-button admin-button-refuse">
-          {pending ? "Enregistrement…" : "✕ Marquer no-show"}
+          {pending ? "Enregistrement…" : "✕ Marquer absence"}
         </button>
         <button
           type="button"
@@ -798,7 +800,7 @@ function CancelAndReissueContractForm({
     <form action={action} className="admin-form admin-form-block">
       <h3 className="admin-h3">Annuler & réémettre contrat v{contractVersion} (D62)</h3>
       <p className="admin-meta-block">
-        La submission DocuSeal courante sera archivée + le contrat v{contractVersion} marqué{" "}
+        La soumission DocuSeal courante sera archivée + le contrat v{contractVersion} marqué{" "}
         <code>cancelled_admin</code>. Une nouvelle version v{contractVersion + 1} sera créée et
         envoyée au client. Possible uniquement <strong>avant signature</strong>.
       </p>
@@ -820,7 +822,7 @@ function CancelAndReissueContractForm({
       </div>
       <div className="admin-field">
         <label htmlFor={`cr-body-${contractDocumentId}`} className="admin-label">
-          Nouveau corps Tiptap JSON (snapshot immuable)
+          Nouveau corps Tiptap JSON (instantané immuable)
         </label>
         <textarea
           id={`cr-body-${contractDocumentId}`}
@@ -861,7 +863,7 @@ function CancelAndReissueContractForm({
 function CreateQuoteLink({ bookingId, adminPrefix }: { bookingId: string; adminPrefix: string }) {
   return (
     <a href={`/fr/${adminPrefix}/devis/new?bookingId=${bookingId}`} className="admin-button-ghost">
-      📄 Créer un devis pour ce booking…
+      📄 Créer un devis pour cette réservation…
     </a>
   );
 }
@@ -899,16 +901,16 @@ function OverrideScheduleForm({ bookingId }: { bookingId: string }) {
   if (!open) {
     return (
       <button type="button" className="admin-button-ghost" onClick={() => setOpen(true)}>
-        📅 Override échéancier custom pour ce booking…
+        📅 Échéancier sur-mesure pour cette réservation…
       </button>
     );
   }
   return (
     <form action={action} className="admin-form admin-form-block">
-      <h3 className="admin-h3">Échéancier custom (override profile par défaut)</h3>
+      <h3 className="admin-h3">Échéancier sur-mesure (remplace le profil par défaut)</h3>
       <p className="admin-meta-block">
-        Définit un échéancier sur-mesure pour ce booking uniquement. Bypass le profile
-        auto-sélectionné selon le seuil HT. Snapshot immuable côté BookingPaymentSchedule.
+        Définit un échéancier sur-mesure pour cette réservation uniquement. Contourne le profil
+        auto-sélectionné selon le seuil HT. Instantané immuable côté BookingPaymentSchedule.
       </p>
       <input type="hidden" name="bookingId" value={bookingId} />
       <div className="admin-field">
@@ -928,7 +930,7 @@ function OverrideScheduleForm({ bookingId }: { bookingId: string }) {
       </div>
       <div className="admin-field">
         <label htmlFor={`os-installments-${bookingId}`} className="admin-label">
-          Installments JSON (somme percentage = 100)
+          Échéances JSON (somme des pourcentages = 100)
         </label>
         <textarea
           id={`os-installments-${bookingId}`}
@@ -943,7 +945,7 @@ function OverrideScheduleForm({ bookingId }: { bookingId: string }) {
       <ScheduleResult state={state} />
       <div className="admin-filters-actions">
         <button type="submit" disabled={pending} className="admin-button admin-button-validate">
-          {pending ? "Application…" : "💾 Appliquer l'échéancier custom"}
+          {pending ? "Application…" : "💾 Appliquer l'échéancier sur-mesure"}
         </button>
         <button
           type="button"

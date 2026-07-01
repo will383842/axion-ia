@@ -114,7 +114,7 @@ export function JobLogStream({ jobId }: { readonly jobId: string }) {
             checked={autoScroll}
             onChange={(e) => setAutoScroll(e.target.checked)}
           />{" "}
-          Auto-scroll
+          Défilement auto
         </label>
       </div>
       <div

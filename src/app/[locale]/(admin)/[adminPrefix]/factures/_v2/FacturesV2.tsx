@@ -148,7 +148,7 @@ export async function FacturesV2({
           <AdminFilterTabs current={type ?? "all"} options={typeOptions} label="Type" />
         </div>
       }
-      columnHeaders={["Numéro", "Émise", "Client", "Type", "Status", "Montant TTC", "Échéance"]}
+      columnHeaders={["Numéro", "Émise", "Client", "Type", "Statut", "Montant TTC", "Échéance"]}
       rows={rows}
       paginationBaseHref={base}
       paginationPreservedParams={{

@@ -29,8 +29,8 @@ interface Props {
 function severityPill(severity: Alert["severity"]) {
   const labels: Record<Alert["severity"], string> = {
     critical: "● Critique",
-    warning: "● Warning",
-    info: "● Info",
+    warning: "● Avertissement",
+    info: "● Information",
   };
   return <span className={`admin-status-pill admin-severity-${severity}`}>{labels[severity]}</span>;
 }
@@ -105,11 +105,11 @@ export function AlertsV2({
           tone={counts.critical > 0 ? "destructive" : "default"}
         />
         <AdminStatCard
-          label="Warnings"
+          label="Avertissements"
           value={counts.warning}
           tone={counts.warning > 0 ? "warning" : "default"}
         />
-        <AdminStatCard label="Info" value={counts.info} />
+        <AdminStatCard label="Information" value={counts.info} />
         <AdminStatCard label="Total" value={allAlerts.length} />
       </section>
 

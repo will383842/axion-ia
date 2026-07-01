@@ -51,7 +51,7 @@ export async function GeoBatchesV2({ adminPrefix }: Props): Promise<React.ReactE
         </Link>
       ),
     },
-    { key: "scope", header: "Scope", cell: (b) => b.scope },
+    { key: "scope", header: "Périmètre", cell: (b) => b.scope },
     { key: "target", header: "Cible", cell: (b) => b.totalTargetCount },
     {
       key: "status",

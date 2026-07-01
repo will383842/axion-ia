@@ -37,7 +37,7 @@ export async function QueueV2({ adminPrefix }: Props): Promise<React.ReactElemen
         actions={
           <form action={retryAll}>
             <button type="submit" className="admin-button">
-              Retry all failed ({failed.total})
+              Relancer tous les échecs ({failed.total})
             </button>
           </form>
         }
@@ -58,7 +58,7 @@ export async function QueueV2({ adminPrefix }: Props): Promise<React.ReactElemen
           ? { className: "border-l-4 border-l-[color:var(--color-admin-destructive)]" }
           : {})}
       >
-        <h2 className="admin-h2">Failed ({failed.total})</h2>
+        <h2 className="admin-h2">En échec ({failed.total})</h2>
         <JobMini rows={failed.rows} adminPrefix={adminPrefix} />
       </AdminCard>
     </AdminPageShell>

@@ -86,7 +86,7 @@ export function OptionActions({ optionId }: { optionId: string }) {
               rows={3}
               maxLength={500}
               className="admin-input admin-textarea"
-              placeholder="Ex: créneau finalement indisponible, fit pas adapté…"
+              placeholder="Ex: créneau finalement indisponible, profil pas adapté…"
               disabled={vPending || rPending}
             />
           </div>

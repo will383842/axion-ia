@@ -34,8 +34,8 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Détection Dérive Brand Voice"
-        description="Monitoring quotidien (04:00 UTC) — similarité cosine article vs référence Manon. Alerte si < 0.80."
+        title="Détection de dérive de la voix de marque"
+        description="Monitoring quotidien (04:00 UTC) — similarité cosinus article vs référence Manon. Alerte si < 0.80."
         actions={<RecalibrateBrandVoiceForm articleIds={recalibrateArticleIds} />}
       />
 
@@ -56,7 +56,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
             </strong>
           </li>
           <li>
-            Dernier run : <strong>{lastRunLabel}</strong>
+            Dernier passage : <strong>{lastRunLabel}</strong>
           </li>
         </ul>
       </AdminCard>
@@ -69,12 +69,12 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
             <AdminStatCard
               label="Articles analysés"
               value={String(stats.articlesAnalyzed)}
-              meta="fenêtre dernier run"
+              meta="fenêtre du dernier passage"
             />
             <AdminStatCard
               label="Articles flaggés (< 0.80)"
               value={String(stats.articlesFlagged)}
-              meta="drift warning 30j"
+              meta="alerte de dérive 30j"
               tone={stats.articlesFlagged > 0 ? "warning" : "default"}
             />
             <AdminStatCard

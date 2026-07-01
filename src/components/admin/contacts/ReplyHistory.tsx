@@ -15,7 +15,7 @@ const STATUS_LABEL: Record<string, { icon: string; label: string; tone: string }
   pending: { icon: "🟡", label: "En cours d'envoi", tone: "warning" },
   sent: { icon: "🟢", label: "Envoyé", tone: "success" },
   delivered: { icon: "✅", label: "Délivré", tone: "success" },
-  bounced: { icon: "⚠️", label: "Bounced", tone: "warning" },
+  bounced: { icon: "⚠️", label: "Rejeté", tone: "warning" },
   complained: { icon: "🚨", label: "Marqué comme spam", tone: "danger" },
   failed: { icon: "🔴", label: "Échec d'envoi", tone: "danger" },
 };
@@ -85,7 +85,7 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
                 >
                   <span aria-hidden="true">{status?.icon ?? "🟡"}</span>
                   {status?.label ?? r.deliveryStatus}
-                  {r.retryCount > 0 ? ` · retry ${r.retryCount}` : ""}
+                  {r.retryCount > 0 ? ` · tentative ${r.retryCount}` : ""}
                 </span>
               </div>
 

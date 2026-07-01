@@ -35,11 +35,11 @@ export async function GeoHistoryV2({ adminPrefix }: Props): Promise<React.ReactE
         </Link>
       ),
     },
-    { key: "scope", header: "Scope", cell: (c) => c.scope },
+    { key: "scope", header: "Périmètre", cell: (c) => c.scope },
     { key: "target", header: "Cible", cell: (c) => c.totalTargetCount },
     {
       key: "genpubfail",
-      header: "Gen/Pub/Fail",
+      header: "Gén/Pub/Échec",
       cell: (c) => `${c.generatedCount} / ${c.publishedCount} / ${c.failedCount}`,
     },
     { key: "status", header: "Statut", cell: (c) => c.status },

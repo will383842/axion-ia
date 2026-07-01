@@ -18,7 +18,7 @@ export function GeoBatchesNewV2({ adminPrefix, preselected }: Props): React.Reac
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <p className="admin-meta-block">
-          Le batch builder complet (modes d&apos;ordre, drag&amp;drop, skip filters) arrive V1.5.
+          Le batch builder complet (modes d&apos;ordre, glisser-déposer, filtres d&apos;exclusion) arrive V1.5.
           Pour V1, créez une campagne depuis le formulaire campagne avec scope <code>region</code>{" "}
           ou <code>departement</code>.
         </p>

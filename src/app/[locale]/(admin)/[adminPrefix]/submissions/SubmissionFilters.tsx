@@ -81,7 +81,7 @@ export function SubmissionFilters({ initial }: FiltersProps) {
 
         <div className="admin-field">
           <label htmlFor="locale" className="admin-label">
-            Locale
+            Langue
           </label>
           <select
             id="locale"

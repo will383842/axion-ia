@@ -31,13 +31,13 @@ export function LibraryV2({ base, status, images }: Props): React.ReactElement {
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Library"
+        title="Bibliothèque"
         description={`${images.length} image${images.length > 1 ? "s" : ""} affiché${
           images.length > 1 ? "es" : "e"
-        } (cap 60)`}
+        } (max 60)`}
         actions={
           <Link href={`${base}/upload`} className="admin-button">
-            + Upload
+            + Téléverser
           </Link>
         }
       />
@@ -58,7 +58,7 @@ export function LibraryV2({ base, status, images }: Props): React.ReactElement {
           description="Aucune image dans la bibliothèque pour ces critères."
           primaryAction={
             <Link href={`${base}/upload`} className="admin-button">
-              Uploader la première image
+              Téléverser la première image
             </Link>
           }
         />

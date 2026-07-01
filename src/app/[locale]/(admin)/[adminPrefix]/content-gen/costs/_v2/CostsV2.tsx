@@ -20,10 +20,10 @@ export async function CostsV2(): Promise<React.ReactElement> {
   type ProviderRow = (typeof stats.byProvider)[number];
 
   const columns: ReadonlyArray<AdminTableColumn<ProviderRow>> = [
-    { key: "provider", header: "Provider", cell: (p) => p.provider },
+    { key: "provider", header: "Fournisseur", cell: (p) => p.provider },
     { key: "cost", header: "Coût", cell: (p) => `$${p.costUsd.toFixed(2)}` },
-    { key: "tokensIn", header: "Tokens in", cell: (p) => p.tokensInput.toLocaleString() },
-    { key: "tokensOut", header: "Tokens out", cell: (p) => p.tokensOutput.toLocaleString() },
+    { key: "tokensIn", header: "Jetons entrée", cell: (p) => p.tokensInput.toLocaleString() },
+    { key: "tokensOut", header: "Jetons sortie", cell: (p) => p.tokensOutput.toLocaleString() },
     {
       key: "cap",
       header: "Cap mensuel",
@@ -58,7 +58,7 @@ export async function CostsV2(): Promise<React.ReactElement> {
       />
 
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Par provider (30 jours)</h2>
+        <h2 className="admin-h2">Par fournisseur (30 jours)</h2>
         {stats.byProvider.length === 0 ? (
           <AdminEmptyState title="Aucune dépense enregistrée." />
         ) : (
@@ -66,7 +66,7 @@ export async function CostsV2(): Promise<React.ReactElement> {
             columns={columns}
             rows={stats.byProvider}
             getRowId={(p) => p.provider}
-            caption="Coûts par provider (30 jours)"
+            caption="Coûts par fournisseur (30 jours)"
           />
         )}
       </AdminCard>

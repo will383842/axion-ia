@@ -643,26 +643,31 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "coaching-1to1",
     },
     // ── banque d'images (image-bank V1) ──────────────────────────────────
-    { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },
-    { href: `${base}/image-bank/library`, label: "Library", icon: "📚", group: "image-bank" },
-    { href: `${base}/image-bank/upload`, label: "Upload", icon: "⬆️", group: "image-bank" },
+    { href: `${base}/image-bank`, label: "Vue d'ensemble", icon: "🖼️", group: "image-bank" },
+    { href: `${base}/image-bank/library`, label: "Bibliothèque", icon: "📚", group: "image-bank" },
+    { href: `${base}/image-bank/upload`, label: "Téléverser", icon: "⬆️", group: "image-bank" },
     {
       href: `${base}/image-bank/bulk-import`,
-      label: "Bulk import CSV",
+      label: "Import CSV en masse",
       icon: "📦",
       group: "image-bank",
     },
-    { href: `${base}/image-bank/quality`, label: "Quality queue", icon: "🔍", group: "image-bank" },
-    { href: `${base}/image-bank/analytics`, label: "Analytics", icon: "📊", group: "image-bank" },
-    { href: `${base}/image-bank/categories`, label: "Categories", icon: "🏷️", group: "image-bank" },
-    { href: `${base}/image-bank/tags`, label: "Tags", icon: "🔖", group: "image-bank" },
+    { href: `${base}/image-bank/quality`, label: "File de qualité", icon: "🔍", group: "image-bank" },
+    {
+      href: `${base}/image-bank/analytics`,
+      label: "Statistiques",
+      icon: "📊",
+      group: "image-bank",
+    },
+    { href: `${base}/image-bank/categories`, label: "Catégories", icon: "🏷️", group: "image-bank" },
+    { href: `${base}/image-bank/tags`, label: "Étiquettes", icon: "🔖", group: "image-bank" },
     {
       href: `${base}/image-bank/usage-logs`,
-      label: "Usage logs (RGPD)",
+      label: "Journaux d'utilisation (RGPD)",
       icon: "🛡️",
       group: "image-bank",
     },
-    { href: `${base}/image-bank/settings`, label: "Settings", icon: "⚙️", group: "image-bank" },
+    { href: `${base}/image-bank/settings`, label: "Réglages", icon: "⚙️", group: "image-bank" },
     // ── salle de presse (communiqués + kit média de marque) ──────────────
     { href: `${base}/presse`, label: "Vue d'ensemble", icon: "📰", group: "presse" },
     { href: `${base}/presse/communiques`, label: "Communiqués", icon: "🗞️", group: "presse" },
@@ -682,7 +687,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── engagement ───────────────────────────────────────────────────────
     { href: `${base}/newsletter`, label: "Newsletter", icon: "📧", group: "engagement" },
     // ── ops & monitoring ─────────────────────────────────────────────────
-    { href: `${base}/analytics`, label: "Analytics & SEO", icon: "📊", group: "ops" },
+    { href: `${base}/analytics`, label: "Statistiques & SEO", icon: "📊", group: "ops" },
     { href: `${base}/web-vitals`, label: "Web Vitals", icon: "📈", group: "ops" },
     { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "🗺️", group: "ops" },
     { href: `${base}/infra`, label: "Infra & outils", icon: "🔧", group: "ops" },
@@ -690,7 +695,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/alerts`, label: "Alertes ops", icon: "🚨", group: "ops" },
     // ── système ──────────────────────────────────────────────────────────
     { href: `${base}/users`, label: "Utilisateurs", icon: "👥", group: "system" },
-    { href: `${base}/activity-logs`, label: "Activity logs", icon: "📜", group: "system" },
+    { href: `${base}/activity-logs`, label: "Journaux d'activité", icon: "📜", group: "system" },
     { href: `${base}/settings`, label: "Paramètres", icon: "⚙️", group: "system" },
     { href: `${base}/2fa/setup`, label: "2FA — sécurité", icon: "🔐", group: "system" },
   ];

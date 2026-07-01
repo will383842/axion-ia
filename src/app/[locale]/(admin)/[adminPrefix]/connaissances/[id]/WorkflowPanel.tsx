@@ -14,7 +14,7 @@ import { schedulePublishAction } from "@/server/actions/knowledge/schedule-publi
 import { unpublishAction } from "@/server/actions/knowledge/unpublish";
 import { archiveAction } from "@/server/actions/knowledge/archive";
 import { restoreAction } from "@/server/actions/knowledge/restore";
-import { getStatusLabel } from "@/content/knowledge/statuses";
+import { getStatusLabel, getPipelineStageLabel } from "@/content/knowledge/statuses";
 import type { KbStatus, KbPipelineStage } from "../../../../../../../prisma/generated/client";
 
 interface Props {
@@ -84,7 +84,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
       <h2 className="admin-h2">Workflow</h2>
       <p className="admin-meta">
         Statut : <strong>{getStatusLabel(status, "fr")}</strong> · Pipeline :{" "}
-        <strong>{pipelineStage}</strong>
+        <strong>{getPipelineStageLabel(pipelineStage, "fr")}</strong>
       </p>
 
       {/* draft → review : EDITOR+ */}

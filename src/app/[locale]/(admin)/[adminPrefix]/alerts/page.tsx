@@ -83,17 +83,17 @@ async function fetchUptimeRobotAlerts(): Promise<{
 function statusLabelUptimeRobot(status: number): string {
   switch (status) {
     case 0:
-      return "paused";
+      return "en pause";
     case 1:
-      return "not checked yet";
+      return "pas encore vérifié";
     case 2:
-      return "up";
+      return "en ligne";
     case 8:
-      return "seems down";
+      return "semble hors service";
     case 9:
-      return "down";
+      return "hors service";
     default:
-      return `status ${status}`;
+      return `statut ${status}`;
   }
 }
 
@@ -134,7 +134,7 @@ async function fetchCoolifyAlerts(): Promise<{
     const alerts: Alert[] = failed.slice(0, 5).map((d) => ({
       source: "coolify",
       severity: d.status === "failed" ? "critical" : "info",
-      title: `Deploy ${d.status}`,
+      title: `Déploiement ${d.status}`,
       detail: `commit ${(d.commit ?? "?").slice(0, 8)} · ${new Date(d.created_at).toLocaleString("fr-FR")}`,
       url: d.deployment_uuid ? `${url}/deployment/${d.deployment_uuid}` : url,
       createdAt: d.created_at,

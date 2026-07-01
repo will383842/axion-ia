@@ -260,7 +260,7 @@ function TranslationFields({
   const labels =
     prefix === "fr"
       ? { title: "Titre", slug: "Slug", excerpt: "Chapeau", body: "Corps de l'article" }
-      : { title: "Title", slug: "Slug", excerpt: "Excerpt", body: "Article body" };
+      : { title: "Titre", slug: "Slug", excerpt: "Chapeau", body: "Corps de l'article" };
 
   return (
     <>
@@ -318,14 +318,14 @@ function TranslationFields({
         <TiptapEditor
           name={`${prefix}_body`}
           initialHtml={initial?.body ?? ""}
-          placeholder={prefix === "fr" ? "Rédigez l'article…" : "Write the article…"}
+          placeholder={prefix === "fr" ? "Rédigez l'article…" : "Rédigez l'article…"}
         />
       </div>
 
       <div className="admin-form-row">
         <div className="admin-field">
           <label htmlFor={`${prefix}_metaTitle`} className="admin-label">
-            Meta title (max 70)
+            Méta-titre (max 70)
           </label>
           <input
             id={`${prefix}_metaTitle`}
@@ -339,7 +339,7 @@ function TranslationFields({
         </div>
         <div className="admin-field">
           <label htmlFor={`${prefix}_metaDescription`} className="admin-label">
-            Meta description (max 160)
+            Méta-description (max 160)
           </label>
           <input
             id={`${prefix}_metaDescription`}
@@ -353,7 +353,7 @@ function TranslationFields({
         </div>
         <div className="admin-field">
           <label htmlFor={`${prefix}_ogImage`} className="admin-label">
-            OG image URL
+            URL de l'image OG
           </label>
           <input
             id={`${prefix}_ogImage`}

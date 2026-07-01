@@ -69,9 +69,9 @@ export function ReschedulePanel({ bookings, slots }: Props) {
         <div className="admin-reschedule-grid">
           {/* ── Colonne gauche : bookings ── */}
           <div className="admin-card">
-            <h2 className="admin-h2">Bookings reschedulables</h2>
+            <h2 className="admin-h2">Réservations reprogrammables</h2>
             {bookings.length === 0 ? (
-              <p className="admin-meta-block">Aucun booking à reprogrammer sur la période.</p>
+              <p className="admin-meta-block">Aucune réservation à reprogrammer sur la période.</p>
             ) : (
               <ul className="admin-reschedule-bookings">
                 {bookings.map((b) => (
@@ -83,9 +83,9 @@ export function ReschedulePanel({ bookings, slots }: Props) {
 
           {/* ── Colonne droite : slots ── */}
           <div className="admin-card">
-            <h2 className="admin-h2">Slots du mois</h2>
+            <h2 className="admin-h2">Créneaux du mois</h2>
             {slots.length === 0 ? (
-              <p className="admin-meta-block">Aucun slot calendrier sur le mois.</p>
+              <p className="admin-meta-block">Aucun créneau calendrier sur le mois.</p>
             ) : (
               <div className="admin-reschedule-slots">
                 {slots.map((s) => (
@@ -206,7 +206,7 @@ function DroppableSlotCell({ slot }: { slot: SlotItem }) {
     .filter(Boolean)
     .join(" ");
   return (
-    <div ref={setNodeRef} className={classes} aria-label={`Slot ${slot.slotDate}`}>
+    <div ref={setNodeRef} className={classes} aria-label={`Créneau ${slot.slotDate}`}>
       <div className="admin-reschedule-slot-date">{new Date(slot.slotDate).getUTCDate()}</div>
       <div className="admin-meta-small">
         {slot.status === "available" ? "Libre" : slot.status === "reserved" ? "Réservé" : "Bloqué"}

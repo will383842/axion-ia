@@ -58,18 +58,18 @@ export async function TemplatesListV2({
     { key: "type", header: "Type", cell: (r) => r.contentType },
     {
       key: "slug",
-      header: "Slug",
+      header: "Identifiant",
       cell: (r) => (
         <Link href={`${base}/${r.id}`} className="admin-link">
           <code>{r.slug}</code>
         </Link>
       ),
     },
-    { key: "variant", header: "Variant", cell: (r) => r.variant ?? "—" },
+    { key: "variant", header: "Variante", cell: (r) => r.variant ?? "—" },
     { key: "version", header: "Version", cell: (r) => `v${r.version}` },
     {
       key: "stats",
-      header: "Gen/Pub/Failed",
+      header: "Génér./Publ./Échecs",
       cell: (r) => `${r.generatedItems} / ${r.publishedItems} / ${r.failedItems}`,
     },
     { key: "model", header: "Modèle", cell: (r) => r.defaultModel ?? "—" },

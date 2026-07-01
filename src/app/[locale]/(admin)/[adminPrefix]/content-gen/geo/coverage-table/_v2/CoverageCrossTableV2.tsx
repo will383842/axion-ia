@@ -18,7 +18,7 @@ const STATUS_LABELS: Record<string, string> = {
   running: "En cours",
   queued: "En attente",
   failed: "Échec",
-  needs_review: "Review",
+  needs_review: "À relire",
   quality_improving: "Qualité auto",
   cancelled: "Annulé",
 };

@@ -40,15 +40,15 @@ export function OverviewV2({
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Image bank — Overview"
-        description={`Dashboard production · ${new Date().toLocaleDateString(locale)}`}
+        title="Banque d'images — Vue d'ensemble"
+        description={`Tableau de bord production · ${new Date().toLocaleDateString(locale)}`}
         actions={
           <>
             <Link href={`${base}/upload`} className="admin-button">
-              Upload
+              Téléverser
             </Link>
             <Link href={`${base}/bulk-import`} className="admin-button-ghost">
-              Bulk import CSV
+              Import en masse CSV
             </Link>
           </>
         }
@@ -58,32 +58,32 @@ export function OverviewV2({
         aria-label="KPIs image-bank"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
       >
-        <AdminStatCard label="Total images" value={totalCount} href={`${base}/library`} />
+        <AdminStatCard label="Total des images" value={totalCount} href={`${base}/library`} />
         <AdminStatCard
-          label="Published"
+          label="Publiées"
           value={publishedCount}
           tone="success"
           href={`${base}/library?status=published`}
         />
         <AdminStatCard
-          label="Needs review"
+          label="À vérifier"
           value={pendingReviewCount}
           tone={pendingReviewCount > 0 ? "warning" : "default"}
           href={`${base}/quality`}
         />
         <AdminStatCard
-          label="Avg SEO score"
+          label="Score SEO moyen"
           value={`${avgSeoScore}/100`}
           tone={avgSeoScore >= 80 ? "success" : "warning"}
         />
       </section>
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Recent uploads</h2>
+        <h2 className="admin-h2">Téléversements récents</h2>
         <div className="admin-kpi-grid">
           {recentImages.length === 0 ? (
             <p className="admin-meta col-span-4">
-              Aucune image — uploadez la première via le bouton ci-dessus.
+              Aucune image — téléversez la première via le bouton ci-dessus.
             </p>
           ) : (
             recentImages.map((img) => {
@@ -107,7 +107,7 @@ export function OverviewV2({
       </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Top embedded</h2>
+        <h2 className="admin-h2">Les plus intégrées</h2>
         <div className="admin-kpi-grid">
           {topEmbedded.length === 0 ? (
             <p className="admin-meta col-span-4">Aucune image publiée pour le moment.</p>
@@ -123,7 +123,7 @@ export function OverviewV2({
                   <div className="admin-image-placeholder" />
                   <p className="admin-meta-strong">{tr?.title ?? img.slug}</p>
                   <p className="admin-meta-small">
-                    {img.embedCount} embeds · {img.downloadCount} downloads
+                    {img.embedCount} intégrations · {img.downloadCount} téléchargements
                   </p>
                 </Link>
               );
@@ -133,21 +133,21 @@ export function OverviewV2({
       </AdminCard>
 
       <AdminCard>
-        <h2 className="admin-h2">Quick links</h2>
+        <h2 className="admin-h2">Liens rapides</h2>
         <ul className="admin-meta-block flex flex-wrap gap-[var(--space-admin-5)]">
           <li>
             <Link href={`${base}/analytics`} className="admin-link">
-              View detailed analytics →
+              Voir les statistiques détaillées →
             </Link>
           </li>
           <li>
             <Link href={`${base}/sitemap-status`} className="admin-link">
-              Sitemap &amp; IndexNow status →
+              Statut Sitemap &amp; IndexNow →
             </Link>
           </li>
           <li>
             <Link href={`${base}/settings`} className="admin-link">
-              Settings →
+              Paramètres →
             </Link>
           </li>
         </ul>

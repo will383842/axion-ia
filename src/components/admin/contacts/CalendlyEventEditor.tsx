@@ -69,7 +69,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="admin-field">
           <label htmlFor="inviteeName" className="admin-label">
-            Nom invitee
+            Nom invité
           </label>
           <input
             id="inviteeName"
@@ -82,7 +82,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
         </div>
         <div className="admin-field">
           <label htmlFor="inviteeEmail" className="admin-label">
-            Email invitee
+            Email invité
           </label>
           <input
             id="inviteeEmail"
@@ -121,7 +121,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
             <option value="scheduled">Programmé</option>
             <option value="completed">Terminé</option>
             <option value="canceled">Annulé</option>
-            <option value="no_show">No-show</option>
+            <option value="no_show">Absent</option>
           </select>
         </div>
         <div className="admin-field">
@@ -165,7 +165,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
         </div>
         <div className="admin-field sm:col-span-2">
           <label htmlFor="linkedSubmissionId" className="admin-label">
-            ID Submission liée (UUID, optionnel)
+            ID soumission liée (UUID, optionnel)
           </label>
           <input
             id="linkedSubmissionId"

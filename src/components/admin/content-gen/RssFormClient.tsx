@@ -90,7 +90,7 @@ export function RssFormClient({ action }: Props): React.ReactElement {
       </div>
       <div className="admin-field">
         <label className="admin-label">
-          <input type="checkbox" name="autoPublish" /> Auto-publish si score ≥ seuil
+          <input type="checkbox" name="autoPublish" /> Publication auto si score ≥ seuil
         </label>
       </div>
       <div className="admin-field">

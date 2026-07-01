@@ -139,7 +139,7 @@ export function TemplatesEditV2({ template }: Props): React.ReactElement {
           <div className="admin-filters-actions">
             <SubmitButton
               variant="primary"
-              pendingLabel="Enqueue…"
+              pendingLabel="Mise en file…"
               ariaLabel="Lancer un test de ce template"
             >
               Tester avec ce template

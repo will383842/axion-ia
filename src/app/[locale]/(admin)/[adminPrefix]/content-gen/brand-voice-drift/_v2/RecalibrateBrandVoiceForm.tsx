@@ -30,9 +30,9 @@ export function RecalibrateBrandVoiceForm({ articleIds }: Props): React.ReactEle
       ))}
       <SubmitButton
         variant="primary"
-        pendingLabel="Recalibration…"
+        pendingLabel="Recalibrage…"
         disabled={!hasArticles}
-        ariaLabel="Recalibrer la référence brand voice à partir des articles affichés"
+        ariaLabel="Recalibrer la référence de voix de marque à partir des articles affichés"
       >
         Recalibrer la référence
       </SubmitButton>

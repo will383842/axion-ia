@@ -240,7 +240,7 @@ export function JobOfferForm({ initial }: Props) {
         </div>
         <div className="admin-field">
           <label htmlFor="employmentType" className="admin-label">
-            employmentType (Google)
+            Type de contrat (Google)
           </label>
           <select
             id="employmentType"
@@ -269,12 +269,12 @@ export function JobOfferForm({ initial }: Props) {
           >
             <option value="on_site">Sur site</option>
             <option value="hybrid">Hybride</option>
-            <option value="remote">Remote</option>
+            <option value="remote">À distance</option>
           </select>
         </div>
         <div className="admin-field">
           <label htmlFor="remoteDaysPerWeek" className="admin-label">
-            Jours remote / sem (hybride)
+            Jours à distance / sem (hybride)
           </label>
           <input
             id="remoteDaysPerWeek"

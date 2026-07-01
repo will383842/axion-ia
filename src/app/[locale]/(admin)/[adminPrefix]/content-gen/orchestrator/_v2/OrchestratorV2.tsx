@@ -26,7 +26,7 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
 
   const campaignColumns: ReadonlyArray<AdminTableColumn<ActiveCampaign>> = [
     { key: "name", header: "Nom", cell: (c) => c.name },
-    { key: "scope", header: "Scope", cell: (c) => c.scope },
+    { key: "scope", header: "Périmètre", cell: (c) => c.scope },
     {
       key: "avancement",
       header: "Avancement",

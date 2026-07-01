@@ -113,8 +113,8 @@ export function HeatmapV2({
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title={`Heatmap géographique — ${periodLabel}`}
-        description={`${bookings.length} booking${bookings.length > 1 ? "s" : ""} actif${bookings.length > 1 ? "s" : ""} sur la période`}
+        title={`Carte de chaleur géographique — ${periodLabel}`}
+        description={`${bookings.length} réservation${bookings.length > 1 ? "s" : ""} active${bookings.length > 1 ? "s" : ""} sur la période`}
         actions={
           <div className="admin-filters-actions">
             <Link
@@ -141,7 +141,7 @@ export function HeatmapV2({
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Conflits géographiques (fenêtre 48h)</h2>
         <p className="admin-meta-block">
-          Bookings espacés de moins de 48 h et distants de plus de{" "}
+          Réservations espacées de moins de 48 h et distantes de plus de{" "}
           <strong>{WARN_THRESHOLD_KM} km</strong> (alerte) ou{" "}
           <strong>{CONFLICT_THRESHOLD_KM} km</strong> (conflit critique).
         </p>
@@ -186,9 +186,9 @@ export function HeatmapV2({
               <thead>
                 <tr>
                   <th>Ville</th>
-                  <th>Bookings</th>
+                  <th>Réservations</th>
                   <th>Distance hub Paris</th>
-                  <th>Buffer recommandé</th>
+                  <th>Tampon recommandé</th>
                   <th>Détail</th>
                 </tr>
               </thead>

@@ -227,7 +227,7 @@ export function CitiesOrderV3({ initialRows, initialTotal }: Props): React.React
         <AdminStatCard label="Total" value={String(stats.total)} />
         <AdminStatCard label="Épinglées" value={String(stats.pinned)} />
         <AdminStatCard label="Affichées" value={String(visibleRows.length)} />
-        <AdminStatCard label="Re-ordonnancement" value={isReordering ? "En cours…" : "Idle"} />
+        <AdminStatCard label="Re-ordonnancement" value={isReordering ? "En cours…" : "Au repos"} />
       </div>
 
       <AdminCard>

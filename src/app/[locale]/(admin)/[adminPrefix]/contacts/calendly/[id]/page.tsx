@@ -16,7 +16,7 @@ const STATUS_LABEL: Record<string, string> = {
   scheduled: "Programmé",
   canceled: "Annulé",
   completed: "Terminé",
-  no_show: "No-show",
+  no_show: "Absent",
 };
 
 interface PageProps {
@@ -49,7 +49,7 @@ export default async function CalendlyDetailPage({
             rel="noopener noreferrer"
             className="admin-button-ghost"
           >
-            Dashboard Calendly →
+            Tableau de bord Calendly →
           </a>
         }
       />
@@ -76,7 +76,7 @@ export default async function CalendlyDetailPage({
         <div className="admin-card">
           <h2 className="admin-h2">Métadonnées</h2>
           <dl className="admin-dl">
-            <dt className="admin-dt">Type slug</dt>
+            <dt className="admin-dt">Slug du type</dt>
             <dd className="admin-dd">
               <code className="text-xs">{event.eventTypeSlug}</code>
             </dd>
@@ -112,7 +112,7 @@ export default async function CalendlyDetailPage({
             )}
             {event.utmMedium && (
               <>
-                <dt className="admin-dt">UTM medium</dt>
+                <dt className="admin-dt">UTM support</dt>
                 <dd className="admin-dd">
                   <code className="text-xs">{event.utmMedium}</code>
                 </dd>
@@ -120,7 +120,7 @@ export default async function CalendlyDetailPage({
             )}
             {event.referrer && (
               <>
-                <dt className="admin-dt">Referrer</dt>
+                <dt className="admin-dt">Provenance</dt>
                 <dd className="admin-dd">
                   <code className="text-xs">{event.referrer}</code>
                 </dd>
@@ -134,7 +134,7 @@ export default async function CalendlyDetailPage({
         </div>
 
         <div className="admin-card admin-card-wide">
-          <h2 className="admin-h2">Payload Calendly brut</h2>
+          <h2 className="admin-h2">Données Calendly brutes</h2>
           <pre className="admin-json text-xs">{JSON.stringify(event.rawPayload, null, 2)}</pre>
         </div>
       </div>

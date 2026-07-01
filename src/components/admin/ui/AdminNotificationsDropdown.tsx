@@ -25,6 +25,14 @@ export interface AdminNotificationItem {
   createdAt: string;
 }
 
+/** Libellés FR du niveau de sévérité affiché dans le badge (console 100 % FR). */
+const SEVERITY_LABELS_FR: Record<AdminNotificationItem["severity"], string> = {
+  info: "Information",
+  warning: "Attention",
+  destructive: "Critique",
+  success: "Succès",
+};
+
 interface AdminNotificationsDropdownProps {
   items: ReadonlyArray<AdminNotificationItem>;
   unreadCount?: number;
@@ -114,7 +122,7 @@ export function AdminNotificationsDropdown({
                 >
                   <div className="flex items-center gap-[var(--space-admin-3)]">
                     <AdminBadge tone={it.severity} compact>
-                      {it.severity}
+                      {SEVERITY_LABELS_FR[it.severity] ?? it.severity}
                     </AdminBadge>
                     <span
                       className={cn(

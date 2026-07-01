@@ -109,7 +109,7 @@ export function HelpForm({ categories, initial }: Props) {
               defaultChecked={initial?.isTutorial ?? false}
               disabled={pending}
             />
-            <span>📘 Tutoriel (Schema HowTo)</span>
+            <span>📘 Tutoriel (balisage HowTo)</span>
           </label>
         </div>
       </div>
@@ -218,7 +218,7 @@ function HelpTranslationFields({
         <TiptapEditor
           name={`${prefix}_body`}
           initialHtml={initial?.body ?? ""}
-          placeholder={prefix === "fr" ? "Rédigez l'article…" : "Write the article…"}
+          placeholder={prefix === "fr" ? "Rédigez l'article…" : "Rédigez l'article…"}
         />
       </div>
 

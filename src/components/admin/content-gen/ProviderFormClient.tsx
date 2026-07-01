@@ -79,7 +79,7 @@ export function ProviderFormClient({
           throw err;
         }
         if (err instanceof Error && err.message === "NEXT_REDIRECT") throw err;
-        const msg = err instanceof Error ? err.message : "Erreur lors du reset.";
+        const msg = err instanceof Error ? err.message : "Erreur lors de la réinitialisation.";
         setResetError(msg);
       }
     });
@@ -163,7 +163,7 @@ export function ProviderFormClient({
         </div>
 
         <details className="mt-[var(--space-admin-4)]">
-          <summary>Reset spend mensuel (debug / fin de cycle)</summary>
+          <summary>Réinitialiser la dépense mensuelle (fin de cycle)</summary>
         </details>
       </form>
       <form onSubmit={handleReset} className="mt-[var(--space-admin-3)]">
@@ -179,7 +179,7 @@ export function ProviderFormClient({
           disabled={isResetPending}
           aria-busy={isResetPending}
         >
-          {isResetPending ? "Reset en cours…" : "Reset currentMonthSpentUsd à 0"}
+          {isResetPending ? "Réinitialisation en cours…" : "Réinitialiser la dépense du mois à 0"}
         </button>
       </form>
     </>
