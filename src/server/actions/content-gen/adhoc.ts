@@ -41,6 +41,11 @@ const AdHocJobSchema = z.object({
   anchorVilleSlug: z.string().max(100).optional(),
   searchIntent: z.enum(SEARCH_INTENT_VALUES).optional(),
   campaignId: z.string().cuid().optional(),
+  // Titre / mot-clé imposé (optionnel). Si fourni, il est écrit dans
+  // inputPayload.primaryKeyword → le worker NE pioche PAS dans le pool de seeds
+  // et le générateur (blog_from_title en tête) l'utilise comme sujet imposé.
+  // Vide → fallback historique = sélection auto d'un seed (rotation lastUsedAt).
+  title: z.string().trim().min(1).max(140).optional(),
 });
 
 export type AdHocJobInput = z.infer<typeof AdHocJobSchema>;
@@ -52,7 +57,7 @@ export async function dispatchAdHocJob(input: AdHocJobInput): Promise<{ jobId: s
   const idempotencyKey = crypto
     .createHash("sha256")
     .update(
-      `adhoc::${session.userId}::${Date.now()}::${data.contentType}::${data.anchorVilleSlug ?? ""}`,
+      `adhoc::${session.userId}::${Date.now()}::${data.contentType}::${data.anchorVilleSlug ?? ""}::${data.title ?? ""}`,
     )
     .digest("hex")
     .slice(0, 32);
@@ -65,7 +70,13 @@ export async function dispatchAdHocJob(input: AdHocJobInput): Promise<{ jobId: s
         status: "queued",
         priority: 10,
         correlationId,
-        inputPayload: { adhoc: true, dispatchedBy: session.userId },
+        inputPayload: {
+          adhoc: true,
+          dispatchedBy: session.userId,
+          // Si présent → sujet imposé (court-circuite la sélection de seed du
+          // worker) ; lu par content-gen-worker via inputPayload.primaryKeyword.
+          ...(data.title ? { primaryKeyword: data.title } : {}),
+        },
         targetLocale: "fr",
         targetSearchIntent: (data.searchIntent ?? "informational") as SearchIntent,
         primaryProvider: "openai",

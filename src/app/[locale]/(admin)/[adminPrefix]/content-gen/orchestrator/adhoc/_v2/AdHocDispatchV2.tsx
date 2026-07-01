@@ -39,6 +39,7 @@ interface Props {
 
 export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
   const [contentType, setContentType] = useState<string>("blog_article");
+  const [title, setTitle] = useState("");
   const [anchorVilleSlug, setAnchorVilleSlug] = useState("");
   const [searchIntent, setSearchIntent] = useState<string>("informational");
   const [campaignId, setCampaignId] = useState("");
@@ -51,6 +52,7 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
     try {
       const result = await dispatchAdHocJob({
         contentType: contentType as Parameters<typeof dispatchAdHocJob>[0]["contentType"],
+        ...(title.trim() ? { title: title.trim() } : {}),
         ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
         searchIntent: searchIntent as Parameters<typeof dispatchAdHocJob>[0]["searchIntent"],
         ...(campaignId ? { campaignId } : {}),
@@ -89,6 +91,22 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
               </option>
             ))}
           </select>
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Titre / mot-clé imposé (optionnel)</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="ex: Automatiser sa facturation avec l'IA en cabinet comptable"
+            className="w-full rounded border px-3 py-2 text-sm"
+            maxLength={140}
+          />
+          <p className="text-muted-foreground text-xs">
+            Si renseigné, ce titre est imposé au générateur (sujet exact). Laissé vide, le worker
+            pioche automatiquement un mot-clé dans le pool de seeds.
+          </p>
         </div>
 
         <div className="space-y-1">
