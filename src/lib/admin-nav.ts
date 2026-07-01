@@ -201,6 +201,17 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       tier: "advanced",
     },
     {
+      // Séparation Actualités (2026-07-01) — centre de contrôle des news RSS
+      // (volume/jour + fraîcheur) dans le pôle Lancer. Les news sont publiées
+      // séparément du blog, sur /actualites.
+      href: `${base}/content-gen/news`,
+      label: "Actualités (news RSS)",
+      icon: "📰",
+      group: "content_gen",
+      subGroup: "lancer",
+      tier: "simple",
+    },
+    {
       // Masqué de la sidebar (page de setup one-shot) mais conservée : accessible
       // par URL directe + command palette, et le breadcrumb résout toujours le
       // libellé. `parent` défini ⇒ exclu du rendu sidebar (cf. AdminSidebarNav
