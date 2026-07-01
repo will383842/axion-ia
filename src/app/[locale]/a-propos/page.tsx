@@ -23,6 +23,7 @@ import {
   SITE_URL,
   SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -118,6 +119,9 @@ export default async function About({ params }: Props) {
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     mainEntity: { "@id": `${SITE_URL}/#organization` },
     about: { "@id": `${SITE_URL}/#organization` },
+    // Speakable AEO — AboutPage est un sous-type WebPage : la propriété est valide
+    // ici (défaut = h1 + [itemprop=text] + .speakable, présents dans le hero).
+    speakable: buildSpeakableSpecification(),
   } as const;
 
   // FAQ AEO — Q/R factuelles citables sur l'entité Axion-IA (siège, ancienneté,
