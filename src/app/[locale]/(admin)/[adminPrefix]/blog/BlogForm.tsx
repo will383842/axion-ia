@@ -353,7 +353,7 @@ function TranslationFields({
         </div>
         <div className="admin-field">
           <label htmlFor={`${prefix}_ogImage`} className="admin-label">
-            URL de l'image OG
+            URL de l&apos;image OG
           </label>
           <input
             id={`${prefix}_ogImage`}
