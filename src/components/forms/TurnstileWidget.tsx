@@ -127,7 +127,15 @@ export function TurnstileWidget({
       try {
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
-          size,
+          // Cloudflare a RETIRÉ "invisible" des valeurs de `size` (désormais
+          // compact | flexible | normal). Passer size:"invisible" fait lever
+          // `TurnstileError: Invalid value for parameter "size"` → render()
+          // échoue → AUCUN token n'est émis → « Captcha échoué » même quand le
+          // formulaire est bien hydraté. Pour un comportement quasi-invisible
+          // avec un widget « Managed », on n'envoie PAS de `size` et on utilise
+          // `appearance:"interaction-only"` : le widget ne s'affiche QUE si un
+          // défi interactif est requis ; sinon pass silencieux (token sans UI).
+          ...(size === "invisible" ? { appearance: "interaction-only" as const } : { size }),
           action: action ?? "submit",
           theme: "light",
           retry: "auto",
