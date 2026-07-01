@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { isStaleServerActionError } from "@/lib/forms/form-errors";
 
 interface NewsletterFormProps {
   labels: {
@@ -45,13 +46,27 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
     widget: turnstileWidget,
     reset: resetTurnstile,
   } = useTurnstileToken("newsletter");
+  const turnstileExpected = Boolean(process.env["NEXT_PUBLIC_TURNSTILE_SITE_KEY"]);
   const [serverError, setServerError] = React.useState<string | null>(null);
+
+  const isFr = locale === "fr";
+  const captchaBlockedMsg = isFr
+    ? "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur), puis réessayez."
+    : "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker) and try again.";
+  const pageOutdatedMsg = isFr
+    ? "Cette page a expiré suite à une mise à jour du site. Rechargez la page (Ctrl+R / ⌘+R) puis réessayez."
+    : "This page expired after a site update. Reload the page (Ctrl+R / ⌘+R) and try again.";
 
   // E4 cert 2026-05-08 — wired to Sprint 15 `subscribeNewsletterAction`
   // (rate-limit + Turnstile + double opt-in token via email queue).
   // Audit E2E 2026-05-11 P0-CONF-02 — Turnstile widget client câblé.
   async function onSubmit(values: NewsletterInput) {
     setServerError(null);
+    // Turnstile attendu mais aucun token (script/challenge bloqué) → message clair.
+    if (turnstileExpected && !turnstileToken) {
+      setServerError(captchaBlockedMsg);
+      return;
+    }
     try {
       const fd = new FormData();
       fd.set("email", values.email);
@@ -62,11 +77,18 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
       const result = await subscribeNewsletterAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
         resetTurnstile();
-        setServerError(result.error || labels.failure);
-        throw new Error(result.error || labels.failure);
+        const message =
+          turnstileExpected && !turnstileToken ? captchaBlockedMsg : result.error || labels.failure;
+        setServerError(message);
+        throw new Error(message);
       }
     } catch (err) {
-      if (!serverError) setServerError(labels.failure);
+      // Deploy-skew (Server Action introuvable, page chargée avant un déploiement).
+      if (isStaleServerActionError(err)) {
+        setServerError(pageOutdatedMsg);
+      } else if (!serverError) {
+        setServerError(labels.failure);
+      }
       throw err instanceof Error ? err : new Error(String(err));
     }
   }

@@ -249,6 +249,12 @@ jobs:
             DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
             REDIS_URL=redis://stub.invalid:6379
             BUILD_SSG_VILLES_INDEXABLE_ONLY=true
+          # Secret BuildKit (jamais baké dans l'image GHCR publique) — clé de
+          # chiffrement des Server Actions. Si le secret GH `NEXT_SERVER_ACTIONS_
+          # ENCRYPTION_KEY` est absent → chaîne vide → build INERTE (Next génère
+          # une clé par build = comportement actuel). Voir Dockerfile RUN build.
+          secrets: |
+            server_actions_key=${{ secrets.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}
           # Cache de layers Docker en REGISTRY (GHCR) — ré-activé 2026-06-22.
           #
           # Historique : `cache-to type=gha` (inline) construisait un gros tarball

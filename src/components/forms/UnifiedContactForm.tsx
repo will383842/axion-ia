@@ -39,6 +39,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import { cn } from "@/lib/utils";
 
 // ---- Labels i18n ----------------------------------------------------------
@@ -114,6 +115,8 @@ const LABELS = {
     failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
     captchaBlocked:
       "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur pour ce site), puis réessayez — ou écrivez-nous directement à contact@axion-ia.com.",
+    pageOutdated:
+      "Cette page a expiré suite à une mise à jour du site. Rechargez la page (Ctrl+R / ⌘+R) puis renvoyez votre demande.",
     typeRequired: "Choisissez un type pour continuer.",
     submitAgain: "Faire une autre demande",
     referenceLabel: "Référence",
@@ -189,6 +192,8 @@ const LABELS = {
     failure: "An error occurred. Try again or email contact@axion-ia.com.",
     captchaBlocked:
       "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker for this site) and try again — or email us directly at contact@axion-ia.com.",
+    pageOutdated:
+      "This page expired after a site update. Reload the page (Ctrl+R / ⌘+R) and resend your request.",
     typeRequired: "Pick a type to continue.",
     submitAgain: "Send another request",
     referenceLabel: "Reference",
@@ -323,17 +328,20 @@ function UnifiedContactFormBody({
     token: turnstileToken,
     widget: turnstileWidget,
     reset: resetTurnstile,
-    blocked: turnstileBlocked,
   } = useTurnstileToken("unified-contact");
+  // Turnstile attendu si une site key est configurée (prod). Inlined au build.
+  const turnstileExpected = Boolean(process.env["NEXT_PUBLIC_TURNSTILE_SITE_KEY"]);
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [submissionId, setSubmissionId] = React.useState<string | null>(null);
 
   async function onSubmit(values: UnifiedContactInput) {
     setServerError(null);
-    // Court-circuit : si Turnstile est bloqué (extension/DNS), la soumission
-    // échouerait côté serveur (fail-closed) avec un message générique. On
-    // affiche directement un message actionnable au lieu de tenter.
-    if (turnstileBlocked && !turnstileToken) {
+    // Court-circuit : Turnstile attendu mais AUCUN token produit (script ou
+    // challenge bloqué par une extension/DNS, ex. brunhild.challenges.cloudflare
+    // .com filtré). La soumission échouerait fail-closed → on affiche direct un
+    // message actionnable. Couvre TOUS les cas de token absent (pas seulement
+    // ceux où error-callback a pu tirer).
+    if (turnstileExpected && !turnstileToken) {
       setServerError(t.captchaBlocked);
       return;
     }
@@ -359,16 +367,21 @@ function UnifiedContactFormBody({
       const result = await submitUnifiedContactAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
         resetTurnstile();
-        // Si l'échec coïncide avec un Turnstile bloqué (token vide), on
-        // privilégie le message actionnable plutôt que le générique serveur.
+        // Token absent → message captcha actionnable ; sinon message serveur.
         const message =
-          turnstileBlocked && !turnstileToken ? t.captchaBlocked : result.error || t.failure;
+          turnstileExpected && !turnstileToken ? t.captchaBlocked : result.error || t.failure;
         setServerError(message);
         throw new Error(message);
       }
       setSubmissionId(result.submissionId || null);
     } catch (err) {
-      if (!serverError) setServerError(t.failure);
+      // Deploy-skew (Server Action introuvable car page chargée avant un
+      // déploiement) → message « rechargez » plutôt que générique.
+      if (isStaleServerActionError(err)) {
+        setServerError(t.pageOutdated);
+      } else if (!serverError) {
+        setServerError(t.failure);
+      }
       throw err instanceof Error ? err : new Error(String(err));
     }
   }
