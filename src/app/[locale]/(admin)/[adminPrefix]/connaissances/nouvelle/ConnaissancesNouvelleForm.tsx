@@ -11,7 +11,10 @@ import { createEntryAction, type CreateEntryResult } from "@/server/actions/know
 import { KB_TYPES, getKbTypeMeta } from "@/content/knowledge/types";
 import { KB_DOMAINS, getDomainLabel } from "@/content/knowledge/domains";
 import { KB_AUDIENCES, getAudienceLabel } from "@/content/knowledge/audiences";
-import { KB_CONFIDENTIALITIES, getConfidentialityLabel } from "@/content/knowledge/confidentialities";
+import {
+  KB_CONFIDENTIALITIES,
+  getConfidentialityLabel,
+} from "@/content/knowledge/confidentialities";
 import { TiptapEditor } from "@/components/admin/TiptapEditor";
 
 interface Props {

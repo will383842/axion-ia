@@ -652,7 +652,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "📦",
       group: "image-bank",
     },
-    { href: `${base}/image-bank/quality`, label: "File de qualité", icon: "🔍", group: "image-bank" },
+    {
+      href: `${base}/image-bank/quality`,
+      label: "File de qualité",
+      icon: "🔍",
+      group: "image-bank",
+    },
     {
       href: `${base}/image-bank/analytics`,
       label: "Statistiques",

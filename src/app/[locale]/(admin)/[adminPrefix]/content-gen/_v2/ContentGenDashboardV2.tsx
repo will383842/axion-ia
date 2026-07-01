@@ -131,9 +131,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
       )}
 
       <AdminCard className="mb-[var(--space-admin-6)]">
-        <h2 className="admin-h2">
-          Récapitulatif du jour — secteurs &amp; pipelines indépendants
-        </h2>
+        <h2 className="admin-h2">Récapitulatif du jour — secteurs &amp; pipelines indépendants</h2>
         <p className="admin-meta">
           3 secteurs éditoriaux (campagnes ciblées) + 2 pipelines indépendants (landing villes,
           RSS). Fenêtre depuis minuit UTC.

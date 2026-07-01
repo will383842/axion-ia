@@ -10,7 +10,10 @@ import { deleteEntryAction } from "@/server/actions/knowledge/delete-entry";
 import { KB_TYPES, getKbTypeMeta } from "@/content/knowledge/types";
 import { KB_DOMAINS, getDomainLabel } from "@/content/knowledge/domains";
 import { KB_AUDIENCES, getAudienceLabel } from "@/content/knowledge/audiences";
-import { KB_CONFIDENTIALITIES, getConfidentialityLabel } from "@/content/knowledge/confidentialities";
+import {
+  KB_CONFIDENTIALITIES,
+  getConfidentialityLabel,
+} from "@/content/knowledge/confidentialities";
 import {
   KB_STATUSES,
   KB_PIPELINE_STAGES,
