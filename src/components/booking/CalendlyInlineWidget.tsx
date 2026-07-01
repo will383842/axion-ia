@@ -1,9 +1,30 @@
 "use client";
-// use-client: charge le script tiers Calendly via next/script + embed inline
-// avec lien fallback pour les visiteurs dont le navigateur bloque les iframes
-// cross-origin (cookies tiers stricts, extensions anti-tracking, etc.).
+// use-client: charge le script tiers Calendly + init programmatique de l'embed
+// inline, avec lien fallback pour les visiteurs dont le navigateur bloque les
+// iframes cross-origin (cookies tiers stricts, extensions anti-tracking, etc.).
+//
+// Pourquoi injection manuelle plutôt que <Script strategy="afterInteractive"> ?
+// Audit 2026-07-01 : en App Router (Next 16 + React 19), le <Script async> était
+// hoisté en `<link rel=preload>` mais le <script> exécutable n'était jamais
+// injecté au runtime → `window.Calendly` restait undefined → le widget ne
+// s'initialisait jamais (grand cadre gris vide en prod). On charge donc le
+// script nous-mêmes dans un useEffect puis on appelle l'API programmatique
+// `Calendly.initInlineWidget`, ce qui est déterministe et indépendant du
+// timing d'auto-scan du DOM et du ScriptLoader de Next.
 
-import Script from "next/script";
+import { useEffect, useRef } from "react";
+
+const CALENDLY_WIDGET_JS = "https://assets.calendly.com/assets/external/widget.js";
+
+interface CalendlyGlobal {
+  initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
+}
+
+declare global {
+  interface Window {
+    Calendly?: CalendlyGlobal;
+  }
+}
 
 interface CalendlyInlineWidgetProps {
   readonly calendlyUrl: string | undefined;
@@ -27,11 +48,75 @@ function buildCalendlyUrl(baseUrl: string): string {
   return url.toString();
 }
 
+/**
+ * Charge (une seule fois) le script widget.js de Calendly et résout quand
+ * `window.Calendly` est disponible. Idempotent : réutilise le tag existant si
+ * déjà présent (navigations client, remontage StrictMode en dev).
+ */
+function loadCalendlyScript(): Promise<CalendlyGlobal> {
+  return new Promise((resolve, reject) => {
+    if (window.Calendly) {
+      resolve(window.Calendly);
+      return;
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>(
+      `script[src="${CALENDLY_WIDGET_JS}"]`,
+    );
+    if (existing) {
+      existing.addEventListener("load", () => {
+        if (window.Calendly) resolve(window.Calendly);
+        else reject(new Error("Calendly global manquant après chargement du script"));
+      });
+      existing.addEventListener("error", () => reject(new Error("Échec chargement widget.js")));
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = CALENDLY_WIDGET_JS;
+    script.async = true;
+    script.addEventListener("load", () => {
+      if (window.Calendly) resolve(window.Calendly);
+      else reject(new Error("Calendly global manquant après chargement du script"));
+    });
+    script.addEventListener("error", () => reject(new Error("Échec chargement widget.js")));
+    document.head.appendChild(script);
+  });
+}
+
 export function CalendlyInlineWidget({
   calendlyUrl,
   isFr,
   height = 720,
 }: CalendlyInlineWidgetProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl) : null;
+
+  useEffect(() => {
+    if (!finalUrl) return;
+    const parent = containerRef.current;
+    if (!parent) return;
+
+    let cancelled = false;
+
+    void loadCalendlyScript()
+      .then((calendly) => {
+        if (cancelled || !containerRef.current) return;
+        // Nettoyage défensif : évite un double-embed si l'effet se rejoue
+        // (remontage StrictMode en dev, changement d'URL).
+        containerRef.current.replaceChildren();
+        calendly.initInlineWidget({ url: finalUrl, parentElement: containerRef.current });
+      })
+      .catch(() => {
+        // fail-soft : le lien « Ouvrir Calendly directement » reste visible.
+      });
+
+    return () => {
+      cancelled = true;
+      parent.replaceChildren();
+    };
+  }, [finalUrl]);
+
   if (!calendlyUrl) {
     return (
       <div
@@ -55,16 +140,14 @@ export function CalendlyInlineWidget({
     );
   }
 
-  const finalUrl = buildCalendlyUrl(calendlyUrl);
-
   return (
     <>
       <link rel="preconnect" href="https://assets.calendly.com" />
       <link rel="preconnect" href="https://calendly.com" />
       <link rel="dns-prefetch" href="https://calendly.com" />
       <div
-        className="calendly-inline-widget mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
-        data-url={finalUrl}
+        ref={containerRef}
+        className="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
         style={{ minWidth: "320px", height: `${height}px` }}
         aria-label={isFr ? "Calendrier de prise de rendez-vous" : "Booking calendar"}
       />
@@ -88,11 +171,6 @@ export function CalendlyInlineWidget({
             : "Enable JavaScript to display the booking calendar, or contact us directly."}
         </div>
       </noscript>
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-        async
-      />
     </>
   );
 }
