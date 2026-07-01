@@ -46,8 +46,12 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "maskable",
       },
       {
+        // Tailles CONCRÈTES (et non `sizes: "any"`) : `any` est réservé aux
+        // icônes scalables (SVG). Sur un .ico raster, Chrome le refuse avec
+        // « Resource size is not correct - typo in the Manifest? ». Le fichier
+        // embarque réellement 3 bitmaps 16/32/48.
         src: "/favicon.ico",
-        sizes: "any",
+        sizes: "16x16 32x32 48x48",
         type: "image/x-icon",
       },
     ],
