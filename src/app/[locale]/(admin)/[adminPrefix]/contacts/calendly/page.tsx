@@ -15,7 +15,7 @@ const STATUS_LABEL: Record<string, string> = {
   scheduled: "Programmé",
   canceled: "Annulé",
   completed: "Terminé",
-  no_show: "No-show",
+  no_show: "Absent",
 };
 
 function formatDateTime(d: Date | null): string {
@@ -70,7 +70,7 @@ export default async function ContactsCalendlyPage({
               rel="noopener noreferrer"
               className="admin-button-ghost"
             >
-              Dashboard Calendly →
+              Tableau de bord Calendly →
             </Link>
           </div>
         }
@@ -78,7 +78,7 @@ export default async function ContactsCalendlyPage({
 
       <div className="mt-[var(--space-admin-4)] rounded-lg border border-[color:var(--color-admin-warning-border)] bg-[color:var(--color-admin-warning-bg)] p-4 text-sm">
         <p className="font-semibold">
-          ℹ️ La capture Calendly fonctionne en mode client-side gratuit.
+          ℹ️ La capture Calendly fonctionne en mode côté client gratuit.
         </p>
         <p className="mt-2">
           Seules les <strong>créations depuis /appel</strong> sont captées automatiquement (via
@@ -99,7 +99,7 @@ export default async function ContactsCalendlyPage({
               <tr>
                 <th>Capturé le</th>
                 <th>Type RDV</th>
-                <th>Invitee</th>
+                <th>Invité</th>
                 <th>Statut</th>
                 <th>Source</th>
                 <th>UTM</th>

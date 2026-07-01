@@ -101,7 +101,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Timeline</h2>
+        <h2 className="admin-h2">Chronologie</h2>
         <ul className="admin-inline-list">
           <li>
             <strong>Statut :</strong> {job.status}
@@ -110,7 +110,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
             <strong>Priorité :</strong> {job.priority}
           </li>
           <li>
-            <strong>Retries :</strong> {job.retryCount}
+            <strong>Tentatives :</strong> {job.retryCount}
           </li>
           <li>
             <strong>Démarré :</strong> {job.startedAt?.toISOString() ?? "—"}
@@ -133,7 +133,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
           <li>Région : {job.anchorRegionSlug ?? "—"}</li>
           <li>Taille : {job.targetAudienceSize ?? "—"}</li>
           <li>Organisation : {job.targetAudienceOrganisation ?? "—"}</li>
-          <li>Intent : {job.targetSearchIntent}</li>
+          <li>Intention : {job.targetSearchIntent}</li>
         </ul>
       </AdminCard>
 
@@ -141,7 +141,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
         <h2 className="admin-h2">Métriques</h2>
         <ul className="admin-inline-list">
           <li>
-            <strong>Quality :</strong> {job.qualityScore ?? "—"}
+            <strong>Qualité :</strong> {job.qualityScore ?? "—"}
           </li>
           <li>
             <strong>SEO :</strong> {job.seoScore ?? "—"}
@@ -151,7 +151,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
             {job.plagiarismScore ? Number(job.plagiarismScore).toFixed(2) : "—"}
           </li>
           <li>
-            <strong>Readability :</strong>{" "}
+            <strong>Lisibilité :</strong>{" "}
             {job.readabilityScore ? Number(job.readabilityScore).toFixed(2) : "—"}
           </li>
           <li>
@@ -196,12 +196,12 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
             ) : null}
             {job.reviewQueue ? (
               <li>
-                <strong>Review :</strong>{" "}
+                <strong>Revue :</strong>{" "}
                 <Link
                   href={`/fr/${adminPrefix}/content-gen/review-queue/${encodeURIComponent(job.reviewQueue.id)}`}
                   className="admin-link"
                 >
-                  Review #{job.reviewQueue.id.slice(0, 8)}… · {job.reviewQueue.status}
+                  Revue #{job.reviewQueue.id.slice(0, 8)}… · {job.reviewQueue.status}
                 </Link>
               </li>
             ) : null}
@@ -225,7 +225,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
       </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Live stream (logs)</h2>
+        <h2 className="admin-h2">Flux en direct (journaux)</h2>
         <JobLogStream jobId={job.id} />
       </AdminCard>
 

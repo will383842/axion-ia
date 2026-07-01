@@ -16,8 +16,8 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { KB_TYPES, getKbTypeMeta } from "@/content/knowledge/types";
-import { KB_DOMAINS } from "@/content/knowledge/domains";
-import { KB_AUDIENCES } from "@/content/knowledge/audiences";
+import { KB_DOMAINS, getDomainLabel } from "@/content/knowledge/domains";
+import { KB_AUDIENCES, getAudienceLabel } from "@/content/knowledge/audiences";
 import { KB_STATUSES, getStatusLabel } from "@/content/knowledge/statuses";
 
 // Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
@@ -72,8 +72,12 @@ export function ConnaissancesV2({
       header: "Slug",
       cell: (e) => <code className="admin-meta-small">{e.slug}</code>,
     },
-    { key: "domain", header: "Domaine", cell: (e) => e.domain },
-    { key: "audience", header: "Audience", cell: (e) => e.audience },
+    { key: "domain", header: "Domaine", cell: (e) => getDomainLabel(e.domain as never, "fr") },
+    {
+      key: "audience",
+      header: "Audience",
+      cell: (e) => getAudienceLabel(e.audience as never, "fr"),
+    },
     {
       key: "status",
       header: "Statut",
@@ -127,7 +131,7 @@ export function ConnaissancesV2({
                 <option value="all">Toutes</option>
                 {KB_AUDIENCES.map((a) => (
                   <option key={a} value={a}>
-                    {a}
+                    {getAudienceLabel(a, "fr")}
                   </option>
                 ))}
               </select>
@@ -163,7 +167,7 @@ export function ConnaissancesV2({
                 <option value="">Tous</option>
                 {KB_DOMAINS.map((d) => (
                   <option key={d} value={d}>
-                    {d}
+                    {getDomainLabel(d, "fr")}
                   </option>
                 ))}
               </select>

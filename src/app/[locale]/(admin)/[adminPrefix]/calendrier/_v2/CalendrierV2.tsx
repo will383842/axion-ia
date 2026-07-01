@@ -93,16 +93,16 @@ export function CalendrierV2({
             <Link
               href={`/fr/${adminPrefix}/calendrier/heatmap?year=${year}&month=${month}`}
               className="admin-button-ghost"
-              title="Heatmap géo"
+              title="Carte de chaleur géo"
             >
-              🗺️ Heatmap
+              🗺️ Carte de chaleur
             </Link>
             <Link
               href={`/fr/${adminPrefix}/calendrier/reschedule?year=${year}&month=${month}`}
               className="admin-button-ghost"
-              title="Reschedule drag-drop"
+              title="Reprogrammation (glisser-déposer)"
             >
-              🔄 Reschedule
+              🔄 Reprogrammer
             </Link>
             <Link
               href={`/fr/${adminPrefix}/calendrier?year=${nextMonth.year}&month=${nextMonth.month}`}

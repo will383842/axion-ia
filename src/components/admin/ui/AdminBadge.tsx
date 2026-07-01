@@ -97,8 +97,65 @@ function statusToTone(type: StatusType, status: string): AdminBadgeTone {
   return "neutral";
 }
 
+/**
+ * Libellés FR par défaut pour les valeurs d'enum de statut affichées en badge.
+ * Console admin = 100 % français : on traduit les statuts Prisma rendus tels
+ * quels. Statut inconnu → fallback `replace(/_/g, " ")` (sûr, jamais d'erreur).
+ * Une prop `label` explicite a toujours la priorité sur cette table.
+ */
+const STATUS_LABELS_FR: Record<string, string> = {
+  // génériques / pipeline
+  pending: "En attente",
+  awaiting: "En attente",
+  processing: "En traitement",
+  queued: "En file",
+  running: "En cours",
+  in_progress: "En cours",
+  publishing: "Publication…",
+  published: "Publié",
+  draft: "Brouillon",
+  active: "Actif",
+  inactive: "Inactif",
+  completed: "Terminé",
+  confirmed: "Confirmé",
+  cancelled: "Annulé",
+  canceled: "Annulé",
+  failed: "Échec",
+  error: "Erreur",
+  expired: "Expiré",
+  overdue: "En retard",
+  suspended: "Suspendu",
+  refused: "Refusé",
+  rejected: "Rejeté",
+  approved: "Approuvé",
+  accepted: "Accepté",
+  sent: "Envoyé",
+  paid: "Payé",
+  unpaid: "Impayé",
+  refunded: "Remboursé",
+  archived: "Archivé",
+  scheduled: "Planifié",
+  open: "Ouvert",
+  closed: "Fermé",
+  new: "Nouveau",
+  submitted: "Soumis",
+  ready: "Prêt",
+  valid: "Valide",
+  no_show: "Absent",
+  review: "À relire",
+  needs_review: "À relire",
+  needs_edits: "Modifications demandées",
+  promoted_t1: "Promu tier-1",
+  // rôles utilisateur
+  super_admin: "Super admin",
+  admin: "Administrateur",
+  editor: "Éditeur",
+  reader: "Lecteur",
+};
+
 function defaultLabel(status: string): string {
-  return status.replace(/_/g, " ");
+  const s = status.toLowerCase();
+  return STATUS_LABELS_FR[s] ?? status.replace(/_/g, " ");
 }
 
 export function AdminStatusBadge({

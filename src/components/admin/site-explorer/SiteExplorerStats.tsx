@@ -48,7 +48,7 @@ export function SiteExplorerStats({ stats }: Props) {
         <StatCard label="⚪ Non revues" value={stats.byQuality.unset ?? 0} color="gray" />
         {stats.anomaliesHigh > 0 && (
           <StatCard
-            label="Anomalies HIGH"
+            label="Anomalies élevées"
             value={stats.anomaliesHigh}
             color="red"
             total={stats.anomaliesTotal}

@@ -98,7 +98,7 @@ export default async function NewMediaCoveragePage({ params, searchParams }: Pag
               name="titleEn"
               type="text"
               hint="Optionnel — laissez vide si pas de version anglaise."
-              placeholder="English headline"
+              placeholder="Titre en anglais"
             />
           </AdminFormSection>
 

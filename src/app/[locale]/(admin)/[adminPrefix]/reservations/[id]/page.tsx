@@ -255,11 +255,11 @@ export default async function ReservationDetailPage({ params }: PageProps) {
             <dt className="admin-dt">Participants</dt>
             <dd className="admin-dd">
               {booking.participantsCount}
-              {booking.participantsTier ? ` · tier ${booking.participantsTier}` : ""}
+              {booking.participantsTier ? ` · palier ${booking.participantsTier}` : ""}
             </dd>
-            <dt className="admin-dt">Buffer trajet</dt>
+            <dt className="admin-dt">Marge trajet</dt>
             <dd className="admin-dd">{booking.travelBufferDays} j</dd>
-            <dt className="admin-dt">Slot calendrier</dt>
+            <dt className="admin-dt">Créneau calendrier</dt>
             <dd className="admin-dd">
               {booking.slot ? (
                 <>
@@ -311,7 +311,7 @@ export default async function ReservationDetailPage({ params }: PageProps) {
             <dl className="admin-dl">
               <dt className="admin-dt">Planifié</dt>
               <dd className="admin-dd">{formatDate(booking.cadrageMeeting.scheduledAt)}</dd>
-              <dt className="admin-dt">Status</dt>
+              <dt className="admin-dt">Statut</dt>
               <dd className="admin-dd">{booking.cadrageMeeting.status}</dd>
               {booking.cadrageMeeting.visioUrl && (
                 <>

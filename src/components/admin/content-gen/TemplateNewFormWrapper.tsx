@@ -30,6 +30,30 @@ const EXPANSION_MODES: ReadonlyArray<ExpansionMode> = [
   "from_csv",
 ];
 
+// Libellés FR pour l'affichage des options (valeurs d'enum inchangées en interne).
+const CONTENT_TYPE_LABEL_FR: Record<string, string> = {
+  landing_ville: "Page ville",
+  blog_article: "Article de blog",
+  blog_from_title: "Blog depuis un titre",
+  blog_from_keywords: "Blog depuis des mots-clés",
+  blog_from_rss: "Blog depuis un flux RSS",
+  comparison: "Comparatif",
+  guide_pilier: "Guide pilier",
+  qa_derived: "Question-réponse dérivée",
+  faq_standalone: "FAQ autonome",
+};
+
+const EXPANSION_MODE_LABEL_FR: Record<string, string> = {
+  manual: "Manuel",
+  all_villes: "Toutes les villes",
+  all_regions: "Toutes les régions",
+  custom_villes: "Villes personnalisées",
+  from_keywords: "Depuis des mots-clés",
+  from_questions: "Depuis des questions",
+  from_rss_items: "Depuis des éléments RSS",
+  from_csv: "Depuis un CSV",
+};
+
 interface InitialValues {
   readonly id?: string;
   readonly slug?: string;
@@ -113,7 +137,7 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
         </div>
         <div className="admin-field">
           <label htmlFor="contentType" className="admin-label">
-            ContentType
+            Type de contenu
           </label>
           <select
             id="contentType"
@@ -124,14 +148,14 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
           >
             {CONTENT_TYPES.map((t) => (
               <option key={t} value={t}>
-                {t}
+                {CONTENT_TYPE_LABEL_FR[t] ?? t}
               </option>
             ))}
           </select>
         </div>
         <div className="admin-field">
           <label htmlFor="variant" className="admin-label">
-            Variant
+            Variante
           </label>
           <input
             id="variant"
@@ -169,7 +193,7 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
 
       <div className="admin-field">
         <label htmlFor="systemPrompt" className="admin-label">
-          System prompt (min 30 caractères)
+          Invite système (min 30 caractères)
         </label>
         <textarea
           id="systemPrompt"
@@ -185,7 +209,7 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
 
       <div className="admin-field">
         <label htmlFor="userPromptTemplate" className="admin-label">
-          User prompt template (mustache <code>{"{{var}}"}</code>)
+          Modèle d&apos;invite utilisateur (mustache <code>{"{{var}}"}</code>)
         </label>
         <textarea
           id="userPromptTemplate"
@@ -201,7 +225,7 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
 
       <div className="admin-field">
         <label htmlFor="outputSchemaZod" className="admin-label">
-          Zod schema (TS source sérialisé)
+          Schéma Zod (source TS sérialisée)
         </label>
         <textarea
           id="outputSchemaZod"
@@ -230,7 +254,7 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
       <div className="admin-filters-grid">
         <div className="admin-field">
           <label htmlFor="expansionMode" className="admin-label">
-            Expansion mode
+            Mode d&apos;expansion
           </label>
           <select
             id="expansionMode"
@@ -241,14 +265,14 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
           >
             {EXPANSION_MODES.map((m) => (
               <option key={m} value={m}>
-                {m}
+                {EXPANSION_MODE_LABEL_FR[m] ?? m}
               </option>
             ))}
           </select>
         </div>
         <div className="admin-field">
           <label htmlFor="defaultModel" className="admin-label">
-            Default model override
+            Modèle par défaut (surcharge)
           </label>
           <input
             id="defaultModel"
@@ -260,7 +284,7 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
         </div>
         <div className="admin-field">
           <label htmlFor="defaultTemperature" className="admin-label">
-            Temperature
+            Température
           </label>
           <input
             id="defaultTemperature"
@@ -275,7 +299,7 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
         </div>
         <div className="admin-field">
           <label htmlFor="defaultMaxTokens" className="admin-label">
-            Max tokens
+            Jetons max
           </label>
           <input
             id="defaultMaxTokens"
@@ -292,7 +316,7 @@ export function TemplateNewFormWrapper({ action, initial }: Props): React.ReactE
       <div className="admin-field">
         <label className="admin-label">
           <input type="checkbox" name="isActive" defaultChecked={initial?.isActive ?? true} />{" "}
-          Template actif (utilisable par les generators)
+          Modèle actif (utilisable par les générateurs)
         </label>
       </div>
 

@@ -62,8 +62,8 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
       <AdminBreadcrumbs
         className="mb-[var(--space-admin-4)]"
         items={[
-          { label: "Image bank", href: base },
-          { label: "Library", href: `${base}/library` },
+          { label: "Banque d'images", href: base },
+          { label: "Bibliothèque", href: `${base}/library` },
           { label: titleDisplay },
         ]}
       />
@@ -80,12 +80,12 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
             <Row label="ID" value={image.id} />
             <Row label="Slug" value={image.slug} />
             <Row label="Format" value={`${image.fileFormat} · ${image.width}×${image.height}`} />
-            <Row label="License" value={image.licenseType} />
-            <Row label="Copyright" value={image.copyrightHolder} />
-            <Row label="Source type" value={image.sourceType} />
-            {image.aiModel ? <Row label="AI model" value={image.aiModel} /> : null}
+            <Row label="Licence" value={image.licenseType} />
+            <Row label="Droits d'auteur" value={image.copyrightHolder} />
+            <Row label="Type de source" value={image.sourceType} />
+            {image.aiModel ? <Row label="Modèle IA" value={image.aiModel} /> : null}
             <Row
-              label="Published"
+              label="Publié"
               value={image.publishedAt ? image.publishedAt.toISOString() : "Non publié"}
             />
           </dl>
@@ -93,7 +93,7 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
 
         <div className="flex flex-col gap-[var(--space-admin-5)]">
           <AdminCard>
-            <h2 className="admin-h2">Translations ({image.translations.length})</h2>
+            <h2 className="admin-h2">Traductions ({image.translations.length})</h2>
             <ul className="admin-meta-block flex flex-col gap-[var(--space-admin-3)]">
               {image.translations.map((t) => (
                 <li
@@ -111,7 +111,7 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
           </AdminCard>
 
           <AdminCard>
-            <h2 className="admin-h2">Tags ({image.tags.length})</h2>
+            <h2 className="admin-h2">Étiquettes ({image.tags.length})</h2>
             <ul className="admin-meta-block flex flex-wrap gap-[var(--space-admin-2)]">
               {image.tags.map((tag) => (
                 <li key={tag.id} className="admin-tag-pill">
@@ -124,10 +124,10 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
           {image.requiresHumanReview && (
             <AdminCard className="border-l-4 border-l-[color:var(--color-admin-warning)]">
               <p className="admin-meta-block">
-                ⚠ Cette image est marquée pour relecture humaine (validators automatiques échoués).
+                ⚠ Cette image est marquée pour relecture humaine (validateurs automatiques échoués).
               </p>
               <Link href={`${base}/quality`} className="admin-link">
-                Voir la file Quality →
+                Voir la file Qualité →
               </Link>
             </AdminCard>
           )}

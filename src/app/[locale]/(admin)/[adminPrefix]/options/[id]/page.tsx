@@ -87,12 +87,12 @@ export default async function OptionDetailPage({ params }: PageProps) {
             <dd className="admin-dd">{interventionTypeLabel(opt.interventionType)}</dd>
             <dt className="admin-dt">Participants</dt>
             <dd className="admin-dd">{opt.participantsCount}</dd>
-            <dt className="admin-dt">Locale</dt>
+            <dt className="admin-dt">Langue</dt>
             <dd className="admin-dd">{opt.locale.toUpperCase()}</dd>
           </dl>
         </div>
         <div className="admin-card">
-          <h2 className="admin-h2">Lifecycle</h2>
+          <h2 className="admin-h2">Cycle de vie</h2>
           <dl className="admin-dl">
             <dt className="admin-dt">Posée</dt>
             <dd className="admin-dd">{opt.createdAt.toISOString()}</dd>

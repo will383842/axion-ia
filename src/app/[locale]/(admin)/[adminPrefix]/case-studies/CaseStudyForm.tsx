@@ -334,7 +334,7 @@ function CSTranslationFields({
           name={`${prefix}_problem`}
           initialHtml={initial?.problem ?? ""}
           placeholder={
-            prefix === "fr" ? "Décrivez la situation initiale…" : "Describe the initial situation…"
+            prefix === "fr" ? "Décrivez la situation initiale…" : "Décrivez la situation initiale…"
           }
         />
       </div>
@@ -344,14 +344,14 @@ function CSTranslationFields({
         <TiptapEditor
           name={`${prefix}_solution`}
           initialHtml={initial?.solution ?? ""}
-          placeholder={prefix === "fr" ? "Décrivez la solution…" : "Describe the solution…"}
+          placeholder={prefix === "fr" ? "Décrivez la solution…" : "Décrivez la solution…"}
         />
       </div>
 
       <div className="admin-form-row">
         <div className="admin-field">
           <label htmlFor={`${prefix}_metaTitle`} className="admin-label">
-            Meta title (max 70)
+            Méta-titre (max 70)
           </label>
           <input
             id={`${prefix}_metaTitle`}
@@ -365,7 +365,7 @@ function CSTranslationFields({
         </div>
         <div className="admin-field">
           <label htmlFor={`${prefix}_metaDescription`} className="admin-label">
-            Meta description (max 160)
+            Méta-description (max 160)
           </label>
           <input
             id={`${prefix}_metaDescription`}

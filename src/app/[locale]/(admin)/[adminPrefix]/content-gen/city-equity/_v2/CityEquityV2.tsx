@@ -25,7 +25,7 @@ const CONTENT_TYPE_LABELS: Record<string, string> = {
   landing_ville: "Landing ville",
   blog_article: "Blog article",
   blog_from_rss: "Blog RSS",
-  blog_from_keywords: "Blog keywords",
+  blog_from_keywords: "Blog mots-clés",
   blog_from_title: "Blog titre",
   comparison: "Comparatif",
   guide_pilier: "Guide pilier",

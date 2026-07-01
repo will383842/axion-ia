@@ -11,12 +11,12 @@ import { dispatchAdHocJob } from "@/server/actions/content-gen/adhoc";
 const CONTENT_TYPES = [
   { value: "blog_article", label: "Blog article" },
   { value: "blog_from_rss", label: "Blog depuis RSS" },
-  { value: "blog_from_keywords", label: "Blog depuis keywords" },
+  { value: "blog_from_keywords", label: "Blog depuis mots-clés" },
   { value: "blog_from_title", label: "Blog depuis titre" },
   { value: "comparison", label: "Comparatif" },
   { value: "guide_pilier", label: "Guide pilier" },
-  { value: "qa_derived", label: "Q&A dérivé" },
-  { value: "faq_standalone", label: "FAQ standalone" },
+  { value: "qa_derived", label: "Q/R dérivé" },
+  { value: "faq_standalone", label: "FAQ autonome" },
 ] as const;
 
 // B5 (CONTENT-GEN-UX 2026) — aligné sur l'enum DB `SearchIntent` (8 valeurs).
@@ -104,7 +104,7 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">Intent de recherche</label>
+          <label className="text-sm font-medium">Intention de recherche</label>
           <select
             value={searchIntent}
             onChange={(e) => setSearchIntent(e.target.value)}
@@ -119,7 +119,7 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">Campaign ID (optionnel)</label>
+          <label className="text-sm font-medium">ID de campagne (optionnel)</label>
           <input
             type="text"
             value={campaignId}

@@ -87,7 +87,7 @@ export function ActivityLogsV2({
     { key: "targetType", header: "Type cible", cell: (l) => l.targetType ?? "—" },
     {
       key: "targetId",
-      header: "Target ID",
+      header: "ID cible",
       cell: (l) =>
         l.targetId ? <code className="admin-meta-small">{l.targetId.slice(0, 8)}…</code> : "—",
     },
@@ -111,8 +111,8 @@ export function ActivityLogsV2({
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Activity logs"
-        description={`${total} entrée${total > 1 ? "s" : ""} · page ${page}/${totalPages} · Read-only audit trail`}
+        title="Journaux d'activité"
+        description={`${total} entrée${total > 1 ? "s" : ""} · page ${page}/${totalPages} · journal d'audit en lecture seule`}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">

@@ -32,10 +32,10 @@ export const metadata: Metadata = {
 
 const KIND_LABELS: Record<string, string> = {
   logo: "Logo",
-  wordmark: "Wordmark",
+  wordmark: "Logotype texte",
   photo: "Photo",
-  brand_book: "Brand book",
-  boilerplate: "Boilerplate",
+  brand_book: "Livret de marque",
+  boilerplate: "Texte de présentation",
   color_charter: "Charte couleur",
   graphic_charter: "Charte graphique",
 };

@@ -45,6 +45,24 @@ const STATUS_PROGRESS: Record<string, number> = {
   quarantined_factcheck: 100,
 };
 
+// Libellés FR pour l'affichage des statuts (valeurs d'enum inchangées en interne).
+const STATUS_LABEL_FR: Record<string, string> = {
+  queued: "En file",
+  running: "En cours",
+  generating_text: "Génération du texte",
+  generating_image: "Génération de l'image",
+  running_qa: "Contrôle qualité",
+  quality_improving: "Amélioration qualité",
+  needs_review: "À relire",
+  approved: "Approuvé",
+  publishing: "Publication",
+  published: "Publié",
+  failed: "Échec",
+  cancelled: "Annulé",
+  quarantined_critical: "Quarantaine (critique)",
+  quarantined_factcheck: "Quarantaine (vérification)",
+};
+
 function statusColor(status: string): string {
   if (status === "published") return "var(--color-admin-success)";
   if (
@@ -178,13 +196,16 @@ export function JobsLiveStream({ jobId, initialStatus }: Props): React.ReactElem
       {/* En-tête statut */}
       <div className="flex items-center justify-between">
         <span className="text-[length:var(--text-admin-sm)]">
-          Statut : <strong style={{ color: statusColor(status) }}>{status}</strong>
+          Statut :{" "}
+          <strong style={{ color: statusColor(status) }}>
+            {STATUS_LABEL_FR[status] ?? status}
+          </strong>
         </span>
         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           {connected && !done ? (
             <span className="inline-flex items-center gap-1">
               <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500" />
-              Live
+              En direct
             </span>
           ) : done ? (
             "Terminé"

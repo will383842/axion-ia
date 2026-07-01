@@ -183,7 +183,7 @@ export async function PaiementsV2({
         filters={
           <AdminFilterTabs current={status ?? "all"} options={statusOptions} label="Statut" />
         }
-        columnHeaders={["Payé le", "Montant", "Type", "Provider", "Status"]}
+        columnHeaders={["Payé le", "Montant", "Type", "Prestataire", "Statut"]}
         rows={rows}
         paginationBaseHref={base}
         paginationPreservedParams={{ status: status ?? undefined, provider: provider ?? undefined }}

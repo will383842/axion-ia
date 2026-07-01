@@ -83,7 +83,7 @@ export function TestimonialsV2({
               {t.firstName} {t.lastName}
             </span>
             {t.isReal ? (
-              <span title="Testimonial vérifié : source identifiable + consentement RGPD">
+              <span title="Témoignage vérifié : source identifiable + consentement RGPD">
                 <AdminBadge tone="success">✓ Authentifié</AdminBadge>
               </span>
             ) : null}

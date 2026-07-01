@@ -26,6 +26,14 @@ import type {
   ServiceSector,
 } from "../../../../../../../../prisma/generated/client";
 
+const STATUS_LABELS_FR: Record<string, string> = {
+  draft: "Brouillon",
+  running: "En cours",
+  paused: "En pause",
+  completed: "Terminée",
+  cancelled: "Annulée",
+};
+
 const STATUSES: ReadonlyArray<CoverageStatus> = [
   "draft",
   "running",
@@ -86,10 +94,10 @@ export async function CoverageListV2({
     },
     { key: "scope", header: "Scope", cell: (r) => r.scope },
     { key: "target", header: "Cible", cell: (r) => r.totalTargetCount },
-    { key: "status", header: "Statut", cell: (r) => r.status },
+    { key: "status", header: "Statut", cell: (r) => STATUS_LABELS_FR[r.status] ?? r.status },
     {
       key: "counts",
-      header: "Gen/Pub/Fail",
+      header: "Gén/Pub/Éch",
       cell: (r) => `${r.generatedCount} / ${r.publishedCount} / ${r.failedCount}`,
     },
     {
@@ -133,7 +141,7 @@ export async function CoverageListV2({
                 <option value="">Tous</option>
                 {STATUSES.map((s) => (
                   <option key={s} value={s}>
-                    {s}
+                    {STATUS_LABELS_FR[s] ?? s}
                   </option>
                 ))}
               </select>

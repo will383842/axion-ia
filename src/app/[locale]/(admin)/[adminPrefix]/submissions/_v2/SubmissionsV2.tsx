@@ -129,7 +129,7 @@ export async function SubmissionsV2({
         total={result.total}
         page={result.page}
         totalPages={result.totalPages}
-        columnHeaders={["Date", "Type", "Réponse", "Statut", "Société", "Contact", "Locale"]}
+        columnHeaders={["Date", "Type", "Réponse", "Statut", "Société", "Contact", "Langue"]}
         rows={rows}
         paginationBaseHref={base}
         paginationPreservedParams={{

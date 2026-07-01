@@ -145,7 +145,7 @@ export function AdminSessionExpiryWarning({
             }}
             className="admin-button-ghost"
           >
-            Sauvegarder en draft local
+            Sauvegarder un brouillon local
           </button>
         ) : null}
         <button

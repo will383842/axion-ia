@@ -65,7 +65,7 @@ export function BatchesV2({ cfg, health }: Props): React.ReactElement {
             </div>
             <div className="admin-field">
               <label htmlFor="retryMaxAttempts" className="admin-label">
-                Retries max (0-10)
+                Tentatives max (0-10)
               </label>
               <input
                 id="retryMaxAttempts"
@@ -80,7 +80,7 @@ export function BatchesV2({ cfg, health }: Props): React.ReactElement {
             </div>
             <div className="admin-field">
               <label htmlFor="retryBackoffMs" className="admin-label">
-                Backoff retry (ms)
+                Délai entre tentatives (ms)
               </label>
               <input
                 id="retryBackoffMs"

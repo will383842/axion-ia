@@ -90,7 +90,7 @@ export function CategoryForm({ parents, initial }: Props) {
             className="admin-input"
             disabled={pending}
           >
-            <option value="">— (top-level)</option>
+            <option value="">— (racine)</option>
             {parents.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.nameFr} ({p.slug})
@@ -193,7 +193,7 @@ export function CategoryForm({ parents, initial }: Props) {
       <div className="admin-form-row">
         <div className="admin-field">
           <label htmlFor="icon" className="admin-label">
-            Icône (lucide-react name)
+            Icône (nom lucide-react)
           </label>
           <input
             id="icon"

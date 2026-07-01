@@ -62,7 +62,7 @@ export function PromptV2({
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Prompt versionné"
-        description="Versions du prompt système du chatbot. Une seule version est active à la fois ; activer une version antérieure = rollback immédiat (sans redéploiement)."
+        description="Versions du prompt système du chatbot. Une seule version est active à la fois ; activer une version antérieure = retour arrière immédiat (sans redéploiement)."
       />
 
       <AdminCard className="mb-[var(--space-admin-4)]">

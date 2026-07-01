@@ -80,7 +80,7 @@ export function ManualCalendlyEventButton(): React.ReactElement {
         <form onSubmit={onSubmit} className="admin-form mt-4 space-y-3">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="admin-field">
-              <label className="admin-label">Type event (nom)</label>
+              <label className="admin-label">Type d&apos;événement (nom)</label>
               <input
                 className="admin-input"
                 value={state.eventTypeName}
@@ -91,7 +91,7 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Type slug</label>
+              <label className="admin-label">Slug du type</label>
               <input
                 className="admin-input"
                 value={state.eventTypeSlug}
@@ -102,7 +102,7 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Nom invitee</label>
+              <label className="admin-label">Nom invité</label>
               <input
                 className="admin-input"
                 value={state.inviteeName}
@@ -112,7 +112,7 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Email invitee</label>
+              <label className="admin-label">Email invité</label>
               <input
                 type="email"
                 className="admin-input"

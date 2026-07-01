@@ -29,10 +29,10 @@ export const metadata: Metadata = {
 
 const KIND_OPTIONS = [
   { value: "logo", label: "Logo" },
-  { value: "wordmark", label: "Wordmark" },
+  { value: "wordmark", label: "Logotype texte" },
   { value: "photo", label: "Photo" },
-  { value: "brand_book", label: "Brand book" },
-  { value: "boilerplate", label: "Boilerplate" },
+  { value: "brand_book", label: "Livret de marque" },
+  { value: "boilerplate", label: "Texte de présentation" },
   { value: "color_charter", label: "Charte couleur" },
   { value: "graphic_charter", label: "Charte graphique" },
 ] as const;

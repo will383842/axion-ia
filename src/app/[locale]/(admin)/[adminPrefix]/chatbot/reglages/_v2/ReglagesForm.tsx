@@ -89,7 +89,7 @@ export function ReglagesForm({ data }: { data: ChatbotSettingsView }): React.Rea
         />
         <div className="flex flex-col gap-1 border-t border-[color:var(--color-admin-border)] py-2">
           <label htmlFor="pages" className="text-[length:var(--text-admin-sm)]">
-            Pages où afficher le widget (canary)
+            Pages où afficher le widget (test ciblé)
           </label>
           <input
             id="pages"
@@ -146,7 +146,7 @@ export function ReglagesForm({ data }: { data: ChatbotSettingsView }): React.Rea
         </h2>
         <CheckField label="Cache activé" name="cacheEnabled" defaultChecked={s.cache.enabled} />
         <NumberField
-          label="Seuil de similarité (hit)"
+          label="Seuil de similarité (correspondance)"
           name="cacheSimilarityThreshold"
           defaultValue={s.cache.similarityThreshold}
           step="0.01"

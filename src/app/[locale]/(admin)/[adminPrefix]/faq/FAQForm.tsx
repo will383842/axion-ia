@@ -166,7 +166,7 @@ export function FAQForm({ initial }: Props) {
       <div className="admin-form-row">
         <div className="admin-field">
           <label htmlFor="metaTitle" className="admin-label">
-            Meta title (SEO, max 70 chars) — optionnel
+            Meta title (SEO, max 70 caractères) — optionnel
           </label>
           <input
             id="metaTitle"

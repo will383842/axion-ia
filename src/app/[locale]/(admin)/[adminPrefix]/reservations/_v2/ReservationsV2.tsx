@@ -170,7 +170,7 @@ export async function ReservationsV2({
           ? `Réservations · ${fmtDate(new Date(`${rawDate}T00:00:00.000Z`))}`
           : "Réservations"
       }
-      itemLabel="booking(s)"
+      itemLabel="réservation(s)"
       total={total}
       page={page}
       totalPages={totalPages}
@@ -180,7 +180,7 @@ export async function ReservationsV2({
         "Société",
         "Contact",
         "Intervention",
-        "Status",
+        "Statut",
         "Formateur",
         "Montant HT",
         "Mise à jour",

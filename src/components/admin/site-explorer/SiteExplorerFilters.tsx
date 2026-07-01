@@ -36,8 +36,8 @@ export function SiteExplorerFilters() {
         <option value="">Tous les types</option>
         <option value="static">Statique</option>
         <option value="dynamic_db">Dynamique DB</option>
-        <option value="dynamic_template">Template</option>
-        <option value="dynamic_filesystem">Filesystem</option>
+        <option value="dynamic_template">Modèle</option>
+        <option value="dynamic_filesystem">Système de fichiers</option>
       </select>
 
       <select
@@ -47,12 +47,12 @@ export function SiteExplorerFilters() {
         className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
       >
         <option value="">Tous les statuts</option>
-        <option value="live">Live (200)</option>
+        <option value="live">En ligne (200)</option>
         <option value="not_found">404</option>
-        <option value="redirect">Redirect</option>
+        <option value="redirect">Redirection</option>
         <option value="error">Erreur</option>
         <option value="unknown">Inconnu</option>
-        <option value="draft">Draft</option>
+        <option value="draft">Brouillon</option>
       </select>
 
       <select

@@ -151,7 +151,7 @@ export function CitationsBackfill() {
 
       {preview && preview.sample.length > 0 ? (
         <div className="admin-card p-4">
-          <p className="admin-meta mb-2">Aperçu des premiers articles (dry-run) :</p>
+          <p className="admin-meta mb-2">Aperçu des premiers articles (simulation) :</p>
           <ResultList items={preview.sample} />
         </div>
       ) : null}

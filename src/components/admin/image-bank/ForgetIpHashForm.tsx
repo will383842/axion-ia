@@ -61,7 +61,7 @@ export function ForgetIpHashForm({ initialIpHash, usageLogs, downloadLogs }: Pro
           type="text"
           name="ipHash"
           defaultValue={initialIpHash ?? ""}
-          placeholder="ipHash SHA-256 (64 hex chars)"
+          placeholder="ipHash SHA-256 (64 caractères hexadécimaux)"
           pattern="[a-fA-F0-9]{64}"
           aria-label="Recherche par ipHash"
           className="border-border-strong bg-paper flex-1 rounded border px-3 py-2 font-mono text-sm"
@@ -82,12 +82,12 @@ export function ForgetIpHashForm({ initialIpHash, usageLogs, downloadLogs }: Pro
           </h2>
           <p className="text-fg-muted text-sm">
             {totalLogs} entrées trouvées ({usageLogs.length} usage + {downloadLogs.length}{" "}
-            download).
+            téléchargement).
           </p>
 
           {usageLogs.length > 0 && (
             <div>
-              <h3 className="font-medium">Usage logs ({usageLogs.length})</h3>
+              <h3 className="font-medium">Journaux d&apos;usage ({usageLogs.length})</h3>
               <ul className="mt-2 space-y-1 font-mono text-xs">
                 {usageLogs.map((r) => (
                   <li key={r.id} className="text-fg-muted">
@@ -100,11 +100,11 @@ export function ForgetIpHashForm({ initialIpHash, usageLogs, downloadLogs }: Pro
 
           {downloadLogs.length > 0 && (
             <div>
-              <h3 className="font-medium">Download logs ({downloadLogs.length})</h3>
+              <h3 className="font-medium">Journaux de téléchargement ({downloadLogs.length})</h3>
               <ul className="mt-2 space-y-1 font-mono text-xs">
                 {downloadLogs.map((r) => (
                   <li key={r.id} className="text-fg-muted">
-                    {r.downloadedAt} — variant {r.variant} — image {r.imageId.slice(0, 8)}…
+                    {r.downloadedAt} — variante {r.variant} — image {r.imageId.slice(0, 8)}…
                   </li>
                 ))}
               </ul>
@@ -115,7 +115,7 @@ export function ForgetIpHashForm({ initialIpHash, usageLogs, downloadLogs }: Pro
             <form action={handleSubmit} className="border-t pt-4">
               <input type="hidden" name="ipHash" value={initialIpHash} />
               <p className="text-fg-muted mb-3 text-sm">
-                Cette action est <strong>irréversible</strong> et conforme à l&apos;art. 17 GDPR
+                Cette action est <strong>irréversible</strong> et conforme à l&apos;art. 17 RGPD
                 (droit à l&apos;effacement). Audit trail conservé dans <code>activity_logs</code>.
               </p>
               <ConfirmButton />

@@ -18,7 +18,7 @@ const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
   confirmed: "Confirmé",
   unsubscribed: "Désabonné",
-  bounced: "Bounce",
+  bounced: "Rejeté",
 };
 // Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`).
 const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {

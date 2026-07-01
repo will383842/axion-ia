@@ -25,7 +25,7 @@ const STATUS_LABELS: Record<string, string> = {
 const WORKMODE_LABELS: Record<string, string> = {
   on_site: "Sur site",
   hybrid: "Hybride",
-  remote: "Remote",
+  remote: "À distance",
 };
 // Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
 // non défini pour draft/published/archived → badge neutre non coloré).

@@ -53,8 +53,8 @@ export async function CampaignPresetsV2({ adminPrefix }: Props): Promise<React.R
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Presets de campagnes"
-        description={`${presets.length} presets disponibles. Sélectionnez un preset pour pré-remplir le wizard.`}
+        title="Préréglages de campagnes"
+        description={`${presets.length} préréglages disponibles. Sélectionnez un preset pour pré-remplir le wizard.`}
         actions={
           <Link href={`${base}/campaigns/new`} className="admin-button">
             Nouvelle campagne libre
@@ -87,12 +87,12 @@ export async function CampaignPresetsV2({ adminPrefix }: Props): Promise<React.R
                   )}
                   {cfg.batchSize != null && (
                     <li>
-                      <span className="font-medium">Batch :</span> {cfg.batchSize} articles
+                      <span className="font-medium">Lot :</span> {cfg.batchSize} articles
                     </li>
                   )}
                   {cfg.dailyCap != null && (
                     <li>
-                      <span className="font-medium">Cap/jour :</span> {cfg.dailyCap} articles
+                      <span className="font-medium">Plafond/jour :</span> {cfg.dailyCap} articles
                     </li>
                   )}
                 </ul>

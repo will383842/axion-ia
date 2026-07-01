@@ -176,14 +176,14 @@ export function AuthorManonV2({ author }: Props): React.ReactElement {
 
           <div className="admin-filters-actions">
             <button type="submit" className="admin-button">
-              Enregistrer + revalidate /fr/equipe/manon
+              Enregistrer + revalider /fr/equipe/manon
             </button>
           </div>
         </form>
       </AdminCard>
 
       <AdminCard>
-        <h2 className="admin-h2">Photos (gérées via filesystem)</h2>
+        <h2 className="admin-h2">Photos (gérées via le système de fichiers)</h2>
         <ul className="admin-meta-block">
           <li>
             <code>{author.photoUrl80}</code>

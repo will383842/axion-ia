@@ -119,7 +119,7 @@ export async function DevisV2({ adminPrefix, searchParams }: Props): Promise<Rea
         "Contact",
         "Intervention",
         "Montant TTC",
-        "Status",
+        "Statut",
         "Validité",
       ]}
       rows={rows}

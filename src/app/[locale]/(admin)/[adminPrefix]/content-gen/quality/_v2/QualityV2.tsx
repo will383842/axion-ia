@@ -203,27 +203,27 @@ export async function QualityV2(): Promise<React.ReactElement> {
     { key: "day", header: "Jour", cell: (d) => <span className="tabular-nums">{d.day}</span> },
     { key: "count", header: "Articles", cell: (d) => d.count },
     { key: "seo", header: "SEO", cell: (d) => d.avgSeo || "—" },
-    { key: "quality", header: "Quality", cell: (d) => d.avgQuality || "—" },
-    { key: "readability", header: "Readability", cell: (d) => d.avgReadability || "—" },
-    { key: "factCheck", header: "Fact-check", cell: (d) => d.avgFactCheck || "—" },
-    { key: "editorial", header: "Editorial", cell: (d) => d.avgEditorial || "—" },
+    { key: "quality", header: "Qualité", cell: (d) => d.avgQuality || "—" },
+    { key: "readability", header: "Lisibilité", cell: (d) => d.avgReadability || "—" },
+    { key: "factCheck", header: "Vérif. des faits", cell: (d) => d.avgFactCheck || "—" },
+    { key: "editorial", header: "Éditorial", cell: (d) => d.avgEditorial || "—" },
   ];
 
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Quality dashboard"
-        description={`Scores moyens des articles publiés sur les ${WINDOW_DAYS} derniers jours. ${totalArticles} article${totalArticles > 1 ? "s" : ""} agrégé${totalArticles > 1 ? "s" : ""}. Bars CSS — pas de bibliothèque graphique.`}
+        title="Tableau de bord qualité"
+        description={`Scores moyens des articles publiés sur les ${WINDOW_DAYS} derniers jours. ${totalArticles} article${totalArticles > 1 ? "s" : ""} agrégé${totalArticles > 1 ? "s" : ""}. Barres CSS — pas de bibliothèque graphique.`}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Moyenne globale (fenêtre 30j)</h2>
         <div className="mt-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-4)]">
           <ScoreBar label="SEO" value={globalAvg("avgSeo")} max={100} />
-          <ScoreBar label="Quality" value={globalAvg("avgQuality")} max={100} />
-          <ScoreBar label="Readability" value={globalAvg("avgReadability")} max={100} />
-          <ScoreBar label="Fact-check" value={globalAvg("avgFactCheck")} max={100} />
-          <ScoreBar label="Editorial" value={globalAvg("avgEditorial")} max={100} />
+          <ScoreBar label="Qualité" value={globalAvg("avgQuality")} max={100} />
+          <ScoreBar label="Lisibilité" value={globalAvg("avgReadability")} max={100} />
+          <ScoreBar label="Vérif. des faits" value={globalAvg("avgFactCheck")} max={100} />
+          <ScoreBar label="Éditorial" value={globalAvg("avgEditorial")} max={100} />
         </div>
       </AdminCard>
 

@@ -83,7 +83,7 @@ export function TestimonialEditV2({
           authentifié, mais SEULS les authentifiés apparaîssent sur /presse. */}
       <AdminCard className="mt-[var(--space-admin-5)]">
         <div className="admin-section-title">
-          <h2>Authentification (Real Testimonial)</h2>
+          <h2>Authentification (témoignage réel)</h2>
           <p className="admin-meta-small">
             {realMeta
               ? "Ce témoignage est marqué comme authentifié — il apparaît dans la section « Témoignages vérifiés » sur /presse."

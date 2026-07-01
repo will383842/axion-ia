@@ -82,7 +82,7 @@ export function GeoEventsBanner() {
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-        <strong>Live geo events (§ 12.4)</strong>
+        <strong>Événements géo en direct (§ 12.4)</strong>
         <span
           style={{
             color: connected ? "var(--color-success, green)" : "var(--color-muted, gray)",

@@ -9,9 +9,12 @@ import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { createEntryAction, type CreateEntryResult } from "@/server/actions/knowledge/create-entry";
 import { KB_TYPES, getKbTypeMeta } from "@/content/knowledge/types";
-import { KB_DOMAINS } from "@/content/knowledge/domains";
-import { KB_AUDIENCES } from "@/content/knowledge/audiences";
-import { KB_CONFIDENTIALITIES } from "@/content/knowledge/confidentialities";
+import { KB_DOMAINS, getDomainLabel } from "@/content/knowledge/domains";
+import { KB_AUDIENCES, getAudienceLabel } from "@/content/knowledge/audiences";
+import {
+  KB_CONFIDENTIALITIES,
+  getConfidentialityLabel,
+} from "@/content/knowledge/confidentialities";
 import { TiptapEditor } from "@/components/admin/TiptapEditor";
 
 interface Props {
@@ -81,7 +84,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
         <select id="domain" name="domain" required className="admin-input" defaultValue="editorial">
           {KB_DOMAINS.map((d) => (
             <option key={d} value={d}>
-              {d}
+              {getDomainLabel(d, "fr")}
             </option>
           ))}
         </select>
@@ -94,7 +97,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
         <select id="audience" name="audience" className="admin-input" defaultValue="team">
           {KB_AUDIENCES.map((a) => (
             <option key={a} value={a}>
-              {a}
+              {getAudienceLabel(a, "fr")}
             </option>
           ))}
         </select>
@@ -112,7 +115,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
         >
           {KB_CONFIDENTIALITIES.map((c) => (
             <option key={c} value={c}>
-              {c}
+              {getConfidentialityLabel(c, "fr")}
             </option>
           ))}
         </select>

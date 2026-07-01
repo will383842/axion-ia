@@ -84,7 +84,7 @@ export function MarkAsRealForm({ testimonialId, currentRealMeta }: Props) {
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ Testimonial marqué comme authentifié.
+          ✓ Témoignage marqué comme authentifié.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

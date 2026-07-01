@@ -191,7 +191,7 @@ export function CoverageMapV2({ initialData }: Props): React.ReactElement {
             <option value="all">Tous statuts</option>
             <option value="complete">Complète</option>
             <option value="in_progress">En cours</option>
-            <option value="idle">Idle</option>
+            <option value="idle">Inactif</option>
           </select>
           <select
             value={filterDept}

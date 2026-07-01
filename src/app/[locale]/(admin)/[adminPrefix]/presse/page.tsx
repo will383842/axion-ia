@@ -123,8 +123,8 @@ export default async function PressOverviewPage({ params }: PageProps) {
             Kit média
           </h2>
           <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
-            Logos, wordmarks, photos, chartes couleur/graphique, brand book et boilerplate
-            téléchargeables par la presse.
+            Logos, logotypes texte, photos, chartes couleur/graphique, livret de marque et texte de
+            présentation téléchargeables par la presse.
           </p>
           <div className="mt-[var(--space-admin-5)] flex gap-[var(--space-admin-3)]">
             <Link href={`${base}/kit-media`} className="admin-button">

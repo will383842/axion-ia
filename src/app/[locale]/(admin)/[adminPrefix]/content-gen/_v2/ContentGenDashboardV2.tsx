@@ -131,9 +131,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
       )}
 
       <AdminCard className="mb-[var(--space-admin-6)]">
-        <h2 className="admin-h2">
-          Rollup aujourd&apos;hui — secteurs &amp; pipelines indépendants
-        </h2>
+        <h2 className="admin-h2">Récapitulatif du jour — secteurs &amp; pipelines indépendants</h2>
         <p className="admin-meta">
           3 secteurs éditoriaux (campagnes ciblées) + 2 pipelines indépendants (landing villes,
           RSS). Fenêtre depuis minuit UTC.
@@ -151,7 +149,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
                 value={`${c.publishedToday} / ${c.generatedToday}`}
                 meta={
                   c.failedToday > 0
-                    ? `publiés / générés · ${c.failedToday} fail${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
+                    ? `publiés / générés · ${c.failedToday} échec(s)${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
                     : `publiés / générés${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
                 }
                 tone={c.failedToday > 0 ? "warning" : "default"}
@@ -166,10 +164,10 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         aria-label="KPIs 7 jours"
         className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] md:grid-cols-4 lg:grid-cols-8"
       >
-        <AdminStatCard label="Jobs (7 j)" value={kpis.jobsRun7d} />
+        <AdminStatCard label="Tâches (7 j)" value={kpis.jobsRun7d} />
         <AdminStatCard label="Publiés (7 j)" value={kpis.published7d} />
         <AdminStatCard
-          label="Failed (7 j)"
+          label="Échecs (7 j)"
           value={kpis.failed7d}
           tone={kpis.failed7d > 0 ? "warning" : "default"}
         />
@@ -180,7 +178,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
           value={kpis.avgQualityScore7d != null ? kpis.avgQualityScore7d.toFixed(1) : "—"}
         />
         <AdminStatCard label="Plagiat bloqués" value={kpis.plagiarismBlocks7d} />
-        <AdminStatCard label="KB entries" value={kpis.kbHealth.chunks} />
+        <AdminStatCard label="Entrées KB" value={kpis.kbHealth.chunks} />
       </section>
 
       {/* P2 — Progression couverture villes */}
@@ -225,7 +223,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
       </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-6)]">
-        <h2 className="admin-h2">Queue temps réel</h2>
+        <h2 className="admin-h2">File d&apos;attente temps réel</h2>
         <ul className="admin-inline-list">
           <li>
             <strong>En cours :</strong> {kpis.activeQueue.running}
@@ -234,7 +232,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             <strong>En attente :</strong> {kpis.activeQueue.waiting}
           </li>
           <li>
-            <strong>Failed :</strong> {kpis.activeQueue.failed}
+            <strong>Échecs :</strong> {kpis.activeQueue.failed}
           </li>
           <li>
             <Link href={`${base}/jobs`} className="admin-button-ghost">
@@ -354,7 +352,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/rss`}>📡 Sources RSS</Link>
             </li>
             <li>
-              <Link href={`${base}/keyword-tracking`}>🔑 Keyword tracking</Link>
+              <Link href={`${base}/keyword-tracking`}>🔑 Suivi des mots-clés</Link>
             </li>
             <li>
               <Link href={`${base}/kb-readonly`}>
@@ -380,7 +378,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
           <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
             <li>
               <Link href={`${base}/jobs`}>
-                🛠️ Jobs &amp; logs
+                🛠️ Tâches &amp; journaux
                 {kpis.activeQueue.running + kpis.activeQueue.waiting > 0 && (
                   <span className="admin-badge ml-[var(--space-admin-2)]">
                     {kpis.activeQueue.running + kpis.activeQueue.waiting} actifs
@@ -390,7 +388,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             </li>
             <li>
               <Link href={`${base}/review-queue`}>
-                👀 Review queue
+                👀 File de revue
                 {kpis.pendingReview > 0 && (
                   <span className="admin-badge ml-[var(--space-admin-2)]">
                     {kpis.pendingReview}
@@ -419,7 +417,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
           <h2 className="admin-h2">⚙️ Réglages</h2>
           <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
             <li>
-              <Link href={`${base}/settings/providers`}>Providers IA</Link>
+              <Link href={`${base}/settings/providers`}>Fournisseurs IA</Link>
             </li>
             <li>
               <Link href={`${base}/settings/batches`}>Batches &amp; workers</Link>

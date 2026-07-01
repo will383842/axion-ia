@@ -67,6 +67,19 @@ const STATUS_TONE: Record<string, "success" | "warning" | "destructive" | "neutr
   cancelled: "neutral",
 };
 
+// Libellés FR affichés à l'écran pour les statuts (option de filtre + badge).
+// La valeur d'enum sous-jacente reste inchangée ; on ne traduit que l'affichage.
+const STATUS_LABELS_FR: Record<string, string> = {
+  queued: "En file",
+  running: "En cours",
+  quality_improving: "Amélioration qualité",
+  needs_review: "À relire",
+  publishing: "Publication",
+  published: "Publié",
+  failed: "Échec",
+  cancelled: "Annulé",
+};
+
 interface Props {
   adminPrefix: string;
   searchParams: Record<string, string | undefined>;
@@ -136,7 +149,11 @@ export async function JobsListV2({
     {
       key: "status",
       header: "Statut",
-      cell: (r) => <AdminBadge tone={STATUS_TONE[r.status] ?? "neutral"}>{r.status}</AdminBadge>,
+      cell: (r) => (
+        <AdminBadge tone={STATUS_TONE[r.status] ?? "neutral"}>
+          {STATUS_LABELS_FR[r.status] ?? r.status}
+        </AdminBadge>
+      ),
     },
     { key: "ville", header: "Ville", cell: (r) => r.anchorVilleSlug ?? "—" },
     { key: "score", header: "Score", cell: (r) => r.qualityScore ?? "—" },
@@ -169,7 +186,7 @@ export async function JobsListV2({
         actions={
           <form action={retryAll}>
             <button type="submit" className="admin-button-ghost">
-              Retry all failed
+              Relancer tous les échecs
             </button>
           </form>
         }
@@ -191,7 +208,7 @@ export async function JobsListV2({
                 <option value="">Tous</option>
                 {STATUSES.map((s) => (
                   <option key={s} value={s}>
-                    {s}
+                    {STATUS_LABELS_FR[s] ?? s}
                   </option>
                 ))}
               </select>

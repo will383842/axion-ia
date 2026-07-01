@@ -54,7 +54,7 @@ export async function GeoVilleGenerateV2({
                   <th>Date</th>
                   <th>Type</th>
                   <th>Statut</th>
-                  <th>Quality</th>
+                  <th>Qualité</th>
                 </tr>
               </thead>
               <tbody>
