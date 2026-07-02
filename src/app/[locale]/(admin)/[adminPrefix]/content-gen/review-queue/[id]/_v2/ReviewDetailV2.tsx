@@ -14,6 +14,10 @@ import {
   requestEdits,
 } from "@/server/actions/content-gen/review";
 import { createPreviewToken } from "@/server/content-gen/shared/preview-token";
+import {
+  REVIEW_STATUS_LABELS_FR,
+  contentTypeLabelFr,
+} from "@/server/content-gen/shared/admin-labels";
 
 interface ReviewData {
   id: string;
@@ -48,7 +52,7 @@ function QualityIterationsBadge({ attempts }: { attempts: number }): React.React
   return (
     <span
       style={{ color, fontWeight: 600 }}
-      title={`${attempts} itération${attempts > 1 ? "s" : ""} qualité boucle LLM`}
+      title={`${attempts} passage${attempts > 1 ? "s" : ""} d'amélioration qualité par l'IA`}
     >
       {attempts}x
     </span>
@@ -103,14 +107,14 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title={`Review · ${review.job.contentType}${review.job.anchorVilleSlug ? ` · ${review.job.anchorVilleSlug}` : ""}`}
-        description={`Job ${review.jobId.slice(0, 12)}… · statut review ${review.status} · quality ${review.job.qualityScore ?? "—"} · SEO ${review.job.seoScore ?? "—"}`}
+        title={`Relecture · ${contentTypeLabelFr(review.job.contentType)}${review.job.anchorVilleSlug ? ` · ${review.job.anchorVilleSlug}` : ""}`}
+        description={`Statut : ${REVIEW_STATUS_LABELS_FR[review.status as keyof typeof REVIEW_STATUS_LABELS_FR] ?? review.status} · Qualité ${review.job.qualityScore ?? "—"}/100 · SEO ${review.job.seoScore ?? "—"}/100`}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Aperçu rendu (iframe sandbox, token signé 10 min)</h2>
+        <h2 className="admin-h2">Aperçu de l&apos;article</h2>
         <p className="admin-meta-block">
-          Itérations boucle qualité :{" "}
+          Améliorations qualité automatiques :{" "}
           <QualityIterationsBadge attempts={review.job.qualityImprovementAttempts} />
         </p>
         {review.job.outputJsonRaw ? (
@@ -127,7 +131,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <details>
-          <summary className="cursor-pointer font-bold">Voir le JSON brut (debug)</summary>
+          <summary className="cursor-pointer font-bold">Données techniques (JSON — avancé)</summary>
           <pre className="mt-[var(--space-admin-3)] max-h-[300px] overflow-auto text-[length:var(--text-admin-xs)] whitespace-pre-wrap">
             {JSON.stringify(review.job.outputJsonRaw ?? {}, null, 2)}
           </pre>
@@ -193,7 +197,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             ) : null}
             {review.promotedToTier1At ? (
               <li>
-                <strong>Promu tier-1 le :</strong>{" "}
+                <strong>Rendu visible sur Google le :</strong>{" "}
                 {new Date(review.promotedToTier1At).toLocaleString("fr-FR")}
               </li>
             ) : null}
@@ -217,24 +221,24 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             <input id="approve-notes" name="notes" className="admin-input" />
           </div>
           <button type="submit" className="admin-button">
-            ✅ Approuver (tier-2)
+            ✅ Approuver (en ligne, non indexé)
           </button>
         </form>
 
         <form action={promote} className="mb-[var(--space-admin-6)]">
           <p className="admin-meta-block">
-            Approve + promote tier-1 indexable immédiat (worker content-publish-worker Sprint 4 wiré
-            pour la publication effective). L&apos;article devient indexable une fois publié.
+            Approuve l&apos;article ET le rend <strong>visible sur Google</strong> (indexable) : il
+            pourra apparaître dans les résultats de recherche une fois publié.
           </p>
           <button type="submit" className="admin-button">
-            🚀 Promouvoir tier-1
+            🚀 Approuver + rendre visible sur Google
           </button>
         </form>
 
         <form action={askEdits} className="mb-[var(--space-admin-6)]">
           <div className="admin-field">
             <label htmlFor="edits-comment" className="admin-label">
-              Demander des modifications (min 10 caractères) — guidance LLM
+              Demander des modifications — l&apos;IA régénère le contenu (10 caractères min)
             </label>
             <textarea
               id="edits-comment"
@@ -248,7 +252,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             />
           </div>
           <button type="submit" className="admin-button-ghost">
-            ✏️ Demander des modifs (re-prompt LLM)
+            ✏️ Demander des modifications
           </button>
         </form>
 

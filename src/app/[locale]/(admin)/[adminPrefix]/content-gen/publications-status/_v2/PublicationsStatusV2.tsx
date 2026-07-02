@@ -7,6 +7,7 @@ import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/u
 import { prisma } from "@/lib/prisma";
 import { bulkApproveReviews, bulkRejectReviews } from "@/server/actions/content-gen/review";
 import { retryAllFailed } from "@/server/actions/content-gen/jobs";
+import { contentTypeLabelFr } from "@/server/content-gen/shared/admin-labels";
 
 interface Props {
   adminPrefix: string;
@@ -62,8 +63,8 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Statut publications (kanban)"
-        description="5 colonnes · drag&drop V1.5 · bulk actions ci-dessous"
+        title="Suivi des publications"
+        description="Vue d'ensemble : Brouillon → En relecture → Approuvé → Publié (en ligne) → Refusé. La colonne « Publié » = articles réellement en ligne sur le site."
         actions={
           // eslint-disable-next-line @next/next/no-html-link-for-pages
           <a
@@ -77,7 +78,11 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Bulk actions (§ 12.1 v1.8)</h2>
+        <h2 className="admin-h2">Actions groupées</h2>
+        <p className="admin-meta-block">
+          Traite d&apos;un coup les contenus en attente de relecture. Le score qualité va de 0 à
+          100.
+        </p>
         <div className="flex flex-wrap items-center gap-[var(--space-admin-4)]">
           <form action={doBulkApprove} className="flex items-center gap-[var(--space-admin-2)]">
             <label htmlFor="bulkMin" className="admin-meta">
@@ -93,7 +98,7 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               className="admin-input w-[60px]"
             />
             <button type="submit" className="admin-button">
-              ✅ Approve bulk pending
+              ✅ Approuver en masse (score ≥ min)
             </button>
           </form>
           <form action={doBulkReject} className="flex items-center gap-[var(--space-admin-2)]">
@@ -110,27 +115,35 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               className="admin-input w-[60px]"
             />
             <button type="submit" className="admin-button-ghost">
-              ❌ Reject bulk pending
+              ❌ Rejeter en masse (score ≤ max)
             </button>
           </form>
           <form action={doRetryFailed}>
             <button type="submit" className="admin-button-ghost">
-              🔁 Retry all failed
+              🔁 Relancer tous les échecs
             </button>
           </form>
         </div>
       </AdminCard>
 
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        <KanbanColumn title={`Brouillon · ${draft.length}`} rows={draft} base={base} />
-        <KanbanColumn title={`En revue · ${review.length}`} rows={review} base={base} />
         <KanbanColumn
-          title={`Approuvé · ${approved.length}`}
+          title={`Brouillon (en génération) · ${draft.length}`}
+          rows={draft}
+          base={base}
+        />
+        <KanbanColumn title={`En relecture · ${review.length}`} rows={review} base={base} />
+        <KanbanColumn
+          title={`Approuvé (à publier) · ${approved.length}`}
           rows={approved.map((a) => a.job)}
           base={base}
         />
-        <KanbanColumn title={`Publié · ${published.length}`} rows={published} base={base} />
-        <KanbanColumn title={`Refusé · ${rejected.length}`} rows={rejected} base={base} />
+        <KanbanColumn
+          title={`Publié (en ligne) · ${published.length}`}
+          rows={published}
+          base={base}
+        />
+        <KanbanColumn title={`Refusé (échec) · ${rejected.length}`} rows={rejected} base={base} />
       </div>
     </AdminPageShell>
   );
@@ -160,8 +173,8 @@ function KanbanColumn({
             key={r.id}
             className="border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-2)]"
           >
-            <Link href={`${base}/jobs/${r.id}`} className="admin-link">
-              <strong>{r.contentType}</strong>
+            <Link href={`${base}/jobs/${r.id}`} className="admin-link" title={r.contentType}>
+              <strong>{contentTypeLabelFr(r.contentType)}</strong>
               {r.anchorVilleSlug ? ` · ${r.anchorVilleSlug}` : null}
             </Link>
             <br />

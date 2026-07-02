@@ -10,6 +10,7 @@ import {
   AdminPageHeader,
   AdminCard,
   AdminTable,
+  AdminBadge,
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
@@ -21,6 +22,12 @@ import {
   rollbackArticle,
   unarchiveArticle,
 } from "@/server/actions/content-gen/article";
+import {
+  INDEXATION_TIER_LABELS_FR,
+  INDEXATION_TIER_HELP_FR,
+  ARTICLE_STATUS_LABELS_FR,
+  articlePublicationBadge,
+} from "@/server/content-gen/shared/admin-labels";
 
 const PAGE_SIZE = 100;
 
@@ -126,11 +133,23 @@ export async function PublicationsV2({
       },
     },
     {
-      key: "tier",
-      header: "Tier",
-      cell: (a) => a.indexationTier.replace(/^tier_/, "tier-").replace(/_.*$/, ""),
+      key: "state",
+      header: "État",
+      cell: (a) => {
+        const badge = articlePublicationBadge(a.status);
+        return <AdminBadge tone={badge.tone}>{badge.label}</AdminBadge>;
+      },
     },
-    { key: "quality", header: "Quality", cell: (a) => a.qualityScore ?? "—" },
+    {
+      key: "tier",
+      header: "Visibilité Google",
+      cell: (a) => (
+        <span title={INDEXATION_TIER_HELP_FR[a.indexationTier]}>
+          {INDEXATION_TIER_LABELS_FR[a.indexationTier]}
+        </span>
+      ),
+    },
+    { key: "quality", header: "Qualité", cell: (a) => a.qualityScore ?? "—" },
     { key: "seo", header: "SEO", cell: (a) => a.seoScore ?? "—" },
   ];
 
@@ -138,7 +157,7 @@ export async function PublicationsV2({
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Publications"
-        description={`${total} article${total > 1 ? "s" : ""} content-gen · ${(where.status ?? "published") as string}${where.indexationTier ? ` · ${where.indexationTier}` : ""} · page ${page}/${totalPages}`}
+        description={`${total} article${total > 1 ? "s" : ""} · ${ARTICLE_STATUS_LABELS_FR[where.status ?? "published"] ?? where.status}${where.indexationTier ? ` · ${INDEXATION_TIER_LABELS_FR[where.indexationTier]}` : ""} · page ${page}/${totalPages}`}
         actions={
           <a
             href={`/api/content-gen/export?type=articles${sp.status ? `&status=${sp.status}` : ""}${sp.tier ? `&tier=${sp.tier}` : ""}`}
@@ -163,20 +182,26 @@ export async function PublicationsV2({
                 defaultValue={sp.status ?? "published"}
                 className="admin-input"
               >
-                <option value="published">Publié</option>
-                <option value="draft">Draft (rollback)</option>
+                <option value="published">Publié (en ligne)</option>
+                <option value="draft">Brouillon (dépublié)</option>
                 <option value="archived">Archivé</option>
               </select>
             </div>
             <div className="admin-field">
               <label htmlFor="tier" className="admin-label">
-                Tier
+                Visibilité Google
               </label>
               <select id="tier" name="tier" defaultValue={sp.tier ?? ""} className="admin-input">
-                <option value="">Tous</option>
-                <option value="tier_1_indexable">tier-1 indexable</option>
-                <option value="tier_2_noindex_follow">tier-2 noindex</option>
-                <option value="tier_3_noindex_nofollow">tier-3 nofollow</option>
+                <option value="">Toutes</option>
+                <option value="tier_1_indexable">
+                  {INDEXATION_TIER_LABELS_FR.tier_1_indexable}
+                </option>
+                <option value="tier_2_noindex_follow">
+                  {INDEXATION_TIER_LABELS_FR.tier_2_noindex_follow}
+                </option>
+                <option value="tier_3_noindex_nofollow">
+                  {INDEXATION_TIER_LABELS_FR.tier_3_noindex_nofollow}
+                </option>
               </select>
             </div>
           </div>
@@ -274,15 +299,19 @@ function ActionsCell({
       </Link>
       {status === "published" && tier === "tier_1_indexable" ? (
         <form action={doDemote}>
-          <button type="submit" className="admin-button-ghost text-[length:var(--text-admin-xs)]">
-            Demote tier-2
+          <button
+            type="submit"
+            className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+            title="Rendre l'article non indexé (ne plus apparaître sur Google)"
+          >
+            Retirer de Google
           </button>
         </form>
       ) : null}
       {status === "published" ? (
         <form action={doArchive}>
           <button type="submit" className="admin-button-ghost text-[length:var(--text-admin-xs)]">
-            Archive
+            Archiver
           </button>
         </form>
       ) : null}
@@ -295,8 +324,12 @@ function ActionsCell({
       ) : null}
       {status === "published" ? (
         <form action={doRollback}>
-          <button type="submit" className="admin-button-ghost text-[length:var(--text-admin-xs)]">
-            Rollback
+          <button
+            type="submit"
+            className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+            title="Dépublier : repasse l'article en brouillon (retiré du site)"
+          >
+            Dépublier
           </button>
         </form>
       ) : null}
