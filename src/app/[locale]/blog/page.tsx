@@ -151,8 +151,20 @@ export default async function BlogListing({ params, searchParams }: Props) {
     name: isFr
       ? "Blog Axion-IA · méthodologie & cas d'usage IA"
       : "Axion-IA blog · methodology & AI use cases",
+    // Résumé answer-ready (schema.org `abstract`, 40-60 mots) — excerptable par
+    // Perplexity / Claude / AI Overviews (audit AEO 2026-07-02, parité hub
+    // /blog/categorie). Reformule la ligne éditoriale, autonome et citable.
+    abstract: isFr
+      ? "Le blog Axion-IA réunit méthodologie d'audit IA, quick-wins opérationnels et stratégie IA sur mesure pour les TPE et PME françaises. Chaque article est rédigé après une mission réelle — pas de spéculation, pas de hype — et pensé pour rester actionnable douze mois après publication."
+      : "The Axion-IA blog gathers AI audit methodology, operational quick-wins and custom AI strategy for French SMBs. Every article is written after a real engagement — no speculation, no hype — and designed to stay actionable twelve months after publication.",
     speakable: true,
     mainEntity: { "@id": `${SITE_URL}/${locale}${pagePath}#itemlist` },
+    // E-E-A-T : revue éditoriale rattachée au nœud Person canonique du fondateur
+    // (référence `@id` — pas de duplication d'identité ; le nœud est défini par
+    // l'Organization du layout). Parité avec le hub /blog/categorie.
+    extra: {
+      reviewedBy: { "@id": `${SITE_URL}/${locale}/equipe/williams#person` },
+    },
   });
 
   // Pills réassurance (count dynamique)
@@ -299,8 +311,9 @@ export default async function BlogListing({ params, searchParams }: Props) {
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-primary text-sm font-medium">
-                          {isFr ? "Voir les articles" : "See articles"} â†’
+                        <p className="text-primary inline-flex items-center gap-1.5 text-sm font-medium">
+                          {isFr ? "Voir les articles" : "See articles"}{" "}
+                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
                         </p>
                       </CardContent>
                     </Card>
@@ -396,7 +409,8 @@ export default async function BlogListing({ params, searchParams }: Props) {
         }
         cta={
           <Cta href="/formations" size="lg">
-            {isFr ? "Voir nos formations" : "See our trainings"} â†’
+            {isFr ? "Voir nos formations" : "See our trainings"}{" "}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Cta>
         }
         tone="dark"
