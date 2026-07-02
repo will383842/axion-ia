@@ -19,6 +19,7 @@ import {
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
 import { listTemplates } from "@/server/actions/content-gen/templates";
+import { WIZARD_CONTENT_TYPE_LABELS } from "@/server/actions/content-gen/campaign-wizard-constants";
 import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
@@ -63,9 +64,14 @@ const STATUS_TONE: Record<string, "success" | "warning" | "destructive" | "neutr
   needs_review: "warning",
   publishing: "warning",
   published: "success",
+  approved: "success",
   failed: "destructive",
   cancelled: "neutral",
 };
+
+// Libellé FR d'un type de contenu (slug technique → libellé lisible). Fallback
+// sur le slug pour les types hors wizard (ex. landing_ville, barometer_insight).
+const CONTENT_TYPE_LABELS_FR = WIZARD_CONTENT_TYPE_LABELS as Record<string, string>;
 
 // Libellés FR affichés à l'écran pour les statuts (option de filtre + badge).
 // La valeur d'enum sous-jacente reste inchangée ; on ne traduit que l'affichage.
@@ -76,6 +82,7 @@ const STATUS_LABELS_FR: Record<string, string> = {
   needs_review: "À relire",
   publishing: "Publication",
   published: "Publié",
+  approved: "Approuvé",
   failed: "Échec",
   cancelled: "Annulé",
 };
@@ -135,7 +142,13 @@ export async function JobsListV2({
         </Link>
       ),
     },
-    { key: "type", header: "Type", cell: (r) => r.contentType },
+    {
+      key: "type",
+      header: "Type",
+      cell: (r) => (
+        <span title={r.contentType}>{CONTENT_TYPE_LABELS_FR[r.contentType] ?? r.contentType}</span>
+      ),
+    },
     {
       key: "secteur",
       header: "Secteur",
@@ -226,7 +239,7 @@ export async function JobsListV2({
                 <option value="">Tous</option>
                 {TYPES.map((t) => (
                   <option key={t} value={t}>
-                    {t}
+                    {CONTENT_TYPE_LABELS_FR[t] ?? t}
                   </option>
                 ))}
               </select>

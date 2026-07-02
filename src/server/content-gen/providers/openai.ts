@@ -205,8 +205,13 @@ export const openaiProvider: IProvider = {
         false,
       );
     }
-    if (!fullText) {
-      throw new ProviderError("OpenAI returned empty content", "invalid_response", "openai", false);
+    if (!fullText || fullText.trim().length === 0) {
+      // Sortie VIDE (throttling « soft » OpenAI sans 429, ou quota dégradé) :
+      // RETRYABLE=true → le routeur bascule sur le fallback (Anthropic) au lieu
+      // d'échouer le job. Avant : `false` (non-retryable) = échec sec SANS fallback
+      // → cause racine des « plan invalide » / « outline parse failed » / « aucun
+      // output valide » intermittents (2026-07-02).
+      throw new ProviderError("OpenAI returned empty content", "invalid_response", "openai", true);
     }
     if (truncatedByLength) {
       console.warn(
