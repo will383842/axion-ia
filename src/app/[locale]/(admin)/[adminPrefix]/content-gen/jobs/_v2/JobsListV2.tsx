@@ -19,7 +19,11 @@ import {
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
 import { listTemplates } from "@/server/actions/content-gen/templates";
-import { WIZARD_CONTENT_TYPE_LABELS } from "@/server/actions/content-gen/campaign-wizard-constants";
+import {
+  JOB_STATUS_LABELS_FR,
+  JOB_STATUS_TONE,
+  contentTypeLabelFr,
+} from "@/server/content-gen/shared/admin-labels";
 import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
@@ -53,39 +57,8 @@ const TYPES: ReadonlyArray<ContentType> = [
   "faq_standalone",
 ];
 
-// Track 2 : tonalité du badge dérivée du statut job (labels inchangés).
-// Record<string, …> volontaire (pas exhaustif sur l'enum) : le `?? "neutral"`
-// au point d'usage couvre les statuts non listés (generating_*, running_qa,
-// approved, …) → tonalité neutre par défaut.
-const STATUS_TONE: Record<string, "success" | "warning" | "destructive" | "neutral"> = {
-  queued: "warning",
-  running: "warning",
-  quality_improving: "warning",
-  needs_review: "warning",
-  publishing: "warning",
-  published: "success",
-  approved: "success",
-  failed: "destructive",
-  cancelled: "neutral",
-};
-
-// Libellé FR d'un type de contenu (slug technique → libellé lisible). Fallback
-// sur le slug pour les types hors wizard (ex. landing_ville, barometer_insight).
-const CONTENT_TYPE_LABELS_FR = WIZARD_CONTENT_TYPE_LABELS as Record<string, string>;
-
-// Libellés FR affichés à l'écran pour les statuts (option de filtre + badge).
-// La valeur d'enum sous-jacente reste inchangée ; on ne traduit que l'affichage.
-const STATUS_LABELS_FR: Record<string, string> = {
-  queued: "En file",
-  running: "En cours",
-  quality_improving: "Amélioration qualité",
-  needs_review: "À relire",
-  publishing: "Publication",
-  published: "Publié",
-  approved: "Approuvé",
-  failed: "Échec",
-  cancelled: "Annulé",
-};
+// Libellés FR + tonalités : centralisés dans `admin-labels.ts` (SSOT, exhaustif
+// sur les enums Prisma, testé). On n'affiche plus jamais un slug technique.
 
 interface Props {
   adminPrefix: string;
@@ -145,9 +118,7 @@ export async function JobsListV2({
     {
       key: "type",
       header: "Type",
-      cell: (r) => (
-        <span title={r.contentType}>{CONTENT_TYPE_LABELS_FR[r.contentType] ?? r.contentType}</span>
-      ),
+      cell: (r) => <span title={r.contentType}>{contentTypeLabelFr(r.contentType)}</span>,
     },
     {
       key: "secteur",
@@ -163,8 +134,8 @@ export async function JobsListV2({
       key: "status",
       header: "Statut",
       cell: (r) => (
-        <AdminBadge tone={STATUS_TONE[r.status] ?? "neutral"}>
-          {STATUS_LABELS_FR[r.status] ?? r.status}
+        <AdminBadge tone={JOB_STATUS_TONE[r.status] ?? "neutral"}>
+          {JOB_STATUS_LABELS_FR[r.status] ?? r.status}
         </AdminBadge>
       ),
     },
@@ -221,7 +192,7 @@ export async function JobsListV2({
                 <option value="">Tous</option>
                 {STATUSES.map((s) => (
                   <option key={s} value={s}>
-                    {STATUS_LABELS_FR[s] ?? s}
+                    {JOB_STATUS_LABELS_FR[s] ?? s}
                   </option>
                 ))}
               </select>
@@ -239,7 +210,7 @@ export async function JobsListV2({
                 <option value="">Tous</option>
                 {TYPES.map((t) => (
                   <option key={t} value={t}>
-                    {CONTENT_TYPE_LABELS_FR[t] ?? t}
+                    {contentTypeLabelFr(t)}
                   </option>
                 ))}
               </select>
