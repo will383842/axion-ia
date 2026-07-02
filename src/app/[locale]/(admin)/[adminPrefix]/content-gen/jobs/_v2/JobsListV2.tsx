@@ -17,7 +17,7 @@ import {
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
-import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
+import { listJobs, retryAllFailed, deleteFailedJobs } from "@/server/actions/content-gen/jobs";
 import { listTemplates } from "@/server/actions/content-gen/templates";
 import {
   JOB_STATUS_LABELS_FR,
@@ -103,6 +103,11 @@ export async function JobsListV2({
     await retryAllFailed();
   }
 
+  async function deleteFailed() {
+    "use server";
+    await deleteFailedJobs();
+  }
+
   type JobRow = (typeof result.rows)[number];
 
   const columns: ReadonlyArray<AdminTableColumn<JobRow>> = [
@@ -168,11 +173,22 @@ export async function JobsListV2({
         title="Jobs content-gen"
         description={`${result.total} job${result.total > 1 ? "s" : ""} · page ${result.page}/${result.totalPages}`}
         actions={
-          <form action={retryAll}>
-            <button type="submit" className="admin-button-ghost">
-              Relancer tous les échecs
-            </button>
-          </form>
+          <div className="flex flex-wrap gap-[var(--space-admin-2)]">
+            <form action={retryAll}>
+              <button type="submit" className="admin-button-ghost">
+                Relancer tous les échecs
+              </button>
+            </form>
+            <form action={deleteFailed}>
+              <button
+                type="submit"
+                className="admin-button-ghost text-[color:var(--color-admin-destructive)]"
+                title="Supprime définitivement les jobs en échec/bloqués (tentatives ratées, sans contenu publié)"
+              >
+                Supprimer les jobs en échec
+              </button>
+            </form>
+          </div>
         }
       />
 
