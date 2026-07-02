@@ -356,3 +356,34 @@ export async function retryAllFailed(): Promise<number> {
     throw e;
   }
 }
+
+/**
+ * Supprime les jobs en échec/bloqués (nettoyage console — 2026-07-02). Ce sont
+ * des tentatives ratées SANS contenu publié. Suppression sûre :
+ *  - GenerationLog.jobId + ReviewQueue.jobId sont en onDelete: Cascade (purgés
+ *    automatiquement) ;
+ *  - Article.generatedByJobId est une simple chaîne (pas de FK) → aucun article
+ *    publié n'est impacté.
+ * Retourne le nombre de jobs supprimés.
+ */
+export async function deleteFailedJobs(): Promise<number> {
+  const session = await requireAdmin();
+  try {
+    const res = await prisma.contentGenJob.deleteMany({
+      where: {
+        status: { in: ["failed", "quarantined_critical", "quarantined_factcheck"] },
+      },
+    });
+    revalidatePath(adminBase());
+    await logActivity({
+      session,
+      action: "content-gen.job.delete-failed-bulk",
+      targetType: "ContentGenJob",
+      changes: { count: res.count },
+    });
+    return res.count;
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "deleteFailedJobs" } });
+    throw e;
+  }
+}
