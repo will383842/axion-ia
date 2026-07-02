@@ -193,6 +193,7 @@ label : ${config.recommendedCtaLabel}
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
 
 ## Champs synthèse (AEO)
+- "directAnswer": OBLIGATOIRE — réponse directe et autonome de 40 à 80 mots à la question / au sujet principal ("${safeKeyword}"), en phrases complètes, citable telle quelle par une IA. Jamais vide, jamais sous 40 mots.
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé ci-dessus.
 
@@ -226,6 +227,15 @@ label : ${config.recommendedCtaLabel}
       if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
       continue;
     }
+
+    // Robustesse (2026-07-02) : le LLM peut renvoyer un JSON VALIDE mais avec des
+    // champs manquants (observé sur faq_geo → bodyHtml/faq absents). On coerce vers
+    // des valeurs sûres AVANT tout .length / sanitize, sinon crash « Cannot read
+    // properties of undefined (reading 'length') ». Un champ manquant fait alors
+    // simplement échouer un gate (re-génération propre) au lieu de tuer le job.
+    parsed.bodyHtml = typeof parsed.bodyHtml === "string" ? parsed.bodyHtml : "";
+    parsed.faq = Array.isArray(parsed.faq) ? parsed.faq : [];
+    parsed.tags = Array.isArray(parsed.tags) ? parsed.tags : [];
 
     // keyword-in-H1 hard-gate (parité blog_from_keywords, 2026-06-22) — le H1
     // rendu de la page = `parsed.title` (le sanitizer interdit un <h1> dans le
