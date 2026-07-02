@@ -94,13 +94,15 @@ function getQaExtractQueue(): Queue {
 // Drip window : 8h-22h CET (Europe/Paris). Publie uniquement pendant les
 // heures ouvrées → signal humain, réduit risque HCU Google.
 //
-// P1-6 — Rampe progressive 30→500 si env var non définie.
+// Rampe progressive si env var non définie. Relevée 2026-07-02 (décision Will —
+// objectif ~100 contenus/jour) : plancher 150/jour dès le départ pour ne PAS
+// bloquer la montée en charge, puis 300 puis 1000. L'ancien plancher à 30/jour
+// bottleneckait la publication (file « À relire » qui s'accumulait).
 // Paliers basés sur le volume d'articles publiés cumulés :
-//   <  60 articles publiés → cap 30/jour  (phase démarrage)
-//   < 300 articles publiés → cap 100/jour (phase croissance)
-//   < 600 articles publiés → cap 200/jour (phase scale)
-//   ≥ 600 articles publiés → cap 500/jour (régime croisière)
-// Si MAX_PUBLISH_PER_DAY env var définie → override direct (compatibilité).
+//   < 1000 articles publiés → cap 150/jour (support ~100/jour + marge de drainage)
+//   < 5000 articles publiés → cap 300/jour
+//   ≥ 5000 articles publiés → cap 1000/jour
+// Override explicite prioritaire : env MAX_PUBLISH_PER_DAY, puis ContentGenConfig.
 async function getEffectivePublishCap(): Promise<number> {
   const envCap = process.env.MAX_PUBLISH_PER_DAY;
   if (envCap !== undefined && envCap !== "") return parseInt(envCap, 10);
@@ -108,10 +110,9 @@ async function getEffectivePublishCap(): Promise<number> {
   const dbCap = await readContentGenConfig<number>("MAX_PUBLISH_PER_DAY", 0);
   if (dbCap > 0) return dbCap;
   const totalPublished = await prisma.article.count({ where: { status: "published" } });
-  if (totalPublished < 60) return 30;
-  if (totalPublished < 300) return 100;
-  if (totalPublished < 600) return 200;
-  return 500;
+  if (totalPublished < 1000) return 150;
+  if (totalPublished < 5000) return 300;
+  return 1000;
 }
 
 const DRIP_HOUR_START_CET = 8;
