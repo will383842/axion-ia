@@ -13,6 +13,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
@@ -72,6 +73,73 @@ function salaryLabel(o: JobOffer, isFr: boolean): string | null {
       ? `${k(o.salaryMin)}–${k(o.salaryMax)}`
       : k((o.salaryMin ?? o.salaryMax) as number);
   return `${range} ${o.salaryCurrency} ${per}`;
+}
+
+// FAQ par offre (AEO / AI Overviews) : questions/réponses FACTUELLES dérivées des
+// données réelles de l'offre (mode de travail, contrat, salaire, candidature) →
+// unique par offre (anti-thin/anti-doorway), rien d'inventé. Rendu via FaqAccordion
+// (CSS-only, 0 JS) qui émet le JSON-LD FAQPage.
+function buildOfferFaq(
+  o: JobOffer,
+  title: string,
+  isFr: boolean,
+): Array<{ id: string; question: string; answer: string }> {
+  const items: Array<{ id: string; question: string; answer: string }> = [];
+  const cityPart = o.city ? (isFr ? ` à ${o.city}` : ` in ${o.city}`) : "";
+
+  const modeAnswer =
+    o.workMode === "remote"
+      ? isFr
+        ? "Oui, ce poste est en télétravail (à distance), ouvert partout en France."
+        : "Yes, this role is fully remote, open across France."
+      : o.workMode === "hybrid"
+        ? isFr
+          ? `Ce poste est en hybride : une partie en présentiel${cityPart} et une partie en télétravail.`
+          : `This role is hybrid: partly on-site${cityPart} and partly remote.`
+        : isFr
+          ? `Ce poste est en présentiel${cityPart}.`
+          : `This role is on-site${cityPart}.`;
+  items.push({
+    id: "teletravail",
+    question: isFr
+      ? `Le poste de ${title} est-il en télétravail ?`
+      : `Is the ${title} role remote?`,
+    answer: modeAnswer,
+  });
+
+  const contract =
+    o.contractLabel ??
+    (o.employmentType === "FULL_TIME"
+      ? isFr
+        ? "CDI temps plein"
+        : "full-time permanent contract"
+      : o.employmentType);
+  items.push({
+    id: "contrat",
+    question: isFr ? "Quel est le type de contrat ?" : "What type of contract is it?",
+    answer: isFr ? `Il s'agit d'un poste en ${contract}.` : `This is a ${contract} position.`,
+  });
+
+  const sal = salaryLabel(o, isFr);
+  if (sal) {
+    items.push({
+      id: "remuneration",
+      question: isFr ? "Quelle est la rémunération ?" : "What is the salary?",
+      answer: isFr
+        ? `La rémunération proposée est de ${sal}, selon ton profil et ton expérience.`
+        : `The offered pay is ${sal}, depending on your profile and experience.`,
+    });
+  }
+
+  items.push({
+    id: "candidature",
+    question: isFr ? "Comment postuler à cette offre ?" : "How do I apply?",
+    answer: isFr
+      ? "Tu postules en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est ta motivation et ce que tu sais faire."
+      : "Apply online in a few minutes via the « Apply » button. A CV is optional — what matters is your motivation and skills.",
+  });
+
+  return items;
 }
 
 export async function generateStaticParams() {
@@ -398,6 +466,17 @@ export default async function JobOfferDetailPage({
                 {isFr ? EMPLOYER_BRAND.formateurOnboardingFr : EMPLOYER_BRAND.formateurOnboardingEn}
               </p>
             ) : null}
+          </div>
+        </Container>
+      </Section>
+
+      <Section>
+        <Container>
+          <h2 className="font-serif text-2xl font-semibold">
+            {isFr ? "Questions fréquentes" : "Frequently asked questions"}
+          </h2>
+          <div className="mt-6 max-w-3xl">
+            <FaqAccordion items={buildOfferFaq(offer, title, isFr)} />
           </div>
         </Container>
       </Section>
