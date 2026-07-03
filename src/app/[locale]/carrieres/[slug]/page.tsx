@@ -101,7 +101,9 @@ function buildOfferFaq(
           : `This role is on-site${cityPart}.`;
   items.push({
     id: "teletravail",
-    question: isFr ? `Le poste de ${title} est-il en télétravail ?` : `Is the ${title} role remote?`,
+    question: isFr
+      ? `Le poste de ${title} est-il en télétravail ?`
+      : `Is the ${title} role remote?`,
     answer: modeAnswer,
   });
 
