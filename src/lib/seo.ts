@@ -781,14 +781,20 @@ export function buildOrganizationJsonLd({
       url: `${SITE_URL}/${isFr ? "fr" : "en"}/interventions`,
     },
     foundingDate: "2024",
-    // Décision Will D7 (2026-05-21) : société française pure, siège principal Paris.
-    // Cf. memory [[axionia_decisions_will_final_2026-05-21]].
+    // Siège social réel (2026-07-03) : SAS AXION-IA, 11 Avenue Paul Verlaine,
+    // 38100 Grenoble (domiciliation), RCS Grenoble — Auvergne-Rhône-Alpes.
+    // L'ancrage entité DOIT refléter le RCS (sinon incohérence NAP ↔ registre
+    // = risque E-E-A-T). La visibilité Paris / Île-de-France / toute la France
+    // reste portée par `areaServed` + les pages pSEO villes/régions (zone
+    // servie), pas par l'adresse du siège. Remplace la décision D7 2026-05-21
+    // (ancrage Paris), caduque depuis l'immatriculation à Grenoble.
     foundingLocation: {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
         addressCountry: "FR",
-        addressLocality: "Paris",
+        addressRegion: "Auvergne-Rhône-Alpes",
+        addressLocality: "Grenoble",
       },
     },
     // Fondateur — E-E-A-T : un humain nommé identifiable derrière l'entité
@@ -822,7 +828,9 @@ export function buildOrganizationJsonLd({
           address: {
             "@type": "PostalAddress",
             streetAddress: env.COMPANY_ADDRESS,
-            addressLocality: "Paris",
+            addressLocality: "Grenoble",
+            postalCode: "38100",
+            addressRegion: "Auvergne-Rhône-Alpes",
             addressCountry: "FR",
           },
         }
@@ -1235,7 +1243,7 @@ interface LocalBusinessJsonLdInput {
    * ville où LB émis. Maintenant : omettre = pas d'openingHours dans le JSON-LD
    * (compatible Service Area Business pattern Google). À passer explicitement
    * UNIQUEMENT pour les pages avec un vrai bureau physique (ex: /a-propos siège
-   * Paris).
+   * Grenoble).
    * Cert C6 2026-05-08 : forme objet typée requise (Google Validator rejette les
    * arrays de strings type "Mo-Fr 09:00-18:00").
    */
@@ -1252,7 +1260,7 @@ interface LocalBusinessJsonLdInput {
 
 /**
  * Default opening hours utilisables par la page /a-propos ou /contact (siège
- * Paris réel). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
+ * Grenoble réel). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
  * appliquées automatiquement par `buildLocalBusinessJsonLd` (cf. commentaire
  * de la fonction) — à passer explicitement.
  */
@@ -1267,7 +1275,7 @@ export const DEFAULT_HEADQUARTERS_OPENING_HOURS = [
 // LocalBusiness JSON-LD — Service Area Business safe mode.
 //
 // Sprint Correctif P1-2 (2026-05-23 — audit E2E passe 2 runtime + décision Will
-// 2026-05-23) : Axion-IA = 1 siège FR (Paris) qui sert toute la France. Pour
+// 2026-05-23) : Axion-IA = 1 siège FR (Grenoble) qui sert toute la France. Pour
 // chaque page ville/région : on émet `ProfessionalService` (compatible LocalBusiness
 // schema.org) avec `areaServed` mais SANS les attributs qui claim un bureau
 // physique (`geo`, `openingHoursSpecification`, `priceRange`, `address.postalCode`)
@@ -1281,7 +1289,7 @@ export const DEFAULT_HEADQUARTERS_OPENING_HOURS = [
 // ville (`implantations/[ville]`, `audit/par-ville/[ville]`, etc.) appellent
 // sans `geo`/`openingHours`/`priceRange` → JSON-LD propre Service Area Business.
 // Une seule page peut/doit passer les vraies valeurs : `/a-propos` ou `/contact`
-// avec address Paris réelle (TODO Will).
+// avec address Grenoble réelle (TODO Will).
 //
 // Référence Google : « Do not mark up an address that is not a real, accurate
 // physical address. » → https://developers.google.com/search/docs/appearance/structured-data/local-business

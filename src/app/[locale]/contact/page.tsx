@@ -66,7 +66,8 @@ export default async function Contact({ params }: Props) {
       url: SITE_URL,
       address: {
         "@type": "PostalAddress",
-        addressLocality: "Paris",
+        addressLocality: "Grenoble",
+        addressRegion: "Auvergne-Rhône-Alpes",
         addressCountry: "FR",
       },
     },

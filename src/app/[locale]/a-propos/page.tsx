@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
-        ? "Axion-IA, cabinet IA opérationnel basé à Paris : mission, équipe, valeurs E-E-A-T, hébergement UE et réponse humaine sous 48 h. Découvrez notre parcours depuis 2024."
+        ? "Axion-IA, cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France, notamment à Paris et en Île-de-France : mission, équipe, valeurs E-E-A-T, hébergement UE et réponse humaine sous 48 h. Découvrez notre parcours depuis 2024."
         : "Axion-IA — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });
@@ -72,11 +72,13 @@ export default async function About({ params }: Props) {
   // LocalBusiness root — 1 SEULE émission propre sur le site, sur /a-propos
   // (Sprint Correctif P1-2 2026-05-23 — audit E2E passe 2 runtime + décision Will).
   //
-  // Axion-IA = 1 siège FR Paris (Service Area Business pattern). Toutes les
-  // autres pages ville-service émettent Service+areaServed (pas LocalBusiness)
-  // pour ne pas claim de bureau physique dans chaque ville (anti-spam local Google).
-  // Cette émission ici donne à Google + AI overviews une ancre locale CLAIRE et
-  // UNIQUE pour ancrer l'entité Axion-IA à Paris.
+  // Axion-IA = 1 siège FR Grenoble / Auvergne-Rhône-Alpes (Service Area Business
+  // pattern). Toutes les autres pages ville-service émettent Service+areaServed
+  // (pas LocalBusiness) pour ne pas claim de bureau physique dans chaque ville
+  // (anti-spam local Google). Cette émission ici donne à Google + AI overviews
+  // une ancre locale CLAIRE et UNIQUE pour ancrer l'entité Axion-IA à Grenoble
+  // (siège réel = RCS Grenoble). La visibilité Paris / Île-de-France / France
+  // reste portée par `areaServed` + les pages pSEO villes (zone servie).
   //
   // ⚠️ Champs ÉMIS uniquement avec données réelles (no street/geo/horaires/CP
   // car données précises non publiables par Will pour l'instant — à compléter
@@ -86,15 +88,16 @@ export default async function About({ params }: Props) {
     locale: loc,
     path: "/a-propos",
     name: isFr
-      ? "Axion-IA — Cabinet IA opérationnel B2B (siège Paris, France)"
-      : "Axion-IA — Operational B2B AI consultancy (HQ Paris, France)",
+      ? "Axion-IA — Cabinet IA opérationnel B2B (siège Grenoble, France)"
+      : "Axion-IA — Operational B2B AI consultancy (HQ Grenoble, France)",
     description: isFr
-      ? "Axion-IA est un cabinet IA opérationnel basé à Paris, qui intervient sur toute la France auprès de TPE, PME, ETI et grands comptes : interventions IA, audits, implémentations, coaching 1-to-1 et sites web augmentés."
-      : "Axion-IA is an operational AI consultancy headquartered in Paris, serving the whole of France for SMBs, mid-caps and enterprises: AI sessions, audits, implementations, 1-to-1 coaching and AI-augmented websites.",
+      ? "Axion-IA est un cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès de TPE, PME, ETI et grands comptes : interventions IA, audits, implémentations, coaching 1-to-1 et sites web augmentés."
+      : "Axion-IA is an operational AI consultancy headquartered in Grenoble (Auvergne-Rhône-Alpes), serving the whole of France — including Paris and the Île-de-France region — for SMBs, mid-caps and enterprises: AI sessions, audits, implementations, 1-to-1 coaching and AI-augmented websites.",
     areaServed: { type: "AdministrativeArea", name: "France" },
     address: {
-      city: "Paris",
-      region: "Île-de-France",
+      city: "Grenoble",
+      region: "Auvergne-Rhône-Alpes",
+      postalCode: "38100",
       country: "FR",
     },
   });
@@ -113,8 +116,8 @@ export default async function About({ params }: Props) {
     inLanguage: loc,
     name: isFr ? "À propos d'Axion-IA" : "About Axion-IA",
     description: isFr
-      ? "Axion-IA, cabinet IA opérationnel basé à Paris : mission, équipe, valeurs E-E-A-T et parcours depuis 2024."
-      : "Axion-IA, an operational AI consultancy based in Paris: mission, team, E-E-A-T values and journey since 2024.",
+      ? "Axion-IA, cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes), intervenant dans toute la France dont Paris et l'Île-de-France : mission, équipe, valeurs E-E-A-T et parcours depuis 2024."
+      : "Axion-IA, an operational AI consultancy headquartered in Grenoble (Auvergne-Rhône-Alpes), serving the whole of France including Paris and Île-de-France: mission, team, E-E-A-T values and journey since 2024.",
     dateModified: SITE_EDITORIAL_DATE,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     mainEntity: { "@id": `${SITE_URL}/#organization` },
@@ -132,7 +135,7 @@ export default async function About({ params }: Props) {
           id: "siege",
           question: "Où est le siège d'Axion-IA ?",
           answer:
-            "Le siège d'Axion-IA est à Paris, France. C'est un cabinet IA opérationnel français, qui intervient sur toute la France auprès des TPE, PME, ETI et grands comptes.",
+            "Le siège d'Axion-IA est à Grenoble (Auvergne-Rhône-Alpes), en France. C'est un cabinet IA opérationnel français qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès des TPE, PME, ETI et grands comptes.",
         },
         {
           id: "depuis-quand",
@@ -158,7 +161,7 @@ export default async function About({ params }: Props) {
           id: "siege",
           question: "Where is Axion-IA's head office?",
           answer:
-            "Axion-IA's head office is in Paris, France. It is a French operational AI consultancy serving the whole of France for small businesses, SMEs, mid-caps and large accounts.",
+            "Axion-IA's head office is in Grenoble (Auvergne-Rhône-Alpes), France. It is a French operational AI consultancy serving the whole of France — including Paris and the Île-de-France region — for small businesses, SMEs, mid-caps and large accounts.",
         },
         {
           id: "depuis-quand",
