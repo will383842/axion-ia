@@ -16,9 +16,6 @@ import type {
   BlogFormat,
 } from "./types";
 
-import { POST as POST_AUDIT_AVANT } from "./posts/pourquoi-auditer-avant-implementer";
-import { POST as POST_QUICK_WINS } from "./posts/3-quick-wins-2026";
-import { POST as POST_IA_CUSTOM } from "./posts/ia-custom-quand-vraiment";
 import { slugify } from "@/lib/slug";
 
 export type {
@@ -40,11 +37,15 @@ export type {
  * Quand le volume dépasse ~5K articles, migrer vers Prisma DB (Sprint 15+).
  * Le barrel restera exposé en helper pour rétrocompat avec le rendering SSG.
  */
-export const BLOG_POSTS: ReadonlyArray<BlogPost> = [
-  POST_AUDIT_AVANT,
-  POST_QUICK_WINS,
-  POST_IA_CUSTOM,
-];
+// Vidé le 2026-07-03 (audit blog) : les 3 posts FS legacy
+// (pourquoi-auditer-avant-implementer, 3-quick-wins-2026, ia-custom-quand-vraiment)
+// existaient AUSSI en base (stubs thin ~400 car.) qui les masquaient (loader
+// DB-first). Ils ont été régénérés/enrichis en base (8-10 k car.) avec de
+// nouveaux slugs keyword-rich ; garder les fichiers FS ré-affichait l'ancien
+// contenu thin à l'ancienne URL au lieu de 301 vers l'article enrichi
+// (loader.ts consulte le FS AVANT le redirect slug-history). Tout le blog est
+// désormais piloté par la DB (Article/ArticleTranslation).
+export const BLOG_POSTS: ReadonlyArray<BlogPost> = [];
 
 // ============================================================================
 // Tier resolver — anti-doorway HCU 2024 strict
