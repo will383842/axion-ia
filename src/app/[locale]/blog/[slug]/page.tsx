@@ -411,6 +411,9 @@ export default async function BlogArticle({ params }: Props) {
   const related = await findRelatedArticles({
     currentSlug: slug,
     currentCategory: view.category,
+    // Audit maillage 2026-07-03 — titre courant → tri par pertinence (recouvrement
+    // de mots-clés), plus fiable que la catégorie souvent « Cas d'usage ».
+    currentTitle: view.title,
     locale: loc,
     limit: 4,
   });

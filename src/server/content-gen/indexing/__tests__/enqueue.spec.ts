@@ -78,6 +78,9 @@ describe("enqueueIndexingForTier1", () => {
   it("enqueues both indexnow + google when both flags set", async () => {
     process.env.INDEXNOW_KEY = "key123";
     process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+    // Articles : opt-in explicite requis en plus du master (Google ignore les
+    // non-JobPosting → protège le quota 200/j réservé aux offres).
+    process.env.GOOGLE_INDEXING_ARTICLES = "true";
 
     const result = await enqueueIndexingForTier1({
       articleId: "a-3",
@@ -107,6 +110,7 @@ describe("enqueueIndexingForTier1", () => {
   it("passes lifecycleEvent=delete → URL_DELETED + jobId suffix", async () => {
     process.env.INDEXNOW_KEY = "key123";
     process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+    process.env.GOOGLE_INDEXING_ARTICLES = "true";
 
     await enqueueIndexingForTier1({
       articleId: "a-7",
@@ -172,9 +176,30 @@ describe("enqueueIndexingForTier1", () => {
     expect(result.indexnowEnqueued).toBe(false);
   });
 
+  it("skips google for ARTICLES when master ON but GOOGLE_INDEXING_ARTICLES unset", async () => {
+    // Régression : le master seul (posé en prod pour Google for Jobs) ne doit
+    // PAS faire pinger les articles (Google ignore + gaspille le quota).
+    process.env.INDEXNOW_KEY = "key";
+    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+    delete process.env.GOOGLE_INDEXING_ARTICLES;
+
+    const result = await enqueueIndexingForTier1({
+      articleId: "a-8",
+      slug: "post",
+      isNews: false,
+      origin: "content-gen",
+    });
+
+    expect(result.indexnowEnqueued).toBe(true);
+    expect(result.googleEnqueued).toBe(false);
+    // Un seul add (IndexNow), aucun add Google.
+    expect(addMock).toHaveBeenCalledOnce();
+  });
+
   it("uses deterministic jobId for idempotency", async () => {
     process.env.INDEXNOW_KEY = "key";
     process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+    process.env.GOOGLE_INDEXING_ARTICLES = "true";
 
     await enqueueIndexingForTier1({
       articleId: "stable-id",

@@ -48,16 +48,23 @@ export function ImplementationLandingLinks({ isFr }: { isFr: boolean }): ReactNo
         })}
       </div>
 
-      {/* Porte d'entrée thématique — de-orphelinise le hub par-techno (audit
-          maillage 2026-07-03 : 0 lien entrant HTML avant). Ce hub relie lui-même
-          les 9 prestations packagées. Pas de lien vers /implementation/par-fonction :
-          cette route n'a pas de hub (seulement des pages [slug]) → 404. */}
+      {/* Deux portes d'entrée thématiques — de-orphelinisent les hubs par-techno
+          ET par-fonction (audit maillage 2026-07-03 : 0 lien entrant HTML avant ;
+          le hub par-fonction a été créé dans le même lot). Chacun relie ensuite
+          ses propres pages détail. */}
       <div className="mt-6 flex flex-wrap gap-3">
         <Link
           href="/implementation/par-techno"
           className="border-border text-fg hover:border-terracotta focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
-          {isFr ? "Voir les 9 prestations par brique techno" : "See all 9 services by tech block"}
+          {isFr ? "Voir par brique techno" : "Browse by tech block"}
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </Link>
+        <Link
+          href="/implementation/par-fonction"
+          className="border-border text-fg hover:border-terracotta focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          {isFr ? "Voir par fonction métier" : "Browse by business function"}
           <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
         </Link>
       </div>

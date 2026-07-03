@@ -119,8 +119,16 @@ export async function enqueueIndexingForTier1(
     }
   }
 
-  // Google Indexing API — gated par flag explicite, type dérivé du lifecycleEvent
-  const googleEnabled = process.env.GOOGLE_INDEXING_API_ENABLED === "true";
+  // Google Indexing API — l'API n'honore officiellement QUE JobPosting /
+  // BroadcastEvent. Pour un ARTICLE, Google accepte le ping (200) mais
+  // n'indexe rien → quota 200/j gaspillé (les offres en ont besoin) + hors ToS
+  // (risque de révocation). On exige donc un opt-in EXPLICITE distinct
+  // `GOOGLE_INDEXING_ARTICLES=true` (default off), EN PLUS du master
+  // `GOOGLE_INDEXING_API_ENABLED`. Conséquence : activer le master (pour Google
+  // for Jobs, cf. `enqueueGoogleIndexingForUrls`) ne fait PAS pinger les articles.
+  const googleEnabled =
+    process.env.GOOGLE_INDEXING_API_ENABLED === "true" &&
+    process.env.GOOGLE_INDEXING_ARTICLES === "true";
   if (googleEnabled) {
     const queue = getGoogleIndexingQueue();
     if (queue) {
@@ -192,8 +200,13 @@ export async function enqueueIndexingForUrls(
     }
   }
 
-  // Google Indexing API — 1 job par URL (quota 200/jour réparti par appel)
-  const googleEnabled = process.env.GOOGLE_INDEXING_API_ENABLED === "true";
+  // Google Indexing API — chemin CONTENU (articles/KB). Même garde que
+  // `enqueueIndexingForTier1` : opt-in explicite `GOOGLE_INDEXING_ARTICLES=true`
+  // en plus du master (Google ignore les non-JobPosting → ne pas brûler le
+  // quota). 1 job par URL (quota 200/jour réparti par appel).
+  const googleEnabled =
+    process.env.GOOGLE_INDEXING_API_ENABLED === "true" &&
+    process.env.GOOGLE_INDEXING_ARTICLES === "true";
   if (googleEnabled) {
     const queue = getGoogleIndexingQueue();
     if (queue) {
