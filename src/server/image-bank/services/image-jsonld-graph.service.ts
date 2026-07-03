@@ -101,7 +101,8 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     address: {
       "@type": "PostalAddress",
       addressCountry: "FR",
-      addressLocality: "Paris",
+      addressRegion: "Auvergne-Rhône-Alpes",
+      addressLocality: "Grenoble",
     },
   };
 }

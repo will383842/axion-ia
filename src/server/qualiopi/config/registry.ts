@@ -52,10 +52,14 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   },
   siret: { ...str(), description: "SIRET Axion-IA SAS." },
   raison_sociale: { ...str("Axion-IA SAS"), description: "Raison sociale (SAS France)." },
-  adresse_siege: { ...str(), description: "Adresse du siège social (domiciliation Paris)." },
+  adresse_siege: {
+    ...str(),
+    description:
+      "Adresse du siège social (domiciliation — 11 Avenue Paul Verlaine, 38100 Grenoble ; RCS Grenoble).",
+  },
   adresse_exercice: {
     ...str(),
-    description: "Adresse du lieu d'exercice effectif (Saint-Lattier, Isère).",
+    description: "Adresse du lieu d'exercice effectif (Grenoble, Isère — Auvergne-Rhône-Alpes).",
   },
   // ── Régime de TVA (ÉVOLUTIF — cf. legal/tva.ts) ──────────────────────────
   // Qualiopi n'a AUCUN effet sur la TVA. Défaut « assujetti » (20 %), le seul

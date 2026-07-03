@@ -972,7 +972,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "Cabinet IA à Paris — audit stratégique pour PME sur toute la France",
       metaTitle: "Cabinet IA Paris PME audit | Axion-IA",
       metaDescription:
-        "Cabinet IA basé à Paris. Audit stratégique pour PME, interventions sur site ou à distance. Devis gratuit. Premier POC en 6 semaines.",
+        "Cabinet IA intervenant à Paris et en Île-de-France. Audit stratégique pour PME, interventions sur site ou à distance. Devis gratuit. Premier POC en 6 semaines.",
       h2Variants: [
         "Pourquoi choisir un cabinet IA parisien pour auditer une PME en région ?",
         "Audit IA à distance ou sur site pour une PME : quelle formule choisir ?",
