@@ -1,7 +1,7 @@
 name: Careers · Seed 10 offres Grenoble
 
 # Seed manuel des 10 offres tech/IA du siège de Grenoble en base PROD.
-# Modèle : content-gen-seed.yml (SSH Hetzner + docker exec container worker).
+# Modèle : les workflows de seed prod existants (SSH Hetzner + docker exec worker).
 #
 # Le container worker (Dockerfile.worker) n'embarque PAS scripts/ ni careers-gen/
 # (COPY src/ + prisma/ seulement) → on COPIE les fichiers de seed dans le container
