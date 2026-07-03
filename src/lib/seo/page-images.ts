@@ -26,6 +26,8 @@
 // ⚠️ Les `alt`/`name` DOIVENT rester identiques au texte déjà rendu par la page
 // (aucune régression a11y/SEO). En cas de doute, la page est la référence.
 
+import { CLIENT_SECTORS } from "@/content/sectors";
+
 /** Emplacement de rendu de l'image sur la page (pour que la page filtre son manifeste). */
 export type PageImageSlot =
   | "grid" // grille de photos illustratives
@@ -60,6 +62,34 @@ export interface PageImagesManifest {
   path: string;
   images: readonly PageImage[];
 }
+
+// ---------------------------------------------------------------------------
+// Secteurs — piliers `/secteurs/[secteur]` (généré depuis le SSOT CLIENT_SECTORS)
+// ---------------------------------------------------------------------------
+// Chaque pilier secteur porte le portrait fondateur comme image représentative
+// (rendu dans le bandeau « Qui vous accompagne » de la page), avec un alt
+// contextualisé par secteur. Image crawlable existante → couvre le JSON-LD
+// ImageObject + le sitemap images sans dépendre d'un visuel sectoriel dédié.
+// ⚠️ TODO(secteurs-photos) : dès que les 10 photos métier
+// `/illustrations/secteurs/{slug}.avif` existent, ajouter une image
+// `slot: "hero"` `representativeOfPage` par secteur et rétrograder ce portrait
+// en secondaire (retirer `representativeOfPage` ici).
+const SECTOR_PAGE_IMAGES: readonly PageImagesManifest[] = CLIENT_SECTORS.map((s) => ({
+  path: `/secteurs/${s.slug}`,
+  images: [
+    {
+      src: "/illustrations/home-founder-william.avif",
+      nameFr: `Williams — Fondateur Axion-IA, référent IA pour ${s.labelFr}`,
+      nameEn: `Williams — Axion-IA founder, AI lead for ${s.labelFr}`,
+      altFr: `Portrait de Williams, fondateur d'Axion-IA. Avec son équipe, il accompagne ${s.fullFr} sur l'IA — audit, formation, implémentation, 1-to-1 et sites web augmentés, avec des cas d'usage métier chiffrés.`,
+      altEn: `Portrait of Williams, Axion-IA founder. With his team, he supports ${s.fullFr} on AI — audit, training, implementation, 1-to-1 and AI-augmented websites, with quantified business use cases.`,
+      width: 800,
+      height: 1000,
+      representativeOfPage: true,
+      slot: "portrait",
+    },
+  ],
+}));
 
 // ---------------------------------------------------------------------------
 // Manifeste
@@ -99,6 +129,29 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
           "Portrait of Williams, Axion-IA founder. Personally drives client AI missions and guarantees the authenticity of quantified results presented on Axion-IA — measured ROI, verified testimonials.",
         width: 800,
         height: 1000,
+      },
+    ],
+  },
+  // ===== Secteurs (hub /secteurs) =====
+  // Image représentative rendue en <Image> à droite du h1 (Section `media`).
+  // Réutilise le bandeau équipe (déjà servi statiquement sous /public, donc
+  // crawlable) → se propage à l'identique au JSON-LD ImageObject + au sitemap
+  // images pour Google Images sur « IA par secteur », « IA pour [métier] ».
+  {
+    path: "/secteurs",
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        nameFr: "Équipe Axion-IA — l'IA appliquée à chaque secteur d'activité",
+        nameEn: "Axion-IA team — AI applied to every business sector",
+        altFr:
+          "Équipe Axion-IA en session de cadrage sectoriel — cabinet IA opérationnel français accompagnant comptabilité, BTP, santé, juridique, commerce, industrie, RH et collectivités avec des cas d'usage métier chiffrés.",
+        altEn:
+          "Axion-IA team in a sector scoping session — French operational AI consultancy supporting accounting, construction, healthcare, legal, retail, industry, HR and public sector with quantified business use cases.",
+        width: 1961,
+        height: 802,
+        representativeOfPage: true,
+        slot: "hero",
       },
     ],
   },
@@ -814,6 +867,7 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  ...SECTOR_PAGE_IMAGES,
 ];
 
 // ---------------------------------------------------------------------------

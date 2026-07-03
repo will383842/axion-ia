@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -11,11 +12,14 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { CLIENT_SECTORS } from "@/content/sectors";
+import { getRepresentativePageImage } from "@/lib/seo/page-images";
 import {
   buildProductMetadata,
   buildItemListJsonLd,
   buildBreadcrumbJsonLd,
   buildCollectionPageJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -70,6 +74,26 @@ export default async function SecteursHub({ params }: Props) {
     ],
   });
 
+  // Image représentative (héro) : rendue à droite du h1 ET propagée au JSON-LD
+  // ImageObject + sitemap images via le SSOT `page-images.ts` (même URL crawlable).
+  const heroImage = getRepresentativePageImage("/secteurs");
+  const secteursImagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/secteurs" });
+  const primaryImageOfPage = buildPrimaryImageOfPage("/secteurs");
+
+  const heroMedia = heroImage ? (
+    <figure className="shadow-card m-0 overflow-hidden rounded-2xl">
+      <Image
+        src={heroImage.src}
+        alt={isFr ? heroImage.altFr : heroImage.altEn}
+        width={heroImage.width}
+        height={heroImage.height}
+        priority
+        sizes="(max-width: 1024px) 100vw, 40vw"
+        className="h-auto w-full object-cover"
+      />
+    </figure>
+  ) : undefined;
+
   // Nœud CollectionPage page-level — porteur du `speakable` (h1). Réutilise
   // EXACTEMENT le titre/description de la metadata (pas de réécriture).
   const collectionPageJsonLd = buildCollectionPageJsonLd({
@@ -82,6 +106,7 @@ export default async function SecteursHub({ params }: Props) {
       ? "L'intelligence artificielle appliquée à votre secteur : comptabilité, BTP, santé, juridique, commerce, industrie, RH, collectivités… Cas d'usage concrets, bénéfices chiffrés et feuille de route par métier."
       : "AI applied to your sector: accounting, construction, healthcare, legal, retail, industry, HR, public sector… Concrete use cases, quantified benefits and a roadmap per industry.",
     speakable: true,
+    ...(primaryImageOfPage ? { extra: { primaryImageOfPage } } : {}),
   });
 
   const itemListJsonLd = buildItemListJsonLd({
@@ -118,20 +143,27 @@ export default async function SecteursHub({ params }: Props) {
             ? "Chaque secteur a ses contraintes, son vocabulaire et ses gisements de temps. On part de vos cas d'usage réels — pas d'un discours générique — pour vous montrer où l'IA fait gagner du temps et de l'argent."
             : "Every sector has its constraints, vocabulary and time sinks. We start from your real use cases — not a generic pitch — to show where AI saves time and money."
         }
+        media={heroMedia}
       >
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
           {CLIENT_SECTORS.map((s) => (
             <li key={s.slug}>
               <Link
                 href={`/${loc}/secteurs/${s.slug}`}
-                className="border-border hover:bg-paper flex h-full flex-col gap-2 rounded-2xl border p-6 transition"
+                className="border-border hover:border-border-strong hover:shadow-card group flex h-full flex-col gap-3 rounded-2xl border p-6 transition"
               >
-                <span className="text-3xl" aria-hidden="true">
+                <span
+                  aria-hidden="true"
+                  className="bg-sand flex h-14 w-14 items-center justify-center rounded-xl text-3xl"
+                >
                   {s.emoji}
                 </span>
-                <span className="text-fg text-lg font-semibold">{s.labelFr}</span>
-                <span className="text-fg-soft text-sm">
+                <span className="text-fg mt-1 text-lg font-semibold">{s.labelFr}</span>
+                <span className="text-fg-soft text-sm leading-relaxed">
                   {isFr ? `Solutions IA pour ${s.fullFr}.` : `AI solutions for ${s.fullFr}.`}
+                </span>
+                <span className="text-terracotta mt-auto pt-2 text-sm font-semibold">
+                  {isFr ? "Voir les cas d'usage →" : "See use cases →"}
                 </span>
               </Link>
             </li>
@@ -148,6 +180,7 @@ export default async function SecteursHub({ params }: Props) {
 
       <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
+      {secteursImagesJsonLd ? <JsonLd data={secteursImagesJsonLd} /> : null}
       <JsonLd
         data={itemListJsonLd}
         strategy="afterInteractive"
