@@ -26,6 +26,8 @@
 // ⚠️ Les `alt`/`name` DOIVENT rester identiques au texte déjà rendu par la page
 // (aucune régression a11y/SEO). En cas de doute, la page est la référence.
 
+import { CLIENT_SECTORS } from "@/content/sectors";
+
 /** Emplacement de rendu de l'image sur la page (pour que la page filtre son manifeste). */
 export type PageImageSlot =
   | "grid" // grille de photos illustratives
@@ -60,6 +62,43 @@ export interface PageImagesManifest {
   path: string;
   images: readonly PageImage[];
 }
+
+// ---------------------------------------------------------------------------
+// Secteurs — piliers `/secteurs/[secteur]` (généré depuis le SSOT CLIENT_SECTORS)
+// ---------------------------------------------------------------------------
+// 2 images par pilier :
+//   1. Photo héro sectorielle Unsplash locale (1600×1000, `representativeOfPage`,
+//      slot "hero") — rendue à droite du h1 (cf. `SectorHeroMedia`). Crédit
+//      photographe rendu sur la page (CGU §9) + tracé dans `sector-photos.ts`.
+//   2. Portrait fondateur (slot "portrait") — rendu dans le bandeau « Qui vous
+//      accompagne ». Alt contextualisé par secteur, angle équipe.
+// Les deux → couvrent le JSON-LD ImageObject @graph + le sitemap images.
+const SECTOR_PAGE_IMAGES: readonly PageImagesManifest[] = CLIENT_SECTORS.map((s) => ({
+  path: `/secteurs/${s.slug}`,
+  images: [
+    {
+      src: `/illustrations/secteurs/${s.slug}.avif`,
+      nameFr: `${s.labelFr} et intelligence artificielle — Axion-IA`,
+      nameEn: `${s.labelFr} and artificial intelligence — Axion-IA`,
+      altFr: `${s.labelFr} et intelligence artificielle — Axion-IA accompagne ${s.fullFr} (audit, formation, implémentation, 1-to-1, sites web augmentés).`,
+      altEn: `${s.labelFr} and artificial intelligence — Axion-IA supports ${s.fullFr} (audit, training, implementation, 1-to-1, AI-augmented websites).`,
+      width: 1600,
+      height: 1000,
+      representativeOfPage: true,
+      slot: "hero",
+    },
+    {
+      src: "/illustrations/home-founder-william.avif",
+      nameFr: `Williams — Fondateur Axion-IA, référent IA pour ${s.labelFr}`,
+      nameEn: `Williams — Axion-IA founder, AI lead for ${s.labelFr}`,
+      altFr: `Portrait de Williams, fondateur d'Axion-IA. Avec son équipe, il accompagne ${s.fullFr} sur l'IA — audit, formation, implémentation, 1-to-1 et sites web augmentés, avec des cas d'usage métier chiffrés.`,
+      altEn: `Portrait of Williams, Axion-IA founder. With his team, he supports ${s.fullFr} on AI — audit, training, implementation, 1-to-1 and AI-augmented websites, with quantified business use cases.`,
+      width: 800,
+      height: 1000,
+      slot: "portrait",
+    },
+  ],
+}));
 
 // ---------------------------------------------------------------------------
 // Manifeste
@@ -99,6 +138,29 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
           "Portrait of Williams, Axion-IA founder. Personally drives client AI missions and guarantees the authenticity of quantified results presented on Axion-IA — measured ROI, verified testimonials.",
         width: 800,
         height: 1000,
+      },
+    ],
+  },
+  // ===== Secteurs (hub /secteurs) =====
+  // Image représentative rendue en <Image> à droite du h1 (Section `media`).
+  // Réutilise le bandeau équipe (déjà servi statiquement sous /public, donc
+  // crawlable) → se propage à l'identique au JSON-LD ImageObject + au sitemap
+  // images pour Google Images sur « IA par secteur », « IA pour [métier] ».
+  {
+    path: "/secteurs",
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        nameFr: "Équipe Axion-IA — l'IA appliquée à chaque secteur d'activité",
+        nameEn: "Axion-IA team — AI applied to every business sector",
+        altFr:
+          "Équipe Axion-IA en session de cadrage sectoriel — cabinet IA opérationnel français accompagnant comptabilité, BTP, santé, juridique, commerce, industrie, RH et collectivités avec des cas d'usage métier chiffrés.",
+        altEn:
+          "Axion-IA team in a sector scoping session — French operational AI consultancy supporting accounting, construction, healthcare, legal, retail, industry, HR and public sector with quantified business use cases.",
+        width: 1961,
+        height: 802,
+        representativeOfPage: true,
+        slot: "hero",
       },
     ],
   },
@@ -814,6 +876,7 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  ...SECTOR_PAGE_IMAGES,
 ];
 
 // ---------------------------------------------------------------------------
