@@ -45,15 +45,18 @@ const FABRICATED_STAT_PATTERNS: ReadonlyArray<{ re: RegExp; reason: string }> = 
   },
   {
     re: /\bsource\s+interne\s+Axion-?IA/gi,
-    reason: "Attribution « source interne Axion-IA » d'une donnée fabriquée. Retirer ou sourcer publiquement.",
+    reason:
+      "Attribution « source interne Axion-IA » d'une donnée fabriquée. Retirer ou sourcer publiquement.",
   },
   {
     re: /\bétude\s+interne\b/gi,
-    reason: "Renvoi à une « étude interne » (propriétaire, invérifiable). Interdit sauf source publique.",
+    reason:
+      "Renvoi à une « étude interne » (propriétaire, invérifiable). Interdit sauf source publique.",
   },
   {
     re: /\bn\s*=\s*\d{1,5}\b/g,
-    reason: "Taille d'échantillon (« n=87 ») d'une étude interne fabriquée. Retirer ou sourcer publiquement.",
+    reason:
+      "Taille d'échantillon (« n=87 ») d'une étude interne fabriquée. Retirer ou sourcer publiquement.",
   },
   {
     re: /\bévaluations?\s+20\d{2}(?:\s*[-–]\s*20\d{2})?/gi,
