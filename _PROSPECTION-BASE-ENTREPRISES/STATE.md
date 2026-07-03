@@ -80,11 +80,16 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 - ✅ GATE : vitest 77/77 · eslint · prettier · isolation-check · 🔄 typecheck (hook) · 🔄 adversarial · 🔄 commit
 - ⚠️ Reste T7 : write-side config (`setProspectionConfig`) + audit ; note reconciliation T1 (exploitable défini 2× — scoring hardcodé vs config `exploitableThreshold`, wiring en T5)
 
-### T3 — Ingestion Stock Sirene ⛔ (gate juridique)
+### T3 — Ingestion Stock Sirene (gate juridique = non bloquant, fixtures/mocks)
 
-- 🔲 `StockSource` (interface) + `sireneStockIngestor` (bulk-upsert) + `StockReference`
-- 🔲 `delta-worker` · 🔲 rate-limit distribué (file limiter + token-bucket) · 🔲 Zod · 🔲 circuit breaker
-- 🔲 tests non-régression #1 (re-enqueue), #3 (exhaustivité), #8 (rate-limit), #10 (stub) · 🔲 GATE · 🔲 vérif adversariale · 🔲 commit
+- ✅ `StockSource` (interface) + `LocalFileStockSource` (stream gz-aware) + `EmptyStockSource` · ✅ `sirene-stock-schema` (Zod + mapping) · ✅ `sirene-stock-ingestor` (bulk-upsert dédup SIREN/SIRET, injectable db) + `StockReference` (dénominateur dép×naf×taille)
+- ✅ `nature-juridique.ts` (SSOT type organisation) + test
+- ✅ `delta-worker` (réutilise l'ingestor — upsert idempotent, cessations marquées) · ✅ `stock-ingestor-worker` (stub-aware, fichier via env/job)
+- ✅ rate-limit distribué : `token-bucket-redis` (Lua atomique + pur testable, fail-open) + limiter BullMQ par file · ✅ `circuit-breaker` (machine à états pure + Redis fail-open)
+- ✅ Zod (schéma altéré → invalidRows, jamais de null) · ✅ non-diffusible **exclu à l'ingest** (#4) · ✅ idempotence (#6) · queues in-module + workers enregistrés (worker.ts + sentry WorkerName)
+- ✅ GATE : vitest 125/125 · eslint · prettier · isolation-check (0) · typecheck
+- ✅ **Vérif adversariale + réconciliation** (agent indépendant) : BOM = faux positif (trim() gère) mais fix explicite gardé ; **A** orphelin `connect` + `Promise.all` fatal → try/catch par ligne (P2025 = `etablissementOrphanSkipped`, jamais fatal) ; **B** dénominateur double-compte SIRET + drop silencieux → dédup `seenSiegeSirets` + `siegeIncomplet` tracé ; **C** half-open pas single-probe → fenêtre `probeUntilMs` (single-probe best-effort) ; **D** limiter BullMQ inexistant → commentaires corrigés (limiter = sur WORKER collect T4) + trim statut/état. +5 tests régression.
+- 📌 Décisions : download DataGouv = **fichier local via chemin** (`PROSPECTION_STOCK_*_PATH`, ops wget) plutôt qu'un downloader HTTP non testable ; tests = fixtures CSV temp (pas de SIREN réel) ; rate-limit dur = **limiter BullMQ sur les workers collect/enrich (T4/T5, à poser)**, token-bucket = lissage global fail-open.
 
 ### T4 — Collecte + coverage
 

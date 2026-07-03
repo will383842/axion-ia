@@ -59,6 +59,10 @@ import { startFormationCronsWorker } from "./workers/qualiopi-formation-crons-wo
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
+// Prospection & Base Entreprises (T3+) — workers + crons cloisonnés en module.
+import { startProspectionStockIngestorWorker } from "./workers/prospection-stock-ingestor-worker";
+import { startProspectionDeltaWorker } from "./workers/prospection-delta-worker";
+import { bootProspectionRepeatableJobs } from "@/server/prospection/queue/queues";
 
 async function main() {
   if (isBullmqDisabled()) {
@@ -134,9 +138,13 @@ async function main() {
     startFormationCronsWorker(),
     // Chatbot ingest — démarre uniquement si le flag est explicitement activé.
     ...(process.env.CHATBOT_ENABLED === "true" ? [startChatbotIngestWorker()] : []),
+    // Prospection & Base Entreprises (T3+) — ingestion Stock Sirene + delta.
+    startProspectionStockIngestorWorker(),
+    startProspectionDeltaWorker(),
   ];
 
   await bootRepeatableJobs();
+  await bootProspectionRepeatableJobs();
 
   console.log(`✓ ${workers.length} workers running. Cron jobs scheduled.`);
 

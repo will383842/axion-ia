@@ -43,12 +43,19 @@ describe("migration prospection_init — additive", () => {
     expect((MIGRATION_SQL.match(/CREATE TABLE /g) ?? []).length).toBe(16);
   });
 
-  it("n'exécute AUCUN DROP (migration strictement additive)", () => {
-    expect(MIGRATION_SQL).not.toMatch(/DROP\s+(TABLE|COLUMN|TYPE|CONSTRAINT|INDEX|SCHEMA)/i);
+  it("n'exécute AUCUNE opération destructive (additif strict)", () => {
+    expect(MIGRATION_SQL).not.toMatch(/DROP\s+(TABLE|COLUMN|TYPE|CONSTRAINT|INDEX|SCHEMA|VIEW)/i);
+    expect(MIGRATION_SQL).not.toMatch(/\bTRUNCATE\b/i);
+    expect(MIGRATION_SQL).not.toMatch(/\bRENAME\b/i);
+    expect(MIGRATION_SQL).not.toMatch(/ALTER\s+COLUMN[\s\S]*?\bTYPE\b/i);
+    // Aucun DELETE sur une table existante (les seules écritures sont des CREATE).
+    expect(MIGRATION_SQL).not.toMatch(/\bDELETE\s+FROM\b/i);
   });
 
-  it("étend l'enum SiteSettingCategory avec 'prospection' (ADD VALUE)", () => {
-    expect(MIGRATION_SQL).toMatch(/ALTER TYPE "SiteSettingCategory" ADD VALUE 'prospection'/);
+  it("étend l'enum SiteSettingCategory avec 'prospection' (ADD VALUE IF NOT EXISTS — idempotent)", () => {
+    expect(MIGRATION_SQL).toMatch(
+      /ALTER TYPE "SiteSettingCategory" ADD VALUE IF NOT EXISTS 'prospection'/,
+    );
   });
 });
 

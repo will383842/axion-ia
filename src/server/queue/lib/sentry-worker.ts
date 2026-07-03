@@ -106,7 +106,16 @@ export type WorkerName =
   // Qualiopi T6 — auto-transitions formation crons
   | "formation-crons"
   // Import en masse kit formation (ZIP → documents-interventions) 2026-06-13
-  | "kit-import";
+  | "kit-import"
+  // Prospection & Base Entreprises (T3+) — collecte/enrichissement B2B
+  | "prospection-stock-ingestor"
+  | "prospection-delta"
+  | "prospection-orchestrator"
+  | "prospection-collect"
+  | "prospection-enrich"
+  | "prospection-coverage"
+  | "prospection-export"
+  | "prospection-scheduler";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.

@@ -80,7 +80,7 @@ CREATE TYPE "ProspectionCollectRunStatus" AS ENUM ('running', 'done', 'error');
 CREATE TYPE "ProspectionGeoScope" AS ENUM ('departement', 'region', 'france');
 
 -- AlterEnum
-ALTER TYPE "SiteSettingCategory" ADD VALUE 'prospection';
+ALTER TYPE "SiteSettingCategory" ADD VALUE IF NOT EXISTS 'prospection';
 
 -- CreateTable
 CREATE TABLE "prospection_company" (

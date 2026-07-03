@@ -75,7 +75,8 @@ const quotasSchema = z.object({
 const circuitBreakerSchema = z.object({
   failuresToOpen: z.number().int().positive().max(100),
   cooldownMs: z.number().int().positive(),
-  halfOpenProbes: z.number().int().positive().max(20),
+  /** Fenêtre pendant laquelle une sonde half-open est « en vol » (single-probe). */
+  probeTimeoutMs: z.number().int().positive(),
 });
 
 const teamPassSchema = z.object({
@@ -168,8 +169,8 @@ export const PROSPECTION_CONFIG_REGISTRY = {
   ),
   circuitBreaker: entry(
     circuitBreakerSchema,
-    { failuresToOpen: 5, cooldownMs: 60000, halfOpenProbes: 3 },
-    "Circuit breaker par source (ouvre après K échecs, half-open après cooldown).",
+    { failuresToOpen: 5, cooldownMs: 60000, probeTimeoutMs: 30000 },
+    "Circuit breaker par source (ouvre après K échecs, sonde half-open unique après cooldown).",
   ),
   teamPass: entry(
     teamPassSchema,
