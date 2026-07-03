@@ -4,6 +4,7 @@
 // Server Actions launch/pause/resume/cancel/addSlots préservées.
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -15,7 +16,11 @@ import {
   launchCampaign,
   pauseCampaign,
   resumeCampaign,
+  archiveCampaign,
+  unarchiveCampaign,
+  deleteCampaignPermanently,
 } from "@/server/actions/content-gen/coverage";
+import { ConfirmSubmitButton } from "../../_v2/ConfirmSubmitButton";
 
 const STATUS_LABELS_FR: Record<string, string> = {
   draft: "Brouillon",
@@ -52,6 +57,8 @@ interface CampaignData {
   estimatedDurationMinutes: number | null;
   startedAt: Date | null;
   completedAt: Date | null;
+  /** Archivage explicite réversible (null = active). */
+  archivedAt?: Date | null;
   // Sprint Campaign Controls (§ 25.2 v1.8)
   cityProcessingMode?: string | null;
   currentCityIndex?: number | null;
@@ -93,6 +100,20 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
     "use server";
     const delta = Number(formData.get("delta") ?? 50);
     await incrementCampaignTarget(id, delta);
+  }
+  async function archive() {
+    "use server";
+    await archiveCampaign(id);
+  }
+  async function unarchive() {
+    "use server";
+    await unarchiveCampaign(id);
+  }
+  async function del() {
+    "use server";
+    await deleteCampaignPermanently(id);
+    // La campagne n'existe plus → retour à la liste.
+    redirect(`/fr/${adminPrefix ?? "admin"}/content-gen/coverage`);
   }
 
   const progressPct =
@@ -157,6 +178,33 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                 </form>
               </>
             ) : null}
+            {/* Archivage réversible (masque de la liste) vs suppression définitive. */}
+            {campaign.archivedAt ? (
+              <form action={unarchive}>
+                <button type="submit" className="admin-button-ghost">
+                  ♻️ Réactiver (désarchiver)
+                </button>
+              </form>
+            ) : (
+              <form action={archive}>
+                <button
+                  type="submit"
+                  className="admin-button-ghost"
+                  title="Masquer de la liste par défaut — réversible"
+                >
+                  🗄️ Archiver
+                </button>
+              </form>
+            )}
+            <form action={del}>
+              <ConfirmSubmitButton
+                confirmMessage={`Supprimer DÉFINITIVEMENT « ${campaign.name} » ? Cette action est irréversible (la campagne ne pourra plus être réactivée). Ses jobs et articles publiés sont conservés. Pour la masquer temporairement, préférez « Archiver ».`}
+                title="Supprimer définitivement cette campagne"
+                className="admin-button-ghost text-[color:var(--color-admin-destructive)]"
+              >
+                🗑️ Supprimer
+              </ConfirmSubmitButton>
+            </form>
           </div>
         }
       />

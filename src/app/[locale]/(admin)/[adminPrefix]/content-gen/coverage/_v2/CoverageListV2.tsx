@@ -4,7 +4,7 @@
 // pagination 25/page pour la scalabilité.
 
 import Link from "next/link";
-import { Pause, Play, PlayCircle } from "lucide-react";
+import { Pause, Play, PlayCircle, Archive, ArchiveRestore, Trash2 } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -19,11 +19,15 @@ import {
   pauseCampaign,
   resumeCampaign,
   launchCampaign,
+  archiveCampaign,
+  unarchiveCampaign,
+  deleteCampaignPermanently,
 } from "@/server/actions/content-gen/coverage";
 import {
   parseCampaignListView,
   type CampaignListView,
 } from "@/server/actions/content-gen/coverage-status-groups";
+import { ConfirmSubmitButton } from "./ConfirmSubmitButton";
 import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
@@ -35,27 +39,42 @@ import type {
 
 const STATUS_LABELS_FR: Record<string, string> = {
   draft: "Brouillon",
+  scheduled: "Planifiée",
+  queued: "En file",
   running: "En cours",
   paused: "En pause",
   completed: "Terminée",
+  failed: "Échouée",
   cancelled: "Annulée",
 };
 
 const STATUSES: ReadonlyArray<CoverageStatus> = [
   "draft",
+  "scheduled",
+  "queued",
   "running",
   "paused",
   "completed",
+  "failed",
   "cancelled",
 ];
 
+// Onglets de vue — distinguent clairement en cours/pause vs terminées vs archivées.
 const VIEW_LABEL: Record<CampaignListView, string> = {
   active: "Actives",
+  paused: "En pause",
+  terminated: "Terminées",
   archived: "Archivées",
   all: "Toutes",
 };
 
-const VIEW_TABS: ReadonlyArray<CampaignListView> = ["active", "archived", "all"];
+const VIEW_TABS: ReadonlyArray<CampaignListView> = [
+  "active",
+  "paused",
+  "terminated",
+  "archived",
+  "all",
+];
 
 interface Props {
   adminPrefix: string;
@@ -75,6 +94,21 @@ async function resumeRow(id: string) {
 async function launchRow(id: string) {
   "use server";
   await launchCampaign(id);
+}
+
+async function archiveRow(id: string) {
+  "use server";
+  await archiveCampaign(id);
+}
+
+async function unarchiveRow(id: string) {
+  "use server";
+  await unarchiveCampaign(id);
+}
+
+async function deleteRow(id: string) {
+  "use server";
+  await deleteCampaignPermanently(id);
 }
 
 export async function CoverageListV2({
@@ -245,9 +279,13 @@ export async function CoverageListV2({
           title={
             view === "archived"
               ? "Aucune campagne archivée."
-              : view === "all"
-                ? "Aucune campagne. Créez-en une."
-                : "Aucune campagne active. Créez-en une ou consultez les archives."
+              : view === "paused"
+                ? "Aucune campagne en pause."
+                : view === "terminated"
+                  ? "Aucune campagne terminée."
+                  : view === "all"
+                    ? "Aucune campagne. Créez-en une."
+                    : "Aucune campagne active. Créez-en une ou consultez les archivées."
           }
         />
       ) : (
@@ -259,40 +297,89 @@ export async function CoverageListV2({
             caption="Liste des campagnes de couverture"
             rowAction={(r) => (
               <div className="flex items-center gap-[var(--space-admin-2)]">
-                {r.status === "running" ? (
-                  <form action={pauseRow.bind(null, r.id)} className="inline">
-                    <button
-                      type="submit"
-                      title="Mettre en pause"
-                      aria-label="Mettre en pause cette campagne"
-                      className="admin-button-ghost"
-                    >
-                      <Pause size={16} />
-                    </button>
-                  </form>
-                ) : r.status === "paused" ? (
-                  <form action={resumeRow.bind(null, r.id)} className="inline">
-                    <button
-                      type="submit"
-                      title="Reprendre"
-                      aria-label="Reprendre cette campagne"
-                      className="admin-button-ghost"
-                    >
-                      <Play size={16} />
-                    </button>
-                  </form>
-                ) : r.status === "draft" ? (
-                  <form action={launchRow.bind(null, r.id)} className="inline">
-                    <button
-                      type="submit"
-                      title="Lancer la campagne"
-                      aria-label="Lancer cette campagne"
-                      className="admin-button-ghost"
-                    >
-                      <PlayCircle size={16} />
-                    </button>
-                  </form>
-                ) : null}
+                {r.archivedAt ? (
+                  <>
+                    {/* Campagne archivée → réactiver (désarchiver) ou supprimer. */}
+                    <form action={unarchiveRow.bind(null, r.id)} className="inline">
+                      <button
+                        type="submit"
+                        title="Réactiver (désarchiver)"
+                        aria-label="Réactiver cette campagne"
+                        className="admin-button-ghost"
+                      >
+                        <ArchiveRestore size={16} />
+                      </button>
+                    </form>
+                    <form action={deleteRow.bind(null, r.id)} className="inline">
+                      <ConfirmSubmitButton
+                        confirmMessage={`Supprimer DÉFINITIVEMENT la campagne « ${r.name} » ? Cette action est irréversible (la campagne ne pourra plus être réactivée). Ses jobs et articles publiés sont conservés.`}
+                        title="Supprimer définitivement"
+                        ariaLabel="Supprimer définitivement cette campagne"
+                        className="admin-button-ghost text-[color:var(--color-admin-destructive)]"
+                      >
+                        <Trash2 size={16} />
+                      </ConfirmSubmitButton>
+                    </form>
+                  </>
+                ) : (
+                  <>
+                    {r.status === "running" ? (
+                      <form action={pauseRow.bind(null, r.id)} className="inline">
+                        <button
+                          type="submit"
+                          title="Mettre en pause"
+                          aria-label="Mettre en pause cette campagne"
+                          className="admin-button-ghost"
+                        >
+                          <Pause size={16} />
+                        </button>
+                      </form>
+                    ) : r.status === "paused" ? (
+                      <form action={resumeRow.bind(null, r.id)} className="inline">
+                        <button
+                          type="submit"
+                          title="Reprendre"
+                          aria-label="Reprendre cette campagne"
+                          className="admin-button-ghost"
+                        >
+                          <Play size={16} />
+                        </button>
+                      </form>
+                    ) : r.status === "draft" || r.status === "scheduled" ? (
+                      <form action={launchRow.bind(null, r.id)} className="inline">
+                        <button
+                          type="submit"
+                          title="Lancer la campagne"
+                          aria-label="Lancer cette campagne"
+                          className="admin-button-ghost"
+                        >
+                          <PlayCircle size={16} />
+                        </button>
+                      </form>
+                    ) : null}
+                    {/* Archiver : masque la campagne de la vue par défaut (réversible). */}
+                    <form action={archiveRow.bind(null, r.id)} className="inline">
+                      <button
+                        type="submit"
+                        title="Archiver (masquer, réversible)"
+                        aria-label="Archiver cette campagne"
+                        className="admin-button-ghost"
+                      >
+                        <Archive size={16} />
+                      </button>
+                    </form>
+                    <form action={deleteRow.bind(null, r.id)} className="inline">
+                      <ConfirmSubmitButton
+                        confirmMessage={`Supprimer DÉFINITIVEMENT la campagne « ${r.name} » ? Cette action est irréversible (la campagne ne pourra plus être réactivée). Ses jobs et articles publiés sont conservés. Pour la masquer temporairement, préférez « Archiver ».`}
+                        title="Supprimer définitivement"
+                        ariaLabel="Supprimer définitivement cette campagne"
+                        className="admin-button-ghost text-[color:var(--color-admin-destructive)]"
+                      >
+                        <Trash2 size={16} />
+                      </ConfirmSubmitButton>
+                    </form>
+                  </>
+                )}
               </div>
             )}
           />

@@ -27,7 +27,7 @@ import { BANNED_FROM_EDITORIAL_MIX } from "@/server/content-gen/shared/editorial
 import { requireAdmin } from "./_auth";
 import {
   ACTIVE_CAMPAIGN_STATUSES,
-  ARCHIVED_CAMPAIGN_STATUSES,
+  TERMINAL_CAMPAIGN_STATUSES,
   type CampaignListView,
 } from "./coverage-status-groups";
 // Sprint S+4-F 2026-05-18 (audit 06-CROISEMENTS §8.9 P1-1) — chokepoint settings
@@ -118,6 +118,8 @@ export interface CampaignRow {
   readonly startedAt: Date | null;
   readonly completedAt: Date | null;
   readonly createdAt: Date;
+  /** Archivage explicite réversible (null = active dans la liste). */
+  readonly archivedAt: Date | null;
   // Sprint Campaign Controls (§ 25.2 v1.8)
   readonly cityProcessingMode: CityProcessingMode;
   readonly currentCityIndex: number | null;
@@ -180,18 +182,27 @@ export async function listCampaigns(opts: ListCampaignsOptions = {}): Promise<Li
       : DEFAULT_CAMPAIGN_PAGE_SIZE;
   const page = opts.page && opts.page > 0 ? Math.floor(opts.page) : 1;
 
-  // Filtre statut : un statut EXACT prime sur la vue ; sinon la vue regroupe
-  // (active = non terminal, archived = terminal, all = aucun filtre statut).
-  const statusFilter = opts.status
-    ? { status: opts.status }
-    : view === "active"
-      ? { status: { in: [...ACTIVE_CAMPAIGN_STATUSES] } }
-      : view === "archived"
-        ? { status: { in: [...ARCHIVED_CAMPAIGN_STATUSES] } }
-        : {};
+  // Vue de la liste (archivage EXPLICITE via archivedAt + regroupement statut) :
+  //  - active      : non archivées, statut non terminal (en cours/pause/brouillon)
+  //  - paused      : non archivées, en pause
+  //  - terminated  : non archivées, terminées (finie/échouée/annulée)
+  //  - archived    : archivées (archivedAt renseigné), quel que soit le statut
+  //  - all         : aucun filtre
+  const viewFilter =
+    view === "archived"
+      ? { archivedAt: { not: null } }
+      : view === "all"
+        ? {}
+        : view === "paused"
+          ? { archivedAt: null, status: "paused" as CoverageStatus }
+          : view === "terminated"
+            ? { archivedAt: null, status: { in: [...TERMINAL_CAMPAIGN_STATUSES] } }
+            : { archivedAt: null, status: { in: [...ACTIVE_CAMPAIGN_STATUSES] } };
 
   const where = {
-    ...statusFilter,
+    ...viewFilter,
+    // Statut EXACT (dropdown) — affine la vue courante (prime sur le regroupement).
+    ...(opts.status ? { status: opts.status } : {}),
     ...(opts.serviceSector ? { serviceSector: opts.serviceSector } : {}),
   };
 
@@ -245,6 +256,7 @@ function toRow(r: {
   startedAt: Date | null;
   completedAt: Date | null;
   createdAt: Date;
+  archivedAt: Date | null;
   cityProcessingMode: CityProcessingMode;
   currentCityIndex: number | null;
   startDate: Date | null;
@@ -267,6 +279,7 @@ function toRow(r: {
     startedAt: r.startedAt,
     completedAt: r.completedAt,
     createdAt: r.createdAt,
+    archivedAt: r.archivedAt,
     cityProcessingMode: r.cityProcessingMode,
     currentCityIndex: r.currentCityIndex,
     startDate: r.startDate,
@@ -941,4 +954,89 @@ export async function extendCampaignDeadline(id: string, newEndDate: Date): Prom
     targetId: id,
     changes: { newEndDate: newEndDate.toISOString(), soc2: "CAMPAIGN_DEADLINE_EXTENDED" },
   });
+}
+
+// ─── Archivage explicite réversible + suppression définitive (2026-07-03) ───
+// L'archivage (archivedAt) masque une campagne de la vue par défaut SANS toucher
+// son statut : réversible via unarchiveCampaign. La suppression, elle, est
+// définitive (une campagne supprimée ne peut plus être réactivée).
+
+/** Archive une campagne (la masque de la liste par défaut). Réversible. */
+export async function archiveCampaign(id: string): Promise<void> {
+  const session = await requireAdmin();
+  CoverageCampaignIdSchema.parse(id);
+  await prisma.coverageCampaign.update({
+    where: { id },
+    data: { archivedAt: new Date() },
+  });
+  revalidatePath(adminBase());
+  revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.campaign.archive",
+    targetType: "CoverageCampaign",
+    targetId: id,
+  });
+}
+
+/** Désarchive une campagne (la restaure dans la liste, statut inchangé). */
+export async function unarchiveCampaign(id: string): Promise<void> {
+  const session = await requireAdmin();
+  CoverageCampaignIdSchema.parse(id);
+  await prisma.coverageCampaign.update({
+    where: { id },
+    data: { archivedAt: null },
+  });
+  revalidatePath(adminBase());
+  revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.campaign.unarchive",
+    targetType: "CoverageCampaign",
+    targetId: id,
+  });
+}
+
+/**
+ * Supprime DÉFINITIVEMENT une campagne (irréversible — elle ne pourra plus être
+ * réactivée). Choix Will 2026-07-03 : on DÉTACHE ses jobs (campaignId → null)
+ * plutôt que de les supprimer → jobs de génération ET articles publiés SURVIVENT
+ * (Article.campaignId est une simple chaîne, pas une FK). Le detach satisfait la
+ * FK ContentGenJob.campaignId (onDelete par défaut = Restrict) : plus aucun job
+ * ne référence la campagne au moment du delete. Transaction atomique.
+ */
+export async function deleteCampaignPermanently(id: string): Promise<{ detachedJobs: number }> {
+  const session = await requireAdmin();
+  CoverageCampaignIdSchema.parse(id);
+  const campaign = await prisma.coverageCampaign.findUnique({
+    where: { id },
+    select: { recurringSchedule: true },
+  });
+  const [detach] = await prisma.$transaction([
+    prisma.contentGenJob.updateMany({ where: { campaignId: id }, data: { campaignId: null } }),
+    prisma.coverageCampaign.delete({ where: { id } }),
+  ]);
+  // Best-effort : retirer un éventuel repeatable BullMQ (campagne récurrente).
+  if (campaign?.recurringSchedule) {
+    const queue = getContentGenQueue();
+    if (queue) {
+      try {
+        await queue.removeRepeatable(`campaign-${id}-recurring`, {
+          pattern: campaign.recurringSchedule,
+          tz: "Europe/Paris",
+        });
+      } catch (err) {
+        console.warn(`[deleteCampaignPermanently] removeRepeatable failed for ${id}:`, err);
+      }
+    }
+  }
+  revalidatePath(adminBase());
+  await logActivity({
+    session,
+    action: "content-gen.campaign.delete",
+    targetType: "CoverageCampaign",
+    targetId: id,
+    changes: { detachedJobs: detach.count, soc2: "CAMPAIGN_HARD_DELETE" },
+  });
+  return { detachedJobs: detach.count };
 }

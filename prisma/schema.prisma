@@ -3282,6 +3282,11 @@ model CoverageCampaign {
   completedAt DateTime?
   createdAt   DateTime  @default(now())
   createdBy   String?
+  // Archivage explicite réversible (2026-07-03) — orthogonal au statut : archiver
+  // masque une campagne de la vue par défaut (réduction du bruit) SANS changer son
+  // statut, et le désarchivage la restaure telle quelle. Distinct de cancelled
+  // (terminal irréversible) et de la suppression définitive (hard delete).
+  archivedAt DateTime?
 
   jobs ContentGenJob[]
 
@@ -3290,6 +3295,8 @@ model CoverageCampaign {
   // Sprint v7 Phase 9 — index pour worker phase-transition-monitor (lookup
   // campagnes par phase courante, groupage transition).
   @@index([expansionPhase, status])
+  // Vue liste : filtre archivedAt (null = actives, non-null = archivées).
+  @@index([archivedAt])
   @@map("coverage_campaigns")
 }
 

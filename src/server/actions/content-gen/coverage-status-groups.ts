@@ -1,10 +1,14 @@
 /**
- * Groupes de statuts de campagne pour l'ARCHIVAGE de la liste (2026-07-01).
+ * Groupes de statuts + vues de la liste des campagnes de couverture.
  *
- * Sans champ dédié ni migration : une campagne "archivée" = un statut TERMINAL
- * (completed/failed/cancelled). La vue liste par défaut n'affiche que les
- * campagnes ACTIVES (non terminales) → auto-archivage gratuit dès qu'une
- * campagne se termine, sans encombrer la console.
+ * Refonte 2026-07-03 : l'archivage devient EXPLICITE via le champ
+ * `CoverageCampaign.archivedAt` (migration `..._coverage_campaign_archived_at`),
+ * orthogonal au statut. On peut donc archiver/désarchiver n'importe quelle
+ * campagne (même en pause ou brouillon) réversiblement, sans changer son statut.
+ *
+ * Les vues de la liste ne mélangent plus les statuts : on distingue clairement
+ * « Actives » (en cours + en pause + brouillons, non archivées), « En pause »,
+ * « Terminées » et « Archivées ». cf. `listCampaigns` dans `coverage.ts`.
  *
  * Fichier SANS "use server" (pure data) : importable par `coverage.ts`
  * (qui, en "use server", ne peut exporter que des fonctions async), par le
@@ -13,7 +17,7 @@
 
 import type { CoverageStatus } from "../../../../prisma/generated/client";
 
-/** Statuts non terminaux — affichés par défaut dans la liste. */
+/** Statuts non terminaux — une campagne « vivante » (en cours / à venir). */
 export const ACTIVE_CAMPAIGN_STATUSES: ReadonlyArray<CoverageStatus> = [
   "draft",
   "queued",
@@ -22,17 +26,39 @@ export const ACTIVE_CAMPAIGN_STATUSES: ReadonlyArray<CoverageStatus> = [
   "scheduled",
 ];
 
-/** Statuts terminaux — "archivés" (masqués par défaut, visibles via la vue dédiée). */
-export const ARCHIVED_CAMPAIGN_STATUSES: ReadonlyArray<CoverageStatus> = [
+/** Statuts terminaux — campagne « Terminée » (finie / échouée / annulée). */
+export const TERMINAL_CAMPAIGN_STATUSES: ReadonlyArray<CoverageStatus> = [
   "completed",
   "failed",
   "cancelled",
 ];
 
-/** Vue de la liste : actives (défaut) · archivées · toutes. */
-export type CampaignListView = "active" | "archived" | "all";
+/**
+ * @deprecated Alias historique (PR #185) — conservé pour compat des imports.
+ * Utiliser `TERMINAL_CAMPAIGN_STATUSES`. « Archivé » se lit désormais via
+ * `archivedAt`, pas via le statut.
+ */
+export const ARCHIVED_CAMPAIGN_STATUSES = TERMINAL_CAMPAIGN_STATUSES;
+
+/**
+ * Vue de la liste :
+ * - `active` (défaut) : non archivées + statut non terminal (en cours/pause/brouillon)
+ * - `paused` : non archivées + en pause
+ * - `terminated` : non archivées + terminées (finie/échouée/annulée)
+ * - `archived` : archivées (archivedAt renseigné), quel que soit le statut
+ * - `all` : toutes, sans filtre
+ */
+export type CampaignListView = "active" | "paused" | "terminated" | "archived" | "all";
+
+const VALID_VIEWS: ReadonlyArray<CampaignListView> = [
+  "active",
+  "paused",
+  "terminated",
+  "archived",
+  "all",
+];
 
 /** Garde de type : normalise une valeur d'URL en vue valide (défaut "active"). */
 export function parseCampaignListView(raw: string | undefined): CampaignListView {
-  return raw === "archived" || raw === "all" ? raw : "active";
+  return VALID_VIEWS.includes(raw as CampaignListView) ? (raw as CampaignListView) : "active";
 }
