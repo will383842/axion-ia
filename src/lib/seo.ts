@@ -289,9 +289,7 @@ export function buildProductMetadata({
   return {
     title: resolvedTitle,
     description: metaDescription,
-    ...(articleAuthors.length > 0
-      ? { authors: articleAuthors.map((name) => ({ name })) }
-      : {}),
+    ...(articleAuthors.length > 0 ? { authors: articleAuthors.map((name) => ({ name })) } : {}),
     ...(articleTags.length > 0 ? { keywords: articleTags } : {}),
     alternates: {
       canonical: `/${locale}${pathNorm}`,

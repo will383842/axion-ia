@@ -194,9 +194,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // Facebook/LinkedIn/crawlers news) + autodiscovery du flux RSS section.
     rssFeed: `${SITE_URL}/fr/actualites/feed.xml`,
     article: {
-      ...(t.article.publishedAt
-        ? { publishedTime: t.article.publishedAt.toISOString() }
-        : {}),
+      ...(t.article.publishedAt ? { publishedTime: t.article.publishedAt.toISOString() } : {}),
       ...(t.article.updatedAt ? { modifiedTime: t.article.updatedAt.toISOString() } : {}),
       ...(t.article.author?.name ? { authors: [t.article.author.name] } : {}),
       ...(t.article.newsCategory ? { section: t.article.newsCategory } : {}),

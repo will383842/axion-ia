@@ -349,10 +349,7 @@ export default async function ActualitesHub({ params }: Props) {
               .faq-answer (speakable-ready). Rendu seulement si des news existent. */}
           {items.length > 0 ? (
             <section className="mt-20 max-w-3xl" aria-labelledby="actualites-faq-title">
-              <h2
-                id="actualites-faq-title"
-                className="text-fg text-2xl font-medium sm:text-3xl"
-              >
+              <h2 id="actualites-faq-title" className="text-fg text-2xl font-medium sm:text-3xl">
                 Questions fréquentes
               </h2>
               <dl className="mt-8 space-y-6">
