@@ -37,7 +37,10 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
-import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+import {
+  findRelatedArticles,
+  segmentForArticleType,
+} from "@/server/content-gen/links/related-articles";
 import { loadPeopleAlsoAsk, loadAdjacentArticlesByType } from "@/server/content-gen/blog/loader";
 import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
 import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
@@ -85,6 +88,29 @@ function deriveTldr(excerpt: string | null | undefined, body: string): string | 
     .slice(0, 2)
     .join(" ");
   return sentences.length > 0 ? sentences : null;
+}
+
+// Découpe heuristique du titre en `lead` + `em` (em = portion serif italique
+// terracotta), identique à /blog/[slug] (parité template). Règle :
+// 1. Si le titre contient « : », on coupe au séparateur (la partie après devient
+//    l'em). 2. Sinon on italicise les 2 derniers mots (titre 4+ mots) sinon le
+//    dernier mot.
+function splitTitleEm(title: string): { lead: string; em: string } {
+  const colonFr = title.indexOf(" : ");
+  if (colonFr > 0) {
+    return { lead: title.slice(0, colonFr + 1), em: title.slice(colonFr + 3) };
+  }
+  const colonEn = title.indexOf(": ");
+  if (colonEn > 0) {
+    return { lead: title.slice(0, colonEn + 1), em: title.slice(colonEn + 2) };
+  }
+  const words = title.trim().split(/\s+/);
+  if (words.length <= 2) return { lead: "", em: title };
+  const emCount = words.length >= 4 ? 2 : 1;
+  return {
+    lead: words.slice(0, words.length - emCount).join(" "),
+    em: words.slice(words.length - emCount).join(" "),
+  };
 }
 
 async function loadNewsArticle(slug: string) {
@@ -164,6 +190,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t.metaTitle ?? `${t.title} · Axion-IA`,
     description: t.metaDescription ?? t.excerpt ?? t.title,
     ogType: "article", // VIS-05/SEO-05
+    // SEO news 2026 — OG article:* (fraîcheur + attribution, lus par
+    // Facebook/LinkedIn/crawlers news) + autodiscovery du flux RSS section.
+    rssFeed: `${SITE_URL}/fr/actualites/feed.xml`,
+    article: {
+      ...(t.article.publishedAt ? { publishedTime: t.article.publishedAt.toISOString() } : {}),
+      ...(t.article.updatedAt ? { modifiedTime: t.article.updatedAt.toISOString() } : {}),
+      ...(t.article.author?.name ? { authors: [t.article.author.name] } : {}),
+      ...(t.article.newsCategory ? { section: t.article.newsCategory } : {}),
+    },
   });
 
   // Anti-doorway HCU 2024 — robots dérivé du tier (cohérence § 28.5 + § 21).
@@ -317,6 +352,13 @@ export default async function NewsArticlePage({ params }: Props) {
         ? "Brève (non indexée)"
         : "Archive";
 
+  // Accent éditorial du titre (parité /blog) — la queue rend en serif italique
+  // terracotta via `titleEm` du <Section>.
+  const titleParts = splitTitleEm(t.title);
+  // Bannière « Dernière révision » (parité /blog) — signal de fraîcheur E-E-A-T.
+  // Date de référence = updatedAt sinon publishedAt.
+  const lastReviewed = article.updatedAt ?? article.publishedAt;
+
   return (
     <>
       {/* Refonte templates 2026-06-22 — barre de progression de lecture (CSS, 0 JS). */}
@@ -337,8 +379,32 @@ export default async function NewsArticlePage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={article.newsCategory ?? "Actualité IA"}
-        title={t.title}
+        title={titleParts.lead}
+        titleEm={titleParts.em}
         description={t.excerpt ?? undefined}
+        // Photo hero À DROITE du titre (parité /blog 2026-06-24). LCP critique →
+        // priority. Ratio 16/10 réservé (CLS = 0), cadre premium (rounded-2xl +
+        // bordure + ombre). Rendue uniquement si Article.featuredImage existe.
+        media={
+          article.featuredImage ? (
+            <figure className="m-0">
+              <div className="border-border/60 shadow-card relative aspect-[16/10] w-full overflow-hidden rounded-2xl border">
+                <Image
+                  src={article.featuredImage}
+                  alt={article.featuredImageAltFr ?? t.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                />
+              </div>
+              <UnsplashCredit
+                photographerName={article.featuredImagePhotographerName}
+                photographerUrl={article.featuredImagePhotographerUrl}
+              />
+            </figure>
+          ) : undefined
+        }
       >
         <Container className="text-fg-muted mt-8 flex flex-wrap items-center gap-3 text-sm">
           <Badge variant="neutral">{tierBadge}</Badge>
@@ -387,29 +453,35 @@ export default async function NewsArticlePage({ params }: Props) {
             </>
           ) : null}
         </Container>
+        {/* Bannière « Dernière révision » (parité /blog) — signal de fraîcheur
+            E-E-A-T visible (Article.dateModified déjà émis côté JSON-LD).
+            Toujours affichée dès qu'une date de référence existe. */}
+        {lastReviewed ? (
+          <Container className="mt-4 max-w-3xl">
+            <div className="border-border bg-sand-50 text-fg-muted flex items-center gap-2 rounded-md border px-3 py-2 text-sm">
+              <svg
+                aria-hidden="true"
+                className="text-terracotta-deep h-4 w-4 shrink-0"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.477-9.817a.75.75 0 0 1 1.053-.143Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span>
+                Dernière révision :{" "}
+                <time dateTime={lastReviewed.toISOString()} className="tabular-nums">
+                  {lastReviewed.toLocaleDateString("fr-FR")}
+                </time>
+                {showUpdated ? <span className="text-fg-muted ml-1">(mis à jour)</span> : null}
+              </span>
+            </div>
+          </Container>
+        ) : null}
       </Section>
-
-      {/* Chantier templates 2026-06-21 — Héros (avant : aucune image sur les
-          actualités). Image Unsplash de l'Article, LCP priority, ratio réservé
-          (CLS=0), crédit Unsplash. Rendu seulement si featuredImage présent. */}
-      {article.featuredImage ? (
-        <Container className="max-w-4xl">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-            <Image
-              src={article.featuredImage}
-              alt={article.featuredImageAltFr ?? t.title}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-              className="object-cover"
-            />
-          </div>
-          <UnsplashCredit
-            photographerName={article.featuredImagePhotographerName}
-            photographerUrl={article.featuredImagePhotographerUrl}
-          />
-        </Container>
-      ) : null}
 
       {/* Layout 2 colonnes (parité blog 2026-06-25) : rail SOMMAIRE sticky à
           GAUCHE + colonne de lecture à droite. Mobile-first : sous lg une seule
@@ -511,7 +583,9 @@ export default async function NewsArticlePage({ params }: Props) {
       <SuggestedContent
         variant="articles"
         items={related.map((r) => ({
-          href: `/blog/${r.slug}`,
+          // Route par type (parité /blog) : un guide/actualité connexe pointe
+          // vers son hub canonique (évite un 308). Défaut sûr = blog.
+          href: `/${segmentForArticleType(r.type ?? "blog")}/${r.slug}`,
           title: r.title,
           excerpt: r.excerpt,
           publishedAt: r.publishedAt,

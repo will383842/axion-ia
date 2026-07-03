@@ -88,6 +88,25 @@ interface ProductSeoInput {
    * "article" pour un og:type correct (preview sociale + signal éditorial).
    */
   ogType?: "website" | "article";
+  /**
+   * SEO news 2026 — métadonnées OpenGraph `article:*` (émises UNIQUEMENT si
+   * `ogType==="article"`). Lues par Facebook/LinkedIn/crawlers news pour la
+   * fraîcheur + l'attribution. `authors`/`tags` alimentent aussi les champs
+   * Next `Metadata.authors`/`keywords` (redondance utile).
+   */
+  article?: {
+    publishedTime?: string;
+    modifiedTime?: string;
+    authors?: string[];
+    section?: string;
+    tags?: string[];
+  };
+  /**
+   * SEO news 2026 — URL absolue d'un flux RSS/Atom à exposer en autodiscovery
+   * (`alternates.types["application/rss+xml"]`). Permet à Feedly/Apple News/
+   * navigateurs de découvrir le flux depuis la page (hub /actualites).
+   */
+  rssFeed?: string;
 }
 
 /**
@@ -207,6 +226,8 @@ export function buildProductMetadata({
   ogImage,
   ogAccent,
   ogType = "website",
+  article,
+  rssFeed,
 }: ProductSeoInput): Metadata {
   const fr = alternates?.fr ?? resolveLocalizedPath(path, "fr");
   const en = alternates?.en ?? resolveLocalizedPath(path, "en");
@@ -251,12 +272,29 @@ export function buildProductMetadata({
   if (!enDisabled) {
     languages.en = `/en${enNorm}`;
   }
+  // SEO news 2026 — auteurs/keywords Next Metadata (redondance signal) + flux RSS
+  // autodiscovery. `article:*` OG émis uniquement pour ogType="article".
+  const articleAuthors = (article?.authors ?? []).filter(Boolean);
+  const articleTags = (article?.tags ?? []).filter(Boolean);
+  const ogArticleFields =
+    ogType === "article" && article
+      ? {
+          ...(article.publishedTime ? { publishedTime: article.publishedTime } : {}),
+          ...(article.modifiedTime ? { modifiedTime: article.modifiedTime } : {}),
+          ...(articleAuthors.length > 0 ? { authors: articleAuthors } : {}),
+          ...(article.section ? { section: article.section } : {}),
+          ...(articleTags.length > 0 ? { tags: articleTags } : {}),
+        }
+      : {};
   return {
     title: resolvedTitle,
     description: metaDescription,
+    ...(articleAuthors.length > 0 ? { authors: articleAuthors.map((name) => ({ name })) } : {}),
+    ...(articleTags.length > 0 ? { keywords: articleTags } : {}),
     alternates: {
       canonical: `/${locale}${pathNorm}`,
       languages,
+      ...(rssFeed ? { types: { "application/rss+xml": rssFeed } } : {}),
     },
     openGraph: {
       type: ogType,
@@ -273,6 +311,7 @@ export function buildProductMetadata({
           alt: title,
         },
       ],
+      ...ogArticleFields,
     },
     twitter: {
       card: "summary_large_image",

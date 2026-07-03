@@ -42,6 +42,13 @@ import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitema
 // livrera les builders correspondants.
 const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   "/sitemap-news.xml",
+  // News evergreen (audit maillage/indexation 2026-07-03) — les Articles
+  // `isNews=true` ne vivaient QUE dans `/sitemap-news.xml` (fenêtre stricte 48h
+  // Google News) ; passé 48h ils disparaissaient de TOUS les sitemaps (le sub-
+  // sitemap `blog` exclut `isNews:true`). Ce sub-sitemap prolonge la découverte
+  // long-tail à ~90 jours en `<urlset>` STANDARD (pas de namespace `xmlns:news` :
+  // finalité découverte organique, pas Google News). Cf. `app/sitemap-news-evergreen.xml`.
+  "/sitemap-news-evergreen.xml",
   // KB DB-aware (entrées KB publiques, audience=public). Déplacé de la convention
   // metadata `generateSitemaps()` (où le compte au build stub.invalid = 0 → 404
   // fantômes) vers un Route Handler runtime. Cf. `app/sitemap-knowledge.xml/route.ts`.
@@ -205,10 +212,11 @@ export async function GET(): Promise<Response> {
   });
 
   const customBlocks = customSitemaps.map((path) => {
-    // sitemap-news.xml      → max(updatedAt) Article isNews
-    // sitemap-knowledge.xml → max(updatedAt) KnowledgeEntry (signal fraîcheur réel)
+    // sitemap-news.xml           → max(updatedAt) Article isNews
+    // sitemap-news-evergreen.xml → même source (Article isNews) → même signal
+    // sitemap-knowledge.xml      → max(updatedAt) KnowledgeEntry (signal fraîcheur réel)
     const lm =
-      path === "/sitemap-news.xml"
+      path === "/sitemap-news.xml" || path === "/sitemap-news-evergreen.xml"
         ? lastmods.news
         : path === "/sitemap-knowledge.xml"
           ? lastmods.knowledge
