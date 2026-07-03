@@ -66,10 +66,10 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 
 ### T1 — SSOT & config (schéma → n/a · gate → unitaires)
 
-- 🔲 `naf-to-secteur.ts` + test · 🔲 `taille.ts` (bornes) + test · 🔲 `departement-to-region.ts` + test
-- 🔲 `qualite-to-fonction.ts` + test · 🔲 `crawl-targets.ts` · 🔲 `scoring.ts` + test
-- 🔲 `SiteSetting` catégorie `prospection` (quotas, seuils, fenêtres, budgets crawl)
-- 🔲 GATE (typecheck/eslint/vitest) · 🔲 vérif adversariale · 🔲 commit
+- ✅ `enums.ts` (SSOT enums, contrat T2) · ✅ `naf-to-secteur.ts` + test (100% divisions) · ✅ `taille.ts` (bornes) + test · ✅ `departement-to-region.ts` + test (101 dép)
+- ✅ `qualite-to-fonction.ts` + test · ✅ `crawl-targets.ts` · ✅ `scoring.ts` + test (leadScore + contactabilité Q2)
+- ✅ `SiteSetting` registry + config read-side (`registry.ts` Zod + defaults, `site-settings.ts` stub-aware). Enum value + set() = T2/T7.
+- ✅ GATE partiel : vitest 66/66 ✅ · eslint ✅ · prettier ✅ · 🔄 typecheck (via hook commit) · 🔄 vérif adversariale · 🔄 commit
 
 ### T2 — Schéma
 
