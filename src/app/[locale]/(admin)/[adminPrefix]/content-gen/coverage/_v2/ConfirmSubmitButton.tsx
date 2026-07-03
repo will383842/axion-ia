@@ -1,4 +1,5 @@
 "use client";
+// use-client: confirmation navigateur (onClick + window.confirm) avant une action serveur destructive (suppression de campagne).
 
 import type { ReactNode } from "react";
 
