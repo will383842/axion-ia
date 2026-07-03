@@ -46,7 +46,8 @@ const stripHtml = (html: string): string =>
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-const cut = (s: string, n: number): string => (s.length <= n ? s : s.slice(0, n - 1).trimEnd() + "…");
+const cut = (s: string, n: number): string =>
+  s.length <= n ? s : s.slice(0, n - 1).trimEnd() + "…";
 
 async function main() {
   const input = JSON.parse(fs.readFileSync(INPUT, "utf8")) as {
@@ -100,7 +101,10 @@ async function main() {
       ...(jobLocations ? { jobLocations } : {}),
     };
 
-    const existing = await prisma.jobOffer.findUnique({ where: { slug: p.slug }, select: { id: true } });
+    const existing = await prisma.jobOffer.findUnique({
+      where: { slug: p.slug },
+      select: { id: true },
+    });
     await prisma.jobOffer.upsert({
       where: { slug: p.slug },
       create: data,
