@@ -6,6 +6,7 @@ import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
+import { HeaderResourcesMenu } from "./HeaderResourcesMenu";
 
 // Server Component. Header v5 2026-05-28 (Will) — layout 2026 dual-CTA :
 //   [Logo · Cabinet IA pour entreprises]   nav 6 items     [Nous écrire ghost] [Réserver un appel primary]
@@ -144,6 +145,15 @@ export async function Header() {
               multiline={item.multiline}
             />
           ))}
+          {/* Méga-menu « Ressources » (audit maillage 2026-07-03) — expose les
+              hubs stratégiques (secteurs, guides, glossaire, cas concrets, stack
+              IA, implantations, observatoire, ROI) dans la nav desktop, jusqu'ici
+              accessibles seulement via footer/drawer. Monté à `xl` (validé Will
+              2026-07-03), en parité avec l'apparition de la nav desktop. À
+              surveiller sur la bande 1280–1400 (budget d'espace header tendu). */}
+          <div className="hidden xl:block">
+            <HeaderResourcesMenu isFr={isFr} />
+          </div>
         </nav>
 
         {/* Bloc dual-CTA à DROITE — ml-auto pour pousser à l'extrême droite,

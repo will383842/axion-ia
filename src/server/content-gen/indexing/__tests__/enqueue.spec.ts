@@ -12,7 +12,11 @@ vi.mock("bullmq", () => ({
   Queue: queueCtorMock,
 }));
 
-import { enqueueIndexingForTier1, _resetIndexingQueuesForTest } from "../enqueue";
+import {
+  enqueueIndexingForTier1,
+  enqueueGoogleIndexingForUrls,
+  _resetIndexingQueuesForTest,
+} from "../enqueue";
 
 describe("enqueueIndexingForTier1", () => {
   let originalEnv: NodeJS.ProcessEnv;
@@ -191,5 +195,87 @@ describe("enqueueIndexingForTier1", () => {
       expect.anything(),
       expect.objectContaining({ jobId: "google-indexing-stable-id-publish" }),
     );
+  });
+});
+
+describe("enqueueGoogleIndexingForUrls (google-only, offres d'emploi)", () => {
+  let originalEnv: NodeJS.ProcessEnv;
+
+  beforeEach(() => {
+    originalEnv = { ...process.env };
+    addMock.mockClear();
+    queueCtorMock.mockClear();
+    _resetIndexingQueuesForTest();
+    process.env.REDIS_URL = "redis://test:6379";
+  });
+
+  afterEach(() => {
+    process.env = originalEnv;
+  });
+
+  it("no-op complet quand GOOGLE_INDEXING_API_ENABLED !== 'true'", async () => {
+    delete process.env.GOOGLE_INDEXING_API_ENABLED;
+    process.env.INDEXNOW_KEY = "key"; // ne doit JAMAIS déclencher IndexNow ici
+
+    const result = await enqueueGoogleIndexingForUrls({
+      entityId: "joboffer-dev-ia",
+      urls: ["https://axion-ia.com/fr/carrieres/dev-ia"],
+      origin: "manual",
+      lifecycleEvent: "publish",
+    });
+
+    expect(result.googleEnqueued).toBe(false);
+    expect(addMock).not.toHaveBeenCalled();
+  });
+
+  it("enqueue Google URL_UPDATED (et JAMAIS IndexNow) quand flag ON", async () => {
+    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+    process.env.INDEXNOW_KEY = "key";
+
+    const result = await enqueueGoogleIndexingForUrls({
+      entityId: "joboffer-dev-ia",
+      urls: ["https://axion-ia.com/fr/carrieres/dev-ia"],
+      origin: "manual",
+      lifecycleEvent: "publish",
+    });
+
+    expect(result.googleEnqueued).toBe(true);
+    // Un seul add : la file Google. Aucune file IndexNow (pas de double-ping).
+    expect(addMock).toHaveBeenCalledOnce();
+    expect(addMock).toHaveBeenCalledWith(
+      "ping",
+      { url: "https://axion-ia.com/fr/carrieres/dev-ia", type: "URL_UPDATED" },
+      { jobId: "google-indexing-joboffer-dev-ia-0-publish" },
+    );
+  });
+
+  it("mappe lifecycleEvent=delete → URL_DELETED", async () => {
+    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+
+    await enqueueGoogleIndexingForUrls({
+      entityId: "joboffer-dev-ia",
+      urls: ["https://axion-ia.com/fr/carrieres/dev-ia"],
+      origin: "manual",
+      lifecycleEvent: "delete",
+    });
+
+    expect(addMock).toHaveBeenCalledWith(
+      "ping",
+      { url: "https://axion-ia.com/fr/carrieres/dev-ia", type: "URL_DELETED" },
+      { jobId: "google-indexing-joboffer-dev-ia-0-delete" },
+    );
+  });
+
+  it("no-op sur liste d'URLs vide", async () => {
+    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+
+    const result = await enqueueGoogleIndexingForUrls({
+      entityId: "joboffer-x",
+      urls: [],
+      origin: "manual",
+    });
+
+    expect(result.googleEnqueued).toBe(false);
+    expect(addMock).not.toHaveBeenCalled();
   });
 });

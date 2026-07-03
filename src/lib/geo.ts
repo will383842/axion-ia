@@ -39,13 +39,18 @@ interface NearbyVille {
 export function getNearbyVilles(
   origin: { lat: number; lon: number },
   n: number,
-  options?: { excludeSlug?: string; sameRegion?: string; maxKm?: number },
+  options?: { excludeSlug?: string; sameRegion?: string; maxKm?: number; indexableOnly?: boolean },
 ): NearbyVille[] {
   const opts = options ?? {};
   const candidates: NearbyVille[] = [];
   for (const ville of VILLES) {
     if (opts.excludeSlug && ville.slug === opts.excludeSlug) continue;
     if (opts.sameRegion && ville.region !== opts.sameRegion) continue;
+    // Audit maillage 2026-07-03 — `indexableOnly` : ne retenir que les villes
+    // avec `copy` (= vraies pages éligibles à l'index). Évite de mailler vers
+    // les ~2 280 communes stub noindex (doorway HCU) et de gaspiller le
+    // link-equity des pages indexables sur des pages volontairement noindex.
+    if (opts.indexableOnly && !ville.copy) continue;
     const distanceKm = haversineKm(origin, ville.geo);
     if (typeof opts.maxKm === "number" && distanceKm > opts.maxKm) continue;
     candidates.push({ ville, distanceKm });

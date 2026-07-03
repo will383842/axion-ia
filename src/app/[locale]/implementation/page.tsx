@@ -38,6 +38,7 @@ import { ImplementationServices } from "@/components/services/implementation/Imp
 import { ImplementationApproachPaths } from "@/components/services/implementation/ImplementationApproachPaths";
 import { ImplementationExpertises } from "@/components/services/implementation/ImplementationExpertises";
 import { ImplementationExpertisesGrid } from "@/components/services/implementation/ImplementationExpertisesGrid";
+import { ImplementationLandingLinks } from "@/components/services/implementation/ImplementationLandingLinks";
 import { ImplementationContactBand } from "@/components/services/implementation/ImplementationContactBand";
 import { ImplementationMethodology } from "@/components/services/implementation/ImplementationMethodology";
 import { ImplementationWhyChooseUs } from "@/components/services/implementation/ImplementationWhyChooseUs";
@@ -231,6 +232,10 @@ export default async function ImplementationListing({ params }: Props) {
 
       {/* CHAMP DES POSSIBLES — grille on-page des 16 domaines (vision, prévision, métier…) */}
       <ImplementationExpertisesGrid isFr={isFr} />
+
+      {/* MAILLAGE DESCENDANT — liens vers les 9 sous-pages détail + hub par-techno
+          (audit maillage 2026-07-03, anti-orphelin, parité SitesWebLandingLinks). */}
+      <ImplementationLandingLinks isFr={isFr} />
 
       {/* BANDEAU CONTACT (orientation) */}
       <ImplementationContactBand isFr={isFr} trackSuffix="-mid" />

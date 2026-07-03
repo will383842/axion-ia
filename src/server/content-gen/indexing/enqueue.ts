@@ -221,6 +221,54 @@ export async function enqueueIndexingForUrls(
   return { indexnowEnqueued, googleEnqueued };
 }
 
+/**
+ * Variante GOOGLE-ONLY : enqueue uniquement l'Indexing API Google (pas IndexNow)
+ * pour une liste d'URLs déjà construites. Utile quand IndexNow est déjà pingé par
+ * un autre canal (ex. offres d'emploi via `pingIndexNow` synchrone) et qu'on veut
+ * AJOUTER Google sans doublonner le ping IndexNow.
+ *
+ * Cas d'usage principal : `JobPosting` — l'un des deux seuls types que Google
+ * honore officiellement via l'Indexing API (avec `BroadcastEvent`). Contrairement
+ * aux Articles, pinger une offre d'emploi ici a un effet réel sur Google for Jobs.
+ *
+ * Gardé par `GOOGLE_INDEXING_API_ENABLED === "true"` : no-op complet sinon.
+ * Toujours safe (fire-and-forget). N'échoue jamais.
+ */
+export async function enqueueGoogleIndexingForUrls(
+  input: EnqueueIndexingForUrlsInput,
+): Promise<{ googleEnqueued: boolean }> {
+  if (process.env.GOOGLE_INDEXING_API_ENABLED !== "true") {
+    return { googleEnqueued: false };
+  }
+  const validUrls = input.urls.filter((u) => typeof u === "string" && u.length > 0);
+  if (validUrls.length === 0) return { googleEnqueued: false };
+
+  const event: IndexingLifecycleEvent = input.lifecycleEvent ?? "publish";
+  const queue = getGoogleIndexingQueue();
+  if (!queue) return { googleEnqueued: false };
+
+  const type = eventToGoogleType(event);
+  let googleEnqueued = false;
+  for (let i = 0; i < validUrls.length; i++) {
+    const url = validUrls[i];
+    if (typeof url !== "string") continue;
+    try {
+      await queue.add(
+        "ping",
+        { url, type },
+        { jobId: `google-indexing-${input.entityId}-${i}-${event}` },
+      );
+      googleEnqueued = true;
+    } catch (err) {
+      console.warn(
+        `[indexing-enqueue] google-only add failed for ${input.entityId} url ${url}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+  return { googleEnqueued };
+}
+
 /** Test-only : reset les singletons queue (sinon les mocks BullMQ leakent entre tests). */
 export function _resetIndexingQueuesForTest(): void {
   indexNowQueue = null;

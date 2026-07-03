@@ -553,18 +553,31 @@ export default async function StackIaPage({ params }: Props) {
                           {isFr ? "Combo gagnant" : "Winning combo"}
                         </p>
                         <p className="text-fg mt-2 text-[14.5px] leading-relaxed">{t.combo}</p>
-                        <a
-                          href={tool.url}
-                          target="_blank"
-                          rel="noreferrer nofollow"
-                          className={cn(
-                            "mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium underline underline-offset-4 hover:no-underline",
-                            acc.title,
-                          )}
-                        >
-                          {isFr ? "Site officiel" : "Official site"}
-                          <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
-                        </a>
+                        {/* Maillage interne (audit 2026-07-03) : lien vers notre page
+                            détail /stack-ia/[tool] — avant, la carte ne pointait QUE
+                            vers le site vendeur (externe nofollow) → page détail
+                            quasi-orpheline (découverte sitemap only). */}
+                        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+                          <Link
+                            href={(isFr ? `/stack-ia/${tool.id}` : `/ai-stack/${tool.id}`) as never}
+                            className={cn(
+                              "inline-flex items-center gap-1.5 text-[13px] font-medium underline underline-offset-4 hover:no-underline",
+                              acc.title,
+                            )}
+                          >
+                            {isFr ? `Notre analyse de ${tool.name}` : `Our ${tool.name} review`}
+                            <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+                          </Link>
+                          <a
+                            href={tool.url}
+                            target="_blank"
+                            rel="noreferrer nofollow"
+                            className="text-fg-muted inline-flex items-center gap-1.5 text-[13px] font-medium underline underline-offset-4 hover:no-underline"
+                          >
+                            {isFr ? "Site officiel" : "Official site"}
+                            <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+                          </a>
+                        </div>
                       </footer>
                     </div>
                   </article>

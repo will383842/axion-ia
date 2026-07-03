@@ -43,7 +43,10 @@ import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote"
 import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
 import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransparencyBlock";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
-import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+import {
+  findRelatedArticles,
+  segmentForArticleType,
+} from "@/server/content-gen/links/related-articles";
 import { getVille } from "@/content/villes";
 // VIS-01 (audit visibilité 2026-06-05) — rendu HTML sanitisé du body des
 // articles DB (bodyHtml) + injection d'ancres h2. Aligne /blog sur le chemin
@@ -678,7 +681,9 @@ export default async function BlogArticle({ params }: Props) {
       <SuggestedContent
         variant="articles"
         items={related.map((r) => ({
-          href: `/blog/${r.slug}`,
+          // Route par type (audit maillage 2026-07-03) : un guide connexe doit
+          // pointer /guides/… et non /blog/guide-x (308). Défaut sûr = blog.
+          href: `/${segmentForArticleType(r.type ?? "blog")}/${r.slug}`,
           title: r.title,
           excerpt: r.excerpt,
           publishedAt: r.publishedAt,

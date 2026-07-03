@@ -19,6 +19,7 @@ import { Clarity } from "@/components/analytics/Clarity";
 import { ChatWidgetMount } from "@/components/chatbot/ChatWidgetMount";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { buildSiteNavigationJsonLd } from "@/lib/seo/extended-schemas";
+import { SERVICES, serviceOfficial } from "@/content/services";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { env } from "@/env";
 import type { Locale } from "@/i18n/routing";
@@ -219,37 +220,24 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const organizationJsonLd = buildOrganizationJsonLd(organizationJsonLdInput);
   const websiteJsonLd = buildWebsiteJsonLd({ locale: locale as Locale });
 
-  // Sprint v7 post-audit FIX F4 — SiteNavigationElement JSON-LD (helper Phase 12).
-  // SSOT des 5 items canoniques du header desktop (cf. `Header.tsx` navLeft+navRight).
-  // Signal AEO/GEO 2026 : permet à Perplexity/Claude.ai/SGE de comprendre la
-  // structure de navigation primaire du site et de citer les hubs pertinents.
-  // URLs en FR (locale par défaut + EN désactivé 2026-05-16, cf. AGENTS.md).
+  // SiteNavigationElement JSON-LD — dérivé du SSOT `SERVICES` (`content/services.ts`)
+  // pour rester aligné sur la nav primaire RÉELLE du header desktop (5 services +
+  // Tarifs), au lieu d'une liste figée à la main. Corrige l'audit maillage 2026-07-03 :
+  // l'ancienne liste pointait vers `/interventions` (hub inexistant → redirigé) et
+  // divergeait du header (Cas concrets/Implantations ne sont pas dans la nav desktop).
+  // Signal AEO/GEO : permet à Perplexity/Claude.ai/SGE de comprendre la structure
+  // de navigation primaire et de citer les hubs. URLs FR (EN désactivé, cf. AGENTS.md).
   const isFrLocale = (locale as Locale) === "fr";
   const siteNavigationJsonLd = buildSiteNavigationJsonLd([
+    ...SERVICES.map((s, i) => ({
+      name: serviceOfficial(s, isFrLocale),
+      url: `${SITE_URL}/${locale}${s.href}`,
+      position: i + 1,
+    })),
     {
-      name: isFrLocale ? "Interventions" : "Interventions",
-      url: `${SITE_URL}/${locale}/interventions`,
-      position: 1,
-    },
-    {
-      name: isFrLocale ? "Audit" : "Audit",
-      url: `${SITE_URL}/${locale}/audit`,
-      position: 2,
-    },
-    {
-      name: isFrLocale ? "Implémentation" : "Implementation",
-      url: `${SITE_URL}/${locale}/implementation`,
-      position: 3,
-    },
-    {
-      name: isFrLocale ? "Cas concrets" : "Case studies",
-      url: `${SITE_URL}/${locale}/cas-concrets`,
-      position: 4,
-    },
-    {
-      name: isFrLocale ? "Implantations" : "Locations",
-      url: `${SITE_URL}/${locale}/implantations`,
-      position: 5,
+      name: isFrLocale ? "Tarifs" : "Pricing",
+      url: `${SITE_URL}/${locale}/tarifs`,
+      position: SERVICES.length + 1,
     },
   ]);
 

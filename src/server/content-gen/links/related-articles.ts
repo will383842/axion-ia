@@ -103,6 +103,10 @@ export async function findRelatedArticles(opts: FindRelatedOptions): Promise<Rel
         publishedAt: a.publishedAt?.toISOString().slice(0, 10) ?? "",
         readingTime: a.readingTime ? `${a.readingTime} min` : "",
         source: "db" as const,
+        // Audit maillage 2026-07-03 — porte le `type` pour router le href côté
+        // consommateur. `listPublishedArticles` exclut les news → seul le préfixe
+        // `guide-` discrimine ; sans ça un guide sortait en href /blog/guide-x → 308.
+        type: a.slug.startsWith("guide-") ? ("guides" as const) : ("blog" as const),
       }));
   } catch {
     // Stub Proxy build-time → retour []
@@ -122,6 +126,7 @@ export async function findRelatedArticles(opts: FindRelatedOptions): Promise<Rel
         publishedAt: p.publishedAt,
         readingTime: p.readingTime,
         source: "fs" as const,
+        type: "blog" as const,
       };
     });
 

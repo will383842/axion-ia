@@ -337,7 +337,9 @@ export async function loadAdjacentArticles(
   const idx = list.findIndex((a) => a.slug === currentSlug);
   if (idx === -1) return { prev: null, next: null };
   const toLink = (a: BlogArticleView | undefined): ArticleLink | null =>
-    a ? { title: a.title, href: `/blog/${a.slug}` } : null;
+    // Route par type (audit maillage 2026-07-03) : `loadBlogIndexForView` exclut
+    // déjà les news, mais un guide (`guide-*`) glisserait un href /blog/guide-x → 308.
+    a ? { title: a.title, href: hrefForArticle(a.slug, false) } : null;
   return {
     // Liste DESC : index+1 = plus ancien (précédent), index-1 = plus récent (suivant).
     prev: toLink(list[idx + 1]),
@@ -424,7 +426,7 @@ export async function loadPeopleAlsoAsk(
  * Discriminants (cf. prisma `Article`) : `isNews` → segment `/actualites`,
  * slug préfixé `guide-` → `/guides`, sinon (défaut sûr) → `/blog`.
  */
-function hrefForArticle(slug: string, isNews: boolean | null | undefined): string {
+export function hrefForArticle(slug: string, isNews: boolean | null | undefined): string {
   if (isNews) return `/actualites/${slug}`;
   if (slug.startsWith("guide-")) return `/guides/${slug}`;
   return `/blog/${slug}`;
