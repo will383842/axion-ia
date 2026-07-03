@@ -12,7 +12,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqRelatedResources } from "@/components/sections/FaqRelatedResources";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildItemListJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildItemListJsonLd, buildFaqJsonLd } from "@/lib/seo";
 import { listFaqsByCategory } from "@/lib/knowledge/readers";
 import { getFaqCategory, getAllFaqCategorySlugs } from "@/content/faq-categories";
 
@@ -176,6 +176,11 @@ export default async function FaqCategoryPage({ params }: Props) {
       />
 
       <JsonLd data={itemListJsonLd} />
+      {/* FAQPage JSON-LD — émis UNIQUEMENT quand le hub est indexable (≥ seuil),
+          jamais sur une page noindex thin (audit 2026-07-03). Un hub thématique
+          (nombre raisonnable de Q/R) est le bon porteur d'un FAQPage — contrairement
+          au hub /faq global (centaines de Q/R → speakable). Complète l'ItemList. */}
+      {items.length >= MIN_INDEXABLE_ITEMS ? <JsonLd data={buildFaqJsonLd({ items })} /> : null}
     </>
   );
 }
