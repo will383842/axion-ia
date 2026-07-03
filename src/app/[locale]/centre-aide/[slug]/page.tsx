@@ -103,6 +103,8 @@ export default async function HelpArticlePage({ params }: Props) {
     path: `/centre-aide/${slug}`,
     question: copy.title,
     acceptedAnswer: { text: copy.excerpt || copy.body.slice(0, 300) },
+    // GSC 2026-07-03 — date pour QAPage (recommandé). Date éditoriale du site.
+    datePublished: SITE_EDITORIAL_DATE,
   });
 
   // VIS-05 — co-émet le nœud Person Manon (résout l'author @id de l'Article factory).

@@ -2044,6 +2044,8 @@ interface QAPageJsonLdInput {
   acceptedAnswer: { text: string; authorName?: string; upvoteCount?: number };
   /** Optional suggested answers. */
   suggestedAnswers?: ReadonlyArray<{ text: string; authorName?: string; upvoteCount?: number }>;
+  /** Date de publication/relecture (recommandé QAPage). Émis si fourni. */
+  datePublished?: string | Date;
 }
 
 // QAPage JSON-LD — différent de FAQPage : pour pages détail FAQ par question
@@ -2056,21 +2058,35 @@ export function buildQAPageJsonLd({
   question,
   acceptedAnswer,
   suggestedAnswers,
+  datePublished,
 }: QAPageJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
+  // GSC Rich Results 2026-07-03 — QAPage requiert `answerCount` sur la Question
+  // (sinon INVALIDE). Champs recommandés `text`/`author`/`url`/`datePublished`
+  // fournis honnêtement : auteur = l'Organisation (contenu site-authored), date
+  // si fournie. `upvoteCount` jamais fabriqué (politique anti-fabrication).
+  const orgRef = { "@id": `${SITE_URL}/#organization` } as const;
+  const dateIso = datePublished ? new Date(datePublished).toISOString() : undefined;
+  const answerCount = 1 + (suggestedAnswers?.length ?? 0);
   return {
     "@context": "https://schema.org",
     "@type": "QAPage",
     mainEntity: {
       "@type": "Question",
       name: question,
+      text: question,
       url,
+      answerCount,
+      author: orgRef,
+      ...(dateIso ? { datePublished: dateIso } : {}),
       acceptedAnswer: {
         "@type": "Answer",
         text: acceptedAnswer.text,
-        ...(acceptedAnswer.authorName
-          ? { author: { "@type": "Person", name: acceptedAnswer.authorName } }
-          : {}),
+        url,
+        author: acceptedAnswer.authorName
+          ? { "@type": "Person", name: acceptedAnswer.authorName }
+          : orgRef,
+        ...(dateIso ? { datePublished: dateIso } : {}),
         ...(typeof acceptedAnswer.upvoteCount === "number"
           ? { upvoteCount: acceptedAnswer.upvoteCount }
           : {}),
@@ -2080,7 +2096,7 @@ export function buildQAPageJsonLd({
             suggestedAnswer: suggestedAnswers.map((a) => ({
               "@type": "Answer",
               text: a.text,
-              ...(a.authorName ? { author: { "@type": "Person", name: a.authorName } } : {}),
+              author: a.authorName ? { "@type": "Person", name: a.authorName } : orgRef,
               ...(typeof a.upvoteCount === "number" ? { upvoteCount: a.upvoteCount } : {}),
             })),
           }
