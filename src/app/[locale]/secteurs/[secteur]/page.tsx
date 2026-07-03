@@ -272,7 +272,11 @@ export default async function SecteurPilier({ params }: Props) {
               >
                 <div className="flex items-center gap-3">
                   <span className="bg-halo-warm flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-                    <Icon className="text-terracotta h-5 w-5" strokeWidth={1.6} aria-hidden="true" />
+                    <Icon
+                      className="text-terracotta h-5 w-5"
+                      strokeWidth={1.6}
+                      aria-hidden="true"
+                    />
                   </span>
                   <h3 className="text-fg text-lg font-semibold">{svc.labelFr}</h3>
                 </div>
@@ -485,7 +489,11 @@ export default async function SecteurPilier({ params }: Props) {
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={serviceJsonLd} />
       {sectorImagesJsonLd ? <JsonLd data={sectorImagesJsonLd} /> : null}
-      <JsonLd data={itemListJsonLd} strategy="afterInteractive" scriptId="jsonld-secteur-itemlist" />
+      <JsonLd
+        data={itemListJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-secteur-itemlist"
+      />
       <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-secteur-faq" />
     </>
   );

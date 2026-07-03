@@ -74,7 +74,7 @@ export function SectorHeroMedia({ slug, src, alt, width, height, credit }: Secto
   const Icon = SECTOR_ICON[slug];
   return (
     <figure className="m-0">
-      <div className="ring-border-strong/30 relative overflow-hidden rounded-3xl shadow-card ring-1">
+      <div className="ring-border-strong/30 shadow-card relative overflow-hidden rounded-3xl ring-1">
         <Image
           src={src}
           alt={alt}

@@ -31,7 +31,8 @@ export const SECTOR_PHOTO_CREDITS: Record<ClientSectorSlug, SectorPhotoCredit> =
   comptabilite_finance: {
     photoId: "Mw9KxYkqsnk",
     photographer: "Marissa Grootes",
-    photographerUrl: "https://unsplash.com/@marissacristina?utm_source=axion-ia&utm_medium=referral",
+    photographerUrl:
+      "https://unsplash.com/@marissacristina?utm_source=axion-ia&utm_medium=referral",
     photoUrl: "https://unsplash.com/photos/Mw9KxYkqsnk?utm_source=axion-ia&utm_medium=referral",
   },
   btp_immobilier: {
