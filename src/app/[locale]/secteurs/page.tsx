@@ -145,30 +145,63 @@ export default async function SecteursHub({ params }: Props) {
         }
         media={heroMedia}
       >
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
           {CLIENT_SECTORS.map((s) => (
             <li key={s.slug}>
               <Link
                 href={`/${loc}/secteurs/${s.slug}`}
-                className="border-border hover:border-border-strong hover:shadow-card group flex h-full flex-col gap-3 rounded-2xl border p-6 transition"
+                className="border-border hover:border-border-strong hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition"
               >
-                <span
-                  aria-hidden="true"
-                  className="bg-sand flex h-14 w-14 items-center justify-center rounded-xl text-3xl"
-                >
-                  {s.emoji}
-                </span>
-                <span className="text-fg mt-1 text-lg font-semibold">{s.labelFr}</span>
-                <span className="text-fg-soft text-sm leading-relaxed">
-                  {isFr ? `Solutions IA pour ${s.fullFr}.` : `AI solutions for ${s.fullFr}.`}
-                </span>
-                <span className="text-terracotta mt-auto pt-2 text-sm font-semibold">
-                  {isFr ? "Voir les cas d'usage →" : "See use cases →"}
-                </span>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={`/illustrations/secteurs/${s.slug}.avif`}
+                    alt={
+                      isFr
+                        ? `${s.labelFr} et intelligence artificielle — Axion-IA accompagne ${s.fullFr}.`
+                        : `${s.labelFr} and artificial intelligence — Axion-IA supports ${s.fullFr}.`
+                    }
+                    width={1600}
+                    height={1000}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="bg-bg/85 ring-border-strong/30 absolute top-3 left-3 flex h-9 w-9 items-center justify-center rounded-lg text-lg ring-1 backdrop-blur"
+                  >
+                    {s.emoji}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col gap-2 p-5">
+                  <span className="text-fg text-lg font-semibold">{s.labelFr}</span>
+                  <span className="text-fg-soft text-sm leading-relaxed">
+                    {isFr ? `Solutions IA pour ${s.fullFr}.` : `AI solutions for ${s.fullFr}.`}
+                  </span>
+                  <span className="text-terracotta mt-auto pt-2 text-sm font-semibold">
+                    {isFr ? "Voir les cas d'usage →" : "See use cases →"}
+                  </span>
+                </div>
               </Link>
             </li>
           ))}
         </ul>
+
+        <p className="text-fg-muted mt-8 text-xs">
+          {isFr ? "Photos d'illustration : " : "Illustration photos: "}
+          <a
+            href="https://unsplash.com/?utm_source=axion-ia&utm_medium=referral"
+            target="_blank"
+            rel="nofollow noopener"
+            className="hover:text-fg underline-offset-2 hover:underline"
+          >
+            Unsplash
+          </a>
+          {isFr
+            ? " — crédits photographes détaillés sur chaque page secteur."
+            : " — detailed photographer credits on each sector page."}
+        </p>
       </Section>
 
       <StickyMobileCta

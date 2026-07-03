@@ -12,10 +12,11 @@ import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
-import { SectorHeroPanel, SERVICE_ICON } from "@/components/secteurs/SectorVisuals";
+import { SectorHeroMedia, SERVICE_ICON } from "@/components/secteurs/SectorVisuals";
 import { CLIENT_SECTORS, getClientSector, type ClientSectorSlug } from "@/content/sectors";
+import { SECTOR_PHOTO_CREDITS } from "@/content/secteurs/sector-photos";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
-import { getRepresentativePageImage } from "@/lib/seo/page-images";
+import { getPageImages } from "@/lib/seo/page-images";
 import { FOUNDER } from "@/lib/brand";
 import {
   getSectorPainContext,
@@ -100,8 +101,11 @@ export default async function SecteurPilier({ params }: Props) {
   const lexicon = Array.from(new Set(activities.flatMap((a) => a.pain!.sectorLexicon)));
   const flagship = activities[0];
 
-  // Portrait fondateur (image représentative de la page — cf. page-images.ts).
-  const founderImage = getRepresentativePageImage(`/secteurs/${sector.slug}`);
+  // Images de la page (cf. page-images.ts) : photo héro sectorielle + portrait fondateur.
+  const sectorImages = getPageImages(`/secteurs/${sector.slug}`);
+  const heroImage = sectorImages.find((img) => img.slot === "hero");
+  const founderImage = sectorImages.find((img) => img.slot === "portrait");
+  const photoCredit = SECTOR_PHOTO_CREDITS[slug];
 
   const breadcrumbItems = [
     { href: "/secteurs", label: isFr ? "Secteurs" : "Sectors" },
@@ -198,7 +202,18 @@ export default async function SecteurPilier({ params }: Props) {
             ? `Pour ${sector.fullFr}, on part de vos contraintes réelles et de votre vocabulaire métier. Voici les 5 façons dont Axion-IA vous fait gagner du temps et de l'argent — chacune avec un gain concret et chiffré.`
             : `For ${sector.fullFr}, we start from your real constraints and trade vocabulary. Here are the 5 ways Axion-IA saves you time and money — each with a concrete, quantified gain.`
         }
-        media={<SectorHeroPanel slug={slug} label={sector.labelFr} chips={lexicon.slice(0, 3)} />}
+        media={
+          heroImage ? (
+            <SectorHeroMedia
+              slug={slug}
+              src={heroImage.src}
+              alt={isFr ? heroImage.altFr : heroImage.altEn}
+              width={heroImage.width}
+              height={heroImage.height}
+              credit={photoCredit}
+            />
+          ) : undefined
+        }
       >
         <div className="flex flex-wrap gap-3">
           <Link

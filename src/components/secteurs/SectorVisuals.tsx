@@ -2,17 +2,15 @@
  * Visuels sectoriels — piliers `/secteurs/[secteur]`.
  *
  * Server Components purs (zéro JS client) → budget Web Vitals 2026 préservé
- * (First Load JS ≤ 75 KB, CLS = 0). Emblèmes = icônes `lucide-react` déjà dans
- * le bundle (SVG stroke, `currentColor`, theme-aware). Aucun fichier image, donc
- * aucun requête réseau ni décalage de layout.
+ * (First Load JS ≤ 75 KB, CLS = 0). Photo héro Unsplash locale (1600×1000,
+ * dimensions fixes → pas de décalage) + badge emblème (icône lucide déjà bundle)
+ * + crédit photographe obligatoire (CGU Unsplash §9, cf. `sector-photos.ts`).
  *
- * ⚠️ `SECTOR_ICON` est clé sur `ClientSectorSlug` (SSOT `content/sectors.ts`),
+ * `SECTOR_ICON` est clé sur `ClientSectorSlug` (SSOT `content/sectors.ts`),
  * `SERVICE_ICON` sur `ServiceDef.slug` (SSOT `content/knowledge/services.ts`).
- * Quand les 10 photos métier `/illustrations/secteurs/{slug}.avif` existeront,
- * le panneau emblème du héro pourra être remplacé par un `<Image>` sans toucher
- * au reste de la page (le slot `media` de `Section` reste identique).
  */
 
+import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
 import {
   Calculator,
@@ -33,6 +31,7 @@ import {
 } from "lucide-react";
 
 import type { ClientSectorSlug } from "@/content/sectors";
+import type { SectorPhotoCredit } from "@/content/secteurs/sector-photos";
 
 /** Emblème par secteur client (= `ClientSectorSlug`). */
 export const SECTOR_ICON: Record<ClientSectorSlug, LucideIcon> = {
@@ -57,60 +56,60 @@ export const SERVICE_ICON: Record<string, LucideIcon> = {
   "sites-web-augmentes": Globe,
 };
 
-export interface SectorHeroPanelProps {
+export interface SectorHeroMediaProps {
   readonly slug: ClientSectorSlug;
-  readonly label: string;
-  /** Mots du lexique métier affichés en chips (décoratif, `aria-hidden`). */
-  readonly chips: readonly string[];
+  readonly src: string;
+  readonly alt: string;
+  readonly width: number;
+  readonly height: number;
+  readonly credit: SectorPhotoCredit;
 }
 
 /**
- * Panneau emblème rendu à droite du h1 (slot `media` de `Section`). Carte teintée
- * `sand` + anneaux décoratifs + grand emblème sectoriel + chips lexique métier.
- * Distinct par secteur, crawlable-agnostique, zéro décalage (dimensions fixes).
+ * Média du héro (slot `media` de `Section`) : photo sectorielle Unsplash locale
+ * + badge emblème (coin haut-gauche) + crédit photographe (CGU §9). Image en
+ * `priority` (candidate LCP du héro), ratio fixe 16/10 → CLS 0.
  */
-export function SectorHeroPanel({ slug, label, chips }: SectorHeroPanelProps) {
+export function SectorHeroMedia({ slug, src, alt, width, height, credit }: SectorHeroMediaProps) {
   const Icon = SECTOR_ICON[slug];
   return (
-    <div className="bg-sand ring-border-strong/40 relative overflow-hidden rounded-3xl p-8 shadow-card ring-1 sm:p-10">
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 400 400"
-        className="pointer-events-none absolute -top-16 -right-16 h-64 w-64 opacity-50"
-      >
-        <circle cx="200" cy="200" r="150" fill="none" stroke="var(--color-terracotta)" strokeOpacity="0.16" />
-        <circle
-          cx="200"
-          cy="200"
-          r="105"
-          fill="none"
-          stroke="var(--color-terracotta)"
-          strokeOpacity="0.12"
-          strokeDasharray="3 7"
+    <figure className="m-0">
+      <div className="ring-border-strong/30 relative overflow-hidden rounded-3xl shadow-card ring-1">
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          priority
+          sizes="(max-width: 1024px) 100vw, 48vw"
+          className="aspect-[16/10] h-auto w-full object-cover"
         />
-      </svg>
-      <div className="relative flex flex-col items-center gap-6 text-center">
-        <span className="bg-bg/80 ring-border-strong/30 flex h-24 w-24 items-center justify-center rounded-2xl ring-1">
+        <span className="bg-bg/85 ring-border-strong/30 absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-xl ring-1 backdrop-blur">
           {Icon ? (
-            <Icon className="text-terracotta h-12 w-12" strokeWidth={1.4} aria-hidden="true" />
+            <Icon className="text-terracotta h-6 w-6" strokeWidth={1.5} aria-hidden="true" />
           ) : null}
         </span>
-        <p className="text-fg text-lg font-semibold" style={{ fontFamily: "var(--font-serif)" }}>
-          {label}
-        </p>
-        {chips.length > 0 ? (
-          <ul className="flex flex-wrap justify-center gap-2" aria-hidden="true">
-            {chips.map((c) => (
-              <li
-                key={c}
-                className="bg-bg/70 text-fg-soft ring-border rounded-full px-3 py-1 text-xs font-medium ring-1"
-              >
-                {c}
-              </li>
-            ))}
-          </ul>
-        ) : null}
       </div>
-    </div>
+      <figcaption className="text-fg-muted mt-2 text-[11px]">
+        Photo :{" "}
+        <a
+          href={credit.photographerUrl}
+          target="_blank"
+          rel="nofollow noopener"
+          className="hover:text-fg underline-offset-2 hover:underline"
+        >
+          {credit.photographer}
+        </a>{" "}
+        /{" "}
+        <a
+          href={credit.photoUrl}
+          target="_blank"
+          rel="nofollow noopener"
+          className="hover:text-fg underline-offset-2 hover:underline"
+        >
+          Unsplash
+        </a>
+      </figcaption>
+    </figure>
   );
 }

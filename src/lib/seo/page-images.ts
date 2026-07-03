@@ -66,17 +66,27 @@ export interface PageImagesManifest {
 // ---------------------------------------------------------------------------
 // Secteurs — piliers `/secteurs/[secteur]` (généré depuis le SSOT CLIENT_SECTORS)
 // ---------------------------------------------------------------------------
-// Chaque pilier secteur porte le portrait fondateur comme image représentative
-// (rendu dans le bandeau « Qui vous accompagne » de la page), avec un alt
-// contextualisé par secteur. Image crawlable existante → couvre le JSON-LD
-// ImageObject + le sitemap images sans dépendre d'un visuel sectoriel dédié.
-// ⚠️ TODO(secteurs-photos) : dès que les 10 photos métier
-// `/illustrations/secteurs/{slug}.avif` existent, ajouter une image
-// `slot: "hero"` `representativeOfPage` par secteur et rétrograder ce portrait
-// en secondaire (retirer `representativeOfPage` ici).
+// 2 images par pilier :
+//   1. Photo héro sectorielle Unsplash locale (1600×1000, `representativeOfPage`,
+//      slot "hero") — rendue à droite du h1 (cf. `SectorHeroMedia`). Crédit
+//      photographe rendu sur la page (CGU §9) + tracé dans `sector-photos.ts`.
+//   2. Portrait fondateur (slot "portrait") — rendu dans le bandeau « Qui vous
+//      accompagne ». Alt contextualisé par secteur, angle équipe.
+// Les deux → couvrent le JSON-LD ImageObject @graph + le sitemap images.
 const SECTOR_PAGE_IMAGES: readonly PageImagesManifest[] = CLIENT_SECTORS.map((s) => ({
   path: `/secteurs/${s.slug}`,
   images: [
+    {
+      src: `/illustrations/secteurs/${s.slug}.avif`,
+      nameFr: `${s.labelFr} et intelligence artificielle — Axion-IA`,
+      nameEn: `${s.labelFr} and artificial intelligence — Axion-IA`,
+      altFr: `${s.labelFr} et intelligence artificielle — Axion-IA accompagne ${s.fullFr} (audit, formation, implémentation, 1-to-1, sites web augmentés).`,
+      altEn: `${s.labelFr} and artificial intelligence — Axion-IA supports ${s.fullFr} (audit, training, implementation, 1-to-1, AI-augmented websites).`,
+      width: 1600,
+      height: 1000,
+      representativeOfPage: true,
+      slot: "hero",
+    },
     {
       src: "/illustrations/home-founder-william.avif",
       nameFr: `Williams — Fondateur Axion-IA, référent IA pour ${s.labelFr}`,
@@ -85,7 +95,6 @@ const SECTOR_PAGE_IMAGES: readonly PageImagesManifest[] = CLIENT_SECTORS.map((s)
       altEn: `Portrait of Williams, Axion-IA founder. With his team, he supports ${s.fullFr} on AI — audit, training, implementation, 1-to-1 and AI-augmented websites, with quantified business use cases.`,
       width: 800,
       height: 1000,
-      representativeOfPage: true,
       slot: "portrait",
     },
   ],
