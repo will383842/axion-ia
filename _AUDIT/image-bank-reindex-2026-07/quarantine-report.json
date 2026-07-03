@@ -1,0 +1,60 @@
+{
+ "generated": "regen 2026-07-03 (221 uniques → publiés)",
+ "total_unique_images": 221,
+ "published": 215,
+ "quarantine_wrong_label": [],
+ "excluded_modules": [
+  {
+   "slug": "axion-ia-favicon-icone-site-web-1024px-onglet-navigateur",
+   "module": "favicon",
+   "source": "Favicon/axion-ia-favicon-icone-site-web-1024px-onglet-navigateur.png"
+  },
+  {
+   "slug": "axion-ia-screenshot-site-web-mobile-responsive-interface-pme",
+   "module": "screenshot",
+   "source": "Captures d'#U00e9cran Axion IA/axion-ia-screenshot-site-web-mobile-responsive-interface-pme.png"
+  },
+  {
+   "slug": "axion-ia-screenshot-site-web-page-accueil-interface-desktop",
+   "module": "screenshot",
+   "source": "Captures d'#U00e9cran Axion IA/axion-ia-screenshot-site-web-page-accueil-interface-desktop.png"
+  },
+  {
+   "slug": "axion-ia-screenshot-site-web-page-contact-formulaire-prise-rdv",
+   "module": "screenshot",
+   "source": "Captures d'#U00e9cran Axion IA/axion-ia-screenshot-site-web-page-contact-formulaire-prise-rdv.png"
+  },
+  {
+   "slug": "axion-ia-screenshot-site-web-page-formation-programme-details",
+   "module": "screenshot",
+   "source": "Captures d'#U00e9cran Axion IA/axion-ia-screenshot-site-web-page-formation-programme-details.png"
+  },
+  {
+   "slug": "axion-ia-screenshot-site-web-page-services-offres-tarifs",
+   "module": "screenshot",
+   "source": "Captures d'#U00e9cran Axion IA/axion-ia-screenshot-site-web-page-services-offres-tarifs.png"
+  }
+ ],
+ "dropped_duplicate_slugs": [
+  {
+   "kept": "axion-ia-audit-ia-scoring-priorites-quick-wins-long-terme",
+   "dropped_duplicate": "axion-ia-coaching-1to1-dirigeant-pme-strategie-ia-personnalisee"
+  },
+  {
+   "kept": "axion-ia-personnalisation-temps-reel-visiteurs-experience-unique-ia-banniere",
+   "dropped_duplicate": "axion-ia-personnalisation-temps-reel-2847-visiteurs-experience-unique-ia-banniere"
+  },
+  {
+   "kept": "axion-ia-cas-concret-analyse-contrats-clauses-risques-ia-rapide-carre",
+   "dropped_duplicate": "axion-ia-cas-concret-planification-chantier-gantt-ia-automatique-carre"
+  },
+  {
+   "kept": "axion-ia-cas-concret-approvisionnements-fournisseurs-ia-zero-rupture-carre",
+   "dropped_duplicate": "axion-ia-cas-concret-gestion-approvisionnements-fournisseurs-ia-zero-rupture-carre"
+  },
+  {
+   "kept": "axion-ia-cas-concret-generation-contenu-reseaux-sociaux-ia-batch-carre",
+   "dropped_duplicate": "axion-ia-cas-concret-prevision-tresorerie-90-jours-sans-excel-ia-carre"
+  }
+ ]
+}
