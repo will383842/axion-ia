@@ -63,9 +63,29 @@ describe("buildJobPostingJsonLd", () => {
     expect(j!["@type"]).toBe("JobPosting");
     expect(j!.title).toBe("Développeur Fullstack");
     expect(String(j!.datePosted)).toContain("2026-06-01");
-    expect(String(j!.validThrough)).toContain("2027-06-01");
+    // Pas de date de fin automatique : validThrough omis tant que l'admin ne l'a pas fixé.
+    expect(j!.validThrough).toBeUndefined();
     expect(j!.hiringOrganization).toBeTruthy();
+    expect((j!.hiringOrganization as Record<string, unknown>)["@id"]).toContain("#organization");
+    expect(j!.image).toBeTruthy();
+    // url = page de l'annonce, pas le formulaire /postuler.
+    expect(String(j!.url)).toContain("/carrieres/dev-fullstack-lyon");
+    expect(String(j!.url)).not.toContain("/postuler");
     expect(j!.directApply).toBe(true);
+  });
+
+  it("émet validThrough UNIQUEMENT si fixé par l'admin (jamais de +1 an auto)", () => {
+    expect(buildJobPostingJsonLd(makeOffer())!.validThrough).toBeUndefined();
+    const avec = buildJobPostingJsonLd(
+      makeOffer({ validThrough: new Date("2027-12-31T00:00:00.000Z") }),
+    )!;
+    expect(String(avec.validThrough)).toContain("2027-12-31");
+  });
+
+  it("hybride → Place + TELECOMMUTE (les deux)", () => {
+    const j = buildJobPostingJsonLd(makeOffer({ workMode: "hybrid" }))!;
+    expect(j.jobLocation).toBeTruthy();
+    expect(j.jobLocationType).toBe("TELECOMMUTE");
   });
 
   it("retourne null si brouillon / pourvue / noindex / expirée", () => {

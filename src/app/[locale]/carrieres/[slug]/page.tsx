@@ -155,7 +155,20 @@ export default async function JobOfferDetailPage({
     locale: loc,
     path: `/carrieres/${offer.slug}`,
     name: title,
+    description: summary,
+    // Signaux de fraîcheur (E-E-A-T / AI Overviews) : datés depuis la DB.
+    datePublished: (offer.publishedAt ?? offer.datePosted).toISOString(),
+    dateModified: offer.updatedAt.toISOString(),
     speakable: { selectors: ["h1", "[data-speakable]"] },
+    // Image représentative de la page (lien page↔image pour Google/Images).
+    extra: {
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: img.url,
+        contentUrl: img.url,
+        caption: `${title} — Axion-IA`,
+      },
+    },
   });
 
   return (
@@ -223,7 +236,7 @@ export default async function JobOfferDetailPage({
               <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border">
                 <Image
                   src={img.url}
-                  alt={img.alt}
+                  alt={`${title} — offre d'emploi chez Axion-IA`}
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 40vw"
@@ -407,7 +420,7 @@ export default async function JobOfferDetailPage({
                       <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg">
                         <Image
                           src={sImg.url}
-                          alt={sImg.alt}
+                          alt={`${isFr ? s.titleFr : s.titleEn} — Axion-IA`}
                           fill
                           sizes="80px"
                           className="object-cover"
