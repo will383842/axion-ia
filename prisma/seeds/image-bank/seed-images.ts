@@ -2230,8 +2230,6 @@ const IMAGE_ENTRIES: ImageEntry[] = [
   },
 ];
 
-
-
 async function main() {
   console.log("🌱 Axion-IA Image Bank — Seeder 215 images (reindex 2026-07)\n");
   let upserted = 0;
@@ -2341,7 +2339,9 @@ async function main() {
     const deactivate = process.env.REINDEX_DEACTIVATE_ORPHANS === "true";
     console.log(
       `\n🧹 ${orphans.length} slug(s) orphelin(s) hors du set reindex 2026-07 ` +
-        (deactivate ? "— désactivation soft :" : "— (rapport seul ; REINDEX_DEACTIVATE_ORPHANS=true pour désactiver) :")
+        (deactivate
+          ? "— désactivation soft :"
+          : "— (rapport seul ; REINDEX_DEACTIVATE_ORPHANS=true pour désactiver) :"),
     );
     orphans.forEach((o) => console.log("   – " + o.slug));
     if (deactivate) {
