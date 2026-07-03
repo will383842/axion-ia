@@ -5,22 +5,20 @@
 // validThrough déterministe ; garde-fou published & !filled.
 import { SITE_URL } from "@/lib/seo";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
+import { careerImage } from "@/content/careers/careers-images";
 import type { JobOffer } from "../../../prisma/generated/client";
 
+// Aligné sur le nœud Organization canonique (`seo.ts` `#organization`) : même
+// `@id` (résolution d'entité Google/LLM), même `name`, `logo` (affiché dans la
+// fiche Google for Jobs) et `sameAs` autoritatif (profil externe réel, pas la home).
 const HIRING_ORG = {
   "@type": "Organization",
-  name: "Axion-IA.com",
+  "@id": `${SITE_URL}/#organization`,
+  name: "Axion-IA",
   url: SITE_URL,
-  sameAs: SITE_URL,
+  logo: `${SITE_URL}/opengraph-image`,
+  sameAs: ["https://www.linkedin.com/company/axion-ia-france"],
 } as const;
-
-/** validThrough : offer.validThrough sinon date de publication + 1 an (déterministe). */
-function resolveValidThrough(validThrough: Date | null, posted: Date): string {
-  if (validThrough) return validThrough.toISOString();
-  const d = new Date(posted);
-  d.setUTCFullYear(d.getUTCFullYear() + 1);
-  return d.toISOString();
-}
 
 /**
  * Construit le JobPosting d'une offre. Renvoie `null` si l'offre ne doit PAS
@@ -36,16 +34,18 @@ export function buildJobPostingJsonLd(
   // qu'on a voulu cacher/clôturer).
   if (offer.status !== "published" || offer.filledAt) return null;
   if (offer.indexationTier !== "tier_1_indexable") return null;
-  // Expiration effective : validThrough explicite, sinon date limite de candidature.
-  const effectiveValidThrough = offer.validThrough ?? offer.applicationDeadline;
-  if (effectiveValidThrough && effectiveValidThrough.getTime() < Date.now()) return null;
+  // Pas de date de fin automatique (décision Will 2026-07-03) : une offre reste
+  // active et indexée tant qu'elle n'est PAS retirée manuellement (archive /
+  // pourvue). On n'émet `validThrough` QUE si l'admin l'a explicitement renseignée
+  // (sinon l'offre est permanente). Une `validThrough` passée (choix admin) la clôt.
+  const explicitValidThrough = offer.validThrough;
+  if (explicitValidThrough && explicitValidThrough.getTime() < Date.now()) return null;
 
   const isFr = locale === "fr";
   const title = isFr ? offer.titleFr : offer.titleEn;
   // Description sanitizée (whitelist) — le composant JsonLd n'échappe pas </script>.
   const description = sanitizeContentGenHtml(isFr ? offer.bodyFr : offer.bodyEn);
   const posted = offer.publishedAt ?? offer.datePosted;
-  const applyUrl = `${SITE_URL}/${locale}/carrieres/${offer.slug}/postuler`;
 
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -54,15 +54,20 @@ export function buildJobPostingJsonLd(
     description,
     identifier: {
       "@type": "PropertyValue",
-      name: "Axion-IA.com",
+      name: "Axion-IA",
       value: offer.slug,
     },
     datePosted: posted.toISOString(),
-    validThrough: resolveValidThrough(effectiveValidThrough, posted),
+    // validThrough émis uniquement si explicitement fixé par l'admin (cf. supra).
+    ...(explicitValidThrough ? { validThrough: explicitValidThrough.toISOString() } : {}),
     employmentType: offer.employmentType,
     hiringOrganization: HIRING_ORG,
+    // Image de l'annonce (recommandée par Google for Jobs). URL absolue.
+    image: careerImage(offer.slug).url,
     directApply: true,
-    url: applyUrl,
+    // `url` = page de l'ANNONCE (schema.org/JobPosting.url), pas le formulaire
+    // `/postuler` : l'intention « postuler directement » reste portée par `directApply`.
+    url: `${SITE_URL}/${locale}/carrieres/${offer.slug}`,
     industry: isFr
       ? "Intelligence artificielle · Services aux entreprises"
       : "Artificial intelligence · Business services",
@@ -108,6 +113,16 @@ export function buildJobPostingJsonLd(
         addressCountry: offer.country,
       },
     };
+    // Hybride = présentiel + télétravail : signaler les DEUX à Google for Jobs
+    // (Place ci-dessus + TELECOMMUTE), sinon Google ne remonte pas l'offre sur
+    // les recherches « télétravail ».
+    if (offer.workMode === "hybrid") {
+      jsonLd.jobLocationType = "TELECOMMUTE";
+      jsonLd.applicantLocationRequirements = {
+        "@type": "Country",
+        name: "France",
+      };
+    }
   } else {
     jsonLd.applicantLocationRequirements = {
       "@type": "Country",
