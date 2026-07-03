@@ -16,6 +16,7 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 import {
   getCitiesStats,
   listCities,
+  syncCitiesUniverse,
   type CityRow,
 } from "@/server/actions/content-gen/cities-coverage";
 
@@ -84,6 +85,11 @@ export async function CitiesCoverageV2({
   isCovered,
   search,
 }: Props): Promise<React.ReactElement> {
+  async function runCitiesSync() {
+    "use server";
+    await syncCitiesUniverse();
+  }
+
   const [stats, { cities, total, totalPages }] = await Promise.all([
     getCitiesStats(),
     listCities({
@@ -160,6 +166,17 @@ export async function CitiesCoverageV2({
       <AdminPageHeader
         title="Couverture villes France"
         description={`${stats.covered} / ${stats.total} villes couvertes — ${stats.coveragePercent}%`}
+        actions={
+          <form action={runCitiesSync}>
+            <button
+              type="submit"
+              className="admin-button"
+              title="Seed idempotent des tables villes (City + ordre de génération) depuis la SSOT + recompute de la couverture depuis les articles publiés"
+            >
+              Synchroniser les villes
+            </button>
+          </form>
+        }
       />
 
       {/* Progress global */}

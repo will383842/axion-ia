@@ -83,7 +83,11 @@ export async function getCityContentEquityMatrix(filters?: {
     select: { slug: true, name: true, populationTier: true },
   });
   const cityMap = new Map(cities.map((c) => [c.slug, c]));
-  const slugsInTier = filters?.tier !== undefined ? new Set(cityMap.keys()) : null;
+  // Défensif (P0 2026-07-03) : n'applique le filtre tier QUE si la table `City`
+  // renvoie des lignes. Table vide (non seedée) → filtre bypassé (affiche les
+  // jobs live) au lieu de tout masquer.
+  const slugsInTier =
+    filters?.tier !== undefined && cityMap.size > 0 ? new Set(cityMap.keys()) : null;
 
   const rowMap = new Map<string, { byType: Record<string, number>; total: number }>();
   const contentTypes = new Set<string>();
