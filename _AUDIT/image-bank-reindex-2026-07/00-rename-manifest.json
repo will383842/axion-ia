@@ -1,0 +1,2152 @@
+[
+ {
+  "id": 1,
+  "source": "axion-ia-audit-ia-analyse-donnees-historiques-performance-entreprise.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-analyse-donnees-historiques-performance-entreprise",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 2,
+  "source": "axion-ia-audit-ia-analyse-processus-entreprise-consultant-banniere.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-analyse-processus-entreprise-consultant-banniere",
+  "type": "banniere",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 3,
+  "source": "axion-ia-audit-ia-benchmark-secteur-positionnement-concurrentiel.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-benchmark-secteur-positionnement-concurrentiel",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 4,
+  "source": "axion-ia-audit-ia-cartographie-outils-existants-systeme-information-banniere.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-cartographie-outils-existants-systeme-information-banniere",
+  "type": "banniere",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 5,
+  "source": "axion-ia-audit-ia-diagnostic-numerique-pme-bilan-competences.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-diagnostic-numerique-pme-bilan-competences",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 6,
+  "source": "axion-ia-audit-ia-diagnostic-workflow-taches-repetitives-detection.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-diagnostic-workflow-taches-repetitives-detection",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 7,
+  "source": "axion-ia-audit-ia-entretien-dirigeant-recueil-besoins-analyse.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-entretien-dirigeant-recueil-besoins-analyse",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 8,
+  "source": "axion-ia-audit-ia-evaluation-maturite-digitale-entreprise-banniere.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-evaluation-maturite-digitale-entreprise-banniere",
+  "type": "banniere",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 9,
+  "source": "axion-ia-audit-ia-feuille-de-route-implementation-phases-etapes.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-feuille-de-route-implementation-phases-etapes",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 10,
+  "source": "axion-ia-audit-ia-identification-gains-potentiels-automatisation-banniere.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-identification-gains-potentiels-automatisation-banniere",
+  "type": "banniere",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 11,
+  "source": "axion-ia-audit-ia-identification-risques-conformite-rgpd-ia.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-identification-risques-conformite-rgpd-ia",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 12,
+  "source": "axion-ia-audit-ia-rapport-restitution-dirigeant-plan-action.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-rapport-restitution-dirigeant-plan-action",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 13,
+  "source": "axion-ia-audit-ia-restitution-equipe-plan-transformation-digitale-carre.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-restitution-equipe-plan-transformation-digitale-carre",
+  "type": "carre",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 14,
+  "source": "axion-ia-audit-ia-schema-bilan-forces-faiblesses-opportunites-carre.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-schema-bilan-forces-faiblesses-opportunites-carre",
+  "type": "carre",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 15,
+  "source": "axion-ia-audit-ia-scoring-priorites-quick-wins-long-terme.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-scoring-priorites-quick-wins-long-terme",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 16,
+  "source": "axion-ia-audit-ia-synthese-executive-roi-priorites-implementation.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-synthese-executive-roi-priorites-implementation",
+  "type": "photo",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 17,
+  "source": "axion-ia-audit-ia-tableau-bord-kpi-avant-apres-transformation-carre.png",
+  "sourceFolder": "Audit",
+  "targetSlug": "axion-ia-audit-ia-tableau-bord-kpi-avant-apres-transformation-carre",
+  "type": "carre",
+  "category": "audit",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 18,
+  "source": "axion-ia-5-heures-saisie-supprimees-gain-temps-entreprise-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-5-heures-saisie-supprimees-gain-temps-entreprise-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 19,
+  "source": "axion-ia-accueil-client-vip-automatique-onboarding-crm-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-accueil-client-vip-automatique-onboarding-crm-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 20,
+  "source": "axion-ia-analyse-contrat-clauses-risque-68-pages-2-minutes-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-analyse-contrat-clauses-risque-68-pages-2-minutes-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 21,
+  "source": "axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 22,
+  "source": "axion-ia-boite-mail-liberte-automatisation-emails-ia-affiche.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-boite-mail-liberte-automatisation-emails-ia-affiche",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 23,
+  "source": "axion-ia-cerveau-ia-analyse-donnees-60-min-a-4-min-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-cerveau-ia-analyse-donnees-60-min-a-4-min-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 24,
+  "source": "axion-ia-commande-farine-boulangerie-automatique-sans-saisie-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-commande-farine-boulangerie-automatique-sans-saisie-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 25,
+  "source": "axion-ia-commande-fournisseur-45min-a-0min-automatique-boulangerie-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-commande-fournisseur-45min-a-0min-automatique-boulangerie-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 26,
+  "source": "axion-ia-commande-fournisseur-5-etapes-ventes-stock-boulangerie-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-commande-fournisseur-5-etapes-ventes-stock-boulangerie-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 27,
+  "source": "axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 28,
+  "source": "axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 29,
+  "source": "axion-ia-crm-boutique-12-clients-absents-34-pourcent-retour-relance-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-crm-boutique-12-clients-absents-34-pourcent-retour-relance-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 30,
+  "source": "axion-ia-crm-scoring-contacts-action-automatique-bon-moment-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-crm-scoring-contacts-action-automatique-bon-moment-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 31,
+  "source": "axion-ia-detection-profil-ideal-foule-ia-ne-cherche-pas-elle-trouve-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-detection-profil-ideal-foule-ia-ne-cherche-pas-elle-trouve-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 32,
+  "source": "axion-ia-devis-automatise-30-secondes-envoi-gain-temps-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-devis-automatise-30-secondes-envoi-gain-temps-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 33,
+  "source": "axion-ia-devis-envoye-28-secondes-avant-raccrochage-client-affiche.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-devis-envoye-28-secondes-avant-raccrochage-client-affiche",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 34,
+  "source": "axion-ia-dispatch-interventions-carte-technicien-bon-endroit-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-dispatch-interventions-carte-technicien-bon-endroit-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 35,
+  "source": "axion-ia-envoi-message-numerique-automatique-campagne-email-affiche.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-envoi-message-numerique-automatique-campagne-email-affiche",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 36,
+  "source": "axion-ia-equilibre-moins-effort-plus-resultats-optimisation-ia-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-equilibre-moins-effort-plus-resultats-optimisation-ia-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 37,
+  "source": "axion-ia-facturation-automatique-flux-ia-tva-zero-saisie-infographie.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-facturation-automatique-flux-ia-tva-zero-saisie-infographie",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 38,
+  "source": "axion-ia-flux-facturation-ia-zero-saisie-manuelle-infographie.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-flux-facturation-ia-zero-saisie-manuelle-infographie",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 39,
+  "source": "axion-ia-gain-productivite-45-pourcent-bureau-implementation-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-gain-productivite-45-pourcent-bureau-implementation-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 40,
+  "source": "axion-ia-generation-contenu-6-formats-4-minutes-brief-ia-infographie.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-generation-contenu-6-formats-4-minutes-brief-ia-infographie",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 41,
+  "source": "axion-ia-gestion-factures-comptabilite-capture-extraction-validation-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-gestion-factures-comptabilite-capture-extraction-validation-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 42,
+  "source": "axion-ia-gestion-stocks-boucherie-zero-rupture-zero-surstock-ia-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-gestion-stocks-boucherie-zero-rupture-zero-surstock-ia-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 43,
+  "source": "axion-ia-gestion-stocks-prevision-j45-commandes-automatiques-ia-infographie.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-gestion-stocks-prevision-j45-commandes-automatiques-ia-infographie",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 44,
+  "source": "axion-ia-inondation-emails-mur-brisant-automatisation-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-inondation-emails-mur-brisant-automatisation-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 45,
+  "source": "axion-ia-marches-publics-score-opportunites-dossier-prepare-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-marches-publics-score-opportunites-dossier-prepare-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 46,
+  "source": "axion-ia-meilleur-candidat-etoile-or-parmi-200-cv-3-min-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-meilleur-candidat-etoile-or-parmi-200-cv-3-min-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 47,
+  "source": "axion-ia-onboarding-rh-j-5-j90-90-pourcent-automatise-collaborateur-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-onboarding-rh-j-5-j90-90-pourcent-automatise-collaborateur-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 48,
+  "source": "axion-ia-optimisation-vente-viande-boucherie-flux-ia-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-optimisation-vente-viande-boucherie-flux-ia-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 49,
+  "source": "axion-ia-personnalisation-temps-reel-visiteurs-experience-unique-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-personnalisation-temps-reel-visiteurs-experience-unique-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 50,
+  "source": "axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 51,
+  "source": "axion-ia-pipeline-marketing-lead-qualifie-scoring-crm-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-pipeline-marketing-lead-qualifie-scoring-crm-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 52,
+  "source": "axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 53,
+  "source": "axion-ia-prevision-tresorerie-90-jours-zero-saisie-zero-surprise-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-prevision-tresorerie-90-jours-zero-saisie-zero-surprise-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 54,
+  "source": "axion-ia-rapport-performance-hebdomadaire-automatique-lundi-matin-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-rapport-performance-hebdomadaire-automatique-lundi-matin-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 55,
+  "source": "axion-ia-recrutement-ia-8-semaines-a-3-semaines-80-pourcent-automatise-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-recrutement-ia-8-semaines-a-3-semaines-80-pourcent-automatise-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 56,
+  "source": "axion-ia-reduction-dechets-viande-300-a-47-euros-reassort-ia-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-reduction-dechets-viande-300-a-47-euros-reassort-ia-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 57,
+  "source": "axion-ia-relance-clients-boutique-sms-anniversaire-fidelisation-ia-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-relance-clients-boutique-sms-anniversaire-fidelisation-ia-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 58,
+  "source": "axion-ia-relance-clients-nuit-virement-3200-euros-ia-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-relance-clients-nuit-virement-3200-euros-ia-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 59,
+  "source": "axion-ia-relance-clients-zero-manuel-100-pourcent-automatique-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-relance-clients-zero-manuel-100-pourcent-automatique-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 60,
+  "source": "axion-ia-reporting-executif-ca-1248000-euros-marge-leads-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-reporting-executif-ca-1248000-euros-marge-leads-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 61,
+  "source": "axion-ia-reunion-1-heure-compte-rendu-4-minutes-ia-sablier-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-reunion-1-heure-compte-rendu-4-minutes-ia-sablier-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 62,
+  "source": "axion-ia-reunion-chaos-ia-clarifie-contexte-decision-actions-affiche.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-reunion-chaos-ia-clarifie-contexte-decision-actions-affiche",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 63,
+  "source": "axion-ia-reunion-compte-rendu-ia-vue-aerienne-table-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-reunion-compte-rendu-ia-vue-aerienne-table-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 64,
+  "source": "axion-ia-selection-cv-200-candidatures-3-minutes-entonnoir-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-selection-cv-200-candidatures-3-minutes-entonnoir-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 65,
+  "source": "axion-ia-selection-meilleur-candidat-pyramide-cv-ia-affiche.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-selection-meilleur-candidat-pyramide-cv-ia-affiche",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 66,
+  "source": "axion-ia-support-client-reclamation-reponse-ia-34-secondes-affiche.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-support-client-reclamation-reponse-ia-34-secondes-affiche",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 67,
+  "source": "axion-ia-tableau-bord-boucherie-zero-invendu-zero-rupture-zero-calcul-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-tableau-bord-boucherie-zero-invendu-zero-rupture-zero-calcul-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 68,
+  "source": "axion-ia-tampon-validation-encre-terracotta-automatisation-documents-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-tampon-validation-encre-terracotta-automatisation-documents-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 69,
+  "source": "axion-ia-traitement-courrier-intelligent-ia-3h-a-20min-affiche.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-traitement-courrier-intelligent-ia-3h-a-20min-affiche",
+  "type": "photo",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 70,
+  "source": "axion-ia-traitement-reclamations-312-semaine-4-minutes-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-traitement-reclamations-312-semaine-4-minutes-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 71,
+  "source": "axion-ia-transcription-audio-flux-donnees-ia-automatique-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-transcription-audio-flux-donnees-ia-automatique-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 72,
+  "source": "axion-ia-transcription-reunion-microphone-60min-a-5min-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-transcription-reunion-microphone-60min-a-5min-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 73,
+  "source": "axion-ia-transformation-chaos-devis-rentabilite-croissance-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-transformation-chaos-devis-rentabilite-croissance-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 74,
+  "source": "axion-ia-tri-emails-847-recus-1-compte-ia-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-tri-emails-847-recus-1-compte-ia-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 75,
+  "source": "axion-ia-tri-emails-inbox-3h-a-20min-entonnoir-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-tri-emails-inbox-3h-a-20min-entonnoir-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 76,
+  "source": "axion-ia-validation-document-tampon-comptabilite-controle-ia-carre.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-validation-document-tampon-comptabilite-controle-ia-carre",
+  "type": "carre",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 77,
+  "source": "axion-ia-veille-concurrentielle-847-sources-12-signaux-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-veille-concurrentielle-847-sources-12-signaux-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 78,
+  "source": "axion-ia-veille-marches-publics-47000-sources-opportunites-ia-banniere.png",
+  "sourceFolder": "Axion-IA_Visuels_Banni├¿res_20052026",
+  "targetSlug": "axion-ia-veille-marches-publics-47000-sources-opportunites-ia-banniere",
+  "type": "banniere",
+  "category": "banniere",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 79,
+  "source": "axion-ia-cas-concret-analyse-contrats-clauses-risques-ia-rapide-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-onboarding-client-automatique-post-signature-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 80,
+  "source": "axion-ia-cas-concret-approvisionnements-fournisseurs-ia-zero-rupture-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-approvisionnements-fournisseurs-ia-zero-rupture-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 81,
+  "source": "axion-ia-cas-concret-comptes-rendus-reunions-automatiques-sans-effort-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-comptes-rendus-reunions-automatiques-sans-effort-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 82,
+  "source": "axion-ia-cas-concret-emails-inbox-zero-tri-automatique-priorites-ia-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-emails-inbox-zero-tri-automatique-priorites-ia-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 83,
+  "source": "axion-ia-cas-concret-facturation-automatique-zero-saisie-manuelle-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-facturation-automatique-zero-saisie-manuelle-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 84,
+  "source": "axion-ia-cas-concret-generation-contenu-reseaux-sociaux-ia-batch-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-veille-concurrentielle-digest-quotidien-alertes-marche-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 85,
+  "source": "axion-ia-cas-concret-gestion-stocks-prevision-commandes-automatiques-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-gestion-stocks-prevision-commandes-automatiques-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 86,
+  "source": "axion-ia-cas-concret-impayes-relance-clients-automatique-argent-recupere-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-impayes-relance-clients-automatique-argent-recupere-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 87,
+  "source": "axion-ia-cas-concret-onboarding-rh-collaborateur-parcours-automatise-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-onboarding-rh-collaborateur-parcours-automatise-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 88,
+  "source": "axion-ia-cas-concret-pipeline-commercial-leads-qualifies-crm-ia-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-pipeline-commercial-leads-qualifies-crm-ia-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 89,
+  "source": "axion-ia-cas-concret-recrutement-cv-tri-automatique-candidats-ia-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-recrutement-cv-tri-automatique-candidats-ia-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 90,
+  "source": "axion-ia-cas-concret-reporting-performance-hebdomadaire-automatique-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-reporting-performance-hebdomadaire-automatique-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 91,
+  "source": "axion-ia-cas-concret-soirees-admin-devis-factures-automatiques-pme-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-soirees-admin-devis-factures-automatiques-pme-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 92,
+  "source": "axion-ia-cas-concret-support-client-reponses-automatiques-ia-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-support-client-reponses-automatiques-ia-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 93,
+  "source": "axion-ia-cas-concret-traitement-reclamations-clients-ia-rapid-resolution-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-traitement-reclamations-clients-ia-rapid-resolution-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 94,
+  "source": "axion-ia-cas-concret-veille-concurrentielle-ia-signaux-marche-carre.png",
+  "sourceFolder": "Images cas concrets",
+  "targetSlug": "axion-ia-cas-concret-veille-concurrentielle-ia-signaux-marche-carre",
+  "type": "carre",
+  "category": "cas-concret",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 95,
+  "source": "axion-ia-photo-atelier-ia-groupe-collaborateurs-ordinateurs-ecrans.png",
+  "sourceFolder": "Photos_Formations",
+  "targetSlug": "axion-ia-photo-atelier-ia-groupe-collaborateurs-ordinateurs-ecrans",
+  "type": "photo",
+  "category": "formation-photo",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 96,
+  "source": "axion-ia-photo-celebration-formation-ia-reussie-equipe-satisfaite.png",
+  "sourceFolder": "Photos_Formations",
+  "targetSlug": "axion-ia-photo-celebration-formation-ia-reussie-equipe-satisfaite",
+  "type": "photo",
+  "category": "formation-photo",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 97,
+  "source": "axion-ia-photo-formateur-ia-presentation-tableau-equipe-entreprise.png",
+  "sourceFolder": "Photos_Formations",
+  "targetSlug": "axion-ia-photo-formateur-ia-presentation-tableau-equipe-entreprise",
+  "type": "photo",
+  "category": "formation-photo",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 98,
+  "source": "axion-ia-photo-formation-ia-equipe-mixte-exercices-pratiques-resultat.png",
+  "sourceFolder": "Photos_Formations",
+  "targetSlug": "axion-ia-photo-formation-ia-equipe-mixte-exercices-pratiques-resultat",
+  "type": "photo",
+  "category": "formation-photo",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 99,
+  "source": "axion-ia-photo-formation-ia-salle-conference-participants-eclairage.png",
+  "sourceFolder": "Photos_Formations",
+  "targetSlug": "axion-ia-photo-formation-ia-salle-conference-participants-eclairage",
+  "type": "photo",
+  "category": "formation-photo",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 100,
+  "source": "axion-ia-courbe-adoption-ia-collaborateurs-montee-competences.png",
+  "sourceFolder": "Graphiques et courbes",
+  "targetSlug": "axion-ia-courbe-adoption-ia-collaborateurs-montee-competences",
+  "type": "photo",
+  "category": "graphique",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 101,
+  "source": "axion-ia-courbe-productivite-avant-apres-automatisation-ia-entreprise.png",
+  "sourceFolder": "Graphiques et courbes",
+  "targetSlug": "axion-ia-courbe-productivite-avant-apres-automatisation-ia-entreprise",
+  "type": "photo",
+  "category": "graphique",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 102,
+  "source": "axion-ia-graphique-gain-temps-heures-economisees-semaine-ia.png",
+  "sourceFolder": "Graphiques et courbes",
+  "targetSlug": "axion-ia-graphique-gain-temps-heures-economisees-semaine-ia",
+  "type": "photo",
+  "category": "graphique",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 103,
+  "source": "axion-ia-graphique-reduction-couts-operationnels-ia-12-mois.png",
+  "sourceFolder": "Graphiques et courbes",
+  "targetSlug": "axion-ia-graphique-reduction-couts-operationnels-ia-12-mois",
+  "type": "photo",
+  "category": "graphique",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 104,
+  "source": "axion-ia-graphique-roi-implementation-ia-pme-courbe-croissance.png",
+  "sourceFolder": "Graphiques et courbes",
+  "targetSlug": "axion-ia-graphique-roi-implementation-ia-pme-courbe-croissance",
+  "type": "photo",
+  "category": "graphique",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 105,
+  "source": "axion-ia-automatisation-taches-repetitives-gain-productivite-pme.png",
+  "sourceFolder": "Automatisations et impl#U00e9mentations",
+  "targetSlug": "axion-ia-automatisation-taches-repetitives-gain-productivite-pme",
+  "type": "photo",
+  "category": "implementations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 106,
+  "source": "axion-ia-connexion-outils-crm-erp-ia-automatisation-donnees.png",
+  "sourceFolder": "Automatisations et impl#U00e9mentations",
+  "targetSlug": "axion-ia-connexion-outils-crm-erp-ia-automatisation-donnees",
+  "type": "photo",
+  "category": "implementations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 107,
+  "source": "axion-ia-deploiement-ia-processus-metier-integration-systeme-existant.png",
+  "sourceFolder": "Automatisations et impl#U00e9mentations",
+  "targetSlug": "axion-ia-deploiement-ia-processus-metier-integration-systeme-existant",
+  "type": "photo",
+  "category": "implementations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 108,
+  "source": "axion-ia-implementation-automatisation-workflow-entreprise-schema.png",
+  "sourceFolder": "Automatisations et impl#U00e9mentations",
+  "targetSlug": "axion-ia-implementation-automatisation-workflow-entreprise-schema",
+  "type": "photo",
+  "category": "implementations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 109,
+  "source": "axion-ia-atelier-ia-equipe-commerciale-crm-automatisation-leads.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-atelier-ia-equipe-commerciale-crm-automatisation-leads",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 110,
+  "source": "axion-ia-atelier-pratique-ia-equipe-exercices-mains-dans-la-masse.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-atelier-pratique-ia-equipe-exercices-mains-dans-la-masse",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 111,
+  "source": "axion-ia-conference-ia-dirigeants-pme-transformation-numerique.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-conference-ia-dirigeants-pme-transformation-numerique",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 112,
+  "source": "axion-ia-formation-ia-cas-pratiques-metiers-secteurs-specifiques.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-ia-cas-pratiques-metiers-secteurs-specifiques",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 113,
+  "source": "axion-ia-formation-ia-certification-collaborateurs-validation-competences.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-ia-certification-collaborateurs-validation-competences",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 114,
+  "source": "axion-ia-formation-ia-entreprises-programme-catalogue-offre.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-ia-entreprises-programme-catalogue-offre",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 115,
+  "source": "axion-ia-formation-ia-entreprises-vue-isometrique-participants-carre.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-ia-entreprises-vue-isometrique-participants-carre",
+  "type": "carre",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 116,
+  "source": "axion-ia-formation-ia-groupe-collaborateurs-salle-aprentissage-carre.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-ia-groupe-collaborateurs-salle-aprentissage-carre",
+  "type": "carre",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 117,
+  "source": "axion-ia-formation-ia-intelligence-collective-equipe-innovation-carre.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-ia-intelligence-collective-equipe-innovation-carre",
+  "type": "carre",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 118,
+  "source": "axion-ia-formation-ia-resultats-mesurables-avant-apres-application-carre.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-ia-resultats-mesurables-avant-apres-application-carre",
+  "type": "carre",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 119,
+  "source": "axion-ia-formation-prompt-engineering-equipe-pme-salle-informatique.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-prompt-engineering-equipe-pme-salle-informatique",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 120,
+  "source": "axion-ia-formation-une-journee-intelligence-artificielle-entreprises-pme.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-formation-une-journee-intelligence-artificielle-entreprises-pme",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 121,
+  "source": "axion-ia-intervention-ia-entreprise-demi-journee-mise-en-pratique-immediate.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-intervention-ia-entreprise-demi-journee-mise-en-pratique-immediate",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 122,
+  "source": "axion-ia-intervention-ia-formateur-tableau-blanc-schema-pedagogique.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-intervention-ia-formateur-tableau-blanc-schema-pedagogique",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 123,
+  "source": "axion-ia-intervention-une-journee-ia-sur-site-entreprise-equipe.png",
+  "sourceFolder": "Formations & Interventions",
+  "targetSlug": "axion-ia-intervention-une-journee-ia-sur-site-entreprise-equipe",
+  "type": "photo",
+  "category": "interventions_formations",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 124,
+  "source": "axion-ia-logo-blanc-fond-transparent-haute-resolution-site-web.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-blanc-fond-transparent-haute-resolution-site-web",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 125,
+  "source": "axion-ia-logo-blanc-transparent-500px-email-web-compact.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-blanc-transparent-500px-email-web-compact",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 126,
+  "source": "axion-ia-logo-format-cercle-avatar-profil-linkedin-reseaux.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-format-cercle-avatar-profil-linkedin-reseaux",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 127,
+  "source": "axion-ia-logo-full-transparent-toutes-couleurs-fond-versatile.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-full-transparent-toutes-couleurs-fond-versatile",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 128,
+  "source": "axion-ia-logo-icone-carre-sans-fond-500px-reseaux-sociaux.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-icone-carre-sans-fond-500px-reseaux-sociaux",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 129,
+  "source": "axion-ia-logo-icone-carre-sans-fond-haute-definition.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-icone-carre-sans-fond-haute-definition",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 130,
+  "source": "axion-ia-logo-officiel-optimise-web-500kb-usage-general.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-officiel-optimise-web-500kb-usage-general",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 131,
+  "source": "axion-ia-logo-plat-couleur-fond-blanc-usage-standard-large.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-plat-couleur-fond-blanc-usage-standard-large",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 132,
+  "source": "axion-ia-logo-plat-full-transparent-fond-neutre-presentation.png",
+  "sourceFolder": "Logos",
+  "targetSlug": "axion-ia-logo-plat-full-transparent-fond-neutre-presentation",
+  "type": "photo",
+  "category": "logos",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 133,
+  "source": "axion-ia-catalogue-services-ia-b2b-consulting-formation-france-banniere.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-catalogue-services-ia-b2b-consulting-formation-france-banniere",
+  "type": "banniere",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 134,
+  "source": "axion-ia-equipe-experts-ia-accompagnement-360-transformation-digitale-carre.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-equipe-experts-ia-accompagnement-360-transformation-digitale-carre",
+  "type": "carre",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 135,
+  "source": "axion-ia-expertise-sectorielle-ia-industrie-commerce-services-france.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-expertise-sectorielle-ia-industrie-commerce-services-france",
+  "type": "photo",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 136,
+  "source": "axion-ia-garantie-resultats-satisfaction-accompagnement-ia-carre.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-garantie-resultats-satisfaction-accompagnement-ia-carre",
+  "type": "carre",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 137,
+  "source": "axion-ia-methode-intervention-sur-mesure-objectifs-mesurables-banniere.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-methode-intervention-sur-mesure-objectifs-mesurables-banniere",
+  "type": "banniere",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 138,
+  "source": "axion-ia-next-step-demarrer-projet-ia-entreprise-etapes-simples.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-next-step-demarrer-projet-ia-entreprise-etapes-simples",
+  "type": "photo",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 139,
+  "source": "axion-ia-offre-complete-audit-formation-implementation-coaching-ia.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-offre-complete-audit-formation-implementation-coaching-ia",
+  "type": "photo",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 140,
+  "source": "axion-ia-parcours-client-diagnostic-deploiement-suivi-ia-etapes.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-parcours-client-diagnostic-deploiement-suivi-ia-etapes",
+  "type": "photo",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 141,
+  "source": "axion-ia-prise-de-contact-decouverte-gratuite-30-min-visio.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-prise-de-contact-decouverte-gratuite-30-min-visio",
+  "type": "photo",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 142,
+  "source": "axion-ia-proposition-valeur-5-piliers-services-ia-pme-entreprises.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-proposition-valeur-5-piliers-services-ia-pme-entreprises",
+  "type": "photo",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 143,
+  "source": "axion-ia-resultats-clients-temoignages-cas-concrets-pme-carre.png",
+  "sourceFolder": "Tous types de propositions",
+  "targetSlug": "axion-ia-resultats-clients-temoignages-cas-concrets-pme-carre",
+  "type": "carre",
+  "category": "proposition",
+  "city": null,
+  "persona": null
+ },
+ {
+  "id": 144,
+  "source": "axion-ia-accompagnement-personnalise-dirigeant-decisions-ia.png",
+  "sourceFolder": "1 TO 1/Dirigeant 1 TO 1",
+  "targetSlug": "axion-ia-accompagnement-personnalise-dirigeant-decisions-ia",
+  "type": "photo",
+  "category": "un-a-un",
+  "city": null,
+  "persona": "dirigeant"
+ },
+ {
+  "id": 145,
+  "source": "axion-ia-bilan-coaching-dirigeant-ia-transformation-reussie-portrait.png",
+  "sourceFolder": "1 TO 1/Dirigeant 1 TO 1",
+  "targetSlug": "axion-ia-bilan-coaching-dirigeant-ia-transformation-reussie-portrait",
+  "type": "photo",
+  "category": "un-a-un",
+  "city": null,
+  "persona": "dirigeant"
+ },
+ {
+  "id": 146,
+  "source": "axion-ia-coaching-1to1-ceo-vision-ia-feuille-route-individuelle.png",
+  "sourceFolder": "1 TO 1/Dirigeant 1 TO 1",
+  "targetSlug": "axion-ia-coaching-1to1-ceo-vision-ia-feuille-route-individuelle",
+  "type": "photo",
+  "category": "un-a-un",
+  "city": null,
+  "persona": "dirigeant"
+ },
+ {
+  "id": 147,
+  "source": "axion-ia-coaching-1to1-collaborateur-formation-ia-individuelle.png",
+  "sourceFolder": "1 TO 1/Membre d'#U00e9quipe 1 TO 1",
+  "targetSlug": "axion-ia-coaching-1to1-collaborateur-formation-ia-individuelle",
+  "type": "photo",
+  "category": "un-a-un",
+  "city": null,
+  "persona": "equipe"
+ },
+ {
+  "id": 148,
+  "source": "axion-ia-formation-1to1-dirigeant-prompt-engineering-chatgpt.png",
+  "sourceFolder": "1 TO 1/Dirigeant 1 TO 1",
+  "targetSlug": "axion-ia-formation-1to1-dirigeant-prompt-engineering-chatgpt",
+  "type": "photo",
+  "category": "un-a-un",
+  "city": null,
+  "persona": "dirigeant"
+ },
+ {
+  "id": 149,
+  "source": "axion-ia-seance-coaching-ia-dirigeant-objectifs-mesurables-resultats.png",
+  "sourceFolder": "1 TO 1/Dirigeant 1 TO 1",
+  "targetSlug": "axion-ia-seance-coaching-ia-dirigeant-objectifs-mesurables-resultats",
+  "type": "photo",
+  "category": "un-a-un",
+  "city": null,
+  "persona": "dirigeant"
+ },
+ {
+  "id": 150,
+  "source": "axion-ia-session-individuelle-dirigeant-prise-en-main-outils-ia.png",
+  "sourceFolder": "1 TO 1/Dirigeant 1 TO 1",
+  "targetSlug": "axion-ia-session-individuelle-dirigeant-prise-en-main-outils-ia",
+  "type": "photo",
+  "category": "un-a-un",
+  "city": null,
+  "persona": "dirigeant"
+ },
+ {
+  "id": 151,
+  "source": "axion-ia-session-individuelle-employe-maitrise-outils-ia-quotidien.png",
+  "sourceFolder": "1 TO 1/Membre d'#U00e9quipe 1 TO 1",
+  "targetSlug": "axion-ia-session-individuelle-employe-maitrise-outils-ia-quotidien",
+  "type": "photo",
+  "category": "un-a-un",
+  "city": null,
+  "persona": "equipe"
+ },
+ {
+  "id": 152,
+  "source": "Paris/axion-ia-audit-ia-paris-pme-startups-grands-comptes-diagnostic.png",
+  "sourceFolder": "Villes",
+  "targetSlug": "axion-ia-audit-ia-paris-pme-startups-grands-comptes-diagnostic",
+  "type": "photo",
+  "category": "ville",
+  "city": "Paris",
+  "persona": null
+ },
+ {
+  "id": 153,
+  "source": "Lyon/axion-ia-consultant-ia-lyon-rhone-alpes-pme-formation-accompagnement.png",
+  "sourceFolder": "Villes",
+  "targetSlug": "axion-ia-consultant-ia-lyon-rhone-alpes-pme-formation-accompagnement",
+  "type": "photo",
+  "category": "ville",
+  "city": "Lyon",
+  "persona": null
+ },
+ {
+  "id": 154,
+  "source": "Paris/axion-ia-consultant-ia-paris-ile-de-france-pme-transformation-digitale.png",
+  "sourceFolder": "Villes",
+  "targetSlug": "axion-ia-consultant-ia-paris-ile-de-france-pme-transformation-digitale",
+  "type": "photo",
+  "category": "ville",
+  "city": "Paris",
+  "persona": null
+ },
+ {
+  "id": 155,
+  "source": "Paris/axion-ia-formation-ia-paris-equipe-entreprise-conseil-sur-mesure.png",
+  "sourceFolder": "Villes",
+  "targetSlug": "axion-ia-formation-ia-paris-equipe-entreprise-conseil-sur-mesure",
+  "type": "photo",
+  "category": "ville",
+  "city": "Paris",
+  "persona": null
+ },
+ {
+  "id": 156,
+  "source": "Paris/axion-ia-implementation-ia-paris-business-district-bureaux-entreprise.png",
+  "sourceFolder": "Villes",
+  "targetSlug": "axion-ia-implementation-ia-paris-business-district-bureaux-entreprise",
+  "type": "photo",
+  "category": "ville",
+  "city": "Paris",
+  "persona": null
+ },
+ {
+  "id": 157,
+  "source": "axion-ia-hero-ville-aix-en-provence-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-aix-en-provence-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "aix-en-provence",
+  "persona": null
+ },
+ {
+  "id": 158,
+  "source": "axion-ia-hero-ville-amiens-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-amiens-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "amiens",
+  "persona": null
+ },
+ {
+  "id": 159,
+  "source": "axion-ia-hero-ville-angers-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-angers-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "angers",
+  "persona": null
+ },
+ {
+  "id": 160,
+  "source": "axion-ia-hero-ville-annecy-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-annecy-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "annecy",
+  "persona": null
+ },
+ {
+  "id": 161,
+  "source": "axion-ia-hero-ville-argenteuil-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-argenteuil-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "argenteuil",
+  "persona": null
+ },
+ {
+  "id": 162,
+  "source": "axion-ia-hero-ville-asnieres-sur-seine-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-asnieres-sur-seine-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "asnieres-sur-seine",
+  "persona": null
+ },
+ {
+  "id": 163,
+  "source": "axion-ia-hero-ville-aubervilliers-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-aubervilliers-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "aubervilliers",
+  "persona": null
+ },
+ {
+  "id": 164,
+  "source": "axion-ia-hero-ville-aulnay-sous-bois-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-aulnay-sous-bois-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "aulnay-sous-bois",
+  "persona": null
+ },
+ {
+  "id": 165,
+  "source": "axion-ia-hero-ville-avignon-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-avignon-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "avignon",
+  "persona": null
+ },
+ {
+  "id": 166,
+  "source": "axion-ia-hero-ville-besancon-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-besancon-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "besancon",
+  "persona": null
+ },
+ {
+  "id": 167,
+  "source": "axion-ia-hero-ville-bordeaux-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-bordeaux-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "bordeaux",
+  "persona": null
+ },
+ {
+  "id": 168,
+  "source": "axion-ia-hero-ville-boulogne-billancourt-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-boulogne-billancourt-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "boulogne-billancourt",
+  "persona": null
+ },
+ {
+  "id": 169,
+  "source": "axion-ia-hero-ville-brest-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-brest-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "brest",
+  "persona": null
+ },
+ {
+  "id": 170,
+  "source": "axion-ia-hero-ville-caen-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-caen-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "caen",
+  "persona": null
+ },
+ {
+  "id": 171,
+  "source": "axion-ia-hero-ville-cannes-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-cannes-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "cannes",
+  "persona": null
+ },
+ {
+  "id": 172,
+  "source": "axion-ia-hero-ville-clermont-ferrand-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-clermont-ferrand-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "clermont-ferrand",
+  "persona": null
+ },
+ {
+  "id": 173,
+  "source": "axion-ia-hero-ville-colombes-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-colombes-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "colombes",
+  "persona": null
+ },
+ {
+  "id": 174,
+  "source": "axion-ia-hero-ville-courbevoie-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-courbevoie-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "courbevoie",
+  "persona": null
+ },
+ {
+  "id": 175,
+  "source": "axion-ia-hero-ville-creteil-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-creteil-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "creteil",
+  "persona": null
+ },
+ {
+  "id": 176,
+  "source": "axion-ia-hero-ville-dijon-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-dijon-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "dijon",
+  "persona": null
+ },
+ {
+  "id": 177,
+  "source": "axion-ia-hero-ville-dunkerque-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-dunkerque-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "dunkerque",
+  "persona": null
+ },
+ {
+  "id": 178,
+  "source": "axion-ia-hero-ville-grenoble-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-grenoble-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "grenoble",
+  "persona": null
+ },
+ {
+  "id": 179,
+  "source": "axion-ia-hero-ville-le-havre-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-le-havre-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "le-havre",
+  "persona": null
+ },
+ {
+  "id": 180,
+  "source": "axion-ia-hero-ville-le-mans-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-le-mans-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "le-mans",
+  "persona": null
+ },
+ {
+  "id": 181,
+  "source": "axion-ia-hero-ville-lille-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-lille-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "lille",
+  "persona": null
+ },
+ {
+  "id": 182,
+  "source": "axion-ia-hero-ville-limoges-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-limoges-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "limoges",
+  "persona": null
+ },
+ {
+  "id": 183,
+  "source": "axion-ia-hero-ville-lyon-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-lyon-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "lyon",
+  "persona": null
+ },
+ {
+  "id": 184,
+  "source": "axion-ia-hero-ville-marseille-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-marseille-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "marseille",
+  "persona": null
+ },
+ {
+  "id": 185,
+  "source": "axion-ia-hero-ville-metz-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-metz-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "metz",
+  "persona": null
+ },
+ {
+  "id": 186,
+  "source": "axion-ia-hero-ville-montelimar-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-montelimar-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "montelimar",
+  "persona": null
+ },
+ {
+  "id": 187,
+  "source": "axion-ia-hero-ville-montpellier-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-montpellier-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "montpellier",
+  "persona": null
+ },
+ {
+  "id": 188,
+  "source": "axion-ia-hero-ville-montreuil-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-montreuil-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "montreuil",
+  "persona": null
+ },
+ {
+  "id": 189,
+  "source": "axion-ia-hero-ville-mulhouse-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-mulhouse-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "mulhouse",
+  "persona": null
+ },
+ {
+  "id": 190,
+  "source": "axion-ia-hero-ville-nancy-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-nancy-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "nancy",
+  "persona": null
+ },
+ {
+  "id": 191,
+  "source": "axion-ia-hero-ville-nanterre-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-nanterre-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "nanterre",
+  "persona": null
+ },
+ {
+  "id": 192,
+  "source": "axion-ia-hero-ville-nantes-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-nantes-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "nantes",
+  "persona": null
+ },
+ {
+  "id": 193,
+  "source": "axion-ia-hero-ville-nice-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-nice-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "nice",
+  "persona": null
+ },
+ {
+  "id": 194,
+  "source": "axion-ia-hero-ville-nimes-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-nimes-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "nimes",
+  "persona": null
+ },
+ {
+  "id": 195,
+  "source": "axion-ia-hero-ville-orleans-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-orleans-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "orleans",
+  "persona": null
+ },
+ {
+  "id": 196,
+  "source": "axion-ia-hero-ville-paris-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-paris-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "paris",
+  "persona": null
+ },
+ {
+  "id": 197,
+  "source": "axion-ia-hero-ville-perpignan-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-perpignan-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "perpignan",
+  "persona": null
+ },
+ {
+  "id": 198,
+  "source": "axion-ia-hero-ville-poitiers-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-poitiers-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "poitiers",
+  "persona": null
+ },
+ {
+  "id": 199,
+  "source": "axion-ia-hero-ville-reims-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-reims-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "reims",
+  "persona": null
+ },
+ {
+  "id": 200,
+  "source": "axion-ia-hero-ville-rennes-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-rennes-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "rennes",
+  "persona": null
+ },
+ {
+  "id": 201,
+  "source": "axion-ia-hero-ville-romans-sur-isere-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-romans-sur-isere-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "romans-sur-isere",
+  "persona": null
+ },
+ {
+  "id": 202,
+  "source": "axion-ia-hero-ville-roubaix-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-roubaix-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "roubaix",
+  "persona": null
+ },
+ {
+  "id": 203,
+  "source": "axion-ia-hero-ville-rouen-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-rouen-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "rouen",
+  "persona": null
+ },
+ {
+  "id": 204,
+  "source": "axion-ia-hero-ville-rueil-malmaison-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-rueil-malmaison-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "rueil-malmaison",
+  "persona": null
+ },
+ {
+  "id": 205,
+  "source": "axion-ia-hero-ville-saint-chamond-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-saint-chamond-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "saint-chamond",
+  "persona": null
+ },
+ {
+  "id": 206,
+  "source": "axion-ia-hero-ville-saint-denis-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-saint-denis-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "saint-denis",
+  "persona": null
+ },
+ {
+  "id": 207,
+  "source": "axion-ia-hero-ville-saint-etienne-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-saint-etienne-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "saint-etienne",
+  "persona": null
+ },
+ {
+  "id": 208,
+  "source": "axion-ia-hero-ville-saint-marcellin-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-saint-marcellin-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "saint-marcellin",
+  "persona": null
+ },
+ {
+  "id": 209,
+  "source": "axion-ia-hero-ville-strasbourg-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-strasbourg-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "strasbourg",
+  "persona": null
+ },
+ {
+  "id": 210,
+  "source": "axion-ia-hero-ville-toulon-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-toulon-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "toulon",
+  "persona": null
+ },
+ {
+  "id": 211,
+  "source": "axion-ia-hero-ville-tourcoing-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-tourcoing-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "tourcoing",
+  "persona": null
+ },
+ {
+  "id": 212,
+  "source": "axion-ia-hero-ville-tours-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-tours-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "tours",
+  "persona": null
+ },
+ {
+  "id": 213,
+  "source": "axion-ia-hero-ville-versailles-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-versailles-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "versailles",
+  "persona": null
+ },
+ {
+  "id": 214,
+  "source": "axion-ia-hero-ville-villeurbanne-consultant-ia-formation-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-villeurbanne-consultant-ia-formation-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "villeurbanne",
+  "persona": null
+ },
+ {
+  "id": 215,
+  "source": "axion-ia-hero-ville-vitry-sur-seine-consultant-ia-pme.png",
+  "sourceFolder": "photo h#U00e9ro par ville",
+  "targetSlug": "axion-ia-hero-ville-vitry-sur-seine-consultant-ia-pme",
+  "type": "photo",
+  "category": "ville-hero",
+  "city": "vitry-sur-seine",
+  "persona": null
+ }
+]
