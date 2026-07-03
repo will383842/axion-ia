@@ -1,0 +1,118 @@
+name: Careers · Seed 10 offres Grenoble
+
+# Seed manuel des 10 offres tech/IA du siège de Grenoble en base PROD.
+# Modèle : content-gen-seed.yml (SSH Hetzner + docker exec container worker).
+#
+# Le container worker (Dockerfile.worker) n'embarque PAS scripts/ ni careers-gen/
+# (COPY src/ + prisma/ seulement) → on COPIE les fichiers de seed dans le container
+# via docker cp (depuis le checkout du runner), puis on exécute tsx.
+#
+# Idempotent : upsert par slug → re-run safe. N'affecte QUE les 10 slugs Grenoble.
+# Pré-requis : secrets HETZNER_SSH_KEY + COOLIFY_WORKER_APP_UUID. À lancer APRÈS
+# qu'un déploiement a mis à jour la DB (le seed écrit dans la même Postgres).
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (liste les fichiers, pas d'écriture DB)"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    name: Seed 10 offres Grenoble
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Secret HETZNER_SSH_KEY manquant."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
+
+      - name: Find axion-ia WORKER container
+        id: worker
+        env:
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
+            echo "::error::Secret COOLIFY_WORKER_APP_UUID manquant — le seed exige le container worker (src/+tsx)."
+            exit 1
+          fi
+          ROWS=$(ssh -o BatchMode=yes root@178.105.55.15 'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$ROWS" | awk -F'|' -v uuid="$COOLIFY_WORKER_APP_UUID" '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Container worker $COOLIFY_WORKER_APP_UUID introuvable."
+            echo "$ROWS"; exit 1
+          fi
+          echo "✓ Worker container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Copier les fichiers de seed dans le container
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          set -euo pipefail
+          # 1) scp les fichiers du runner vers le VPS
+          ssh -o BatchMode=yes root@178.105.55.15 'rm -rf /tmp/careers-seed && mkdir -p /tmp/careers-seed'
+          scp -o BatchMode=yes scripts/seed-careers-grenoble.ts root@178.105.55.15:/tmp/careers-seed/
+          scp -o BatchMode=yes careers_grenoble_input.json root@178.105.55.15:/tmp/careers-seed/
+          scp -o BatchMode=yes -r careers-gen root@178.105.55.15:/tmp/careers-seed/
+          # 2) docker cp du VPS vers le container worker (/app)
+          ssh -o BatchMode=yes root@178.105.55.15 "
+            set -e
+            docker exec '$WORKER' mkdir -p /app/scripts
+            docker cp /tmp/careers-seed/seed-careers-grenoble.ts '$WORKER':/app/scripts/seed-careers-grenoble.ts
+            docker cp /tmp/careers-seed/careers_grenoble_input.json '$WORKER':/app/careers_grenoble_input.json
+            docker cp /tmp/careers-seed/careers-gen '$WORKER':/app/careers-gen
+            rm -rf /tmp/careers-seed
+          "
+          echo "✓ Fichiers copiés dans le container worker."
+
+      - name: "[DRY RUN] Lister les fichiers dans le container"
+        if: inputs.dry_run == 'true'
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' sh -c 'ls -1 /app/careers-gen | grep -E \"(ingenieur|data|consultant|architecte|product|prompt)\" ; echo ---; cat /app/careers_grenoble_input.json | head -c 120'"
+
+      - name: Exécuter le seed (container worker)
+        if: inputs.dry_run != 'true'
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          echo "── Seed 10 offres Grenoble ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' sh -ec 'cd /app && node_modules/.bin/tsx scripts/seed-careers-grenoble.ts'" 2>&1
+          echo "── Seed terminé ──"
+
+      - name: Vérifier le nombre d'offres publiées
+        if: always()
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' node -e \
+            \"const{PrismaClient}=require('/app/prisma/generated/client');const p=new PrismaClient();
+            p.jobOffer.count({where:{status:'published',city:'Grenoble'}}).then(n=>{console.log('Offres publiées à Grenoble:',n);process.exit(0)}).catch(e=>{console.log('check skip:',e.message.slice(0,80));process.exit(0)})\"" 2>&1 || true
