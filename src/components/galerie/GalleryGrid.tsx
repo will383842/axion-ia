@@ -26,7 +26,7 @@ type Props = {
    */
   firstImagePriority?: boolean;
   /**
-   * `default` = grille hub /galerie (vignettes confortables, jusqu'à 5 col).
+   * `default` = grille hub /galerie (vignettes plus compactes, jusqu'à 6 col).
    * `compact` = teaser dense (vignettes plus petites, jusqu'à 6 col) — utilisé
    * dans l'espace presse où la galerie n'est qu'un aperçu. `sizes` réduit en
    * conséquence (perf : on ne sert pas une image surdimensionnée).
@@ -61,12 +61,12 @@ export function GalleryGrid({
   const isCompact = variant === "compact";
   const gridClassName = isCompact
     ? "grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
-    : "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5";
+    : "grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6";
   // `sizes` aligné sur la largeur réelle d'une colonne pour ne pas servir une
   // image trop lourde (budget Web Vitals). Compact = colonnes plus étroites.
   const imgSizes = isCompact
     ? "(min-width: 1280px) 16vw, (min-width: 1024px) 20vw, (min-width: 640px) 25vw, 33vw"
-    : "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw";
+    : "(min-width: 1280px) 16vw, (min-width: 1024px) 20vw, (min-width: 640px) 25vw, 33vw";
 
   if (images.length === 0) {
     return (
