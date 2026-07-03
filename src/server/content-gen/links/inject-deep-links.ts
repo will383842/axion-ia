@@ -14,6 +14,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { linkPhraseOutsideAnchors } from "./anchor-safe-link";
 
 export interface InjectDeepLinksInput {
   readonly currentSlug: string;
@@ -62,13 +63,12 @@ export function titlePhrases(title: string): string[] {
   return phrases;
 }
 
-/** Injecte la phrase comme lien interne si elle apparaît dans le body (hors balise/lien). */
+/**
+ * Injecte la phrase comme lien interne si elle apparaît dans le body, hors balise
+ * ET hors texte d'un `<a>…</a>` existant (anti ancres imbriquées — audit 2026-07-03).
+ */
 export function linkPhraseInBody(bodyHtml: string, phrase: string, href: string): string | null {
-  const esc = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  // Même garde que injectInternalLinks : pas dans un href, pas dans une balise.
-  const re = new RegExp(`(?<!href=[^>]{0,200})\\b(${esc})\\b(?![^<]*>)`, "i");
-  if (!re.test(bodyHtml)) return null;
-  return bodyHtml.replace(re, `<a href="${href}">$1</a>`);
+  return linkPhraseOutsideAnchors(bodyHtml, phrase, href);
 }
 
 export async function injectDeepArticleLinks(

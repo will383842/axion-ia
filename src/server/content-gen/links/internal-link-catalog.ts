@@ -10,6 +10,8 @@
  * V2 (Sprint S+7) : scan dynamique filesystem + DB Article.publishStatus=published.
  */
 
+import { linkPhraseOutsideAnchors } from "./anchor-safe-link";
+
 /** Entrée du catalogue : topic → URL canonique FR. */
 export interface InternalLinkEntry {
   readonly topic: string;
@@ -134,13 +136,11 @@ export function injectInternalLinks(bodyHtml: string, primaryKeyword: string): s
     for (const kw of link.keywords) {
       // Ne pas injecter si le lien existe déjà dans le texte
       if (result.includes(`href="${link.url}"`)) break;
-      // Regex : kw dans du texte (pas déjà dans un <a>)
-      const regex = new RegExp(
-        `(?<!href=[^>]{0,200})\\b(${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})\\b(?![^<]*>)`,
-        "i",
-      );
-      if (regex.test(result)) {
-        result = result.replace(regex, `<a href="${link.url}">$1</a>`);
+      // Lie kw uniquement dans le texte libre — jamais dans une balise ni dans
+      // le texte d'un <a>…</a> existant (anti ancres imbriquées, audit 2026-07-03).
+      const next = linkPhraseOutsideAnchors(result, kw, link.url);
+      if (next) {
+        result = next;
         injected++;
         break;
       }
