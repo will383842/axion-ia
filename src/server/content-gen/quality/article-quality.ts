@@ -49,6 +49,24 @@ export function articlePageSeoDefaults(
 }
 
 /**
+ * Net de sécurité titres (audit blog 2026-07-03) : borne un titre/metaTitle à
+ * `max` caractères (défaut 60 — au-delà Google tronque en SERP), en coupant sur
+ * une limite de mot et en retirant une ponctuation de séparation traînante
+ * (« : », « — », « ,… »). Ne touche PAS à la casse : les noms propres FR
+ * (« Aix-en-Provence », « Saint-Étienne ») doivent garder leurs majuscules ; la
+ * sentence case et l'absence d'année en dur sont pilotées par le prompt PLAN.
+ * SOURCE UNIQUE, à appeler après le parse du plan dans chaque générateur.
+ */
+export function clampTitle(title: string, max = 60): string {
+  const t = (title ?? "").trim();
+  if (t.length <= max) return t;
+  let cut = t.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  if (lastSpace > max * 0.5) cut = cut.slice(0, lastSpace);
+  return cut.replace(/[\s:—–,;.-]+$/u, "").trim();
+}
+
+/**
  * qualityScore = moyenne(SEO, lisibilité FITNESS). La lisibilité Flesch brute
  * pénalisait le contenu IA B2B (dense par nature) ; readabilityFitScore crédite
  * pleinement une densité professionnelle (cf. readability.ts). -30 si la

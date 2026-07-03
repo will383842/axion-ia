@@ -303,6 +303,72 @@ const nextConfig: NextConfig = {
         destination: "/:locale/audit/cible",
         permanent: true,
       },
+      // Nettoyage doublons/cannibalisation blog Grenoble 2026-07-03 (audit contenu).
+      // Le moteur avait généré, sur les mêmes mots-clés « X IA Grenoble », d'anciens
+      // brouillons courts (2–5 k car., juin) PUIS des versions longues (12–18 k, fin
+      // juin-juillet). Les deux restaient publiés → cannibalisation. On archive les
+      // courts (retirés du sitemap + IndexNow URL_DELETED en base) et on 301 chaque
+      // ancien slug vers la version canonique longue. Aucune chaîne : tout le cluster
+      // audit pointe directement vers `cabinet-audit-ia-grenoble-faq`.
+      {
+        source: "/:locale(fr|en)/blog/cours-ia-grenoble-entreprise",
+        destination: "/:locale/blog/cours-ia-grenoble-entreprise-faq",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/chatbot-ia-grenoble-entreprise",
+        destination: "/:locale/blog/chatbot-ia-grenoble-entreprise-guide",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/coaching-ia-dirigeants-grenoble",
+        destination: "/:locale/blog/coaching-ia-dirigeant-grenoble",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/formation-intelligence-artificielle-grenoble-pme",
+        destination: "/:locale/blog/formation-intelligence-artificielle-entreprise-grenoble",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/formation-prompt-engineering-grenoble",
+        destination: "/:locale/blog/formation-intelligence-artificielle-entreprise-grenoble",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/audit-ia-grenoble-guide",
+        destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/audit-intelligence-artificielle-grenoble-entreprise",
+        destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/audit-intelligence-artificielle-grenoble-entreprise-faq",
+        destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/mentor-ia-dirigeant-grenoble",
+        destination: "/:locale/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/blog/mentor-ia-dirigeant-auvergne-rhone-alpes",
+        destination: "/:locale/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble",
+        permanent: true,
+      },
+      // Slug cassé `glossaire/formation-ia-colombes` (contenait un `/` → 2 segments,
+      // ne matchait pas la route `/blog/[slug]` mono-segment → 404). Le slug est
+      // renommé en base vers `formation-ia-colombes` ; ce 301 couvre l'ancien chemin
+      // au cas où il aurait été lié/soumis quelque part.
+      {
+        source: "/:locale(fr|en)/blog/glossaire/formation-ia-colombes",
+        destination: "/:locale/blog/formation-ia-colombes",
+        permanent: true,
+      },
       // Refonte villes 2026-05-26 — les 10 750 pages `/implantations/[region]/[ville]/[verticale]`
       // ont été supprimées (risque doorway HCU 2024 + cannibalisation des pages services).
       // 5 redirects 301 par verticale vers la page service canonique correspondante.
