@@ -1,0 +1,114 @@
+name: Careers · Seed formateur (MAJ contenu multi-ville)
+
+# Met à jour en base PROD les 2 offres formateur (présentiel itinérant + distanciel)
+# avec le contenu enrichi (couverture régions/métropoles, anti-doorway).
+# Modèle : les workflows de seed prod existants (SSH Hetzner + docker exec worker).
+# Le container worker n'embarque pas scripts/ ni careers-gen/ → docker cp requis.
+# Idempotent : upsert des 2 slugs uniquement. À lancer après un déploiement.
+# Pré-requis : secrets HETZNER_SSH_KEY + COOLIFY_WORKER_APP_UUID.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (liste les fichiers, pas d'écriture DB)"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    name: Seed formateur (2 offres)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Secret HETZNER_SSH_KEY manquant."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
+
+      - name: Find axion-ia WORKER container
+        id: worker
+        env:
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
+            echo "::error::Secret COOLIFY_WORKER_APP_UUID manquant."
+            exit 1
+          fi
+          ROWS=$(ssh -o BatchMode=yes root@178.105.55.15 'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$ROWS" | awk -F'|' -v uuid="$COOLIFY_WORKER_APP_UUID" '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Container worker $COOLIFY_WORKER_APP_UUID introuvable."
+            echo "$ROWS"; exit 1
+          fi
+          echo "✓ Worker container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Copier les fichiers de seed dans le container
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          set -euo pipefail
+          ssh -o BatchMode=yes root@178.105.55.15 'rm -rf /tmp/formateur-seed && mkdir -p /tmp/formateur-seed'
+          scp -o BatchMode=yes scripts/seed-careers-formateur.ts root@178.105.55.15:/tmp/formateur-seed/
+          scp -o BatchMode=yes careers_seed_input.json root@178.105.55.15:/tmp/formateur-seed/
+          scp -o BatchMode=yes -r careers-gen root@178.105.55.15:/tmp/formateur-seed/
+          # Le container worker tourne en user non-root → mkdir via -u 0 (root).
+          # docker cp écrit via le daemon (root) ; fichiers 644 lisibles par worker.
+          ssh -o BatchMode=yes root@178.105.55.15 "
+            set -e
+            docker exec -u 0 '$WORKER' mkdir -p /app/scripts
+            docker cp /tmp/formateur-seed/seed-careers-formateur.ts '$WORKER':/app/scripts/seed-careers-formateur.ts
+            docker cp /tmp/formateur-seed/careers_seed_input.json '$WORKER':/app/careers_seed_input.json
+            docker cp /tmp/formateur-seed/careers-gen '$WORKER':/app/careers-gen
+            rm -rf /tmp/formateur-seed
+          "
+          echo "✓ Fichiers copiés."
+
+      - name: "[DRY RUN] Vérifier les fichiers"
+        if: inputs.dry_run == 'true'
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' sh -c 'ls -1 /app/careers-gen | grep formateur ; echo ---; head -c 100 /app/scripts/seed-careers-formateur.ts'"
+
+      - name: Exécuter le seed formateur (container worker)
+        if: inputs.dry_run != 'true'
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          echo "── Seed formateur (2 offres) ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' sh -ec 'cd /app && node_modules/.bin/tsx scripts/seed-careers-formateur.ts'" 2>&1
+          echo "── Seed terminé ──"
+
+      - name: Vérifier les offres formateur publiées
+        if: always()
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' node -e \
+            \"const{PrismaClient}=require('/app/prisma/generated/client');const p=new PrismaClient();
+            p.jobOffer.count({where:{status:'published',slug:{startsWith:'formateur-ia-'}}}).then(n=>{console.log('Offres formateur publiées:',n);process.exit(0)}).catch(e=>{console.log('check skip:',e.message.slice(0,80));process.exit(0)})\"" 2>&1 || true
