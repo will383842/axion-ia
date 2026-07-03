@@ -1,9 +1,9 @@
 /**
  * SSOT — Photos héro sectorielles (Unsplash, licence gratuite).
  *
- * Sourcées via l'API Unsplash (provider `content-gen/providers/unsplash.ts`),
+ * Sourcées via l'API Unsplash (intégration Unsplash interne du projet),
  * téléchargées en local (`/public/illustrations/secteurs/{slug}.avif`, 1600×1000)
- * → 0 hotlink externe. Conformité CGU (docs/content-gen/UNSPLASH-COMPLIANCE.md) :
+ * → 0 hotlink externe. Conformité CGU Unsplash :
  *   - licence gratuite uniquement (filtre premium/paid à la sélection)
  *   - endpoint `/photos/:id/download` déclenché avant usage (CGU API §6)
  *   - **attribution photographe rendue** sur la page (CGU API §9) — cf. le
