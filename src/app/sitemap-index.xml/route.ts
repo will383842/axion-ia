@@ -58,6 +58,10 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // Image Sitemap — services (73 images marketing) + villes France (2 157 communes).
   // image-bank-complet audit 2026-05-20.
   "/sitemap-images-services.xml",
+  // Image Sitemap — visuels d'articles de blog (Article.featuredImage), tier-1.
+  // Audit maillage/indexation 2026-07-03 : seul manque images restant (les héros
+  // d'articles n'étaient annoncés dans aucun sitemap). Cf. `app/sitemap-images-blog.xml`.
+  "/sitemap-images-blog.xml",
   "/sitemap-images-villes-t1.xml",
   "/sitemap-images-villes-t2.xml",
   "/sitemap-images-villes-t3-t4.xml",
@@ -196,7 +200,10 @@ export async function GET(): Promise<Response> {
         ? lastmods.news
         : path === "/sitemap-knowledge.xml"
           ? lastmods.knowledge
-          : lastmods.fallback;
+          : // Images blog : suivent les articles → max(updatedAt) blog (fraîcheur réelle).
+            path === "/sitemap-images-blog.xml"
+            ? lastmods.blog
+            : lastmods.fallback;
     return `  <sitemap>
     <loc>${SITE_URL}${path}</loc>
     <lastmod>${lm}</lastmod>
