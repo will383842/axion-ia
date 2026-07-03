@@ -77,9 +77,12 @@ jobs:
           scp -o BatchMode=yes careers_grenoble_input.json root@178.105.55.15:/tmp/careers-seed/
           scp -o BatchMode=yes -r careers-gen root@178.105.55.15:/tmp/careers-seed/
           # 2) docker cp du VPS vers le container worker (/app)
+          # NB: le container worker tourne en user non-root → mkdir via -u 0 (root).
+          # Les `docker cp` écrivent via le daemon (root) donc OK ; les fichiers
+          # copiés (644) restent lisibles par l'user worker qui exécute le seed.
           ssh -o BatchMode=yes root@178.105.55.15 "
             set -e
-            docker exec '$WORKER' mkdir -p /app/scripts
+            docker exec -u 0 '$WORKER' mkdir -p /app/scripts
             docker cp /tmp/careers-seed/seed-careers-grenoble.ts '$WORKER':/app/scripts/seed-careers-grenoble.ts
             docker cp /tmp/careers-seed/careers_grenoble_input.json '$WORKER':/app/careers_grenoble_input.json
             docker cp /tmp/careers-seed/careers-gen '$WORKER':/app/careers-gen
