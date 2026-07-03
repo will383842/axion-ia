@@ -14,6 +14,67 @@ export const CAREERS_HERO: CareerImage = {
 };
 
 export const CAREERS_IMAGES: Record<string, CareerImage> = {
+  // Postes tech/IA Grenoble (2026-07) — images Unsplash par métier (crédit photographe, CGU).
+  "ingenieur-machine-learning": {
+    url: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxtYWNoaW5lJTIwbGVhcm5pbmclMjBlbmdpbmVlciUyMGNvbXB1dGVyJTIwc2NyZWVufGVufDF8MHx8fDE3ODMwOTY3NTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "laptop screen displaying colorful code",
+    byName: "Mohammad Rahmani",
+    byUrl: "https://unsplash.com/@afgprogrammer",
+  },
+  "data-engineer": {
+    url: "https://images.unsplash.com/photo-1695668548342-c0c1ad479aee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxkYXRhJTIwZW5naW5lZXIlMjBzZXJ2ZXIlMjBwaXBlbGluZXxlbnwxfDB8fHwxNzgzMDk2NzUxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "a rack of servers in a server room",
+    byName: "Kevin Ache",
+    byUrl: "https://unsplash.com/@kevinache",
+  },
+  "data-scientist": {
+    url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxkYXRhJTIwc2NpZW5jZSUyMGFuYWx5dGljcyUyMGNoYXJ0cyUyMGxhcHRvcHxlbnwxfDB8fHwxNzgzMDk2NzUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "graphs of performance analytics on a laptop screen",
+    byName: "Luke Chesser",
+    byUrl: "https://unsplash.com/@lukechesser",
+  },
+  "consultant-ia-generative": {
+    url: "https://images.unsplash.com/photo-1690378820474-b468b8ee64d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxhaSUyMGNvbnN1bHRhbnQlMjBtZWV0aW5nJTIwbGFwdG9wJTIwb2ZmaWNlfGVufDF8MHx8fDE3ODMwOTY3NTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "a group of people sitting around a table with laptops",
+    byName: "Lyubomyr Reverchuk",
+    byUrl: "https://unsplash.com/@lreverchuk",
+  },
+  "ingenieur-mlops": {
+    url: "https://images.unsplash.com/photo-1667372335936-3dc4ff716017?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxkZXZvcHMlMjBhdXRvbWF0aW9uJTIwbW9uaXRvcmluZyUyMHNlcnZlcnxlbnwxfDB8fHwxNzgzMDk2NzUzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "serveurs et automatisation en salle machine",
+    byName: "Growtika",
+    byUrl: "https://unsplash.com/@growtika",
+  },
+  "ingenieur-rag-llm": {
+    url: "https://images.unsplash.com/photo-1674027444485-cec3da58eef4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxhcnRpZmljaWFsJTIwaW50ZWxsaWdlbmNlJTIwbmV1cmFsJTIwbmV0d29yayUyMGNvZGV8ZW58MXwwfHx8MTc4MzA5Njc1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "réseau de neurones abstrait, sphère de points connectés",
+    byName: "Growtika",
+    byUrl: "https://unsplash.com/@growtika",
+  },
+  "product-manager-ia": {
+    url: "https://images.unsplash.com/photo-1542626991-cbc4e32524cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxwcm9kdWN0JTIwbWFuYWdlciUyMHRlYW0lMjByb2FkbWFwJTIwcGxhbm5pbmd8ZW58MXwwfHx8MTc4MzA5Njc1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "notes autocollantes sur un tableau de planification",
+    byName: "Jo Szczepanska",
+    byUrl: "https://unsplash.com/@joszczepanska",
+  },
+  "architecte-cloud-ia": {
+    url: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxjbG91ZCUyMGRhdGElMjBjZW50ZXIlMjBhcmNoaXRlY3R1cmUlMjBzZXJ2ZXJzfGVufDF8MHx8fDE3ODMwOTY3NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "câblage réseau d'un centre de données",
+    byName: "Taylor Vick",
+    byUrl: "https://unsplash.com/@tvick",
+  },
+  "consultant-data-strategie": {
+    url: "https://images.unsplash.com/photo-1529119368496-2dfda6ec2804?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHN0cmF0ZWd5JTIwZGF0YSUyMG1lZXRpbmclMjB3aGl0ZWJvYXJkfGVufDF8MHx8fDE3ODMwOTY3NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "atelier de stratégie devant un tableau blanc",
+    byName: "Startaê Team",
+    byUrl: "https://unsplash.com/@startaeteam",
+  },
+  "prompt-engineer": {
+    url: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxkZXZlbG9wZXIlMjBjb2RpbmclMjBhaSUyMGNoYXQlMjBsYXB0b3B8ZW58MXwwfHx8MTc4MzA5Njc1N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "MacBook Pro affichant du code de programmation",
+    byName: "Arnold Francisca",
+    byUrl: "https://unsplash.com/@clark_fransa",
+  },
   "business-developer-ia": {
     url: "https://images.unsplash.com/photo-1549923746-c502d488b3ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMG1lZXRpbmclMjBoYW5kc2hha2UlMjBvZmZpY2V8ZW58MXwwfHx8MTc4MTAwODMwN3ww&ixlib=rb-4.1.0&q=80&w=1080",
     alt: "two men facing each other while shake hands and smiling",
