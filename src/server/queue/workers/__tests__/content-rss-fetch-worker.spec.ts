@@ -190,31 +190,33 @@ describe("content-rss-fetch-worker — Sprint S+5 P2-10 sub-agent C", () => {
     });
     ssrfFetchMock.mockResolvedValue({ ok: true, status: 200, text: async () => "<rss>...</rss>" });
     const H = 60 * 60 * 1000;
+    // Titres IA-pertinents : le filtre thématique (flux généraliste) laisse passer,
+    // le test isole ainsi la logique cap + fraîcheur.
     parseFeedMock.mockReturnValue([
       {
         id: "g1",
-        title: "Plus récent",
+        title: "IA — Plus récent",
         link: "https://x/1",
         summary: "s",
         published: new Date(Date.now() - 1 * H),
       },
       {
         id: "g2",
-        title: "Récent",
+        title: "IA — Récent",
         link: "https://x/2",
         summary: "s",
         published: new Date(Date.now() - 5 * H),
       },
       {
         id: "g3",
-        title: "Moins récent",
+        title: "IA — Moins récent",
         link: "https://x/3",
         summary: "s",
         published: new Date(Date.now() - 20 * H),
       },
       {
         id: "g4",
-        title: "Périmé",
+        title: "IA — Périmé",
         link: "https://x/4",
         summary: "s",
         published: new Date(Date.now() - 10 * 24 * H),
@@ -232,8 +234,8 @@ describe("content-rss-fetch-worker — Sprint S+5 P2-10 sub-agent C", () => {
       (c) => (c[0] as { data: { inputPayload: { rssTitle: string } } }).data.inputPayload.rssTitle,
     );
     // Sélection = les 2 plus récents, dans l'ordre.
-    expect(titles).toEqual(["Plus récent", "Récent"]);
-    expect(titles).not.toContain("Périmé");
+    expect(titles).toEqual(["IA — Plus récent", "IA — Récent"]);
+    expect(titles).not.toContain("IA — Périmé");
   });
 
   it("failure path — DB insert ContentGenJob échoue → warn + skip, pas d'enqueue", async () => {
@@ -318,5 +320,59 @@ describe("content-rss-fetch-worker — Sprint S+5 P2-10 sub-agent C", () => {
     expect(contentGenJobCreateMock).not.toHaveBeenCalled();
     expect(queueAddMock).not.toHaveBeenCalled();
     expect(writeConfigMock).not.toHaveBeenCalled();
+  });
+
+  it("filtre thématique — item hors-sujet d'un flux généraliste (verticale null) écarté, item IA gardé", async () => {
+    readConfigMock.mockImplementation(async (key: string, defaultValue: unknown) => {
+      if (key === "kill_switch") return { active: false };
+      if (key === "policies") return { rssMaxPerDay: 10, rssMaxAgeDays: 3 };
+      if (key === "rss_sources") {
+        return [
+          {
+            url: "https://generaliste.example.com/rss",
+            name: "Généraliste Éco",
+            tags: [],
+            pollIntervalMin: 60,
+            autoPublish: false,
+            enabled: true,
+            // verticale absent (null) → flux généraliste → filtre thématique IA actif.
+          },
+        ];
+      }
+      if (key === "rss_items_seen") return [];
+      return defaultValue;
+    });
+    ssrfFetchMock.mockResolvedValue({ ok: true, status: 200, text: async () => "<rss/>" });
+    const H = 60 * 60 * 1000;
+    parseFeedMock.mockReturnValue([
+      {
+        id: "ai",
+        title: "OpenAI dévoile un nouveau modèle de langage",
+        link: "https://x/ai",
+        summary: "une avancée en intelligence artificielle générative",
+        published: new Date(Date.now() - 1 * H),
+      },
+      {
+        id: "off",
+        title: "Incendie dans les Pyrénées-Orientales",
+        link: "https://x/off",
+        summary: "près de 3 000 hectares brûlés, pompiers mobilisés",
+        published: new Date(Date.now() - 1 * H),
+      },
+    ]);
+    let n = 0;
+    contentGenJobCreateMock.mockImplementation(async () => ({ id: `cg-${++n}` }));
+
+    const processor = await getProcessor();
+    await processor(fakeJob());
+
+    // Seul l'item IA est généré ; le feu de forêt (hors-sujet) est écarté en amont.
+    expect(contentGenJobCreateMock).toHaveBeenCalledTimes(1);
+    const onlyTitle = (
+      contentGenJobCreateMock.mock.calls[0]?.[0] as {
+        data: { inputPayload: { rssTitle: string } };
+      }
+    ).data.inputPayload.rssTitle;
+    expect(onlyTitle).toBe("OpenAI dévoile un nouveau modèle de langage");
   });
 });
