@@ -31,6 +31,7 @@ export async function Footer() {
     { href: "/guide-ia", label: isFr ? "Guide IA opérationnelle" : "Operational AI guide" },
     { href: "/blog", label: t("nav.blog") },
     { href: "/blog/categorie", label: isFr ? "Catégories du blog" : "Blog categories" },
+    { href: "/actualites", label: isFr ? "Actualités de l'IA" : "AI news" },
     { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
     { href: "/guides", label: isFr ? "Guides piliers" : "Pillar guides" },

@@ -144,6 +144,23 @@ export default async function ActualitesHub({ params }: Props) {
 
   const items = await fetchPublishedNews();
 
+  // ItemList JSON-LD — expose chaque actualité VISIBLE au crawler + ancre la
+  // collection pour la citation LLM (parité hub /blog, audit AEO 2026-07-03).
+  // Aligné sur le contenu rendu (les news affichées) pour éviter tout mismatch
+  // schéma/contenu (risque rich-results).
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${SITE_URL}/fr/actualites#itemlist`,
+    name: "Actualités IA Axion-IA · veille hebdomadaire",
+    itemListElement: items.slice(0, 12).map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/fr/actualites/${item.slug}`,
+      name: item.title,
+    })),
+  } as const;
+
   const collectionJsonLd = buildCollectionPageJsonLd({
     locale: "fr",
     path: "/actualites",
@@ -152,12 +169,23 @@ export default async function ActualitesHub({ params }: Props) {
     inLanguage: "fr-FR",
     isPartOf: { "@id": `${SITE_URL}/fr#website` },
     description: "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de PME et ETI.",
+    // Résumé answer-ready (schema.org `abstract`, 40-60 mots) — excerptable par
+    // Perplexity / Claude / AI Overviews (parité hub /blog, audit AEO 2026-07-03).
+    abstract:
+      "Les Actualités IA d'Axion-IA proposent une veille hebdomadaire sur l'IA opérationnelle : sorties produits, mises à jour Search Console et décisions techniques qui changent les arbitrages des dirigeants de PME et ETI. Chaque brève cite sa source primaire — pas de hype, uniquement ce qui impacte vos décisions cette semaine.",
+    speakable: true,
+    mainEntity: { "@id": `${SITE_URL}/fr/actualites#itemlist` },
     hasPart: items.slice(0, 12).map((item) => ({
       "@type": "NewsArticle",
       headline: item.title,
       url: `${SITE_URL}/fr/actualites/${item.slug}`,
       datePublished: item.publishedAt?.toISOString(),
     })),
+    // E-E-A-T : revue éditoriale rattachée au nœud Person canonique du fondateur
+    // (référence `@id`, pas de duplication d'identité). Parité hub /blog.
+    extra: {
+      reviewedBy: { "@id": `${SITE_URL}/fr/equipe/williams#person` },
+    },
   });
 
   return (
@@ -236,6 +264,7 @@ export default async function ActualitesHub({ params }: Props) {
       />
 
       <JsonLd data={collectionJsonLd} />
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }

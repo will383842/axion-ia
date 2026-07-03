@@ -1026,9 +1026,23 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     const fullAutoPublishRequested =
       !isRss && fullAutoPublishEnabled && !blockingFail && score >= qualityThreshold;
 
+    // 2026-07-03 — Priorité auto-publish NEWS sur la boucle qualité.
+    // Bug corrigé : une news (`blog_from_rss`) scorée entre `rssAutoPublishMinScore`
+    // (60) et le seuil de boucle qualité (65) partait d'abord en `quality_improving`
+    // (la boucle était prioritaire), PUIS restait piégée en `needs_review` à la
+    // sortie de la boucle — le worker `content-quality-improver-worker` ne
+    // réapplique JAMAIS la décision auto-publish RSS. Résultat concret : 0 news
+    // publiée sur /actualites malgré `newsAutoPublish=true` (6 news bloquées).
+    // Fix : une news qui remplit déjà les critères d'auto-publication publie
+    // directement via le chemin `approved` (ci-dessous, déjà éprouvé), SANS détour
+    // par la boucle. Les news encore sous le seuil RSS continuent de passer par la
+    // boucle (regénération ciblée) et publient automatiquement dès qu'une passe
+    // repasse au-dessus du seuil. Comportement des types non-RSS inchangé
+    // (`rssAutoPublishRequested` est faux hors RSS).
     let nextStatus: "quality_improving" | "approved" | "needs_review" = "needs_review";
-    if (eligibleQualityLoop) nextStatus = "quality_improving";
-    else if (rssAutoPublishRequested || fullAutoPublishRequested) nextStatus = "approved";
+    if (rssAutoPublishRequested) nextStatus = "approved";
+    else if (eligibleQualityLoop) nextStatus = "quality_improving";
+    else if (fullAutoPublishRequested) nextStatus = "approved";
 
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },

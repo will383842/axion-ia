@@ -69,7 +69,8 @@ Règles absolues :
 - Introduction : commence par l'information elle-même, pas par "Chez Axion-IA" — l'intro est centrée sur l'actu.
 - Style journalistique : réactif, factuel, contextuel. Explique l'info, donne le contexte marché, puis impact concret pour les entreprises françaises de toutes tailles (TPE, PME, ETI, grands comptes), en nuançant selon la taille quand c'est pertinent.
 - INTERDICTION DE CITER LA SOURCE : ne mentionne JAMAIS dans le body visible le nom du média/site/source d'origine ni d'expressions du type "Selon X", "d'après Y", "le média Z rapporte". Présente l'information comme un constat factuel ré-analysé sous le prisme Axion-IA. (Traçabilité préservée côté machine via JSON-LD \`isBasedOn\` au publish — AI Act art. 50.)
-- Ré-écriture obligatoire : reformule TOTALEMENT le résumé fourni. Ne reprends pas de phrases littérales (similarité Jaccard 5-gram bloquante à 0.10).
+- Ré-écriture TOTALE obligatoire (garde-fou anti-régurgitation Jaccard 5-gram BLOQUANT à 0.10 — échec = article NON indexé) : n'emprunte AUCUNE tournure du résumé source. Change l'ANGLE (pars de l'impact opérationnel pour les entreprises françaises, jamais du fil chronologique de la source), l'ORDRE des idées, le vocabulaire et la structure de phrases. Aucune séquence de 5 mots consécutifs ne doit être identique à la source. Traite le résumé comme une matière première factuelle à ré-analyser, jamais comme un texte à paraphraser.
+- Structure : 3 à 6 sous-titres <h2> (section Axion-IA finale incluse), article scannable, aucun <h2> vide.
 - Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les entreprises françaises") — angle conseil, en distinguant si utile TPE/PME vs ETI/grands comptes.
 - CTA discret en fin d'article uniquement : "Axion-IA accompagne les entreprises (TPE, PME, ETI, grands comptes) dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
@@ -284,6 +285,12 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         directAnswer: parsed.directAnswer,
         faqCount: (parsed.faq ?? []).length,
         internalLinkCount,
+        // Citations d'autorité posées déterministe post-loop via appendSourcesSection
+        // (INSEE/DARES/BPI/EU AI Act…). Le compte DOIT être crédité au scorer, sinon
+        // scoreCitations=0/6 alors que les liens SERONT bien dans le body final
+        // (bug SEO 2026-07-03 : −6 pts + intentAligned KO à tort). Crédite dès la
+        // boucle car ces liens sont garantis (injectExternalLinks déterministe).
+        citationCount: externalLinksCtx.links.length,
         primaryKeyword: topic,
         searchIntent: input.targetSearchIntent,
         ...articlePageSeoDefaults(parsed.slug ?? "", "blog_from_rss"),
@@ -335,6 +342,14 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         issues.push(`violations doctrine : ${violations}`);
       }
       if (wordCount < 400) issues.push(`contenu trop court (${wordCount} mots, minimum 400)`);
+      // Longueur titre/meta hors cible = points SEO perdus (scoreTitle 50-60,
+      // scoreMetaDescription 140-160). Feedback pour correction à l'itération suivante.
+      const titleLen = (parsed.title ?? "").length;
+      if (titleLen < 45 || titleLen > 70)
+        issues.push(`titre ${titleLen} caractères hors cible 50-60 (ajuste sans tronquer le sens)`);
+      const metaDescLen = (parsed.metaDescription ?? "").length;
+      if (metaDescLen < 120 || metaDescLen > 180)
+        issues.push(`meta description ${metaDescLen} caractères hors cible 140-160`);
       // V-06 P0a (Sprint Correctif 2026-05-22) — gate INVERSÉ : si la source RSS
       // est mentionnée dans le body, c'est un fail (directive Will "ne pas dire
       // la source"). Traçabilité source via JSON-LD NewsArticle.isBasedOn.
@@ -405,6 +420,10 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       directAnswer: parsed.directAnswer,
       faqCount: (parsed.faq ?? []).length,
       internalLinkCount: finalInternalLinkCount,
+      // Citations posées par appendSourcesSection ci-dessus (ligne ~372) — crédite
+      // le compte réel au scorer (bug SEO 2026-07-03 : sinon 0/6 malgré les liens
+      // présents dans le body → tier_3 injustifié + intentAligned KO).
+      citationCount: externalLinksCtx.links.length,
       primaryKeyword: topic,
       searchIntent: input.targetSearchIntent,
       ...articlePageSeoDefaults(parsed.slug ?? "", "blog_from_rss"),
