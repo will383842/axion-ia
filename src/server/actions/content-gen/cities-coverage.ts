@@ -12,6 +12,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { syncCityUniverseAndCoverage } from "@/server/content-gen/cities/city-universe-sync";
 import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
@@ -214,6 +215,23 @@ export async function markCitiesPriority(citySlugs: string[]): Promise<{ updated
     data: { isTargeted: true },
   });
   return { updated: result.count };
+}
+
+/**
+ * Synchro complète du sous-système villes (P0 2026-07-03) : seed idempotent de
+ * `City` + `CityGenerationOrder` depuis la SSOT statique `VILLES`, puis recompute
+ * de la couverture depuis les articles publiés. Déclenchable au runtime (bouton
+ * admin) avec la vraie DB, sans accès shell. Idempotente (createMany skipDuplicates
+ * + recount autoritaire). Débloque cities-coverage, coverage-map, cities-order.
+ */
+export async function syncCitiesUniverse(): Promise<{
+  citiesInserted: number;
+  orderInserted: number;
+  universeSize: number;
+  coveredCities: number;
+}> {
+  await requireAdmin();
+  return syncCityUniverseAndCoverage();
 }
 
 export async function exportCitiesCSV(params: {

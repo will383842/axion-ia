@@ -30,6 +30,7 @@ import { redis } from "@/lib/redis";
 import { slugify } from "@/lib/slug";
 import { enrichOutputWithNewsArticleJsonLd } from "@/server/content-gen/generators/blog-from-rss";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
+import { refreshCityCoverageForSlug } from "@/server/content-gen/cities/city-universe-sync";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
@@ -1129,6 +1130,13 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   //
   // Note : import dynamique pour éviter de charger les ~2150 villes
   // au module-eval (ralentit les tests throttle qui mock le worker).
+  // P0 2026-07-03 — Rafraîchit la couverture ville (table `City`) pour la ville
+  // ancre de ce job : recount de ses jobs publiés. Best-effort, ne throw jamais
+  // (le recompute global du bouton admin reste autoritaire en secours).
+  if (cgJob.anchorVilleSlug) {
+    await refreshCityCoverageForSlug(cgJob.anchorVilleSlug);
+  }
+
   const cityPaths: string[] = [];
   if (mentionedCities.length > 0) {
     const { getVille } = await import("@/content/villes");
