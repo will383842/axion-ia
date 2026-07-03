@@ -83,8 +83,8 @@ function buildOfferFaq(
   o: JobOffer,
   title: string,
   isFr: boolean,
-): Array<{ question: string; answer: string }> {
-  const items: Array<{ question: string; answer: string }> = [];
+): Array<{ id: string; question: string; answer: string }> {
+  const items: Array<{ id: string; question: string; answer: string }> = [];
   const cityPart = o.city ? (isFr ? ` à ${o.city}` : ` in ${o.city}`) : "";
 
   const modeAnswer =
@@ -100,6 +100,7 @@ function buildOfferFaq(
           ? `Ce poste est en présentiel${cityPart}.`
           : `This role is on-site${cityPart}.`;
   items.push({
+    id: "teletravail",
     question: isFr ? `Le poste de ${title} est-il en télétravail ?` : `Is the ${title} role remote?`,
     answer: modeAnswer,
   });
@@ -112,6 +113,7 @@ function buildOfferFaq(
         : "full-time permanent contract"
       : o.employmentType);
   items.push({
+    id: "contrat",
     question: isFr ? "Quel est le type de contrat ?" : "What type of contract is it?",
     answer: isFr ? `Il s'agit d'un poste en ${contract}.` : `This is a ${contract} position.`,
   });
@@ -119,6 +121,7 @@ function buildOfferFaq(
   const sal = salaryLabel(o, isFr);
   if (sal) {
     items.push({
+      id: "remuneration",
       question: isFr ? "Quelle est la rémunération ?" : "What is the salary?",
       answer: isFr
         ? `La rémunération proposée est de ${sal}, selon ton profil et ton expérience.`
@@ -127,6 +130,7 @@ function buildOfferFaq(
   }
 
   items.push({
+    id: "candidature",
     question: isFr ? "Comment postuler à cette offre ?" : "How do I apply?",
     answer: isFr
       ? "Tu postules en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est ta motivation et ce que tu sais faire."
