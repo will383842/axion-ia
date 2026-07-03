@@ -21,6 +21,8 @@
 import { Queue, Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
+import { generate as routerGenerate } from "@/server/content-gen/providers/provider-router";
+import { ensureDirectAnswer } from "@/server/content-gen/shared/ensure-direct-answer";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
 import { checkDedup } from "@/server/content-gen/quality/dedup-guard";
 import { checkPlagiarism } from "@/server/content-gen/quality/plagiarism";
@@ -603,6 +605,47 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       total_tokens: output.totalTokens,
       total_cost_usd: output.totalCostUsd,
     });
+
+    // 4bis-pre0. Réparation directAnswer (P0 auto-publish 2026-07-03) — le gate de
+    // complétude `data-quality-gate` exige ≥ 40 mots ; le PLAN des générateurs le
+    // rend parfois trop court et la boucle d'expansion n'étoffe QUE le corps. On
+    // ré-génère UNIQUEMENT le directAnswer sous plancher via un appel LLM court.
+    // Fail-open & non-régressif (cf. ensure-direct-answer.ts) : aucune altération
+    // si déjà conforme, jamais plus court que l'original.
+    try {
+      const daRepair = await ensureDirectAnswer({
+        current: output.directAnswer,
+        title: output.title || resolvedKeyword || rssItemTitle || "",
+        bodyText: output.bodyText,
+        generate: async (req) => {
+          const r = await routerGenerate({
+            jobId: contentGenJobId,
+            contentType,
+            role: "text",
+            systemPrompt: req.systemPrompt,
+            userPrompt: req.userPrompt,
+            maxTokens: req.maxTokens,
+            temperature: req.temperature,
+          });
+          return { output: r.output, costUsd: r.costUsd };
+        },
+      });
+      if (daRepair.repaired) {
+        output = {
+          ...output,
+          directAnswer: daRepair.directAnswer,
+          totalCostUsd: output.totalCostUsd + daRepair.costUsd,
+        };
+        await logStep(
+          contentGenJobId,
+          "direct_answer_repair",
+          `directAnswer ré-généré (${daRepair.directAnswer.split(/\s+/).filter(Boolean).length} mots, +$${daRepair.costUsd.toFixed(4)})`,
+          { cost_usd: daRepair.costUsd },
+        );
+      }
+    } catch {
+      // Fail-open : aucune altération si la réparation échoue.
+    }
 
     // 4bis-pre. Intent enforcement déterministe (2026-06-27) — plancher AVANT la
     // validation d'intent : garantit ≥ 3 sources externes (intents AEO/info) + un
