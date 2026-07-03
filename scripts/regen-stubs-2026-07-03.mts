@@ -18,6 +18,7 @@ import {
   buildRegenerationJobData,
   deriveSourceJobFromArticle,
   REGENERABLE_CONTENT_TYPES,
+  type RegenSourceJob,
 } from "@/server/actions/content-gen/regenerate-helpers";
 
 // Liste corrigée alignée sur l'enum ContentGenJobStatus prod (le code déployé
@@ -64,7 +65,7 @@ async function enqueue(articleId: string) {
   if (article.status !== "published")
     return { articleId, skippedReason: `not_published:${article.status}` };
 
-  let sourceJob: any = null;
+  let sourceJob: RegenSourceJob | null = null;
   if (article.generatedByJobId) {
     const found = await prisma.contentGenJob.findUnique({
       where: { id: article.generatedByJobId },
@@ -83,7 +84,8 @@ async function enqueue(articleId: string) {
         inputPayload: true,
       },
     });
-    if (found && REGENERABLE_CONTENT_TYPES.has(found.contentType)) sourceJob = found;
+    if (found && REGENERABLE_CONTENT_TYPES.has(found.contentType))
+      sourceJob = found as RegenSourceJob;
   }
   if (!sourceJob) {
     sourceJob = deriveSourceJobFromArticle({
@@ -138,8 +140,10 @@ async function enqueue(articleId: string) {
 for (const id of IDS) {
   try {
     console.log(JSON.stringify(await enqueue(id)));
-  } catch (e: any) {
-    console.log(JSON.stringify({ articleId: id, error: String(e?.message ?? e) }));
+  } catch (e) {
+    console.log(
+      JSON.stringify({ articleId: id, error: e instanceof Error ? e.message : String(e) }),
+    );
   }
 }
 await prisma.$disconnect();
