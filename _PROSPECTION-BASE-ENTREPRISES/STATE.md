@@ -93,8 +93,11 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 
 ### T4 — Collecte + coverage
 
-- 🔲 `collect-worker` (dédup SIREN/SIRET) · 🔲 `coverage-worker` (rollup 3 niveaux) · 🔲 idempotence jobId
-- 🔲 tests #2 (anti-dérive), #6 (anti-doublon) · 🔲 GATE · 🔲 vérif adversariale · 🔲 commit
+- ✅ `campaign-expansion` (secteur→naf, cellules paresseuses via StockReference, decideCellOutcome exhaustivité) · ✅ `collect-cell` (count-based, RGPD where opt-out/non-diffusible exclus, idempotent #6) · ✅ `orchestrator` (upsert cellules dédup, n'enfile que a_faire/erreur, quota) · ✅ `recherche-entreprises` connecteur (Zod, injectable fetch, stub-aware)
+- ✅ `coverage-rollup` (dép→région→France, computeMetrics sans div/0) + `coverage-service` (recalcul depuis COUNT = anti-dérive #2, `detectDrift`)
+- ✅ 4 workers (orchestrator, collect [limiter BullMQ DUR], coverage [rollup+snapshot], scheduler) enregistrés + crons (scheduler \*/5, coverage :15)
+- ✅ idempotence jobId nonce (enqueueProspectionCollect cell:run) · tests #2 anti-dérive + #6 anti-doublon
+- ✅ GATE : vitest 150/150 · eslint · prettier · isolation-check (0) · typecheck (exactOptional fixes) · 🔄 adversarial · 🔄 commit
 
 ### T5 — Enrichissement (2 passes)
 

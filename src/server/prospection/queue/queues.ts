@@ -179,4 +179,32 @@ export async function bootProspectionRepeatableJobs(): Promise<void> {
     { tick: new Date().toISOString() },
     { repeat: { pattern: "30 4 * * *" }, jobId: "prospection-delta-cron" },
   );
+
+  // Scheduler campagnes toutes les 5 min (active les campagnes dues).
+  if (prospectionSchedulerQueue) {
+    await prospectionSchedulerQueue.removeRepeatable(
+      "tick",
+      { pattern: "*/5 * * * *" },
+      "prospection-scheduler-cron",
+    );
+    await prospectionSchedulerQueue.add(
+      "tick",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "*/5 * * * *" }, jobId: "prospection-scheduler-cron" },
+    );
+  }
+
+  // Rollup de couverture horaire (dép→région→France + snapshot du jour).
+  if (prospectionCoverageQueue) {
+    await prospectionCoverageQueue.removeRepeatable(
+      "coverage",
+      { pattern: "15 * * * *" },
+      "prospection-coverage-cron",
+    );
+    await prospectionCoverageQueue.add(
+      "coverage",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "15 * * * *" }, jobId: "prospection-coverage-cron" },
+    );
+  }
 }

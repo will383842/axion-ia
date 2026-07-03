@@ -62,6 +62,10 @@ import { isBullmqDisabled } from "./connection";
 // Prospection & Base Entreprises (T3+) — workers + crons cloisonnés en module.
 import { startProspectionStockIngestorWorker } from "./workers/prospection-stock-ingestor-worker";
 import { startProspectionDeltaWorker } from "./workers/prospection-delta-worker";
+import { startProspectionOrchestratorWorker } from "./workers/prospection-orchestrator-worker";
+import { startProspectionCollectWorker } from "./workers/prospection-collect-worker";
+import { startProspectionCoverageWorker } from "./workers/prospection-coverage-worker";
+import { startProspectionSchedulerWorker } from "./workers/prospection-scheduler-worker";
 import { bootProspectionRepeatableJobs } from "@/server/prospection/queue/queues";
 
 async function main() {
@@ -141,6 +145,11 @@ async function main() {
     // Prospection & Base Entreprises (T3+) — ingestion Stock Sirene + delta.
     startProspectionStockIngestorWorker(),
     startProspectionDeltaWorker(),
+    // Prospection T4 — orchestration campagne, collecte, coverage rollup, scheduler.
+    startProspectionOrchestratorWorker(),
+    startProspectionCollectWorker(),
+    startProspectionCoverageWorker(),
+    startProspectionSchedulerWorker(),
   ];
 
   await bootRepeatableJobs();
