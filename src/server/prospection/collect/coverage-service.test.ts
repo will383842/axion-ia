@@ -50,11 +50,18 @@ describe("rebuildGeoCoverage (fake db) — recalcul depuis COUNT (anti-dérive)"
     }> = [];
     const db = {
       prospectionCompany: {
-        async groupBy() {
+        async groupBy(args: { by: string[] }) {
+          if (args.by.includes("contactabilite")) {
+            return [
+              { departement: "38", contactabilite: "exploitable", _count: { _all: 20 } },
+              { departement: "38", contactabilite: "partiel", _count: { _all: 60 } },
+              { departement: "75", contactabilite: "exploitable", _count: { _all: 100 } },
+            ];
+          }
+          // groupBy enrichmentStatus=enriched par département
           return [
-            { departement: "38", contactabilite: "exploitable", _count: { _all: 20 } },
-            { departement: "38", contactabilite: "partiel", _count: { _all: 60 } },
-            { departement: "75", contactabilite: "exploitable", _count: { _all: 100 } },
+            { departement: "38", _count: { _all: 30 } },
+            { departement: "75", _count: { _all: 40 } },
           ];
         },
         async count() {
@@ -88,6 +95,7 @@ describe("rebuildGeoCoverage (fake db) — recalcul depuis COUNT (anti-dérive)"
     const fr = stats.find((s) => s.scope === "france");
     expect(fr?.collectees).toBe(180); // 80 (38) + 100 (75)
     expect(fr?.stockAttendu).toBe(220);
+    expect(fr?.enrichies).toBe(70); // 30 (38) + 40 (75) — enrichies bien câblé (D1)
     // dép 38 + dép 75 + région 84 + région 11 + France = 5 upserts
     expect(upserts).toHaveLength(5);
     expect(upserts.find((u) => u.scope === "france")?.collectees).toBe(180);

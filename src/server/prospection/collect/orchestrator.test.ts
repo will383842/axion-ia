@@ -63,6 +63,17 @@ describe("orchestrateCampaign", () => {
     expect(enqueued).toHaveLength(1);
   });
 
+  it("REFUSE un ciblage vide (aucun secteur ni NAF) — anti collecte département entier (G1)", async () => {
+    const { db, enqueued } = makeDb({});
+    await expect(
+      orchestrateCampaign(
+        db,
+        { id: "camp-empty", departements: ["38"], secteurs: [], nafCodes: [], tailles: ["PME"] },
+        { enqueueCollect: async (c) => void enqueued.push(c), genRunId: () => "run" },
+      ),
+    ).rejects.toThrow(/ciblage vide/i);
+  });
+
   it("respecte le quota (arrête d'enfiler au-delà)", async () => {
     const { db, enqueued } = makeDb({}); // toutes a_faire
     const r = await orchestrateCampaign(

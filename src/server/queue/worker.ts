@@ -66,6 +66,7 @@ import { startProspectionOrchestratorWorker } from "./workers/prospection-orches
 import { startProspectionCollectWorker } from "./workers/prospection-collect-worker";
 import { startProspectionCoverageWorker } from "./workers/prospection-coverage-worker";
 import { startProspectionSchedulerWorker } from "./workers/prospection-scheduler-worker";
+import { startProspectionEnrichWorker } from "./workers/prospection-enrich-worker";
 import { bootProspectionRepeatableJobs } from "@/server/prospection/queue/queues";
 
 async function main() {
@@ -150,6 +151,8 @@ async function main() {
     startProspectionCollectWorker(),
     startProspectionCoverageWorker(),
     startProspectionSchedulerWorker(),
+    // Prospection T5 — enrichissement 2 passes (site public + MX + responsables).
+    startProspectionEnrichWorker(),
   ];
 
   await bootRepeatableJobs();

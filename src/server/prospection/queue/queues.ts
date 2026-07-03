@@ -115,11 +115,10 @@ export async function enqueueProspectionStockIngest(
 
 export async function enqueueProspectionOrchestrator(campaignId: string): Promise<void> {
   if (!prospectionOrchestratorQueue) return warnNoConnection("enqueueProspectionOrchestrator");
-  await prospectionOrchestratorQueue.add(
-    "orchestrate",
-    { campaignId },
-    { jobId: `prospection-orch-${campaignId}` },
-  );
+  // PAS de jobId stable : la ré-orchestration (reprise après erreur / récurrence
+  // T6) doit TOUJOURS créer un nouveau run (sinon no-op BullMQ sur job complété).
+  // L'orchestrateur est idempotent (upsert cellules) → un run en double est sûr.
+  await prospectionOrchestratorQueue.add("orchestrate", { campaignId });
 }
 
 export async function enqueueProspectionCollect(cellId: string, runId: string): Promise<void> {

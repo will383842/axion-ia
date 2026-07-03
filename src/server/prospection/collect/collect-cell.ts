@@ -19,7 +19,10 @@ export interface CollectDb {
     findMany(args: {
       where: Prisma.ProspectionCompanyWhereInput;
       select: { id: true };
+      orderBy?: { id: "asc" };
       take?: number;
+      cursor?: { id: string };
+      skip?: number;
     }): Promise<{ id: string }[]>;
   };
   prospectionCollectRun: {
@@ -70,6 +73,10 @@ export async function collectCell(
   },
 ): Promise<CollectResult> {
   const now = opts.now ?? (() => new Date());
+  // Marque la cellule `en_cours` : garde-fou anti-double-enqueue (l'orchestrateur
+  // ne ré-enfile que a_faire/erreur) + support de l'alerte « cellule stale » (T9).
+  await db.prospectionCoverageCell.update({ where: { id: cell.id }, data: { statut: "en_cours" } });
+
   const run = await db.prospectionCollectRun.create({
     data: { cell: { connect: { id: cell.id } }, startedAt: now(), status: "running" },
   });
@@ -80,14 +87,28 @@ export async function collectCell(
 
   let enrichEnqueued = 0;
   if (opts.enrichirContacts && opts.enqueueEnrich) {
-    const pending = await db.prospectionCompany.findMany({
-      where: { ...where, enrichmentStatus: "pending" },
-      select: { id: true },
-      take: opts.maxEnrichPerCell ?? 5000,
-    });
-    for (const c of pending) {
-      await opts.enqueueEnrich(c.id);
-      enrichEnqueued++;
+    // Curseur keyset sur TOUTES les entreprises pending (pas de cap arbitraire
+    // qui laisserait la queue de cellule jamais enrichie). BullMQ dédup par
+    // jobId=companyId → ré-enfiler est sûr. `maxEnrichPerCell` = plafond de sécurité.
+    const batch = 500;
+    const hardCap = opts.maxEnrichPerCell ?? Number.POSITIVE_INFINITY;
+    let cursor: string | undefined;
+    while (enrichEnqueued < hardCap) {
+      const page = await db.prospectionCompany.findMany({
+        where: { ...where, enrichmentStatus: "pending" },
+        select: { id: true },
+        orderBy: { id: "asc" },
+        take: batch,
+        ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
+      });
+      if (page.length === 0) break;
+      for (const c of page) {
+        if (enrichEnqueued >= hardCap) break;
+        await opts.enqueueEnrich(c.id);
+        enrichEnqueued++;
+      }
+      cursor = page[page.length - 1]?.id;
+      if (page.length < batch) break;
     }
   }
 

@@ -37,6 +37,17 @@ export async function orchestrateCampaign(
     quotaMax?: number;
   },
 ): Promise<OrchestrateResult> {
+  // Garde-fou : un ciblage vide (aucun secteur NI code NAF) collecterait tout le
+  // département — footgun. On exige un ciblage explicite (le wizard T6 le valide aussi).
+  if (campaign.secteurs.length === 0 && campaign.nafCodes.length === 0) {
+    throw new Error(
+      `Campagne ${campaign.id} : ciblage vide (aucun secteur ni code NAF) — refusé pour éviter la collecte d'un département entier.`,
+    );
+  }
+  if (campaign.departements.length === 0 || campaign.tailles.length === 0) {
+    throw new Error(`Campagne ${campaign.id} : départements ou tailles manquants.`);
+  }
+
   const refs = await db.prospectionStockReference.findMany({
     where: {
       departement: { in: campaign.departements },

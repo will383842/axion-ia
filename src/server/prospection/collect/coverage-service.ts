@@ -77,13 +77,7 @@ export function aggregatePerDepartement(input: {
 
 export interface CoverageDb {
   prospectionCompany: {
-    groupBy(args: unknown): Promise<
-      Array<{
-        departement: string | null;
-        contactabilite: Contactabilite | null;
-        _count: { _all: number };
-      }>
-    >;
+    groupBy(args: unknown): Promise<Array<Record<string, unknown>>>;
     count(args: { where: Prisma.ProspectionCompanyWhereInput }): Promise<number>;
   };
   prospectionStockReference: {
@@ -107,15 +101,30 @@ export async function rebuildGeoCoverage(
   db: CoverageDb,
   opts: { snapshotDate?: Date; enrichedByDep?: EnrichedByDep[] } = {},
 ): Promise<GeoStat[]> {
+  const baseWhere = { statutDiffusion: "diffusible", etatAdministratif: "actif", optOut: false };
   const contactRows = (await db.prospectionCompany.groupBy({
     by: ["departement", "contactabilite"],
-    where: { statutDiffusion: "diffusible", etatAdministratif: "actif", optOut: false },
+    where: baseWhere,
     _count: { _all: true },
   })) as Array<{
     departement: string | null;
     contactabilite: Contactabilite | null;
     _count: { _all: number };
   }>;
+
+  // `enrichies` recalculé depuis un COUNT réel (et NON un param optionnel jamais
+  // passé — sinon toujours 0 en prod). Repli sur opts.enrichedByDep pour les tests.
+  const enrichedRows =
+    opts.enrichedByDep ??
+    (
+      (await db.prospectionCompany.groupBy({
+        by: ["departement"],
+        where: { ...baseWhere, enrichmentStatus: "enriched" },
+        _count: { _all: true },
+      })) as Array<{ departement: string | null; _count: { _all: number } }>
+    )
+      .filter((r) => r.departement)
+      .map((r) => ({ departement: r.departement as string, count: r._count._all }));
 
   const stockRows = (await db.prospectionStockReference.groupBy({
     by: ["departement"],
@@ -134,11 +143,7 @@ export async function rebuildGeoCoverage(
     stockAttendu: r._sum.stockAttendu ?? 0,
   }));
 
-  const perDep = aggregatePerDepartement({
-    contactabilite,
-    enriched: opts.enrichedByDep ?? [],
-    stock,
-  });
+  const perDep = aggregatePerDepartement({ contactabilite, enriched: enrichedRows, stock });
   const stats = rollupDepartementsToRegionsToFrance(perDep);
 
   for (const s of stats) {

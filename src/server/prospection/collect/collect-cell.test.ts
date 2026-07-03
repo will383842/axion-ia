@@ -6,17 +6,28 @@ interface Recorder {
   runsUpdated: number;
   cellUpdates: Array<{ collecte: number; statut: string }>;
   countCalls: number;
+  enCoursCount: number;
 }
 
 function makeDb(companyCount: number, pendingIds: string[]): { db: CollectDb; rec: Recorder } {
-  const rec: Recorder = { runsCreated: 0, runsUpdated: 0, cellUpdates: [], countCalls: 0 };
+  const rec: Recorder = {
+    runsCreated: 0,
+    runsUpdated: 0,
+    cellUpdates: [],
+    countCalls: 0,
+    enCoursCount: 0,
+  };
+  let served = false;
   const db = {
     prospectionCompany: {
       async count() {
         rec.countCalls++;
         return companyCount;
       },
+      // Curseur : sert la page une fois puis vide (évite la boucle infinie).
       async findMany() {
+        if (served) return [];
+        served = true;
         return pendingIds.map((id) => ({ id }));
       },
     },
@@ -31,8 +42,12 @@ function makeDb(companyCount: number, pendingIds: string[]): { db: CollectDb; re
       },
     },
     prospectionCoverageCell: {
-      async update(a: { data: { collecte: number; statut: string } }) {
-        rec.cellUpdates.push({ collecte: a.data.collecte, statut: a.data.statut });
+      async update(a: { data: { collecte?: number; statut: string } }) {
+        if (a.data.collecte !== undefined) {
+          rec.cellUpdates.push({ collecte: a.data.collecte, statut: a.data.statut });
+        } else if (a.data.statut === "en_cours") {
+          rec.enCoursCount++;
+        }
         return {};
       },
     },
@@ -66,6 +81,7 @@ describe("collectCell", () => {
     expect(r.statut).toBe("fait");
     expect(rec.runsCreated).toBe(1);
     expect(rec.runsUpdated).toBe(1);
+    expect(rec.enCoursCount).toBe(1); // cellule passée en_cours au début
     expect(rec.cellUpdates[0]).toEqual({ collecte: 12, statut: "fait" });
   });
 

@@ -31,11 +31,12 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 
 ## En-tête de session (à actualiser)
 
-- **Tranche en cours** : **T1 (SSOT & config)** — démarrée
-- **Dernier commit** : (T0 à committer)
-- **Worktree** : ✅ `.claude/worktrees/prospection`, branche `feat/prospection` (off `main` @15b115fd), `pnpm install` OK.
+- **Tranche en cours** : **T5 (Enrichissement 2 passes)** — à démarrer. T0→T4 ✅ commités.
+- **Dernier commit** : `1c874757` (T4). Historique : T0 `3442cb86` · T1 `0222bec1` · T2 `7d2a17ed` · T3 `40b3a59d` · T4 `1c874757`.
+- **Recette de commit** : `NODE_OPTIONS=--max-old-space-size=6144 git commit …` (le hook pre-commit fait un typecheck full-repo qui OOM à 2 Go ; ~3 min/commit). Sujet commitlint = **minuscules** (pas de MAJ). `prisma generate` doit être lancé dans le worktree (client gitignoré). Tests unit = 150/150 verts.
+- **Worktree** : ✅ `.claude/worktrees/prospection`, branche `feat/prospection` (off `main` @15b115fd), `pnpm install` + `prisma generate` OK.
 - **Gate juridique (Q9)** : ✅ **NON BLOQUANT pour le build** (directive Will) — AIPD/LIA/mention pré-remplies ; valeurs légales = placeholders `SiteSetting`/`[À COMPLÉTER]`. T3+ construit/testé sur fixtures/mocks, jamais de SIREN réel/collecte prod. Reste côté Will = 3 champs + relecture juriste avant collecte prod.
-- **Prochaine action** : T1 — écrire les SSOT purs (`departement-to-region` ✅ écrit) + `taille`, `naf-to-secteur`, `qualite-to-fonction`, `crawl-targets`, `scoring` + registry SiteSetting, puis tests + gate + adversarial + commit.
+- **Prochaine action** : T5 — enrichissement 2 passes (découverte domaine + confirmation SIREN, passe A coordonnées, passe B responsables, validation email MX/tél E.164, matching nominatif, Annuaire administration). Robots/extraction = **ré-implémenter en local prospection** (D-T0-1). Poser le `limiter` BullMQ DUR sur le worker enrich (dette D T3). Puis gate + adversarial + commit.
 - **Directive Will (2026-07-03)** : autopilot complet T0→T9 + pilote, sans blocage juridique, gates+croisement+vérif adversariale par tranche, 2 vérifs E2E finales, worktree isolé, sources gratuites, aucun outreach, jamais push main sans accord.
 
 ## Avancement global
@@ -101,9 +102,11 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 
 ### T5 — Enrichissement (2 passes)
 
-- 🔲 découverte domaine + confirmation SIREN (test #9) · 🔲 passe A coordonnées · 🔲 passe B responsables (test #7)
-- 🔲 validation email (MX)/tél (E.164) · 🔲 matching nominatif · 🔲 Annuaire administration (public)
-- 🔲 GATE · 🔲 vérif adversariale · 🔲 commit
+- ✅ helpers purs : `email` (syntaxe+MX injecté, rôle, matching nominatif), `phone` (E.164 FR, surtaxés exclus), `person-key` (dédup nom+prénoms triés), `html-utils`, `domain-confirm` (#9 SIREN/dénom), `contact-extract`, `person-extract` (#7 responsables), `robots` (local D-T0-1)
+- ✅ `enrich-service` (2 passes distinctes, confirmation domaine gate le scrape, validation MX/E.164, matching nominatif, contactabilité+leadScore, writes contacts/persons/roles) + test intégration fixtures (#7/#9/nominatif)
+- ✅ `recherche-entreprises` (T4) + `annuaire-administration` connecteur (public, Zod, stub-aware) + `enrich-worker` (ssrfSafeFetch+robots, MX dns, **limiter BullMQ DUR ≤10/s** = dette D T3 réglée, RGPD opt-out/non-diffusible avant réseau, anti-re-scrape refreshAfter)
+- ✅ GATE : vitest 194/194 · eslint · prettier · isolation (0) · typecheck · 🔄 adversarial · 🔄 commit
+- 📌 Inclut **réconciliation T4** (adversarial) : D1 enrichies câblé (groupBy), D2 orchestrator jobId sans nonce (no-op fixé), G1 garde ciblage vide, G2 curseur enrich (pas de queue perdue), en_cours posé.
 
 ### T6 — Admin pilotage
 
