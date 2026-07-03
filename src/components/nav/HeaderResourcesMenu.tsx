@@ -1,4 +1,5 @@
 "use client";
+// use-client: render-prop `children({close})` non sérialisable à travers la frontière RSC (cf. bloc ci-dessous).
 // Méga-menu « Ressources » du header desktop (audit maillage 2026-07-03).
 //
 // Active le shell générique `HeaderMegaMenu` (jusqu'ici code mort) pour exposer
