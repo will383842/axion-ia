@@ -28,12 +28,21 @@ export const REGENERABLE_CONTENT_TYPES: ReadonlySet<string> = new Set<ContentTyp
 
 // Statuts NON terminaux : si un job de refresh dans un de ces états cible déjà
 // l'article, on ne ré-enqueue pas (anti-doublon en vol).
+// ⚠️ Ces libellés DOIVENT correspondre exactement à l'enum Prisma
+// `ContentGenJobStatus` (schema.prisma). Ils étaient castés `as never` dans les
+// requêtes → aucune validation TS ; deux valeurs étaient fausses
+// (`generating_images` au lieu de `generating_image`, `fact_checking` inexistant
+// → `running_qa`), ce qui faisait échouer TOUTE régénération avec
+// « Invalid value for argument `in`. Expected ContentGenJobStatus » (audit blog
+// 2026-07-03). Liste = tous les statuts NON terminaux (terminaux exclus :
+// published, failed, cancelled, quarantined_critical, quarantined_factcheck).
 export const NON_TERMINAL_STATUSES = [
   "queued",
   "running",
   "generating_text",
-  "generating_images",
-  "fact_checking",
+  "generating_image",
+  "running_qa",
+  "quality_improving",
   "needs_review",
   "approved",
   "publishing",
