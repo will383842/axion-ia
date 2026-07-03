@@ -90,6 +90,28 @@ describe("normalizeFonction — repli", () => {
   it("un titre 'cadre' explicite est capté", () => {
     expect(normalizeFonction("Cadre technique").seniorite).toBe("cadre");
   });
+});
+
+describe("normalizeFonction — juridique & informatique (reconciliation T1)", () => {
+  it("Directeur juridique → département juridique", () => {
+    expect(normalizeFonction("Directeur juridique").departementFonctionnel).toBe("juridique");
+  });
+  it("Juriste / Responsable juridique → juridique", () => {
+    expect(normalizeFonction("Responsable juridique").departementFonctionnel).toBe("juridique");
+    expect(normalizeFonction("Juriste").departementFonctionnel).toBe("juridique");
+  });
+  it("Directeur informatique → DSI", () => {
+    expect(normalizeFonction("Directeur informatique")).toMatchObject({
+      fonctionNormalisee: "directeur_des_systemes_information",
+      departementFonctionnel: "dsi",
+    });
+  });
+  it("Responsable informatique → DSI (séniorité responsable)", () => {
+    expect(normalizeFonction("Responsable informatique")).toMatchObject({
+      seniorite: "responsable",
+      departementFonctionnel: "dsi",
+    });
+  });
   it("vide → autre/autre/autre", () => {
     expect(normalizeFonction("")).toEqual({
       fonctionNormalisee: "autre",

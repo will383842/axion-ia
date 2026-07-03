@@ -493,6 +493,9 @@ enum SiteSettingCategory {
   /// Formation Engine + Qualiopi Manager (paramètres métier OF). Ajout additif
   /// T0 — remplace la table `config_systeme` des specs (réutilisation SiteSetting).
   qualiopi
+  /// Module Prospection & Base Entreprises (T2) — quotas, rate-limits, seuils,
+  /// fenêtres de fraîcheur, budgets de crawl, poids de score, rétention RGPD.
+  prospection
 }
 
 /// Sprint X.1 — classification INSEE 4 tailles (snapshot Booking + filtres).
@@ -3286,7 +3289,7 @@ model CoverageCampaign {
   // masque une campagne de la vue par défaut (réduction du bruit) SANS changer son
   // statut, et le désarchivage la restaure telle quelle. Distinct de cancelled
   // (terminal irréversible) et de la suppression définitive (hard delete).
-  archivedAt DateTime?
+  archivedAt  DateTime?
 
   jobs ContentGenJob[]
 
@@ -7306,4 +7309,677 @@ model MediaCoverageTranslation {
 
   @@unique([coverageId, locale])
   @@map("media_coverage_translations")
+}
+
+// ============================================================
+// MODULE PROSPECTION & BASE ENTREPRISES (additif — T2)
+// Cloisonné : tous les modèles/enums préfixés `Prospection`, tables `prospection_*`.
+// Références utilisateur = String uuid (pas de FK vers AdminUser → pas de couplage).
+// Enums = miroir de src/lib/prospection/enums.ts (valeurs identiques).
+// ============================================================
+
+enum ProspectionTaille {
+  TPE
+  PME
+  ETI
+  GE
+}
+
+enum ProspectionTailleSource {
+  effectif
+  categorie_insee
+}
+
+enum ProspectionCategorieEntreprise {
+  PME
+  ETI
+  GE
+}
+
+enum ProspectionSecteur {
+  btp
+  sante
+  action_sociale
+  droit
+  numerique
+  conseil
+  finance_assurance
+  immobilier
+  commerce
+  industrie
+  agriculture
+  transport_logistique
+  hotellerie_restauration
+  enseignement
+  administration_publique
+  arts_culture_sport
+  services_aux_entreprises
+  services_aux_particuliers
+  autre
+}
+
+enum ProspectionTypeOrganisation {
+  privee
+  publique
+  parapublique
+  association
+  collectivite
+  epic
+}
+
+enum ProspectionContactabilite {
+  exploitable
+  partiel
+  non_contactable
+}
+
+enum ProspectionContactabiliteNuance {
+  exploitable_nominatif
+  exploitable_generique
+  aucune
+}
+
+enum ProspectionSeniorite {
+  dirigeant
+  directeur
+  responsable
+  manager
+  cadre
+  autre
+}
+
+enum ProspectionDepartementFonctionnel {
+  direction
+  commercial
+  rh
+  achats
+  finance
+  technique
+  dsi
+  marketing
+  juridique
+  production
+  qhse
+  autre
+}
+
+enum ProspectionFonctionNormalisee {
+  gerant
+  president
+  directeur_general
+  directeur_general_delegue
+  directeur
+  directeur_administratif_financier
+  directeur_commercial
+  directeur_technique
+  directeur_des_systemes_information
+  directeur_marketing
+  directeur_ressources_humaines
+  directeur_achats
+  directeur_production
+  responsable_commercial
+  responsable_rh
+  responsable_achats
+  responsable_marketing
+  responsable_technique
+  responsable_qhse
+  responsable_administratif
+  associe
+  manager
+  cadre
+  autre
+}
+
+enum ProspectionEnrichmentStatus {
+  pending
+  enriching
+  enriched
+  failed
+  no_data
+}
+
+enum ProspectionCampaignStatut {
+  brouillon
+  active
+  en_pause
+  en_pause_quota
+  terminee
+}
+
+enum ProspectionCellStatut {
+  a_faire
+  en_cours
+  fait
+  erreur
+}
+
+enum ProspectionStatutDiffusion {
+  diffusible
+  non_diffusible
+  partiel
+}
+
+enum ProspectionVerifStatus {
+  verified_syntax
+  mx_ok
+  role
+  invalid
+  e164_ok
+  invalide
+}
+
+enum ProspectionEtatAdministratif {
+  actif
+  cesse
+}
+
+enum ProspectionSource {
+  stock_sirene
+  sirene
+  recherche_entreprises
+  rne
+  annuaire_administration
+  bodacc
+  ban
+  site_scrape
+  manuel
+}
+
+enum ProspectionDomainMatchMethod {
+  siren_on_page
+  denomination_on_page
+  open_data_field
+  heuristic
+  none
+}
+
+enum ProspectionSiteWebStatus {
+  verifie
+  mort
+  redirige
+  inconnu
+}
+
+enum ProspectionContactType {
+  email
+  telephone
+}
+
+enum ProspectionAssignedBy {
+  auto
+  user
+}
+
+enum ProspectionTagType {
+  SECTEUR
+  TAILLE
+  DEPARTEMENT
+  SOURCE
+  QUALITE
+}
+
+enum ProspectionSuppressionType {
+  siren
+  email
+  domaine
+  personKey
+}
+
+enum ProspectionEventType {
+  company_collected
+  person_added
+  contact_scraped
+  opt_out
+  export
+  campaign_started
+  paused
+  resumed
+  completed
+  refresh
+}
+
+enum ProspectionAccessLogAction {
+  view_person
+  search
+  export
+}
+
+enum ProspectionCollectRunStatus {
+  running
+  done
+  error
+}
+
+enum ProspectionGeoScope {
+  departement
+  region
+  france
+}
+
+// --- Unité légale (1 SIREN = 1 ligne) ---
+model ProspectionCompany {
+  id                       String                           @id @default(uuid()) @db.Uuid
+  siren                    String                           @unique @db.VarChar(9)
+  denomination             String?
+  nomComplet               String?                          @map("nom_complet")
+  sigle                    String?
+  formeJuridique           String?                          @map("forme_juridique")
+  formeJuridiqueLibelle    String?                          @map("forme_juridique_libelle")
+  natureJuridique          String?                          @map("nature_juridique")
+  natureJuridiqueLibelle   String?                          @map("nature_juridique_libelle")
+  dateCreation             DateTime?                        @map("date_creation")
+  etatAdministratif        ProspectionEtatAdministratif     @default(actif) @map("etat_administratif")
+  economieSocialeSolidaire Boolean?                         @map("economie_sociale_solidaire")
+  naf                      String?
+  nafLibelle               String?                          @map("naf_libelle")
+  sectionNaf               String?                          @map("section_naf")
+  secteur                  ProspectionSecteur?
+  trancheEffectif          String?                          @map("tranche_effectif")
+  effectifEstime           Int?                             @map("effectif_estime")
+  taille                   ProspectionTaille?
+  tailleSource             ProspectionTailleSource?         @map("taille_source")
+  categorieEntreprise      ProspectionCategorieEntreprise?  @map("categorie_entreprise")
+  typeOrganisation         ProspectionTypeOrganisation?     @map("type_organisation")
+  departement              String?
+  codePostal               String?                          @map("code_postal")
+  commune                  String?
+  communeCode              String?                          @map("commune_code")
+  region                   String?
+  adresse                  String?
+  latitude                 Float?
+  longitude                Float?
+  siteWeb                  String?                          @map("site_web")
+  siteWebStatus            ProspectionSiteWebStatus?        @map("site_web_status")
+  domainMatchMethod        ProspectionDomainMatchMethod?    @map("domain_match_method")
+  domainConfidence         Float?                           @map("domain_confidence")
+  emailPublic              String?                          @map("email_public")
+  telephonePublic          String?                          @map("telephone_public")
+  contactFormUrl           String?                          @map("contact_form_url")
+  linkedinUrl              String?                          @map("linkedin_url")
+  socials                  Json?
+  langueSite               String?                          @map("langue_site")
+  tvaIntracom              String?                          @map("tva_intracom")
+  capitalSocial            String?                          @map("capital_social")
+  rcs                      String?
+  horaires                 String?
+  contactabilite           ProspectionContactabilite?
+  contactabiliteNuance     ProspectionContactabiliteNuance? @map("contactabilite_nuance")
+  hasEmail                 Boolean                          @default(false) @map("has_email")
+  hasTelephone             Boolean                          @default(false) @map("has_telephone")
+  leadScore                Int?                             @map("lead_score")
+  enrichmentStatus         ProspectionEnrichmentStatus      @default(pending) @map("enrichment_status")
+  lastEnrichedAt           DateTime?                        @map("last_enriched_at")
+  dataQuality              Int?                             @map("data_quality")
+  firstSeenAt              DateTime?                        @map("first_seen_at")
+  lastCollectedAt          DateTime?                        @map("last_collected_at")
+  lastCheckedAt            DateTime?                        @map("last_checked_at")
+  contentHash              String?                          @map("content_hash")
+  refreshAfter             DateTime?                        @map("refresh_after")
+  statutDiffusion          ProspectionStatutDiffusion?      @map("statut_diffusion")
+  oppositionProspectionRNE Boolean                          @default(false) @map("opposition_prospection_rne")
+  optOut                   Boolean                          @default(false) @map("opt_out")
+  optOutAt                 DateTime?                        @map("opt_out_at")
+  retentionUntil           DateTime?                        @map("retention_until")
+  fieldProvenance          Json?                            @map("field_provenance")
+  source                   ProspectionSource?
+  collectRunId             String?                          @map("collect_run_id") @db.Uuid
+  createdAt                DateTime                         @default(now()) @map("created_at")
+  updatedAt                DateTime                         @updatedAt @map("updated_at")
+
+  establishments ProspectionEstablishment[]
+  persons        ProspectionPerson[]
+  contacts       ProspectionContact[]
+  tags           ProspectionCompanyTag[]
+  events         ProspectionEvent[]
+
+  @@index([departement, taille])
+  @@index([secteur, departement])
+  @@index([naf, taille])
+  @@index([region])
+  @@index([enrichmentStatus])
+  @@index([contactabilite])
+  @@index([statutDiffusion])
+  @@index([optOut])
+  @@index([retentionUntil])
+  @@map("prospection_company")
+}
+
+// --- Établissement (SIRET) ---
+model ProspectionEstablishment {
+  id                String                       @id @default(uuid()) @db.Uuid
+  siret             String                       @unique @db.VarChar(14)
+  companyId         String                       @map("company_id") @db.Uuid
+  estSiege          Boolean                      @default(false) @map("est_siege")
+  naf               String?
+  trancheEffectif   String?                      @map("tranche_effectif")
+  adresse           String?
+  departement       String?
+  codePostal        String?                      @map("code_postal")
+  commune           String?
+  communeCode       String?                      @map("commune_code")
+  latitude          Float?
+  longitude         Float?
+  etatAdministratif ProspectionEtatAdministratif @default(actif) @map("etat_administratif")
+  statutDiffusion   ProspectionStatutDiffusion?  @map("statut_diffusion")
+  createdAt         DateTime                     @default(now()) @map("created_at")
+  updatedAt         DateTime                     @updatedAt @map("updated_at")
+
+  company  ProspectionCompany   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  contacts ProspectionContact[]
+  persons  ProspectionPerson[]
+
+  @@index([companyId])
+  @@index([departement])
+  @@map("prospection_establishment")
+}
+
+// --- Personne (dirigeant légal + responsable — DONNÉE PERSO) ---
+model ProspectionPerson {
+  id              String             @id @default(uuid()) @db.Uuid
+  companyId       String             @map("company_id") @db.Uuid
+  establishmentId String?            @map("establishment_id") @db.Uuid
+  nom             String
+  prenoms         String?
+  titreVerbatim   String?            @map("titre_verbatim")
+  photoUrl        String?            @map("photo_url")
+  linkedinUrl     String?            @map("linkedin_url")
+  personKey       String             @map("person_key")
+  optOut          Boolean            @default(false) @map("opt_out")
+  optOutAt        DateTime?          @map("opt_out_at")
+  retentionUntil  DateTime?          @map("retention_until")
+  source          ProspectionSource?
+  sourceUrl       String?            @map("source_url")
+  collectedAt     DateTime?          @map("collected_at")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+
+  company       ProspectionCompany        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  establishment ProspectionEstablishment? @relation(fields: [establishmentId], references: [id], onDelete: SetNull)
+  roles         ProspectionPersonRole[]
+  contacts      ProspectionContact[]
+
+  @@unique([companyId, personKey])
+  @@index([personKey])
+  @@index([optOut])
+  @@index([retentionUntil])
+  @@map("prospection_person")
+}
+
+// --- Rôle d'une personne (1 → N) ---
+model ProspectionPersonRole {
+  id                     String                             @id @default(uuid()) @db.Uuid
+  personId               String                             @map("person_id") @db.Uuid
+  qualiteRaw             String?                            @map("qualite_raw")
+  fonctionNormalisee     ProspectionFonctionNormalisee?     @map("fonction_normalisee")
+  seniorite              ProspectionSeniorite?
+  departementFonctionnel ProspectionDepartementFonctionnel? @map("departement_fonctionnel")
+  estDirigeantLegal      Boolean                            @default(false) @map("est_dirigeant_legal")
+  source                 ProspectionSource?
+  sourceUrl              String?                            @map("source_url")
+  collectedAt            DateTime?                          @map("collected_at")
+  createdAt              DateTime                           @default(now()) @map("created_at")
+
+  person ProspectionPerson @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@index([personId])
+  @@index([fonctionNormalisee])
+  @@index([seniorite])
+  @@map("prospection_person_role")
+}
+
+// --- Contact (multi-emails / multi-téléphones) ---
+model ProspectionContact {
+  id                    String                  @id @default(uuid()) @db.Uuid
+  companyId             String                  @map("company_id") @db.Uuid
+  establishmentId       String?                 @map("establishment_id") @db.Uuid
+  personId              String?                 @map("person_id") @db.Uuid
+  type                  ProspectionContactType
+  value                 String
+  valueNormalized       String                  @map("value_normalized")
+  isNominatif           Boolean                 @default(false) @map("is_nominatif")
+  isGenerique           Boolean                 @default(false) @map("is_generique")
+  personMatchConfidence Float?                  @map("person_match_confidence")
+  label                 String?
+  role                  String?
+  isPrimary             Boolean                 @default(false) @map("is_primary")
+  sharedAcrossCompanies Boolean                 @default(false) @map("shared_across_companies")
+  sourceUrl             String?                 @map("source_url")
+  confidence            Float?
+  verifStatus           ProspectionVerifStatus? @map("verif_status")
+  collectedAt           DateTime?               @map("collected_at")
+  createdAt             DateTime                @default(now()) @map("created_at")
+
+  company       ProspectionCompany        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  establishment ProspectionEstablishment? @relation(fields: [establishmentId], references: [id], onDelete: SetNull)
+  person        ProspectionPerson?        @relation(fields: [personId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, type, valueNormalized])
+  @@index([companyId])
+  @@index([personId])
+  @@index([valueNormalized])
+  @@map("prospection_contact")
+}
+
+// --- Campagne de collecte ---
+model ProspectionCampaign {
+  id                    String                        @id @default(uuid()) @db.Uuid
+  nom                   String
+  statut                ProspectionCampaignStatut     @default(brouillon)
+  departements          String[]
+  nafCodes              String[]                      @map("naf_codes")
+  secteurs              ProspectionSecteur[]
+  tailles               ProspectionTaille[]
+  typesOrganisation     ProspectionTypeOrganisation[] @map("types_organisation")
+  enrichirContacts      Boolean                       @default(true) @map("enrichir_contacts")
+  enrichirPersonnes     Boolean                       @default(false) @map("enrichir_personnes")
+  quotaMax              Int?                          @map("quota_max")
+  rythme                String?
+  priorite              Int                           @default(0)
+  scheduledAt           DateTime?                     @map("scheduled_at")
+  recurrence            String?
+  nextRunAt             DateTime?                     @map("next_run_at")
+  cellulesTotal         Int                           @default(0) @map("cellules_total")
+  cellulesFaites        Int                           @default(0) @map("cellules_faites")
+  entreprisesCollectees Int                           @default(0) @map("entreprises_collectees")
+  entreprisesEnrichies  Int                           @default(0) @map("entreprises_enrichies")
+  debitParHeure         Float?                        @map("debit_par_heure")
+  etaCompletion         DateTime?                     @map("eta_completion")
+  createdBy             String?                       @map("created_by") @db.Uuid
+  createdAt             DateTime                      @default(now()) @map("created_at")
+  updatedAt             DateTime                      @updatedAt @map("updated_at")
+
+  cells ProspectionCoverageCell[]
+
+  @@index([statut])
+  @@index([nextRunAt])
+  @@map("prospection_campaign")
+}
+
+// --- Cellule de couverture (matrice = work-list) ---
+model ProspectionCoverageCell {
+  id               String                       @id @default(uuid()) @db.Uuid
+  campaignId       String                       @map("campaign_id") @db.Uuid
+  departement      String
+  region           String?
+  naf              String
+  secteur          ProspectionSecteur?
+  taille           ProspectionTaille
+  typeOrganisation ProspectionTypeOrganisation? @map("type_organisation")
+  statut           ProspectionCellStatut        @default(a_faire)
+  attendu          Int                          @default(0)
+  collecte         Int                          @default(0)
+  enrichi          Int                          @default(0)
+  pageCursor       String?                      @map("page_cursor")
+  lastError        String?                      @map("last_error")
+  errorCode        String?                      @map("error_code")
+  createdAt        DateTime                     @default(now()) @map("created_at")
+  updatedAt        DateTime                     @updatedAt @map("updated_at")
+
+  campaign ProspectionCampaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  runs     ProspectionCollectRun[]
+
+  @@unique([campaignId, departement, naf, taille])
+  @@index([campaignId, statut])
+  @@index([departement, secteur, taille])
+  @@map("prospection_coverage_cell")
+}
+
+// --- Run de collecte d'une cellule (audit / idempotence) ---
+model ProspectionCollectRun {
+  id          String                      @id @default(uuid()) @db.Uuid
+  cellId      String                      @map("cell_id") @db.Uuid
+  startedAt   DateTime?                   @map("started_at")
+  finishedAt  DateTime?                   @map("finished_at")
+  nbResultats Int                         @default(0) @map("nb_resultats")
+  nbNouveaux  Int                         @default(0) @map("nb_nouveaux")
+  nbDoublons  Int                         @default(0) @map("nb_doublons")
+  apiCalls    Int                         @default(0) @map("api_calls")
+  status      ProspectionCollectRunStatus @default(running)
+  errorCode   String?                     @map("error_code")
+  createdAt   DateTime                    @default(now()) @map("created_at")
+
+  cell ProspectionCoverageCell @relation(fields: [cellId], references: [id], onDelete: Cascade)
+
+  @@index([cellId])
+  @@map("prospection_collect_run")
+}
+
+// --- Événement (append-only) ---
+model ProspectionEvent {
+  id         String               @id @default(uuid()) @db.Uuid
+  type       ProspectionEventType
+  actorId    String?              @map("actor_id") @db.Uuid
+  reason     String?
+  companyId  String?              @map("company_id") @db.Uuid
+  campaignId String?              @map("campaign_id") @db.Uuid
+  data       Json?
+  createdAt  DateTime             @default(now()) @map("created_at")
+
+  company ProspectionCompany? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  @@index([type, createdAt])
+  @@index([companyId])
+  @@index([campaignId])
+  @@map("prospection_event")
+}
+
+// --- Journal d'accès aux données perso (RGPD) ---
+model ProspectionAccessLog {
+  id        String                     @id @default(uuid()) @db.Uuid
+  userId    String                     @map("user_id") @db.Uuid
+  action    ProspectionAccessLogAction
+  cible     String?
+  createdAt DateTime                   @default(now()) @map("created_at")
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
+  @@map("prospection_access_log")
+}
+
+// --- Tags hiérarchiques ---
+model ProspectionTag {
+  id        String             @id @default(uuid()) @db.Uuid
+  type      ProspectionTagType
+  value     String
+  label     String?
+  createdAt DateTime           @default(now()) @map("created_at")
+
+  companyTags ProspectionCompanyTag[]
+
+  @@unique([type, value])
+  @@map("prospection_tag")
+}
+
+model ProspectionCompanyTag {
+  id         String                @id @default(uuid()) @db.Uuid
+  companyId  String                @map("company_id") @db.Uuid
+  tagId      String                @map("tag_id") @db.Uuid
+  assignedBy ProspectionAssignedBy @default(auto) @map("assigned_by")
+  createdAt  DateTime              @default(now()) @map("created_at")
+
+  company ProspectionCompany @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  tag     ProspectionTag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, tagId])
+  @@index([tagId])
+  @@map("prospection_company_tag")
+}
+
+// --- Registre d'opposition (opt-out multi-clé — RGPD) ---
+model ProspectionSuppressionEntry {
+  id              String                     @id @default(uuid()) @db.Uuid
+  type            ProspectionSuppressionType
+  value           String
+  valueNormalized String                     @map("value_normalized")
+  raison          String?
+  createdAt       DateTime                   @default(now()) @map("created_at")
+
+  @@unique([type, valueNormalized])
+  @@index([type, valueNormalized])
+  @@map("prospection_suppression_entry")
+}
+
+// --- Dénominateur autoritatif (Stock Sirene) ---
+model ProspectionStockReference {
+  id               String                       @id @default(uuid()) @db.Uuid
+  departement      String
+  naf              String
+  taille           ProspectionTaille
+  typeOrganisation ProspectionTypeOrganisation? @map("type_organisation")
+  stockAttendu     Int                          @default(0) @map("stock_attendu")
+  stockRefreshedAt DateTime?                    @map("stock_refreshed_at")
+  createdAt        DateTime                     @default(now()) @map("created_at")
+  updatedAt        DateTime                     @updatedAt @map("updated_at")
+
+  @@unique([departement, naf, taille])
+  @@index([departement])
+  @@map("prospection_stock_reference")
+}
+
+// --- Rollup dép→région→France (table Prisma — décision verrouillée) ---
+model ProspectionGeoCoverageStat {
+  id                          String                       @id @default(uuid()) @db.Uuid
+  scope                       ProspectionGeoScope
+  scopeId                     String                       @map("scope_id")
+  dimKey                      String                       @map("dim_key")
+  secteur                     ProspectionSecteur?
+  taille                      ProspectionTaille?
+  typeOrganisation            ProspectionTypeOrganisation? @map("type_organisation")
+  stockAttendu                Int                          @default(0) @map("stock_attendu")
+  collectees                  Int                          @default(0)
+  enrichies                   Int                          @default(0)
+  exploitables                Int                          @default(0)
+  partiels                    Int                          @default(0)
+  nonContactables             Int                          @default(0) @map("non_contactables")
+  pctCompletion               Float                        @default(0) @map("pct_completion")
+  pctExploitableSurCollectees Float                        @default(0) @map("pct_exploitable_sur_collectees")
+  pctExploitableSurStock      Float                        @default(0) @map("pct_exploitable_sur_stock")
+  pctPerime                   Float                        @default(0) @map("pct_perime")
+  refreshedAt                 DateTime?                    @map("refreshed_at")
+  createdAt                   DateTime                     @default(now()) @map("created_at")
+  updatedAt                   DateTime                     @updatedAt @map("updated_at")
+
+  @@unique([scope, scopeId, dimKey])
+  @@index([scope])
+  @@map("prospection_geo_coverage_stat")
+}
+
+// --- Série temporelle (courbes, débit, ETA) ---
+model ProspectionStatsSnapshot {
+  id              String              @id @default(uuid()) @db.Uuid
+  date            DateTime            @db.Date
+  scope           ProspectionGeoScope
+  scopeId         String              @map("scope_id")
+  dimKey          String              @map("dim_key")
+  stockAttendu    Int                 @default(0) @map("stock_attendu")
+  collectees      Int                 @default(0)
+  enrichies       Int                 @default(0)
+  exploitables    Int                 @default(0)
+  partiels        Int                 @default(0)
+  nonContactables Int                 @default(0) @map("non_contactables")
+  createdAt       DateTime            @default(now()) @map("created_at")
+
+  @@unique([date, scope, scopeId, dimKey])
+  @@index([scope, scopeId, date])
+  @@map("prospection_stats_snapshot")
 }

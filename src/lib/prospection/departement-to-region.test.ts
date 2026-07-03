@@ -79,3 +79,36 @@ describe("regionLabelOfDepartement", () => {
     expect(regionLabelOfDepartement("999")).toBe("Région inconnue");
   });
 });
+
+describe("couverture par région (un représentant par région)", () => {
+  // Un département témoin par région → détecte un swap inter-régions.
+  const TEMOINS: Record<string, string> = {
+    "01": "971", // Guadeloupe
+    "02": "972", // Martinique
+    "03": "973", // Guyane
+    "04": "974", // La Réunion
+    "06": "976", // Mayotte
+    "11": "75", // Île-de-France
+    "24": "45", // Centre-Val de Loire (Loiret)
+    "27": "21", // Bourgogne-Franche-Comté (Côte-d'Or)
+    "28": "76", // Normandie (Seine-Maritime)
+    "32": "59", // Hauts-de-France (Nord)
+    "44": "67", // Grand Est (Bas-Rhin)
+    "52": "44", // Pays de la Loire (Loire-Atlantique)
+    "53": "35", // Bretagne (Ille-et-Vilaine)
+    "75": "33", // Nouvelle-Aquitaine (Gironde)
+    "76": "31", // Occitanie (Haute-Garonne)
+    "84": "69", // Auvergne-Rhône-Alpes (Rhône)
+    "93": "13", // PACA (Bouches-du-Rhône)
+    "94": "2A", // Corse
+  };
+  it("chaque région a son témoin correctement rattaché (18 régions)", () => {
+    expect(Object.keys(TEMOINS)).toHaveLength(18);
+    for (const [region, dep] of Object.entries(TEMOINS)) {
+      expect(regionOfDepartement(dep), `dep ${dep}`).toBe(region);
+    }
+  });
+  it("legacy Corse '20' → région 94", () => {
+    expect(regionOfDepartement("20")).toBe("94");
+  });
+});

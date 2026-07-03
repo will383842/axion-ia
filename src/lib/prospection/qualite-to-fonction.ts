@@ -81,11 +81,19 @@ const RULES: ReadonlyArray<{ re: RegExp; m: FonctionMatch }> = [
     },
   },
   {
-    re: /directeur (des )?systemes( d)?( )?information|\bdsi\b|\bcio\b/,
+    re: /directeur (des )?systemes( d)?( )?information|directeur informatique|\bdsi\b|\bcio\b/,
     m: {
       fonctionNormalisee: "directeur_des_systemes_information",
       seniorite: "directeur",
       departementFonctionnel: "dsi",
+    },
+  },
+  {
+    re: /directeur (des affaires )?juridiques?|directeur juridique|\bdaj\b/,
+    m: {
+      fonctionNormalisee: "directeur",
+      seniorite: "directeur",
+      departementFonctionnel: "juridique",
     },
   },
   {
@@ -199,6 +207,22 @@ const RULES: ReadonlyArray<{ re: RegExp; m: FonctionMatch }> = [
       fonctionNormalisee: "responsable_administratif",
       seniorite: "responsable",
       departementFonctionnel: "direction",
+    },
+  },
+  {
+    re: /responsable (des affaires )?juridiques?|responsable juridique|\bjuriste\b|general counsel/,
+    m: {
+      fonctionNormalisee: "autre",
+      seniorite: "responsable",
+      departementFonctionnel: "juridique",
+    },
+  },
+  {
+    re: /responsable informatique|responsable (des )?systemes( d)?( )?information|responsable si\b/,
+    m: {
+      fonctionNormalisee: "responsable_technique",
+      seniorite: "responsable",
+      departementFonctionnel: "dsi",
     },
   },
   {

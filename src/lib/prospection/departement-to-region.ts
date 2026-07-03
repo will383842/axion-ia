@@ -84,6 +84,10 @@ const DEPARTEMENT_TO_REGION: Record<string, RegionCode> = (() => {
   for (const region of Object.keys(REGION_TO_DEPARTEMENTS) as Exclude<RegionCode, "inconnu">[]) {
     for (const dep of REGION_TO_DEPARTEMENTS[region]) map[dep] = region;
   }
+  // Alias legacy : certaines sources émettent encore "20" pour la Corse (avant
+  // le découpage 2A/2B). On le rattache à la région Corse (94) sans l'ajouter à
+  // ALL_DEPARTEMENTS (le découpage officiel reste 2A/2B).
+  map["20"] = "94";
   return map;
 })();
 

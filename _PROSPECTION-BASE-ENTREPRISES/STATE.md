@@ -73,8 +73,12 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 
 ### T2 — Schéma
 
-- 🔲 Migration additive (toutes entités `01-DATA-MODEL`) · 🔲 contraintes UNIQUE dédup
-- 🔲 stub-aware · 🔲 mock Prisma tests · 🔲 GATE · 🔲 vérif adversariale · 🔲 commit
+- ✅ Migration additive `20260704000000_prospection_init` (16 tables, 12 FK, enums préfixés `Prospection`, `SiteSettingCategory += prospection`) — générée offline via `prisma migrate diff` (pas de DB requise), 0 DROP
+- ✅ Contraintes UNIQUE dédup (siren, siret, contact, personKey, cell, tag, suppression, stock, geo, snapshot)
+- ✅ stub-aware (prisma singleton) · ✅ `prisma generate` OK · ✅ schema-contract test (5) au lieu d'integration DB (pas de Postgres local ; enforcement runtime = CI/prod)
+- ✅ `scripts/prospection/isolation-check.ts` + npm script → 0 violation (9231 fichiers)
+- ✅ GATE : vitest 77/77 · eslint · prettier · isolation-check · 🔄 typecheck (hook) · 🔄 adversarial · 🔄 commit
+- ⚠️ Reste T7 : write-side config (`setProspectionConfig`) + audit ; note reconciliation T1 (exploitable défini 2× — scoring hardcodé vs config `exploitableThreshold`, wiring en T5)
 
 ### T3 — Ingestion Stock Sirene ⛔ (gate juridique)
 
