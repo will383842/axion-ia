@@ -303,7 +303,7 @@ const nextConfig: NextConfig = {
         destination: "/:locale/audit/cible",
         permanent: true,
       },
-      // Nettoyage doublons/cannibalisation blog Grenoble 2026-07-03 (audit content-gen).
+      // Nettoyage doublons/cannibalisation blog Grenoble 2026-07-03 (audit contenu).
       // Le moteur avait généré, sur les mêmes mots-clés « X IA Grenoble », d'anciens
       // brouillons courts (2–5 k car., juin) PUIS des versions longues (12–18 k, fin
       // juin-juillet). Les deux restaient publiés → cannibalisation. On archive les
