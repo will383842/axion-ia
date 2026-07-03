@@ -31,6 +31,36 @@ export interface DoctrineViolation {
 const SIREN_REGEX = /\b\d{9}\b|\b\d{14}\b|RCS\s+[A-Z]/i;
 const NAMING_INCORRECT_REGEX = /\b(AxionIA|Axion\s+IA)\b/g; // doit être Axion-IA
 
+// Stats « propriétaires » fabriquées (audit blog 2026-07-03). Le LLM inventait
+// des statistiques auto-attribuées présentées comme des faits (« 89 % … données
+// Axion-IA, évaluations 2024-2025 », « étude interne Axion-IA, n=87 dirigeants »).
+// Invérifiables → risque E-E-A-T. On BLOQUE : aucun chiffre ne doit être attribué
+// à des données internes Axion-IA. `\b` ancré pour ne PAS matcher « ressources
+// Axion-IA » (source ⊂ ressource) ni les mentions brand légitimes.
+const FABRICATED_STAT_PATTERNS: ReadonlyArray<{ re: RegExp; reason: string }> = [
+  {
+    re: /\b(?:données|mesures|chiffres|statistiques?)\s+(?:internes?\s+)?(?:d['’]\s*)?Axion-?IA/gi,
+    reason:
+      "Statistique auto-attribuée à des « données internes Axion-IA » (invérifiable, E-E-A-T). Citer une source publique vérifiable OU formuler qualitativement, sans chiffre inventé.",
+  },
+  {
+    re: /\bsource\s+interne\s+Axion-?IA/gi,
+    reason: "Attribution « source interne Axion-IA » d'une donnée fabriquée. Retirer ou sourcer publiquement.",
+  },
+  {
+    re: /\bétude\s+interne\b/gi,
+    reason: "Renvoi à une « étude interne » (propriétaire, invérifiable). Interdit sauf source publique.",
+  },
+  {
+    re: /\bn\s*=\s*\d{1,5}\b/g,
+    reason: "Taille d'échantillon (« n=87 ») d'une étude interne fabriquée. Retirer ou sourcer publiquement.",
+  },
+  {
+    re: /\bévaluations?\s+20\d{2}(?:\s*[-–]\s*20\d{2})?/gi,
+    reason: "Attribution « évaluations 20XX » d'une étude propriétaire fabriquée.",
+  },
+];
+
 const AXIONIA_KEYWORDS = [
   "axion-ia",
   "méthodologie",
@@ -93,6 +123,19 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
       reason: "Naming brand : utiliser 'Axion-IA' exactement (avec tiret)",
       occurrences: namingMatches.length,
     });
+  }
+
+  // 2bis. Stats « propriétaires » fabriquées (auto-attribuées à Axion-IA).
+  for (const { re, reason } of FABRICATED_STAT_PATTERNS) {
+    const matches = text.match(re);
+    if (matches) {
+      blocking.push({
+        pattern: "stat-fabriquée-Axion-IA",
+        severity: "block",
+        reason,
+        occurrences: matches.length,
+      });
+    }
   }
 
   // 3. Banned phrases (DB ou fallback)

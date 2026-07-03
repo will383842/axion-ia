@@ -24,6 +24,7 @@ import {
   articlePageSeoDefaults,
   qualityFromScores,
   appendSourcesSection,
+  clampTitle,
 } from "../quality/article-quality";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
@@ -87,8 +88,8 @@ const SYSTEM_PROMPT_EXPAND =
 - Le keyword principal DOIT apparaître textuellement AU MOINS 3 fois dans le corps, réparti naturellement.
 - NE PAS inclure de <h1> dans le corps (le titre est rendu séparément par la page).
 - Sous CHAQUE <h2>, commence par une réponse autonome de 40-60 mots citable hors contexte, enveloppée dans <p data-aeo="answer">…</p>. Le développement suit.
-- ANTI-MONOTONIE : alterne les formats. 2-3 encadrés <aside class="callout callout-info|callout-note|callout-warning"><p class="callout-label">…</p><p>…</p></aside>, 1-2 <blockquote>, et AU MOINS 1 chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">+40 %</span><span class="ax-stat-label">…</span></aside> (chiffre RÉEL sourcé). Jamais plus de 3 paragraphes consécutifs sans élément visuel.
-- Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies (INSEE, DARES, BPI France, France Num, McKinsey, Stanford AI Index…), avec au moins 2 statistiques chiffrées sourcées inline — jamais inventées.
+- ANTI-MONOTONIE : alterne les formats. 2-3 encadrés <aside class="callout callout-info|callout-note|callout-warning"><p class="callout-label">…</p><p>…</p></aside>, 1-2 <blockquote>. Un chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">+40 %</span><span class="ax-stat-label">…</span></aside> UNIQUEMENT si un chiffre RÉEL et publiquement sourçable figure dans les faits fournis — sinon N'EN METS AUCUN (un encadré qualitatif vaut mieux qu'un chiffre inventé). Jamais plus de 3 paragraphes consécutifs sans élément visuel.
+- Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies (INSEE, DARES, BPI France, France Num, McKinsey, Stanford AI Index…). Cite un chiffre inline SEULEMENT s'il provient d'une de ces sources publiques et reste attribué à ELLE. INTERDIT ABSOLU : fabriquer une statistique, ou attribuer un chiffre à des « données / mesures / étude internes Axion-IA », « n=… », « évaluations 20XX » (invérifiable → rejet E-E-A-T). En l'absence de chiffre réel, écris qualitativement (« nettement », « une large part »…).
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
 - Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`);
@@ -237,7 +238,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       const titleLen = (candidate.title ?? "").length;
       const titleOk =
         titleLen >= 30 &&
-        titleLen <= 64 &&
+        titleLen <= 60 &&
         keywordPresentInText(effectiveKeyword, candidate.title ?? "");
       // metaTitle gate LENIENT — seulement si un primaryKeyword explicite est
       // garanti (les articles de campagne n'en ont pas toujours).
@@ -250,6 +251,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
     if (!plan) {
       throw new Error("blog-article: plan invalide après 2 tentatives");
     }
+    // Net de sécurité titres (audit 2026-07-03) : si le LLM ignore la consigne
+    // ≤ 60 car. (accepté tel quel au 2e essai), on borne quand même → jamais de
+    // titre tronqué en SERP. La casse/année restent pilotées par le prompt.
+    if (plan.title) plan.title = clampTitle(plan.title, 60);
+    if (plan.metaTitle) plan.metaTitle = clampTitle(plan.metaTitle, 60);
     await logStep(
       input.jobId,
       "plan_generated",
