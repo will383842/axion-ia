@@ -1,0 +1,284 @@
+{
+  "postes": [
+    {
+      "slug": "ingenieur-machine-learning",
+      "num": 45,
+      "titre": "Ingénieur Machine Learning — Grenoble",
+      "categorie": "ia",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 45000,
+      "sal_max": 65000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "concevoir, entraîner et évaluer des modèles ML pour des cas clients concrets",
+        "industrialiser les modèles jusqu'à la mise en production (pas de POC qui dort)",
+        "collaborer avec les consultants pour cadrer la donnée et les métriques métier",
+        "documenter et fiabiliser les pipelines d'entraînement"
+      ],
+      "profil": [
+        "solides bases en ML/stats et en Python (scikit-learn, PyTorch)",
+        "goût pour le concret et la mise en production",
+        "autonomie et communication claire avec des non-techniciens"
+      ],
+      "tech": true,
+      "skills": ["Python", "PyTorch", "scikit-learn", "MLOps", "feature engineering"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "data-engineer",
+      "num": 46,
+      "titre": "Data Engineer — Grenoble",
+      "categorie": "data",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 42000,
+      "sal_max": 60000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "construire des pipelines de données fiables (ingestion, transformation, qualité)",
+        "modéliser et alimenter les entrepôts et lakehouses des clients",
+        "outiller les data scientists et les modèles IA en données propres",
+        "surveiller coûts, fraîcheur et qualité de la donnée"
+      ],
+      "profil": [
+        "maîtrise SQL et Python, expérience d'un orchestrateur (Airflow/Dagster)",
+        "rigueur sur la qualité et la fiabilité des données",
+        "à l'aise avec le cloud (GCP/AWS/Azure)"
+      ],
+      "tech": true,
+      "skills": ["SQL", "Python", "Airflow", "dbt", "data warehouse", "cloud"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "data-scientist",
+      "num": 47,
+      "titre": "Data Scientist — Grenoble",
+      "categorie": "data",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 42000,
+      "sal_max": 62000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "transformer des questions métier en analyses et modèles exploitables",
+        "explorer la donnée, prototyper, mesurer l'impact réel des modèles",
+        "restituer des résultats clairs et actionnables aux dirigeants",
+        "travailler main dans la main avec les data engineers et les consultants"
+      ],
+      "profil": [
+        "solide culture stats/ML et storytelling de la donnée",
+        "Python (pandas, scikit-learn), notebooks et rigueur expérimentale",
+        "curiosité métier et sens de l'impact"
+      ],
+      "tech": true,
+      "skills": ["Python", "pandas", "statistiques", "visualisation", "expérimentation"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "consultant-ia-generative",
+      "num": 48,
+      "titre": "Consultant IA générative (LLM) — Grenoble",
+      "categorie": "conseil",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 45000,
+      "sal_max": 70000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "cadrer et déployer des cas d'usage LLM à fort ROI chez les clients",
+        "concevoir des assistants, agents et automatisations basés sur l'IA générative",
+        "évaluer la qualité, les coûts et les risques des solutions",
+        "former les équipes clientes à un usage sûr et efficace"
+      ],
+      "profil": [
+        "expérience concrète des LLM et de leur mise en production",
+        "sens du conseil, pédagogie et esprit ROI",
+        "veille active sur l'écosystème IA générative"
+      ],
+      "tech": true,
+      "skills": ["LLM", "RAG", "prompt design", "évaluation", "conseil", "automatisation"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "ingenieur-mlops",
+      "num": 49,
+      "titre": "Ingénieur MLOps — Grenoble",
+      "categorie": "ia",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 48000,
+      "sal_max": 68000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "industrialiser le cycle de vie des modèles (CI/CD, versioning, monitoring)",
+        "automatiser déploiement, observabilité et réentraînement des modèles",
+        "garantir fiabilité, coûts et reproductibilité en production",
+        "outiller les équipes ML pour livrer plus vite et plus sûr"
+      ],
+      "profil": [
+        "solide culture DevOps appliquée au ML (Docker, CI/CD, cloud)",
+        "expérience du monitoring et du déploiement de modèles",
+        "obsession de la fiabilité et de l'automatisation"
+      ],
+      "tech": true,
+      "skills": ["Docker", "CI/CD", "MLflow", "Kubernetes", "monitoring", "cloud"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "ingenieur-rag-llm",
+      "num": 50,
+      "titre": "Ingénieur RAG / LLM — Grenoble",
+      "categorie": "ia",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 48000,
+      "sal_max": 70000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "concevoir des systèmes RAG robustes (ingestion, embeddings, recherche, génération)",
+        "améliorer la pertinence et réduire les hallucinations des assistants",
+        "évaluer et optimiser latence, coûts et qualité des réponses",
+        "intégrer les briques LLM dans les produits et outils clients"
+      ],
+      "profil": [
+        "expérience concrète des architectures RAG et des bases vectorielles",
+        "Python et bonne compréhension des embeddings et du NLP",
+        "esprit d'évaluation rigoureux (métriques, tests)"
+      ],
+      "tech": true,
+      "skills": ["RAG", "embeddings", "bases vectorielles", "Python", "NLP", "évaluation"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "product-manager-ia",
+      "num": 51,
+      "titre": "Product Manager IA — Grenoble",
+      "categorie": "produit",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 45000,
+      "sal_max": 65000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "définir la vision et la roadmap de produits IA utiles et rentables",
+        "prioriser sur la base de la valeur client et de l'impact business",
+        "faire le pont entre équipes techniques, consultants et clients",
+        "mesurer l'adoption et itérer sur les vrais besoins"
+      ],
+      "profil": [
+        "expérience produit, idéalement sur des sujets data/IA",
+        "capacité à trancher, à cadrer et à embarquer les équipes",
+        "sens du business et de l'utilisateur"
+      ],
+      "tech": false,
+      "skills": ["product management", "roadmap", "discovery", "analytics", "IA"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "architecte-cloud-ia",
+      "num": 52,
+      "titre": "Architecte Cloud & Données IA — Grenoble",
+      "categorie": "developpement",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 55000,
+      "sal_max": 80000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "concevoir des architectures cloud sûres, scalables et maîtrisées en coûts",
+        "poser les fondations data/IA (stockage, calcul, sécurité, gouvernance)",
+        "arbitrer les choix techniques avec les clients et les équipes",
+        "garantir performance, sécurité et sobriété des plateformes"
+      ],
+      "profil": [
+        "solide expérience d'architecture cloud (GCP/AWS/Azure)",
+        "vision data/IA de bout en bout et sens de la sécurité",
+        "capacité à expliquer et à convaincre"
+      ],
+      "tech": true,
+      "skills": ["architecture cloud", "sécurité", "IaC", "données", "scalabilité"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "consultant-data-strategie",
+      "num": 53,
+      "titre": "Consultant Data & Stratégie — Grenoble",
+      "categorie": "conseil",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 45000,
+      "sal_max": 68000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "aider les dirigeants à bâtir une stratégie data et IA réaliste",
+        "auditer la maturité data et prioriser les chantiers à fort ROI",
+        "cadrer la gouvernance, les indicateurs et la feuille de route",
+        "accompagner la conduite du changement jusqu'aux résultats"
+      ],
+      "profil": [
+        "expérience du conseil data/IA et de la relation dirigeants",
+        "esprit d'analyse, pédagogie et sens du ROI",
+        "capacité à passer de la stratégie à l'exécution"
+      ],
+      "tech": false,
+      "skills": ["stratégie data", "audit", "gouvernance", "ROI", "conduite du changement"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    },
+    {
+      "slug": "prompt-engineer",
+      "num": 54,
+      "titre": "Prompt Engineer / AI Ops — Grenoble",
+      "categorie": "ia",
+      "emploi": "FULL_TIME",
+      "type_loc": "site",
+      "sal_min": 38000,
+      "sal_max": 55000,
+      "sal_note": "selon expérience",
+      "missions": [
+        "concevoir, tester et fiabiliser des prompts et chaînes d'IA générative",
+        "mettre en place l'évaluation systématique de la qualité des réponses",
+        "optimiser coûts, latence et robustesse des assistants en production",
+        "outiller et documenter les bonnes pratiques pour les équipes"
+      ],
+      "profil": [
+        "excellente compréhension des LLM et de leurs limites",
+        "rigueur d'évaluation et goût de l'expérimentation",
+        "à l'aise entre technique et rédaction claire"
+      ],
+      "tech": true,
+      "skills": ["prompt design", "évaluation LLM", "AI ops", "automatisation", "documentation"],
+      "group": "grenoble",
+      "workMode": "hybrid",
+      "multiCity": false,
+      "city": "Grenoble"
+    }
+  ]
+}
