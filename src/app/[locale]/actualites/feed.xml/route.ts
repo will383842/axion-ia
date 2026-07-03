@@ -17,6 +17,7 @@ import { prisma } from "@/lib/prisma";
 import { routing, type Locale } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
 import { SITE_URL } from "@/lib/seo";
+import { BRAND } from "@/lib/brand";
 
 // Force dynamic : fenêtre 48h glissante exige éval par request (CDN cache
 // 5min derrière Cloudflare via Cache-Control).
@@ -42,6 +43,8 @@ function escapeXml(s: string): string {
 
 interface NewsRow {
   publishedAt: Date | null;
+  newsCategory: string | null;
+  author: { name: string } | null;
   translations: Array<{ slug: string; title: string; excerpt: string | null }>;
 }
 
@@ -61,6 +64,8 @@ async function fetchRecentNewsRows(locale: Locale): Promise<NewsRow[]> {
       take: ACTUALITES_FEED_MAX_ITEMS,
       select: {
         publishedAt: true,
+        newsCategory: true,
+        author: { select: { name: true } },
         translations: {
           where: { locale },
           select: { slug: true, title: true, excerpt: true },
@@ -84,18 +89,29 @@ export async function GET(_req: Request, { params }: RouteContext) {
 
   const rows = await fetchRecentNewsRows(loc);
 
+  // lastBuildDate = date du plus récent item (rows triées desc), sinon now.
+  const newestDate = rows.find((r) => r.publishedAt)?.publishedAt ?? new Date();
+
   const items = rows
     .map((row) => {
       const t = row.translations[0];
       if (!t || !t.slug || !row.publishedAt) return null;
       const link = `${SITE_URL}/${locale}/actualites/${t.slug}`;
       const pub = row.publishedAt.toUTCString();
+      const iso = row.publishedAt.toISOString();
       const desc = t.excerpt ?? "";
+      // dc:creator = auteur réel si chargé, sinon nom éditorial de la marque.
+      const creator = row.author?.name ?? BRAND.name;
+      const categoryLine = row.newsCategory
+        ? `\n      <category>${escapeXml(row.newsCategory)}</category>`
+        : "";
       return `    <item>
       <title>${escapeXml(t.title)}</title>
       <link>${link}</link>
       <guid isPermaLink="true">${link}</guid>
       <pubDate>${pub}</pubDate>
+      <dc:date>${iso}</dc:date>
+      <dc:creator>${escapeXml(creator)}</dc:creator>${categoryLine}
       <description>${escapeXml(desc)}</description>
     </item>`;
     })
@@ -103,12 +119,14 @@ export async function GET(_req: Request, { params }: RouteContext) {
     .join("\n");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>Axion-IA · Actualités ${locale.toUpperCase()}</title>
     <link>${SITE_URL}/${locale}/actualites</link>
     <description>${isFr ? "Actualités IA business — analyse opérationnelle, marché, réglementation (fenêtre 48h glissante)." : "AI business news — operational analysis, market, regulation (48h sliding window)."}</description>
     <language>${locale === "fr" ? "fr-FR" : "en-US"}</language>
+    <lastBuildDate>${newestDate.toUTCString()}</lastBuildDate>
+    <ttl>60</ttl>
     <atom:link href="${SITE_URL}/${locale}/actualites/feed.xml" rel="self" type="application/rss+xml" />
 ${items}
   </channel>

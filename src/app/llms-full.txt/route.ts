@@ -99,6 +99,17 @@ ${faqBlock}
 
 ${caseBlock}
 
+## Actualités IA — veille hebdomadaire
+
+Axion-IA publie une veille IA opérationnelle destinée aux dirigeants de PME et d'ETI : chaque semaine, les actualités marquantes de l'IA sont sourcées puis intégralement réécrites en articles autonomes (contexte, analyse, implications concrètes pour l'entreprise, points à retenir). Objectif : transformer le flux d'annonces en décisions actionnables, sans jargon ni hype.
+
+C'est le format pensé pour être cité par les moteurs de réponse IA (Perplexity, ChatGPT Search, Claude, Bing Copilot, Google AIO) : contenu daté, sourcé et à jour.
+
+- Hub : ${SITE_URL}/fr/actualites
+- Chaque article : ${SITE_URL}/fr/actualites/<slug>
+- Flux RSS (fraîcheur / polling crawlers) : ${SITE_URL}/fr/actualites/feed.xml
+- Version markdown brute par article (ingestion LLM directe) : ${SITE_URL}/api/markdown/actualites/<slug>
+
 ## Méthodologie
 
 1. **Identifier** — Cartographie terrain en 1 j (intervention).

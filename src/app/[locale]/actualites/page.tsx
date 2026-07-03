@@ -16,7 +16,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Rss, Newspaper, ShieldCheck, CalendarClock } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -59,6 +59,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de PME et ETI : décisions Search Console, sorties produits Anthropic/Mistral/OpenAI, retours terrain.",
     alternates: { fr: "/actualites", en: "/actualites" },
+    // SEO news 2026 — autodiscovery du flux RSS de la section (Feedly/Apple News/
+    // navigateurs) via <link rel="alternate" type="application/rss+xml">.
+    rssFeed: `${SITE_URL}/fr/actualites/feed.xml`,
   });
   // Anti-yoyo (audit indexation 2026-06-17) : au build GH Actions
   // (DATABASE_URL=stub.invalid), `countPublishedNews()` renvoie 0 → on figerait un
@@ -81,6 +84,9 @@ interface NewsItem {
   excerpt: string | null;
   publishedAt: Date | null;
   readingTime: number | null;
+  featuredImage: string | null;
+  featuredImageAlt: string | null;
+  newsCategory: string | null;
 }
 
 async function fetchPublishedNews(): Promise<NewsItem[]> {
@@ -96,6 +102,9 @@ async function fetchPublishedNews(): Promise<NewsItem[]> {
       select: {
         publishedAt: true,
         readingTime: true,
+        featuredImage: true,
+        featuredImageAltFr: true,
+        newsCategory: true,
         translations: {
           where: { locale: "fr" },
           select: { slug: true, title: true, excerpt: true },
@@ -113,6 +122,9 @@ async function fetchPublishedNews(): Promise<NewsItem[]> {
           excerpt: t.excerpt,
           publishedAt: r.publishedAt,
           readingTime: r.readingTime,
+          featuredImage: r.featuredImage,
+          featuredImageAlt: r.featuredImageAltFr,
+          newsCategory: r.newsCategory,
         };
       })
       .filter((x): x is NewsItem => x !== null);
@@ -188,6 +200,42 @@ export default async function ActualitesHub({ params }: Props) {
     },
   });
 
+  // FAQ hub — AEO/GEO (réponses answer-first citables) + parité /blog. FAQPage
+  // JSON-LD émis pour l'extraction par les moteurs de réponse (rich-result
+  // FAQPage déprécié Google mai 2026, mais toujours exploité Perplexity/Claude/AIO).
+  const faqItems = [
+    {
+      question: "À quelle fréquence les actualités IA sont-elles publiées ?",
+      answer:
+        "En continu : le pipeline traite chaque jour les actualités IA marquantes des flux de référence, dans la limite du volume éditorial quotidien. La veille reste fraîche, sans hype.",
+    },
+    {
+      question: "Ces actualités sont-elles sourcées et fiables ?",
+      answer:
+        "Oui. Chaque brève part d'une source primaire réelle, puis est intégralement réécrite en analyse autonome, avec attribution machine (JSON-LD isBasedOn) et liens d'autorité. Aucune copie, aucune donnée inventée.",
+    },
+    {
+      question: "Pour qui est conçue cette veille IA ?",
+      answer:
+        "Pour les dirigeants de PME et d'ETI : l'angle est toujours l'impact opérationnel concret — ce que l'actualité change pour vos arbitrages —, pas la prouesse technique.",
+    },
+    {
+      question: "Comment suivre les actualités IA d'Axion-IA ?",
+      answer:
+        "Via cette page, mise à jour en continu, ou en vous abonnant au flux RSS de la section (axion-ia.com/fr/actualites/feed.xml) depuis votre lecteur (Feedly, Apple News…).",
+    },
+  ];
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${SITE_URL}/fr/actualites#faq`,
+    mainEntity: faqItems.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  } as const;
+
   return (
     <>
       <Section tone="paper" className="pt-8 lg:pt-12">
@@ -209,17 +257,56 @@ export default async function ActualitesHub({ params }: Props) {
                 <span className="italic">IA pour dirigeants</span>
               </em>
             </h1>
-            <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+            <p
+              data-answer
+              className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
+            >
               Veille hebdomadaire sur les sorties produits, mises à jour Search Console et décisions
               techniques qui impactent l&apos;IA opérationnelle des PME et ETI. Pas de hype —
               uniquement ce qui change vos arbitrages cette semaine.
             </p>
+
+            {items.length > 0 ? (
+              <ul className="text-fg-soft mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                <li className="inline-flex items-center gap-1.5">
+                  <Newspaper className="text-terracotta h-4 w-4" aria-hidden="true" />
+                  {items.length} actualité{items.length > 1 ? "s" : ""} IA
+                </li>
+                <li className="inline-flex items-center gap-1.5">
+                  <CalendarClock className="text-terracotta h-4 w-4" aria-hidden="true" />
+                  Mise à jour en continu
+                </li>
+                <li className="inline-flex items-center gap-1.5">
+                  <ShieldCheck className="text-terracotta h-4 w-4" aria-hidden="true" />
+                  Sources primaires citées
+                </li>
+              </ul>
+            ) : null}
           </div>
 
           {items.length === 0 ? (
-            <p className="text-fg-soft mt-12 text-base">
-              Aucune actualité publiée pour le moment. Revenez bientôt — la veille est hebdomadaire.
-            </p>
+            <div className="border-border/60 bg-halo-warm/40 mt-12 rounded-2xl border px-6 py-14 text-center">
+              <Newspaper className="text-terracotta mx-auto h-8 w-8" aria-hidden="true" />
+              <p className="text-fg mt-4 text-lg font-medium">La veille arrive</p>
+              <p className="text-fg-soft mx-auto mt-2 max-w-md text-base">
+                Les premières actualités IA sont en préparation. Abonnez-vous au flux pour être
+                prévenu, ou explorez le blog éditorial en attendant.
+              </p>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm">
+                <a
+                  href="/fr/actualites/feed.xml"
+                  className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1.5 font-medium"
+                >
+                  <Rss className="h-4 w-4" aria-hidden="true" /> S&apos;abonner au flux RSS
+                </a>
+                <Link
+                  href="/blog"
+                  className="text-fg-soft hover:text-fg inline-flex items-center gap-1 underline"
+                >
+                  Voir le blog <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
           ) : (
             <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {items.map((item) => {
@@ -231,6 +318,9 @@ export default async function ActualitesHub({ params }: Props) {
                       href={`/actualites/${item.slug}`}
                       title={item.title}
                       excerpt={item.excerpt ?? ""}
+                      compact
+                      {...(item.featuredImage ? { imageUrl: item.featuredImage } : {})}
+                      {...(item.featuredImageAlt ? { imageAlt: item.featuredImageAlt } : {})}
                       {...(publishedStr ? { publishedAt: publishedStr } : {})}
                       {...(readingStr ? { readingTime: readingStr } : {})}
                     />
@@ -240,7 +330,13 @@ export default async function ActualitesHub({ params }: Props) {
             </ul>
           )}
 
-          <div className="mt-16 flex flex-wrap items-center gap-4 text-sm">
+          <div className="mt-16 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+            <a
+              href="/fr/actualites/feed.xml"
+              className="text-fg-soft hover:text-fg inline-flex items-center gap-1.5"
+            >
+              <Rss className="h-4 w-4" aria-hidden="true" /> Flux RSS des actualités
+            </a>
             <Link
               href="/blog"
               className="text-fg-soft hover:text-fg inline-flex items-center gap-1 underline"
@@ -248,6 +344,29 @@ export default async function ActualitesHub({ params }: Props) {
               Voir aussi le blog éditorial <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </div>
+
+          {/* FAQ hub — réponses answer-first citables (AEO/GEO). Chaque réponse en
+              .faq-answer (speakable-ready). Rendu seulement si des news existent. */}
+          {items.length > 0 ? (
+            <section className="mt-20 max-w-3xl" aria-labelledby="actualites-faq-title">
+              <h2
+                id="actualites-faq-title"
+                className="text-fg text-2xl font-medium sm:text-3xl"
+              >
+                Questions fréquentes
+              </h2>
+              <dl className="mt-8 space-y-6">
+                {faqItems.map((f) => (
+                  <div key={f.question} className="border-border/60 border-b pb-6">
+                    <dt className="text-fg text-base font-medium">{f.question}</dt>
+                    <dd className="faq-answer text-fg-soft mt-2 text-base leading-relaxed">
+                      {f.answer}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          ) : null}
         </Container>
       </Section>
 
@@ -265,6 +384,9 @@ export default async function ActualitesHub({ params }: Props) {
 
       <JsonLd data={collectionJsonLd} />
       <JsonLd data={itemListJsonLd} />
+      {/* FAQPage émis uniquement quand la FAQ est réellement rendue (items>0) —
+          cohérence schéma↔contenu (anti rich-results mismatch). */}
+      {items.length > 0 ? <JsonLd data={faqJsonLd} /> : null}
     </>
   );
 }

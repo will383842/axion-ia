@@ -74,6 +74,8 @@ export function GET() {
 - [Blog](${SITE_URL}/fr/blog) — articles tier-1 indexable (méthodologie, cas d'usage, retours terrain). Chaque article rédigé après une mission réelle, pensé pour rester actionnable 12 mois.
 - [Catégories du blog](${SITE_URL}/fr/blog/categorie) — hubs thématiques (formations IA, coaching 1-to-1, audits IA, implémentation & automatisation, sites web augmentés). Hub par thème : ${SITE_URL}/fr/blog/categorie/{slug}.
 - [Flux RSS du blog](${SITE_URL}/fr/blog/feed.xml) — flux machine-readable des derniers articles (signal de fraîcheur / polling crawlers).
+- [Actualités IA](${SITE_URL}/fr/actualites) — veille hebdomadaire IA opérationnelle pour dirigeants de PME/ETI : articles d'actualité sourcés puis réécrits (analyse, implications concrètes, à retenir). Chaque article dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/actualites/{slug}.
+- [Flux RSS Actualités IA](${SITE_URL}/fr/actualites/feed.xml) — flux machine-readable de la veille (signal de fraîcheur / polling crawlers).
 - [FAQ](${SITE_URL}/fr/faq) — Q/R structurées, ${SITE_URL}/fr/faq/par-thematique pour navigation.
 - [Glossaire](${SITE_URL}/fr/glossaire) — termes IA opérationnelle (RAG, fine-tuning, agents, etc.).
 - [Guide IA pour entreprises 2026](${SITE_URL}/fr/guide-ia) — vue d'ensemble enjeux + roadmap.
