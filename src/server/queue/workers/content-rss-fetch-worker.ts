@@ -55,6 +55,65 @@ function hashItem(url: string, title: string): string {
   return crypto.createHash("sha256").update(`${url}::${title}`).digest("hex").slice(0, 16);
 }
 
+// Filtre thématique IA (2026-07-03) — les flux GÉNÉRALISTES (`verticale=null` :
+// Capital, Challenges…) injectent des news hors-sujet (politique, faits divers,
+// feux de forêt) dans une page « Actualités IA ». On EXIGE qu'un item de ces flux
+// matche un terme IA/tech AVANT de créer un job — sinon on le consomme (marqué
+// "seen") sans générer, économisant tokens LLM + budget/jour. Les flux
+// VERTICALISÉS (`verticale` non-null) sont curés → traités sans ce filtre.
+const AI_TOPIC_PHRASES: ReadonlyArray<string> = [
+  "intelligence artificielle",
+  "artificial intelligence",
+  "machine learning",
+  "apprentissage automatique",
+  "deep learning",
+  "apprentissage profond",
+  "réseau de neurones",
+  "réseaux de neurones",
+  "modèle de langage",
+  "large language model",
+  "ia générative",
+  "generative ai",
+  "chatgpt",
+  "openai",
+  "anthropic",
+  "gemini",
+  "mistral ai",
+  "copilot",
+  "nvidia",
+  "prompt engineering",
+  "algorithme",
+  "automatisation",
+  "agent ia",
+  "agents ia",
+  "agentique",
+  "data science",
+  "science des données",
+  "vision par ordinateur",
+  "computer vision",
+  "hugging face",
+  "perplexity",
+  "midjourney",
+  "cybersécurité",
+  "cloud computing",
+  "chatbot",
+  "no-code",
+  "saas",
+];
+// Tokens courts → frontière de mot uniquement (évite « via », « média », « biais »,
+// et surtout PAS « ai » qui matcherait « j'ai »/« vrai » en français).
+const AI_TOPIC_WORD_RE = /\b(ia|llm|llms|gpt|genai|agi)\b/i;
+
+function isAiRelevant(...texts: ReadonlyArray<string | null | undefined>): boolean {
+  const hay = texts
+    .filter((t): t is string => Boolean(t))
+    .join(" ")
+    .toLowerCase();
+  if (!hay) return false;
+  if (AI_TOPIC_WORD_RE.test(hay)) return true;
+  return AI_TOPIC_PHRASES.some((p) => hay.includes(p));
+}
+
 async function fetchSource(source: RssSource): Promise<ReadonlyArray<FeedItem>> {
   if (!source.enabled) return [];
   const controller = new AbortController();
@@ -214,6 +273,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const freshnessCutoffMs = Date.now() - maxAgeDays * 86_400_000;
 
   let totalEnqueued = 0;
+  let offTopicSkipped = 0;
   const newSeen: string[] = [];
 
   // 1. Collecte de TOUS les items nouveaux (non vus) de TOUS les flux + santé source.
@@ -243,6 +303,15 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     for (const item of items) {
       const hash = hashItem(item.link, item.title);
       if (seenHashes.has(hash)) continue;
+      // Garde-fou hors-sujet : sur les flux généralistes (verticale=null), on
+      // n'accepte que les items IA/tech. Item non pertinent → consommé (seen) sans
+      // génération, jamais reconsidéré.
+      if (!source.verticale && !isAiRelevant(item.title, item.summary)) {
+        seenHashes.add(hash);
+        newSeen.push(hash);
+        offTopicSkipped++;
+        continue;
+      }
       candidates.push({ item, source, hash, ts: item.published ? item.published.getTime() : null });
     }
   }
@@ -323,6 +392,11 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     totalEnqueued++;
   }
 
+  if (offTopicSkipped > 0) {
+    console.log(
+      `[rss-fetch-worker] ${offTopicSkipped} item(s) hors-sujet IA écarté(s) des flux généralistes`,
+    );
+  }
   if (dropped > 0) {
     console.log(`[rss-fetch-worker] ${dropped} item(s) périmé(s) (> ${maxAgeDays}j) abandonné(s)`);
   }
