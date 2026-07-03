@@ -234,6 +234,44 @@ export async function syncCitiesUniverse(): Promise<{
   return syncCityUniverseAndCoverage();
 }
 
+export interface LandingIndexabilityResult {
+  byTier: Array<{ tier: number; total: number; indexable: number }>;
+  totalCities: number;
+  totalIndexable: number;
+}
+
+/**
+ * Indexabilité des PAGES VILLES statiques (« couche A » landing SEO), par tier,
+ * calculée depuis la SSOT statique `VILLES` + `isVilleIndexable` (cap T1/T2 +
+ * curées). Distinct de la couverture par ARTICLES content-gen (« couche B »,
+ * getCitiesStats). Permet de piloter la stratégie d'indexation par tier.
+ */
+export async function getLandingIndexabilityByTier(): Promise<LandingIndexabilityResult> {
+  await requireAdmin();
+  const { VILLES, isVilleIndexable } = await import("@/content/villes");
+  const tierOf = (p: number): number => (p >= 100_000 ? 1 : p >= 20_000 ? 2 : p >= 10_000 ? 3 : 4);
+  const agg = new Map<number, { total: number; indexable: number }>([
+    [1, { total: 0, indexable: 0 }],
+    [2, { total: 0, indexable: 0 }],
+    [3, { total: 0, indexable: 0 }],
+    [4, { total: 0, indexable: 0 }],
+  ]);
+  let totalIndexable = 0;
+  for (const v of VILLES) {
+    const e = agg.get(tierOf(v.population))!;
+    e.total += 1;
+    if (isVilleIndexable(v.slug)) {
+      e.indexable += 1;
+      totalIndexable += 1;
+    }
+  }
+  return {
+    byTier: [1, 2, 3, 4].map((tier) => ({ tier, ...agg.get(tier)! })),
+    totalCities: VILLES.length,
+    totalIndexable,
+  };
+}
+
 export async function exportCitiesCSV(params: {
   deptCode?: string;
   regionSlug?: string;

@@ -260,10 +260,22 @@ export function isPremiumVille(v: Ville): boolean {
 // d'indexation effective (robots des pages + contenu du sitemap) passe, elle, par
 // `isVilleIndexable` ⟶ `RANKED_INDEXABLE` (sous-ensemble unique + drip).
 //
+// P0 2026-07-03 (décision Will) — CAP INDEXATION T1/T2 + CURÉES. Concentration
+// du budget de crawl sur les villes à valeur pendant que l'infra d'indexation
+// (backlinks, soumission sitemap GSC, cache CDN) est en cours de correction.
+// On restreint la cohorte indexable aux villes PREMIUM : `isPremiumVille` = a un
+// `copy` ET (population ≥ 20 000 [= T1/T2, 455 villes] OU réécriture manuelle
+// gold `PREMIUM_REWRITE_SLUGS` [~25 petites villes curées]). Résultat ≈ 480
+// villes indexées ; les ~1336 petites villes auto-templatées (T3/T4 non curées)
+// passent `noindex,follow` + hors sitemap — mais restent live, crawlables,
+// maillées et citables par les IA (AEO). ZÉRO risque doorway, crawl concentré.
+// RÉVERSIBLE : retirer `isPremiumVille(v) &&` ci-dessous (retour à copy+unique,
+// ~1816 indexées) quand l'autorité du site sera montée.
+//
 // Tri par priorité : premium d'abord (population décroissante), puis le reste.
 // Ordre déterministe et stable entre builds (tri par pop puis slug en tie-break).
 const RANKED_INDEXABLE: ReadonlyArray<Ville> = VILLES.filter(
-  (v) => !!v.copy && UNIQUE_VILLE_SLUGS.has(v.slug),
+  (v) => isPremiumVille(v) && UNIQUE_VILLE_SLUGS.has(v.slug),
 ).sort((a, b) => {
   const pa = isPremiumVille(a);
   const pb = isPremiumVille(b);

@@ -15,6 +15,7 @@ import {
 import type { AdminTableColumn } from "@/components/admin/ui";
 import {
   getCitiesStats,
+  getLandingIndexabilityByTier,
   listCities,
   syncCitiesUniverse,
   type CityRow,
@@ -90,8 +91,9 @@ export async function CitiesCoverageV2({
     await syncCitiesUniverse();
   }
 
-  const [stats, { cities, total, totalPages }] = await Promise.all([
+  const [stats, landing, { cities, total, totalPages }] = await Promise.all([
     getCitiesStats(),
+    getLandingIndexabilityByTier(),
     listCities({
       page,
       pageSize: 50,
@@ -211,6 +213,29 @@ export async function CitiesCoverageV2({
                 Tier {row.tier} — {row.label}
               </span>
               <div className="flex-1">{coverageBar(row.covered, row.total)}</div>
+            </div>
+          ))}
+        </div>
+      </AdminCard>
+
+      {/* Couche A — pages villes (landing SEO) indexables par tier (P0 2026-07-03).
+          Distinct de la couverture par ARTICLES content-gen ci-dessus (couche B). */}
+      <AdminCard className="mb-[var(--space-admin-5)]">
+        <h2 className="admin-h2">Pages villes (landing SEO) — indexables par tier</h2>
+        <p className="admin-meta-block mb-[var(--space-admin-3)]">
+          {landing.totalIndexable} / {landing.totalCities} pages villes indexées (cap T1/T2 +
+          curées). À distinguer de la couverture par articles content-gen ci-dessus : ici ce sont
+          les landing pages `/implantations/…`, indexées seulement si premium (pop ≥ 20k ou réécrite
+          main) — anti-doorway + concentration du crawl. Les autres restent live & crawlables mais
+          `noindex`.
+        </p>
+        <div className="flex flex-col gap-[var(--space-admin-3)]">
+          {landing.byTier.map((row) => (
+            <div key={row.tier} className="flex items-center gap-[var(--space-admin-4)]">
+              <span className="w-28 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
+                Tier {row.tier} — {tierLabel(row.tier)}
+              </span>
+              <div className="flex-1">{coverageBar(row.indexable, row.total)}</div>
             </div>
           ))}
         </div>
