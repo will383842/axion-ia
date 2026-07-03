@@ -119,8 +119,16 @@ export async function enqueueIndexingForTier1(
     }
   }
 
-  // Google Indexing API — gated par flag explicite, type dérivé du lifecycleEvent
-  const googleEnabled = process.env.GOOGLE_INDEXING_API_ENABLED === "true";
+  // Google Indexing API — l'API n'honore officiellement QUE JobPosting /
+  // BroadcastEvent. Pour un ARTICLE, Google accepte le ping (200) mais
+  // n'indexe rien → quota 200/j gaspillé (les offres en ont besoin) + hors ToS
+  // (risque de révocation). On exige donc un opt-in EXPLICITE distinct
+  // `GOOGLE_INDEXING_ARTICLES=true` (default off), EN PLUS du master
+  // `GOOGLE_INDEXING_API_ENABLED`. Conséquence : activer le master (pour Google
+  // for Jobs, cf. `enqueueGoogleIndexingForUrls`) ne fait PAS pinger les articles.
+  const googleEnabled =
+    process.env.GOOGLE_INDEXING_API_ENABLED === "true" &&
+    process.env.GOOGLE_INDEXING_ARTICLES === "true";
   if (googleEnabled) {
     const queue = getGoogleIndexingQueue();
     if (queue) {
@@ -192,8 +200,13 @@ export async function enqueueIndexingForUrls(
     }
   }
 
-  // Google Indexing API — 1 job par URL (quota 200/jour réparti par appel)
-  const googleEnabled = process.env.GOOGLE_INDEXING_API_ENABLED === "true";
+  // Google Indexing API — chemin CONTENU (articles/KB). Même garde que
+  // `enqueueIndexingForTier1` : opt-in explicite `GOOGLE_INDEXING_ARTICLES=true`
+  // en plus du master (Google ignore les non-JobPosting → ne pas brûler le
+  // quota). 1 job par URL (quota 200/jour réparti par appel).
+  const googleEnabled =
+    process.env.GOOGLE_INDEXING_API_ENABLED === "true" &&
+    process.env.GOOGLE_INDEXING_ARTICLES === "true";
   if (googleEnabled) {
     const queue = getGoogleIndexingQueue();
     if (queue) {
@@ -219,6 +232,54 @@ export async function enqueueIndexingForUrls(
   }
 
   return { indexnowEnqueued, googleEnqueued };
+}
+
+/**
+ * Variante GOOGLE-ONLY : enqueue uniquement l'Indexing API Google (pas IndexNow)
+ * pour une liste d'URLs déjà construites. Utile quand IndexNow est déjà pingé par
+ * un autre canal (ex. offres d'emploi via `pingIndexNow` synchrone) et qu'on veut
+ * AJOUTER Google sans doublonner le ping IndexNow.
+ *
+ * Cas d'usage principal : `JobPosting` — l'un des deux seuls types que Google
+ * honore officiellement via l'Indexing API (avec `BroadcastEvent`). Contrairement
+ * aux Articles, pinger une offre d'emploi ici a un effet réel sur Google for Jobs.
+ *
+ * Gardé par `GOOGLE_INDEXING_API_ENABLED === "true"` : no-op complet sinon.
+ * Toujours safe (fire-and-forget). N'échoue jamais.
+ */
+export async function enqueueGoogleIndexingForUrls(
+  input: EnqueueIndexingForUrlsInput,
+): Promise<{ googleEnqueued: boolean }> {
+  if (process.env.GOOGLE_INDEXING_API_ENABLED !== "true") {
+    return { googleEnqueued: false };
+  }
+  const validUrls = input.urls.filter((u) => typeof u === "string" && u.length > 0);
+  if (validUrls.length === 0) return { googleEnqueued: false };
+
+  const event: IndexingLifecycleEvent = input.lifecycleEvent ?? "publish";
+  const queue = getGoogleIndexingQueue();
+  if (!queue) return { googleEnqueued: false };
+
+  const type = eventToGoogleType(event);
+  let googleEnqueued = false;
+  for (let i = 0; i < validUrls.length; i++) {
+    const url = validUrls[i];
+    if (typeof url !== "string") continue;
+    try {
+      await queue.add(
+        "ping",
+        { url, type },
+        { jobId: `google-indexing-${input.entityId}-${i}-${event}` },
+      );
+      googleEnqueued = true;
+    } catch (err) {
+      console.warn(
+        `[indexing-enqueue] google-only add failed for ${input.entityId} url ${url}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+  return { googleEnqueued };
 }
 
 /** Test-only : reset les singletons queue (sinon les mocks BullMQ leakent entre tests). */

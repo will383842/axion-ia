@@ -178,6 +178,12 @@ export const routing = defineRouting({
     "/implementation/no-code": "/implementation/no-code",
 
     // Module 3 — Catalogue par fonction d'entreprise (8 catégories)
+    // Hub par-fonction (audit maillage 2026-07-03 : de-orphelinise les pages
+    // [slug] qui n'avaient aucun lien entrant HTML ni page hub).
+    "/implementation/par-fonction": {
+      fr: "/implementation/par-fonction",
+      en: "/implementation/by-function",
+    },
     "/implementation/par-fonction/[slug]": {
       fr: "/implementation/par-fonction/[slug]",
       en: "/implementation/by-function/[slug]",

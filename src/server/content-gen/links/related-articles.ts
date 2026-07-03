@@ -45,6 +45,14 @@ interface FindRelatedOptions {
   /** Tier filter : exclut tier-2/tier-3 par défaut (anti-doorway HCU). */
   readonly tier1Only?: boolean;
   /**
+   * Titre de l'article courant (audit maillage 2026-07-03). Si fourni, la
+   * sélection est ordonnée par PERTINENCE (recouvrement de mots-clés du titre)
+   * et non plus seulement par catégorie + date — utile car beaucoup d'articles
+   * partagent la catégorie fourre-tout « Cas d'usage » (tri catégorie inopérant).
+   * ADDITIF : sans ce champ, comportement inchangé (catégorie puis date desc).
+   */
+  readonly currentTitle?: string;
+  /**
    * Refonte 2026-06-22 — types d'articles à inclure (maillage cross-type).
    * ADDITIF : si absent (défaut), comportement strictement inchangé = articles
    * blog (DB via `listPublishedArticles` + FS legacy). Si fourni, on requête
@@ -63,12 +71,89 @@ export function segmentForArticleType(type: RelatedArticleType): "blog" | "guide
   return "blog";
 }
 
+const RELATED_STOPWORDS = new Set([
+  "les",
+  "des",
+  "une",
+  "pour",
+  "avec",
+  "dans",
+  "sur",
+  "par",
+  "aux",
+  "vos",
+  "nos",
+  "que",
+  "qui",
+  "the",
+  "and",
+  "with",
+  "for",
+  "your",
+  "comment",
+  "pourquoi",
+  "quel",
+  "quelle",
+  "quels",
+  "quelles",
+]);
+
+/** Mots de contenu (≥4 lettres, hors stopwords) d'un titre, en minuscules. */
+function titleTokens(title: string | null | undefined): Set<string> {
+  if (!title) return new Set();
+  const out = new Set<string>();
+  for (const raw of title.toLowerCase().split(/\s+/)) {
+    const w = raw.replace(/[^\p{L}\p{N}-]/gu, "");
+    if (w.length >= 4 && !RELATED_STOPWORDS.has(w)) out.add(w);
+  }
+  return out;
+}
+
+/**
+ * Trie les suggestions par pertinence (audit maillage 2026-07-03) :
+ *   1. recouvrement de mots-clés du titre (si `currentTitle` fourni) — desc,
+ *   2. même catégorie prioritaire,
+ *   3. date de publication desc.
+ * Sans `currentTitle`, dégénère en (catégorie, date) = comportement historique.
+ */
+function sortByRelevance<T extends { category: string | null; title: string; publishedAt: string }>(
+  items: T[],
+  currentCategory: string | null | undefined,
+  currentTitle: string | undefined,
+): T[] {
+  const base = currentTitle ? titleTokens(currentTitle) : null;
+  const overlap = (title: string): number => {
+    if (!base || base.size === 0) return 0;
+    let n = 0;
+    for (const tok of titleTokens(title)) if (base.has(tok)) n++;
+    return n;
+  };
+  return [...items].sort((a, b) => {
+    const ov = overlap(b.title) - overlap(a.title);
+    if (ov !== 0) return ov;
+    if (currentCategory) {
+      const aSame = a.category === currentCategory ? 0 : 1;
+      const bSame = b.category === currentCategory ? 0 : 1;
+      if (aSame !== bSame) return aSame - bSame;
+    }
+    return b.publishedAt.localeCompare(a.publishedAt);
+  });
+}
+
 /**
  * Trouve articles connexes (DB + FS merged, tri catégorie + date).
  * Tier-1 only par défaut (anti-doorway HCU 2024 — pas de noindex en suggested).
  */
 export async function findRelatedArticles(opts: FindRelatedOptions): Promise<RelatedArticleItem[]> {
-  const { currentSlug, currentCategory, locale, limit = 4, tier1Only = true, articleTypes } = opts;
+  const {
+    currentSlug,
+    currentCategory,
+    locale,
+    limit = 4,
+    tier1Only = true,
+    articleTypes,
+    currentTitle,
+  } = opts;
 
   // Refonte 2026-06-22 — chemin cross-type OPT-IN. Si `articleTypes` est fourni,
   // on requête directement `articleTranslation` filtrée sur les types demandés
@@ -82,6 +167,8 @@ export async function findRelatedArticles(opts: FindRelatedOptions): Promise<Rel
       limit,
       tier1Only,
       articleTypes,
+      // exactOptionalPropertyTypes : n'inclure la clé que si définie.
+      ...(currentTitle !== undefined ? { currentTitle } : {}),
     });
   }
 
@@ -103,6 +190,10 @@ export async function findRelatedArticles(opts: FindRelatedOptions): Promise<Rel
         publishedAt: a.publishedAt?.toISOString().slice(0, 10) ?? "",
         readingTime: a.readingTime ? `${a.readingTime} min` : "",
         source: "db" as const,
+        // Audit maillage 2026-07-03 — porte le `type` pour router le href côté
+        // consommateur. `listPublishedArticles` exclut les news → seul le préfixe
+        // `guide-` discrimine ; sans ça un guide sortait en href /blog/guide-x → 308.
+        type: a.slug.startsWith("guide-") ? ("guides" as const) : ("blog" as const),
       }));
   } catch {
     // Stub Proxy build-time → retour []
@@ -122,6 +213,7 @@ export async function findRelatedArticles(opts: FindRelatedOptions): Promise<Rel
         publishedAt: p.publishedAt,
         readingTime: p.readingTime,
         source: "fs" as const,
+        type: "blog" as const,
       };
     });
 
@@ -131,17 +223,8 @@ export async function findRelatedArticles(opts: FindRelatedOptions): Promise<Rel
   for (const item of dbItems) byslug.set(item.slug, item); // DB override
   const merged = [...byslug.values()];
 
-  // Étape 4 : tri (catégorie match prioritaire, puis date desc)
-  merged.sort((a, b) => {
-    if (currentCategory) {
-      const aSame = a.category === currentCategory ? 0 : 1;
-      const bSame = b.category === currentCategory ? 0 : 1;
-      if (aSame !== bSame) return aSame - bSame;
-    }
-    return b.publishedAt.localeCompare(a.publishedAt);
-  });
-
-  return merged.slice(0, limit);
+  // Étape 4 : tri par pertinence (recouvrement titre → catégorie → date desc).
+  return sortByRelevance(merged, currentCategory, currentTitle).slice(0, limit);
 }
 
 /**
@@ -158,8 +241,10 @@ async function findRelatedCrossType(opts: {
   limit: number;
   tier1Only: boolean;
   articleTypes: ReadonlyArray<RelatedArticleType>;
+  currentTitle?: string;
 }): Promise<RelatedArticleItem[]> {
-  const { currentSlug, currentCategory, locale, limit, tier1Only, articleTypes } = opts;
+  const { currentSlug, currentCategory, locale, limit, tier1Only, articleTypes, currentTitle } =
+    opts;
   const wantBlog = articleTypes.includes("blog");
   const wantGuides = articleTypes.includes("guides");
   const wantNews = articleTypes.includes("news");
@@ -214,17 +299,8 @@ async function findRelatedCrossType(opts: {
       });
     }
 
-    // Tri : même catégorie d'abord, puis date desc (parité chemin standard).
-    items.sort((a, b) => {
-      if (currentCategory) {
-        const aSame = a.category === currentCategory ? 0 : 1;
-        const bSame = b.category === currentCategory ? 0 : 1;
-        if (aSame !== bSame) return aSame - bSame;
-      }
-      return b.publishedAt.localeCompare(a.publishedAt);
-    });
-
-    return items.slice(0, limit);
+    // Tri par pertinence (recouvrement titre → catégorie → date), parité standard.
+    return sortByRelevance(items, currentCategory, currentTitle).slice(0, limit);
   } catch {
     // Stub Proxy build-time / DB indispo → retour []
     return [];

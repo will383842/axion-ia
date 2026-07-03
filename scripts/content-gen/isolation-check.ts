@@ -152,6 +152,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // (consommateur, pas du pipeline de génération). Même cas qu'ArticleFaq.
   /^src\/server\/observatoire\/analysis\.ts$/,
   /^src\/features\/admin-blog\/actions\.ts$/,
+  // admin-job-offers/actions.ts (PR #201) — CONSOMME `enqueueGoogleIndexingForUrls`
+  // depuis src/server/content-gen/indexing pour pinger l'Indexing API sur les URLs
+  // d'offres d'emploi publiées. Le marqueur "content-gen" vient du seul chemin
+  // d'import (consommateur, pas du pipeline de génération). Même cas qu'admin-blog.
+  /^src\/features\/admin-job-offers\/actions\.ts$/,
   /^src\/i18n\/routing\.ts$/,
   /^src\/lib\/image-utils\.ts$/,
   /^src\/server\/actions\/knowledge\/_transition\.ts$/,

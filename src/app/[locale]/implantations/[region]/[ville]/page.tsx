@@ -811,7 +811,7 @@ export default async function VilleHubPage({ params }: Props) {
               {villeArticles.map((a) => (
                 <li key={a.id}>
                   <ArticleCard
-                    href={`/blog/${a.slug}`}
+                    href={a.slug.startsWith("guide-") ? `/guides/${a.slug}` : `/blog/${a.slug}`}
                     title={a.title}
                     excerpt={a.excerpt ?? ""}
                     {...(a.publishedAt

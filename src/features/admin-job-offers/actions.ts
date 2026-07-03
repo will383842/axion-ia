@@ -13,20 +13,45 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/seo";
 import { pingIndexNow } from "@/lib/indexnow";
+import { enqueueGoogleIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
+import { isJobOfferIndexable } from "@/lib/careers/job-offers";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { CAREER_CATEGORY_SLUGS } from "@/content/careers/categories";
 import type {
   JobCategory,
   JobWorkMode,
+  JobOffer,
   PublishStatus,
   Prisma,
 } from "../../../prisma/generated/client";
 
 const LIST_CATEGORIES = [...CAREER_CATEGORY_SLUGS, "all"] as const;
 
-/** Ping IndexNow pour une offre (FR seul, EN désactivé). Fire-and-forget. */
-function pingOfferIndexing(slug: string, event: "publish" | "delete"): void {
-  pingIndexNow([`${SITE_URL}/fr/carrieres/${slug}`], `joboffer:${event}`);
+/**
+ * Signale une offre aux moteurs. Deux canaux complémentaires (fire-and-forget) :
+ *  - IndexNow (Bing/Yandex) : toujours, ping direct synchrone.
+ *  - Google Indexing API : seulement si `GOOGLE_INDEXING_API_ENABLED=true`.
+ *    Une offre est un `JobPosting` → l'un des 2 types que Google honore
+ *    réellement via cette API (contrairement aux articles). Sur `publish`, on
+ *    n'émet `URL_UPDATED` que si l'offre est vraiment indexable (sinon on
+ *    demanderait à Google d'indexer une page noindex) ; `offer` fournit alors
+ *    l'état (tier / pourvue / expiration) pour ce contrôle.
+ */
+function pingOfferIndexing(
+  slug: string,
+  event: "publish" | "delete",
+  offer?: Pick<JobOffer, "status" | "filledAt" | "indexationTier" | "validThrough">,
+): void {
+  const url = `${SITE_URL}/fr/carrieres/${slug}`;
+  pingIndexNow([url], `joboffer:${event}`);
+  // Guard : sur publish, ne pinger Google que si l'offre est réellement indexable.
+  if (event === "publish" && offer && !isJobOfferIndexable(offer)) return;
+  void enqueueGoogleIndexingForUrls({
+    entityId: `joboffer-${slug}`,
+    urls: [url],
+    origin: "manual",
+    lifecycleEvent: event,
+  }).catch(() => {});
 }
 
 async function requireAdminWrite() {
@@ -359,7 +384,7 @@ export async function upsertJobOfferAction(
     if (existing?.slug && existing.slug !== d.slug) {
       revalidatePath(`/fr/carrieres/${existing.slug}`);
     }
-    if (d.status === "published") pingOfferIndexing(d.slug, "publish");
+    if (d.status === "published") pingOfferIndexing(d.slug, "publish", offer);
     else if (d.status === "archived") pingOfferIndexing(d.slug, "delete");
     return { ok: true, id: offer.id, created };
   } catch (err) {

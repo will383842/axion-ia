@@ -87,7 +87,12 @@ export async function injectDeepArticleLinks(
       },
       select: { slug: true, title: true },
       orderBy: { article: { publishedAt: "desc" } },
-      take: 20,
+      // Audit maillage 2026-07-03 — fenêtre élargie 20 → 200 : au-delà des 20
+      // articles les plus récents, les articles plus anciens redeviennent des
+      // cibles candidates de liens profonds (réduit les orphelins de liens
+      // entrants). L'injection reste plafonnée à `maxLinks` et l'ordre reste
+      // date DESC (les plus récents/pertinents restent prioritaires).
+      take: 200,
     })
     .catch(() => []);
   if (rows.length === 0) return bodyHtml;
@@ -96,7 +101,9 @@ export async function injectDeepArticleLinks(
   let injected = 0;
   for (const row of rows) {
     if (injected >= maxLinks) break;
-    const href = `/blog/${row.slug}`;
+    // Route par type (les news sont déjà exclues par la requête ; un guide
+    // pillar `guide-*` doit pointer /guides/… et non /blog/… → sinon 308).
+    const href = row.slug.startsWith("guide-") ? `/guides/${row.slug}` : `/blog/${row.slug}`;
     if (result.includes(`href="${href}"`)) continue;
     for (const phrase of titlePhrases(row.title)) {
       const next = linkPhraseInBody(result, phrase, href);

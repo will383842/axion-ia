@@ -48,6 +48,10 @@ export async function getBlogArticlesByVille(
       where: {
         status: "published",
         indexationTier: "tier_1_indexable",
+        // Audit maillage 2026-07-03 — exclut les actualités : ce bloc « Contenus
+        // IA à {ville} » est un maillage BLOG (segment /blog|/guides). Une news
+        // rendue en /blog/<slug> produirait un 308 vers /actualites/<slug>.
+        isNews: false,
         // Postgres `text[] @> ARRAY['paris']` via Prisma `has` (array containment).
         mentionedCities: { has: villeSlug },
       },

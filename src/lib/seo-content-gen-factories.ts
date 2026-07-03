@@ -362,11 +362,25 @@ export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unkn
     mainEntity: {
       "@type": "Question",
       name: input.question,
+      // GSC Rich Results 2026-07-03 — champs requis/recommandés QAPage :
+      //  - `answerCount` (REQUIS) : sans lui l'élément est INVALIDE (pas de rich
+      //    result). 1 = la réponse acceptée (pas de réponses communautaires).
+      //  - `text` / `author` / `datePublished` sur la Question et l'Answer
+      //    (recommandés) : fournis honnêtement (auteur = Manon, la persona éditoriale
+      //    nommée déjà porteuse du `author` de niveau page ; date = date de relecture).
+      //  - `upvoteCount` VOLONTAIREMENT omis : pas de faux votes (politique
+      //    anti-fabrication) — warning non critique laissé tel quel.
+      text: input.question,
+      answerCount: 1,
+      author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
+      datePublished: new Date(input.publishedAt).toISOString(),
       acceptedAnswer: {
         "@type": "Answer",
         text: input.answerHtml.replace(/<[^>]+>/g, "").slice(0, 5000),
+        url: input.parentArticleUrl ?? url,
+        author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
+        datePublished: new Date(input.publishedAt).toISOString(),
         ...(input.upvoteCount ? { upvoteCount: input.upvoteCount } : {}),
-        ...(input.parentArticleUrl ? { url: input.parentArticleUrl } : {}),
       },
       ...(input.parentArticleUrl
         ? { isPartOf: { "@type": "WebPage", url: input.parentArticleUrl } }

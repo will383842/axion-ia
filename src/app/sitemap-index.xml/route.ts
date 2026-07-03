@@ -58,6 +58,10 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // Image Sitemap — services (73 images marketing) + villes France (2 157 communes).
   // image-bank-complet audit 2026-05-20.
   "/sitemap-images-services.xml",
+  // Image Sitemap — visuels d'articles de blog (Article.featuredImage), tier-1.
+  // Audit maillage/indexation 2026-07-03 : seul manque images restant (les héros
+  // d'articles n'étaient annoncés dans aucun sitemap). Cf. `app/sitemap-images-blog.xml`.
+  "/sitemap-images-blog.xml",
   "/sitemap-images-villes-t1.xml",
   "/sitemap-images-villes-t2.xml",
   "/sitemap-images-villes-t3-t4.xml",
@@ -175,7 +179,19 @@ export async function GET(): Promise<Response> {
   // `sitemap-knowledge.xml` → cohérence index↔route garantie. Stub-safe
   // (`listKnowledgeSitemapEntries()` => [] au build stub → non listé ; recompté
   // au runtime via ISR/revalidate).
-  const kbEmittableCount = (await listKnowledgeSitemapEntries(buildExcludeSlugsByType())).length;
+  // Durcissement 2026-07-03 — le sitemap-index NE DOIT JAMAIS 500 (c'est l'entrée
+  // que Google lit à chaque crawl). Le fail-soft de `knowledge-sitemap.ts` couvre
+  // P2021/P1001/P1012/ECONNREFUSED, mais PAS un `PrismaClientInitializationError`
+  // (« Can't reach database server ») qui remonterait ici et 500-erait l'index
+  // entier lors d'un hoquet DB (restart/migration deploy). On isole donc le gating :
+  // si le compte échoue, on omet le sitemap-knowledge conditionnel et on sert
+  // l'index quand même (il réapparaît au prochain render réussi via ISR).
+  let kbEmittableCount = 0;
+  try {
+    kbEmittableCount = (await listKnowledgeSitemapEntries(buildExcludeSlugsByType())).length;
+  } catch {
+    kbEmittableCount = 0;
+  }
   const customSitemaps = CUSTOM_SITEMAPS.filter(
     (path) => path !== "/sitemap-knowledge.xml" || kbEmittableCount > 0,
   );
@@ -196,7 +212,10 @@ export async function GET(): Promise<Response> {
         ? lastmods.news
         : path === "/sitemap-knowledge.xml"
           ? lastmods.knowledge
-          : lastmods.fallback;
+          : // Images blog : suivent les articles → max(updatedAt) blog (fraîcheur réelle).
+            path === "/sitemap-images-blog.xml"
+            ? lastmods.blog
+            : lastmods.fallback;
     return `  <sitemap>
     <loc>${SITE_URL}${path}</loc>
     <lastmod>${lm}</lastmod>
