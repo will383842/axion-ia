@@ -81,24 +81,34 @@ puis la solution IA pas-à-pas. Cas concret anonymisé recommandé. FAQ × 8.`,
 
 const VS_COMPARATOR_CONFIG = buildConfig(
   "vs_comparator",
-  "Comparatif vs concurrent",
-  `## Focus VS COMPARATOR
-Compare Axion-IA vs un concurrent nommé sur 6-8 critères (méthodologie,
-tarifs, transparence, lock-in, support FR, ROI mesuré). Ton analytique
-factuel, pas de dénigrement. <table> récapitulatif OBLIGATOIRE (Featured
-Snippet 2026). Verdict final nuancé.`,
+  "Comparatif d'approches (sans marque)",
+  `## Focus VS COMPARATOR — comparaison d'APPROCHES, JAMAIS de marque nommée
+Compare l'approche « cabinet de conseil IA opérationnel (Axion-IA) » à des
+CATÉGORIES d'alternatives GÉNÉRIQUES — jamais une entreprise/marque/produit réel :
+équipe interne, solution SaaS générique, agence web classique, freelance IA,
+grand cabinet de conseil généraliste. Sur 6-8 critères (méthodologie, transparence
+tarifaire, dépendance/lock-in, support FR, autonomie des équipes, ROI mesuré).
+INTERDIT ABSOLU de citer un nom de marque, produit, outil ou société tierce réelle
+(zéro invention, zéro risque de publicité comparative). Ton analytique factuel,
+sans dénigrement. <table> récapitulatif OBLIGATOIRE (Featured Snippet 2026).
+Verdict final nuancé.`,
   "/audit",
   "Comparer avec un audit IA",
 );
 
 const ALTERNATIVE_TO_CONFIG = buildConfig(
   "alternative_to",
-  "Alternative à X",
-  `## Focus ALTERNATIVE TO
-Liste 3-5 alternatives à un outil/service IA cité. Axion-IA en position 1
-(plus opérationnelle), 4-5 concurrents avec forces/limites neutres.
-<table> récapitulatif comparatif OBLIGATOIRE (alternatives × critères — intent
-commercial, Featured Snippet 2026). FAQ × 6. CTA audit personnalisé.`,
+  "Alternatives par catégorie (sans marque)",
+  `## Focus ALTERNATIVE TO — alternatives par CATÉGORIE, JAMAIS de marque nommée
+Présente 4-5 CATÉGORIES d'alternatives GÉNÉRIQUES pour adresser le besoin IA —
+jamais un outil/produit/société réel : faire soi-même en interne, adopter un SaaS
+généraliste, passer par une agence web, recruter un profil IA, mandater un grand
+cabinet généraliste. L'approche Axion-IA (cabinet IA opérationnel) en position 1
+(plus opérationnelle), chaque catégorie avec forces/limites neutres. INTERDIT
+ABSOLU de nommer une marque, un produit, un outil ou une société tierce réelle
+(zéro invention, zéro risque juridique). <table> récapitulatif comparatif
+OBLIGATOIRE (catégories × critères — intent commercial, Featured Snippet 2026).
+FAQ × 6. CTA audit personnalisé.`,
   "/audit",
   "Faire un audit IA personnalisé",
 );
