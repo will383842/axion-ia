@@ -11,9 +11,15 @@
 import { Worker } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import { tmpdir } from "node:os";
 import { ingestSireneStock } from "@/server/prospection/sources/sirene-stock-ingestor";
 import { getProspectionConfig } from "@/server/prospection/config/site-settings";
-import { LocalFileStockSource, isBuildStub } from "@/server/prospection/sources/stock-source";
+import {
+  LocalFileStockSource,
+  isBuildStub,
+  type StockSource,
+} from "@/server/prospection/sources/stock-source";
+import { downloadStockFiles, ZipStockSource } from "@/server/prospection/sources/stock-downloader";
 import type { ProspectionStockIngestJobData } from "@/server/prospection/queue/queues";
 import type { Job } from "bullmq";
 
@@ -30,15 +36,26 @@ async function processJob(job: Job<ProspectionStockIngestJobData>) {
   const uniteLegale = job.data.uniteLegalePath ?? process.env.PROSPECTION_STOCK_UNITE_LEGALE_PATH;
   const etablissement =
     job.data.etablissementPath ?? process.env.PROSPECTION_STOCK_ETABLISSEMENT_PATH;
+  const autoDownload = process.env.PROSPECTION_STOCK_AUTODOWNLOAD === "true";
 
-  if (!uniteLegale && !etablissement) {
+  let source: StockSource;
+  if (autoDownload) {
+    // Téléchargement automatique depuis data.gouv (pas de dépôt manuel).
+    const dir = process.env.PROSPECTION_STOCK_DOWNLOAD_DIR ?? tmpdir();
+    console.log(`[prospection-stock-ingestor] téléchargement Stock data.gouv → ${dir} …`);
+    const { ulZip, etZip } = await downloadStockFiles(dir);
+    source = new ZipStockSource(ulZip, etZip);
+    console.log("[prospection-stock-ingestor] téléchargement terminé, ingestion…");
+  } else if (uniteLegale || etablissement) {
+    source = new LocalFileStockSource({ uniteLegale, etablissement });
+  } else {
     console.warn(
-      "[prospection-stock-ingestor] aucun fichier Stock configuré (job data ou PROSPECTION_STOCK_*_PATH) → no-op",
+      "[prospection-stock-ingestor] aucun fichier Stock (PROSPECTION_STOCK_*_PATH) et autodownload " +
+        "désactivé (PROSPECTION_STOCK_AUTODOWNLOAD≠true) → no-op",
     );
     return { skipped: "no-file" as const };
   }
 
-  const source = new LocalFileStockSource({ uniteLegale, etablissement });
   const { retentionYears } = await getProspectionConfig("retention");
   const summary = await ingestSireneStock(source, prisma, { retentionYears });
   console.log("[prospection-stock-ingestor] terminé", summary);

@@ -27,17 +27,19 @@ export interface EnrichSegmentFilters {
  */
 export async function triggerProspectionStockIngest(_formData?: FormData): Promise<void> {
   const session = await requireProspectionAccess("config");
-  // Échec CLAIR si aucun fichier Stock n'est provisionné (sinon le job no-op en
-  // silence et la campagne se clôt à vide — audit backend). Les chemins sont
-  // fournis via env (fichiers Sirene montés sur le VPS).
+  // Échec CLAIR si rien n'est provisionné (sinon le job no-op en silence et la
+  // campagne se clôt à vide — audit backend). Deux modes : téléchargement AUTO
+  // depuis data.gouv (PROSPECTION_STOCK_AUTODOWNLOAD=true) OU fichiers montés.
+  const autoDownload = process.env.PROSPECTION_STOCK_AUTODOWNLOAD === "true";
   if (
+    !autoDownload &&
     !process.env.PROSPECTION_STOCK_UNITE_LEGALE_PATH &&
     !process.env.PROSPECTION_STOCK_ETABLISSEMENT_PATH
   ) {
     throw new Error(
-      "Aucun fichier Stock Sirene configuré (PROSPECTION_STOCK_UNITE_LEGALE_PATH / " +
-        "PROSPECTION_STOCK_ETABLISSEMENT_PATH). Télécharger le Stock data.gouv, le monter, " +
-        "puis renseigner ces variables avant de lancer l'ingestion.",
+      "Aucune source Stock Sirene : soit activer le téléchargement automatique " +
+        "(PROSPECTION_STOCK_AUTODOWNLOAD=true), soit fournir les fichiers " +
+        "(PROSPECTION_STOCK_UNITE_LEGALE_PATH / PROSPECTION_STOCK_ETABLISSEMENT_PATH).",
     );
   }
   await enqueueProspectionStockIngest({});

@@ -26,20 +26,24 @@ Tu peux le vérifier dans **Prospection → Réglages** : le bandeau doit passer
 
 ---
 
-## Étape 2 — Donner l'annuaire des entreprises au système (fichier INSEE) · 15 min · 🔧 ton dev/hébergeur
+## Étape 2 — Activer la récupération des entreprises (INSEE) · 2 min · 🔧 ton dev/hébergeur
 
-C'est la seule partie « serveur ». Transmets ceci à ton dev :
+Le système peut **télécharger le fichier INSEE tout seul** depuis data.gouv (plus besoin de le
+déposer à la main). Transmets ceci à ton dev — **une seule variable à activer** :
 
-1. Télécharger le **Stock Sirene** de l'INSEE (gratuit) :
-   - Site : **insee.fr → Rubrique « Sirene » → « Fichiers Stock »** (ou data.gouv.fr « Base Sirene »).
-   - Prendre **2 fichiers** : « StockUniteLegale » (les entreprises) et « StockEtablissement »
-     (les adresses/établissements). Ce sont de gros fichiers (plusieurs Go) — c'est normal.
-2. Les **déposer sur le serveur** et renseigner 2 variables d'environnement :
-   - `PROSPECTION_STOCK_UNITE_LEGALE_PATH` = chemin du fichier « StockUniteLegale »
-   - `PROSPECTION_STOCK_ETABLISSEMENT_PATH` = chemin du fichier « StockEtablissement »
-3. Redémarrer l'application (ça applique aussi la mise à jour de la base automatiquement).
+1. Mettre la variable d'environnement `PROSPECTION_STOCK_AUTODOWNLOAD=true`.
+2. Prévoir **~5–10 Go d'espace disque temporaire** sur le serveur (les fichiers INSEE sont gros ;
+   le système les télécharge, les traite en flux, puis les supprime).
+3. Redémarrer l'application.
 
-✅ Une fois fait, tu n'as plus jamais à y toucher (une mise à jour automatique tourne chaque nuit).
+C'est tout : au clic « Lancer l'ingestion Stock » (étape 3), le système ira chercher le fichier
+officiel, le lira, et remplira la base — automatiquement.
+
+> **Variante (si tu préfères fournir les fichiers toi-même)** : au lieu du téléchargement auto,
+> déposer les 2 fichiers Stock (insee.fr → « Sirene » → « Fichiers Stock ») sur le serveur et
+> renseigner `PROSPECTION_STOCK_UNITE_LEGALE_PATH` + `PROSPECTION_STOCK_ETABLISSEMENT_PATH`.
+
+✅ Une fois fait, tu n'y touches plus (une mise à jour tourne chaque nuit).
 
 ---
 

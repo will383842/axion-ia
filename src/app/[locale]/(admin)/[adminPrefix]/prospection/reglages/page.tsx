@@ -73,10 +73,20 @@ export default async function ReglagesPage() {
       <section className="admin-card" style={{ marginBottom: "1rem" }}>
         <h2 className="admin-section-title">Ingestion du Stock Sirene</h2>
         <p className="admin-muted">
-          Déclenche l’ingestion du fichier Stock (chemins <code>PROSPECTION_STOCK_*_PATH</code>).
           Peuple la base entreprises + le dénominateur de couverture. À lancer une fois avant les
-          campagnes, puis le delta quotidien (4h30) prend le relais.
+          campagnes, puis le delta quotidien (4h30) prend le relais. Deux modes :
         </p>
+        <ul className="admin-list">
+          <li>
+            <strong>Automatique</strong> (<code>PROSPECTION_STOCK_AUTODOWNLOAD=true</code>) : le
+            système télécharge lui-même le fichier depuis data.gouv — rien à déposer. Prévoir ~5–10
+            Go d’espace disque temporaire sur le serveur.
+          </li>
+          <li>
+            <strong>Fichier fourni</strong> (<code>PROSPECTION_STOCK_*_PATH</code>) : si les
+            fichiers sont déjà montés sur le serveur.
+          </li>
+        </ul>
         <form action={triggerProspectionStockIngest}>
           <button type="submit" className="admin-button">
             Lancer l’ingestion Stock
