@@ -27,6 +27,7 @@ import {
 import { buildProductMetadata } from "@/lib/seo";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { QualiopiFinancingFaq } from "@/components/qualiopi/QualiopiFinancingFaq";
+import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
 export const revalidate = 3600;
@@ -104,8 +105,8 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
               moins cher qu&apos;une formation catalogue en salle extérieure, sans déplacer vos
               équipes.
             </p>
-            {/* Réassurance Qualiopi (Phase B) — formations finançables (OPCO/CPF).
-                Pastille texte seul, rend null hors Phase B. */}
+            {/* Réassurance Qualiopi (Phase B) — formations finançables OPCO /
+                France Travail. Pastille texte seul, rend null hors Phase B. */}
             <QualiopiBadge variant="inline" className="mt-6" />
           </div>
         </Container>
@@ -208,6 +209,15 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
           </Container>
         </Section>
       ) : null}
+
+      {/* Encart financement OPCO / France Travail (badges neutres maison, aucun
+          logo tiers). Gaté Phase B (rend null hors Phase B). Formulation variée
+          et déterministe via le SSOT financing.ts. */}
+      <Section tone="canvas">
+        <Container>
+          <FinancingBadges seed="formations-tarifs" className="max-w-3xl" />
+        </Container>
+      </Section>
 
       {/* FAQ Financement & certification (FAQPage + Speakable) — gated Phase B,
           rend null hors Phase B. */}
