@@ -59,6 +59,8 @@ export interface EnrichConfig {
   enrichirPersonnes: boolean;
   /** Plafond d'emails traités (évite des centaines de lookups MX). */
   maxEmails?: number;
+  /** Horizon de conservation RGPD (années) pour les personnes captées. Défaut 3. */
+  retentionYears?: number;
 }
 
 /** Hash déterministe (djb2) — anti-re-scrape « no-op si inchangé » (D4). */
@@ -114,6 +116,8 @@ export async function enrichCompany(
   deps: EnrichDeps,
 ): Promise<EnrichResult> {
   const now = deps.now ?? (() => new Date());
+  const retentionUntil = new Date(now());
+  retentionUntil.setUTCFullYear(retentionUntil.getUTCFullYear() + (config.retentionYears ?? 3));
   const origin = company.siteWeb ? toOrigin(company.siteWeb) : null;
 
   const noData = async (
@@ -240,6 +244,7 @@ export async function enrichCompany(
             source: "site_scrape",
             sourceUrl: page.url,
             collectedAt: now(),
+            retentionUntil,
           },
           update: { titreVerbatim: person.titre },
         });

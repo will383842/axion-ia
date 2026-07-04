@@ -78,10 +78,11 @@ async function processJob(job: Job<ProspectionEnrichJobData>) {
     return { skipped: "fresh" as const };
   }
 
-  const [crawlBudget, teamPass, freshness] = await Promise.all([
+  const [crawlBudget, teamPass, freshness, retention] = await Promise.all([
     getProspectionConfig("crawlBudget"),
     getProspectionConfig("teamPass"),
     getProspectionConfig("freshness"),
+    getProspectionConfig("retention"),
   ]);
 
   const enrichirPersonnes = teamPass.defaultEnabledSecteurs.includes(company.secteur ?? "");
@@ -93,6 +94,7 @@ async function processJob(job: Job<ProspectionEnrichJobData>) {
     maxPagesEntreprise: crawlBudget.maxPagesEntreprise,
     maxTeamAttempts: crawlBudget.maxTeamAttempts,
     enrichirPersonnes,
+    retentionYears: retention.retentionYears,
   };
 
   const result = await enrichCompany(

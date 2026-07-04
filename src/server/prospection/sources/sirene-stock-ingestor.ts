@@ -41,6 +41,21 @@ export interface IngestDb {
 export interface IngestOptions {
   batchSize?: number;
   now?: () => Date;
+  /** Horizon de conservation RGPD (années) → `retentionUntil` = now + N ans. Défaut 3. */
+  retentionYears?: number;
+  /**
+   * Upserts concurrents MAX par lot. Défaut 25 (et non `batchSize` entier) :
+   * évite d'épuiser le pool Prisma (~10-20 conns) avec 500 requêtes simultanées
+   * → P2024 timeouts silencieux = perte de lignes (vérif data). Borne aussi la
+   * pression sur Postgres au run national.
+   */
+  concurrency?: number;
+}
+
+function addYears(d: Date, years: number): Date {
+  const r = new Date(d);
+  r.setUTCFullYear(r.getUTCFullYear() + years);
+  return r;
 }
 
 export interface IngestSummary {
@@ -72,16 +87,21 @@ async function processInBatches<T>(
   iterable: AsyncIterable<StockRow>,
   batchSize: number,
   handle: (row: StockRow) => Promise<T>,
+  concurrency = 25,
 ): Promise<void> {
   let batch: StockRow[] = [];
+  const flush = async () => {
+    // Concurrence bornée : sous-lots de `concurrency` (pas 500 d'un coup → pool).
+    for (let i = 0; i < batch.length; i += concurrency) {
+      await Promise.all(batch.slice(i, i + concurrency).map(handle));
+    }
+    batch = [];
+  };
   for await (const row of iterable) {
     batch.push(row);
-    if (batch.length >= batchSize) {
-      await Promise.all(batch.map(handle));
-      batch = [];
-    }
+    if (batch.length >= batchSize) await flush();
   }
-  if (batch.length > 0) await Promise.all(batch.map(handle));
+  if (batch.length > 0) await flush();
 }
 
 export async function ingestSireneStock(
@@ -91,6 +111,8 @@ export async function ingestSireneStock(
 ): Promise<IngestSummary> {
   const batchSize = options.batchSize ?? 500;
   const now = options.now ?? (() => new Date());
+  const concurrency = options.concurrency ?? 25;
+  const retentionUntil = addYears(now(), options.retentionYears ?? 3);
   const summary: IngestSummary = {
     uniteLegaleSeen: 0,
     uniteLegaleUpserted: 0,
@@ -124,169 +146,181 @@ export async function ingestSireneStock(
   const seenSiegeSirets = new Set<string>();
 
   // --- Passe 1 : unités légales (identité/activité/taille/type/diffusion) ---
-  await processInBatches(source.iterateUniteLegale(), batchSize, async (raw) => {
-    summary.uniteLegaleSeen++;
-    const parsed = uniteLegaleRowSchema.safeParse(raw);
-    if (!parsed.success) {
-      summary.invalidUniteLegaleRows++;
-      return;
-    }
-    const c = mapUniteLegale(parsed.data);
-    if (c.statutDiffusion !== "diffusible") {
-      summary.uniteLegaleSkippedNonDiffusible++;
-      skippedSirens.add(c.siren);
-      return;
-    }
-    const createData: Prisma.ProspectionCompanyCreateInput = {
-      siren: c.siren,
-      denomination: c.denomination,
-      sigle: c.sigle,
-      formeJuridique: c.formeJuridique,
-      natureJuridique: c.natureJuridique,
-      dateCreation: c.dateCreation,
-      etatAdministratif: c.etatAdministratif,
-      naf: c.naf,
-      nafLibelle: c.nafLibelle,
-      sectionNaf: c.sectionNaf,
-      secteur: c.secteur,
-      trancheEffectif: c.trancheEffectif,
-      taille: c.taille,
-      tailleSource: c.tailleSource,
-      categorieEntreprise: c.categorieEntreprise,
-      typeOrganisation: c.typeOrganisation,
-      statutDiffusion: c.statutDiffusion,
-      economieSocialeSolidaire: c.economieSocialeSolidaire,
-      source: "stock_sirene",
-      firstSeenAt: now(),
-      lastCollectedAt: now(),
-    };
-    // À l'upsert on ne réécrit PAS firstSeenAt (garde la 1re date vue).
-    const updateData: Prisma.ProspectionCompanyUpdateInput = {
-      denomination: c.denomination,
-      sigle: c.sigle,
-      formeJuridique: c.formeJuridique,
-      natureJuridique: c.natureJuridique,
-      dateCreation: c.dateCreation,
-      etatAdministratif: c.etatAdministratif,
-      naf: c.naf,
-      sectionNaf: c.sectionNaf,
-      secteur: c.secteur,
-      trancheEffectif: c.trancheEffectif,
-      taille: c.taille,
-      tailleSource: c.tailleSource,
-      categorieEntreprise: c.categorieEntreprise,
-      typeOrganisation: c.typeOrganisation,
-      statutDiffusion: c.statutDiffusion,
-      economieSocialeSolidaire: c.economieSocialeSolidaire,
-      lastCollectedAt: now(),
-    };
-    try {
-      await db.prospectionCompany.upsert({
-        where: { siren: c.siren },
-        create: createData,
-        update: updateData,
-      });
-      summary.uniteLegaleUpserted++;
-    } catch (err) {
-      // Isolation par ligne : une erreur DB transitoire ne casse pas tout le run.
-      summary.uniteLegaleDbErrors++;
-      console.error(`[stock-ingestor] upsert company ${c.siren} failed:`, err);
-    }
-  });
+  await processInBatches(
+    source.iterateUniteLegale(),
+    batchSize,
+    async (raw) => {
+      summary.uniteLegaleSeen++;
+      const parsed = uniteLegaleRowSchema.safeParse(raw);
+      if (!parsed.success) {
+        summary.invalidUniteLegaleRows++;
+        return;
+      }
+      const c = mapUniteLegale(parsed.data);
+      if (c.statutDiffusion !== "diffusible") {
+        summary.uniteLegaleSkippedNonDiffusible++;
+        skippedSirens.add(c.siren);
+        return;
+      }
+      const createData: Prisma.ProspectionCompanyCreateInput = {
+        siren: c.siren,
+        denomination: c.denomination,
+        sigle: c.sigle,
+        formeJuridique: c.formeJuridique,
+        natureJuridique: c.natureJuridique,
+        dateCreation: c.dateCreation,
+        etatAdministratif: c.etatAdministratif,
+        naf: c.naf,
+        nafLibelle: c.nafLibelle,
+        sectionNaf: c.sectionNaf,
+        secteur: c.secteur,
+        trancheEffectif: c.trancheEffectif,
+        taille: c.taille,
+        tailleSource: c.tailleSource,
+        categorieEntreprise: c.categorieEntreprise,
+        typeOrganisation: c.typeOrganisation,
+        statutDiffusion: c.statutDiffusion,
+        economieSocialeSolidaire: c.economieSocialeSolidaire,
+        source: "stock_sirene",
+        firstSeenAt: now(),
+        lastCollectedAt: now(),
+        retentionUntil,
+      };
+      // À l'upsert on ne réécrit PAS firstSeenAt (garde la 1re date vue).
+      const updateData: Prisma.ProspectionCompanyUpdateInput = {
+        denomination: c.denomination,
+        sigle: c.sigle,
+        formeJuridique: c.formeJuridique,
+        natureJuridique: c.natureJuridique,
+        dateCreation: c.dateCreation,
+        etatAdministratif: c.etatAdministratif,
+        naf: c.naf,
+        sectionNaf: c.sectionNaf,
+        secteur: c.secteur,
+        trancheEffectif: c.trancheEffectif,
+        taille: c.taille,
+        tailleSource: c.tailleSource,
+        categorieEntreprise: c.categorieEntreprise,
+        typeOrganisation: c.typeOrganisation,
+        statutDiffusion: c.statutDiffusion,
+        economieSocialeSolidaire: c.economieSocialeSolidaire,
+        lastCollectedAt: now(),
+        retentionUntil,
+      };
+      try {
+        await db.prospectionCompany.upsert({
+          where: { siren: c.siren },
+          create: createData,
+          update: updateData,
+        });
+        summary.uniteLegaleUpserted++;
+      } catch (err) {
+        // Isolation par ligne : une erreur DB transitoire ne casse pas tout le run.
+        summary.uniteLegaleDbErrors++;
+        console.error(`[stock-ingestor] upsert company ${c.siren} failed:`, err);
+      }
+    },
+    concurrency,
+  );
 
   // --- Passe 2 : établissements (siège → géo Company + dénominateur) ---
-  await processInBatches(source.iterateEtablissement(), batchSize, async (raw) => {
-    summary.etablissementSeen++;
-    const parsed = etablissementRowSchema.safeParse(raw);
-    if (!parsed.success) {
-      summary.invalidEtablissementRows++;
-      return;
-    }
-    const e = mapEtablissement(parsed.data);
-    // Exclu si l'établissement est non-diffusible OU si son unité légale a été
-    // écartée (non-diffusible) → jamais de connect vers une Company absente.
-    if (e.statutDiffusion !== "diffusible" || skippedSirens.has(e.siren)) {
-      summary.etablissementSkippedNonDiffusible++;
-      return;
-    }
-    try {
-      await db.prospectionEstablishment.upsert({
-        where: { siret: e.siret },
-        create: {
-          siret: e.siret,
-          company: { connect: { siren: e.siren } },
-          estSiege: e.estSiege,
-          naf: e.naf,
-          trancheEffectif: e.trancheEffectif,
-          adresse: e.adresse,
-          departement: e.departement,
-          codePostal: e.codePostal,
-          commune: e.commune,
-          communeCode: e.communeCode,
-          etatAdministratif: e.etatAdministratif,
-          statutDiffusion: e.statutDiffusion,
-        },
-        update: {
-          estSiege: e.estSiege,
-          naf: e.naf,
-          trancheEffectif: e.trancheEffectif,
-          adresse: e.adresse,
-          departement: e.departement,
-          codePostal: e.codePostal,
-          commune: e.commune,
-          communeCode: e.communeCode,
-          etatAdministratif: e.etatAdministratif,
-          statutDiffusion: e.statutDiffusion,
-        },
-      });
-      summary.etablissementUpserted++;
-    } catch (err) {
-      if (isRecordNotFound(err)) {
-        // Company absente (delta / UL invalide) → orphelin sauté, run non cassé.
-        summary.etablissementOrphanSkipped++;
-      } else {
-        summary.etablissementDbErrors++;
-        console.error(`[stock-ingestor] upsert establishment ${e.siret} failed:`, err);
+  await processInBatches(
+    source.iterateEtablissement(),
+    batchSize,
+    async (raw) => {
+      summary.etablissementSeen++;
+      const parsed = etablissementRowSchema.safeParse(raw);
+      if (!parsed.success) {
+        summary.invalidEtablissementRows++;
+        return;
       }
-      return;
-    }
-
-    if (e.estSiege) {
-      // Géo du siège reportée sur la Company (updateMany = no-op si société absente).
-      const res = (await db.prospectionCompany.updateMany({
-        where: { siren: e.siren },
-        data: {
-          departement: e.departement,
-          codePostal: e.codePostal,
-          commune: e.commune,
-          communeCode: e.communeCode,
-          region: e.region,
-          adresse: e.adresse,
-        },
-      })) as { count?: number };
-      if (res && typeof res.count === "number" && res.count > 0) summary.siegeGeoUpdated++;
-
-      // Dénominateur : sièges diffusibles actifs, DÉDUPLIQUÉS par SIRET, par (dép, naf, taille).
-      if (e.etatAdministratif === "actif" && !seenSiegeSirets.has(e.siret)) {
-        if (e.departement && e.naf && e.taille) {
-          seenSiegeSirets.add(e.siret);
-          const key = `${e.departement}|${e.naf}|${e.taille}`;
-          const existing = stockCounts.get(key);
-          if (existing) existing.count++;
-          else
-            stockCounts.set(key, {
-              departement: e.departement,
-              naf: e.naf,
-              taille: e.taille,
-              count: 1,
-            });
+      const e = mapEtablissement(parsed.data);
+      // Exclu si l'établissement est non-diffusible OU si son unité légale a été
+      // écartée (non-diffusible) → jamais de connect vers une Company absente.
+      if (e.statutDiffusion !== "diffusible" || skippedSirens.has(e.siren)) {
+        summary.etablissementSkippedNonDiffusible++;
+        return;
+      }
+      try {
+        await db.prospectionEstablishment.upsert({
+          where: { siret: e.siret },
+          create: {
+            siret: e.siret,
+            company: { connect: { siren: e.siren } },
+            estSiege: e.estSiege,
+            naf: e.naf,
+            trancheEffectif: e.trancheEffectif,
+            adresse: e.adresse,
+            departement: e.departement,
+            codePostal: e.codePostal,
+            commune: e.commune,
+            communeCode: e.communeCode,
+            etatAdministratif: e.etatAdministratif,
+            statutDiffusion: e.statutDiffusion,
+          },
+          update: {
+            estSiege: e.estSiege,
+            naf: e.naf,
+            trancheEffectif: e.trancheEffectif,
+            adresse: e.adresse,
+            departement: e.departement,
+            codePostal: e.codePostal,
+            commune: e.commune,
+            communeCode: e.communeCode,
+            etatAdministratif: e.etatAdministratif,
+            statutDiffusion: e.statutDiffusion,
+          },
+        });
+        summary.etablissementUpserted++;
+      } catch (err) {
+        if (isRecordNotFound(err)) {
+          // Company absente (delta / UL invalide) → orphelin sauté, run non cassé.
+          summary.etablissementOrphanSkipped++;
         } else {
-          // Siège actif mais incomplet (naf/taille/dép manquant) → tracé, hors dénominateur.
-          summary.siegeIncomplet++;
+          summary.etablissementDbErrors++;
+          console.error(`[stock-ingestor] upsert establishment ${e.siret} failed:`, err);
+        }
+        return;
+      }
+
+      if (e.estSiege) {
+        // Géo du siège reportée sur la Company (updateMany = no-op si société absente).
+        const res = (await db.prospectionCompany.updateMany({
+          where: { siren: e.siren },
+          data: {
+            departement: e.departement,
+            codePostal: e.codePostal,
+            commune: e.commune,
+            communeCode: e.communeCode,
+            region: e.region,
+            adresse: e.adresse,
+          },
+        })) as { count?: number };
+        if (res && typeof res.count === "number" && res.count > 0) summary.siegeGeoUpdated++;
+
+        // Dénominateur : sièges diffusibles actifs, DÉDUPLIQUÉS par SIRET, par (dép, naf, taille).
+        if (e.etatAdministratif === "actif" && !seenSiegeSirets.has(e.siret)) {
+          if (e.departement && e.naf && e.taille) {
+            seenSiegeSirets.add(e.siret);
+            const key = `${e.departement}|${e.naf}|${e.taille}`;
+            const existing = stockCounts.get(key);
+            if (existing) existing.count++;
+            else
+              stockCounts.set(key, {
+                departement: e.departement,
+                naf: e.naf,
+                taille: e.taille,
+                count: 1,
+              });
+          } else {
+            // Siège actif mais incomplet (naf/taille/dép manquant) → tracé, hors dénominateur.
+            summary.siegeIncomplet++;
+          }
         }
       }
-    }
-  });
+    },
+    concurrency,
+  );
 
   // --- Écriture du dénominateur StockReference ---
   const refreshedAt = now();

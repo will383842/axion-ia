@@ -99,6 +99,9 @@ describe("ingestSireneStock — pipeline complet (fixtures)", () => {
 
     expect(s.uniteLegaleSeen).toBe(4);
     expect(s.uniteLegaleUpserted).toBe(3); // 100000003 non-diffusible exclu
+    // RGPD : retentionUntil renseigné (sinon la purge est un no-op — vérif RGPD).
+    const anyCompany = [...db.companies.values()][0] as { retentionUntil?: Date };
+    expect(anyCompany.retentionUntil).toBeInstanceOf(Date);
     expect(s.uniteLegaleSkippedNonDiffusible).toBe(1);
     expect(db.companies.has("100000003")).toBe(false); // JAMAIS en base
     expect(db.companies.size).toBe(3);

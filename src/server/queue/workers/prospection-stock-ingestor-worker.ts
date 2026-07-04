@@ -12,6 +12,7 @@ import { Worker } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { ingestSireneStock } from "@/server/prospection/sources/sirene-stock-ingestor";
+import { getProspectionConfig } from "@/server/prospection/config/site-settings";
 import { LocalFileStockSource, isBuildStub } from "@/server/prospection/sources/stock-source";
 import type { ProspectionStockIngestJobData } from "@/server/prospection/queue/queues";
 import type { Job } from "bullmq";
@@ -38,7 +39,8 @@ async function processJob(job: Job<ProspectionStockIngestJobData>) {
   }
 
   const source = new LocalFileStockSource({ uniteLegale, etablissement });
-  const summary = await ingestSireneStock(source, prisma);
+  const { retentionYears } = await getProspectionConfig("retention");
+  const summary = await ingestSireneStock(source, prisma, { retentionYears });
   console.log("[prospection-stock-ingestor] terminé", summary);
   return summary;
 }
