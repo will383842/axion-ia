@@ -157,6 +157,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // d'offres d'emploi publiées. Le marqueur "content-gen" vient du seul chemin
   // d'import (consommateur, pas du pipeline de génération). Même cas qu'admin-blog.
   /^src\/features\/admin-job-offers\/actions\.ts$/,
+  // prospection (feat/prospection 2026-07-04) — module autonome qui CONSOMME la
+  // brique partagée `content-gen/_auth` (requireAdmin) via un import, et mentionne
+  // "content-gen" dans un commentaire de contexte (robots.ts : « on ne réutilise
+  // pas la brique content-gen »). Consommateur / commentaire, PAS du pipeline de
+  // génération. Même cas légitime qu'admin-blog / admin-job-offers.
+  /^src\/server\/actions\/prospection\/_auth\.ts$/,
+  /^src\/server\/prospection\/enrichment\/robots\.ts$/,
   /^src\/i18n\/routing\.ts$/,
   /^src\/lib\/image-utils\.ts$/,
   /^src\/server\/actions\/knowledge\/_transition\.ts$/,
