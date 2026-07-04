@@ -54,7 +54,8 @@ import { checkOutlineDedup } from "@/server/content-gen/quality/dedup-guard";
 // #2 2026-06-14 — Dedup sémantique cross-entry (topic-fingerprint Voyage SimHash).
 import {
   computeTopicFingerprint,
-  classifyTopicDuplicate,
+  classifyTopicDuplicateWithSource,
+  hammingToSimilarityPct,
 } from "@/server/content-gen/dedup/topic-fingerprint";
 // Sprint Final P1-14 — Global keyword lock Redis (Fl-08 multi-campagnes parallèles).
 import { acquireKeywordLock } from "@/server/content-gen/lib/keyword-lock";
@@ -826,6 +827,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     const topicFingerprint = await computeTopicFingerprint(topicText);
     let topicDuplicateFail = false;
     if (topicFingerprint) {
+      // Corpus léger (fingerprint + id) pour la comparaison de masse ; le
+      // titre/slug de l'article le plus proche n'est résolu qu'en cas de doublon
+      // (1 requête ciblée) → pas de jointure sur 50 000 lignes à chaque job.
       const recentFp = await prisma.article.findMany({
         where: {
           status: "published",
@@ -834,19 +838,48 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         },
         orderBy: { publishedAt: "desc" },
         take: 50_000,
-        select: { topicFingerprint: true },
+        select: { topicFingerprint: true, id: true },
       });
       const fpCorpus = recentFp
-        .map((r) => r.topicFingerprint)
-        .filter((f): f is string => typeof f === "string");
-      const topicVerdict = classifyTopicDuplicate(topicFingerprint, fpCorpus);
+        .filter(
+          (r): r is { topicFingerprint: string; id: string } =>
+            typeof r.topicFingerprint === "string",
+        )
+        .map((r) => ({ fingerprint: r.topicFingerprint, id: r.id }));
+      const topicVerdict = classifyTopicDuplicateWithSource(topicFingerprint, fpCorpus);
       topicDuplicateFail = topicVerdict.verdict === "duplicate";
-      await logStep(
-        contentGenJobId,
-        "dedup_check",
-        `Topic-fingerprint ${topicVerdict.verdict} (Hamming ${topicVerdict.minDistance})`,
-        { verdict: topicVerdict.verdict, min_distance: topicVerdict.minDistance },
-      );
+      const similarityPct = hammingToSimilarityPct(topicVerdict.minDistance);
+      // Log LISIBLE : « bloqué car trop proche de « <titre> » (X %) » au lieu de
+      // « Hamming 6 ». On résout le titre/slug FR de l'article le plus proche
+      // UNIQUEMENT quand il y en a un (doublon ou similaire) — 1 requête ciblée.
+      let nearestTitle: string | null = null;
+      let nearestSlug: string | null = null;
+      if (topicVerdict.nearest && topicVerdict.verdict !== "ok") {
+        const near = await prisma.articleTranslation.findFirst({
+          where: { articleId: topicVerdict.nearest.id, locale: "fr" },
+          select: { slug: true, title: true },
+        });
+        if (near) {
+          nearestTitle = near.title;
+          nearestSlug = near.slug;
+        }
+      }
+      const nearestLabel = nearestTitle
+        ? `« ${nearestTitle} » (/${nearestSlug})`
+        : "un article existant";
+      const dedupMessage =
+        topicVerdict.verdict === "duplicate"
+          ? `Dedup sémantique (Voyage) : trop similaire à ${nearestLabel} — ${similarityPct} % → déclassé en noindex`
+          : topicVerdict.verdict === "similar"
+            ? `Dedup sémantique (Voyage) : proche de ${nearestLabel} — ${similarityPct} % (à surveiller)`
+            : "Dedup sémantique (Voyage) : sujet original, aucun doublon proche";
+      await logStep(contentGenJobId, "dedup_check", dedupMessage, {
+        verdict: topicVerdict.verdict,
+        min_distance: topicVerdict.minDistance,
+        similarity_pct: similarityPct,
+        nearest_slug: nearestSlug,
+        nearest_title: nearestTitle,
+      });
     }
 
     // PH1+PH2 (plan §2/§4) — Profil qualité + benefit-gate COMMERCIAL-ONLY.
@@ -925,6 +958,26 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       topicDuplicateFail ||
       benefitFail;
     const finalIndexationTier = blockingFail ? "tier_3_noindex_nofollow" : output.indexationTier;
+
+    // Log LISIBLE de la CAUSE du déclassement noindex — dit clairement QUI a
+    // déclassé (Voyage vs plagiat vs structure vs doctrine vs …), en français
+    // simple, pour le pilotage admin. Ne s'affiche qu'en cas de déclassement.
+    if (blockingFail) {
+      const blockCauses: string[] = [];
+      if (topicDuplicateFail)
+        blockCauses.push("Dedup sémantique Voyage (même sujet qu'un article existant)");
+      if (!plagiarism.passed) blockCauses.push("Plagiat lexical (texte trop proche d'un existant)");
+      if (outlineBlockingFail) blockCauses.push("Structure trop proche (plan H2/H3 d'un existant)");
+      if (!intent.aligned) blockCauses.push("Intention de recherche non respectée");
+      if (doctrineHardFail) blockCauses.push("Doctrine (prix/SIREN non conforme)");
+      if (benefitFail) blockCauses.push("Bénéfice concret insuffisant");
+      await logStep(
+        contentGenJobId,
+        "validation",
+        `Déclassé en noindex (tier_3) — cause${blockCauses.length > 1 ? "s" : ""} : ${blockCauses.join(" + ")}`,
+        { causes: blockCauses, tier: "tier_3_noindex_nofollow" },
+      );
+    }
 
     // 5. Update job + persist outputs (Sprint 2 Day 5 — Article DB row insert).
     // `outputJsonRaw` est la source de vérité que `content-publish-worker.ts`

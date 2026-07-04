@@ -139,3 +139,46 @@ export function classifyTopicDuplicate(
         : "ok";
   return { verdict, minDistance, nearest };
 }
+
+/**
+ * Similarité en % (0-100) dérivée de la distance de Hamming 64-bit, pour un
+ * affichage lisible (« 92 % de similarité ») à la place du « Hamming 6 »
+ * technique. 0 bits différents = 100 % ; 64 = 0 %. Borne à [0, 100].
+ */
+export function hammingToSimilarityPct(distance: number): number {
+  if (distance < 0) return 0;
+  const pct = Math.round((1 - distance / 64) * 100);
+  return Math.max(0, Math.min(100, pct));
+}
+
+/**
+ * Variante de `classifyTopicDuplicate` qui CONSERVE la source du plus proche
+ * (n'importe quel objet porteur d'un `fingerprint`) — permet de logguer « bloqué
+ * car trop proche de l'article X » au lieu d'une simple distance anonyme.
+ *
+ * Générique sur le type de corpus : l'appelant passe p.ex. `{ fingerprint, id }`
+ * et récupère l'item le plus proche pour résoudre ensuite son titre/slug.
+ */
+export function classifyTopicDuplicateWithSource<T extends { fingerprint: string }>(
+  fingerprint: string,
+  corpus: ReadonlyArray<T>,
+): { verdict: TopicDuplicateVerdict; minDistance: number; nearest: T | null } {
+  let minDistance = Number.POSITIVE_INFINITY;
+  let nearest: T | null = null;
+  for (const item of corpus) {
+    const d = hammingDistance(fingerprint, item.fingerprint);
+    if (d < 0) continue; // format invalide → ignore
+    if (d < minDistance) {
+      minDistance = d;
+      nearest = item;
+    }
+  }
+  if (nearest === null) return { verdict: "ok", minDistance: -1, nearest: null };
+  const verdict: TopicDuplicateVerdict =
+    minDistance <= TOPIC_FINGERPRINT_THRESHOLDS.BLOCK
+      ? "duplicate"
+      : minDistance <= TOPIC_FINGERPRINT_THRESHOLDS.WARN
+        ? "similar"
+        : "ok";
+  return { verdict, minDistance, nearest };
+}
