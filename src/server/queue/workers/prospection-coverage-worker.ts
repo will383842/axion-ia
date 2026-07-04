@@ -11,6 +11,8 @@ import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { rebuildGeoCoverage, type CoverageDb } from "@/server/prospection/collect/coverage-service";
 import { dimKey } from "@/server/prospection/collect/coverage-rollup";
+import { detectAnomalies } from "@/server/prospection/collect/anomaly";
+import { getProspectionConfig } from "@/server/prospection/config/site-settings";
 import { isBuildStub } from "@/server/prospection/sources/stock-source";
 import type { ProspectionCoverageJobData } from "@/server/prospection/queue/queues";
 import type { Job } from "bullmq";
@@ -63,7 +65,24 @@ async function processJob(_job: Job<ProspectionCoverageJobData>) {
       },
     });
   }
-  return { scopes: stats.length };
+
+  // Détection d'anomalies (T9) : cellules bloquées en « en_cours » (stale).
+  const alertsConfig = await getProspectionConfig("alerts");
+  const staleThreshold = new Date(Date.now() - alertsConfig.staleCellHours * 3600 * 1000);
+  const staleCells = await prisma.prospectionCoverageCell.count({
+    where: { statut: "en_cours", updatedAt: { lt: staleThreshold } },
+  });
+  const alerts = detectAnomalies(
+    { debitCurrent: 0, debitPrevious: 0, zeroResultSources: [], staleCells, quotaReached: 0 },
+    alertsConfig,
+  );
+  for (const alert of alerts) {
+    await prisma.prospectionEvent.create({
+      data: { type: "refresh", reason: `[${alert.severity}] ${alert.type}: ${alert.message}` },
+    });
+  }
+
+  return { scopes: stats.length, alerts: alerts.length };
 }
 
 export function startProspectionCoverageWorker(): Worker<ProspectionCoverageJobData> {

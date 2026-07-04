@@ -231,6 +231,24 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       });
       counts.chatIdempotency = chatIdemResult.count;
 
+      // Prospection & Base Entreprises — purge par `retentionUntil` (3 ans après
+      // dernière action, entreprise ET personne) + journal d'accès ancien (RGPD).
+      const now = new Date();
+      const prospCompanies = await prisma.prospectionCompany.deleteMany({
+        where: { retentionUntil: { not: null, lt: now } },
+      });
+      const prospPersons = await prisma.prospectionPerson.deleteMany({
+        where: { retentionUntil: { not: null, lt: now } },
+      });
+      const accessLogMonths = readMonths("RETENTION_PROSPECTION_ACCESS_MONTHS", 12);
+      const prospAccess = await prisma.prospectionAccessLog.deleteMany({
+        where: { createdAt: { lt: monthsAgo(accessLogMonths) } },
+      });
+      console.log(
+        `[retention-purge][prospection] companies=${prospCompanies.count} ` +
+          `persons=${prospPersons.count} accessLogs=${prospAccess.count}`,
+      );
+
       console.log(
         `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
           `newsletter=${counts.newsletter} bookings=${counts.bookings} ` +
