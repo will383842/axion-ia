@@ -819,7 +819,7 @@ export function buildOrganizationJsonLd({
       name: isFr ? "Services IA pour entreprises" : "AI services for businesses",
       url: `${SITE_URL}/${isFr ? "fr" : "en"}/interventions`,
     },
-    foundingDate: "2024",
+    foundingDate: "2026",
     // Siège social réel (2026-07-03) : SAS AXION-IA, 11 Avenue Paul Verlaine,
     // 38100 Grenoble (domiciliation), RCS Grenoble — Auvergne-Rhône-Alpes.
     // L'ancrage entité DOIT refléter le RCS (sinon incohérence NAP ↔ registre

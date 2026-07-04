@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
-        ? "Axion-IA, cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France, notamment à Paris et en Île-de-France : mission, équipe, valeurs E-E-A-T, hébergement UE et réponse humaine sous 48 h. Découvrez notre parcours depuis 2024."
+        ? "Axion-IA, cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France, notamment à Paris et en Île-de-France : mission, équipe, valeurs E-E-A-T, hébergement UE et réponse humaine sous 48 h. Découvrez notre méthode et nos engagements."
         : "Axion-IA — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });
@@ -116,8 +116,8 @@ export default async function About({ params }: Props) {
     inLanguage: loc,
     name: isFr ? "À propos d'Axion-IA" : "About Axion-IA",
     description: isFr
-      ? "Axion-IA, cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes), intervenant dans toute la France dont Paris et l'Île-de-France : mission, équipe, valeurs E-E-A-T et parcours depuis 2024."
-      : "Axion-IA, an operational AI consultancy headquartered in Grenoble (Auvergne-Rhône-Alpes), serving the whole of France including Paris and Île-de-France: mission, team, E-E-A-T values and journey since 2024.",
+      ? "Axion-IA, cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes), intervenant dans toute la France dont Paris et l'Île-de-France : mission, équipe, valeurs E-E-A-T et méthode."
+      : "Axion-IA, an operational AI consultancy headquartered in Grenoble (Auvergne-Rhône-Alpes), serving the whole of France including Paris and Île-de-France: mission, team, E-E-A-T values and method.",
     dateModified: SITE_EDITORIAL_DATE,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     mainEntity: { "@id": `${SITE_URL}/#organization` },
@@ -141,7 +141,7 @@ export default async function About({ params }: Props) {
           id: "depuis-quand",
           question: "Depuis quand Axion-IA existe-t-il ?",
           answer:
-            "Axion-IA a été fondé en 2024. Le cabinet a été créé en France pour la stabilité juridique et la proximité avec les entreprises françaises et européennes.",
+            "Axion-IA a été fondé en 2026. Le cabinet a été créé en France pour la stabilité juridique et la proximité avec les entreprises françaises et européennes.",
         },
         {
           id: "perimetre",
@@ -167,7 +167,7 @@ export default async function About({ params }: Props) {
           id: "depuis-quand",
           question: "How long has Axion-IA existed?",
           answer:
-            "Axion-IA was founded in 2024. The consultancy was created in France for legal stability and proximity to French and European companies.",
+            "Axion-IA was founded in 2026. The consultancy was created in France for legal stability and proximity to French and European companies.",
         },
         {
           id: "perimetre",
@@ -220,7 +220,7 @@ export default async function About({ params }: Props) {
                 {[
                   { icon: Building2, label: isFr ? "Axion-IA · Europe" : "Axion-IA · Europe" },
                   { icon: ShieldCheck, label: isFr ? "Hébergement UE" : "EU hosting" },
-                  { icon: Calendar, label: isFr ? "Fondé 2024" : "Founded 2024" },
+                  { icon: Calendar, label: isFr ? "Fondé 2026" : "Founded 2026" },
                   { icon: Globe2, label: isFr ? "FR · EN · UE" : "FR · EN · EU" },
                 ].map((pill) => {
                   const Icon = pill.icon;
@@ -280,11 +280,11 @@ export default async function About({ params }: Props) {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
-                figure: "2024",
-                label: isFr ? "Fondée 2024" : "Founded 2024",
+                figure: "2026",
+                label: isFr ? "Fondée 2026" : "Founded 2026",
                 detail: isFr
-                  ? "Cabinet IA français fondé en 2024."
-                  : "French AI consultancy founded in 2024.",
+                  ? "Cabinet IA français fondé en 2026."
+                  : "French AI consultancy founded in 2026.",
               },
               {
                 figure: "100 %",

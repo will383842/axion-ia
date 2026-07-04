@@ -64,7 +64,7 @@ export const STACK_TOOL_DETAILS: ReadonlyArray<StackToolDetail> = [
     comparableSlugs: ["chatgpt", "perplexity"],
     fr: {
       summary:
-        "Claude est l'IA-pivot d'Axion-IA depuis 2024. Son moteur de raisonnement profond, sa fenêtre de contexte de 1 million de tokens et son ton naturel en font le coéquipier par défaut pour tout travail qui demande nuance, structure et fiabilité.",
+        "Claude est l'IA-pivot d'Axion-IA depuis sa création. Son moteur de raisonnement profond, sa fenêtre de contexte de 1 million de tokens et son ton naturel en font le coéquipier par défaut pour tout travail qui demande nuance, structure et fiabilité.",
       pros: [
         "Contexte 1M tokens — un dossier client entier d'un coup",
         "Raisonnement nuancé supérieur sur sujets complexes",
@@ -86,7 +86,7 @@ export const STACK_TOOL_DETAILS: ReadonlyArray<StackToolDetail> = [
     },
     en: {
       summary:
-        "Claude has been Axion-IA's pivot AI since 2024. Its deep reasoning engine, 1M-token context window and natural tone make it the default teammate for any work that demands nuance, structure and reliability.",
+        "Claude has been Axion-IA's pivot AI since its inception. Its deep reasoning engine, 1M-token context window and natural tone make it the default teammate for any work that demands nuance, structure and reliability.",
       pros: [
         "1M-token context — a whole client dossier in one shot",
         "Superior nuanced reasoning on complex topics",

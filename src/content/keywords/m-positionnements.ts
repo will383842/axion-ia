@@ -890,7 +890,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
       h1: "Intégrez Claude d'Anthropic dans votre entreprise — avec un cabinet spécialiste en France",
       metaTitle: "Intégrateur Claude Anthropic France | Axion-IA",
       metaDescription:
-        "Axion-IA intègre Claude (Anthropic) dans vos process métier : API Claude, agents IA, automatisation. Cabinet spécialiste Claude en France depuis 2024.",
+        "Axion-IA intègre Claude (Anthropic) dans vos process métier : API Claude, agents IA, automatisation. Cabinet spécialiste Claude basé en France.",
       h2Variants: [
         "Pourquoi Claude d'Anthropic plutôt que ChatGPT pour votre entreprise",
         "Notre méthode d'intégration Claude API — de l'audit au déploiement en production",

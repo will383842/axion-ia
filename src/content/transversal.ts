@@ -53,33 +53,17 @@ function modulesAnswerEn(): string {
 
 export const ABOUT_TIMELINE = [
   {
-    id: "2024",
-    date: "2024",
-    fr: { title: "Création d'Axion-IA", description: "Lancement du cabinet IA opérationnel." },
-    en: { title: "Axion-IA founded", description: "Operational AI consultancy launched." },
-  },
-  {
-    id: "2025",
-    date: "2025",
-    fr: {
-      title: "Premières interventions terrain",
-      description: "10 missions opérationnelles, méthodologie itérée et stabilisée.",
-    },
-    en: {
-      title: "First field engagements",
-      description: "10 operational missions, methodology iterated and stabilized.",
-    },
-  },
-  {
     id: "2026",
     date: "2026",
     fr: {
-      title: "Plateforme axion-ia.com",
-      description: "Refonte complète, mobile-first, multilingue FR/EN.",
+      title: "Création d'Axion-IA",
+      description:
+        "Lancement du cabinet IA opérationnel et de la plateforme axion-ia.com — mobile-first, multilingue FR/EN.",
     },
     en: {
-      title: "Platform axion-ia.com",
-      description: "Full revamp, mobile-first, FR/EN multilingual.",
+      title: "Axion-IA founded",
+      description:
+        "Operational AI consultancy launched with the axion-ia.com platform — mobile-first, FR/EN multilingual.",
     },
   },
 ] as const;
