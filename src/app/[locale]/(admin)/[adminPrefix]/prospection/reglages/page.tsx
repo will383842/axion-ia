@@ -3,6 +3,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { getAllProspectionConfig } from "@/server/prospection/config/site-settings";
 import { getProspectionControllerIdentity } from "@/server/prospection/rgpd/controller-identity";
+import { triggerProspectionStockIngest } from "@/server/actions/prospection/ops";
 import { adminPath } from "@/lib/admin-path";
 
 export const dynamic = "force-dynamic";
@@ -64,6 +65,20 @@ export default async function ReglagesPage() {
             ⚠️ Avant une collecte en production, compléter : {identity.missing.join(", ")}.
           </p>
         )}
+      </section>
+
+      <section className="admin-card" style={{ marginBottom: "1rem" }}>
+        <h2 className="admin-section-title">Ingestion du Stock Sirene</h2>
+        <p className="admin-muted">
+          Déclenche l’ingestion du fichier Stock (chemins <code>PROSPECTION_STOCK_*_PATH</code>).
+          Peuple la base entreprises + le dénominateur de couverture. À lancer une fois avant les
+          campagnes, puis le delta quotidien (4h30) prend le relais.
+        </p>
+        <form action={triggerProspectionStockIngest}>
+          <button type="submit" className="admin-button">
+            Lancer l’ingestion Stock
+          </button>
+        </form>
       </section>
 
       <section className="admin-card">

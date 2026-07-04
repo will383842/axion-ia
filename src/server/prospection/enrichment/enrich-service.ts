@@ -13,6 +13,7 @@ import type { EnrichmentStatus, DomainMatchMethod } from "@/lib/prospection/enum
 import { normalizeFonction } from "@/lib/prospection/qualite-to-fonction";
 import { deriveContactabilite, computeLeadScore } from "@/lib/prospection/scoring";
 import { confirmDomainOwnership } from "./domain-confirm";
+import { discoverSiteWeb } from "./site-discovery";
 import { extractContacts } from "./contact-extract";
 import { extractPersons } from "./person-extract";
 import { personKey, splitFullName } from "./person-key";
@@ -61,6 +62,8 @@ export interface EnrichConfig {
   maxEmails?: number;
   /** Horizon de conservation RGPD (années) pour les personnes captées. Défaut 3. */
   retentionYears?: number;
+  /** Découvrir un site par devinette de domaine si le Stock n'en a pas. Défaut true. */
+  discoverSite?: boolean;
 }
 
 /** Hash déterministe (djb2) — anti-re-scrape « no-op si inchangé » (D4). */
@@ -118,7 +121,20 @@ export async function enrichCompany(
   const now = deps.now ?? (() => new Date());
   const retentionUntil = new Date(now());
   retentionUntil.setUTCFullYear(retentionUntil.getUTCFullYear() + (config.retentionYears ?? 3));
-  const origin = company.siteWeb ? toOrigin(company.siteWeb) : null;
+  // Découverte de site : le Stock Sirene n'a pas d'URL. Si aucune n'est connue,
+  // on devine + confirme un domaine (sinon l'enrichissement ne produit rien).
+  let siteWeb = company.siteWeb ?? null;
+  if (!siteWeb && config.discoverSite !== false) {
+    const discovered = await discoverSiteWeb(company, deps.fetchPage);
+    if (discovered) {
+      siteWeb = discovered;
+      await deps.db.prospectionCompany.update({
+        where: { id: company.id },
+        data: { siteWeb: discovered },
+      });
+    }
+  }
+  const origin = siteWeb ? toOrigin(siteWeb) : null;
 
   const noData = async (
     status: EnrichmentStatus,

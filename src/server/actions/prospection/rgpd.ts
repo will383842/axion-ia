@@ -60,8 +60,10 @@ export async function submitProspectionOptOut(
     }
   } else if (type === "domaine") {
     // Propage sur les entreprises dont le site public porte ce domaine.
+    // `insensitive` : le siteWeb est stocké tel que scrapé (casse variable) alors
+    // que `valueNormalized` est minuscule → sinon l'opposition ne matcherait pas.
     await prisma.prospectionCompany.updateMany({
-      where: { siteWeb: { contains: valueNormalized } },
+      where: { siteWeb: { contains: valueNormalized, mode: "insensitive" } },
       data: { optOut: true, optOutAt: now },
     });
   }
