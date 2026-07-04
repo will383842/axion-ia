@@ -44,7 +44,7 @@ export function GET() {
 
 ## Certification qualité
 
-- Axion-IA est un **organisme de formation certifié Qualiopi** au titre de la catégorie « Actions de formation » — marque de certification qualité délivrée au nom de l'État (Ministère du Travail). Les formations, audits et accompagnements 1-to-1 sont à ce titre **finançables** (OPCO, CPF selon le dispositif). Mentions légales : ${SITE_URL}/fr/mentions-legales.`
+- Axion-IA est un **organisme de formation certifié Qualiopi** au titre de la catégorie « Actions de formation » — marque de certification qualité délivrée au nom de l'État (Ministère du Travail). Les formations, audits et accompagnements 1-to-1 sont à ce titre **finançables** (OPCO, France Travail selon le dispositif). Mentions légales : ${SITE_URL}/fr/mentions-legales.`
     : "";
   const body = `# Axion-IA
 

@@ -12,8 +12,8 @@ import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-menti
  * gain AEO : citation LLM (Perplexity/Claude/SGE) + voice.
  *
  * Rend `null` hors Phase B : revendiquer « certifié Qualiopi / finançable » avant
- * l'agrément est ILLÉGAL. Les réponses tirent la mention obligatoire de la config
- * (DB-sourcée). Décision Will : le n° de certificat n'est JAMAIS exposé au public.
+ * l'agrément est ILLÉGAL. Les réponses tirent le n° de certificat + la mention
+ * obligatoire de la config (DB-sourcée).
  *
  * Placé sur `/formations/tarifs` (le hub `/formations` a déjà sa propre FAQPage —
  * ne PAS dupliquer un 2e FAQPage sur la même page).
@@ -26,8 +26,8 @@ export async function QualiopiFinancingFaq() {
   const isFr = locale === "fr";
 
   const certPhrase = isFr
-    ? `Oui. Axion-IA est un organisme de formation certifié Qualiopi. ${formatMentionMarqueQualiopi(id.categoriesCertifiees)}`
-    : `Yes. Axion-IA is a Qualiopi-certified training provider. ${formatMentionMarqueQualiopi(id.categoriesCertifiees)}`;
+    ? `Oui. Axion-IA est un organisme de formation certifié Qualiopi (certificat n° ${id.qualiopiNumero}). ${formatMentionMarqueQualiopi(id.categoriesCertifiees)}`
+    : `Yes. Axion-IA is a Qualiopi-certified training provider (certificate no. ${id.qualiopiNumero}). ${formatMentionMarqueQualiopi(id.categoriesCertifiees)}`;
 
   const items = isFr
     ? [
@@ -38,7 +38,7 @@ export async function QualiopiFinancingFaq() {
         {
           question: "Les formations sont-elles finançables (OPCO, France Travail) ?",
           answer:
-            "La certification Qualiopi rend les formations Axion-IA éligibles à un financement par les OPCO ; selon votre situation, une prise en charge par France Travail (AIF, POEI) est également possible. La prise en charge est étudiée au cas par cas selon votre branche et votre dispositif — nous fournissons les pièces nécessaires : devis, convention, programme détaillé, certificat de réalisation.",
+            "Oui. La certification Qualiopi rend les formations Axion-IA finançables par les OPCO ; selon le dispositif et l'éligibilité, elles peuvent aussi être mobilisées via France Travail (AIF — Aide Individuelle à la Formation) ou le plan de développement des compétences de l'entreprise. Nous fournissons les pièces nécessaires : devis, convention, programme détaillé, certificat de réalisation.",
         },
         {
           question: "Comment monter le dossier de prise en charge ?",
@@ -51,7 +51,7 @@ export async function QualiopiFinancingFaq() {
         {
           question: "Are the trainings fundable (OPCO, France Travail)?",
           answer:
-            "Qualiopi certification makes Axion-IA trainings eligible for OPCO funding; depending on your situation, coverage by France Travail (AIF, POEI) may also be possible. Coverage is assessed case by case according to your sector and scheme — we provide the required documents: quote, agreement, detailed programme, completion certificate.",
+            "Yes. Qualiopi certification makes Axion-IA trainings fundable by OPCOs; depending on the scheme and eligibility, they may also be mobilised via France Travail (AIF) or the employer's skills-development plan. We provide the required documents: quote, agreement, detailed programme, completion certificate.",
         },
         {
           question: "How do we set up the funding request?",
