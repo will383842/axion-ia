@@ -96,10 +96,10 @@ const alertsSchema = z.object({
 });
 
 const legalIdentitySchema = z.object({
-  /** Placeholders légaux — remplis APRÈS l'implémentation (cf. AIPD `[À COMPLÉTER]`). */
-  raisonSociale: z.string(),
-  siren: z.string(),
-  dpoContact: z.string(),
+  // Gouvernance AIPD spécifique prospection. L'IDENTITÉ légale (raison sociale,
+  // SIREN, DPO) n'est PAS dupliquée ici : elle est centralisée dans le
+  // SiteSetting `legal_overrides` (SSOT `src/lib/legal-identity.ts`, éditée dans
+  // la console `/settings`), lue via `getProspectionControllerIdentity()`.
   aipdValidatedBy: z.string(),
   aipdValidatedAt: z.string(),
 });
@@ -188,10 +188,10 @@ export const PROSPECTION_CONFIG_REGISTRY = {
     { debitDropPct: 50, staleCellHours: 6, zeroResultAlert: true },
     "Seuils de détection d'anomalies (débit, cellule stale, taux 0 anormal).",
   ),
-  legalIdentity: entry(
+  aipdGovernance: entry(
     legalIdentitySchema,
-    { raisonSociale: "", siren: "", dpoContact: "", aipdValidatedBy: "", aipdValidatedAt: "" },
-    "Identité légale + DPO (placeholders — remplis APRÈS implémentation, avant collecte prod).",
+    { aipdValidatedBy: "", aipdValidatedAt: "" },
+    "Gouvernance AIPD prospection (qui a validé / quand). Identité légale = SiteSetting `legal_overrides`.",
   ),
 } as const;
 

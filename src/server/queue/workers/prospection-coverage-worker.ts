@@ -12,6 +12,8 @@ import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { rebuildGeoCoverage, type CoverageDb } from "@/server/prospection/collect/coverage-service";
 import { dimKey } from "@/server/prospection/collect/coverage-rollup";
 import { detectAnomalies } from "@/server/prospection/collect/anomaly";
+import { decideCampaignAction } from "@/server/prospection/collect/campaign-progress";
+import { enqueueProspectionOrchestrator } from "@/server/prospection/queue/queues";
 import { getProspectionConfig } from "@/server/prospection/config/site-settings";
 import { isBuildStub } from "@/server/prospection/sources/stock-source";
 import type { ProspectionCoverageJobData } from "@/server/prospection/queue/queues";
@@ -91,7 +93,45 @@ async function processJob(_job: Job<ProspectionCoverageJobData>) {
     });
   }
 
-  return { scopes: stats.length, alerts: alerts.length };
+  // Pilotage autonome (production) : draine et clôt les campagnes actives.
+  // → « laisser tourner jusqu'à ce que tous les départements soient faits ».
+  const activeCampaigns = await prisma.prospectionCampaign.findMany({
+    where: { statut: "active" },
+    select: { id: true },
+  });
+  let completed = 0;
+  let reorchestrated = 0;
+  for (const camp of activeCampaigns) {
+    const [faites, aFaire, enCours] = await Promise.all([
+      prisma.prospectionCoverageCell.count({ where: { campaignId: camp.id, statut: "fait" } }),
+      prisma.prospectionCoverageCell.count({ where: { campaignId: camp.id, statut: "a_faire" } }),
+      prisma.prospectionCoverageCell.count({ where: { campaignId: camp.id, statut: "en_cours" } }),
+    ]);
+    await prisma.prospectionCampaign.update({
+      where: { id: camp.id },
+      data: { cellulesFaites: faites },
+    });
+    const action = decideCampaignAction({ aFaire, enCours });
+    if (action === "reorchestrate") {
+      await enqueueProspectionOrchestrator(camp.id);
+      reorchestrated++;
+    } else if (action === "complete") {
+      await prisma.prospectionCampaign.update({
+        where: { id: camp.id },
+        data: { statut: "terminee", nextRunAt: null },
+      });
+      await prisma.prospectionEvent.create({
+        data: {
+          type: "refresh",
+          campaignId: camp.id,
+          reason: "campagne terminée (toutes cellules traitées)",
+        },
+      });
+      completed++;
+    }
+  }
+
+  return { scopes: stats.length, alerts: alerts.length, completed, reorchestrated };
 }
 
 export function startProspectionCoverageWorker(): Worker<ProspectionCoverageJobData> {
