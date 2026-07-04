@@ -10,6 +10,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { QualiopiContentBadge } from "@/components/qualiopi/QualiopiContentBadge";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
@@ -597,6 +598,15 @@ export default async function BlogArticle({ params }: Props) {
               </Container>
             </Section>
           </article>
+
+          {/* Badge Qualiopi (contenus) — Will 2026-07-04 : certification affichée
+          en clôture d'article, NON gatée. Logo + mention « Actions de formation »,
+          sans n° (non renseigné), sans CPF (non habilité). */}
+          <Section>
+            <Container className="max-w-[52rem]">
+              <QualiopiContentBadge locale={loc} />
+            </Container>
+          </Section>
 
           {/* Carte auteur E-E-A-T déplacée EN BAS (Will 2026-06-25) — clôt l'article
           juste après le corps, pattern éditorial standard (bio auteur en fin). */}
