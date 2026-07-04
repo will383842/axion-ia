@@ -20,7 +20,6 @@ import { routing, type Locale } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
-import { FinancingMicro } from "@/components/qualiopi/FinancingBadges";
 import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
@@ -67,7 +66,7 @@ export async function generateMetadata({
     // Suffixe Qualiopi/finançable — GATED Phase B (claim illégal avant agrément).
     // Flag lu au runtime ; l'ISR régénère la meta en Phase B (sinon suffixe absent).
     const qualiopiSuffix = isQualiopiPublicDisclosureEnabled()
-      ? " · Certifié Qualiopi, finançable OPCO."
+      ? " · Certifié Qualiopi, finançable OPCO et France Travail."
       : "";
     return buildProductMetadata({
       locale,
@@ -273,11 +272,9 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                   {f.codeRncp ? ` ${f.codeRncp}` : f.codeRs ? ` ${f.codeRs}` : ""}
                 </span>
               )}
-              {/* Financement (Phase B) — micro-mention OPCO / France Travail
-                  variée + déterministe (SSOT financing.ts). Rend null hors
-                  Phase A. Le CPF est volontairement EXCLU (Qualiopi seul ne
-                  suffit pas : requiert RNCP/RS + EDOF non détenus). */}
-              <FinancingMicro seed={slug} />
+              {/* Badge éligibilité CPF RETIRÉ (2026-07-04) — Axion-IA n'a pas
+                  l'habilitation CPF ; annoncer publiquement l'éligibilité CPF est
+                  illégal. Financements publics affichables : OPCO, France Travail. */}
               {/* Réassurance Qualiopi (Phase B) — pastille texte seul, zéro image
                   (Web Vitals safe). Rend null hors Phase B. */}
               <QualiopiBadge variant="inline" />
@@ -522,6 +519,8 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                       </div>
                     )}
                   </dl>
+                  {/* Badge « Éligible CPF » RETIRÉ (2026-07-04) — pas d'habilitation
+                      CPF ; claim public CPF illégal. Cf. OPCO / France Travail. */}
                 </SectionBlock>
               )}
 
