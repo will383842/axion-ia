@@ -162,6 +162,42 @@ cellule `en_cours` bloquée (reclaimer stale→erreur dans coverage-worker) + in
 d'intégration Redis (re-enqueue no-op, Retry-After, isBuildStub gating) et E2E Playwright/lhci UI
 (hors suite vitest — gate CI dédié) ; bench charge/soak France entière (T9 §6, mesure prod).
 
+## 🔬 VÉRIF FINALE APPROFONDIE (2e passe, 2026-07-04) — production-readiness
+
+4 agents indépendants (frontend/console, backend/workers/autonomie, RGPD/légal/sécurité,
+data/business/prod-readiness). Défauts confirmés **corrigés** :
+
+- **Identité légale centralisée** : la config prospection dupliquait raison sociale/SIREN/DPO →
+  supprimée. Tout lit désormais le SSOT central `legal_overrides` (console `/settings`, partagé
+  mentions légales + factures). Ajout du **contact DPO** au central (défaut `contact@axion-ia.com`).
+  Raison sociale = **Axion-IA SAS** (déjà défaut marque). **SIREN = à saisir via Kbis** (ne peut être
+  inventé) → affiché « communiqué sur demande » + garde-fou `productionReady` dans Réglages.
+- **Complétion autonome** : coverage-worker (horaire) draine les cellules restantes + clôt la campagne
+  (`terminee`) → « laisser tourner jusqu'à tous les départements faits » converge.
+- **Frontend** : fiche entreprise `entreprises/[siren]` (corrige un 404 réel) + fiche personne
+  `personnes/[personKey]` ; classes CSS → design system + utilitaires manquants ajoutés.
+- **Data** : `pctCompletion` borné à 1.0 + numérateur aligné (fini > 100 %) ; `domain-confirm` SIREN
+  à frontière de chiffres (fini la fabrication par concaténation → mauvaise entreprise) ; extraction
+  personnes rejette les sections de page (« Mentions Légales »).
+- **RGPD** : `retentionUntil` **enfin renseigné** (ingest + enrich) → purge non-inerte (art. 5.1.e) ;
+  opt-out domaine insensible à la casse.
+- **Backend** : découverte de site (devinette domaine confirmée SIREN/dénom) → l'enrichissement n'est
+  plus inerte quand le Stock n'a pas d'URL ; ingest concurrence bornée (25, plus 500 → pool/P2024) ;
+  bouton console « Lancer l'ingestion Stock ».
+
+**Reste documenté (à traiter avant / pendant le 1er run national réel — NON bloquant pour un pilote
+départemental supervisé)** :
+
+1. **Politesse crawl à grande échelle** : câbler `token-bucket-redis` + `circuit-breaker` + `Crawl-delay`
+   robots PAR HÔTE dans le chemin fetch (aujourd'hui seul le limiter BullMQ global 10/s throttle, par
+   process). Nécessaire si worker scalé en N réplicas.
+2. **Mention d'information publique (RGPD art. 14)** : ajouter une section « prospection » à
+   `politique-confidentialite` (V1 sans outreach → obligation légère mais réelle depuis la collecte).
+3. **Ingest national** : option de filtre par département, downloader data.gouv, retry sur P2024
+   (aujourd'hui compté+sauté), dry-run sur le vrai fichier. Tuning pool Postgres.
+4. Mineurs : collision personKey (homonymes même entreprise), clé upsert téléphone, flag de troncature
+   export > 100k.
+
 ## Journal (append)
 
 - 2026-07-01 — Dossier de conception + skill créés. Implémentation non démarrée. En attente feu vert Will
