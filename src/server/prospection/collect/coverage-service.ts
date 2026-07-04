@@ -101,7 +101,18 @@ export async function rebuildGeoCoverage(
   db: CoverageDb,
   opts: { snapshotDate?: Date; enrichedByDep?: EnrichedByDep[] } = {},
 ): Promise<GeoStat[]> {
-  const baseWhere = { statutDiffusion: "diffusible", etatAdministratif: "actif", optOut: false };
+  // Numérateur ALIGNÉ sur le dénominateur Stock : ne compte que les entreprises
+  // qui appartiennent à une cellule (dép+naf+taille renseignés). Sans ce filtre,
+  // les entreprises sans tranche d'effectif (fréquentes, 0 salarié) gonflent
+  // `collectees` sans être dans `stockAttendu` → complétion > 100 % (vérif data).
+  const baseWhere = {
+    statutDiffusion: "diffusible",
+    etatAdministratif: "actif",
+    optOut: false,
+    departement: { not: null },
+    naf: { not: null },
+    taille: { not: null },
+  };
   const contactRows = (await db.prospectionCompany.groupBy({
     by: ["departement", "contactabilite"],
     where: baseWhere,

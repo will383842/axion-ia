@@ -91,7 +91,7 @@ export default async function EntreprisesPage({
           defaultValue={sp.contactabilite}
           placeholder="Contactabilité"
         />
-        <button type="submit" className="admin-btn">
+        <button type="submit" className="admin-button">
           Filtrer
         </button>
       </form>
@@ -109,7 +109,7 @@ export default async function EntreprisesPage({
       {hasMore && page.length > 0 && (
         <p style={{ marginTop: "1rem" }}>
           <Link
-            className="admin-btn"
+            className="admin-button"
             href={`${base}?${(() => {
               qs.set("cursor", page[page.length - 1]!.id);
               return qs.toString();

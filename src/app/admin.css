@@ -1481,3 +1481,47 @@
   gap: 8px;
   align-items: center;
 }
+
+/* Utilitaires admin partagés (ajout module prospection — comblent des classes
+   utilisées par plusieurs pages console sans définition). Non-layered pour
+   gagner la cascade, cohérent avec .admin-card. */
+.admin-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-fg);
+  margin: 0 0 12px;
+}
+.admin-muted {
+  color: var(--color-fg-muted);
+  font-size: 13px;
+}
+.admin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.admin-list > li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.admin-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.admin-form-field > span,
+.admin-form-field > legend {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-fg-soft);
+}
+.admin-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}

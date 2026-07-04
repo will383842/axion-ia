@@ -42,7 +42,11 @@ export function dimKey(
 function ratio(num: number, den: number): number {
   if (den <= 0) return 0;
   const r = num / den;
-  return Number.isFinite(r) ? r : 0;
+  if (!Number.isFinite(r)) return 0;
+  // Un taux de complétion/couverture ne dépasse jamais 100 % : on borne à 1
+  // (garde-fou contre un numérateur légèrement plus inclusif que le dénominateur
+  // Stock — ex. entreprises sans tranche d'effectif). Cf. vérif finale (data).
+  return Math.min(1, r);
 }
 
 /** Calcule les pourcentages d'un jeu de compteurs (jamais de div/0). */

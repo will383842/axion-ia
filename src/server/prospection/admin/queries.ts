@@ -104,6 +104,25 @@ export async function listRegionCoverage() {
   }));
 }
 
+export async function getCompanyBySiren(siren: string) {
+  return prisma.prospectionCompany.findUnique({
+    where: { siren },
+    include: {
+      contacts: { orderBy: [{ isPrimary: "desc" }, { type: "asc" }] },
+      persons: { where: { optOut: false }, orderBy: { nom: "asc" } },
+      establishments: { take: 20, orderBy: { estSiege: "desc" } },
+    },
+  });
+}
+
+export async function getPersonByKey(personKey: string) {
+  return prisma.prospectionPerson.findMany({
+    where: { personKey },
+    include: { company: { select: { siren: true, denomination: true, departement: true } } },
+    orderBy: { createdAt: "asc" },
+  });
+}
+
 export async function listSuppressions() {
   return prisma.prospectionSuppressionEntry.findMany({ orderBy: { createdAt: "desc" }, take: 200 });
 }

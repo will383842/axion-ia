@@ -87,6 +87,12 @@ describe("extractPersons (passe B, #7)", () => {
     const persons = extractPersons(html);
     expect(persons.find((p) => /Cabinet/i.test(p.name))).toBeUndefined();
   });
+
+  it("REJETTE une section de page (Mentions Légales) comme personne (vérif data)", () => {
+    const html = `<div class="card"><h3>Mentions Légales</h3><p>Responsable du site</p></div>`;
+    const persons = extractPersons(html);
+    expect(persons.find((p) => /Mentions|Légales/i.test(p.name))).toBeUndefined();
+  });
 });
 
 describe("confirmDomainOwnership — frontière de mot (réconciliation T5 D3)", () => {
@@ -96,5 +102,23 @@ describe("confirmDomainOwnership — frontière de mot (réconciliation T5 D3)",
       denomination: "ELIS",
     });
     expect(r.confirmed).toBe(false);
+  });
+
+  it("SIREN fabriqué par concaténation de nombres sans rapport → NON confirmé (vérif data)", () => {
+    // "00123456789" contient "123456789" mais collé à un autre chiffre → pas le SIREN.
+    const r = confirmDomainOwnership("<p>Commande n° 00123456789 du 12/03</p>", {
+      siren: "123456789",
+      denomination: "ZZZ SANS LIEN",
+    });
+    expect(r.confirmed).toBe(false);
+  });
+
+  it("SIRET (SIREN + NIC) sur la page → confirmé", () => {
+    const r = confirmDomainOwnership("<p>SIRET 12345678900012</p>", {
+      siren: "123456789",
+      denomination: "ZZZ",
+    });
+    expect(r.confirmed).toBe(true);
+    expect(r.method).toBe("siren_on_page");
   });
 });

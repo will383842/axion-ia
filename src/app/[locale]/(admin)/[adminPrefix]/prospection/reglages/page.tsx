@@ -60,7 +60,7 @@ export default async function ReglagesPage() {
           </li>
         </ul>
         {!identity.productionReady && (
-          <p className="admin-error" role="alert">
+          <p className="admin-alert" role="alert">
             ⚠️ Avant une collecte en production, compléter : {identity.missing.join(", ")}.
           </p>
         )}

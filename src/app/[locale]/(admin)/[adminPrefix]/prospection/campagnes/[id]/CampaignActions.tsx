@@ -24,7 +24,7 @@ export function CampaignActions({ id, statut }: { id: string; statut: string }) 
     <div className="admin-actions" style={{ display: "flex", gap: "0.5rem" }}>
       {(statut === "brouillon" || statut === "terminee") && (
         <button
-          className="admin-btn admin-btn-primary"
+          className="admin-button-cta"
           disabled={isPending}
           onClick={() => run(launchProspectionCampaign)}
         >
@@ -33,7 +33,7 @@ export function CampaignActions({ id, statut }: { id: string; statut: string }) 
       )}
       {statut === "active" && (
         <button
-          className="admin-btn"
+          className="admin-button"
           disabled={isPending}
           onClick={() => run(pauseProspectionCampaign)}
         >
@@ -42,7 +42,7 @@ export function CampaignActions({ id, statut }: { id: string; statut: string }) 
       )}
       {(statut === "en_pause" || statut === "en_pause_quota") && (
         <button
-          className="admin-btn admin-btn-primary"
+          className="admin-button-cta"
           disabled={isPending}
           onClick={() => run(resumeProspectionCampaign)}
         >

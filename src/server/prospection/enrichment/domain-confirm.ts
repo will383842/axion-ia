@@ -33,9 +33,20 @@ export function confirmDomainOwnership(
   company: { siren: string; denomination?: string | null },
 ): DomainConfirmResult {
   const text = htmlToText(html);
-  const digitsOnly = text.replace(/\D/g, "");
-  if (company.siren && digitsOnly.includes(company.siren)) {
-    return { confirmed: true, method: "siren_on_page", confidence: 0.98 };
+  // SIREN à FRONTIÈRE de chiffres (tolère espaces/points/insécables entre les
+  // chiffres, ex. « 380 000 001 » ou le SIRET « 38000000100011 »), mais JAMAIS à
+  // cheval sur deux nombres sans rapport (un téléphone/prix ne doit pas
+  // « fabriquer » le SIREN par concaténation — sinon on rattache les personnes
+  // scrapées à la MAUVAISE entreprise). Cf. vérif finale (data, RGPD-sensible).
+  const sirenDigits = company.siren.replace(/\D/g, "");
+  if (sirenDigits.length === 9) {
+    const sep = "[\\s.\\u00A0]*";
+    const spaced = sirenDigits.split("").join(sep);
+    // SIREN seul (borné) OU SIREN suivi d'EXACTEMENT 5 chiffres NIC (= SIRET).
+    const re = new RegExp(`(?<![0-9])${spaced}(?:${sep}(?:[0-9]${sep}){5})?(?![0-9])`);
+    if (re.test(text)) {
+      return { confirmed: true, method: "siren_on_page", confidence: 0.98 };
+    }
   }
   const denom = normalizeText(company.denomination ?? "");
   // Match à la FRONTIÈRE de mot (espaces autour) — un « elis » ne doit pas matcher

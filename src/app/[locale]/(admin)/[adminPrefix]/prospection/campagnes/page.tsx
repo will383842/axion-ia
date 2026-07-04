@@ -48,7 +48,7 @@ export default async function CampagnesPage({
         title="Campagnes de prospection"
         description="Chaque campagne cible département × secteur/NAF × taille et se découpe en cellules de couverture."
         actions={
-          <Link className="admin-btn admin-btn-primary" href={`${base}/nouvelle`}>
+          <Link className="admin-button-cta" href={`${base}/nouvelle`}>
             + Nouvelle campagne
           </Link>
         }
@@ -62,7 +62,7 @@ export default async function CampagnesPage({
             title="Aucune campagne"
             description="Créez une campagne pour lancer la collecte (ex. Isère 38 · BTP + Santé)."
             primaryAction={
-              <Link className="admin-btn admin-btn-primary" href={`${base}/nouvelle`}>
+              <Link className="admin-button-cta" href={`${base}/nouvelle`}>
                 Créer une campagne
               </Link>
             }

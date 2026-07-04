@@ -115,11 +115,11 @@ export function WizardForm({ base }: { base: string }) {
       </label>
 
       {error && (
-        <p className="admin-error" role="alert">
+        <p className="admin-alert" role="alert">
           {error}
         </p>
       )}
-      <button type="submit" className="admin-btn admin-btn-primary" disabled={isPending}>
+      <button type="submit" className="admin-button-cta" disabled={isPending}>
         {isPending ? "Création…" : "Créer la campagne (brouillon)"}
       </button>
     </form>

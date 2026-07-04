@@ -56,12 +56,12 @@ export function ExportPanel() {
         />
         <input placeholder="Secteur" value={secteur} onChange={(e) => setSecteur(e.target.value)} />
         <input placeholder="Taille" value={taille} onChange={(e) => setTaille(e.target.value)} />
-        <button className="admin-btn admin-btn-primary" onClick={generate} disabled={isPending}>
+        <button className="admin-button-cta" onClick={generate} disabled={isPending}>
           {isPending ? "Génération…" : "Générer l'export"}
         </button>
       </div>
       {error && (
-        <p className="admin-error" role="alert">
+        <p className="admin-alert" role="alert">
           {error}
         </p>
       )}
@@ -75,19 +75,19 @@ export function ExportPanel() {
           </p>
           <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
             <button
-              className="admin-btn"
+              className="admin-button"
               onClick={() => download("prospection-exploitables.csv", res.exploitables)}
             >
               ⬇ Exploitables
             </button>
             <button
-              className="admin-btn"
+              className="admin-button"
               onClick={() => download("prospection-partiels.csv", res.partiels)}
             >
               ⬇ Partiels
             </button>
             <button
-              className="admin-btn"
+              className="admin-button"
               onClick={() => download("prospection-a-completer.csv", res.aCompleter)}
             >
               ⬇ À compléter

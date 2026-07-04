@@ -61,7 +61,7 @@ export function RgpdForm() {
         <span>Raison (optionnel)</span>
         <input value={raison} onChange={(e) => setRaison(e.target.value)} />
       </label>
-      <button type="submit" className="admin-btn admin-btn-primary" disabled={isPending}>
+      <button type="submit" className="admin-button-cta" disabled={isPending}>
         {isPending ? "…" : "Enregistrer l'opposition"}
       </button>
       {msg && (
