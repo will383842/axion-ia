@@ -67,6 +67,7 @@ import { startProspectionCollectWorker } from "./workers/prospection-collect-wor
 import { startProspectionCoverageWorker } from "./workers/prospection-coverage-worker";
 import { startProspectionSchedulerWorker } from "./workers/prospection-scheduler-worker";
 import { startProspectionEnrichWorker } from "./workers/prospection-enrich-worker";
+import { startProspectionAnnuaireSanteWorker } from "./workers/prospection-annuaire-sante-worker";
 import { bootProspectionRepeatableJobs } from "@/server/prospection/queue/queues";
 
 async function main() {
@@ -153,6 +154,8 @@ async function main() {
     startProspectionSchedulerWorker(),
     // Prospection T5 — enrichissement 2 passes (site public + MX + responsables).
     startProspectionEnrichWorker(),
+    // Prospection V2 — ingestion Annuaire Santé/RPPS (gardée par le flag AIPD).
+    startProspectionAnnuaireSanteWorker(),
   ];
 
   await bootRepeatableJobs();

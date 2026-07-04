@@ -3,7 +3,10 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { getAllProspectionConfig } from "@/server/prospection/config/site-settings";
 import { getProspectionControllerIdentity } from "@/server/prospection/rgpd/controller-identity";
-import { triggerProspectionStockIngest } from "@/server/actions/prospection/ops";
+import {
+  triggerProspectionStockIngest,
+  triggerAnnuaireSanteIngest,
+} from "@/server/actions/prospection/ops";
 import { adminPath } from "@/lib/admin-path";
 
 export const dynamic = "force-dynamic";
@@ -77,6 +80,25 @@ export default async function ReglagesPage() {
         <form action={triggerProspectionStockIngest}>
           <button type="submit" className="admin-button">
             Lancer l’ingestion Stock
+          </button>
+        </form>
+      </section>
+
+      <section className="admin-card" style={{ marginBottom: "1rem" }}>
+        <h2 className="admin-section-title">Ingestion Annuaire Santé / RPPS (spécialités)</h2>
+        <p className="admin-muted">
+          Récupère directement la <strong>spécialité fine</strong> (cardiologue, ophtalmologue…), le{" "}
+          <strong>téléphone</strong> et l’adresse des professionnels de santé — sans crawler leur
+          site (peu en ont). Fichier « PS LibreAccès » (<code>PROSPECTION_RPPS_PATH</code>).
+        </p>
+        <p className="admin-alert" role="note">
+          ⚠️ Données <strong>nominatives</strong> de professionnels de santé. L’ingestion est
+          bloquée tant que <code>PROSPECTION_SANTE_INGESTION_ENABLED=true</code> n’est pas
+          positionné — à ne faire qu’<strong>après validation de l’AIPD dédiée</strong>.
+        </p>
+        <form action={triggerAnnuaireSanteIngest}>
+          <button type="submit" className="admin-button">
+            Lancer l’ingestion Santé (RPPS)
           </button>
         </form>
       </section>

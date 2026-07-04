@@ -9,6 +9,7 @@ import { requireProspectionAccess } from "./_auth";
 import {
   enqueueProspectionStockIngest,
   enqueueProspectionEnrich,
+  enqueueProspectionAnnuaireSante,
 } from "@/server/prospection/queue/queues";
 import { prisma } from "@/lib/prisma";
 
@@ -97,6 +98,35 @@ export async function enrichProspectionSegment(
     },
   });
   return { enqueued };
+}
+
+/**
+ * Ingestion Annuaire Santé / RPPS (spécialité + tél + adresse des pros de santé).
+ * DOUBLE garde-fou : (1) fichier `PROSPECTION_RPPS_PATH` présent ; (2) flag AIPD
+ * `PROSPECTION_SANTE_INGESTION_ENABLED=true` (données nominatives). RBAC `config`.
+ */
+export async function triggerAnnuaireSanteIngest(_formData?: FormData): Promise<void> {
+  const session = await requireProspectionAccess("config");
+  if (process.env.PROSPECTION_SANTE_INGESTION_ENABLED !== "true") {
+    throw new Error(
+      "Ingestion santé désactivée : données nominatives de professionnels de santé. " +
+        "Valider l'AIPD dédiée puis positionner PROSPECTION_SANTE_INGESTION_ENABLED=true.",
+    );
+  }
+  if (!process.env.PROSPECTION_RPPS_PATH) {
+    throw new Error(
+      "Aucun fichier RPPS configuré (PROSPECTION_RPPS_PATH). Télécharger l'extract « PS " +
+        "LibreAccès » de l'Annuaire Santé, le monter, puis renseigner cette variable.",
+    );
+  }
+  await enqueueProspectionAnnuaireSante({});
+  await prisma.prospectionEvent.create({
+    data: {
+      type: "refresh",
+      actorId: session.userId,
+      reason: "ingestion Annuaire Santé/RPPS déclenchée (console)",
+    },
+  });
 }
 
 /**

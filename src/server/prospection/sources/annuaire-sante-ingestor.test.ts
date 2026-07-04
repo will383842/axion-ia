@@ -52,6 +52,8 @@ const ROWS: AnnuaireSanteRow[] = [
     siret: "38000000100011",
     codePostal: "38000",
     commune: "GRENOBLE",
+    telephone: "04 76 00 11 22",
+    email: "cabinet.martin@exemple.fr",
   },
   {
     rpps: "10007654321",
@@ -79,11 +81,15 @@ describe("ingestAnnuaireSante (V2 fixtures)", () => {
     const cardio = practitioners.get("10001234567") as {
       specialite: string;
       departement: string;
+      telephone: string | null;
+      email: string | null;
       company?: unknown;
       retentionUntil: Date;
     };
     expect(cardio.specialite).toBe("cardiologie");
     expect(cardio.departement).toBe("38");
+    expect(cardio.telephone).toBe("+33476001122"); // normalisé E.164, sans crawl
+    expect(cardio.email).toBe("cabinet.martin@exemple.fr");
     expect(cardio.company).toBeDefined(); // relié
     expect(cardio.retentionUntil.getUTCFullYear()).toBe(2029);
 

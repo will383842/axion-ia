@@ -7886,6 +7886,8 @@ model ProspectionHealthPractitioner {
   codePostal        String?            @map("code_postal")
   commune           String?
   departement       String?
+  telephone         String?
+  email             String?
   modeExercice      String?            @map("mode_exercice")
   source            ProspectionSource?
   collectedAt       DateTime?          @map("collected_at")

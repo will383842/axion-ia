@@ -49,6 +49,9 @@ export interface ProspectionExportJobData {
 export interface ProspectionSchedulerJobData {
   tick: string;
 }
+export interface ProspectionAnnuaireSanteJobData {
+  rppsPath?: string;
+}
 
 // --- Files ---
 export const prospectionStockIngestorQueue: Queue<ProspectionStockIngestJobData> | null = connection
@@ -98,6 +101,14 @@ export const prospectionSchedulerQueue: Queue<ProspectionSchedulerJobData> | nul
     })
   : null;
 
+export const prospectionAnnuaireSanteQueue: Queue<ProspectionAnnuaireSanteJobData> | null =
+  connection
+    ? new Queue<ProspectionAnnuaireSanteJobData>("prospection-annuaire-sante", {
+        connection,
+        defaultJobOptions: { ...defaultJobOptions, attempts: 2 },
+      })
+    : null;
+
 function warnNoConnection(fn: string): void {
   if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
     console.warn(`[bullmq] no connection, skipping ${fn}`);
@@ -111,6 +122,13 @@ export async function enqueueProspectionStockIngest(
   if (!prospectionStockIngestorQueue) return warnNoConnection("enqueueProspectionStockIngest");
   const runId = data.runId ?? `stock-${data.uniteLegalePath ?? "adhoc"}`;
   await prospectionStockIngestorQueue.add("ingest", data, { jobId: `prospection-stock-${runId}` });
+}
+
+export async function enqueueProspectionAnnuaireSante(
+  data: ProspectionAnnuaireSanteJobData = {},
+): Promise<void> {
+  if (!prospectionAnnuaireSanteQueue) return warnNoConnection("enqueueProspectionAnnuaireSante");
+  await prospectionAnnuaireSanteQueue.add("ingest", data, { jobId: "prospection-annuaire-sante" });
 }
 
 export async function enqueueProspectionOrchestrator(campaignId: string): Promise<void> {

@@ -14,11 +14,27 @@ import { z } from "zod";
 import type { Prisma } from "../../../../prisma/generated/client";
 import { normalizeSpecialite } from "@/lib/prospection/specialite-sante";
 import { personKey } from "@/server/prospection/enrichment/person-key";
+import { normalizePhoneFR } from "@/server/prospection/enrichment/phone";
+import { normalizeEmail, isValidEmailSyntax } from "@/server/prospection/enrichment/email";
+import { streamCsv } from "./stock-source";
+import { createReadStream } from "node:fs";
 
 export type AnnuaireSanteRow = Record<string, string>;
 
 export interface AnnuaireSanteSource {
   iteratePractitioners(): AsyncIterable<AnnuaireSanteRow>;
+}
+
+/** Source fichier local (extract « PS LibreAccès » de l'Annuaire Santé). */
+export class LocalFileAnnuaireSanteSource implements AnnuaireSanteSource {
+  constructor(
+    private readonly path: string,
+    private readonly opts: { separator?: string } = {},
+  ) {}
+  async *iteratePractitioners(): AsyncGenerator<AnnuaireSanteRow> {
+    const gzip = this.path.endsWith(".gz");
+    yield* streamCsv(createReadStream(this.path), { gzip, separator: this.opts.separator ?? ";" });
+  }
 }
 
 export interface AnnuaireSanteDb {
@@ -66,6 +82,8 @@ const rowSchema = z.object({
   adresse: z.string().optional(),
   codePostal: z.string().optional(),
   commune: z.string().optional(),
+  telephone: z.string().optional(),
+  email: z.string().optional(),
   modeExercice: z.string().optional(),
 });
 
@@ -130,6 +148,8 @@ export async function ingestAnnuaireSante(
       adresse: pick(raw, "adresse", "Libellé voie (coord. structure)", "adresse"),
       codePostal: pick(raw, "codePostal", "Code postal (coord. structure)", "code_postal"),
       commune: pick(raw, "commune", "Libellé commune (coord. structure)", "libelle_commune"),
+      telephone: pick(raw, "telephone", "Téléphone (coord. structure)", "telephone_coord"),
+      email: pick(raw, "email", "Adresse e-mail (coord. structure)", "adresse_email"),
       modeExercice: pick(raw, "modeExercice", "Libellé mode exercice", "mode_exercice"),
     };
     if (!extracted.rpps) {
@@ -159,6 +179,9 @@ export async function ingestAnnuaireSante(
     }
 
     const departement = departementFromCp(p.codePostal);
+    const telephone = p.telephone ? (normalizePhoneFR(p.telephone) ?? p.telephone) : null;
+    const emailNorm =
+      p.email && isValidEmailSyntax(normalizeEmail(p.email)) ? normalizeEmail(p.email) : null;
 
     try {
       await db.prospectionHealthPractitioner.upsert({
@@ -177,6 +200,8 @@ export async function ingestAnnuaireSante(
           codePostal: p.codePostal ?? null,
           commune: p.commune ?? null,
           departement: departement ?? null,
+          telephone,
+          email: emailNorm,
           modeExercice: p.modeExercice ?? null,
           source: "annuaire_sante",
           collectedAt: now(),
@@ -188,6 +213,8 @@ export async function ingestAnnuaireSante(
           professionLibelle: p.profession ?? null,
           specialite: specialite ?? null,
           specialiteLibelle: p.savoirFaire ?? null,
+          telephone,
+          email: emailNorm,
           ...(companyId ? { company: { connect: { id: companyId } } } : {}),
           collectedAt: now(),
           retentionUntil,

@@ -113,6 +113,7 @@ export type WorkerName =
   | "prospection-orchestrator"
   | "prospection-collect"
   | "prospection-enrich"
+  | "prospection-annuaire-sante"
   | "prospection-coverage"
   | "prospection-export"
   | "prospection-scheduler";
