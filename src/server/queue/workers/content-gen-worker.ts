@@ -786,7 +786,18 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         matched_article_id: outlineDedup.matchedArticleId,
       },
     );
-    const outlineBlockingFail = outlineDedup.verdict === "duplicate_template";
+    // 2026-07-04 — Les NEWS (`blog_from_rss`) partagent LÉGITIMEMENT une structure
+    // de brève (directAnswer AEO + 3-6 h2 + FAQ + point clé), ce qui produit un
+    // outline SimHash quasi identique (Hamming 0) d'une news à l'autre. L'outline-
+    // dedup — conçu contre le template-farming doorway des pages LONGUES (villes) —
+    // les classait donc TOUTES `duplicate_template` → `blockingFail` → tier_3 +
+    // needs_review, alors que ce sont des CONTENUS distincts (plagiat ~0.04,
+    // topic-fingerprint distinct, anti-régurgitation RSS OK). C'était la cause du
+    // backlog de news non auto-publiées. On EXEMPTE les news de ce gate : leur
+    // anti-duplication reste couverte par le plagiat lexical Jaccard + le dedup
+    // sémantique Voyage (topicDuplicateFail) + l'anti-régurgitation source RSS.
+    const outlineBlockingFail =
+      outlineDedup.verdict === "duplicate_template" && contentType !== "blog_from_rss";
 
     // P0 2026-06-13 (décision Will) — Gate « fautes DURES » : un contenu avec une
     // donnée fausse ne doit PAS être publié (même en noindex), car une donnée
