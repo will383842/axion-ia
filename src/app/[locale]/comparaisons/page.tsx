@@ -263,7 +263,7 @@ export default async function ComparisonsListPage({ params }: Props) {
 
       <Section id="comparaisons" eyebrow={isFr ? "Comparaisons" : "Comparisons"}>
         <Container>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="xs:grid-cols-2 grid grid-cols-1 gap-6 md:grid-cols-3">
             {COMPARISONS.map((c) => (
               <li key={c.slug}>
                 <ArticleCard

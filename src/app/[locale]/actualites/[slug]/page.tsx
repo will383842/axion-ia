@@ -601,6 +601,7 @@ export default async function NewsArticlePage({ params }: Props) {
           excerpt: r.excerpt,
           publishedAt: r.publishedAt,
           readingTime: r.readingTime,
+          ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
         }))}
         eyebrow="Articles connexes"
         title="À lire aussi"

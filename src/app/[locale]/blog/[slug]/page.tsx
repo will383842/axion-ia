@@ -691,6 +691,7 @@ export default async function BlogArticle({ params }: Props) {
           excerpt: r.excerpt,
           publishedAt: r.publishedAt,
           readingTime: r.readingTime,
+          ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
         }))}
         eyebrow={isFr ? "Articles connexes" : "Related articles"}
         title={isFr ? "À lire aussi" : "Read next"}
