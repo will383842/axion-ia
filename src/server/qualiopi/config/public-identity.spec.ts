@@ -59,13 +59,17 @@ describe("computeQualiopiPublicIdentity — gate Phase A/B", () => {
     expect(mockFindUnique).not.toHaveBeenCalled();
   });
 
-  it("Phase B mais certificat non renseigné → null", async () => {
+  it("Phase B sans certificat → identité affichée (n° optionnel, jamais public)", async () => {
     process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
     seedConfig({ "qualiopi.nda_numero": "11380490538" }); // pas de qualiopi_numero
 
     const res = await computeQualiopiPublicIdentity();
 
-    expect(res).toBeNull();
+    // Nouveau contrat : le flag Phase B suffit (attestation délibérée). On affiche
+    // la version texte conforme même sans n° — le numéro n'est jamais public.
+    expect(res).not.toBeNull();
+    expect(res?.qualiopiNumero).toBe("");
+    expect(res?.categoriesCertifiees).toBe("Actions de formation");
   });
 
   it("Phase B + certificat renseigné → identité complète", async () => {

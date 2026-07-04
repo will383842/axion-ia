@@ -26,6 +26,7 @@ import {
 } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
+import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
 import { QualiopiFinancingFaq } from "@/components/qualiopi/QualiopiFinancingFaq";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
@@ -67,7 +68,7 @@ export async function generateMetadata({
   // Suffixe Qualiopi/finançable — GATED Phase B (claim illégal avant agrément).
   // Le flag est lu au runtime ; l'ISR (revalidate) régénère la meta en Phase B.
   const qualiopiSuffix = isQualiopiPublicDisclosureEnabled()
-    ? " Organisme certifié Qualiopi, formations finançables (OPCO/CPF)."
+    ? " Organisme certifié Qualiopi, formations finançables par les OPCO et France Travail."
     : "";
   return buildProductMetadata({
     locale,
@@ -104,9 +105,13 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
               moins cher qu&apos;une formation catalogue en salle extérieure, sans déplacer vos
               équipes.
             </p>
-            {/* Réassurance Qualiopi (Phase B) — formations finançables (OPCO/CPF).
-                Pastille texte seul, rend null hors Phase B. */}
+            {/* Réassurance Qualiopi (Phase B) — formations finançables par les
+                OPCO / France Travail. Pastille texte seul, rend null hors Phase B. */}
             <QualiopiBadge variant="inline" className="mt-6" />
+            {/* Encart financement riche (Phase B) — OPCO + France Travail (AIF,
+                POEI), formulation variée SSOT. Le CPF est volontairement EXCLU
+                (Qualiopi seul ne suffit pas). Rend null hors Phase B. */}
+            <FinancingBadges seed="formations-tarifs" className="mt-6 max-w-3xl" />
           </div>
         </Container>
       </section>

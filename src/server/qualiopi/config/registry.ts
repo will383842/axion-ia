@@ -43,9 +43,14 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description: "Catégorie(s) d'actions certifiées (mention obligatoire de la marque Qualiopi).",
   },
   // Chemin/URL du fichier LOGO OFFICIEL Qualiopi (≠ logo Axion-IA `logo_url`).
-  // Livré par le certificateur dans le kit de communication À LA certification.
-  // Tant que vide : le badge public affiche un libellé textuel conforme, jamais
-  // un faux logo. Ex. attendu : "/qualiopi/qualiopi-logo.png".
+  // Défaut VIDE (badge en libellé textuel conforme tant qu'aucun logo n'est
+  // renseigné — jamais de faux logo). À la Phase B, Will renseigne ici, en admin,
+  // le chemin du fichier déposé dans `public/qualiopi/` (un asset est fourni :
+  // `/qualiopi/axion-ia-qualiopi.png`, lockup co-brandé Qualiopi + mention
+  // « ACTIONS DE FORMATION »). ⚠️ CONFORMITÉ : les règles d'usage de la marque
+  // (Ministère du Travail) + le README de `public/qualiopi/` déconseillent la
+  // RECOMPOSITION du logo → à remplacer idéalement par la MARQUE SEULE du kit
+  // certificateur (simple swap de fichier, aucun changement de code).
   qualiopi_logo_path: {
     ...str(),
     description: "Chemin du fichier logo officiel Qualiopi (kit certificateur).",

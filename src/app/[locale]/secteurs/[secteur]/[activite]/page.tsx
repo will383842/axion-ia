@@ -10,6 +10,8 @@ import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { CLIENT_SECTORS, getClientSector } from "@/content/sectors";
 import { SERVICE_DEFS, getServiceDef } from "@/content/knowledge/services";
 import {
@@ -94,7 +96,15 @@ export default async function SecteurActivite({ params }: Props) {
 
   const r = resolve(secteur, activite);
   if (!r) notFound();
-  const { sector, service, pain } = r;
+  const { sector, service, pain, verticale } = r;
+
+  // Le financement OPCO / France Travail ne concerne QUE les prestations de
+  // formation (interventions collectives + 1-to-1/AFEST), pas les audits /
+  // implémentations / sites web. Gaté aussi sur la Phase B (flag) pour ne pas
+  // rendre de section vide avant la certification.
+  const showFinancing =
+    isQualiopiPublicDisclosureEnabled() &&
+    (verticale === "interventions_formations" || verticale === "un_a_un");
 
   const breadcrumbItems = [
     { href: "/secteurs", label: isFr ? "Secteurs" : "Sectors" },
@@ -179,6 +189,16 @@ export default async function SecteurActivite({ params }: Props) {
               </div>
             </div>
           </Section>
+
+          {showFinancing ? (
+            <Section
+              tone="canvas"
+              titleAs="h2"
+              title={isFr ? "Financer cette formation" : "Funding this training"}
+            >
+              <FinancingBadges seed={`${sector.slug}-${service.slug}`} className="max-w-3xl" />
+            </Section>
+          ) : null}
 
           <Section
             tone="canvas"

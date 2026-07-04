@@ -66,8 +66,14 @@ export async function computeQualiopiPublicIdentity(): Promise<QualiopiPublicIde
       getQualiopiConfig("qualiopi_logo_path"),
     ]);
 
-  // Garde anti-affichage partiel : pas de certificat → on n'affiche rien.
-  if (!org.qualiopi.trim()) return null;
+  // Décision Will : le n° de certificat n'est JAMAIS affiché publiquement → il
+  // est retiré du rendu des composants (badge/bandeau/FAQ) ET n'est plus une
+  // condition d'affichage ici. Le flag Phase B EST l'attestation délibérée de
+  // divulgation (« NDA + Qualiopi obtenus », cf. flag.ts) : dès la Phase B, on
+  // affiche la version TEXTE conforme (« Organisme certifié Qualiopi » +
+  // catégorie), sans logo ni numéro. Le n° et le logo restent des enrichissements
+  // OPTIONNELS (renseignés en admin), le logo débloquant le visuel du badge.
+  // (Pas de garde numéro ici : la garde Phase A ci-dessus suffit.)
 
   return {
     raisonSociale: org.raisonSociale,

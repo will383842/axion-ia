@@ -105,12 +105,7 @@ export async function QualiopiBadge({ className, variant = "card" }: QualiopiBad
         <div className="min-w-0">
           <p className="text-sm leading-snug font-semibold">{title}</p>
           <p className="text-fg-muted mt-1 text-[11px] leading-snug">{mention}</p>
-          {identity.qualiopiNumero ? (
-            <p className="text-fg-muted mt-1 font-mono text-[11px]">
-              {isFr ? "Certificat n° " : "Certificate no. "}
-              {identity.qualiopiNumero}
-            </p>
-          ) : null}
+          {/* Décision Will : le n° de certificat n'est JAMAIS affiché publiquement. */}
         </div>
       </div>
     </div>

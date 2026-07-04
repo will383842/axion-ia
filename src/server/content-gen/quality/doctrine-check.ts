@@ -64,6 +64,56 @@ const FABRICATED_STAT_PATTERNS: ReadonlyArray<{ re: RegExp; reason: string }> = 
   },
 ];
 
+// Financement — garde-fous doctrine (Phase B). Axion-IA est certifié Qualiopi →
+// OPCO + France Travail sont mobilisables et PEUVENT être mentionnés (registre
+// « éligible / prise en charge possible »). Mais 3 familles restent INTERDITES
+// dans tout contenu généré :
+//  (a) le CPF (Qualiopi ne suffit pas : exige RNCP/RS + EDOF non détenus) ;
+//  (b) les sur-promesses « automatique / 100 % / gratuit » (le versement dépend
+//      toujours de l'accord de l'OPCO ou de France Travail — C. conso L121-2) ;
+//  (c) les numéros légaux (NDA, certificat Qualiopi) — jamais dans le public.
+// SSOT des formulations autorisées : `server/qualiopi/config/financing.ts`.
+const FINANCING_FORBIDDEN_PATTERNS: ReadonlyArray<{
+  re: RegExp;
+  severity: "block" | "warn";
+  reason: string;
+}> = [
+  {
+    re: /\bCPF\b|compte\s+personnel\s+de\s+formation|mon\s+compte\s+formation|moncompteformation/gi,
+    severity: "block",
+    reason:
+      "CPF / Mon Compte Formation cité : NON éligible (Qualiopi seul ne suffit pas, il faut RNCP/RS + EDOF). Ne mentionner que OPCO / France Travail.",
+  },
+  {
+    // ⚠️ `\S*` (et non `\w+`) : `\w` ne matche PAS les lettres accentuées, donc
+    // « financée / financés » échapperait à `financ\w+`. `financ\S*` les couvre.
+    re: /(?:financ\S*|pris\S*\s+en\s+charge)\s+(?:à\s+)?100\s*%|100\s*%\s+(?:financ\S*|pris\S*\s+en\s+charge|gratuit)/gi,
+    severity: "block",
+    reason:
+      "Sur-promesse « 100 % financé / pris en charge ». Le versement dépend de l'accord de l'OPCO / France Travail. Formuler « prise en charge possible, selon votre situation ».",
+  },
+  {
+    re: /financement\s+automatique|automatiquement\s+financ\S*|financ\S*\s+automatiquement/gi,
+    severity: "block",
+    reason:
+      "Sur-promesse « financement automatique ». L'éligibilité est acquise, mais le financement suppose une demande + accord préalable.",
+  },
+  {
+    re: /(?:intégralement|entièrement|totalement)\s+(?:financ\S*|gratuit\S*)|formation\s+gratuite|gratuit\S*\s+grâce\s+à/gi,
+    severity: "block",
+    reason:
+      "Sur-promesse de gratuité / financement intégral. Le reste à charge dépend du dossier OPCO. Formuler au conditionnel (« en tout ou partie »).",
+  },
+  {
+    // NDA / certificat Qualiopi suivi d'un numéro, sous toutes ses formes :
+    // « certificat n° 12345 », « certification Qualiopi numéro … », « NDA 11380… ».
+    re: /(?:déclaration\s+d['’e]?\s*activité|certificat|certification\s+qualiopi|qualiopi|\bNDA\b)\s*(?:qualiopi\s*)?(?:n[°ºo]|numéro|:)\s*\d|\bNDA\b\s*\d{3}/gi,
+    severity: "block",
+    reason:
+      "Numéro légal (NDA / certificat Qualiopi) dans un contenu généré. Ces numéros ne figurent JAMAIS dans le public/généré. Retirer le numéro.",
+  },
+];
+
 const AXIONIA_KEYWORDS = [
   "axion-ia",
   "méthodologie",
@@ -138,6 +188,21 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
         reason,
         occurrences: matches.length,
       });
+    }
+  }
+
+  // 2ter. Financement — CPF interdit, sur-promesses interdites, numéros interdits.
+  for (const { re, severity, reason } of FINANCING_FORBIDDEN_PATTERNS) {
+    const matches = text.match(re);
+    if (matches) {
+      const violation: DoctrineViolation = {
+        pattern: "financement-interdit",
+        severity,
+        reason,
+        occurrences: matches.length,
+      };
+      if (severity === "block") blocking.push(violation);
+      else warnings.push(violation);
     }
   }
 

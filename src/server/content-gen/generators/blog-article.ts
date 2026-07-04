@@ -42,6 +42,7 @@ import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 import { buildPh3PromptAugmentation } from "../prompt-augmentation";
 import { applySystemPromptOverride } from "@/server/content-gen/template-resolver";
+import { getFinancingPromptFact } from "@/server/qualiopi/config/financing";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 import { keywordPresentInText } from "@/server/content-gen/shared/keyword-match";
 
@@ -195,7 +196,10 @@ export const blogArticleGenerator: Generator = {
     const planSystem =
       applySystemPromptOverride(SYSTEM_PROMPT_PLAN, input.templateOverride, "blog_article") +
       getIntentPromptAddendum(input.targetSearchIntent) +
-      ph3Aug;
+      ph3Aug +
+      // Fait financement OPCO/France Travail — self-gaté Phase B ("" en Phase A),
+      // mentionné par le LLM uniquement si le sujet touche aux formations.
+      getFinancingPromptFact();
     const planUserPrompt = `Prépare le PLAN d'un article de blog Axion-IA sur le sujet : "${safeTopic}".
 Intent : ${safeIntent}.
 Audience cible : ${safeAudienceSize}.
@@ -274,7 +278,8 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
     const expandSystem =
       applySystemPromptOverride(SYSTEM_PROMPT_EXPAND, input.templateOverride, "blog_article") +
       getIntentPromptAddendum(input.targetSearchIntent) +
-      ph3Aug;
+      ph3Aug +
+      getFinancingPromptFact();
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
