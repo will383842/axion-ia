@@ -606,6 +606,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "prospection",
     },
     { href: `${base}/prospection/carte`, label: "Carte", icon: "📍", group: "prospection" },
+    {
+      href: `${base}/prospection/activites`,
+      label: "Par activité",
+      icon: "📊",
+      group: "prospection",
+    },
     { href: `${base}/prospection/personnes`, label: "Personnes", icon: "👥", group: "prospection" },
     { href: `${base}/prospection/exports`, label: "Exports", icon: "📤", group: "prospection" },
     { href: `${base}/prospection/journal`, label: "Journal", icon: "📜", group: "prospection" },

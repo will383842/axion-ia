@@ -8,6 +8,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { REGION_LABELS, type RegionCode } from "@/lib/prospection/departement-to-region";
+import { aggregateActivity } from "./activity-stats";
 
 export interface FranceKpis {
   stockAttendu: number;
@@ -121,6 +122,71 @@ export async function getPersonByKey(personKey: string) {
     include: { company: { select: { siren: true, denomination: true, departement: true } } },
     orderBy: { createdAt: "asc" },
   });
+}
+
+/**
+ * Couverture ventilée par ACTIVITÉ. Sans `secteur` → par secteur (grossier) ;
+ * avec `secteur` → par code NAF dans ce secteur (fin, ex. architectes du BTP).
+ * Filtrable par département. Agrégation live (admin, force-dynamic, stub-aware).
+ */
+export async function getActivityBreakdown(opts: { departement?: string; secteur?: string }) {
+  const base = {
+    statutDiffusion: "diffusible" as never,
+    etatAdministratif: "actif" as never,
+    optOut: false,
+    naf: { not: null },
+    taille: { not: null },
+    ...(opts.departement ? { departement: opts.departement } : {}),
+  };
+
+  if (opts.secteur) {
+    // Drill-down : par code NAF DANS un secteur (ex. architectes du BTP).
+    const where = { ...base, secteur: opts.secteur as never };
+    const [contactRows, enrichedRows] = await Promise.all([
+      prisma.prospectionCompany.groupBy({
+        by: ["naf", "contactabilite"],
+        where,
+        _count: { _all: true },
+      }),
+      prisma.prospectionCompany.groupBy({
+        by: ["naf"],
+        where: { ...where, enrichmentStatus: "enriched" as never },
+        _count: { _all: true },
+      }),
+    ]);
+    return aggregateActivity(
+      contactRows.map((r) => ({
+        key: r.naf,
+        contactabilite: r.contactabilite,
+        count: r._count._all,
+      })),
+      enrichedRows.map((r) => ({ key: r.naf, count: r._count._all })),
+      (k) => k,
+    );
+  }
+
+  // Vue grossière : par secteur.
+  const [contactRows, enrichedRows] = await Promise.all([
+    prisma.prospectionCompany.groupBy({
+      by: ["secteur", "contactabilite"],
+      where: base,
+      _count: { _all: true },
+    }),
+    prisma.prospectionCompany.groupBy({
+      by: ["secteur"],
+      where: { ...base, enrichmentStatus: "enriched" as never },
+      _count: { _all: true },
+    }),
+  ]);
+  return aggregateActivity(
+    contactRows.map((r) => ({
+      key: r.secteur,
+      contactabilite: r.contactabilite,
+      count: r._count._all,
+    })),
+    enrichedRows.map((r) => ({ key: r.secteur, count: r._count._all })),
+    (k) => k,
+  );
 }
 
 export async function listSuppressions() {
