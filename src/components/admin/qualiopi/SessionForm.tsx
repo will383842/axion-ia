@@ -57,7 +57,7 @@ const FINANCEMENT_OPTIONS = [
   { value: "", label: "— Non défini —" },
   { value: "direct", label: "Direct (entreprise)" },
   { value: "opco", label: "OPCO" },
-  { value: "cpf", label: "CPF / EDOF" },
+  // CPF retiré (2026-07-04) — Axion-IA non habilité CPF (sélection interdite).
   { value: "france_travail", label: "France Travail" },
   { value: "mixte", label: "Mixte" },
 ] as const;

@@ -114,7 +114,9 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
   const [certifType, setCertifType] = useState(c.certificationType);
   const [codeRncp, setCodeRncp] = useState(c.codeRncp ?? "");
   const [codeRs, setCodeRs] = useState(c.codeRs ?? "");
-  const [cpfEligible, setCpfEligible] = useState(c.cpfEligible);
+  // CPF non modifiable (2026-07-04) — Axion-IA non habilité CPF : plus de setter,
+  // la valeur existante est préservée en lecture (soumise telle quelle au submit).
+  const [cpfEligible] = useState(c.cpfEligible);
 
   function saveFinancement() {
     const montantCents = centsFromEuros(montant);
@@ -262,7 +264,7 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
               >
                 <option value="direct">Direct (entreprise / particulier)</option>
                 <option value="opco">OPCO</option>
-                <option value="cpf">CPF / Mon Compte Formation</option>
+                {/* CPF retiré (2026-07-04) — Axion-IA non habilité CPF. */}
                 <option value="france_travail">France Travail</option>
                 <option value="mixte">Mixte</option>
               </select>
@@ -464,16 +466,9 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
               />
             </label>
           ) : null}
-          {certifType !== "aucune" ? (
-            <label className="col-span-2 flex items-center gap-2 text-xs">
-              <input
-                type="checkbox"
-                checked={cpfEligible}
-                onChange={(e) => setCpfEligible(e.target.checked)}
-              />
-              <span>Éligible CPF (inscrit sur Mon Compte Formation)</span>
-            </label>
-          ) : null}
+          {/* Checkbox « Éligible CPF » RETIRÉE (2026-07-04) — Axion-IA n'a pas
+              l'habilitation CPF ; une formation ne peut pas être marquée éligible
+              CPF. La valeur existante (cpfEligible) est préservée en lecture. */}
         </div>
         <button
           type="button"
