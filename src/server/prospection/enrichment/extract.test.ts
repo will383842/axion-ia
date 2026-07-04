@@ -68,4 +68,33 @@ describe("extractPersons (passe B, #7)", () => {
     const jean = persons.find((p) => p.name === "Jean DUPONT");
     expect(jean?.titre).toMatch(/Directeur/i);
   });
+
+  it("layout carte : <h3>Nom</h3><p>Fonction</p> (réconciliation T5 D2)", () => {
+    const html = `<div class="card"><h3>Jean DUPONT</h3><p>Directeur Général</p></div>
+<div class="card"><h3>Marie MARTIN</h3><p>Responsable achats</p></div>`;
+    const names = extractPersons(html).map((p) => p.name);
+    expect(names).toEqual(expect.arrayContaining(["Jean DUPONT", "Marie MARTIN"]));
+  });
+
+  it("`Rôle : Nom` (réconciliation T5 D2)", () => {
+    const html = `<li>Directeur Commercial : Marc PETIT</li>`;
+    const names = extractPersons(html).map((p) => p.name);
+    expect(names).toContain("Marc PETIT");
+  });
+
+  it("REJETTE une raison sociale comme personne (pas de ligne perso bidon)", () => {
+    const html = `<li>Cabinet DUPONT Associés — Responsable juridique</li>`;
+    const persons = extractPersons(html);
+    expect(persons.find((p) => /Cabinet/i.test(p.name))).toBeUndefined();
+  });
+});
+
+describe("confirmDomainOwnership — frontière de mot (réconciliation T5 D3)", () => {
+  it("dénomination courte ne matche pas un sous-mot (ELIS ≠ modélisation)", () => {
+    const r = confirmDomainOwnership("<p>Nous faisons de la modélisation 3D</p>", {
+      siren: "999999999",
+      denomination: "ELIS",
+    });
+    expect(r.confirmed).toBe(false);
+  });
 });

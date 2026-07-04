@@ -56,6 +56,23 @@ async function processJob(job: Job<ProspectionEnrichJobData>) {
   if (company.optOut || company.statutDiffusion !== "diffusible") {
     return { skipped: "rgpd" as const };
   }
+  // RGPD (D5) : opposition multi-clé SuppressionEntry (siren + domaine du site).
+  const domaine = company.siteWeb
+    ? company.siteWeb
+        .toLowerCase()
+        .replace(/^https?:\/\//, "")
+        .replace(/\/.*$/, "")
+    : null;
+  const suppressed = await prisma.prospectionSuppressionEntry.findFirst({
+    where: {
+      OR: [
+        { type: "siren", valueNormalized: company.siren },
+        ...(domaine ? [{ type: "domaine" as const, valueNormalized: domaine }] : []),
+      ],
+    },
+    select: { id: true },
+  });
+  if (suppressed) return { skipped: "suppression" as const };
   // Anti-re-scrape : fenêtre de fraîcheur.
   if (company.refreshAfter && company.refreshAfter > new Date()) {
     return { skipped: "fresh" as const };
@@ -74,6 +91,7 @@ async function processJob(job: Job<ProspectionEnrichJobData>) {
     maxPagesContact: crawlBudget.maxPagesContact,
     maxPagesPersonnes: teamPass.maxPagesPersonnes,
     maxPagesEntreprise: crawlBudget.maxPagesEntreprise,
+    maxTeamAttempts: crawlBudget.maxTeamAttempts,
     enrichirPersonnes,
   };
 
@@ -83,6 +101,7 @@ async function processJob(job: Job<ProspectionEnrichJobData>) {
       siren: company.siren,
       denomination: company.denomination,
       siteWeb: company.siteWeb,
+      contentHash: company.contentHash,
     },
     config,
     {
@@ -94,8 +113,11 @@ async function processJob(job: Job<ProspectionEnrichJobData>) {
     },
   );
 
-  // Fenêtre de fraîcheur : ne pas re-crawler avant N jours.
-  const nextRefresh = new Date(Date.now() + freshness.enrichmentRefreshDays * 24 * 3600 * 1000);
+  // Fenêtre de fraîcheur (D6) : succès → fenêtre pleine ; no_data / échec →
+  // re-tentative courte (7 j) pour ne pas geler un site momentanément indisponible
+  // ni un site ajouté plus tard.
+  const days = result.status === "enriched" ? freshness.enrichmentRefreshDays : 7;
+  const nextRefresh = new Date(Date.now() + days * 24 * 3600 * 1000);
   await prisma.prospectionCompany.update({
     where: { id: company.id },
     data: { refreshAfter: nextRefresh },

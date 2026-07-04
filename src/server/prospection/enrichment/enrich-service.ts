@@ -55,7 +55,17 @@ export interface EnrichConfig {
   maxPagesContact: number;
   maxPagesPersonnes: number;
   maxPagesEntreprise: number;
+  maxTeamAttempts: number;
   enrichirPersonnes: boolean;
+  /** Plafond d'emails traités (évite des centaines de lookups MX). */
+  maxEmails?: number;
+}
+
+/** Hash déterministe (djb2) — anti-re-scrape « no-op si inchangé » (D4). */
+export function hashText(s: string): string {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(16);
 }
 
 export interface EnrichDeps {
@@ -71,6 +81,8 @@ export interface EnrichCompanyInput {
   siren: string;
   denomination?: string | null;
   siteWeb?: string | null;
+  /** Empreinte du dernier crawl — si inchangée, on ne ré-écrit rien (no-op). */
+  contentHash?: string | null;
 }
 
 export interface EnrichResult {
@@ -81,6 +93,10 @@ export interface EnrichResult {
   persons: number;
   contactabilite: string;
   leadScore: number;
+  /** True si contenu inchangé depuis le dernier crawl (aucune ré-écriture). */
+  noop: boolean;
+  /** Empreinte du crawl (à re-persister par l'appelant). */
+  contentHash?: string;
 }
 
 function toOrigin(siteWeb: string): string | null {
@@ -121,6 +137,7 @@ export async function enrichCompany(
       persons: 0,
       contactabilite,
       leadScore: 0,
+      noop: false,
     };
   };
 
@@ -130,14 +147,16 @@ export async function enrichCompany(
   const robots = deps.fetchRobots ? await fetchRobotsRules(origin, deps.fetchRobots) : null;
   const allowed = (path: string): boolean => (robots ? isPathAllowed(robots, path) : true);
 
-  let pagesFetched = 0;
+  let pagesFetched = 0; // uniquement les 200 OK (les 404 ne consomment pas le budget)
   const fetchedPages: EnrichPage[] = [];
   const fetchPath = async (path: string): Promise<EnrichPage | null> => {
     if (pagesFetched >= config.maxPagesEntreprise) return null;
     if (!allowed(path)) return null;
     const page = await deps.fetchPage(`${origin}${path}`);
-    pagesFetched++;
-    if (page && page.ok) fetchedPages.push(page);
+    if (page && page.ok) {
+      pagesFetched++;
+      fetchedPages.push(page);
+    }
     return page;
   };
 
@@ -163,6 +182,26 @@ export async function enrichCompany(
 
   if (!domainConfirmed) return noData("no_data");
 
+  // --- Anti-re-scrape : no-op si les pages coordonnées sont inchangées (D4) ---
+  const contentHash = hashText(fetchedPages.map((p) => p.text).join("\n"));
+  if (company.contentHash && contentHash === company.contentHash) {
+    await deps.db.prospectionCompany.update({
+      where: { id: company.id },
+      data: { lastCheckedAt: now(), enrichmentStatus: "enriched" },
+    });
+    return {
+      status: "enriched",
+      domainConfirmed: true,
+      emails: 0,
+      phones: 0,
+      persons: 0,
+      contactabilite: "",
+      leadScore: 0,
+      noop: true,
+      contentHash,
+    };
+  }
+
   // --- Passe A : coordonnées (sur les pages déjà récupérées) ---
   const emailSet = new Map<string, { role: boolean }>();
   const phoneSet = new Set<string>();
@@ -173,14 +212,19 @@ export async function enrichCompany(
   }
 
   // --- Passe B : responsables (pages équipe) — indépendante de A ---
+  // Budget découplé de A (réconciliation T5 D1) : on TENTE jusqu'à
+  // `maxTeamAttempts` chemins (la plupart en 404), on RÉCUPÈRE jusqu'à
+  // `maxPagesPersonnes` pages OK, et on s'arrête dès qu'on a des responsables.
   const persons: Array<{ id: string; nom: string; prenoms: string }> = [];
   if (config.enrichirPersonnes) {
-    let teamPages = 0;
+    let teamOk = 0;
+    let teamAttempts = 0;
     for (const path of config.teamPaths) {
-      if (teamPages >= config.maxPagesPersonnes) break;
+      if (teamOk >= config.maxPagesPersonnes || teamAttempts >= config.maxTeamAttempts) break;
+      teamAttempts++;
       const page = await fetchPath(path);
       if (!page || !page.ok) continue;
-      teamPages++;
+      teamOk++;
       for (const person of extractPersons(page.text)) {
         const { prenoms, nom } = splitFullName(person.name);
         if (!nom) continue;
@@ -222,7 +266,9 @@ export async function enrichCompany(
   let hasEmailVerified = false;
   let hasEmail = false;
   let hasNominativeVerifiedEmail = false;
-  for (const [email, meta] of emailSet) {
+  // Plafond d'emails traités (évite des centaines de lookups MX sur une page-annuaire).
+  const cappedEmails = [...emailSet.entries()].slice(0, config.maxEmails ?? 50);
+  for (const [email, meta] of cappedEmails) {
     hasEmail = true;
     const verif = await verifyEmail(email, deps.mxResolver);
     const mxOk = isMxOk(verif);
@@ -316,6 +362,7 @@ export async function enrichCompany(
       hasEmail,
       hasTelephone: hasPhoneValid,
       leadScore,
+      contentHash,
       lastEnrichedAt: now(),
       lastCheckedAt: now(),
     },
@@ -329,5 +376,7 @@ export async function enrichCompany(
     persons: persons.length,
     contactabilite,
     leadScore,
+    noop: false,
+    contentHash,
   };
 }

@@ -38,7 +38,9 @@ export function confirmDomainOwnership(
     return { confirmed: true, method: "siren_on_page", confidence: 0.98 };
   }
   const denom = normalizeText(company.denomination ?? "");
-  if (denom.length >= 4 && normalizeText(text).includes(denom)) {
+  // Match à la FRONTIÈRE de mot (espaces autour) — un « elis » ne doit pas matcher
+  // « modelisation ». Seuil relevé à 4 caractères significatifs.
+  if (denom.length >= 4 && ` ${normalizeText(text)} `.includes(` ${denom} `)) {
     return { confirmed: true, method: "denomination_on_page", confidence: 0.8 };
   }
   return { confirmed: false, method: "none", confidence: 0 };

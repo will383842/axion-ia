@@ -27,7 +27,8 @@ const CONFIG: EnrichConfig = {
   teamPaths: ["/equipe"],
   maxPagesContact: 3,
   maxPagesPersonnes: 4,
-  maxPagesEntreprise: 7,
+  maxPagesEntreprise: 10,
+  maxTeamAttempts: 6,
   enrichirPersonnes: true,
 };
 
@@ -138,5 +139,24 @@ describe("enrichCompany — 2 passes", () => {
     const r = await enrichCompany({ ...COMPANY, siteWeb: null }, CONFIG, deps);
     expect(r.status).toBe("no_data");
     expect(rec.contacts).toHaveLength(0);
+  });
+
+  it("contenu inchangé → no-op, aucune ré-écriture (anti-re-scrape D4)", async () => {
+    const pages = { "/": HOME, "/mentions-legales": MENTIONS, "/equipe": EQUIPE };
+    const first = makeDeps(pages);
+    const r1 = await enrichCompany(COMPANY, CONFIG, first.deps);
+    expect(r1.noop).toBe(false);
+    expect(r1.contentHash).toBeTruthy();
+
+    // 2e passe avec le même contentHash → no-op.
+    const second = makeDeps(pages);
+    const r2 = await enrichCompany(
+      { ...COMPANY, contentHash: r1.contentHash ?? null },
+      CONFIG,
+      second.deps,
+    );
+    expect(r2.noop).toBe(true);
+    expect(second.rec.contacts).toHaveLength(0); // rien ré-écrit
+    expect(second.rec.roles).toBe(0);
   });
 });

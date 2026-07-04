@@ -59,10 +59,16 @@ export const TEAM_ENRICH_DEFAULT_SECTEURS: readonly string[] = ["droit", "sante"
 export const DEFAULT_CRAWL_BUDGET = {
   /** Passe A : nb max de pages coordonnées. */
   maxPagesContact: 3,
-  /** Passe B : nb max de pages personnes. */
+  /** Passe B : nb max de pages personnes RÉCUPÉRÉES (200 OK). */
   maxPagesPersonnes: 4,
-  /** Plafond global de pages par entreprise. */
-  maxPagesEntreprise: 7,
+  /**
+   * Plafond global de pages RÉCUPÉRÉES (200 OK) par entreprise. Doit couvrir
+   * Passe A (≤ maxPagesContact+1) + Passe B (≤ maxPagesPersonnes) sinon la Passe B
+   * est affamée (réconciliation adversariale T5 D1). Les 404 ne comptent PAS.
+   */
+  maxPagesEntreprise: 10,
+  /** Passe B : nb max de chemins équipe TENTÉS (la plupart renvoient 404). */
+  maxTeamAttempts: 6,
   /** Profondeur max de suivi de liens en passe B. */
   maxDepthPersonnes: 2,
   /** Timeout par page (ms). */
