@@ -4,7 +4,8 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminTable, type AdminTableColumn } from "@/components/admin/ui/AdminTable";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
-import { getActivityBreakdown } from "@/server/prospection/admin/queries";
+import { getActivityBreakdown, getSpecialiteBreakdown } from "@/server/prospection/admin/queries";
+import { SPECIALITE_LABELS, type SpecialiteSante } from "@/lib/prospection/specialite-sante";
 import { EnrichSegmentForm } from "./EnrichSegmentForm";
 
 export const dynamic = "force-dynamic";
@@ -28,6 +29,9 @@ export default async function ActivitesPage({
     ...(departement ? { departement } : {}),
     ...(secteur ? { secteur } : {}),
   });
+  // V2 Santé : la spécialité fine (que le NAF ne donne pas) vient du RPPS.
+  const specialites =
+    secteur === "sante" ? await getSpecialiteBreakdown(departement ? { departement } : {}) : [];
   const base = `/fr/${adminPrefix}/prospection/activites`;
   const drilldown = !!secteur; // affiche des NAF, sinon des secteurs
 
@@ -114,6 +118,29 @@ export default async function ActivitesPage({
           {...(secteur ? { secteur } : {})}
         />
       </section>
+
+      {secteur === "sante" && (
+        <section className="admin-card" style={{ marginBottom: "1rem" }}>
+          <h2 className="admin-section-title">Par spécialité médicale (RPPS — module Santé V2)</h2>
+          {specialites.length === 0 ? (
+            <p className="admin-muted">
+              Aucun praticien ingéré. Le module Santé (spécialités cardiologue/ophtalmologue…)
+              requiert l’ingestion RPPS/Annuaire Santé, gatée par l’AIPD dédiée.
+            </p>
+          ) : (
+            <ul className="admin-list">
+              {specialites.map((s) => (
+                <li key={s.specialite ?? "null"}>
+                  {s.specialite
+                    ? (SPECIALITE_LABELS[s.specialite as SpecialiteSante] ?? s.specialite)
+                    : "—"}{" "}
+                  : <strong>{s.count.toLocaleString("fr-FR")}</strong>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
 
       <AdminTable
         columns={columns}

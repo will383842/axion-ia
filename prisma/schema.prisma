@@ -7479,6 +7479,7 @@ enum ProspectionSource {
   recherche_entreprises
   rne
   annuaire_administration
+  annuaire_sante
   bodacc
   ban
   site_scrape
@@ -7626,11 +7627,12 @@ model ProspectionCompany {
   createdAt                DateTime                         @default(now()) @map("created_at")
   updatedAt                DateTime                         @updatedAt @map("updated_at")
 
-  establishments ProspectionEstablishment[]
-  persons        ProspectionPerson[]
-  contacts       ProspectionContact[]
-  tags           ProspectionCompanyTag[]
-  events         ProspectionEvent[]
+  establishments     ProspectionEstablishment[]
+  persons            ProspectionPerson[]
+  contacts           ProspectionContact[]
+  tags               ProspectionCompanyTag[]
+  events             ProspectionEvent[]
+  healthPractitioners ProspectionHealthPractitioner[] @relation("CompanyPractitioners")
 
   @@index([departement, taille])
   @@index([secteur, departement])
@@ -7861,6 +7863,42 @@ model ProspectionEvent {
   @@index([companyId])
   @@index([campaignId])
   @@map("prospection_event")
+}
+
+// --- Prospection Santé V2 : praticien (RPPS / Annuaire Santé), nominatif ---
+//   Spécialité fine (cardiologue, ophtalmologue…) que le NAF ne distingue pas.
+//   ⚠️ Données nominatives de professionnels de santé → AIPD dédiée avant ingest.
+model ProspectionHealthPractitioner {
+  id                String             @id @default(uuid()) @db.Uuid
+  rpps              String?            @unique
+  nom               String
+  prenoms           String?
+  personKey         String             @map("person_key")
+  professionLibelle String?            @map("profession_libelle")
+  specialite        String?
+  specialiteLibelle String?            @map("specialite_libelle")
+  siret             String?            @db.VarChar(14)
+  companyId         String?            @map("company_id") @db.Uuid
+  adresse           String?
+  codePostal        String?            @map("code_postal")
+  commune           String?
+  departement       String?
+  modeExercice      String?            @map("mode_exercice")
+  source            ProspectionSource?
+  collectedAt       DateTime?          @map("collected_at")
+  retentionUntil    DateTime?          @map("retention_until")
+  optOut            Boolean            @default(false) @map("opt_out")
+  optOutAt          DateTime?          @map("opt_out_at")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  company ProspectionCompany? @relation("CompanyPractitioners", fields: [companyId], references: [id], onDelete: SetNull)
+
+  @@unique([personKey, siret])
+  @@index([departement, specialite])
+  @@index([specialite])
+  @@index([companyId])
+  @@map("prospection_health_practitioner")
 }
 
 // --- Journal d'accès aux données perso (RGPD) ---

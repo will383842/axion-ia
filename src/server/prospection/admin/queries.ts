@@ -189,6 +189,24 @@ export async function getActivityBreakdown(opts: { departement?: string; secteur
   );
 }
 
+/**
+ * Prospection Santé (V2) — répartition des praticiens par spécialité (cardiologie,
+ * ophtalmologie…), que le NAF ne distingue pas. Filtrable par département.
+ */
+export async function getSpecialiteBreakdown(opts: { departement?: string }) {
+  const rows = await prisma.prospectionHealthPractitioner.groupBy({
+    by: ["specialite"],
+    where: {
+      optOut: false,
+      ...(opts.departement ? { departement: opts.departement } : {}),
+    },
+    _count: { _all: true },
+  });
+  return rows
+    .map((r) => ({ specialite: r.specialite, count: r._count._all }))
+    .sort((a, b) => b.count - a.count);
+}
+
 export async function listSuppressions() {
   return prisma.prospectionSuppressionEntry.findMany({ orderBy: { createdAt: "desc" }, take: 200 });
 }
