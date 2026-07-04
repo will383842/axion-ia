@@ -33,6 +33,9 @@ CREATE TABLE "prospection_health_practitioner" (
 CREATE UNIQUE INDEX "prospection_health_practitioner_rpps_key" ON "prospection_health_practitioner"("rpps");
 
 -- CreateIndex
+CREATE INDEX "prospection_health_practitioner_person_key_idx" ON "prospection_health_practitioner"("person_key");
+
+-- CreateIndex
 CREATE INDEX "prospection_health_practitioner_departement_specialite_idx" ON "prospection_health_practitioner"("departement", "specialite");
 
 -- CreateIndex
@@ -40,9 +43,6 @@ CREATE INDEX "prospection_health_practitioner_specialite_idx" ON "prospection_he
 
 -- CreateIndex
 CREATE INDEX "prospection_health_practitioner_company_id_idx" ON "prospection_health_practitioner"("company_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "prospection_health_practitioner_person_key_siret_key" ON "prospection_health_practitioner"("person_key", "siret");
 
 -- AddForeignKey
 ALTER TABLE "prospection_health_practitioner" ADD CONSTRAINT "prospection_health_practitioner_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "prospection_company"("id") ON DELETE SET NULL ON UPDATE CASCADE;

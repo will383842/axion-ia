@@ -240,13 +240,19 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       const prospPersons = await prisma.prospectionPerson.deleteMany({
         where: { retentionUntil: { not: null, lt: now } },
       });
+      // Prospection Santé V2 — praticiens (données NOMINATIVES de pro de santé) :
+      // même horizon de conservation, sinon rétention illimitée (art. 5.1.e).
+      const prospPractitioners = await prisma.prospectionHealthPractitioner.deleteMany({
+        where: { retentionUntil: { not: null, lt: now } },
+      });
       const accessLogMonths = readMonths("RETENTION_PROSPECTION_ACCESS_MONTHS", 12);
       const prospAccess = await prisma.prospectionAccessLog.deleteMany({
         where: { createdAt: { lt: monthsAgo(accessLogMonths) } },
       });
       console.log(
         `[retention-purge][prospection] companies=${prospCompanies.count} ` +
-          `persons=${prospPersons.count} accessLogs=${prospAccess.count}`,
+          `persons=${prospPersons.count} practitioners=${prospPractitioners.count} ` +
+          `accessLogs=${prospAccess.count}`,
       );
 
       console.log(

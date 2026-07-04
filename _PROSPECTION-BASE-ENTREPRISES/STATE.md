@@ -198,6 +198,40 @@ départemental supervisé)** :
 4. Mineurs : collision personKey (homonymes même entreprise), clé upsert téléphone, flag de troncature
    export > 100k.
 
+## 🔬 AUDIT COMPLET E2E (3e passe, 6 agents, 2026-07-04) — V1 + V2
+
+6 agents indépendants (régressions/intégration, V2 santé, RGPD/sécurité, frontend, backend, données).
+Gates objectifs verts (typecheck, 254 tests, eslint, isolation, use-client/anti-siren/anti-hex).
+V1 jugé **solide** (SSOT tous corrects, RBAC airtight, opt-out bloquant, 0 mailer, domain-confirm sans
+ReDoS, console navigable sans 404). Défauts confirmés **corrigés** :
+
+- 🔴 **Purge rétention santé** : `prospectionHealthPractitioner` ajouté au retention-purge-worker
+  (sinon rétention illimitée de données santé nominatives, art. 5.1.e).
+- 🟠 **Garde-fou AIPD codé** : `ingestAnnuaireSante` throw si `PROSPECTION_SANTE_INGESTION_ENABLED!=true`
+  (la protection n'était que documentaire).
+- 🟠 **Clé upsert praticien** : retrait de `@@unique([personKey, siret])` (drop silencieux d'homonymes) ;
+  `rpps` = identité. Migration régénérée.
+- 🟠 **Opt-out personKey** propagé aussi aux praticiens (`rgpd.ts`).
+- 🟠 **Trigger ingest bruyant** : `triggerProspectionStockIngest` throw si aucun fichier Stock configuré
+  (sinon campagne clôturée à vide en silence).
+- 🟠 **Couverture** : numérateur filtré `source=stock_sirene` (le dénominateur est stock-only → plus de
+  contamination cross-source) + test du clamp (>100 % borné) ajouté.
+- 🟡 Corse `2A`/`2B` (CP<20200) ; `getPersonByKey` filtre opt-out ; `retentionUntil` rafraîchi à l'update
+  personne ; person-extract retire « legal/legales » des stopwords (noms de famille réels) ; `.admin-checkbox`
+  CSS ; libellés secteurs (activités) via `SECTEUR_LABELS`.
+
+**Reste documenté (durcissement pré-run-national, NON bloquant pour un pilote départemental supervisé)** :
+
+1. **Politesse crawl par-hôte** : `token-bucket-redis` + `circuit-breaker` (écrits+testés mais NON câblés
+   dans le fetch) + robots `Crawl-delay` (parsé mais non honoré) + site-discovery hors robots/budget.
+   Seul le limiter BullMQ global (10/s) throttle aujourd'hui. À câbler avant run national multi-réplicas.
+2. **Downloader Stock data.gouv** : aujourd'hui fichiers montés manuellement + env `PROSPECTION_STOCK_*_PATH`.
+3. **Couverture** : divergence résiduelle UL↔siège (taille/naf) bornée par le clamp — approximation assumée
+   (les micro-entreprises sans tranche d'effectif sortent des KPI mais restent exportables).
+4. **Alerte débit** anomalie jamais déclenchée (débit 0/0 en entrée) ; connecteurs V1 recherche-entreprises /
+   annuaire-administration non câblés (test-only) ; ré-orchestration = jobs collecte dupliqués (idempotent).
+5. **V2** : pas de worker/queue d'ingestion RPPS (fondation) — à câbler APRÈS AIPD, avec le flag.
+
 ## Journal (append)
 
 - 2026-07-01 — Dossier de conception + skill créés. Implémentation non démarrée. En attente feu vert Will

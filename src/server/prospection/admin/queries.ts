@@ -8,6 +8,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { REGION_LABELS, type RegionCode } from "@/lib/prospection/departement-to-region";
+import { SECTEUR_LABELS, type Secteur } from "@/lib/prospection/enums";
 import { aggregateActivity } from "./activity-stats";
 
 export interface FranceKpis {
@@ -118,7 +119,7 @@ export async function getCompanyBySiren(siren: string) {
 
 export async function getPersonByKey(personKey: string) {
   return prisma.prospectionPerson.findMany({
-    where: { personKey },
+    where: { personKey, optOut: false },
     include: { company: { select: { siren: true, denomination: true, departement: true } } },
     orderBy: { createdAt: "asc" },
   });
@@ -161,7 +162,7 @@ export async function getActivityBreakdown(opts: { departement?: string; secteur
         count: r._count._all,
       })),
       enrichedRows.map((r) => ({ key: r.naf, count: r._count._all })),
-      (k) => k,
+      (k) => k, // NAF : le code EST le libellé le plus précis disponible ici
     );
   }
 
@@ -185,7 +186,7 @@ export async function getActivityBreakdown(opts: { departement?: string; secteur
       count: r._count._all,
     })),
     enrichedRows.map((r) => ({ key: r.secteur, count: r._count._all })),
-    (k) => k,
+    (k) => SECTEUR_LABELS[k as Secteur] ?? k,
   );
 }
 

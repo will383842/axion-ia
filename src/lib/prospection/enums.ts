@@ -42,6 +42,29 @@ export const SECTEURS = [
 ] as const;
 export type Secteur = (typeof SECTEURS)[number];
 
+/** Libellés FR des secteurs (affichage console — « Par activité »). */
+export const SECTEUR_LABELS: Record<Secteur, string> = {
+  btp: "BTP",
+  sante: "Santé",
+  action_sociale: "Action sociale",
+  droit: "Droit",
+  numerique: "Numérique",
+  conseil: "Conseil",
+  finance_assurance: "Finance / Assurance",
+  immobilier: "Immobilier",
+  commerce: "Commerce",
+  industrie: "Industrie",
+  agriculture: "Agriculture",
+  transport_logistique: "Transport / Logistique",
+  hotellerie_restauration: "Hôtellerie / Restauration",
+  enseignement: "Enseignement",
+  administration_publique: "Administration publique",
+  arts_culture_sport: "Arts / Culture / Sport",
+  services_aux_entreprises: "Services aux entreprises",
+  services_aux_particuliers: "Services aux particuliers",
+  autre: "Autre",
+};
+
 /** Type d'organisation (dérivé de la nature juridique INSEE). */
 export const TYPES_ORGANISATION = [
   "privee",

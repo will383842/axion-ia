@@ -33,6 +33,18 @@ describe("computeMetrics", () => {
     expect(m.pctExploitableSurCollectees).toBeCloseTo(0.25);
     expect(m.pctExploitableSurStock).toBeCloseTo(0.2);
   });
+  it("borne les taux à 1.0 (collectées > stock ne dépasse jamais 100 %)", () => {
+    const m = computeMetrics({
+      stockAttendu: 100,
+      collectees: 130, // divergence résiduelle UL↔siège
+      enrichies: 0,
+      exploitables: 120,
+      partiels: 0,
+      nonContactables: 10,
+    });
+    expect(m.pctCompletion).toBe(1);
+    expect(m.pctExploitableSurStock).toBe(1);
+  });
 });
 
 describe("dimKey", () => {

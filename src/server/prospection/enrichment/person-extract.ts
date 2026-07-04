@@ -51,8 +51,8 @@ const STOPWORDS = new Set([
   // Mots de sections de page (jamais des noms de personne) — évite les faux
   // positifs type « Mentions Légales », « Politique Confidentialité » (vérif data).
   "mentions",
-  "legales",
-  "legal",
+  // NB : « legal »/« legales » retirés (noms de famille réels « Légal ») ; les
+  // ancres « mentions »/« politique » suffisent à rejeter « Mentions Légales ».
   "politique",
   "confidentialite",
   "cookies",

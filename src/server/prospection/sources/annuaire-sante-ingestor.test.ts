@@ -1,10 +1,19 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import {
   ingestAnnuaireSante,
   type AnnuaireSanteSource,
   type AnnuaireSanteDb,
   type AnnuaireSanteRow,
 } from "./annuaire-sante-ingestor";
+
+// Le garde-fou AIPD bloque l'ingestion sauf activation explicite. On l'active
+// pour les tests (données de fixtures uniquement).
+beforeAll(() => {
+  process.env.PROSPECTION_SANTE_INGESTION_ENABLED = "true";
+});
+afterAll(() => {
+  delete process.env.PROSPECTION_SANTE_INGESTION_ENABLED;
+});
 
 function source(rows: AnnuaireSanteRow[]): AnnuaireSanteSource {
   return {
@@ -88,5 +97,12 @@ describe("ingestAnnuaireSante (V2 fixtures)", () => {
     await ingestAnnuaireSante(source(ROWS), db);
     await ingestAnnuaireSante(source(ROWS), db);
     expect(practitioners.size).toBe(2);
+  });
+
+  it("garde-fou AIPD : throw si PROSPECTION_SANTE_INGESTION_ENABLED absent", async () => {
+    delete process.env.PROSPECTION_SANTE_INGESTION_ENABLED;
+    const { db } = makeDb();
+    await expect(ingestAnnuaireSante(source(ROWS), db)).rejects.toThrow(/AIPD|désactivée/i);
+    process.env.PROSPECTION_SANTE_INGESTION_ENABLED = "true"; // restaure pour les suivants
   });
 });

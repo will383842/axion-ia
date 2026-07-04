@@ -7894,7 +7894,10 @@ model ProspectionHealthPractitioner {
 
   company ProspectionCompany? @relation("CompanyPractitioners", fields: [companyId], references: [id], onDelete: SetNull)
 
-  @@unique([personKey, siret])
+  // Identité = RPPS (upsert clé). PAS de @@unique([personKey, siret]) : deux
+  // homonymes au même site (RPPS distincts) sont légitimes, et un praticien
+  // multi-sites garde une ligne (site principal/dernier vu). Cf. audit V2.
+  @@index([personKey])
   @@index([departement, specialite])
   @@index([specialite])
   @@index([companyId])

@@ -79,8 +79,20 @@ function departementFromCp(cp: string | undefined): string | undefined {
   if (!cp) return undefined;
   const c = cp.trim();
   if (/^97[1-6]/.test(c)) return c.slice(0, 3); // DROM
-  if (/^20/.test(c)) return "2A"; // Corse (approx — affiné à l'enrichissement)
+  // Corse : Corse-du-Sud (2A) ≈ CP < 20200, Haute-Corse (2B) ≈ CP ≥ 20200.
+  if (/^20\d{3}/.test(c)) return c < "20200" ? "2A" : "2B";
   return /^\d{2}/.test(c) ? c.slice(0, 2) : undefined;
+}
+
+/** Garde-fou : l'ingestion RPPS (données NOMINATIVES de pro de santé) exige
+ *  l'activation explicite APRÈS validation de l'AIPD dédiée. Sinon → throw. */
+function assertSanteIngestionEnabled(): void {
+  if (process.env.PROSPECTION_SANTE_INGESTION_ENABLED !== "true") {
+    throw new Error(
+      "Ingestion Annuaire Santé désactivée : données nominatives de professionnels de santé. " +
+        "Valider l'AIPD dédiée puis positionner PROSPECTION_SANTE_INGESTION_ENABLED=true.",
+    );
+  }
 }
 
 export async function ingestAnnuaireSante(
@@ -88,6 +100,7 @@ export async function ingestAnnuaireSante(
   db: AnnuaireSanteDb,
   options: AnnuaireSanteOptions = {},
 ): Promise<AnnuaireSanteSummary> {
+  assertSanteIngestionEnabled();
   const now = options.now ?? (() => new Date());
   const retentionUntil = addYears(now(), options.retentionYears ?? 3);
   const summary: AnnuaireSanteSummary = {

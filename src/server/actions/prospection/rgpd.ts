@@ -46,6 +46,11 @@ export async function submitProspectionOptOut(
       where: { personKey: valueNormalized },
       data: { optOut: true, optOutAt: now },
     });
+    // V2 santé : propage aussi aux praticiens (même personKey).
+    await prisma.prospectionHealthPractitioner.updateMany({
+      where: { personKey: valueNormalized },
+      data: { optOut: true, optOutAt: now },
+    });
   } else if (type === "email") {
     const contacts = await prisma.prospectionContact.findMany({
       where: { type: "email", valueNormalized },

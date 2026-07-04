@@ -262,7 +262,8 @@ export async function enrichCompany(
             collectedAt: now(),
             retentionUntil,
           },
-          update: { titreVerbatim: person.titre },
+          // Rétention « 3 ans après dernière action » → rafraîchie à chaque re-vue.
+          update: { titreVerbatim: person.titre, retentionUntil },
         });
         const fonction = normalizeFonction(person.titre);
         await deps.db.prospectionPersonRole.create({

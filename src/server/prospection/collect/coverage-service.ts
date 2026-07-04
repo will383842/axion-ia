@@ -112,6 +112,10 @@ export async function rebuildGeoCoverage(
     departement: { not: null },
     naf: { not: null },
     taille: { not: null },
+    // Le dénominateur `stockAttendu` est construit UNIQUEMENT depuis le Stock
+    // Sirene → le numérateur doit l'être aussi, sinon les entreprises découvertes
+    // via d'autres sources gonflent la complétion (>100 %, masqué par le clamp).
+    source: "stock_sirene",
   };
   const contactRows = (await db.prospectionCompany.groupBy({
     by: ["departement", "contactabilite"],
