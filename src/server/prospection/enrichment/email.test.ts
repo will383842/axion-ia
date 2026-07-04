@@ -48,8 +48,9 @@ describe("verifyEmail (MX injecté)", () => {
     expect(s).toBe("mx_ok");
     expect(isMxOk(s)).toBe(true);
   });
-  it("email de rôle avec MX → role (non nominatif)", async () => {
-    expect(await verifyEmail("contact@acme.fr", okResolver)).toBe("role");
+  it("email de rôle avec MX → mx_ok (validité) ; généricité via isRoleEmail", async () => {
+    expect(await verifyEmail("contact@acme.fr", okResolver)).toBe("mx_ok");
+    expect(isRoleEmail("contact@acme.fr")).toBe(true); // flag générique séparé
   });
   it("pas de MX → verified_syntax", async () => {
     expect(await verifyEmail("jean@acme.fr", noMxResolver)).toBe("verified_syntax");

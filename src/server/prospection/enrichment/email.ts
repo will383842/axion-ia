@@ -74,13 +74,14 @@ export interface MxResolver {
 export async function verifyEmail(email: string, resolver: MxResolver): Promise<VerifStatus> {
   const norm = normalizeEmail(email);
   if (!isValidEmailSyntax(norm)) return "invalid";
-  const role = isRoleEmail(norm);
+  // `verifStatus` = VALIDITÉ (mx_ok/verified_syntax). La généricité (contact@…)
+  // est un flag SÉPARÉ (`isRoleEmail` → `isGenerique`) : un email de rôle MX-OK
+  // reste un contact exploitable_generique (07-DECISIONS Q2).
   try {
     const mx = await resolver.resolveMx(emailDomain(norm));
-    if (mx.length === 0) return role ? "role" : "verified_syntax";
-    return role ? "role" : "mx_ok";
+    return mx.length > 0 ? "mx_ok" : "verified_syntax";
   } catch {
-    return role ? "role" : "verified_syntax";
+    return "verified_syntax";
   }
 }
 
