@@ -7,7 +7,12 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { REGION_LABELS, type RegionCode } from "@/lib/prospection/departement-to-region";
+import {
+  REGION_LABELS,
+  type RegionCode,
+  ALL_DEPARTEMENTS,
+  regionLabelOfDepartement,
+} from "@/lib/prospection/departement-to-region";
 import { SECTEUR_LABELS, type Secteur } from "@/lib/prospection/enums";
 import { aggregateActivity } from "./activity-stats";
 
@@ -206,6 +211,29 @@ export async function getSpecialiteBreakdown(opts: { departement?: string }) {
   return rows
     .map((r) => ({ specialite: r.specialite, count: r._count._all }))
     .sort((a, b) => b.count - a.count);
+}
+
+/**
+ * Complétion PAR DÉPARTEMENT (page Départements — balayage 1-clic). Retourne les
+ * 101 départements avec leur couverture (0 si non démarré), triés par n°.
+ */
+export async function listDepartmentCoverage() {
+  const stats = await prisma.prospectionGeoCoverageStat.findMany({
+    where: { scope: "departement", dimKey: "*|*|*" },
+  });
+  const byDep = new Map(stats.map((s) => [s.scopeId, s]));
+  return ALL_DEPARTEMENTS.map((dep) => {
+    const s = byDep.get(dep);
+    return {
+      departement: dep,
+      region: regionLabelOfDepartement(dep),
+      stockAttendu: s?.stockAttendu ?? 0,
+      collectees: s?.collectees ?? 0,
+      exploitables: s?.exploitables ?? 0,
+      pctCompletion: s?.pctCompletion ?? 0,
+      demarre: !!s && (s.collectees > 0 || s.stockAttendu > 0),
+    };
+  });
 }
 
 export async function listSuppressions() {

@@ -27,12 +27,14 @@ export const createCampaignSchema = z
       .default([]),
     enrichirContacts: z.boolean().default(true),
     enrichirPersonnes: z.boolean().default(false),
+    /** Balayage « tout le département » (tous secteurs, santé comprise). */
+    toutesActivites: z.boolean().default(false),
     quotaMax: z.number().int().nonnegative().max(10_000_000).optional(),
     priorite: z.number().int().min(0).max(100).default(0),
     rythme: z.string().max(50).optional(),
   })
-  .refine((d) => d.secteurs.length > 0 || d.nafCodes.length > 0, {
-    message: "ciblage vide : renseignez au moins un secteur ou un code NAF",
+  .refine((d) => d.toutesActivites || d.secteurs.length > 0 || d.nafCodes.length > 0, {
+    message: "ciblage vide : renseignez un secteur/NAF, ou activez « toute activité »",
     path: ["secteurs"],
   });
 

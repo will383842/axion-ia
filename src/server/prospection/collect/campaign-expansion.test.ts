@@ -57,6 +57,20 @@ describe("cellsFromStockRefs", () => {
     // 41.20A et 86.10Z (PME, dép 38, attendu>0) — pas 42.11Z (attendu 0)
     expect(cells.map((c) => c.naf).sort()).toEqual(["41.20A", "86.10Z"]);
   });
+  it("toutesActivites : balaye TOUS les secteurs (santé comprise), ignore le filtre secteur", () => {
+    const cells = cellsFromStockRefs(
+      // secteurs=["btp"] mais toutesActivites → le filtre BTP est ignoré.
+      {
+        departements: ["38"],
+        secteurs: ["btp"],
+        nafCodes: [],
+        tailles: ["PME"],
+        toutesActivites: true,
+      },
+      refs,
+    );
+    expect(cells.map((c) => c.naf).sort()).toEqual(["41.20A", "86.10Z"]); // BTP + Santé
+  });
 });
 
 describe("decideCellOutcome", () => {

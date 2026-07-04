@@ -11,6 +11,8 @@ import type { Prisma } from "../../../../prisma/generated/client";
 import { requireProspectionAccess } from "./_auth";
 import { createCampaignSchema } from "./campaign-schema";
 import { enqueueProspectionOrchestrator } from "@/server/prospection/queue/queues";
+import { TAILLES } from "@/lib/prospection/enums";
+import { ALL_DEPARTEMENTS } from "@/lib/prospection/departement-to-region";
 import { adminPath } from "@/lib/admin-path";
 
 function campaignsPath(): string {
@@ -29,6 +31,7 @@ export async function createProspectionCampaign(raw: unknown): Promise<{ id: str
     nafCodes: data.nafCodes,
     tailles: data.tailles,
     typesOrganisation: data.typesOrganisation,
+    toutesActivites: data.toutesActivites,
     enrichirContacts: data.enrichirContacts,
     enrichirPersonnes: data.enrichirPersonnes,
     priorite: data.priorite,
@@ -38,6 +41,44 @@ export async function createProspectionCampaign(raw: unknown): Promise<{ id: str
   };
   const campaign = await prisma.prospectionCampaign.create({ data: createData });
   revalidatePath(campaignsPath());
+  return { id: campaign.id };
+}
+
+/**
+ * Balayage « tout le département » (page Départements) : crée + lance UNE campagne
+ * couvrant TOUS les secteurs (santé comprise) et toutes les tailles des
+ * départements sélectionnés, en mode autonome de bout en bout. RBAC `operate`.
+ */
+export async function launchDepartmentSweep(departements: string[]): Promise<{ id: string }> {
+  const session = await requireProspectionAccess("operate");
+  const valid = new Set(ALL_DEPARTEMENTS);
+  const deps = [...new Set(departements.map((d) => d.trim()))].filter((d) => valid.has(d));
+  if (deps.length === 0) throw new Error("Aucun département valide sélectionné.");
+
+  const campaign = await prisma.prospectionCampaign.create({
+    data: {
+      nom: `Balayage ${deps.length === 1 ? deps[0] : `${deps.length} départements`} (toutes activités)`,
+      statut: "active",
+      departements: deps,
+      secteurs: [],
+      nafCodes: [],
+      tailles: [...TAILLES],
+      toutesActivites: true,
+      enrichirContacts: true,
+      enrichirPersonnes: true,
+      createdBy: session.userId,
+    },
+  });
+  await enqueueProspectionOrchestrator(campaign.id);
+  await prisma.prospectionEvent.create({
+    data: {
+      type: "campaign_started",
+      campaignId: campaign.id,
+      actorId: session.userId,
+      reason: `balayage départements ${deps.join(", ")}`,
+    },
+  });
+  revalidatePath(adminPath("fr", "prospection/departements"));
   return { id: campaign.id };
 }
 

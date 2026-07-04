@@ -7772,6 +7772,9 @@ model ProspectionCampaign {
   secteurs              ProspectionSecteur[]
   tailles               ProspectionTaille[]
   typesOrganisation     ProspectionTypeOrganisation[] @map("types_organisation")
+  // Mode « tout le département » : cible TOUS les secteurs (santé compris) sans
+  // filtre NAF. Permet le balayage 1-clic par département (page Départements).
+  toutesActivites       Boolean                       @default(false) @map("toutes_activites")
   enrichirContacts      Boolean                       @default(true) @map("enrichir_contacts")
   enrichirPersonnes     Boolean                       @default(false) @map("enrichir_personnes")
   quotaMax              Int?                          @map("quota_max")

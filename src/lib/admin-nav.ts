@@ -591,6 +591,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     // ── Prospection & Base Entreprises (module prospection) ──────────────
     { href: `${base}/prospection`, label: "Tableau de bord", icon: "🧭", group: "prospection" },
+    {
+      href: `${base}/prospection/departements`,
+      label: "Départements",
+      icon: "🇫🇷",
+      group: "prospection",
+    },
     { href: `${base}/prospection/campagnes`, label: "Campagnes", icon: "🎯", group: "prospection" },
     {
       href: `${base}/prospection/entreprises`,

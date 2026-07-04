@@ -37,6 +37,7 @@ async function processJob(job: Job<ProspectionOrchestratorJobData>) {
       secteurs: campaign.secteurs,
       nafCodes: campaign.nafCodes,
       tailles: campaign.tailles,
+      toutesActivites: campaign.toutesActivites,
     },
     {
       enqueueCollect: enqueueProspectionCollect,

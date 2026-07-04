@@ -21,6 +21,8 @@ export interface CampaignTargeting {
   secteurs: Secteur[];
   nafCodes: string[];
   tailles: Taille[];
+  /** Mode « tout le département » : ignore le filtre secteur/NAF (tous secteurs). */
+  toutesActivites?: boolean;
 }
 
 /** Dénombrement StockReference (une ligne = triplet dép×naf×taille peuplé). */
@@ -68,7 +70,8 @@ export function cellsFromStockRefs(
   t: CampaignTargeting,
   refs: readonly StockRefRow[],
 ): CoverageCellSpec[] {
-  const prefixes = campaignNafPrefixes(t);
+  // Mode « tout le département » : aucun filtre secteur/NAF (toutes activités).
+  const prefixes = t.toutesActivites ? [] : campaignNafPrefixes(t);
   const tailles = new Set(t.tailles);
   const deps = new Set(t.departements);
   const cells: CoverageCellSpec[] = [];
