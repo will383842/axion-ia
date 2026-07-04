@@ -298,7 +298,7 @@ export default async function BlogCategoryPage({ params }: Props) {
           title={isFr ? "Autres thématiques" : "Other topics"}
         >
           <Container>
-            <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <ul className="xs:grid-cols-2 grid grid-cols-1 gap-6 md:grid-cols-3">
               {otherCategories.map((c, i) => {
                 // Mapping littéral (Tailwind JIT ne détecte pas `bg-${var}`).
                 const accentDot = ["bg-terracotta", "bg-primary", "bg-sage", "bg-mocha"][

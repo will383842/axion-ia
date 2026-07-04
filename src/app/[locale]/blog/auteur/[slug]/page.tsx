@@ -142,7 +142,7 @@ export default async function BlogAuthorPage({ params }: Props) {
       </Section>
       <Section>
         <Container>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="xs:grid-cols-2 grid grid-cols-1 gap-6 md:grid-cols-3">
             {posts.map((p) => (
               <li key={p.slug}>
                 <ArticleCard
