@@ -1043,7 +1043,7 @@ export function CampaignWizardV2({
               type="button"
               onClick={() => handleSubmit("draft")}
               disabled={state.submitting}
-              className="rounded border border-[color:var(--color-admin-border)] px-4 py-2 hover:bg-[color:var(--color-admin-surface-2)] disabled:opacity-50"
+              className="admin-button"
             >
               {state.submitting ? "Enregistrement…" : "Enregistrer en brouillon"}
             </button>
@@ -1051,7 +1051,7 @@ export function CampaignWizardV2({
               type="button"
               onClick={() => handleSubmit("launch")}
               disabled={state.submitting}
-              className="rounded border border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-accent)] px-4 py-2 text-white hover:opacity-90 disabled:opacity-50"
+              className="admin-button-cta"
             >
               {state.submitting ? "Lancement…" : "🚀 Lancer la campagne"}
             </button>
@@ -1065,7 +1065,7 @@ export function CampaignWizardV2({
           type="button"
           onClick={() => update("step", Math.max(1, state.step - 1) as 1 | 2 | 3 | 4)}
           disabled={state.step === 1}
-          className="rounded border border-[color:var(--color-admin-border)] px-4 py-2 disabled:opacity-30"
+          className="admin-button"
         >
           ← Précédent
         </button>
@@ -1091,7 +1091,7 @@ export function CampaignWizardV2({
               }
               update("step", (state.step + 1) as 1 | 2 | 3 | 4);
             }}
-            className="rounded border border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-accent)] px-4 py-2 text-white"
+            className="admin-button-cta"
           >
             Suivant →
           </button>
