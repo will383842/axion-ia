@@ -131,32 +131,19 @@ RÈGLES D'ANCRAGE (SANS données locales KB — mode minimal) :
       ? `Secteurs dominants locaux : ${kbFacts.secteursDominants.slice(0, 5).join(", ")}`
       : "";
 
-  const ecosystemBlock =
-    kbFacts.ecosystemActeurs.length > 0
-      ? `Tissu économique local (exemples génériques, ne pas citer en tant que clients) :\n${kbFacts.ecosystemActeurs
-          .slice(0, 3)
-          .map((a) => `- ${a}`)
-          .join("\n")}`
-      : "";
-
-  const reseauxBlock =
-    kbFacts.reseauxConsulaires.length > 0
-      ? `Réseaux consulaires : ${kbFacts.reseauxConsulaires.slice(0, 2).join(", ")}`
-      : "";
-
   return `
 === ANCRAGE LOCAL OBLIGATOIRE — ${ville.toUpperCase()} ===
 
 Ville : ${kbFacts.villeNom}${kbFacts.departement ? ` (${kbFacts.departement})` : ""}${kbFacts.region ? ` — ${kbFacts.region}` : ""}
 
-${[economicBlock, secteursBlock, ecosystemBlock, reseauxBlock].filter(Boolean).join("\n\n")}
+${[economicBlock, secteursBlock].filter(Boolean).join("\n\n")}
 
 RÈGLES D'ANCRAGE LOCAL (OBLIGATOIRES — pas optionnelles) :
-1. Au moins 1 fait économique local concret de la liste ci-dessus doit apparaître dans le corps du texte (narratif, pas en titre/méta).
+1. Au moins 1 fait économique local concret ci-dessus (secteur dominant ou statistique INSEE) doit apparaître dans le corps du texte (narratif, pas en titre/méta).
 2. Le scénario avant/après doit être situé à ${ville}, cohérent avec les secteurs dominants locaux.
-3. JAMAIS "dans votre région" — nommer ${ville} explicitement.
-4. JAMAIS inventer des données économiques hors de la liste ci-dessus.
-5. Réseau consulaire : utiliser ceux de la liste (${kbFacts.reseauxConsulaires.slice(0, 1).join(", ") || "CCI locale"}).
+3. JAMAIS "dans votre région" / "votre ville" — nommer ${ville} explicitement.
+4. JAMAIS inventer de données économiques, d'entreprises, de chiffres ou de partenaires hors de la liste ci-dessus.
+5. INTERDICTION ABSOLUE de présenter Axion-IA comme partenaire, client, prestataire, accompagnant, membre ou en collaboration avec une entité nommée (entreprise, CCI / chambre consulaire, pôle de compétitivité, institution, réseau). Ces entités sont le CONTEXTE économique de ${ville}, PAS des relations ni des références d'Axion-IA. Bannir TOUTE formule du type : « en partenariat avec », « en collaboration avec », « développé avec », « aux côtés de », « accompagne », « client de », « membre de », « soutenu par », « labellisé par ».
 6. 3 à 5 mentions naturelles de ${ville} maximum (ancrage sémantique, pas répétition mécanique).
 `.trim();
 }
