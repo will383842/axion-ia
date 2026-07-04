@@ -250,12 +250,20 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     rssMaxPerDay?: number;
     rssMaxAgeDays?: number;
   }>("policies", {});
-  const maxPerDay = rssPolicies.rssMaxPerDay ?? 20;
+  const maxPerDay = rssPolicies.rssMaxPerDay ?? 5;
   const startOfDayUtc = new Date();
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
+  // 2026-07-04 — Fail-SAFE : l'ancien `.catch(() => 0)` faisait « fuiter » le cap.
+  // Si le comptage échouait (hoquet DB), todayCount=0 restaurait un budget PLEIN
+  // (maxPerDay news possibles) à CHAQUE tick en erreur → dépassement silencieux.
+  // Désormais un échec de comptage skippe le tick (réessayé au tick suivant).
   const todayCount = await prisma.contentGenJob
     .count({ where: { contentType: "blog_from_rss", createdAt: { gte: startOfDayUtc } } })
-    .catch(() => 0);
+    .catch(() => null);
+  if (todayCount === null) {
+    console.log("[rss-fetch-worker] comptage cap indisponible (DB) — skip tick par sécurité");
+    return;
+  }
   const dailyBudget = Math.max(0, maxPerDay - todayCount);
   if (dailyBudget <= 0) {
     console.log(
