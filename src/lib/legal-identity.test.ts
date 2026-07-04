@@ -28,6 +28,7 @@ describe("LEGAL_IDENTITY_DEFAULTS", () => {
     expect(LEGAL_IDENTITY_DEFAULTS.contactEmail).toBe("contact@axion-ia.com");
     expect(LEGAL_IDENTITY_DEFAULTS.siren).toBeNull();
     expect(LEGAL_IDENTITY_DEFAULTS.vatNumber).toBeNull();
+    expect(LEGAL_IDENTITY_DEFAULTS.dpoContact).toBe("contact@axion-ia.com");
   });
 });
 
@@ -54,6 +55,7 @@ describe("resolveLegalIdentity", () => {
         siret: "123 456 789 00012",
         vatNumber: "FR12123456789",
         contactPhone: "+33 4 00 00 00 00",
+        dpoContact: "rgpd@axion-ia.com",
       },
     });
     const id = await resolveLegalIdentity();
@@ -62,6 +64,7 @@ describe("resolveLegalIdentity", () => {
     expect(id.siren).toBe("123 456 789");
     expect(id.vatNumber).toBe("FR12123456789");
     expect(id.contactPhone).toBe("+33 4 00 00 00 00");
+    expect(id.dpoContact).toBe("rgpd@axion-ia.com");
   });
 
   it("repli sur les clés historiques factures (companyVatNumber / companyLegalForm)", async () => {
@@ -95,6 +98,7 @@ describe("buildLegalIdentitySections", () => {
     contactPhone: "+33 4 00 00 00 00",
     directorName: "Williams Jullin",
     directorTitle: "Président",
+    dpoContact: "contact@axion-ia.com",
   };
 
   it("FR defaults : placeholders gracieux, jamais de section vide", () => {
