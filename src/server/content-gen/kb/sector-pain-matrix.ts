@@ -122,7 +122,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "La formation est suivie de 30 jours d'accompagnement à distance — on ne vous lâche pas après le présentiel.",
     kpiLabel: "tâches IA maîtrisées par collaborateur",
-    typicalBudgetSignal: "Finançable OPCO sur code CPF formation numérique",
+    typicalBudgetSignal: "Une seule erreur de saisie évitée par mois rentabilise la journée",
   },
   {
     secteur: "comptabilite_finance",
@@ -580,7 +580,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "On travaille sur votre téléphone ou votre PC, avec des outils gratuits ou très peu chers. Aucun prérequis technique.",
     kpiLabel: "outils IA maîtrisés et utilisés le lendemain",
-    typicalBudgetSignal: "Finançable OPCO pour les artisans en AGEFICE/FIFPL",
+    typicalBudgetSignal: "2 heures de paperasse gagnées par semaine, soit une journée par mois",
   },
 
   // ─────────────────────────────────────────────
@@ -670,7 +670,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "L'objectif est l'inverse : libérer vos agents des questions répétitives pour qu'ils soient plus disponibles pour les cas qui nécessitent une vraie aide humaine.",
     kpiLabel: "ETP libérés sur les tâches répétitives",
-    typicalBudgetSignal: "Finançable via DETR, fonds européens, ou budget DSI",
+    typicalBudgetSignal: "Un demi-ETP d'accueil libéré, réaffecté aux cas complexes",
   },
   {
     secteur: "collectivites_public",
@@ -696,7 +696,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "La formation prépare vos agents aux directives à venir — celles qui attendent seront en retard. Les premières collectivités formées maîtrisent leur déploiement.",
     kpiLabel: "% d'agents formés et conformes à la charte IA",
-    typicalBudgetSignal: "Finançable CNFPT pour les agents territoriaux",
+    typicalBudgetSignal: "Une journée pour cadrer 100% des agents avant le premier incident RGPD",
   },
 
   // ─────────────────────────────────────────────
@@ -754,9 +754,9 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objection:
       "Mes gars sont sur le terrain, ils n'ont pas le temps ni l'envie de suivre une formation informatique.",
     objectionReply:
-      "La formation est calée sur leurs vraies tâches bureau, pas sur de la théorie. Une journée OPCO, et ils récupèrent leurs vendredis après-midi.",
+      "La formation est calée sur leurs vraies tâches bureau, pas sur de la théorie. Une seule journée, et ils récupèrent leurs vendredis après-midi.",
     kpiLabel: "heures/semaine récupérées sur la paperasse chantier",
-    typicalBudgetSignal: "Finançable OPCO Constructys pour le BTP",
+    typicalBudgetSignal: "Un vendredi après-midi récupéré par personne, chaque semaine",
   },
   {
     secteur: "btp_immobilier",
@@ -810,9 +810,9 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objection:
       "En restauration on n'a pas le temps de former le personnel, et le turnover est trop élevé pour que ça serve.",
     objectionReply:
-      "Une demi-journée finançable OPCO, sur des gestes simples que même un extra reprend vite. La méthode reste, même si l'équipe tourne.",
+      "Une demi-journée, sur des gestes simples que même un extra reprend vite. La méthode reste, même si l'équipe tourne.",
     kpiLabel: "heures/semaine récupérées sur la communication hors service",
-    typicalBudgetSignal: "Finançable OPCO AKTO pour l'hôtellerie-restauration",
+    typicalBudgetSignal: "Rentabilisé dès qu'un avis client bien géré ramène une table",
   },
   {
     secteur: "restauration_hotellerie",
@@ -895,7 +895,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "C'est l'inverse : la formation pose justement le cadre. Sans elle, vos soignants l'utilisent déjà, mais sans aucune règle ni filet de sécurité.",
     kpiLabel: "% de soignants formés aux usages conformes au secret médical",
-    typicalBudgetSignal: "Finançable OPCO santé (ANFH, ACTALIANS/OPCO Santé)",
+    typicalBudgetSignal: "Sans commune mesure avec le coût d'une seule fuite de donnée patient",
   },
   {
     secteur: "sante_medecine",
@@ -978,7 +978,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "Vos collaborateurs l'utilisent déjà sans cadre, c'est ça le vrai risque. La formation leur apprend justement à vérifier et à ne jamais citer sans contrôle.",
     kpiLabel: "% de collaborateurs formés au contrôle systématique des sorties IA",
-    typicalBudgetSignal: "Finançable OPCO (OPCO EP / FIF-PL pour les avocats)",
+    typicalBudgetSignal: "Une seule jurisprudence inventée évitée vaut bien plus qu'une journée",
   },
   {
     secteur: "juridique",
@@ -1061,7 +1061,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "Justement : on travaille sur smartphone, en 5 minutes entre deux clients. La formation est calée sur les vrais gestes du magasin, pas sur de la théorie devant un PC.",
     kpiLabel: "usages IA maîtrisés par vendeur et utilisés en magasin",
-    typicalBudgetSignal: "Finançable OPCO sur code formation numérique commerce",
+    typicalBudgetSignal: "Une journée rentabilisée par le temps rendu à la surface de vente",
   },
   {
     secteur: "commerce_retail",
@@ -1143,7 +1143,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "La journée est suivie de 30 jours d'accompagnement à distance et travaille sur vos vrais OF, pas sur des exemples génériques. On ne vous lâche pas après le présentiel.",
     kpiLabel: "usages IA maîtrisés par rôle (ordonnancement, prépa, atelier)",
-    typicalBudgetSignal: "Finançable OPCO sur code formation numérique industrie",
+    typicalBudgetSignal: "Moins qu'une heure de ligne arrêtée, pour toute l'équipe formée",
   },
   {
     secteur: "industrie_logistique",
@@ -1309,7 +1309,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "L'IA absorbe le tri et la rédaction répétitive, pas l'évaluation humaine d'un candidat. La formation rend vos recruteurs plus présents là où ils font la différence : l'entretien et la décision.",
     kpiLabel: "usages IA maîtrisés par recruteur",
-    typicalBudgetSignal: "Finançable OPCO sur le plan de développement des compétences",
+    typicalBudgetSignal: "Une journée face au coût d'un seul tri de CV biaisé",
   },
   {
     secteur: "rh_recrutement",
@@ -1393,8 +1393,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "L'implémentation tourne sur une infrastructure souveraine hébergée en France, dans le respect du RGPD et des avis CNIL — les données d'administrés ne quittent jamais le périmètre de la collectivité.",
     kpiLabel: "délai moyen d'instruction d'une demande réduit en %",
-    typicalBudgetSignal:
-      "Inscriptible au marché public via DETR, fonds européens FEDER ou budget DSI mutualisé",
+    typicalBudgetSignal: "20 minutes d'instruction ramenées à 2 sur chaque dossier courant",
   },
   {
     secteur: "collectivites_public",
@@ -1421,7 +1420,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "4 sessions d'1h réparties sur 2 mois, en présentiel ou à distance. La 1ère session sécurise déjà votre position : vous repartez avec un cadre défendable en conseil avant la fin de l'accompagnement.",
     kpiLabel: "cas d'usage IA validés et présentables en délibération",
-    typicalBudgetSignal: "Finançable via le budget formation des élus ou le CNFPT pour un DGS",
+    typicalBudgetSignal: "Le coût d'un outil mal cadré évité dès la première délibération",
   },
   {
     secteur: "collectivites_public",

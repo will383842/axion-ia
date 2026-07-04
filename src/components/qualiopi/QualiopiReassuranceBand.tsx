@@ -39,17 +39,7 @@ export async function QualiopiReassuranceBand() {
           {isFr ? "Catégorie : " : "Category: "}
           {identity.categoriesCertifiees}
         </span>
-        {identity.qualiopiNumero ? (
-          <>
-            <span aria-hidden="true" className="text-fg-muted">
-              ·
-            </span>
-            <span className="text-fg-muted font-mono text-xs">
-              {isFr ? "Certificat n° " : "Certificate no. "}
-              {identity.qualiopiNumero}
-            </span>
-          </>
-        ) : null}
+        {/* Décision Will : le n° de certificat n'est JAMAIS affiché publiquement. */}
       </div>
     </aside>
   );

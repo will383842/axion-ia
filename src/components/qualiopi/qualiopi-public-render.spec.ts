@@ -51,7 +51,8 @@ describe("QualiopiReassuranceBand (rendu)", () => {
     const html = renderToStaticMarkup((await QualiopiReassuranceBand()) as React.ReactElement);
     expect(html).toContain("Organisme de formation certifié Qualiopi");
     expect(html).toContain("Actions de formation");
-    expect(html).toContain("CERT-2026-001");
+    // Décision Will : le n° de certificat n'est JAMAIS affiché publiquement.
+    expect(html).not.toContain("CERT-2026-001");
     // accessibilité : libellé d'aside.
     expect(html).toContain('aria-label="Certification Qualiopi"');
   });
@@ -63,7 +64,7 @@ describe("QualiopiBadge (rendu)", () => {
     expect(await QualiopiBadge({})).toBeNull();
   });
 
-  it("variante card : mention obligatoire + n° + libellé textuel si pas de logo", async () => {
+  it("variante card : mention obligatoire + libellé textuel si pas de logo, SANS n° public", async () => {
     mockId.mockResolvedValue(PHASE_B_IDENTITY);
     const html = renderToStaticMarkup((await QualiopiBadge({})) as React.ReactElement);
     expect(html).toContain("Organisme de formation certifié Qualiopi");
@@ -72,7 +73,8 @@ describe("QualiopiBadge (rendu)", () => {
     expect(html).toContain(
       "La certification qualité a été délivrée au titre de la ou des catégories",
     );
-    expect(html).toContain("CERT-2026-001");
+    // Décision Will : le n° de certificat n'est JAMAIS affiché publiquement.
+    expect(html).not.toContain("CERT-2026-001");
     // logoPath vide → libellé textuel, AUCUNE balise <img> (pas de faux logo).
     expect(html).not.toContain("<img");
   });

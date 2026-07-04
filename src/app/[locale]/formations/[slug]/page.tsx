@@ -20,6 +20,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
+import { FinancingMicro } from "@/components/qualiopi/FinancingBadges";
 import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
@@ -66,7 +67,7 @@ export async function generateMetadata({
     // Suffixe Qualiopi/finançable — GATED Phase B (claim illégal avant agrément).
     // Flag lu au runtime ; l'ISR régénère la meta en Phase B (sinon suffixe absent).
     const qualiopiSuffix = isQualiopiPublicDisclosureEnabled()
-      ? " · Certifié Qualiopi, finançable OPCO/CPF."
+      ? " · Certifié Qualiopi, finançable OPCO."
       : "";
     return buildProductMetadata({
       locale,
@@ -272,12 +273,11 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                   {f.codeRncp ? ` ${f.codeRncp}` : f.codeRs ? ` ${f.codeRs}` : ""}
                 </span>
               )}
-              {/* Badge éligibilité CPF (T18) */}
-              {f.cpfEligible === true && (
-                <span className="rounded-full bg-green-50 px-3 py-1 text-[12px] font-semibold text-green-700">
-                  Éligible CPF
-                </span>
-              )}
+              {/* Financement (Phase B) — micro-mention OPCO / France Travail
+                  variée + déterministe (SSOT financing.ts). Rend null hors
+                  Phase A. Le CPF est volontairement EXCLU (Qualiopi seul ne
+                  suffit pas : requiert RNCP/RS + EDOF non détenus). */}
+              <FinancingMicro seed={slug} />
               {/* Réassurance Qualiopi (Phase B) — pastille texte seul, zéro image
                   (Web Vitals safe). Rend null hors Phase B. */}
               <QualiopiBadge variant="inline" />
@@ -522,11 +522,6 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                       </div>
                     )}
                   </dl>
-                  {f.cpfEligible === true && (
-                    <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-[12px] font-semibold text-green-700">
-                      ● Éligible CPF
-                    </div>
-                  )}
                 </SectionBlock>
               )}
 

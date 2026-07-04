@@ -44,9 +44,9 @@ describe("QualiopiFinancingFaq (rendu)", () => {
   it("rend la FAQ + FAQPage JSON-LD en Phase B", async () => {
     mockId.mockResolvedValue(PHASE_B);
     const html = renderToStaticMarkup((await QualiopiFinancingFaq()) as React.ReactElement);
-    // Questions + n° certificat + finançable.
+    // Questions + finançable. Décision Will : le n° de certificat n'est JAMAIS public.
     expect(html).toContain("certifiées Qualiopi");
-    expect(html).toContain("CERT-2026-001");
+    expect(html).not.toContain("CERT-2026-001");
     expect(html).toContain("finançables");
     // Attributs speakable (ciblés par buildFaqSpeakableJsonLd).
     expect(html).toContain("data-faq-q");
