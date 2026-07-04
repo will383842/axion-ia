@@ -45,11 +45,12 @@ export async function createProspectionCampaign(raw: unknown): Promise<{ id: str
 }
 
 /**
- * Balayage « tout le département » (page Départements) : crée + lance UNE campagne
- * couvrant TOUS les secteurs (santé comprise) et toutes les tailles des
- * départements sélectionnés, en mode autonome de bout en bout. RBAC `operate`.
+ * ÉTAPE 1 « Récupérer » (page Départements) : crée + lance UNE campagne couvrant
+ * TOUS les secteurs (santé comprise) et toutes les tailles des départements
+ * sélectionnés, en collecte/couverture SEULEMENT (pas de crawl d'enrichissement).
+ * Rapide. L'enrichissement se lance séparément (étape 2). RBAC `operate`.
  */
-export async function launchDepartmentSweep(departements: string[]): Promise<{ id: string }> {
+export async function launchDepartmentCollect(departements: string[]): Promise<{ id: string }> {
   const session = await requireProspectionAccess("operate");
   const valid = new Set(ALL_DEPARTEMENTS);
   const deps = [...new Set(departements.map((d) => d.trim()))].filter((d) => valid.has(d));
@@ -57,15 +58,15 @@ export async function launchDepartmentSweep(departements: string[]): Promise<{ i
 
   const campaign = await prisma.prospectionCampaign.create({
     data: {
-      nom: `Balayage ${deps.length === 1 ? deps[0] : `${deps.length} départements`} (toutes activités)`,
+      nom: `Récupération ${deps.length === 1 ? deps[0] : `${deps.length} départements`} (toutes activités)`,
       statut: "active",
       departements: deps,
       secteurs: [],
       nafCodes: [],
       tailles: [...TAILLES],
       toutesActivites: true,
-      enrichirContacts: true,
-      enrichirPersonnes: true,
+      enrichirContacts: false, // étape 1 = récupération seule
+      enrichirPersonnes: false,
       createdBy: session.userId,
     },
   });
@@ -75,7 +76,7 @@ export async function launchDepartmentSweep(departements: string[]): Promise<{ i
       type: "campaign_started",
       campaignId: campaign.id,
       actorId: session.userId,
-      reason: `balayage départements ${deps.join(", ")}`,
+      reason: `récupération départements ${deps.join(", ")}`,
     },
   });
   revalidatePath(adminPath("fr", "prospection/departements"));

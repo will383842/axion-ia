@@ -229,6 +229,7 @@ export async function listDepartmentCoverage() {
       region: regionLabelOfDepartement(dep),
       stockAttendu: s?.stockAttendu ?? 0,
       collectees: s?.collectees ?? 0,
+      enrichies: s?.enrichies ?? 0,
       exploitables: s?.exploitables ?? 0,
       pctCompletion: s?.pctCompletion ?? 0,
       demarre: !!s && (s.collectees > 0 || s.stockAttendu > 0),

@@ -1,15 +1,17 @@
 "use client";
-// use-client: sélection multiple de départements + lancement (Server Action).
+// use-client: sélection multiple + 2 étapes (Récupérer / Enrichir) via Server Actions.
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { launchDepartmentSweep } from "@/server/actions/prospection/campaigns";
+import { launchDepartmentCollect } from "@/server/actions/prospection/campaigns";
+import { enrichDepartments } from "@/server/actions/prospection/ops";
 
 export interface DeptRow {
   departement: string;
   region: string;
   stockAttendu: number;
   collectees: number;
+  enrichies: number;
   exploitables: number;
   pctCompletion: number;
   demarre: boolean;
@@ -34,22 +36,23 @@ export function DepartmentSweepPanel({ rows }: { rows: DeptRow[] }) {
     });
   };
 
-  function launch() {
+  const run = (fn: (deps: string[]) => Promise<unknown>, ok: (n: number) => string) => {
     if (selected.size === 0) return;
     setMsg(null);
+    const deps = [...selected];
     startTransition(async () => {
       try {
-        await launchDepartmentSweep([...selected]);
-        setMsg(
-          `Balayage lancé pour ${selected.size} département(s) — tous secteurs, en automatique. La complétion se mettra à jour ici.`,
-        );
+        const r = (await fn(deps)) as { enqueued?: number } | undefined;
+        setMsg(ok(r?.enqueued ?? deps.length));
         setSelected(new Set());
         router.refresh();
       } catch (err) {
         setMsg(err instanceof Error ? err.message : "Erreur");
       }
     });
-  }
+  };
+
+  const n = selected.size;
 
   return (
     <div>
@@ -57,22 +60,39 @@ export function DepartmentSweepPanel({ rows }: { rows: DeptRow[] }) {
         className="admin-toolbar"
         style={{ position: "sticky", top: 0, marginBottom: "1rem", alignItems: "center" }}
       >
+        <span className="admin-muted">{n} sélectionné(s) —</span>
         <button
           className="admin-button-cta"
-          onClick={launch}
-          disabled={isPending || selected.size === 0}
+          disabled={isPending || n === 0}
+          onClick={() =>
+            run(
+              launchDepartmentCollect,
+              () => `Étape 1 lancée : récupération de ${n} département(s) (rapide).`,
+            )
+          }
         >
-          {isPending
-            ? "Lancement…"
-            : `Lancer ${selected.size || ""} département${selected.size > 1 ? "s" : ""} sélectionné${selected.size > 1 ? "s" : ""}`}
+          1️⃣ Récupérer
         </button>
-        {selected.size > 0 && (
+        <button
+          className="admin-button"
+          disabled={isPending || n === 0}
+          onClick={() =>
+            run(
+              enrichDepartments,
+              (q) =>
+                `Étape 2 lancée : ${q.toLocaleString("fr-FR")} entreprise(s) mise(s) en enrichissement.`,
+            )
+          }
+        >
+          2️⃣ Enrichir
+        </button>
+        {n > 0 && (
           <button
             className="admin-button"
             onClick={() => setSelected(new Set())}
             disabled={isPending}
           >
-            Tout décocher
+            Décocher
           </button>
         )}
         {msg && (
@@ -85,12 +105,13 @@ export function DepartmentSweepPanel({ rows }: { rows: DeptRow[] }) {
       <table className="admin-table" style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr>
-            <th style={{ textAlign: "left" }}></th>
+            <th></th>
             <th style={{ textAlign: "left" }}>Dép.</th>
             <th style={{ textAlign: "left" }}>Région</th>
-            <th style={{ textAlign: "right" }}>Complétion</th>
-            <th style={{ textAlign: "right" }}>Collectées</th>
+            <th style={{ textAlign: "right" }}>Récupérées</th>
+            <th style={{ textAlign: "right" }}>Enrichies</th>
             <th style={{ textAlign: "right" }}>Exploitables</th>
+            <th style={{ textAlign: "right" }}>Complétion</th>
             <th style={{ textAlign: "left" }}>État</th>
           </tr>
         </thead>
@@ -109,11 +130,12 @@ export function DepartmentSweepPanel({ rows }: { rows: DeptRow[] }) {
                 <strong>{r.departement}</strong>
               </td>
               <td>{r.region}</td>
-              <td style={{ textAlign: "right" }}>{r.demarre ? pct(r.pctCompletion) : "—"}</td>
               <td style={{ textAlign: "right" }}>{r.collectees.toLocaleString("fr-FR")}</td>
+              <td style={{ textAlign: "right" }}>{r.enrichies.toLocaleString("fr-FR")}</td>
               <td style={{ textAlign: "right" }}>{r.exploitables.toLocaleString("fr-FR")}</td>
+              <td style={{ textAlign: "right" }}>{r.demarre ? pct(r.pctCompletion) : "—"}</td>
               <td>
-                {!r.demarre ? "Non démarré" : r.pctCompletion >= 1 ? "✅ Complet" : "🔄 En cours"}
+                {!r.demarre ? "Non démarré" : r.pctCompletion >= 1 ? "✅ Récupéré" : "🔄 En cours"}
               </td>
             </tr>
           ))}

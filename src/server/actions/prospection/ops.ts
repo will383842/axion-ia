@@ -98,3 +98,19 @@ export async function enrichProspectionSegment(
   });
   return { enqueued };
 }
+
+/**
+ * ÉTAPE 2 « Enrichir » (page Départements) : lance le crawl d'enrichissement des
+ * entreprises DÉJÀ récupérées des départements sélectionnés (toutes activités).
+ * À faire après l'étape 1 (récupération). RBAC `operate`.
+ */
+export async function enrichDepartments(departements: string[]): Promise<{ enqueued: number }> {
+  const deps = [...new Set(departements.map((d) => d.trim()).filter(Boolean))];
+  if (deps.length === 0) throw new Error("Aucun département sélectionné.");
+  let total = 0;
+  for (const dep of deps) {
+    const { enqueued } = await enrichProspectionSegment({ departement: dep, onlyPending: true });
+    total += enqueued;
+  }
+  return { enqueued: total };
+}
