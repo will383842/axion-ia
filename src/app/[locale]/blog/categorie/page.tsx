@@ -234,7 +234,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
       >
         <Container>
           {/* Cartes catégorie modernisées : accent couleur + compteur + flèche. */}
-          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="xs:grid-cols-2 grid grid-cols-1 gap-6 md:grid-cols-3">
             {categories.map((cat) => {
               const visual = CATEGORY_VISUAL[cat.slug] ?? FALLBACK_VISUAL;
               const { Icon } = visual;
