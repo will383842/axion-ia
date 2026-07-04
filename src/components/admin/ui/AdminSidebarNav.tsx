@@ -696,6 +696,31 @@ export function AdminSidebarNav({
           aria-label="Sections admin"
           className="flex-1 overflow-x-hidden overflow-y-auto px-[var(--space-admin-4)] pb-[var(--space-admin-4)]"
         >
+          {/* Accès direct à Axion CRM Pro — outil de prospection dédié (appli séparée,
+              ouverte dans un nouvel onglet). La prospection se pilote là-bas. */}
+          <a
+            href="https://app.axion-crm-pro.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Ouvrir Axion CRM Pro (outil de prospection)"
+            className={cn(
+              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
+              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
+              "transition-opacity hover:opacity-80",
+              collapsed && "justify-center",
+            )}
+          >
+            <ScanSearch className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
+            {!collapsed && (
+              <>
+                <span className="flex-1 text-sm font-medium">Prospection</span>
+                <span aria-hidden className="text-sm opacity-60">
+                  ↗
+                </span>
+              </>
+            )}
+          </a>
           {ADMIN_NAV_GROUP_ORDER.map((g, gi) => {
             // Exclut les items `parent != null` : atteignables par URL/palette
             // mais volontairement masqués de la sidebar (placeholders non livrés).
