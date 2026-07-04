@@ -190,16 +190,6 @@ export default async function SecteurActivite({ params }: Props) {
             </div>
           </Section>
 
-          {showFinancing ? (
-            <Section
-              tone="canvas"
-              titleAs="h2"
-              title={isFr ? "Financer cette formation" : "Funding this training"}
-            >
-              <FinancingBadges seed={`${sector.slug}-${service.slug}`} className="max-w-3xl" />
-            </Section>
-          ) : null}
-
           <Section
             tone="canvas"
             titleAs="h2"
@@ -230,6 +220,20 @@ export default async function SecteurActivite({ params }: Props) {
             </p>
           </Section>
         </>
+      ) : null}
+
+      {/* Financement OPCO / France Travail — HORS du bloc `pain` : l'éligibilité
+          au financement ne dépend pas de l'existence d'une entrée pain-matrix
+          (sinon l'encart ne rend sur AUCUNE page formation, cf. combos sans pain
+          rendus en noindex). Gaté Phase B + verticale formation via showFinancing. */}
+      {showFinancing ? (
+        <Section
+          tone="canvas"
+          titleAs="h2"
+          title={isFr ? "Financer cette formation" : "Funding this training"}
+        >
+          <FinancingBadges seed={`${sector.slug}-${service.slug}`} className="max-w-3xl" />
+        </Section>
       ) : null}
 
       <Section tone="canvas" titleAs="h2" title={isFr ? "Aller plus loin" : "Go further"}>
