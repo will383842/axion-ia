@@ -1,7 +1,7 @@
 # STATE — Suivi d'implémentation de bout en bout (Prospection & Base Entreprises)
 
 > **Fichier de reprise de l'autopilot.** Point d'ancrage unique pour reprendre après une fermeture
-> inopinée de Claude Code (limite de session, crash, coupure). Légende : 🔲 à faire · 🔄 en cours ·
+> inopinée de Claude Code (limite de session, crash, coupure). Légende : ✅ à faire · 🔄 en cours ·
 > ✅ fait · ⛔ bloqué.
 
 ## ⛑️ PROTOCOLE DE REPRISE (lire EN PREMIER à chaque redémarrage)
@@ -19,7 +19,7 @@ Si tu reprends une session (ou en cas de doute sur l'état) :
    `en_cours`/`fait`/`erreur`) plutôt que se fier à un compteur. Reprendre ne rejoue QUE `a_faire`+`erreur`
    (idempotence — voir `reference/02-autopilot-workflow.md` §Idempotence). Aucune cellule `fait` n'est
    recollectée.
-5. Reprendre à l'étape 🔄 (ou la première 🔲 après le dernier ✅). **Ne jamais refaire une étape ✅.**
+5. Reprendre à l'étape 🔄 (ou la première ✅ après le dernier ✅). **Ne jamais refaire une étape ✅.**
 
 ## 🔁 CADENCE DE MISE À JOUR (obligatoire pour que la reprise soit fiable)
 
@@ -31,30 +31,30 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 
 ## En-tête de session (à actualiser)
 
-- **Tranche en cours** : **T9 durcissement + 2 vérifs finales**. T0→T5 ✅ + T6/T7 UI + T8 RGPD/export + pilote E2E ✅.
+- **Tranche en cours** : **AUCUNE — T0→T9 + pilote + 2 vérifs finales TERMINÉS** (voir §COMPLÉTION).
 - **Dernier commit** : voir `git log`. Historique : T0 `3442cb86` · T1 `0222bec1` · T2 `7d2a17ed` · T3 `40b3a59d` · T4 `1c874757` · T5+reconcile `09edaa47`/`36305918` · pilote+export `e2606402`.
 - **Reste (après implémentation, côté Will)** : remplir les 3 champs légaux (raison sociale, SIREN, DPO) dans `SiteSetting.legalIdentity` + relecture juriste avant collecte prod. Optionnel : pont CRM Qualiopi (Q5), download-route fichiers (V1 = téléchargement Blob client).
 - **Recette de commit** : `NODE_OPTIONS=--max-old-space-size=6144 git commit …` (le hook pre-commit fait un typecheck full-repo qui OOM à 2 Go ; ~3 min/commit). Sujet commitlint = **minuscules** (pas de MAJ). `prisma generate` doit être lancé dans le worktree (client gitignoré). Tests unit = 150/150 verts.
 - **Worktree** : ✅ `.claude/worktrees/prospection`, branche `feat/prospection` (off `main` @15b115fd), `pnpm install` + `prisma generate` OK.
 - **Gate juridique (Q9)** : ✅ **NON BLOQUANT pour le build** (directive Will) — AIPD/LIA/mention pré-remplies ; valeurs légales = placeholders `SiteSetting`/`[À COMPLÉTER]`. T3+ construit/testé sur fixtures/mocks, jamais de SIREN réel/collecte prod. Reste côté Will = 3 champs + relecture juriste avant collecte prod.
-- **Prochaine action** : T5 — enrichissement 2 passes (découverte domaine + confirmation SIREN, passe A coordonnées, passe B responsables, validation email MX/tél E.164, matching nominatif, Annuaire administration). Robots/extraction = **ré-implémenter en local prospection** (D-T0-1). Poser le `limiter` BullMQ DUR sur le worker enrich (dette D T3). Puis gate + adversarial + commit.
+- **Prochaine action** : RIEN côté implémentation. Reste = Will remplit les valeurs légales (config) puis fournit le fichier Stock + active le worker. Cf. §COMPLÉTION.
 - **Directive Will (2026-07-03)** : autopilot complet T0→T9 + pilote, sans blocage juridique, gates+croisement+vérif adversariale par tranche, 2 vérifs E2E finales, worktree isolé, sources gratuites, aucun outreach, jamais push main sans accord.
 
 ## Avancement global
 
 | Tranche   | Objet                                                                                                  | Bloqué par        | Statut |
 | --------- | ------------------------------------------------------------------------------------------------------ | ----------------- | ------ |
-| **T0**    | Grounding + RAPPORT D'EXPLORATION + ADR actés (AIPD/LIA **déjà pré-remplies**)                         | —                 | 🔲     |
-| **T1**    | SSOT purs (naf-to-secteur, taille, dép-région, qualite-fonction, crawl-targets, scoring) + SiteSetting | — (non bloqué)    | 🔲     |
-| **T2**    | Schéma Prisma (migration additive, toutes entités)                                                     | T1                | 🔲     |
-| **T3**    | Ingestion Stock Sirene + delta + rate-limit distribué + Zod + circuit breaker                          | ⛔ gate juridique | 🔲     |
-| **T4**    | Collecte ciblée + coverage-worker (rollup dép→région→France) + idempotence                             | T3                | 🔲     |
-| **T5**    | Enrichissement 2 passes (coordonnées + responsables) + confirmation domaine + validation email/tél     | T4                | 🔲     |
-| **T6**    | Console admin pilotage (pôle nav, wizard, détail campagne)                                             | T4                | 🔲     |
-| **T7**    | Console admin exploitation (base, fiche, contacts onglets, coverage-map, carte)                        | T5                | 🔲     |
-| **T8**    | Export segmenté + RGPD (opt-out multi-clé, journal d'accès, purge, pont CRM manuel)                    | T7                | 🔲     |
-| **T9**    | Durcissement (circuit breaker, alertes, Web Vitals, bench charge, tests complets)                      | T8                | 🔲     |
-| **Final** | Campagne pilote Isère 38 · BTP + Santé prouvée + couverture matrice 100 %                              | T9                | 🔲     |
+| **T0**    | Grounding + RAPPORT D'EXPLORATION + ADR actés (AIPD/LIA **déjà pré-remplies**)                         | —                 | ✅     |
+| **T1**    | SSOT purs (naf-to-secteur, taille, dép-région, qualite-fonction, crawl-targets, scoring) + SiteSetting | — (non bloqué)    | ✅     |
+| **T2**    | Schéma Prisma (migration additive, toutes entités)                                                     | T1                | ✅     |
+| **T3**    | Ingestion Stock Sirene + delta + rate-limit distribué + Zod + circuit breaker                          | ⛔ gate juridique | ✅     |
+| **T4**    | Collecte ciblée + coverage-worker (rollup dép→région→France) + idempotence                             | T3                | ✅     |
+| **T5**    | Enrichissement 2 passes (coordonnées + responsables) + confirmation domaine + validation email/tél     | T4                | ✅     |
+| **T6**    | Console admin pilotage (pôle nav, wizard, détail campagne)                                             | T4                | ✅     |
+| **T7**    | Console admin exploitation (base, fiche, contacts onglets, coverage-map, carte)                        | T5                | ✅     |
+| **T8**    | Export segmenté + RGPD (opt-out multi-clé, journal d'accès, purge, pont CRM manuel)                    | T7                | ✅     |
+| **T9**    | Durcissement (circuit breaker, alertes, Web Vitals, bench charge, tests complets)                      | T8                | ✅     |
+| **Final** | Campagne pilote Isère 38 · BTP + Santé prouvée + couverture matrice 100 %                              | T9                | ✅     |
 
 ## Détail par tranche (cocher les étapes)
 
@@ -111,24 +111,24 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 
 ### T6 — Admin pilotage
 
-- 🔲 pôle nav · 🔲 wizard 4 étapes (aperçu volume) · 🔲 détail campagne · 🔲 scheduler/priorité
-- 🔲 GATE (+ size-limit/lhci) · 🔲 vérif adversariale · 🔲 commit
+- ✅ pôle nav · ✅ wizard 4 étapes (aperçu volume) · ✅ détail campagne · ✅ scheduler/priorité
+- ✅ GATE (+ size-limit/lhci) · ✅ vérif adversariale · ✅ commit
 
 ### T7 — Admin exploitation
 
-- 🔲 base + filtres (keyset) · 🔲 fiche entreprise · 🔲 contacts à onglets · 🔲 coverage-map + région/France · 🔲 carte SVG
-- 🔲 GATE (+ Web Vitals) · 🔲 vérif adversariale · 🔲 commit
+- ✅ base + filtres (keyset) · ✅ fiche entreprise · ✅ contacts à onglets · ✅ coverage-map + région/France · ✅ carte SVG
+- ✅ GATE (+ Web Vitals) · ✅ vérif adversariale · ✅ commit
 
 ### T8 — Export & RGPD
 
-- 🔲 export segmenté (re-filtre opt-out + non-diffusible) · 🔲 tests #4 (non-diffusible), #5 (opt-out post-collecte)
-- 🔲 journal d'accès · 🔲 RBAC · 🔲 purge rétention (entreprise + personne) · 🔲 pont CRM manuel
-- 🔲 GATE · 🔲 vérif adversariale · 🔲 commit
+- ✅ export segmenté (re-filtre opt-out + non-diffusible) · ✅ tests #4 (non-diffusible), #5 (opt-out post-collecte)
+- ✅ journal d'accès · ✅ RBAC · ✅ purge rétention (entreprise + personne) · ✅ pont CRM manuel
+- ✅ GATE · ✅ vérif adversariale · ✅ commit
 
 ### T9 — Durcissement
 
-- 🔲 circuit breaker · 🔲 alertes anomalies · 🔲 Web Vitals admin · 🔲 bench charge/soak · 🔲 suite complète
-- 🔲 GATE · 🔲 vérif adversariale · 🔲 commit
+- ✅ circuit breaker · ✅ alertes anomalies · ✅ Web Vitals admin · ✅ bench charge/soak · ✅ suite complète
+- ✅ GATE · ✅ vérif adversariale · ✅ commit
 
 ## ✅ COMPLÉTION (2026-07-04)
 
