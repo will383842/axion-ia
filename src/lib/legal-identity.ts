@@ -49,6 +49,13 @@ export interface LegalIdentity {
   directorName: string;
   /** Qualité du directeur de la publication (ex. « Président »). */
   directorTitle: string;
+  /**
+   * Contact du responsable de la protection des données (RGPD art. 13/14, 37-39).
+   * Adresse à laquelle une personne exerce ses droits (accès, effacement,
+   * opposition). Toujours renseigné (défaut = contact public). Une PME n'a pas
+   * toujours l'obligation de DÉSIGNER un DPO formel — mais doit fournir ce contact.
+   */
+  dpoContact: string;
 }
 
 /**
@@ -69,6 +76,7 @@ export const LEGAL_IDENTITY_DEFAULTS: LegalIdentity = {
   contactPhone: null,
   directorName: "Williams Jullin",
   directorTitle: "Président",
+  dpoContact: "contact@axion-ia.com",
 };
 
 /** Normalise une valeur d'override en string non vide, sinon null. */
@@ -118,6 +126,8 @@ export async function resolveLegalIdentity(): Promise<LegalIdentity> {
     contactPhone: pick("contactPhone", "phone"),
     directorName: pick("directorName") ?? LEGAL_IDENTITY_DEFAULTS.directorName,
     directorTitle: pick("directorTitle") ?? LEGAL_IDENTITY_DEFAULTS.directorTitle,
+    dpoContact:
+      pick("dpoContact", "dpoEmail", "privacyContact") ?? LEGAL_IDENTITY_DEFAULTS.dpoContact,
   };
 }
 

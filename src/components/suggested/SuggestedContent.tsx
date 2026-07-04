@@ -103,7 +103,7 @@ export function SuggestedContent({
       >
         <Container>
           {variant === "articles" ? (
-            <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <ul className="xs:grid-cols-2 grid grid-cols-1 gap-5 md:grid-cols-3">
               {items.map((item) => (
                 <li key={item.href}>
                   <ArticleCard
@@ -112,6 +112,8 @@ export function SuggestedContent({
                     excerpt={item.excerpt ?? ""}
                     publishedAt={item.publishedAt ?? ""}
                     readingTime={item.readingTime ?? ""}
+                    compact
+                    {...(item.imageUrl ? { imageUrl: item.imageUrl } : {})}
                   />
                 </li>
               ))}

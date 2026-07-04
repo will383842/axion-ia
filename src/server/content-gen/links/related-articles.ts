@@ -35,6 +35,13 @@ export interface RelatedArticleItem {
    * appelants existants peuvent l'ignorer → comportement inchangé).
    */
   readonly type?: RelatedArticleType;
+  /**
+   * Refonte hubs 2026-07-04 — miniature Unsplash (Article.featuredImage) pour la
+   * carte SuggestedContent variant `articles`. ADDITIF/optionnel : items FS legacy
+   * ou articles sans hero → absent (spread conditionnel, jamais `undefined`).
+   */
+  readonly imageUrl?: string;
+  readonly imageAlt?: string;
 }
 
 interface FindRelatedOptions {
@@ -194,6 +201,9 @@ export async function findRelatedArticles(opts: FindRelatedOptions): Promise<Rel
         // consommateur. `listPublishedArticles` exclut les news → seul le préfixe
         // `guide-` discrimine ; sans ça un guide sortait en href /blog/guide-x → 308.
         type: a.slug.startsWith("guide-") ? ("guides" as const) : ("blog" as const),
+        // Refonte hubs 2026-07-04 — miniature (spread conditionnel exactOptional).
+        ...(a.featuredImage ? { imageUrl: a.featuredImage } : {}),
+        ...(a.featuredImageAlt ? { imageAlt: a.featuredImageAlt } : {}),
       }));
   } catch {
     // Stub Proxy build-time → retour []
@@ -269,6 +279,8 @@ async function findRelatedCrossType(opts: {
             isNews: true,
             readingTime: true,
             publishedAt: true,
+            featuredImage: true,
+            featuredImageAltFr: true,
             category: { select: { nameFr: true, nameEn: true } },
           },
         },
@@ -296,6 +308,8 @@ async function findRelatedCrossType(opts: {
         readingTime: r.article?.readingTime ? `${r.article.readingTime} min` : "",
         source: "db",
         type,
+        ...(r.article?.featuredImage ? { imageUrl: r.article.featuredImage } : {}),
+        ...(r.article?.featuredImageAltFr ? { imageAlt: r.article.featuredImageAltFr } : {}),
       });
     }
 

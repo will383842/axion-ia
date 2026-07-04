@@ -114,6 +114,36 @@ const FINANCING_FORBIDDEN_PATTERNS: ReadonlyArray<{
   },
 ];
 
+// 2026-07-04 — Partenariats / clients / labels FABRIQUÉS. Will a repéré des
+// mentions inventées (« développé en partenariat avec la CCI Lyon Métropole… »).
+// Axion-IA n'a AUCUN partenariat institutionnel ni client nommé public. On BLOQUE
+// ces revendications (publicité mensongère / E-E-A-T). Patterns ciblés sur une
+// institution nommée OU « parmi nos clients » pour NE PAS faux-positiver les
+// usages légitimes (« en collaboration avec vos équipes », « nos clients
+// bénéficient de… »).
+const FABRICATED_PARTNERSHIP_PATTERNS: ReadonlyArray<{ re: RegExp; reason: string }> = [
+  {
+    re: /\ben\s+(?:partenariat|collaboration)\s+avec\s+(?:la\s+|le\s+|l['’]|les\s+)?(?:CCI|chambre\s+(?:de\s+commerce|des\s+métiers|consulaire)|pôle\s+(?:de\s+compétitivité|d['’]excellence)|université|métropole|agglomération|communauté\s+(?:de\s+communes|d['’]agglomération)|région|préfecture|mairie|ville\s+de)/gi,
+    reason:
+      "Partenariat/collaboration FABRIQUÉ avec une institution nommée (CCI, pôle, université, métropole…). Axion-IA n'a pas ces partenariats — retirer la mention.",
+  },
+  {
+    re: /\b(?:développ[ée]e?s?|conçue?s?|créée?s?|élaborée?s?)\s+(?:en\s+partenariat\b|en\s+collaboration\s+avec\s+(?:la\s+|le\s+)?(?:CCI|chambre|pôle|université|région))/gi,
+    reason:
+      "Contenu prétendument « développé en partenariat » avec une institution — fabrication. Axion-IA produit seul ; retirer.",
+  },
+  {
+    re: /\b(?:labellisée?s?|accréditée?s?|certifiée?s?\s+par|soutenue?s?|financée?s?)\s+(?:par\s+)?(?:la\s+|le\s+)?(?:CCI|chambre\s+consulaire|pôle\s+de\s+compétitivité|région|préfecture)/gi,
+    reason:
+      "Label / soutien / accréditation FABRIQUÉ par une institution. Retirer sauf preuve réelle vérifiable.",
+  },
+  {
+    re: /\b(?:parmi\s+nos\s+clients|comptent\s+parmi\s+nos\s+clients|nos\s+clients\s+(?:tels?\s+que|comme|incluent)\b)/gi,
+    reason:
+      "Référence client nommée/listée FABRIQUÉE (« parmi nos clients… »). Axion-IA ne cite pas de clients nommés — retirer ou anonymiser (« un client industriel de la région »).",
+  },
+];
+
 const AXIONIA_KEYWORDS = [
   "axion-ia",
   "méthodologie",
@@ -191,7 +221,10 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
     }
   }
 
-  // 2ter. Financement — CPF interdit, sur-promesses interdites, numéros interdits.
+  // 2ter. Financement — sur-promesses interdites (100 % / automatique / gratuit),
+  // numéros légaux exposés, et CPF interdit. NB : le CPF est AUSSI attrapé plus bas
+  // par le bloc dédié 2sexies (décision Will) — la double détection est bénigne
+  // (deux violations bloquantes cumulables) et laisse les deux jeux de tests verts.
   for (const { re, severity, reason } of FINANCING_FORBIDDEN_PATTERNS) {
     const matches = text.match(re);
     if (matches) {
@@ -204,6 +237,35 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
       if (severity === "block") blocking.push(violation);
       else warnings.push(violation);
     }
+  }
+
+  // 2quater. Partenariats / clients / labels institutionnels FABRIQUÉS.
+  for (const { re, reason } of FABRICATED_PARTNERSHIP_PATTERNS) {
+    const matches = text.match(re);
+    if (matches) {
+      blocking.push({
+        pattern: "partenariat-fabriqué",
+        severity: "block",
+        reason,
+        occurrences: matches.length,
+      });
+    }
+  }
+
+  // 2sexies. CPF INTERDIT (2026-07-04, décision Will) — Axion-IA n'a PAS
+  // l'autorisation CPF (nécessite un enregistrement RNCP/RS distinct de Qualiopi).
+  // Annoncer un financement CPF sans habilitation est illégal. Toute mention est
+  // BLOQUÉE. Financements légitimes à citer : OPCO, France Travail (AIF), plan de
+  // développement des compétences. (Qualiopi + OPCO = OK ; CPF = jamais.)
+  const cpfMatches = text.match(/\bCPF\b|compte\s+personnel\s+de\s+formation/gi);
+  if (cpfMatches) {
+    blocking.push({
+      pattern: "CPF-non-autorise",
+      severity: "block",
+      reason:
+        "Mention du CPF INTERDITE — Axion-IA n'a pas l'habilitation CPF. Retirer toute référence au CPF ; financements citables : OPCO, France Travail (AIF), plan de développement des compétences.",
+      occurrences: cpfMatches.length,
+    });
   }
 
   // 3. Banned phrases (DB ou fallback)

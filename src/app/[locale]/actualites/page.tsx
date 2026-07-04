@@ -308,7 +308,7 @@ export default async function ActualitesHub({ params }: Props) {
               </div>
             </div>
           ) : (
-            <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="xs:grid-cols-2 mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
               {items.map((item) => {
                 const publishedStr = formatPublishedAt(item.publishedAt);
                 const readingStr = formatReadingTime(item.readingTime);

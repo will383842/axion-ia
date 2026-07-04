@@ -60,7 +60,7 @@ export async function RelatedKnowledge({
       <h2 id="connaissances-liees" className="display-editorial text-fg mb-8">
         {title}
       </h2>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3">
         {cards.map((card) => {
           const typeLabel = TYPE_LABEL[String(card.type)] ?? "Ressource";
           // Évite le doublon « titre tronqué + excerpt identique » : on n'affiche

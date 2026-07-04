@@ -203,6 +203,9 @@ export interface GuideSummaryView {
   readonly publishedAt: Date;
   readonly updatedAt: Date;
   readonly readingTimeMinutes: number;
+  /** Miniature héros Unsplash (Article.featuredImage) — carte du hub /guides. */
+  readonly featuredImage: string | null;
+  readonly featuredImageAlt: string | null;
 }
 
 /**
@@ -252,6 +255,8 @@ export async function loadGuidesIndexForView(
         publishedAt: a.publishedAt ?? a.createdAt,
         updatedAt: t.updatedAt,
         readingTimeMinutes: estimateReadingTime(bodyForReadingTime),
+        featuredImage: a.featuredImage ?? null,
+        featuredImageAlt: a.featuredImageAltFr ?? null,
       });
     }
     return views;

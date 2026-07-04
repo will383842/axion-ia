@@ -228,7 +228,7 @@ export default async function GuidesHubPage({ params }: Props) {
               </div>
             </div>
           ) : (
-            <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="xs:grid-cols-2 grid grid-cols-1 gap-6 md:grid-cols-3">
               {guides.map((g) => (
                 <li key={g.slug}>
                   <ArticleCard
@@ -243,6 +243,9 @@ export default async function GuidesHubPage({ params }: Props) {
                         ? `${g.readingTimeMinutes} min de lecture`
                         : `${g.readingTimeMinutes} min read`
                     }
+                    compact
+                    {...(g.featuredImage ? { imageUrl: g.featuredImage } : {})}
+                    {...(g.featuredImageAlt ? { imageAlt: g.featuredImageAlt } : {})}
                   />
                 </li>
               ))}
