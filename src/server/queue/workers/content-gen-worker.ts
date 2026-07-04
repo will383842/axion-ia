@@ -572,14 +572,25 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           })
         )?.serviceSector ?? undefined)
       : undefined;
+    // 2026-07-04 — Hero Unsplash pour les NEWS RSS. Avant, `!resolvedKeyword`
+    // court-circuitait selectHeroImage pour toute news `blog_from_rss` (l'ingestion
+    // RSS ne fournit jamais de `primaryKeyword`) → `featuredImage` restait null sur
+    // 100 % des news → détail sans photo hero ET cartes du hub /actualites sans
+    // miniature (« blocosse », trop textuel). On dérive donc une requête Unsplash du
+    // TITRE RSS (fallback : titre généré) pour les news, exactement comme le blog
+    // obtient sa photo. `selectHeroImage` est agnostique du contentType et garantit
+    // une photo via sa cascade + requête générique de dernier recours.
+    const heroKeyword =
+      resolvedKeyword ??
+      (contentType === "blog_from_rss" ? (rssItemTitle ?? output.title ?? undefined) : undefined);
     const hero =
-      heroFromRss || !resolvedKeyword
+      heroFromRss || !heroKeyword
         ? null
         : await selectHeroImage({
             jobId: contentGenJobId,
             contentType,
             ...(campaignSectorForHero ? { vertical: campaignSectorForHero } : {}),
-            primaryKeyword: resolvedKeyword,
+            primaryKeyword: heroKeyword,
             ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
             ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
           });

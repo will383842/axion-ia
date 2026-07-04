@@ -329,7 +329,18 @@ export default async function NewsArticlePage({ params }: Props) {
   // /actualites n'avait ni sommaire ni ancres). buildToc injecte les id sur les
   // h2 du HTML sanitisé et renvoie les items ; ne s'applique qu'au body HTML
   // content-gen (le bodyText plat n'a pas de headings).
-  const newsBodyToc = t.bodyText ? null : buildToc(sanitizeContentGenHtml(t.body));
+  // 2026-07-04 (fix « blocosse ») — Le contenu content-gen d'une news est persisté
+  // sous DEUX formes : `body` = HTML riche (h2/h3/h4, listes, callouts) et
+  // `bodyText` = version texte plate (balises strippées). L'ancien test
+  // `t.bodyText ? plat : html` tombait TOUJOURS dans la branche texte plat (une news
+  // content-gen a toujours un `bodyText` non vide) → mur de <p>, sans hiérarchie de
+  // titres, sans `.prose-axionia`, sans sommaire : d'où l'aspect « blocosse ». On
+  // rend désormais le HTML (avec ancres TOC + prose) dès que `body` contient des
+  // balises de bloc — même comportement que /blog. Le texte plat ne sert plus que de
+  // fallback pour un `body` réellement dépourvu de HTML (ancien contenu legacy).
+  const hasHtmlBody =
+    typeof t.body === "string" && /<(h[1-6]|p|ul|ol|blockquote|table|figure|div)\b/i.test(t.body);
+  const newsBodyToc = hasHtmlBody ? buildToc(sanitizeContentGenHtml(t.body)) : null;
   const bodyHtmlFallback = newsBodyToc ? newsBodyToc.html : null;
   const tocItems: TocItem[] = newsBodyToc
     ? newsBodyToc.toc.map((h) => ({ anchor: h.id, title: h.text, level: 2 as const }))

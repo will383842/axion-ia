@@ -224,8 +224,12 @@ const POLICIES_DEFAULTS: ContentPolicies = {
   // 2026-06-14 (décision Will) — full auto + tout indexable par défaut.
   factoryAutoPublishAllBlogTypes: true,
   factoryAutoPromoteTier1MinScore: 0,
-  // 2026-06-14 — Cap news RSS/jour (défaut 20) + fenêtre fraîcheur (défaut 3 j).
-  rssMaxPerDay: 20,
+  // 2026-06-14 — Cap news RSS/jour + fenêtre fraîcheur (défaut 3 j).
+  // 2026-07-04 (Will) — défaut abaissé 20 → 5 : le volume de news RSS/jour visé est
+  // 5, pas 20. NB : ce défaut ne s'applique qu'en l'absence de config `policies`
+  // persistée ; la valeur effective en prod est celle stockée (réglable dans la page
+  // admin « Actualités / News RSS » /content-gen/news, champ « max/jour »).
+  rssMaxPerDay: 5,
   rssMaxAgeDays: 3,
   // 2026-07-01 — Auto-publication des news activée par défaut (aligné sur la
   // stratégie « veille IA → Google News »). Réversible depuis la page Actualités.
