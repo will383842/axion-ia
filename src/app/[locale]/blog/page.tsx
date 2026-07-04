@@ -290,7 +290,7 @@ export default async function BlogListing({ params, searchParams }: Props) {
       {categories.length > 0 ? (
         <Section eyebrow={isFr ? "Thématiques" : "Topics"} tone="sand">
           <Container>
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3">
               {categories.map((cat) => (
                 <li key={cat.slug}>
                   <a href={`/${locale}${categoryBase}/${cat.slug}`} className="group block h-full">
@@ -351,7 +351,7 @@ export default async function BlogListing({ params, searchParams }: Props) {
             </>
           ) : null}
           {/* 3 colonnes max (cartes plus larges) — md/lg (sm est buggé dans ce thème). */}
-          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="xs:grid-cols-2 grid grid-cols-1 gap-6 md:grid-cols-3">
             {paginatedPosts.map((post) => (
               <li key={post.slug}>
                 <ArticleCard

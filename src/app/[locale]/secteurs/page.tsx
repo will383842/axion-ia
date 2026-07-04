@@ -145,14 +145,14 @@ export default async function SecteursHub({ params }: Props) {
         }
         media={heroMedia}
       >
-        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
+        <ul className="xs:grid-cols-2 grid grid-cols-1 gap-5 md:grid-cols-3" role="list">
           {CLIENT_SECTORS.map((s) => (
             <li key={s.slug}>
               <Link
                 href={`/${loc}/secteurs/${s.slug}`}
                 className="border-border hover:border-border-strong hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition"
               >
-                <div className="relative aspect-[16/10] overflow-hidden">
+                <div className="relative aspect-[16/9] overflow-hidden">
                   <Image
                     src={`/illustrations/secteurs/${s.slug}.avif`}
                     alt={

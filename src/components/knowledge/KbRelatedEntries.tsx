@@ -58,7 +58,7 @@ export function KbRelatedEntries({ items }: KbRelatedEntriesProps) {
   return (
     <Section tone="sand" eyebrow="Cluster" title="Sur le même" titleEm="sujet">
       <JsonLd data={itemListJsonLd} />
-      <ul className="-mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="xs:grid-cols-2 -mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         {items.map((card) => {
           const typeLabel = TYPE_LABEL[card.type] ?? "Ressource";
           const excerpt = card.excerpt?.trim();

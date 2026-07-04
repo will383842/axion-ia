@@ -350,6 +350,7 @@ export default async function GuidePiliersPage({ params }: Props) {
             excerpt: r.excerpt,
             publishedAt: r.publishedAt,
             readingTime: r.readingTime,
+            ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
           }),
         )}
         eyebrow="Articles connexes"
