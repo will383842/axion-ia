@@ -817,7 +817,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // plagiat lexical Jaccard rate — notamment 2 sources RSS couvrant le même
     // événement, rédigées différemment. Fail-soft : sans clé Voyage / embedding
     // stub / erreur réseau → fingerprint null → aucun blocage (zéro régression).
-    // Comparé aux 300 derniers articles publiés porteurs d'un fingerprint.
+    // Comparé à TOUT l'historique publié porteur d'un fingerprint (cap 50 000 =
+    // ~7 ans à 20/j). Anti-doublon DURABLE : une relance même des mois/années
+    // plus tard est comparée aux anciens articles, pas seulement aux ~300
+    // récents (~15 j). Hamming 64-bit = négligeable même sur des dizaines de
+    // milliers de fingerprints ; la requête ne tourne qu'1×/génération.
     const topicText = `${output.title}\n\n${output.bodyText}`.slice(0, 4000);
     const topicFingerprint = await computeTopicFingerprint(topicText);
     let topicDuplicateFail = false;
@@ -829,7 +833,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           NOT: { generatedByJobId: contentGenJobId },
         },
         orderBy: { publishedAt: "desc" },
-        take: 300,
+        take: 50_000,
         select: { topicFingerprint: true },
       });
       const fpCorpus = recentFp
