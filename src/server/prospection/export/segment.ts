@@ -53,8 +53,13 @@ export const EXPORT_COLUMNS = [
 const BASE_LEGALE = "Intérêt légitime (art. 6.1.f RGPD) — prospection B2B";
 
 function csvEscape(value: string): string {
-  if (/[",\n\r]/.test(value)) return `"${value.replace(/"/g, '""')}"`;
-  return value;
+  // Anti-injection de formule (Excel/LibreOffice) : une cellule commençant par
+  // = + - @ (ou tab/CR) — dénomination Sirene contrôlée par un tiers — est
+  // préfixée d'une apostrophe pour ne pas être exécutée à l'ouverture.
+  let v = value;
+  if (/^[=+\-@\t\r]/.test(v)) v = `'${v}`;
+  if (/[",\n\r]/.test(v)) return `"${v.replace(/"/g, '""')}"`;
+  return v;
 }
 
 function fmtDate(d: Date | null): string {

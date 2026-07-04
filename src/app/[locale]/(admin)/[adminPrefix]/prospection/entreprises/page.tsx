@@ -5,6 +5,7 @@ import { AdminTable, type AdminTableColumn } from "@/components/admin/ui/AdminTa
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { listCompanies } from "@/server/prospection/admin/queries";
+import { logProspectionAccess } from "@/server/actions/prospection/rgpd";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,8 @@ export default async function EntreprisesPage({
     cursor: sp.cursor,
     take,
   });
+  // RGPD — journal d'accès (recherche de données personnelles). Fail-soft.
+  await logProspectionAccess("search", JSON.stringify(sp)).catch(() => {});
   const hasMore = rows.length > take;
   const page = rows.slice(0, take);
   const base = `/fr/${adminPrefix}/prospection/entreprises`;

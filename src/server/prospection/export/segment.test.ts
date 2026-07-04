@@ -44,6 +44,14 @@ describe("export CSV", () => {
     expect(values[1]).toBe('ACME "BTP", SAS'); // valeur brute
     expect(csv).toContain('"ACME ""BTP"", SAS"'); // échappée dans le CSV
   });
+  it("neutralise l'injection de formule CSV (=,+,-,@ → préfixe apostrophe)", () => {
+    const evil: ExportCompanyRow = { ...ROW, denomination: '=HYPERLINK("http://evil","x")' };
+    const csv = buildCsv([evil]);
+    // La valeur est préfixée d'une apostrophe ET quotée (contient des guillemets).
+    expect(csv).toContain("'=HYPERLINK");
+    expect(csv).not.toMatch(/,=HYPERLINK/); // jamais une cellule brute commençant par =
+  });
+
   it("date au format ISO court + base légale", () => {
     const values = exportRowValues(ROW);
     expect(values).toContain("2026-07-04");

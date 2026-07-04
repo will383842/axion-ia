@@ -66,12 +66,21 @@ async function processJob(_job: Job<ProspectionCoverageJobData>) {
     });
   }
 
-  // Détection d'anomalies (T9) : cellules bloquées en « en_cours » (stale).
+  // Reprise-sur-panne (réconciliation vérif finale) : une cellule bloquée en
+  // « en_cours » (job de collecte mort avant la transition finale) est RÉCLAMÉE
+  // → `erreur`, ce qui la rend ré-enfilable par la ré-orchestration. Sans cela,
+  // elle resterait invisible pour toujours (non-régression #1).
   const alertsConfig = await getProspectionConfig("alerts");
   const staleThreshold = new Date(Date.now() - alertsConfig.staleCellHours * 3600 * 1000);
-  const staleCells = await prisma.prospectionCoverageCell.count({
+  const reclaimed = await prisma.prospectionCoverageCell.updateMany({
     where: { statut: "en_cours", updatedAt: { lt: staleThreshold } },
+    data: {
+      statut: "erreur",
+      errorCode: "STALE_RECLAIM",
+      lastError: "cellule bloquée en_cours (job interrompu) → ré-enfilable",
+    },
   });
+  const staleCells = reclaimed.count;
   const alerts = detectAnomalies(
     { debitCurrent: 0, debitPrevious: 0, zeroResultSources: [], staleCells, quotaReached: 0 },
     alertsConfig,

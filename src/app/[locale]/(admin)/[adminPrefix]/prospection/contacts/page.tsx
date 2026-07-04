@@ -5,6 +5,7 @@ import { AdminTable, type AdminTableColumn } from "@/components/admin/ui/AdminTa
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { countContactsByTab, listCompanies } from "@/server/prospection/admin/queries";
+import { logProspectionAccess } from "@/server/actions/prospection/rgpd";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +33,7 @@ export default async function ContactsPage({
     countContactsByTab(),
     listCompanies({ contactabilite: tab, take: 50 }),
   ]);
+  await logProspectionAccess("search", `contacts:${tab}`).catch(() => {});
 
   const countOf: Record<string, number> = {
     exploitable: counts.exploitable,

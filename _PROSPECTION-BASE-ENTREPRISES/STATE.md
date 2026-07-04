@@ -130,6 +130,38 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 - 🔲 circuit breaker · 🔲 alertes anomalies · 🔲 Web Vitals admin · 🔲 bench charge/soak · 🔲 suite complète
 - 🔲 GATE · 🔲 vérif adversariale · 🔲 commit
 
+## ✅ COMPLÉTION (2026-07-04)
+
+**T0→T9 + pilote + 2 vérifications finales : FAIT.** 232 tests verts, tous les gates (typecheck
+full-repo, eslint, anti-siren/anti-hex/use-client, gitleaks, commitlint, isolation-check) passés à
+chaque commit. Chaque tranche : gate → croisement → vérif adversariale indépendante → réconciliation
+→ commit. Pilote Isère 38 · BTP+Santé prouvé end-to-end sur fixtures (`pilot-e2e.test.ts`) : ingest →
+cellules → collecte (exhaustivité) → enrichissement 2 passes (responsables captés) → rollup
+dép→région→France → opt-out post-collecte → export segmenté re-filtré. **Aucun SIREN réel, aucune
+collecte prod, aucun envoi d'email** (grep 0 mailer). RGPD prouvé (non affirmé) à l'ingest + collecte
+
+- enrichissement + export.
+
+**Vérifs finales (2 passes indépendantes)** : (1) matrice 06 rejouée + preuve RGPD 6 points → « done
+modulo wiring journal view/search » → **corrigé** (`logProspectionAccess` câblé sur entreprises /
+contacts / personnes). (2) cas limites / sécurité / non-régressions → 2 défauts confirmés **corrigés** :
+cellule `en_cours` bloquée (reclaimer stale→erreur dans coverage-worker) + injection de formule CSV
+(csvEscape neutralise `=+-@`). Défauts mineurs corrigés : propagation opt-out par domaine.
+
+**Reste côté Will (uniquement de la config, ZÉRO code)** :
+
+1. Remplir les 3 champs légaux dans `SiteSetting` catégorie `prospection`, clé `legalIdentity` :
+   `raisonSociale`, `siren`, `dpoContact` (+ `aipdValidatedBy`/`aipdValidatedAt`).
+2. Relecture juriste de l'AIPD/LIA (recommandée) avant la 1re collecte en production.
+3. Fournir les fichiers Stock Sirene (chemins `PROSPECTION_STOCK_UNITE_LEGALE_PATH` /
+   `..._ETABLISSEMENT_PATH`) + activer le worker (BULLMQ) pour lancer la collecte réelle.
+4. `pnpm prisma migrate deploy` appliquera la migration `20260704000000_prospection_init` au restart.
+
+**Items différés (documentés, non bloquants V1)** : opt-out par téléphone (nécessite ajout enum
+`ProspectionSuppressionType` + migration) ; pont CRM Qualiopi manuel (Q5, option) ; tests
+d'intégration Redis (re-enqueue no-op, Retry-After, isBuildStub gating) et E2E Playwright/lhci UI
+(hors suite vitest — gate CI dédié) ; bench charge/soak France entière (T9 §6, mesure prod).
+
 ## Journal (append)
 
 - 2026-07-01 — Dossier de conception + skill créés. Implémentation non démarrée. En attente feu vert Will

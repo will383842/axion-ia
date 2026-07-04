@@ -2,11 +2,13 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { prisma } from "@/lib/prisma";
+import { logProspectionAccess } from "@/server/actions/prospection/rgpd";
 
 export const dynamic = "force-dynamic";
 
 export default async function PersonnesPage() {
   const total = await prisma.prospectionPerson.count({ where: { optOut: false } });
+  await logProspectionAccess("view_person", "liste personnes").catch(() => {});
   return (
     <AdminPageShell>
       <AdminPageHeader

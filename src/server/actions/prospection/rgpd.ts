@@ -58,6 +58,12 @@ export async function submitProspectionOptOut(
         data: { optOut: true, optOutAt: now },
       });
     }
+  } else if (type === "domaine") {
+    // Propage sur les entreprises dont le site public porte ce domaine.
+    await prisma.prospectionCompany.updateMany({
+      where: { siteWeb: { contains: valueNormalized } },
+      data: { optOut: true, optOutAt: now },
+    });
   }
 
   await prisma.prospectionEvent.create({
