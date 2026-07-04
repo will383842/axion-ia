@@ -31,8 +31,9 @@ une fermeture inopinée ne perd **au plus qu'une seule étape**, toujours recons
 
 ## En-tête de session (à actualiser)
 
-- **Tranche en cours** : **T5 (Enrichissement 2 passes)** — à démarrer. T0→T4 ✅ commités.
-- **Dernier commit** : `1c874757` (T4). Historique : T0 `3442cb86` · T1 `0222bec1` · T2 `7d2a17ed` · T3 `40b3a59d` · T4 `1c874757`.
+- **Tranche en cours** : **T9 durcissement + 2 vérifs finales**. T0→T5 ✅ + T6/T7 UI + T8 RGPD/export + pilote E2E ✅.
+- **Dernier commit** : voir `git log`. Historique : T0 `3442cb86` · T1 `0222bec1` · T2 `7d2a17ed` · T3 `40b3a59d` · T4 `1c874757` · T5+reconcile `09edaa47`/`36305918` · pilote+export `e2606402`.
+- **Reste (après implémentation, côté Will)** : remplir les 3 champs légaux (raison sociale, SIREN, DPO) dans `SiteSetting.legalIdentity` + relecture juriste avant collecte prod. Optionnel : pont CRM Qualiopi (Q5), download-route fichiers (V1 = téléchargement Blob client).
 - **Recette de commit** : `NODE_OPTIONS=--max-old-space-size=6144 git commit …` (le hook pre-commit fait un typecheck full-repo qui OOM à 2 Go ; ~3 min/commit). Sujet commitlint = **minuscules** (pas de MAJ). `prisma generate` doit être lancé dans le worktree (client gitignoré). Tests unit = 150/150 verts.
 - **Worktree** : ✅ `.claude/worktrees/prospection`, branche `feat/prospection` (off `main` @15b115fd), `pnpm install` + `prisma generate` OK.
 - **Gate juridique (Q9)** : ✅ **NON BLOQUANT pour le build** (directive Will) — AIPD/LIA/mention pré-remplies ; valeurs légales = placeholders `SiteSetting`/`[À COMPLÉTER]`. T3+ construit/testé sur fixtures/mocks, jamais de SIREN réel/collecte prod. Reste côté Will = 3 champs + relecture juriste avant collecte prod.

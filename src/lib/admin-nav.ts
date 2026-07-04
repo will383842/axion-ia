@@ -27,6 +27,7 @@ export type AdminNavGroup =
   | "content"
   | "content_gen"
   | "qualiopi"
+  | "prospection"
   | "documents-interventions"
   | "coaching-1to1"
   | "image-bank"
@@ -84,6 +85,7 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   content: "Contenu",
   content_gen: "Génération de contenu",
   qualiopi: "Formation / Qualiopi",
+  prospection: "Prospection",
   "documents-interventions": "Documents",
   "coaching-1to1": "Coaching 1-to-1",
   "image-bank": "Banque d'images",
@@ -126,6 +128,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "content",
   "content_gen",
   "qualiopi",
+  "prospection",
   "documents-interventions",
   "coaching-1to1",
   "image-bank",
@@ -586,6 +589,29 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🔔",
       group: "qualiopi",
     },
+    // ── Prospection & Base Entreprises (module prospection) ──────────────
+    { href: `${base}/prospection`, label: "Tableau de bord", icon: "🧭", group: "prospection" },
+    { href: `${base}/prospection/campagnes`, label: "Campagnes", icon: "🎯", group: "prospection" },
+    {
+      href: `${base}/prospection/entreprises`,
+      label: "Base entreprises",
+      icon: "🏢",
+      group: "prospection",
+    },
+    { href: `${base}/prospection/contacts`, label: "Contacts", icon: "📇", group: "prospection" },
+    {
+      href: `${base}/prospection/couverture`,
+      label: "Couverture",
+      icon: "🗺️",
+      group: "prospection",
+    },
+    { href: `${base}/prospection/carte`, label: "Carte", icon: "📍", group: "prospection" },
+    { href: `${base}/prospection/personnes`, label: "Personnes", icon: "👥", group: "prospection" },
+    { href: `${base}/prospection/exports`, label: "Exports", icon: "📤", group: "prospection" },
+    { href: `${base}/prospection/journal`, label: "Journal", icon: "📜", group: "prospection" },
+    { href: `${base}/prospection/rgpd`, label: "RGPD", icon: "🛡️", group: "prospection" },
+    { href: `${base}/prospection/doublons`, label: "Doublons", icon: "🔀", group: "prospection" },
+    { href: `${base}/prospection/reglages`, label: "Réglages", icon: "⚙️", group: "prospection" },
     // ── Documents (hub à 2 niveaux : Activités + Autres) ─────────────────
     //   Activités : Formations / 1-to-1 / Audit (kits pédagogiques Qualiopi,
     //   InterventionDocument) + Implémentations / Sites web (buckets de fichiers

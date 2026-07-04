@@ -130,6 +130,7 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   content: Newspaper,
   content_gen: Sparkles,
   qualiopi: GraduationCap,
+  prospection: Search,
   "documents-interventions": FolderOpen,
   "coaching-1to1": GraduationCap,
   "image-bank": Images,
