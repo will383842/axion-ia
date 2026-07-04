@@ -56,6 +56,12 @@ import {
 } from "../quality";
 import type { ContentType } from "../../../../prisma/generated/client";
 import type { GeneratorBaseInput, GeneratorOutput } from "./types";
+import { getVille } from "@/content/villes";
+import { getVilleEconomicData } from "@/content/villes/economic-data";
+import {
+  buildLocalAnchorBlock,
+  villeEconomicToAnchorFacts,
+} from "@/server/content-gen/local/local-anchor";
 
 const ORIGINALITY_SCAN_TIMEOUT_MS = 5_000;
 const ORIGINALITY_MIN_BODY_CHARS = 100;
@@ -103,6 +109,32 @@ export async function runV7Phase8Pipeline(
   const safeVilleSlug = input.anchorVilleSlug
     ? escapeLlmInput(input.anchorVilleSlug, { maxLen: 60 })
     : "";
+
+  // Ancrage local ACTIVÉ (2026-07-04) — injecte les VRAIES données économiques
+  // de la ville (pôles de compétitivité, secteurs dominants, INSEE, tissu local)
+  // dans le prompt, pour que chaque ville produise un contenu RÉELLEMENT
+  // différent (Grenoble = recherche/microélectronique ≠ Saint-Étienne =
+  // design/industrie). Corrige le templating cause n°1 des doublons sémantiques
+  // (« formation IA <ville> » quasi-identiques). Données SSOT réelles, jamais
+  // inventées ; sans données éco (villes hors des 40 sourcées) → ancrage minimal
+  // (nommer la ville + interdiction de génériques/invention). Fail-soft total.
+  let localAnchorBlock = "";
+  if (input.anchorVilleSlug) {
+    const villeMeta = getVille(input.anchorVilleSlug);
+    if (villeMeta) {
+      const kbFacts = villeEconomicToAnchorFacts(getVilleEconomicData(input.anchorVilleSlug), {
+        ville: villeMeta.nameFr,
+        departement: villeMeta.departementLabel ?? villeMeta.departement ?? "",
+        region: villeMeta.region,
+      });
+      localAnchorBlock = buildLocalAnchorBlock({
+        ville: villeMeta.nameFr,
+        departement: villeMeta.departementLabel ?? villeMeta.departement ?? "",
+        region: villeMeta.region,
+        kbFacts,
+      });
+    }
+  }
 
   // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT
   // (nom/titre fixés depuis la banque ; le LLM ne rédige que le texte). Le sujet
@@ -163,7 +195,7 @@ export async function runV7Phase8Pipeline(
     const userPrompt = `Génère un contenu Axion-IA de type "${config.contentTypeSlug}" (${config.humanLabel}).
 Primary keyword : ${safeKeyword}.
 Intent : ${safeIntent}.
-${safeVilleSlug ? `Ville cible : ${safeVilleSlug}.\n` : ""}
+${localAnchorBlock ? `\n${localAnchorBlock}\n` : safeVilleSlug ? `Ville cible : ${safeVilleSlug}.\n` : ""}
 ${config.userPromptFocusSection}
 
 ## CONTRAINTES STRICTES (re-gen si non-respect)
@@ -180,6 +212,8 @@ ${config.userPromptFocusSection}
 - metaTitle : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces). NE JAMAIS descendre sous 50 : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60.
 - metaDescription : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète. NE JAMAIS descendre sous 140 : développe jusqu'à la fourchette. NE PAS dépasser 160.
 - INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre.
+- FINANCEMENT FORMATION : ne JAMAIS mentionner le « CPF » ni le « Compte Personnel de Formation » (Axion-IA n'a pas cette habilitation — mention illégale). Si tu évoques un financement, cite UNIQUEMENT : les OPCO, France Travail (AIF — Aide Individuelle à la Formation), et le plan de développement des compétences de l'entreprise. Jamais le CPF.
+- Ne JAMAIS présenter Axion-IA comme partenaire/membre/labellisé d'une institution nommée (CCI, pôle, université, France Compétences…) ni citer un client nommé : ces entités sont du contexte, pas des relations d'Axion-IA.
 
 ## Sources internes Axion-IA (à citer en priorité)
 ${kbContext}
