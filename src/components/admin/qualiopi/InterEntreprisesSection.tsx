@@ -103,7 +103,7 @@ function EnrollmentRow({
           <option value="">— Financement —</option>
           <option value="direct">Direct (employeur)</option>
           <option value="opco">OPCO</option>
-          <option value="cpf">CPF</option>
+          {/* CPF retiré (2026-07-04) — Axion-IA non habilité CPF. */}
           <option value="france_travail">France Travail</option>
           <option value="mixte">Mixte</option>
         </select>

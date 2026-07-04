@@ -58,7 +58,8 @@ const FINANCEMENT_OPTIONS: Array<{ value: FinancementSuggere; label: string }> =
   { value: "", label: "— Aucun —" },
   { value: "direct", label: "Direct (entreprise)" },
   { value: "opco", label: "OPCO" },
-  { value: "cpf", label: "CPF / EDOF" },
+  // CPF retiré (2026-07-04) — Axion-IA non habilité CPF (sélection interdite).
+  // Enum + labels BPF conservés ailleurs pour l'intégrité des données existantes.
   { value: "france_travail", label: "France Travail" },
 ];
 
