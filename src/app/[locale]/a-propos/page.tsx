@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, ShieldCheck, Building2, Calendar, Globe2 } from "lucide-react";
+import { ArrowRight, ShieldCheck, Building2, Calendar, Globe2, Check, X } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -15,6 +15,8 @@ import { FaqBlock } from "@/components/sections/FaqBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
+import { ABOUT_PHOTO_CREDITS } from "@/content/a-propos/about-photos";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   buildProductMetadata,
@@ -212,8 +214,8 @@ export default async function About({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Axion-IA accompagne les entreprises dans l'identification, la démonstration et l'implémentation d'usages IA générant un ROI mesurable. Hébergement UE, méthode documentée, livrables actionnables."
-                  : "Axion-IA helps companies identify, demonstrate and implement AI use cases generating measurable ROI. EU hosting, documented method, actionable deliverables."}
+                  ? "De l'IA qui passe en production et génère un ROI mesurable — pas une démo de plus. On identifie vos cas d'usage, on les prouve sur vos données réelles, puis on les déploie dans vos process. Hébergement UE, méthode documentée, livrables actionnables."
+                  : "AI that reaches production and delivers measurable ROI — not one more demo. We identify your use cases, prove them on your real data, then deploy them inside your processes. EU hosting, documented method, actionable deliverables."}
               </p>
               {/* Pills réassurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
@@ -263,13 +265,104 @@ export default async function About({ params }: Props) {
         </Container>
       </section>
 
-      {/* Pillar copy — pourquoi Axion-IA */}
+      {/* Pourquoi Axion-IA — comparaison visuelle « promesses du marché » vs
+         « méthode Axion-IA ». Casse le pavé de texte en 2 colonnes contrastées. */}
       <Section eyebrow={isFr ? "Pourquoi Axion-IA" : "Why Axion-IA"} tone="paper">
-        <Container className="max-w-3xl">
-          <p className="text-fg-soft text-lg leading-relaxed">
+        <Container className="max-w-5xl">
+          <p className="text-fg mx-auto max-w-3xl text-center text-2xl leading-snug font-medium tracking-tight sm:text-3xl">
+            {isFr ? (
+              <>
+                Le marché de l&apos;IA d&apos;entreprise est saturé de promesses non tenues.{" "}
+                <span
+                  className="text-terracotta italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  Nous prenons le contre-pied.
+                </span>
+              </>
+            ) : (
+              <>
+                The enterprise AI market is saturated with broken promises.{" "}
+                <span
+                  className="text-terracotta italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  We take the opposite stance.
+                </span>
+              </>
+            )}
+          </p>
+
+          <div className="mt-12 grid gap-6 lg:grid-cols-2 lg:gap-8">
+            {/* Colonne « ce que le marché fait » — ton éteint, X */}
+            <div className="border-border bg-bg/40 rounded-2xl border border-dashed p-7 sm:p-8">
+              <p className="text-fg-muted text-[12px] font-semibold tracking-[0.16em] uppercase">
+                {isFr ? "Les promesses du marché" : "The market's promises"}
+              </p>
+              <ul className="mt-6 space-y-5" role="list">
+                {(isFr
+                  ? [
+                      "Des pilotes qui ne passent jamais en production.",
+                      "Des démos époustouflantes sur des données fabriquées.",
+                      "Des factures longues comme un bras, sans ROI mesurable.",
+                    ]
+                  : [
+                      "Pilots that never reach production.",
+                      "Stunning demos built on fabricated data.",
+                      "Long invoices, with no measurable ROI.",
+                    ]
+                ).map((item) => (
+                  <li key={item} className="flex items-start gap-3.5">
+                    <span
+                      aria-hidden="true"
+                      className="border-border text-fg-muted mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border"
+                    >
+                      <X className="h-3.5 w-3.5" strokeWidth={2.5} />
+                    </span>
+                    <span className="text-fg-soft decoration-fg-muted/40 text-[15px] leading-snug line-through">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Colonne « ce qu'Axion-IA fait » — accent terracotta, Check */}
+            <div className="border-terracotta/40 bg-paper shadow-card rounded-2xl border-2 p-7 sm:p-8">
+              <p className="text-terracotta text-[12px] font-semibold tracking-[0.16em] uppercase">
+                {isFr ? "La méthode Axion-IA" : "The Axion-IA method"}
+              </p>
+              <ul className="mt-6 space-y-5" role="list">
+                {(isFr
+                  ? [
+                      "Aucune intervention sans démonstration sur vos données réelles.",
+                      "Aucun devis sans plan d'action chiffré et priorisé.",
+                      "Aucun déploiement sans support post-livraison inclus.",
+                    ]
+                  : [
+                      "No engagement without a live demo on your real data.",
+                      "No quote without a costed, prioritised action plan.",
+                      "No deployment without post-delivery support included.",
+                    ]
+                ).map((item) => (
+                  <li key={item} className="flex items-start gap-3.5">
+                    <span
+                      aria-hidden="true"
+                      className="bg-terracotta-soft text-terracotta mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                    >
+                      <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                    </span>
+                    <span className="text-fg text-[15px] leading-snug font-medium">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <p className="text-fg-soft mx-auto mt-10 max-w-3xl text-center text-base leading-relaxed">
             {isFr
-              ? "Le marché de l'IA d'entreprise en 2026 est saturé de promesses non tenues. Pilotes qui ne passent jamais en production. Démos époustouflantes sur des données fabriquées. Factures longues comme un bras pour des outils sans ROI mesurable. Axion-IA prend le contre-pied : aucune intervention sans démonstration sur vos données réelles, aucun devis sans plan d'action chiffré priorisé, aucun déploiement sans support post-livraison. Cabinet IA opérationnel signifie : on travaille dans vos process, pas à côté. France : siège choisi pour la stabilité juridique et la proximité avec les entreprises françaises et européennes."
-              : "The enterprise AI market in 2026 is saturated with broken promises. Pilots that never reach production. Stunning demos on fabricated data. Long invoices for tools without measurable ROI. Axion-IA takes the opposite stance: no engagement without a live demo on your real data, no quote without a costed prioritised action plan, no deployment without post-delivery support. Operational AI consultancy means: we work inside your processes, not next to them. France: HQ chosen for legal stability and proximity to French and European companies."}
+              ? "Cabinet IA opérationnel, ça veut dire une chose : on travaille dans vos process, pas à côté. Notre siège est en France, choisi pour la stabilité juridique et la proximité avec les entreprises françaises et européennes."
+              : "Operational AI consultancy means one thing: we work inside your processes, not next to them. Our head office is in France, chosen for legal stability and proximity to French and European companies."}
           </p>
         </Container>
       </Section>
@@ -346,6 +439,10 @@ export default async function About({ params }: Props) {
             name: m[loc].name,
             role: m[loc].role,
             bio: m[loc].bio,
+            // Photo réelle du fondateur sur la carte Will. Manon = persona
+            // éditoriale IA (transparence AI Act art. 50) → aucun portrait
+            // humain, avatar initiale conservé pour ne pas induire en erreur.
+            ...(m.id === "will" ? { photoUrl: "/illustrations/home-founder-william.avif" } : {}),
           }))}
         />
       </Section>
@@ -373,42 +470,75 @@ export default async function About({ params }: Props) {
                   : "EU hosting by default, open-source models when relevant."}
               </p>
             </div>
-            <Illustration
-              slot="APROPOS-02-mid"
-              aspectRatio="1:1"
-              filenameTarget="public/illustrations/a-propos-mid-1.avif"
-              caption={
-                isFr
-                  ? "Atelier de conception — précision, traces de craie, plan ouvert"
-                  : "Design studio — precision, chalk traces, open blueprint"
-              }
-              alt={
-                isFr
-                  ? "Illustration éditoriale d'un atelier de conception symbolisant la précision opérationnelle d'Axion-IA."
-                  : "Editorial illustration of a design studio symbolizing Axion-IA's operational precision."
-              }
-            />
+            <div>
+              <Illustration
+                slot="APROPOS-02-mid"
+                src="/illustrations/a-propos/valeurs.avif"
+                aspectRatio="1:1"
+                filenameTarget="public/illustrations/a-propos/valeurs.avif"
+                caption={
+                  isFr
+                    ? "La précision opérationnelle d'Axion-IA."
+                    : "Axion-IA's operational precision."
+                }
+                alt={
+                  isFr
+                    ? "Concepteur au travail, casque sur les oreilles, esquissant un schéma — la précision opérationnelle d'Axion-IA."
+                    : "A maker at work, headphones on, sketching a diagram — Axion-IA's operational precision."
+                }
+              />
+              <UnsplashCredit
+                photographerName={ABOUT_PHOTO_CREDITS.valeurs?.photographer}
+                photographerUrl={ABOUT_PHOTO_CREDITS.valeurs?.photographerUrl}
+              />
+            </div>
           </div>
         </Container>
       </Section>
 
       <Section tone="canvas">
         <Container className="max-w-3xl">
-          <Illustration
-            slot="APROPOS-03-closing"
-            aspectRatio="16:9"
-            filenameTarget="public/illustrations/a-propos-closing.avif"
-            caption={
-              isFr
-                ? "Cabinet IA opérationnel — vue éditoriale d'un système en marche"
-                : "Operational AI consultancy — editorial view of a system at work"
-            }
-            alt={
-              isFr
-                ? "Illustration éditoriale d'un cabinet IA opérationnel en activité — vue d'ensemble du système Axion-IA."
-                : "Editorial illustration of an operational AI consultancy at work — overview of the Axion-IA system."
-            }
-          />
+          <h2
+            className="text-fg text-center text-3xl leading-tight font-medium tracking-tight sm:text-4xl"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {isFr ? (
+              <>
+                Une méthode, <span className="text-terracotta italic">pas une promesse.</span>
+              </>
+            ) : (
+              <>
+                A method, <span className="text-terracotta italic">not a promise.</span>
+              </>
+            )}
+          </h2>
+          <p className="text-fg-soft mx-auto mt-4 max-w-2xl text-center text-lg leading-relaxed">
+            {isFr
+              ? "Chaque mission suit le même fil : cadrage, démonstration sur vos données, déploiement et suivi. Vous voyez le résultat avant de vous engager."
+              : "Every engagement follows the same thread: scoping, a demo on your data, deployment and follow-up. You see the result before you commit."}
+          </p>
+          <div className="mt-10">
+            <Illustration
+              slot="APROPOS-03-closing"
+              src="/illustrations/a-propos/closing.avif"
+              aspectRatio="16:9"
+              filenameTarget="public/illustrations/a-propos/closing.avif"
+              caption={
+                isFr
+                  ? "Un cabinet IA opérationnel en activité."
+                  : "An operational AI consultancy at work."
+              }
+              alt={
+                isFr
+                  ? "Une équipe réunie autour d'ordinateurs portables dans un bureau lumineux — un cabinet IA opérationnel en activité."
+                  : "A team gathered around laptops in a bright office — an operational AI consultancy at work."
+              }
+            />
+            <UnsplashCredit
+              photographerName={ABOUT_PHOTO_CREDITS.closing?.photographer}
+              photographerUrl={ABOUT_PHOTO_CREDITS.closing?.photographerUrl}
+            />
+          </div>
         </Container>
       </Section>
 
