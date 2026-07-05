@@ -222,7 +222,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
             </div>
 
             {/* CARTE INFOS-CLÉS */}
-            <aside className="border-terracotta/25 bg-canvas shadow-card rounded-3xl border-2 p-6 lg:sticky lg:top-24 lg:p-7">
+            <aside className="border-terracotta/25 bg-canvas shadow-card rounded-3xl border-2 p-6 lg:sticky lg:top-24 lg:mt-8 lg:p-7">
               <div className="border-border border-b pb-5">
                 <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
                   À partir de
@@ -265,22 +265,30 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                 Renseignements sans engagement
               </p>
               {ofPublic ? (
-                <p className="text-fg-muted mt-4 text-center text-[12px] leading-relaxed">
-                  Organisme{" "}
-                  <Link
-                    href={"/certification-qualiopi" as never}
-                    className="text-terracotta underline"
-                  >
-                    Qualiopi
-                  </Link>{" "}
-                  ·{" "}
-                  <Link
-                    href={"/financement-opco-france-travail" as never}
-                    className="text-terracotta underline"
-                  >
-                    finançable OPCO / France Travail
-                  </Link>
-                </p>
+                <div className="border-border mt-5 flex flex-col items-center gap-2 border-t pt-5">
+                  <Image
+                    src="/qualiopi/qualiopi-actions-de-formation-axion-ia.webp"
+                    alt="Logo Qualiopi — Axion-IA, organisme de formation certifié : la certification qualité a été délivrée au titre des actions de formation."
+                    width={700}
+                    height={423}
+                    className="h-auto w-full max-w-[220px] object-contain"
+                  />
+                  <p className="text-fg-muted text-center text-[12px] leading-relaxed">
+                    <Link
+                      href={"/certification-qualiopi" as never}
+                      className="text-terracotta underline"
+                    >
+                      Certifié Qualiopi
+                    </Link>{" "}
+                    ·{" "}
+                    <Link
+                      href={"/financement-opco-france-travail" as never}
+                      className="text-terracotta underline"
+                    >
+                      finançable OPCO / France Travail
+                    </Link>
+                  </p>
+                </div>
               ) : null}
             </aside>
           </div>
@@ -290,35 +298,34 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       {/* ── PREUVE SOCIALE (logos) ───────────────────────────────────────── */}
       <ClientLogosMarqueeBand isFr={isFr} />
 
-      {/* ── AVANT / APRÈS ────────────────────────────────────────────────── */}
+      {/* ── AVANT / APRÈS (compact & léger) ──────────────────────────────── */}
       {f.avantApresFr ? (
-        <Section
-          tone="paper"
-          eyebrow="La transformation"
-          title="Avant / après"
-          titleEm="la formation"
-          description="Ce qui change concrètement dans le quotidien de vos équipes."
-        >
-          <div className="mx-auto grid max-w-4xl grid-cols-1 items-stretch gap-4 md:grid-cols-[1fr_auto_1fr]">
-            <div className="border-border bg-bg flex flex-col gap-2 rounded-2xl border p-6">
-              <span className="text-fg-muted text-[12px] font-bold tracking-[0.16em] uppercase">
-                Avant
-              </span>
-              <p className="text-fg-soft text-[15px] leading-relaxed">{f.avantApresFr.avant}</p>
-            </div>
-            <div className="hidden items-center justify-center md:flex">
-              <ArrowRightLeft aria-hidden="true" className="text-terracotta h-7 w-7" />
-            </div>
-            <div className="border-terracotta/30 bg-terracotta-soft flex flex-col gap-2 rounded-2xl border p-6">
-              <span className="text-terracotta-deep text-[12px] font-bold tracking-[0.16em] uppercase">
-                Après
-              </span>
-              <p className="text-fg text-[15px] leading-relaxed font-medium" data-speakable>
-                {f.avantApresFr.apres}
-              </p>
+        <Container className="py-8 md:py-10">
+          <div className="mx-auto max-w-4xl">
+            <p className="text-terracotta-deep mb-4 text-center text-[12px] font-bold tracking-[0.16em] uppercase">
+              La transformation
+            </p>
+            <div className="grid grid-cols-1 items-stretch gap-3 md:grid-cols-[1fr_auto_1fr]">
+              <div className="border-border bg-canvas flex flex-col gap-1.5 rounded-xl border p-4">
+                <span className="text-fg-muted text-[11px] font-bold tracking-[0.16em] uppercase">
+                  Avant
+                </span>
+                <p className="text-fg-soft text-sm leading-relaxed">{f.avantApresFr.avant}</p>
+              </div>
+              <div className="hidden items-center justify-center md:flex">
+                <ArrowRightLeft aria-hidden="true" className="text-terracotta h-5 w-5" />
+              </div>
+              <div className="border-terracotta/25 bg-terracotta-soft flex flex-col gap-1.5 rounded-xl border p-4">
+                <span className="text-terracotta-deep text-[11px] font-bold tracking-[0.16em] uppercase">
+                  Après
+                </span>
+                <p className="text-fg text-sm leading-relaxed font-medium" data-speakable>
+                  {f.avantApresFr.apres}
+                </p>
+              </div>
             </div>
           </div>
-        </Section>
+        </Container>
       ) : null}
 
       {/* ── OBJECTIFS & CAS D'USAGE (fusionnés — cartes + images) ────────── */}
@@ -326,8 +333,8 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         <Section
           tone="sand"
           eyebrow="Objectifs & cas d'usage"
-          title="Ce que vous saurez"
-          titleEm="faire"
+          title="Ce que chacun saura faire —"
+          titleEm="cas d'usage concret"
           description="Des compétences directement applicables sur vos vrais dossiers, travaillées en atelier."
         >
           <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl gap-4 lg:grid-cols-3">
