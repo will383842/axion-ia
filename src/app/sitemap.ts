@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { DB_BLOG_CATEGORY_SLUGS } from "@/server/content-gen/blog/category-loader";
 import { getAllSlugs as getAllCaseStudySlugs, getAllIndustrySlugs } from "@/content/case-studies";
 import {
@@ -585,6 +586,11 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
     if (isSlugTemplate(key)) continue;
+    // Page de réassurance Qualiopi : Phase-B uniquement (la page `notFound()` en
+    // Phase A tant que l'agrément n'est pas public). On la garde HORS sitemap tant
+    // que `OF_PUBLIC_DISCLOSURE_ENABLED` ≠ "true" pour éviter une URL 404 dans
+    // pages.xml (incohérence GSC + crawl budget gaspillé).
+    if (key === "/certification-qualiopi" && !isQualiopiPublicDisclosureEnabled()) continue;
     for (const locale of effectiveLocales) {
       const url = `${SITE_URL}/${locale}${localizedHref(key, locale)}`;
       entries.push({
