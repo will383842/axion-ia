@@ -1,9 +1,10 @@
 // Section « Les plus Axion-IA » — 3 avantages en BANDEAUX IMAGE alternés (image
 // d'un côté, texte de l'autre), pour un rendu qui donne envie. Server Component.
 //
-// Images : vraies photos Unsplash (slots resultats/financement/visibilite du
-// manifeste `formations-entreprise-unsplash.ts`, download-trigger CGU §6 +
-// attribution <UnsplashCredit>). Hotlink images.unsplash.com re-optimisé next/image.
+// Images : bandeaux résultats/financement = vraies photos Unsplash (manifeste
+// `formations-entreprise-unsplash.ts`, download-trigger CGU §6 + <UnsplashCredit>).
+// Bandeau visibilité = infographie locale AVIF (référencée dans page-images.ts pour
+// le JSON-LD ImageObject + sitemap-images / Google Images).
 //
 // ⚠️ Financement : le bandeau OPCO est GATÉ Phase B (`ofPublic`) et cite l'OPCO
 // en TEXTE + « Certifié Qualiopi » — JAMAIS le logo OPCO (marque tierce, cf.
@@ -11,7 +12,7 @@
 
 import type { ReactNode } from "react";
 import Image from "next/image";
-import { Globe, Link2, Mic, Share2, ShieldCheck, Video, Wallet, Zap } from "lucide-react";
+import { Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/layout/Section";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
@@ -23,26 +24,39 @@ function bySlot(slot: string) {
 
 function Banner({
   slot,
+  localSrc,
   reverse,
   alt,
   children,
 }: {
-  slot: string;
+  /** Slot d'une photo Unsplash du manifeste (rendue object-cover + crédit). */
+  slot?: string;
+  /** Image locale (illustration/infographie) — rendue object-contain, sans crédit. */
+  localSrc?: string;
   reverse?: boolean;
   alt: string;
   children: ReactNode;
 }): ReactNode {
-  const image = bySlot(slot);
+  const image = slot ? bySlot(slot) : undefined;
   return (
     <div>
       <div className="border-border bg-bg grid grid-cols-1 overflow-hidden rounded-3xl border lg:grid-cols-2 lg:items-stretch">
         <figure
           className={cn(
-            "relative order-first m-0 min-h-[220px] lg:min-h-[360px]",
+            "relative order-first m-0 min-h-[240px] lg:min-h-[380px]",
             reverse && "lg:order-last",
           )}
         >
-          {image ? (
+          {localSrc ? (
+            <Image
+              src={localSrc}
+              alt={alt}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              loading="lazy"
+              className="object-contain p-4"
+            />
+          ) : image ? (
             <Image
               src={image.src}
               alt={alt}
@@ -57,7 +71,7 @@ function Banner({
         </figure>
         <div className="flex flex-col justify-center gap-4 p-8 lg:p-10">{children}</div>
       </div>
-      {image ? (
+      {image && !localSrc ? (
         <UnsplashCredit
           photographerName={image.photographer}
           photographerUrl={image.photographerUrl}
@@ -67,14 +81,6 @@ function Banner({
     </div>
   );
 }
-
-const visibilityItems: ReadonlyArray<{ icon: typeof Mic; label: string }> = [
-  { icon: Mic, label: "Un podcast dirigeant ou collaborateur" },
-  { icon: Video, label: "Des interviews de participants volontaires" },
-  { icon: Globe, label: "Une page dédiée à votre entreprise sur axion-ia.com" },
-  { icon: Link2, label: "Un lien dofollow vers votre site (SEO)" },
-  { icon: Share2, label: "Un relais sur notre LinkedIn" },
-];
 
 export function FormationsLesPlus({
   isFr,
@@ -143,10 +149,14 @@ export function FormationsLesPlus({
           </Banner>
         ) : null}
 
-        {/* 3 — Visibilité offerte (image à gauche) */}
+        {/* 3 — Visibilité offerte (infographie locale, image à gauche) */}
         <Banner
-          slot="visibilite"
-          alt="Enregistrement d'un podcast — visibilité offerte à votre entreprise"
+          localSrc="/illustrations/formations/visibilite-entreprise-podcast-interview-backlink-formation-ia-axion-ia.avif"
+          alt={
+            isFr
+              ? "Infographie « La visibilité de votre entreprise, en bonus » — Axion-IA : podcast dirigeant ou collaborateur, interviews des participants, page dédiée sur axion-ia.com, lien dofollow et relais LinkedIn."
+              : "Infographic “Your company's visibility, as a bonus” — Axion-IA: executive or employee podcast, participant interviews, dedicated page on axion-ia.com, dofollow link and LinkedIn share."
+          }
         >
           <span className="bg-primary-soft text-primary inline-flex h-12 w-12 items-center justify-center rounded-2xl">
             <Globe aria-hidden="true" className="h-6 w-6" />
@@ -161,19 +171,11 @@ export function FormationsLesPlus({
               ? "Nous ne formons pas que vos équipes : nous mettons votre entreprise en lumière, localement ou nationalement."
               : "We don't just train your teams: we put your company in the spotlight, locally or nationally."}
           </p>
-          <ul role="list" className="flex flex-col gap-2.5">
-            {visibilityItems.map((v) => (
-              <li
-                key={v.label}
-                className="text-fg flex items-start gap-2.5 text-sm leading-relaxed"
-              >
-                <span className="bg-terracotta-soft text-terracotta-deep mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md">
-                  <v.icon aria-hidden="true" className="h-3.5 w-3.5" />
-                </span>
-                {v.label}
-              </li>
-            ))}
-          </ul>
+          <p className="text-fg text-sm leading-relaxed font-medium">
+            {isFr
+              ? "Podcast dirigeant ou collaborateur · interviews des participants · page dédiée à votre entreprise sur axion-ia.com · lien dofollow vers votre site (SEO) · relais LinkedIn."
+              : "Executive or employee podcast · participant interviews · dedicated page on axion-ia.com · dofollow link to your site (SEO) · LinkedIn share."}
+          </p>
         </Banner>
       </div>
     </Section>

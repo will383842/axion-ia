@@ -288,6 +288,20 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         slot: "inline",
       },
       {
+        src: "/illustrations/formations/visibilite-entreprise-podcast-interview-backlink-formation-ia-axion-ia.avif",
+        nameFr:
+          "La visibilité de votre entreprise en bonus — podcast, interview, page dédiée, backlink | Axion-IA",
+        nameEn:
+          "Your company's visibility as a bonus — podcast, interview, dedicated page, backlink | Axion-IA",
+        altFr:
+          "Infographie « La visibilité de votre entreprise, en bonus » — Axion-IA : podcast dirigeant ou collaborateur, interviews des participants, page dédiée à votre entreprise et votre secteur sur axion-ia.com, lien dofollow vers votre site (SEO) et relais LinkedIn, offerts avec votre formation IA.",
+        altEn:
+          "Infographic “Your company's visibility, as a bonus” — Axion-IA: executive or employee podcast, participant interviews, dedicated page about your company and sector on axion-ia.com, dofollow link to your site (SEO) and LinkedIn share, included with your AI training.",
+        width: 1254,
+        height: 1254,
+        slot: "inline",
+      },
+      {
         src: "/illustrations/formations/formateur-ia-claude-atelier-pme.png",
         nameFr: "Formateur IA en atelier formation entreprise",
         nameEn: "AI trainer in corporate training workshop",

@@ -459,7 +459,7 @@ export default async function FormationsEntreprise({ params }: Props) {
           // sans déformation → conforme) pour préserver le LCP. Phase A : repli sur
           // la photo d'équipe (aucune mention Qualiopi tant que non certifié).
           ofPublic ? (
-            <div className="bg-paper border-border shadow-card flex aspect-[3/2] w-full items-center justify-center rounded-2xl border p-8 lg:p-10">
+            <div className="flex aspect-[3/2] w-full items-center justify-center">
               <Image
                 src="/qualiopi/axion-ia-qualiopi.png"
                 alt={
@@ -472,7 +472,7 @@ export default async function FormationsEntreprise({ params }: Props) {
                 priority
                 quality={90}
                 sizes="(max-width: 1024px) 88vw, 44vw"
-                className="h-auto w-full max-w-[460px] object-contain"
+                className="h-auto w-full max-w-[480px] object-contain"
               />
             </div>
           ) : heroImage ? (
