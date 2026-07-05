@@ -13,7 +13,7 @@
 // ============================================================================
 
 import type { FormationDuree, FormationGamme } from "../pricing";
-import type { FormationV2 } from "./catalog-v2";
+import type { FormationCasUsage, FormationV2 } from "./catalog-v2";
 import { type ModalitePedagogique, PRESENTIEL_DISTANCIEL } from "./modalites";
 
 // ── Durée canonique en NOMBRES (heures d'horloge + jours) ───────────────────
@@ -132,7 +132,7 @@ export function getFormationScenePhotos(
   return FORMATION_SCENE_PHOTOS.filter((p) => p.src !== heroSrc).slice(0, 2);
 }
 
-/** Cas d'usage : override par formation, sinon repli sur les objectifs. */
-export function getFormationCasUsage(f: FormationV2): ReadonlyArray<string> {
-  return f.casUsageFr ?? f.objectifsFr;
+/** Cas d'usage : override par formation, sinon repli sur les objectifs (sans image). */
+export function getFormationCasUsage(f: FormationV2): ReadonlyArray<FormationCasUsage> {
+  return f.casUsageFr ?? f.objectifsFr.map((o) => ({ texteFr: o }));
 }

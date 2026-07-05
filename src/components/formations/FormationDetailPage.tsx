@@ -59,7 +59,6 @@ import {
   getFormationModalites,
   getFormationScenePhotos,
 } from "@/content/formations/catalog-v2-facts";
-import { findBookableBySlug } from "@/content/booking-catalog";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
@@ -72,6 +71,7 @@ import {
 } from "@/lib/seo";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
 
 /** « 2-15 » → « 2 à 15 personnes ». */
 function bracketLabel(b: FormationBracket): string {
@@ -92,8 +92,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const entryPrice = getFormationV2EntryPrice(f);
   const brackets = getFormationV2Brackets(f);
   const ofPublic = isQualiopiPublicDisclosureEnabled();
-
-  const isBookable = Boolean(findBookableBySlug(f.slugFr));
+  const mentionMarque = formatMentionMarqueQualiopi("Actions de formation");
 
   // formatAmount renvoie déjà « … € HT » → NE PAS re-suffixer « HT ».
   const priceValue = typeof entryPrice === "number" ? formatAmount(entryPrice, "fr") : "Sur devis";
@@ -262,11 +261,14 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                 className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta mt-5 w-full justify-center"
               >
                 <Phone aria-hidden="true" className="h-4 w-4" />
-                {isBookable ? "Poser une option" : "Réserver un appel"}
+                Réserver un appel
               </Cta>
               <Cta href="/contact" variant="ghost" size="md" className="mt-2 w-full justify-center">
                 Nous écrire
               </Cta>
+              <p className="text-fg-muted mt-2 text-center text-[12px]">
+                Renseignements sans engagement
+              </p>
               {ofPublic ? (
                 <p className="text-fg-muted mt-4 text-center text-[12px] leading-relaxed">
                   Organisme{" "}
@@ -479,7 +481,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </div>
       </Section>
 
-      {/* ── CAS D'USAGE CONCRETS ─────────────────────────────────────────── */}
+      {/* ── CAS D'USAGE CONCRETS (avec petites images) ───────────────────── */}
       {casUsage.length > 0 ? (
         <Section
           tone="sand"
@@ -491,19 +493,61 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl gap-4 lg:grid-cols-3">
             {casUsage.map((c) => (
               <li
-                key={c}
-                className="border-border bg-canvas shadow-subtle text-fg-soft flex flex-col gap-2 rounded-2xl border p-5 text-sm leading-relaxed"
+                key={c.texteFr}
+                className="border-border bg-canvas shadow-subtle flex flex-col overflow-hidden rounded-2xl border"
               >
-                <Sparkles aria-hidden="true" className="text-terracotta h-4 w-4" />
-                {c}
+                {c.imageSrc ? (
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={c.imageSrc}
+                      alt={c.texteFr}
+                      fill
+                      sizes="(min-width: 1024px) 30vw, (min-width: 479px) 50vw, 100vw"
+                      loading="lazy"
+                      className="object-cover"
+                    />
+                  </div>
+                ) : null}
+                <div className="flex flex-1 flex-col gap-2 p-5">
+                  <Sparkles aria-hidden="true" className="text-terracotta h-4 w-4" />
+                  <p className="text-fg-soft flex-1 text-sm leading-relaxed">{c.texteFr}</p>
+                  {c.imageCredit ? (
+                    <UnsplashCredit
+                      photographerName={c.imageCredit.name}
+                      photographerUrl={c.imageCredit.url}
+                      className="text-[10px]"
+                    />
+                  ) : null}
+                </div>
               </li>
             ))}
           </ul>
         </Section>
       ) : null}
 
+      {/* ── MODALITÉS — cartes à icônes (AVANT les secteurs) ─────────────── */}
+      <Section eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
+        <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {modalitesRows.map((row) => (
+            <div
+              key={row.label}
+              className="border-border bg-canvas shadow-subtle flex flex-col gap-2 rounded-2xl border p-5"
+            >
+              <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-xl">
+                <row.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <dt className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+                {row.label}
+              </dt>
+              <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
       {/* ── SECTEURS D'ACTIVITÉ ──────────────────────────────────────────── */}
       <Section
+        tone="sand"
         eyebrow="Tous secteurs"
         title="Adaptée à"
         titleEm="votre secteur"
@@ -540,26 +584,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
             </li>
           ))}
         </ul>
-      </Section>
-
-      {/* ── MODALITÉS — cartes à icônes ──────────────────────────────────── */}
-      <Section tone="sand" eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
-        <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {modalitesRows.map((row) => (
-            <div
-              key={row.label}
-              className="border-border bg-canvas shadow-subtle flex flex-col gap-2 rounded-2xl border p-5"
-            >
-              <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-xl">
-                <row.icon aria-hidden="true" className="h-5 w-5" />
-              </span>
-              <dt className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
-                {row.label}
-              </dt>
-              <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
-            </div>
-          ))}
-        </dl>
       </Section>
 
       {/* ── TARIF (tranches par effectif) ────────────────────────────────── */}
@@ -607,7 +631,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                       </p>
                       <div className="mt-auto pt-6">
                         <Cta href="/appel" size="lg" className="w-full justify-center">
-                          {isBookable ? "Poser une option" : "Réserver un appel"}
+                          Réserver un appel
                           <ArrowRight aria-hidden="true" className="h-4 w-4" />
                         </Cta>
                       </div>
@@ -617,6 +641,50 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               })}
             </ul>
           </Container>
+        </Section>
+      ) : null}
+
+      {/* ── QUALIOPI / OPCO (logo officiel + financement, gaté Phase B) ──── */}
+      {ofPublic ? (
+        <Section
+          tone="paper"
+          eyebrow="Sérieux & financement"
+          title="Un organisme"
+          titleEm="certifié Qualiopi"
+          description="Un gage de qualité — et l'assurance d'une formation finançable."
+        >
+          <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 lg:grid-cols-[0.75fr_1.25fr]">
+            <div className="border-border bg-canvas shadow-subtle mx-auto flex w-full max-w-[360px] items-center justify-center rounded-2xl border p-8">
+              <Image
+                src="/qualiopi/axion-ia-qualiopi.png"
+                alt="Logo Qualiopi — Axion-IA, organisme de formation certifié (catégorie : actions de formation)"
+                width={360}
+                height={240}
+                quality={90}
+                sizes="(max-width: 1024px) 70vw, 28vw"
+                className="h-auto w-full max-w-[280px] object-contain"
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <p className="text-fg text-base leading-relaxed" data-speakable>
+                {mentionMarque}
+              </p>
+              <p className="text-fg-soft text-sm leading-relaxed">
+                Parce que nous sommes certifiés Qualiopi, cette formation est éligible aux
+                financements de la formation professionnelle : <strong>OPCO</strong> pour vos
+                salariés, <strong>France Travail</strong> pour les demandeurs d’emploi — en tout ou
+                partie selon votre situation. Nous montons le dossier avec vous.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Cta href="/certification-qualiopi" variant="outline" size="md">
+                  Notre certification Qualiopi
+                </Cta>
+                <Cta href="/financement-opco-france-travail" variant="outline" size="md">
+                  Financer cette formation
+                </Cta>
+              </div>
+            </div>
+          </div>
         </Section>
       ) : null}
 
@@ -667,21 +735,24 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </ul>
       </Section>
 
-      {/* ── FORMATIONS COMPLÉMENTAIRES ───────────────────────────────────── */}
+      {/* ── FORMATIONS COMPLÉMENTAIRES (cartes contrastées) ──────────────── */}
       {siblings.length > 0 ? (
-        <Section eyebrow="Autres formations" title="Pour aller" titleEm="plus loin">
-          <div className="xs:grid-cols-2 grid gap-4 lg:grid-cols-4">
+        <Section tone="paper" eyebrow="Autres formations" title="Pour aller" titleEm="plus loin">
+          <div className="xs:grid-cols-2 grid gap-5 lg:grid-cols-4">
             {siblings.map((s) => (
               <Link
                 key={s.id}
                 href={`/formations/${s.slugFr}` as never}
-                className="border-border bg-bg hover:border-terracotta hover:shadow-card flex h-full flex-col rounded-2xl border p-6 transition"
+                className="border-border-strong bg-canvas shadow-subtle hover:border-terracotta hover:shadow-card group flex h-full flex-col rounded-2xl border-2 p-6 transition hover:-translate-y-1"
               >
-                <p className="text-fg text-[15px] leading-snug font-semibold">{s.titreFr}</p>
+                <span className="text-terracotta-deep text-[11px] font-bold tracking-wide uppercase">
+                  {getGammeMeta(s.gamme).labelFr} · {formatDureeFr(s)}
+                </span>
+                <p className="text-fg mt-2.5 text-[15px] leading-snug font-semibold">{s.titreFr}</p>
                 <p className="text-fg-soft mt-2 line-clamp-2 flex-1 text-sm leading-relaxed">
                   {s.accrocheFr}
                 </p>
-                <span className="text-terracotta-deep mt-4 inline-flex items-center gap-1 text-[13px] font-medium">
+                <span className="text-terracotta bg-terracotta/10 mt-4 inline-flex items-center gap-1 self-start rounded-full px-3 py-1 text-[13px] font-semibold transition group-hover:gap-2">
                   Découvrir
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </span>
@@ -693,21 +764,26 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
 
       <RelatedKnowledge service="interventions-formations" />
 
-      {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
+      {/* ── CTA FINAL (2 CTA, renseignements sans engagement) ────────────── */}
       <CtaBlock
         eyebrow="Démarrer"
         title="Former vos équipes"
         titleEm="à l'IA"
-        description="Un formateur IA expert intervient sur votre site, sur vos vrais outils. Vos équipes gagnent des heures dès la première session. Aucun engagement avant signature."
+        description="Un formateur IA expert intervient sur votre site, sur vos vrais outils. Vos équipes gagnent des heures dès la première session. Contactez-nous pour des renseignements, sans engagement."
         cta={
-          <Cta
-            href="/appel"
-            size="lg"
-            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
-          >
-            <Phone aria-hidden="true" className="h-4 w-4" />
-            {isBookable ? "Poser une option sur le calendrier" : "Réserver un appel"}
-          </Cta>
+          <>
+            <Cta
+              href="/appel"
+              size="lg"
+              className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+            >
+              <Phone aria-hidden="true" className="h-4 w-4" />
+              Réserver un appel
+            </Cta>
+            <Cta href="/contact" variant="outline" size="lg">
+              Nous écrire
+            </Cta>
+          </>
         }
         tone="dark"
       />

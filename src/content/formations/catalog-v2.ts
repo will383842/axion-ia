@@ -24,6 +24,13 @@ export interface FormationV2Faq {
   reponse: string;
 }
 
+export interface FormationCasUsage {
+  texteFr: string;
+  /** Petite image d'illustration (Unsplash → crédit obligatoire). */
+  imageSrc?: string;
+  imageCredit?: { name: string; url: string };
+}
+
 export interface FormationProgrammeStep {
   /** Repère de temps (« 35' », « Pause », « Matin »). Optionnel. */
   temps?: string;
@@ -74,8 +81,8 @@ export interface FormationV2 {
   /** Matériel requis. Défaut = « un ordinateur avec connexion internet ». */
   materielFr?: string;
   // ---- Contenu enrichi (optionnel — fallback template si absent) ----
-  /** Cas d'usage concrets. Fallback = objectifs. */
-  casUsageFr?: ReadonlyArray<string>;
+  /** Cas d'usage concrets (avec petite image optionnelle). Fallback = objectifs. */
+  casUsageFr?: ReadonlyArray<FormationCasUsage>;
   /** Avant / après la formation (transformation concrète). */
   avantApresFr?: { avant: string; apres: string };
   /** Résultats concrets & mesurables (ex. { valeur: "1 à 2 h", label: "gagnées / jour" }). */
@@ -609,12 +616,37 @@ const IA_AU_BUREAU: FormationV2 = {
     { valeur: "1 journée", label: "sur site, sur vos vrais dossiers" },
   ],
   casUsageFr: [
-    "Générer un courrier type (relance, convocation, attestation) à partir d'un modèle maison",
-    "Transformer des notes de réunion en compte rendu propre et diffusable",
-    "Dépouiller un dossier épais : synthèse, échéancier, pièces manquantes",
-    "Préparer une réponse à une administration ou un organisme",
-    "Tenir un suivi (échanges → tableau → relances) sans ressaisie",
-    "Constituer une banque de gabarits réutilisable par toute l'équipe",
+    {
+      texteFr:
+        "Générer un courrier type (relance, convocation, attestation) à partir d'un modèle maison",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/courrier-type-gabarit.webp",
+      imageCredit: { name: "Towfiqu barbhuiya", url: "https://unsplash.com/@towfiqu999999" },
+    },
+    {
+      texteFr: "Transformer des notes de réunion en compte rendu propre et diffusable",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/compte-rendu-reunion.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Dépouiller un dossier épais : synthèse, échéancier, pièces manquantes",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/dossier-synthese.webp",
+      imageCredit: { name: "Wesley Tingey", url: "https://unsplash.com/@wesleyphotography" },
+    },
+    {
+      texteFr: "Préparer une réponse à une administration ou un organisme",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/reponse-administration.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
+    {
+      texteFr: "Tenir un suivi (échanges → tableau → relances) sans ressaisie",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/suivi-relances.webp",
+      imageCredit: { name: "Carlos Muza", url: "https://unsplash.com/@kmuza" },
+    },
+    {
+      texteFr: "Constituer une banque de gabarits réutilisable par toute l'équipe",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/banque-gabarits.webp",
+      imageCredit: { name: "Maksym Kaharlytskyi", url: "https://unsplash.com/@qwitka" },
+    },
   ],
   programme: [
     {
