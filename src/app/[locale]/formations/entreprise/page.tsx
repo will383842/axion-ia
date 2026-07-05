@@ -157,6 +157,7 @@ export default async function FormationsEntreprise({ params }: Props) {
     url: `${SITE_URL}/${loc}${PATH}`,
     numberOfItems: FORMATIONS_V2.length,
     itemListElement: FORMATIONS_V2.map((f, i) => {
+      const p = getFormationV2EntryPrice(f);
       const { "@context": _ctx, ...course } = buildCourseJsonLd({
         locale: loc,
         path: `/formations/${f.slugFr}`,
@@ -164,7 +165,7 @@ export default async function FormationsEntreprise({ params }: Props) {
         description: f.accrocheFr,
         courseMode: ["Onsite", "Online"],
         audienceType: isFr ? "Entreprises" : "Businesses",
-        priceEurHt: getFormationV2EntryPrice(f),
+        ...(typeof p === "number" ? { priceEurHt: p } : {}),
       });
       return { "@type": "ListItem", position: i + 1, item: course };
     }),
