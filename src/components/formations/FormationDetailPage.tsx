@@ -95,6 +95,52 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const image = getFormationImage(f);
   const casUsage = getFormationCasUsage(f);
 
+  // ── FAQ : spécifiques (SSOT) + génériques DÉRIVÉES des faits (centralisé, DRY,
+  //    toujours en phase avec la durée/le format/le matériel) + financement gaté.
+  const genericFaqs: ReadonlyArray<{ question: string; reponse: string }> = [
+    {
+      question: `À qui s'adresse la formation « ${f.titreFr} » ?`,
+      reponse: `${f.publicViseFr} Le programme est cadré avec vous et adapté au niveau de chacun.`,
+    },
+    {
+      question: "Quelle est la durée et le format de la formation ?",
+      reponse: `${formatDureeFr(f)}. ${modalitesLabel}. Le groupe est intra-entreprise : uniquement vos équipes.`,
+    },
+    {
+      question: "Faut-il des prérequis ou du matériel particulier ?",
+      reponse: `${prerequis} Côté matériel : ${materiel.toLowerCase()}.`,
+    },
+    {
+      question: "Quels outils d'IA vais-je apprendre à utiliser ?",
+      reponse:
+        "Vous travaillez sur les principaux assistants IA (ChatGPT, Claude, Copilot, Mistral) appliqués à vos tâches réelles. L'objectif est de savoir choisir le bon outil selon le besoin, sur vos propres cas d'usage.",
+    },
+    {
+      question: "La formation est-elle adaptée à notre métier ?",
+      reponse:
+        "Oui. Le programme est cadré en amont par un appel, puis les ateliers se font sur vos vrais dossiers et vos cas d'usage. Les exemples sont directement issus de votre activité.",
+    },
+    {
+      question: "Que se passe-t-il après la formation ?",
+      reponse:
+        "Vos équipes repartent avec des acquis opérationnels dès le lendemain. Le savoir-faire est structuré et reste dans l'entreprise, même en cas de départ.",
+    },
+  ];
+  const financingFaq: ReadonlyArray<{ question: string; reponse: string }> = ofPublic
+    ? [
+        {
+          question: "Cette formation est-elle finançable ?",
+          reponse:
+            "Oui, en tout ou partie selon votre situation. En tant qu'organisme certifié Qualiopi, nos formations IA sont éligibles aux financements de la formation professionnelle (OPCO pour les salariés, France Travail pour les demandeurs d'emploi). Nous étudions votre prise en charge et montons le dossier avec vous.",
+        },
+      ]
+    : [];
+  const allFaqs = [
+    ...f.faqs.map((q) => ({ question: q.question, reponse: q.reponse })),
+    ...genericFaqs,
+    ...financingFaq,
+  ];
+
   const los = brackets
     .map((b) => Number.parseInt(b.split("-")[0] ?? "", 10))
     .filter((n) => Number.isFinite(n));
@@ -560,12 +606,12 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* ── FAQ (FaqAccordion centralisé — juste avant Qualiopi) ─────────── */}
-      {f.faqs.length > 0 ? (
+      {/* ── FAQ (FaqAccordion centralisé — spécifiques + génériques SSOT) ── */}
+      {allFaqs.length > 0 ? (
         <Section eyebrow="FAQ" title="Questions" titleEm="fréquentes">
           <div className="mx-auto max-w-3xl">
             <FaqAccordion
-              items={f.faqs.map((q, i) => ({
+              items={allFaqs.map((q, i) => ({
                 id: `faq-${i + 1}`,
                 question: q.question,
                 answer: q.reponse,
