@@ -1,6 +1,6 @@
 // Les 5 leviers de visibilité offerts aux clients Axion-IA, en BANDEAUX IMAGE
 // alternés (parité image/texte). Server Component. Photos Unsplash réelles
-// (manifeste `visibilite-client-unsplash.ts`, download-trigger CGU §6 + crédit).
+// (manifeste `visibilite-entreprise-unsplash.ts`, download-trigger CGU §6 + crédit).
 //
 // Le paragraphe descriptif porte `data-speakable`/`data-answer` (AEO/GEO).
 
@@ -9,7 +9,7 @@ import Image from "next/image";
 import { FileText, Link2, Mic, Share2, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
-import { VISIBILITE_UNSPLASH } from "@/content/visibilite-client-unsplash";
+import { VISIBILITE_UNSPLASH } from "@/content/visibilite-entreprise-unsplash";
 
 function bySlot(slot: string) {
   return VISIBILITE_UNSPLASH.find((i) => i.slot === slot);

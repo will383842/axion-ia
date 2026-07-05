@@ -52,7 +52,7 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-const PATH = "/visibilite-client";
+const PATH = "/visibilite-entreprise";
 
 export const revalidate = 3600;
 
@@ -81,7 +81,9 @@ export default async function VisibiliteClient({ params }: Props) {
 
   const heroImage = getPageImages(PATH).find((i) => i.slot === "hero");
 
-  const breadcrumbItems = [{ href: PATH, label: isFr ? "Visibilité client" : "Client visibility" }];
+  const breadcrumbItems = [
+    { href: PATH, label: isFr ? "Visibilité entreprise" : "Company visibility" },
+  ];
 
   // ── JSON-LD ────────────────────────────────────────────────────────────────
   const primaryImage = buildPrimaryImageOfPage(PATH);

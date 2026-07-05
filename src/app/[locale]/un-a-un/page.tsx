@@ -53,6 +53,7 @@ import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { VisibiliteCallout } from "@/components/visibilite/VisibiliteCallout";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 
 interface Props {
@@ -1007,6 +1008,8 @@ export default async function UnAUnHubPage({ params }: Props) {
 
       {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="un-a-un" />
+
+      <VisibiliteCallout isFr={isFr} />
 
       <CtaBlock
         eyebrow={isFr ? "Coaching IA individuel" : "Individual AI coaching"}

@@ -207,7 +207,7 @@ export const routing = defineRouting({
     // Bénéfices client — la visibilité offerte (podcast, interviews, page dédiée,
     // backlink dofollow, LinkedIn) valable pour TOUS les services (2026-07-05).
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307.
-    "/visibilite-client": { fr: "/visibilite-client", en: "/visibilite-client" },
+    "/visibilite-entreprise": { fr: "/visibilite-entreprise", en: "/visibilite-entreprise" },
 
     // Transversales
     "/a-propos": { fr: "/a-propos", en: "/about" },

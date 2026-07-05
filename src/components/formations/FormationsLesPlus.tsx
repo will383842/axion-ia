@@ -118,7 +118,7 @@ export function FormationsLesPlus({
 
       <p className="mt-8">
         <Link
-          href="/visibilite-client"
+          href="/visibilite-entreprise"
           className="text-terracotta inline-flex items-center gap-1.5 text-sm font-semibold hover:underline"
         >
           {isFr

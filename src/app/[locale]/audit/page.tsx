@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { BeyondAuditBlock } from "@/components/sections/AuditConversionBlocks";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { VisibiliteCallout } from "@/components/visibilite/VisibiliteCallout";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { AuditHero } from "@/components/services/audit/AuditHero";
 import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
@@ -246,6 +247,8 @@ export default async function AuditHub({ params }: Props) {
       <RelatedKnowledge service="audit" />
 
       {/* CTA FINAL bifurqué — Réserver un appel / Nous écrire */}
+      <VisibiliteCallout isFr={isFr} />
+
       <AuditCtaBlock isFr={isFr} />
 
       {/* STICKY CTA MOBILE */}

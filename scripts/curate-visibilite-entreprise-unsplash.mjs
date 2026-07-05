@@ -1,10 +1,10 @@
-// One-shot curation — vraies photos Unsplash pour la page /visibilite-client
+// One-shot curation — vraies photos Unsplash pour la page /visibilite-entreprise
 // (bénéfices visibilité offerts aux clients Axion-IA). 100 % conforme CGU :
 // free-tier only, orientation=landscape, content_filter=high, download-trigger
 // §6 déclenché, attribution via <UnsplashCredit>. Hotlink images.unsplash.com
 // (whitelisté next.config), re-optimisé par next/image.
 //
-// Usage : UNSPLASH_ACCESS_KEY=xxx node scripts/curate-visibilite-client-unsplash.mjs
+// Usage : UNSPLASH_ACCESS_KEY=xxx node scripts/curate-visibilite-entreprise-unsplash.mjs
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -125,7 +125,7 @@ for (const s of SLOTS) {
   console.log(`  → ${photo.id} by ${photo.user.name} (${photo.likes} likes)`);
 }
 
-const header = `// AUTO-GÉNÉRÉ par scripts/curate-visibilite-client-unsplash.mjs — NE PAS éditer à la main.
+const header = `// AUTO-GÉNÉRÉ par scripts/curate-visibilite-entreprise-unsplash.mjs — NE PAS éditer à la main.
 // Photos Unsplash réelles conformes CGU (free-tier, download-trigger §6, attribution
 // via <UnsplashCredit>). Hotlink images.unsplash.com re-optimisé par next/image.
 export interface VisibiliteUnsplashImage {
@@ -143,5 +143,5 @@ export interface VisibiliteUnsplashImage {
 
 export const VISIBILITE_UNSPLASH: readonly VisibiliteUnsplashImage[] = ${JSON.stringify(out, null, 2)} as const;
 `;
-writeFileSync(join(ROOT, "src/content/visibilite-client-unsplash.ts"), header, "utf8");
-console.log(`\n✅ ${out.length} photos écrites dans src/content/visibilite-client-unsplash.ts`);
+writeFileSync(join(ROOT, "src/content/visibilite-entreprise-unsplash.ts"), header, "utf8");
+console.log(`\n✅ ${out.length} photos écrites dans src/content/visibilite-entreprise-unsplash.ts`);

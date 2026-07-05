@@ -47,6 +47,7 @@ import { SitesWebFaq } from "@/components/services/sites-web/SitesWebFaq";
 import { SitesWebCtaBlock } from "@/components/services/sites-web/SitesWebCtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { VisibiliteCallout } from "@/components/visibilite/VisibiliteCallout";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -275,6 +276,8 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       <RelatedKnowledge service="sites-web-augmentes" />
 
       {/* CTA FINAL mocha — pont vers audit */}
+      <VisibiliteCallout isFr={isFr} />
+
       <SitesWebCtaBlock isFr={isFr} />
 
       {/* STICKY CTA MOBILE */}

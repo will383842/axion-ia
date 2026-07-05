@@ -341,7 +341,7 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
   },
   // ===== Visibilité client (bénéfices — la visibilité offerte) =====
   {
-    path: "/visibilite-client",
+    path: "/visibilite-entreprise",
     images: [
       {
         src: "/illustrations/formations/visibilite-entreprise-podcast-interview-backlink-formation-ia-axion-ia.avif",

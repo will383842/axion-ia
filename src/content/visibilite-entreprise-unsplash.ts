@@ -1,4 +1,4 @@
-// AUTO-GÉNÉRÉ par scripts/curate-visibilite-client-unsplash.mjs — NE PAS éditer à la main.
+// AUTO-GÉNÉRÉ par scripts/curate-visibilite-entreprise-unsplash.mjs — NE PAS éditer à la main.
 // Photos Unsplash réelles conformes CGU (free-tier, download-trigger §6, attribution
 // via <UnsplashCredit>). Hotlink images.unsplash.com re-optimisé par next/image.
 export interface VisibiliteUnsplashImage {
