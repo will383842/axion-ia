@@ -1163,12 +1163,36 @@ const IA_INTEGRATION_METIER: FormationV2 = {
   publicViseFr:
     "Tout salarié de tous services, idéalement en équipes constituées — bureau, commercial, technique, support, encadrement — ainsi que managers et responsables d'équipe qui veulent transformer les tâches réelles de leurs collaborateurs. Aucun pré-requis technique.",
   casUsageFr: [
-    { texteFr: "Transformer ses tâches les plus chronophages en gabarits reproductibles" },
-    { texteFr: "Vérifier et fiabiliser une production IA avant diffusion" },
-    { texteFr: "Contribuer à la bibliothèque de modèles validés de l'équipe" },
-    { texteFr: "Documenter un gabarit pour qu'un collègue le réutilise" },
-    { texteFr: "Tester un gabarit deux fois pour garantir sa reproductibilité" },
-    { texteFr: "Transmettre les bonnes pratiques à un collègue" },
+    {
+      texteFr: "Transformer ses tâches les plus chronophages en gabarits reproductibles",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
+    },
+    {
+      texteFr: "Vérifier et fiabiliser une production IA avant diffusion",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-4.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
+    {
+      texteFr: "Contribuer à la bibliothèque de modèles validés de l'équipe",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-5.webp",
+      imageCredit: { name: "Anastassia Anufrieva", url: "https://unsplash.com/@antoie" },
+    },
+    {
+      texteFr: "Documenter un gabarit pour qu'un collègue le réutilise",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-3.webp",
+      imageCredit: { name: "Unseen Studio", url: "https://unsplash.com/@uns__nstudio" },
+    },
+    {
+      texteFr: "Tester un gabarit deux fois pour garantir sa reproductibilité",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Transmettre les bonnes pratiques à un collègue",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-1.webp",
+      imageCredit: { name: "David Hahn", url: "https://unsplash.com/@hahn_david_com" },
+    },
   ],
   objectifsFr: [
     "Tout le contenu d'IA Fondamentaux",
@@ -1256,12 +1280,36 @@ const IA_COMMERCIAL_AVANCE: FormationV2 = {
   publicViseFr:
     "Commerciaux confirmés, responsables et directeurs commerciaux, ADV impliquée dans les offres, dirigeants qui pilotent le développement — B2B, appels d'offres publics et privés, tous secteurs. Aucun pré-requis technique.",
   casUsageFr: [
-    { texteFr: "Prospecter en série personnalisée, dans le respect de la déontologie" },
-    { texteFr: "Décortiquer un appel d'offres : exigences, preuves, trame de réponse" },
-    { texteFr: "Construire une matrice de conformité pour un appel d'offres" },
-    { texteFr: "Produire une proposition différenciante qui traite les objections" },
-    { texteFr: "Dérouler une séquence de relance multi-touches" },
-    { texteFr: "Faire vivre la bibliothèque commerciale d'équipe" },
+    {
+      texteFr: "Prospecter en série personnalisée, dans le respect de la déontologie",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Décortiquer un appel d'offres : exigences, preuves, trame de réponse",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
+    },
+    {
+      texteFr: "Construire une matrice de conformité pour un appel d'offres",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-3.webp",
+      imageCredit: { name: "Sasun Bughdaryan", url: "https://unsplash.com/@sasun1990" },
+    },
+    {
+      texteFr: "Produire une proposition différenciante qui traite les objections",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-6.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
+    {
+      texteFr: "Dérouler une séquence de relance multi-touches",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-2.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Faire vivre la bibliothèque commerciale d'équipe",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-3.webp",
+      imageCredit: { name: "Dylan Gillis", url: "https://unsplash.com/@mainermedia" },
+    },
   ],
   objectifsFr: [
     "Tout le contenu d'IA & Commercial",
@@ -1358,12 +1406,36 @@ const IA_TRANSFORMATION_EQUIPE: FormationV2 = {
   publicViseFr:
     "Équipe constituée avec 1-2 référents volontaires, et la direction présente à la restitution finale — tous services et toutes tailles d'entreprise. Aucun pré-requis technique.",
   casUsageFr: [
-    { texteFr: "Outiller un processus complet de bout en bout avec points de contrôle humain" },
-    { texteFr: "Placer des points de contrôle humain aux étapes sensibles" },
-    { texteFr: "Faire l'inventaire des abonnements IA : garder, tester, résilier" },
-    { texteFr: "Chiffrer ses gains dans un tableau de bord d'une page" },
-    { texteFr: "Former un référent interne capable d'intégrer les nouveaux arrivants" },
-    { texteFr: "Présenter les résultats à la direction" },
+    {
+      texteFr: "Outiller un processus complet de bout en bout avec points de contrôle humain",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-2.webp",
+      imageCredit: { name: "Austin Distel", url: "https://unsplash.com/@austindistel" },
+    },
+    {
+      texteFr: "Placer des points de contrôle humain aux étapes sensibles",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
+    },
+    {
+      texteFr: "Faire l'inventaire des abonnements IA : garder, tester, résilier",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-2.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Chiffrer ses gains dans un tableau de bord d'une page",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-1.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
+    {
+      texteFr: "Former un référent interne capable d'intégrer les nouveaux arrivants",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-1.webp",
+      imageCredit: { name: "David Hahn", url: "https://unsplash.com/@hahn_david_com" },
+    },
+    {
+      texteFr: "Présenter les résultats à la direction",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-6.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
   ],
   objectifsFr: [
     "Tout le contenu d'IA Intégration métier",
@@ -1470,12 +1542,36 @@ const AGENTS_AUTOMATISATIONS: FormationV2 = {
   publicViseFr:
     "Tout salarié sans connaissance en programmation, de tous services, qui veut créer ses propres automatisations — bureau, gestion, opérations, support. L'IA écrit le code en clair, qui appartient à l'entreprise. Groupe limité à 12. Pré-requis : un PC avec droits d'installation (réglé avec votre DSI en amont, à notre initiative) ; aucune compétence en développement requise.",
   casUsageFr: [
-    { texteFr: "Spécifier une automatisation en français dans une fiche de spec" },
-    { texteFr: "Faire écrire le code de son automatisation en dialoguant avec l'IA" },
-    { texteFr: "Lire et comprendre un code sans savoir programmer" },
-    { texteFr: "Tester une automatisation et corriger un bug" },
-    { texteFr: "Protéger les données et les secrets, jamais en clair" },
-    { texteFr: "Livrer une automatisation documentée, propriété de l'entreprise" },
+    {
+      texteFr: "Spécifier une automatisation en français dans une fiche de spec",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-1.webp",
+      imageCredit: { name: "Kelly Sikkema", url: "https://unsplash.com/@kellysikkema" },
+    },
+    {
+      texteFr: "Faire écrire le code de son automatisation en dialoguant avec l'IA",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Lire et comprendre un code sans savoir programmer",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
+    },
+    {
+      texteFr: "Tester une automatisation et corriger un bug",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-1.webp",
+      imageCredit: { name: "David Hahn", url: "https://unsplash.com/@hahn_david_com" },
+    },
+    {
+      texteFr: "Protéger les données et les secrets, jamais en clair",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-5.webp",
+      imageCredit: { name: "Israel Andrade", url: "https://unsplash.com/@israelandrxde" },
+    },
+    {
+      texteFr: "Livrer une automatisation documentée, propriété de l'entreprise",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-6.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
   ],
   objectifsFr: [
     "Spécifier une automatisation en français (fiche de spec)",
@@ -1586,12 +1682,36 @@ const AGENTS_AUTOMATISATIONS_AVANCE: FormationV2 = {
   publicViseFr:
     "Tout salarié sans connaissance en programmation ayant suivi le niveau 2 jours, qui veut déployer des automatisations robustes en production. Groupe limité à 12. Pré-requis : mêmes que le niveau 2 jours, plus un lieu d'exécution récurrente décidé avec la DSI au cadrage.",
   casUsageFr: [
-    { texteFr: "Étendre une automatisation à plusieurs étapes et plusieurs outils connectés" },
-    { texteFr: "Gérer les erreurs et tenir un journal d'activité" },
-    { texteFr: "Mettre en place des alertes en cas d'échec" },
-    { texteFr: "Déployer une automatisation en exécution planifiée" },
-    { texteFr: "Éprouver la robustesse par un test du chaos" },
-    { texteFr: "Devenir autonome pour créer la prochaine automatisation seul" },
+    {
+      texteFr: "Étendre une automatisation à plusieurs étapes et plusieurs outils connectés",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Gérer les erreurs et tenir un journal d'activité",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-1.webp",
+      imageCredit: { name: "David Hahn", url: "https://unsplash.com/@hahn_david_com" },
+    },
+    {
+      texteFr: "Mettre en place des alertes en cas d'échec",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
+    },
+    {
+      texteFr: "Déployer une automatisation en exécution planifiée",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-5.webp",
+      imageCredit: { name: "Anastassia Anufrieva", url: "https://unsplash.com/@antoie" },
+    },
+    {
+      texteFr: "Éprouver la robustesse par un test du chaos",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-1.webp",
+      imageCredit: { name: "Kelly Sikkema", url: "https://unsplash.com/@kellysikkema" },
+    },
+    {
+      texteFr: "Devenir autonome pour créer la prochaine automatisation seul",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-2.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
   ],
   objectifsFr: [
     "Tout le niveau 2 jours",
@@ -1693,12 +1813,36 @@ const CLAUDE_DECOUVERTE: FormationV2 = {
   publicViseFr:
     "Tout salarié de tous services curieux de l'écosystème Claude (Anthropic) — bureau, commercial, technique, encadrement — ainsi que dirigeants et décideurs qui veulent évaluer l'outil avant d'investir. Les comptes gratuits suffisent ; aucun pré-requis technique.",
   casUsageFr: [
-    { texteFr: "Produire et analyser un vrai document de travail avec Claude" },
-    { texteFr: "Construire un livrable fini : plan, sections, relecture critique" },
-    { texteFr: "Découvrir l'apport des Projets : instructions permanentes et base documentaire" },
-    { texteFr: "Comparer Claude aux autres outils sur des tâches réelles" },
-    { texteFr: "Appliquer les bonnes pratiques de confidentialité propres à Claude" },
-    { texteFr: "Évaluer l'outil sur pièces avant tout investissement" },
+    {
+      texteFr: "Produire et analyser un vrai document de travail avec Claude",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
+    },
+    {
+      texteFr: "Construire un livrable fini : plan, sections, relecture critique",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Découvrir l'apport des Projets : instructions permanentes et base documentaire",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-5.webp",
+      imageCredit: { name: "Andrew Neel", url: "https://unsplash.com/@andrewtneel" },
+    },
+    {
+      texteFr: "Comparer Claude aux autres outils sur des tâches réelles",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-1.webp",
+      imageCredit: { name: "Kelly Sikkema", url: "https://unsplash.com/@kellysikkema" },
+    },
+    {
+      texteFr: "Appliquer les bonnes pratiques de confidentialité propres à Claude",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-5.webp",
+      imageCredit: { name: "Israel Andrade", url: "https://unsplash.com/@israelandrxde" },
+    },
+    {
+      texteFr: "Évaluer l'outil sur pièces avant tout investissement",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-3.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
   ],
   objectifsFr: [
     "Produire et analyser de vrais documents de travail avec Claude",
@@ -1793,12 +1937,36 @@ const CLAUDE_CREATEUR: FormationV2 = {
   publicViseFr:
     "Tout salarié de tous services qui veut construire son propre assistant Claude sur ses vrais dossiers — bureau, commercial, technique, encadrement. Groupe limité à 12, formateur certifié. Pré-requis : comptes Claude Pro ou Team actifs avant le jour 1, fournis par l'entreprise (conseil licences offert au cadrage).",
   casUsageFr: [
-    { texteFr: "Construire son assistant Claude personnalisé : métier, ton, formats" },
-    { texteFr: "Rédiger des instructions permanentes en cinq blocs" },
-    { texteFr: "Organiser un projet Claude par activité avec sa base documentaire" },
-    { texteFr: "Industrialiser ses tâches récurrentes avec des gabarits validés" },
-    { texteFr: "Tester la reproductibilité d'un gabarit sur ses dossiers" },
-    { texteFr: "Protéger les données sensibles dans ses espaces de travail" },
+    {
+      texteFr: "Construire son assistant Claude personnalisé : métier, ton, formats",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Rédiger des instructions permanentes en cinq blocs",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-1.webp",
+      imageCredit: { name: "Kelly Sikkema", url: "https://unsplash.com/@kellysikkema" },
+    },
+    {
+      texteFr: "Organiser un projet Claude par activité avec sa base documentaire",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-5.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
+    {
+      texteFr: "Industrialiser ses tâches récurrentes avec des gabarits validés",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-2.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Tester la reproductibilité d'un gabarit sur ses dossiers",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-1.webp",
+      imageCredit: { name: "David Hahn", url: "https://unsplash.com/@hahn_david_com" },
+    },
+    {
+      texteFr: "Protéger les données sensibles dans ses espaces de travail",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-5.webp",
+      imageCredit: { name: "Israel Andrade", url: "https://unsplash.com/@israelandrxde" },
+    },
   ],
   objectifsFr: [
     "Tout le contenu de Claude Découverte",
@@ -1895,12 +2063,36 @@ const CLAUDE_ARCHITECTE: FormationV2 = {
   publicViseFr:
     "Tout salarié de tous services ayant un usage régulier de Claude, qui veut connecter son outil à ses flux de travail réels et le faire évoluer seul — bureau, commercial, technique, encadrement. Groupe limité à 12, formateur certifié. Pré-requis : comptes Claude Pro ou Team actifs avant le jour 1 et flux de travail réels identifiés au cadrage.",
   casUsageFr: [
-    { texteFr: "Connecter son outil Claude à ses documents et flux entrants réels" },
-    { texteFr: "Organiser ses flux entrants avec un filtre de confidentialité" },
-    { texteFr: "Mettre en place une routine quotidienne, la « tournée du matin »" },
-    { texteFr: "Automatiser des séquences multi-étapes dans Claude" },
-    { texteFr: "Versionner et faire évoluer ses instructions en autonomie" },
-    { texteFr: "Éprouver son outil avec le test des 3 pièges" },
+    {
+      texteFr: "Connecter son outil Claude à ses documents et flux entrants réels",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Organiser ses flux entrants avec un filtre de confidentialité",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-5.webp",
+      imageCredit: { name: "Israel Andrade", url: "https://unsplash.com/@israelandrxde" },
+    },
+    {
+      texteFr: "Mettre en place une routine quotidienne, la « tournée du matin »",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
+    },
+    {
+      texteFr: "Automatiser des séquences multi-étapes dans Claude",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-2.webp",
+      imageCredit: { name: "Austin Distel", url: "https://unsplash.com/@austindistel" },
+    },
+    {
+      texteFr: "Versionner et faire évoluer ses instructions en autonomie",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-5.webp",
+      imageCredit: { name: "Anastassia Anufrieva", url: "https://unsplash.com/@antoie" },
+    },
+    {
+      texteFr: "Éprouver son outil avec le test des 3 pièges",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-1.webp",
+      imageCredit: { name: "David Hahn", url: "https://unsplash.com/@hahn_david_com" },
+    },
   ],
   objectifsFr: [
     "Tout le contenu de Claude Créateur",
