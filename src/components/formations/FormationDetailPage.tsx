@@ -13,7 +13,6 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import {
   ArrowRight,
-  ArrowRightLeft,
   CheckCircle2,
   Clock,
   GraduationCap,
@@ -298,36 +297,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       {/* ── PREUVE SOCIALE (logos) ───────────────────────────────────────── */}
       <ClientLogosMarqueeBand isFr={isFr} />
 
-      {/* ── AVANT / APRÈS (compact & léger) ──────────────────────────────── */}
-      {f.avantApresFr ? (
-        <Container className="py-8 md:py-10">
-          <div className="mx-auto max-w-4xl">
-            <p className="text-terracotta-deep mb-4 text-center text-[12px] font-bold tracking-[0.16em] uppercase">
-              La transformation
-            </p>
-            <div className="grid grid-cols-1 items-stretch gap-3 md:grid-cols-[1fr_auto_1fr]">
-              <div className="border-border bg-canvas flex flex-col gap-1.5 rounded-xl border p-4">
-                <span className="text-fg-muted text-[11px] font-bold tracking-[0.16em] uppercase">
-                  Avant
-                </span>
-                <p className="text-fg-soft text-sm leading-relaxed">{f.avantApresFr.avant}</p>
-              </div>
-              <div className="hidden items-center justify-center md:flex">
-                <ArrowRightLeft aria-hidden="true" className="text-terracotta h-5 w-5" />
-              </div>
-              <div className="border-terracotta/25 bg-terracotta-soft flex flex-col gap-1.5 rounded-xl border p-4">
-                <span className="text-terracotta-deep text-[11px] font-bold tracking-[0.16em] uppercase">
-                  Après
-                </span>
-                <p className="text-fg text-sm leading-relaxed font-medium" data-speakable>
-                  {f.avantApresFr.apres}
-                </p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      ) : null}
-
       {/* ── OBJECTIFS & CAS D'USAGE (fusionnés — cartes + images) ────────── */}
       {casUsage.length > 0 ? (
         <Section
@@ -410,39 +379,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           ))}
         </div>
       </Section>
-
-      {/* ── BANDEAU PHOTO (immersion — image spécifique de la formation) ──── */}
-      <Container className="py-6 md:py-8">
-        <div className="relative overflow-hidden rounded-3xl">
-          <Image
-            src={image.src}
-            alt={image.altFr}
-            width={1600}
-            height={640}
-            sizes="(max-width: 1366px) 100vw, 1366px"
-            loading="lazy"
-            className="h-[240px] w-full object-cover md:h-[340px]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-            <p className="text-[13px] font-bold tracking-[0.16em] text-white/80 uppercase">
-              Sur site, dans vos locaux
-            </p>
-            <p className="mt-2 max-w-2xl text-xl leading-tight font-semibold text-white md:text-2xl">
-              Sur vos vrais outils, vos vrais dossiers — opérationnel dès le lendemain.
-            </p>
-          </div>
-          {f.imageCredit ? (
-            <div className="absolute top-3 right-3">
-              <UnsplashCredit
-                photographerName={f.imageCredit.name}
-                photographerUrl={f.imageCredit.url}
-                className="text-[10px] text-white/70"
-              />
-            </div>
-          ) : null}
-        </div>
-      </Container>
 
       {/* ── RÉSULTATS CONCRETS & MESURABLES ──────────────────────────────── */}
       <Section
