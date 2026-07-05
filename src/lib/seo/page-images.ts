@@ -276,6 +276,18 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         slot: "banner",
       },
       {
+        src: "/illustrations/formations/comment-reserver-formation-ia-entreprise-axion-ia.avif",
+        nameFr: "Comment réserver votre formation IA en entreprise — les 7 étapes Axion-IA",
+        nameEn: "How to book your corporate AI training — the 7 Axion-IA steps",
+        altFr:
+          "Infographie « Comment réserver votre formation IA en entreprise » en 7 étapes : 1) contactez-nous, 2) échange sur vos besoins, 3) montage du dossier OPCO, 4) accord de financement, 5) intervention sur votre site, 6) interviews & podcast, 7) page dédiée + backlink dofollow.",
+        altEn:
+          "Infographic “How to book your corporate AI training” in 7 steps: 1) contact us, 2) needs call, 3) OPCO funding file, 4) funding approval, 5) on-site delivery, 6) interviews & podcast, 7) dedicated page + dofollow backlink.",
+        width: 1983,
+        height: 793,
+        slot: "inline",
+      },
+      {
         src: "/illustrations/formations/formateur-ia-claude-atelier-pme.png",
         nameFr: "Formateur IA en atelier formation entreprise",
         nameEn: "AI trainer in corporate training workshop",

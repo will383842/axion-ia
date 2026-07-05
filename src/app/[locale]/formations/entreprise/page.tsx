@@ -126,6 +126,7 @@ export default async function FormationsEntreprise({ params }: Props) {
   const images = getPageImages(PATH);
   const heroImage = images.find((i) => i.slot === "hero");
   const bannerImage = images.find((i) => i.slot === "banner");
+  const reserveImage = images.find((i) => i.slot === "inline");
 
   const breadcrumbItems = [
     { href: "/formations", label: isFr ? "Formations IA" : "AI training" },
@@ -567,18 +568,42 @@ export default async function FormationsEntreprise({ params }: Props) {
       <ClientLogosMarqueeBand isFr={isFr} />
 
       {/* ── COMMENT RÉSERVER (7 étapes) ──────────────────────────────────── */}
-      <Section
-        tone="paper"
-        eyebrow={isFr ? "Simple et accompagné" : "Simple and guided"}
-        title={isFr ? "Comment réserver" : "How to book"}
-        titleEm={isFr ? "votre formation" : "your training"}
-        description={
-          isFr
-            ? "De la prise de contact au coup de projecteur sur votre entreprise : on s'occupe de tout, y compris du dossier de financement."
-            : "From first contact to the spotlight on your company: we handle everything, including the funding file."
-        }
-      >
-        <ol className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-7">
+      {/* Desktop : infographie pleine largeur (titre + étapes intégrés). Mobile :
+          en-tête + stepper HTML accessible (l'infographie large serait illisible).
+          L'en-tête reste dans le DOM (crawlable) même masqué en CSS sur desktop. */}
+      <Section id="comment-reserver" tone="paper">
+        <header className="mb-10 max-w-3xl md:hidden">
+          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            />
+            {isFr ? "Simple et accompagné" : "Simple and guided"}
+          </p>
+          <h2 className="text-fg mt-5 text-[clamp(2rem,7vw,2.75rem)] leading-[1.05] font-semibold tracking-tight">
+            {isFr ? "Comment réserver votre formation" : "How to book your training"}
+          </h2>
+          <p className="text-fg-soft mt-4 text-lg leading-relaxed">
+            {isFr
+              ? "De la prise de contact au coup de projecteur sur votre entreprise : on s'occupe de tout, y compris du dossier de financement."
+              : "From first contact to the spotlight on your company: we handle everything, including the funding file."}
+          </p>
+        </header>
+
+        {/* Infographie pleine largeur — desktop uniquement */}
+        {reserveImage ? (
+          <Image
+            src={reserveImage.src}
+            alt={isFr ? reserveImage.altFr : reserveImage.altEn}
+            width={reserveImage.width}
+            height={reserveImage.height}
+            sizes="(max-width: 1366px) 100vw, 1366px"
+            className="border-border hidden h-auto w-full rounded-2xl border md:block"
+          />
+        ) : null}
+
+        {/* Stepper HTML accessible — mobile uniquement */}
+        <ol className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:hidden">
           {reserveSteps.map((step, i) => (
             <li
               key={step.title}
