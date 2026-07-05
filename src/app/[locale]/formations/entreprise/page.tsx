@@ -38,6 +38,7 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
 import { FormationsCatalogueGrid } from "@/components/formations/FormationsCatalogueGrid";
+import { FormationsVisualShowcase } from "@/components/formations/FormationsVisualShowcase";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
@@ -655,6 +656,9 @@ export default async function FormationsEntreprise({ params }: Props) {
           </ul>
         </div>
       </Section>
+
+      {/* ── EN IMAGES (bande Unsplash dédiée) ────────────────────────────── */}
+      <FormationsVisualShowcase isFr={isFr} />
 
       {/* ── PROCESS ──────────────────────────────────────────────────────── */}
       <Section
