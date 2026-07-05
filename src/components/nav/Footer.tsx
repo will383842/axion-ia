@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
 import { SERVICES, serviceFooter } from "@/content/services";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
 
@@ -11,6 +12,8 @@ export async function Footer() {
   const locale = await getLocale();
   const isFr = locale === "fr";
   const year = new Date().getFullYear();
+  // Divulgation OF (Qualiopi/financement) — Phase B uniquement (pages gatées).
+  const ofPublic = isQualiopiPublicDisclosureEnabled();
 
   // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
   // `src/content/services.ts` (libellé `footer*` — variante courte voulue par
@@ -169,6 +172,21 @@ export async function Footer() {
                 (OF_PUBLIC_DISCLOSURE_ENABLED + certificat renseigné), sinon null.
                 Communication générale autorisée (jamais sur les PDF/attestations). */}
             <QualiopiBadge className="mt-6 lg:max-w-[15rem]" />
+            {/* Liens réassurance OF — Phase B uniquement (pages gatées, sinon 404). */}
+            {ofPublic ? (
+              <ul className="mt-3 flex flex-col">
+                <li>
+                  <Link href={"/certification-qualiopi" as never} className={linkCn}>
+                    {isFr ? "Certification Qualiopi" : "Qualiopi certification"}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/financement-opco-france-travail" as never} className={linkCn}>
+                    {isFr ? "Financement OPCO / France Travail" : "OPCO / France Travail funding"}
+                  </Link>
+                </li>
+              </ul>
+            ) : null}
           </div>
 
           {/* Link columns */}
