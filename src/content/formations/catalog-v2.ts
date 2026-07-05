@@ -120,7 +120,24 @@ const IA_EXPRESS: FormationV2 = {
     "anonymisation",
   ],
   publicViseFr:
-    "Tout salarié, tous postes mélangés (bureau, terrain, commercial, technique). Aucun pré-requis. Un smartphone suffit.",
+    "Tout salarié, tous postes mélangés — bureau, terrain, commercial, technique, atelier, accueil — mais aussi managers, encadrants, dirigeants de TPE-PME, professions libérales et indépendants qui veulent démarrer avec l'IA en même temps que leur équipe. Aucun pré-requis : un smartphone suffit et aucun profil technique n'est requis.",
+  casUsageFr: [
+    {
+      texteFr:
+        "Produire un texte professionnel au clavier ou à la voix, sans être un as du traitement de texte",
+    },
+    {
+      texteFr:
+        "Formuler une demande claire à l'IA avec la méthode CRFE pour un bon résultat dès le premier essai",
+    },
+    {
+      texteFr:
+        "Résumer un document long en dégageant l'essentiel, les points de vigilance et les actions",
+    },
+    { texteFr: "Faire reformuler et améliorer un texte jusqu'au résultat voulu" },
+    { texteFr: "Repérer quand l'IA se trompe ou invente avant de réutiliser sa réponse" },
+    { texteFr: "Anonymiser un document en quelques secondes avant de le confier à une IA" },
+  ],
   objectifsFr: [
     "Produire un texte professionnel au clavier ou en dictée vocale",
     "Formuler une demande qui donne un bon résultat du premier coup (méthode CRFE)",
@@ -196,7 +213,15 @@ const ART_DU_PROMPT: FormationV2 = {
     "fiabilité",
   ],
   publicViseFr:
-    "Salariés qui ont déjà pratiqué l'IA (seuls ou après IA Express) et qui plafonnent : résultats génériques, reprises multiples, outil sous-exploité.",
+    "Salariés de tous services qui pratiquent déjà l'IA — seuls ou après IA Express — et qui plafonnent : résultats génériques, reprises multiples, outil sous-exploité. Commerciaux, assistants, managers, chefs de projet, professions libérales et indépendants, tous profils métier. Seule formation du catalogue avec un pré-requis : avoir déjà utilisé l'IA, vérifié au cadrage.",
+  casUsageFr: [
+    { texteFr: "Construire une demande avec les 6 leviers d'un prompt qui marche" },
+    { texteFr: "Améliorer un texte par itérations en donnant des critiques précises à l'IA" },
+    { texteFr: "Adapter un même contenu à trois destinataires différents" },
+    { texteFr: "Se constituer une bibliothèque de gabarits réutilisables" },
+    { texteFr: "Retirer toute donnée sensible d'un gabarit avant de le partager" },
+    { texteFr: "Recadrer l'IA quand elle invente pour fiabiliser le résultat" },
+  ],
   objectifsFr: [
     "Construire une demande avec les 6 leviers d'un prompt qui marche",
     "Itérer jusqu'à un niveau diffusable (critiques précises, rôle de relecteur)",
@@ -268,7 +293,17 @@ const IA_SECURITE: FormationV2 = {
     "RGPD",
   ],
   publicViseFr:
-    "Tout salarié ; dirigeant et DSI bienvenus. Format largement collectif (peu d'appareils requis). Complément individuel d'IA & Conformité (qui traite, elle, les obligations de l'entreprise).",
+    "Tout salarié, quel que soit son poste, qui utilise déjà l'IA ou s'apprête à le faire — bureau, commercial, RH, technique, terrain — ainsi que dirigeants, DSI et référents. Format largement collectif. Aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Identifier les données qui ne doivent jamais sortir de l'entreprise" },
+    { texteFr: "Anonymiser un document ou une photo avant de le confier à une IA" },
+    { texteFr: "Distinguer un outil IA sûr d'un outil à risque avant de l'utiliser" },
+    {
+      texteFr: "Vérifier ce que produit l'IA avant de l'envoyer à un client ou une administration",
+    },
+    { texteFr: "Appliquer les réflexes RGPD au quotidien" },
+    { texteFr: "Rédiger et faire vivre la charte d'usage IA de l'entreprise" },
+  ],
   objectifsFr: [
     "Identifier les données qui ne doivent jamais sortir de l'entreprise",
     "Anonymiser correctement un document ou une photo avant de le confier à une IA",
@@ -344,7 +379,15 @@ const IA_CONFORMITE: FormationV2 = {
     "RGPD",
   ],
   publicViseFr:
-    "Dirigeants, RH, managers, référents, DPO. Format collectif, peu d'appareils requis. Aucun pré-requis.",
+    "Dirigeants, DRH et RH, managers, référents IA, DPO et responsables conformité de TPE, PME et ETI — toute personne chargée d'encadrer l'usage de l'IA dans l'entreprise. Format collectif, peu d'appareils requis. Aucun pré-requis technique ni juridique.",
+  casUsageFr: [
+    { texteFr: "Repérer les obligations applicables (AI Act, RGPD, droit du travail) sans jargon" },
+    { texteFr: "Cartographier les usages IA réels de l'entreprise, shadow AI compris" },
+    { texteFr: "Classer chaque usage selon son niveau de risque" },
+    { texteFr: "Constituer le registre des usages IA de l'entreprise" },
+    { texteFr: "Bâtir un plan de mise en conformité à 90 jours" },
+    { texteFr: "Communiquer le cadre en interne sans freiner l'adoption" },
+  ],
   objectifsFr: [
     "Identifier les obligations applicables (AI Act, RGPD, droit du travail) sans jargon",
     "Cartographier et classer les usages IA de l'entreprise (shadow AI compris)",
@@ -424,7 +467,19 @@ const IA_FONDAMENTAUX: FormationV2 = {
     "boîte à outils",
     "autonomie",
   ],
-  publicViseFr: "Tout salarié. Aucun pré-requis.",
+  publicViseFr:
+    "Tout salarié de tous services — bureau, commercial, technique, support, encadrement — mais aussi managers, chefs de projet, dirigeants de TPE-PME, professions libérales et indépendants qui veulent devenir vraiment autonomes avec l'IA. Aucun pré-requis : aucun profil technique n'est requis.",
+  casUsageFr: [
+    {
+      texteFr:
+        "Analyser un document long et complexe de son poste et en tirer une synthèse vérifiée",
+    },
+    { texteFr: "Produire un livrable complet de A à Z : dossier, proposition ou support" },
+    { texteFr: "Travailler en plusieurs étapes : brouillon, critique, version finale" },
+    { texteFr: "Vérifier une production et repérer les inventions avant diffusion" },
+    { texteFr: "Choisir le bon outil IA selon la tâche à réaliser" },
+    { texteFr: "Se constituer une boîte à outils personnelle de prompts validés" },
+  ],
   objectifsFr: [
     "Tout le contenu d'IA Express, ancré par une journée de pratique",
     "Analyser un document long et complexe et en tirer une synthèse fiable et vérifiée",
@@ -507,7 +562,16 @@ const IA_COMMERCIAL: FormationV2 = {
     "relances personnalisées",
     "gabarit de devis",
   ],
-  publicViseFr: "Commerciaux, ADV, SAV, dirigeants qui vendent.",
+  publicViseFr:
+    "Commerciaux, ADV, assistants commerciaux, SAV et service client, responsables commerciaux et dirigeants qui vendent — en B2B comme en B2C, tous secteurs. Aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Traiter une demande client complexe dans la journée, complète et sans faute" },
+    { texteFr: "Produire un devis ou une proposition à partir de son gabarit" },
+    { texteFr: "Désamorcer une réclamation difficile par écrit, avec le ton juste" },
+    { texteFr: "Préparer un rendez-vous commercial en dix minutes" },
+    { texteFr: "Relancer un prospect avec une séquence personnalisée" },
+    { texteFr: "Constituer une bibliothèque commerciale partagée par l'équipe" },
+  ],
   objectifsFr: [
     "Traiter une demande client complexe dans la journée, complète et sans faute",
     "Produire devis et propositions depuis son gabarit (chiffres vérifiés à la main)",
@@ -726,7 +790,15 @@ const IA_SUR_LE_TERRAIN: FormationV2 = {
     "non scolaire",
   ],
   publicViseFr:
-    "Techniciens, ouvriers, chauffeurs, agents, atelier. Un smartphone suffit — aucun ordinateur de la journée. Format non scolaire.",
+    "Techniciens, ouvriers, chauffeurs, agents d'exploitation, personnel d'atelier, installateurs et agents de maintenance — toute personne dont le travail se passe hors du bureau. Un smartphone suffit : aucun ordinateur de la journée, format volontairement non scolaire, aucun pré-requis.",
+  casUsageFr: [
+    { texteFr: "Dicter un compte rendu d'intervention structuré en quittant le site" },
+    { texteFr: "Rédiger un signalement à partir d'une photo : constat, cause, action, urgence" },
+    { texteFr: "Reformuler un message délicat avant de l'envoyer au client ou au bureau" },
+    { texteFr: "Comprendre une consigne ou une notice technique à partir d'une photo" },
+    { texteFr: "Boucler le circuit terrain vers bureau depuis son téléphone" },
+    { texteFr: "Installer ses raccourcis pour ses documents récurrents" },
+  ],
   objectifsFr: [
     "Produire un compte rendu structuré à la voix en quittant le site",
     "Rédiger un signalement exploitable depuis une photo (constat / cause / action / urgence)",
@@ -810,7 +882,15 @@ const AUTOMATISATIONS_DECOUVERTE: FormationV2 = {
     "tâches répétitives",
   ],
   publicViseFr:
-    "Tout salarié et encadrement ; dirigeant invité à la restitution finale. Aucun matériel participant requis. Journée démonstrative : on identifie, on chiffre, on priorise — on ne construit pas (c'est l'objet des formats 2-3 jours).",
+    "Tout salarié et encadrement de tous services, ainsi que les dirigeants (invités à la restitution finale), de la TPE à l'ETI. Journée démonstrative : on identifie, on chiffre, on priorise. Aucun matériel participant requis, aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Comprendre le principe d'une automatisation : déclencheur, traitement, action" },
+    { texteFr: "Repérer dans son poste les tâches répétitives automatisables" },
+    { texteFr: "Distinguer ce qui s'automatise de ce qui ne s'automatise pas" },
+    { texteFr: "Estimer le temps que ferait gagner chaque automatisation" },
+    { texteFr: "Prioriser les premières automatisations sur une matrice gain / difficulté" },
+    { texteFr: "Bâtir un plan d'automatisation chiffré pour la direction" },
+  ],
   objectifsFr: [
     "Expliquer le principe d'une automatisation : déclencheur → traitement → action",
     "Identifier dans son poste les tâches automatisables — et celles qui ne le sont pas",
@@ -898,7 +978,16 @@ const IA_INTEGRATION_METIER: FormationV2 = {
     "bibliothèque de prompts",
     "gains de temps mesurés",
   ],
-  publicViseFr: "Tout salarié ; équipes constituées recommandées.",
+  publicViseFr:
+    "Tout salarié de tous services, idéalement en équipes constituées — bureau, commercial, technique, support, encadrement — ainsi que managers et responsables d'équipe qui veulent transformer les tâches réelles de leurs collaborateurs. Aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Transformer ses tâches les plus chronophages en gabarits reproductibles" },
+    { texteFr: "Vérifier et fiabiliser une production IA avant diffusion" },
+    { texteFr: "Contribuer à la bibliothèque de modèles validés de l'équipe" },
+    { texteFr: "Documenter un gabarit pour qu'un collègue le réutilise" },
+    { texteFr: "Tester un gabarit deux fois pour garantir sa reproductibilité" },
+    { texteFr: "Transmettre les bonnes pratiques à un collègue" },
+  ],
   objectifsFr: [
     "Tout le contenu d'IA Fondamentaux",
     "Transformer réellement ses 3 à 5 tâches chronophages avec gabarits reproductibles",
@@ -982,7 +1071,16 @@ const IA_COMMERCIAL_AVANCE: FormationV2 = {
     "bibliothèque commerciale",
     "pipeline réel",
   ],
-  publicViseFr: "Commerciaux confirmés, responsables commerciaux, ADV impliquée dans les offres.",
+  publicViseFr:
+    "Commerciaux confirmés, responsables et directeurs commerciaux, ADV impliquée dans les offres, dirigeants qui pilotent le développement — B2B, appels d'offres publics et privés, tous secteurs. Aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Prospecter en série personnalisée, dans le respect de la déontologie" },
+    { texteFr: "Décortiquer un appel d'offres : exigences, preuves, trame de réponse" },
+    { texteFr: "Construire une matrice de conformité pour un appel d'offres" },
+    { texteFr: "Produire une proposition différenciante qui traite les objections" },
+    { texteFr: "Dérouler une séquence de relance multi-touches" },
+    { texteFr: "Faire vivre la bibliothèque commerciale d'équipe" },
+  ],
   objectifsFr: [
     "Tout le contenu d'IA & Commercial",
     "Prospecter en série personnalisée, dans les règles (déontologie)",
@@ -1076,7 +1174,15 @@ const IA_TRANSFORMATION_EQUIPE: FormationV2 = {
     "restitution direction",
   ],
   publicViseFr:
-    "Équipe constituée + 1-2 référents volontaires ; direction présente à la restitution finale.",
+    "Équipe constituée avec 1-2 référents volontaires, et la direction présente à la restitution finale — tous services et toutes tailles d'entreprise. Aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Outiller un processus complet de bout en bout avec points de contrôle humain" },
+    { texteFr: "Placer des points de contrôle humain aux étapes sensibles" },
+    { texteFr: "Faire l'inventaire des abonnements IA : garder, tester, résilier" },
+    { texteFr: "Chiffrer ses gains dans un tableau de bord d'une page" },
+    { texteFr: "Former un référent interne capable d'intégrer les nouveaux arrivants" },
+    { texteFr: "Présenter les résultats à la direction" },
+  ],
   objectifsFr: [
     "Tout le contenu d'IA Intégration métier",
     "Outiller un processus complet de bout en bout avec points de contrôle humain",
@@ -1180,7 +1286,15 @@ const AGENTS_AUTOMATISATIONS: FormationV2 = {
     "gestion d'erreurs",
   ],
   publicViseFr:
-    "Tout salarié SANS connaissance en programmation. L'IA écrit le code en clair : il appartient à l'entreprise, documenté, zéro abonnement à une plateforme. Groupe limité à 12 pour l'accompagnement individuel.",
+    "Tout salarié sans connaissance en programmation, de tous services, qui veut créer ses propres automatisations — bureau, gestion, opérations, support. L'IA écrit le code en clair, qui appartient à l'entreprise. Groupe limité à 12. Pré-requis : un PC avec droits d'installation (réglé avec votre DSI en amont, à notre initiative) ; aucune compétence en développement requise.",
+  casUsageFr: [
+    { texteFr: "Spécifier une automatisation en français dans une fiche de spec" },
+    { texteFr: "Faire écrire le code de son automatisation en dialoguant avec l'IA" },
+    { texteFr: "Lire et comprendre un code sans savoir programmer" },
+    { texteFr: "Tester une automatisation et corriger un bug" },
+    { texteFr: "Protéger les données et les secrets, jamais en clair" },
+    { texteFr: "Livrer une automatisation documentée, propriété de l'entreprise" },
+  ],
   objectifsFr: [
     "Spécifier une automatisation en français (fiche de spec)",
     "Faire écrire, lire, tester et corriger le code en dialoguant avec l'IA",
@@ -1287,7 +1401,16 @@ const AGENTS_AUTOMATISATIONS_AVANCE: FormationV2 = {
     "dépôt central",
     "robustesse",
   ],
-  publicViseFr: "Tout salarié sans connaissance en programmation. Groupe limité à 12.",
+  publicViseFr:
+    "Tout salarié sans connaissance en programmation ayant suivi le niveau 2 jours, qui veut déployer des automatisations robustes en production. Groupe limité à 12. Pré-requis : mêmes que le niveau 2 jours, plus un lieu d'exécution récurrente décidé avec la DSI au cadrage.",
+  casUsageFr: [
+    { texteFr: "Étendre une automatisation à plusieurs étapes et plusieurs outils connectés" },
+    { texteFr: "Gérer les erreurs et tenir un journal d'activité" },
+    { texteFr: "Mettre en place des alertes en cas d'échec" },
+    { texteFr: "Déployer une automatisation en exécution planifiée" },
+    { texteFr: "Éprouver la robustesse par un test du chaos" },
+    { texteFr: "Devenir autonome pour créer la prochaine automatisation seul" },
+  ],
   objectifsFr: [
     "Tout le niveau 2 jours",
     "Étendre une automatisation : plusieurs étapes, plusieurs outils connectés",
@@ -1386,7 +1509,15 @@ const CLAUDE_DECOUVERTE: FormationV2 = {
     "formateur certifié",
   ],
   publicViseFr:
-    "Tout salarié. Comptes gratuits suffisent (les fonctions avancées sont démontrées par le formateur certifié).",
+    "Tout salarié de tous services curieux de l'écosystème Claude (Anthropic) — bureau, commercial, technique, encadrement — ainsi que dirigeants et décideurs qui veulent évaluer l'outil avant d'investir. Les comptes gratuits suffisent ; aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Produire et analyser un vrai document de travail avec Claude" },
+    { texteFr: "Construire un livrable fini : plan, sections, relecture critique" },
+    { texteFr: "Découvrir l'apport des Projets : instructions permanentes et base documentaire" },
+    { texteFr: "Comparer Claude aux autres outils sur des tâches réelles" },
+    { texteFr: "Appliquer les bonnes pratiques de confidentialité propres à Claude" },
+    { texteFr: "Évaluer l'outil sur pièces avant tout investissement" },
+  ],
   objectifsFr: [
     "Produire et analyser de vrais documents de travail avec Claude",
     "Construire un livrable fini (plan → sections → relecture-critique)",
@@ -1478,7 +1609,15 @@ const CLAUDE_CREATEUR: FormationV2 = {
     "formateur certifié",
   ],
   publicViseFr:
-    "Tout salarié. Pré-requis : comptes Claude Pro ou Team actifs avant J1, fournis par l'entreprise. Groupe limité à 12. Formateur certifié écosystème Claude.",
+    "Tout salarié de tous services qui veut construire son propre assistant Claude sur ses vrais dossiers — bureau, commercial, technique, encadrement. Groupe limité à 12, formateur certifié. Pré-requis : comptes Claude Pro ou Team actifs avant le jour 1, fournis par l'entreprise (conseil licences offert au cadrage).",
+  casUsageFr: [
+    { texteFr: "Construire son assistant Claude personnalisé : métier, ton, formats" },
+    { texteFr: "Rédiger des instructions permanentes en cinq blocs" },
+    { texteFr: "Organiser un projet Claude par activité avec sa base documentaire" },
+    { texteFr: "Industrialiser ses tâches récurrentes avec des gabarits validés" },
+    { texteFr: "Tester la reproductibilité d'un gabarit sur ses dossiers" },
+    { texteFr: "Protéger les données sensibles dans ses espaces de travail" },
+  ],
   objectifsFr: [
     "Tout le contenu de Claude Découverte",
     "Construire son assistant personnalisé (métier, entreprise, formats, ton) configuré une fois pour toutes",
@@ -1572,7 +1711,15 @@ const CLAUDE_ARCHITECTE: FormationV2 = {
     "test des 3 pièges",
   ],
   publicViseFr:
-    "Tout salarié. Pré-requis : comptes Claude Pro ou Team actifs avant J1 + flux de travail réels identifiés au cadrage. Groupe limité à 12. Formateur certifié.",
+    "Tout salarié de tous services ayant un usage régulier de Claude, qui veut connecter son outil à ses flux de travail réels et le faire évoluer seul — bureau, commercial, technique, encadrement. Groupe limité à 12, formateur certifié. Pré-requis : comptes Claude Pro ou Team actifs avant le jour 1 et flux de travail réels identifiés au cadrage.",
+  casUsageFr: [
+    { texteFr: "Connecter son outil Claude à ses documents et flux entrants réels" },
+    { texteFr: "Organiser ses flux entrants avec un filtre de confidentialité" },
+    { texteFr: "Mettre en place une routine quotidienne, la « tournée du matin »" },
+    { texteFr: "Automatiser des séquences multi-étapes dans Claude" },
+    { texteFr: "Versionner et faire évoluer ses instructions en autonomie" },
+    { texteFr: "Éprouver son outil avec le test des 3 pièges" },
+  ],
   objectifsFr: [
     "Tout le contenu de Claude Créateur",
     "Connecter son outil au travail réel : documents, données, flux entrants",
