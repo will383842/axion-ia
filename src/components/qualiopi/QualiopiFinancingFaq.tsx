@@ -25,9 +25,11 @@ export async function QualiopiFinancingFaq() {
   const locale = await getLocale();
   const isFr = locale === "fr";
 
+  // Décision Will : le n° de certificat n'est JAMAIS affiché publiquement (cf.
+  // public-identity.ts:69). On garde la mention de marque obligatoire, sans le n°.
   const certPhrase = isFr
-    ? `Oui. Axion-IA est un organisme de formation certifié Qualiopi (certificat n° ${id.qualiopiNumero}). ${formatMentionMarqueQualiopi(id.categoriesCertifiees)}`
-    : `Yes. Axion-IA is a Qualiopi-certified training provider (certificate no. ${id.qualiopiNumero}). ${formatMentionMarqueQualiopi(id.categoriesCertifiees)}`;
+    ? `Oui. Axion-IA est un organisme de formation certifié Qualiopi. ${formatMentionMarqueQualiopi(id.categoriesCertifiees)}`
+    : `Yes. Axion-IA is a Qualiopi-certified training provider. ${formatMentionMarqueQualiopi(id.categoriesCertifiees)}`;
 
   const items = isFr
     ? [
