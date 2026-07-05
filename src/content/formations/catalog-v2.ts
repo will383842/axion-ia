@@ -587,7 +587,8 @@ const IA_AU_BUREAU: FormationV2 = {
     "suivi sans ressaisie",
     "RH et paie",
   ],
-  publicViseFr: "Assistant(e)s, secrétariat, gestion, comptabilité, RH, services généraux.",
+  publicViseFr:
+    "Tout collaborateur qui produit des documents au quotidien : assistant(e)s, secrétariat et office management, gestion, comptabilité et paie, RH, ADV et services généraux — mais aussi chefs de projet, managers, professions libérales et indépendants. Aucun profil technique requis.",
   imageSrc:
     "/illustrations/formations/fiches/ia-au-bureau-administratif-secretariat-formation-ia-axion-ia.webp",
   imageAltFr:
@@ -700,6 +701,36 @@ const IA_AU_BUREAU: FormationV2 = {
       question: "Comment rédiger les réponses aux administrations avec l'IA ?",
       reponse:
         "On part d'une vraie réponse en attente : l'IA structure le courrier à partir de vos pièces, vous vérifiez et validez. La formation produit des gabarits réutilisables pour vos échanges récurrents avec les organismes et administrations.",
+    },
+    {
+      question: "À qui s'adresse la formation IA au bureau ?",
+      reponse:
+        "À tout collaborateur qui produit des documents au quotidien : secrétariat, gestion, comptabilité et paie, RH, ADV et services généraux, mais aussi chefs de projet, managers, professions libérales et indépendants. Aucune compétence technique n'est nécessaire.",
+    },
+    {
+      question: "Quelle est la durée et le format de la formation ?",
+      reponse:
+        "La formation dure 1 journée (7 heures). Elle se déroule en présentiel dans vos locaux, et peut aussi être organisée à distance selon votre situation. Le groupe est intra-entreprise : uniquement vos équipes.",
+    },
+    {
+      question: "Faut-il des prérequis ou du matériel particulier ?",
+      reponse:
+        "Aucun prérequis technique : la formation démarre à votre niveau. Il suffit d'un ordinateur avec une connexion internet. Les comptes gratuits des outils suffisent pour l'essentiel.",
+    },
+    {
+      question: "Quels outils d'IA vais-je apprendre à utiliser ?",
+      reponse:
+        "Vous travaillez sur les principaux assistants IA (ChatGPT, Claude, Copilot, Mistral) appliqués à vos tâches réelles : courriers, comptes rendus, dépouillement de dossiers et suivi. L'objectif est de savoir choisir le bon outil selon le besoin.",
+    },
+    {
+      question: "La formation est-elle adaptée à notre métier ?",
+      reponse:
+        "Oui. Le programme est cadré en amont par un appel, puis les ateliers se font sur vos vrais documents et vos cas d'usage. Les exemples et les gabarits produits sont directement issus de votre activité.",
+    },
+    {
+      question: "Que se passe-t-il après la formation ?",
+      reponse:
+        "Vos équipes repartent avec une banque de gabarits prêts à l'emploi et de nouveaux réflexes opérationnels dès le lendemain. Le savoir-faire est structuré et reste dans l'entreprise, même en cas de départ.",
     },
   ],
 };

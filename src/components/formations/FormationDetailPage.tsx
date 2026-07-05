@@ -36,7 +36,7 @@ import { ContactBand } from "@/components/sections/ContactBand";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
-import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import {
   type FormationV2,
   FORMATIONS_V2,
@@ -62,13 +62,7 @@ import {
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
-import {
-  buildCourseJsonLd,
-  buildFaqJsonLd,
-  buildHowToJsonLd,
-  buildServiceJsonLd,
-  SITE_URL,
-} from "@/lib/seo";
+import { buildCourseJsonLd, buildHowToJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
@@ -141,7 +135,15 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   ];
 
   // ── JSON-LD ─────────────────────────────────────────────────────────────────
-  const imageUrl = `${SITE_URL}${image.src}`;
+  // Toutes les images de la fiche (héro + scènes + cas d'usage) → Course.image
+  // (association à l'entité pour Google Images), dédupliquées, en URL absolue.
+  const pageImageUrls = [
+    ...new Set([
+      image.src,
+      ...scenePhotos.map((p) => p.src),
+      ...casUsage.map((c) => c.imageSrc).filter((s): s is string => Boolean(s)),
+    ]),
+  ].map((src) => `${SITE_URL}${src}`);
   const serviceJsonLd = buildServiceJsonLd({
     locale,
     path,
@@ -163,11 +165,8 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       about: "IA opérationnelle (ChatGPT, Claude, Mistral, Copilot, agents IA, automatisations)",
       ...(typeof entryPrice === "number" ? { priceEurHt: entryPrice } : {}),
     }),
-    image: [imageUrl],
+    image: pageImageUrls,
   };
-  const faqJsonLd = buildFaqJsonLd({
-    items: f.faqs.map((q) => ({ question: q.question, answer: q.reponse })),
-  });
   const programmeSteps = f.programme.flatMap((s) => s.steps).filter((st) => st.titre !== "Pause");
   const howToJsonLd =
     programmeSteps.length > 0
@@ -698,18 +697,18 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         track="-formation-detail"
       />
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      {/* ── FAQ (FaqAccordion centralisé — émet FAQPage + Speakable) ─────── */}
       {f.faqs.length > 0 ? (
         <Section tone="paper" eyebrow="FAQ" title="Questions" titleEm="fréquentes">
-          <InterventionFaqList
-            items={f.faqs.map((q) => ({
-              qFr: q.question,
-              qEn: q.question,
-              aFr: q.reponse,
-              aEn: q.reponse,
-            }))}
-            isFr={isFr}
-          />
+          <div className="mx-auto max-w-3xl">
+            <FaqAccordion
+              items={f.faqs.map((q, i) => ({
+                id: `faq-${i + 1}`,
+                question: q.question,
+                answer: q.reponse,
+              }))}
+            />
+          </div>
         </Section>
       ) : null}
 
@@ -790,7 +789,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
 
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={courseJsonLd} />
-      <JsonLd data={faqJsonLd} />
       {howToJsonLd ? <JsonLd data={howToJsonLd} /> : null}
     </>
   );
