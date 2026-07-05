@@ -325,6 +325,49 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
+      {/* ── CAS D'USAGE CONCRETS (juste après avant/après) ──────────────── */}
+      {casUsage.length > 0 ? (
+        <Section
+          eyebrow="Sur vos vrais dossiers"
+          title="Cas d'usage"
+          titleEm="concrets"
+          description="Des exemples directement applicables dans votre métier, travaillés en atelier."
+        >
+          <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl gap-4 lg:grid-cols-3">
+            {casUsage.map((c) => (
+              <li
+                key={c.texteFr}
+                className="border-border bg-bg shadow-subtle flex flex-col overflow-hidden rounded-2xl border"
+              >
+                {c.imageSrc ? (
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={c.imageSrc}
+                      alt={c.texteFr}
+                      fill
+                      sizes="(min-width: 1024px) 30vw, (min-width: 479px) 50vw, 100vw"
+                      loading="lazy"
+                      className="object-cover"
+                    />
+                  </div>
+                ) : null}
+                <div className="flex flex-1 flex-col gap-2 p-5">
+                  <Sparkles aria-hidden="true" className="text-terracotta h-4 w-4" />
+                  <p className="text-fg-soft flex-1 text-sm leading-relaxed">{c.texteFr}</p>
+                  {c.imageCredit ? (
+                    <UnsplashCredit
+                      photographerName={c.imageCredit.name}
+                      photographerUrl={c.imageCredit.url}
+                      className="text-[10px]"
+                    />
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
+
       {/* ── OBJECTIFS (2 colonnes + photo) ───────────────────────────────── */}
       {f.objectifsFr.length > 0 ? (
         <Section
@@ -480,50 +523,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </div>
       </Section>
 
-      {/* ── CAS D'USAGE CONCRETS (avec petites images) ───────────────────── */}
-      {casUsage.length > 0 ? (
-        <Section
-          tone="sand"
-          eyebrow="Sur vos vrais dossiers"
-          title="Cas d'usage"
-          titleEm="concrets"
-          description="Des exemples directement applicables dans votre métier, travaillés en atelier."
-        >
-          <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl gap-4 lg:grid-cols-3">
-            {casUsage.map((c) => (
-              <li
-                key={c.texteFr}
-                className="border-border bg-canvas shadow-subtle flex flex-col overflow-hidden rounded-2xl border"
-              >
-                {c.imageSrc ? (
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <Image
-                      src={c.imageSrc}
-                      alt={c.texteFr}
-                      fill
-                      sizes="(min-width: 1024px) 30vw, (min-width: 479px) 50vw, 100vw"
-                      loading="lazy"
-                      className="object-cover"
-                    />
-                  </div>
-                ) : null}
-                <div className="flex flex-1 flex-col gap-2 p-5">
-                  <Sparkles aria-hidden="true" className="text-terracotta h-4 w-4" />
-                  <p className="text-fg-soft flex-1 text-sm leading-relaxed">{c.texteFr}</p>
-                  {c.imageCredit ? (
-                    <UnsplashCredit
-                      photographerName={c.imageCredit.name}
-                      photographerUrl={c.imageCredit.url}
-                      className="text-[10px]"
-                    />
-                  ) : null}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      ) : null}
-
       {/* ── MODALITÉS — cartes à icônes (AVANT les secteurs) ─────────────── */}
       <Section eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
         <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -643,27 +642,40 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
+      {/* ── FAQ (FaqAccordion centralisé — juste avant Qualiopi) ─────────── */}
+      {f.faqs.length > 0 ? (
+        <Section eyebrow="FAQ" title="Questions" titleEm="fréquentes">
+          <div className="mx-auto max-w-3xl">
+            <FaqAccordion
+              items={f.faqs.map((q, i) => ({
+                id: `faq-${i + 1}`,
+                question: q.question,
+                answer: q.reponse,
+              }))}
+            />
+          </div>
+        </Section>
+      ) : null}
+
       {/* ── QUALIOPI / OPCO (logo officiel + financement, gaté Phase B) ──── */}
       {ofPublic ? (
         <Section
-          tone="paper"
+          tone="sand"
           eyebrow="Sérieux & financement"
           title="Un organisme"
           titleEm="certifié Qualiopi"
           description="Un gage de qualité — et l'assurance d'une formation finançable."
         >
-          <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 lg:grid-cols-[0.75fr_1.25fr]">
-            <div className="border-border bg-canvas shadow-subtle mx-auto flex w-full max-w-[360px] items-center justify-center rounded-2xl border p-8">
-              <Image
-                src="/qualiopi/axion-ia-qualiopi.png"
-                alt="Logo Qualiopi — Axion-IA, organisme de formation certifié (catégorie : actions de formation)"
-                width={360}
-                height={240}
-                quality={90}
-                sizes="(max-width: 1024px) 70vw, 28vw"
-                className="h-auto w-full max-w-[280px] object-contain"
-              />
-            </div>
+          <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+            <Image
+              src="/qualiopi/axion-ia-qualiopi.png"
+              alt="Logo Qualiopi — Axion-IA, organisme de formation certifié (catégorie : actions de formation)"
+              width={520}
+              height={347}
+              quality={90}
+              sizes="(max-width: 1024px) 88vw, 40vw"
+              className="mx-auto h-auto w-full max-w-[440px] object-contain"
+            />
             <div className="flex flex-col gap-4">
               <p className="text-fg text-base leading-relaxed" data-speakable>
                 {mentionMarque}
@@ -697,21 +709,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         track="-formation-detail"
       />
 
-      {/* ── FAQ (FaqAccordion centralisé — émet FAQPage + Speakable) ─────── */}
-      {f.faqs.length > 0 ? (
-        <Section tone="paper" eyebrow="FAQ" title="Questions" titleEm="fréquentes">
-          <div className="mx-auto max-w-3xl">
-            <FaqAccordion
-              items={f.faqs.map((q, i) => ({
-                id: `faq-${i + 1}`,
-                question: q.question,
-                answer: q.reponse,
-              }))}
-            />
-          </div>
-        </Section>
-      ) : null}
-
       {/* ── VILLES (maillage compact — pas d'espace superflu) ────────────── */}
       <Section
         tone="sand"
@@ -736,13 +733,13 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
 
       {/* ── FORMATIONS COMPLÉMENTAIRES (cartes contrastées) ──────────────── */}
       {siblings.length > 0 ? (
-        <Section tone="paper" eyebrow="Autres formations" title="Pour aller" titleEm="plus loin">
+        <Section tone="sand" eyebrow="Autres formations" title="Pour aller" titleEm="plus loin">
           <div className="xs:grid-cols-2 grid gap-5 lg:grid-cols-4">
             {siblings.map((s) => (
               <Link
                 key={s.id}
                 href={`/formations/${s.slugFr}` as never}
-                className="border-border-strong bg-canvas shadow-subtle hover:border-terracotta hover:shadow-card group flex h-full flex-col rounded-2xl border-2 p-6 transition hover:-translate-y-1"
+                className="border-border bg-bg shadow-card hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition hover:-translate-y-1"
               >
                 <span className="text-terracotta-deep text-[11px] font-bold tracking-wide uppercase">
                   {getGammeMeta(s.gamme).labelFr} · {formatDureeFr(s)}
