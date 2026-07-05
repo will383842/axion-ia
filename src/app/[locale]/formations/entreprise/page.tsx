@@ -20,16 +20,22 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import {
   ArrowRight,
+  BadgeCheck,
   Building2,
+  CalendarClock,
   Check,
-  Clock,
+  FileText,
   Globe,
+  GraduationCap,
   Link2,
   MapPin,
+  MessageCircle,
   Mic,
   Share2,
   ShieldCheck,
   Sparkles,
+  Target,
+  TrendingUp,
   Users,
   Video,
   Wallet,
@@ -47,11 +53,14 @@ import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosM
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
-import { FormationsCatalogueGrid } from "@/components/formations/FormationsCatalogueGrid";
+import {
+  FormationsCatalogueFilterable,
+  type SlimFormation,
+} from "@/components/formations/FormationsCatalogueFilterable";
 import { FormationsVisualShowcase } from "@/components/formations/FormationsVisualShowcase";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
-import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
+import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
@@ -189,39 +198,40 @@ export default async function FormationsEntreprise({ params }: Props) {
     { href: "/formations/duree/3-jours", label: isFr ? "3 jours et +" : "3 days and +" },
   ];
 
-  // « Comment réserver » — 7 étapes. Les étapes financement (2-4) sont gatées
-  // Phase B (registre OPCO conforme) ; hors Phase B, wording neutre (devis).
-  const reserveSteps: ReadonlyArray<{ title: string; body: string; withCtas?: boolean }> = [
+  // « Comment réserver » — 7 étapes COMPACTES (icône + titre + 1 ligne). Les
+  // étapes financement (3-4) sont gatées Phase B ; hors Phase B, wording neutre.
+  const reserveSteps: ReadonlyArray<{ icon: typeof Mic; title: string; body: string }> = [
     {
+      icon: MessageCircle,
       title: isFr ? "Contactez-nous" : "Contact us",
-      body: isFr
-        ? "Un appel ou un message, comme vous préférez — on vous répond vite."
-        : "A call or a message, whichever you prefer — we reply fast.",
-      withCtas: true,
+      body: isFr ? "Appel ou message, on répond vite." : "Call or message, we reply fast.",
     },
     {
-      title: isFr ? "On échange sur vos besoins" : "We discuss your needs",
+      icon: CalendarClock,
+      title: isFr ? "Échange de 30 min" : "30-min call",
       body: isFr
-        ? `Premier échange de 30 minutes : vos objectifs, vos équipes, la date qui vous arrange${ofPublic ? " et votre OPCO pour le financement" : ""}.`
-        : `A first 30-minute call: your goals, your teams, the date that suits you${ofPublic ? " and your OPCO for funding" : ""}.`,
+        ? `Vos objectifs, vos équipes, votre date${ofPublic ? ", votre OPCO" : ""}.`
+        : `Your goals, teams and date${ofPublic ? ", your OPCO" : ""}.`,
     },
     {
+      icon: FileText,
       title: ofPublic
         ? isFr
-          ? "On monte votre dossier OPCO"
-          : "We build your OPCO file"
+          ? "Dossier OPCO"
+          : "OPCO file"
         : isFr
-          ? "On cadre le programme"
-          : "We scope the programme",
+          ? "Devis & cadrage"
+          : "Quote & scope",
       body: ofPublic
         ? isFr
-          ? "Nous constituons le dossier de prise en charge auprès de votre opérateur de compétences."
-          : "We build the funding file with your skills operator (OPCO)."
+          ? "On monte votre prise en charge."
+          : "We build your funding file."
         : isFr
-          ? "Programme, devis et planning validés ensemble."
-          : "Programme, quote and schedule agreed together.",
+          ? "Programme et devis validés."
+          : "Programme and quote agreed.",
     },
     {
+      icon: BadgeCheck,
       title: ofPublic
         ? isFr
           ? "Accord de financement"
@@ -231,29 +241,26 @@ export default async function FormationsEntreprise({ params }: Props) {
           : "Confirmation",
       body: ofPublic
         ? isFr
-          ? "Votre OPCO valide la prise en charge, en tout ou partie selon votre situation."
-          : "Your OPCO approves the funding, fully or partly depending on your situation."
+          ? "Votre OPCO valide la prise en charge."
+          : "Your OPCO approves the funding."
         : isFr
-          ? "Vous validez le devis et la date."
-          : "You confirm the quote and the date.",
+          ? "Vous validez devis et date."
+          : "You confirm quote and date.",
     },
     {
-      title: isFr ? "On intervient sur votre site" : "We deliver at your site",
-      body: isFr
-        ? "Le formateur anime la formation dans vos locaux — ou à distance si vous préférez."
-        : "The trainer delivers at your premises — or remotely if you prefer.",
+      icon: GraduationCap,
+      title: isFr ? "On intervient" : "We deliver",
+      body: isFr ? "Sur votre site, ou à distance." : "At your site, or remotely.",
     },
     {
+      icon: Mic,
       title: isFr ? "Interviews & podcast" : "Interviews & podcast",
-      body: isFr
-        ? "En fin de formation, on interviewe les participants volontaires — et un podcast dirigeant ou commercial si vous le souhaitez."
-        : "At the end, we interview willing participants — plus an executive or sales podcast if you wish.",
+      body: isFr ? "On valorise vos participants." : "We spotlight your participants.",
     },
     {
+      icon: Globe,
       title: isFr ? "Votre page + backlink" : "Your page + backlink",
-      body: isFr
-        ? "Nous créons sur axion-ia.com une page dédiée à votre entreprise et votre secteur, co-construite avec vous, avec un lien dofollow pour votre visibilité."
-        : "We create a dedicated page about your company and sector on axion-ia.com, co-built with you, with a dofollow link for your visibility.",
+      body: isFr ? "Page dédiée + lien dofollow." : "Dedicated page + dofollow link.",
     },
   ];
 
@@ -305,30 +312,34 @@ export default async function FormationsEntreprise({ params }: Props) {
     },
   ];
 
-  const features: ReadonlyArray<{ title: string; body: string }> = [
+  const features: ReadonlyArray<{ icon: typeof Target; title: string; body: string }> = [
     {
+      icon: Target,
       title: isFr ? "Sur mesure, par métier" : "Tailored, by role",
       body: isFr
-        ? "Chaque formation est adaptée à vos outils, vos vrais dossiers et votre secteur. Vos équipes s'entraînent sur leur quotidien, pas sur des exemples abstraits."
-        : "Every training is tailored to your tools, your real files and your sector. Teams practise on their day-to-day, not abstract examples.",
+        ? "Adaptées à vos outils, vos vrais dossiers et votre secteur — pas des exemples abstraits."
+        : "Tailored to your tools, real files and sector — not abstract examples.",
     },
     {
+      icon: MapPin,
       title: isFr ? "Sur site, partout en France" : "On site, across France",
       body: isFr
-        ? "Le formateur se déplace dans vos locaux — de la TPE au grand compte, en présentiel, sans désorganiser votre activité."
-        : "The trainer comes to your premises — from micro-business to large accounts, in person, without disrupting your operations.",
+        ? "Le formateur se déplace dans vos locaux, de la TPE au grand compte."
+        : "The trainer comes to your premises, from micro-business to large accounts.",
     },
     {
+      icon: Users,
       title: isFr ? "Formateurs IA experts" : "Expert AI trainers",
       body: isFr
-        ? "Une équipe de formateurs opérationnels, cas d'usage métier chiffrés, à jour des derniers outils (ChatGPT, Claude, Mistral, agents IA)."
-        : "A team of operational trainers, quantified business use cases, up to date with the latest tools (ChatGPT, Claude, Mistral, AI agents).",
+        ? "Des formateurs opérationnels, à jour des derniers outils (ChatGPT, Claude, Mistral…)."
+        : "Operational trainers, up to date with the latest tools (ChatGPT, Claude, Mistral…).",
     },
     {
+      icon: TrendingUp,
       title: isFr ? "Résultats mesurables" : "Measurable results",
       body: isFr
-        ? "Chaque participant repart avec un livrable terminé et des gains de temps immédiats — pas seulement des notes."
-        : "Every participant leaves with a finished deliverable and immediate time savings — not just notes.",
+        ? "Chaque participant repart avec un livrable terminé et des gains de temps immédiats."
+        : "Every participant leaves with a finished deliverable and immediate time savings.",
     },
   ];
 
@@ -340,6 +351,21 @@ export default async function FormationsEntreprise({ params }: Props) {
   ];
 
   const villes = getVillesIndexableNow().slice(0, 60);
+
+  // Données slim du catalogue passées au filtre client (prix déjà formaté côté
+  // serveur → catalog-v2 reste hors bundle client).
+  const slimFormations: readonly SlimFormation[] = FORMATIONS_V2.map((f) => {
+    const p = getFormationV2EntryPrice(f);
+    return {
+      slugFr: f.slugFr,
+      titreFr: f.titreFr,
+      accrocheFr: f.accrocheFr,
+      gamme: f.gamme,
+      duree: f.duree,
+      featured: f.featured ?? false,
+      priceLabel: p !== undefined ? formatAmount(p, loc) : isFr ? "Sur devis" : "On quote",
+    };
+  });
 
   const faqItems: ReadonlyArray<{ id: string; question: string; answer: string }> = [
     {
@@ -502,30 +528,28 @@ export default async function FormationsEntreprise({ params }: Props) {
         titleEm={isFr ? "en entreprise" : "for companies"}
         description={
           isFr
-            ? "La durée est indiquée sur chaque carte. Cliquez une formation pour voir le programme détaillé, le public visé et le tarif."
-            : "The duration is shown on each card. Click a training to see the detailed programme, target audience and price."
+            ? "Filtrez par durée ou par thème. La durée est indiquée sur chaque carte — cliquez pour voir le programme, le public visé et le tarif."
+            : "Filter by duration or theme. The duration is on each card — click to see the programme, target audience and price."
         }
       >
-        {/* Raccourcis par durée (maillage vers les listings) */}
-        <div className="mb-8 flex flex-wrap gap-2">
-          <span className="text-fg-muted mr-1 self-center text-[13px] font-medium">
-            {isFr ? "Filtrer par durée :" : "Filter by duration:"}
-          </span>
-          {dureeChips.map((d) => (
-            <Link
-              key={d.href}
-              href={d.href as never}
-              className="text-fg border-border hover:border-terracotta hover:text-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-semibold transition"
-            >
-              <Clock aria-hidden="true" className="h-3.5 w-3.5" />
-              {d.label}
-            </Link>
+        <FormationsCatalogueFilterable items={slimFormations} isFr={isFr} />
+
+        {/* Liens durée crawlables (SEO / maillage vers les listings) */}
+        <p className="text-fg-muted mt-8 text-[13px]">
+          {isFr ? "Parcourir par durée : " : "Browse by duration: "}
+          {dureeChips.map((d, i) => (
+            <span key={d.href}>
+              {i > 0 ? " · " : ""}
+              <Link
+                href={d.href as never}
+                className="hover:text-terracotta underline underline-offset-2"
+              >
+                {d.label}
+              </Link>
+            </span>
           ))}
-        </div>
-
-        <FormationsCatalogueGrid locale={loc} />
-
-        <p className="text-fg-soft mt-8 text-sm">
+        </p>
+        <p className="text-fg-soft mt-2 text-sm">
           {isFr
             ? "Vous ne trouvez pas exactement votre besoin ? "
             : "Can't find exactly what you need? "}
@@ -552,43 +576,44 @@ export default async function FormationsEntreprise({ params }: Props) {
             : "From first contact to the spotlight on your company: we handle everything, including the funding file."
         }
       >
-        <ol className="xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <ol className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-7">
           {reserveSteps.map((step, i) => (
             <li
               key={step.title}
-              className="border-border bg-bg flex flex-col rounded-2xl border p-6"
+              className="border-border bg-bg flex flex-col items-start rounded-2xl border p-4"
             >
-              <span
-                className="text-terracotta/40 block text-3xl font-semibold"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="text-fg mt-3 text-base font-semibold tracking-tight">{step.title}</h3>
-              <p className="text-fg-soft mt-2 text-sm leading-relaxed">{step.body}</p>
-              {step.withCtas ? (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <Cta
-                    href="/appel"
-                    variant="primary"
-                    size="sm"
-                    track="formations-entreprise-reserver-appel"
-                  >
-                    {isFr ? "Réserver un appel" : "Book a call"}
-                  </Cta>
-                  <Cta
-                    href="/contact"
-                    variant="outline"
-                    size="sm"
-                    track="formations-entreprise-reserver-contact"
-                  >
-                    {isFr ? "Nous écrire" : "Email us"}
-                  </Cta>
-                </div>
-              ) : null}
+              <div className="relative mb-3">
+                <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                  <step.icon aria-hidden="true" className="h-5 w-5" />
+                </span>
+                <span className="bg-terracotta text-mocha-fg absolute -top-1.5 -right-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold">
+                  {i + 1}
+                </span>
+              </div>
+              <h3 className="text-fg text-sm font-semibold tracking-tight">{step.title}</h3>
+              <p className="text-fg-soft mt-1 text-[13px] leading-snug">{step.body}</p>
             </li>
           ))}
         </ol>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Cta
+            href="/appel"
+            variant="primary"
+            size="lg"
+            track="formations-entreprise-reserver-appel"
+          >
+            {isFr ? "Réserver un appel" : "Book a call"}
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </Cta>
+          <Cta
+            href="/contact"
+            variant="outline"
+            size="lg"
+            track="formations-entreprise-reserver-contact"
+          >
+            {isFr ? "Écrire un message" : "Send a message"}
+          </Cta>
+        </div>
       </Section>
 
       {/* ── POURQUOI NOUS + STATS ────────────────────────────────────────── */}
@@ -606,7 +631,7 @@ export default async function FormationsEntreprise({ params }: Props) {
           {features.map((f) => (
             <div key={f.title} className="border-border bg-paper rounded-2xl border p-6">
               <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl">
-                <Check aria-hidden="true" className="h-5 w-5" />
+                <f.icon aria-hidden="true" className="h-5 w-5" />
               </div>
               <h3 className="text-fg text-base font-semibold tracking-tight">{f.title}</h3>
               <p className="text-fg-soft mt-2 text-sm leading-relaxed">{f.body}</p>
@@ -794,27 +819,38 @@ export default async function FormationsEntreprise({ params }: Props) {
             : "We train in every sector and for every role — with concrete use cases fitted to your reality."
         }
       >
-        <ul role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <ul
+          role="list"
+          className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
+        >
           {CLIENT_SECTORS.map((s) => (
             <li key={s.slug}>
               <Link
                 href={`/secteurs/${s.slug}` as never}
-                className="border-border hover:border-terracotta hover:shadow-card group bg-bg flex h-full items-center gap-3 rounded-2xl border p-4 transition"
+                className="border-border hover:border-terracotta hover:shadow-card group bg-bg flex h-full flex-col overflow-hidden rounded-2xl border transition"
               >
-                <span
-                  aria-hidden="true"
-                  className="bg-sand flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-xl"
-                >
-                  {s.emoji}
-                </span>
-                <span className="min-w-0">
-                  <span className="text-fg block text-sm font-semibold tracking-tight">
-                    {s.labelFr}
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={`/illustrations/secteurs/${s.slug}.avif`}
+                    alt={isFr ? `Formation IA pour ${s.fullFr}` : `AI training for ${s.fullFr}`}
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, (min-width: 479px) 50vw, 100vw"
+                    loading="lazy"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="bg-paper/90 shadow-subtle absolute top-2.5 left-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg text-base"
+                  >
+                    {s.emoji}
                   </span>
-                  <span className="text-terracotta text-[13px] font-medium">
+                </div>
+                <div className="flex flex-1 flex-col gap-1 p-4">
+                  <span className="text-fg text-sm font-semibold tracking-tight">{s.labelFr}</span>
+                  <span className="text-terracotta mt-auto text-[13px] font-medium">
                     {isFr ? "Voir les cas d'usage →" : "See use cases →"}
                   </span>
-                </span>
+                </div>
               </Link>
             </li>
           ))}
