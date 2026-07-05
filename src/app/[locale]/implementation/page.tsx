@@ -19,6 +19,7 @@ import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { VisibiliteCallout } from "@/components/visibilite/VisibiliteCallout";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import {
@@ -270,6 +271,8 @@ export default async function ImplementationListing({ params }: Props) {
       <RelatedKnowledge service="implementation" />
 
       {/* BANDEAU CONTACT FINAL */}
+      <VisibiliteCallout isFr={isFr} />
+
       <ImplementationContactBand isFr={isFr} trackSuffix="-final" />
 
       {/* CTA flottant mobile — visible < lg */}

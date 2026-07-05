@@ -17,10 +17,18 @@
 
 import type { FormationBracket, FormationDuree, FormationGamme } from "../pricing";
 import { getFormationBrackets, getFormationEntryPrice, getFormationPrice } from "../pricing";
+import type { ModalitePedagogique } from "./modalites";
 
 export interface FormationV2Faq {
   question: string;
   reponse: string;
+}
+
+export interface FormationCasUsage {
+  texteFr: string;
+  /** Petite image d'illustration (Unsplash → crédit obligatoire). */
+  imageSrc?: string;
+  imageCredit?: { name: string; url: string };
 }
 
 export interface FormationProgrammeStep {
@@ -67,6 +75,23 @@ export interface FormationV2 {
   equationTempsFr: string;
   programme: ReadonlyArray<FormationProgrammeSection>;
   faqs: ReadonlyArray<FormationV2Faq>;
+  // ---- Modalités & pratique (défauts centralisés dans catalog-v2-facts.ts) ----
+  /** Format. Défaut = présentiel + distanciel possible. Surcharge si différent. */
+  modalites?: ReadonlyArray<ModalitePedagogique>;
+  /** Matériel requis. Défaut = « un ordinateur avec connexion internet ». */
+  materielFr?: string;
+  // ---- Contenu enrichi (optionnel — fallback template si absent) ----
+  /** Cas d'usage concrets (avec petite image optionnelle). Fallback = objectifs. */
+  casUsageFr?: ReadonlyArray<FormationCasUsage>;
+  /** Avant / après la formation (transformation concrète). */
+  avantApresFr?: { avant: string; apres: string };
+  /** Résultats concrets & mesurables (ex. { valeur: "1 à 2 h", label: "gagnées / jour" }). */
+  resultatsFr?: ReadonlyArray<{ valeur: string; label: string }>;
+  /** Image spécifique (sinon fallback par gamme, cf. catalog-v2-facts.ts). */
+  imageSrc?: string;
+  imageAltFr?: string;
+  /** Crédit photographe si l'image est une photo Unsplash (CGU §6). */
+  imageCredit?: { name: string; url: string };
 }
 
 // ============================================================================
@@ -95,7 +120,41 @@ const IA_EXPRESS: FormationV2 = {
     "anonymisation",
   ],
   publicViseFr:
-    "Tout salarié, tous postes mélangés (bureau, terrain, commercial, technique). Aucun pré-requis. Un smartphone suffit.",
+    "Tout salarié, tous postes mélangés — bureau, terrain, commercial, technique, atelier, accueil — mais aussi managers, encadrants, dirigeants de TPE-PME, professions libérales et indépendants qui veulent démarrer avec l'IA en même temps que leur équipe. Aucun pré-requis : un smartphone suffit et aucun profil technique n'est requis.",
+  casUsageFr: [
+    {
+      texteFr:
+        "Produire un texte professionnel au clavier ou à la voix, sans être un as du traitement de texte",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-1.webp",
+      imageCredit: { name: "David Hahn", url: "https://unsplash.com/@hahn_david_com" },
+    },
+    {
+      texteFr:
+        "Formuler une demande claire à l'IA avec la méthode CRFE pour un bon résultat dès le premier essai",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-2.webp",
+      imageCredit: {
+        name: "Glenn Carstens-Peters",
+        url: "https://unsplash.com/@glenncarstenspeters",
+      },
+    },
+    {
+      texteFr:
+        "Résumer un document long en dégageant l'essentiel, les points de vigilance et les actions",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
+    },
+    {
+      texteFr: "Faire reformuler et améliorer un texte jusqu'au résultat voulu",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Repérer quand l'IA se trompe ou invente avant de réutiliser sa réponse",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-5.webp",
+      imageCredit: { name: "Anastassia Anufrieva", url: "https://unsplash.com/@antoie" },
+    },
+    { texteFr: "Anonymiser un document en quelques secondes avant de le confier à une IA" },
+  ],
   objectifsFr: [
     "Produire un texte professionnel au clavier ou en dictée vocale",
     "Formuler une demande qui donne un bon résultat du premier coup (méthode CRFE)",
@@ -171,7 +230,35 @@ const ART_DU_PROMPT: FormationV2 = {
     "fiabilité",
   ],
   publicViseFr:
-    "Salariés qui ont déjà pratiqué l'IA (seuls ou après IA Express) et qui plafonnent : résultats génériques, reprises multiples, outil sous-exploité.",
+    "Salariés de tous services qui pratiquent déjà l'IA — seuls ou après IA Express — et qui plafonnent : résultats génériques, reprises multiples, outil sous-exploité. Commerciaux, assistants, managers, chefs de projet, professions libérales et indépendants, tous profils métier. Seule formation du catalogue avec un pré-requis : avoir déjà utilisé l'IA, vérifié au cadrage.",
+  casUsageFr: [
+    {
+      texteFr: "Construire une demande avec les 6 leviers d'un prompt qui marche",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-1.webp",
+      imageCredit: { name: "Kelly Sikkema", url: "https://unsplash.com/@kellysikkema" },
+    },
+    {
+      texteFr: "Améliorer un texte par itérations en donnant des critiques précises à l'IA",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-2.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Adapter un même contenu à trois destinataires différents",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-3.webp",
+      imageCredit: { name: "Dylan Gillis", url: "https://unsplash.com/@mainermedia" },
+    },
+    { texteFr: "Se constituer une bibliothèque de gabarits réutilisables" },
+    {
+      texteFr: "Retirer toute donnée sensible d'un gabarit avant de le partager",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-5.webp",
+      imageCredit: { name: "Israel Andrade", url: "https://unsplash.com/@israelandrxde" },
+    },
+    {
+      texteFr: "Recadrer l'IA quand elle invente pour fiabiliser le résultat",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-6.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
+  ],
   objectifsFr: [
     "Construire une demande avec les 6 leviers d'un prompt qui marche",
     "Itérer jusqu'à un niveau diffusable (critiques précises, rôle de relecteur)",
@@ -243,7 +330,35 @@ const IA_SECURITE: FormationV2 = {
     "RGPD",
   ],
   publicViseFr:
-    "Tout salarié ; dirigeant et DSI bienvenus. Format largement collectif (peu d'appareils requis). Complément individuel d'IA & Conformité (qui traite, elle, les obligations de l'entreprise).",
+    "Tout salarié, quel que soit son poste, qui utilise déjà l'IA ou s'apprête à le faire — bureau, commercial, RH, technique, terrain — ainsi que dirigeants, DSI et référents. Format largement collectif. Aucun pré-requis technique.",
+  casUsageFr: [
+    {
+      texteFr: "Identifier les données qui ne doivent jamais sortir de l'entreprise",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-1.webp",
+      imageCredit: { name: "Towfiqu barbhuiya", url: "https://unsplash.com/@towfiqu999999" },
+    },
+    { texteFr: "Anonymiser un document ou une photo avant de le confier à une IA" },
+    {
+      texteFr: "Distinguer un outil IA sûr d'un outil à risque avant de l'utiliser",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-3.webp",
+      imageCredit: { name: "FlyD", url: "https://unsplash.com/@flyd2069" },
+    },
+    {
+      texteFr: "Vérifier ce que produit l'IA avant de l'envoyer à un client ou une administration",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-4.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
+    {
+      texteFr: "Appliquer les réflexes RGPD au quotidien",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-5.webp",
+      imageCredit: { name: "Israel Andrade", url: "https://unsplash.com/@israelandrxde" },
+    },
+    {
+      texteFr: "Rédiger et faire vivre la charte d'usage IA de l'entreprise",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-6.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
+  ],
   objectifsFr: [
     "Identifier les données qui ne doivent jamais sortir de l'entreprise",
     "Anonymiser correctement un document ou une photo avant de le confier à une IA",
@@ -319,7 +434,39 @@ const IA_CONFORMITE: FormationV2 = {
     "RGPD",
   ],
   publicViseFr:
-    "Dirigeants, RH, managers, référents, DPO. Format collectif, peu d'appareils requis. Aucun pré-requis.",
+    "Dirigeants, DRH et RH, managers, référents IA, DPO et responsables conformité de TPE, PME et ETI — toute personne chargée d'encadrer l'usage de l'IA dans l'entreprise. Format collectif, peu d'appareils requis. Aucun pré-requis technique ni juridique.",
+  casUsageFr: [
+    {
+      texteFr: "Repérer les obligations applicables (AI Act, RGPD, droit du travail) sans jargon",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-1.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
+    {
+      texteFr: "Cartographier les usages IA réels de l'entreprise, shadow AI compris",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-2.webp",
+      imageCredit: { name: "Austin Distel", url: "https://unsplash.com/@austindistel" },
+    },
+    {
+      texteFr: "Classer chaque usage selon son niveau de risque",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-3.webp",
+      imageCredit: { name: "Sasun Bughdaryan", url: "https://unsplash.com/@sasun1990" },
+    },
+    {
+      texteFr: "Constituer le registre des usages IA de l'entreprise",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-4.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
+    {
+      texteFr: "Bâtir un plan de mise en conformité à 90 jours",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-5.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
+    {
+      texteFr: "Communiquer le cadre en interne sans freiner l'adoption",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-6.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
+  ],
   objectifsFr: [
     "Identifier les obligations applicables (AI Act, RGPD, droit du travail) sans jargon",
     "Cartographier et classer les usages IA de l'entreprise (shadow AI compris)",
@@ -399,7 +546,41 @@ const IA_FONDAMENTAUX: FormationV2 = {
     "boîte à outils",
     "autonomie",
   ],
-  publicViseFr: "Tout salarié. Aucun pré-requis.",
+  publicViseFr:
+    "Tout salarié de tous services — bureau, commercial, technique, support, encadrement — mais aussi managers, chefs de projet, dirigeants de TPE-PME, professions libérales et indépendants qui veulent devenir vraiment autonomes avec l'IA. Aucun pré-requis : aucun profil technique n'est requis.",
+  casUsageFr: [
+    {
+      texteFr:
+        "Analyser un document long et complexe de son poste et en tirer une synthèse vérifiée",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-1.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
+    {
+      texteFr: "Produire un livrable complet de A à Z : dossier, proposition ou support",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-2.webp",
+      imageCredit: { name: "Vadim Bozhko", url: "https://unsplash.com/@bozhstudio" },
+    },
+    {
+      texteFr: "Travailler en plusieurs étapes : brouillon, critique, version finale",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-3.webp",
+      imageCredit: { name: "Unseen Studio", url: "https://unsplash.com/@uns__nstudio" },
+    },
+    {
+      texteFr: "Vérifier une production et repérer les inventions avant diffusion",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-4.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
+    {
+      texteFr: "Choisir le bon outil IA selon la tâche à réaliser",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-5.webp",
+      imageCredit: { name: "Andrew Neel", url: "https://unsplash.com/@andrewtneel" },
+    },
+    {
+      texteFr: "Se constituer une boîte à outils personnelle de prompts validés",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-6.webp",
+      imageCredit: { name: "Andrei Slobtsov", url: "https://unsplash.com/@andreislobtsov" },
+    },
+  ],
   objectifsFr: [
     "Tout le contenu d'IA Express, ancré par une journée de pratique",
     "Analyser un document long et complexe et en tirer une synthèse fiable et vérifiée",
@@ -482,7 +663,49 @@ const IA_COMMERCIAL: FormationV2 = {
     "relances personnalisées",
     "gabarit de devis",
   ],
-  publicViseFr: "Commerciaux, ADV, SAV, dirigeants qui vendent.",
+  publicViseFr:
+    "Commerciaux, ADV, assistants commerciaux, SAV et service client, responsables commerciaux et dirigeants qui vendent — en B2B comme en B2C, tous secteurs. Aucun pré-requis technique.",
+  casUsageFr: [
+    {
+      texteFr: "Traiter une demande client complexe dans la journée, complète et sans faute",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-1.webp",
+      imageCredit: { name: "Vitaly Gariev", url: "https://unsplash.com/@silverkblack" },
+    },
+    {
+      texteFr: "Produire un devis ou une proposition à partir de son gabarit",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-2.webp",
+      imageCredit: { name: "Luca Bravo", url: "https://unsplash.com/@lucabravo" },
+    },
+    {
+      texteFr: "Désamorcer une réclamation difficile par écrit, avec le ton juste",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-3.webp",
+      imageCredit: {
+        name: "Glenn Carstens-Peters",
+        url: "https://unsplash.com/@glenncarstenspeters",
+      },
+    },
+    {
+      texteFr: "Préparer un rendez-vous commercial en dix minutes",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-4.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Relancer un prospect avec une séquence personnalisée",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-5.webp",
+      imageCredit: {
+        name: "Glenn Carstens-Peters",
+        url: "https://unsplash.com/@glenncarstenspeters",
+      },
+    },
+    {
+      texteFr: "Constituer une bibliothèque commerciale partagée par l'équipe",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-6.webp",
+      imageCredit: {
+        name: "Gabrielle Henderson",
+        url: "https://unsplash.com/@gabriellefaithhenderson",
+      },
+    },
+  ],
   objectifsFr: [
     "Traiter une demande client complexe dans la journée, complète et sans faute",
     "Produire devis et propositions depuis son gabarit (chiffres vérifiés à la main)",
@@ -562,7 +785,13 @@ const IA_AU_BUREAU: FormationV2 = {
     "suivi sans ressaisie",
     "RH et paie",
   ],
-  publicViseFr: "Assistant(e)s, secrétariat, gestion, comptabilité, RH, services généraux.",
+  publicViseFr:
+    "Tout collaborateur qui produit des documents au quotidien : assistant(e)s, secrétariat et office management, gestion, comptabilité et paie, RH, ADV et services généraux — mais aussi chefs de projet, managers, professions libérales et indépendants. Aucun profil technique requis.",
+  imageSrc:
+    "/illustrations/formations/fiches/ia-au-bureau-administratif-secretariat-formation-ia-axion-ia.webp",
+  imageAltFr:
+    "Formation IA au bureau Axion-IA — poste administratif (secrétariat, gestion) accompagné par l'IA pour produire courriers, comptes rendus et dossiers deux fois plus vite.",
+  imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
   objectifsFr: [
     "Créer ses gabarits de documents et courriers récurrents",
     "Transformer des notes en vrac en document propre et diffusable",
@@ -574,6 +803,50 @@ const IA_AU_BUREAU: FormationV2 = {
     "L'administratif cesse d'être le goulot d'étranglement. La banque de gabarits remise au responsable = le savoir-faire administratif structuré, qui reste même si la personne part.",
   equationTempsFr:
     "1 jour investi → 1 à 2 h gagnées par jour sur les postes administratifs. Rentabilisée en une dizaine de jours ouvrés ; plusieurs semaines récupérées par personne sur l'année.",
+  avantApresFr: {
+    avant:
+      "Courriers repris de zéro à chaque fois, dossiers épais dépouillés à la main, réponses aux administrations chronophages, suivi éparpillé entre mails et tableurs.",
+    apres:
+      "Des gabarits prêts à l'emploi, un dossier synthétisé en quelques minutes, des réponses préparées d'un clic, un suivi centralisé sans ressaisie.",
+  },
+  resultatsFr: [
+    { valeur: "1 à 2 h", label: "gagnées par jour sur l'administratif" },
+    { valeur: "~10 j", label: "ouvrés pour rentabiliser la formation" },
+    { valeur: "1 journée", label: "sur site, sur vos vrais dossiers" },
+  ],
+  casUsageFr: [
+    {
+      texteFr:
+        "Générer un courrier type (relance, convocation, attestation) à partir d'un modèle maison",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/courrier-type-gabarit.webp",
+      imageCredit: { name: "Towfiqu barbhuiya", url: "https://unsplash.com/@towfiqu999999" },
+    },
+    {
+      texteFr: "Transformer des notes de réunion en compte rendu propre et diffusable",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/compte-rendu-reunion.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Dépouiller un dossier épais : synthèse, échéancier, pièces manquantes",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/dossier-synthese.webp",
+      imageCredit: { name: "Wesley Tingey", url: "https://unsplash.com/@wesleyphotography" },
+    },
+    {
+      texteFr: "Préparer une réponse à une administration ou un organisme",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/reponse-administration.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
+    {
+      texteFr: "Tenir un suivi (échanges → tableau → relances) sans ressaisie",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/suivi-relances.webp",
+      imageCredit: { name: "Carlos Muza", url: "https://unsplash.com/@kmuza" },
+    },
+    {
+      texteFr: "Constituer une banque de gabarits réutilisable par toute l'équipe",
+      imageSrc: "/illustrations/formations/fiches/ia-au-bureau/banque-gabarits.webp",
+      imageCredit: { name: "Maksym Kaharlytskyi", url: "https://unsplash.com/@qwitka" },
+    },
+  ],
   programme: [
     {
       titreFr: "Matin — produire",
@@ -651,7 +924,39 @@ const IA_SUR_LE_TERRAIN: FormationV2 = {
     "non scolaire",
   ],
   publicViseFr:
-    "Techniciens, ouvriers, chauffeurs, agents, atelier. Un smartphone suffit — aucun ordinateur de la journée. Format non scolaire.",
+    "Techniciens, ouvriers, chauffeurs, agents d'exploitation, personnel d'atelier, installateurs et agents de maintenance — toute personne dont le travail se passe hors du bureau. Un smartphone suffit : aucun ordinateur de la journée, format volontairement non scolaire, aucun pré-requis.",
+  casUsageFr: [
+    {
+      texteFr: "Dicter un compte rendu d'intervention structuré en quittant le site",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-1.webp",
+      imageCredit: { name: "Sorin Gheorghita", url: "https://unsplash.com/@sxtcxtc" },
+    },
+    {
+      texteFr: "Rédiger un signalement à partir d'une photo : constat, cause, action, urgence",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-2.webp",
+      imageCredit: { name: "Mike Beaumont", url: "https://unsplash.com/@mbeaumont76" },
+    },
+    {
+      texteFr: "Reformuler un message délicat avant de l'envoyer au client ou au bureau",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-3.webp",
+      imageCredit: { name: "Valerie V", url: "https://unsplash.com/@valerief" },
+    },
+    {
+      texteFr: "Comprendre une consigne ou une notice technique à partir d'une photo",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-4.webp",
+      imageCredit: { name: "NordWood Themes", url: "https://unsplash.com/@nordwood" },
+    },
+    {
+      texteFr: "Boucler le circuit terrain vers bureau depuis son téléphone",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-5.webp",
+      imageCredit: { name: "Mathias Reding", url: "https://unsplash.com/@matreding" },
+    },
+    {
+      texteFr: "Installer ses raccourcis pour ses documents récurrents",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-6.webp",
+      imageCredit: { name: "Gilles Lambert", url: "https://unsplash.com/@gilleslambert" },
+    },
+  ],
   objectifsFr: [
     "Produire un compte rendu structuré à la voix en quittant le site",
     "Rédiger un signalement exploitable depuis une photo (constat / cause / action / urgence)",
@@ -735,7 +1040,39 @@ const AUTOMATISATIONS_DECOUVERTE: FormationV2 = {
     "tâches répétitives",
   ],
   publicViseFr:
-    "Tout salarié et encadrement ; dirigeant invité à la restitution finale. Aucun matériel participant requis. Journée démonstrative : on identifie, on chiffre, on priorise — on ne construit pas (c'est l'objet des formats 2-3 jours).",
+    "Tout salarié et encadrement de tous services, ainsi que les dirigeants (invités à la restitution finale), de la TPE à l'ETI. Journée démonstrative : on identifie, on chiffre, on priorise. Aucun matériel participant requis, aucun pré-requis technique.",
+  casUsageFr: [
+    {
+      texteFr: "Comprendre le principe d'une automatisation : déclencheur, traitement, action",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-1.webp",
+      imageCredit: { name: "ThisisEngineering", url: "https://unsplash.com/@thisisengineering" },
+    },
+    {
+      texteFr: "Repérer dans son poste les tâches répétitives automatisables",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-2.webp",
+      imageCredit: { name: "Luca Bravo", url: "https://unsplash.com/@lucabravo" },
+    },
+    {
+      texteFr: "Distinguer ce qui s'automatise de ce qui ne s'automatise pas",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-3.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
+    {
+      texteFr: "Estimer le temps que ferait gagner chaque automatisation",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-4.webp",
+      imageCredit: { name: "Towfiqu barbhuiya", url: "https://unsplash.com/@towfiqu999999" },
+    },
+    {
+      texteFr: "Prioriser les premières automatisations sur une matrice gain / difficulté",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-5.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
+    {
+      texteFr: "Bâtir un plan d'automatisation chiffré pour la direction",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-6.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
+  ],
   objectifsFr: [
     "Expliquer le principe d'une automatisation : déclencheur → traitement → action",
     "Identifier dans son poste les tâches automatisables — et celles qui ne le sont pas",
@@ -823,7 +1160,16 @@ const IA_INTEGRATION_METIER: FormationV2 = {
     "bibliothèque de prompts",
     "gains de temps mesurés",
   ],
-  publicViseFr: "Tout salarié ; équipes constituées recommandées.",
+  publicViseFr:
+    "Tout salarié de tous services, idéalement en équipes constituées — bureau, commercial, technique, support, encadrement — ainsi que managers et responsables d'équipe qui veulent transformer les tâches réelles de leurs collaborateurs. Aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Transformer ses tâches les plus chronophages en gabarits reproductibles" },
+    { texteFr: "Vérifier et fiabiliser une production IA avant diffusion" },
+    { texteFr: "Contribuer à la bibliothèque de modèles validés de l'équipe" },
+    { texteFr: "Documenter un gabarit pour qu'un collègue le réutilise" },
+    { texteFr: "Tester un gabarit deux fois pour garantir sa reproductibilité" },
+    { texteFr: "Transmettre les bonnes pratiques à un collègue" },
+  ],
   objectifsFr: [
     "Tout le contenu d'IA Fondamentaux",
     "Transformer réellement ses 3 à 5 tâches chronophages avec gabarits reproductibles",
@@ -907,7 +1253,16 @@ const IA_COMMERCIAL_AVANCE: FormationV2 = {
     "bibliothèque commerciale",
     "pipeline réel",
   ],
-  publicViseFr: "Commerciaux confirmés, responsables commerciaux, ADV impliquée dans les offres.",
+  publicViseFr:
+    "Commerciaux confirmés, responsables et directeurs commerciaux, ADV impliquée dans les offres, dirigeants qui pilotent le développement — B2B, appels d'offres publics et privés, tous secteurs. Aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Prospecter en série personnalisée, dans le respect de la déontologie" },
+    { texteFr: "Décortiquer un appel d'offres : exigences, preuves, trame de réponse" },
+    { texteFr: "Construire une matrice de conformité pour un appel d'offres" },
+    { texteFr: "Produire une proposition différenciante qui traite les objections" },
+    { texteFr: "Dérouler une séquence de relance multi-touches" },
+    { texteFr: "Faire vivre la bibliothèque commerciale d'équipe" },
+  ],
   objectifsFr: [
     "Tout le contenu d'IA & Commercial",
     "Prospecter en série personnalisée, dans les règles (déontologie)",
@@ -1001,7 +1356,15 @@ const IA_TRANSFORMATION_EQUIPE: FormationV2 = {
     "restitution direction",
   ],
   publicViseFr:
-    "Équipe constituée + 1-2 référents volontaires ; direction présente à la restitution finale.",
+    "Équipe constituée avec 1-2 référents volontaires, et la direction présente à la restitution finale — tous services et toutes tailles d'entreprise. Aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Outiller un processus complet de bout en bout avec points de contrôle humain" },
+    { texteFr: "Placer des points de contrôle humain aux étapes sensibles" },
+    { texteFr: "Faire l'inventaire des abonnements IA : garder, tester, résilier" },
+    { texteFr: "Chiffrer ses gains dans un tableau de bord d'une page" },
+    { texteFr: "Former un référent interne capable d'intégrer les nouveaux arrivants" },
+    { texteFr: "Présenter les résultats à la direction" },
+  ],
   objectifsFr: [
     "Tout le contenu d'IA Intégration métier",
     "Outiller un processus complet de bout en bout avec points de contrôle humain",
@@ -1105,7 +1468,15 @@ const AGENTS_AUTOMATISATIONS: FormationV2 = {
     "gestion d'erreurs",
   ],
   publicViseFr:
-    "Tout salarié SANS connaissance en programmation. L'IA écrit le code en clair : il appartient à l'entreprise, documenté, zéro abonnement à une plateforme. Groupe limité à 12 pour l'accompagnement individuel.",
+    "Tout salarié sans connaissance en programmation, de tous services, qui veut créer ses propres automatisations — bureau, gestion, opérations, support. L'IA écrit le code en clair, qui appartient à l'entreprise. Groupe limité à 12. Pré-requis : un PC avec droits d'installation (réglé avec votre DSI en amont, à notre initiative) ; aucune compétence en développement requise.",
+  casUsageFr: [
+    { texteFr: "Spécifier une automatisation en français dans une fiche de spec" },
+    { texteFr: "Faire écrire le code de son automatisation en dialoguant avec l'IA" },
+    { texteFr: "Lire et comprendre un code sans savoir programmer" },
+    { texteFr: "Tester une automatisation et corriger un bug" },
+    { texteFr: "Protéger les données et les secrets, jamais en clair" },
+    { texteFr: "Livrer une automatisation documentée, propriété de l'entreprise" },
+  ],
   objectifsFr: [
     "Spécifier une automatisation en français (fiche de spec)",
     "Faire écrire, lire, tester et corriger le code en dialoguant avec l'IA",
@@ -1212,7 +1583,16 @@ const AGENTS_AUTOMATISATIONS_AVANCE: FormationV2 = {
     "dépôt central",
     "robustesse",
   ],
-  publicViseFr: "Tout salarié sans connaissance en programmation. Groupe limité à 12.",
+  publicViseFr:
+    "Tout salarié sans connaissance en programmation ayant suivi le niveau 2 jours, qui veut déployer des automatisations robustes en production. Groupe limité à 12. Pré-requis : mêmes que le niveau 2 jours, plus un lieu d'exécution récurrente décidé avec la DSI au cadrage.",
+  casUsageFr: [
+    { texteFr: "Étendre une automatisation à plusieurs étapes et plusieurs outils connectés" },
+    { texteFr: "Gérer les erreurs et tenir un journal d'activité" },
+    { texteFr: "Mettre en place des alertes en cas d'échec" },
+    { texteFr: "Déployer une automatisation en exécution planifiée" },
+    { texteFr: "Éprouver la robustesse par un test du chaos" },
+    { texteFr: "Devenir autonome pour créer la prochaine automatisation seul" },
+  ],
   objectifsFr: [
     "Tout le niveau 2 jours",
     "Étendre une automatisation : plusieurs étapes, plusieurs outils connectés",
@@ -1311,7 +1691,15 @@ const CLAUDE_DECOUVERTE: FormationV2 = {
     "formateur certifié",
   ],
   publicViseFr:
-    "Tout salarié. Comptes gratuits suffisent (les fonctions avancées sont démontrées par le formateur certifié).",
+    "Tout salarié de tous services curieux de l'écosystème Claude (Anthropic) — bureau, commercial, technique, encadrement — ainsi que dirigeants et décideurs qui veulent évaluer l'outil avant d'investir. Les comptes gratuits suffisent ; aucun pré-requis technique.",
+  casUsageFr: [
+    { texteFr: "Produire et analyser un vrai document de travail avec Claude" },
+    { texteFr: "Construire un livrable fini : plan, sections, relecture critique" },
+    { texteFr: "Découvrir l'apport des Projets : instructions permanentes et base documentaire" },
+    { texteFr: "Comparer Claude aux autres outils sur des tâches réelles" },
+    { texteFr: "Appliquer les bonnes pratiques de confidentialité propres à Claude" },
+    { texteFr: "Évaluer l'outil sur pièces avant tout investissement" },
+  ],
   objectifsFr: [
     "Produire et analyser de vrais documents de travail avec Claude",
     "Construire un livrable fini (plan → sections → relecture-critique)",
@@ -1403,7 +1791,15 @@ const CLAUDE_CREATEUR: FormationV2 = {
     "formateur certifié",
   ],
   publicViseFr:
-    "Tout salarié. Pré-requis : comptes Claude Pro ou Team actifs avant J1, fournis par l'entreprise. Groupe limité à 12. Formateur certifié écosystème Claude.",
+    "Tout salarié de tous services qui veut construire son propre assistant Claude sur ses vrais dossiers — bureau, commercial, technique, encadrement. Groupe limité à 12, formateur certifié. Pré-requis : comptes Claude Pro ou Team actifs avant le jour 1, fournis par l'entreprise (conseil licences offert au cadrage).",
+  casUsageFr: [
+    { texteFr: "Construire son assistant Claude personnalisé : métier, ton, formats" },
+    { texteFr: "Rédiger des instructions permanentes en cinq blocs" },
+    { texteFr: "Organiser un projet Claude par activité avec sa base documentaire" },
+    { texteFr: "Industrialiser ses tâches récurrentes avec des gabarits validés" },
+    { texteFr: "Tester la reproductibilité d'un gabarit sur ses dossiers" },
+    { texteFr: "Protéger les données sensibles dans ses espaces de travail" },
+  ],
   objectifsFr: [
     "Tout le contenu de Claude Découverte",
     "Construire son assistant personnalisé (métier, entreprise, formats, ton) configuré une fois pour toutes",
@@ -1497,7 +1893,15 @@ const CLAUDE_ARCHITECTE: FormationV2 = {
     "test des 3 pièges",
   ],
   publicViseFr:
-    "Tout salarié. Pré-requis : comptes Claude Pro ou Team actifs avant J1 + flux de travail réels identifiés au cadrage. Groupe limité à 12. Formateur certifié.",
+    "Tout salarié de tous services ayant un usage régulier de Claude, qui veut connecter son outil à ses flux de travail réels et le faire évoluer seul — bureau, commercial, technique, encadrement. Groupe limité à 12, formateur certifié. Pré-requis : comptes Claude Pro ou Team actifs avant le jour 1 et flux de travail réels identifiés au cadrage.",
+  casUsageFr: [
+    { texteFr: "Connecter son outil Claude à ses documents et flux entrants réels" },
+    { texteFr: "Organiser ses flux entrants avec un filtre de confidentialité" },
+    { texteFr: "Mettre en place une routine quotidienne, la « tournée du matin »" },
+    { texteFr: "Automatiser des séquences multi-étapes dans Claude" },
+    { texteFr: "Versionner et faire évoluer ses instructions en autonomie" },
+    { texteFr: "Éprouver son outil avec le test des 3 pièges" },
+  ],
   objectifsFr: [
     "Tout le contenu de Claude Créateur",
     "Connecter son outil au travail réel : documents, données, flux entrants",

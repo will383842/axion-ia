@@ -243,6 +243,455 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  // ===== Toutes nos formations IA entreprise (landing catalogue flagship) =====
+  // Réutilise les assets « maison » déjà crawlables (aucun nouveau fichier) :
+  // héro équipe (représentatif), quadriptyque bandeau, 4 photos d'atelier, portrait
+  // fondateur. Alt denses alignés sur le texte réellement rendu par la page.
+  {
+    path: "/formations/entreprise",
+    images: [
+      {
+        src: "/illustrations/home-hero-equipe.avif",
+        nameFr: "Formations IA en entreprise — équipe Axion-IA n°1 en France",
+        nameEn: "Corporate AI training — Axion-IA team, France leader",
+        altFr:
+          "Formations IA en entreprise Axion-IA — l'équipe de formateurs IA experts qui accompagne TPE, PME, ETI et grandes entreprises partout en France : 17 formations sur site, certifiées Qualiopi, finançables OPCO.",
+        altEn:
+          "Axion-IA corporate AI training — the team of expert AI trainers supporting SMEs, mid-caps and large enterprises across France: 17 on-site trainings, Qualiopi-certified, OPCO-fundable.",
+        width: 1536,
+        height: 1024,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/formation-claude-team-quadriptyque.png",
+        nameFr: "Catalogue formations IA entreprise Axion-IA — 4 moments d'intervention",
+        nameEn: "Axion-IA corporate AI training catalogue — 4 intervention moments",
+        altFr:
+          "Séquence d'une formation IA en entreprise Axion-IA : présentation au tableau, démonstration écran, atelier pratique en équipe, salle de formation sur site avec formateur IA expert.",
+        altEn:
+          "Sequence of an Axion-IA corporate AI training: whiteboard presentation, screen demo, hands-on team workshop, on-site training room with expert AI trainer.",
+        width: 2400,
+        height: 800,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/formations/comment-reserver-formation-ia-entreprise-axion-ia.avif",
+        nameFr: "Comment réserver votre formation IA en entreprise — les 7 étapes Axion-IA",
+        nameEn: "How to book your corporate AI training — the 7 Axion-IA steps",
+        altFr:
+          "Infographie « Comment réserver votre formation IA en entreprise » en 7 étapes : 1) contactez-nous, 2) échange sur vos besoins, 3) montage du dossier OPCO, 4) accord de financement, 5) intervention sur votre site, 6) interviews & podcast, 7) page dédiée + backlink dofollow.",
+        altEn:
+          "Infographic “How to book your corporate AI training” in 7 steps: 1) contact us, 2) needs call, 3) OPCO funding file, 4) funding approval, 5) on-site delivery, 6) interviews & podcast, 7) dedicated page + dofollow backlink.",
+        width: 1983,
+        height: 793,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/formations/visibilite-entreprise-podcast-interview-backlink-formation-ia-axion-ia.avif",
+        nameFr:
+          "La visibilité de votre entreprise en bonus — podcast, interview, page dédiée, backlink | Axion-IA",
+        nameEn:
+          "Your company's visibility as a bonus — podcast, interview, dedicated page, backlink | Axion-IA",
+        altFr:
+          "Infographie « La visibilité de votre entreprise, en bonus » — Axion-IA : podcast dirigeant ou collaborateur, interviews des participants, page dédiée à votre entreprise et votre secteur sur axion-ia.com, lien dofollow vers votre site (SEO) et relais LinkedIn, offerts avec votre formation IA.",
+        altEn:
+          "Infographic “Your company's visibility, as a bonus” — Axion-IA: executive or employee podcast, participant interviews, dedicated page about your company and sector on axion-ia.com, dofollow link to your site (SEO) and LinkedIn share, included with your AI training.",
+        width: 1254,
+        height: 1254,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/formations/formateur-ia-claude-atelier-pme.png",
+        nameFr: "Formateur IA en atelier formation entreprise",
+        nameEn: "AI trainer in corporate training workshop",
+        altFr:
+          "Formateur IA expert Axion-IA animant une formation IA en entreprise — atelier pratique sur les vrais outils métier (ChatGPT, Claude, Mistral).",
+        altEn:
+          "Expert Axion-IA AI trainer running a corporate AI training — hands-on workshop on real business tools (ChatGPT, Claude, Mistral).",
+        width: 1024,
+        height: 768,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.png",
+        nameFr: "Équipe en formation IA entreprise sur site",
+        nameEn: "Team in on-site corporate AI training",
+        altFr:
+          "Équipe d'entreprise en formation IA sur site — apprenants en atelier pratique sur leurs propres dossiers, montée en compétence opérationnelle Axion-IA.",
+        altEn:
+          "Corporate team in on-site AI training — learners in hands-on workshop on their own files, operational upskilling by Axion-IA.",
+        width: 1024,
+        height: 768,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/william-fondateur-formateur-ia-axion-ia.png",
+        nameFr: "Williams — Fondateur Axion-IA et formateur IA en entreprise",
+        nameEn: "Williams — Axion-IA founder and corporate AI trainer",
+        altFr:
+          "Williams, fondateur d'Axion-IA et formateur IA — accompagne avec son équipe les entreprises françaises (TPE, PME, ETI, grands comptes) sur toutes les formations IA du catalogue.",
+        altEn:
+          "Williams, Axion-IA founder and AI trainer — with his team he supports French companies (SMEs, mid-caps, large accounts) across the full AI training catalogue.",
+        width: 800,
+        height: 1000,
+        slot: "portrait",
+      },
+    ],
+  },
+  // ===== Visibilité client (bénéfices — la visibilité offerte) =====
+  {
+    path: "/visibilite-entreprise",
+    images: [
+      {
+        src: "/illustrations/visibilite/visibilite-entreprise-hub-podcast-interview-page-dediee-backlink-linkedin-axion-ia.avif",
+        nameFr:
+          "Les 5 leviers de visibilité offerts par Axion-IA — podcast, interviews, page dédiée, lien dofollow, relais LinkedIn",
+        nameEn:
+          "The 5 visibility levers offered by Axion-IA — podcast, interviews, dedicated page, dofollow link, LinkedIn share",
+        altFr:
+          "Infographie Axion-IA « La visibilité de votre entreprise, offerte » : 5 leviers autour de la marque Axion-IA.com — podcast dirigeant ou collaborateur, interviews (témoignages de participants volontaires), page dédiée à votre entreprise et votre secteur sur axion-ia.com, lien dofollow vers votre site (SEO) et relais LinkedIn auprès de notre communauté et réseau, offerts avec chaque prestation (formation, 1-to-1, audit, implémentation, site web augmenté à l'IA).",
+        altEn:
+          "Axion-IA infographic “Your company's visibility, offered”: 5 levers around the Axion-IA.com brand — executive or employee podcast, interviews (testimonials from volunteer participants), dedicated page about your company and sector on axion-ia.com, dofollow link to your site (SEO) and LinkedIn share to our community and network, included with every service (training, 1-to-1, audit, implementation, AI-augmented website).",
+        width: 1254,
+        height: 1254,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        nameFr: "Équipe Axion-IA — met ses entreprises clientes en lumière",
+        nameEn: "Axion-IA team — puts its client companies in the spotlight",
+        altFr:
+          "Équipe Axion-IA en session avec un client — cabinet IA français qui, en plus de sa prestation, offre de la visibilité à ses entreprises clientes (podcast, interviews, page dédiée, backlink dofollow, LinkedIn).",
+        altEn:
+          "Axion-IA team in a client session — French AI consultancy that, on top of its service, offers visibility to its client companies (podcast, interviews, dedicated page, dofollow backlink, LinkedIn).",
+        width: 1961,
+        height: 802,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/visibilite/pourquoi-ca-compte-visibilite-entreprise-axion-ia.avif",
+        nameFr: "Pourquoi la visibilité offerte compte — infographie Axion-IA",
+        nameEn: "Why the free visibility matters — Axion-IA infographic",
+        altFr:
+          "Infographie « Pourquoi ça compte » : la visibilité offerte par Axion-IA est un actif marketing durable — une valeur qui vous survit, une autorité SEO durable (backlink dofollow), la notoriété locale et nationale, la preuve sociale et la confiance, la marque employeur et le recrutement.",
+        altEn:
+          "Infographic “Why it matters”: the visibility offered by Axion-IA is a durable marketing asset — value that outlasts you, durable SEO authority (dofollow backlink), local and national awareness, social proof and trust, employer brand and hiring.",
+        width: 1693,
+        height: 929,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/visibilite/equipe-entreprise-mise-en-lumiere-visibilite-axion-ia.avif",
+        nameFr: "Équipe d'entreprise mise en lumière par Axion-IA",
+        nameEn: "Client company team spotlighted by Axion-IA",
+        altFr:
+          "Équipe d'entreprise cliente mise en lumière par Axion-IA — la visibilité offerte (podcast, page dédiée, relais LinkedIn) renforce sa notoriété.",
+        altEn:
+          "Client company team spotlighted by Axion-IA — the free visibility (podcast, dedicated page, LinkedIn) boosts its awareness.",
+        width: 1600,
+        height: 1067,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/podcast-dirigeant-entreprise-visibilite-axion-ia.avif",
+        nameFr: "Podcast dirigeant d'entreprise — visibilité Axion-IA",
+        nameEn: "Company executive podcast — Axion-IA visibility",
+        altFr:
+          "Enregistrement d'un podcast d'entreprise — le dirigeant partage sa transformation IA avec Axion-IA pour gagner en visibilité.",
+        altEn:
+          "Recording a corporate podcast — the executive shares their AI transformation with Axion-IA to gain visibility.",
+        width: 1600,
+        height: 1067,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/interview-participant-entreprise-visibilite-axion-ia.avif",
+        nameFr: "Interview d'un collaborateur d'entreprise cliente — Axion-IA",
+        nameEn: "Interview of a client-company employee — Axion-IA",
+        altFr:
+          "Interview vidéo d'un collaborateur d'entreprise cliente, filmée par Axion-IA — témoignage et preuve sociale pour la visibilité de l'entreprise.",
+        altEn:
+          "Video interview of a client-company employee, filmed by Axion-IA — testimonial and social proof for the company's visibility.",
+        width: 1600,
+        height: 1099,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/page-dediee-entreprise-secteur-visibilite-axion-ia.avif",
+        nameFr: "Page entreprise dédiée sur axion-ia.com — visibilité",
+        nameEn: "Dedicated company page on axion-ia.com — visibility",
+        altFr:
+          "Page entreprise dédiée sur axion-ia.com — vitrine du secteur d'activité du client, optimisée SEO et hébergée sur un domaine à forte autorité.",
+        altEn:
+          "Dedicated company page on axion-ia.com — showcase of the client's sector, SEO-optimised and hosted on a high-authority domain.",
+        width: 1600,
+        height: 924,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/backlink-dofollow-autorite-seo-visibilite-axion-ia.avif",
+        nameFr: "Backlink dofollow — autorité SEO offerte par Axion-IA",
+        nameEn: "Dofollow backlink — SEO authority offered by Axion-IA",
+        altFr:
+          "Tableau de bord d'analyse SEO — le backlink dofollow d'Axion-IA transmet de l'autorité de domaine et améliore le référencement Google du client.",
+        altEn:
+          "SEO analytics dashboard — Axion-IA's dofollow backlink passes domain authority and improves the client's Google ranking.",
+        width: 1600,
+        height: 1140,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/relais-linkedin-entreprise-visibilite-axion-ia.avif",
+        nameFr: "Relais LinkedIn d'une entreprise cliente — Axion-IA",
+        nameEn: "LinkedIn share of a client company — Axion-IA",
+        altFr:
+          "Relais LinkedIn d'une entreprise cliente par Axion-IA — portée organique auprès d'une audience B2B de dirigeants et décideurs.",
+        altEn:
+          "LinkedIn share of a client company by Axion-IA — organic reach to a B2B audience of executives and decision-makers.",
+        width: 1600,
+        height: 1067,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/notoriete-confiance-entreprise-visibilite-axion-ia.avif",
+        nameFr: "Notoriété et confiance — la visibilité offerte par Axion-IA",
+        nameEn: "Awareness and trust — the visibility offered by Axion-IA",
+        altFr:
+          "Poignée de main entre Axion-IA et une entreprise cliente — la visibilité offerte renforce la notoriété, la preuve sociale et la confiance.",
+        altEn:
+          "Handshake between Axion-IA and a client company — the free visibility strengthens awareness, social proof and trust.",
+        width: 1600,
+        height: 1068,
+        slot: "grid",
+      },
+    ],
+  },
+  // ===== Certification Qualiopi (réassurance qualité) =====
+  {
+    path: "/certification-qualiopi",
+    images: [
+      {
+        src: "/illustrations/qualiopi/certification-qualiopi-axion-ia-formation-ia-qualite.webp",
+        nameFr:
+          "Axion-IA, organisme de formation certifié Qualiopi — agrément qualité, expertise IA, résultats",
+        nameEn:
+          "Axion-IA, Qualiopi-certified training provider — quality certification, AI expertise, results",
+        altFr:
+          "Infographie Axion-IA.com : agrément Qualiopi (processus certifié, République française) au centre, entouré de scènes de formation IA en entreprise — salle de formation, atelier, tampon « Qualité », mots-clés Formation, Expertise, Résultats et repères Qualité certifiée, Experts IA, Formations d'excellence.",
+        altEn:
+          "Axion-IA.com infographic: Qualiopi certification (certified process, French Republic) at the centre, surrounded by corporate AI training scenes — training room, workshop, “Quality” stamp, keywords Training, Expertise, Results and markers Certified quality, AI experts, Excellence training.",
+        width: 1254,
+        height: 1254,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/qualiopi/bandeau-qualiopi-qualite-certifiee-formation-ia-axion-ia.webp",
+        nameFr:
+          "Axion-IA — Qualiopi, la qualité certifiée : des formations IA concrètes, efficaces et reconnues",
+        nameEn:
+          "Axion-IA — Qualiopi, certified quality: concrete, effective and recognised AI trainings",
+        altFr:
+          "Bandeau Axion-IA.com « Qualiopi, la qualité certifiée » : formateur IA face à une équipe en salle, badge Qualiopi « processus certifié — République française » avec mention « La certification qualité a été délivrée au titre de la catégorie d'actions suivante : actions de formation », et 5 repères — qualité certifiée (Référentiel National Qualité), formations expertes, résultats concrets, accompagnement personnalisé, partout en France.",
+        altEn:
+          "Axion-IA.com banner “Qualiopi, certified quality”: AI trainer facing a team in a room, Qualiopi badge “certified process — French Republic” with the mention “Quality certification granted for the following action category: training actions”, and 5 markers — certified quality (National Quality Framework), expert trainings, concrete results, personalised support, everywhere in France.",
+        width: 1983,
+        height: 793,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/qualiopi/audit-documentaire-processus-qualite-certification-qualiopi-axion-ia.webp",
+        nameFr: "Audit documentaire du processus qualité — certification Qualiopi Axion-IA",
+        nameEn: "Documentary audit of the quality process — Axion-IA Qualiopi certification",
+        altFr:
+          "Documents et poste de travail lors de l'audit du processus qualité d'un organisme de formation — la certification Qualiopi d'Axion-IA repose sur un audit indépendant.",
+        altEn:
+          "Documents and workstation during the audit of a training provider's quality process — Axion-IA's Qualiopi certification rests on an independent audit.",
+        width: 1600,
+        height: 1067,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/qualiopi/confiance-accord-organisme-formation-certifie-qualiopi-axion-ia.webp",
+        nameFr: "Confiance et accord — organisme de formation IA certifié Qualiopi Axion-IA",
+        nameEn: "Trust and agreement — Axion-IA Qualiopi-certified AI training provider",
+        altFr:
+          "Poignée de main devant un ordinateur — choisir un organisme de formation IA certifié Qualiopi (Axion-IA), c'est la garantie d'un partenaire sérieux et conforme.",
+        altEn:
+          "Handshake in front of a laptop — choosing a Qualiopi-certified AI training provider (Axion-IA) guarantees a serious, compliant partner.",
+        width: 1600,
+        height: 1067,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.avif",
+        nameFr: "Salle de formation IA en entreprise — qualité certifiée Qualiopi",
+        nameEn: "Corporate AI training room — Qualiopi-certified quality",
+        altFr:
+          "Salle de formation IA en entreprise sur site animée par Axion-IA — dispositif conforme au Référentiel National Qualité (Qualiopi) : objectifs, moyens et évaluation adaptés.",
+        altEn:
+          "On-site corporate AI training room run by Axion-IA — setup compliant with the National Quality Framework (Qualiopi): tailored objectives, means and assessment.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/formateur-ia-claude-atelier-pme.avif",
+        nameFr: "Formateur IA expert Axion-IA — compétences vérifiées (critère Qualiopi)",
+        nameEn: "Expert Axion-IA AI trainer — verified skills (Qualiopi criterion)",
+        altFr:
+          "Formateur IA expert Axion-IA en atelier — la qualification des intervenants est l'un des 7 critères du Référentiel National Qualité Qualiopi.",
+        altEn:
+          "Expert Axion-IA AI trainer in workshop — trainer qualification is one of the 7 criteria of the Qualiopi National Quality Framework.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.avif",
+        nameFr: "Équipe en formation IA — accueil et adaptation des publics (Qualiopi)",
+        nameEn: "Team in AI training — audience reception and adaptation (Qualiopi)",
+        altFr:
+          "Équipe d'entreprise en formation IA pratique Axion-IA — l'adaptation aux publics et l'accueil des bénéficiaires font partie des exigences Qualiopi.",
+        altEn:
+          "Corporate team in hands-on Axion-IA AI training — audience adaptation and beneficiary reception are part of the Qualiopi requirements.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.avif",
+        nameFr: "Bilan de formation IA — évaluation des résultats (critère Qualiopi)",
+        nameEn: "AI training review — results assessment (Qualiopi criterion)",
+        altFr:
+          "Bilan de fin de formation IA Axion-IA — l'évaluation des acquis et l'amélioration continue sont au cœur de la certification Qualiopi.",
+        altEn:
+          "End-of-training review with Axion-IA — assessment of learning and continuous improvement are at the heart of Qualiopi certification.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        nameFr: "Williams — Fondateur Axion-IA, organisme certifié Qualiopi",
+        nameEn: "Williams — Axion-IA founder, Qualiopi-certified provider",
+        altFr:
+          "Williams, fondateur d'Axion-IA — engage la démarche qualité Qualiopi et garantit le sérieux des formations IA proposées aux entreprises françaises.",
+        altEn:
+          "Williams, Axion-IA founder — drives the Qualiopi quality approach and guarantees the seriousness of the AI trainings offered to French companies.",
+        width: 2048,
+        height: 2048,
+        slot: "portrait",
+      },
+    ],
+  },
+  // ===== Financement OPCO / France Travail =====
+  {
+    path: "/financement-opco-france-travail",
+    images: [
+      {
+        src: "/illustrations/financement/financement-formation-ia-opco-france-travail-axion-ia.webp",
+        nameFr:
+          "Vos formations IA financées avec OPCO et France Travail — Axion-IA vous accompagne de A à Z",
+        nameEn:
+          "Your AI trainings funded with OPCO and France Travail — Axion-IA supports you end to end",
+        altFr:
+          "Infographie Axion-IA.com « Vos formations IA financées avec OPCO et France Travail » : OPCO (financements dédiés aux entreprises et à leurs salariés) et France Travail (accompagnement vers l'emploi et la formation), avec le parcours en 5 étapes — votre besoin, dossier pris en charge, financement validé, formation réalisée, compétences et performance.",
+        altEn:
+          "Axion-IA.com infographic “Your AI trainings funded with OPCO and France Travail”: OPCO (funding dedicated to companies and their employees) and France Travail (support towards employment and training), with the 5-step path — your need, funded file, approved funding, training delivered, skills and performance.",
+        width: 1254,
+        height: 1254,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/financement/bandeau-financement-formation-ia-opco-france-travail-axion-ia.webp",
+        nameFr: "Vos formations IA financées facilement — OPCO et France Travail | Axion-IA",
+        nameEn: "Your AI trainings funded easily — OPCO and France Travail | Axion-IA",
+        altFr:
+          "Bandeau Axion-IA.com « Vos formations IA financées facilement — OPCO · France Travail » : dossier (prise en charge simplifiée), financement (solutions adaptées à votre entreprise), accompagnement (suivi personnalisé), et repères sécurisé, gain de temps, investir, performance.",
+        altEn:
+          "Axion-IA.com banner “Your AI trainings funded easily — OPCO · France Travail”: file (simplified coverage), funding (solutions tailored to your company), support (personalised follow-up), and markers secure, time-saving, invest, performance.",
+        width: 1983,
+        height: 793,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/financement/dossier-financement-formation-opco-france-travail-axion-ia.webp",
+        nameFr: "Montage du dossier de financement d'une formation IA — OPCO / France Travail",
+        nameEn: "Building the funding file for an AI training — OPCO / France Travail",
+        altFr:
+          "Bureau avec documents et calculatrice pour le montage d'un dossier de prise en charge OPCO ou France Travail — Axion-IA prépare le dossier de financement avec vous.",
+        altEn:
+          "Desk with documents and calculator to build an OPCO or France Travail funding file — Axion-IA prepares the funding file with you.",
+        width: 1600,
+        height: 1067,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/financement/accompagnement-financement-formation-ia-axion-ia.webp",
+        nameFr: "Accompagnement au financement d'une formation IA — conseil personnalisé Axion-IA",
+        nameEn: "Support for funding an AI training — personalised Axion-IA advice",
+        altFr:
+          "Échange de conseil et d'accompagnement pour financer une formation IA — Axion-IA oriente entreprises et demandeurs d'emploi vers le bon dispositif (OPCO, France Travail).",
+        altEn:
+          "Advisory session to fund an AI training — Axion-IA guides companies and jobseekers to the right scheme (OPCO, France Travail).",
+        width: 1600,
+        height: 1067,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.avif",
+        nameFr: "Formation IA financée réalisée sur site — OPCO / France Travail",
+        nameEn: "Funded AI training delivered on site — OPCO / France Travail",
+        altFr:
+          "Salle de formation IA en entreprise Axion-IA — une fois le financement OPCO ou France Travail validé, la formation est réalisée sur site partout en France.",
+        altEn:
+          "Axion-IA corporate AI training room — once OPCO or France Travail funding is approved, the training is delivered on site across France.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.avif",
+        nameFr: "Équipe en formation IA financée — montée en compétences OPCO",
+        nameEn: "Team in funded AI training — OPCO upskilling",
+        altFr:
+          "Équipe d'entreprise en formation IA pratique financée via l'OPCO — montée en compétences des salariés accompagnée par Axion-IA.",
+        altEn:
+          "Corporate team in hands-on AI training funded via the OPCO — employee upskilling supported by Axion-IA.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.avif",
+        nameFr: "Bilan de formation IA financée — compétences et performance",
+        nameEn: "Funded AI training review — skills and performance",
+        altFr:
+          "Bilan de fin de formation IA Axion-IA — le financement OPCO ou France Travail se traduit par de nouvelles compétences et de la performance pour l'organisation.",
+        altEn:
+          "End-of-training review with Axion-IA — OPCO or France Travail funding translates into new skills and performance for the organisation.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        nameFr: "Williams — Fondateur Axion-IA, monte votre dossier de financement",
+        nameEn: "Williams — Axion-IA founder, builds your funding file",
+        altFr:
+          "Williams, fondateur d'Axion-IA — accompagne les entreprises et demandeurs d'emploi dans le montage du dossier de financement OPCO ou France Travail de leur formation IA.",
+        altEn:
+          "Williams, Axion-IA founder — supports companies and jobseekers in building the OPCO or France Travail funding file for their AI training.",
+        width: 2048,
+        height: 2048,
+        slot: "portrait",
+      },
+    ],
+  },
   // ===== Audit IA (hub) =====
   // Images SEO-only rendues dans des sous-composants Audit* (pas de <Image> direct).
   {

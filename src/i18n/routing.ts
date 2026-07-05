@@ -24,6 +24,12 @@ export const routing = defineRouting({
     // redirigé 301→FR (proxy) et fr==en évite le bug next-intl 307 self-loop
     // (qui ne survient que sur un mapping fr≠en) si EN était réactivé.
     "/formations": { fr: "/formations", en: "/formations" },
+    // Landing catalogue « Toutes nos formations IA entreprise » (2026-07-05) —
+    // page flagship qui liste À PLAT les 17 formations (durée = badge par carte,
+    // pas d'axe de tri). Cible « formation IA entreprise France ». Segment static
+    // déclaré AVANT `/formations/[slug]` (priorité match static > dynamique).
+    // fr==en : EN redirigé 301→FR (proxy), fr==en évite le bug next-intl 307.
+    "/formations/entreprise": { fr: "/formations/entreprise", en: "/formations/entreprise" },
     "/formations/tarifs": { fr: "/formations/tarifs", en: "/formations/tarifs" },
     "/formations/duree/[duree]": {
       fr: "/formations/duree/[duree]",
@@ -197,6 +203,21 @@ export const routing = defineRouting({
     // Cas concrets
     "/cas-concrets": { fr: "/cas-concrets", en: "/case-studies" },
     "/cas-concrets/[slug]": { fr: "/cas-concrets/[slug]", en: "/case-studies/[slug]" },
+
+    // Bénéfices client — la visibilité offerte (podcast, interviews, page dédiée,
+    // backlink dofollow, LinkedIn) valable pour TOUS les services (2026-07-05).
+    // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307.
+    "/visibilite-entreprise": { fr: "/visibilite-entreprise", en: "/visibilite-entreprise" },
+
+    // Certification Qualiopi — page de réassurance (agrément, qualité, sérieux)
+    // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307.
+    "/certification-qualiopi": { fr: "/certification-qualiopi", en: "/certification-qualiopi" },
+
+    // Financement OPCO / France Travail — page dédiée (Phase B, gatée comme Qualiopi)
+    "/financement-opco-france-travail": {
+      fr: "/financement-opco-france-travail",
+      en: "/financement-opco-france-travail",
+    },
 
     // Transversales
     "/a-propos": { fr: "/a-propos", en: "/about" },
