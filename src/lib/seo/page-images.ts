@@ -473,7 +473,7 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
     path: "/certification-qualiopi",
     images: [
       {
-        src: "/illustrations/qualiopi/certification-qualiopi-axion-ia-formation-ia-qualite.avif",
+        src: "/illustrations/qualiopi/certification-qualiopi-axion-ia-formation-ia-qualite.webp",
         nameFr:
           "Axion-IA, organisme de formation certifié Qualiopi — agrément qualité, expertise IA, résultats",
         nameEn:
@@ -488,16 +488,42 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         slot: "hero",
       },
       {
-        src: "/illustrations/home-bandeau-team.avif",
-        nameFr: "Équipe Axion-IA — organisme de formation IA certifié Qualiopi",
-        nameEn: "Axion-IA team — Qualiopi-certified AI training provider",
+        src: "/illustrations/qualiopi/bandeau-qualiopi-qualite-certifiee-formation-ia-axion-ia.webp",
+        nameFr:
+          "Axion-IA — Qualiopi, la qualité certifiée : des formations IA concrètes, efficaces et reconnues",
+        nameEn:
+          "Axion-IA — Qualiopi, certified quality: concrete, effective and recognised AI trainings",
         altFr:
-          "Équipe Axion-IA en session — cabinet de formation IA français certifié Qualiopi, gage de sérieux et de qualité pour les formations en entreprise partout en France.",
+          "Bandeau Axion-IA.com « Qualiopi, la qualité certifiée » : formateur IA face à une équipe en salle, badge Qualiopi « processus certifié — République française » avec mention « La certification qualité a été délivrée au titre de la catégorie d'actions suivante : actions de formation », et 5 repères — qualité certifiée (Référentiel National Qualité), formations expertes, résultats concrets, accompagnement personnalisé, partout en France.",
         altEn:
-          "Axion-IA team in session — French AI training consultancy certified Qualiopi, a mark of seriousness and quality for corporate trainings across France.",
-        width: 1961,
-        height: 802,
+          "Axion-IA.com banner “Qualiopi, certified quality”: AI trainer facing a team in a room, Qualiopi badge “certified process — French Republic” with the mention “Quality certification granted for the following action category: training actions”, and 5 markers — certified quality (National Quality Framework), expert trainings, concrete results, personalised support, everywhere in France.",
+        width: 1983,
+        height: 793,
         slot: "banner",
+      },
+      {
+        src: "/illustrations/qualiopi/audit-documentaire-processus-qualite-certification-qualiopi-axion-ia.webp",
+        nameFr: "Audit documentaire du processus qualité — certification Qualiopi Axion-IA",
+        nameEn: "Documentary audit of the quality process — Axion-IA Qualiopi certification",
+        altFr:
+          "Documents et poste de travail lors de l'audit du processus qualité d'un organisme de formation — la certification Qualiopi d'Axion-IA repose sur un audit indépendant.",
+        altEn:
+          "Documents and workstation during the audit of a training provider's quality process — Axion-IA's Qualiopi certification rests on an independent audit.",
+        width: 1600,
+        height: 1067,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/qualiopi/confiance-accord-organisme-formation-certifie-qualiopi-axion-ia.webp",
+        nameFr: "Confiance et accord — organisme de formation IA certifié Qualiopi Axion-IA",
+        nameEn: "Trust and agreement — Axion-IA Qualiopi-certified AI training provider",
+        altFr:
+          "Poignée de main devant un ordinateur — choisir un organisme de formation IA certifié Qualiopi (Axion-IA), c'est la garantie d'un partenaire sérieux et conforme.",
+        altEn:
+          "Handshake in front of a laptop — choosing a Qualiopi-certified AI training provider (Axion-IA) guarantees a serious, compliant partner.",
+        width: 1600,
+        height: 1067,
+        slot: "inline",
       },
       {
         src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.avif",

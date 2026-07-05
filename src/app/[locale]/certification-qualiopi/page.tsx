@@ -48,6 +48,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
@@ -103,9 +104,22 @@ export default async function CertificationQualiopiPage({ params }: Props) {
 
   const pageImages = getPageImages(PATH);
   const heroImage = pageImages.find((i) => i.slot === "hero");
+  const bannerImage = pageImages.find((i) => i.slot === "banner");
+  const agrementPhotos = pageImages.filter((i) => i.slot === "inline");
   const gridImages = pageImages.filter((i) => i.slot === "grid");
   const portraitImage = pageImages.find((i) => i.slot === "portrait");
   const villes = getVillesIndexableNow().slice(0, 60);
+
+  // Attribution photographe Unsplash (CGU §6) pour les photos de la section agrément.
+  const UNSPLASH_CREDITS: Record<string, { name: string; url: string }> = {
+    "/illustrations/qualiopi/audit-documentaire-processus-qualite-certification-qualiopi-axion-ia.webp":
+      { name: "Markus Winkler", url: "https://unsplash.com/@markuswinkler" },
+    "/illustrations/qualiopi/confiance-accord-organisme-formation-certifie-qualiopi-axion-ia.webp":
+      {
+        name: "Radission US",
+        url: "https://unsplash.com/@radission",
+      },
+  };
 
   // Mention de marque OBLIGATOIRE (règles d'usage officielles). Catégorie par défaut
   // du registre : « Actions de formation ».
@@ -433,7 +447,21 @@ export default async function CertificationQualiopiPage({ params }: Props) {
       {/* ── PREUVE SOCIALE (logos défilants) ─────────────────────────────── */}
       <ClientLogosMarqueeBand isFr={isFr} />
 
-      {/* ── LOGO OFFICIEL + MENTION OBLIGATOIRE ──────────────────────────── */}
+      {/* ── BANDEAU QUALIOPI (visuel fort — badge + mention + repères) ────── */}
+      {bannerImage ? (
+        <Container className="pt-12 md:pt-16">
+          <Image
+            src={bannerImage.src}
+            alt={isFr ? bannerImage.altFr : bannerImage.altEn}
+            width={bannerImage.width}
+            height={bannerImage.height}
+            sizes="(max-width: 1366px) 100vw, 1366px"
+            className="shadow-card h-auto w-full rounded-2xl"
+          />
+        </Container>
+      ) : null}
+
+      {/* ── L'AGRÉMENT + MENTION OBLIGATOIRE (aéré par photos) ────────────── */}
       <Section
         id="agrement"
         tone="paper"
@@ -446,24 +474,35 @@ export default async function CertificationQualiopiPage({ params }: Props) {
             : "The Qualiopi certification is granted by an independent body under the National Quality Framework. It provides external proof of the quality of our training approach."
         }
       >
-        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="border-border bg-canvas shadow-subtle mx-auto flex w-full max-w-[420px] items-center justify-center rounded-2xl border p-8">
-            <Image
-              src="/qualiopi/axion-ia-qualiopi.png"
-              alt={
-                isFr
-                  ? "Logo Qualiopi — Axion-IA, organisme de formation certifié (catégorie : actions de formation)"
-                  : "Qualiopi logo — Axion-IA, certified training provider (category: training actions)"
-              }
-              width={440}
-              height={293}
-              quality={90}
-              sizes="(max-width: 1024px) 80vw, 34vw"
-              className="h-auto w-full max-w-[340px] object-contain"
-            />
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
+          <div className="xs:grid-cols-2 grid grid-cols-1 gap-4">
+            {agrementPhotos.map((img) => {
+              const credit = UNSPLASH_CREDITS[img.src];
+              return (
+                <figure key={img.src} className="flex flex-col gap-1.5">
+                  <div className="border-border shadow-subtle relative aspect-[3/2] overflow-hidden rounded-2xl border">
+                    <Image
+                      src={img.src}
+                      alt={isFr ? img.altFr : img.altEn}
+                      fill
+                      sizes="(min-width: 1024px) 22vw, (min-width: 479px) 40vw, 100vw"
+                      loading="lazy"
+                      className="object-cover"
+                    />
+                  </div>
+                  {credit ? (
+                    <UnsplashCredit
+                      photographerName={credit.name}
+                      photographerUrl={credit.url}
+                      className="text-[11px]"
+                    />
+                  ) : null}
+                </figure>
+              );
+            })}
           </div>
           <div className="flex flex-col gap-4">
-            <p className="text-fg text-base leading-relaxed" data-speakable data-answer>
+            <p className="text-fg text-lg leading-relaxed font-medium" data-speakable data-answer>
               {mentionMarque}
             </p>
             <p className="text-fg-soft text-sm leading-relaxed">
@@ -489,6 +528,49 @@ export default async function CertificationQualiopiPage({ params }: Props) {
               ))}
             </ul>
           </div>
+        </div>
+      </Section>
+
+      {/* ── FINANCEMENT (auto-gaté, Phase B — juste après l'agrément) ─────── */}
+      <Section
+        id="financement"
+        tone="sand"
+        eyebrow={isFr ? "Financement" : "Funding"}
+        title={isFr ? "Une certification qui" : "A certification that"}
+        titleEm={isFr ? "ouvre le financement" : "unlocks funding"}
+        description={
+          isFr
+            ? "Parce que nous sommes certifiés Qualiopi, nos formations IA sont éligibles aux financements de la formation professionnelle. Nous étudions votre prise en charge et montons le dossier avec vous."
+            : "Because we are Qualiopi-certified, our AI trainings are eligible for professional training funding. We study your funding and build the file with you."
+        }
+      >
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_1fr]">
+          <FinancingBadges seed="certification-qualiopi" />
+          <ul role="list" className="flex flex-col gap-3">
+            {(isFr
+              ? [
+                  "Éligibilité vérifiée selon votre branche et votre OPCO",
+                  "Aide au montage du dossier de prise en charge (OPCO, France Travail)",
+                  "Prise en charge possible en tout ou partie, selon votre situation",
+                ]
+              : [
+                  "Eligibility checked with your branch and OPCO",
+                  "Help building the funding file (OPCO, France Travail)",
+                  "Funding possible in whole or in part, depending on your situation",
+                ]
+            ).map((item) => (
+              <li key={item} className="text-fg flex items-start gap-2.5 text-sm leading-relaxed">
+                <Check aria-hidden="true" className="text-terracotta mt-0.5 h-4 w-4 shrink-0" />
+                {item}
+              </li>
+            ))}
+            <li className="mt-2">
+              <Cta href="/appel" variant="primary" size="md" track="qualiopi-financement-appel">
+                {isFr ? "Étudier ma prise en charge" : "Study my funding"}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Cta>
+            </li>
+          </ul>
         </div>
       </Section>
 
@@ -533,63 +615,25 @@ export default async function CertificationQualiopiPage({ params }: Props) {
             : "The Qualiopi certification rests on 7 quality criteria, audited across our whole training process."
         }
       >
-        <ol role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <ol role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-3 lg:grid-cols-4">
           {criteres.map((c, i) => (
             <li
               key={c.title}
               id={`critere-${i + 1}`}
-              className="border-border bg-canvas shadow-subtle flex h-full flex-col gap-2.5 rounded-2xl border p-5"
+              className="border-border bg-canvas shadow-subtle flex h-full flex-col gap-2 rounded-xl border p-4"
             >
-              <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-lg">
-                <c.icon aria-hidden="true" className="h-5 w-5" />
-              </span>
-              <h3 className="text-fg text-[15px] font-semibold tracking-tight">{c.title}</h3>
-              <p className="text-fg-soft text-sm leading-relaxed">{c.body}</p>
+              <div className="flex items-center gap-2.5">
+                <span className="bg-terracotta/10 text-terracotta inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+                  <c.icon aria-hidden="true" className="h-4 w-4" />
+                </span>
+                <h3 className="text-fg text-sm leading-tight font-semibold tracking-tight">
+                  {c.title}
+                </h3>
+              </div>
+              <p className="text-fg-soft text-[13px] leading-relaxed">{c.body}</p>
             </li>
           ))}
         </ol>
-      </Section>
-
-      {/* ── FINANCEMENT (auto-gaté, Phase B) ─────────────────────────────── */}
-      <Section
-        id="financement"
-        eyebrow={isFr ? "Financement" : "Funding"}
-        title={isFr ? "Une certification qui" : "A certification that"}
-        titleEm={isFr ? "ouvre le financement" : "unlocks funding"}
-        description={
-          isFr
-            ? "Parce que nous sommes certifiés Qualiopi, nos formations IA sont éligibles aux financements de la formation professionnelle. Nous étudions votre prise en charge et montons le dossier avec vous."
-            : "Because we are Qualiopi-certified, our AI trainings are eligible for professional training funding. We study your funding and build the file with you."
-        }
-      >
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_1fr]">
-          <FinancingBadges seed="certification-qualiopi" />
-          <ul role="list" className="flex flex-col gap-3">
-            {(isFr
-              ? [
-                  "Éligibilité vérifiée selon votre branche et votre OPCO",
-                  "Aide au montage du dossier de prise en charge (OPCO, France Travail)",
-                  "Prise en charge possible en tout ou partie, selon votre situation",
-                ]
-              : [
-                  "Eligibility checked with your branch and OPCO",
-                  "Help building the funding file (OPCO, France Travail)",
-                  "Funding possible in whole or in part, depending on your situation",
-                ]
-            ).map((item) => (
-              <li key={item} className="text-fg flex items-start gap-2.5 text-sm leading-relaxed">
-                <Check aria-hidden="true" className="text-terracotta mt-0.5 h-4 w-4 shrink-0" />
-                {item}
-              </li>
-            ))}
-            <li className="mt-2">
-              <Cta href="/appel" variant="primary" size="md" track="qualiopi-financement-appel">
-                {isFr ? "Étudier ma prise en charge" : "Study my funding"}
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </Cta>
-            </li>
-          </ul>
-        </div>
       </Section>
 
       {/* ── LA PREUVE PAR LA QUALITÉ (photos) ────────────────────────────── */}
@@ -674,15 +718,42 @@ export default async function CertificationQualiopiPage({ params }: Props) {
             : "Our Qualiopi-certified AI trainings adapt to your field and your roles."
         }
       >
-        <ul role="list" className="flex flex-wrap gap-x-2 gap-y-2.5">
+        <ul
+          role="list"
+          className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
+        >
           {CLIENT_SECTORS.map((s) => (
             <li key={s.slug}>
               <Link
                 href={`/secteurs/${s.slug}` as never}
-                className="text-fg-soft bg-paper border-border hover:border-terracotta hover:text-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+                className="shadow-subtle hover:shadow-elevated group bg-paper flex h-full flex-col overflow-hidden rounded-2xl transition hover:-translate-y-0.5"
               >
-                <span aria-hidden="true">{s.emoji}</span>
-                {s.labelFr}
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={`/illustrations/secteurs/${s.slug}.avif`}
+                    alt={
+                      isFr
+                        ? `Formation IA certifiée Qualiopi pour ${s.fullFr} — Axion-IA`
+                        : `Qualiopi-certified AI training for ${s.fullFr} — Axion-IA`
+                    }
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, (min-width: 479px) 50vw, 100vw"
+                    loading="lazy"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="bg-paper/90 shadow-subtle absolute top-2.5 left-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg text-base"
+                  >
+                    {s.emoji}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col gap-1 p-4">
+                  <span className="text-fg text-sm font-semibold tracking-tight">{s.labelFr}</span>
+                  <span className="text-terracotta mt-auto text-[13px] font-medium">
+                    {isFr ? "Voir →" : "See →"}
+                  </span>
+                </div>
               </Link>
             </li>
           ))}
