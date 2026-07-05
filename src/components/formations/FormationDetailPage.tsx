@@ -1,11 +1,10 @@
 // Server Component — fiche détail d'UNE formation du catalogue V2 (template partagé
-// par les 17 formations). Refonte 2026-07-05 (Will) :
-//   - Carte « infos clés » (À partir de · Durée h+j · Format · Public · Prérequis
-//     · Matériel) — TOUT dérivé du SSOT (catalog-v2 + catalog-v2-facts), jamais hardcodé.
-//   - PAS d'horaires détaillés (programme sans heures d'horloge).
-//   - Sections claires : Avant/Après · Objectifs · Programme · Résultats concrets &
-//     mesurables · Cas d'usage · Modalités · Financement (gaté) · FAQ · complémentaires.
-//   - Parité image/texte (image par gamme ou spécifique).
+// par les 17 formations). Refonte 2026-07-05 (Will) : mise en page repensée pour
+// que le visiteur comprenne TOUT immédiatement.
+//   - HÉRO avec CARTE INFOS-CLÉS proéminente (prix + durée + format + public +
+//     prérequis + matériel + CTA) — tout dérivé du SSOT (catalog-v2 + facts).
+//   - Riche en visuels : carte, image immersive, cartes à icônes, blocs colorés.
+//   - PAS d'horaires détaillés. Secteurs + villes (compact). Ordre optimisé 2026.
 //
 // AUCUN prix en dur (matrice pricing.ts). AUCUN avis/note fabriqué (E-E-A-T).
 // Financement gaté Phase B (jamais logo OPCO/FT, jamais CPF).
@@ -15,18 +14,15 @@ import Image from "next/image";
 import {
   ArrowRight,
   ArrowRightLeft,
-  CalendarDays,
   CheckCircle2,
   Clock,
   GraduationCap,
   Laptop,
-  Mail,
   MapPin,
   Phone,
   Sparkles,
   Target,
   Users,
-  Wallet,
 } from "lucide-react";
 
 import type { Locale } from "@/i18n/routing";
@@ -38,7 +34,6 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { ContactBand } from "@/components/sections/ContactBand";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
 import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
@@ -66,6 +61,8 @@ import {
 } from "@/content/formations/catalog-v2-facts";
 import { findBookableBySlug } from "@/content/booking-catalog";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
+import { CLIENT_SECTORS } from "@/content/sectors";
+import { getVillesIndexableNow } from "@/content/villes";
 import {
   buildCourseJsonLd,
   buildFaqJsonLd,
@@ -73,7 +70,6 @@ import {
   buildServiceJsonLd,
   SITE_URL,
 } from "@/lib/seo";
-import { FinancingMicro } from "@/components/qualiopi/FinancingBadges";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
@@ -98,32 +94,38 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const ofPublic = isQualiopiPublicDisclosureEnabled();
 
   const isBookable = Boolean(findBookableBySlug(f.slugFr));
-  const reserveHref = "/appel";
 
-  const priceValue =
-    typeof entryPrice === "number" ? `${formatAmount(entryPrice, "fr")} HT` : "Sur devis";
-  const modalites = getFormationModalites(f);
-  const modalitesLabel = formatModalitesFr(modalites);
+  // formatAmount renvoie déjà « … € HT » → NE PAS re-suffixer « HT ».
+  const priceValue = typeof entryPrice === "number" ? formatAmount(entryPrice, "fr") : "Sur devis";
+  const modalitesLabel = formatModalitesFr(getFormationModalites(f));
   const materiel = getFormationMateriel(f);
   const prerequis = f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.";
   const image = getFormationImage(f);
   const casUsage = getFormationCasUsage(f);
   const scenePhotos = getFormationScenePhotos(f);
   const objectifsPhoto = scenePhotos[0];
-  const bandPhoto = scenePhotos[1] ?? scenePhotos[0];
 
-  // ── Infos clés (carte) — TOUT depuis le SSOT ────────────────────────────────
-  const facts: ReadonlyArray<{ icon: typeof Wallet; label: string; value: string }> = [
-    { icon: Wallet, label: "À partir de", value: priceValue },
+  const los = brackets
+    .map((b) => Number.parseInt(b.split("-")[0] ?? "", 10))
+    .filter((n) => Number.isFinite(n));
+  const his = brackets
+    .map((b) => Number.parseInt(b.split("-")[1] ?? "", 10))
+    .filter((n) => Number.isFinite(n));
+  const groupSizeLabel =
+    his.length > 0
+      ? `${Math.min(...los)} à ${Math.max(...his)} participants · intra-entreprise`
+      : "Intra-entreprise, sur site";
+
+  // ── CARTE INFOS-CLÉS (héro) — tout depuis le SSOT ───────────────────────────
+  const factRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
     { icon: Clock, label: "Durée", value: formatDureeFr(f) },
     { icon: MapPin, label: "Format", value: modalitesLabel },
     { icon: Users, label: "Public visé", value: f.publicViseFr },
-    { icon: GraduationCap, label: "Prérequis", value: prerequis },
+    { icon: CheckCircle2, label: "Prérequis", value: prerequis },
     { icon: Laptop, label: "Matériel", value: materiel },
   ];
 
-  // ── Modalités (récap) — cartes à icônes ─────────────────────────────────────
-  const modalitesRows: ReadonlyArray<{ icon: typeof Wallet; label: string; value: string }> = [
+  const modalitesRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
     { icon: MapPin, label: "Format", value: modalitesLabel },
     { icon: Clock, label: "Durée", value: formatDureeFr(f) },
     { icon: Users, label: "Groupe", value: "Intra-entreprise — vos équipes uniquement" },
@@ -131,6 +133,12 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
     { icon: Target, label: "Public visé", value: f.publicViseFr },
     { icon: CheckCircle2, label: "Prérequis", value: prerequis },
     { icon: Laptop, label: "Matériel", value: materiel },
+  ];
+
+  const heroChips = [
+    "Sur vos vrais outils",
+    "Intra-entreprise",
+    "Opérationnel·le dès le lendemain",
   ];
 
   // ── JSON-LD ─────────────────────────────────────────────────────────────────
@@ -176,6 +184,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const siblings = FORMATIONS_V2.filter(
     (x) => x.id !== f.id && (x.gamme === f.gamme || x.duree === f.duree),
   ).slice(0, 4);
+  const villes = getVillesIndexableNow().slice(0, 48);
 
   const breadcrumbItems = [
     { href: "/formations", label: "Formations IA" },
@@ -189,10 +198,10 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* ── HÉRO (2 colonnes : contenu + image) ──────────────────────────── */}
+      {/* ── HÉRO — contenu (gauche) + CARTE INFOS-CLÉS (droite) ──────────── */}
       <section className="bg-halo-warm relative overflow-hidden py-12 md:py-16 lg:py-20">
         <Container className="relative">
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
             <div className="max-w-2xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
@@ -205,93 +214,81 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               <p className="text-fg-soft mt-6 text-lg leading-relaxed md:text-xl" data-speakable>
                 {f.accrocheFr}
               </p>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <span className="bg-terracotta text-mocha-fg rounded-full px-4 py-1.5 text-base font-bold tracking-tight tabular-nums">
-                  À partir de {priceValue}
-                </span>
-                <span className="text-fg-soft text-[13px]">{modalitesLabel}</span>
-              </div>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                {isBookable ? (
-                  <Cta
-                    href={reserveHref}
-                    size="lg"
-                    className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {heroChips.map((chip) => (
+                  <li
+                    key={chip}
+                    className="bg-terracotta-soft text-terracotta-deep border-terracotta/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
                   >
-                    <CalendarDays aria-hidden="true" className="h-4 w-4" />
-                    Poser une option
-                  </Cta>
-                ) : (
-                  <Cta
-                    href="/appel"
-                    size="lg"
-                    className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
-                  >
-                    <Phone aria-hidden="true" className="h-4 w-4" />
-                    Réserver un appel
-                  </Cta>
-                )}
-                <Cta href="/contact" variant="outline" size="lg">
-                  <Mail aria-hidden="true" className="h-4 w-4" />
-                  Nous écrire
-                </Cta>
-              </div>
+                    <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
+                    {chip}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="relative">
-              <Image
-                src={image.src}
-                alt={image.altFr}
-                width={1000}
-                height={667}
-                priority
-                sizes="(max-width: 1024px) 100vw, 44vw"
-                className="shadow-card aspect-[3/2] h-auto w-full rounded-2xl object-cover"
-              />
-              {f.imageCredit ? (
-                <UnsplashCredit
-                  photographerName={f.imageCredit.name}
-                  photographerUrl={f.imageCredit.url}
-                  className="mt-1.5 text-[11px]"
-                />
+
+            {/* CARTE INFOS-CLÉS */}
+            <aside className="border-terracotta/25 bg-canvas shadow-card rounded-3xl border-2 p-6 lg:sticky lg:top-24 lg:p-7">
+              <div className="border-border border-b pb-5">
+                <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+                  À partir de
+                </p>
+                <p
+                  className="text-terracotta mt-1 text-[2.5rem] leading-none font-medium tabular-nums"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {priceValue}
+                </p>
+                <p className="text-fg-muted mt-2 text-[13px]">{groupSizeLabel}</p>
+              </div>
+              <dl className="divide-border flex flex-col divide-y">
+                {factRows.map((row) => (
+                  <div key={row.label} className="flex items-start gap-3 py-3">
+                    <span className="bg-terracotta/10 text-terracotta mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+                      <row.icon aria-hidden="true" className="h-4 w-4" />
+                    </span>
+                    <div className="flex min-w-0 flex-col">
+                      <dt className="text-fg-muted text-[11.5px] font-semibold tracking-wide uppercase">
+                        {row.label}
+                      </dt>
+                      <dd className="text-fg text-[14px] leading-snug font-medium">{row.value}</dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+              <Cta
+                href="/appel"
+                size="lg"
+                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta mt-5 w-full justify-center"
+              >
+                <Phone aria-hidden="true" className="h-4 w-4" />
+                {isBookable ? "Poser une option" : "Réserver un appel"}
+              </Cta>
+              <Cta href="/contact" variant="ghost" size="md" className="mt-2 w-full justify-center">
+                Nous écrire
+              </Cta>
+              {ofPublic ? (
+                <p className="text-fg-muted mt-4 text-center text-[12px] leading-relaxed">
+                  Organisme{" "}
+                  <Link
+                    href={"/certification-qualiopi" as never}
+                    className="text-terracotta underline"
+                  >
+                    Qualiopi
+                  </Link>{" "}
+                  ·{" "}
+                  <Link
+                    href={"/financement-opco-france-travail" as never}
+                    className="text-terracotta underline"
+                  >
+                    finançable OPCO / France Travail
+                  </Link>
+                </p>
               ) : null}
-            </div>
+            </aside>
           </div>
         </Container>
       </section>
-
-      {/* ── INFOS CLÉS (carte) — tout depuis le SSOT ─────────────────────── */}
-      <Container className="relative z-10 -mt-6">
-        <dl className="border-border bg-canvas shadow-card grid grid-cols-2 gap-x-6 gap-y-6 rounded-2xl border p-6 md:grid-cols-3 lg:grid-cols-6 lg:p-7">
-          {facts.map((fact) => (
-            <div key={fact.label} className="flex flex-col gap-1.5">
-              <dt className="text-fg-muted inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-wide uppercase">
-                <fact.icon aria-hidden="true" className="text-terracotta h-3.5 w-3.5" />
-                {fact.label}
-              </dt>
-              <dd className="text-fg text-[13.5px] leading-snug font-medium">{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
-        {ofPublic ? (
-          <div className="mt-4">
-            <FinancingMicro seed={`formation-${f.slugFr}`} />
-            <p className="text-fg-muted mt-2 text-[13px]">
-              Organisme certifié{" "}
-              <Link href={"/certification-qualiopi" as never} className="text-terracotta underline">
-                Qualiopi
-              </Link>{" "}
-              — formation{" "}
-              <Link
-                href={"/financement-opco-france-travail" as never}
-                className="text-terracotta underline"
-              >
-                finançable OPCO / France Travail
-              </Link>
-              , en tout ou partie selon votre situation.
-            </p>
-          </div>
-        ) : null}
-      </Container>
 
       {/* ── PREUVE SOCIALE (logos) ───────────────────────────────────────── */}
       <ClientLogosMarqueeBand isFr={isFr} />
@@ -327,7 +324,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* ── OBJECTIFS PÉDAGOGIQUES (2 colonnes + photo) ──────────────────── */}
+      {/* ── OBJECTIFS (2 colonnes + photo) ───────────────────────────────── */}
       {f.objectifsFr.length > 0 ? (
         <Section
           eyebrow="Objectifs pédagogiques"
@@ -402,35 +399,41 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </div>
       </Section>
 
-      {/* ── BANDEAU PHOTO (immersion) ────────────────────────────────────── */}
-      {bandPhoto ? (
-        <Container className="py-6 md:py-8">
-          <div className="relative overflow-hidden rounded-3xl">
-            <Image
-              src={bandPhoto.src}
-              alt={bandPhoto.altFr}
-              width={1600}
-              height={640}
-              sizes="(max-width: 1366px) 100vw, 1366px"
-              loading="lazy"
-              className="h-[240px] w-full object-cover md:h-[320px]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-              <p className="text-[13px] font-bold tracking-[0.16em] text-white/80 uppercase">
-                Sur site, dans vos locaux
-              </p>
-              <p className="mt-2 max-w-2xl text-xl leading-tight font-semibold text-white md:text-2xl">
-                Sur vos vrais outils, vos vrais dossiers — opérationnel dès le lendemain.
-              </p>
-            </div>
+      {/* ── BANDEAU PHOTO (immersion — image spécifique de la formation) ──── */}
+      <Container className="py-6 md:py-8">
+        <div className="relative overflow-hidden rounded-3xl">
+          <Image
+            src={image.src}
+            alt={image.altFr}
+            width={1600}
+            height={640}
+            sizes="(max-width: 1366px) 100vw, 1366px"
+            loading="lazy"
+            className="h-[240px] w-full object-cover md:h-[340px]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
+            <p className="text-[13px] font-bold tracking-[0.16em] text-white/80 uppercase">
+              Sur site, dans vos locaux
+            </p>
+            <p className="mt-2 max-w-2xl text-xl leading-tight font-semibold text-white md:text-2xl">
+              Sur vos vrais outils, vos vrais dossiers — opérationnel dès le lendemain.
+            </p>
           </div>
-        </Container>
-      ) : null}
+          {f.imageCredit ? (
+            <div className="absolute top-3 right-3">
+              <UnsplashCredit
+                photographerName={f.imageCredit.name}
+                photographerUrl={f.imageCredit.url}
+                className="text-[10px] text-white/70"
+              />
+            </div>
+          ) : null}
+        </div>
+      </Container>
 
       {/* ── RÉSULTATS CONCRETS & MESURABLES ──────────────────────────────── */}
       <Section
-        tone="sand"
         eyebrow="En résumé"
         title="Des résultats concrets"
         titleEm="et mesurables"
@@ -442,7 +445,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               {f.resultatsFr.map((r) => (
                 <li
                   key={r.label}
-                  className="border-border bg-canvas shadow-subtle flex flex-col items-center gap-1 rounded-2xl border p-6 text-center"
+                  className="from-terracotta-soft border-terracotta/20 flex flex-col items-center gap-1 rounded-2xl border bg-gradient-to-b to-transparent p-6 text-center"
                 >
                   <span
                     className="text-terracotta text-[clamp(2rem,4vw,2.75rem)] leading-none font-medium tabular-nums"
@@ -479,19 +482,19 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       {/* ── CAS D'USAGE CONCRETS ─────────────────────────────────────────── */}
       {casUsage.length > 0 ? (
         <Section
-          tone="paper"
+          tone="sand"
           eyebrow="Sur vos vrais dossiers"
           title="Cas d'usage"
           titleEm="concrets"
           description="Des exemples directement applicables dans votre métier, travaillés en atelier."
         >
-          <ul className="xs:grid-cols-2 mx-auto grid max-w-4xl gap-4 lg:grid-cols-3">
+          <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl gap-4 lg:grid-cols-3">
             {casUsage.map((c) => (
               <li
                 key={c}
-                className="border-border bg-canvas shadow-subtle text-fg-soft rounded-2xl border p-5 text-sm leading-relaxed"
+                className="border-border bg-canvas shadow-subtle text-fg-soft flex flex-col gap-2 rounded-2xl border p-5 text-sm leading-relaxed"
               >
-                <Sparkles aria-hidden="true" className="text-terracotta mb-2 h-4 w-4" />
+                <Sparkles aria-hidden="true" className="text-terracotta h-4 w-4" />
                 {c}
               </li>
             ))}
@@ -499,10 +502,69 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* ── TRANCHES DE PRIX ─────────────────────────────────────────────── */}
+      {/* ── SECTEURS D'ACTIVITÉ ──────────────────────────────────────────── */}
+      <Section
+        eyebrow="Tous secteurs"
+        title="Adaptée à"
+        titleEm="votre secteur"
+        description="Le contenu et les exemples sont ajustés à votre domaine d'activité et à vos métiers."
+      >
+        <ul className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
+          {CLIENT_SECTORS.map((s) => (
+            <li key={s.slug}>
+              <Link
+                href={`/secteurs/${s.slug}` as never}
+                className="shadow-subtle hover:shadow-elevated group bg-canvas flex h-full flex-col overflow-hidden rounded-2xl transition hover:-translate-y-0.5"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={`/illustrations/secteurs/${s.slug}.avif`}
+                    alt={`Formation IA « ${f.titreFr} » pour ${s.fullFr} — Axion-IA`}
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, (min-width: 479px) 50vw, 100vw"
+                    loading="lazy"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="bg-canvas/90 shadow-subtle absolute top-2.5 left-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg text-base"
+                  >
+                    {s.emoji}
+                  </span>
+                </div>
+                <div className="flex flex-1 items-center justify-between gap-2 p-4">
+                  <span className="text-fg text-sm font-semibold tracking-tight">{s.labelFr}</span>
+                  <ArrowRight aria-hidden="true" className="text-terracotta h-4 w-4 shrink-0" />
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* ── MODALITÉS — cartes à icônes ──────────────────────────────────── */}
+      <Section tone="sand" eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
+        <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {modalitesRows.map((row) => (
+            <div
+              key={row.label}
+              className="border-border bg-canvas shadow-subtle flex flex-col gap-2 rounded-2xl border p-5"
+            >
+              <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-xl">
+                <row.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <dt className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+                {row.label}
+              </dt>
+              <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {/* ── TARIF (tranches par effectif) ────────────────────────────────── */}
       {brackets.length > 0 ? (
         <Section
-          tone="sand"
           eyebrow="Tarif"
           title={brackets.length > 1 ? "Un tarif selon" : "Tarif pour"}
           titleEm={brackets.length > 1 ? "votre effectif" : "votre équipe"}
@@ -531,22 +593,20 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                       <p className="text-fg-muted text-[12px] font-bold tracking-[0.16em] uppercase">
                         {bracketLabel(b)}
                       </p>
-                      <p
-                        className="text-fg mt-4 text-[clamp(2.5rem,5vw,3.5rem)] leading-none font-medium tracking-tight tabular-nums"
-                        style={{ fontFamily: "var(--font-serif)" }}
-                      >
-                        {formatAmount(price, "fr")}
+                      <p className="mt-4 flex items-baseline gap-1.5">
+                        <span
+                          className="text-fg text-[clamp(2.5rem,5vw,3.5rem)] leading-none font-medium tracking-tight tabular-nums"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {formatAmount(price, "fr", { compact: true })}
+                        </span>
+                        <span className="text-fg-muted text-sm font-semibold">HT</span>
                       </p>
-                      <p className="text-fg-muted mt-1 text-xs">HT</p>
                       <p className="text-fg-soft mt-4 text-base leading-relaxed">
                         {formatDureeFr(f)}, dans vos locaux. {f.accrocheFr}
                       </p>
                       <div className="mt-auto pt-6">
-                        <Cta
-                          href={isBookable ? reserveHref : "/appel"}
-                          size="lg"
-                          className="w-full justify-center"
-                        >
+                        <Cta href="/appel" size="lg" className="w-full justify-center">
                           {isBookable ? "Poser une option" : "Réserver un appel"}
                           <ArrowRight aria-hidden="true" className="h-4 w-4" />
                         </Cta>
@@ -560,26 +620,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* ── MODALITÉS (récap) — cartes à icônes ──────────────────────────── */}
-      <Section tone="paper" eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
-        <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {modalitesRows.map((row) => (
-            <div
-              key={row.label}
-              className="border-border bg-canvas shadow-subtle flex flex-col gap-2 rounded-2xl border p-5"
-            >
-              <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-xl">
-                <row.icon aria-hidden="true" className="h-5 w-5" />
-              </span>
-              <dt className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
-                {row.label}
-              </dt>
-              <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
-
       {/* ── BANDEAU CONTACT ──────────────────────────────────────────────── */}
       <ContactBand
         isFr={isFr}
@@ -592,7 +632,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       {f.faqs.length > 0 ? (
-        <Section tone="sand" eyebrow="FAQ" title="Questions" titleEm="fréquentes">
+        <Section tone="paper" eyebrow="FAQ" title="Questions" titleEm="fréquentes">
           <InterventionFaqList
             items={f.faqs.map((q) => ({
               qFr: q.question,
@@ -605,9 +645,31 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
+      {/* ── VILLES (maillage compact — pas d'espace superflu) ────────────── */}
+      <Section
+        tone="sand"
+        eyebrow="Partout en France"
+        title="Cette formation,"
+        titleEm="près de chez vous"
+        description="Nous intervenons en présentiel dans vos locaux, dans toute la France."
+      >
+        <ul role="list" className="flex flex-wrap gap-x-2 gap-y-2.5">
+          {villes.map((v) => (
+            <li key={v.slug}>
+              <Link
+                href={`/formations/par-ville/${v.slug}` as never}
+                className="text-fg-soft bg-canvas border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+              >
+                Formation IA {v.nameFr}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
       {/* ── FORMATIONS COMPLÉMENTAIRES ───────────────────────────────────── */}
       {siblings.length > 0 ? (
-        <Section tone="paper" eyebrow="Autres formations" title="Pour aller" titleEm="plus loin">
+        <Section eyebrow="Autres formations" title="Pour aller" titleEm="plus loin">
           <div className="xs:grid-cols-2 grid gap-4 lg:grid-cols-4">
             {siblings.map((s) => (
               <Link
@@ -629,14 +691,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      <LocalCoverageSection
-        isFr={isFr}
-        serviceLabelFr={`La formation « ${f.titreFr} »`}
-        serviceLabelEn={`The « ${f.titreFr} » training`}
-        serviceSlug="interventions"
-        tone="sand"
-      />
-
       <RelatedKnowledge service="interventions-formations" />
 
       {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
@@ -647,15 +701,11 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         description="Un formateur IA expert intervient sur votre site, sur vos vrais outils. Vos équipes gagnent des heures dès la première session. Aucun engagement avant signature."
         cta={
           <Cta
-            href={isBookable ? reserveHref : "/appel"}
+            href="/appel"
             size="lg"
             className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
           >
-            {isBookable ? (
-              <CalendarDays aria-hidden="true" className="h-4 w-4" />
-            ) : (
-              <Phone aria-hidden="true" className="h-4 w-4" />
-            )}
+            <Phone aria-hidden="true" className="h-4 w-4" />
             {isBookable ? "Poser une option sur le calendrier" : "Réserver un appel"}
           </Cta>
         }
