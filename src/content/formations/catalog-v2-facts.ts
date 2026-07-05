@@ -98,6 +98,40 @@ export function getFormationImage(f: FormationV2): { src: string; altFr: string 
   return FORMATION_GAMME_IMAGE[f.gamme];
 }
 
+// Photos « scène » (bank) réutilisées pour aérer la fiche (objectifs + bandeau).
+// Génériques (elles conviennent à toute formation) → parité image/texte sans
+// sourcer une image par section et par formation.
+const FORMATION_SCENE_PHOTOS: ReadonlyArray<{ src: string; altFr: string }> = [
+  {
+    src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.avif",
+    altFr:
+      "Formation IA en entreprise Axion-IA — salle de formation sur site, dans les locaux du client, animée par un formateur IA expert.",
+  },
+  {
+    src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.avif",
+    altFr:
+      "Équipe en atelier pratique pendant une formation IA Axion-IA — mise en application sur les vrais outils et cas d'usage de l'entreprise.",
+  },
+  {
+    src: "/illustrations/formations/formateur-ia-claude-atelier-pme.avif",
+    altFr:
+      "Formateur IA expert Axion-IA accompagnant une équipe pendant un atelier de formation en entreprise.",
+  },
+  {
+    src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.avif",
+    altFr:
+      "Bilan de fin de formation IA Axion-IA — équipe désormais autonome sur ses nouveaux réflexes IA.",
+  },
+];
+
+/** 2 photos de scène pour la fiche, différentes de l'image héro. */
+export function getFormationScenePhotos(
+  f: FormationV2,
+): ReadonlyArray<{ src: string; altFr: string }> {
+  const heroSrc = getFormationImage(f).src;
+  return FORMATION_SCENE_PHOTOS.filter((p) => p.src !== heroSrc).slice(0, 2);
+}
+
 /** Cas d'usage : override par formation, sinon repli sur les objectifs. */
 export function getFormationCasUsage(f: FormationV2): ReadonlyArray<string> {
   return f.casUsageFr ?? f.objectifsFr;

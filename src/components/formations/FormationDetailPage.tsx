@@ -62,6 +62,7 @@ import {
   getFormationImage,
   getFormationMateriel,
   getFormationModalites,
+  getFormationScenePhotos,
 } from "@/content/formations/catalog-v2-facts";
 import { findBookableBySlug } from "@/content/booking-catalog";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
@@ -107,6 +108,9 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const prerequis = f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.";
   const image = getFormationImage(f);
   const casUsage = getFormationCasUsage(f);
+  const scenePhotos = getFormationScenePhotos(f);
+  const objectifsPhoto = scenePhotos[0];
+  const bandPhoto = scenePhotos[1] ?? scenePhotos[0];
 
   // ── Infos clés (carte) — TOUT depuis le SSOT ────────────────────────────────
   const facts: ReadonlyArray<{ icon: typeof Wallet; label: string; value: string }> = [
@@ -118,15 +122,15 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
     { icon: Laptop, label: "Matériel", value: materiel },
   ];
 
-  // ── Modalités (récap) ───────────────────────────────────────────────────────
-  const modalitesRows: ReadonlyArray<{ label: string; value: string }> = [
-    { label: "Format", value: modalitesLabel },
-    { label: "Durée", value: formatDureeFr(f) },
-    { label: "Groupe", value: "Intra-entreprise — vos équipes uniquement" },
-    { label: "Intervenant", value: "Un formateur IA expert Axion-IA" },
-    { label: "Public visé", value: f.publicViseFr },
-    { label: "Prérequis", value: prerequis },
-    { label: "Matériel", value: materiel },
+  // ── Modalités (récap) — cartes à icônes ─────────────────────────────────────
+  const modalitesRows: ReadonlyArray<{ icon: typeof Wallet; label: string; value: string }> = [
+    { icon: MapPin, label: "Format", value: modalitesLabel },
+    { icon: Clock, label: "Durée", value: formatDureeFr(f) },
+    { icon: Users, label: "Groupe", value: "Intra-entreprise — vos équipes uniquement" },
+    { icon: GraduationCap, label: "Intervenant", value: "Un formateur IA expert Axion-IA" },
+    { icon: Target, label: "Public visé", value: f.publicViseFr },
+    { icon: CheckCircle2, label: "Prérequis", value: prerequis },
+    { icon: Laptop, label: "Matériel", value: materiel },
   ];
 
   // ── JSON-LD ─────────────────────────────────────────────────────────────────
@@ -323,7 +327,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* ── OBJECTIFS PÉDAGOGIQUES ───────────────────────────────────────── */}
+      {/* ── OBJECTIFS PÉDAGOGIQUES (2 colonnes + photo) ──────────────────── */}
       {f.objectifsFr.length > 0 ? (
         <Section
           eyebrow="Objectifs pédagogiques"
@@ -331,18 +335,34 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           titleEm="saura faire"
           description="À l'issue de la formation, voici les compétences acquises et pratiquées en séance."
         >
-          <ul className="xs:grid-cols-2 mx-auto grid max-w-4xl gap-4">
-            {f.objectifsFr.map((o) => (
-              <li key={o} className="flex items-start gap-3">
-                <CheckCircle2
-                  aria-hidden="true"
-                  className="text-terracotta mt-0.5 h-5 w-5 shrink-0"
-                  strokeWidth={2}
-                />
-                <span className="text-fg-soft text-[15px] leading-relaxed">{o}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            <ul className="flex flex-col gap-3.5">
+              {f.objectifsFr.map((o) => (
+                <li
+                  key={o}
+                  className="border-border bg-canvas shadow-subtle flex items-start gap-3 rounded-xl border p-4"
+                >
+                  <CheckCircle2
+                    aria-hidden="true"
+                    className="text-terracotta mt-0.5 h-5 w-5 shrink-0"
+                    strokeWidth={2}
+                  />
+                  <span className="text-fg text-[15px] leading-relaxed">{o}</span>
+                </li>
+              ))}
+            </ul>
+            {objectifsPhoto ? (
+              <Image
+                src={objectifsPhoto.src}
+                alt={objectifsPhoto.altFr}
+                width={1000}
+                height={667}
+                sizes="(max-width: 1024px) 100vw, 48vw"
+                loading="lazy"
+                className="shadow-card aspect-[3/2] h-auto w-full rounded-2xl object-cover lg:sticky lg:top-24"
+              />
+            ) : null}
+          </div>
         </Section>
       ) : null}
 
@@ -382,8 +402,35 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </div>
       </Section>
 
+      {/* ── BANDEAU PHOTO (immersion) ────────────────────────────────────── */}
+      {bandPhoto ? (
+        <Container className="py-6 md:py-8">
+          <div className="relative overflow-hidden rounded-3xl">
+            <Image
+              src={bandPhoto.src}
+              alt={bandPhoto.altFr}
+              width={1600}
+              height={640}
+              sizes="(max-width: 1366px) 100vw, 1366px"
+              loading="lazy"
+              className="h-[240px] w-full object-cover md:h-[320px]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
+              <p className="text-[13px] font-bold tracking-[0.16em] text-white/80 uppercase">
+                Sur site, dans vos locaux
+              </p>
+              <p className="mt-2 max-w-2xl text-xl leading-tight font-semibold text-white md:text-2xl">
+                Sur vos vrais outils, vos vrais dossiers — opérationnel dès le lendemain.
+              </p>
+            </div>
+          </div>
+        </Container>
+      ) : null}
+
       {/* ── RÉSULTATS CONCRETS & MESURABLES ──────────────────────────────── */}
       <Section
+        tone="sand"
         eyebrow="En résumé"
         title="Des résultats concrets"
         titleEm="et mesurables"
@@ -513,16 +560,21 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* ── MODALITÉS (récap) ────────────────────────────────────────────── */}
+      {/* ── MODALITÉS (récap) — cartes à icônes ──────────────────────────── */}
       <Section tone="paper" eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
-        <dl className="border-border bg-canvas divide-border mx-auto max-w-3xl divide-y rounded-2xl border">
+        <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {modalitesRows.map((row) => (
             <div
               key={row.label}
-              className="grid grid-cols-1 gap-1 p-4 md:grid-cols-[160px_1fr] md:gap-4"
+              className="border-border bg-canvas shadow-subtle flex flex-col gap-2 rounded-2xl border p-5"
             >
-              <dt className="text-fg text-sm font-semibold">{row.label}</dt>
-              <dd className="text-fg-soft text-sm leading-relaxed">{row.value}</dd>
+              <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-xl">
+                <row.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <dt className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+                {row.label}
+              </dt>
+              <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
             </div>
           ))}
         </dl>
