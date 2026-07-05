@@ -203,7 +203,10 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                 />
                 {gamme.labelFr} · {formatDureeFr(f)}
               </p>
-              <h1 className="display-editorial text-fg mt-5">{f.h1Fr}</h1>
+              <p className="text-terracotta-deep mt-4 text-lg font-bold tracking-tight md:text-xl">
+                Formation « {f.titreFr} »
+              </p>
+              <h1 className="display-editorial text-fg mt-2">{f.h1Fr}</h1>
               <p className="text-fg-soft mt-6 text-lg leading-relaxed md:text-xl" data-speakable>
                 {f.accrocheFr}
               </p>
