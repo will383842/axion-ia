@@ -440,17 +440,19 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       </Section>
 
       {/* ── MODALITÉS — cartes à icônes (AVANT les secteurs) ─────────────── */}
-      <Section eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
+      <Section tone="paper" eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
         <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {modalitesRows.map((row) => (
             <div
               key={row.label}
-              className="border-border bg-canvas shadow-subtle flex flex-col gap-2 rounded-2xl border p-5"
+              className={`border-border bg-bg shadow-card hover:shadow-elevated group flex flex-col gap-3 rounded-2xl border p-5 transition hover:-translate-y-1 ${
+                row.label === "Public visé" ? "xs:col-span-2 md:col-span-3 lg:col-span-2" : ""
+              }`}
             >
-              <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-xl">
+              <span className="bg-terracotta text-mocha-fg shadow-cta-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl transition group-hover:scale-110">
                 <row.icon aria-hidden="true" className="h-5 w-5" />
               </span>
-              <dt className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+              <dt className="text-terracotta-deep text-[11.5px] font-bold tracking-[0.1em] uppercase">
                 {row.label}
               </dt>
               <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
