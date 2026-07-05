@@ -445,8 +445,9 @@ export default async function CertificationQualiopiPage({ params }: Props) {
             ? "La certification Qualiopi est délivrée par un organisme indépendant, au titre du Référentiel National Qualité. Elle atteste, preuve à l'appui, de la qualité de notre démarche de formation."
             : "The Qualiopi certification is granted by an independent body under the National Quality Framework. It provides external proof of the quality of our training approach."
         }
-        media={
-          <div className="border-border bg-canvas shadow-subtle mx-auto flex w-full max-w-[440px] items-center justify-center rounded-2xl border p-8">
+      >
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="border-border bg-canvas shadow-subtle mx-auto flex w-full max-w-[420px] items-center justify-center rounded-2xl border p-8">
             <Image
               src="/qualiopi/axion-ia-qualiopi.png"
               alt={
@@ -457,38 +458,37 @@ export default async function CertificationQualiopiPage({ params }: Props) {
               width={440}
               height={293}
               quality={90}
-              sizes="(max-width: 1024px) 80vw, 40vw"
-              className="h-auto w-full max-w-[360px] object-contain"
+              sizes="(max-width: 1024px) 80vw, 34vw"
+              className="h-auto w-full max-w-[340px] object-contain"
             />
           </div>
-        }
-      >
-        <div className="flex flex-col gap-4">
-          <p className="text-fg text-base leading-relaxed" data-speakable data-answer>
-            {mentionMarque}
-          </p>
-          <p className="text-fg-soft text-sm leading-relaxed">
-            {LEGAL_MENTIONS.declarationActivite}
-          </p>
-          <ul role="list" className="mt-1 flex flex-col gap-2.5">
-            {(isFr
-              ? [
-                  "Audit indépendant de nos processus qualité",
-                  "Conformité au Code du travail (conventions, émargement, attestations)",
-                  "Démarche d'amélioration continue documentée",
-                ]
-              : [
-                  "Independent audit of our quality processes",
-                  "Labour Code compliance (agreements, attendance, certificates)",
-                  "Documented continuous-improvement approach",
-                ]
-            ).map((item) => (
-              <li key={item} className="text-fg flex items-start gap-2.5 text-sm leading-relaxed">
-                <Check aria-hidden="true" className="text-terracotta mt-0.5 h-4 w-4 shrink-0" />
-                {item}
-              </li>
-            ))}
-          </ul>
+          <div className="flex flex-col gap-4">
+            <p className="text-fg text-base leading-relaxed" data-speakable data-answer>
+              {mentionMarque}
+            </p>
+            <p className="text-fg-soft text-sm leading-relaxed">
+              {LEGAL_MENTIONS.declarationActivite}
+            </p>
+            <ul role="list" className="mt-1 flex flex-col gap-2.5">
+              {(isFr
+                ? [
+                    "Audit indépendant de nos processus qualité",
+                    "Conformité au Code du travail (conventions, émargement, attestations)",
+                    "Démarche d'amélioration continue documentée",
+                  ]
+                : [
+                    "Independent audit of our quality processes",
+                    "Labour Code compliance (agreements, attendance, certificates)",
+                    "Documented continuous-improvement approach",
+                  ]
+              ).map((item) => (
+                <li key={item} className="text-fg flex items-start gap-2.5 text-sm leading-relaxed">
+                  <Check aria-hidden="true" className="text-terracotta mt-0.5 h-4 w-4 shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Section>
 
