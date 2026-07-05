@@ -27,19 +27,15 @@ import {
   FileText,
   Globe,
   GraduationCap,
-  Link2,
   MapPin,
   MessageCircle,
   Mic,
-  Share2,
   ShieldCheck,
   Sparkles,
   Target,
   TrendingUp,
   Users,
-  Video,
   Wallet,
-  Zap,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -58,6 +54,7 @@ import {
   type SlimFormation,
 } from "@/components/formations/FormationsCatalogueFilterable";
 import { FormationsVisualShowcase } from "@/components/formations/FormationsVisualShowcase";
+import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
 import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
@@ -264,30 +261,6 @@ export default async function FormationsEntreprise({ params }: Props) {
     },
   ];
 
-  const visibilityItems: ReadonlyArray<{ icon: typeof Mic; label: string }> = [
-    {
-      icon: Mic,
-      label: isFr ? "Un podcast dirigeant ou collaborateur" : "An executive or employee podcast",
-    },
-    {
-      icon: Video,
-      label: isFr
-        ? "Des interviews de participants volontaires"
-        : "Interviews of willing participants",
-    },
-    {
-      icon: Globe,
-      label: isFr
-        ? "Une page dédiée à votre entreprise sur axion-ia.com"
-        : "A dedicated page about your company on axion-ia.com",
-    },
-    {
-      icon: Link2,
-      label: isFr ? "Un lien dofollow vers votre site (SEO)" : "A dofollow link to your site (SEO)",
-    },
-    { icon: Share2, label: isFr ? "Un relais sur notre LinkedIn" : "A share on our LinkedIn" },
-  ];
-
   // Métiers → formation la plus pertinente (maillage interne vers les fiches).
   const metiers: ReadonlyArray<{ href: string; label: string }> = [
     { href: "/formations/ia-express", label: isFr ? "Tous les collaborateurs" : "All employees" },
@@ -346,7 +319,7 @@ export default async function FormationsEntreprise({ params }: Props) {
   const stats: ReadonlyArray<{ value: string; label: string }> = [
     { value: String(total), label: isFr ? "formations au catalogue" : "trainings in catalogue" },
     { value: "10", label: isFr ? "secteurs couverts" : "sectors covered" },
-    { value: "30-60 min", label: isFr ? "gagnées par jour" : "saved per day" },
+    { value: "30 min à 2 h", label: isFr ? "gagnées par jour" : "saved per day" },
     { value: entryPriceCompact, label: isFr ? "à partir de, HT" : "starting from, excl. VAT" },
   ];
 
@@ -520,6 +493,35 @@ export default async function FormationsEntreprise({ params }: Props) {
         </div>
       </Section>
 
+      {/* ── RÉASSURANCE QUALIOPI (gaté Phase B) — logo composite officiel (mention
+          « actions de formation » incluse dans l'image), <img> brut sans ré-encodage
+          (règle d'usage de la marque), lazy sous le héro pour préserver le LCP. ── */}
+      {ofPublic ? (
+        <div className="bg-bg">
+          <Container className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 pt-12 text-center">
+            {/* eslint-disable-next-line @next/next/no-img-element -- logo officiel Qualiopi : aucune modification ni ré-encodage autorisés (règle d'usage de la marque) → <img> brut, pas next/image. */}
+            <img
+              src="/qualiopi/axion-ia-qualiopi.png"
+              alt={
+                isFr
+                  ? "Organisme de formation certifié Qualiopi — Axion-IA (catégorie : actions de formation)"
+                  : "Qualiopi-certified training provider — Axion-IA (category: training actions)"
+              }
+              width={360}
+              height={240}
+              loading="lazy"
+              decoding="async"
+              className="h-auto w-[min(320px,100%)]"
+            />
+            <p className="text-fg-soft max-w-xs text-left text-sm leading-relaxed">
+              {isFr
+                ? "Organisme de formation certifié Qualiopi — vos formations sont finançables (OPCO, France Travail), selon votre situation."
+                : "Qualiopi-certified training provider — your trainings are fundable (OPCO, France Travail), depending on your situation."}
+            </p>
+          </Container>
+        </div>
+      ) : null}
+
       {/* ── CATALOGUE (toutes les formations FORMATIONS_V2, à plat) ───────── */}
       <Section
         id="catalogue"
@@ -528,8 +530,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         titleEm={isFr ? "en entreprise" : "for companies"}
         description={
           isFr
-            ? "Filtrez par durée ou par thème. La durée est indiquée sur chaque carte — cliquez pour voir le programme, le public visé et le tarif."
-            : "Filter by duration or theme. The duration is on each card — click to see the programme, target audience and price."
+            ? `${ofPublic ? "Organisme certifié Qualiopi. " : ""}Filtrez par durée ou par thème. La durée est indiquée sur chaque carte — cliquez pour voir le programme, le public visé et le tarif.`
+            : `${ofPublic ? "Qualiopi-certified provider. " : ""}Filter by duration or theme. The duration is on each card — click to see the programme, target audience and price.`
         }
       >
         <FormationsCatalogueFilterable items={slimFormations} isFr={isFr} />
@@ -656,57 +658,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         </dl>
       </Section>
 
-      {/* ── LES PLUS : résultats concrets + visibilité offerte ───────────── */}
-      <Section
-        tone="paper"
-        eyebrow={isFr ? "Les plus Axion-IA" : "The Axion-IA edge"}
-        title={isFr ? "Deux avantages que" : "Two advantages"}
-        titleEm={isFr ? "personne n'offre" : "no one else offers"}
-      >
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {/* Avantage 1 — résultats concrets dès le lendemain */}
-          <div className="border-border bg-bg flex flex-col rounded-3xl border p-8">
-            <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl">
-              <Zap aria-hidden="true" className="h-6 w-6" />
-            </div>
-            <h3 className="text-fg text-xl font-semibold tracking-tight">
-              {isFr ? "Des résultats concrets dès le lendemain" : "Concrete results from day one"}
-            </h3>
-            <p className="text-fg-soft mt-3 leading-relaxed">
-              {isFr
-                ? "Pas de théorie hors-sol : vos équipes s'entraînent sur leurs vrais dossiers. Chaque participant repart avec un livrable terminé et des gains de temps immédiats — 30 à 60 minutes gagnées par jour, dès la semaine suivante."
-                : "No abstract theory: your teams practise on their real files. Every participant leaves with a finished deliverable and immediate time savings — 30 to 60 minutes saved per day, from the very next week."}
-            </p>
-          </div>
-
-          {/* Avantage 2 — la visibilité offerte (bloc mocha, mis en avant) */}
-          <div className="bg-mocha-rich text-mocha-fg flex flex-col rounded-3xl p-8">
-            <div className="bg-terracotta text-mocha-fg mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl">
-              <Globe aria-hidden="true" className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-semibold tracking-tight">
-              {isFr
-                ? "La visibilité de votre entreprise, en bonus"
-                : "Your company's visibility, as a bonus"}
-            </h3>
-            <p className="text-mocha-fg/80 mt-3 leading-relaxed">
-              {isFr
-                ? "Nous ne formons pas que vos équipes : nous mettons votre entreprise en lumière, localement ou nationalement."
-                : "We don't just train your teams: we put your company in the spotlight, locally or nationally."}
-            </p>
-            <ul role="list" className="mt-6 flex flex-col gap-3">
-              {visibilityItems.map((v) => (
-                <li key={v.label} className="flex items-start gap-3">
-                  <span className="bg-mocha-fg/10 text-terracotta-soft mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
-                    <v.icon aria-hidden="true" className="h-4 w-4" />
-                  </span>
-                  <span className="text-mocha-fg text-sm leading-relaxed">{v.label}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Section>
+      {/* ── LES PLUS : bandeaux image (résultats · financement OPCO · visibilité) ── */}
+      <FormationsLesPlus isFr={isFr} ofPublic={ofPublic} />
 
       {/* ── BANDEAU IMAGE (scènes de formation authentiques) ─────────────── */}
       {bannerImage ? (

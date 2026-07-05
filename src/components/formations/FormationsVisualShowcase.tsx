@@ -20,8 +20,13 @@ import { Section } from "@/components/layout/Section";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { FORMATIONS_ENTREPRISE_UNSPLASH } from "@/content/formations-entreprise-unsplash";
 
+// Slots réservés à la bande « En images » (les slots resultats/financement/
+// visibilite alimentent la section « Les plus », pas cette bande).
+const SHOWCASE_SLOTS = ["equipe", "atelier", "formateur", "dirigeants"];
+
 export function FormationsVisualShowcase({ isFr }: { isFr: boolean }): ReactNode {
-  if (FORMATIONS_ENTREPRISE_UNSPLASH.length === 0) return null;
+  const photos = FORMATIONS_ENTREPRISE_UNSPLASH.filter((i) => SHOWCASE_SLOTS.includes(i.slot));
+  if (photos.length === 0) return null;
 
   return (
     <Section
@@ -37,7 +42,7 @@ export function FormationsVisualShowcase({ isFr }: { isFr: boolean }): ReactNode
       }
     >
       <ul className="xs:grid-cols-2 grid list-none grid-cols-1 gap-5 p-0 lg:grid-cols-4">
-        {FORMATIONS_ENTREPRISE_UNSPLASH.map((img) => (
+        {photos.map((img) => (
           <li key={img.slot} className="flex flex-col">
             <figure className="m-0 flex flex-col">
               <div className="border-border shadow-subtle relative aspect-[4/3] w-full overflow-hidden rounded-2xl border">

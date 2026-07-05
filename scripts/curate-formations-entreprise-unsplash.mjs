@@ -57,6 +57,22 @@ const SLOTS = [
     query: "executives meeting modern office",
     label: "Dirigeants & managers embarqués",
   },
+  // Bandeaux « Les plus »
+  {
+    slot: "resultats",
+    query: "business team success laptop office happy",
+    label: "Des résultats concrets dès le lendemain",
+  },
+  {
+    slot: "financement",
+    query: "signing business contract documents desk",
+    label: "Une formation prise en charge",
+  },
+  {
+    slot: "visibilite",
+    query: "podcast microphone studio recording",
+    label: "La visibilité de votre entreprise",
+  },
 ];
 
 function filterFreeOnly(photos) {
