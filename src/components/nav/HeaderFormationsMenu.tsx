@@ -68,8 +68,8 @@ export function HeaderFormationsMenu({
               </span>
               <span className="text-fg-soft mt-0.5 block text-[13px]">
                 {isFr
-                  ? `Le catalogue complet · ${totalCount} formations · dès ${entryPrice} HT`
-                  : `Full catalogue · ${totalCount} trainings · from ${entryPrice} excl. VAT`}
+                  ? `Le catalogue complet · ${totalCount} formations · dès ${entryPrice}`
+                  : `Full catalogue · ${totalCount} trainings · from ${entryPrice}`}
               </span>
             </span>
             <ArrowRight
