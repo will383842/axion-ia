@@ -250,6 +250,12 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                   {priceValue}
                 </p>
                 <p className="text-fg-muted mt-2 text-[13px]">{groupSizeLabel}</p>
+                {ofPublic ? (
+                  <p className="text-terracotta-deep mt-3 text-[12.5px] leading-snug font-semibold">
+                    Finançable OPCO / France Travail — jusqu’à 0 € de reste à charge selon votre
+                    situation.
+                  </p>
+                ) : null}
               </div>
               <dl className="divide-border flex flex-col divide-y">
                 {factRows.map((row) => (
@@ -385,10 +391,10 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
 
       {/* ── RÉSULTATS CONCRETS & MESURABLES ──────────────────────────────── */}
       <Section
-        eyebrow="En résumé"
+        eyebrow="Résultats & bénéfices"
         title="Des résultats concrets"
         titleEm="et mesurables"
-        description="Le bénéfice réel de la formation, au-delà des slides."
+        description="Le bénéfice réel de la formation pour vos équipes et pour l'entreprise, au-delà des slides."
       >
         <div className="mx-auto max-w-4xl">
           {f.resultatsFr && f.resultatsFr.length > 0 ? (
@@ -422,7 +428,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
             <div className="border-border bg-canvas flex flex-col gap-2 rounded-2xl border p-6">
               <span className="text-fg inline-flex items-center gap-2 text-[15px] font-semibold">
                 <Target aria-hidden="true" className="text-terracotta h-4 w-4" />
-                Le bénéfice direct
+                Le bénéfice pour l’entreprise
               </span>
               <p className="text-fg-soft text-sm leading-relaxed">{f.beneficeDirigeantFr}</p>
             </div>
