@@ -552,12 +552,34 @@ const IA_FONDAMENTAUX: FormationV2 = {
     {
       texteFr:
         "Analyser un document long et complexe de son poste et en tirer une synthèse vérifiée",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-1.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
     },
-    { texteFr: "Produire un livrable complet de A à Z : dossier, proposition ou support" },
-    { texteFr: "Travailler en plusieurs étapes : brouillon, critique, version finale" },
-    { texteFr: "Vérifier une production et repérer les inventions avant diffusion" },
-    { texteFr: "Choisir le bon outil IA selon la tâche à réaliser" },
-    { texteFr: "Se constituer une boîte à outils personnelle de prompts validés" },
+    {
+      texteFr: "Produire un livrable complet de A à Z : dossier, proposition ou support",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-2.webp",
+      imageCredit: { name: "Vadim Bozhko", url: "https://unsplash.com/@bozhstudio" },
+    },
+    {
+      texteFr: "Travailler en plusieurs étapes : brouillon, critique, version finale",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-3.webp",
+      imageCredit: { name: "Unseen Studio", url: "https://unsplash.com/@uns__nstudio" },
+    },
+    {
+      texteFr: "Vérifier une production et repérer les inventions avant diffusion",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-4.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
+    {
+      texteFr: "Choisir le bon outil IA selon la tâche à réaliser",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-5.webp",
+      imageCredit: { name: "Andrew Neel", url: "https://unsplash.com/@andrewtneel" },
+    },
+    {
+      texteFr: "Se constituer une boîte à outils personnelle de prompts validés",
+      imageSrc: "/illustrations/formations/fiches/ia-fondamentaux/cas-6.webp",
+      imageCredit: { name: "Andrei Slobtsov", url: "https://unsplash.com/@andreislobtsov" },
+    },
   ],
   objectifsFr: [
     "Tout le contenu d'IA Express, ancré par une journée de pratique",
@@ -644,12 +666,45 @@ const IA_COMMERCIAL: FormationV2 = {
   publicViseFr:
     "Commerciaux, ADV, assistants commerciaux, SAV et service client, responsables commerciaux et dirigeants qui vendent — en B2B comme en B2C, tous secteurs. Aucun pré-requis technique.",
   casUsageFr: [
-    { texteFr: "Traiter une demande client complexe dans la journée, complète et sans faute" },
-    { texteFr: "Produire un devis ou une proposition à partir de son gabarit" },
-    { texteFr: "Désamorcer une réclamation difficile par écrit, avec le ton juste" },
-    { texteFr: "Préparer un rendez-vous commercial en dix minutes" },
-    { texteFr: "Relancer un prospect avec une séquence personnalisée" },
-    { texteFr: "Constituer une bibliothèque commerciale partagée par l'équipe" },
+    {
+      texteFr: "Traiter une demande client complexe dans la journée, complète et sans faute",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-1.webp",
+      imageCredit: { name: "Vitaly Gariev", url: "https://unsplash.com/@silverkblack" },
+    },
+    {
+      texteFr: "Produire un devis ou une proposition à partir de son gabarit",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-2.webp",
+      imageCredit: { name: "Luca Bravo", url: "https://unsplash.com/@lucabravo" },
+    },
+    {
+      texteFr: "Désamorcer une réclamation difficile par écrit, avec le ton juste",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-3.webp",
+      imageCredit: {
+        name: "Glenn Carstens-Peters",
+        url: "https://unsplash.com/@glenncarstenspeters",
+      },
+    },
+    {
+      texteFr: "Préparer un rendez-vous commercial en dix minutes",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-4.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Relancer un prospect avec une séquence personnalisée",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-5.webp",
+      imageCredit: {
+        name: "Glenn Carstens-Peters",
+        url: "https://unsplash.com/@glenncarstenspeters",
+      },
+    },
+    {
+      texteFr: "Constituer une bibliothèque commerciale partagée par l'équipe",
+      imageSrc: "/illustrations/formations/fiches/ia-commercial/cas-6.webp",
+      imageCredit: {
+        name: "Gabrielle Henderson",
+        url: "https://unsplash.com/@gabriellefaithhenderson",
+      },
+    },
   ],
   objectifsFr: [
     "Traiter une demande client complexe dans la journée, complète et sans faute",
@@ -871,12 +926,36 @@ const IA_SUR_LE_TERRAIN: FormationV2 = {
   publicViseFr:
     "Techniciens, ouvriers, chauffeurs, agents d'exploitation, personnel d'atelier, installateurs et agents de maintenance — toute personne dont le travail se passe hors du bureau. Un smartphone suffit : aucun ordinateur de la journée, format volontairement non scolaire, aucun pré-requis.",
   casUsageFr: [
-    { texteFr: "Dicter un compte rendu d'intervention structuré en quittant le site" },
-    { texteFr: "Rédiger un signalement à partir d'une photo : constat, cause, action, urgence" },
-    { texteFr: "Reformuler un message délicat avant de l'envoyer au client ou au bureau" },
-    { texteFr: "Comprendre une consigne ou une notice technique à partir d'une photo" },
-    { texteFr: "Boucler le circuit terrain vers bureau depuis son téléphone" },
-    { texteFr: "Installer ses raccourcis pour ses documents récurrents" },
+    {
+      texteFr: "Dicter un compte rendu d'intervention structuré en quittant le site",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-1.webp",
+      imageCredit: { name: "Sorin Gheorghita", url: "https://unsplash.com/@sxtcxtc" },
+    },
+    {
+      texteFr: "Rédiger un signalement à partir d'une photo : constat, cause, action, urgence",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-2.webp",
+      imageCredit: { name: "Mike Beaumont", url: "https://unsplash.com/@mbeaumont76" },
+    },
+    {
+      texteFr: "Reformuler un message délicat avant de l'envoyer au client ou au bureau",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-3.webp",
+      imageCredit: { name: "Valerie V", url: "https://unsplash.com/@valerief" },
+    },
+    {
+      texteFr: "Comprendre une consigne ou une notice technique à partir d'une photo",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-4.webp",
+      imageCredit: { name: "NordWood Themes", url: "https://unsplash.com/@nordwood" },
+    },
+    {
+      texteFr: "Boucler le circuit terrain vers bureau depuis son téléphone",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-5.webp",
+      imageCredit: { name: "Mathias Reding", url: "https://unsplash.com/@matreding" },
+    },
+    {
+      texteFr: "Installer ses raccourcis pour ses documents récurrents",
+      imageSrc: "/illustrations/formations/fiches/ia-sur-le-terrain/cas-6.webp",
+      imageCredit: { name: "Gilles Lambert", url: "https://unsplash.com/@gilleslambert" },
+    },
   ],
   objectifsFr: [
     "Produire un compte rendu structuré à la voix en quittant le site",
@@ -963,12 +1042,36 @@ const AUTOMATISATIONS_DECOUVERTE: FormationV2 = {
   publicViseFr:
     "Tout salarié et encadrement de tous services, ainsi que les dirigeants (invités à la restitution finale), de la TPE à l'ETI. Journée démonstrative : on identifie, on chiffre, on priorise. Aucun matériel participant requis, aucun pré-requis technique.",
   casUsageFr: [
-    { texteFr: "Comprendre le principe d'une automatisation : déclencheur, traitement, action" },
-    { texteFr: "Repérer dans son poste les tâches répétitives automatisables" },
-    { texteFr: "Distinguer ce qui s'automatise de ce qui ne s'automatise pas" },
-    { texteFr: "Estimer le temps que ferait gagner chaque automatisation" },
-    { texteFr: "Prioriser les premières automatisations sur une matrice gain / difficulté" },
-    { texteFr: "Bâtir un plan d'automatisation chiffré pour la direction" },
+    {
+      texteFr: "Comprendre le principe d'une automatisation : déclencheur, traitement, action",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-1.webp",
+      imageCredit: { name: "ThisisEngineering", url: "https://unsplash.com/@thisisengineering" },
+    },
+    {
+      texteFr: "Repérer dans son poste les tâches répétitives automatisables",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-2.webp",
+      imageCredit: { name: "Luca Bravo", url: "https://unsplash.com/@lucabravo" },
+    },
+    {
+      texteFr: "Distinguer ce qui s'automatise de ce qui ne s'automatise pas",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-3.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
+    {
+      texteFr: "Estimer le temps que ferait gagner chaque automatisation",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-4.webp",
+      imageCredit: { name: "Towfiqu barbhuiya", url: "https://unsplash.com/@towfiqu999999" },
+    },
+    {
+      texteFr: "Prioriser les premières automatisations sur une matrice gain / difficulté",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-5.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
+    {
+      texteFr: "Bâtir un plan d'automatisation chiffré pour la direction",
+      imageSrc: "/illustrations/formations/fiches/automatisations-decouverte/cas-6.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
   ],
   objectifsFr: [
     "Expliquer le principe d'une automatisation : déclencheur → traitement → action",
