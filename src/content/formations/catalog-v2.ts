@@ -83,6 +83,8 @@ export interface FormationV2 {
   /** Image spécifique (sinon fallback par gamme, cf. catalog-v2-facts.ts). */
   imageSrc?: string;
   imageAltFr?: string;
+  /** Crédit photographe si l'image est une photo Unsplash (CGU §6). */
+  imageCredit?: { name: string; url: string };
 }
 
 // ============================================================================
@@ -579,6 +581,11 @@ const IA_AU_BUREAU: FormationV2 = {
     "RH et paie",
   ],
   publicViseFr: "Assistant(e)s, secrétariat, gestion, comptabilité, RH, services généraux.",
+  imageSrc:
+    "/illustrations/formations/fiches/ia-au-bureau-administratif-secretariat-formation-ia-axion-ia.webp",
+  imageAltFr:
+    "Formation IA au bureau Axion-IA — poste administratif (secrétariat, gestion) accompagné par l'IA pour produire courriers, comptes rendus et dossiers deux fois plus vite.",
+  imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
   objectifsFr: [
     "Créer ses gabarits de documents et courriers récurrents",
     "Transformer des notes en vrac en document propre et diffusable",
@@ -590,6 +597,25 @@ const IA_AU_BUREAU: FormationV2 = {
     "L'administratif cesse d'être le goulot d'étranglement. La banque de gabarits remise au responsable = le savoir-faire administratif structuré, qui reste même si la personne part.",
   equationTempsFr:
     "1 jour investi → 1 à 2 h gagnées par jour sur les postes administratifs. Rentabilisée en une dizaine de jours ouvrés ; plusieurs semaines récupérées par personne sur l'année.",
+  avantApresFr: {
+    avant:
+      "Courriers repris de zéro à chaque fois, dossiers épais dépouillés à la main, réponses aux administrations chronophages, suivi éparpillé entre mails et tableurs.",
+    apres:
+      "Des gabarits prêts à l'emploi, un dossier synthétisé en quelques minutes, des réponses préparées d'un clic, un suivi centralisé sans ressaisie.",
+  },
+  resultatsFr: [
+    { valeur: "1 à 2 h", label: "gagnées par jour sur l'administratif" },
+    { valeur: "~10 j", label: "ouvrés pour rentabiliser la formation" },
+    { valeur: "1 journée", label: "sur site, sur vos vrais dossiers" },
+  ],
+  casUsageFr: [
+    "Générer un courrier type (relance, convocation, attestation) à partir d'un modèle maison",
+    "Transformer des notes de réunion en compte rendu propre et diffusable",
+    "Dépouiller un dossier épais : synthèse, échéancier, pièces manquantes",
+    "Préparer une réponse à une administration ou un organisme",
+    "Tenir un suivi (échanges → tableau → relances) sans ressaisie",
+    "Constituer une banque de gabarits réutilisable par toute l'équipe",
+  ],
   programme: [
     {
       titreFr: "Matin — produire",
