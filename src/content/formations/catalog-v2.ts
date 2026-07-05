@@ -17,6 +17,7 @@
 
 import type { FormationBracket, FormationDuree, FormationGamme } from "../pricing";
 import { getFormationBrackets, getFormationEntryPrice, getFormationPrice } from "../pricing";
+import type { ModalitePedagogique } from "./modalites";
 
 export interface FormationV2Faq {
   question: string;
@@ -67,6 +68,21 @@ export interface FormationV2 {
   equationTempsFr: string;
   programme: ReadonlyArray<FormationProgrammeSection>;
   faqs: ReadonlyArray<FormationV2Faq>;
+  // ---- Modalités & pratique (défauts centralisés dans catalog-v2-facts.ts) ----
+  /** Format. Défaut = présentiel + distanciel possible. Surcharge si différent. */
+  modalites?: ReadonlyArray<ModalitePedagogique>;
+  /** Matériel requis. Défaut = « un ordinateur avec connexion internet ». */
+  materielFr?: string;
+  // ---- Contenu enrichi (optionnel — fallback template si absent) ----
+  /** Cas d'usage concrets. Fallback = objectifs. */
+  casUsageFr?: ReadonlyArray<string>;
+  /** Avant / après la formation (transformation concrète). */
+  avantApresFr?: { avant: string; apres: string };
+  /** Résultats concrets & mesurables (ex. { valeur: "1 à 2 h", label: "gagnées / jour" }). */
+  resultatsFr?: ReadonlyArray<{ valeur: string; label: string }>;
+  /** Image spécifique (sinon fallback par gamme, cf. catalog-v2-facts.ts). */
+  imageSrc?: string;
+  imageAltFr?: string;
 }
 
 // ============================================================================
