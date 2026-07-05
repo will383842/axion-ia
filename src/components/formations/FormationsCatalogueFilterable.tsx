@@ -61,10 +61,10 @@ function FilterChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "focus-visible:ring-terracotta inline-flex items-center rounded-full border px-3.5 py-1.5 text-[13px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none",
+        "focus-visible:ring-terracotta inline-flex items-center rounded-full border px-4 py-2 text-[13px] font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         active
-          ? "bg-fg text-bg border-fg"
-          : "text-fg border-border hover:border-terracotta hover:text-terracotta",
+          ? "bg-terracotta text-mocha-fg border-terracotta shadow-cta-terracotta"
+          : "bg-paper text-fg-soft border-border hover:border-terracotta hover:text-terracotta",
       )}
     >
       {children}
@@ -90,10 +90,10 @@ export function FormationsCatalogueFilterable({
 
   return (
     <div>
-      {/* Barre de filtres */}
-      <div className="border-border bg-paper mb-8 flex flex-col gap-4 rounded-2xl border p-4">
+      {/* Barre de filtres — chips segmentés, accent terracotta sur l'actif */}
+      <div className="mb-8 flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-fg-muted mr-1 w-16 shrink-0 text-[12px] font-semibold tracking-tight uppercase">
+          <span className="text-fg-muted mr-2 w-14 shrink-0 text-[11px] font-semibold tracking-[0.14em] uppercase">
             {isFr ? "Durée" : "Duration"}
           </span>
           <FilterChip active={duree === null} onClick={() => setDuree(null)}>
@@ -106,7 +106,7 @@ export function FormationsCatalogueFilterable({
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-fg-muted mr-1 w-16 shrink-0 text-[12px] font-semibold tracking-tight uppercase">
+          <span className="text-fg-muted mr-2 w-14 shrink-0 text-[11px] font-semibold tracking-[0.14em] uppercase">
             {isFr ? "Thème" : "Theme"}
           </span>
           <FilterChip active={gamme === null} onClick={() => setGamme(null)}>

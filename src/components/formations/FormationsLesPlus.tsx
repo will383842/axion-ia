@@ -109,8 +109,8 @@ export function FormationsLesPlus({
           </h3>
           <p className="text-fg-soft leading-relaxed">
             {isFr
-              ? "Pas de théorie hors-sol : vos équipes s'entraînent sur leurs vrais dossiers. Chaque participant repart avec un livrable terminé et des gains de temps immédiats — de 30 minutes à 2 heures gagnées par jour, dès la semaine suivante."
-              : "No abstract theory: your teams practise on their real files. Every participant leaves with a finished deliverable and immediate time savings — 30 minutes to 2 hours saved per day, from the very next week."}
+              ? "Pas de théorie hors-sol : vos équipes s'entraînent sur leurs vrais dossiers. Chaque participant repart avec un livrable terminé et des gains de temps immédiats — de 30 minutes à 2 heures gagnées par jour, dès le lendemain."
+              : "No abstract theory: your teams practise on their real files. Every participant leaves with a finished deliverable and immediate time savings — 30 minutes to 2 hours saved per day, from the very next day."}
           </p>
         </Banner>
 

@@ -178,7 +178,11 @@ export default async function FormationsEntreprise({ params }: Props) {
   // ── Données de contenu ─────────────────────────────────────────────────────
   const heroChips: ReadonlyArray<{ icon: typeof Sparkles; label: string; on: boolean }> = [
     { icon: Sparkles, label: isFr ? `${total} formations` : `${total} trainings`, on: true },
-    { icon: Building2, label: isFr ? "Dans vos locaux" : "At your premises", on: true },
+    {
+      icon: Building2,
+      label: isFr ? "Sur site (présentiel) ou à distance" : "On site or remote",
+      on: true,
+    },
     { icon: MapPin, label: isFr ? "Partout en France" : "Across France", on: true },
     {
       icon: Users,
@@ -319,7 +323,7 @@ export default async function FormationsEntreprise({ params }: Props) {
 
   const stats: ReadonlyArray<{ value: string; label: string }> = [
     { value: String(total), label: isFr ? "formations au catalogue" : "trainings in catalogue" },
-    { value: "10", label: isFr ? "secteurs couverts" : "sectors covered" },
+    { value: isFr ? "Tous" : "All", label: isFr ? "secteurs couverts" : "sectors covered" },
     { value: "30 min à 2 h", label: isFr ? "gagnées par jour" : "saved per day" },
     { value: entryPriceCompact, label: isFr ? "à partir de, HT" : "starting from, excl. VAT" },
   ];
@@ -499,7 +503,7 @@ export default async function FormationsEntreprise({ params }: Props) {
           (règle d'usage de la marque), lazy sous le héro pour préserver le LCP. ── */}
       {ofPublic ? (
         <div className="bg-bg">
-          <Container className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 pt-12 text-center">
+          <Container className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 pt-6 pb-2 text-center">
             {/* eslint-disable-next-line @next/next/no-img-element -- logo officiel Qualiopi : aucune modification ni ré-encodage autorisés (règle d'usage de la marque) → <img> brut, pas next/image. */}
             <img
               src="/qualiopi/axion-ia-qualiopi.png"
@@ -508,11 +512,11 @@ export default async function FormationsEntreprise({ params }: Props) {
                   ? "Organisme de formation certifié Qualiopi — Axion-IA (catégorie : actions de formation)"
                   : "Qualiopi-certified training provider — Axion-IA (category: training actions)"
               }
-              width={360}
-              height={240}
+              width={480}
+              height={320}
               loading="lazy"
               decoding="async"
-              className="h-auto w-[min(320px,100%)]"
+              className="h-auto w-[min(460px,100%)]"
             />
             <p className="text-fg-soft max-w-xs text-left text-sm leading-relaxed">
               {isFr
@@ -526,6 +530,7 @@ export default async function FormationsEntreprise({ params }: Props) {
       {/* ── CATALOGUE (toutes les formations FORMATIONS_V2, à plat) ───────── */}
       <Section
         id="catalogue"
+        className="pt-10 sm:pt-12 lg:pt-16"
         eyebrow={isFr ? "Le catalogue" : "The catalogue"}
         title={isFr ? `Nos ${total} formations IA` : `Our ${total} AI trainings`}
         titleEm={isFr ? "en entreprise" : "for companies"}
@@ -643,6 +648,57 @@ export default async function FormationsEntreprise({ params }: Props) {
         </div>
       </Section>
 
+      {/* ── LES PLUS : bandeaux image (résultats · financement OPCO · visibilité) ── */}
+      <FormationsLesPlus isFr={isFr} ofPublic={ofPublic} />
+
+      {/* ── FINANCEMENT / QUALIOPI / 0 € (gaté Phase B) ──────────────────── */}
+      {ofPublic ? (
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Financement" : "Funding"}
+          title={isFr ? "Jusqu'à 0 € de reste à charge," : "Down to €0 out of pocket,"}
+          titleEm={isFr ? "selon votre OPCO" : "with your OPCO"}
+          description={
+            isFr
+              ? "Organisme certifié Qualiopi, nous rendons nos formations éligibles aux financements de la formation professionnelle. Nous montons le dossier avec vous."
+              : "As a Qualiopi-certified provider, our trainings are eligible for professional training funding. We build the file with you."
+          }
+        >
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_1fr]">
+            <FinancingBadges seed="formations-entreprise" />
+            <ul role="list" className="flex flex-col gap-3">
+              {[
+                isFr
+                  ? "Éligibilité vérifiée selon votre branche et votre OPCO"
+                  : "Eligibility checked with your branch and OPCO",
+                isFr
+                  ? "Aide au montage du dossier de prise en charge (OPCO, France Travail)"
+                  : "Help building the funding file (OPCO, France Travail)",
+                isFr
+                  ? "Convention, émargement et attestation conformes"
+                  : "Compliant agreement, attendance sheet and certificate",
+              ].map((item) => (
+                <li key={item} className="text-fg flex items-start gap-2.5 text-sm leading-relaxed">
+                  <Check aria-hidden="true" className="text-terracotta mt-0.5 h-4 w-4 shrink-0" />
+                  {item}
+                </li>
+              ))}
+              <li className="mt-2">
+                <Cta
+                  href="/appel"
+                  variant="primary"
+                  size="md"
+                  track="formations-entreprise-financement-appel"
+                >
+                  {isFr ? "Étudier ma prise en charge" : "Study my funding"}
+                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </Cta>
+              </li>
+            </ul>
+          </div>
+        </Section>
+      ) : null}
+
       {/* ── POURQUOI NOUS + STATS ────────────────────────────────────────── */}
       <Section
         eyebrow={isFr ? "Pourquoi Axion-IA" : "Why Axion-IA"}
@@ -682,9 +738,6 @@ export default async function FormationsEntreprise({ params }: Props) {
           ))}
         </dl>
       </Section>
-
-      {/* ── LES PLUS : bandeaux image (résultats · financement OPCO · visibilité) ── */}
-      <FormationsLesPlus isFr={isFr} ofPublic={ofPublic} />
 
       {/* ── BANDEAU IMAGE (scènes de formation authentiques) ─────────────── */}
       {bannerImage ? (
@@ -736,54 +789,6 @@ export default async function FormationsEntreprise({ params }: Props) {
           </>
         }
       />
-
-      {/* ── FINANCEMENT / QUALIOPI / 0 € (gaté Phase B) ──────────────────── */}
-      {ofPublic ? (
-        <Section
-          tone="sand"
-          eyebrow={isFr ? "Financement" : "Funding"}
-          title={isFr ? "Jusqu'à 0 € de reste à charge," : "Down to €0 out of pocket,"}
-          titleEm={isFr ? "selon votre OPCO" : "with your OPCO"}
-          description={
-            isFr
-              ? "Organisme certifié Qualiopi, nous rendons nos formations éligibles aux financements de la formation professionnelle. Nous montons le dossier avec vous."
-              : "As a Qualiopi-certified provider, our trainings are eligible for professional training funding. We build the file with you."
-          }
-        >
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_1fr]">
-            <FinancingBadges seed="formations-entreprise" />
-            <ul role="list" className="flex flex-col gap-3">
-              {[
-                isFr
-                  ? "Éligibilité vérifiée selon votre branche et votre OPCO"
-                  : "Eligibility checked with your branch and OPCO",
-                isFr
-                  ? "Aide au montage du dossier de prise en charge (OPCO, France Travail)"
-                  : "Help building the funding file (OPCO, France Travail)",
-                isFr
-                  ? "Convention, émargement et attestation conformes"
-                  : "Compliant agreement, attendance sheet and certificate",
-              ].map((item) => (
-                <li key={item} className="text-fg flex items-start gap-2.5 text-sm leading-relaxed">
-                  <Check aria-hidden="true" className="text-terracotta mt-0.5 h-4 w-4 shrink-0" />
-                  {item}
-                </li>
-              ))}
-              <li className="mt-2">
-                <Cta
-                  href="/appel"
-                  variant="primary"
-                  size="md"
-                  track="formations-entreprise-financement-appel"
-                >
-                  {isFr ? "Étudier ma prise en charge" : "Study my funding"}
-                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                </Cta>
-              </li>
-            </ul>
-          </div>
-        </Section>
-      ) : null}
 
       {/* ── SECTEURS + MÉTIERS ───────────────────────────────────────────── */}
       <Section
