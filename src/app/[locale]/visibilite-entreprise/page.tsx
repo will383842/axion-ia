@@ -13,6 +13,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import {
   ArrowRight,
+  Check,
   Code2,
   Cpu,
   GraduationCap,
@@ -26,6 +27,7 @@ import {
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
@@ -36,6 +38,8 @@ import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosM
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { VisibiliteBenefits } from "@/components/visibilite/VisibiliteBenefits";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { VISIBILITE_UNSPLASH } from "@/content/visibilite-entreprise-unsplash";
 import { SERVICES, serviceOfficial, type ServiceId } from "@/content/services";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import {
@@ -79,7 +83,11 @@ export default async function VisibiliteClient({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const heroImage = getPageImages(PATH).find((i) => i.slot === "hero");
+  const pageImages = getPageImages(PATH);
+  const heroImage = pageImages.find((i) => i.slot === "hero");
+  const bannerImage = pageImages.find((i) => i.slot === "banner");
+  const roiImage = VISIBILITE_UNSPLASH.find((i) => i.slot === "notoriete");
+  const processImage = VISIBILITE_UNSPLASH.find((i) => i.slot === "hero");
 
   const breadcrumbItems = [
     { href: PATH, label: isFr ? "Visibilité entreprise" : "Company visibility" },
@@ -361,20 +369,36 @@ export default async function VisibiliteClient({ params }: Props) {
             : "Whichever service you choose at Axion-IA, your company's visibility is included."
         }
       >
-        <ul role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-4 lg:grid-cols-5">
-          {SERVICES.map((s) => {
+        <ul role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-5">
+          {SERVICES.map((s, idx) => {
             const Icon = serviceIcons[s.id];
+            const accent = [
+              "bg-terracotta-soft text-terracotta-deep",
+              "bg-primary-soft text-primary",
+              "bg-sage-soft text-sage",
+              "bg-terracotta-soft text-terracotta-deep",
+              "bg-primary-soft text-primary",
+            ][idx % 5];
             return (
               <li key={s.id}>
                 <Link
                   href={s.href as never}
-                  className="shadow-subtle hover:shadow-elevated group bg-bg flex h-full flex-col gap-3 rounded-2xl p-5 transition hover:-translate-y-0.5"
+                  className="shadow-subtle hover:shadow-elevated group bg-bg flex h-full flex-col gap-3 rounded-2xl p-6 transition hover:-translate-y-1"
                 >
-                  <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 items-center justify-center rounded-xl">
-                    <Icon aria-hidden="true" className="h-5 w-5" />
+                  <span
+                    className={cn(
+                      "inline-flex h-12 w-12 items-center justify-center rounded-2xl",
+                      accent,
+                    )}
+                  >
+                    <Icon aria-hidden="true" className="h-6 w-6" />
                   </span>
                   <span className="text-fg text-sm font-semibold tracking-tight">
                     {serviceOfficial(s, isFr)}
+                  </span>
+                  <span className="text-sage inline-flex items-center gap-1 text-[12px] font-semibold">
+                    <Check aria-hidden="true" className="h-3.5 w-3.5" />
+                    {isFr ? "Visibilité incluse" : "Visibility included"}
                   </span>
                   <span className="text-terracotta mt-auto text-[13px] font-medium">
                     {isFr ? "Découvrir →" : "Discover →"}
@@ -385,6 +409,22 @@ export default async function VisibiliteClient({ params }: Props) {
           })}
         </ul>
       </Section>
+
+      {/* ── BANDEAU ÉQUIPE (respiration visuelle) ────────────────────────── */}
+      {bannerImage ? (
+        <div className="bg-bg">
+          <Container>
+            <Image
+              src={bannerImage.src}
+              alt={isFr ? bannerImage.altFr : bannerImage.altEn}
+              width={bannerImage.width}
+              height={bannerImage.height}
+              sizes="(max-width: 1366px) 100vw, 1366px"
+              className="aspect-[21/9] h-auto w-full rounded-3xl object-cover md:aspect-[3/1]"
+            />
+          </Container>
+        </div>
+      ) : null}
 
       {/* ── LA VALEUR / ROI ──────────────────────────────────────────────── */}
       <Section
@@ -397,18 +437,44 @@ export default async function VisibiliteClient({ params }: Props) {
             : "Visibility isn't a gimmick: it's a durable marketing asset — ranking, awareness, trust, hiring."
         }
       >
-        <div className="xs:grid-cols-2 grid grid-cols-1 gap-x-8 gap-y-9 lg:grid-cols-4">
-          {valeurs.map((v) => (
-            <div key={v.title} className="flex flex-col gap-3">
-              <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 items-center justify-center rounded-xl">
-                <v.icon aria-hidden="true" className="h-5 w-5" />
-              </span>
-              <h3 className="text-fg text-base font-semibold tracking-tight">{v.title}</h3>
-              <p data-speakable className="text-fg-soft text-sm leading-relaxed">
-                {v.body}
-              </p>
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          {roiImage ? (
+            <div className="lg:order-last">
+              <Image
+                src={roiImage.src}
+                alt={
+                  isFr
+                    ? "Poignée de main entre Axion-IA et une entreprise cliente — la visibilité offerte renforce la notoriété et la confiance"
+                    : "Handshake between Axion-IA and a client company — the free visibility strengthens awareness and trust"
+                }
+                width={roiImage.width}
+                height={roiImage.height}
+                loading="lazy"
+                sizes="(min-width: 1024px) 48vw, 100vw"
+                className="aspect-[4/3] h-auto w-full rounded-3xl object-cover"
+              />
+              <UnsplashCredit
+                photographerName={roiImage.photographer}
+                photographerUrl={roiImage.photographerUrl}
+                className="mt-1.5 px-1"
+              />
             </div>
-          ))}
+          ) : null}
+          <ul role="list" className="flex flex-col gap-6">
+            {valeurs.map((v) => (
+              <li key={v.title} className="flex gap-4">
+                <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                  <v.icon aria-hidden="true" className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="text-fg text-base font-semibold tracking-tight">{v.title}</h3>
+                  <p data-speakable className="text-fg-soft mt-1 text-sm leading-relaxed">
+                    {v.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </Section>
 
@@ -419,21 +485,44 @@ export default async function VisibiliteClient({ params }: Props) {
         title={isFr ? "Comment ça" : "How it"}
         titleEm={isFr ? "se passe" : "works"}
       >
-        <ol className="xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-4">
-          {steps.map((step) => (
-            <li key={step.n} className="border-border bg-bg flex flex-col rounded-2xl border p-6">
-              <span
-                className="text-terracotta/40 block text-3xl font-semibold"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {step.n}
-              </span>
-              <h3 className="text-fg mt-3 text-base font-semibold tracking-tight">{step.title}</h3>
-              <p className="text-fg-soft mt-2 text-sm leading-relaxed">{step.body}</p>
-            </li>
-          ))}
-        </ol>
-        <div className="mt-8 flex flex-wrap gap-3">{heroCtas}</div>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-14">
+          <ol className="flex flex-col gap-6">
+            {steps.map((step) => (
+              <li key={step.n} className="flex gap-4">
+                <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-base font-bold">
+                  {step.n}
+                </span>
+                <div className="min-w-0 pt-1.5">
+                  <h3 className="text-fg text-base font-semibold tracking-tight">{step.title}</h3>
+                  <p className="text-fg-soft mt-1 text-sm leading-relaxed">{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          {processImage ? (
+            <div>
+              <Image
+                src={processImage.src}
+                alt={
+                  isFr
+                    ? "Équipe d'entreprise mise en lumière par Axion-IA — podcast, page dédiée et relais LinkedIn"
+                    : "Client company team spotlighted by Axion-IA — podcast, dedicated page and LinkedIn share"
+                }
+                width={processImage.width}
+                height={processImage.height}
+                loading="lazy"
+                sizes="(min-width: 1024px) 38vw, 100vw"
+                className="aspect-[4/5] h-auto w-full rounded-3xl object-cover"
+              />
+              <UnsplashCredit
+                photographerName={processImage.photographer}
+                photographerUrl={processImage.photographerUrl}
+                className="mt-1.5 px-1"
+              />
+            </div>
+          ) : null}
+        </div>
+        <div className="mt-10 flex flex-wrap gap-3">{heroCtas}</div>
       </Section>
 
       {/* ── SECTEURS ─────────────────────────────────────────────────────── */}
@@ -448,15 +537,42 @@ export default async function VisibiliteClient({ params }: Props) {
             : "Whatever your field, your dedicated page and podcast are tailored to your sector."
         }
       >
-        <ul role="list" className="flex flex-wrap gap-2">
+        <ul
+          role="list"
+          className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
+        >
           {CLIENT_SECTORS.map((s) => (
             <li key={s.slug}>
               <Link
                 href={`/secteurs/${s.slug}` as never}
-                className="text-fg bg-bg border-border hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-medium transition"
+                className="shadow-subtle hover:shadow-elevated group bg-paper flex h-full flex-col overflow-hidden rounded-2xl transition hover:-translate-y-0.5"
               >
-                <span aria-hidden="true">{s.emoji}</span>
-                {s.labelFr}
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={`/illustrations/secteurs/${s.slug}.avif`}
+                    alt={
+                      isFr
+                        ? `Visibilité pour ${s.fullFr} — page dédiée et podcast Axion-IA`
+                        : `Visibility for ${s.fullFr} — Axion-IA dedicated page and podcast`
+                    }
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, (min-width: 479px) 50vw, 100vw"
+                    loading="lazy"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="bg-paper/90 shadow-subtle absolute top-2.5 left-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg text-base"
+                  >
+                    {s.emoji}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col gap-1 p-4">
+                  <span className="text-fg text-sm font-semibold tracking-tight">{s.labelFr}</span>
+                  <span className="text-terracotta mt-auto text-[13px] font-medium">
+                    {isFr ? "Voir →" : "See →"}
+                  </span>
+                </div>
               </Link>
             </li>
           ))}
