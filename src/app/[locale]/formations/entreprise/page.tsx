@@ -53,7 +53,6 @@ import {
   FormationsCatalogueFilterable,
   type SlimFormation,
 } from "@/components/formations/FormationsCatalogueFilterable";
-import { FormationsVisualShowcase } from "@/components/formations/FormationsVisualShowcase";
 import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
@@ -125,7 +124,6 @@ export default async function FormationsEntreprise({ params }: Props) {
   const total = FORMATIONS_V2.length;
   const images = getPageImages(PATH);
   const heroImage = images.find((i) => i.slot === "hero");
-  const bannerImage = images.find((i) => i.slot === "banner");
   const reserveImage = images.find((i) => i.slot === "inline");
 
   const breadcrumbItems = [
@@ -519,6 +517,33 @@ export default async function FormationsEntreprise({ params }: Props) {
         </div>
       </Section>
 
+      {/* ── BARRE D'ANCRES intra-page (collante sous le header) ──────────── */}
+      <div className="bg-bg/90 border-border sticky top-[80px] z-30 border-b backdrop-blur">
+        <Container>
+          <nav
+            aria-label={isFr ? "Sections de la page" : "Page sections"}
+            className="flex flex-wrap gap-1 py-2.5"
+          >
+            {[
+              { href: "#catalogue", label: isFr ? "Les formations" : "Trainings", on: true },
+              { href: "#financement", label: isFr ? "Financement" : "Funding", on: ofPublic },
+              { href: "#secteurs", label: isFr ? "Secteurs" : "Sectors", on: true },
+              { href: "#faq", label: "FAQ", on: true },
+            ]
+              .filter((a) => a.on)
+              .map((a) => (
+                <a
+                  key={a.href}
+                  href={a.href}
+                  className="text-fg-soft hover:bg-sand hover:text-terracotta shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition"
+                >
+                  {a.label}
+                </a>
+              ))}
+          </nav>
+        </Container>
+      </div>
+
       {/* ── CATALOGUE (toutes les formations FORMATIONS_V2, à plat) ───────── */}
       <Section
         id="catalogue"
@@ -563,6 +588,41 @@ export default async function FormationsEntreprise({ params }: Props) {
 
       {/* ── LOGOS CLIENTS (marquee défilant, sans titre) ─────────────────── */}
       <ClientLogosMarqueeBand isFr={isFr} />
+
+      {/* ── RÉASSURANCE : atouts + chiffres (léger, sans boîtes) ─────────── */}
+      <Section
+        eyebrow={isFr ? "Pourquoi Axion-IA" : "Why Axion-IA"}
+        title={isFr ? "La référence des formations IA" : "The reference for AI training"}
+        titleEm={isFr ? "en entreprise" : "for companies"}
+      >
+        <div className="xs:grid-cols-2 grid grid-cols-1 gap-x-8 gap-y-9 lg:grid-cols-4">
+          {features.map((f) => (
+            <div key={f.title} className="flex flex-col gap-3">
+              <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                <f.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <h3 className="text-fg text-base font-semibold tracking-tight">{f.title}</h3>
+              <p className="text-fg-soft text-sm leading-relaxed">{f.body}</p>
+            </div>
+          ))}
+        </div>
+        <dl className="border-border mt-14 grid grid-cols-2 gap-6 border-t pt-10 lg:grid-cols-4">
+          {stats.map((s) => (
+            <div key={s.label}>
+              <dt className="sr-only">{s.label}</dt>
+              <dd>
+                <span
+                  className="text-terracotta block text-3xl font-semibold tracking-tight lg:text-4xl"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {s.value}
+                </span>
+                <span className="text-fg-soft mt-1 block text-sm">{s.label}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
 
       {/* ── COMMENT RÉSERVER (7 étapes) ──────────────────────────────────── */}
       {/* Desktop : infographie pleine largeur (titre + étapes intégrés). Mobile :
@@ -640,12 +700,10 @@ export default async function FormationsEntreprise({ params }: Props) {
         </div>
       </Section>
 
-      {/* ── LES PLUS : bandeaux image (résultats · financement OPCO · visibilité) ── */}
-      <FormationsLesPlus isFr={isFr} ofPublic={ofPublic} />
-
       {/* ── FINANCEMENT / QUALIOPI / 0 € (gaté Phase B) ──────────────────── */}
       {ofPublic ? (
         <Section
+          id="financement"
           tone="sand"
           eyebrow={isFr ? "Financement" : "Funding"}
           title={isFr ? "Jusqu'à 0 € de reste à charge," : "Down to €0 out of pocket,"}
@@ -691,99 +749,12 @@ export default async function FormationsEntreprise({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* ── POURQUOI NOUS + STATS ────────────────────────────────────────── */}
-      <Section
-        eyebrow={isFr ? "Pourquoi Axion-IA" : "Why Axion-IA"}
-        title={isFr ? "Les meilleures formations IA" : "The best AI trainings"}
-        titleEm={isFr ? "pour vos équipes" : "for your teams"}
-        description={
-          isFr
-            ? "Une approche concrète, sur mesure et mesurable — pensée pour l'entreprise française, de la TPE au grand compte."
-            : "A concrete, tailored and measurable approach — designed for French companies, from micro-business to large accounts."
-        }
-      >
-        <div className="xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-4">
-          {features.map((f) => (
-            <div key={f.title} className="border-border bg-paper rounded-2xl border p-6">
-              <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl">
-                <f.icon aria-hidden="true" className="h-5 w-5" />
-              </div>
-              <h3 className="text-fg text-base font-semibold tracking-tight">{f.title}</h3>
-              <p className="text-fg-soft mt-2 text-sm leading-relaxed">{f.body}</p>
-            </div>
-          ))}
-        </div>
-        <dl className="border-border mt-10 grid grid-cols-2 gap-6 border-t pt-10 lg:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label}>
-              <dt className="sr-only">{s.label}</dt>
-              <dd>
-                <span
-                  className="text-terracotta block text-3xl font-semibold tracking-tight lg:text-4xl"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {s.value}
-                </span>
-                <span className="text-fg-soft mt-1 block text-sm">{s.label}</span>
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
-
-      {/* ── BANDEAU IMAGE (scènes de formation authentiques) ─────────────── */}
-      {bannerImage ? (
-        <div className="bg-bg">
-          <Container>
-            <Image
-              src={bannerImage.src}
-              alt={isFr ? bannerImage.altFr : bannerImage.altEn}
-              width={bannerImage.width}
-              height={bannerImage.height}
-              sizes="(max-width: 1366px) 100vw, 1366px"
-              className="aspect-[3/1] h-auto w-full rounded-3xl object-cover"
-            />
-          </Container>
-        </div>
-      ) : null}
-
-      {/* ── CTA #1 ───────────────────────────────────────────────────────── */}
-      <CtaBlock
-        tone="terracotta"
-        eyebrow={isFr ? "On vous aide à choisir" : "We help you choose"}
-        title={isFr ? "Vous hésitez sur la" : "Not sure which"}
-        titleEm={isFr ? "formation idéale" : "training fits"}
-        titleTail={isFr ? " ?" : "?"}
-        description={
-          isFr
-            ? "Un premier échange de 30 minutes suffit pour identifier la formation la plus utile à vos équipes — et étudier votre prise en charge."
-            : "A first 30-minute call is enough to identify the most useful training for your teams — and study your funding."
-        }
-        cta={
-          <>
-            <Cta
-              href="/appel"
-              variant="secondary"
-              size="lg"
-              track="formations-entreprise-cta1-appel"
-            >
-              {isFr ? "Réserver un appel" : "Book a call"}
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </Cta>
-            <Cta
-              href="/contact"
-              variant="outline"
-              size="lg"
-              track="formations-entreprise-cta1-contact"
-            >
-              {isFr ? "Écrire un message" : "Send a message"}
-            </Cta>
-          </>
-        }
-      />
+      {/* ── LES PLUS (léger : 3 avantages + infographie visibilité) ──────── */}
+      <FormationsLesPlus isFr={isFr} ofPublic={ofPublic} />
 
       {/* ── SECTEURS + MÉTIERS ───────────────────────────────────────────── */}
       <Section
+        id="secteurs"
         tone="paper"
         eyebrow={isFr ? "Tous secteurs, tous métiers" : "Every sector, every role"}
         title={isFr ? "Une formation IA pour" : "An AI training for"}
@@ -802,7 +773,7 @@ export default async function FormationsEntreprise({ params }: Props) {
             <li key={s.slug}>
               <Link
                 href={`/secteurs/${s.slug}` as never}
-                className="border-border hover:border-terracotta hover:shadow-card group bg-bg flex h-full flex-col overflow-hidden rounded-2xl border transition"
+                className="shadow-subtle hover:shadow-elevated group bg-paper flex h-full flex-col overflow-hidden rounded-2xl transition hover:-translate-y-0.5"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
@@ -850,9 +821,6 @@ export default async function FormationsEntreprise({ params }: Props) {
         </div>
       </Section>
 
-      {/* ── EN IMAGES (bande Unsplash dédiée) ────────────────────────────── */}
-      <FormationsVisualShowcase isFr={isFr} />
-
       {/* ── VILLES (maillage) ────────────────────────────────────────────── */}
       <Section
         tone="paper"
@@ -881,6 +849,7 @@ export default async function FormationsEntreprise({ params }: Props) {
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <Section
+        id="faq"
         eyebrow={isFr ? "Questions fréquentes" : "Frequently asked"}
         title={isFr ? "Vos questions sur nos" : "Your questions about our"}
         titleEm={isFr ? "formations IA" : "AI trainings"}

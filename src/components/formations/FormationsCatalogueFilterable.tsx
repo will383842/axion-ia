@@ -137,7 +137,7 @@ export function FormationsCatalogueFilterable({
               <Link
                 href={`/formations/${f.slugFr}` as never}
                 data-cta={`formation-card-${f.slugFr}`}
-                className="border-border hover:border-terracotta hover:shadow-card group bg-paper relative flex h-full flex-col overflow-hidden rounded-2xl border transition duration-200 hover:-translate-y-0.5"
+                className="shadow-subtle hover:shadow-elevated group bg-paper relative flex h-full flex-col overflow-hidden rounded-2xl transition duration-200 hover:-translate-y-1"
               >
                 <span aria-hidden="true" className={cn("block h-1.5 w-full", g.bar)} />
                 <div className="flex h-full flex-col p-6">
