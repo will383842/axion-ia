@@ -370,6 +370,102 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         height: 802,
         slot: "banner",
       },
+      {
+        src: "/illustrations/visibilite/pourquoi-ca-compte-visibilite-entreprise-axion-ia.avif",
+        nameFr: "Pourquoi la visibilité offerte compte — infographie Axion-IA",
+        nameEn: "Why the free visibility matters — Axion-IA infographic",
+        altFr:
+          "Infographie « Pourquoi ça compte » : la visibilité offerte par Axion-IA est un actif marketing durable — une valeur qui vous survit, une autorité SEO durable (backlink dofollow), la notoriété locale et nationale, la preuve sociale et la confiance, la marque employeur et le recrutement.",
+        altEn:
+          "Infographic “Why it matters”: the visibility offered by Axion-IA is a durable marketing asset — value that outlasts you, durable SEO authority (dofollow backlink), local and national awareness, social proof and trust, employer brand and hiring.",
+        width: 1693,
+        height: 929,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/visibilite/equipe-entreprise-mise-en-lumiere-visibilite-axion-ia.avif",
+        nameFr: "Équipe d'entreprise mise en lumière par Axion-IA",
+        nameEn: "Client company team spotlighted by Axion-IA",
+        altFr:
+          "Équipe d'entreprise cliente mise en lumière par Axion-IA — la visibilité offerte (podcast, page dédiée, relais LinkedIn) renforce sa notoriété.",
+        altEn:
+          "Client company team spotlighted by Axion-IA — the free visibility (podcast, dedicated page, LinkedIn) boosts its awareness.",
+        width: 1600,
+        height: 1067,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/podcast-dirigeant-entreprise-visibilite-axion-ia.avif",
+        nameFr: "Podcast dirigeant d'entreprise — visibilité Axion-IA",
+        nameEn: "Company executive podcast — Axion-IA visibility",
+        altFr:
+          "Enregistrement d'un podcast d'entreprise — le dirigeant partage sa transformation IA avec Axion-IA pour gagner en visibilité.",
+        altEn:
+          "Recording a corporate podcast — the executive shares their AI transformation with Axion-IA to gain visibility.",
+        width: 1600,
+        height: 1067,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/interview-participant-entreprise-visibilite-axion-ia.avif",
+        nameFr: "Interview d'un collaborateur d'entreprise cliente — Axion-IA",
+        nameEn: "Interview of a client-company employee — Axion-IA",
+        altFr:
+          "Interview vidéo d'un collaborateur d'entreprise cliente, filmée par Axion-IA — témoignage et preuve sociale pour la visibilité de l'entreprise.",
+        altEn:
+          "Video interview of a client-company employee, filmed by Axion-IA — testimonial and social proof for the company's visibility.",
+        width: 1600,
+        height: 1099,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/page-dediee-entreprise-secteur-visibilite-axion-ia.avif",
+        nameFr: "Page entreprise dédiée sur axion-ia.com — visibilité",
+        nameEn: "Dedicated company page on axion-ia.com — visibility",
+        altFr:
+          "Page entreprise dédiée sur axion-ia.com — vitrine du secteur d'activité du client, optimisée SEO et hébergée sur un domaine à forte autorité.",
+        altEn:
+          "Dedicated company page on axion-ia.com — showcase of the client's sector, SEO-optimised and hosted on a high-authority domain.",
+        width: 1600,
+        height: 924,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/backlink-dofollow-autorite-seo-visibilite-axion-ia.avif",
+        nameFr: "Backlink dofollow — autorité SEO offerte par Axion-IA",
+        nameEn: "Dofollow backlink — SEO authority offered by Axion-IA",
+        altFr:
+          "Tableau de bord d'analyse SEO — le backlink dofollow d'Axion-IA transmet de l'autorité de domaine et améliore le référencement Google du client.",
+        altEn:
+          "SEO analytics dashboard — Axion-IA's dofollow backlink passes domain authority and improves the client's Google ranking.",
+        width: 1600,
+        height: 1140,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/relais-linkedin-entreprise-visibilite-axion-ia.avif",
+        nameFr: "Relais LinkedIn d'une entreprise cliente — Axion-IA",
+        nameEn: "LinkedIn share of a client company — Axion-IA",
+        altFr:
+          "Relais LinkedIn d'une entreprise cliente par Axion-IA — portée organique auprès d'une audience B2B de dirigeants et décideurs.",
+        altEn:
+          "LinkedIn share of a client company by Axion-IA — organic reach to a B2B audience of executives and decision-makers.",
+        width: 1600,
+        height: 1067,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/visibilite/notoriete-confiance-entreprise-visibilite-axion-ia.avif",
+        nameFr: "Notoriété et confiance — la visibilité offerte par Axion-IA",
+        nameEn: "Awareness and trust — the visibility offered by Axion-IA",
+        altFr:
+          "Poignée de main entre Axion-IA et une entreprise cliente — la visibilité offerte renforce la notoriété, la preuve sociale et la confiance.",
+        altEn:
+          "Handshake between Axion-IA and a client company — the free visibility strengthens awareness, social proof and trust.",
+        width: 1600,
+        height: 1068,
+        slot: "grid",
+      },
     ],
   },
   // ===== Audit IA (hub) =====

@@ -86,7 +86,7 @@ export default async function VisibiliteClient({ params }: Props) {
   const pageImages = getPageImages(PATH);
   const heroImage = pageImages.find((i) => i.slot === "hero");
   const bannerImage = pageImages.find((i) => i.slot === "banner");
-  const roiImage = VISIBILITE_UNSPLASH.find((i) => i.slot === "notoriete");
+  const roiInfographic = pageImages.find((i) => i.slot === "inline");
   const processImage = VISIBILITE_UNSPLASH.find((i) => i.slot === "hero");
 
   const breadcrumbItems = [
@@ -427,55 +427,56 @@ export default async function VisibiliteClient({ params }: Props) {
       ) : null}
 
       {/* ── LA VALEUR / ROI ──────────────────────────────────────────────── */}
-      <Section
-        eyebrow={isFr ? "Pourquoi ça compte" : "Why it matters"}
-        title={isFr ? "Une valeur qui" : "Value that"}
-        titleEm={isFr ? "vous survit" : "outlasts you"}
-        description={
-          isFr
-            ? "La visibilité n'est pas un gadget : c'est un actif marketing durable pour votre entreprise — référencement, notoriété, confiance, recrutement."
-            : "Visibility isn't a gimmick: it's a durable marketing asset — ranking, awareness, trust, hiring."
-        }
-      >
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
-          {roiImage ? (
-            <div className="lg:order-last">
-              <Image
-                src={roiImage.src}
-                alt={
-                  isFr
-                    ? "Poignée de main entre Axion-IA et une entreprise cliente — la visibilité offerte renforce la notoriété et la confiance"
-                    : "Handshake between Axion-IA and a client company — the free visibility strengthens awareness and trust"
-                }
-                width={roiImage.width}
-                height={roiImage.height}
-                loading="lazy"
-                sizes="(min-width: 1024px) 48vw, 100vw"
-                className="aspect-[4/3] h-auto w-full rounded-3xl object-cover"
-              />
-              <UnsplashCredit
-                photographerName={roiImage.photographer}
-                photographerUrl={roiImage.photographerUrl}
-                className="mt-1.5 px-1"
-              />
-            </div>
-          ) : null}
-          <ul role="list" className="flex flex-col gap-6">
-            {valeurs.map((v) => (
-              <li key={v.title} className="flex gap-4">
-                <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-                  <v.icon aria-hidden="true" className="h-5 w-5" />
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-fg text-base font-semibold tracking-tight">{v.title}</h3>
-                  <p data-speakable className="text-fg-soft mt-1 text-sm leading-relaxed">
-                    {v.body}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* Desktop : infographie « Pourquoi ça compte » (titre + valeurs intégrés).
+          Mobile : en-tête + points texte accessibles ; le h2 reste dans le DOM
+          (md:sr-only, pas md:hidden) pour la structure de titres + le crawl. */}
+      <Section id="valeur" tone="paper">
+        <header className="mb-10 max-w-3xl md:mb-0">
+          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase md:hidden">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            />
+            {isFr ? "Pourquoi ça compte" : "Why it matters"}
+          </p>
+          <h2 className="text-fg mt-5 text-[clamp(2rem,7vw,2.75rem)] leading-[1.05] font-semibold tracking-tight md:sr-only md:mt-0">
+            {isFr ? "Une valeur qui vous survit" : "Value that outlasts you"}
+          </h2>
+          <p className="text-fg-soft mt-4 text-lg leading-relaxed md:hidden">
+            {isFr
+              ? "La visibilité n'est pas un gadget : c'est un actif marketing durable pour votre entreprise — référencement, notoriété, confiance, recrutement."
+              : "Visibility isn't a gimmick: it's a durable marketing asset — ranking, awareness, trust, hiring."}
+          </p>
+        </header>
+
+        {/* Infographie pleine largeur — desktop uniquement */}
+        {roiInfographic ? (
+          <Image
+            src={roiInfographic.src}
+            alt={isFr ? roiInfographic.altFr : roiInfographic.altEn}
+            width={roiInfographic.width}
+            height={roiInfographic.height}
+            sizes="(max-width: 1366px) 100vw, 1366px"
+            className="border-border hidden h-auto w-full rounded-2xl border md:block"
+          />
+        ) : null}
+
+        {/* Points texte accessibles — mobile uniquement */}
+        <ul role="list" className="flex flex-col gap-6 md:hidden">
+          {valeurs.map((v) => (
+            <li key={v.title} className="flex gap-4">
+              <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                <v.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <div className="min-w-0">
+                <h3 className="text-fg text-base font-semibold tracking-tight">{v.title}</h3>
+                <p data-speakable className="text-fg-soft mt-1 text-sm leading-relaxed">
+                  {v.body}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </Section>
 
       {/* ── COMMENT ÇA SE PASSE ──────────────────────────────────────────── */}
