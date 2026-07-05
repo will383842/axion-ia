@@ -468,6 +468,99 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  // ===== Certification Qualiopi (réassurance qualité) =====
+  {
+    path: "/certification-qualiopi",
+    images: [
+      {
+        src: "/illustrations/qualiopi/certification-qualiopi-axion-ia-formation-ia-qualite.avif",
+        nameFr:
+          "Axion-IA, organisme de formation certifié Qualiopi — agrément qualité, expertise IA, résultats",
+        nameEn:
+          "Axion-IA, Qualiopi-certified training provider — quality certification, AI expertise, results",
+        altFr:
+          "Infographie Axion-IA.com : agrément Qualiopi (processus certifié, République française) au centre, entouré de scènes de formation IA en entreprise — salle de formation, atelier, tampon « Qualité », mots-clés Formation, Expertise, Résultats et repères Qualité certifiée, Experts IA, Formations d'excellence.",
+        altEn:
+          "Axion-IA.com infographic: Qualiopi certification (certified process, French Republic) at the centre, surrounded by corporate AI training scenes — training room, workshop, “Quality” stamp, keywords Training, Expertise, Results and markers Certified quality, AI experts, Excellence training.",
+        width: 1254,
+        height: 1254,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        nameFr: "Équipe Axion-IA — organisme de formation IA certifié Qualiopi",
+        nameEn: "Axion-IA team — Qualiopi-certified AI training provider",
+        altFr:
+          "Équipe Axion-IA en session — cabinet de formation IA français certifié Qualiopi, gage de sérieux et de qualité pour les formations en entreprise partout en France.",
+        altEn:
+          "Axion-IA team in session — French AI training consultancy certified Qualiopi, a mark of seriousness and quality for corporate trainings across France.",
+        width: 1961,
+        height: 802,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.avif",
+        nameFr: "Salle de formation IA en entreprise — qualité certifiée Qualiopi",
+        nameEn: "Corporate AI training room — Qualiopi-certified quality",
+        altFr:
+          "Salle de formation IA en entreprise sur site animée par Axion-IA — dispositif conforme au Référentiel National Qualité (Qualiopi) : objectifs, moyens et évaluation adaptés.",
+        altEn:
+          "On-site corporate AI training room run by Axion-IA — setup compliant with the National Quality Framework (Qualiopi): tailored objectives, means and assessment.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/formateur-ia-claude-atelier-pme.avif",
+        nameFr: "Formateur IA expert Axion-IA — compétences vérifiées (critère Qualiopi)",
+        nameEn: "Expert Axion-IA AI trainer — verified skills (Qualiopi criterion)",
+        altFr:
+          "Formateur IA expert Axion-IA en atelier — la qualification des intervenants est l'un des 7 critères du Référentiel National Qualité Qualiopi.",
+        altEn:
+          "Expert Axion-IA AI trainer in workshop — trainer qualification is one of the 7 criteria of the Qualiopi National Quality Framework.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.avif",
+        nameFr: "Équipe en formation IA — accueil et adaptation des publics (Qualiopi)",
+        nameEn: "Team in AI training — audience reception and adaptation (Qualiopi)",
+        altFr:
+          "Équipe d'entreprise en formation IA pratique Axion-IA — l'adaptation aux publics et l'accueil des bénéficiaires font partie des exigences Qualiopi.",
+        altEn:
+          "Corporate team in hands-on Axion-IA AI training — audience adaptation and beneficiary reception are part of the Qualiopi requirements.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.avif",
+        nameFr: "Bilan de formation IA — évaluation des résultats (critère Qualiopi)",
+        nameEn: "AI training review — results assessment (Qualiopi criterion)",
+        altFr:
+          "Bilan de fin de formation IA Axion-IA — l'évaluation des acquis et l'amélioration continue sont au cœur de la certification Qualiopi.",
+        altEn:
+          "End-of-training review with Axion-IA — assessment of learning and continuous improvement are at the heart of Qualiopi certification.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        nameFr: "Williams — Fondateur Axion-IA, organisme certifié Qualiopi",
+        nameEn: "Williams — Axion-IA founder, Qualiopi-certified provider",
+        altFr:
+          "Williams, fondateur d'Axion-IA — engage la démarche qualité Qualiopi et garantit le sérieux des formations IA proposées aux entreprises françaises.",
+        altEn:
+          "Williams, Axion-IA founder — drives the Qualiopi quality approach and guarantees the seriousness of the AI trainings offered to French companies.",
+        width: 2048,
+        height: 2048,
+        slot: "portrait",
+      },
+    ],
+  },
   // ===== Audit IA (hub) =====
   // Images SEO-only rendues dans des sous-composants Audit* (pas de <Image> direct).
   {
