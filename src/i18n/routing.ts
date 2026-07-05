@@ -24,6 +24,12 @@ export const routing = defineRouting({
     // redirigé 301→FR (proxy) et fr==en évite le bug next-intl 307 self-loop
     // (qui ne survient que sur un mapping fr≠en) si EN était réactivé.
     "/formations": { fr: "/formations", en: "/formations" },
+    // Landing catalogue « Toutes nos formations IA entreprise » (2026-07-05) —
+    // page flagship qui liste À PLAT les 17 formations (durée = badge par carte,
+    // pas d'axe de tri). Cible « formation IA entreprise France ». Segment static
+    // déclaré AVANT `/formations/[slug]` (priorité match static > dynamique).
+    // fr==en : EN redirigé 301→FR (proxy), fr==en évite le bug next-intl 307.
+    "/formations/entreprise": { fr: "/formations/entreprise", en: "/formations/entreprise" },
     "/formations/tarifs": { fr: "/formations/tarifs", en: "/formations/tarifs" },
     "/formations/duree/[duree]": {
       fr: "/formations/duree/[duree]",

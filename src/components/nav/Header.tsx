@@ -7,6 +7,10 @@ import { ROUTES } from "@/lib/routes";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
 import { HeaderResourcesMenu } from "./HeaderResourcesMenu";
+import { HeaderFormationsMenu } from "./HeaderFormationsMenu";
+import { FORMATION_DUREES_META } from "@/content/formations/catalog-v2-meta";
+import { FORMATIONS_V2, getFormationsV2ByDuree } from "@/content/formations/catalog-v2";
+import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 
 // Server Component. Header v5 2026-05-28 (Will) — layout 2026 dual-CTA :
 //   [Logo · Cabinet IA pour entreprises]   nav 6 items     [Nous écrire ghost] [Réserver un appel primary]
@@ -51,6 +55,21 @@ export async function Header() {
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
     { href: "/a-propos", label: t("nav.about") },
   ] as const;
+
+  // Données du méga-menu « Formations IA » calculées CÔTÉ SERVEUR (le catalogue
+  // catalog-v2 reste hors du bundle client) et passées en props au composant
+  // client `HeaderFormationsMenu`. 4 raccourcis durée + compteur + prix d'entrée.
+  const formationsDurations = FORMATION_DUREES_META.map((m) => ({
+    href: `/formations/duree/${m.slug}`,
+    label: m.labelFr,
+    hours: m.heuresFr,
+    count: getFormationsV2ByDuree(m.id).length,
+  }));
+  const formationsEntryPrice = formatAmount(
+    getFormationCatalogPriceRange().minEur,
+    isFr ? "fr" : "en",
+  );
+  const formationsTotal = FORMATIONS_V2.length;
 
   const taglineB2B = isFr ? "Cabinet IA pour entreprises" : "AI consultancy for companies";
 
@@ -137,14 +156,28 @@ export async function Header() {
           // l'espacement entre onglets ni la position du dual-CTA (ml-auto).
           className="hidden items-center gap-8 xl:ml-4 xl:flex 2xl:ml-6 2xl:gap-12"
         >
-          {navItems.map((item) => (
-            <NavLink
-              key={item.href}
-              href={item.href}
-              label={item.label}
-              multiline={item.multiline}
-            />
-          ))}
+          {navItems.map((item) =>
+            item.href === "/formations" ? (
+              // Onglet « Formations IA » — méga-menu au survol (2026-07-05) : bloc
+              // phare « Toutes nos formations entreprises » + 4 raccourcis durée.
+              // Le clic sur le trigger reste dirigé vers le hub /formations.
+              <HeaderFormationsMenu
+                key={item.href}
+                isFr={isFr}
+                allHref="/formations/entreprise"
+                entryPrice={formationsEntryPrice}
+                totalCount={formationsTotal}
+                durations={formationsDurations}
+              />
+            ) : (
+              <NavLink
+                key={item.href}
+                href={item.href}
+                label={item.label}
+                multiline={item.multiline}
+              />
+            ),
+          )}
           {/* Méga-menu « Ressources » (audit maillage 2026-07-03) — expose les
               hubs stratégiques (secteurs, guides, glossaire, cas concrets, stack
               IA, implantations, observatoire, ROI) dans la nav desktop, jusqu'ici
@@ -242,6 +275,28 @@ export async function Header() {
               {navItems.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
               ))}
+              {/* Sous-liens Formations (parité méga-menu desktop) — accès direct
+                  au catalogue complet + aux 4 paliers durée depuis le drawer. */}
+              <ul className="border-border mt-0.5 mb-1 ml-3 flex flex-col gap-0.5 border-l pl-3">
+                <li>
+                  <Link
+                    href={"/formations/entreprise" as never}
+                    className="text-fg hover:text-terracotta block rounded-md px-2 py-1.5 text-sm font-semibold"
+                  >
+                    {isFr ? "Toutes nos formations entreprises" : "All our corporate trainings"}
+                  </Link>
+                </li>
+                {formationsDurations.map((d) => (
+                  <li key={d.href}>
+                    <Link
+                      href={d.href as never}
+                      className="text-fg-soft hover:text-terracotta block rounded-md px-2 py-1.5 text-sm"
+                    >
+                      {d.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
               {/* Items secondaires (pages stratégiques accessibles depuis mobile) */}
               <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
               {navMobileExtras.map((item) => (

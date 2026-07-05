@@ -1106,6 +1106,9 @@ function buildFormationsSitemap(now: Date): MetadataRoute.Sitemap {
 
   // Hub /formations · /training et page tarifs /formations/tarifs · /training/pricing.
   const hubs: ReadonlyArray<{ fr: string; en: string; priority: number }> = [
+    // Landing flagship « Toutes nos formations IA entreprise » — priorité max du
+    // module (catalogue complet, cible principale « formation IA entreprise »).
+    { fr: "/formations/entreprise", en: "/formations/entreprise", priority: 0.9 },
     { fr: "/formations", en: "/training", priority: 0.8 },
     { fr: "/formations/tarifs", en: "/training/pricing", priority: 0.7 },
   ];

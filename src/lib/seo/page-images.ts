@@ -243,6 +243,76 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  // ===== Toutes nos formations IA entreprise (landing catalogue flagship) =====
+  // Réutilise les assets « maison » déjà crawlables (aucun nouveau fichier) :
+  // héro équipe (représentatif), quadriptyque bandeau, 4 photos d'atelier, portrait
+  // fondateur. Alt denses alignés sur le texte réellement rendu par la page.
+  {
+    path: "/formations/entreprise",
+    images: [
+      {
+        src: "/illustrations/home-hero-equipe.avif",
+        nameFr: "Formations IA en entreprise — équipe Axion-IA n°1 en France",
+        nameEn: "Corporate AI training — Axion-IA team, France leader",
+        altFr:
+          "Formations IA en entreprise Axion-IA — l'équipe de formateurs IA experts qui accompagne TPE, PME, ETI et grandes entreprises partout en France : 17 formations sur site, certifiées Qualiopi, finançables OPCO.",
+        altEn:
+          "Axion-IA corporate AI training — the team of expert AI trainers supporting SMEs, mid-caps and large enterprises across France: 17 on-site trainings, Qualiopi-certified, OPCO-fundable.",
+        width: 1536,
+        height: 1024,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/formation-claude-team-quadriptyque.png",
+        nameFr: "Catalogue formations IA entreprise Axion-IA — 4 moments d'intervention",
+        nameEn: "Axion-IA corporate AI training catalogue — 4 intervention moments",
+        altFr:
+          "Séquence d'une formation IA en entreprise Axion-IA : présentation au tableau, démonstration écran, atelier pratique en équipe, salle de formation sur site avec formateur IA expert.",
+        altEn:
+          "Sequence of an Axion-IA corporate AI training: whiteboard presentation, screen demo, hands-on team workshop, on-site training room with expert AI trainer.",
+        width: 2400,
+        height: 800,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/formations/formateur-ia-claude-atelier-pme.png",
+        nameFr: "Formateur IA en atelier formation entreprise",
+        nameEn: "AI trainer in corporate training workshop",
+        altFr:
+          "Formateur IA expert Axion-IA animant une formation IA en entreprise — atelier pratique sur les vrais outils métier (ChatGPT, Claude, Mistral).",
+        altEn:
+          "Expert Axion-IA AI trainer running a corporate AI training — hands-on workshop on real business tools (ChatGPT, Claude, Mistral).",
+        width: 1024,
+        height: 768,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.png",
+        nameFr: "Équipe en formation IA entreprise sur site",
+        nameEn: "Team in on-site corporate AI training",
+        altFr:
+          "Équipe d'entreprise en formation IA sur site — apprenants en atelier pratique sur leurs propres dossiers, montée en compétence opérationnelle Axion-IA.",
+        altEn:
+          "Corporate team in on-site AI training — learners in hands-on workshop on their own files, operational upskilling by Axion-IA.",
+        width: 1024,
+        height: 768,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/william-fondateur-formateur-ia-axion-ia.png",
+        nameFr: "Williams — Fondateur Axion-IA et formateur IA en entreprise",
+        nameEn: "Williams — Axion-IA founder and corporate AI trainer",
+        altFr:
+          "Williams, fondateur d'Axion-IA et formateur IA — accompagne avec son équipe les entreprises françaises (TPE, PME, ETI, grands comptes) sur toutes les formations IA du catalogue.",
+        altEn:
+          "Williams, Axion-IA founder and AI trainer — with his team he supports French companies (SMEs, mid-caps, large accounts) across the full AI training catalogue.",
+        width: 800,
+        height: 1000,
+        slot: "portrait",
+      },
+    ],
+  },
   // ===== Audit IA (hub) =====
   // Images SEO-only rendues dans des sous-composants Audit* (pas de <Image> direct).
   {
