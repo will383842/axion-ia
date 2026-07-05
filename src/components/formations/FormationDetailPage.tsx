@@ -22,6 +22,7 @@ import {
   Sparkles,
   Target,
   Users,
+  Wallet,
 } from "lucide-react";
 
 import type { Locale } from "@/i18n/routing";
@@ -251,10 +252,12 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                 </p>
                 <p className="text-fg-muted mt-2 text-[13px]">{groupSizeLabel}</p>
                 {ofPublic ? (
-                  <p className="text-terracotta-deep mt-3 text-[12.5px] leading-snug font-semibold">
-                    Finançable OPCO / France Travail — jusqu’à 0 € de reste à charge selon votre
-                    situation.
-                  </p>
+                  <div className="bg-terracotta text-mocha-fg mt-4 flex items-start gap-2 rounded-xl p-3">
+                    <Wallet aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
+                    <span className="text-[13px] leading-snug font-bold">
+                      Finançable OPCO — jusqu’à 0 € de reste à charge selon votre situation.
+                    </span>
+                  </div>
                 ) : null}
               </div>
               <dl className="divide-border flex flex-col divide-y">
@@ -293,7 +296,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                       href={"/financement-opco-france-travail" as never}
                       className="text-terracotta underline"
                     >
-                      finançable OPCO / France Travail
+                      Financer cette formation
                     </Link>
                   </p>
                 </div>
@@ -365,7 +368,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           {f.programme.map((sectionDay, idx) => (
             <div
               key={idx}
-              className="border-border bg-canvas shadow-subtle flex flex-col gap-3 rounded-2xl border p-6"
+              className="border-border bg-bg shadow-card flex flex-col gap-3 rounded-2xl border p-6"
             >
               <p className="text-terracotta-deep text-[13px] font-bold tracking-[0.12em] uppercase">
                 {sectionDay.titreFr}
