@@ -28,19 +28,22 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ["business", "productivity", "education"],
     icons: [
       {
-        src: "/icon",
-        sizes: "32x32",
+        // Fichiers statiques Next 16 servis à `/icon.png` / `/apple-icon.png`
+        // (les formes sans extension `/icon` `/apple-icon` sont réservées à la
+        // convention DYNAMIQUE icon.tsx/apple-icon.tsx et renvoient 404 ici).
+        src: "/icon.png",
+        sizes: "192x192",
         type: "image/png",
         purpose: "any",
       },
       {
-        src: "/apple-icon",
+        src: "/apple-icon.png",
         sizes: "180x180",
         type: "image/png",
         purpose: "any",
       },
       {
-        src: "/apple-icon",
+        src: "/apple-icon.png",
         sizes: "180x180",
         type: "image/png",
         purpose: "maskable",
