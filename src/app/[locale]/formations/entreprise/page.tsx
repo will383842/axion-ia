@@ -454,7 +454,28 @@ export default async function FormationsEntreprise({ params }: Props) {
             : `${total} operational trainings, delivered on site across France, so your teams produce with AI from the very next day. From micro-business to large accounts, every sector, every role.`
         }
         media={
-          heroImage ? (
+          // Phase B : visuel héro = logo Qualiopi officiel (mention incluse) sur
+          // fond blanc (règle d'usage de la marque). Servi via next/image (optimisé,
+          // sans déformation → conforme) pour préserver le LCP. Phase A : repli sur
+          // la photo d'équipe (aucune mention Qualiopi tant que non certifié).
+          ofPublic ? (
+            <div className="bg-paper border-border shadow-card flex aspect-[3/2] w-full items-center justify-center rounded-2xl border p-8 lg:p-10">
+              <Image
+                src="/qualiopi/axion-ia-qualiopi.png"
+                alt={
+                  isFr
+                    ? "Organisme de formation certifié Qualiopi — Axion-IA (catégorie : actions de formation)"
+                    : "Qualiopi-certified training provider — Axion-IA (category: training actions)"
+                }
+                width={480}
+                height={320}
+                priority
+                quality={90}
+                sizes="(max-width: 1024px) 88vw, 44vw"
+                className="h-auto w-full max-w-[460px] object-contain"
+              />
+            </div>
+          ) : heroImage ? (
             <Image
               src={heroImage.src}
               alt={isFr ? heroImage.altFr : heroImage.altEn}
@@ -497,35 +518,6 @@ export default async function FormationsEntreprise({ params }: Props) {
           </ul>
         </div>
       </Section>
-
-      {/* ── RÉASSURANCE QUALIOPI (gaté Phase B) — logo composite officiel (mention
-          « actions de formation » incluse dans l'image), <img> brut sans ré-encodage
-          (règle d'usage de la marque), lazy sous le héro pour préserver le LCP. ── */}
-      {ofPublic ? (
-        <div className="bg-bg">
-          <Container className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 pt-6 pb-2 text-center">
-            {/* eslint-disable-next-line @next/next/no-img-element -- logo officiel Qualiopi : aucune modification ni ré-encodage autorisés (règle d'usage de la marque) → <img> brut, pas next/image. */}
-            <img
-              src="/qualiopi/axion-ia-qualiopi.png"
-              alt={
-                isFr
-                  ? "Organisme de formation certifié Qualiopi — Axion-IA (catégorie : actions de formation)"
-                  : "Qualiopi-certified training provider — Axion-IA (category: training actions)"
-              }
-              width={480}
-              height={320}
-              loading="lazy"
-              decoding="async"
-              className="h-auto w-[min(460px,100%)]"
-            />
-            <p className="text-fg-soft max-w-xs text-left text-sm leading-relaxed">
-              {isFr
-                ? "Organisme de formation certifié Qualiopi — vos formations sont finançables (OPCO, France Travail), selon votre situation."
-                : "Qualiopi-certified training provider — your trainings are fundable (OPCO, France Travail), depending on your situation."}
-            </p>
-          </Container>
-        </div>
-      ) : null}
 
       {/* ── CATALOGUE (toutes les formations FORMATIONS_V2, à plat) ───────── */}
       <Section
