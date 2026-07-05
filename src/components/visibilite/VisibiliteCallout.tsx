@@ -18,7 +18,7 @@ export function VisibiliteCallout({ isFr }: { isFr: boolean }): ReactNode {
   ];
 
   return (
-    <section className="bg-mocha-rich text-mocha-fg py-20 sm:py-24 lg:py-28">
+    <section className="bg-mocha-rich text-mocha-fg py-20 md:py-24 lg:py-28">
       <Container>
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl">
