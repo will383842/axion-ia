@@ -42,6 +42,7 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { VISIBILITE_UNSPLASH } from "@/content/visibilite-entreprise-unsplash";
 import { SERVICES, serviceOfficial, type ServiceId } from "@/content/services";
 import { CLIENT_SECTORS } from "@/content/sectors";
+import { getVillesIndexableNow } from "@/content/villes";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -85,6 +86,7 @@ export default async function VisibiliteClient({ params }: Props) {
 
   const pageImages = getPageImages(PATH);
   const heroImage = pageImages.find((i) => i.slot === "hero");
+  const villes = getVillesIndexableNow().slice(0, 60);
   const bannerImage = pageImages.find((i) => i.slot === "banner");
   const roiInfographic = pageImages.find((i) => i.slot === "inline");
   const processImage = VISIBILITE_UNSPLASH.find((i) => i.slot === "hero");
@@ -574,6 +576,33 @@ export default async function VisibiliteClient({ params }: Props) {
                     {isFr ? "Voir →" : "See →"}
                   </span>
                 </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* ── VILLES (GEO / maillage) ──────────────────────────────────────── */}
+      <Section
+        id="villes"
+        tone="paper"
+        eyebrow={isFr ? "Partout en France" : "Across France"}
+        title={isFr ? "Une visibilité locale et nationale," : "Local and national visibility,"}
+        titleEm={isFr ? "près de chez vous" : "near you"}
+        description={
+          isFr
+            ? "Nous mettons en lumière des entreprises dans toute la France. Votre page dédiée et votre podcast valorisent votre ancrage local autant que votre rayonnement national :"
+            : "We spotlight companies all across France. Your dedicated page and podcast showcase your local roots as much as your national reach:"
+        }
+      >
+        <ul role="list" className="flex flex-wrap gap-x-2 gap-y-2.5">
+          {villes.map((v) => (
+            <li key={v.slug}>
+              <Link
+                href={`/formations/par-ville/${v.slug}` as never}
+                className="text-fg-soft bg-bg border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+              >
+                {isFr ? `Visibilité entreprise ${v.nameFr}` : `Company visibility ${v.nameFr}`}
               </Link>
             </li>
           ))}

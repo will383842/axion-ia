@@ -344,15 +344,15 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
     path: "/visibilite-entreprise",
     images: [
       {
-        src: "/illustrations/formations/visibilite-entreprise-podcast-interview-backlink-formation-ia-axion-ia.avif",
+        src: "/illustrations/visibilite/visibilite-entreprise-hub-podcast-interview-page-dediee-backlink-linkedin-axion-ia.avif",
         nameFr:
-          "La visibilité de votre entreprise offerte par Axion-IA — podcast, interview, page dédiée, backlink, LinkedIn",
+          "Les 5 leviers de visibilité offerts par Axion-IA — podcast, interviews, page dédiée, lien dofollow, relais LinkedIn",
         nameEn:
-          "Your company's visibility offered by Axion-IA — podcast, interview, dedicated page, backlink, LinkedIn",
+          "The 5 visibility levers offered by Axion-IA — podcast, interviews, dedicated page, dofollow link, LinkedIn share",
         altFr:
-          "Infographie « La visibilité de votre entreprise, en bonus » — Axion-IA met ses clients en lumière : podcast dirigeant ou collaborateur, interviews des participants, page dédiée sur axion-ia.com, lien dofollow (SEO) et relais LinkedIn, avec chaque prestation (formation, 1-to-1, audit, implémentation, site web augmenté à l'IA).",
+          "Infographie Axion-IA « La visibilité de votre entreprise, offerte » : 5 leviers autour de la marque Axion-IA.com — podcast dirigeant ou collaborateur, interviews (témoignages de participants volontaires), page dédiée à votre entreprise et votre secteur sur axion-ia.com, lien dofollow vers votre site (SEO) et relais LinkedIn auprès de notre communauté et réseau, offerts avec chaque prestation (formation, 1-to-1, audit, implémentation, site web augmenté à l'IA).",
         altEn:
-          "Infographic “Your company's visibility, as a bonus” — Axion-IA puts its clients in the spotlight: executive or employee podcast, participant interviews, dedicated page on axion-ia.com, dofollow link (SEO) and LinkedIn share, with every service (training, 1-to-1, audit, implementation, AI-augmented website).",
+          "Axion-IA infographic “Your company's visibility, offered”: 5 levers around the Axion-IA.com brand — executive or employee podcast, interviews (testimonials from volunteer participants), dedicated page about your company and sector on axion-ia.com, dofollow link to your site (SEO) and LinkedIn share to our community and network, included with every service (training, 1-to-1, audit, implementation, AI-augmented website).",
         width: 1254,
         height: 1254,
         representativeOfPage: true,
