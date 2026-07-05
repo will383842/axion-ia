@@ -62,7 +62,7 @@ import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
-  buildItemListJsonLd,
+  buildCourseJsonLd,
   buildServiceJsonLd,
   buildHowToJsonLd,
   buildPageImageGraphJsonLd,
@@ -145,17 +145,30 @@ export default async function FormationsEntreprise({ params }: Props) {
     ...(primaryImage ? { extra: { primaryImageOfPage: primaryImage } } : {}),
   });
 
-  const itemListJsonLd = buildItemListJsonLd({
-    locale: loc,
-    path: PATH,
+  // Carrousel de formations (Course carousel — rich result 2026). ItemList dont
+  // chaque item est un Course RÉFÉRENÇANT sa fiche détail (même @id `…#course` que
+  // la page canonique → pas de doublon, c'est le pattern « summary page » de Google).
+  // provider + hasCourseInstance + offers (prix SSOT `getFormationV2EntryPrice`)
+  // rendent le carrousel éligible.
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
     name: isFr ? "Catalogue des formations IA en entreprise" : "Corporate AI training catalogue",
-    items: FORMATIONS_V2.map((f, i) => ({
-      position: i + 1,
-      name: f.titreFr,
-      url: `${SITE_URL}/${loc}/formations/${f.slugFr}`,
-      description: f.accrocheFr,
-    })),
-  });
+    url: `${SITE_URL}/${loc}${PATH}`,
+    numberOfItems: FORMATIONS_V2.length,
+    itemListElement: FORMATIONS_V2.map((f, i) => {
+      const { "@context": _ctx, ...course } = buildCourseJsonLd({
+        locale: loc,
+        path: `/formations/${f.slugFr}`,
+        name: f.titreFr,
+        description: f.accrocheFr,
+        courseMode: ["Onsite", "Online"],
+        audienceType: isFr ? "Entreprises" : "Businesses",
+        priceEurHt: getFormationV2EntryPrice(f),
+      });
+      return { "@type": "ListItem", position: i + 1, item: course };
+    }),
+  } as const;
 
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
