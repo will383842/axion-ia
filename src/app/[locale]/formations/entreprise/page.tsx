@@ -56,12 +56,7 @@ import {
 import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
-import {
-  FORMATIONS_V2,
-  getFormationV2EntryPrice,
-  getFormationsV2ByDuree,
-} from "@/content/formations/catalog-v2";
-import { FORMATION_DUREES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
+import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
@@ -69,7 +64,6 @@ import {
   buildCollectionPageJsonLd,
   buildItemListJsonLd,
   buildServiceJsonLd,
-  buildCourseJsonLd,
   buildHowToJsonLd,
   buildPageImageGraphJsonLd,
   buildPrimaryImageOfPage,
@@ -179,34 +173,11 @@ export default async function FormationsEntreprise({ params }: Props) {
 
   const imageGraphJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: PATH });
 
-  // Course JSON-LD ×4 (un par palier durée) — signal AEO/GEO fort pour « formation
-  // IA 4h/1j/2j/3j » (cité par Google AI Overviews / Perplexity / Claude). Le
-  // `provider #organization` hérite du hasCredential Qualiopi (chaîne d'autorité).
-  const courseJsonLdArray = FORMATION_DUREES_META.map((m) => {
-    // Prix d'entrée du palier (min des formations de cette durée) → `offers` du
-    // Course = éligibilité aux rich results Course de Google (affichage du prix).
-    const dureePrices = getFormationsV2ByDuree(m.id)
-      .map((f) => getFormationV2EntryPrice(f))
-      .filter((p): p is number => typeof p === "number");
-    const dureeMinPrice = dureePrices.length ? Math.min(...dureePrices) : undefined;
-    return buildCourseJsonLd({
-      locale: loc,
-      path: `/formations/duree/${m.slug}`,
-      name: isFr
-        ? `Formation IA en entreprise — ${m.labelFr}`
-        : `Corporate AI training — ${m.labelFr}`,
-      description: isFr
-        ? `Formation IA opérationnelle (${m.heuresFr}) pour vos équipes, sur site ou à distance partout en France — ${getFormationsV2ByDuree(m.id).length} formations, dès ${entryPrice}. ChatGPT, Claude, Mistral, agents IA et automatisations métier.`
-        : `Operational AI training (${m.heuresFr}) for your teams, on site or remote across France — ${getFormationsV2ByDuree(m.id).length} trainings, from ${entryPrice}. ChatGPT, Claude, Mistral, AI agents and business automations.`,
-      courseMode: ["Onsite", "Online"],
-      duration: formationDureeIso(m.id),
-      audienceType: isFr
-        ? "Salariés et dirigeants d'entreprise (TPE, PME, ETI, grands comptes)"
-        : "Company employees and executives (SMEs, mid-caps, large accounts)",
-      about: "IA opérationnelle (ChatGPT, Claude, Mistral, agents IA, automatisations)",
-      ...(dureeMinPrice !== undefined ? { priceEurHt: dureeMinPrice } : {}),
-    });
-  });
+  // NB : PAS de Course JSON-LD ici. Le schéma Course est émis à sa place
+  // CANONIQUE — par formation sur `/formations/[slug]` (FormationDetailPage) et
+  // par durée sur `/formations/duree/[duree]` (FormationDurationListing). Cette
+  // page de listing porte l'`ItemList` (les 17 formations → fiches), qui est le
+  // bon schéma pour un catalogue. On évite ainsi de tripler les mêmes `@id`.
 
   // ── Données de contenu ─────────────────────────────────────────────────────
   const heroChips: ReadonlyArray<{ icon: typeof Sparkles; label: string; on: boolean }> = [
@@ -490,9 +461,6 @@ export default async function FormationsEntreprise({ params }: Props) {
       <JsonLd data={itemListJsonLd} />
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={howToJsonLd} />
-      {courseJsonLdArray.map((course, i) => (
-        <JsonLd key={`course-${i}`} data={course} />
-      ))}
       {imageGraphJsonLd ? <JsonLd data={imageGraphJsonLd} /> : null}
 
       <div className="bg-halo-warm">
