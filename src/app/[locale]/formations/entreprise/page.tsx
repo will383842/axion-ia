@@ -182,8 +182,14 @@ export default async function FormationsEntreprise({ params }: Props) {
   // Course JSON-LD ×4 (un par palier durée) — signal AEO/GEO fort pour « formation
   // IA 4h/1j/2j/3j » (cité par Google AI Overviews / Perplexity / Claude). Le
   // `provider #organization` hérite du hasCredential Qualiopi (chaîne d'autorité).
-  const courseJsonLdArray = FORMATION_DUREES_META.map((m) =>
-    buildCourseJsonLd({
+  const courseJsonLdArray = FORMATION_DUREES_META.map((m) => {
+    // Prix d'entrée du palier (min des formations de cette durée) → `offers` du
+    // Course = éligibilité aux rich results Course de Google (affichage du prix).
+    const dureePrices = getFormationsV2ByDuree(m.id)
+      .map((f) => getFormationV2EntryPrice(f))
+      .filter((p): p is number => typeof p === "number");
+    const dureeMinPrice = dureePrices.length ? Math.min(...dureePrices) : undefined;
+    return buildCourseJsonLd({
       locale: loc,
       path: `/formations/duree/${m.slug}`,
       name: isFr
@@ -198,8 +204,9 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Salariés et dirigeants d'entreprise (TPE, PME, ETI, grands comptes)"
         : "Company employees and executives (SMEs, mid-caps, large accounts)",
       about: "IA opérationnelle (ChatGPT, Claude, Mistral, agents IA, automatisations)",
-    }),
-  );
+      ...(dureeMinPrice !== undefined ? { priceEurHt: dureeMinPrice } : {}),
+    });
+  });
 
   // ── Données de contenu ─────────────────────────────────────────────────────
   const heroChips: ReadonlyArray<{ icon: typeof Sparkles; label: string; on: boolean }> = [
@@ -387,6 +394,17 @@ export default async function FormationsEntreprise({ params }: Props) {
   });
 
   const faqItems: ReadonlyArray<{ id: string; question: string; answer: string }> = [
+    {
+      // Réponse-définition concise (40-60 mots) → cible le featured snippet
+      // (position 0) sur la requête informationnelle large.
+      id: "definition",
+      question: isFr
+        ? "Qu'est-ce qu'une formation IA en entreprise ?"
+        : "What is a corporate AI training?",
+      answer: isFr
+        ? `Une formation IA en entreprise est une session courte (de 4 heures à 3 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Mistral, agents et automatisations) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, dès ${entryPrice}.`
+        : `A corporate AI training is a short session (4 hours to 3 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Mistral, agents and automations) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, from ${entryPrice}.`,
+    },
     {
       id: "combien-coute",
       question: isFr
