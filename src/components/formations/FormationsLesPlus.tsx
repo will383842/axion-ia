@@ -9,8 +9,9 @@
 
 import type { ReactNode } from "react";
 import Image from "next/image";
-import { Globe, Wallet, Zap } from "lucide-react";
+import { ArrowRight, Globe, Wallet, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
 import { Section } from "@/components/layout/Section";
 
 const VISIBILITE_SRC =
@@ -114,6 +115,18 @@ export function FormationsLesPlus({
           />
         </div>
       </div>
+
+      <p className="mt-8">
+        <Link
+          href="/visibilite-client"
+          className="text-terracotta inline-flex items-center gap-1.5 text-sm font-semibold hover:underline"
+        >
+          {isFr
+            ? "Découvrir tout ce qu'on fait pour votre visibilité"
+            : "Discover everything we do for your visibility"}
+          <ArrowRight aria-hidden="true" className="h-4 w-4" />
+        </Link>
+      </p>
     </Section>
   );
 }

@@ -339,6 +339,39 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  // ===== Visibilité client (bénéfices — la visibilité offerte) =====
+  {
+    path: "/visibilite-client",
+    images: [
+      {
+        src: "/illustrations/formations/visibilite-entreprise-podcast-interview-backlink-formation-ia-axion-ia.avif",
+        nameFr:
+          "La visibilité de votre entreprise offerte par Axion-IA — podcast, interview, page dédiée, backlink, LinkedIn",
+        nameEn:
+          "Your company's visibility offered by Axion-IA — podcast, interview, dedicated page, backlink, LinkedIn",
+        altFr:
+          "Infographie « La visibilité de votre entreprise, en bonus » — Axion-IA met ses clients en lumière : podcast dirigeant ou collaborateur, interviews des participants, page dédiée sur axion-ia.com, lien dofollow (SEO) et relais LinkedIn, avec chaque prestation (formation, 1-to-1, audit, implémentation, site web augmenté à l'IA).",
+        altEn:
+          "Infographic “Your company's visibility, as a bonus” — Axion-IA puts its clients in the spotlight: executive or employee podcast, participant interviews, dedicated page on axion-ia.com, dofollow link (SEO) and LinkedIn share, with every service (training, 1-to-1, audit, implementation, AI-augmented website).",
+        width: 1254,
+        height: 1254,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        nameFr: "Équipe Axion-IA — met ses entreprises clientes en lumière",
+        nameEn: "Axion-IA team — puts its client companies in the spotlight",
+        altFr:
+          "Équipe Axion-IA en session avec un client — cabinet IA français qui, en plus de sa prestation, offre de la visibilité à ses entreprises clientes (podcast, interviews, page dédiée, backlink dofollow, LinkedIn).",
+        altEn:
+          "Axion-IA team in a client session — French AI consultancy that, on top of its service, offers visibility to its client companies (podcast, interviews, dedicated page, dofollow backlink, LinkedIn).",
+        width: 1961,
+        height: 802,
+        slot: "banner",
+      },
+    ],
+  },
   // ===== Audit IA (hub) =====
   // Images SEO-only rendues dans des sous-composants Audit* (pas de <Image> direct).
   {
