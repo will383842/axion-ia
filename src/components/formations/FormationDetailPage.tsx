@@ -219,6 +219,20 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                   </li>
                 ))}
               </ul>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Cta
+                  href="/appel"
+                  size="lg"
+                  className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+                >
+                  <Phone aria-hidden="true" className="h-4 w-4" />
+                  Réserver un appel
+                </Cta>
+                <Cta href="/contact" variant="outline" size="lg">
+                  Nous écrire
+                </Cta>
+                <span className="text-fg-muted text-[12px]">Renseignements sans engagement</span>
+              </div>
             </div>
 
             {/* CARTE INFOS-CLÉS */}
@@ -250,20 +264,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                   </div>
                 ))}
               </dl>
-              <Cta
-                href="/appel"
-                size="lg"
-                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta mt-5 w-full justify-center"
-              >
-                <Phone aria-hidden="true" className="h-4 w-4" />
-                Réserver un appel
-              </Cta>
-              <Cta href="/contact" variant="ghost" size="md" className="mt-2 w-full justify-center">
-                Nous écrire
-              </Cta>
-              <p className="text-fg-muted mt-2 text-center text-[12px]">
-                Renseignements sans engagement
-              </p>
               {ofPublic ? (
                 <div className="border-border mt-5 flex flex-col items-center gap-2 border-t pt-5">
                   <Image
