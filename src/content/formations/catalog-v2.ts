@@ -125,17 +125,34 @@ const IA_EXPRESS: FormationV2 = {
     {
       texteFr:
         "Produire un texte professionnel au clavier ou à la voix, sans être un as du traitement de texte",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-1.webp",
+      imageCredit: { name: "David Hahn", url: "https://unsplash.com/@hahn_david_com" },
     },
     {
       texteFr:
         "Formuler une demande claire à l'IA avec la méthode CRFE pour un bon résultat dès le premier essai",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-2.webp",
+      imageCredit: {
+        name: "Glenn Carstens-Peters",
+        url: "https://unsplash.com/@glenncarstenspeters",
+      },
     },
     {
       texteFr:
         "Résumer un document long en dégageant l'essentiel, les points de vigilance et les actions",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-3.webp",
+      imageCredit: { name: "freddie marriage", url: "https://unsplash.com/@fredmarriage" },
     },
-    { texteFr: "Faire reformuler et améliorer un texte jusqu'au résultat voulu" },
-    { texteFr: "Repérer quand l'IA se trompe ou invente avant de réutiliser sa réponse" },
+    {
+      texteFr: "Faire reformuler et améliorer un texte jusqu'au résultat voulu",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-4.webp",
+      imageCredit: { name: "Zulfugar Karimov", url: "https://unsplash.com/@zulfugarkarimov" },
+    },
+    {
+      texteFr: "Repérer quand l'IA se trompe ou invente avant de réutiliser sa réponse",
+      imageSrc: "/illustrations/formations/fiches/ia-express/cas-5.webp",
+      imageCredit: { name: "Anastassia Anufrieva", url: "https://unsplash.com/@antoie" },
+    },
     { texteFr: "Anonymiser un document en quelques secondes avant de le confier à une IA" },
   ],
   objectifsFr: [
@@ -215,12 +232,32 @@ const ART_DU_PROMPT: FormationV2 = {
   publicViseFr:
     "Salariés de tous services qui pratiquent déjà l'IA — seuls ou après IA Express — et qui plafonnent : résultats génériques, reprises multiples, outil sous-exploité. Commerciaux, assistants, managers, chefs de projet, professions libérales et indépendants, tous profils métier. Seule formation du catalogue avec un pré-requis : avoir déjà utilisé l'IA, vérifié au cadrage.",
   casUsageFr: [
-    { texteFr: "Construire une demande avec les 6 leviers d'un prompt qui marche" },
-    { texteFr: "Améliorer un texte par itérations en donnant des critiques précises à l'IA" },
-    { texteFr: "Adapter un même contenu à trois destinataires différents" },
+    {
+      texteFr: "Construire une demande avec les 6 leviers d'un prompt qui marche",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-1.webp",
+      imageCredit: { name: "Kelly Sikkema", url: "https://unsplash.com/@kellysikkema" },
+    },
+    {
+      texteFr: "Améliorer un texte par itérations en donnant des critiques précises à l'IA",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-2.webp",
+      imageCredit: { name: "Luke Southern", url: "https://unsplash.com/@lukesouthern" },
+    },
+    {
+      texteFr: "Adapter un même contenu à trois destinataires différents",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-3.webp",
+      imageCredit: { name: "Dylan Gillis", url: "https://unsplash.com/@mainermedia" },
+    },
     { texteFr: "Se constituer une bibliothèque de gabarits réutilisables" },
-    { texteFr: "Retirer toute donnée sensible d'un gabarit avant de le partager" },
-    { texteFr: "Recadrer l'IA quand elle invente pour fiabiliser le résultat" },
+    {
+      texteFr: "Retirer toute donnée sensible d'un gabarit avant de le partager",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-5.webp",
+      imageCredit: { name: "Israel Andrade", url: "https://unsplash.com/@israelandrxde" },
+    },
+    {
+      texteFr: "Recadrer l'IA quand elle invente pour fiabiliser le résultat",
+      imageSrc: "/illustrations/formations/fiches/art-du-prompt/cas-6.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
   ],
   objectifsFr: [
     "Construire une demande avec les 6 leviers d'un prompt qui marche",
@@ -295,14 +332,32 @@ const IA_SECURITE: FormationV2 = {
   publicViseFr:
     "Tout salarié, quel que soit son poste, qui utilise déjà l'IA ou s'apprête à le faire — bureau, commercial, RH, technique, terrain — ainsi que dirigeants, DSI et référents. Format largement collectif. Aucun pré-requis technique.",
   casUsageFr: [
-    { texteFr: "Identifier les données qui ne doivent jamais sortir de l'entreprise" },
+    {
+      texteFr: "Identifier les données qui ne doivent jamais sortir de l'entreprise",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-1.webp",
+      imageCredit: { name: "Towfiqu barbhuiya", url: "https://unsplash.com/@towfiqu999999" },
+    },
     { texteFr: "Anonymiser un document ou une photo avant de le confier à une IA" },
-    { texteFr: "Distinguer un outil IA sûr d'un outil à risque avant de l'utiliser" },
+    {
+      texteFr: "Distinguer un outil IA sûr d'un outil à risque avant de l'utiliser",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-3.webp",
+      imageCredit: { name: "FlyD", url: "https://unsplash.com/@flyd2069" },
+    },
     {
       texteFr: "Vérifier ce que produit l'IA avant de l'envoyer à un client ou une administration",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-4.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
     },
-    { texteFr: "Appliquer les réflexes RGPD au quotidien" },
-    { texteFr: "Rédiger et faire vivre la charte d'usage IA de l'entreprise" },
+    {
+      texteFr: "Appliquer les réflexes RGPD au quotidien",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-5.webp",
+      imageCredit: { name: "Israel Andrade", url: "https://unsplash.com/@israelandrxde" },
+    },
+    {
+      texteFr: "Rédiger et faire vivre la charte d'usage IA de l'entreprise",
+      imageSrc: "/illustrations/formations/fiches/ia-securite/cas-6.webp",
+      imageCredit: { name: "Romain Dancre", url: "https://unsplash.com/@romaindancre" },
+    },
   ],
   objectifsFr: [
     "Identifier les données qui ne doivent jamais sortir de l'entreprise",
@@ -381,12 +436,36 @@ const IA_CONFORMITE: FormationV2 = {
   publicViseFr:
     "Dirigeants, DRH et RH, managers, référents IA, DPO et responsables conformité de TPE, PME et ETI — toute personne chargée d'encadrer l'usage de l'IA dans l'entreprise. Format collectif, peu d'appareils requis. Aucun pré-requis technique ni juridique.",
   casUsageFr: [
-    { texteFr: "Repérer les obligations applicables (AI Act, RGPD, droit du travail) sans jargon" },
-    { texteFr: "Cartographier les usages IA réels de l'entreprise, shadow AI compris" },
-    { texteFr: "Classer chaque usage selon son niveau de risque" },
-    { texteFr: "Constituer le registre des usages IA de l'entreprise" },
-    { texteFr: "Bâtir un plan de mise en conformité à 90 jours" },
-    { texteFr: "Communiquer le cadre en interne sans freiner l'adoption" },
+    {
+      texteFr: "Repérer les obligations applicables (AI Act, RGPD, droit du travail) sans jargon",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-1.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
+    {
+      texteFr: "Cartographier les usages IA réels de l'entreprise, shadow AI compris",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-2.webp",
+      imageCredit: { name: "Austin Distel", url: "https://unsplash.com/@austindistel" },
+    },
+    {
+      texteFr: "Classer chaque usage selon son niveau de risque",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-3.webp",
+      imageCredit: { name: "Sasun Bughdaryan", url: "https://unsplash.com/@sasun1990" },
+    },
+    {
+      texteFr: "Constituer le registre des usages IA de l'entreprise",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-4.webp",
+      imageCredit: { name: "Arisa Chattasa", url: "https://unsplash.com/@golfarisa" },
+    },
+    {
+      texteFr: "Bâtir un plan de mise en conformité à 90 jours",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-5.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
+    {
+      texteFr: "Communiquer le cadre en interne sans freiner l'adoption",
+      imageSrc: "/illustrations/formations/fiches/ia-conformite/cas-6.webp",
+      imageCredit: { name: "Campaign Creators", url: "https://unsplash.com/@campaign_creators" },
+    },
   ],
   objectifsFr: [
     "Identifier les obligations applicables (AI Act, RGPD, droit du travail) sans jargon",
