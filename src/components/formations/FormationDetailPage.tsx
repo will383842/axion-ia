@@ -57,7 +57,6 @@ import {
   getFormationImage,
   getFormationMateriel,
   getFormationModalites,
-  getFormationScenePhotos,
 } from "@/content/formations/catalog-v2-facts";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
@@ -95,8 +94,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const prerequis = f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.";
   const image = getFormationImage(f);
   const casUsage = getFormationCasUsage(f);
-  const scenePhotos = getFormationScenePhotos(f);
-  const objectifsPhoto = scenePhotos[0];
 
   const los = brackets
     .map((b) => Number.parseInt(b.split("-")[0] ?? "", 10))
@@ -140,7 +137,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const pageImageUrls = [
     ...new Set([
       image.src,
-      ...scenePhotos.map((p) => p.src),
       ...casUsage.map((c) => c.imageSrc).filter((s): s is string => Boolean(s)),
     ]),
   ].map((src) => `${SITE_URL}${src}`);
@@ -325,19 +321,20 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* ── CAS D'USAGE CONCRETS (juste après avant/après) ──────────────── */}
+      {/* ── OBJECTIFS & CAS D'USAGE (fusionnés — cartes + images) ────────── */}
       {casUsage.length > 0 ? (
         <Section
-          eyebrow="Sur vos vrais dossiers"
-          title="Cas d'usage"
-          titleEm="concrets"
-          description="Des exemples directement applicables dans votre métier, travaillés en atelier."
+          tone="sand"
+          eyebrow="Objectifs & cas d'usage"
+          title="Ce que vous saurez"
+          titleEm="faire"
+          description="Des compétences directement applicables sur vos vrais dossiers, travaillées en atelier."
         >
           <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl gap-4 lg:grid-cols-3">
             {casUsage.map((c) => (
               <li
                 key={c.texteFr}
-                className="border-border bg-bg shadow-subtle flex flex-col overflow-hidden rounded-2xl border"
+                className="border-border bg-bg shadow-card flex flex-col overflow-hidden rounded-2xl border"
               >
                 {c.imageSrc ? (
                   <div className="relative aspect-[16/10] overflow-hidden">
@@ -350,10 +347,13 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                       className="object-cover"
                     />
                   </div>
-                ) : null}
+                ) : (
+                  <div className="bg-terracotta/10 flex aspect-[16/10] items-center justify-center">
+                    <Sparkles aria-hidden="true" className="text-terracotta h-8 w-8" />
+                  </div>
+                )}
                 <div className="flex flex-1 flex-col gap-2 p-5">
-                  <Sparkles aria-hidden="true" className="text-terracotta h-4 w-4" />
-                  <p className="text-fg-soft flex-1 text-sm leading-relaxed">{c.texteFr}</p>
+                  <p className="text-fg flex-1 text-sm leading-relaxed font-medium">{c.texteFr}</p>
                   {c.imageCredit ? (
                     <UnsplashCredit
                       photographerName={c.imageCredit.name}
@@ -365,45 +365,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               </li>
             ))}
           </ul>
-        </Section>
-      ) : null}
-
-      {/* ── OBJECTIFS (2 colonnes + photo) ───────────────────────────────── */}
-      {f.objectifsFr.length > 0 ? (
-        <Section
-          eyebrow="Objectifs pédagogiques"
-          title="Ce que chacun"
-          titleEm="saura faire"
-          description="À l'issue de la formation, voici les compétences acquises et pratiquées en séance."
-        >
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-            <ul className="flex flex-col gap-3.5">
-              {f.objectifsFr.map((o) => (
-                <li
-                  key={o}
-                  className="border-border bg-canvas shadow-subtle flex items-start gap-3 rounded-xl border p-4"
-                >
-                  <CheckCircle2
-                    aria-hidden="true"
-                    className="text-terracotta mt-0.5 h-5 w-5 shrink-0"
-                    strokeWidth={2}
-                  />
-                  <span className="text-fg text-[15px] leading-relaxed">{o}</span>
-                </li>
-              ))}
-            </ul>
-            {objectifsPhoto ? (
-              <Image
-                src={objectifsPhoto.src}
-                alt={objectifsPhoto.altFr}
-                width={1000}
-                height={667}
-                sizes="(max-width: 1024px) 100vw, 48vw"
-                loading="lazy"
-                className="shadow-card aspect-[3/2] h-auto w-full rounded-2xl object-cover lg:sticky lg:top-24"
-              />
-            ) : null}
-          </div>
         </Section>
       ) : null}
 
@@ -662,7 +623,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         <Section
           tone="sand"
           eyebrow="Sérieux & financement"
-          title="Un organisme"
+          title="Axion-IA.com"
           titleEm="certifié Qualiopi"
           description="Un gage de qualité — et l'assurance d'une formation finançable."
         >
