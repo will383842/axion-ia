@@ -90,7 +90,9 @@ export function FormationsLesPlus({
                 </span>
                 <div className="min-w-0">
                   <h3 className="text-fg text-lg font-semibold tracking-tight">{a.title}</h3>
-                  <p className="text-fg-soft mt-1.5 leading-relaxed">{a.body}</p>
+                  <p data-speakable data-answer className="text-fg-soft mt-1.5 leading-relaxed">
+                    {a.body}
+                  </p>
                 </div>
               </li>
             ))}

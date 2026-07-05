@@ -56,7 +56,12 @@ import {
 import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
-import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
+import {
+  FORMATIONS_V2,
+  getFormationV2EntryPrice,
+  getFormationsV2ByDuree,
+} from "@/content/formations/catalog-v2";
+import { FORMATION_DUREES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
@@ -64,6 +69,8 @@ import {
   buildCollectionPageJsonLd,
   buildItemListJsonLd,
   buildServiceJsonLd,
+  buildCourseJsonLd,
+  buildHowToJsonLd,
   buildPageImageGraphJsonLd,
   buildPrimaryImageOfPage,
   SITE_URL,
@@ -132,17 +139,16 @@ export default async function FormationsEntreprise({ params }: Props) {
   ];
 
   // ── JSON-LD ────────────────────────────────────────────────────────────────
+  const primaryImage = buildPrimaryImageOfPage(PATH);
   const collectionPageJsonLd = buildCollectionPageJsonLd({
     locale: loc,
     path: PATH,
     name: isFr ? "Toutes nos formations IA en entreprise" : "All our corporate AI trainings",
     description: isFr
-      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site partout en France, de 4 h à 3 jours, dès ${entryPrice}.`
-      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site across France, from 4 h to 3 days, from ${entryPrice}.`,
+      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site ou à distance partout en France, de 4 h à 3 jours, dès ${entryPrice}.`
+      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site or remote across France, from 4 h to 3 days, from ${entryPrice}.`,
     speakable: true,
-    ...(buildPrimaryImageOfPage(PATH)
-      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage(PATH) } }
-      : {}),
+    ...(primaryImage ? { extra: { primaryImageOfPage: primaryImage } } : {}),
   });
 
   const itemListJsonLd = buildItemListJsonLd({
@@ -172,6 +178,28 @@ export default async function FormationsEntreprise({ params }: Props) {
   });
 
   const imageGraphJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: PATH });
+
+  // Course JSON-LD ×4 (un par palier durée) — signal AEO/GEO fort pour « formation
+  // IA 4h/1j/2j/3j » (cité par Google AI Overviews / Perplexity / Claude). Le
+  // `provider #organization` hérite du hasCredential Qualiopi (chaîne d'autorité).
+  const courseJsonLdArray = FORMATION_DUREES_META.map((m) =>
+    buildCourseJsonLd({
+      locale: loc,
+      path: `/formations/duree/${m.slug}`,
+      name: isFr
+        ? `Formation IA en entreprise — ${m.labelFr}`
+        : `Corporate AI training — ${m.labelFr}`,
+      description: isFr
+        ? `Formation IA opérationnelle (${m.heuresFr}) pour vos équipes, sur site ou à distance partout en France — ${getFormationsV2ByDuree(m.id).length} formations, dès ${entryPrice}. ChatGPT, Claude, Mistral, agents IA et automatisations métier.`
+        : `Operational AI training (${m.heuresFr}) for your teams, on site or remote across France — ${getFormationsV2ByDuree(m.id).length} trainings, from ${entryPrice}. ChatGPT, Claude, Mistral, AI agents and business automations.`,
+      courseMode: ["Onsite", "Online"],
+      duration: formationDureeIso(m.id),
+      audienceType: isFr
+        ? "Salariés et dirigeants d'entreprise (TPE, PME, ETI, grands comptes)"
+        : "Company employees and executives (SMEs, mid-caps, large accounts)",
+      about: "IA opérationnelle (ChatGPT, Claude, Mistral, agents IA, automatisations)",
+    }),
+  );
 
   // ── Données de contenu ─────────────────────────────────────────────────────
   const heroChips: ReadonlyArray<{ icon: typeof Sparkles; label: string; on: boolean }> = [
@@ -263,6 +291,21 @@ export default async function FormationsEntreprise({ params }: Props) {
       body: isFr ? "Page dédiée + lien dofollow." : "Dedicated page + dofollow link.",
     },
   ];
+
+  // HowTo JSON-LD — les 7 étapes « Comment réserver » (dérivées de reserveSteps).
+  // Signal GEO fort : cité par les moteurs génératifs pour « comment réserver /
+  // organiser une formation IA en entreprise » (dossier OPCO inclus).
+  const howToJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path: PATH,
+    name: isFr
+      ? "Comment réserver votre formation IA en entreprise"
+      : "How to book your corporate AI training",
+    description: isFr
+      ? "De la prise de contact à la visibilité offerte : les 7 étapes pour réserver et organiser votre formation IA en entreprise, dossier de financement OPCO inclus."
+      : "From first contact to the free visibility bonus: the 7 steps to book and organise your corporate AI training, OPCO funding file included.",
+    steps: reserveSteps.map((s) => ({ name: s.title, text: s.body })),
+  });
 
   // Métiers → formation la plus pertinente (maillage interne vers les fiches).
   const metiers: ReadonlyArray<{ href: string; label: string }> = [
@@ -428,6 +471,10 @@ export default async function FormationsEntreprise({ params }: Props) {
       <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={howToJsonLd} />
+      {courseJsonLdArray.map((course, i) => (
+        <JsonLd key={`course-${i}`} data={course} />
+      ))}
       {imageGraphJsonLd ? <JsonLd data={imageGraphJsonLd} /> : null}
 
       <div className="bg-halo-warm">
@@ -441,8 +488,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         titleAs="h1"
         eyebrow={
           isFr
-            ? "N°1 des formations IA en entreprise · France"
-            : "France's leading corporate AI training"
+            ? "Formations IA en entreprise · Certifié Qualiopi · Toute la France"
+            : "Corporate AI training · Qualiopi-certified · Across France"
         }
         title={isFr ? "Formations IA" : "Corporate AI"}
         titleEm={isFr ? "en entreprise" : "training"}
@@ -592,8 +639,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       {/* ── RÉASSURANCE : atouts + chiffres (léger, sans boîtes) ─────────── */}
       <Section
         eyebrow={isFr ? "Pourquoi Axion-IA" : "Why Axion-IA"}
-        title={isFr ? "La référence des formations IA" : "The reference for AI training"}
-        titleEm={isFr ? "en entreprise" : "for companies"}
+        title={isFr ? "Des formations IA" : "AI training"}
+        titleEm={isFr ? "pensées pour l'entreprise" : "built for companies"}
       >
         <div className="xs:grid-cols-2 grid grid-cols-1 gap-x-8 gap-y-9 lg:grid-cols-4">
           {features.map((f) => (
@@ -629,18 +676,21 @@ export default async function FormationsEntreprise({ params }: Props) {
           en-tête + stepper HTML accessible (l'infographie large serait illisible).
           L'en-tête reste dans le DOM (crawlable) même masqué en CSS sur desktop. */}
       <Section id="comment-reserver" tone="paper">
-        <header className="mb-10 max-w-3xl md:hidden">
-          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+        {/* En-tête : visible mobile ; sur desktop le titre est dans l'infographie,
+            mais le h2 reste dans l'arbre a11y + DOM (md:sr-only, pas md:hidden) pour
+            la structure de titres (lecteurs d'écran + crawlers), sans doublon visuel. */}
+        <header className="mb-10 max-w-3xl md:mb-0">
+          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase md:hidden">
             <span
               aria-hidden="true"
               className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
             />
             {isFr ? "Simple et accompagné" : "Simple and guided"}
           </p>
-          <h2 className="text-fg mt-5 text-[clamp(2rem,7vw,2.75rem)] leading-[1.05] font-semibold tracking-tight">
+          <h2 className="text-fg mt-5 text-[clamp(2rem,7vw,2.75rem)] leading-[1.05] font-semibold tracking-tight md:sr-only md:mt-0">
             {isFr ? "Comment réserver votre formation" : "How to book your training"}
           </h2>
-          <p className="text-fg-soft mt-4 text-lg leading-relaxed">
+          <p className="text-fg-soft mt-4 text-lg leading-relaxed md:hidden">
             {isFr
               ? "De la prise de contact au coup de projecteur sur votre entreprise : on s'occupe de tout, y compris du dossier de financement."
               : "From first contact to the spotlight on your company: we handle everything, including the funding file."}
