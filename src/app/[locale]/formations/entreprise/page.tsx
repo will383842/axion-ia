@@ -1,7 +1,7 @@
 // Landing flagship « Toutes nos formations IA en entreprise » (2026-07-05).
 //
 // Objectif : LA page qui capte « formation IA entreprise » / « meilleures
-// formations IA entreprise France ». Catalogue À PLAT des 17 formations (durée =
+// formations IA entreprise France ». Catalogue À PLAT du SSOT FORMATIONS_V2 (durée =
 // badge par carte, PAS d'axe de tri — décision Will), chaque carte cliquable →
 // fiche détail. Aucun prix en dur (matrice pricing.ts). Financement/Qualiopi
 // gatés par `OF_PUBLIC_DISCLOSURE_ENABLED` (Phase B) via composants auto-gatés.
@@ -71,6 +71,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const isFr = loc === "fr";
   const entryPrice = formatAmount(getFormationCatalogPriceRange().minEur, loc);
+  // Compteur dérivé du SSOT : ajouter/retirer une formation dans FORMATIONS_V2
+  // met à jour tous les libellés (titre, meta, JSON-LD, chips…) automatiquement.
+  const total = FORMATIONS_V2.length;
   const ofPublic = isQualiopiPublicDisclosureEnabled();
   const finBit = ofPublic
     ? isFr
@@ -78,11 +81,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : " Qualiopi-certified, OPCO-fundable."
     : "";
   const title = isFr
-    ? "Formations IA en entreprise — nos 17 formations sur mesure | Axion-IA"
-    : "Corporate AI training — our 17 tailored trainings | Axion-IA";
+    ? `Formations IA en entreprise — nos ${total} formations sur mesure | Axion-IA`
+    : `Corporate AI training — our ${total} tailored trainings | Axion-IA`;
   const description = isFr
-    ? `Le catalogue complet des formations IA en entreprise Axion-IA : 17 formations opérationnelles sur site, de 4 h à 3 jours, tous secteurs, partout en France.${finBit} Dès ${entryPrice} HT.`
-    : `The full catalogue of Axion-IA corporate AI trainings: 17 operational on-site trainings, from 4 h to 3 days, every sector, across France.${finBit} From ${entryPrice} excl. VAT.`;
+    ? `Le catalogue complet des formations IA en entreprise Axion-IA : ${total} formations opérationnelles sur site, de 4 h à 3 jours, tous secteurs, partout en France.${finBit} Dès ${entryPrice} HT.`
+    : `The full catalogue of Axion-IA corporate AI trainings: ${total} operational on-site trainings, from 4 h to 3 days, every sector, across France.${finBit} From ${entryPrice} excl. VAT.`;
   return {
     ...buildProductMetadata({ locale, path: PATH, title, description }),
     title: { absolute: title },
@@ -98,6 +101,8 @@ export default async function FormationsEntreprise({ params }: Props) {
   const ofPublic = isQualiopiPublicDisclosureEnabled();
 
   const entryPrice = formatAmount(getFormationCatalogPriceRange().minEur, loc);
+  // Compteur dérivé du SSOT (auto-maj si on ajoute/retire une formation).
+  const total = FORMATIONS_V2.length;
   const images = getPageImages(PATH);
   const heroImage = images.find((i) => i.slot === "hero");
   const bannerImage = images.find((i) => i.slot === "banner");
@@ -114,8 +119,8 @@ export default async function FormationsEntreprise({ params }: Props) {
     path: PATH,
     name: isFr ? "Toutes nos formations IA en entreprise" : "All our corporate AI trainings",
     description: isFr
-      ? `Catalogue complet des 17 formations IA en entreprise Axion-IA, sur site partout en France, de 4 h à 3 jours, dès ${entryPrice} HT.`
-      : `Full catalogue of the 17 Axion-IA corporate AI trainings, on site across France, from 4 h to 3 days, from ${entryPrice} excl. VAT.`,
+      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site partout en France, de 4 h à 3 jours, dès ${entryPrice} HT.`
+      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site across France, from 4 h to 3 days, from ${entryPrice} excl. VAT.`,
     speakable: true,
     ...(buildPrimaryImageOfPage(PATH)
       ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage(PATH) } }
@@ -141,8 +146,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       ? "Formations IA en entreprise · sur site · Axion-IA"
       : "Corporate AI training · on site · Axion-IA",
     description: isFr
-      ? `17 formations IA opérationnelles pour vos équipes, animées dans vos locaux partout en France, dès ${entryPrice} HT.`
-      : `17 operational AI trainings for your teams, delivered on site across France, from ${entryPrice} excl. VAT.`,
+      ? `${total} formations IA opérationnelles pour vos équipes, animées dans vos locaux partout en France, dès ${entryPrice} HT.`
+      : `${total} operational AI trainings for your teams, delivered on site across France, from ${entryPrice} excl. VAT.`,
     serviceType: "AI training",
     priceEur: getFormationCatalogPriceRange().minEur,
     areasServed: buildServiceAreasServed(loc),
@@ -152,7 +157,7 @@ export default async function FormationsEntreprise({ params }: Props) {
 
   // ── Contenu ──────────────────────────────────────────────────────────────
   const heroChips: ReadonlyArray<{ icon: typeof Sparkles; label: string; on: boolean }> = [
-    { icon: Sparkles, label: isFr ? "17 formations" : "17 trainings", on: true },
+    { icon: Sparkles, label: isFr ? `${total} formations` : `${total} trainings`, on: true },
     { icon: Building2, label: isFr ? "Dans vos locaux" : "At your premises", on: true },
     { icon: MapPin, label: isFr ? "Partout en France" : "Across France", on: true },
     {
@@ -192,7 +197,7 @@ export default async function FormationsEntreprise({ params }: Props) {
   ];
 
   const stats: ReadonlyArray<{ value: string; label: string }> = [
-    { value: "17", label: isFr ? "formations au catalogue" : "trainings in catalogue" },
+    { value: String(total), label: isFr ? "formations au catalogue" : "trainings in catalogue" },
     { value: "10", label: isFr ? "secteurs couverts" : "sectors covered" },
     { value: isFr ? "30-60 min" : "30-60 min", label: isFr ? "gagnées par jour" : "saved per day" },
     { value: `${entryPrice}`, label: isFr ? "à partir de, HT" : "starting from, excl. VAT" },
@@ -351,8 +356,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         titleEm={isFr ? "en entreprise" : "training"}
         description={
           isFr
-            ? "17 formations opérationnelles, animées sur site partout en France, pour que vos équipes produisent avec l'IA dès le lendemain. De la TPE au grand compte, tous secteurs, tous métiers."
-            : "17 operational trainings, delivered on site across France, so your teams produce with AI from the very next day. From micro-business to large accounts, every sector, every role."
+            ? `${total} formations opérationnelles, animées sur site partout en France, pour que vos équipes produisent avec l'IA dès le lendemain. De la TPE au grand compte, tous secteurs, tous métiers.`
+            : `${total} operational trainings, delivered on site across France, so your teams produce with AI from the very next day. From micro-business to large accounts, every sector, every role.`
         }
         media={
           heroImage ? (
@@ -468,11 +473,11 @@ export default async function FormationsEntreprise({ params }: Props) {
         </div>
       ) : null}
 
-      {/* ── CATALOGUE (17 formations, à plat) ────────────────────────────── */}
+      {/* ── CATALOGUE (toutes les formations FORMATIONS_V2, à plat) ───────── */}
       <Section
         id="catalogue"
         eyebrow={isFr ? "Le catalogue" : "The catalogue"}
-        title={isFr ? "Nos 17 formations IA" : "Our 17 AI trainings"}
+        title={isFr ? `Nos ${total} formations IA` : `Our ${total} AI trainings`}
         titleEm={isFr ? "en entreprise" : "for companies"}
         description={
           isFr
