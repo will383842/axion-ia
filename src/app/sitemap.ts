@@ -591,6 +591,10 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
     // que `OF_PUBLIC_DISCLOSURE_ENABLED` ≠ "true" pour éviter une URL 404 dans
     // pages.xml (incohérence GSC + crawl budget gaspillé).
     if (key === "/certification-qualiopi" && !isQualiopiPublicDisclosureEnabled()) continue;
+    // Page financement OPCO/France Travail : Phase-B only (mentions financement
+    // interdites avant l'agrément OF) → hors sitemap en Phase A.
+    if (key === "/financement-opco-france-travail" && !isQualiopiPublicDisclosureEnabled())
+      continue;
     for (const locale of effectiveLocales) {
       const url = `${SITE_URL}/${locale}${localizedHref(key, locale)}`;
       entries.push({

@@ -213,6 +213,12 @@ export const routing = defineRouting({
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307.
     "/certification-qualiopi": { fr: "/certification-qualiopi", en: "/certification-qualiopi" },
 
+    // Financement OPCO / France Travail — page dédiée (Phase B, gatée comme Qualiopi)
+    "/financement-opco-france-travail": {
+      fr: "/financement-opco-france-travail",
+      en: "/financement-opco-france-travail",
+    },
+
     // Transversales
     "/a-propos": { fr: "/a-propos", en: "/about" },
     "/contact": { fr: "/contact", en: "/contact" },

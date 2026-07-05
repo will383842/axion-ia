@@ -587,6 +587,111 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  // ===== Financement OPCO / France Travail =====
+  {
+    path: "/financement-opco-france-travail",
+    images: [
+      {
+        src: "/illustrations/financement/financement-formation-ia-opco-france-travail-axion-ia.webp",
+        nameFr:
+          "Vos formations IA financées avec OPCO et France Travail — Axion-IA vous accompagne de A à Z",
+        nameEn:
+          "Your AI trainings funded with OPCO and France Travail — Axion-IA supports you end to end",
+        altFr:
+          "Infographie Axion-IA.com « Vos formations IA financées avec OPCO et France Travail » : OPCO (financements dédiés aux entreprises et à leurs salariés) et France Travail (accompagnement vers l'emploi et la formation), avec le parcours en 5 étapes — votre besoin, dossier pris en charge, financement validé, formation réalisée, compétences et performance.",
+        altEn:
+          "Axion-IA.com infographic “Your AI trainings funded with OPCO and France Travail”: OPCO (funding dedicated to companies and their employees) and France Travail (support towards employment and training), with the 5-step path — your need, funded file, approved funding, training delivered, skills and performance.",
+        width: 1254,
+        height: 1254,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/financement/bandeau-financement-formation-ia-opco-france-travail-axion-ia.webp",
+        nameFr: "Vos formations IA financées facilement — OPCO et France Travail | Axion-IA",
+        nameEn: "Your AI trainings funded easily — OPCO and France Travail | Axion-IA",
+        altFr:
+          "Bandeau Axion-IA.com « Vos formations IA financées facilement — OPCO · France Travail » : dossier (prise en charge simplifiée), financement (solutions adaptées à votre entreprise), accompagnement (suivi personnalisé), et repères sécurisé, gain de temps, investir, performance.",
+        altEn:
+          "Axion-IA.com banner “Your AI trainings funded easily — OPCO · France Travail”: file (simplified coverage), funding (solutions tailored to your company), support (personalised follow-up), and markers secure, time-saving, invest, performance.",
+        width: 1983,
+        height: 793,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/financement/dossier-financement-formation-opco-france-travail-axion-ia.webp",
+        nameFr: "Montage du dossier de financement d'une formation IA — OPCO / France Travail",
+        nameEn: "Building the funding file for an AI training — OPCO / France Travail",
+        altFr:
+          "Bureau avec documents et calculatrice pour le montage d'un dossier de prise en charge OPCO ou France Travail — Axion-IA prépare le dossier de financement avec vous.",
+        altEn:
+          "Desk with documents and calculator to build an OPCO or France Travail funding file — Axion-IA prepares the funding file with you.",
+        width: 1600,
+        height: 1067,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/financement/accompagnement-financement-formation-ia-axion-ia.webp",
+        nameFr: "Accompagnement au financement d'une formation IA — conseil personnalisé Axion-IA",
+        nameEn: "Support for funding an AI training — personalised Axion-IA advice",
+        altFr:
+          "Échange de conseil et d'accompagnement pour financer une formation IA — Axion-IA oriente entreprises et demandeurs d'emploi vers le bon dispositif (OPCO, France Travail).",
+        altEn:
+          "Advisory session to fund an AI training — Axion-IA guides companies and jobseekers to the right scheme (OPCO, France Travail).",
+        width: 1600,
+        height: 1067,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.avif",
+        nameFr: "Formation IA financée réalisée sur site — OPCO / France Travail",
+        nameEn: "Funded AI training delivered on site — OPCO / France Travail",
+        altFr:
+          "Salle de formation IA en entreprise Axion-IA — une fois le financement OPCO ou France Travail validé, la formation est réalisée sur site partout en France.",
+        altEn:
+          "Axion-IA corporate AI training room — once OPCO or France Travail funding is approved, the training is delivered on site across France.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.avif",
+        nameFr: "Équipe en formation IA financée — montée en compétences OPCO",
+        nameEn: "Team in funded AI training — OPCO upskilling",
+        altFr:
+          "Équipe d'entreprise en formation IA pratique financée via l'OPCO — montée en compétences des salariés accompagnée par Axion-IA.",
+        altEn:
+          "Corporate team in hands-on AI training funded via the OPCO — employee upskilling supported by Axion-IA.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.avif",
+        nameFr: "Bilan de formation IA financée — compétences et performance",
+        nameEn: "Funded AI training review — skills and performance",
+        altFr:
+          "Bilan de fin de formation IA Axion-IA — le financement OPCO ou France Travail se traduit par de nouvelles compétences et de la performance pour l'organisation.",
+        altEn:
+          "End-of-training review with Axion-IA — OPCO or France Travail funding translates into new skills and performance for the organisation.",
+        width: 1536,
+        height: 1024,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        nameFr: "Williams — Fondateur Axion-IA, monte votre dossier de financement",
+        nameEn: "Williams — Axion-IA founder, builds your funding file",
+        altFr:
+          "Williams, fondateur d'Axion-IA — accompagne les entreprises et demandeurs d'emploi dans le montage du dossier de financement OPCO ou France Travail de leur formation IA.",
+        altEn:
+          "Williams, Axion-IA founder — supports companies and jobseekers in building the OPCO or France Travail funding file for their AI training.",
+        width: 2048,
+        height: 2048,
+        slot: "portrait",
+      },
+    ],
+  },
   // ===== Audit IA (hub) =====
   // Images SEO-only rendues dans des sous-composants Audit* (pas de <Image> direct).
   {
