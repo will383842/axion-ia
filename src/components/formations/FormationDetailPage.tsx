@@ -94,6 +94,8 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const prerequis = f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.";
   const image = getFormationImage(f);
   const casUsage = getFormationCasUsage(f);
+  // « reste à charge » = mention financement (OPCO), pas un tarif produit.
+  const financeMention = "Finançable OPCO — jusqu’à 0 € de reste à charge selon votre situation."; // price-exempt
 
   // ── FAQ : spécifiques (SSOT) + génériques DÉRIVÉES des faits (centralisé, DRY,
   //    toujours en phase avec la durée/le format/le matériel) + financement gaté.
@@ -308,9 +310,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                 {ofPublic ? (
                   <div className="bg-terracotta text-mocha-fg mt-4 flex items-start gap-2 rounded-xl p-3">
                     <Wallet aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
-                    <span className="text-[13px] leading-snug font-bold">
-                      Finançable OPCO — jusqu’à 0 € de reste à charge selon votre situation.
-                    </span>
+                    <span className="text-[13px] leading-snug font-bold">{financeMention}</span>
                   </div>
                 ) : null}
               </div>

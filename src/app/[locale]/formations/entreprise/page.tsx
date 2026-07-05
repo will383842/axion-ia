@@ -119,8 +119,8 @@ export default async function FormationsEntreprise({ params }: Props) {
   const ofPublic = isQualiopiPublicDisclosureEnabled();
 
   const minEur = getFormationCatalogPriceRange().minEur;
-  const entryPrice = formatAmount(minEur, loc); // « 1 200 € HT »
-  const entryPriceCompact = formatAmount(minEur, loc, { compact: true }); // « 1 200 € »
+  const entryPrice = formatAmount(minEur, loc); // libellé « à partir de … » (matrice SSOT)
+  const entryPriceCompact = formatAmount(minEur, loc, { compact: true }); // même montant, format compact
   // Compteur dérivé du SSOT (auto-maj si on ajoute/retire une formation).
   const total = FORMATIONS_V2.length;
   const images = getPageImages(PATH);
@@ -750,13 +750,13 @@ export default async function FormationsEntreprise({ params }: Props) {
         </div>
       </Section>
 
-      {/* ── FINANCEMENT / QUALIOPI / 0 € (gaté Phase B) ──────────────────── */}
+      {/* ── FINANCEMENT / QUALIOPI (gaté Phase B) ────────────────────────── */}
       {ofPublic ? (
         <Section
           id="financement"
           tone="sand"
           eyebrow={isFr ? "Financement" : "Funding"}
-          title={isFr ? "Jusqu'à 0 € de reste à charge," : "Down to €0 out of pocket,"}
+          title={isFr ? "Jusqu'à 0 € de reste à charge," : "Down to €0 out of pocket,"} // price-exempt: reste à charge (mention financement, pas un tarif produit)
           titleEm={isFr ? "selon votre OPCO" : "with your OPCO"}
           description={
             isFr
