@@ -179,13 +179,20 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
 
   // ── JSON-LD ─────────────────────────────────────────────────────────────────
   // Toutes les images de la fiche (héro + scènes + cas d'usage) → Course.image
-  // (association à l'entité pour Google Images), dédupliquées, en URL absolue.
-  const pageImageUrls = [
-    ...new Set([
-      image.src,
-      ...casUsage.map((c) => c.imageSrc).filter((s): s is string => Boolean(s)),
-    ]),
-  ].map((src) => `${SITE_URL}${src}`);
+  // (association à l'entité pour Google Images) en ImageObject RICHES (caption),
+  // dédupliquées, URL absolues — parité avec les pages landing.
+  const pageImageMap = new Map<string, string>();
+  pageImageMap.set(image.src, image.altFr);
+  for (const c of casUsage) {
+    if (c.imageSrc && !pageImageMap.has(c.imageSrc)) pageImageMap.set(c.imageSrc, c.texteFr);
+  }
+  const courseImages = [...pageImageMap.entries()].map(([src, caption]) => ({
+    "@type": "ImageObject",
+    url: `${SITE_URL}${src}`,
+    contentUrl: `${SITE_URL}${src}`,
+    caption,
+  }));
+  // Service AVEC speakable (parité page-level speakable des landings).
   const serviceJsonLd = buildServiceJsonLd({
     locale,
     path,
@@ -193,6 +200,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
     description: f.accrocheFr,
     serviceType: "AI training",
     area: "Worldwide",
+    speakable: true,
   });
   const courseJsonLd = {
     ...buildCourseJsonLd({
@@ -207,7 +215,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       about: "IA opérationnelle (ChatGPT, Claude, Mistral, Copilot, agents IA, automatisations)",
       ...(typeof entryPrice === "number" ? { priceEurHt: entryPrice } : {}),
     }),
-    image: pageImageUrls,
+    image: courseImages,
   };
   const programmeSteps = f.programme.flatMap((s) => s.steps).filter((st) => st.titre !== "Pause");
   const howToJsonLd =
