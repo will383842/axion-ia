@@ -345,17 +345,21 @@ export const CLAUDE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
     // Sprint 14.10.7 (Will 2026-05-11) — palier 4 h Collectives. Tier porté
-    // par l'unique formation 4 h restante (Démarrage IA Express). Atelier IA
-    // ciblé supprimé le 2026-06-03 (Will). Prix passé de 590 à 690 € HT et
-    // effectif plafonné à 12 personnes (Will 2026-06-03).
+    // par l'unique formation 4 h restante (Démarrage IA Express).
+    // Will 2026-07-06 — alignement sur le vrai catalogue V2 : le format 4 h
+    // (gamme IA standard, cf. FORMATION_PRICE_MATRIX["ia-standard"]["4h"]) démarre
+    // à 1 200 € HT pour 2 à 30 personnes. Ce tier legacy porte le prix d'entrée
+    // « à partir de » consommé par la home, les ~400 villes, /tarifs et llms.txt :
+    // il passe donc à 1 200 € / 2-30 pour ne plus propager l'ancien 690 € (ex-590)
+    // fantôme, qui ne correspondait à aucune formation réellement proposée.
     id: "intervention-4h",
     labelFr: "Formation 4 heures",
     labelEn: "4-hour training",
-    priceFlat: 690,
+    priceFlat: 1200,
     durationFr: "Demi-journée (4 h)",
     durationEn: "Half-day (4 h)",
-    groupSizeFr: "2 à 12 personnes",
-    groupSizeEn: "2 to 12 people",
+    groupSizeFr: "2 à 30 personnes",
+    groupSizeEn: "2 to 30 people",
     descriptionFr:
       "Format express demi-journée pour découvrir l'IA ou cadrer un cas d'usage métier précis.",
     descriptionEn: "Half-day express format to discover AI or frame a specific business use case.",

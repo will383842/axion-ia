@@ -97,12 +97,12 @@ describe("T-33 catalogue — dérivation facettes (échantillon 5 verticales)", 
     expect(o.vertical).toBe<OfferVertical>("un-a-un");
   });
 
-  it("demi-journée : intervention-4h → 4 h / 0.5 j, effectif 2-12", () => {
+  it("demi-journée : intervention-4h → 4 h / 0.5 j, effectif 2-30", () => {
     const o = getOfferById("intervention-4h")!;
     expect(o.dureeHeures).toBe(4);
     expect(o.dureeJours).toBe(0.5);
     expect(o.effectifMin).toBe(2);
-    expect(o.effectifMax).toBe(12);
+    expect(o.effectifMax).toBe(30);
   });
 
   it("audit : audit-cible déduit distanciel + mixte (sous-tiers)", () => {

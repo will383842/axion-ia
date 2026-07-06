@@ -24,11 +24,11 @@ describe("T-35 filterOffers — fourchette de prix", () => {
     const ids = res.map((o) => o.id);
     // intervention-essentielle (2450) et intervention-temps (2450) chevauchent.
     expect(ids).toContain("intervention-essentielle");
-    // intervention-4h (690) hors fourchette.
+    // intervention-4h (1200) hors fourchette.
     expect(ids).not.toContain("intervention-4h");
   });
 
-  it("borne basse exclusive : rien sous 690 € en formation", () => {
+  it("borne basse exclusive : rien sous 1 200 € en formation", () => {
     const res = filterOffers({ vertical: "formation", prixMax: 600 });
     expect(res).toEqual([]);
   });
@@ -76,7 +76,7 @@ describe("T-35 sortOffers — « le moins cher »", () => {
     const priced = res.filter((o) => !o.onQuote).map((o) => o.prixMin!);
     const sorted = [...priced].sort((a, b) => a - b);
     expect(priced).toEqual(sorted);
-    // le 1er (le moins cher) en formation = intervention-4h (690 €).
+    // le 1er (le moins cher) en formation = intervention-4h (1 200 €).
     expect(res[0]?.id).toBe("intervention-4h");
   });
 
@@ -113,7 +113,7 @@ describe("T-35 toOfferResult & handler", () => {
   });
 
   it("formate un prix flat, un range et un sur-devis", () => {
-    expect(toOfferResult(getOfferById("intervention-4h")!).prix).toMatch(/690/);
+    expect(toOfferResult(getOfferById("intervention-4h")!).prix).toMatch(/1\s?200/);
     expect(toOfferResult(getOfferById("codage-web")!).prix).toMatch(/2\s?000.*30\s?000/);
     expect(toOfferResult(getOfferById("intervention-conference")!).prix).toBe("Sur devis");
   });

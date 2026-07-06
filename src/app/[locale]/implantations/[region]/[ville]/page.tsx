@@ -441,9 +441,11 @@ export default async function VilleHubPage({ params }: Props) {
   // Overviews) + Google Shopping/Local Pack avec prix inline.
   const auditFlashPrice = getTierById(AUDIT_TIERS, "audit-flash").priceFlat!;
   const auditEtiHighPrice = getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!;
-  const interventionEntryPrice = getEntryPriceEur(INTERVENTION_TIERS) ?? 690;
-  const unAUnEntryPrice = getEntryPriceEur(UN_A_UN_TIERS) ?? 990;
-  const implEntryPrice = getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 990;
+  // Aucun prix en dur : le prix d'entrée dérive de la SSOT (getEntryPriceEur ne
+  // renvoie jamais undefined pour ces catégories non vides — `!` comme l'audit-flash ci-dessus).
+  const interventionEntryPrice = getEntryPriceEur(INTERVENTION_TIERS)!;
+  const unAUnEntryPrice = getEntryPriceEur(UN_A_UN_TIERS)!;
+  const implEntryPrice = getEntryPriceEur(IMPLEMENTATION_TIERS)!;
 
   const aggregateOfferJsonLd = {
     "@context": "https://schema.org",
