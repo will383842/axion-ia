@@ -27,6 +27,8 @@
 // (aucune régression a11y/SEO). En cas de doute, la page est la référence.
 
 import { CLIENT_SECTORS } from "@/content/sectors";
+import { FAQ_IMAGES } from "@/content/faq/faq-images";
+import { FAQ_CATEGORIES } from "@/content/faq-categories";
 
 /** Emplacement de rendu de l'image sur la page (pour que la page filtre son manifeste). */
 export type PageImageSlot =
@@ -99,6 +101,35 @@ const SECTOR_PAGE_IMAGES: readonly PageImagesManifest[] = CLIENT_SECTORS.map((s)
     },
   ],
 }));
+
+// ===== FAQ (hub + index thématiques + 8 catégories) =====
+// Photo héro Unsplash locale (1280×960, `representativeOfPage`, slot "hero")
+// rendue à droite du h1 (Section `media`). Crédit photographe rendu sur la page
+// (CGU §9) + tracé dans `faq-photos.ts`. Les fiches `/faq/[slug]` réutilisent
+// l'image de leur catégorie en rendu (dynamiques → pas d'entrée sitemap dédiée).
+function faqManifestImage(slot: string): PageImage {
+  const img = FAQ_IMAGES[slot]!;
+  return {
+    src: img.src,
+    nameFr: img.nameFr,
+    nameEn: img.nameEn,
+    altFr: img.altFr,
+    altEn: img.altEn,
+    width: img.width,
+    height: img.height,
+    representativeOfPage: true,
+    slot: "hero",
+  };
+}
+
+const FAQ_PAGE_IMAGES: readonly PageImagesManifest[] = [
+  { path: "/faq", images: [faqManifestImage("hub")] },
+  { path: "/faq/par-thematique", images: [faqManifestImage("topics")] },
+  ...FAQ_CATEGORIES.map((c) => ({
+    path: `/faq/par-thematique/${c.slug}`,
+    images: [faqManifestImage(c.slug)],
+  })),
+];
 
 // ---------------------------------------------------------------------------
 // Manifeste
@@ -1326,6 +1357,7 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
     ],
   },
   ...SECTOR_PAGE_IMAGES,
+  ...FAQ_PAGE_IMAGES,
 ];
 
 // ---------------------------------------------------------------------------

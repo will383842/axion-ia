@@ -8,12 +8,15 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { FaqHeroImage } from "@/components/sections/FaqHeroImage";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   buildProductMetadata,
   buildItemListJsonLd,
   buildCollectionPageJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
 import { listFaqs } from "@/lib/knowledge/readers";
@@ -89,8 +92,16 @@ export default async function FaqTopicsPage({ params }: Props) {
       ? "Les thématiques de la FAQ Axion-IA : interventions et formations IA, implémentation, audit, tarifs, process, RGPD, sites web, coaching 1-to-1."
       : "Axion-IA FAQ topics: AI sessions and training, implementation, audit, pricing, process, GDPR, websites, 1-to-1 coaching.",
     speakable: true,
-    extra: { about: { "@id": `${SITE_URL}/#organization` } },
+    extra: {
+      about: { "@id": `${SITE_URL}/#organization` },
+      ...(buildPrimaryImageOfPage("/faq/par-thematique")
+        ? { primaryImageOfPage: buildPrimaryImageOfPage("/faq/par-thematique") }
+        : {}),
+    },
   });
+
+  // Image héro (GEO / Google Images) — ImageObject @graph via manifeste SSOT.
+  const imageGraphJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/faq/par-thematique" });
 
   // Cartes « Aller plus loin » — navigation transverse (maillage + RSS).
   const furtherLinks: ReadonlyArray<{
@@ -144,6 +155,7 @@ export default async function FaqTopicsPage({ params }: Props) {
             ? "Choisissez une famille de questions pour aller droit au but : interventions et formations IA, implémentation, audit, tarifs, process & RGPD, sites web, coaching 1-to-1. Réponses courtes, sourcées, citables par les IA."
             : "Pick a family of questions to get straight to the point: AI sessions and training, implementation, audit, pricing, process & GDPR, websites, 1-to-1 coaching. Short, sourced, AI-citable answers."
         }
+        media={<FaqHeroImage slot="topics" isFr={isFr} priority />}
       >
         <div className="flex flex-col gap-6">
           <ul role="list" className="flex flex-wrap gap-x-5 gap-y-2.5">
@@ -287,6 +299,7 @@ export default async function FaqTopicsPage({ params }: Props) {
 
       <JsonLd data={itemListJsonLd} />
       <JsonLd data={collectionPageJsonLd} />
+      {imageGraphJsonLd ? <JsonLd data={imageGraphJsonLd} /> : null}
     </>
   );
 }

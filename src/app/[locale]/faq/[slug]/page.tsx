@@ -22,6 +22,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqRelatedResources } from "@/components/sections/FaqRelatedResources";
+import { FaqHeroImage } from "@/components/sections/FaqHeroImage";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
@@ -277,6 +278,7 @@ export default async function FaqEntryPage({ params }: Props) {
             ? "Réponse directe Axion-IA — courte, sourcée, pensée pour être citée par les moteurs de recherche et les IA."
             : "Direct Axion-IA answer — short, sourced, built to be cited by search engines and AI assistants."
         }
+        media={<FaqHeroImage slot={entry.category} isFr={isFr} priority />}
       >
         <div className="flex flex-col gap-6">
           {catLabel ? (
@@ -344,6 +346,69 @@ export default async function FaqEntryPage({ params }: Props) {
                     {para}
                   </p>
                 ))}
+              </div>
+
+              {/* E-E-A-T — signataire/relecteur humain visible (auteur = équipe
+                  Axion-IA). Renforce le signal « qui répond » pour Google/AEO. */}
+              <div className="border-border mt-8 flex items-start gap-3 rounded-xl border border-dashed p-4">
+                <ShieldCheck
+                  aria-hidden="true"
+                  className="text-terracotta mt-0.5 h-5 w-5 shrink-0"
+                  strokeWidth={2}
+                />
+                <p className="text-fg-soft text-sm leading-relaxed">
+                  {isAutoGen ? (
+                    isFr ? (
+                      <>
+                        Réponse rédigée avec assistance IA et{" "}
+                        <strong className="text-fg font-medium">
+                          relue par l&apos;équipe Axion-IA
+                        </strong>{" "}
+                        avant publication.
+                      </>
+                    ) : (
+                      <>
+                        Answer drafted with AI assistance and{" "}
+                        <strong className="text-fg font-medium">
+                          reviewed by the Axion-IA team
+                        </strong>{" "}
+                        before publication.
+                      </>
+                    )
+                  ) : isFr ? (
+                    <>
+                      Rédigé et relu par l&apos;
+                      <a
+                        href={`/${locale}/a-propos`}
+                        className="text-terracotta-deep font-medium underline underline-offset-2 hover:no-underline"
+                      >
+                        équipe Axion-IA
+                      </a>
+                      , cabinet IA opérationnel français —{" "}
+                      {new Date(FAQ_LAST_REVIEWED).toLocaleDateString("fr-FR", {
+                        year: "numeric",
+                        month: "long",
+                      })}
+                      .
+                    </>
+                  ) : (
+                    <>
+                      Written and reviewed by the{" "}
+                      <a
+                        href={`/${locale}/a-propos`}
+                        className="text-terracotta-deep font-medium underline underline-offset-2 hover:no-underline"
+                      >
+                        Axion-IA team
+                      </a>
+                      , a French operational AI consultancy —{" "}
+                      {new Date(FAQ_LAST_REVIEWED).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                      })}
+                      .
+                    </>
+                  )}
+                </p>
               </div>
 
               {/* Navigation séquentielle dans la thématique (lecture continue). */}
