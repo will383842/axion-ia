@@ -69,7 +69,10 @@ const COMMON_DISALLOW = [
 // l'optimiseur sans rouvrir le reste de `/_next/` (chunks JS, data, etc.).
 // SOS-Expat (jumeau indexé dans Google Images) sert ses images en fichiers
 // statiques directs, sans optimiseur ni chemin disallowed — d'où l'écart.
-const COMMON_ALLOW = ["/", "/api/og", "/_next/image"];
+// `/api/avis/photo/` : photos publiques optimisées des avis clients. `Disallow:
+// /api/` bloquerait Googlebot-Image de les crawler → même correctif que `/api/og`
+// (longest-match `Allow` débloque). Indispensable pour l'indexation Google Images.
+const COMMON_ALLOW = ["/", "/api/og", "/api/avis/photo", "/_next/image"];
 
 const AI_BOTS_ALLOWED = [
   // SEARCH / CITATION uniquement (ces UA citent, ils n'entraînent pas) :
