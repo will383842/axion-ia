@@ -102,10 +102,12 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
       aria-label={isFr ? "Explorer les questions" : "Explore questions"}
       className="py-12 sm:py-16"
     >
-      <Container className="max-w-3xl">
+      <Container>
         {/* Barre de recherche + filtres — sticky « flottante » (CSS pur).
-            top-20 dégage le header ; z-20 passe au-dessus des résultats. */}
-        <div className="border-border bg-paper/95 shadow-subtle sticky top-20 z-20 rounded-2xl border p-4 backdrop-blur-sm">
+            top-20 dégage le header ; z-20 passe au-dessus des résultats.
+            Centrée (max-w-3xl) ; les résultats en dessous prennent la pleine
+            largeur (grille 3 colonnes) pour une lecture aérée (refonte 2026-07-06). */}
+        <div className="border-border bg-paper/95 shadow-subtle sticky top-20 z-20 mx-auto max-w-3xl rounded-2xl border p-4 backdrop-blur-sm">
           <div className="relative">
             <Search
               aria-hidden="true"
@@ -174,7 +176,11 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
         </div>
 
         {/* Compteur résultats */}
-        <p className="text-fg-muted mt-5 text-sm" role="status" aria-live="polite">
+        <p
+          className="text-fg-muted mx-auto mt-5 max-w-3xl text-sm"
+          role="status"
+          aria-live="polite"
+        >
           {filtered.length}{" "}
           {isFr
             ? filtered.length > 1
@@ -188,7 +194,7 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
 
         {/* Résultats groupés par thème */}
         {grouped.length === 0 ? (
-          <div className="border-border mt-6 rounded-xl border border-dashed py-12 text-center">
+          <div className="border-border mx-auto mt-6 max-w-3xl rounded-xl border border-dashed py-12 text-center">
             <p className="text-fg-soft">
               {isFr
                 ? "Aucune question ne correspond. Essayez un autre mot-clé."
@@ -224,7 +230,7 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
                     {isFr ? "Voir le thème →" : "View topic →"}
                   </a>
                 </div>
-                <ul className="grid gap-3 sm:grid-cols-2">
+                <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {list.map((it) => (
                     <li key={it.id}>
                       <a
