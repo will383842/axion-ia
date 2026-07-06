@@ -6,7 +6,7 @@
 
 import * as React from "react";
 import { useLocale } from "next-intl";
-import { Check, Star } from "lucide-react";
+import { Check, Star, ImageUp, X } from "lucide-react";
 import { submitReviewAction } from "@/features/review-submission/actions";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
@@ -15,7 +15,7 @@ import { SERVICE_LINES } from "@/lib/reviews/service-lines";
 import { REVIEW_COMMENT_MIN, REVIEW_COMMENT_MAX } from "@/lib/schemas/review-submission-schema";
 
 const FIELD =
-  "border-border bg-bg focus:border-terracotta focus:ring-terracotta/20 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none focus:ring-4";
+  "border-border-strong bg-paper focus:border-terracotta focus:ring-terracotta/25 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none transition-colors focus:ring-4";
 const LABEL = "text-fg mb-1.5 block text-sm font-medium";
 const SECTION = "font-serif text-xl font-semibold border-l-4 border-terracotta pl-3 leading-tight";
 
@@ -279,8 +279,15 @@ export function ReviewSubmissionForm() {
         <legend className={SECTION}>📷 Photo (facultative)</legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label htmlFor="photo" className={LABEL}>
-              Portrait ou logo (JPG, PNG, WebP) — optionnel
+            <span className={LABEL}>Portrait ou logo (JPG, PNG, WebP) — optionnel</span>
+            <label
+              htmlFor="photo"
+              className={`border-terracotta/45 bg-terracotta-soft/40 text-terracotta-deep hover:bg-terracotta-soft hover:border-terracotta focus-within:ring-terracotta/30 flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-3.5 text-sm font-semibold shadow-sm transition-colors focus-within:ring-4 ${
+                submitting ? "pointer-events-none opacity-60" : ""
+              }`}
+            >
+              <ImageUp aria-hidden="true" className="h-5 w-5" strokeWidth={2} />
+              {photoName ? "Changer la photo" : "Choisir une photo"}
             </label>
             <input
               id="photo"
@@ -288,14 +295,28 @@ export function ReviewSubmissionForm() {
               type="file"
               accept="image/*"
               ref={photoRef}
-              className="text-sm"
+              className="sr-only"
               disabled={submitting}
               onChange={(ev) => setPhotoName(ev.target.files?.[0]?.name ?? "")}
             />
             {photoName ? (
-              <p className="text-fg-muted mt-1 text-xs">Sélectionnée : {photoName}</p>
+              <p className="text-fg-soft mt-2 flex items-center gap-1.5 text-xs">
+                <Check aria-hidden="true" className="text-sage h-3.5 w-3.5" strokeWidth={2.5} />
+                <span className="truncate font-medium">{photoName}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (photoRef.current) photoRef.current.value = "";
+                    setPhotoName("");
+                  }}
+                  className="text-fg-muted hover:text-terracotta ml-auto inline-flex items-center gap-0.5"
+                  aria-label="Retirer la photo"
+                >
+                  <X aria-hidden="true" className="h-3.5 w-3.5" /> retirer
+                </button>
+              </p>
             ) : (
-              <p className="text-fg-muted mt-1 text-xs">
+              <p className="text-fg-muted mt-2 text-xs">
                 Sans photo, un avatar Axion-IA sera généré automatiquement.
               </p>
             )}
@@ -338,9 +359,10 @@ export function ReviewSubmissionForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="bg-terracotta hover:bg-terracotta-deep inline-flex h-11 items-center gap-2 rounded-full px-6 font-medium text-white transition-colors disabled:opacity-60"
+        className="bg-terracotta hover:bg-terracotta-deep shadow-card inline-flex h-12 items-center gap-2 rounded-full px-8 text-base font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:translate-y-0 disabled:opacity-60"
       >
         {submitting ? "Envoi…" : "Publier mon avis"}
+        {submitting ? null : <Star aria-hidden="true" className="h-4 w-4 fill-current" />}
       </button>
       <p className="text-fg-muted text-xs">
         {isFr
