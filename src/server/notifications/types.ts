@@ -137,6 +137,23 @@ export type NotificationEvent =
       };
     }
   | {
+      category: "REVIEW_SUBMITTED";
+      payload: {
+        reviewId: string;
+        /** Identité publique : prénom + initiale (ex. "Marie D."). */
+        authorName: string;
+        rating: number;
+        companyName?: string;
+        clientSector?: string;
+        city?: string;
+        serviceLine?: string;
+        hasPhoto: boolean;
+        /** Début du commentaire (aperçu). */
+        excerpt?: string;
+        locale: "fr" | "en";
+      };
+    }
+  | {
       category: "SPEAKER_INVITATION_RECEIVED";
       payload: {
         submissionId: string;

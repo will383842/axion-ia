@@ -25,6 +25,7 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   PRESS_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
   RECRUITMENT_RECEIVED: { channels: ["telegram"], severity: "info" },
   JOB_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
+  REVIEW_SUBMITTED: { channels: ["telegram"], severity: "info" },
   SPEAKER_INVITATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   INVESTOR_INQUIRY_RECEIVED: { channels: ["telegram"], severity: "warn" },
   CUSTOMER_SUPPORT_REQUEST: { channels: ["telegram"], severity: "warn" },
