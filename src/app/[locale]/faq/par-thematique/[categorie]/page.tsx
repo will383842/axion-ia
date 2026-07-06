@@ -10,6 +10,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqRelatedResources } from "@/components/sections/FaqRelatedResources";
+import { FaqHeroImage } from "@/components/sections/FaqHeroImage";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
@@ -17,6 +18,8 @@ import {
   buildItemListJsonLd,
   buildFaqJsonLd,
   buildCollectionPageJsonLd,
+  buildPageImageGraphJsonLd,
+  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
 import { listFaqs, listFaqsByCategory } from "@/lib/knowledge/readers";
@@ -110,13 +113,21 @@ export default async function FaqCategoryPage({ params }: Props) {
     })),
   });
 
+  const primaryImage = buildPrimaryImageOfPage(`/faq/par-thematique/${categorie}`);
+  const imageGraphJsonLd = buildPageImageGraphJsonLd({
+    locale: loc,
+    path: `/faq/par-thematique/${categorie}`,
+  });
   const collectionPageJsonLd = buildCollectionPageJsonLd({
     locale: loc,
     path: `/faq/par-thematique/${categorie}`,
     name: isFr ? `FAQ ${cat.labelFr} — Axion-IA` : `${cat.labelEn} FAQ — Axion-IA`,
     description: catDesc,
     speakable: true,
-    extra: { about: { "@id": `${SITE_URL}/#organization` } },
+    extra: {
+      about: { "@id": `${SITE_URL}/#organization` },
+      ...(primaryImage ? { primaryImageOfPage: primaryImage } : {}),
+    },
   });
 
   const heroPills: ReadonlyArray<{ icon: typeof HelpCircle; label: string }> = [
@@ -144,6 +155,7 @@ export default async function FaqCategoryPage({ params }: Props) {
         eyebrow={isFr ? "FAQ · Thématique" : "FAQ · Topic"}
         title={catLabel}
         description={catDesc}
+        media={<FaqHeroImage slot={categorie} isFr={isFr} priority />}
       >
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-3">
@@ -284,6 +296,7 @@ export default async function FaqCategoryPage({ params }: Props) {
 
       <JsonLd data={itemListJsonLd} />
       <JsonLd data={collectionPageJsonLd} />
+      {imageGraphJsonLd ? <JsonLd data={imageGraphJsonLd} /> : null}
       {/* FAQPage JSON-LD — émis UNIQUEMENT quand le hub est indexable (≥ seuil),
           jamais sur une page noindex thin (audit 2026-07-03). Un hub thématique
           (nombre raisonnable de Q/R) est le bon porteur d'un FAQPage — contrairement
