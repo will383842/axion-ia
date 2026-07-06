@@ -16,7 +16,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { PenLine } from "lucide-react";
+import { PenLine, BadgeCheck, Scale, ShieldCheck } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -241,21 +241,30 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
         <div className="grid gap-6 md:grid-cols-3">
           {[
             {
+              icon: BadgeCheck,
               t: "Avis 100 % vérifiés",
               d: "Chaque avis est contrôlé manuellement (authenticité, cohérence) avant publication.",
             },
             {
+              icon: Scale,
               t: "Positifs ET négatifs",
               d: "Nous publions tous les avis authentiques. La modération n'écarte que les faux avis ou contenus illégaux.",
             },
             {
+              icon: ShieldCheck,
               t: "Conforme & RGPD",
               d: "Directive Omnibus / DGCCRF. Seuls le prénom, l'initiale et les données consenties sont affichés.",
             },
           ].map((x) => (
-            <div key={x.t} className="border-border rounded-xl border p-5">
-              <p className="text-fg font-semibold">{x.t}</p>
-              <p className="text-fg-soft mt-1 text-sm">{x.d}</p>
+            <div
+              key={x.t}
+              className="border-border-strong bg-paper hover:border-terracotta/50 rounded-2xl border p-6 shadow-sm transition-colors"
+            >
+              <span className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                <x.icon aria-hidden="true" className="h-5 w-5" strokeWidth={2} />
+              </span>
+              <p className="text-fg font-serif text-lg font-semibold">{x.t}</p>
+              <p className="text-fg-soft mt-1.5 text-sm leading-relaxed">{x.d}</p>
             </div>
           ))}
         </div>

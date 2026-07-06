@@ -25,10 +25,14 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
 
   return (
     <article
-      className={`bg-paper border-border shadow-card flex h-full flex-col rounded-2xl border p-6 ${className ?? ""}`}
+      className={`group bg-paper border-border-strong shadow-card hover:border-terracotta/50 relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl ${className ?? ""}`}
     >
+      <span
+        aria-hidden="true"
+        className="from-terracotta to-terracotta-deep absolute inset-x-0 top-0 h-1 bg-gradient-to-r opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+      />
       <div className="flex items-center justify-between gap-3">
-        <StarRating value={review.rating} size={16} />
+        <StarRating value={review.rating} size={18} />
         {review.isVerified ? (
           <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold">
             <BadgeCheck aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.25} />
