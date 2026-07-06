@@ -66,7 +66,7 @@ export function FacetReviewsPage({
         </Section>
       ) : null}
 
-      <Section tone="canvas">
+      <Section tone="canvas" title="Les" titleEm="avis vérifiés">
         <ul className="grid list-none gap-6 p-0 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((r) => (
             <li key={r.id}>

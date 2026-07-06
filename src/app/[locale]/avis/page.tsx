@@ -238,7 +238,7 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
 
       {/* 2. Barre de confiance / méthodologie */}
       <Section tone="paper">
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {[
             {
               t: "Avis 100 % vérifiés",
@@ -269,7 +269,7 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
       ) : null}
 
       {/* 4. Filtres + 5. Grille */}
-      <Section tone="canvas">
+      <Section tone="canvas" title="Tous les" titleEm="avis">
         <ReviewFiltersBar
           values={{ note: sp.note, service: sp.service, secteur: sp.secteur, tri: sp.tri, q: sp.q }}
           resetHref="/avis"
@@ -323,7 +323,7 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
       {/* 7. Avis par service */}
       {topServices.length > 0 ? (
         <Section tone="paper" eyebrow="Par service" title="Avis par" titleEm="service">
-          <ul className="grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid list-none gap-4 p-0 md:grid-cols-2 lg:grid-cols-3">
             {topServices.map((f) => (
               <li key={f.key}>
                 <Link
@@ -376,7 +376,7 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
       {/* 9. Secteurs */}
       {topSectors.length > 0 ? (
         <Section tone="paper" eyebrow="Par secteur" title="Avis par" titleEm="secteur d'activité">
-          <ul className="grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid list-none gap-4 p-0 md:grid-cols-2 lg:grid-cols-3">
             {topSectors.map((f) => (
               <li key={f.key}>
                 <Link

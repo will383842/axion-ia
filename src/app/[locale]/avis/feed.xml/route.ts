@@ -29,7 +29,13 @@ export async function GET(_req: Request, { params }: RouteContext): Promise<Resp
     return new Response("Unknown locale", { status: 404 });
   }
 
-  const { items: reviews } = await getPublishedReviews({ pageSize: 48, sort: "recent" });
+  let reviews: Awaited<ReturnType<typeof getPublishedReviews>>["items"] = [];
+  try {
+    reviews = (await getPublishedReviews({ pageSize: 48, sort: "recent" })).items;
+  } catch (e) {
+    // Fail-soft (parité avec sitemap-avis) : un hoquet DB ne doit pas 500 le flux.
+    console.error("[avis feed] échec lecture DB:", e);
+  }
 
   const items = reviews
     .map((r) => {

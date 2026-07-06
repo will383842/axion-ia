@@ -138,19 +138,6 @@ export async function getReviewBySlug(slug: string): Promise<PublicReview | null
   });
 }
 
-/** Tous les slugs d'avis publiés (pour generateStaticParams / sitemap). Stub-aware. */
-export async function getPublishedReviewSlugs(
-  limit = 5000,
-): Promise<{ slug: string; publishedAt: Date | null; updatedAt: Date }[]> {
-  if (isStubBuild()) return [];
-  return prisma.customerReview.findMany({
-    where: { status: "published" },
-    orderBy: { publishedAt: "desc" },
-    take: limit,
-    select: { slug: true, publishedAt: true, updatedAt: true },
-  });
-}
-
 /** Avis liés (même service > même secteur > même ville), hors l'avis courant. */
 export async function getRelatedReviews(review: PublicReview, limit = 3): Promise<PublicReview[]> {
   if (isStubBuild()) return [];
@@ -231,4 +218,3 @@ export const getCityFacets = () => facetCounts("citySlug");
 export const getSectorFacets = () => facetCounts("clientSector");
 export const getServiceFacets = () => facetCounts("serviceLine");
 export const getDepartmentFacets = () => facetCounts("departmentCode");
-export const getRegionFacets = () => facetCounts("regionSlug");

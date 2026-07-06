@@ -85,11 +85,7 @@ export default async function AvisDetailPage({ params }: Props) {
 
       <Section tone="canvas">
         <div className="mx-auto max-w-2xl">
-          <article
-            className="bg-paper border-border shadow-card rounded-2xl border p-6 sm:p-8"
-            itemScope
-            itemType="https://schema.org/Review"
-          >
+          <article className="bg-paper border-border shadow-card rounded-2xl border p-6 sm:p-8">
             {/* En-tête */}
             <div className="flex items-start gap-4">
               <ReviewAvatar
@@ -122,7 +118,6 @@ export default async function AvisDetailPage({ params }: Props) {
             {/* Corps de l’avis (speakable + itemprop) */}
             <p
               className="direct-answer text-fg mt-5 text-lg leading-relaxed whitespace-pre-wrap"
-              itemProp="reviewBody"
               data-answer
             >
               {review.comment}
