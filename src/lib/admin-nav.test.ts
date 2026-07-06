@@ -12,7 +12,8 @@ describe("buildAdminNav SSOT", () => {
     // +14 pôle Prospection & Base Entreprises 2026-07-04 (dashboard, départements,
     // campagnes, entreprises, contacts, couverture, carte, par activité, personnes,
     // exports, journal, rgpd, doublons, réglages) → 117 → 131.
-    expect(items.length).toBe(131);
+    // +1 Avis clients 2026-07-06 (groupe content, modération avis) → 132.
+    expect(items.length).toBe(132);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

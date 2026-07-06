@@ -98,6 +98,10 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   "/sitemap-recrutement.xml",
   // Offres d'emploi (/carrieres) — DB-driven (offres publiées indexables).
   "/sitemap-carrieres.xml",
+  // Avis clients (/avis) — DB-driven runtime : hub + chaque avis publié (avec
+  // photo pour Google Images) + facettes curées. Toujours ≥ 2 URLs (hub +
+  // deposer) → jamais un urlset vide. Cf. `app/sitemap-avis.xml/route.ts`.
+  "/sitemap-avis.xml",
 ];
 
 // Rendu DYNAMIQUE au runtime (2026-07-06). Auparavant `force-static` : l'index

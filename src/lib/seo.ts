@@ -1733,8 +1733,8 @@ interface ReviewJsonLdInput {
   bestRating?: number;
   /** Review body. */
   reviewBody: string;
-  /** Item being reviewed (Service or Product). */
-  itemReviewed: { type: "Service" | "Product"; name: string };
+  /** Item being reviewed (Service, Product, Course or Organization). */
+  itemReviewed: { type: "Service" | "Product" | "Course" | "Organization"; name: string };
   /** Date in ISO format. */
   datePublished?: string;
 }
@@ -1781,7 +1781,7 @@ interface AggregateRatingJsonLdInput {
   /** Best rating (defaults to 5). */
   bestRating?: number;
   /** Item being rated. */
-  itemReviewed: { type: "Service" | "Product" | "Organization"; name: string };
+  itemReviewed: { type: "Service" | "Product" | "Organization" | "Course"; name: string };
 }
 
 // AggregateRating JSON-LD — used to summarize multiple Reviews. Affiche

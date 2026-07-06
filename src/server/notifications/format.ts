@@ -25,6 +25,7 @@ const TITLES: Record<NotificationCategory, string> = {
   PRESS_REQUEST_SUBMITTED: "📰 Demande presse / média",
   RECRUITMENT_RECEIVED: "👤 Candidature reçue",
   JOB_APPLICATION_RECEIVED: "📨 Candidature emploi reçue",
+  REVIEW_SUBMITTED: "⭐ Nouvel avis client (à modérer)",
   SPEAKER_INVITATION_RECEIVED: "🎤 Invitation conférence",
   INVESTOR_INQUIRY_RECEIVED: "💼 Demande investisseur / M&A",
   CUSTOMER_SUPPORT_REQUEST: "🛟 Support client",
@@ -131,6 +132,22 @@ function formatBody(event: NotificationEvent): string {
           "Voir en console",
           `${SITE_URL}${adminPath("fr", "candidatures")}/${p.applicationId}`,
         ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "REVIEW_SUBMITTED": {
+      const p = event.payload;
+      return [
+        formatKV("Auteur", p.authorName),
+        formatKV("Note", `${p.rating}/5 ★`),
+        p.companyName ? formatKV("Société", p.companyName) : null,
+        p.clientSector ? formatKV("Secteur", p.clientSector) : null,
+        p.city ? formatKV("Ville", p.city) : null,
+        p.serviceLine ? formatKV("Service", p.serviceLine) : null,
+        formatKV("Photo", p.hasPhoto ? "jointe ✅" : "aucune"),
+        p.excerpt ? formatKV("Extrait", p.excerpt.slice(0, 160)) : null,
+        formatKV("Modérer en console", `${SITE_URL}${adminPath("fr", "avis")}/${p.reviewId}`),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");

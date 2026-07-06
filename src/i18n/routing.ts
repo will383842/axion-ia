@@ -328,6 +328,21 @@ export const routing = defineRouting({
       en: "/gallery/[slug]/download",
     },
 
+    // Avis clients — système d'avis modérés soumis par les clients (2026-07-06).
+    // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307 self-loop.
+    // ⚠️ Routes STATIQUES + facettes (2 segments) déclarées AVANT `/avis/[slug]`
+    // (1 segment) : « plus spécifique d'abord » = reverse-mapping correct.
+    "/avis": { fr: "/avis", en: "/avis" },
+    "/avis/deposer": { fr: "/avis/deposer", en: "/avis/deposer" },
+    "/avis/service/[service]": { fr: "/avis/service/[service]", en: "/avis/service/[service]" },
+    "/avis/secteur/[secteur]": { fr: "/avis/secteur/[secteur]", en: "/avis/secteur/[secteur]" },
+    "/avis/ville/[ville]": { fr: "/avis/ville/[ville]", en: "/avis/ville/[ville]" },
+    "/avis/departement/[code]": {
+      fr: "/avis/departement/[code]",
+      en: "/avis/departement/[code]",
+    },
+    "/avis/[slug]": { fr: "/avis/[slug]", en: "/avis/[slug]" },
+
     "/confirmation": { fr: "/confirmation", en: "/confirmation" },
     "/desabonnement": { fr: "/desabonnement", en: "/unsubscribe" },
     "/preferences-cookies": { fr: "/preferences-cookies", en: "/cookie-preferences" },
