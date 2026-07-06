@@ -29,6 +29,8 @@ import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // Prix formation dérivé du SSOT (jamais hardcodé) — même entrée de gamme que la
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
 import { formatAmount, getTierById, INTERVENTION_TIERS } from "@/content/pricing";
+// Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
+import { FOUNDER } from "@/lib/brand";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -132,10 +134,19 @@ export default async function About({ params }: Props) {
     speakable: buildSpeakableSpecification(),
   } as const;
 
-  // FAQ AEO — Q/R factuelles citables sur l'entité Axion-IA (siège, ancienneté,
-  // périmètre). FaqBlock émet automatiquement le FAQPage JSON-LD via FaqAccordion.
+  // FAQ AEO / PAA — Q/R factuelles citables sur l'entité Axion-IA (définition,
+  // siège, ancienneté, fondateur, périmètre, délai, prix, contact). Ciblent les
+  // « People Also Ask » de marque + les AI Overviews. FaqBlock émet automatiquement
+  // le FAQPage JSON-LD via FaqAccordion. Prix/fondateur dérivés des SSOT (jamais
+  // hardcodés). Aucune allégation Qualiopi/financement ici (gatées Phase B ailleurs).
   const aboutFaq = isFr
     ? [
+        {
+          id: "definition",
+          question: "Qu'est-ce qu'Axion-IA ?",
+          answer:
+            "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle, basé en France (siège à Grenoble). Il accompagne les TPE, PME, ETI et grands comptes sur l'audit IA, la formation, l'implémentation de solutions IA en production, le coaching 1-à-1 et les sites web augmentés, avec une approche centrée sur des résultats concrets et mesurables.",
+        },
         {
           id: "siege",
           question: "Où est le siège d'Axion-IA ?",
@@ -147,6 +158,11 @@ export default async function About({ params }: Props) {
           question: "Depuis quand Axion-IA existe-t-il ?",
           answer:
             "Axion-IA a été fondé en 2026. Le cabinet a été créé en France pour la stabilité juridique et la proximité avec les entreprises françaises et européennes.",
+        },
+        {
+          id: "fondateur",
+          question: "Qui est le fondateur d'Axion-IA ?",
+          answer: `Axion-IA a été fondé par ${FOUNDER.displayName}, son fondateur et CEO. Son parcours et son domaine d'expertise — l'IA opérationnelle pour l'entreprise — sont détaillés sur sa fiche fondateur dédiée.`,
         },
         {
           id: "perimetre",
@@ -165,8 +181,20 @@ export default async function About({ params }: Props) {
           question: "Combien coûte une formation IA en entreprise ?",
           answer: `Les formations IA en entreprise démarrent à ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")} HT pour un format court sur site. Le prix varie ensuite selon la durée, la gamme et le nombre de participants. Tous les tarifs sont publics sur la page Tarifs, et le devis précis se construit après un échange sur votre contexte.`,
         },
+        {
+          id: "contact",
+          question: "Comment contacter Axion-IA ?",
+          answer:
+            "Le plus simple est de passer par la page Contact : un formulaire unique couvre les devis, audits, formations, implémentations, 1-à-1 et partenariats, avec une réponse humaine sous 48 heures ouvrées. Vous pouvez aussi réserver directement un appel de découverte.",
+        },
       ]
     : [
+        {
+          id: "definition",
+          question: "What is Axion-IA?",
+          answer:
+            "Axion-IA is an operational artificial-intelligence consultancy based in France (head office in Grenoble). It supports small businesses, SMEs, mid-caps and large accounts on AI audits, training, production AI implementation, 1-to-1 coaching and AI-augmented websites, with a focus on concrete, measurable results.",
+        },
         {
           id: "siege",
           question: "Where is Axion-IA's head office?",
@@ -178,6 +206,11 @@ export default async function About({ params }: Props) {
           question: "How long has Axion-IA existed?",
           answer:
             "Axion-IA was founded in 2026. The consultancy was created in France for legal stability and proximity to French and European companies.",
+        },
+        {
+          id: "fondateur",
+          question: "Who founded Axion-IA?",
+          answer: `Axion-IA was founded by ${FOUNDER.displayName}, its founder and CEO. His background and area of expertise — operational AI for businesses — are detailed on his dedicated founder page.`,
         },
         {
           id: "perimetre",
@@ -195,6 +228,12 @@ export default async function About({ params }: Props) {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
           answer: `Corporate AI training starts at ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en")} ex. VAT for a short on-site format. The price then varies with duration, track and number of participants. All rates are public on the Pricing page, and the precise quote is built after a call about your context.`,
+        },
+        {
+          id: "contact",
+          question: "How do I contact Axion-IA?",
+          answer:
+            "The simplest way is the Contact page: a single form covers quotes, audits, training, implementations, 1-to-1 and partnerships, with a human reply within 48 business hours. You can also book a discovery call directly.",
         },
       ];
 

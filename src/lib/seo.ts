@@ -6,7 +6,7 @@ import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 // SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
-import { FOUNDER } from "@/lib/brand";
+import { FOUNDER, BRAND } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
@@ -833,6 +833,9 @@ export function buildOrganizationJsonLd({
     description: isFr
       ? "Cabinet IA opérationnel B2B — interventions, audits et implémentation IA pour entreprises."
       : "Operational B2B AI consultancy — on-site AI sessions, audits and implementation for companies.",
+    // Slogan de marque (SSOT `BRAND`) — signal d'identité pour le Knowledge
+    // Panel + citabilité LLM (audit Knowledge Panel 2026-07-06).
+    slogan: isFr ? BRAND.sloganFr : BRAND.sloganEn,
     // Wikidata Q-number prepended si WIKIDATA_QNUMBER_AXIONIA configuré
     // (Sprint v7 Phase 10 — Knowledge Graph triangulation). Fallback safe :
     // sans env var, retombe sur les 2 sources sociales historiques.

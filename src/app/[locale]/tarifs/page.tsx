@@ -245,12 +245,16 @@ export default async function PricingPage({ params }: Props) {
   // etc. `FaqAccordion` injecte automatiquement `buildFaqJsonLd` (Speakable
   // inclus). Marqueurs `data-faq-q` / `data-faq-a` à appliquer pour Speakable
   // précis sont gérés par le composant.
+  // Tier d'entrée de gamme formation — source unique du prix ET du libellé de
+  // durée injectés dans la FAQ (jamais figés dans la prose) : si le tier change
+  // de prix ou de durée, la réponse suit (audit FAQ prix dynamique 2026-07-06).
+  const formationEntryTier = getTierById(INTERVENTION_TIERS, "intervention-4h");
   const faqItems = isFr
     ? [
         {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Une formation IA en entreprise démarre à ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")} HT pour un format court (4 h sur site). Le prix varie ensuite selon la durée (de 4 h à 3 jours et plus) et le nombre de participants ; la grille détaillée par format figure ci-dessus. Le devis précis se construit après un échange sur votre contexte.`,
+          answer: `Une formation IA en entreprise démarre à ${formatAmount(formationEntryTier.priceFlat!, "fr")} HT pour un format court (${formationEntryTier.durationFr}). Le prix varie ensuite selon la durée, le nombre de participants et le format retenu ; la grille détaillée par format figure ci-dessus. Le devis précis se construit après un échange sur votre contexte.`,
         },
         {
           id: "tarifs-publics",
@@ -278,6 +282,11 @@ export default async function PricingPage({ params }: Props) {
         },
       ]
     : [
+        {
+          id: "prix-formation-ia",
+          question: "How much does corporate AI training cost?",
+          answer: `Corporate AI training starts at ${formatAmount(formationEntryTier.priceFlat!, "en")} ex. VAT for a short on-site format (${formationEntryTier.durationEn}). The price then varies with duration, number of participants and the chosen format; the detailed grid per format is above. The precise quote is built after a call about your context.`,
+        },
         {
           id: "tarifs-publics",
           question: "Why are your prices public?",
