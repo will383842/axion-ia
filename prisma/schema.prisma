@@ -241,13 +241,6 @@ enum PublishStatus {
   archived
 }
 
-enum TestimonialStatus {
-  pending
-  published
-  refused
-  archived
-}
-
 /// Cycle de vie d'un avis client soumis via /avis/deposer.
 /// pending  = déposé, invisible partout (défaut) — attend modération admin.
 /// published = validé admin, visible + indexable.
@@ -1289,45 +1282,6 @@ model Author {
 }
 
 // ============================================================
-// 9. testimonials  (option a — champs *_fr / *_en)
-// ============================================================
-
-model Testimonial {
-  id              String            @id @default(uuid()) @db.Uuid
-  slug            String            @unique @db.VarChar(160)
-  firstName       String            @map("first_name") @db.VarChar(100)
-  lastName        String            @map("last_name") @db.VarChar(100)
-  role            String?           @db.VarChar(100)
-  company         String?           @db.VarChar(255)
-  sector          String?           @db.VarChar(100)
-  companySize     String?           @map("company_size") @db.VarChar(20)
-  // Quotes bilingues
-  shortQuoteFr    String            @map("short_quote_fr") @db.Text
-  shortQuoteEn    String            @map("short_quote_en") @db.Text
-  fullQuoteFr     String?           @map("full_quote_fr") @db.Text
-  fullQuoteEn     String?           @map("full_quote_en") @db.Text
-  rating          Int?
-  photoUrl        String?           @map("photo_url") @db.VarChar(512)
-  // Sprint AEO Phase 4 2026-05-28 (Will) — alt SEO/A11y additif pour photo
-  // témoignage client (Cf. audit images cross-site Phase 1).
-  photoAlt        String?           @map("photo_alt") @db.VarChar(255)
-  videoUrl        String?           @map("video_url") @db.VarChar(512)
-  module          ModuleKind?
-  resultHighlight String?           @map("result_highlight") @db.VarChar(255)
-  displayPages    Json?             @map("display_pages")
-  displayOrder    Int               @default(0) @map("display_order")
-  status          TestimonialStatus @default(pending)
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
-
-  caseStudies CaseStudy[]
-
-  @@index([status])
-  @@index([sector])
-  @@map("testimonials")
-}
-
-// ============================================================
 // 9b. customer_reviews (avis clients — soumission publique modérée)
 // ============================================================
 
@@ -1424,8 +1378,6 @@ model CaseStudy {
   resultsQuantified Json          @map("results_quantified")
   durationWeeks     Int?          @map("duration_weeks")
   roiWeeks          Int?          @map("roi_weeks")
-  testimonialId     String?       @map("testimonial_id") @db.Uuid
-  testimonial       Testimonial?  @relation(fields: [testimonialId], references: [id], onDelete: SetNull)
   status            PublishStatus @default(draft)
   publishedAt       DateTime?     @map("published_at")
   createdAt         DateTime      @default(now()) @map("created_at")
@@ -7724,11 +7676,11 @@ model ProspectionCompany {
   createdAt                DateTime                         @default(now()) @map("created_at")
   updatedAt                DateTime                         @updatedAt @map("updated_at")
 
-  establishments     ProspectionEstablishment[]
-  persons            ProspectionPerson[]
-  contacts           ProspectionContact[]
-  tags               ProspectionCompanyTag[]
-  events             ProspectionEvent[]
+  establishments      ProspectionEstablishment[]
+  persons             ProspectionPerson[]
+  contacts            ProspectionContact[]
+  tags                ProspectionCompanyTag[]
+  events              ProspectionEvent[]
   healthPractitioners ProspectionHealthPractitioner[] @relation("CompanyPractitioners")
 
   @@index([departement, taille])

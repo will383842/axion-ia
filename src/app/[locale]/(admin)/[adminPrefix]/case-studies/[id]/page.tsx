@@ -2,10 +2,7 @@
 
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  getCaseStudyDetailAction,
-  listCandidateTestimonialsAction,
-} from "@/features/admin-case-studies/actions";
+import { getCaseStudyDetailAction } from "@/features/admin-case-studies/actions";
 import { CaseStudyEditV2 } from "./_v2/CaseStudyEditV2";
 
 export const dynamic = "force-dynamic";
@@ -19,10 +16,7 @@ export default async function EditCaseStudyPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const [cs, testimonials] = await Promise.all([
-    getCaseStudyDetailAction(id),
-    listCandidateTestimonialsAction(),
-  ]);
+  const cs = await getCaseStudyDetailAction(id);
   if (!cs) notFound();
 
   const fr = cs.translations.find((t) => t.locale === "fr");
@@ -42,7 +36,6 @@ export default async function EditCaseStudyPage({ params }: PageProps) {
       }>) ?? [],
     durationWeeks: cs.durationWeeks,
     roiWeeks: cs.roiWeeks,
-    testimonialId: cs.testimonialId,
     status: cs.status,
     publishedAt: cs.publishedAt,
     fr: {
@@ -66,7 +59,6 @@ export default async function EditCaseStudyPage({ params }: PageProps) {
   return (
     <CaseStudyEditV2
       adminPrefix={adminPrefix}
-      testimonials={testimonials}
       initial={initialPayload}
       title={fr?.title ?? "(sans titre)"}
       updatedAtIso={cs.updatedAt.toISOString().slice(0, 10)}

@@ -10,14 +10,6 @@ import {
 } from "@/components/admin/ui";
 import { CaseStudyForm } from "../../CaseStudyForm";
 
-interface TestimonialOption {
-  id: string;
-  slug: string;
-  firstName: string;
-  lastName: string;
-  company: string | null;
-}
-
 interface TranslationInitial {
   title: string;
   slug: string;
@@ -36,7 +28,6 @@ interface Initial {
   resultsQuantified: Array<{ label: string; value: string | number; unit?: string }>;
   durationWeeks: number | null;
   roiWeeks: number | null;
-  testimonialId: string | null;
   status: string;
   publishedAt: Date | null;
   fr: TranslationInitial;
@@ -45,7 +36,6 @@ interface Initial {
 
 interface Props {
   adminPrefix: string;
-  testimonials: ReadonlyArray<TestimonialOption>;
   initial: Initial;
   title: string;
   updatedAtIso: string;
@@ -53,7 +43,6 @@ interface Props {
 
 export function CaseStudyEditV2({
   adminPrefix,
-  testimonials,
   initial,
   title,
   updatedAtIso,
@@ -73,7 +62,7 @@ export function CaseStudyEditV2({
         }
       />
       <AdminCard>
-        <CaseStudyForm testimonials={testimonials} initial={initial} />
+        <CaseStudyForm initial={initial} />
       </AdminCard>
     </AdminPageShell>
   );

@@ -10,14 +10,6 @@ import { TiptapEditor } from "@/components/admin/TiptapEditor";
 
 const init: UpsertCaseStudyState = { ok: false, error: "" };
 
-interface TestimonialOption {
-  id: string;
-  slug: string;
-  firstName: string;
-  lastName: string;
-  company: string | null;
-}
-
 interface TranslationInitial {
   title: string;
   slug: string;
@@ -36,7 +28,6 @@ interface Initial {
   resultsQuantified: Array<{ label: string; value: string | number; unit?: string }>;
   durationWeeks: number | null;
   roiWeeks: number | null;
-  testimonialId: string | null;
   status: string;
   publishedAt: Date | null;
   fr: TranslationInitial;
@@ -44,13 +35,12 @@ interface Initial {
 }
 
 interface Props {
-  testimonials: ReadonlyArray<TestimonialOption>;
   initial?: Initial;
 }
 
 const ALL_MODULES = ["intervention", "implementation", "audit"] as const;
 
-export function CaseStudyForm({ testimonials, initial }: Props) {
+export function CaseStudyForm({ initial }: Props) {
   const [state, formAction, pending] = useActionState(upsertCaseStudyAction, init);
   const [activeLocale, setActiveLocale] = useState<"fr" | "en">("fr");
   const [modules, setModules] = useState<Set<string>>(new Set(initial?.modulesUsed ?? []));
@@ -103,25 +93,6 @@ export function CaseStudyForm({ testimonials, initial }: Props) {
             className="admin-input"
             disabled={pending}
           />
-        </div>
-        <div className="admin-field">
-          <label htmlFor="testimonialId" className="admin-label">
-            Témoignage lié
-          </label>
-          <select
-            id="testimonialId"
-            name="testimonialId"
-            defaultValue={initial?.testimonialId ?? ""}
-            className="admin-input"
-            disabled={pending}
-          >
-            <option value="">— (aucun)</option>
-            {testimonials.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.firstName} {t.lastName} {t.company ? `(${t.company})` : ""}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 

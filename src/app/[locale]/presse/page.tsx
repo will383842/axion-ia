@@ -41,7 +41,6 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { getRealTestimonialsOnly } from "@/server/actions/content-gen/real-testimonials";
 import { Link } from "@/i18n/navigation";
 import { readLatestSnapshot } from "@/server/observatoire/snapshot";
 import {
@@ -112,12 +111,6 @@ export default async function PressePage({ params, searchParams }: Props) {
   const activeSector = sectorOptions.some((o) => o.value === sectorRaw) ? sectorRaw : "";
   const activeAudience = audienceRaw === "GENERAL" || audienceRaw === "FOUNDER" ? audienceRaw : "";
   const hasActiveFilter = Boolean(activeRegion || activeSector || activeAudience);
-
-  // Sprint v7 Phase 15 (F5) — consumer real testimonials.
-  // Section invisible si aucun real testimonial (return null plus bas).
-  // Build-time stub-aware : `getRealTestimonialsOnly` retourne [] si
-  // DATABASE_URL=stub.invalid (cf. `real-testimonials.ts`).
-  const realTestimonials = await getRealTestimonialsOnly();
 
   // Observatoire IA 2026 — snapshot avec fallback honnête (pas de faux chiffre
   // si l'enquête n'a pas encore d'échantillon ; build/stub → null).
@@ -659,55 +652,6 @@ export default async function PressePage({ params, searchParams }: Props) {
           formAction={`/${loc}${pressPath}#communiques`}
         />
       </Section>
-
-      {/* TÉMOIGNAGES VÉRIFIÉS (Sprint v7 Phase 15 / F5) — section invisible
-          si aucun real testimonial n'a été marqué côté admin. Affiche
-          uniquement les testimonials avec source vérifiable + consentement
-          RGPD documenté (cf. `markAsRealTestimonial`). */}
-      {realTestimonials.length > 0 ? (
-        <Section
-          id="temoignages-verifies"
-          tone="paper"
-          title={isFr ? "Témoignages vérifiés" : "Verified testimonials"}
-          description={
-            isFr
-              ? "Témoignages clients dont la source est identifiable et le consentement RGPD documenté."
-              : "Client testimonials with identifiable source and documented GDPR consent."
-          }
-        >
-          <Container>
-            <ul className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
-              {realTestimonials.map((rt) => (
-                <li key={rt.id} className="border-border bg-canvas rounded-lg border p-6 shadow-sm">
-                  <blockquote className="text-fg text-base leading-relaxed">
-                    “{rt.shortQuoteFr}”
-                  </blockquote>
-                  <footer className="text-fg-soft mt-4 text-sm">
-                    <div className="font-medium">
-                      {rt.firstName} {rt.lastName}
-                    </div>
-                    {rt.role || rt.company ? (
-                      <div>
-                        {rt.role ?? ""}
-                        {rt.role && rt.company ? " · " : ""}
-                        {rt.company ?? ""}
-                      </div>
-                    ) : null}
-                    <a
-                      href={rt.realMeta.source}
-                      target="_blank"
-                      rel="noopener nofollow"
-                      className="text-terracotta mt-2 inline-block underline"
-                    >
-                      {isFr ? "Source vérifiable →" : "Verifiable source →"}
-                    </a>
-                  </footer>
-                </li>
-              ))}
-            </ul>
-          </Container>
-        </Section>
-      ) : null}
 
       {/* COUVERTURE MÉDIAS — section ENTIÈREMENT masquée tant qu'aucune retombée
           n'est publiée depuis la console admin (décision Will 2026-06-23 :
