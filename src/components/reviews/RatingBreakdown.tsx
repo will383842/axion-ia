@@ -8,8 +8,9 @@ export function RatingBreakdown({ agg }: { agg: AggregateRatingData }) {
   return (
     <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
       <div className="text-center sm:text-left">
-        <p className="font-serif text-5xl font-semibold tabular-nums">
+        <p className="text-terracotta font-serif text-6xl font-bold tabular-nums">
           {agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}
+          <span className="text-fg-muted text-2xl font-normal">/5</span>
         </p>
         <StarRating
           value={agg.ratingValue}
@@ -26,10 +27,10 @@ export function RatingBreakdown({ agg }: { agg: AggregateRatingData }) {
           const pct = Math.round((n / total) * 100);
           return (
             <li key={star} className="flex items-center gap-3 text-sm">
-              <span className="text-fg-muted w-10 shrink-0 tabular-nums">{star} ★</span>
-              <span className="bg-sand relative h-2.5 flex-1 overflow-hidden rounded-full">
+              <span className="text-fg w-10 shrink-0 font-medium tabular-nums">{star} ★</span>
+              <span className="bg-sand-deep relative h-3 flex-1 overflow-hidden rounded-full">
                 <span
-                  className="bg-terracotta absolute inset-y-0 left-0 rounded-full"
+                  className="from-terracotta to-terracotta-deep absolute inset-y-0 left-0 rounded-full bg-gradient-to-r"
                   style={{ width: `${pct}%` }}
                 />
               </span>
