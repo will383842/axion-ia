@@ -19,14 +19,33 @@ import { pingIndexNow } from "@/lib/indexnow";
 import { readCv, deleteCv } from "@/server/careers/cv-storage";
 import { storeReviewPhotoPublic, deleteReviewPhotoPublic } from "@/server/reviews/photo-storage";
 import { getServiceLine } from "@/lib/reviews/service-lines";
-import {
-  requireAdmin,
-  requireSuperAdmin,
-  type AdminSession,
-} from "@/server/actions/content-gen/_auth";
+import { auth } from "@/auth";
 import type { Prisma, CustomerReviewStatus } from "../../../prisma/generated/client";
 
 export type AdminReviewActionState = { ok: true } | { ok: false; error: string };
+
+// Guard auth local (pas d'import cross-domaine) : rôles admin autorisés en écriture.
+interface AdminSession {
+  readonly userId: string;
+  readonly email: string;
+  readonly role: string;
+}
+
+async function requireAdmin(): Promise<AdminSession> {
+  const session = await auth();
+  if (!session?.user?.id || !session.user.email) throw new Error("unauthorized");
+  const role = (session.user as { role?: string }).role ?? "reader";
+  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+    throw new Error("forbidden");
+  }
+  return { userId: session.user.id, email: session.user.email, role };
+}
+
+async function requireSuperAdmin(): Promise<AdminSession> {
+  const session = await requireAdmin();
+  if (session.role !== "super_admin") throw new Error("forbidden");
+  return session;
+}
 
 const ADMIN_SELECT = {
   id: true,
