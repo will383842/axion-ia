@@ -248,6 +248,20 @@ export async function GET(): Promise<Response> {
     blogEmittableCount = 0;
   }
 
+  // Presse DB-aware (fix 2026-07-06) — les communiqués sont admin-only/DB (le
+  // fallback fixtures a été retiré du rendu, cf. `server/press/queries.ts`). Le
+  // builder `presse` lit désormais la DB → vide tant qu'aucun communiqué n'est
+  // publié en console (état actuel prod). Même gating anti-vide que blog/KB : on
+  // ne liste `/sitemap/presse.xml` que s'il émet ≥ 1 URL, sinon Google lirait un
+  // `<urlset>` vide (« Balise XML manquante : url »). Réapparaît automatiquement
+  // dès qu'un communiqué est publié. Fail-soft (jamais 500 l'index).
+  let presseEmittableCount = 0;
+  try {
+    presseEmittableCount = (await sitemap({ id: Promise.resolve("presse") })).length;
+  } catch {
+    presseEmittableCount = 0;
+  }
+
   // News (Google News, fenêtre 48h) + news-evergreen (90j) — vides en creux d'actu.
   // Même gating anti-vide que KB/blog : on ne les liste que s'ils émettent ≥ 1 URL,
   // sinon Google lit un `<urlset>` vide et le flagge « Balise XML manquante : url »
@@ -276,13 +290,17 @@ export async function GET(): Promise<Response> {
     return true;
   });
 
-  const generatedBlocks = sitemaps.map(({ id }) => {
-    const lm = lastmodForGeneratedId(id, lastmods);
-    return `  <sitemap>
+  const generatedBlocks = sitemaps
+    // Gate anti-vide du sous-sitemap `presse` (DB-driven, vide tant qu'aucun
+    // communiqué n'est publié en console) — cf. `presseEmittableCount` ci-dessus.
+    .filter(({ id }) => id !== "presse" || presseEmittableCount > 0)
+    .map(({ id }) => {
+      const lm = lastmodForGeneratedId(id, lastmods);
+      return `  <sitemap>
     <loc>${SITE_URL}/sitemap/${id}.xml</loc>
     <lastmod>${lm}</lastmod>
   </sitemap>`;
-  });
+    });
 
   const customBlocks = customSitemaps.map((path) => {
     // sitemap-news.xml           → max(updatedAt) Article isNews

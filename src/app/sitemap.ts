@@ -3,7 +3,10 @@ import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { DB_BLOG_CATEGORY_SLUGS } from "@/server/content-gen/blog/category-loader";
-import { isRoutableArticleSlug } from "@/server/content-gen/blog/resolve-article-route";
+import {
+  isRoutableArticleSlug,
+  resolveArticleRoute,
+} from "@/server/content-gen/blog/resolve-article-route";
 import { getAllSlugs as getAllCaseStudySlugs, getAllIndustrySlugs } from "@/content/case-studies";
 import {
   getAllBlogCategorySlugs,
@@ -36,10 +39,15 @@ import { prisma } from "@/lib/prisma";
 import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossary-extension";
 // Sprint S+4-B 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) — pages détail outils.
 import { getAllStackToolSlugs } from "@/content/stack-ia-details";
-// Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — sub-sitemap dédié
-// communiqués de presse (`/presse/[slug]` × N locales). Source = PRESS_RELEASES
-// (fixtures éditoriales `src/content/press.ts`, lastmod = `publishedAt`).
-import { PRESS_RELEASES } from "@/content/press";
+// Fix sitemap 2026-07-06 — `buildPresseSitemap` lit désormais la DB (communiqués
+// publiés en console admin), la MÊME source que la page `/presse/[slug]`. Avant :
+// lecture des fixtures `PRESS_RELEASES` (3 slugs figés) alors que le fallback
+// fixtures a été RETIRÉ du rendu des pages (admin-only, décision Will 2026-06-23,
+// cf. `server/press/queries.ts`) → le sitemap annonçait 3 URLs qui 404-aient.
+// `buildBlogSitemap` route désormais les guides (`guide-…`) vers `/guides/[slug]`
+// (leur URL canonique) au lieu de `/blog/guide-…` qui 308-redirige (miroir du
+// redirect réel dans `blog/[slug]/page.tsx` via `resolveArticleRoute`, importé
+// plus haut avec `isRoutableArticleSlug`).
 // Catalogue Formations V2 (Qualiopi déploiement phasé) — sub-sitemap dédié, GATÉ
 // par le flag OF_PUBLIC_DISCLOSURE_ENABLED. Tant que l'agrément OF n'est pas
 // obtenu (Phase A), AUCUNE URL formation ne doit fuiter dans le sitemap public
@@ -180,11 +188,16 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // et glossaire.xml. On retire de pages.xml — il reste émis depuis glossaire.xml
   // (sub-sitemap dédié : hub + 60 termes) où il est canonique.
   "/glossaire",
-  // Refonte /formations 2026-06-11 — les anciennes routes collectives
-  // /interventions/* sont 301-redirigées vers /formations (next.config). Leurs
-  // `pathnames` ont été RETIRÉS de routing.ts (2026-06-12), donc elles ne peuvent
-  // plus apparaître dans le sitemap : plus besoin de les exclure ici. Les 301
-  // (next.config.ts) continuent de porter le SEO.
+  // Refonte /formations 2026-06-11 — l'ancienne offre collective /interventions
+  // est 301/308-redirigée vers /formations (next.config `source: /interventions`).
+  // ⚠️ Fix 2026-07-06 : la CLÉ DE BASE `/interventions` est TOUJOURS déclarée dans
+  // routing.ts (l.41) → elle réapparaissait dans pages.xml en 308 vers /formations
+  // (URL redirigée annoncée = crawl-budget gaspillé + bucket « Page avec redirection »
+  // GSC). On l'exclut. Les SOUS-routes 1-to-1 (`/interventions/{demande,individuel,
+  // dirigeants,coaching-decouverte,dirigeant-vision-strategique}`) sont de VRAIES
+  // pages 200 (clés distinctes) → NON impactées par cette exclusion, elles restent
+  // dans le sitemap. `/formations` (clé propre) reste émise normalement.
+  "/interventions",
   // Audit "page vide / noindexed in sitemap" 2026-06-15 — `/carrieres/widget`
   // (embed iframe, robots:noindex,nofollow) et `/carrieres/widget-builder`
   // (outil de configuration, robots:noindex) sont émis tels quels dans
@@ -205,6 +218,16 @@ function localizedHref(key: PathnameKey, locale: (typeof routing.locales)[number
   return (def as Record<string, string>)[locale] ?? (def as Record<string, string>).fr ?? key;
 }
 
+// URL absolue d'une page localisée. Normalise le href racine ("/" → "") pour NE
+// PAS émettre `${SITE_URL}/fr/` (slash final) : Next 16 redirige `/fr/` → `/fr`
+// (308), donc l'ancienne construction annonçait la home en URL redirigée dans
+// pages.xml ET dans les hreflang alternates (fix 2026-07-06). Toutes les autres
+// clés ont un href déjà préfixé `/…` sans slash final → comportement inchangé.
+function localeUrl(key: PathnameKey, locale: (typeof routing.locales)[number]): string {
+  const href = localizedHref(key, locale);
+  return `${SITE_URL}/${locale}${href === "/" ? "" : href}`;
+}
+
 // EN locale désactivé (2026-05-16) → on filtre les EN URLs hors du sitemap
 // pour ne pas dépenser de crawl budget Google sur des 301s. Quand EN sera
 // réactivé (EN_LOCALE_ENABLED=true), les URLs EN reviennent automatiquement.
@@ -218,11 +241,11 @@ function alternateLanguages(
   key: PathnameKey,
 ): Record<(typeof routing.locales)[number] | "x-default", string> {
   const map = Object.fromEntries(
-    effectiveLocales.map((alt) => [alt, `${SITE_URL}/${alt}${localizedHref(key, alt)}`]),
+    effectiveLocales.map((alt) => [alt, localeUrl(key, alt)]),
   ) as Record<(typeof routing.locales)[number], string>;
   return {
     ...map,
-    "x-default": `${SITE_URL}/${routing.defaultLocale}${localizedHref(key, routing.defaultLocale)}`,
+    "x-default": localeUrl(key, routing.defaultLocale),
   };
 }
 
@@ -485,7 +508,7 @@ export default async function sitemap(props: {
     case "glossaire":
       return filterEnIfDisabled(buildGlossarySitemap(EDITORIAL_BASELINE));
     case "presse":
-      return filterEnIfDisabled(buildPresseSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(await buildPresseSitemap(EDITORIAL_BASELINE));
     case "implementation":
       return filterEnIfDisabled(buildImplementationSitemap(EDITORIAL_BASELINE));
     case "implantations":
@@ -602,7 +625,7 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
     if (key === "/financement-opco-france-travail" && !isQualiopiPublicDisclosureEnabled())
       continue;
     for (const locale of effectiveLocales) {
-      const url = `${SITE_URL}/${locale}${localizedHref(key, locale)}`;
+      const url = localeUrl(key, locale);
       entries.push({
         url,
         lastModified: now,
@@ -646,7 +669,12 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
   const fsSlugs = new Set(fsIndexable.map((p) => p.slug));
   const datesBySlug = new Map<string, string>(fsIndexable.map((p) => [p.slug, p.publishedAt]));
 
-  let dbArticles: Array<{ slug: string; updatedAt: Date | null; publishedAt: Date | null }> = [];
+  let dbArticles: Array<{
+    slug: string;
+    updatedAt: Date | null;
+    publishedAt: Date | null;
+    templateVariant: string | null;
+  }> = [];
   try {
     const rows = await prisma.article.findMany({
       where: {
@@ -657,6 +685,9 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
       select: {
         publishedAt: true,
         updatedAt: true,
+        // `templateVariant` requis pour router les guides vers `/guides/:slug`
+        // (fix 2026-07-06, cf. `resolveArticleRoute` — SSOT du redirect canonique).
+        templateVariant: true,
         translations: { where: { locale: "fr" }, take: 1, select: { slug: true } },
       },
       take: BLOG_SITEMAP_MAX_URLS,
@@ -669,9 +700,23 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
         // 2-segments qui 404 → ne JAMAIS l'exposer au sitemap (sinon « indexation
         // refusée » côté GSC). Cf. isRoutableArticleSlug.
         if (!isRoutableArticleSlug(t.slug)) return null;
-        return { slug: t.slug, updatedAt: r.updatedAt, publishedAt: r.publishedAt };
+        return {
+          slug: t.slug,
+          updatedAt: r.updatedAt,
+          publishedAt: r.publishedAt,
+          templateVariant: r.templateVariant,
+        };
       })
-      .filter((r): r is { slug: string; updatedAt: Date; publishedAt: Date | null } => r !== null);
+      .filter(
+        (
+          r,
+        ): r is {
+          slug: string;
+          updatedAt: Date;
+          publishedAt: Date | null;
+          templateVariant: string | null;
+        } => r !== null,
+      );
     // P3 (2026-06-21) — alerte AVANT le plafond Google (50k) : prévoir le chunking
     // runtime dédié quand on approche. `take` plafonne déjà à 45k, donc si on
     // atteint ce seuil, des articles commencent à être tronqués du sitemap.
@@ -695,6 +740,27 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
 
   const indexableSlugs = Array.from(datesBySlug.keys());
 
+  // Fix 2026-07-06 — router chaque slug vers sa route CANONIQUE (blog vs guides)
+  // via `resolveArticleRoute` (miroir EXACT du redirect réel `blog/[slug]/page.tsx`
+  // + `guides/loader.ts`). AVANT : tous les slugs étaient émis sous `/blog/:slug`,
+  // donc les guides piliers (slug `guide-…` OU templateVariant « guide ») étaient
+  // annoncés en `/blog/guide-…` qui 308-redirige vers `/guides/guide-…` → URL
+  // redirigée dans le sitemap + guides ABSENTS de leur URL canonique. On sépare.
+  // (Les FS posts n'ont pas de `templateVariant` → routés par slug = /blog sauf
+  //  slug `guide-` ; `isNews:false` garanti par le `where` DB ci-dessus.)
+  const templateVariantBySlug = new Map<string, string | null>();
+  for (const a of dbArticles) templateVariantBySlug.set(a.slug, a.templateVariant);
+  const blogSlugs: string[] = [];
+  const guideSlugs: string[] = [];
+  for (const slug of indexableSlugs) {
+    const route = resolveArticleRoute({
+      isNews: false,
+      slug,
+      templateVariant: templateVariantBySlug.get(slug) ?? null,
+    });
+    (route === "guides" ? guideSlugs : blogSlugs).push(slug);
+  }
+
   // Catégories content-gen (DB-driven) ayant >=1 article publié non-news.
   // Audit e2e 2026-06-17 : les 5 hubs /blog/categorie/blog-* (générés par
   // generateStaticParams) n'étaient pas découvrables via le sitemap (seules les
@@ -717,9 +783,19 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
     [
       {
         fr: "/blog/:slug",
-        slugs: indexableSlugs,
+        slugs: blogSlugs,
         changeFrequency: "monthly",
         priority: 0.5,
+        lastModFor: (slug) => datesBySlug.get(slug) ?? now,
+      },
+      {
+        // Guides piliers — URL canonique `/guides/:slug` (cf. resolveArticleRoute).
+        // Émis ici (et plus sous `/blog/guide-…` qui 308-redirige) pour rester
+        // découvrables via le sitemap-blog sans URL redirigée (fix 2026-07-06).
+        fr: "/guides/:slug",
+        slugs: guideSlugs,
+        changeFrequency: "monthly",
+        priority: 0.6,
         lastModFor: (slug) => datesBySlug.get(slug) ?? now,
       },
       {
@@ -1015,10 +1091,15 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
  * Contient les pages détail communiqués `/presse/[slug]` × locales effectives.
  * Le hub `/presse` est déjà émis via `pages.xml` (mapping statique `routing.pathnames`).
  *
- * Source de vérité = `PRESS_RELEASES` (fixtures éditoriales TS). `lastModified`
- * = `publishedAt` réel (ISO `YYYY-MM-DD`) → signal de fraîcheur honnête pour
- * Google Discover + Top Stories + AI Overviews citations. Pas de DB-aware
- * V1 (les communiqués sont curated humain, faible volume ~3-30 en V1+V2).
+ * Source de vérité = la DB (communiqués publiés en console admin), la MÊME que la
+ * page `/presse/[slug]` (`getPressReleaseBySlug` → `notFound()` si absent). Fix
+ * 2026-07-06 : avant, ce builder lisait les fixtures `PRESS_RELEASES` (3 slugs)
+ * alors que le fallback fixtures a été RETIRÉ du rendu (admin-only, décision Will
+ * 2026-06-23) → le sitemap annonçait 3 URLs qui 404-aient. `lastModified` =
+ * `publishedAt` réel (signal de fraîcheur honnête). Stub-safe : au build
+ * `stub.invalid` la query renvoie `[]` → sitemap presse vide → GATÉ hors de
+ * `sitemap-index.xml` (cf. `presseEmittableCount`, pattern anti-vide KB/blog) ;
+ * l'ISR runtime le repeuple dès qu'un communiqué est publié en console.
  *
  * Priority 0.7 — entre les pages stratégiques (0.8) et le contenu éditorial
  * récurrent (0.5). Un communiqué annonce un événement précis (lancement,
@@ -1030,16 +1111,41 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
  * canoniques typés `lancement-plateforme-axion-ia-2026` non traduits — la
  * traduction est dans le titre + body, pas l'URL).
  */
-function buildPresseSitemap(_now: Date): MetadataRoute.Sitemap {
+async function buildPresseSitemap(_now: Date): Promise<MetadataRoute.Sitemap> {
+  // DB-driven (même source que la page). Slug par locale via la translation
+  // correspondante (FR canonique requis, EN miroir si présent + EN activé).
+  // try/catch défensif : une table absente / DB down ne doit jamais casser le
+  // sitemap → `[]` (le gate anti-vide de l'index retire alors presse.xml).
+  let rows: Array<{
+    publishedAt: Date | null;
+    createdAt: Date;
+    translations: Array<{ locale: string; slug: string }>;
+  }> = [];
+  try {
+    rows = await prisma.pressRelease.findMany({
+      where: { status: "published", deletedAt: null },
+      orderBy: [{ sortOrder: "asc" }, { publishedAt: "desc" }],
+      select: {
+        publishedAt: true,
+        createdAt: true,
+        translations: { select: { locale: true, slug: true } },
+      },
+    });
+  } catch {
+    rows = [];
+  }
+
   const entries: MetadataRoute.Sitemap = [];
-  for (const release of PRESS_RELEASES) {
-    const slug = release.slug;
-    // ISO date string accepté tel quel par MetadataRoute.Sitemap (Next 16
-    // sérialise en lastmod ISO 8601). `publishedAt` est `YYYY-MM-DD`.
-    const lastMod = release.publishedAt;
-    const frUrl = `${SITE_URL}/fr/presse/${slug}`;
-    const enUrl = `${SITE_URL}/en/press/${slug}`;
-    const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
+  for (const row of rows) {
+    const fr = row.translations.find((t) => t.locale === "fr");
+    if (!fr) continue; // FR canonique requis (doctrine content-gen)
+    const en = row.translations.find((t) => t.locale === "en");
+    // `publishedAt` peut être null (brouillon promu) → fallback createdAt.
+    const lastMod = (row.publishedAt ?? row.createdAt).toISOString().slice(0, 10);
+    const frUrl = `${SITE_URL}/fr/presse/${fr.slug}`;
+    const enUrl = en ? `${SITE_URL}/en/press/${en.slug}` : undefined;
+    const langs: Record<string, string> = { fr: frUrl, "x-default": frUrl };
+    if (enUrl) langs.en = enUrl;
     entries.push({
       url: frUrl,
       lastModified: lastMod,
@@ -1047,7 +1153,7 @@ function buildPresseSitemap(_now: Date): MetadataRoute.Sitemap {
       priority: 0.7,
       alternates: { languages: langs },
     });
-    if (!EN_LOCALE_DISABLED) {
+    if (!EN_LOCALE_DISABLED && enUrl) {
       entries.push({
         url: enUrl,
         lastModified: lastMod,
