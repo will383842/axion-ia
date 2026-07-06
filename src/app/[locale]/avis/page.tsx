@@ -16,16 +16,42 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { PenLine } from "lucide-react";
+import Image from "next/image";
+import type { LucideIcon } from "lucide-react";
+import {
+  PenLine,
+  Star,
+  MapPin,
+  ShieldCheck,
+  BadgeCheck,
+  Search,
+  GraduationCap,
+  Rocket,
+  UserRound,
+  Globe,
+  Calculator,
+  Building2,
+  UtensilsCrossed,
+  Stethoscope,
+  Scale,
+  ShoppingBag,
+  Factory,
+  Wrench,
+  Users,
+  Landmark,
+} from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
-import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { FaqBlock } from "@/components/sections/FaqBlock";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
+import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
+import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -83,7 +109,42 @@ const FAQ_ITEMS = [
     answer:
       "Rendez-vous sur la page « Déposer un avis », attribuez une note, décrivez votre expérience (contexte, résultats) et validez. Votre avis sera publié après vérification.",
   },
+  {
+    id: "photo",
+    question: "Peut-on ajouter une photo à son avis client ?",
+    answer:
+      "Oui, c'est optionnel : vous pouvez joindre un portrait ou un logo d'entreprise au moment du dépôt. Sans photo, un avatar de marque est généré automatiquement. Seules les données que vous consentez à publier sont affichées.",
+  },
+  {
+    id: "partout",
+    question: "Axion-IA a-t-il des avis clients partout en France ?",
+    answer:
+      "Oui. Nos clients sont répartis dans toute la France — Grenoble, Lyon, Paris, Bordeaux, Marseille, Toulouse et bien d'autres. Vous pouvez filtrer les avis par ville, département, secteur d'activité ou service.",
+  },
 ];
+
+/** Icône lucide par service (facette « par service »). */
+const SERVICE_ICONS: Record<string, LucideIcon> = {
+  audits: Search,
+  interventions_formations: GraduationCap,
+  implementations: Rocket,
+  un_a_un: UserRound,
+  sites_web_augmentes: Globe,
+};
+
+/** Icône lucide par secteur client (facette « par secteur »). */
+const SECTOR_ICONS: Record<string, LucideIcon> = {
+  comptabilite_finance: Calculator,
+  btp_immobilier: Building2,
+  restauration_hotellerie: UtensilsCrossed,
+  sante_medecine: Stethoscope,
+  juridique: Scale,
+  commerce_retail: ShoppingBag,
+  industrie_logistique: Factory,
+  artisanat_services: Wrench,
+  rh_recrutement: Users,
+  collectivites_public: Landmark,
+};
 
 function toFilters(sp: Record<string, string | undefined>): {
   filters: ReviewFilters;
@@ -206,6 +267,24 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
     query: p > 1 ? { ...baseQuery, page: String(p) } : baseQuery,
   });
 
+  // Section Qualiopi/financement : composants auto-gatés Phase B ; on ne rend la
+  // Section entière que si la divulgation OF est activée (évite une section vide).
+  const disclosureEnabled = isQualiopiPublicDisclosureEnabled();
+
+  const heroMedia = (
+    <figure className="shadow-card m-0 overflow-hidden rounded-2xl">
+      <Image
+        src="/images/axion-ia-resultats-clients-temoignages-cas-concrets-pme-carre.avif"
+        alt="Témoignages et cas concrets de clients PME accompagnés par Axion-IA en France"
+        width={1200}
+        height={1200}
+        priority
+        sizes="(max-width: 1024px) 100vw, 44vw"
+        className="h-auto w-full object-cover"
+      />
+    </figure>
+  );
+
   return (
     <>
       <JsonLd data={collectionJsonLd} />
@@ -220,10 +299,15 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
         titleAs="h1"
         tone="halo-warm"
         description="Des retours d'expérience réels et vérifiés sur nos interventions IA — audits, formations, implémentations et accompagnements, partout en France."
+        media={heroMedia}
       >
         <Breadcrumbs items={[{ href: "/avis", label: "Avis clients" }]} />
         <div className="mt-6 max-w-2xl">
-          <AnswerCard question="Axion-IA a-t-il de bons avis clients ?">
+          <AnswerCard
+            question="Axion-IA a-t-il de bons avis clients ?"
+            locale="fr"
+            {...(agg ? { sourceLabel: `Moyenne sur ${agg.reviewCount} avis vérifiés` } : {})}
+          >
             {agg
               ? `Axion-IA affiche une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis clients vérifiés. Chaque avis est contrôlé manuellement avant publication ; les avis positifs comme négatifs sont publiés.`
               : "Axion-IA publie les avis de ses clients après vérification manuelle de leur authenticité. Les avis positifs comme négatifs sont publiés, conformément à la réglementation."}
@@ -242,21 +326,30 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
         <div className="grid gap-6 md:grid-cols-3">
           {[
             {
+              icon: BadgeCheck,
               t: "Avis 100 % vérifiés",
               d: "Chaque avis est contrôlé manuellement (authenticité, cohérence) avant publication.",
             },
             {
+              icon: ShieldCheck,
               t: "Positifs ET négatifs",
               d: "Nous publions tous les avis authentiques. La modération n'écarte que les faux avis ou contenus illégaux.",
             },
             {
+              icon: Scale,
               t: "Conforme & RGPD",
               d: "Directive Omnibus / DGCCRF. Seuls le prénom, l'initiale et les données consenties sont affichés.",
             },
           ].map((x) => (
-            <div key={x.t} className="border-border rounded-xl border p-5">
+            <div
+              key={x.t}
+              className="border-border bg-canvas shadow-subtle flex h-full flex-col gap-3 rounded-2xl border p-6"
+            >
+              <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                <x.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
               <p className="text-fg font-semibold">{x.t}</p>
-              <p className="text-fg-soft mt-1 text-sm">{x.d}</p>
+              <p className="text-fg-soft text-sm leading-relaxed">{x.d}</p>
             </div>
           ))}
         </div>
@@ -326,82 +419,151 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
         )}
       </Section>
 
-      {/* 7. Avis par service */}
+      {/* 7. Avis par service — nos prestations notées */}
       {topServices.length > 0 ? (
-        <Section tone="paper" eyebrow="Par service" title="Avis par" titleEm="service">
-          <ul className="grid list-none gap-4 p-0 md:grid-cols-2 lg:grid-cols-3">
-            {topServices.map((f) => (
-              <li key={f.key}>
-                <Link
-                  href={{ pathname: "/avis/service/[service]", params: { service: f.key } }}
-                  className="border-border hover:border-terracotta flex items-center justify-between rounded-xl border p-4"
-                >
-                  <span>{serviceLineLabel(f.key)}</span>
-                  <span className="text-fg-muted text-sm">{f.count} avis →</span>
-                </Link>
-              </li>
-            ))}
+        <Section
+          tone="paper"
+          eyebrow="Par service"
+          title="Nos prestations"
+          titleEm="notées par nos clients"
+          description="Retrouvez les retours d'expérience pour chacune de nos interventions IA."
+        >
+          <ul className="grid list-none gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
+            {topServices.map((f) => {
+              const Icon = SERVICE_ICONS[f.key] ?? Star;
+              return (
+                <li key={f.key}>
+                  <Link
+                    href={{ pathname: "/avis/service/[service]", params: { service: f.key } }}
+                    className="border-border bg-canvas shadow-subtle hover:shadow-elevated flex h-full flex-col gap-3 rounded-2xl border p-6 transition hover:-translate-y-0.5"
+                  >
+                    <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                      <Icon aria-hidden="true" className="h-5 w-5" />
+                    </span>
+                    <span className="text-fg text-lg font-semibold tracking-tight">
+                      {serviceLineLabel(f.key)}
+                    </span>
+                    <span className="text-terracotta mt-auto text-sm font-medium">
+                      {f.count} avis →
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </Section>
       ) : null}
 
-      {/* 8. Couverture géo — toute la France */}
+      {/* 8. Couverture géographique — nous intervenons partout en France */}
       {topCities.length > 0 || topDepts.length > 0 ? (
-        <Section tone="sand" eyebrow="Partout en France" title="Avis clients par" titleEm="ville">
+        <Section
+          tone="sand"
+          eyebrow="Partout en France"
+          title="Nous intervenons"
+          titleEm="partout en France"
+          description="Nos clients nous notent aux quatre coins du pays — en présentiel comme à distance. Filtrez les avis par ville ou par département."
+        >
           {topCities.length > 0 ? (
-            <ul className="flex flex-wrap gap-2">
-              {topCities.map((f) => (
-                <li key={f.key}>
-                  <Link
-                    href={{ pathname: "/avis/ville/[ville]", params: { ville: f.key } }}
-                    className="border-border bg-paper hover:border-terracotta inline-block rounded-full border px-3 py-1.5 text-sm"
-                  >
-                    {prettifyCity(f.key)} <span className="text-fg-muted">({f.count})</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <>
+              <p className="text-fg mb-3 flex items-center gap-2 text-sm font-semibold">
+                <MapPin aria-hidden="true" className="text-terracotta h-4 w-4" /> Par ville
+              </p>
+              <ul className="flex flex-wrap gap-2">
+                {topCities.map((f) => (
+                  <li key={f.key}>
+                    <Link
+                      href={{ pathname: "/avis/ville/[ville]", params: { ville: f.key } }}
+                      className="text-fg-soft bg-paper border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-medium transition"
+                    >
+                      {prettifyCity(f.key)} <span className="text-fg-muted ml-1">({f.count})</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
           ) : null}
           {topDepts.length > 0 ? (
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {topDepts.map((f) => (
-                <li key={f.key}>
-                  <Link
-                    href={{ pathname: "/avis/departement/[code]", params: { code: f.key } }}
-                    className="border-border bg-paper hover:border-terracotta inline-block rounded-full border px-3 py-1.5 text-xs"
-                  >
-                    Dép. {f.key} <span className="text-fg-muted">({f.count})</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <>
+              <p className="text-fg mt-6 mb-3 flex items-center gap-2 text-sm font-semibold">
+                <MapPin aria-hidden="true" className="text-terracotta h-4 w-4" /> Par département
+              </p>
+              <ul className="flex flex-wrap gap-2">
+                {topDepts.map((f) => (
+                  <li key={f.key}>
+                    <Link
+                      href={{ pathname: "/avis/departement/[code]", params: { code: f.key } }}
+                      className="text-fg-soft bg-paper border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+                    >
+                      Dép. {f.key} <span className="text-fg-muted ml-1">({f.count})</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
           ) : null}
         </Section>
       ) : null}
 
-      {/* 9. Secteurs */}
+      {/* 9. Secteurs d'activité */}
       {topSectors.length > 0 ? (
-        <Section tone="paper" eyebrow="Par secteur" title="Avis par" titleEm="secteur d'activité">
-          <ul className="grid list-none gap-4 p-0 md:grid-cols-2 lg:grid-cols-3">
-            {topSectors.map((f) => (
-              <li key={f.key}>
-                <Link
-                  href={{ pathname: "/avis/secteur/[secteur]", params: { secteur: f.key } }}
-                  className="border-border hover:border-terracotta flex items-center justify-between rounded-xl border p-4"
-                >
-                  <span>{clientSectorLabel(f.key)}</span>
-                  <span className="text-fg-muted text-sm">{f.count} avis →</span>
-                </Link>
-              </li>
-            ))}
+        <Section
+          tone="paper"
+          eyebrow="Par secteur"
+          title="Tous les"
+          titleEm="secteurs d'activité"
+          description="De l'industrie au juridique, nos clients viennent de tous les horizons. Explorez les avis par secteur d'activité."
+        >
+          <ul className="grid list-none gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
+            {topSectors.map((f) => {
+              const Icon = SECTOR_ICONS[f.key] ?? Building2;
+              return (
+                <li key={f.key}>
+                  <Link
+                    href={{ pathname: "/avis/secteur/[secteur]", params: { secteur: f.key } }}
+                    className="border-border bg-canvas shadow-subtle hover:shadow-elevated flex h-full items-center gap-4 rounded-2xl border p-5 transition hover:-translate-y-0.5"
+                  >
+                    <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                      <Icon aria-hidden="true" className="h-5 w-5" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="text-fg block font-semibold tracking-tight">
+                        {clientSectorLabel(f.key)}
+                      </span>
+                      <span className="text-terracotta text-sm font-medium">{f.count} avis →</span>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </Section>
       ) : null}
 
-      {/* 10. FAQ */}
-      <Section tone="canvas" eyebrow="FAQ" title="Vos questions sur les" titleEm="avis">
-        <FaqAccordion items={FAQ_ITEMS} />
-      </Section>
+      {/* 9b. Organisme de formation certifié & finançable (auto-gaté Phase B) */}
+      {disclosureEnabled ? (
+        <Section
+          tone="canvas"
+          eyebrow="Organisme de formation"
+          title="Une expertise IA"
+          titleEm="certifiée & finançable"
+          description="Axion-IA est un organisme de formation engagé dans une démarche qualité. Selon votre situation, nos formations peuvent faire l'objet d'une prise en charge."
+        >
+          <div className="grid items-start gap-6 lg:grid-cols-2">
+            <QualiopiBadge variant="card" />
+            <FinancingBadges seed="avis-hub" />
+          </div>
+        </Section>
+      ) : null}
+
+      {/* 10. FAQ (AEO — FAQPage JSON-LD + speakable via FaqBlock) */}
+      <FaqBlock
+        tone="canvas"
+        eyebrow="FAQ"
+        title="Vos questions sur les"
+        titleEm="avis clients"
+        description="Vérification, modération, note globale, dépôt — l'essentiel sur les avis clients Axion-IA."
+        items={FAQ_ITEMS}
+      />
 
       {/* 12. CTA final */}
       <CtaBlock
