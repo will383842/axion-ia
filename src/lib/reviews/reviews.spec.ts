@@ -1,9 +1,7 @@
+// NB : les tests du schéma Zod `reviewSubmissionSchema` + `deriveLastInitial`
+// vivent dans `tests/schemas/review-submission-schema.test.ts` (emplacement
+// imposé par `pnpm zod:check`). Ce fichier couvre les modules purs restants.
 import { describe, it, expect } from "vitest";
-import {
-  reviewSubmissionSchema,
-  deriveLastInitial,
-  REVIEW_COMMENT_MIN,
-} from "@/lib/schemas/review-submission-schema";
 import { slugifyToken, buildReviewSlugBase, buildReviewSlug } from "@/lib/reviews/slug";
 import { hashSeed, avatarStyle } from "@/lib/reviews/avatar";
 import {
@@ -14,60 +12,6 @@ import {
   serviceLineLabel,
 } from "@/lib/reviews/service-lines";
 import { AGGREGATE_MIN_COUNT, FACET_MIN_COUNT, RATING_BEST } from "@/lib/reviews/config";
-
-const validInput = {
-  firstName: "Marie",
-  lastName: "Dupont",
-  email: "marie@example.com",
-  rating: "5",
-  comment: "x".repeat(REVIEW_COMMENT_MIN),
-  photoKind: "portrait",
-};
-
-describe("review-submission-schema", () => {
-  it("accepte un avis valide", () => {
-    const r = reviewSubmissionSchema.safeParse(validInput);
-    expect(r.success).toBe(true);
-  });
-
-  it("refuse un commentaire trop court (anti-thin)", () => {
-    const r = reviewSubmissionSchema.safeParse({ ...validInput, comment: "trop court" });
-    expect(r.success).toBe(false);
-  });
-
-  it("refuse une note hors [1,5]", () => {
-    expect(reviewSubmissionSchema.safeParse({ ...validInput, rating: "0" }).success).toBe(false);
-    expect(reviewSubmissionSchema.safeParse({ ...validInput, rating: "6" }).success).toBe(false);
-  });
-
-  it("refuse un email invalide", () => {
-    expect(reviewSubmissionSchema.safeParse({ ...validInput, email: "nope" }).success).toBe(false);
-  });
-
-  it("refuse un serviceLine inconnu mais accepte un valide", () => {
-    expect(reviewSubmissionSchema.safeParse({ ...validInput, serviceLine: "audits" }).success).toBe(
-      true,
-    );
-    expect(
-      reviewSubmissionSchema.safeParse({ ...validInput, serviceLine: "inexistant" }).success,
-    ).toBe(false);
-  });
-
-  it("normalise photoKind vers portrait par défaut", () => {
-    const r = reviewSubmissionSchema.parse({ ...validInput, photoKind: "" });
-    expect(r.photoKind).toBe("portrait");
-    expect(reviewSubmissionSchema.parse({ ...validInput, photoKind: "logo" }).photoKind).toBe(
-      "logo",
-    );
-  });
-});
-
-describe("deriveLastInitial", () => {
-  it("dérive l'initiale majuscule + point", () => {
-    expect(deriveLastInitial("Dupont")).toBe("D.");
-    expect(deriveLastInitial("  martin ")).toBe("M.");
-  });
-});
 
 describe("slug", () => {
   it("slugifie en ASCII kebab (accents retirés)", () => {
