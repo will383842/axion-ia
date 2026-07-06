@@ -1,38 +1,31 @@
-"use client";
-// use-client: embed Calendly inline — chargement ROBUSTE, indépendant de
-// l'hydratation (useEffect voie 2 + preuve d'exécution client).
+// Server Component — embed Calendly INLINE NATIF (audit 2026-07-06).
 //
-// Contexte (audit 2026-07-01, 3 passes) : sur /appel, le contenu de page
-// n'était pas hydraté de façon fiable (l'îlot client n'obtenait aucun fiber
-// React), donc TOUT mécanisme reposant sur un useEffect au chargement initial
-// échouait — c'est pourquoi ni <Script afterInteractive> (PR 171) ni l'injection
-// useEffect (PR 173) n'affichaient le calendrier. Preuve que l'environnement est
-// sain : injecter widget.js à la main + Calendly.initInlineWidget crée l'iframe.
+// Historique : ce composant a d'abord été un Client Component à « double voie »
+// (script inline `dangerouslySetInnerHTML` + useEffect appelant manuellement
+// `initInlineWidget`). Cette archi souffrait d'une COURSE d'init entre les deux
+// voies + d'un mismatch d'hydratation (résidu React #418 sur /appel), d'où un
+// écran blanc INTERMITTENT et l'erreur bénigne « postMessage target origin
+// mismatch » (double handshake), corrigés au prix d'un F5.
 //
-// Solution DOUBLE VOIE, idempotente (drapeau data-cal-init) :
-//   1. Script INLINE rendu dans le HTML SSR → s'exécute au PARSE du navigateur,
-//      sans dépendre de React/hydratation. Couvre le chargement direct (SEO,
-//      lien direct, refresh) = le cas du bug d'origine.
-//   2. useEffect → couvre la navigation SPA (next/link), où le script inline
-//      n'est pas ré-exécuté par React mais où le composant se rend côté client.
-// Le conteneur porte suppressHydrationWarning : React ne réconcilie pas l'iframe
-// injectée avant l'hydratation. CSP : script-src autorise 'unsafe-inline' (les
-// <script> JSON-LD de la page fonctionnent déjà ainsi ; aucun nonce).
+// Nouvelle archi = embed NATIF officiel Calendly, immunisé contre l'hydratation :
+//   • Ce Server Component rend un markup STATIQUE `.calendly-inline-widget`
+//     avec `data-url` + le `<script async>` de widget.js, DIRECTEMENT dans le
+//     HTML SSR. Au chargement direct / F5, widget.js s'exécute au parse et
+//     AUTO-SCANNE le DOM → initialise le conteneur, SANS aucune dépendance à
+//     React ni à l'hydratation. C'est le chemin supporté officiellement.
+//     (Aucun hoistable rendu par un Client Component → leçon PR #173 respectée.)
+//   • `<CalendlyBoot>` (Client, rend `null`) couvre la navigation SPA et
+//     l'auto-guérison, avec une garde ANTI-DOUBLE-IFRAME → plus de course.
+//
+// CSP : `script-src` (soft public) autorise déjà `https://assets.calendly.com`
+// et `frame-src`/`connect-src` autorisent `calendly.com` + `*.calendly.com`.
+// COEP : /appel est en `unsafe-none` (cf. `isCredentialedEmbedderPath`, PR #182)
+// pour que l'iframe credentialée Calendly établisse sa session.
 
-import { useEffect, useRef } from "react";
+import { CalendlyBoot } from "./CalendlyBoot";
 
 const CALENDLY_WIDGET_JS = "https://assets.calendly.com/assets/external/widget.js";
 const CALENDLY_EMBED_ID = "calendly-inline-embed";
-
-interface CalendlyGlobal {
-  initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
-}
-
-declare global {
-  interface Window {
-    Calendly?: CalendlyGlobal;
-  }
-}
 
 interface CalendlyInlineWidgetProps {
   readonly calendlyUrl: string | undefined;
@@ -56,83 +49,12 @@ function buildCalendlyUrl(baseUrl: string): string {
   return url.toString();
 }
 
-/**
- * Bootstrap inline (voie 1). Sérialisé dans le HTML SSR, exécuté au parse.
- * Idempotent via l'attribut data-cal-init. L'URL est lue depuis data-cal-url
- * (jamais interpolée dans le code JS → aucun risque d'injection).
- */
-const CALENDLY_BOOTSTRAP = `(function(){
-  var id=${JSON.stringify(CALENDLY_EMBED_ID)};
-  var src=${JSON.stringify(CALENDLY_WIDGET_JS)};
-  var el=document.getElementById(id);
-  if(!el||el.getAttribute("data-cal-init")==="1")return;
-  var url=el.getAttribute("data-cal-url");
-  if(!url)return;
-  function init(){
-    if(!window.Calendly)return;
-    el.setAttribute("data-cal-init","1");
-    try{window.Calendly.initInlineWidget({url:url,parentElement:el});}catch(e){}
-  }
-  if(window.Calendly){init();return;}
-  var ex=document.querySelector('script[data-calendly-loader]');
-  if(ex){ex.addEventListener("load",init);return;}
-  var s=document.createElement("script");
-  s.src=src;s.async=true;s.setAttribute("data-calendly-loader","");s.onload=init;
-  document.head.appendChild(s);
-})();`;
-
 export function CalendlyInlineWidget({
   calendlyUrl,
   isFr,
   height = 720,
 }: CalendlyInlineWidgetProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl) : null;
-
-  // Voie 2 : navigation SPA (client). Idempotent avec la voie 1 (data-cal-init).
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    if (el.getAttribute("data-cal-init") === "1") return;
-    const url = el.getAttribute("data-cal-url");
-    if (!url) return;
-
-    let cancelled = false;
-    const init = () => {
-      if (cancelled || !window.Calendly) return;
-      if (el.getAttribute("data-cal-init") === "1") return;
-      el.setAttribute("data-cal-init", "1");
-      try {
-        window.Calendly.initInlineWidget({ url, parentElement: el });
-      } catch {
-        // fail-soft : le lien « Ouvrir Calendly directement » reste visible.
-      }
-    };
-
-    if (window.Calendly) {
-      init();
-      return;
-    }
-
-    const existing = document.querySelector<HTMLScriptElement>("script[data-calendly-loader]");
-    if (existing) {
-      existing.addEventListener("load", init);
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    const script = document.createElement("script");
-    script.src = CALENDLY_WIDGET_JS;
-    script.async = true;
-    script.setAttribute("data-calendly-loader", "");
-    script.addEventListener("load", init);
-    document.head.appendChild(script);
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   if (!calendlyUrl || !finalUrl) {
     return (
@@ -159,17 +81,32 @@ export function CalendlyInlineWidget({
 
   return (
     <div>
+      {/* Préconnexions (hoistables — sûrs dans un Server Component). Réduisent la
+          latence du chargement de widget.js + du handshake de l'iframe, ce qui
+          diminue la fenêtre de course qui provoquait l'écran blanc intermittent. */}
+      <link rel="preconnect" href="https://assets.calendly.com" />
+      <link rel="preconnect" href="https://calendly.com" />
+
+      {/* Conteneur natif Calendly : classe + data-url reconnus par l'auto-scan de
+          widget.js. suppressHydrationWarning car widget.js injecte une <iframe>
+          enfant que React n'a pas rendue. */}
       <div
         id={CALENDLY_EMBED_ID}
-        ref={containerRef}
-        data-cal-url={finalUrl}
+        className="calendly-inline-widget mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
+        data-url={finalUrl}
         suppressHydrationWarning
-        className="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
         style={{ minWidth: "320px", height: `${height}px` }}
         aria-label={isFr ? "Calendrier de prise de rendez-vous" : "Booking calendar"}
       />
-      {/* Voie 1 : bootstrap inline exécuté au parse (indépendant de l'hydratation). */}
-      <script data-calendly-bootstrap dangerouslySetInnerHTML={{ __html: CALENDLY_BOOTSTRAP }} />
+
+      {/* Voie 1 (chargement direct / F5) : widget.js en SSR → auto-init au parse,
+          indépendant de l'hydratation React. `data-calendly-loader` permet au
+          shim de le retrouver sans en réinjecter un second. */}
+      <script src={CALENDLY_WIDGET_JS} async data-calendly-loader="" />
+
+      {/* Voie 2 (navigation SPA + auto-guérison) : ré-init manuel, garde-fou iframe. */}
+      <CalendlyBoot url={finalUrl} />
+
       <div className="mx-auto mt-4 max-w-xl text-center">
         <p className="text-fg-muted text-sm">
           {isFr ? "Le calendrier ne s’affiche pas ?" : "Calendar not showing?"}{" "}
