@@ -45,6 +45,7 @@ import {
 } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
+import { ServicesGrid } from "@/components/services/ServicesGrid";
 import { Illustration } from "@/components/visual/Illustration";
 import { LogosMarquee } from "@/components/home/LogosMarquee";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
@@ -461,78 +462,52 @@ export default async function Home({ params }: HomeProps) {
             </div>
           </FadeInOnView>
 
-          {/* 5 cartes services — refonte 2026-05-24 (Will feedback) :
-              - charte brand stricte : bg-paper (ivoire), accent terracotta UNIFIÉ
-                (vs ancien rainbow terracotta/primary/sage)
-              - TITRES service forts en serif XL (Formations / 1-to-1 / Audits /
-                Implémentations / Plateforme web & SaaS) — domination visuelle
-              - prix d entrée mis en avant (signal CA direct)
-              - icône emoji dans cercle terracotta-soft (subtil)
-              - "Découvrir le service →" terracotta hover-deep
-              - hover : card lift + shadow + border terracotta */}
-          {/* A11Y Phase 2 fix 2026-05-26 — axe-core règle `list` exige que les
-              enfants directs de <ul> soient <li>. Le wrapper <FadeInOnView>
-              cassait cette règle → on inverse pour avoir <li><FadeInOnView/></li>. */}
-          <ul className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
-            {valuePropositions.map((v, idx) => (
-              <li key={v.id} className="h-full">
-                <FadeInOnView delay={idx * 80}>
-                  <Link
-                    href={v.href}
-                    className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated focus-visible:ring-terracotta relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
+          {/* 5 cartes services — grille CENTRALISÉE (ServicesGrid, variante
+              `showcase`). Depuis 2026-07-06, icône + couleur d'accent par service
+              viennent de la SSOT `services-visual.ts` (« pep par activité » : chaque
+              service a SA teinte), et largeur/hauteur/hover/focus sont partagés avec
+              /visibilite-entreprise et /presse. Le contenu (tagline, prix, CTA) reste
+              propre à la home, injecté via renderBody. `valuePropositions` (ordre =
+              SERVICES) alimente aussi le JSON-LD Service plus haut — ne pas retirer. */}
+          <ServicesGrid
+            variant="showcase"
+            isFr={isFr}
+            renderBody={({ index, accent }) => {
+              const v = valuePropositions[index];
+              if (!v) return null;
+              return (
+                <>
+                  <p className={cn("mt-1 text-sm font-semibold tracking-tight", accent.text)}>
+                    {v.tagline}
+                  </p>
+                  {/* Description courte */}
+                  <p className="text-fg-soft mt-4 text-sm leading-relaxed">{v.headline}</p>
+                  {/* Prix d entrée — signal CA direct */}
+                  <p
+                    className="text-fg mt-5 text-base font-bold tracking-tight"
+                    style={{ fontFamily: "var(--font-serif)" }}
                   >
-                    {/* Stripe terracotta top — accent brand uniforme */}
-                    <span
+                    {v.priceLabel}
+                  </p>
+                  {/* Spacer flex */}
+                  <div className="flex-1" />
+                  {/* CTA Découvrir — teinté à l'accent du service */}
+                  <span
+                    className={cn(
+                      "border-border mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold transition-colors",
+                      accent.text,
+                    )}
+                  >
+                    {t("valueCardCta")}
+                    <ArrowRight
+                      className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                       aria-hidden="true"
-                      className="bg-terracotta absolute inset-x-0 top-0 h-1.5 origin-left transition-transform duration-300 group-hover:scale-x-[1.0]"
                     />
-
-                    {/* Icône emoji dans cercle terracotta-soft */}
-                    <span
-                      className="bg-terracotta-soft mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full text-3xl transition-transform duration-300 group-hover:scale-110"
-                      aria-hidden="true"
-                    >
-                      {v.emoji}
-                    </span>
-
-                    {/* TITRE service XL — la chose la plus visible de la card */}
-                    <h3
-                      className="text-fg text-[clamp(1.75rem,2.5vw,2.5rem)] leading-[1.02] font-semibold tracking-tight"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {v.shortName}
-                    </h3>
-                    <p className="text-terracotta mt-1 text-sm font-semibold tracking-tight">
-                      {v.tagline}
-                    </p>
-
-                    {/* Description courte */}
-                    <p className="text-fg-soft mt-4 text-sm leading-relaxed">{v.headline}</p>
-
-                    {/* Prix d entrée — signal CA direct */}
-                    <p
-                      className="text-fg mt-5 text-base font-bold tracking-tight"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {v.priceLabel}
-                    </p>
-
-                    {/* Spacer flex */}
-                    <div className="flex-1" />
-
-                    {/* CTA Découvrir terracotta */}
-                    <span className="border-border text-terracotta group-hover:border-terracotta group-hover:text-terracotta-deep mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold transition-colors">
-                      {t("valueCardCta")}
-                      <ArrowRight
-                        className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </Link>
-                </FadeInOnView>
-              </li>
-            ))}
-          </ul>
+                  </span>
+                </>
+              );
+            }}
+          />
         </Container>
       </section>
 

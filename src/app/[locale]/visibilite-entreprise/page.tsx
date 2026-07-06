@@ -14,12 +14,8 @@ import { notFound } from "next/navigation";
 import {
   ArrowRight,
   Check,
-  Code2,
-  Cpu,
-  GraduationCap,
   Link2,
   MapPin,
-  Search,
   ShieldCheck,
   Sparkles,
   TrendingUp,
@@ -40,7 +36,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { VisibiliteBenefits } from "@/components/visibilite/VisibiliteBenefits";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { VISIBILITE_UNSPLASH } from "@/content/visibilite-entreprise-unsplash";
-import { SERVICES, serviceOfficial, type ServiceId } from "@/content/services";
+import { ServicesGrid } from "@/components/services/ServicesGrid";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
 import {
@@ -158,14 +154,6 @@ export default async function VisibiliteClient({ params }: Props) {
     { icon: TrendingUp, label: isFr ? "Autorité SEO" : "SEO authority" },
     { icon: Users, label: isFr ? "Preuve sociale" : "Social proof" },
   ];
-
-  const serviceIcons: Record<ServiceId, typeof GraduationCap> = {
-    formations: GraduationCap,
-    unAUn: Users,
-    audit: Search,
-    implementation: Cpu,
-    sitesWeb: Code2,
-  };
 
   const valeurs: ReadonlyArray<{ icon: typeof TrendingUp; title: string; body: string }> = [
     {
@@ -371,45 +359,23 @@ export default async function VisibiliteClient({ params }: Props) {
             : "Whichever service you choose at Axion-IA, your company's visibility is included."
         }
       >
-        <ul role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-5">
-          {SERVICES.map((s, idx) => {
-            const Icon = serviceIcons[s.id];
-            const accent = [
-              "bg-terracotta-soft text-terracotta-deep",
-              "bg-primary-soft text-primary",
-              "bg-sage-soft text-sage",
-              "bg-terracotta-soft text-terracotta-deep",
-              "bg-primary-soft text-primary",
-            ][idx % 5];
-            return (
-              <li key={s.id}>
-                <Link
-                  href={s.href as never}
-                  className="shadow-subtle hover:shadow-elevated group bg-bg flex h-full flex-col gap-3 rounded-2xl p-6 transition hover:-translate-y-1"
-                >
-                  <span
-                    className={cn(
-                      "inline-flex h-12 w-12 items-center justify-center rounded-2xl",
-                      accent,
-                    )}
-                  >
-                    <Icon aria-hidden="true" className="h-6 w-6" />
-                  </span>
-                  <span className="text-fg text-sm font-semibold tracking-tight">
-                    {serviceOfficial(s, isFr)}
-                  </span>
-                  <span className="text-sage inline-flex items-center gap-1 text-[12px] font-semibold">
-                    <Check aria-hidden="true" className="h-3.5 w-3.5" />
-                    {isFr ? "Visibilité incluse" : "Visibility included"}
-                  </span>
-                  <span className="text-terracotta mt-auto text-[13px] font-medium">
-                    {isFr ? "Découvrir →" : "Discover →"}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {/* Grille centralisée — variante `compact` (icône + couleur par service
+            via SSOT services-visual.ts, largeur/hauteur unifiées avec home/presse). */}
+        <ServicesGrid
+          variant="compact"
+          isFr={isFr}
+          renderBody={({ accent }) => (
+            <>
+              <span className="text-sage inline-flex items-center gap-1 text-[12px] font-semibold">
+                <Check aria-hidden="true" className="h-3.5 w-3.5" />
+                {isFr ? "Visibilité incluse" : "Visibility included"}
+              </span>
+              <span className={cn("mt-auto text-[13px] font-medium", accent.text)}>
+                {isFr ? "Découvrir →" : "Discover →"}
+              </span>
+            </>
+          )}
+        />
       </Section>
 
       {/* ── BANDEAU ÉQUIPE (respiration visuelle) ────────────────────────── */}

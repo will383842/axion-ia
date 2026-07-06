@@ -40,6 +40,19 @@
   --color-sage: #5e6c54; /* assombri pour WCAG AA sur paper (5.0:1) */
   --color-sage-soft: #e6ebe2;
 
+  /* ----- Accent chaud : ocre / or — 5e ton palette services (« pep par activité ») -----
+     Complète terracotta/bleu/sauge pour donner à chacun des 5 services SA couleur.
+     Ancré ivoire chaud (charte Editorial Premium Light). Ne PAS réutiliser hors
+     du système de cartes services (services-visual.ts) sans arbitrage Will. */
+  --color-ochre: #b06a12; /* or brûlé — accent 1-to-1 */
+  --color-ochre-soft: #f6e7cf; /* halo ocre doux (fond d'icône) */
+  --color-ochre-deep: #7d4a0a; /* ocre foncé — texte/hover (WCAG ~8:1 sur paper) */
+
+  /* ----- Accent profond : prune — 5e ton palette services ----- */
+  --color-plum: #7c4a63; /* prune sourde — accent sites web & SaaS */
+  --color-plum-soft: #efe2ea; /* halo prune doux (fond d'icône) */
+  --color-plum-deep: #5a3348; /* prune foncée — texte/hover (WCAG ~9:1 sur paper) */
+
   /* ----- Borders & dividers ----- */
   --color-border: #e5ddc8; /* sable doux pour bordures */
   --color-border-strong: #c8bda0; /* sable saturé pour focus rings, dividers marqués */
