@@ -50,6 +50,9 @@ export async function Footer() {
   // colonne. Ordonné : identité (qui/comment) → presse → joindre.
   const company = [
     { href: "/a-propos", label: t("nav.about") },
+    // Fiche fondateur (E-E-A-T / Knowledge Panel — audit 2026-07-06). FR only
+    // (page `/equipe/williams` servie uniquement en FR).
+    ...(isFr ? [{ href: "/equipe/williams", label: "Fondateur" }] : []),
     { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/contact", label: t("nav.contact") },

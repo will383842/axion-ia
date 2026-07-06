@@ -66,10 +66,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/formations",
+    // Titre court (≤ 60 car) pour éviter la troncature SERP + servir de label
+    // sitelink net (audit sitelinks 2026-07-06). TPE/PME/ETI restent dans la
+    // description. Finit par « · Axion-IA » (bypass template).
     title:
       loc === "fr"
-        ? "Formation IA entreprise · TPE PME ETI · formateur IA sur site · Axion-IA"
-        : "Corporate AI training · SME ETI · on-site AI trainer · Axion-IA",
+        ? "Formation IA en entreprise sur site · Axion-IA"
+        : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
         ? `Formation IA en entreprise sur site pour TPE, PME, ETI et grandes entreprises : 4 formats one-shot (4 h à 3 j+) ou formules récurrentes mensuelles/bi-mensuelles. Formateur IA dédié, montée en compétence continue, gains de temps instantanés. Dès ${fromPrice}.`
@@ -1113,6 +1116,14 @@ export default async function FormationsHub({ params }: Props) {
               isFr
                 ? [
                     {
+                      // Prix dérivé du SSOT catalogue (getFormationCatalogPriceRange),
+                      // JAMAIS hardcodé — même valeur que le « Dès … » du hero pour
+                      // rester cohérent sur la page (audit FAQ prix 2026-07-06).
+                      id: "prix-formation-ia",
+                      question: "Combien coûte une formation IA en entreprise ?",
+                      answer: `Une formation IA en entreprise sur site démarre à ${essentielleEntry} HT. Le tarif dépend ensuite de la durée (4 h, 1, 2 ou 3 jours et plus), de la gamme (IA standard, agents & automatisations, ou Claude) et du nombre de participants — la grille complète figure plus haut sur cette page. Le devis précis se cale sur votre contexte après un premier échange.`,
+                    },
+                    {
                       id: "effectif",
                       question: "Combien de participants par session ?",
                       answer:
@@ -1164,6 +1175,13 @@ export default async function FormationsHub({ params }: Props) {
                     },
                   ]
                 : [
+                    {
+                      // Price derived from the catalogue SSOT, never hardcoded —
+                      // same value as the hero "From …" (2026-07-06 price-FAQ audit).
+                      id: "prix-formation-ia",
+                      question: "How much does corporate AI training cost?",
+                      answer: `On-site corporate AI training starts at ${essentielleEntry} ex. VAT. The rate then depends on duration (4 h, 1, 2 or 3+ days), the track (standard AI, agents & automations, or Claude) and the number of participants — the full grid is above on this page. The precise quote is tailored to your context after a first call.`,
+                    },
                     {
                       id: "headcount",
                       question: "How many participants per session?",

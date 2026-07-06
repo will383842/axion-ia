@@ -26,6 +26,9 @@ import {
   SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+// Prix formation dérivé du SSOT (jamais hardcodé) — même entrée de gamme que la
+// page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
+import { formatAmount, getTierById, INTERVENTION_TIERS } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -157,6 +160,11 @@ export default async function About({ params }: Props) {
           answer:
             "Toute demande de devis ou de contact reçoit une réponse humaine sous 48 heures ouvrées, sans engagement.",
         },
+        {
+          id: "prix-formation-ia",
+          question: "Combien coûte une formation IA en entreprise ?",
+          answer: `Les formations IA en entreprise démarrent à ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")} HT pour un format court sur site. Le prix varie ensuite selon la durée, la gamme et le nombre de participants. Tous les tarifs sont publics sur la page Tarifs, et le devis précis se construit après un échange sur votre contexte.`,
+        },
       ]
     : [
         {
@@ -182,6 +190,11 @@ export default async function About({ params }: Props) {
           question: "How quickly does Axion-IA reply to a request?",
           answer:
             "Every quote or contact request gets a human reply within 48 business hours, with no commitment.",
+        },
+        {
+          id: "prix-formation-ia",
+          question: "How much does corporate AI training cost?",
+          answer: `Corporate AI training starts at ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en")} ex. VAT for a short on-site format. The price then varies with duration, track and number of participants. All rates are public on the Pricing page, and the precise quote is built after a call about your context.`,
         },
       ];
 

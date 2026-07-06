@@ -13,19 +13,29 @@
  *
  * Désambiguïsation d'entité : l'avis d'expert émet un nœud `Person` (@id
  * `/equipe/<key>#person`, worksFor Organization) — voir `ArticleExpertQuote`.
- * Manon a une page dédiée `/equipe/manon` (AuthorProfile) ; Williams est le
- * fondateur (nœud Person dans l'Organization). Une page `/equipe/williams`
- * dédiée reste à créer (photo/bio réelles requises) pour compléter l'entité.
+ * Manon a une page dédiée `/equipe/manon` (AuthorProfile) ; Williams a
+ * désormais SA page d'autorité `/equipe/williams` (statique, `williams-person.ts`)
+ * → l'@id de l'avis d'expert Williams pointe sur cette page (fusion Knowledge
+ * Panel avec `Organization.founder`, audit Knowledge Panel 2026-07-06).
+ *
+ * Doctrine nommage fondateur (cf. `FOUNDER`, lib/brand.ts) : `displayName`
+ * (« Williams ») pour l'affichage figcaption ; `name` (= nom complet «
+ * Williams Jullin ») pour le nœud Person structuré + le routage. Pour Manon
+ * (persona), les deux sont identiques.
  *
  * Extensible : ajouter un expert = une entrée dans `INTERNAL_EXPERTS`.
  * 2026-06-22 : Manon + Williams (d'autres experts plus tard, décision Will).
  */
 
+import { FOUNDER } from "@/lib/brand";
+
 export interface InternalExpert {
   /** Clé stable (= slug page /equipe). */
   readonly key: string;
-  /** Nom affiché tel quel dans la citation (figcaption). */
+  /** Nom canonique / structuré (JSON-LD `Person.name`) + clé de routage. */
   readonly name: string;
+  /** Nom affiché dans la citation (figcaption). Doctrine `FOUNDER.displayName`. */
+  readonly displayName: string;
   /** Fonction affichée (jobTitle). */
   readonly title: string;
   /** Domaines d'expertise — servent au routage déterministe de l'expert. */
@@ -36,6 +46,7 @@ export const INTERNAL_EXPERTS: ReadonlyArray<InternalExpert> = [
   {
     key: "manon",
     name: "Manon",
+    displayName: "Manon",
     title: "Experte IA chez Axion-IA",
     domains: [
       "ia",
@@ -51,7 +62,10 @@ export const INTERNAL_EXPERTS: ReadonlyArray<InternalExpert> = [
   },
   {
     key: "williams",
-    name: "Williams Jullin",
+    // Nom complet = entité structurée (cohérent avec `/equipe/williams#person`) ;
+    // displayName = affichage UI. Dérivés du SSOT `FOUNDER`.
+    name: FOUNDER.fullName,
+    displayName: FOUNDER.displayName,
     title: "Fondateur d'Axion-IA",
     domains: [
       "strategie",
@@ -100,8 +114,17 @@ export function pickInternalExpert(opts: {
  */
 export function expertKeyFromName(name: string): string | null {
   const n = name.trim().toLowerCase();
-  const found = INTERNAL_EXPERTS.find((e) => e.name.toLowerCase() === n);
+  // Matche le nom canonique OU le displayName : robuste aux valeurs DB historiques
+  // (« Williams Jullin ») comme au displayName (« Williams »).
+  const found = INTERNAL_EXPERTS.find(
+    (e) => e.name.toLowerCase() === n || e.displayName.toLowerCase() === n,
+  );
   return found ? found.key : null;
+}
+
+/** Expert interne par clé/slug (`null` si inconnu). */
+export function expertByKey(key: string): InternalExpert | null {
+  return INTERNAL_EXPERTS.find((e) => e.key === key) ?? null;
 }
 
 /**

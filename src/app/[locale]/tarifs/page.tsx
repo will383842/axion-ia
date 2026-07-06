@@ -248,6 +248,11 @@ export default async function PricingPage({ params }: Props) {
   const faqItems = isFr
     ? [
         {
+          id: "prix-formation-ia",
+          question: "Combien coûte une formation IA en entreprise ?",
+          answer: `Une formation IA en entreprise démarre à ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")} HT pour un format court (4 h sur site). Le prix varie ensuite selon la durée (de 4 h à 3 jours et plus) et le nombre de participants ; la grille détaillée par format figure ci-dessus. Le devis précis se construit après un échange sur votre contexte.`,
+        },
+        {
           id: "tarifs-publics",
           question: "Pourquoi vos tarifs sont-ils publics ?",
           answer:

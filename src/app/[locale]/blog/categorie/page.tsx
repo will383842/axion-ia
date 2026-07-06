@@ -13,6 +13,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
+import { FOUNDER } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
@@ -316,7 +317,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
               href={`/${locale}/equipe/williams`}
               className="text-terracotta-deep font-medium underline-offset-2 hover:underline"
             >
-              Williams Jullin
+              {FOUNDER.displayName}
             </a>
             {isFr ? ", fondateur d'Axion-IA" : ", founder of Axion-IA"}
             {latestDateLabel

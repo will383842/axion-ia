@@ -72,7 +72,10 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",
-      url: `${SITE_URL}/logo.png`,
+      // Logo carré officiel 512×512 (audit Knowledge Panel 2026-07-06).
+      // Avant : `/logo.png` = 404 (aucun fichier à la racine). Corrigé vers le
+      // vrai asset `public/logo-axion-ia.png`.
+      url: `${SITE_URL}/logo-axion-ia.png`,
       width: 512,
       height: 512,
     },
