@@ -44,7 +44,7 @@ import { ImplementationContactBand } from "@/components/services/implementation/
 import { ImplementationMethodology } from "@/components/services/implementation/ImplementationMethodology";
 import { ImplementationWhyChooseUs } from "@/components/services/implementation/ImplementationWhyChooseUs";
 import { ImplementationFounderBand } from "@/components/services/implementation/ImplementationFounderBand";
-import { ImplementationClientReviews } from "@/components/services/implementation/ImplementationClientReviews";
+import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
 import { ImplementationFaq } from "@/components/services/implementation/ImplementationFaq";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 
@@ -251,7 +251,7 @@ export default async function ImplementationListing({ params }: Props) {
       <ImplementationWhyChooseUs isFr={isFr} />
 
       {/* AVIS CLIENTS — quotes propres à l'implémentation (anti-duplicate /audit) */}
-      <ImplementationClientReviews isFr={isFr} />
+      <ServiceReviewsSection serviceLine="implementations" />
 
       {/* L'IMPLÉMENTATION & AGENTS IA PARTOUT EN FRANCE (pSEO levier 3) */}
       <LocalCoverageSection
