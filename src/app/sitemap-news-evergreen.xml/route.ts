@@ -75,25 +75,38 @@ async function fetchRecentNews(): Promise<Row[]> {
   }
 }
 
-export async function GET(): Promise<Response> {
+/**
+ * Entrées evergreen (actus `isNews` tier-1 publiées dans les ~90 derniers jours)
+ * déjà transformées en `{ loc, lastmod }`. Exportée pour le gating anti-vide de
+ * `app/sitemap-index.xml` (on ne référence ce sitemap dans l'index QUE s'il émet
+ * ≥ 1 URL — sinon Google lit un `<urlset>` vide et le flagge « url manquante »).
+ * Cohérence index↔route garantie : les deux appellent CETTE fonction.
+ */
+export async function listEvergreenNewsEntries(): Promise<Array<{ loc: string; lastmod: string }>> {
   const rows = await fetchRecentNews();
-  const urlBlocks: string[] = [];
-
+  const entries: Array<{ loc: string; lastmod: string }> = [];
   for (const row of rows) {
     const t = row.translations[0];
     if (!t?.slug) continue;
     const loc = escapeXml(`${SITE_URL}/fr/actualites/${t.slug}`);
     // lastmod = updatedAt (fraîcheur réelle), fallback publishedAt.
     const lastmod = (row.updatedAt ?? row.publishedAt ?? new Date(0)).toISOString();
-    urlBlocks.push(
+    entries.push({ loc, lastmod });
+  }
+  return entries;
+}
+
+export async function GET(): Promise<Response> {
+  const entries = await listEvergreenNewsEntries();
+  const urlBlocks = entries.map(
+    ({ loc, lastmod }) =>
       `  <url>
     <loc>${loc}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>`,
-    );
-  }
+  );
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

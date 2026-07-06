@@ -30,6 +30,11 @@ import sitemap, { generateSitemaps, buildExcludeSlugsByType } from "../sitemap";
 import { SITE_URL } from "@/lib/seo";
 import { prisma } from "@/lib/prisma";
 import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitemap";
+// Gating anti-vide des sitemaps news (fenêtres glissantes 48h / 90j → vides en
+// creux d'actu). On réutilise les MÊMES builders que les routes → cohérence
+// index↔route garantie (cf. filtre customSitemaps dans GET).
+import { listRecentNewsEntries } from "@/app/sitemap-news.xml/route";
+import { listEvergreenNewsEntries } from "@/app/sitemap-news-evergreen.xml/route";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
@@ -232,9 +237,28 @@ export async function GET(): Promise<Response> {
     blogEmittableCount = 0;
   }
 
+  // News (Google News, fenêtre 48h) + news-evergreen (90j) — vides en creux d'actu.
+  // Même gating anti-vide que KB/blog : on ne les liste que s'ils émettent ≥ 1 URL,
+  // sinon Google lit un `<urlset>` vide et le flagge « Balise XML manquante : url »
+  // (cas observé le 30/06 sur sitemap-news pendant un creux). Fail-soft.
+  let newsEmittableCount = 0;
+  try {
+    newsEmittableCount = (await listRecentNewsEntries()).length;
+  } catch {
+    newsEmittableCount = 0;
+  }
+  let evergreenEmittableCount = 0;
+  try {
+    evergreenEmittableCount = (await listEvergreenNewsEntries()).length;
+  } catch {
+    evergreenEmittableCount = 0;
+  }
+
   const customSitemaps = CUSTOM_SITEMAPS.filter((path) => {
     if (path === "/sitemap-knowledge.xml") return kbEmittableCount > 0;
     if (path === "/sitemap-blog.xml") return blogEmittableCount > 0;
+    if (path === "/sitemap-news.xml") return newsEmittableCount > 0;
+    if (path === "/sitemap-news-evergreen.xml") return evergreenEmittableCount > 0;
     // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le
     // lister (sinon urlset vide flaggé par GSC). Réapparaît si EN réactivé.
     if (path === "/sitemaps/images-en.xml") return EN_LOCALE_ENABLED;
