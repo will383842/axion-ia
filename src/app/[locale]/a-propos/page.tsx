@@ -31,6 +31,10 @@ import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { formatAmount, getTierById, INTERVENTION_TIERS } from "@/content/pricing";
 // Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
 import { FOUNDER } from "@/lib/brand";
+// Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
+// sont émises QUE si la Phase B est active (elles apparaîtront automatiquement
+// dès le passage du flag, sans retoucher le code). Doctrine financement respectée.
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -139,6 +143,10 @@ export default async function About({ params }: Props) {
   // « People Also Ask » de marque + les AI Overviews. FaqBlock émet automatiquement
   // le FAQPage JSON-LD via FaqAccordion. Prix/fondateur dérivés des SSOT (jamais
   // hardcodés). Aucune allégation Qualiopi/financement ici (gatées Phase B ailleurs).
+  // Divulgation OF (Qualiopi/financement) — Phase B uniquement. Les Q/R gatées
+  // ci-dessous s'affichent automatiquement dès l'activation du flag.
+  const ofPublic = isQualiopiPublicDisclosureEnabled();
+
   const aboutFaq = isFr
     ? [
         {
@@ -152,6 +160,12 @@ export default async function About({ params }: Props) {
           question: "Où est le siège d'Axion-IA ?",
           answer:
             "Le siège d'Axion-IA est à Grenoble (Auvergne-Rhône-Alpes), en France. C'est un cabinet IA opérationnel français qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès des TPE, PME, ETI et grands comptes.",
+        },
+        {
+          id: "couverture-paris",
+          question: "Axion-IA intervient-il à Paris et en Île-de-France ?",
+          answer:
+            "Oui. Paris et l'Île-de-France sont le premier terrain d'intervention d'Axion-IA : audits, formations et implémentations y sont assurés dans les arrondissements parisiens et la première couronne, au même tarif public qu'en région. Le siège reste à Grenoble, mais les interventions sont menées partout en France.",
         },
         {
           id: "depuis-quand",
@@ -187,6 +201,27 @@ export default async function About({ params }: Props) {
           answer:
             "Le plus simple est de passer par la page Contact : un formulaire unique couvre les devis, audits, formations, implémentations, 1-à-1 et partenariats, avec une réponse humaine sous 48 heures ouvrées. Vous pouvez aussi réserver directement un appel de découverte.",
         },
+        // Q/R Qualiopi / financement — émises UNIQUEMENT en Phase B (flag OF).
+        // Doctrine financement : jamais de CPF, jamais « 100 % / gratuit »,
+        // jamais de numéro de certificat ; uniquement OPCO / France Travail,
+        // « prise en charge possible selon votre situation ».
+        ...(ofPublic
+          ? [
+              {
+                id: "qualiopi",
+                question: "Axion-IA est-il un organisme de formation certifié Qualiopi ?",
+                answer:
+                  "Oui. Axion-IA est un organisme de formation certifié Qualiopi au titre des actions de formation. Cette certification atteste de la qualité du processus de formation et conditionne l'accès aux financements publics et mutualisés (OPCO, France Travail).",
+              },
+              {
+                id: "financement",
+                question:
+                  "Les formations IA d'Axion-IA sont-elles finançables (OPCO, France Travail) ?",
+                answer:
+                  "Selon votre situation, une formation IA peut être prise en charge, en tout ou partie, par votre OPCO (salariés) ou par France Travail (demandeurs d'emploi). Axion-IA étudie votre éligibilité et monte le dossier avec vous, partout en France. Le versement dépend de l'accord de l'organisme financeur.",
+              },
+            ]
+          : []),
       ]
     : [
         {
@@ -200,6 +235,12 @@ export default async function About({ params }: Props) {
           question: "Where is Axion-IA's head office?",
           answer:
             "Axion-IA's head office is in Grenoble (Auvergne-Rhône-Alpes), France. It is a French operational AI consultancy serving the whole of France — including Paris and the Île-de-France region — for small businesses, SMEs, mid-caps and large accounts.",
+        },
+        {
+          id: "couverture-paris",
+          question: "Does Axion-IA operate in Paris and the Île-de-France region?",
+          answer:
+            "Yes. Paris and Greater Paris are Axion-IA's primary engagement ground: audits, training and implementations are delivered in the Paris arrondissements and inner suburbs, at the same public rate as the rest of the country. The head office remains in Grenoble, but engagements are run across France.",
         },
         {
           id: "depuis-quand",
@@ -235,6 +276,25 @@ export default async function About({ params }: Props) {
           answer:
             "The simplest way is the Contact page: a single form covers quotes, audits, training, implementations, 1-to-1 and partnerships, with a human reply within 48 business hours. You can also book a discovery call directly.",
         },
+        // Qualiopi / funding Q&A — emitted ONLY in Phase B (OF flag). Funding
+        // doctrine: never CPF, never "100% / free", never a certificate number;
+        // only OPCO / France Travail, "coverage possible depending on your situation".
+        ...(ofPublic
+          ? [
+              {
+                id: "qualiopi",
+                question: "Is Axion-IA a Qualiopi-certified training provider?",
+                answer:
+                  "Yes. Axion-IA is a Qualiopi-certified training provider for training actions. This certification attests to the quality of the training process and is a prerequisite for access to public and pooled funding (OPCO, France Travail).",
+              },
+              {
+                id: "financement",
+                question: "Can Axion-IA's AI trainings be funded (OPCO, France Travail)?",
+                answer:
+                  "Depending on your situation, an AI training may be covered, in whole or in part, by your OPCO (for employees) or by France Travail (for jobseekers). Axion-IA reviews your eligibility and builds the file with you, across France. Payment depends on the funding body's approval.",
+              },
+            ]
+          : []),
       ];
 
   return (
