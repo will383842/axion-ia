@@ -10,7 +10,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { BadgeCheck, ArrowRight } from "lucide-react";
+import { BadgeCheck, ArrowRight, MapPin, Layers, Compass, Star } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -18,13 +18,15 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { Cta } from "@/components/marketing/Cta";
 import { buildProductMetadata } from "@/lib/seo";
-import { getReviewBySlug, getRelatedReviews } from "@/server/reviews/queries";
+import { getReviewBySlug, getRelatedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { reviewToJsonLd } from "@/server/reviews/jsonld";
 import { StarRating } from "@/components/reviews/StarRating";
 import { ReviewAvatar } from "@/components/reviews/ReviewAvatar";
 import { RelatedReviews } from "@/components/reviews/RelatedReviews";
 import { reviewAuthorName, reviewMetaLine } from "@/lib/reviews/display";
 import { getServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
+import { clientSectorLabel } from "@/content/sectors";
+import { FACET_MIN_COUNT } from "@/lib/reviews/config";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -68,7 +70,46 @@ export default async function AvisDetailPage({ params }: Props) {
   const meta = reviewMetaLine(review);
   const date = review.publishedAt ?? review.createdAt;
   const svc = review.serviceLine ? getServiceLine(review.serviceLine) : undefined;
-  const related = await getRelatedReviews(review, 3);
+  const serviceLabel = review.serviceLine ? serviceLineLabel(review.serviceLine) : null;
+  const sectorLabel = review.clientSector ? clientSectorLabel(review.clientSector) : null;
+  const cityLabel = review.cityName ?? null;
+
+  // Agrégats par portée (service / ville / secteur) — alimentent la phrase de
+  // contexte + gèrent les liens de maillage. On ne requête que les portées que
+  // l'avis possède réellement.
+  const [related, svcAgg, cityAgg, sectorAgg, globalAgg] = await Promise.all([
+    getRelatedReviews(review, 3),
+    review.serviceLine
+      ? getAggregateRating({ serviceLine: review.serviceLine })
+      : Promise.resolve(null),
+    review.citySlug ? getAggregateRating({ citySlug: review.citySlug }) : Promise.resolve(null),
+    review.clientSector
+      ? getAggregateRating({ clientSector: review.clientSector })
+      : Promise.resolve(null),
+    getAggregateRating(),
+  ]);
+
+  // Un lien vers une page facette n'est valide que si la facette atteint le seuil
+  // (sinon la route facette renvoie notFound → lien mort). Garde-fou anti-régression.
+  const linkCity = Boolean(review.citySlug && (cityAgg?.reviewCount ?? 0) >= FACET_MIN_COUNT);
+  const linkSector = Boolean(
+    review.clientSector && (sectorAgg?.reviewCount ?? 0) >= FACET_MIN_COUNT,
+  );
+  const linkServiceFacet = Boolean(
+    review.serviceLine && (svcAgg?.reviewCount ?? 0) >= FACET_MIN_COUNT,
+  );
+  const hasExplore = linkCity || linkSector || linkServiceFacet;
+  // Phrase de contexte factuelle (varie par avis) : portée la plus pertinente d'abord
+  // (service → secteur → global). Affichée à partir de 2 avis (sinon « 1 avis » = vide
+  // de sens). La portée inclut sa préposition pour une phrase naturelle.
+  const contextAgg =
+    svcAgg && svcAgg.reviewCount >= 2 && serviceLabel
+      ? { label: `sur ${serviceLabel}`, agg: svcAgg }
+      : sectorAgg && sectorAgg.reviewCount >= 2 && sectorLabel
+        ? { label: `dans le secteur ${sectorLabel}`, agg: sectorAgg }
+        : globalAgg && globalAgg.reviewCount >= 2
+          ? { label: "sur Axion-IA", agg: globalAgg }
+          : null;
 
   return (
     <>
@@ -85,7 +126,7 @@ export default async function AvisDetailPage({ params }: Props) {
 
       <Section tone="canvas">
         <div className="mx-auto max-w-2xl">
-          <article className="bg-paper border-border shadow-card rounded-2xl border p-6 sm:p-8">
+          <article className="bg-paper border-border-strong shadow-card rounded-2xl border p-6 sm:p-8">
             {/* En-tête */}
             <div className="flex items-start gap-4">
               <ReviewAvatar
@@ -163,8 +204,83 @@ export default async function AvisDetailPage({ params }: Props) {
         </div>
       </Section>
 
+      {/* Cet avis en contexte — phrase factuelle (varie par avis) + maillage interne
+          vers les facettes ville/secteur/service (gaté ≥ FACET_MIN_COUNT). */}
+      {contextAgg || hasExplore ? (
+        <Section tone="sand" eyebrow="En contexte" title="Cet avis en" titleEm="contexte">
+          <div className="mx-auto max-w-2xl space-y-6">
+            {contextAgg ? (
+              <p className="text-fg-soft text-lg leading-relaxed">
+                Cet avis fait partie de{" "}
+                <strong className="text-fg">
+                  {contextAgg.agg.reviewCount} avis clients vérifiés
+                </strong>{" "}
+                {contextAgg.label} — note moyenne{" "}
+                <strong className="text-terracotta">
+                  {contextAgg.agg.ratingValue.toLocaleString("fr-FR", {
+                    minimumFractionDigits: 1,
+                  })}
+                  /5
+                </strong>
+                .
+              </p>
+            ) : null}
+            <ul className="flex list-none flex-wrap gap-3 p-0">
+              {linkCity ? (
+                <li>
+                  <Link
+                    href={{ pathname: "/avis/ville/[ville]", params: { ville: review.citySlug! } }}
+                    className="border-border-strong bg-paper text-fg hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
+                  >
+                    <MapPin aria-hidden="true" className="text-terracotta h-4 w-4" />
+                    Avis à {cityLabel}
+                  </Link>
+                </li>
+              ) : null}
+              {linkSector ? (
+                <li>
+                  <Link
+                    href={{
+                      pathname: "/avis/secteur/[secteur]",
+                      params: { secteur: review.clientSector! },
+                    }}
+                    className="border-border-strong bg-paper text-fg hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
+                  >
+                    <Layers aria-hidden="true" className="text-terracotta h-4 w-4" />
+                    Avis secteur {sectorLabel}
+                  </Link>
+                </li>
+              ) : null}
+              {linkServiceFacet ? (
+                <li>
+                  <Link
+                    href={{
+                      pathname: "/avis/service/[service]",
+                      params: { service: review.serviceLine! },
+                    }}
+                    className="border-border-strong bg-paper text-fg hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
+                  >
+                    <Star aria-hidden="true" className="text-terracotta h-4 w-4" />
+                    Avis sur {serviceLabel}
+                  </Link>
+                </li>
+              ) : null}
+              <li>
+                <Link
+                  href="/avis"
+                  className="border-border-strong bg-paper text-fg hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
+                >
+                  <Compass aria-hidden="true" className="text-terracotta h-4 w-4" />
+                  Tous les avis clients
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </Section>
+      ) : null}
+
       {related.length > 0 ? (
-        <Section tone="sand">
+        <Section tone="paper">
           <RelatedReviews reviews={related} title="Avis similaires" />
         </Section>
       ) : null}
