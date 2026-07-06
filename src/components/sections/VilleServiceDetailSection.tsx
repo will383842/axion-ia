@@ -253,35 +253,11 @@ export function VilleServiceDetailSection({
         </div>
       ) : null}
 
-      {/* TESTIMONIALS — preuve sociale ville × service */}
-      {copy.testimonials && copy.testimonials.length > 0 ? (
-        <div className="mb-14">
-          <h2
-            className="text-fg mb-6 text-2xl leading-tight font-semibold tracking-tight"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            {isFr ? "Ils nous ont confié" : "They trusted us with"}{" "}
-            <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
-              {isFr ? `leur ${labelService.toLowerCase()}` : `their ${labelService.toLowerCase()}`}
-            </span>
-          </h2>
-          <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            {copy.testimonials.map((t, idx) => (
-              <li key={idx} className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
-                <p
-                  className="text-fg text-base leading-relaxed italic sm:text-lg"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  «&nbsp;{t.quote}&nbsp;»
-                </p>
-                <p className="text-fg-muted mt-4 text-[11px] font-semibold tracking-[0.16em] uppercase">
-                  {t.role} · {t.companyProfile}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      {/* TESTIMONIALS ville×service RETIRÉS (2026-07-06) — étaient des avis
+          fabriqués (non consentis, non vérifiables → risque E-E-A-T/DGCCRF).
+          Remplacés par le vrai système d'avis clients modérés : /avis (+ facettes
+          par ville /avis/ville/[ville] et par service /avis/service/[service]).
+          Le champ `copy.testimonials` des fichiers villes n'est plus rendu. */}
 
       {/* GUARANTEES — engagement contractuel */}
       {copy.guarantees ? (

@@ -16,7 +16,7 @@ import { AuditContactBand } from "@/components/services/audit/AuditContactBand";
 import { AuditAudience } from "@/components/services/audit/AuditAudience";
 import { AuditWhyChooseUs } from "@/components/services/audit/AuditWhyChooseUs";
 import { AuditRealisations } from "@/components/services/audit/AuditRealisations";
-import { AuditClientReviews } from "@/components/services/audit/AuditClientReviews";
+import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
 import { AuditBenefits } from "@/components/services/audit/AuditBenefits";
 import { AuditProcessFlow } from "@/components/services/audit/AuditProcessFlow";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
@@ -220,7 +220,7 @@ export default async function AuditHub({ params }: Props) {
 
       {/* AVIS CLIENTS — preuve sociale (5 étoiles + avatar), réaliste sans
           inventer de marque (prénom + initiale + fonction). (Will 2026-05-31) */}
-      <AuditClientReviews isFr={isFr} />
+      <ServiceReviewsSection serviceLine="audits" />
 
       {/* Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />

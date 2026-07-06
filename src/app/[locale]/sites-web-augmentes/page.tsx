@@ -39,7 +39,7 @@ import { SitesWebLandingLinks } from "@/components/services/sites-web/SitesWebLa
 import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMethodology";
 import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
 import { SitesWebRealisations } from "@/components/services/sites-web/SitesWebRealisations";
-import { SitesWebReviews } from "@/components/services/sites-web/SitesWebReviews";
+import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
 import { SitesWebWhyChooseUs } from "@/components/services/sites-web/SitesWebWhyChooseUs";
 import { SitesWebStackAdaptee } from "@/components/services/sites-web/SitesWebStackAdaptee";
 import { SitesWebWhyNow } from "@/components/services/sites-web/SitesWebWhyNow";
@@ -235,7 +235,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       <SitesWebRealisations isFr={isFr} />
 
       {/* AVIS CLIENTS — 6 portraits + note 5 étoiles */}
-      <SitesWebReviews isFr={isFr} />
+      <ServiceReviewsSection serviceLine="sites_web_augmentes" />
 
       {/* POURQUOI NOUS CHOISIR + transparence on-fait/on-ne-fait-pas */}
       <SitesWebWhyChooseUs isFr={isFr} />
