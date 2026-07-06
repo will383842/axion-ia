@@ -21,7 +21,10 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
-import { CASE_STUDIES } from "@/content/case-studies";
+import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
+import { orgAggregateJsonLd } from "@/server/reviews/jsonld";
+import { ReviewCard } from "@/components/reviews/ReviewCard";
+import { HomeReviewsCarousel } from "@/components/home/HomeReviewsCarousel";
 import { SERVICE_BY_ID, serviceNavShort, serviceOfficial } from "@/content/services";
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { CLIENT_LOGOS, VIDEO_TESTIMONIALS, SECTORS } from "@/content/home-data";
@@ -89,6 +92,16 @@ export default async function Home({ params }: HomeProps) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
   const t = await getTranslations("home");
+
+  // Avis clients RÉELS (customer_reviews) pour la section témoignages de la home —
+  // remplace les anciennes citations fabriquées (CASE_STUDIES + photos Unsplash +
+  // note « 4,9/5 » factice). `featured` d'abord, puis récents. `homeReviewsOrgAgg`
+  // ré-active honnêtement l'AggregateRating JSON-LD (gaté ≥ 5 avis publiés).
+  const [homeReviews, homeReviewsAgg] = await Promise.all([
+    getPublishedReviews({ sort: "featured", pageSize: 9 }),
+    getAggregateRating({}),
+  ]);
+  const homeReviewsOrgAgg = orgAggregateJsonLd(homeReviewsAgg);
 
   // Prix dérivés du SSOT pricing.ts — injectés dans les messages i18n via {price}/{priceRange}.
   // Sprint 14.10.5 : zéro hardcode. Range audit obsolète (290-1990 €) remplacé par
@@ -295,13 +308,9 @@ export default async function Home({ params }: HomeProps) {
     url: `${SITE_URL}${SERVICE_PATHS[v.id] ?? "/"}`,
   }));
 
-  // 2) Reviewed cases — utilisés pour le rendu visuel des testimonials.
-  // AggregateRating + Review[] JSON-LD RETIRÉS (audit perfection mai 2026) :
-  // - Google exige n ≥ 5 avis vérifiables avec datePublished
-  // - Photos clients pas encore disponibles (autorisations en cours)
-  // → Risque "trompeur" si on émet un JSON-LD avec données factices.
-  // Ré-activer quand Will aura collecté ≥ 5 vrais avis avec accord écrit + dates.
-  const reviewedCases = CASE_STUDIES.filter((c) => c[loc].testimonialQuote);
+  // 2) Témoignages home = désormais les VRAIS avis clients (customer_reviews,
+  // fetchés plus haut). L'AggregateRating JSON-LD, retiré en mai 2026 faute de
+  // ≥ 5 vrais avis datés, est ré-activé via `homeReviewsOrgAgg` (gaté ≥ 5).
 
   // BreadcrumbList JSON-LD : ABSENT volontairement sur la home (convention 2026 :
   // la home EST la racine hiérarchique → un BL self-referencing 1-item est un
@@ -1516,133 +1525,62 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 {t("testimonialsTitlePart2")}
               </h2>
-              {/* Rating moyen global */}
-              <div className="mt-7 inline-flex flex-col items-center gap-2">
-                {/* A11Y Phase 1 fix 2026-05-25 — axe `aria-prohibited-attr` :
-                    aria-label sur <div> sans role est interdit. role="img" rend
-                    le groupe d'étoiles annoncé comme image avec son label. */}
-                <div
-                  role="img"
-                  aria-label={isFr ? "5 étoiles sur 5" : "5 stars out of 5"}
-                  className="flex items-center gap-1"
-                >
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <Star
-                      key={i}
-                      className="text-terracotta h-5 w-5 fill-current"
-                      aria-hidden="true"
-                    />
-                  ))}
+              {/* Note moyenne RÉELLE, dérivée des avis publiés (customer_reviews). */}
+              {homeReviewsAgg ? (
+                <div className="mt-7 inline-flex flex-col items-center gap-2">
+                  <div
+                    role="img"
+                    aria-label={`${homeReviewsAgg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })} sur 5`}
+                    className="flex items-center gap-1"
+                  >
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <Star
+                        key={i}
+                        className={`h-5 w-5 ${i < Math.round(homeReviewsAgg.ratingValue) ? "text-terracotta fill-current" : "text-border"}`}
+                        aria-hidden="true"
+                      />
+                    ))}
+                  </div>
+                  <p className="text-fg-soft text-sm">
+                    <span className="text-fg font-bold">
+                      {homeReviewsAgg.ratingValue.toLocaleString("fr-FR", {
+                        minimumFractionDigits: 1,
+                      })}{" "}
+                      / 5
+                    </span>
+                    {isFr
+                      ? ` — sur ${homeReviewsAgg.reviewCount} avis clients vérifiés`
+                      : ` — based on ${homeReviewsAgg.reviewCount} verified reviews`}
+                  </p>
                 </div>
-                <p className="text-fg-soft text-sm">
-                  <span className="text-fg font-bold">4,9 / 5</span>
-                  {isFr
-                    ? " — basé sur les retours opérationnels"
-                    : " — based on operational feedback"}
-                </p>
-              </div>
+              ) : null}
             </div>
           </FadeInOnView>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {reviewedCases.map((c, idx) => {
-              const author = c[loc].testimonialAuthor;
-              // Photos Unsplash (libres de droits — Unsplash License) sélectionnées
-              // pour profils business diversifiés. Note : Review[] JSON-LD non émis
-              // pour éviter risque "avis trompeurs" Google (audit perfection mai 2026).
-              // À swapper par les vraies photos clients quand autorisations OK.
-              const unsplashPhotos = [
-                "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80",
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
-                "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=faces&q=80",
-                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces&q=80",
-                "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=faces&q=80",
-              ] as const;
-              const photoUrl = unsplashPhotos[idx % unsplashPhotos.length] ?? unsplashPhotos[0];
-              return (
-                <li
-                  key={c.slug}
-                  className="bg-paper border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-5 rounded-2xl border p-6 transition sm:p-7"
-                >
-                  <FadeInOnView delay={idx * 80}>
-                    {/* Header : étoiles + badge vérifié */}
-                    <div className="flex items-center justify-between">
-                      <div
-                        role="img"
-                        aria-label={isFr ? "Note 5 étoiles sur 5" : "5-star rating"}
-                        className="flex items-center gap-0.5"
-                      >
-                        {[0, 1, 2, 3, 4].map((i) => (
-                          <Star
-                            key={i}
-                            className="text-terracotta h-4 w-4 fill-current"
-                            aria-hidden="true"
-                          />
-                        ))}
-                      </div>
-                      <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold tracking-tight uppercase">
-                        <Shield className="h-3 w-3" aria-hidden="true" />
-                        {isFr ? "Vérifié" : "Verified"}
-                      </span>
-                    </div>
-                    {/* Métrique chiffrée en badge */}
-                    <span className="bg-bg text-fg border-border inline-flex w-fit items-center rounded-full border px-3 py-1 text-xs font-semibold">
-                      {c.metric}
-                    </span>
-                    {/* Quote */}
-                    <blockquote
-                      cite={`${SITE_URL}/${loc}/cas-concrets/${c.slug}`}
-                      className="text-fg flex-1 text-base leading-[1.5] sm:text-lg"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      <span
-                        className="text-terracotta mr-1 text-2xl leading-none"
-                        aria-hidden="true"
-                      >
-                        &ldquo;
-                      </span>
-                      {c[loc].testimonialQuote}
-                      <span
-                        className="text-terracotta ml-0.5 text-2xl leading-none"
-                        aria-hidden="true"
-                      >
-                        &rdquo;
-                      </span>
-                    </blockquote>
-                    {/* Auteur : photo Unsplash + nom + rôle + secteur */}
-                    <footer className="border-border mt-2 flex items-center gap-3 border-t pt-4">
-                      <span className="ring-paper relative inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full shadow-sm ring-2">
-                        <Image
-                          src={photoUrl}
-                          alt={`Portrait — ${author}`}
-                          width={96}
-                          height={96}
-                          sizes="48px"
-                          quality={85}
-                          className="h-full w-full object-cover"
-                        />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-fg truncate text-sm font-bold">{author}</p>
-                        <p className="text-fg-muted truncate text-xs">{c[loc].testimonialRole}</p>
-                        <p className="text-terracotta truncate text-[11px] font-semibold">
-                          {isFr ? c.industry : c.industryEn}
-                        </p>
-                      </div>
-                    </footer>
-                  </FadeInOnView>
-                </li>
-              );
-            })}
-          </ul>
-          {/* Lien contextuel /blog (audit P0-4 internal linking 2026-05-24) */}
+          {homeReviews.items.length > 0 ? (
+            <HomeReviewsCarousel>
+              {homeReviews.items.map((r) => (
+                <ReviewCard key={r.id} review={r} className="h-full" />
+              ))}
+            </HomeReviewsCarousel>
+          ) : (
+            <div className="border-border mx-auto max-w-xl rounded-2xl border border-dashed p-8 text-center">
+              <p className="text-fg-soft">
+                {isFr
+                  ? "Nos premiers avis clients arrivent. "
+                  : "Our first customer reviews are coming. "}
+                <Link href="/avis/deposer" className="text-terracotta font-semibold underline">
+                  {isFr ? "Soyez le premier à témoigner" : "Be the first to leave a review"}
+                </Link>
+              </p>
+            </div>
+          )}
+          {/* Lien vers le hub des avis clients */}
           <p className="text-fg-muted mt-12 text-center text-sm">
             <Link
-              href="/blog"
+              href="/avis"
               className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
             >
-              {isFr
-                ? "Plus d'analyses et retours d'expérience sur le blog"
-                : "More analysis & feedback on our blog"}
+              {isFr ? "Voir tous les avis clients" : "See all customer reviews"}
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </p>
@@ -1742,6 +1680,7 @@ export default async function Home({ params }: HomeProps) {
       {homeImagesJsonLd ? <JsonLd data={homeImagesJsonLd} /> : null}
       {/* BreadcrumbList JSON-LD ABSENT : home = racine hiérarchique (cf. audit A4 2026-05-24) */}
       {videosJsonLd.length > 0 ? <JsonLd data={videosJsonLd} /> : null}
+      {homeReviewsOrgAgg ? <JsonLd data={homeReviewsOrgAgg} /> : null}
 
       {/* ───────────── STICKY MOBILE CTA (Blueprint §19) ─────────────
           Bouton fixé bas d'écran sur mobile, apparaît après scroll > 600 px.

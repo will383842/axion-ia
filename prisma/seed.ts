@@ -483,30 +483,12 @@ async function seedTestimonials() {
     },
   ] as const;
 
-  for (const t of ts) {
-    await prisma.testimonial.upsert({
-      where: { slug: t.slug },
-      update: {},
-      create: {
-        slug: t.slug,
-        firstName: t.firstName,
-        lastName: t.lastName,
-        role: t.role,
-        company: t.company,
-        sector: t.sector,
-        companySize: t.companySize,
-        shortQuoteFr: t.shortQuoteFr,
-        shortQuoteEn: t.shortQuoteEn,
-        fullQuoteFr: t.fullQuoteFr,
-        fullQuoteEn: t.fullQuoteEn,
-        rating: t.rating,
-        module: t.module,
-        resultHighlight: t.resultHighlight,
-        status: "published",
-      },
-    });
-  }
-  console.log(`✓ ${ts.length} testimonials seeded`);
+  // ⚠️ Témoignages fabriqués RETIRÉS (2026-07-06). La home et les surfaces
+  // publiques affichent désormais les VRAIS avis clients (table customer_reviews),
+  // en rotation. On ne seed plus AUCUN témoignage factice (risque L121-2/DGCCRF).
+  // `ts` est conservé en référence historique mais n'est plus inséré.
+  void ts.length;
+  console.log("✓ testimonials seed skipped (fakes removed — real customer reviews used)");
 }
 
 // ============================================================
