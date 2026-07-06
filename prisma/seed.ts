@@ -367,131 +367,6 @@ async function seedArticles() {
 }
 
 // ============================================================
-// 7. Testimonials (6 bilingues)
-// ============================================================
-
-async function seedTestimonials() {
-  const ts = [
-    {
-      slug: "marie-dupont-industrie",
-      firstName: "Marie",
-      lastName: "Dupont",
-      role: "DAF",
-      company: "Indus·PME",
-      sector: "Industrie",
-      companySize: "10-49",
-      shortQuoteFr: "Axion-IA a divisé par 3 notre temps de traitement comptable.",
-      shortQuoteEn: "Axion-IA cut our accounting processing time by 3x.",
-      fullQuoteFr:
-        "Audit en 5 jours, déploiement en 6 semaines. ROI atteint en 4 mois sur le périmètre fournisseurs. Les équipes ont enfin du temps pour les sujets à valeur ajoutée.",
-      fullQuoteEn:
-        "Audit in 5 days, deployment in 6 weeks. ROI reached in 4 months on the supplier scope. Teams finally have time for value-add topics.",
-      rating: 5,
-      module: "implementation",
-      resultHighlight: "-32% temps admin",
-    },
-    {
-      slug: "jean-martin-distribution",
-      firstName: "Jean",
-      lastName: "Martin",
-      role: "Dirigeant",
-      company: "Distribut·SARL",
-      sector: "Distribution",
-      companySize: "50-249",
-      shortQuoteFr: "Le diagnostic a évité 2 paris technologiques que nous regrettions déjà.",
-      shortQuoteEn: "The diagnostic avoided 2 tech bets we were already regretting.",
-      fullQuoteFr:
-        "L'audit nous a fait abandonner deux projets IA mal cadrés et concentrer le budget sur trois quick-wins concrets. Économie estimée : 80 K€ sur l'année.",
-      fullQuoteEn:
-        "The audit made us drop two poorly scoped AI projects and focus budget on three concrete quick-wins. Estimated savings: €80K over the year.",
-      rating: 5,
-      module: "audit",
-      resultHighlight: "-80 K€ paris évités",
-    },
-    {
-      slug: "sophie-bernard-services",
-      firstName: "Sophie",
-      lastName: "Bernard",
-      role: "DRH",
-      company: "Services·SAS",
-      sector: "Services B2B",
-      companySize: "10-49",
-      shortQuoteFr: "L'intervention Essentielle a aligné le CODIR en une journée.",
-      shortQuoteEn: "The Essentielle session aligned the executive committee in one day.",
-      fullQuoteFr:
-        "490 € pour faire converger six dirigeants sur une feuille de route IA — incomparable. Le plan 90 jours a été tenu intégralement, livrables compris.",
-      fullQuoteEn:
-        "€490 to converge six executives on an AI roadmap — incomparable. The 90-day plan was fully delivered.",
-      rating: 5,
-      module: "intervention",
-      resultHighlight: "1 journée → roadmap CODIR",
-    },
-    {
-      slug: "ahmed-belkacem-tech",
-      firstName: "Ahmed",
-      lastName: "Belkacem",
-      role: "CTO",
-      company: "ScaleUp·SAS",
-      sector: "Tech B2B",
-      companySize: "50-249",
-      shortQuoteFr: "IA Custom livrée en 8 semaines, déjà ROI sur le 4e mois.",
-      shortQuoteEn: "Custom AI delivered in 8 weeks, ROI on month 4.",
-      fullQuoteFr:
-        "Modèle propriétaire de scoring lead, déployé sur Hetzner UE pour la conformité. Les commerciaux gagnent 1h/jour de qualification, le pipeline se concentre sur les opportunités gagnables.",
-      fullQuoteEn:
-        "Proprietary lead scoring model, deployed on EU Hetzner for compliance. Sales reps save 1h/day of qualification, the pipeline focuses on winnable opportunities.",
-      rating: 5,
-      module: "implementation",
-      resultHighlight: "+30 % conv. lead",
-    },
-    {
-      slug: "claire-leroy-cabinet",
-      firstName: "Claire",
-      lastName: "Leroy",
-      role: "Associée",
-      company: "Cabinet·SCP",
-      sector: "Conseil",
-      companySize: "10-49",
-      shortQuoteFr: "Le rapport d'audit fait référence en interne, on s'y appuie 6 mois après.",
-      shortQuoteEn: "The audit report is our internal reference, we still use it 6 months later.",
-      fullQuoteFr:
-        "Audit cabinet 990 € HT, livré en 5 jours ouvrés. Cartographie 18 flux, 12 quick-wins identifiés, 6 implémentés. Très en deçà de ce qu'un Big4 aurait facturé.",
-      fullQuoteEn:
-        "€990 audit, delivered in 5 working days. 18 flows mapped, 12 quick-wins identified, 6 implemented. Far below what a Big4 would have charged.",
-      rating: 5,
-      module: "audit",
-      resultHighlight: "12 quick-wins / 18 flux",
-    },
-    {
-      slug: "nicolas-faure-retail",
-      firstName: "Nicolas",
-      lastName: "Faure",
-      role: "Directeur Général",
-      company: "Retail·SARL",
-      sector: "Retail",
-      companySize: "1-9",
-      shortQuoteFr:
-        "Conférence demi-journée, 12 collaborateurs convaincus que l'IA n'est pas une menace.",
-      shortQuoteEn: "Half-day conference, 12 colleagues convinced that AI is not a threat.",
-      fullQuoteFr:
-        "Format conférence + atelier sur site. L'effet déclic chez l'équipe a été immédiat. Trois projets IA ont été lancés dans le mois, portés par les opérationnels eux-mêmes.",
-      fullQuoteEn:
-        "Conference + on-site workshop format. The team's lightbulb moment was immediate. Three AI projects launched within the month, owned by the operational teams themselves.",
-      rating: 5,
-      module: "intervention",
-      resultHighlight: "3 projets dans le mois",
-    },
-  ] as const;
-
-  // ⚠️ Témoignages fabriqués RETIRÉS (2026-07-06). La home et les surfaces
-  // publiques affichent désormais les VRAIS avis clients (table customer_reviews),
-  // en rotation. On ne seed plus AUCUN témoignage factice (risque L121-2/DGCCRF).
-  // `ts` est conservé en référence historique mais n'est plus inséré.
-  void ts.length;
-  console.log("✓ testimonials seed skipped (fakes removed — real customer reviews used)");
-}
-
-// ============================================================
 // 8. Case studies (3 + translations)
 // ============================================================
 
@@ -520,7 +395,6 @@ async function seedCaseStudies() {
         "5-day audit → invoice reading automation + Sage push. 6-week deployment. €290/month maintenance.",
       durationWeeks: 6,
       roiWeeks: 16,
-      testimonialSlug: "claire-leroy-cabinet",
       publishedAt: new Date("2026-04-10T08:00:00Z"),
     },
     {
@@ -546,7 +420,6 @@ async function seedCaseStudies() {
         "AI invoice reading (PDF/scan/email) + structured extraction + ERP push. 2-level validation workflow > €5K.",
       durationWeeks: 8,
       roiWeeks: 18,
-      testimonialSlug: "marie-dupont-industrie",
       publishedAt: new Date("2026-04-18T08:00:00Z"),
     },
     {
@@ -572,16 +445,11 @@ async function seedCaseStudies() {
         "Custom AI lead scoring deployed on EU Hetzner (GDPR-compliant). Proprietary model trained on 18 months CRM.",
       durationWeeks: 8,
       roiWeeks: 14,
-      testimonialSlug: "ahmed-belkacem-tech",
       publishedAt: new Date("2026-04-25T08:00:00Z"),
     },
   ];
 
   for (const c of cases) {
-    const testimonial = await prisma.testimonial.findUnique({
-      where: { slug: c.testimonialSlug },
-    });
-
     // Check if already exists by slug fr
     const existing = await prisma.caseStudyTranslation.findUnique({
       where: { locale_slug: { locale: "fr", slug: c.slugFr } },
@@ -597,7 +465,6 @@ async function seedCaseStudies() {
         resultsQuantified: c.resultsQuantified,
         durationWeeks: c.durationWeeks,
         roiWeeks: c.roiWeeks,
-        testimonialId: testimonial?.id ?? null,
         status: "published",
         publishedAt: c.publishedAt,
         translations: {
@@ -1008,7 +875,6 @@ async function main() {
   await seedAuthor();
   await seedTags();
   await seedArticles();
-  await seedTestimonials();
   await seedCaseStudies();
   await seedFAQs();
   await seedHelpArticles();

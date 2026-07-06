@@ -483,7 +483,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },
-    { href: `${base}/testimonials`, label: "Témoignages", icon: "💬", group: "content" },
     { href: `${base}/avis`, label: "Avis clients", icon: "⭐", group: "content" },
     { href: `${base}/offres-emploi`, label: "Offres d'emploi", icon: "💼", group: "content" },
     { href: `${base}/faq`, label: "FAQ", icon: "❓", group: "content" },

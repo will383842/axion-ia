@@ -36,7 +36,6 @@ function makeCaseStudy(o: Partial<CaseStudy> = {}): CaseStudy {
     resultsQuantified: {},
     durationWeeks: 4,
     roiWeeks: 8,
-    testimonialId: null,
     status: "draft",
     publishedAt: null,
     createdAt: new Date("2026-01-01T00:00:00Z"),

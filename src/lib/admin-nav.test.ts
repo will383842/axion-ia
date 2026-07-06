@@ -13,7 +13,8 @@ describe("buildAdminNav SSOT", () => {
     // campagnes, entreprises, contacts, couverture, carte, par activité, personnes,
     // exports, journal, rgpd, doublons, réglages) → 117 → 131.
     // +1 Avis clients 2026-07-06 (groupe content, modération avis) → 132.
-    expect(items.length).toBe(132);
+    // -1 Témoignages 2026-07-06 (système Testimonial décommissionné) → 131.
+    expect(items.length).toBe(131);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

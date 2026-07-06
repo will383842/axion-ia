@@ -3,7 +3,7 @@
 // Multilingue option (b) — CaseStudyTranslation separee. Structure :
 //   - CaseStudy : sector, companySizeRange, region, modulesUsed JSON,
 //     resultsQuantified JSON [{label, value, unit}], durationWeeks,
-//     roiWeeks, testimonialId FK, status, publishedAt
+//     roiWeeks, status, publishedAt
 //   - CaseStudyTranslation : locale, title, slug, problem, solution,
 //     metaTitle, metaDescription
 
@@ -78,7 +78,6 @@ export async function listCaseStudiesAction(input: Partial<ListCaseStudiesInput>
           where: { locale: "fr" },
           select: { title: true, slug: true },
         },
-        testimonial: { select: { firstName: true, lastName: true, slug: true } },
         updatedAt: true,
       },
     }),
@@ -98,17 +97,7 @@ export async function getCaseStudyDetailAction(id: string) {
     where: { id },
     include: {
       translations: { orderBy: { locale: "asc" } },
-      testimonial: { select: { id: true, slug: true, firstName: true, lastName: true } },
     },
-  });
-}
-
-export async function listCandidateTestimonialsAction() {
-  await requireAdminRead();
-  return prisma.testimonial.findMany({
-    where: { status: "published" },
-    select: { id: true, slug: true, firstName: true, lastName: true, company: true },
-    orderBy: { lastName: "asc" },
   });
 }
 
@@ -167,7 +156,6 @@ const upsertSchema = z.object({
   resultsQuantified: z.array(resultEntrySchema).default([]),
   durationWeeks: z.coerce.number().int().min(0).optional(),
   roiWeeks: z.coerce.number().int().min(0).optional(),
-  testimonialId: z.string().uuid().nullable().optional(),
   status: z.enum(["draft", "published", "archived"]).default("draft"),
   publishedAt: z.string().optional(),
   fr: translationSchema,
@@ -211,7 +199,6 @@ export async function upsertCaseStudyAction(
     resultsQuantified,
     durationWeeks: formData.get("durationWeeks") || undefined,
     roiWeeks: formData.get("roiWeeks") || undefined,
-    testimonialId: formData.get("testimonialId") || null,
     status: formData.get("status") || "draft",
     publishedAt: formData.get("publishedAt") || undefined,
     fr: {
@@ -253,7 +240,6 @@ export async function upsertCaseStudyAction(
     resultsQuantified: parsed.data.resultsQuantified,
     durationWeeks: parsed.data.durationWeeks ?? null,
     roiWeeks: parsed.data.roiWeeks ?? null,
-    testimonialId: parsed.data.testimonialId ?? null,
     status: parsed.data.status as PublishStatus,
     publishedAt: parsed.data.publishedAt ? new Date(parsed.data.publishedAt) : null,
   };
