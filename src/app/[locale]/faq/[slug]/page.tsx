@@ -10,6 +10,11 @@ import {
   ArrowUpRight,
   ArrowLeft,
   ArrowRight,
+  Sparkles,
+  Mail,
+  Rss,
+  LayoutGrid,
+  MessagesSquare,
 } from "lucide-react";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -26,7 +31,7 @@ import { splitTitleEm } from "@/lib/title";
 import { listFaqs, isFaqItemIndexable, type FaqItem } from "@/lib/knowledge/readers";
 import { WasHelpful } from "@/components/marketing/WasHelpful";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
-import { getFaqCategory } from "@/content/faq-categories";
+import { getFaqCategory, FAQ_CATEGORIES } from "@/content/faq-categories";
 import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
 
 interface Props {
@@ -152,13 +157,13 @@ export default async function FaqEntryPage({ params }: Props) {
     curIdx >= 0 && curIdx < inCategory.length - 1 ? (inCategory[curIdx + 1] ?? null) : null;
 
   // FAQ liées — priorité à la même catégorie (maillage sémantique, perfection
-  // FAQ 2026-05-31), complété par d'autres questions si < 4. Enrichies d'un
-  // extrait + label catégorie pour l'affichage en cards (refonte 2026-06-01).
+  // FAQ 2026-05-31), complété par d'autres questions si < 6. Enrichies d'un
+  // extrait + label catégorie pour l'affichage en cards (refonte 2026-07-06).
   const pool = faqs.filter((f) => f.slug !== entry.slug);
   const sameCategory = pool.filter((f) => f.category === entry.category);
   const relatedRaw = [...sameCategory, ...pool.filter((f) => f.category !== entry.category)].slice(
     0,
-    4,
+    6,
   );
   const snippetOf = (a: string) => (a.length > 120 ? `${a.slice(0, 118).trimEnd()}…` : a);
   const related = relatedRaw.map((f) => {
@@ -171,6 +176,18 @@ export default async function FaqEntryPage({ params }: Props) {
       catLabel: def ? (isFr ? def.labelFr : def.labelEn) : null,
     };
   });
+
+  // Explorateur de thématiques (maillage GEO hub → catégorie) : chaque catégorie
+  // non vide, avec son nombre de questions, pointe vers /faq/par-thematique/<cat>.
+  const categoryNav = FAQ_CATEGORIES.map((c) => {
+    const count = faqs.filter((f) => f.category === c.slug).length;
+    return {
+      slug: c.slug,
+      label: isFr ? c.labelFr : c.labelEn,
+      count,
+      Icon: FAQ_CATEGORY_ICONS[c.slug] ?? FAQ_CATEGORY_ICON_FALLBACK,
+    };
+  }).filter((c) => c.count > 0);
 
   // Réponse directe AEO (40-80 mots) : pour les réponses longues, on extrait un
   // résumé en tête (1-2 phrases, ≤ ~75 mots) que les moteurs IA (AI Overviews,
@@ -192,198 +209,361 @@ export default async function FaqEntryPage({ params }: Props) {
           .text.trim()
       : null;
 
+  // La réponse complète est découpée en paragraphes (double saut de ligne) pour
+  // un rendu aéré. La plupart des entrées legacy sont mono-paragraphe → 1 <p>.
+  const answerParagraphs = copy.answer
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  const wordCount = answerWords.length;
+  const readMin = Math.max(1, Math.ceil(wordCount / 200));
+  const t = splitTitleEm(copy.question);
+
+  const heroPills: ReadonlyArray<{ icon: typeof HelpCircle; label: string }> = [
+    { icon: HelpCircle, label: isFr ? "Question fréquente" : "Frequent question" },
+    { icon: Clock, label: isFr ? `Lecture ${readMin} min` : `${readMin} min read` },
+    {
+      icon: RefreshCw,
+      label: isFr
+        ? `Mis à jour : ${new Date(FAQ_LAST_REVIEWED).toLocaleDateString("fr-FR", { year: "numeric", month: "long" })}`
+        : `Updated: ${new Date(FAQ_LAST_REVIEWED).toLocaleDateString("en-US", { year: "numeric", month: "long" })}`,
+    },
+    {
+      icon: ShieldCheck,
+      label: isAutoGen
+        ? isFr
+          ? "IA-assisté · relu"
+          : "AI-assisted · reviewed"
+        : isFr
+          ? "Source : doctrine"
+          : "Source: doctrine",
+    },
+  ];
+
+  const exploreLinks: ReadonlyArray<{ href: string; label: string; Icon: typeof HelpCircle }> = [
+    {
+      href: `/${locale}/faq`,
+      label: isFr ? "Toutes les questions" : "All questions",
+      Icon: LayoutGrid,
+    },
+    {
+      href: `/${locale}/faq/par-thematique`,
+      label: isFr ? "Par thématique" : "By topic",
+      Icon: Sparkles,
+    },
+    { href: `/${locale}/faq/feed.xml`, label: isFr ? "Flux RSS" : "RSS feed", Icon: Rss },
+  ];
+
   return (
     <>
       {/* P1-17 — alternate format markdown brut pour LLM ingestion. */}
       <link rel="alternate" type="text/markdown" href={`/api/markdown/faq/${slug}`} />
-      <Container className="border-border border-b py-3">
-        <Breadcrumbs items={breadcrumbItems} />
-      </Container>
-      {(() => {
-        const t = splitTitleEm(copy.question);
-        const wordCount = copy.answer.trim().split(/\s+/).length;
-        const readMin = Math.max(1, Math.ceil(wordCount / 200));
-        return (
-          <Section
-            titleAs="h1"
-            eyebrow="FAQ"
-            title={t.lead}
-            titleEm={t.em}
-            description={
-              isFr
-                ? "Réponse directe Axion-IA — courte, sourcée, mise à jour régulièrement."
-                : "Direct Axion-IA answer — short, sourced, regularly updated."
-            }
-          >
-            <Container className="mt-8 max-w-2xl">
-              {catLabel ? (
-                <a
-                  href={`/${locale}/faq/par-thematique/${entry.category}`}
-                  className="border-border bg-paper text-fg-soft hover:border-terracotta/60 hover:text-terracotta-deep mb-5 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-medium transition"
-                >
-                  <CatIcon className="text-terracotta h-4 w-4" aria-hidden="true" strokeWidth={2} />
-                  {catLabel}
-                </a>
-              ) : null}
-              <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
-                {[
-                  { icon: HelpCircle, label: isFr ? "Question fréquente" : "Frequent question" },
-                  { icon: Clock, label: isFr ? `Lecture ${readMin} min` : `${readMin} min read` },
-                  {
-                    icon: RefreshCw,
-                    label: isFr
-                      ? `Mis à jour : ${new Date(FAQ_LAST_REVIEWED).toLocaleDateString("fr-FR", { year: "numeric", month: "long" })}`
-                      : `Updated: ${new Date(FAQ_LAST_REVIEWED).toLocaleDateString("en-US", { year: "numeric", month: "long" })}`,
-                  },
-                  {
-                    icon: ShieldCheck,
-                    label: isAutoGen
-                      ? isFr
-                        ? "IA-assisté · relu"
-                        : "AI-assisted · reviewed"
-                      : isFr
-                        ? "Source : doctrine"
-                        : "Source: doctrine",
-                  },
-                ].map((pill) => {
-                  const Icon = pill.icon;
-                  return (
-                    <li
-                      key={pill.label}
-                      className="text-fg-soft inline-flex items-center gap-2 text-sm"
-                    >
-                      <Icon
-                        aria-hidden="true"
-                        className="text-terracotta h-4 w-4"
-                        strokeWidth={2}
-                      />
-                      <span>{pill.label}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </Container>
-          </Section>
-        );
-      })()}
 
-      <Section>
-        <Container className="max-w-3xl">
-          {/* Réponse directe citable (AEO) — .tldr-answer + data-aeo="tldr" =
-              cssSelector Speakable, isolée par les moteurs IA. Affichée seulement
-              pour les réponses longues (sinon doublon avec la réponse complète). */}
-          {directAnswer ? (
-            <p
-              className="text-fg tldr-answer border-terracotta bg-halo-warm mb-6 rounded-xl border-l-4 px-5 py-4 text-lg leading-relaxed font-medium"
-              data-aeo="tldr"
-            >
-              {directAnswer}
-            </p>
-          ) : null}
-          {/* data-aeo="answer" + .faq-answer = cssSelector Speakable JSON-LD */}
-          <p className="text-fg faq-answer text-lg leading-relaxed" data-aeo="answer">
-            {copy.answer}
-          </p>
-
-          {/* Navigation séquentielle dans la thématique (lecture continue). */}
-          {prev || next ? (
-            <nav
-              aria-label={isFr ? "Navigation dans la thématique" : "Topic navigation"}
-              className="border-border mt-10 grid gap-3 border-t pt-8 sm:grid-cols-2"
-            >
-              {prev ? (
-                <a
-                  href={`/${locale}/faq/${prev.slug}`}
-                  className="border-border bg-paper hover:border-terracotta/60 hover:shadow-subtle group rounded-xl border p-4 transition"
-                >
-                  <span className="text-fg-muted inline-flex items-center gap-1 text-xs font-medium tracking-[0.12em] uppercase">
-                    <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-                    {isFr ? "Précédent" : "Previous"}
-                  </span>
-                  <span className="text-fg group-hover:text-terracotta-deep mt-1 block text-sm font-medium transition">
-                    {getCopy(prev, loc).question}
-                  </span>
-                </a>
-              ) : (
-                <span aria-hidden="true" className="hidden sm:block" />
-              )}
-              {next ? (
-                <a
-                  href={`/${locale}/faq/${next.slug}`}
-                  className="border-border bg-paper hover:border-terracotta/60 hover:shadow-subtle group rounded-xl border p-4 transition sm:text-right"
-                >
-                  <span className="text-fg-muted inline-flex items-center gap-1 text-xs font-medium tracking-[0.12em] uppercase">
-                    {isFr ? "Suivant" : "Next"}
-                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-                  </span>
-                  <span className="text-fg group-hover:text-terracotta-deep mt-1 block text-sm font-medium transition">
-                    {getCopy(next, loc).question}
-                  </span>
-                </a>
-              ) : null}
-            </nav>
-          ) : null}
+      <div className="bg-halo-warm">
+        <Container className="pt-6">
+          <Breadcrumbs items={breadcrumbItems} />
         </Container>
+      </div>
+
+      {/* ── HÉRO — la question EST le H1 (intention de recherche) ─────────── */}
+      <Section
+        titleAs="h1"
+        eyebrow={catLabel ? `FAQ · ${catLabel}` : "FAQ"}
+        title={t.lead}
+        titleEm={t.em}
+        description={
+          isFr
+            ? "Réponse directe Axion-IA — courte, sourcée, pensée pour être citée par les moteurs de recherche et les IA."
+            : "Direct Axion-IA answer — short, sourced, built to be cited by search engines and AI assistants."
+        }
+      >
+        <div className="flex flex-col gap-6">
+          {catLabel ? (
+            <div>
+              <a
+                href={`/${locale}/faq/par-thematique/${entry.category}`}
+                className="border-border bg-paper/70 text-fg hover:border-terracotta/60 hover:text-terracotta-deep inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-medium transition"
+              >
+                <CatIcon className="text-terracotta h-4 w-4" aria-hidden="true" strokeWidth={2} />
+                {catLabel}
+              </a>
+            </div>
+          ) : null}
+          <ul role="list" className="flex flex-wrap gap-x-5 gap-y-2.5">
+            {heroPills.map((pill) => {
+              const Icon = pill.icon;
+              return (
+                <li
+                  key={pill.label}
+                  className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                >
+                  <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
+                  <span>{pill.label}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </Section>
+
+      {/* ── LA RÉPONSE — pleine largeur, 2 colonnes (réponse | aide) ─────── */}
+      <section className="bg-bg text-fg border-border relative border-t py-16 sm:py-20 lg:py-24">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_clamp(300px,26%,360px)] lg:gap-16">
+            {/* Colonne principale — la réponse citable */}
+            <div className="min-w-0">
+              <p className="text-fg-muted mb-6 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {isFr ? "La réponse" : "The answer"}
+              </p>
+
+              {/* Réponse directe citable (AEO) — .tldr-answer + data-aeo="tldr" =
+                  cssSelector Speakable, isolée par les moteurs IA. Affichée seulement
+                  pour les réponses longues (sinon doublon avec la réponse complète). */}
+              {directAnswer ? (
+                <p
+                  className="text-fg tldr-answer border-terracotta bg-halo-warm mb-8 rounded-2xl border-l-4 px-6 py-5 text-xl leading-relaxed font-medium"
+                  data-aeo="tldr"
+                >
+                  {directAnswer}
+                </p>
+              ) : null}
+
+              {/* data-aeo="answer" + .faq-answer = cssSelector Speakable JSON-LD.
+                  Le wrapper porte les sélecteurs → tous les paragraphes couverts. */}
+              <div
+                className="faq-answer text-fg-soft space-y-5 text-lg leading-relaxed sm:text-[19px]"
+                data-aeo="answer"
+              >
+                {answerParagraphs.map((para, i) => (
+                  <p key={i} className="max-w-[72ch]">
+                    {para}
+                  </p>
+                ))}
+              </div>
+
+              {/* Navigation séquentielle dans la thématique (lecture continue). */}
+              {prev || next ? (
+                <nav
+                  aria-label={isFr ? "Navigation dans la thématique" : "Topic navigation"}
+                  className="border-border mt-12 grid gap-3 border-t pt-8 sm:grid-cols-2"
+                >
+                  {prev ? (
+                    <a
+                      href={`/${locale}/faq/${prev.slug}`}
+                      className="border-border bg-paper hover:border-terracotta/60 hover:shadow-subtle group rounded-xl border p-4 transition"
+                    >
+                      <span className="text-fg-muted inline-flex items-center gap-1 text-xs font-medium tracking-[0.12em] uppercase">
+                        <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                        {isFr ? "Précédent" : "Previous"}
+                      </span>
+                      <span className="text-fg group-hover:text-terracotta-deep mt-1 block text-sm font-medium transition">
+                        {getCopy(prev, loc).question}
+                      </span>
+                    </a>
+                  ) : (
+                    <span aria-hidden="true" className="hidden sm:block" />
+                  )}
+                  {next ? (
+                    <a
+                      href={`/${locale}/faq/${next.slug}`}
+                      className="border-border bg-paper hover:border-terracotta/60 hover:shadow-subtle group rounded-xl border p-4 transition sm:text-right"
+                    >
+                      <span className="text-fg-muted inline-flex items-center gap-1 text-xs font-medium tracking-[0.12em] uppercase sm:justify-end">
+                        {isFr ? "Suivant" : "Next"}
+                        <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      </span>
+                      <span className="text-fg group-hover:text-terracotta-deep mt-1 block text-sm font-medium transition">
+                        {getCopy(next, loc).question}
+                      </span>
+                    </a>
+                  ) : null}
+                </nav>
+              ) : null}
+            </div>
+
+            {/* Rail contextuel (aide + navigation + retour) — sticky au scroll */}
+            <aside className="flex flex-col gap-5 lg:sticky lg:top-24 lg:self-start">
+              <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
+                <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                  <MessagesSquare aria-hidden="true" className="h-5 w-5" />
+                </span>
+                <h2 className="text-fg mt-4 text-lg font-semibold tracking-tight">
+                  {isFr ? "Besoin d'aller plus loin ?" : "Need to go further?"}
+                </h2>
+                <p className="text-fg-soft mt-2 text-sm leading-relaxed">
+                  {isFr
+                    ? "Parlons de votre contexte : nous répondons précisément à votre cas en 20 minutes."
+                    : "Let's talk about your context: we'll answer your exact case in 20 minutes."}
+                </p>
+                <div className="mt-5 flex flex-col gap-3">
+                  <Cta href="/appel" size="md" track="faq-detail-appel">
+                    {isFr ? "Réserver un appel" : "Book a call"}
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  </Cta>
+                  <Cta href="/contact" variant="outline" size="md" track="faq-detail-contact">
+                    <Mail aria-hidden="true" className="h-4 w-4" />
+                    {isFr ? "Écrire un message" : "Send a message"}
+                  </Cta>
+                </div>
+              </div>
+
+              <nav
+                aria-label={isFr ? "Naviguer dans la FAQ" : "Navigate the FAQ"}
+                className="border-border bg-canvas rounded-2xl border p-5"
+              >
+                <p className="text-fg-muted mb-3 text-xs font-semibold tracking-[0.14em] uppercase">
+                  {isFr ? "Explorer la FAQ" : "Explore the FAQ"}
+                </p>
+                <ul className="flex flex-col gap-1">
+                  {exploreLinks.map((l) => (
+                    <li key={l.href}>
+                      <a
+                        href={l.href}
+                        className="text-fg-soft hover:bg-paper hover:text-terracotta-deep group flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition"
+                      >
+                        <l.Icon aria-hidden="true" className="text-terracotta h-4 w-4 shrink-0" />
+                        <span className="min-w-0 flex-1">{l.label}</span>
+                        <ArrowUpRight
+                          aria-hidden="true"
+                          className="text-fg-muted group-hover:text-terracotta h-3.5 w-3.5 shrink-0 transition"
+                        />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              <div className="border-border rounded-2xl border border-dashed p-5">
+                <WasHelpful isFr={isFr} />
+              </div>
+            </aside>
+          </div>
+        </Container>
+      </section>
 
       {/* Maillage interne contextuel curé par catégorie (server, 0 JS). */}
       <FaqRelatedResources category={entry.category} locale={locale} isFr={isFr} />
 
+      {/* ── QUESTIONS LIÉES — grille large 3 colonnes ────────────────────── */}
       {related.length > 0 ? (
-        <Section eyebrow={isFr ? "Autres questions" : "Other questions"} tone="paper">
-          <Container className="max-w-3xl">
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {related.map((r) => (
-                <li key={r.slug}>
-                  <a
-                    href={`/${locale}/faq/${r.slug}`}
-                    className="border-border bg-bg hover:border-terracotta/60 hover:shadow-subtle group flex h-full flex-col rounded-xl border p-4 transition"
-                  >
-                    {r.catLabel ? (
-                      <span className="text-terracotta-deep bg-terracotta-soft mb-2 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase">
-                        {r.catLabel}
-                      </span>
-                    ) : null}
-                    <span className="text-fg group-hover:text-terracotta-deep flex items-start justify-between gap-3 text-base font-medium transition">
-                      <span className="min-w-0">{r.question}</span>
-                      <ArrowUpRight
-                        className="text-fg-muted group-hover:text-terracotta mt-0.5 h-4 w-4 shrink-0 transition"
-                        aria-hidden="true"
-                      />
+        <Section
+          tone="paper"
+          eyebrow={isFr ? "Continuer la lecture" : "Keep reading"}
+          title={isFr ? "Questions" : "Related"}
+          titleEm={isFr ? "liées" : "questions"}
+          description={
+            isFr
+              ? "D'autres réponses courtes et sourcées, dans la même thématique et au-delà."
+              : "More short, sourced answers, within the same topic and beyond."
+          }
+        >
+          <ul role="list" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((r) => (
+              <li key={r.slug}>
+                <a
+                  href={`/${locale}/faq/${r.slug}`}
+                  className="border-border bg-canvas hover:border-terracotta/60 hover:shadow-elevated group flex h-full flex-col rounded-2xl border p-5 transition hover:-translate-y-0.5"
+                >
+                  {r.catLabel ? (
+                    <span className="text-terracotta-deep bg-terracotta-soft mb-3 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase">
+                      {r.catLabel}
                     </span>
-                    <span className="text-fg-soft mt-1.5 line-clamp-2 block text-sm leading-snug">
-                      {r.snippet}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Container>
+                  ) : null}
+                  <span className="text-fg group-hover:text-terracotta-deep flex items-start justify-between gap-3 text-base font-semibold tracking-tight transition">
+                    <span className="min-w-0">{r.question}</span>
+                    <ArrowUpRight
+                      className="text-fg-muted group-hover:text-terracotta mt-0.5 h-4 w-4 shrink-0 transition"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span className="text-fg-soft mt-2 line-clamp-3 block text-sm leading-snug">
+                    {r.snippet}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </Section>
       ) : null}
 
-      <div className="border-border border-t py-6">
-        <Container>
-          <WasHelpful isFr={isFr} />
-        </Container>
-      </div>
+      {/* ── EXPLORER PAR THÉMATIQUE — maillage GEO hub → catégories ───────── */}
+      {categoryNav.length > 0 ? (
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Toutes les thématiques" : "Every topic"}
+          title={isFr ? "Explorer la FAQ par" : "Explore the FAQ by"}
+          titleEm={isFr ? "thématique" : "topic"}
+          description={
+            isFr
+              ? "Interventions, audit, implémentation, tarifs, RGPD, coaching… trouvez la famille de questions qui vous concerne."
+              : "Sessions, audit, implementation, pricing, GDPR, coaching… find the family of questions that matters to you."
+          }
+        >
+          <ul
+            role="list"
+            className="xs:grid-cols-2 grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-4"
+          >
+            {categoryNav.map((c) => (
+              <li key={c.slug}>
+                <a
+                  href={`/${locale}/faq/par-thematique/${c.slug}`}
+                  className="border-border bg-canvas hover:border-terracotta/60 hover:shadow-subtle group flex h-full items-center gap-3 rounded-xl border p-4 transition"
+                >
+                  <span className="bg-terracotta/10 text-terracotta inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+                    <c.Icon aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="text-fg group-hover:text-terracotta-deep block text-sm font-semibold tracking-tight transition">
+                      {c.label}
+                    </span>
+                    <span className="text-fg-muted text-xs tabular-nums">
+                      {c.count} {isFr ? (c.count > 1 ? "questions" : "question") : "questions"}
+                    </span>
+                  </span>
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="text-fg-muted group-hover:text-terracotta h-4 w-4 shrink-0 transition"
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
 
       {/* AI Act art. 50 — disclosure visible sur les Q/R générées (Track B). */}
       {isAutoGen && (
-        <Container className="max-w-3xl">
+        <Container className="max-w-3xl py-8">
           <AiContentDisclaimer locale={isFr ? "fr" : "en"} />
         </Container>
       )}
 
+      {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
       <CtaBlock
-        title={isFr ? "Une question non listée ?" : "Question not listed?"}
+        tone="mocha"
+        eyebrow={isFr ? "Votre question n'est pas là ?" : "Question not listed?"}
+        title={isFr ? "Posez-la," : "Ask it,"}
+        titleEm={isFr ? "on vous répond" : "we'll answer"}
         description={
-          isFr ? "Écrivez-nous à contact@axion-ia.com." : "Email us at contact@axion-ia.com."
+          isFr
+            ? "Écrivez-nous à contact@axion-ia.com ou réservez un appel : nous répondons précisément à votre cas, sans engagement."
+            : "Email us at contact@axion-ia.com or book a call: we answer your exact case, no strings attached."
         }
         cta={
-          <Cta href="/contact" size="lg">
-            Contact →
-          </Cta>
+          <>
+            <Cta href="/appel" variant="primary" size="xl" track="faq-detail-final-appel">
+              {isFr ? "Réserver un appel" : "Book a call"}
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Cta>
+            <Cta href="/contact" variant="outline" size="xl" track="faq-detail-final-contact">
+              {isFr ? "Écrire un message" : "Send a message"}
+            </Cta>
+          </>
         }
       />
 

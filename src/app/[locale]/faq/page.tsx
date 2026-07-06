@@ -2,18 +2,35 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, HelpCircle, Mic, RefreshCw, Rss } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  HelpCircle,
+  MessageSquare,
+  Mic,
+  RefreshCw,
+  Rss,
+  ShieldCheck,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
+import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqHeroSchema } from "@/components/sections/FaqHeroSchema";
 import { FaqHubExplorer } from "@/components/sections/FaqHubExplorer";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildFaqSpeakableJsonLd,
+  buildCollectionPageJsonLd,
+  buildItemListJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { listFaqs } from "@/lib/knowledge/readers";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
+import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -84,6 +101,20 @@ export default async function FaqPage({ params }: Props) {
     label: isFr ? c.labelFr : c.labelEn,
   }));
 
+  // Cartes « Parcourir par thématique » (silo hub → catégorie → Q/A + maillage
+  // GEO). Chaque catégorie non vide, avec description SSOT + nombre de questions,
+  // pointe vers /faq/par-thematique/<cat>. Icônes server-only (budget JS client).
+  const categoryCards = FAQ_CATEGORIES.map((c) => {
+    const count = faqs.filter((f) => f.category === c.slug).length;
+    return {
+      slug: c.slug,
+      label: isFr ? c.labelFr : c.labelEn,
+      desc: isFr ? c.descFr : c.descEn,
+      count,
+      Icon: FAQ_CATEGORY_ICONS[c.slug] ?? FAQ_CATEGORY_ICON_FALLBACK,
+    };
+  }).filter((c) => c.count > 0);
+
   // AEO (2026-06-21) — `additionalSelectors` ÉTEND le défaut Speakable (qui couvre
   // déjà question `[data-faq-q]` + réponse `[data-faq-a]`/`itemprop=text`) avec
   // l'intro. Avant : `speakableSelector` ÉCRASAIT ce défaut → seule l'intro était
@@ -92,15 +123,95 @@ export default async function FaqPage({ params }: Props) {
     items,
     additionalSelectors: ["[data-aeo='faq-intro']"],
   });
+
+  // CollectionPage — rattache le hub FAQ à l'organisation (entité #organization)
+  // et le déclare speakable (intro AEO/GEO).
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: "/faq",
+    name: isFr
+      ? "FAQ Axion-IA — questions fréquentes sur l'IA en entreprise"
+      : "Axion-IA FAQ — frequently asked questions about AI for business",
+    description: isFr
+      ? "Toutes les réponses Axion-IA : interventions et formations IA, audit, implémentation, tarifs, RGPD, coaching. Réponses courtes, sourcées, citables par les IA."
+      : "All Axion-IA answers: AI sessions and training, audit, implementation, pricing, GDPR, coaching. Short, sourced, AI-citable answers.",
+    speakable: true,
+    extra: { about: { "@id": `${SITE_URL}/#organization` } },
+  });
+
+  // ItemList — permet aux LLMs d'énumérer les thématiques FAQ couvertes (AEO/GEO).
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/faq",
+    name: isFr ? "Thématiques de la FAQ Axion-IA" : "Axion-IA FAQ topics",
+    items: categoryCards.map((c, i) => ({
+      position: i + 1,
+      name: c.label,
+      url: `${SITE_URL}/${loc}/faq/par-thematique/${c.slug}`,
+      description: c.desc,
+    })),
+  });
+
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: "/faq", label: "FAQ" }];
 
+  // Piliers AEO/GEO — pourquoi ces réponses sont conçues pour l'IA (truthful,
+  // aligné sur le balisage QAPage/Speakable réellement émis).
+  const aeoPillars: ReadonlyArray<{ icon: typeof MessageSquare; title: string; body: string }> =
+    isFr
+      ? [
+          {
+            icon: MessageSquare,
+            title: "Réponses courtes & directes",
+            body: "Chaque question reçoit une réponse en quelques phrases, sans détour — la bonne info, tout de suite.",
+          },
+          {
+            icon: ShieldCheck,
+            title: "Sourcées depuis notre doctrine",
+            body: "Pas d'invention : nos réponses sont alignées sur nos offres, nos méthodes et nos tarifs publics.",
+          },
+          {
+            icon: Mic,
+            title: "Pensées pour l'IA (AEO)",
+            body: "Balisage Speakable & QAPage : Google AI Overviews, Perplexity et ChatGPT peuvent citer nos réponses.",
+          },
+          {
+            icon: RefreshCw,
+            title: "Mises à jour & flux RSS",
+            body: "Nos réponses sont revues régulièrement. Suivez les nouveautés via notre flux RSS dédié.",
+          },
+        ]
+      : [
+          {
+            icon: MessageSquare,
+            title: "Short, direct answers",
+            body: "Every question gets a few-sentence answer, no fluff — the right info, right away.",
+          },
+          {
+            icon: ShieldCheck,
+            title: "Sourced from our doctrine",
+            body: "No made-up claims: our answers align with our offers, methods and public pricing.",
+          },
+          {
+            icon: Mic,
+            title: "Built for AI (AEO)",
+            body: "Speakable & QAPage markup: Google AI Overviews, Perplexity and ChatGPT can cite our answers.",
+          },
+          {
+            icon: RefreshCw,
+            title: "Updates & RSS feed",
+            body: "Our answers are reviewed regularly. Follow updates via our dedicated RSS feed.",
+          },
+        ];
+
   return (
     <>
-      <Container className="border-border border-b py-3">
-        <Breadcrumbs items={breadcrumbItems} />
-      </Container>
+      <div className="bg-halo-warm">
+        <Container className="pt-6">
+          <Breadcrumbs items={breadcrumbItems} />
+        </Container>
+      </div>
 
       {/* HERO 2-col custom — texte à gauche, FaqHeroSchema 3 thématiques à droite */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
@@ -128,8 +239,8 @@ export default async function FaqPage({ params }: Props) {
                 className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
               >
                 {isFr
-                  ? "Tout savoir sur les interventions, l'audit, l'implémentation, la souveraineté des données et la facturation. Réponses courtes, sourcées, citables par les LLMs."
-                  : "Everything about sessions, audit, implementation, data sovereignty and billing. Short, sourced, LLM-citable answers."}
+                  ? "Tout savoir sur les interventions et formations IA, l'audit, l'implémentation, la souveraineté des données et la facturation. Réponses courtes, sourcées, citables par les moteurs de recherche et les IA."
+                  : "Everything about AI sessions and training, audit, implementation, data sovereignty and billing. Short, sourced answers, citable by search engines and AI assistants."}
               </p>
               {/* Pills réassurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
@@ -186,6 +297,50 @@ export default async function FaqPage({ params }: Props) {
         </Container>
       </section>
 
+      {/* ── PARCOURIR PAR THÉMATIQUE — cartes silo hub → catégorie ────────── */}
+      {categoryCards.length > 0 ? (
+        <Section
+          id="thematiques"
+          tone="canvas"
+          eyebrow={isFr ? "Parcourir" : "Browse"}
+          title={isFr ? "Trouvez votre réponse par" : "Find your answer by"}
+          titleEm={isFr ? "thématique" : "topic"}
+          description={
+            isFr
+              ? "Nos questions sont organisées par famille : interventions et formations, audit, implémentation, tarifs, process & RGPD, sites web, coaching 1-to-1."
+              : "Our questions are organised by family: sessions and training, audit, implementation, pricing, process & GDPR, websites, 1-to-1 coaching."
+          }
+        >
+          <ul role="list" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {categoryCards.map((c) => (
+              <li key={c.slug}>
+                <a
+                  href={`/${locale}/faq/par-thematique/${c.slug}`}
+                  className="border-border bg-paper shadow-subtle hover:border-terracotta/60 hover:shadow-elevated group flex h-full flex-col gap-3 rounded-2xl border p-6 transition hover:-translate-y-0.5"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                      <c.Icon aria-hidden="true" className="h-5 w-5" />
+                    </span>
+                    <span className="text-fg-muted text-xs font-medium tabular-nums">
+                      {c.count} {isFr ? (c.count > 1 ? "questions" : "question") : "questions"}
+                    </span>
+                  </div>
+                  <h3 className="text-fg group-hover:text-terracotta-deep flex items-start justify-between gap-2 text-lg font-semibold tracking-tight transition">
+                    <span className="min-w-0">{c.label}</span>
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="text-fg-muted group-hover:text-terracotta mt-1 h-4 w-4 shrink-0 transition"
+                    />
+                  </h3>
+                  <p className="text-fg-soft text-sm leading-relaxed">{c.desc}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
+
       {/* Explorateur : recherche temps réel + filtres par thème + résultats
           groupés. SSR rend la liste complète (SEO/AEO), JS ajoute le filtrage. */}
       <div id="questions" className="scroll-mt-24">
@@ -197,19 +352,62 @@ export default async function FaqPage({ params }: Props) {
         />
       </div>
 
-      <CtaBlock
-        title={isFr ? "Une question non listée ?" : "Question not listed?"}
+      {/* ── POURQUOI CETTE FAQ (AEO/GEO) — réassurance + différenciation ──── */}
+      <Section
+        id="aeo"
+        tone="sand"
+        eyebrow={isFr ? "Conçu pour être cité" : "Built to be cited"}
+        title={isFr ? "Des réponses pensées pour" : "Answers designed for"}
+        titleEm={isFr ? "l'humain et l'IA" : "humans and AI"}
         description={
-          isFr ? "Écrivez-nous à contact@axion-ia.com." : "Email us at contact@axion-ia.com."
+          isFr
+            ? "Nos réponses ne sont pas là pour meubler : elles sont courtes, exactes et structurées pour être reprises par Google, Perplexity, ChatGPT — et utiles à vous d'abord."
+            : "Our answers aren't filler: they're short, accurate and structured to be picked up by Google, Perplexity, ChatGPT — and useful to you first."
+        }
+      >
+        <ul role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-4">
+          {aeoPillars.map((p) => (
+            <li
+              key={p.title}
+              className="border-border bg-canvas shadow-subtle flex h-full flex-col gap-3 rounded-2xl border p-6"
+            >
+              <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                <p.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <h3 className="text-fg text-base font-semibold tracking-tight">{p.title}</h3>
+              <p className="text-fg-soft text-sm leading-relaxed">{p.body}</p>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
+      <CtaBlock
+        tone="mocha"
+        eyebrow={isFr ? "Une question non listée ?" : "Question not listed?"}
+        title={isFr ? "Parlons de" : "Let's talk about"}
+        titleEm={isFr ? "votre cas" : "your case"}
+        description={
+          isFr
+            ? "Écrivez-nous à contact@axion-ia.com ou réservez un appel de 20 minutes : nous répondons précisément à votre contexte, sans engagement."
+            : "Email us at contact@axion-ia.com or book a 20-minute call: we answer your exact context, no strings attached."
         }
         cta={
-          <Cta href="/contact" size="lg">
-            Contact â†’
-          </Cta>
+          <>
+            <Cta href="/appel" variant="primary" size="xl" track="faq-hub-final-appel">
+              {isFr ? "Réserver un appel" : "Book a call"}
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Cta>
+            <Cta href="/contact" variant="outline" size="xl" track="faq-hub-final-contact">
+              {isFr ? "Écrire un message" : "Send a message"}
+            </Cta>
+          </>
         }
       />
 
       <JsonLd data={faqJsonLd} />
+      <JsonLd data={collectionPageJsonLd} />
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }
