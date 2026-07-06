@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, HelpCircle, LayoutGrid, Mic, ShieldCheck } from "lucide-react";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -12,9 +12,16 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqRelatedResources } from "@/components/sections/FaqRelatedResources";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildItemListJsonLd, buildFaqJsonLd } from "@/lib/seo";
-import { listFaqsByCategory } from "@/lib/knowledge/readers";
-import { getFaqCategory, getAllFaqCategorySlugs } from "@/content/faq-categories";
+import {
+  buildProductMetadata,
+  buildItemListJsonLd,
+  buildFaqJsonLd,
+  buildCollectionPageJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
+import { listFaqs, listFaqsByCategory } from "@/lib/knowledge/readers";
+import { getFaqCategory, getAllFaqCategorySlugs, FAQ_CATEGORIES } from "@/content/faq-categories";
+import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
 
 interface Props {
   params: Promise<{ locale: string; categorie: string }>;
@@ -62,18 +69,33 @@ export default async function FaqCategoryPage({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+  const catLabel = isFr ? cat.labelFr : cat.labelEn;
+  const catDesc = isFr ? cat.descFr : cat.descEn;
+  const CatIcon = FAQ_CATEGORY_ICONS[categorie] ?? FAQ_CATEGORY_ICON_FALLBACK;
 
-  const faqs = await listFaqsByCategory(categorie);
+  // Q/A de la thématique + tout le corpus (pour les compteurs « autres thèmes »).
+  const [faqs, allFaqs] = await Promise.all([listFaqsByCategory(categorie), listFaqs()]);
   const items = faqs.map((entry) => ({
     id: entry.slug,
     question: isFr ? entry.questionFr : entry.questionEn,
     answer: isFr ? entry.answerFr : entry.answerEn,
   }));
 
+  // Autres thématiques (maillage GEO) — exclut la catégorie courante, non vides.
+  const otherTopics = FAQ_CATEGORIES.filter((c) => c.slug !== categorie)
+    .map((c) => ({
+      slug: c.slug,
+      label: isFr ? c.labelFr : c.labelEn,
+      desc: isFr ? c.descFr : c.descEn,
+      count: allFaqs.filter((f) => f.category === c.slug).length,
+      Icon: FAQ_CATEGORY_ICONS[c.slug] ?? FAQ_CATEGORY_ICON_FALLBACK,
+    }))
+    .filter((c) => c.count > 0);
+
   const breadcrumbItems = [
     { href: "/faq", label: "FAQ" },
     { href: "/faq/par-thematique", label: isFr ? "Thématiques" : "Topics" },
-    { href: `/faq/par-thematique/${categorie}`, label: isFr ? cat.labelFr : cat.labelEn },
+    { href: `/faq/par-thematique/${categorie}`, label: catLabel },
   ];
 
   // ItemList JSON-LD — énumère les Q/A de la thématique (citabilité LLM).
@@ -82,41 +104,91 @@ export default async function FaqCategoryPage({ params }: Props) {
     path: `/faq/par-thematique/${categorie}`,
     name: isFr ? `FAQ ${cat.labelFr} — Axion-IA` : `${cat.labelEn} FAQ — Axion-IA`,
     items: items.map((it, i) => ({
-      url: `https://axion-ia.com/${locale}/faq/${it.id}`,
+      url: `${SITE_URL}/${locale}/faq/${it.id}`,
       name: it.question,
       position: i + 1,
     })),
   });
 
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    locale: loc,
+    path: `/faq/par-thematique/${categorie}`,
+    name: isFr ? `FAQ ${cat.labelFr} — Axion-IA` : `${cat.labelEn} FAQ — Axion-IA`,
+    description: catDesc,
+    speakable: true,
+    extra: { about: { "@id": `${SITE_URL}/#organization` } },
+  });
+
+  const heroPills: ReadonlyArray<{ icon: typeof HelpCircle; label: string }> = [
+    {
+      icon: HelpCircle,
+      label: isFr
+        ? `${items.length} question${items.length > 1 ? "s" : ""}`
+        : `${items.length} question${items.length > 1 ? "s" : ""}`,
+    },
+    { icon: Mic, label: "AEO speakable" },
+    { icon: ShieldCheck, label: isFr ? "Source : doctrine" : "Source: doctrine" },
+  ];
+
   return (
     <>
-      <Container className="border-border border-b py-3">
-        <Breadcrumbs items={breadcrumbItems} />
-      </Container>
+      <div className="bg-halo-warm">
+        <Container className="pt-6">
+          <Breadcrumbs items={breadcrumbItems} />
+        </Container>
+      </div>
 
+      {/* ── HÉRO ─────────────────────────────────────────────────────────── */}
       <Section
         titleAs="h1"
         eyebrow={isFr ? "FAQ · Thématique" : "FAQ · Topic"}
-        title={isFr ? cat.labelFr : cat.labelEn}
-        description={isFr ? cat.descFr : cat.descEn}
+        title={catLabel}
+        description={catDesc}
       >
-        <Container className="max-w-3xl">
-          <p className="text-fg-soft text-sm">
-            {isFr
-              ? `${items.length} question${items.length > 1 ? "s" : ""} dans cette thématique.`
-              : `${items.length} question${items.length > 1 ? "s" : ""} in this topic.`}
-          </p>
-          <div className="mt-4">
-            <Cta href={`/${locale}/faq`} variant="outline" size="sm">
-              {isFr ? "← Toutes les thématiques" : "← All topics"}
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-3">
+            <span className="bg-terracotta/10 text-terracotta inline-flex h-12 w-12 items-center justify-center rounded-2xl">
+              <CatIcon aria-hidden="true" className="h-6 w-6" strokeWidth={2} />
+            </span>
+            <ul role="list" className="flex flex-wrap gap-x-5 gap-y-2.5">
+              {heroPills.map((pill) => {
+                const Icon = pill.icon;
+                return (
+                  <li
+                    key={pill.label}
+                    className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                  >
+                    <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
+                    <span>{pill.label}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="flex flex-wrap items-center gap-4">
+            <Cta href={`/${locale}/faq`} size="lg">
+              {isFr ? "Toutes les questions" : "All questions"}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Cta>
+            <Cta href={`/${locale}/faq/par-thematique`} variant="outline" size="lg">
+              {isFr ? "Toutes les thématiques" : "All topics"}
             </Cta>
           </div>
-        </Container>
+        </div>
       </Section>
 
+      {/* ── QUESTIONS & RÉPONSES (inline, AEO — matche le FAQPage JSON-LD) ── */}
       {items.length > 0 ? (
         <FaqBlock
           items={items}
+          eyebrow={isFr ? "Questions & réponses" : "Questions & answers"}
+          title={isFr ? "Les réponses de la" : "Answers for the"}
+          titleEm={isFr ? "thématique" : "topic"}
+          description={
+            isFr
+              ? "Réponses directes, sourcées et régulièrement relues. Chaque question a aussi sa page dédiée."
+              : "Direct, sourced and regularly reviewed answers. Each question also has its own dedicated page."
+          }
           emitJsonLd={false}
           permalinkBase={`/${locale}/faq`}
           permalinkLabel={isFr ? "Page dédiée" : "Dedicated page"}
@@ -133,49 +205,85 @@ export default async function FaqCategoryPage({ params }: Props) {
         </Section>
       )}
 
-      <Section
-        eyebrow={isFr ? "Index" : "Index"}
-        title={isFr ? "Questions de la thématique" : "Topic questions"}
-        tone="paper"
-      >
-        <Container className="max-w-3xl">
-          <ul className="border-border divide-border divide-y border-y">
-            {items.map((item) => (
-              <li key={item.id}>
+      {/* ── EXPLORER LES AUTRES THÉMATIQUES (maillage GEO) ───────────────── */}
+      {otherTopics.length > 0 ? (
+        <Section
+          id="autres-thematiques"
+          tone="sand"
+          eyebrow={isFr ? "Continuer" : "Keep going"}
+          title={isFr ? "Explorer les autres" : "Explore the other"}
+          titleEm={isFr ? "thématiques" : "topics"}
+          description={
+            isFr
+              ? "D'autres familles de questions qui pourraient vous concerner."
+              : "Other families of questions that might concern you."
+          }
+        >
+          <ul role="list" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {otherTopics.map((c) => (
+              <li key={c.slug}>
                 <a
-                  href={`/${locale}/faq/${item.id}`}
-                  className="group flex items-center justify-between gap-4 py-4"
+                  href={`/${locale}/faq/par-thematique/${c.slug}`}
+                  className="border-border bg-canvas shadow-subtle hover:border-terracotta/60 hover:shadow-elevated group flex h-full flex-col gap-3 rounded-2xl border p-6 transition hover:-translate-y-0.5"
                 >
-                  <span className="text-fg group-hover:text-primary text-base font-medium transition">
-                    {item.question}
-                  </span>
-                  <ArrowUpRight
-                    className="text-fg-muted group-hover:text-primary h-4 w-4 shrink-0 transition"
-                    aria-hidden="true"
-                  />
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                      <c.Icon aria-hidden="true" className="h-5 w-5" />
+                    </span>
+                    <span className="text-fg-muted text-xs font-medium tabular-nums">
+                      {c.count} {isFr ? (c.count > 1 ? "questions" : "question") : "questions"}
+                    </span>
+                  </div>
+                  <h3 className="text-fg group-hover:text-terracotta-deep flex items-start justify-between gap-2 text-lg font-semibold tracking-tight transition">
+                    <span className="min-w-0">{c.label}</span>
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="text-fg-muted group-hover:text-terracotta mt-1 h-4 w-4 shrink-0 transition"
+                    />
+                  </h3>
+                  <p className="text-fg-soft text-sm leading-relaxed">{c.desc}</p>
                 </a>
               </li>
             ))}
           </ul>
-        </Container>
-      </Section>
+          <div className="mt-8">
+            <Cta href={`/${locale}/faq`} variant="outline" size="md">
+              <LayoutGrid className="h-4 w-4" aria-hidden="true" />
+              {isFr ? "Voir toutes les questions" : "See all questions"}
+            </Cta>
+          </div>
+        </Section>
+      ) : null}
 
       {/* Maillage interne contextuel curé par catégorie (server, 0 JS). */}
       <FaqRelatedResources category={categorie} locale={locale} isFr={isFr} />
 
+      {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
       <CtaBlock
-        title={isFr ? "Une question non listée ?" : "Question not listed?"}
+        tone="mocha"
+        eyebrow={isFr ? "Une question non listée ?" : "Question not listed?"}
+        title={isFr ? "Parlons de" : "Let's talk about"}
+        titleEm={isFr ? "votre cas" : "your case"}
         description={
-          isFr ? "Écrivez-nous à contact@axion-ia.com." : "Email us at contact@axion-ia.com."
+          isFr
+            ? "Écrivez-nous à contact@axion-ia.com ou réservez un appel de 20 minutes : nous répondons précisément à votre contexte, sans engagement."
+            : "Email us at contact@axion-ia.com or book a 20-minute call: we answer your exact context, no strings attached."
         }
         cta={
-          <Cta href="/contact" size="lg">
-            Contact →
-          </Cta>
+          <>
+            <Cta href="/appel" variant="primary" size="xl" track="faq-cat-appel">
+              {isFr ? "Réserver un appel" : "Book a call"}
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Cta>
+            <Cta href="/contact" variant="outline" size="xl" track="faq-cat-contact">
+              {isFr ? "Écrire un message" : "Send a message"}
+            </Cta>
+          </>
         }
       />
 
       <JsonLd data={itemListJsonLd} />
+      <JsonLd data={collectionPageJsonLd} />
       {/* FAQPage JSON-LD — émis UNIQUEMENT quand le hub est indexable (≥ seuil),
           jamais sur une page noindex thin (audit 2026-07-03). Un hub thématique
           (nombre raisonnable de Q/R) est le bon porteur d'un FAQPage — contrairement
