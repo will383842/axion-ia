@@ -1,4 +1,5 @@
 "use client";
+// use-client: carrousel d'avis home — scroll-snap natif + auto-défilement (hooks client).
 
 // Carrousel d'avis clients pour la home — enveloppe CLIENT légère autour de cartes
 // SSR (les <ReviewCard> sont rendues côté serveur et passées en children, donc

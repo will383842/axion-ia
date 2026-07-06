@@ -5,7 +5,7 @@
 // `.calendly-inline-widget[data-url]` + widget.js `async` rendus en SSR par le
 // Server Component `CalendlyInlineWidget`) s'auto-initialise au PARSE lors d'un
 // chargement direct / F5 — sans dépendre de l'hydratation React (qui est
-// instable sur /appel, cf. résidu React #418). Ce shim couvre les DEUX cas que
+// instable sur /appel, cf. résidu React 418). Ce shim couvre les DEUX cas que
 // l'auto-scan natif ne couvre pas :
 //   1. Navigation SPA (next/link) : widget.js est déjà chargé, donc son
 //      auto-scan (qui ne tourne qu'au `load` du script) ne se redéclenche pas
@@ -21,7 +21,7 @@
 // le « postMessage target origin mismatch » lié à un double handshake.
 //
 // Ce composant ne rend AUCUN hoistable (`<script>/<link>/...`) — il renvoie
-// `null` — pour ne pas fragiliser l'hydratation de l'îlot (leçon PR #173).
+// `null` — pour ne pas fragiliser l'hydratation de l'îlot (leçon PR 173).
 
 import { useEffect } from "react";
 

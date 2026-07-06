@@ -3,7 +3,7 @@
 // Historique : ce composant a d'abord été un Client Component à « double voie »
 // (script inline `dangerouslySetInnerHTML` + useEffect appelant manuellement
 // `initInlineWidget`). Cette archi souffrait d'une COURSE d'init entre les deux
-// voies + d'un mismatch d'hydratation (résidu React #418 sur /appel), d'où un
+// voies + d'un mismatch d'hydratation (résidu React 418 sur /appel), d'où un
 // écran blanc INTERMITTENT et l'erreur bénigne « postMessage target origin
 // mismatch » (double handshake), corrigés au prix d'un F5.
 //
@@ -13,13 +13,13 @@
 //     HTML SSR. Au chargement direct / F5, widget.js s'exécute au parse et
 //     AUTO-SCANNE le DOM → initialise le conteneur, SANS aucune dépendance à
 //     React ni à l'hydratation. C'est le chemin supporté officiellement.
-//     (Aucun hoistable rendu par un Client Component → leçon PR #173 respectée.)
+//     (Aucun hoistable rendu par un Client Component → leçon PR 173 respectée.)
 //   • `<CalendlyBoot>` (Client, rend `null`) couvre la navigation SPA et
 //     l'auto-guérison, avec une garde ANTI-DOUBLE-IFRAME → plus de course.
 //
 // CSP : `script-src` (soft public) autorise déjà `https://assets.calendly.com`
 // et `frame-src`/`connect-src` autorisent `calendly.com` + `*.calendly.com`.
-// COEP : /appel est en `unsafe-none` (cf. `isCredentialedEmbedderPath`, PR #182)
+// COEP : /appel est en `unsafe-none` (cf. `isCredentialedEmbedderPath`, PR 182)
 // pour que l'iframe credentialée Calendly établisse sa session.
 
 import { CalendlyBoot } from "./CalendlyBoot";
