@@ -12,6 +12,8 @@ import {
   toggleVerifiedReviewAction,
   toggleFeaturedReviewAction,
   deleteReviewAction,
+  uploadReviewPhotoAction,
+  removeReviewPhotoAction,
 } from "@/features/admin-reviews/actions";
 
 const EMPTY = { ok: false as const, error: "" };
@@ -36,4 +38,10 @@ export async function featureForm(fd: FormData): Promise<void> {
 }
 export async function deleteForm(fd: FormData): Promise<void> {
   await deleteReviewAction(EMPTY, fd);
+}
+export async function uploadPhotoForm(fd: FormData): Promise<void> {
+  await uploadReviewPhotoAction(EMPTY, fd);
+}
+export async function removePhotoForm(fd: FormData): Promise<void> {
+  await removeReviewPhotoAction(EMPTY, fd);
 }
