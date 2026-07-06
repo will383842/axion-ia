@@ -71,6 +71,12 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // Image Sitemap 1.1 — image-bank V1 (réintroduit Sprint 4 V1 2026-05-16,
   // builders `app/sitemaps/images-{fr,en}.xml/route.ts` livrés).
   "/sitemaps/images-fr.xml",
+  // ⚠️ Listé CONDITIONNELLEMENT (cf. GET) : uniquement si EN_LOCALE_ENABLED=true.
+  // Depuis la désactivation d'EN (2026-05-16), la route `images-en.xml` retourne
+  // volontairement un `<urlset>` VIDE (elle ne doit pas déclarer d'URLs /en/gallery/
+  // qui 301→FR). Or l'index le listait inconditionnellement → Google lisait un
+  // urlset vide et le flaggait « Balise XML manquante : url » (2026-07-06). On ne
+  // le référence donc que quand EN est réactivé. Symétrique du gating KB/blog.
   "/sitemaps/images-en.xml",
   // Image Sitemap — services (73 images marketing) + villes France (2 157 communes).
   // image-bank-complet audit 2026-05-20.
@@ -91,6 +97,11 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
+
+// EN désactivé (AGENTS.md §EN locale désactivé 2026-05-16) → le sub-sitemap
+// `images-en.xml` est volontairement vide ; on ne le référence pas dans l'index
+// tant qu'EN n'est pas réactivé (cf. filtre customSitemaps dans GET).
+const EN_LOCALE_ENABLED = process.env["EN_LOCALE_ENABLED"] === "true";
 
 /**
  * Audit indexation 2026-05-15 P1-14 — lastmod différencié par catégorie.
@@ -224,6 +235,9 @@ export async function GET(): Promise<Response> {
   const customSitemaps = CUSTOM_SITEMAPS.filter((path) => {
     if (path === "/sitemap-knowledge.xml") return kbEmittableCount > 0;
     if (path === "/sitemap-blog.xml") return blogEmittableCount > 0;
+    // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le
+    // lister (sinon urlset vide flaggé par GSC). Réapparaît si EN réactivé.
+    if (path === "/sitemaps/images-en.xml") return EN_LOCALE_ENABLED;
     return true;
   });
 
