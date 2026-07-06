@@ -5,7 +5,7 @@
  * données filtrent `status = "published"` (barrière de modération).
  *
  * JSON-LD : CollectionPage + ItemList + Organization/AggregateRating (gaté ≥5) +
- * FAQPage (FaqAccordion) + BreadcrumbList (Breadcrumbs). Speakable via AnswerCard.
+ * FAQPage (FaqBlock) + BreadcrumbList (Breadcrumbs). Speakable via AnswerCard.
  *
  * SEO faceted-nav : les combinaisons de filtres (?note=&service=…) sont
  * canonicalisées vers /avis propre + noindex (évite le crawl trap). Les facettes
@@ -29,16 +29,7 @@ import {
   Rocket,
   UserRound,
   Globe,
-  Calculator,
-  Building2,
-  UtensilsCrossed,
-  Stethoscope,
   Scale,
-  ShoppingBag,
-  Factory,
-  Wrench,
-  Users,
-  Landmark,
 } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -75,7 +66,7 @@ import { RatingBreakdown } from "@/components/reviews/RatingBreakdown";
 import { ReviewQrCta } from "@/components/reviews/ReviewQrCta";
 import { REVIEWS_PAGE_SIZE, FACET_MIN_COUNT } from "@/lib/reviews/config";
 import { isServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
-import { isClientSectorSlug, clientSectorLabel } from "@/content/sectors";
+import { isClientSectorSlug, clientSectorLabel, getClientSector } from "@/content/sectors";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -130,20 +121,6 @@ const SERVICE_ICONS: Record<string, LucideIcon> = {
   implementations: Rocket,
   un_a_un: UserRound,
   sites_web_augmentes: Globe,
-};
-
-/** Icône lucide par secteur client (facette « par secteur »). */
-const SECTOR_ICONS: Record<string, LucideIcon> = {
-  comptabilite_finance: Calculator,
-  btp_immobilier: Building2,
-  restauration_hotellerie: UtensilsCrossed,
-  sante_medecine: Stethoscope,
-  juridique: Scale,
-  commerce_retail: ShoppingBag,
-  industrie_logistique: Factory,
-  artisanat_services: Wrench,
-  rh_recrutement: Users,
-  collectivites_public: Landmark,
 };
 
 function toFilters(sp: Record<string, string | undefined>): {
@@ -504,7 +481,7 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
         </Section>
       ) : null}
 
-      {/* 9. Secteurs d'activité */}
+      {/* 9. Secteurs d'activité — cartes-photos (assets partagés avec /secteurs) */}
       {topSectors.length > 0 ? (
         <Section
           tone="paper"
@@ -515,22 +492,41 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
         >
           <ul className="grid list-none gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
             {topSectors.map((f) => {
-              const Icon = SECTOR_ICONS[f.key] ?? Building2;
+              const sector = getClientSector(f.key);
               return (
                 <li key={f.key}>
                   <Link
                     href={{ pathname: "/avis/secteur/[secteur]", params: { secteur: f.key } }}
-                    className="border-border bg-canvas shadow-subtle hover:shadow-elevated flex h-full items-center gap-4 rounded-2xl border p-5 transition hover:-translate-y-0.5"
+                    className="border-border hover:border-border-strong hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition"
                   >
-                    <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-                      <Icon aria-hidden="true" className="h-5 w-5" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="text-fg block font-semibold tracking-tight">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src={`/illustrations/secteurs/${f.key}.avif`}
+                        alt={`Avis clients ${clientSectorLabel(f.key)} — Axion-IA`}
+                        width={1600}
+                        height={1000}
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                      />
+                      {sector?.emoji ? (
+                        <span
+                          aria-hidden="true"
+                          className="bg-bg/85 ring-border-strong/30 absolute top-3 left-3 flex h-9 w-9 items-center justify-center rounded-lg text-lg ring-1 backdrop-blur"
+                        >
+                          {sector.emoji}
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1 p-5">
+                      <span className="text-fg text-lg font-semibold tracking-tight">
                         {clientSectorLabel(f.key)}
                       </span>
-                      <span className="text-terracotta text-sm font-medium">{f.count} avis →</span>
-                    </span>
+                      <span className="text-terracotta mt-auto text-sm font-medium">
+                        {f.count} avis →
+                      </span>
+                    </div>
                   </Link>
                 </li>
               );
