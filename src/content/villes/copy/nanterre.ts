@@ -90,7 +90,7 @@ export const NANTERRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 12 personnes)",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 30 personnes)",
             detail:
               "Pour indépendants, jeunes structures des Groues et petites équipes de Nanterre-Préfecture : une demi-journée pour installer et prendre en main les premiers outils IA sur les postes, sans bloquer la journée entière.",
           },
@@ -120,7 +120,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site à Nanterre ?",
-            a: "La Formation 4 heures accueille 2 à 12 personnes, les formats journée Essentielle 2 à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
+            a: "La Formation 4 heures comme les formats journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -182,7 +182,7 @@ export const NANTERRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 12 personnes)",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 30 personnes)",
             detail:
               "Pour indépendants, jeunes structures des Groues et petites équipes de Nanterre-Préfecture : une demi-journée pour installer et prendre en main les premiers outils IA sur les postes, sans bloquer la journée entière.",
           },
@@ -212,7 +212,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site à Nanterre ?",
-            a: "La Formation 4 heures accueille 2 à 12 personnes, les formats journée Essentielle 2 à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
+            a: "La Formation 4 heures comme les formats journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",

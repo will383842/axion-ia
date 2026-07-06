@@ -51,7 +51,7 @@ export const ROUBAIX_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Axion-IA anime à Roubaix des formations IA en entreprise sur site, dans vos locaux. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste, prêts à servir leur travail réel dès le lendemain. Le tissu roubaisien — héritage VPC reconverti en e-commerce avec La Redoute et Damart, RetailTech de Blanchemaille by EuraTechnologies, datacenters RBX d'OVHcloud et filières textiles de l'écoquartier de l'Union — combine contraintes métier historiques et besoins numériques concrets. Le format d'entrée « Formation 4 heures » démarre à {{price:intervention-4h|flat}} pour 2 à 12 personnes. Différenciateur : chaque démo s'appuie sur vos propres documents anonymisés (relances, devis, fiches produit, reporting), pas sur des cas génériques recyclés.",
+        hero: "Axion-IA anime à Roubaix des formations IA en entreprise sur site, dans vos locaux. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste, prêts à servir leur travail réel dès le lendemain. Le tissu roubaisien — héritage VPC reconverti en e-commerce avec La Redoute et Damart, RetailTech de Blanchemaille by EuraTechnologies, datacenters RBX d'OVHcloud et filières textiles de l'écoquartier de l'Union — combine contraintes métier historiques et besoins numériques concrets. Le format d'entrée « Formation 4 heures » démarre à {{price:intervention-4h|flat}} pour 2 à 30 personnes. Différenciateur : chaque démo s'appuie sur vos propres documents anonymisés (relances, devis, fiches produit, reporting), pas sur des cas génériques recyclés.",
         whyHere: [
           "Roubaix concentre 8 500 établissements actifs autour du commerce de détail, de l'informatique et du numérique : nos sessions sont calibrées par métier, du marchand en ligne héritier de la VPC au studio de la Plaine Images.",
           "L'héritage e-commerce est partout — La Redoute (siège et centre logistique automatisé Quai 30), Damart, Auchan Retail, Décathlon, Kiabi : autant de cas d'usage réels pour des ateliers sur relances clients, devis, gestion documentaire et reporting.",
@@ -92,7 +92,7 @@ export const ROUBAIX_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures — {{price:intervention-4h|flat}}",
             detail:
-              "Idéal pour indépendants, artisans et petits marchands roubaisiens : format court de 2 à 12 participants pour prendre en main les premiers outils IA sur des cas concrets de votre activité.",
+              "Idéal pour indépendants, artisans et petits marchands roubaisiens : format court de 2 à 30 participants pour prendre en main les premiers outils IA sur des cas concrets de votre activité.",
           },
           {
             sizeLabel: "PME",
@@ -120,7 +120,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures accueille de 2 à 12 participants, les formats journée (Essentielle, Gagner du temps) de 2 à 30 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
+            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 30 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -147,7 +147,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation à Roubaix. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés et configurés sur leur poste, séance de remédiation offerte. Démos calibrées sur vos données anonymisées, vocabulaire ajusté à votre secteur roubaisien — commerce, logistique, textile ou numérique — et aucune session générique recyclée. Vous gardez la main sur vos comptes et vos données, sans dépendance Axion-IA.",
       },
       en: {
-        hero: "Axion-IA anime à Roubaix des formations IA en entreprise sur site, dans vos locaux. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste, prêts à servir leur travail réel dès le lendemain. Le tissu roubaisien — héritage VPC reconverti en e-commerce avec La Redoute et Damart, RetailTech de Blanchemaille by EuraTechnologies, datacenters RBX d'OVHcloud et filières textiles de l'écoquartier de l'Union — combine contraintes métier historiques et besoins numériques concrets. Le format d'entrée « Formation 4 heures » démarre à {{price:intervention-4h|flat}} pour 2 à 12 personnes. Différenciateur : chaque démo s'appuie sur vos propres documents anonymisés (relances, devis, fiches produit, reporting), pas sur des cas génériques recyclés.",
+        hero: "Axion-IA anime à Roubaix des formations IA en entreprise sur site, dans vos locaux. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste, prêts à servir leur travail réel dès le lendemain. Le tissu roubaisien — héritage VPC reconverti en e-commerce avec La Redoute et Damart, RetailTech de Blanchemaille by EuraTechnologies, datacenters RBX d'OVHcloud et filières textiles de l'écoquartier de l'Union — combine contraintes métier historiques et besoins numériques concrets. Le format d'entrée « Formation 4 heures » démarre à {{price:intervention-4h|flat}} pour 2 à 30 personnes. Différenciateur : chaque démo s'appuie sur vos propres documents anonymisés (relances, devis, fiches produit, reporting), pas sur des cas génériques recyclés.",
         whyHere: [
           "Roubaix concentre 8 500 établissements actifs autour du commerce de détail, de l'informatique et du numérique : nos sessions sont calibrées par métier, du marchand en ligne héritier de la VPC au studio de la Plaine Images.",
           "L'héritage e-commerce est partout — La Redoute (siège et centre logistique automatisé Quai 30), Damart, Auchan Retail, Décathlon, Kiabi : autant de cas d'usage réels pour des ateliers sur relances clients, devis, gestion documentaire et reporting.",
@@ -188,7 +188,7 @@ export const ROUBAIX_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures — {{price:intervention-4h|flat}}",
             detail:
-              "Idéal pour indépendants, artisans et petits marchands roubaisiens : format court de 2 à 12 participants pour prendre en main les premiers outils IA sur des cas concrets de votre activité.",
+              "Idéal pour indépendants, artisans et petits marchands roubaisiens : format court de 2 à 30 participants pour prendre en main les premiers outils IA sur des cas concrets de votre activité.",
           },
           {
             sizeLabel: "PME",
@@ -216,7 +216,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures accueille de 2 à 12 participants, les formats journée (Essentielle, Gagner du temps) de 2 à 30 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
+            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 30 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",

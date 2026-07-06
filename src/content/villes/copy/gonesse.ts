@@ -11,9 +11,9 @@ export const GONESSE_COPY: VilleCopy = {
   pitchEn:
     "Gonesse (95, Val-d'Oise) compte 27 707 habitants (recensement 2023) à 16 km au nord-nord-est de Paris, dans la Communauté d'agglomération Roissy Pays de France. Son économie repose sur le Triangle de Gonesse (zone d'activités stratégique entre A1 et D170), la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, la logistique, le commerce de gros et de détail, ainsi qu'un tissu dense de TPE/PME de services. Patrimoine : église Saint-Pierre-Saint-Paul (XIIe-XIIIe). Axion-IA accompagne dirigeants TPE et PME locales avec du code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:intervention-4h|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:intervention-4h|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
   seoHook: "logistique CDG, commerce & services val-d'oise",
   ecosystemFr:
     "Gonesse bénéficie d'une position stratégique à 16 km de Paris et à proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, desservie par les autoroutes A1, A3 et A170 et le RER D (gare de Villiers-le-Bel - Gonesse - Arnouville). Le Triangle de Gonesse concentre logistique, commerce de gros et activités tertiaires. Les communes limitrophes Arnouville, Villiers-le-Bel, Bonneuil-en-France, Le Thillay, Goussainville et Roissy-en-France forment un bassin de plus de 100 000 habitants à fort potentiel TPE/PME.",
@@ -33,8 +33,8 @@ export const GONESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gonesse : diagnostic terrain pour TPE et PME logistique CDG, commerce, transports et services Val-d'Oise. Audit sur place {{price:intervention-4h|flat}}, ROI quantifié sous 5 jours ouvrés.",
-      en: "Audit IA à Gonesse : diagnostic terrain pour TPE et PME logistique CDG, commerce, transports et services Val-d'Oise. Audit sur place {{price:intervention-4h|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      fr: "Audit IA à Gonesse : diagnostic terrain pour TPE et PME logistique CDG, commerce, transports et services Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      en: "Audit IA à Gonesse : diagnostic terrain pour TPE et PME logistique CDG, commerce, transports et services Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gonesse : formats adaptés à votre entrepôt Triangle de Gonesse, votre commerce, votre flotte de transport ou vos bureaux. Atelier 1 journée pour vos équipes opérationnelles.",
@@ -229,7 +229,7 @@ export const GONESSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Gonesse ?",
-      a: "La formation collective et l'Audit sur place débutent à {{price:intervention-4h|flat}}. Tarifs publics détaillés sur notre site.",
+      a: "La formation collective débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:audit-flash|flat}}. Tarifs publics détaillés sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Gonesse ?",

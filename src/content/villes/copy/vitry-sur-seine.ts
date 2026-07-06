@@ -122,7 +122,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site ?",
-            a: "La Formation 4 heures accueille 2 à 12 participants, l'Essentielle 2 à 30. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
+            a: "La Formation 4 heures comme l'Essentielle accueillent jusqu'à 30 participants. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la formation ?",
@@ -216,7 +216,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site ?",
-            a: "La Formation 4 heures accueille 2 à 12 participants, l'Essentielle 2 à 30. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
+            a: "La Formation 4 heures comme l'Essentielle accueillent jusqu'à 30 participants. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la formation ?",

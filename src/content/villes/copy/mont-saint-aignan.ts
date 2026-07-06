@@ -11,9 +11,9 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
   pitchEn:
     "Mont-Saint-Aignan (76, Seine-Maritime) compte 20 165 habitants (recensement 2023), accolée à Rouen et intégrée à la Métropole Rouen Normandie. Ville la plus étudiante de France en proportion (environ 12 000 étudiants sur le campus accueillant l'Université de Rouen Normandie et NEOMA Business School), elle conjugue économie de l'enseignement supérieur, sièges d'entreprises (Ferrero France), commerce de détail, services et un patrimoine reconnu (ruines de l'église Saint-Jacques XIIe, Saint-Thomas-de-Canterbury, espace Marc-Sangnier). Axion-IA accompagne TPE et PME normandes en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Aignan (76) et dans toute la Métropole Rouen Normandie. Nous accompagnons en priorité les TPE et PME locales (laboratoires & spin-off universitaires, sièges et établissements industriels comme Ferrero France, commerces de détail, services aux étudiants, artisans BTP) avec du code custom — sans no-code. Audit sur place dès {{price:intervention-4h|flat}}, intervention sur site, conformité RGPD, déplacement facilité par la gare Rouen Rive-Droite.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Aignan (76) et dans toute la Métropole Rouen Normandie. Nous accompagnons en priorité les TPE et PME locales (laboratoires & spin-off universitaires, sièges et établissements industriels comme Ferrero France, commerces de détail, services aux étudiants, artisans BTP) avec du code custom — sans no-code. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD, déplacement facilité par la gare Rouen Rive-Droite.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Aignan (76) et dans toute la Métropole Rouen Normandie. Nous accompagnons en priorité les TPE et PME locales (laboratoires & spin-off universitaires, sièges et établissements industriels comme Ferrero France, commerces de détail, services aux étudiants, artisans BTP) avec du code custom — sans no-code. Audit sur place dès {{price:intervention-4h|flat}}, intervention sur site, conformité RGPD, déplacement facilité par la gare Rouen Rive-Droite.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Aignan (76) et dans toute la Métropole Rouen Normandie. Nous accompagnons en priorité les TPE et PME locales (laboratoires & spin-off universitaires, sièges et établissements industriels comme Ferrero France, commerces de détail, services aux étudiants, artisans BTP) avec du code custom — sans no-code. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD, déplacement facilité par la gare Rouen Rive-Droite.",
   seoHook: "campus universitaire, ferrero & services rouen métropole",
   ecosystemFr:
     "Mont-Saint-Aignan est accolée à Rouen sur le plateau nord, intégrée à la Métropole Rouen Normandie (71 communes, environ 500 000 habitants). Son campus universitaire (Université de Rouen Normandie, NEOMA Business School) en fait la ville la plus étudiante de France en proportion. Économie tirée par l'enseignement supérieur, le siège Ferrero France, le commerce de détail et les services aux étudiants. Communes limitrophes Rouen, Bois-Guillaume, Déville-lès-Rouen, Houppeville et Notre-Dame-de-Bondeville. Ligne T1 TEOR vers Rouen toutes les 6 min en heure de pointe.",
@@ -33,8 +33,8 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mont-Saint-Aignan : diagnostic adapté aux TPE et PME du plateau nord rouennais (services aux étudiants, commerces, laboratoires, artisans). Audit sur place {{price:intervention-4h|flat}}, ROI quantifié sous 5 jours ouvrés.",
-      en: "Audit IA à Mont-Saint-Aignan : diagnostic adapté aux TPE et PME du plateau nord rouennais (services aux étudiants, commerces, laboratoires, artisans). Audit sur place {{price:intervention-4h|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      fr: "Audit IA à Mont-Saint-Aignan : diagnostic adapté aux TPE et PME du plateau nord rouennais (services aux étudiants, commerces, laboratoires, artisans). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      en: "Audit IA à Mont-Saint-Aignan : diagnostic adapté aux TPE et PME du plateau nord rouennais (services aux étudiants, commerces, laboratoires, artisans). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mont-Saint-Aignan : formats adaptés à votre commerce campus, votre cabinet, votre laboratoire ou vos bureaux du plateau. Atelier 1 journée pour vos équipes opérationnelles.",
@@ -229,7 +229,7 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Mont-Saint-Aignan ?",
-      a: "La formation collective débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:intervention-4h|flat}}. Tarifs publics détaillés sur notre site.",
+      a: "La formation collective débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:audit-flash|flat}}. Tarifs publics détaillés sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Mont-Saint-Aignan ?",
