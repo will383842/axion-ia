@@ -2,7 +2,7 @@
 // use-client: formulaire interactif (note étoiles, compteur de commentaire, upload
 // photo optionnel, Turnstile, honeypot, soumission async). Dépose un avis client →
 // submitReviewAction → CustomerReview (status "pending") + Telegram + email + RGPD.
-// L'avis N'EST PAS publié : il attend la modération admin.
+// L’avis N’EST PAS publié : il attend la modération admin.
 
 import * as React from "react";
 import { useLocale } from "next-intl";
@@ -22,17 +22,14 @@ const SECTION = "font-serif text-xl font-semibold border-l-4 border-terracotta p
 /** Sélecteur de note accessible (radios stylés en étoiles). */
 function RatingInput({ disabled }: { disabled: boolean }) {
   const [value, setValue] = React.useState(0);
-  const [hover, setHover] = React.useState(0);
-  const active = hover || value;
   return (
     <fieldset className="space-y-1.5">
       <legend className={LABEL}>Votre note *</legend>
-      <div className="flex items-center gap-1" onMouseLeave={() => setHover(0)}>
+      <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((n) => (
           <label
             key={n}
-            className="focus-within:ring-terracotta/40 inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-md focus-within:ring-2"
-            onMouseEnter={() => setHover(n)}
+            className="focus-within:ring-terracotta/40 hover:bg-sand/60 inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-md focus-within:ring-2"
           >
             <input
               type="radio"
@@ -47,7 +44,7 @@ function RatingInput({ disabled }: { disabled: boolean }) {
             <Star
               aria-hidden="true"
               className={
-                n <= active ? "text-terracotta fill-current" : "text-border-strong fill-transparent"
+                n <= value ? "text-terracotta fill-current" : "text-border-strong fill-transparent"
               }
               strokeWidth={1.75}
               width={28}
@@ -83,7 +80,7 @@ export function ReviewSubmissionForm() {
     e.preventDefault();
     setError(null);
     if (!consent) {
-      setError("Merci d'accepter le traitement RGPD.");
+      setError("Merci d’accepter le traitement RGPD.");
       return;
     }
     if (commentLen < REVIEW_COMMENT_MIN) {
@@ -128,7 +125,7 @@ export function ReviewSubmissionForm() {
         </div>
         <p className="text-fg text-lg">
           Votre avis a bien été enregistré. Il sera publié après une vérification de notre équipe
-          (nous contrôlons l'authenticité de chaque avis avant mise en ligne).
+          (nous contrôlons l’authenticité de chaque avis avant mise en ligne).
         </p>
       </div>
     );
@@ -157,7 +154,7 @@ export function ReviewSubmissionForm() {
         </div>
         <div>
           <label htmlFor="comment" className={LABEL}>
-            Votre retour d'expérience *
+            Votre retour d’expérience *
           </label>
           <textarea
             id="comment"
@@ -212,7 +209,7 @@ export function ReviewSubmissionForm() {
               disabled={submitting}
             />
             <p className="text-fg-muted mt-1 text-xs">
-              Seule l'initiale sera affichée publiquement (ex. « Marie D. »).
+              Seule l’initiale sera affichée publiquement (ex. « Marie D. »).
             </p>
           </div>
           <div>
@@ -228,7 +225,7 @@ export function ReviewSubmissionForm() {
               className={FIELD}
               disabled={submitting}
             />
-            <p className="text-fg-muted mt-1 text-xs">Jamais publié — sert à vérifier l'avis.</p>
+            <p className="text-fg-muted mt-1 text-xs">Jamais publié — sert à vérifier l’avis.</p>
           </div>
           <div>
             <label htmlFor="companyName" className={LABEL}>
@@ -244,7 +241,7 @@ export function ReviewSubmissionForm() {
           </div>
           <div>
             <label htmlFor="clientSector" className={LABEL}>
-              Secteur d'activité
+              Secteur d’activité
             </label>
             <select id="clientSector" name="clientSector" className={FIELD} disabled={submitting}>
               <option value="">—</option>
@@ -309,7 +306,7 @@ export function ReviewSubmissionForm() {
             </label>
             <select id="photoKind" name="photoKind" className={FIELD} disabled={submitting}>
               <option value="portrait">Portrait</option>
-              <option value="logo">Logo d'entreprise</option>
+              <option value="logo">Logo d’entreprise</option>
             </select>
           </div>
         </div>
@@ -325,7 +322,7 @@ export function ReviewSubmissionForm() {
           disabled={submitting}
         />
         <span>
-          J'accepte que mon avis et mes données soient traités par Axion-IA pour publication après
+          J’accepte que mon avis et mes données soient traités par Axion-IA pour publication après
           modération, conformément au RGPD. Je certifie être un client réel.
         </span>
       </label>

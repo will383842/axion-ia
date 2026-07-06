@@ -19,7 +19,6 @@ import { notFound } from "next/navigation";
 import { PenLine } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
-import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
@@ -48,7 +47,7 @@ import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { ReviewFilters as ReviewFiltersBar } from "@/components/reviews/ReviewFilters";
 import { RatingBreakdown } from "@/components/reviews/RatingBreakdown";
 import { REVIEWS_PAGE_SIZE, FACET_MIN_COUNT } from "@/lib/reviews/config";
-import { isServiceLine, serviceLineLabel, getServiceLine } from "@/lib/reviews/service-lines";
+import { isServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
 import { isClientSectorSlug, clientSectorLabel } from "@/content/sectors";
 
 interface Props {

@@ -2,8 +2,8 @@
  * Fiche /avis/[slug] — un avis client = sa propre page indexable (Review JSON-LD).
  *
  * Contenu substantiel garanti (commentaire ≥ 120 car. imposé au dépôt) → jamais
- * thin. Full server component, ISR 1h. notFound() si l'avis n'est pas publié
- * (barrière de modération : aucune fuite d'URL avant validation).
+ * thin. Full server component, ISR 1h. notFound() si l’avis n’est pas publié
+ * (barrière de modération : aucune fuite d’URL avant validation).
  */
 
 import type { Metadata } from "next";
@@ -119,7 +119,7 @@ export default async function AvisDetailPage({ params }: Props) {
               <StarRating value={review.rating} size={22} showValue />
             </div>
 
-            {/* Corps de l'avis (speakable + itemprop) */}
+            {/* Corps de l’avis (speakable + itemprop) */}
             <p
               className="direct-answer text-fg mt-5 text-lg leading-relaxed whitespace-pre-wrap"
               itemProp="reviewBody"
@@ -140,7 +140,7 @@ export default async function AvisDetailPage({ params }: Props) {
             {/* Notre réponse */}
             {review.replyBody ? (
               <div className="border-l-terracotta bg-sand/60 mt-6 rounded-lg border border-l-2 p-4">
-                <p className="text-terracotta-deep text-sm font-semibold">Réponse d'Axion-IA</p>
+                <p className="text-terracotta-deep text-sm font-semibold">Réponse d’Axion-IA</p>
                 <p className="text-fg-soft mt-1 whitespace-pre-wrap">{review.replyBody}</p>
                 {review.repliedAt ? (
                   <p className="text-fg-muted mt-2 text-xs">

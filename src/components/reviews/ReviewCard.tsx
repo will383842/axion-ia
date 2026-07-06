@@ -1,4 +1,4 @@
-// Carte d'un avis client (grille du hub + facettes + « avis liés »).
+// Carte d’un avis client (grille du hub + facettes + « avis liés »).
 // Server Component. Affiche : étoiles, badge « Vérifié », titre, extrait, réponse
 // Axion-IA repliée, auteur (avatar de marque ou photo), méta secteur/ville.
 
@@ -55,7 +55,7 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
 
       {review.replyBody ? (
         <div className="border-border bg-sand/60 border-l-terracotta mt-4 rounded-lg border-l-2 p-3">
-          <p className="text-terracotta-deep text-xs font-semibold">Réponse d'Axion-IA</p>
+          <p className="text-terracotta-deep text-xs font-semibold">Réponse d’Axion-IA</p>
           <p className="text-fg-soft mt-1 line-clamp-3 text-xs leading-relaxed">
             {review.replyBody}
           </p>
@@ -79,7 +79,7 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
         <Link
           href={detailHref}
           className="text-primary ml-auto self-start text-xs whitespace-nowrap hover:underline"
-          aria-label={`Lire l'avis de ${author}`}
+          aria-label={`Lire l’avis de ${author}`}
         >
           Lire →
         </Link>

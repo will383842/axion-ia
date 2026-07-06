@@ -1,4 +1,4 @@
-// Détail + modération complète d'un avis client (admin).
+// Détail + modération complète d’un avis client (admin).
 
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -60,7 +60,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
       />
 
       <div className="grid gap-[var(--space-admin-5)] lg:grid-cols-[1.6fr_1fr]">
-        {/* Colonne principale : contenu de l'avis */}
+        {/* Colonne principale : contenu de l’avis */}
         <div className="space-y-[var(--space-admin-5)]">
           <AdminCard>
             <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -95,9 +95,9 @@ export default async function AvisDetailPage({ params }: PageProps) {
 
           {/* Réponse Axion-IA */}
           <AdminCard>
-            <h3 className="mb-2 font-semibold">Réponse d'Axion-IA (publique)</h3>
+            <h3 className="mb-2 font-semibold">Réponse d’Axion-IA (publique)</h3>
             <p className="admin-meta-small mb-3">
-              Le client ne peut pas répondre. Votre réponse apparaît publiquement sous l'avis.
+              Le client ne peut pas répondre. Votre réponse apparaît publiquement sous l’avis.
             </p>
             <form action={replyForm} className="space-y-3">
               <input type="hidden" name="id" value={r.id} />
