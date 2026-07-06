@@ -4,6 +4,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
+import { FOUNDER } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
@@ -365,7 +366,7 @@ export default async function BlogCategoryPage({ params }: Props) {
               href={`/${locale}/equipe/williams`}
               className="text-terracotta-deep font-medium underline-offset-2 hover:underline"
             >
-              Williams Jullin
+              {FOUNDER.displayName}
             </a>
             {isFr ? ", fondateur d'Axion-IA" : ", founder of Axion-IA"}
             {latestDateLabel

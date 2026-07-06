@@ -612,6 +612,17 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
       });
     }
   }
+  // Fiche fondateur `/equipe/williams` — page d'autorité d'entité (E-E-A-T /
+  // Knowledge Panel), servie statiquement (FR only, `williams-person.ts`). Le
+  // template `/equipe/[slug]` est exclu du sitemap (slug template) ; on ajoute
+  // donc explicitement l'URL réelle pour la rendre découvrable par Google
+  // (audit sitelinks 2026-07-06). FR uniquement (doctrine content-gen v1.2).
+  entries.push({
+    url: `${SITE_URL}/fr/equipe/williams`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  });
   return entries;
 }
 

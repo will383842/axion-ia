@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/Container";
 import type { Locale } from "@/i18n/routing";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { SITE_URL } from "@/lib/seo";
-import { expertKeyFromName } from "@/server/content-gen/brand/expert-bank";
+import { expertKeyFromName, expertByKey } from "@/server/content-gen/brand/expert-bank";
 
 export interface ExpertQuoteData {
   readonly name: string;
@@ -40,13 +40,19 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
   // E-E-A-T). N'émet un @id que pour un expert interne CONNU (slug non null) —
   // jamais d'entité inventée.
   const slug = expertKeyFromName(name);
-  // Seuls les experts ayant une VRAIE page /equipe/<slug> (AuthorProfile) ont
-  // un @id pointant vers cette page. Sinon (ex. Williams, page à créer), on
-  // ancre l'@id au domaine racine (#person-<slug>, toujours 200) pour déclarer
-  // l'entité Person SANS introduire de lien /equipe qui renverrait 404.
-  // NB : seul `manon` a une page /equipe ; `williams` n'existe pas encore →
-  // retiré du set pour éviter un @id (et un url) pointant sur une 404.
-  const EQUIPE_PAGE_SLUGS = new Set(["manon"]);
+  const expert = slug ? expertByKey(slug) : null;
+  // Doctrine nommage (FOUNDER) : la figcaption affiche le `displayName`
+  // (« Williams »), le nœud Person structuré porte le nom canonique
+  // (« Williams Jullin »). On dérive TOUJOURS de la banque d'experts pour
+  // normaliser aussi les valeurs DB historiques ; fallback = valeur brute.
+  const displayName = expert?.displayName ?? name;
+  const structuredName = expert?.name ?? name;
+  // Tous les experts internes ont désormais une VRAIE page /equipe/<slug>
+  // (manon = AuthorProfile DB, williams = page d'autorité statique) → l'@id
+  // pointe sur cette page (200) pour fusionner l'entité avec `Organization.founder`
+  // et la page d'autorité (audit Knowledge Panel 2026-07-06). Un expert sans
+  // page connue retombe sur un @id racine `#person-<slug>` (jamais de 404).
+  const EQUIPE_PAGE_SLUGS = new Set(["manon", "williams"]);
   const hasEquipePage = slug != null && EQUIPE_PAGE_SLUGS.has(slug);
   const personJsonLd = slug
     ? {
@@ -55,7 +61,7 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
         "@id": hasEquipePage
           ? `${SITE_URL}/${locale}/equipe/${slug}#person`
           : `${SITE_URL}/#person-${slug}`,
-        name,
+        name: structuredName,
         ...(title.length > 0 ? { jobTitle: title } : {}),
         ...(hasEquipePage ? { url: `${SITE_URL}/${locale}/equipe/${slug}` } : {}),
         worksFor: { "@id": `${SITE_URL}/#organization` },
@@ -74,7 +80,7 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
             «&nbsp;{text}&nbsp;»
           </blockquote>
           <figcaption className="text-fg-muted mt-3 text-sm not-italic">
-            — <span className="text-fg font-semibold">{name}</span>
+            — <span className="text-fg font-semibold">{displayName}</span>
             {title.length > 0 ? `, ${title}` : ""}
           </figcaption>
         </figure>

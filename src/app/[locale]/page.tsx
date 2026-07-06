@@ -630,6 +630,19 @@ export default async function Home({ params }: HomeProps) {
                   <div className="mt-4 text-center">
                     <p className="text-fg text-lg font-semibold">{t("founderName")}</p>
                     <p className="text-fg-muted text-sm">{t("founderRole")}</p>
+                    {/* Lien vers la fiche d'autorité d'entité `/equipe/williams`
+                        (E-E-A-T / Knowledge Panel — audit 2026-07-06). FR only
+                        (page servie uniquement en FR). */}
+                    {isFr ? (
+                      <p className="mt-2">
+                        <Link
+                          href={{ pathname: "/equipe/[slug]", params: { slug: "williams" } }}
+                          className="text-terracotta hover:text-terracotta-deep text-sm font-medium underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                        >
+                          Voir le profil du fondateur
+                        </Link>
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -1105,6 +1118,18 @@ export default async function Home({ params }: HomeProps) {
               className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
             >
               {isFr ? "Voir notre méthode en 4 étapes" : "See our 4-step method"}
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          </p>
+          {/* Lien contextuel /tarifs (audit sitelinks 2026-07-06) — la page Tarifs
+              n'était liée que via header/footer ; ce lien in-content renforce sa
+              candidature de sitelink Google. */}
+          <p className="text-fg-muted mt-4 text-center text-sm leading-relaxed">
+            <Link
+              href="/tarifs"
+              className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
+            >
+              {isFr ? "Voir la grille tarifaire complète" : "See the full pricing grid"}
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </p>

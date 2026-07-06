@@ -6,7 +6,7 @@ import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 // SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
-import { FOUNDER } from "@/lib/brand";
+import { FOUNDER, BRAND } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
@@ -26,6 +26,36 @@ export const SITE_URL =
   process.env.NODE_ENV === "production" && RAW_SITE_URL.startsWith("http://localhost")
     ? "https://axion-ia.com"
     : RAW_SITE_URL;
+
+// Logo carré officiel Axion-IA (512×512, PNG, fond blanc) — cible de
+// `Organization.logo` pour le Knowledge Panel Google + carte éditeur (publisher).
+//
+// Avant (audit Knowledge Panel 2026-07-06) : `logo` pointait vers
+// `${SITE_URL}/opengraph-image` = bannière OpenGraph 1200×630 marketing, NON
+// conforme aux guidelines Google « logo » (attend une image carrée-ish, ratio
+// ~1:1, ≥112×112, fond neutre). Résultat : logo mal rendu / ignoré dans l'encadré
+// marque. Désormais un vrai logo dédié, statique et crawlable (`public/logo-axion-ia.png`).
+export const BRAND_LOGO = {
+  path: "/logo-axion-ia.png",
+  url: `${SITE_URL}/logo-axion-ia.png`,
+  width: 512,
+  height: 512,
+} as const;
+
+// ImageObject réutilisable du logo — `@id` `#logo` partagé pour que
+// Organization / LocalBusiness / publisher pointent la MÊME entité image
+// (déduplication du graphe, cohérence Knowledge Panel).
+export function buildBrandLogoImageObject() {
+  return {
+    "@type": "ImageObject",
+    "@id": `${SITE_URL}/#logo`,
+    url: BRAND_LOGO.url,
+    contentUrl: BRAND_LOGO.url,
+    width: BRAND_LOGO.width,
+    height: BRAND_LOGO.height,
+    caption: "Axion-IA",
+  } as const;
+}
 
 // Build timestamp ISO — signal de fraîcheur AI Overviews 2026.
 //
@@ -780,7 +810,7 @@ interface OrganizationJsonLdInput {
 // call sites. Tout reste conditionnel : env absent ⇒ champ omis ⇒ 0 régression.
 export function buildOrganizationJsonLd({
   locale,
-  contactEmail = env.COMPANY_EMAIL ?? "presse@axion-ia.com",
+  contactEmail = env.COMPANY_EMAIL ?? "contact@axion-ia.com",
   contactType,
   vatID = env.COMPANY_VAT_NUMBER,
   registrationNumber = env.COMPANY_REGISTRATION_NUMBER,
@@ -796,10 +826,16 @@ export function buildOrganizationJsonLd({
     legalName: "Axion-IA SAS",
     alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
     url: SITE_URL,
-    logo: `${SITE_URL}/opengraph-image`,
+    // Logo carré dédié (Knowledge Panel Google) — cf. `BRAND_LOGO`. Émis en
+    // ImageObject `#logo` partagé (audit Knowledge Panel 2026-07-06).
+    logo: buildBrandLogoImageObject(),
+    image: { "@id": `${SITE_URL}/#logo` },
     description: isFr
       ? "Cabinet IA opérationnel B2B — interventions, audits et implémentation IA pour entreprises."
       : "Operational B2B AI consultancy — on-site AI sessions, audits and implementation for companies.",
+    // Slogan de marque (SSOT `BRAND`) — signal d'identité pour le Knowledge
+    // Panel + citabilité LLM (audit Knowledge Panel 2026-07-06).
+    slogan: isFr ? BRAND.sloganFr : BRAND.sloganEn,
     // Wikidata Q-number prepended si WIKIDATA_QNUMBER_AXIONIA configuré
     // (Sprint v7 Phase 10 — Knowledge Graph triangulation). Fallback safe :
     // sans env var, retombe sur les 2 sources sociales historiques.
@@ -831,6 +867,8 @@ export function buildOrganizationJsonLd({
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
+        streetAddress: env.COMPANY_ADDRESS ?? "11 Avenue Paul Verlaine",
+        postalCode: "38100",
         addressCountry: "FR",
         addressRegion: "Auvergne-Rhône-Alpes",
         addressLocality: "Grenoble",
@@ -861,19 +899,19 @@ export function buildOrganizationJsonLd({
       availableLanguage: ["French", "English"],
       ...(env.COMPANY_PHONE ? { telephone: env.COMPANY_PHONE } : {}),
     },
-    // Adresse postale complète (audit A-14) — émise si `COMPANY_ADDRESS` renseigné.
-    ...(env.COMPANY_ADDRESS
-      ? {
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: env.COMPANY_ADDRESS,
-            addressLocality: "Grenoble",
-            postalCode: "38100",
-            addressRegion: "Auvergne-Rhône-Alpes",
-            addressCountry: "FR",
-          },
-        }
-      : {}),
+    // Adresse postale complète du siège (audit A-14 + audit Knowledge Panel
+    // 2026-07-06). L'adresse RCS Grenoble est publique et connue, donc émise
+    // PAR DÉFAUT en dur (ancrage NAP fort pour le Knowledge Panel) ; `COMPANY_ADDRESS`
+    // ne sert plus que d'override optionnel de la rue. Les identifiants légaux
+    // (vatID / RCS / SIREN) restent, eux, env-gatés tant que le Kbis n'est pas émis.
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: env.COMPANY_ADDRESS ?? "11 Avenue Paul Verlaine",
+      addressLocality: "Grenoble",
+      postalCode: "38100",
+      addressRegion: "Auvergne-Rhône-Alpes",
+      addressCountry: "FR",
+    },
     ...(vatID ? { vatID } : {}),
     ...(registrationNumber
       ? {
@@ -917,7 +955,11 @@ interface WebsiteJsonLdInput {
 }
 
 // WebSite JSON-LD with SearchAction — pairs with `/recherche` (FR) / `/search`
-// (EN) and gives Google a sitelinks search box on the SERP.
+// (EN). Toujours émis dans le même `@graph` que le nœud `#organization` (layout),
+// donc `publisher` le référence par `@id` (fusion d'entité, pas de mini-Organization
+// concurrent). NB : la « sitelinks searchbox » Google a été supprimée (nov. 2024) ;
+// le `SearchAction` ci-dessous est conservé (inoffensif, exploité par certains
+// moteurs de réponse) mais ne génère plus de barre de recherche dans la SERP.
 export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
   const isFr = locale === "fr";
   return {
@@ -930,11 +972,7 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
     description: isFr
       ? "Cabinet IA opérationnel — interventions, audits et implémentation IA."
       : "Operational AI consultancy — on-site sessions, audits and implementation.",
-    publisher: {
-      "@type": "Organization",
-      name: "Axion-IA",
-      url: SITE_URL,
-    },
+    publisher: { "@id": `${SITE_URL}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -1350,14 +1388,11 @@ export function buildLocalBusinessJsonLd({
     name,
     description,
     url,
-    image: `${SITE_URL}/opengraph-image`,
-    parentOrganization: {
-      "@type": "Organization",
-      name: "Axion-IA",
-      legalName: "Axion-IA SAS",
-      alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
-      url: SITE_URL,
-    },
+    image: BRAND_LOGO.url,
+    // Rattachement à l'entité canonique par `@id` (le nœud `#organization` est
+    // émis sur toutes les pages via le layout) — évite un mini-Organization
+    // concurrent (audit Knowledge Panel 2026-07-06).
+    parentOrganization: { "@id": `${SITE_URL}/#organization` },
     areaServed: {
       "@type": areaServed.type,
       name: areaServed.name,

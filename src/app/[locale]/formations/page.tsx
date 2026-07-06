@@ -19,7 +19,11 @@ import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getFormationsV2ByDuree } from "@/content/formations/catalog-v2";
-import { FORMATION_DUREES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
+import {
+  FORMATION_DUREES_META,
+  FORMATION_GAMMES_META,
+  formationDureeIso,
+} from "@/content/formations/catalog-v2-meta";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import {
   buildProductMetadata,
@@ -66,10 +70,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/formations",
+    // Titre court (≤ 60 car) pour éviter la troncature SERP + servir de label
+    // sitelink net (audit sitelinks 2026-07-06). TPE/PME/ETI restent dans la
+    // description. Finit par « · Axion-IA » (bypass template).
     title:
       loc === "fr"
-        ? "Formation IA entreprise · TPE PME ETI · formateur IA sur site · Axion-IA"
-        : "Corporate AI training · SME ETI · on-site AI trainer · Axion-IA",
+        ? "Formation IA en entreprise sur site · Axion-IA"
+        : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
         ? `Formation IA en entreprise sur site pour TPE, PME, ETI et grandes entreprises : 4 formats one-shot (4 h à 3 j+) ou formules récurrentes mensuelles/bi-mensuelles. Formateur IA dédié, montée en compétence continue, gains de temps instantanés. Dès ${fromPrice}.`
@@ -97,6 +104,18 @@ export default async function FormationsHub({ params }: Props) {
   ];
 
   const essentielleEntry = formatAmount(getFormationCatalogPriceRange().minEur, loc);
+
+  // Libellés dérivés du SSOT catalogue (jamais figés dans la prose FAQ) : si un
+  // format de durée ou une gamme est ajouté/renommé, la réponse « prix » suit
+  // automatiquement (audit FAQ prix dynamique 2026-07-06).
+  const dureeShortFirst = FORMATION_DUREES_META[0]?.shortFr ?? "4 h";
+  const dureeShortLast = FORMATION_DUREES_META[FORMATION_DUREES_META.length - 1]?.shortFr ?? "3 j";
+  const nbDureeFormats = FORMATION_DUREES_META.length;
+  // « Gamme IA / Agents & Automatisations / Gamme Claude » → on retire le préfixe
+  // « Gamme » pour une liste propre et réutilisable en FR comme en EN.
+  const gammesList = FORMATION_GAMMES_META.map((g) => g.labelFr.replace(/^Gamme\s+/i, "")).join(
+    ", ",
+  );
 
   // Adaptateur durée — dérive du catalogue V2 (17 formations) la même forme que
   // l'ancien DurationDef collectives, pour garder le JSX du design strictement
@@ -1113,6 +1132,14 @@ export default async function FormationsHub({ params }: Props) {
               isFr
                 ? [
                     {
+                      // Prix dérivé du SSOT catalogue (getFormationCatalogPriceRange),
+                      // JAMAIS hardcodé — même valeur que le « Dès … » du hero pour
+                      // rester cohérent sur la page (audit FAQ prix 2026-07-06).
+                      id: "prix-formation-ia",
+                      question: "Combien coûte une formation IA en entreprise ?",
+                      answer: `Une formation IA en entreprise sur site démarre à ${essentielleEntry} HT. Le tarif dépend ensuite de la durée (de ${dureeShortFirst} à ${dureeShortLast}), de la gamme (${gammesList}) et du nombre de participants — la grille complète figure plus haut sur cette page. Le devis précis se cale sur votre contexte après un premier échange.`,
+                    },
+                    {
                       id: "effectif",
                       question: "Combien de participants par session ?",
                       answer:
@@ -1164,6 +1191,13 @@ export default async function FormationsHub({ params }: Props) {
                     },
                   ]
                 : [
+                    {
+                      // Price derived from the catalogue SSOT, never hardcoded —
+                      // same value as the hero "From …" (2026-07-06 price-FAQ audit).
+                      id: "prix-formation-ia",
+                      question: "How much does corporate AI training cost?",
+                      answer: `On-site corporate AI training starts at ${essentielleEntry} ex. VAT. The rate then depends on the format (${nbDureeFormats} durations from ${dureeShortFirst} to ${dureeShortLast}), the track (${gammesList}) and the number of participants — the full grid is above on this page. The precise quote is tailored to your context after a first call.`,
+                    },
                     {
                       id: "headcount",
                       question: "How many participants per session?",

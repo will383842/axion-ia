@@ -41,9 +41,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
+  // Le titre reprend l'ancre nav/footer « Réserver un appel » pour aligner le
+  // label sitelink sur l'intention de recherche (audit sitelinks 2026-07-06).
   const titleStr = isFr
-    ? "Discutons de votre projet IA · Axion-IA"
-    : "Discutons de votre projet IA · Axion-IA";
+    ? "Réserver un appel · votre projet IA · Axion-IA"
+    : "Book a call · your AI project · Axion-IA";
   return {
     ...buildProductMetadata({
       locale,

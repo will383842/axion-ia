@@ -20,10 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/contact",
+    // Le titre DOIT finir par « · Axion-IA » (sinon le template layout ré-appose
+    // la marque → « … · Axion-IA · Axion-IA », bug audit 2026-07-06).
     title:
       locale === "fr"
-        ? "Contact · Axion-IA · réponse sous 48 h ouvrées"
-        : "Contact · Axion-IA · 48 business-hour reply",
+        ? "Contact · réponse sous 48 h ouvrées · Axion-IA"
+        : "Contact · 48 business-hour reply · Axion-IA",
     description:
       locale === "fr"
         ? "Contactez Axion-IA — un formulaire unique pour devis, audit, implémentation, formation, 1-à-1, partenariat. Réponse sous 48 h ouvrées."
