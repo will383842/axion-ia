@@ -19,6 +19,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { ReviewSubmissionForm } from "@/components/forms/ReviewSubmissionForm";
+import { ReviewQrCta } from "@/components/reviews/ReviewQrCta";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_EDITORIAL_DATE } from "@/lib/seo";
 
 interface Props {
@@ -117,6 +118,7 @@ export default async function DeposerAvisPage({ params }: Props) {
               </Link>
               .
             </p>
+            <ReviewQrCta context="form" />
           </aside>
           <div>
             <ReviewSubmissionForm />

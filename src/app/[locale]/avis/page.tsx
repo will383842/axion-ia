@@ -46,6 +46,7 @@ import { orgAggregateJsonLd } from "@/server/reviews/jsonld";
 import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { ReviewFilters as ReviewFiltersBar } from "@/components/reviews/ReviewFilters";
 import { RatingBreakdown } from "@/components/reviews/RatingBreakdown";
+import { ReviewQrCta } from "@/components/reviews/ReviewQrCta";
 import { REVIEWS_PAGE_SIZE, FACET_MIN_COUNT } from "@/lib/reviews/config";
 import { isServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
 import { isClientSectorSlug, clientSectorLabel } from "@/content/sectors";
@@ -259,6 +260,11 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
             </div>
           ))}
         </div>
+      </Section>
+
+      {/* 2b. Scannez pour laisser un avis (cross-device / partage) */}
+      <Section tone="canvas">
+        <ReviewQrCta context="hub" className="mx-auto max-w-2xl" />
       </Section>
 
       {/* 3. Synthèse des notes */}
