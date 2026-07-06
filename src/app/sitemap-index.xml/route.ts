@@ -100,8 +100,15 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   "/sitemap-carrieres.xml",
 ];
 
-export const dynamic = "force-static";
-export const revalidate = 3600;
+// Rendu DYNAMIQUE au runtime (2026-07-06). Auparavant `force-static` : l'index
+// était pré-rendu au build stub.invalid (ADR 0026) où TOUS les gates DB-aware
+// (KB, blog, news, news-evergreen) voient un compte = 0 → ces sub-sitemaps étaient
+// EXCLUS de l'index fraîchement déployé, et ne réapparaissaient qu'après la 1re
+// revalidation ISR (jusqu'à 1h), à CHAQUE deploy. En `force-dynamic`, le gating
+// s'évalue avec la vraie DB à chaque requête → blog/news/KB listés immédiatement.
+// La charge origin est absorbée par le cache CDN (`s-maxage=600`, cf. Response).
+export const dynamic = "force-dynamic";
+export const revalidate = 600;
 
 // EN désactivé (AGENTS.md §EN locale désactivé 2026-05-16) → le sub-sitemap
 // `images-en.xml` est volontairement vide ; on ne le référence pas dans l'index
