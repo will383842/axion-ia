@@ -43,7 +43,7 @@ describe("T-39 prix", () => {
   it("KNOWN_PRICES contient les prix réels de pricing.ts", () => {
     expect(KNOWN_PRICES.has(1190)).toBe(true);
     expect(KNOWN_PRICES.has(2450)).toBe(true);
-    expect(KNOWN_PRICES.has(690)).toBe(true);
+    expect(KNOWN_PRICES.has(1200)).toBe(true);
     expect(KNOWN_PRICES.has(790)).toBe(true);
     expect(KNOWN_PRICES.has(1234)).toBe(false);
   });

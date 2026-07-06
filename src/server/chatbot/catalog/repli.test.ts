@@ -2,7 +2,7 @@
  * T-36 — Module de repli / cross-sell (doc 16 §3, G-5).
  *
  * Vérifie : « jamais de non sec » (toujours ≥ 1 offre proposée) · formation à
- * 400 € → entrée de gamme proche (690 €) · atelier 3 h → propose le 4 h (durée
+ * 400 € → entrée de gamme proche (1 200 €) · atelier 3 h → propose le 4 h (durée
  * voisine) · sujet inconnu → propose le voisin · tri sur sous-tiers réels
  * (inversion ETI) · intégration dans le handler rechercher_offres (replied=true).
  */
@@ -14,7 +14,7 @@ import { rechercherOffres } from "@/server/chatbot/tools/rechercher-offres";
 const ctx = { tenantId: "axion-ia" };
 
 describe("T-36 repli — jamais de « non » sec", () => {
-  it("formation à 400 € (rien sous 690) → propose le moins cher proche (intervention-4h 690)", () => {
+  it("formation à 400 € (rien sous 1 200) → propose le moins cher proche (intervention-4h 1 200)", () => {
     const r = repli({ vertical: "formation", prixMax: 400 });
     expect(r.offres.length).toBeGreaterThan(0);
     expect(r.offres.map((o) => o.id)).toContain("intervention-4h");
@@ -71,7 +71,10 @@ describe("T-36 — intégration handler rechercher_offres", () => {
   });
 
   it("match exact → replied=false (pas de repli)", async () => {
-    const res = await rechercherOffres({ vertical: "formation", prixMin: 600, prixMax: 800 }, ctx);
+    const res = await rechercherOffres(
+      { vertical: "formation", prixMin: 1100, prixMax: 1300 },
+      ctx,
+    );
     expect(res.replied).toBe(false);
     expect(res.offres.map((o) => o.id)).toContain("intervention-4h");
   });
