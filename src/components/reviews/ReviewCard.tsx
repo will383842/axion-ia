@@ -25,7 +25,7 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
 
   return (
     <article
-      className={`bg-paper border-border shadow-card flex h-full flex-col rounded-2xl border p-6 ${className ?? ""}`}
+      className={`group bg-paper border-border shadow-card hover:border-terracotta hover:shadow-elevated relative flex h-full flex-col rounded-2xl border p-6 transition ${className ?? ""}`}
     >
       <div className="flex items-center justify-between gap-3">
         <StarRating value={review.rating} size={16} />
@@ -38,10 +38,8 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
       </div>
 
       {review.title ? (
-        <h3 className="mt-3 font-serif text-lg leading-snug font-semibold">
-          <Link href={detailHref} className="hover:text-terracotta">
-            {review.title}
-          </Link>
+        <h3 className="group-hover:text-terracotta mt-3 font-serif text-lg leading-snug font-semibold transition-colors">
+          {review.title}
         </h3>
       ) : null}
 
@@ -76,9 +74,11 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
             <time dateTime={date.toISOString()}>{DATE_FMT.format(date)}</time>
           </p>
         </div>
+        {/* Lien « étiré » : le ::after recouvre toute la carte (article relative)
+            → toute la carte est cliquable, tout en gardant UN seul lien accessible. */}
         <Link
           href={detailHref}
-          className="text-primary ml-auto self-start text-xs whitespace-nowrap hover:underline"
+          className="text-terracotta ml-auto self-start text-xs whitespace-nowrap group-hover:underline after:absolute after:inset-0"
           aria-label={`Lire l’avis de ${author}`}
         >
           Lire →
