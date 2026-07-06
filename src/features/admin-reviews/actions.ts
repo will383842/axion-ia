@@ -390,3 +390,117 @@ export async function deleteReviewAction(
     return { ok: false, error: "Erreur lors de la suppression." };
   }
 }
+
+// ============================================================
+// Photo (upload / retrait direct côté admin)
+// ============================================================
+
+const PHOTO_MAX_BYTES = 5 * 1024 * 1024; // 5 Mo (aligné dépôt public)
+
+/** Validation photo admin : taille + magic-bytes JPEG/PNG/WebP/HEIC (null = OK). */
+function validateReviewPhoto(file: File, buf: Buffer): string | null {
+  if (file.size === 0) return "Fichier vide.";
+  if (file.size > PHOTO_MAX_BYTES) return "Photo trop volumineuse (5 Mo max).";
+  const s = buf.subarray(0, 12);
+  const isJpg = s[0] === 0xff && s[1] === 0xd8 && s[2] === 0xff;
+  const isPng = s[0] === 0x89 && s[1] === 0x50 && s[2] === 0x4e && s[3] === 0x47;
+  const isWebp =
+    s[0] === 0x52 &&
+    s[1] === 0x49 &&
+    s[2] === 0x46 &&
+    s[3] === 0x46 &&
+    s[8] === 0x57 &&
+    s[9] === 0x45 &&
+    s[10] === 0x42 &&
+    s[11] === 0x50;
+  const isHeif = s[4] === 0x66 && s[5] === 0x74 && s[6] === 0x79 && s[7] === 0x70;
+  if (!isJpg && !isPng && !isWebp && !isHeif)
+    return "Photo non supportée (JPG, PNG, WebP ou HEIC).";
+  return null;
+}
+
+/** Normalise le type de photo (défaut portrait). */
+function reviewPhotoKind(formData: FormData): string {
+  return formData.get("photoKind") === "logo" ? "logo" : "portrait";
+}
+
+/**
+ * Upload direct d'une photo publique pour un avis (console admin). Optimisée
+ * Sharp (carré 512 WebP q82, EXIF/GPS strippés → RGPD). Réservé aux vraies
+ * photos client fournies avec accord — jamais d'illustration générique.
+ */
+export async function uploadReviewPhotoAction(
+  _prev: AdminReviewActionState,
+  formData: FormData,
+): Promise<AdminReviewActionState> {
+  const session = await requireAdmin();
+  const id = idFrom(formData);
+  if (!id) return { ok: false, error: "id manquant" };
+  const file = formData.get("photo");
+  if (!(file instanceof File) || file.size === 0)
+    return { ok: false, error: "Aucun fichier fourni." };
+  try {
+    const current = await prisma.customerReview.findUnique({
+      where: { id },
+      select: { id: true, authorFirstName: true, authorLastInitial: true },
+    });
+    if (!current) return { ok: false, error: "Avis introuvable." };
+
+    const buf = Buffer.from(await file.arrayBuffer());
+    const invalid = validateReviewPhoto(file, buf);
+    if (invalid) return { ok: false, error: invalid };
+
+    let photoUrl: string;
+    try {
+      // Cache-buster `?v=` : la route sert la photo en `immutable` (1 an) et un
+      // remplacement réutilise le même id/URL → sans ce param, l'ancienne image
+      // resterait cachée navigateur/CDN. La route ignore la query (id = path).
+      photoUrl = `${await storeReviewPhotoPublic(buf, current.id)}?v=${Date.now()}`;
+    } catch (e) {
+      Sentry.captureException(e, { tags: { action: "uploadReviewPhotoAction:sharp" } });
+      return { ok: false, error: "Image illisible ou format non pris en charge." };
+    }
+
+    const updated = await prisma.customerReview.update({
+      where: { id },
+      data: {
+        photoUrl,
+        photoKind: reviewPhotoKind(formData),
+        photoAlt: `Photo de ${current.authorFirstName} ${current.authorLastInitial}`.trim(),
+      },
+      select: ADMIN_SELECT,
+    });
+    await logActivity(session, "review.photo_upload", id, { kind: updated.photoKind });
+    revalidateAndPing(publicPaths(updated), "review-photo-upload");
+    revalidatePath(adminPath("fr", "avis"));
+    return { ok: true };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "uploadReviewPhotoAction" } });
+    return { ok: false, error: "Erreur lors de l'envoi de la photo." };
+  }
+}
+
+/** Retire la photo publique d'un avis (fichier disque + champs DB). Idempotent. */
+export async function removeReviewPhotoAction(
+  _prev: AdminReviewActionState,
+  formData: FormData,
+): Promise<AdminReviewActionState> {
+  const session = await requireAdmin();
+  const id = idFrom(formData);
+  if (!id) return { ok: false, error: "id manquant" };
+  try {
+    await deleteReviewPhotoPublic(id);
+    const updated = await prisma.customerReview.update({
+      where: { id },
+      data: { photoUrl: null, photoAlt: null, photoKind: null },
+      select: ADMIN_SELECT,
+    });
+    await logActivity(session, "review.photo_remove", id);
+    revalidateAndPing(publicPaths(updated), "review-photo-remove");
+    revalidatePath(adminPath("fr", "avis"));
+    return { ok: true };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "removeReviewPhotoAction" } });
+    return { ok: false, error: "Erreur lors du retrait de la photo." };
+  }
+}

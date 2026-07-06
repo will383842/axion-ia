@@ -15,6 +15,8 @@ import {
   verifyForm,
   featureForm,
   deleteForm,
+  uploadPhotoForm,
+  removePhotoForm,
 } from "../actions-form";
 
 export const dynamic = "force-dynamic";
@@ -123,19 +125,62 @@ export default async function AvisDetailPage({ params }: PageProps) {
 
         {/* Colonne latérale : photo + modération */}
         <div className="space-y-[var(--space-admin-5)]">
-          {photoSrc ? (
-            <AdminCard>
-              <h3 className="mb-2 font-semibold">Photo ({r.photoKind ?? "—"})</h3>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photoSrc}
-                alt={`Photo de ${author}`}
-                width={160}
-                height={160}
-                className="rounded-lg object-cover"
+          <AdminCard>
+            <h3 className="mb-2 font-semibold">Photo</h3>
+            {photoSrc ? (
+              <div className="mb-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photoSrc}
+                  alt={`Photo de ${author}`}
+                  width={160}
+                  height={160}
+                  className="rounded-lg object-cover"
+                />
+                <p className="admin-meta-small mt-1">Type : {r.photoKind ?? "—"}</p>
+                <form action={removePhotoForm} className="mt-2">
+                  <input type="hidden" name="id" value={r.id} />
+                  <button type="submit" className="admin-button-ghost text-red-600">
+                    Retirer la photo
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <p className="admin-meta-small mb-3">
+                Aucune photo. N’ajoutez qu’une vraie photo (portrait ou logo) fournie par le client
+                avec son accord — jamais d’illustration générique.
+              </p>
+            )}
+            <form
+              action={uploadPhotoForm}
+              encType="multipart/form-data"
+              className="border-admin-border space-y-2 border-t pt-3"
+            >
+              <input type="hidden" name="id" value={r.id} />
+              <label htmlFor="photo" className="admin-meta-small block">
+                {photoSrc ? "Remplacer par" : "Ajouter"} une photo (JPG, PNG, WebP — 5 Mo max)
+              </label>
+              <input
+                id="photo"
+                name="photo"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                required
+                className="admin-input w-full"
               />
-            </AdminCard>
-          ) : null}
+              <select
+                name="photoKind"
+                defaultValue={r.photoKind ?? "portrait"}
+                className="admin-input w-full"
+              >
+                <option value="portrait">Portrait</option>
+                <option value="logo">Logo d’entreprise</option>
+              </select>
+              <button type="submit" className="admin-button w-full">
+                {photoSrc ? "Remplacer la photo" : "Envoyer la photo"}
+              </button>
+            </form>
+          </AdminCard>
 
           <AdminCard>
             <h3 className="mb-3 font-semibold">Modération</h3>
