@@ -232,7 +232,7 @@ export const SANNOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs des services d'Axion-IA à Sannois ?",
-      a: "Audit sur place à partir de {{price:intervention-4h|flat}}, Formation 4 h dès {{price:intervention-4h|flat}} et sessions un-à-un dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}} et sessions un-à-un dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes voisines de Sannois ?",

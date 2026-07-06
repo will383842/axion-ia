@@ -92,7 +92,7 @@ export const POITIERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 12 personnes)",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 30 personnes)",
             detail:
               "Idéal pour les indépendants, cabinets, agences numériques et petites structures du centre de Poitiers : une demi-journée pour installer les premiers outils IA et lever les blocages, sans immobiliser l'équipe une journée entière.",
           },
@@ -122,7 +122,7 @@ export const POITIERS_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures accueille de 2 à 12 personnes, la journée Essentielle de 2 à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
+            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -184,7 +184,7 @@ export const POITIERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 12 personnes)",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 30 personnes)",
             detail:
               "Idéal pour les indépendants, cabinets, agences numériques et petites structures du centre de Poitiers : une demi-journée pour installer les premiers outils IA et lever les blocages, sans immobiliser l'équipe une journée entière.",
           },
@@ -214,7 +214,7 @@ export const POITIERS_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures accueille de 2 à 12 personnes, la journée Essentielle de 2 à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
+            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",

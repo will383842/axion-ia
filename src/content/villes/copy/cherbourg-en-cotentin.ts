@@ -10,9 +10,9 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Cherbourg-en-Cotentin (Manche, 78 258 habitants en 2023), commune née en 2016 du regroupement de Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville et Tourlaville. Notre cabinet conçoit du code IA sur mesure pour le tissu local : maritime, métallurgie, agroalimentaire, électronique, commerces de centre-ville et services portuaires. Nous nous déplaçons sur site pour comprendre les contraintes opérationnelles d'une cité littorale tournée vers la plus grande rade artificielle d'Europe.",
   directAnswerFr:
-    "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure (pas de no-code). Sous-préfecture de la Manche et siège de préfecture maritime, Cherbourg-en-Cotentin concentre une activité maritime, industrielle et logistique structurée autour du port (liaisons Poole, Portsmouth, Dublin, Rosslare via Brittany Ferries et Irish Ferries) et de la rade artificielle. Nos prestations vont de l'Audit sur place à {{price:intervention-4h|flat}} à l'implémentation d'agents IA métiers, avec un déplacement physique sur les cinq communes déléguées.",
+    "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure (pas de no-code). Sous-préfecture de la Manche et siège de préfecture maritime, Cherbourg-en-Cotentin concentre une activité maritime, industrielle et logistique structurée autour du port (liaisons Poole, Portsmouth, Dublin, Rosslare via Brittany Ferries et Irish Ferries) et de la rade artificielle. Nos prestations vont de l'Audit sur place à {{price:audit-flash|flat}} à l'implémentation d'agents IA métiers, avec un déplacement physique sur les cinq communes déléguées.",
   directAnswerEn:
-    "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure (pas de no-code). Sous-préfecture de la Manche et siège de préfecture maritime, Cherbourg-en-Cotentin concentre une activité maritime, industrielle et logistique structurée autour du port (liaisons Poole, Portsmouth, Dublin, Rosslare via Brittany Ferries et Irish Ferries) et de la rade artificielle. Nos prestations vont de l'Audit sur place à {{price:intervention-4h|flat}} à l'implémentation d'agents IA métiers, avec un déplacement physique sur les cinq communes déléguées.",
+    "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure (pas de no-code). Sous-préfecture de la Manche et siège de préfecture maritime, Cherbourg-en-Cotentin concentre une activité maritime, industrielle et logistique structurée autour du port (liaisons Poole, Portsmouth, Dublin, Rosslare via Brittany Ferries et Irish Ferries) et de la rade artificielle. Nos prestations vont de l'Audit sur place à {{price:audit-flash|flat}} à l'implémentation d'agents IA métiers, avec un déplacement physique sur les cinq communes déléguées.",
   seoHook: "maritime, métallurgie & agroalimentaire normands",
   ecosystemFr:
     "Cherbourg-en-Cotentin structure son économie autour du port de commerce et de la rade (deuxième plus grande au monde), des activités maritimes, de la métallurgie, de l'agroalimentaire et de l'électronique. La sous-préfecture de la Manche regroupe cinq communes déléguées (Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville, Tourlaville) et héberge la préfecture maritime de la Manche et de la mer du Nord. Le tissu TPE/PME se déploie autour des services portuaires, des commerces de centre-ville et des sous-traitants industriels.",
@@ -32,8 +32,8 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Cherbourg-en-Cotentin ({{price:intervention-4h|flat}}) pour TPE/PME locales — diagnostic des processus opérationnels d'un commerce de centre-ville, d'un sous-traitant maritime ou d'un acteur agroalimentaire des cinq communes déléguées.",
-      en: "Audit sur place IA à Cherbourg-en-Cotentin ({{price:intervention-4h|flat}}) pour TPE/PME locales — diagnostic des processus opérationnels d'un commerce de centre-ville, d'un sous-traitant maritime ou d'un acteur agroalimentaire des cinq communes déléguées.",
+      fr: "Audit sur place IA à Cherbourg-en-Cotentin ({{price:audit-flash|flat}}) pour TPE/PME locales — diagnostic des processus opérationnels d'un commerce de centre-ville, d'un sous-traitant maritime ou d'un acteur agroalimentaire des cinq communes déléguées.",
+      en: "Audit sur place IA à Cherbourg-en-Cotentin ({{price:audit-flash|flat}}) pour TPE/PME locales — diagnostic des processus opérationnels d'un commerce de centre-ville, d'un sous-traitant maritime ou d'un acteur agroalimentaire des cinq communes déléguées.",
     },
     interventions: {
       fr: "Interventions ciblées à Cherbourg-en-Cotentin pour les TPE/PME — automatisation de devis, suivi de commandes, traitement documentaire pour les acteurs portuaires, logistiques ou de la métallurgie cherbourgeoise.",
@@ -228,7 +228,7 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention IA à Cherbourg-en-Cotentin ?",
-      a: "Nos tarifs publics commencent à {{price:intervention-4h|flat}} pour une intervention en format collectif, et {{price:intervention-4h|flat}} pour un Audit sur place IA. Les tarifs détaillés (audit, interventions, implémentation, un-à-un) figurent sur la page tarifs publics du site Axion-IA.",
+      a: "Nos tarifs publics commencent à {{price:intervention-4h|flat}} pour une intervention en format collectif, et {{price:audit-flash|flat}} pour un Audit sur place IA. Les tarifs détaillés (audit, interventions, implémentation, un-à-un) figurent sur la page tarifs publics du site Axion-IA.",
     },
     {
       q: "Quels délais pour une intervention sur site à Cherbourg-en-Cotentin ?",

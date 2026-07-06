@@ -11,9 +11,9 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   pitchEn:
     "Le Plessis-Trévise (21 112 habitants, Val-de-Marne) est une commune urbaine dense (4 887 hab/km²) du Grand Paris Sud Est Avenir (GPSEA), urbanisée depuis les années 1950. Située à 18 km à l'est de Paris, elle est desservie par le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) et bordée par l'A4 au nord. Axion-IA accompagne les TPE et PME locales (commerce de proximité, services, BTP) avec des interventions code custom sur site.",
   directAnswerFr:
-    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:intervention-4h|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
+    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
   directAnswerEn:
-    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:intervention-4h|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
+    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
   seoHook: "commerce proximité & artisanat GPSEA",
   ecosystemFr:
     "Le Plessis-Trévise s'inscrit dans le territoire Grand Paris Sud Est Avenir (GPSEA), aux côtés de Champigny-sur-Marne, Chennevières-sur-Marne, Noisy-le-Grand, Pontault-Combault, La Queue-en-Brie et Villiers-sur-Marne. Le tissu économique de cette commune urbaine de peuplement récent (existence administrative depuis 1899, urbanisation post-1950) repose sur le commerce de proximité, les services aux entreprises et les professions libérales, avec un taux de propriétaires de 56,8 %.",
@@ -228,7 +228,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA au Plessis-Trévise ?",
-      a: "Les audits IA au Plessis-Trévise débutent à {{price:intervention-4h|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams depuis Paris via RER E inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA au Plessis-Trévise débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams depuis Paris via RER E inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Comment se déroule une intervention IA au Plessis-Trévise ?",
