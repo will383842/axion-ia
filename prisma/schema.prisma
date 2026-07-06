@@ -248,6 +248,20 @@ enum TestimonialStatus {
   archived
 }
 
+/// Cycle de vie d'un avis client soumis via /avis/deposer.
+/// pending  = déposé, invisible partout (défaut) — attend modération admin.
+/// published = validé admin, visible + indexable.
+/// hidden   = retiré temporairement de l'affichage public (ex. litige).
+/// rejected = refusé (spam / faux / illégal), jamais publié.
+/// archived = retiré définitivement (conservé pour audit RGPD).
+enum CustomerReviewStatus {
+  pending
+  published
+  hidden
+  rejected
+  archived
+}
+
 enum FAQCategory {
   general
   interventions
@@ -1311,6 +1325,89 @@ model Testimonial {
   @@index([status])
   @@index([sector])
   @@map("testimonials")
+}
+
+// ============================================================
+// 9b. customer_reviews (avis clients — soumission publique modérée)
+// ============================================================
+
+/// Avis clients déposés via le formulaire public `/avis/deposer`.
+/// MODÉRATION OBLIGATOIRE : `status` défaut `pending` ; seul un admin publie.
+/// Toutes les surfaces publiques (hub `/avis`, fiche `/avis/[slug]`, facettes,
+/// sitemap, JSON-LD, feed) filtrent `status = "published"`. Un avis non publié
+/// est physiquement absent de tout rendu public ET de l'indexation.
+///
+/// RGPD : `contactEmailEnc` chiffré (encryptPii), `ipHash` (SHA-256), consentement
+/// horodaté ; identité publique limitée à `authorFirstName` + `authorLastInitial`.
+/// Photo optionnelle : stockée en privé au dépôt (`photoStoragePath`, hors web-root),
+/// variantes publiques optimisées (`photoUrl`) générées seulement à l'approbation.
+model CustomerReview {
+  id   String @id @default(uuid()) @db.Uuid
+  slug String @unique @db.VarChar(200)
+
+  // Identité publique (jamais le nom de famille complet — RGPD)
+  authorFirstName   String @map("author_first_name") @db.VarChar(80)
+  authorLastInitial String @map("author_last_initial") @db.VarChar(4)
+
+  // Entreprise + secteur d'activité du client
+  companyName  String? @map("company_name") @db.VarChar(200)
+  /// Secteur client — normalisé sur ClientSectorSlug (content/sectors.ts) si reconnu.
+  clientSector String? @map("client_sector") @db.VarChar(80)
+
+  // Rattachement géographique (dénormalisé depuis City pour affichage + facettes)
+  citySlug       String? @map("city_slug") @db.VarChar(100)
+  cityName       String? @map("city_name") @db.VarChar(120)
+  departmentCode String? @map("department_code") @db.VarChar(3)
+  regionSlug     String? @map("region_slug") @db.VarChar(80)
+
+  /// Service Axion-IA concerné (pour AggregateRating par service).
+  serviceLine ServiceSector? @map("service_line")
+
+  // Contenu de l'avis
+  rating  Int // 1..5 (contrainte CHECK ajoutée en migration)
+  title   String? @db.VarChar(160)
+  comment String  @db.Text // min 120 (Zod) → garantit un contenu non-thin
+
+  // Photo optionnelle
+  photoKind        String? @map("photo_kind") @db.VarChar(16) // "portrait" | "logo"
+  photoStoragePath String? @map("photo_storage_path") @db.VarChar(512) // privé, hors web-root
+  photoUrl         String? @map("photo_url") @db.VarChar(512) // public optimisé (post-approbation)
+  photoAlt         String? @map("photo_alt") @db.VarChar(255)
+
+  // Notre réponse (sens unique — le client ne peut pas répondre)
+  replyBody String?   @map("reply_body") @db.Text
+  repliedAt DateTime? @map("replied_at")
+  repliedBy String?   @map("replied_by") @db.VarChar(120)
+
+  // Modération / cycle de vie
+  status          CustomerReviewStatus @default(pending)
+  isVerified      Boolean              @default(false) @map("is_verified")
+  moderatedBy     String?              @map("moderated_by") @db.VarChar(120)
+  moderatedAt     DateTime?            @map("moderated_at")
+  moderationNotes String?              @map("moderation_notes") @db.Text
+  publishedAt     DateTime?            @map("published_at")
+  featured        Boolean              @default(false)
+  displayOrder    Int                  @default(0) @map("display_order")
+
+  // RGPD (jamais exposé publiquement)
+  contactEmailEnc String? @map("contact_email_enc") @db.Text // chiffré (encryptPii)
+  ipHash          String? @map("ip_hash") @db.VarChar(64)
+  consentVersion  String? @map("consent_version") @db.VarChar(60)
+  source          String  @default("form") @db.VarChar(20)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([status, rating])
+  @@index([status, featured])
+  @@index([citySlug])
+  @@index([departmentCode])
+  @@index([regionSlug])
+  @@index([clientSector])
+  @@index([serviceLine])
+  @@map("customer_reviews")
 }
 
 // ============================================================
