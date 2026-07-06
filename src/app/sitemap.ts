@@ -55,7 +55,6 @@ import { SERVICE_DEFS } from "@/content/knowledge/services";
 // Static sub-sitemaps :
 //   /sitemap.xml                    = sitemap-index (auto, lists sub-sitemaps)
 //   /sitemap/pages.xml              = static routes (excluding [slug] templates + dev shells)
-//   /sitemap/blog.xml               = posts + categories + tags + authors (lastModified = publishedAt)
 //   /sitemap/help.xml               = centre-aide + faq
 //   /sitemap/cas-concrets.xml       = case studies + industry filters
 //   /sitemap/comparaisons.xml       = comparison pages
@@ -331,7 +330,14 @@ function getVillesSitemapIds(): string[] {
 export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   const staticIds: StaticSitemapId[] = [
     "pages",
-    "blog",
+    // "blog" RETIRÉ de generateSitemaps() 2026-07-06 — cf. `app/sitemap-blog.xml/route.ts`.
+    // Depuis le vidage de BLOG_POSTS (2026-07-03) le sous-sitemap blog est 100 % DB.
+    // Émis via la convention metadata (pré-rendue au build stub.invalid → `[]`), il
+    // était baké VIDE dans l'image puis resservi ~24h (revalidate=86400) après chaque
+    // deploy → GSC « Balise XML manquante : url ». Déplacé vers un Route Handler runtime
+    // `force-dynamic` (`/sitemap-blog.xml`, référencé dans CUSTOM_SITEMAPS, gaté anti-vide),
+    // même pattern que knowledge/news/carrieres. Le `case "blog"` du switch ci-dessous
+    // est CONSERVÉ : le nouveau Route Handler réutilise ce builder via `sitemap({id:"blog"})`.
     // Audit final P1-12 fix : split sitemap-faq.xml dédié (auparavant bundled
     // `help.xml`). QAPage Speakable distincte.
     //

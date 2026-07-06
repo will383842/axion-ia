@@ -26,10 +26,15 @@
 //     `xmlns:news`). Cf. `app/sitemap-news.xml/route.ts` + audit
 //     Sitemap+IndexNow 2026-05-15 AGENT 4 §4.1.3 P0-3.
 
-import { generateSitemaps, buildExcludeSlugsByType } from "../sitemap";
+import sitemap, { generateSitemaps, buildExcludeSlugsByType } from "../sitemap";
 import { SITE_URL } from "@/lib/seo";
 import { prisma } from "@/lib/prisma";
 import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitemap";
+// Gating anti-vide des sitemaps news (fenêtres glissantes 48h / 90j → vides en
+// creux d'actu). On réutilise les MÊMES builders que les routes → cohérence
+// index↔route garantie (cf. filtre customSitemaps dans GET).
+import { listRecentNewsEntries } from "@/app/sitemap-news.xml/route";
+import { listEvergreenNewsEntries } from "@/app/sitemap-news-evergreen.xml/route";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
@@ -42,6 +47,16 @@ import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitema
 // livrera les builders correspondants.
 const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   "/sitemap-news.xml",
+  // Blog DB-aware (articles tier-1 + catégories content-gen). Déplacé de la
+  // convention metadata `generateSitemaps()` vers un Route Handler runtime le
+  // 2026-07-06 (cf. `app/sitemap-blog.xml/route.ts`) : depuis le vidage de
+  // BLOG_POSTS (2026-07-03), le blog est 100 % DB → le prérendu au build stub
+  // sortait un `<urlset>` VIDE, baké dans l'image et resservi jusqu'à la 1re
+  // revalidation ISR (« Balise XML manquante : url » côté GSC).
+  // ⚠️ Listé CONDITIONNELLEMENT (cf. GET) : uniquement si le builder blog émet
+  // au moins une URL — sinon Google lirait un `<urlset>` vide et le flaggerait.
+  // Réapparaît automatiquement dès qu'un article tier-1 est publié.
+  "/sitemap-blog.xml",
   // News evergreen (audit maillage/indexation 2026-07-03) — les Articles
   // `isNews=true` ne vivaient QUE dans `/sitemap-news.xml` (fenêtre stricte 48h
   // Google News) ; passé 48h ils disparaissaient de TOUS les sitemaps (le sub-
@@ -61,6 +76,12 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // Image Sitemap 1.1 — image-bank V1 (réintroduit Sprint 4 V1 2026-05-16,
   // builders `app/sitemaps/images-{fr,en}.xml/route.ts` livrés).
   "/sitemaps/images-fr.xml",
+  // ⚠️ Listé CONDITIONNELLEMENT (cf. GET) : uniquement si EN_LOCALE_ENABLED=true.
+  // Depuis la désactivation d'EN (2026-05-16), la route `images-en.xml` retourne
+  // volontairement un `<urlset>` VIDE (elle ne doit pas déclarer d'URLs /en/gallery/
+  // qui 301→FR). Or l'index le listait inconditionnellement → Google lisait un
+  // urlset vide et le flaggait « Balise XML manquante : url » (2026-07-06). On ne
+  // le référence donc que quand EN est réactivé. Symétrique du gating KB/blog.
   "/sitemaps/images-en.xml",
   // Image Sitemap — services (73 images marketing) + villes France (2 157 communes).
   // image-bank-complet audit 2026-05-20.
@@ -81,6 +102,11 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
+
+// EN désactivé (AGENTS.md §EN locale désactivé 2026-05-16) → le sub-sitemap
+// `images-en.xml` est volontairement vide ; on ne le référence pas dans l'index
+// tant qu'EN n'est pas réactivé (cf. filtre customSitemaps dans GET).
+const EN_LOCALE_ENABLED = process.env["EN_LOCALE_ENABLED"] === "true";
 
 /**
  * Audit indexation 2026-05-15 P1-14 — lastmod différencié par catégorie.
@@ -199,9 +225,45 @@ export async function GET(): Promise<Response> {
   } catch {
     kbEmittableCount = 0;
   }
-  const customSitemaps = CUSTOM_SITEMAPS.filter(
-    (path) => path !== "/sitemap-knowledge.xml" || kbEmittableCount > 0,
-  );
+
+  // Blog DB-aware — même gating anti-vide que le KB. On réutilise le MÊME builder
+  // que la route `sitemap-blog.xml` (`sitemap({id:"blog"})`) → cohérence index↔route
+  // garantie. Stub-safe (au build → `[]` → non listé ; recompté au runtime via ISR).
+  // Fail-soft : un hoquet DB ne doit JAMAIS 500 l'index (entrée lue à chaque crawl).
+  let blogEmittableCount = 0;
+  try {
+    blogEmittableCount = (await sitemap({ id: Promise.resolve("blog") })).length;
+  } catch {
+    blogEmittableCount = 0;
+  }
+
+  // News (Google News, fenêtre 48h) + news-evergreen (90j) — vides en creux d'actu.
+  // Même gating anti-vide que KB/blog : on ne les liste que s'ils émettent ≥ 1 URL,
+  // sinon Google lit un `<urlset>` vide et le flagge « Balise XML manquante : url »
+  // (cas observé le 30/06 sur sitemap-news pendant un creux). Fail-soft.
+  let newsEmittableCount = 0;
+  try {
+    newsEmittableCount = (await listRecentNewsEntries()).length;
+  } catch {
+    newsEmittableCount = 0;
+  }
+  let evergreenEmittableCount = 0;
+  try {
+    evergreenEmittableCount = (await listEvergreenNewsEntries()).length;
+  } catch {
+    evergreenEmittableCount = 0;
+  }
+
+  const customSitemaps = CUSTOM_SITEMAPS.filter((path) => {
+    if (path === "/sitemap-knowledge.xml") return kbEmittableCount > 0;
+    if (path === "/sitemap-blog.xml") return blogEmittableCount > 0;
+    if (path === "/sitemap-news.xml") return newsEmittableCount > 0;
+    if (path === "/sitemap-news-evergreen.xml") return evergreenEmittableCount > 0;
+    // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le
+    // lister (sinon urlset vide flaggé par GSC). Réapparaît si EN réactivé.
+    if (path === "/sitemaps/images-en.xml") return EN_LOCALE_ENABLED;
+    return true;
+  });
 
   const generatedBlocks = sitemaps.map(({ id }) => {
     const lm = lastmodForGeneratedId(id, lastmods);
@@ -220,8 +282,9 @@ export async function GET(): Promise<Response> {
         ? lastmods.news
         : path === "/sitemap-knowledge.xml"
           ? lastmods.knowledge
-          : // Images blog : suivent les articles → max(updatedAt) blog (fraîcheur réelle).
-            path === "/sitemap-images-blog.xml"
+          : // Blog (articles tier-1) + images blog : suivent les articles →
+            // max(updatedAt) blog (signal de fraîcheur réel).
+            path === "/sitemap-blog.xml" || path === "/sitemap-images-blog.xml"
             ? lastmods.blog
             : lastmods.fallback;
     return `  <sitemap>

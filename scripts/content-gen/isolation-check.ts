@@ -61,6 +61,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // (content-gen) au runtime ; commentaire explicatif uniquement, même cas que
   // sitemap.ts. Débloque l'isolation-check rouge sur main introduite par #109.
   /^src\/app\/sitemap-index\.xml\/route\.ts$/,
+  // sitemap-blog runtime (2026-07-06) — Route Handler qui émet le sub-sitemap
+  // blog DB-aware (articles content-gen tier-1) au runtime, en remplacement du
+  // prérendu build-time baké vide. Même cas que sitemap.ts / sitemap-index.xml
+  // ci-dessus : consommateur, marqueur "content-gen" dans des commentaires
+  // explicatifs uniquement (aucun code pipeline).
+  /^src\/app\/sitemap-blog\.xml\/route\.ts$/,
   // Script anti-siren : exclut content-gen (doctrine code détecte SIREN patterns)
   /^scripts\/check-anti-siren\.sh$/,
   // Queue manager + worker entry — orchestrent les queues content-gen

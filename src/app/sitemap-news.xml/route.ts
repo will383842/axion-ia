@@ -130,7 +130,15 @@ function getRecentPressReleases(): NewsEntry[] {
   return out;
 }
 
-export async function GET(): Promise<Response> {
+/**
+ * Liste fusionnée + triée + cappée des actus dans la fenêtre 48h (DB Article
+ * isNews + PRESS_RELEASES). Exportée pour être réutilisée par le gating anti-vide
+ * de `app/sitemap-index.xml` (on ne référence le sitemap-news dans l'index QUE
+ * s'il émet ≥ 1 URL — sinon Google lit un `<urlset>` vide en creux d'actu et le
+ * flagge « Balise XML manquante : url »). Cohérence index↔route garantie : les
+ * deux appellent CETTE fonction.
+ */
+export async function listRecentNewsEntries(): Promise<NewsEntry[]> {
   const rows = await fetchRecentNewsRows();
 
   // Source 1 : DB Article isNews (pipeline RSS).
@@ -152,9 +160,13 @@ export async function GET(): Promise<Response> {
   // Merge + sort desc par publication_date + tronque au cap Google News.
   // Tri stable (Array.prototype.sort en V8 est stable depuis Node 12) garantit
   // ordre déterministe entre deux items partageant la même date (rare).
-  const merged: NewsEntry[] = [...dbEntries, ...pressEntries]
+  return [...dbEntries, ...pressEntries]
     .sort((a, b) => (a.pubDate < b.pubDate ? 1 : a.pubDate > b.pubDate ? -1 : 0))
     .slice(0, NEWS_SITEMAP_MAX_URLS);
+}
+
+export async function GET(): Promise<Response> {
+  const merged = await listRecentNewsEntries();
 
   const urlBlocks: string[] = [];
   for (const entry of merged) {
