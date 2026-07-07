@@ -358,7 +358,7 @@ export default async function ImplantationsHub({ params }: Props) {
             : "France métropolitaine au complet (Corse comprise), 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). Les pages dédiées listent les 13 régions métropolitaines ; pour DROM et international, contactez-nous."
         }
       >
-        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {REGIONS.map((region) => {
             const isIndexable = !region.noindex;
             return (
@@ -481,7 +481,7 @@ export default async function ImplantationsHub({ params }: Props) {
         }
         tone="paper"
       >
-        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {topRegions.map((region) => (
             <li key={region.slug}>
               <Link
@@ -548,7 +548,7 @@ export default async function ImplantationsHub({ params }: Props) {
           }
           tone="sand"
         >
-          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {indexableVilles.map((ville) => (
               <li key={ville.slug}>
                 <Link
