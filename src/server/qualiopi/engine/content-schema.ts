@@ -59,15 +59,26 @@ export type Exercice = {
 
 // ── Question de quiz (évaluation formative) ───────────────────────────────────
 
-export const QuizItemSchema = z.object({
-  question: z.string().min(8),
-  /** 2 à 5 options de réponse. */
-  options: z.array(z.string().min(1)).min(2).max(5),
-  /** Index (0-based) de la bonne réponse dans `options`. */
-  bonneReponseIndex: z.number().int().min(0),
-  /** Explication pédagogique de la bonne réponse. */
-  explication: z.string().min(10),
-});
+export const QuizItemSchema = z
+  .object({
+    question: z.string().min(8),
+    /** 2 à 5 options de réponse. */
+    options: z.array(z.string().min(1)).min(2).max(5),
+    /** Index (0-based) de la bonne réponse dans `options`. */
+    bonneReponseIndex: z.number().int().min(0),
+    /** Explication pédagogique de la bonne réponse. */
+    explication: z.string().min(10),
+  })
+  // L'index de bonne réponse DOIT pointer dans `options` (sinon corrigé faux).
+  .superRefine((q, ctx) => {
+    if (q.bonneReponseIndex >= q.options.length) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `bonneReponseIndex (${q.bonneReponseIndex}) hors de options (${q.options.length})`,
+        path: ["bonneReponseIndex"],
+      });
+    }
+  });
 
 export type QuizItem = {
   question: string;
@@ -158,6 +169,32 @@ export type ContenuDetaille = {
   genereAvec?: string;
   genereLe?: string;
 };
+
+// ── Normalisation défensive de la sortie LLM ──────────────────────────────────
+
+/**
+ * Convertit récursivement les `null` en `undefined` et retire les clés d'objet
+ * à valeur `null`. INDISPENSABLE avant `safeParse` : les LLM renvoient très
+ * souvent les champs optionnels à `null` plutôt que de les omettre, or Zod
+ * `.optional()`/`.default()` acceptent `undefined` mais REJETTENT `null`. Sans
+ * ce nettoyage, un seul `null` (ex. `adaptationDistanciel: null`) ferait échouer
+ * la validation du module entier. Ne mute pas l'entrée.
+ */
+export function stripNullsDeep(value: unknown): unknown {
+  if (value === null) return undefined;
+  if (Array.isArray(value)) {
+    return value.map(stripNullsDeep).filter((v) => v !== undefined);
+  }
+  if (typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      const cleaned = stripNullsDeep(v);
+      if (cleaned !== undefined) out[k] = cleaned;
+    }
+    return out;
+  }
+  return value;
+}
 
 // ── Helpers de lecture (utilisés par les builders de supports) ────────────────
 

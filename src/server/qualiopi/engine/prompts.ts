@@ -515,7 +515,8 @@ export interface ModuleADetailler {
  * supports (concepts expliqués, exemple métier, exercice AVEC corrigé, quiz,
  * notes formateur, adaptations modalité) — et non du markdown libre non réutilisable.
  */
-export function buildModuleContentStructuredSystemPrompt(): string {
+export function buildModuleContentStructuredSystemPrompt(grounding?: string): string {
+  const groundingSection = grounding ? `\n${grounding}\n` : "";
   return `Tu es un concepteur pédagogique senior (organisme certifié Qualiopi, RNQ 2022) ET un praticien expert du sujet enseigné.
 Tu rédiges le contenu DÉTAILLÉ et OPÉRATIONNEL d'un module de formation professionnelle, directement exploitable pour produire un diaporama, un cahier d'exercices et un guide d'animation.
 
@@ -527,7 +528,7 @@ Exigences de qualité NON négociables :
 - Adapter explicitement les activités à la modalité indiquée.
 - Aucune allégation chiffrée (%, €, ROI, garantie) sans source vérifiable : à défaut, reformule sans chiffre.
 - Contenu 100 % en français professionnel.
-
+${groundingSection}
 ${AI_ACT_NOTICE}
 
 Réponds UNIQUEMENT en JSON valide conforme au format demandé (aucun texte autour, pas de markdown).`;
@@ -573,6 +574,7 @@ Module à détailler :
 - Titre : ${input.module.titre}
 - Durée : ${input.module.dureeMin ?? "à répartir"} min
 - Objectifs couverts : ${(input.module.objectifsCouverts ?? []).join(" ; ") || "cf. objectifs formation"}
+- Activités prévues (issues du plan validé — à respecter) : ${(input.module.activites ?? []).join(" ; ") || "à proposer"}
 - Séquences prévues :
 ${seqStr}
 

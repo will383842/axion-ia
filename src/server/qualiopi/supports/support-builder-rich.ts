@@ -21,7 +21,11 @@ import type {
   SequenceContenu,
   QuizItem,
 } from "../engine/content-schema";
-import { normaliserModalite, rappelAnimationModalite } from "../engine/modalite-pedagogie";
+import {
+  normaliserModalite,
+  rappelAnimationModalite,
+  libelleModalite,
+} from "../engine/modalite-pedagogie";
 import type { SupportType } from "../../../../prisma/generated/client";
 import type { SupportContenu, SectionContenu, BlocContenu } from "./types";
 
@@ -40,6 +44,30 @@ function conceptsBlocs(seq: SequenceContenu): BlocContenu[] {
     type: "paragraphe" as const,
     texte: `${c.titre} — ${c.explication}`,
   }));
+}
+
+/**
+ * Notes d'adaptation selon la modalité. En HYBRIDE, on rend LES DEUX adaptations
+ * (présentiel + distanciel) au lieu d'en perdre une (cf. revue m2).
+ */
+function adaptationNotes(
+  seq: SequenceContenu,
+  modalite: "presentiel" | "distanciel" | "hybride",
+): BlocContenu[] {
+  const out: BlocContenu[] = [];
+  if (modalite === "distanciel") {
+    if (seq.adaptationDistanciel)
+      out.push({ type: "note", texte: `Adaptation distanciel : ${seq.adaptationDistanciel}` });
+  } else if (modalite === "presentiel") {
+    if (seq.adaptationPresentiel)
+      out.push({ type: "note", texte: `Adaptation présentiel : ${seq.adaptationPresentiel}` });
+  } else {
+    if (seq.adaptationPresentiel)
+      out.push({ type: "note", texte: `Présentiel : ${seq.adaptationPresentiel}` });
+    if (seq.adaptationDistanciel)
+      out.push({ type: "note", texte: `Distanciel : ${seq.adaptationDistanciel}` });
+  }
+  return out;
 }
 
 function quizStagiaire(quiz: QuizItem[]): BlocContenu[] {
@@ -96,9 +124,7 @@ function slidesFormateur(titre: string, c: ContenuDetaille): SectionContenu[] {
         blocs.push({ type: "note", texte: `Corrigé : ${seq.exercice.corrige}` });
       }
       blocs.push({ type: "note", texte: `Animation : ${seq.noteFormateur}` });
-      const adaptation =
-        modalite === "distanciel" ? seq.adaptationDistanciel : seq.adaptationPresentiel;
-      if (adaptation) blocs.push({ type: "note", texte: `Adaptation : ${adaptation}` });
+      blocs.push(...adaptationNotes(seq, modalite));
       sections.push({ titre: `${mod.titre} — ${seq.titre}`, blocs });
     }
 
@@ -215,9 +241,7 @@ function guideAnimation(c: ContenuDetaille): SectionContenu[] {
           texte: `Exercice : ${seq.exercice.consigne} — Corrigé : ${seq.exercice.corrige}`,
         });
       }
-      const adaptation =
-        modalite === "distanciel" ? seq.adaptationDistanciel : seq.adaptationPresentiel;
-      if (adaptation) blocs.push({ type: "note", texte: `Adaptation : ${adaptation}` });
+      blocs.push(...adaptationNotes(seq, modalite));
     }
     sections.push({ titre: `Module : ${mod.titre}`, blocs });
   }
@@ -331,5 +355,14 @@ export function construireSupportRiche(
     default:
       sections = slidesStagiaire(titre, c);
   }
-  return { sections, meta: { type, formation: titre, source: "contenu_detaille" } };
+  return {
+    sections,
+    meta: {
+      type,
+      formation: titre,
+      source: "contenu_detaille",
+      modalite: libelleModalite(normaliserModalite(c.modalite)),
+      ...(c.genereLe ? { date: c.genereLe } : {}),
+    },
+  };
 }

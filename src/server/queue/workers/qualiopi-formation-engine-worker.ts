@@ -48,10 +48,13 @@ import {
 import {
   ModuleContenuSchema,
   CONTENU_DETAILLE_VERSION,
+  stripNullsDeep,
   type ContenuDetaille,
   type ModuleContenu,
 } from "@/server/qualiopi/engine/content-schema";
+import { evaluateContenuDetailleQuality } from "@/server/qualiopi/engine/content-quality";
 import { normaliserModalite } from "@/server/qualiopi/engine/modalite-pedagogie";
+import { axionIaStackGrounding } from "@/server/qualiopi/engine/grounding";
 import { evaluateFormationQuality } from "@/server/qualiopi/engine/evaluate";
 import { hasUnsourcedClaims } from "@/server/qualiopi/engine/anti-hallucination";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
@@ -169,6 +172,26 @@ async function advanceStatut(
 
 // ── Étape 1 : generateStructure ───────────────────────────────────────────────
 
+/**
+ * Fusionne la structure générée dans le programme courant SANS écraser les blocs
+ * amont coûteux (backwardDesign, persona, adversarialCritique). La structure
+ * apporte titre/objectifs/modules/fil_rouge ; on préserve le reste (cf. revue
+ * M2 : l'ancien remplacement complet perdait persona + backwardDesign en base).
+ */
+function mergeStructureIntoProgramme(current: unknown, structureRaw: string): unknown {
+  const structure = parseOutputSafe(structureRaw);
+  // Si la structure n'est pas un objet exploitable, on la conserve telle quelle
+  // (cas de bord : sortie non-JSON → l'étape contenu échouera en fail-loud B2).
+  if (structure === null || typeof structure !== "object" || Array.isArray(structure)) {
+    return structure;
+  }
+  const base =
+    current !== null && typeof current === "object" && !Array.isArray(current)
+      ? (current as Record<string, unknown>)
+      : {};
+  return { ...base, ...(structure as Record<string, unknown>) };
+}
+
 async function stepGenerateStructure(
   formation: FormationForEngine,
   passesCourantes: number,
@@ -202,7 +225,7 @@ async function stepGenerateStructure(
       aiGenerated: true,
       aiModel: cached.modele,
       aiPromptVersion: promptVersion,
-      programmeDetaille: parseOutputSafe(output),
+      programmeDetaille: mergeStructureIntoProgramme(formation.programmeDetaille, output),
     });
     return;
   }
@@ -262,7 +285,7 @@ async function stepGenerateStructure(
     aiGenerated: true,
     aiModel: resp.model,
     aiPromptVersion: promptVersion,
-    programmeDetaille: parseOutputSafe(resp.output),
+    programmeDetaille: mergeStructureIntoProgramme(formation.programmeDetaille, resp.output),
   });
 }
 
@@ -756,6 +779,14 @@ async function stepRefine(
 
 // ── Étape 4 : generateContent ─────────────────────────────────────────────────
 
+/**
+ * Plafond dur du nombre de modules détaillés par formation. Chaque module = 1
+ * appel IA séquentiel (~30-60 s) ; borner évite de dépasser le lockDuration du
+ * worker (5 min) et de faire exploser le cost cap. Une formation Qualiopi de 1-3
+ * jours dépasse rarement ~10 modules ; au-delà on tronque en le signalant.
+ */
+const MAX_MODULES_CONTENU = 12;
+
 /** Extrait la liste des modules structurés depuis programmeDetaille (objet ou tableau). */
 function extractModulesADetailler(programmeDetaille: unknown): ModuleADetailler[] {
   let modulesRaw: unknown = null;
@@ -766,7 +797,14 @@ function extractModulesADetailler(programmeDetaille: unknown): ModuleADetailler[
   }
   if (!Array.isArray(modulesRaw)) return [];
 
-  return modulesRaw.map((m, i): ModuleADetailler => {
+  if (modulesRaw.length > MAX_MODULES_CONTENU) {
+    console.warn(
+      `[qualiopi:engine] programmeDetaille contient ${modulesRaw.length} modules — tronqué à ${MAX_MODULES_CONTENU} pour le contenu détaillé.`,
+    );
+    modulesRaw = modulesRaw.slice(0, MAX_MODULES_CONTENU);
+  }
+
+  return (modulesRaw as unknown[]).map((m, i): ModuleADetailler => {
     const mo = (m ?? {}) as Record<string, unknown>;
     const ordre = typeof mo["ordre"] === "number" ? (mo["ordre"] as number) : i + 1;
     const seqRaw = mo["sequences"];
@@ -807,9 +845,10 @@ async function generateModuleContent(
   module: ModuleADetailler,
   promptVersion: number,
   passesCourantes: number,
+  grounding: string,
 ): Promise<{ contenu: ModuleContenu; modele: string } | null> {
   const langue = formation.langueGeneration;
-  const systemPrompt = buildModuleContentStructuredSystemPrompt();
+  const systemPrompt = buildModuleContentStructuredSystemPrompt(grounding);
   const userPrompt = buildModuleContentStructuredUserPrompt({
     formationTitre: formation.titre,
     modalite: formation.modalite as string,
@@ -889,8 +928,10 @@ async function generateModuleContent(
   }
 
   // Validation Zod — un module mal formé est loggué et ignoré (fail-soft),
-  // le reste de la formation continue.
-  const parsed = ModuleContenuSchema.safeParse(raw);
+  // le reste de la formation continue. `stripNullsDeep` normalise d'abord les
+  // `null` renvoyés par le LLM en `undefined` (sinon .optional()/.default()
+  // rejettent le champ et invalident tout le module — cf. revue B1).
+  const parsed = ModuleContenuSchema.safeParse(stripNullsDeep(raw));
   if (!parsed.success) {
     console.warn(
       `[qualiopi:engine] formation=${formation.id} module=${module.moduleId} contenu invalide (ignoré) : ${parsed.error.message.slice(0, 300)}`,
@@ -909,19 +950,54 @@ async function stepGenerateContent(
   const modalite = normaliserModalite(formation.modalite as string);
 
   const modules = extractModulesADetailler(formation.programmeDetaille);
+  const grounding = axionIaStackGrounding();
 
   const modulesContenu: ModuleContenu[] = [];
   let modeleUtilise = "";
   for (const module of modules) {
-    const result = await generateModuleContent(formation, module, promptVersion, passesCourantes);
+    const result = await generateModuleContent(
+      formation,
+      module,
+      promptVersion,
+      passesCourantes,
+      grounding,
+    );
     if (result) {
       modulesContenu.push(result.contenu);
       modeleUtilise = result.modele;
     }
   }
 
-  // Anti-hallucination (warning only — non bloquant en V1)
-  const contenuTexte = JSON.stringify(modulesContenu);
+  // B2 — FAIL-LOUD si aucun module valide : ne JAMAIS avancer le statut avec un
+  // contenu vide (qui violerait de toute façon ContenuDetailleSchema.min(1) et
+  // ferait retomber les supports en squelette sans alerte). On lève une erreur
+  // visible + une alerte système, et le statut reste relançable.
+  if (modulesContenu.length === 0) {
+    void creerOuDedup({
+      code: "job_ia_echoue",
+      niveau: "important",
+      titre: "Contenu détaillé vide",
+      message:
+        `La génération du contenu détaillé de la formation ${formation.id} n'a produit ` +
+        `aucun module exploitable (${modules.length} module(s) en entrée). Relancer la génération.`,
+      cibleType: "Formation",
+      cibleId: formation.id,
+    }).catch(() => {});
+    throw new Error(
+      `[qualiopi:engine] formation=${formation.id} — 0 module de contenu valide généré ` +
+        `(${modules.length} en entrée). Statut non avancé (relançable).`,
+    );
+  }
+
+  // Anti-hallucination (warning only) — analyse le TEXTE pédagogique concaténé
+  // (pas le JSON brut : clés/échappements fausseraient la détection).
+  const contenuTexte = modulesContenu
+    .flatMap((m) => [
+      m.introduction,
+      m.synthese,
+      ...m.sequences.flatMap((s) => [s.exempleConcret, ...s.concepts.map((c) => c.explication)]),
+    ])
+    .join("\n");
   if (hasUnsourcedClaims(contenuTexte)) {
     console.warn(
       `[qualiopi:engine] formation=${formation.id} — allégations non sourcées détectées (warning)`,
@@ -936,11 +1012,29 @@ async function stepGenerateContent(
     genereLe: new Date().toISOString(),
   };
 
-  // Fusionner contenuDetaille dans programmeDetaille (objet) sans écraser la structure.
-  const currentProgramme =
-    formation.programmeDetaille !== null && typeof formation.programmeDetaille === "object"
-      ? (formation.programmeDetaille as Record<string, unknown>)
-      : {};
+  // Contrôle qualité déterministe (best practices Qualiopi) — tracé + aide au
+  // validateur humain. Non bloquant, mais un score « insuffisant » est loggué.
+  const qualite = evaluateContenuDetailleQuality(contenuDetaille);
+  if (qualite.verdict === "insuffisant") {
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} — qualité contenu ${qualite.score}/100 (${qualite.manques.length} manque(s)).`,
+    );
+  }
+
+  // M3 — Fusion array-safe : si programmeDetaille est un TABLEAU (formation
+  // catalogue), l'envelopper dans { modules: [...] } au lieu de le spreader
+  // (sinon corruption en clés numériques). Objet → merge de clés classique.
+  let currentProgramme: Record<string, unknown>;
+  if (Array.isArray(formation.programmeDetaille)) {
+    currentProgramme = { modules: formation.programmeDetaille };
+  } else if (
+    formation.programmeDetaille !== null &&
+    typeof formation.programmeDetaille === "object"
+  ) {
+    currentProgramme = formation.programmeDetaille as Record<string, unknown>;
+  } else {
+    currentProgramme = {};
+  }
   const mergedProgramme = { ...currentProgramme, contenuDetaille };
 
   // Avancer statut → contenu_genere + persister le contenu + FileValidation (AI Act art. 50)
@@ -956,6 +1050,13 @@ async function stepGenerateContent(
       },
     });
 
+    // m3 — Idempotence : purge une éventuelle FileValidation « contenu » en
+    // attente d'une génération précédente avant d'en recréer une (évite les
+    // doublons dans l'UI de validation lors d'une relance).
+    await tx.fileValidation.deleteMany({
+      where: { formationId: formation.id, etape: "contenu", statut: "en_attente" },
+    });
+
     // FileValidation contenu (validation humaine obligatoire)
     await tx.fileValidation.create({
       data: {
@@ -967,6 +1068,9 @@ async function stepGenerateContent(
           modele: modeleUtilise,
           promptVersion,
           modalite,
+          qualiteScore: qualite.score,
+          qualiteVerdict: qualite.verdict,
+          qualiteManques: qualite.manques.slice(0, 20),
           generatedAt: new Date().toISOString(),
         } as never,
       },

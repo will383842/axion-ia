@@ -16,8 +16,10 @@ import { z } from "zod";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   genererSupport,
+  genererTousSupports,
   regenererSupport,
   supprimerSupport,
+  type GenererTousSupportsResult,
 } from "@/server/qualiopi/supports/supports-service";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -93,6 +95,43 @@ export async function genererSupportAction(input: {
     targetType: "SupportFormation",
     targetId: result.id,
     changes: { formationId: parsed.data.formationId, type: parsed.data.type },
+    session,
+  });
+
+  return { data: result };
+}
+
+/**
+ * Génère (ou régénère) EN LOT les 7 supports d'une formation en un clic.
+ */
+export async function genererTousSupportsAction(input: {
+  formationId: string;
+  enrichirIA?: boolean;
+}): Promise<ActionResult<GenererTousSupportsResult>> {
+  const session = await requireAdminWrite();
+
+  const parsed = z
+    .object({ formationId: z.string().uuid(), enrichirIA: z.boolean().optional() })
+    .safeParse(input);
+  if (!parsed.success) {
+    return { error: "Données invalides" };
+  }
+
+  let result: GenererTousSupportsResult;
+  try {
+    result = await genererTousSupports({
+      formationId: parsed.data.formationId,
+      ...(parsed.data.enrichirIA !== undefined ? { enrichirIA: parsed.data.enrichirIA } : {}),
+    });
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Erreur lors de la génération en lot" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.support.generer_tous",
+    targetType: "Formation",
+    targetId: parsed.data.formationId,
+    changes: { ok: result.ok.length, echecs: result.echecs.length },
     session,
   });
 

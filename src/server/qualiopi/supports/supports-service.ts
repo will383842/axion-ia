@@ -333,6 +333,60 @@ export async function regenererSupport(input: {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// genererTousSupports — génération EN LOT des 7 supports d'une formation
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Les 7 types de supports produits pour une formation. */
+export const TOUS_SUPPORT_TYPES: readonly SupportType[] = [
+  "slides_formateur",
+  "slides_stagiaire",
+  "livret_stagiaire",
+  "memo",
+  "guide_animation",
+  "exercices",
+  "grille_eval",
+];
+
+export interface GenererTousSupportsResult {
+  formationId: string;
+  ok: Array<{ type: SupportType; id: string }>;
+  echecs: Array<{ type: SupportType; erreur: string }>;
+}
+
+/**
+ * Génère (ou régénère) les 7 supports d'une formation, séquentiellement.
+ * Un échec sur un type n'interrompt pas les autres (chaque type est isolé).
+ * Idéal pour un bouton « Générer tous les supports » ou un batch multi-formations.
+ *
+ * @throws Error si stub.invalid.
+ */
+export async function genererTousSupports(input: {
+  formationId: string;
+  enrichirIA?: boolean;
+}): Promise<GenererTousSupportsResult> {
+  if (isStub()) {
+    throw new Error("Génération de supports impossible en mode stub (build).");
+  }
+  const ok: GenererTousSupportsResult["ok"] = [];
+  const echecs: GenererTousSupportsResult["echecs"] = [];
+
+  for (const type of TOUS_SUPPORT_TYPES) {
+    try {
+      const res = await genererSupport({
+        formationId: input.formationId,
+        type,
+        ...(input.enrichirIA !== undefined ? { enrichirIA: input.enrichirIA } : {}),
+      });
+      ok.push({ type, id: res.id });
+    } catch (err) {
+      echecs.push({ type, erreur: err instanceof Error ? err.message : String(err) });
+    }
+  }
+
+  return { formationId: input.formationId, ok, echecs };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // listSupports
 // ─────────────────────────────────────────────────────────────────────────────
 

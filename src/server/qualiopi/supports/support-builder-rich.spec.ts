@@ -114,6 +114,33 @@ describe("support-builder-rich", () => {
     expect(JSON.stringify(s)).toContain("Structure d'un bon prompt");
   });
 
+  it("modalité hybride : le guide d'animation rend LES DEUX adaptations", () => {
+    const hybride: ContenuDetaille = {
+      ...CONTENU,
+      modalite: "hybride",
+      modules: [
+        {
+          ...CONTENU.modules[0]!,
+          sequences: [
+            {
+              ...CONTENU.modules[0]!.sequences[0]!,
+              adaptationPresentiel: "ADAPT_PRESENTIEL en salle",
+              adaptationDistanciel: "ADAPT_DISTANCIEL en visio",
+            },
+          ],
+        },
+      ],
+    };
+    const s = construireSupportRiche("guide_animation", {
+      titre: "IA Express",
+      objectifsPedagogiques: objectifs,
+      contenuDetaille: hybride,
+    });
+    const flat = JSON.stringify(s);
+    expect(flat).toContain("ADAPT_PRESENTIEL");
+    expect(flat).toContain("ADAPT_DISTANCIEL");
+  });
+
   it("construireSupport garde le fallback squelette sans contenuDetaille", () => {
     const input: FormationInput = {
       titre: "IA Express",

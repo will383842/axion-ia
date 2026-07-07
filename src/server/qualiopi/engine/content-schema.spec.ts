@@ -7,9 +7,11 @@ import { describe, it, expect } from "vitest";
 import {
   ContenuDetailleSchema,
   ModuleContenuSchema,
+  QuizItemSchema,
   CONTENU_DETAILLE_VERSION,
   readContenuDetaille,
   hasContenuDetaille,
+  stripNullsDeep,
 } from "./content-schema";
 
 const MODULE_VALIDE = {
@@ -105,5 +107,40 @@ describe("content-schema", () => {
     expect(readContenuDetaille(null)).toBeNull();
     expect(readContenuDetaille({ contenuDetaille: { version: 999 } })).toBeNull();
     expect(hasContenuDetaille({})).toBe(false);
+  });
+
+  it("stripNullsDeep : un module devient valide après nettoyage des null LLM", () => {
+    // L'IA renvoie des champs optionnels à null au lieu de les omettre.
+    const brut = {
+      ...MODULE_VALIDE,
+      quiz: null,
+      sequences: [
+        {
+          ...MODULE_VALIDE.sequences[0],
+          adaptationPresentiel: null,
+          adaptationDistanciel: null,
+          pointsVigilance: null,
+        },
+      ],
+    };
+    // Sans nettoyage → échec (Zod rejette null).
+    expect(ModuleContenuSchema.safeParse(brut).success).toBe(false);
+    // Avec nettoyage → succès + defaults appliqués.
+    const nettoye = ModuleContenuSchema.safeParse(stripNullsDeep(brut));
+    expect(nettoye.success).toBe(true);
+    if (nettoye.success) {
+      expect(nettoye.data.quiz).toEqual([]);
+      expect(nettoye.data.sequences[0]?.pointsVigilance).toEqual([]);
+    }
+  });
+
+  it("QuizItemSchema rejette un bonneReponseIndex hors des options", () => {
+    const bad = {
+      question: "Question ?",
+      options: ["A", "B"],
+      bonneReponseIndex: 5,
+      explication: "Explication de la réponse.",
+    };
+    expect(QuizItemSchema.safeParse(bad).success).toBe(false);
   });
 });
