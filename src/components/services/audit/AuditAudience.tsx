@@ -5,13 +5,9 @@
  * Refonte 2026-05-31 (Will) — 3 cartes (TPE / PME / ETI & grandes) avec, pour
  * chacune : un visuel, le profil, ce que l'IA change, et des CTAs d'action.
  *
- * CTAs (Will 2026-05-31) :
- *   - TPE : « Pré-réserver l'audit (1 jour) » (→ /audit/tpe-1-jour) en action
- *     principale + « Réserver un appel » (/appel) et « Nous écrire » (/contact)
- *     pour ceux qui préfèrent des renseignements complémentaires. Prix dérivé
- *     SSOT pricing.ts (audit-flash 1190 €).
- *   - PME & ETI/grandes : pas de « devis » — on invite à entrer en contact
- *     (« Réserver un appel » + « Nous écrire »).
+ * CTAs (Will 2026-07-07) — deux CTA uniquement partout, plus aucun
+ * « Pré-réserver » :
+ *   - Les 3 cartes : « Réserver un appel » (/appel) + « Nous écrire » (/contact).
  *   - Les 3 : « Plus d'infos sur le déroulement » → page détail du tier
  *     (/audit/tpe-1-jour, /audit/strategique-pme, /audit/strategique-eti).
  *
@@ -20,7 +16,7 @@
  */
 
 import type { ReactNode } from "react";
-import { ArrowRight, CalendarCheck, Phone, Mail } from "lucide-react";
+import { ArrowRight, Phone, Mail } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Link } from "@/i18n/navigation";
@@ -39,10 +35,6 @@ interface AudienceCard {
   readonly metaEn: string;
   /** Page détail du tier — « plus d'infos sur le déroulement ». */
   readonly detailHref: string;
-  /** TPE uniquement : action de pré-réservation directe. */
-  readonly preReserveFr?: string;
-  readonly preReserveEn?: string;
-  readonly preReserveHref?: string;
 }
 
 // Prix d'entrée audit sur place (TPE) — SSOT pricing.ts (audit-flash).
@@ -80,9 +72,6 @@ const CARDS: ReadonlyArray<AudienceCard> = [
     metaFr: `1 journée sur place · ${FLASH_PRICE}`,
     metaEn: `1 full day on site · ${FLASH_PRICE}`,
     detailHref: "/audit/tpe-1-jour",
-    preReserveFr: "Pré-réserver l'audit (1 jour)",
-    preReserveEn: "Pre-book the audit (1 day)",
-    preReserveHref: "/appel",
   },
   {
     segment: "PME",
@@ -117,20 +106,6 @@ const CARDS: ReadonlyArray<AudienceCard> = [
 function CardCtas({ card, isFr }: { card: AudienceCard; isFr: boolean }): ReactNode {
   return (
     <div className="mt-6 flex flex-col gap-2.5">
-      {/* TPE : action principale de pré-réservation */}
-      {card.preReserveHref ? (
-        <Cta
-          href={card.preReserveHref}
-          variant="secondary"
-          size="md"
-          className="w-full"
-          track={`audit-audience-prebook-${card.segment.toLowerCase()}`}
-        >
-          <CalendarCheck aria-hidden="true" className="h-4 w-4" />
-          {isFr ? card.preReserveFr : card.preReserveEn}
-        </Cta>
-      ) : null}
-
       {/* Contact — réserver un appel / nous écrire (les 3 cartes).
           Couleurs alignées sur les CTAs du header (Will 2026-05-31) :
           « Réserver un appel » = bleu primary ; « Nous écrire » = ivoire +
