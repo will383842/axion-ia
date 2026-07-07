@@ -19,8 +19,10 @@
 //
 // CSP : `script-src` (soft public) autorise déjà `https://assets.calendly.com`
 // et `frame-src`/`connect-src` autorisent `calendly.com` + `*.calendly.com`.
-// COEP : /appel est en `unsafe-none` (cf. `isCredentialedEmbedderPath`, PR 182)
-// pour que l'iframe credentialée Calendly établisse sa session.
+// COEP : `unsafe-none` site-wide (proxy.ts, audit 2026-07-07) pour que l'iframe
+// credentialée Calendly établisse sa session — y compris en navigation SPA (où
+// une COEP `credentialless` de la page d'arrivée persistait et bloquait
+// l'iframe, d'où l'ancien bug intermittent « il faut F5 »).
 
 import { CalendlyBoot } from "./CalendlyBoot";
 

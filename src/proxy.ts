@@ -18,13 +18,7 @@ import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
 import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
-import {
-  buildCspHeader,
-  generateNonce,
-  isStrictCspPath,
-  isEmbedPath,
-  isCredentialedEmbedderPath,
-} from "./lib/csp";
+import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
 import { verifyFormateurSession } from "./lib/formateur-session";
@@ -196,25 +190,27 @@ const authPipeline = auth(async (req) => {
     // la CSP). next.config.ts exclut aussi ce chemin de son X-Frame-Options.
     const embed = isEmbedPath(req.nextUrl.pathname);
     response.headers.set("Content-Security-Policy", buildCspHeader({ nonce, strict, embed }));
-    // COEP credentialless : isolation cross-origin sans exiger CORP sur chaque
-    // ressource externe. Ressources cross-origin chargees sans cookies/creds.
-    // Bascule depuis `require-corp` 2026-05-09 — ce dernier bloquait Plausible,
-    // Turnstile, fonts Google et assets CDN qui n'envoient pas explicitement
-    // Cross-Origin-Resource-Policy. Consequence observee prod : hydration JS
-    // partielle → composants Motion restent figes a opacity:0 → site "vide".
-    // `credentialless` garde l'isolation (SharedArrayBuffer, COOP cross-origin)
-    // sans casser le chargement des assets externes.
+    // COEP `unsafe-none` site-wide (audit Calendly 2026-07-07).
     //
-    // EXCEPTION `/appel` (audit 2026-07-01) : cette page embarque le widget
-    // Calendly, qui a besoin de sa session (cookies) DANS l'iframe. Sous
-    // `credentialless`, l'iframe cross-origin est chargee sans credentials →
-    // Calendly refuse (« calendly.com refused to connect »). On y bascule donc
-    // COEP `unsafe-none`. /appel n'utilise pas SharedArrayBuffer, la perte
-    // d'isolation cross-origin y est sans consequence.
-    response.headers.set(
-      "Cross-Origin-Embedder-Policy",
-      isCredentialedEmbedderPath(req.nextUrl.pathname) ? "unsafe-none" : "credentialless",
-    );
+    // Historique : on posait `credentialless` partout, puis `unsafe-none` sur le
+    // SEUL chemin `/appel` (PR 182) pour que l'iframe credentialée Calendly
+    // reçoive ses cookies. Ce correctif ne tenait QUE sur un chargement direct
+    // ou un F5 de /appel — car COEP est une propriété du DOCUMENT, fixée à sa
+    // création réseau. En navigation SPA (next/link), aucun nouveau document
+    // n'est créé : la page d'arrivée (ex. accueil, servie en `credentialless`)
+    // garde sa COEP, et l'iframe Calendly injectée ensuite est chargée SANS
+    // credentials → « calendly.com n'autorise pas la connexion ». D'où le bug
+    // INTERMITTENT « il faut F5 » : F5 recharge le document → `unsafe-none`.
+    //
+    // `credentialless` n'apportait AUCUN bénéfice réel ici : `crossOriginIsolated`
+    // exige COOP same-origin + COEP, mais AUCUN code n'utilise SharedArrayBuffer
+    // ni `crossOriginIsolated` (grep = 0). On supprime donc l'isolation inutile
+    // et on pose `unsafe-none` PARTOUT — strictement plus permissif que
+    // `credentialless`, donc sans risque de régresser l'incident require-corp de
+    // 2026-05-09 (Plausible/Turnstile/fonts). Les embeds tiers credentialés
+    // (Calendly, Stripe, YouTube) fonctionnent alors quel que soit le mode de
+    // navigation (SPA ou chargement direct).
+    response.headers.set("Cross-Origin-Embedder-Policy", "unsafe-none");
     // Audit 2026-05-15 P1-16 — X-* OWASP headers explicites en defense-in-depth.
     // CSP `frame-ancestors 'none'` couvre déjà le clickjacking côté navigateurs
     // modernes, mais X-Frame-Options: DENY garantit le comportement sur les
