@@ -138,23 +138,6 @@ export interface AuditDetailConfig {
   /** Phrase de réassurance sous le hero (durée · lieu · livrable). */
   heroMetaFr?: string;
   heroMetaEn?: string;
-  /** Déroulé heure par heure (TPE = la journée). Rendu en timeline détaillée. */
-  dayTimeline?: ReadonlyArray<{
-    time: string;
-    titleFr: string;
-    titleEn: string;
-    descFr: string;
-    descEn: string;
-  }>;
-  /** Eyebrow + titre de la section déroulé horaire. */
-  dayTimelineEyebrowFr?: string;
-  dayTimelineEyebrowEn?: string;
-  dayTimelineTitleFr?: string;
-  dayTimelineTitleEn?: string;
-  dayTimelineTitleEmFr?: string;
-  dayTimelineTitleEmEn?: string;
-  dayTimelineDescFr?: string;
-  dayTimelineDescEn?: string;
   /** Livrables concrets repartis à l'issue de l'audit. */
   deliverables?: ReadonlyArray<{
     titleFr: string;
@@ -165,6 +148,24 @@ export interface AuditDetailConfig {
   /** « Pour qui » — 3 profils que ce tier sert le mieux. */
   forWhomFr?: ReadonlyArray<string>;
   forWhomEn?: ReadonlyArray<string>;
+
+  // ── Refonte 2026-07-07 (Will) — alignement sur le template FormationDetailPage
+  //    (héro + carte infos-clés, PAS de timeline horaire). `infoCard` alimente
+  //    à la fois la carte sticky du héro et la section Modalités. Valeurs
+  //    dérivées du contenu existant (aucune fabrication).
+  infoCard: {
+    /** Sous-titre sous le prix (périmètre couvert). */
+    scopeFr: string;
+    scopeEn: string;
+    durationFr: string;
+    durationEn: string;
+    formatFr: string;
+    formatEn: string;
+    audienceFr: string;
+    audienceEn: string;
+    deliverableFr: string;
+    deliverableEn: string;
+  };
 }
 
 // ============================================================================
@@ -670,6 +671,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "On-site AI audit",
     titleEmFr: "1 journée complète · sur site",
     titleEmEn: "1 full day · on site",
+    infoCard: {
+      scopeFr: "Toute l'entreprise · sur site",
+      scopeEn: "Whole company · on site",
+      durationFr: "1 journée complète (9 h-17 h)",
+      durationEn: "1 full day (9 a.m.-5 p.m.)",
+      formatFr: "Présentiel dans vos locaux",
+      formatEn: "On site, at your premises",
+      audienceFr: "TPE 1-19 salariés · artisans · commerçants · indépendants",
+      audienceEn: "Small businesses 1-19 staff · artisans · retailers · freelancers",
+      deliverableFr: "Rapport 8-15 pages + prompts testés, sous 48 h",
+      deliverableEn: "8-15 page report + tested prompts, within 48 h",
+    },
     promiseFr: `Audit IA complet pour TPE, artisan ou commerçant. Une journée complète sur place : on cartographie toute votre activité, on teste l'IA en live sur vos vrais cas, et on livre un plan d'action chiffré sous 48 h. Réservation directe au calendrier (${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })}).`,
     promiseEn: `Complete AI audit for a small business, artisan or retailer. One full day on site: we map your entire activity, test AI live on your real cases, and deliver a costed action plan within 48 h. Direct calendar booking (${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })}).`,
     chipsFr: ["Plan sous 48 h", "Démos live · vos cas", "Confidentialité totale"],
@@ -705,90 +718,6 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
       "Artisans, retailers, liberal professions",
       "Freelancers who want a clear direction",
     ],
-    dayTimelineEyebrowFr: "Votre journée, heure par heure",
-    dayTimelineEyebrowEn: "Your day, hour by hour",
-    dayTimelineTitleFr: "Comment se déroule",
-    dayTimelineTitleEn: "How your",
-    dayTimelineTitleEmFr: "votre journée d'audit",
-    dayTimelineTitleEmEn: "audit day unfolds",
-    dayTimelineDescFr:
-      "Une journée complète sur site, structurée pour repartir le soir avec une vision claire — et le plan chiffré sous 48 h. Voici exactement ce qui se passe, de votre arrivée au café du matin jusqu'à la restitution.",
-    dayTimelineDescEn:
-      "A full day on site, structured so you leave in the evening with a clear vision — and the costed plan within 48 h. Here is exactly what happens, from the morning coffee to the read-out.",
-    dayTimeline: [
-      {
-        time: "9 h 00",
-        titleFr: "Café & cadrage",
-        titleEn: "Coffee & framing",
-        descFr:
-          "On démarre ensemble autour d'un café : vos objectifs, vos irritants du quotidien, ce qui vous fait perdre du temps. On aligne les priorités de la journée en 30 minutes.",
-        descEn:
-          "We start together over a coffee: your goals, your daily pain points, what wastes your time. We align the day's priorities in 30 minutes.",
-      },
-      {
-        time: "9 h 30",
-        titleFr: "Immersion terrain",
-        titleEn: "Field immersion",
-        descFr:
-          "On vous observe travailler, vous et votre équipe. On note les tâches répétitives, les ressaisies, les allers-retours par mail — tout ce qui peut être automatisé ou augmenté par l'IA.",
-        descEn:
-          "We watch you and your team work. We note repetitive tasks, re-keying, email back-and-forth — everything AI can automate or augment.",
-      },
-      {
-        time: "11 h 00",
-        titleFr: "Cartographie des usages",
-        titleEn: "Use-case mapping",
-        descFr:
-          "On cartographie l'ensemble de votre activité fonction par fonction (devis, relances, compta, support, marketing…) et on repère où l'IA crée le plus de valeur chez vous.",
-        descEn:
-          "We map your whole activity function by function (quotes, follow-ups, accounting, support, marketing…) and pinpoint where AI creates the most value for you.",
-      },
-      {
-        time: "12 h 30",
-        titleFr: "Déjeuner (on continue d'échanger)",
-        titleEn: "Lunch (we keep talking)",
-        descFr:
-          "Pause déjeuner conviviale — souvent le moment où les vraies questions sortent. On répond à tout, sans jargon.",
-        descEn:
-          "A friendly lunch break — often when the real questions come out. We answer everything, no jargon.",
-      },
-      {
-        time: "14 h 00",
-        titleFr: "Démos live sur vos vrais cas",
-        titleEn: "Live demos on your real cases",
-        descFr:
-          "Le cœur de la journée : on teste l'IA en direct sur 2 à 3 cas réels de votre quotidien. Vous voyez le résultat de vos yeux, vous repartez avec des prompts testés et prêts à réutiliser.",
-        descEn:
-          "The heart of the day: we test AI live on 2-3 real cases from your daily work. You see the result with your own eyes and leave with tested, ready-to-reuse prompts.",
-      },
-      {
-        time: "16 h 00",
-        titleFr: "Priorisation & quick-wins",
-        titleEn: "Prioritisation & quick-wins",
-        descFr:
-          "On classe les opportunités par impact et facilité. On identifie ensemble 3 à 5 quick-wins activables tout de suite, sans tout bouleverser.",
-        descEn:
-          "We rank opportunities by impact and ease. Together we identify 3 to 5 quick-wins you can activate right away, without disruption.",
-      },
-      {
-        time: "16 h 45",
-        titleFr: "Restitution à chaud",
-        titleEn: "Hot read-out",
-        descFr:
-          "On vous résume ce qu'on a vu, ce qu'on recommande, et les prochaines étapes. Vous finissez la journée avec une vision claire — pas un rapport théorique.",
-        descEn:
-          "We sum up what we saw, what we recommend, and the next steps. You end the day with a clear vision — not a theoretical report.",
-      },
-      {
-        time: "Sous 48 h",
-        titleFr: "Votre plan d'action chiffré",
-        titleEn: "Your costed action plan",
-        descFr:
-          "On vous envoie le livrable : rapport de 8 à 15 pages avec outils recommandés, prompts testés, quick-wins priorisés et estimation du gain horaire mensuel. Directement actionnable.",
-        descEn:
-          "We send you the deliverable: an 8-15 page report with recommended tools, tested prompts, prioritised quick-wins and a monthly hourly-gain estimate. Directly actionable.",
-      },
-    ],
     deliverables: [
       {
         titleFr: "Rapport d'audit 8-15 pages",
@@ -822,6 +751,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "Targeted audit",
     titleEmFr: "1 département · 3 semaines",
     titleEmEn: "1 department · 3 weeks",
+    infoCard: {
+      scopeFr: "1 département ciblé",
+      scopeEn: "1 targeted department",
+      durationFr: "3 à 4 semaines",
+      durationEn: "3 to 4 weeks",
+      formatFr: "À distance ou mix site + visio",
+      formatEn: "Remote or mix on-site + remote",
+      audienceFr: "PME · 1 département (marketing, RH, ops, finance, juridique, support)",
+      audienceEn: "SME · 1 department (marketing, HR, ops, finance, legal, support)",
+      deliverableFr: "Rapport 10-40 pages + plan d'exécution priorisé",
+      deliverableEn: "10-40 page report + prioritised execution plan",
+    },
     promiseFr: `Audit IA focalisé sur 1 département précis (marketing, RH, opérations, finance, juridique, support). Cartographie complète, scoring opportunités ROI/complexité, plan d'exécution priorisé. 3 sous-tiers Solo (${formatAmount(PRICE_CIBLE_SOLO, "fr", { compact: true })}) · Standard (${formatAmount(PRICE_CIBLE_STANDARD, "fr", { compact: true })}) · Avancé (${formatAmount(PRICE_CIBLE_AVANCE, "fr", { compact: true })}) selon la complexité.`,
     promiseEn: `AI audit focused on 1 specific department (marketing, HR, ops, finance, legal, support). Complete mapping, ROI/complexity scoring, prioritised execution plan. 3 sub-tiers: Solo (${formatAmount(PRICE_CIBLE_SOLO, "en", { compact: true })}) · Standard (${formatAmount(PRICE_CIBLE_STANDARD, "en", { compact: true })}) · Advanced (${formatAmount(PRICE_CIBLE_AVANCE, "en", { compact: true })}) depending on complexity.`,
     chipsFr: ["Cartographie complète", "Scoring ROI/complexité", "Plan chiffré 3-12 mois"],
@@ -845,6 +786,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "SME Strategic audit",
     titleEmFr: "multi-départements · roadmap 12-24 mois",
     titleEmEn: "multi-department · 12-24 month roadmap",
+    infoCard: {
+      scopeFr: "Multi-départements (2 à 4 services)",
+      scopeEn: "Multi-department (2 to 4 services)",
+      durationFr: "5 à 6 semaines",
+      durationEn: "5 to 6 weeks",
+      formatFr: "Mix site + visio · restitution COMEX",
+      formatEn: "Mix on-site + remote · EXCOM read-out",
+      audienceFr: "PME 20-250 salariés · plusieurs services concernés",
+      audienceEn: "SME 20-250 staff · several departments concerned",
+      deliverableFr: "Plan 25-60 pages + roadmap stratégique 12-24 mois",
+      deliverableEn: "25-60 page plan + 12-24 month strategic roadmap",
+    },
     promiseFr: `Audit IA complet multi-départements pour PME ambitieuses (20 à 250 salariés). Cartographie 2-4 services majeurs, plan d'exécution chiffré, roadmap stratégique 12-24 mois, restitution COMEX. 2 sous-tiers : 20-50 salariés (${formatAmount(PRICE_PME_20_50, "fr", { compact: true })}) · 50-250 salariés (${formatAmount(PRICE_PME_50_250, "fr", { compact: true })}).`,
     promiseEn: `Full multi-department AI audit for ambitious SMEs (20 to 250 staff). Maps 2-4 major services, quantified execution plan, 12-24 month strategic roadmap, EXCOM restitution. 2 sub-tiers: 20-50 staff (${formatAmount(PRICE_PME_20_50, "en", { compact: true })}) · 50-250 staff (${formatAmount(PRICE_PME_50_250, "en", { compact: true })}).`,
     chipsFr: ["2-4 services majeurs", "Restitution COMEX", "AI Act + RGPD by default"],
@@ -913,6 +866,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "Mid-cap Strategic audit",
     titleEmFr: "transverse · gouvernance · board-ready",
     titleEmEn: "transverse · governance · board-ready",
+    infoCard: {
+      scopeFr: "Transverse multi-BU · gouvernance",
+      scopeEn: "Transverse multi-BU · governance",
+      durationFr: "9 semaines (multi-BU sur devis)",
+      durationEn: "9 weeks (multi-BU on request)",
+      formatFr: "Multi-sites · restitution COMEX + board",
+      formatEn: "Multi-site · EXCOM + board read-out",
+      audienceFr: "ETI 250-5000 salariés & grandes entreprises",
+      audienceEn: "Mid-caps 250-5000 staff & large enterprises",
+      deliverableFr: "Plan 60-80 pages board-ready + gouvernance + 30 j d'accompagnement",
+      deliverableEn: "60-80 page board-ready plan + governance + 30-day support",
+    },
     promiseFr: `Audit IA transverse pour ETI (250-5000 salariés) et grandes entreprises. Cartographie multi-BU, gouvernance IA + comité de pilotage, livrables board-ready, conformité AI Act 2026 + RGPD + sectoriel. À partir de ${formatAmount(PRICE_ETI_BASE, "fr")} pour 1-2 BU, sur devis pour multi-BU.`,
     promiseEn: `Transverse AI audit for mid-cap (250-5000 staff) and large enterprises. Multi-BU mapping, AI governance + steering committee, board-ready deliverables, 2026 AI Act + GDPR + sector compliance. From ${formatAmount(PRICE_ETI_BASE, "en", { compact: true })} for 1-2 BU, on request for multi-BU.`,
     chipsFr: ["Multi-BU", "Gouvernance IA + comité", "Board-ready · 30 j accompagnement"],
