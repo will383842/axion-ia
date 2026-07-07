@@ -37,13 +37,21 @@ import {
   buildStructureUserPrompt,
   buildRefineSystemPrompt,
   buildRefineUserPrompt,
-  buildContentSystemPrompt,
-  buildContentUserPrompt,
   buildBackwardDesignSystemPrompt,
   buildBackwardDesignUserPrompt,
   buildPersonaSystemPrompt,
   buildPersonaUserPrompt,
+  buildModuleContentStructuredSystemPrompt,
+  buildModuleContentStructuredUserPrompt,
+  type ModuleADetailler,
 } from "@/server/qualiopi/engine/prompts";
+import {
+  ModuleContenuSchema,
+  CONTENU_DETAILLE_VERSION,
+  type ContenuDetaille,
+  type ModuleContenu,
+} from "@/server/qualiopi/engine/content-schema";
+import { normaliserModalite } from "@/server/qualiopi/engine/modalite-pedagogie";
 import { evaluateFormationQuality } from "@/server/qualiopi/engine/evaluate";
 import { hasUnsourcedClaims } from "@/server/qualiopi/engine/anti-hallucination";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
@@ -748,57 +756,103 @@ async function stepRefine(
 
 // ── Étape 4 : generateContent ─────────────────────────────────────────────────
 
-async function stepGenerateContent(
-  formation: FormationForEngine,
-  passesCourantes: number,
-): Promise<void> {
-  const grille = await getActiveGrille();
-  const promptVersion = grille?.promptVersion ?? formation.aiPromptVersion ?? 1;
-  const langue = formation.langueGeneration;
+/** Extrait la liste des modules structurés depuis programmeDetaille (objet ou tableau). */
+function extractModulesADetailler(programmeDetaille: unknown): ModuleADetailler[] {
+  let modulesRaw: unknown = null;
+  if (Array.isArray(programmeDetaille)) {
+    modulesRaw = programmeDetaille;
+  } else if (programmeDetaille !== null && typeof programmeDetaille === "object") {
+    modulesRaw = (programmeDetaille as Record<string, unknown>)["modules"];
+  }
+  if (!Array.isArray(modulesRaw)) return [];
 
-  const systemPrompt = buildContentSystemPrompt(formation);
-  const userPrompt = buildContentUserPrompt(formation);
+  return modulesRaw.map((m, i): ModuleADetailler => {
+    const mo = (m ?? {}) as Record<string, unknown>;
+    const ordre = typeof mo["ordre"] === "number" ? (mo["ordre"] as number) : i + 1;
+    const seqRaw = mo["sequences"];
+    const sequences = Array.isArray(seqRaw)
+      ? seqRaw.map((s) => {
+          const so = (s ?? {}) as Record<string, unknown>;
+          return {
+            titre: String(so["titre"] ?? ""),
+            ...(typeof so["dureeMin"] === "number" ? { dureeMin: so["dureeMin"] as number } : {}),
+            ...(typeof so["description"] === "string"
+              ? { description: so["description"] as string }
+              : {}),
+          };
+        })
+      : undefined;
+    return {
+      moduleId: String(mo["moduleId"] ?? `M${ordre}`),
+      titre: String(mo["titre"] ?? `Module ${ordre}`),
+      ...(typeof mo["dureeMinutes"] === "number"
+        ? { dureeMin: mo["dureeMinutes"] as number }
+        : typeof mo["dureeMin"] === "number"
+          ? { dureeMin: mo["dureeMin"] as number }
+          : {}),
+      ...(Array.isArray(mo["objectifsCouverts"])
+        ? { objectifsCouverts: (mo["objectifsCouverts"] as unknown[]).map(String) }
+        : {}),
+      ...(Array.isArray(mo["activites"])
+        ? { activites: (mo["activites"] as unknown[]).map(String) }
+        : {}),
+      ...(sequences ? { sequences } : {}),
+    };
+  });
+}
+
+/** Génère le contenu structuré d'UN module (cache + cost + trace). */
+async function generateModuleContent(
+  formation: FormationForEngine,
+  module: ModuleADetailler,
+  promptVersion: number,
+  passesCourantes: number,
+): Promise<{ contenu: ModuleContenu; modele: string } | null> {
+  const langue = formation.langueGeneration;
+  const systemPrompt = buildModuleContentStructuredSystemPrompt();
+  const userPrompt = buildModuleContentStructuredUserPrompt({
+    formationTitre: formation.titre,
+    modalite: formation.modalite as string,
+    ...(formation.publicVise != null ? { publicVise: formation.publicVise } : {}),
+    objectifsFormation: formation.objectifsPedagogiques,
+    module,
+  });
 
   const cacheKey = buildCacheKey(userPrompt, promptVersion, langue);
   const cached = await getCachedIa(cacheKey);
 
-  let contenuFinal: string;
-  let modeleUtilise: string;
-
+  let raw: unknown;
+  let modele: string;
   if (cached) {
+    raw = typeof cached.valeur === "string" ? parseOutputSafe(cached.valeur) : cached.valeur;
+    modele = cached.modele;
     await traceGenerationJob({
       formationId: formation.id,
-      etape: "contenu",
+      etape: `contenu_module:${module.moduleId}`,
       tentative: passesCourantes + 1,
       status: "cache_hit",
       tokensIn: 0,
       tokensOut: 0,
       coutUsd: 0,
-      modele: cached.modele,
+      modele,
       dureeMs: 0,
       cacheHit: true,
     });
-    contenuFinal =
-      typeof cached.valeur === "string" ? cached.valeur : JSON.stringify(cached.valeur);
-    modeleUtilise = cached.modele;
   } else {
-    await assertCostCapAvailable("anthropic", 0.2);
+    await assertCostCapAvailable("anthropic", 0.15);
     const startMs = Date.now();
-
     const resp = await withRetry(() =>
       anthropicProvider.generate({
         jobId: formation.id,
-        contentType: "formation_contenu",
+        contentType: "formation_contenu_module",
         role: "text",
         systemPrompt,
         userPrompt,
-        maxTokens: 8192,
-        temperature: 0.2,
+        maxTokens: 6144,
+        temperature: 0.3,
       }),
     );
-
     const dureeMs = Date.now() - startMs;
-
     await trackCost({
       jobId: formation.id,
       provider: "anthropic",
@@ -808,7 +862,6 @@ async function stepGenerateContent(
       tokensOutput: resp.tokensOutput,
       costUsd: resp.costUsd,
     });
-
     await setCachedIa({
       cle: cacheKey,
       valeur: resp.output,
@@ -819,10 +872,9 @@ async function stepGenerateContent(
       promptVersion,
       ttlSeconds: 7 * 24 * 3600,
     });
-
     await traceGenerationJob({
       formationId: formation.id,
-      etape: "contenu",
+      etape: `contenu_module:${module.moduleId}`,
       tentative: passesCourantes + 1,
       status: "success",
       tokensIn: resp.tokensInput,
@@ -832,27 +884,75 @@ async function stepGenerateContent(
       dureeMs,
       cacheHit: false,
     });
+    raw = parseOutputSafe(resp.output);
+    modele = resp.model;
+  }
 
-    contenuFinal = resp.output;
-    modeleUtilise = resp.model;
+  // Validation Zod — un module mal formé est loggué et ignoré (fail-soft),
+  // le reste de la formation continue.
+  const parsed = ModuleContenuSchema.safeParse(raw);
+  if (!parsed.success) {
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} module=${module.moduleId} contenu invalide (ignoré) : ${parsed.error.message.slice(0, 300)}`,
+    );
+    return null;
+  }
+  return { contenu: parsed.data as ModuleContenu, modele };
+}
+
+async function stepGenerateContent(
+  formation: FormationForEngine,
+  passesCourantes: number,
+): Promise<void> {
+  const grille = await getActiveGrille();
+  const promptVersion = grille?.promptVersion ?? formation.aiPromptVersion ?? 1;
+  const modalite = normaliserModalite(formation.modalite as string);
+
+  const modules = extractModulesADetailler(formation.programmeDetaille);
+
+  const modulesContenu: ModuleContenu[] = [];
+  let modeleUtilise = "";
+  for (const module of modules) {
+    const result = await generateModuleContent(formation, module, promptVersion, passesCourantes);
+    if (result) {
+      modulesContenu.push(result.contenu);
+      modeleUtilise = result.modele;
+    }
   }
 
   // Anti-hallucination (warning only — non bloquant en V1)
-  if (hasUnsourcedClaims(contenuFinal)) {
+  const contenuTexte = JSON.stringify(modulesContenu);
+  if (hasUnsourcedClaims(contenuTexte)) {
     console.warn(
       `[qualiopi:engine] formation=${formation.id} — allégations non sourcées détectées (warning)`,
     );
   }
 
-  // Avancer statut → contenu_genere + créer FileValidation (AI Act art. 50)
+  const contenuDetaille: ContenuDetaille = {
+    version: CONTENU_DETAILLE_VERSION,
+    modalite,
+    modules: modulesContenu,
+    ...(modeleUtilise ? { genereAvec: modeleUtilise } : {}),
+    genereLe: new Date().toISOString(),
+  };
+
+  // Fusionner contenuDetaille dans programmeDetaille (objet) sans écraser la structure.
+  const currentProgramme =
+    formation.programmeDetaille !== null && typeof formation.programmeDetaille === "object"
+      ? (formation.programmeDetaille as Record<string, unknown>)
+      : {};
+  const mergedProgramme = { ...currentProgramme, contenuDetaille };
+
+  // Avancer statut → contenu_genere + persister le contenu + FileValidation (AI Act art. 50)
   await prisma.$transaction(async (tx) => {
     await tx.formation.update({
       where: { id: formation.id },
       data: {
         statutGeneration: "contenu_genere",
         aiGenerated: true,
-        aiModel: modeleUtilise,
+        ...(modeleUtilise ? { aiModel: modeleUtilise } : {}),
         aiPromptVersion: promptVersion,
+        programmeDetaille: mergedProgramme as never,
       },
     });
 
@@ -863,9 +963,10 @@ async function stepGenerateContent(
         etape: "contenu",
         statut: "en_attente",
         contenuPropose: {
-          snapshot: contenuFinal.slice(0, 10_000),
+          nbModules: modulesContenu.length,
           modele: modeleUtilise,
           promptVersion,
+          modalite,
           generatedAt: new Date().toISOString(),
         } as never,
       },

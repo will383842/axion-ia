@@ -20,6 +20,7 @@
  */
 
 import type { SupportType } from "../../../../prisma/generated/client";
+import { construireSupportRiche } from "./support-builder-rich";
 import type {
   FormationInput,
   ModuleProgramme,
@@ -509,6 +510,18 @@ function buildGrilleEval(f: FormationInput): SupportContenu {
  * @returns SupportContenu prêt pour le template PDF.
  */
 export function construireSupport(type: SupportType, formation: FormationInput): SupportContenu {
+  // Chemin RICHE : si la formation possède un contenu détaillé structuré
+  // (concepts, exemples, exercices+corrigés, quiz), on produit un vrai support
+  // au lieu du squelette. Fallback squelette conservé pour les formations pas
+  // encore passées par l'étape « contenu » du moteur (zéro régression).
+  if (formation.contenuDetaille) {
+    return construireSupportRiche(type, {
+      titre: formation.titre,
+      objectifsPedagogiques: formation.objectifsPedagogiques,
+      contenuDetaille: formation.contenuDetaille,
+    });
+  }
+
   switch (type) {
     case "slides_formateur":
       return buildSlidesFormateur(formation);

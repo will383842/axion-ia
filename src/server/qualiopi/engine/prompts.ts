@@ -10,6 +10,10 @@
  */
 
 import type { GrilleCriteres } from "@/server/qualiopi/engine/grille-schema";
+import {
+  normaliserModalite,
+  reglesModalitePourPrompt,
+} from "@/server/qualiopi/engine/modalite-pedagogie";
 
 // ── Types des builders (compat worker) ───────────────────────────────────────
 
@@ -121,12 +125,17 @@ ${typeof programmeDetaille.persona === "string" ? programmeDetaille.persona : JS
 `
       : "";
 
+  const reglesModalite = reglesModalitePourPrompt(normaliserModalite(modalite));
+
   return `${personaSection}Génère un plan de formation structuré en JSON pour :
 
 Titre : ${titre}
 Durée totale : ${duree} heure(s)
 Modalité : ${modalite}
 Objectifs pédagogiques : ${objectifsStr}
+
+CONSIGNES D'ADAPTATION À LA MODALITÉ (à respecter dans le choix des activités) :
+${reglesModalite}
 
 Format JSON attendu (champs additifs obligatoires : fil_rouge, livrables_j0, livrables_j1, livrables_j30) :
 {
@@ -485,4 +494,124 @@ Plan de formation :
 ${programmeStr}
 
 Rédige le contenu complet de chaque module (introduction, développement, exercices, synthèse).`;
+}
+
+// ── Contenu STRUCTURÉ par module (chantier « Excellence formations ») ──────────
+
+/**
+ * Entrée d'un module à détailler (dérivée d'un module du programme structuré).
+ */
+export interface ModuleADetailler {
+  moduleId: string;
+  titre: string;
+  dureeMin?: number;
+  objectifsCouverts?: string[];
+  activites?: string[];
+  sequences?: Array<{ titre: string; dureeMin?: number; description?: string }>;
+}
+
+/**
+ * System prompt du contenu structuré : produit un JSON riche EXPLOITABLE par les
+ * supports (concepts expliqués, exemple métier, exercice AVEC corrigé, quiz,
+ * notes formateur, adaptations modalité) — et non du markdown libre non réutilisable.
+ */
+export function buildModuleContentStructuredSystemPrompt(): string {
+  return `Tu es un concepteur pédagogique senior (organisme certifié Qualiopi, RNQ 2022) ET un praticien expert du sujet enseigné.
+Tu rédiges le contenu DÉTAILLÉ et OPÉRATIONNEL d'un module de formation professionnelle, directement exploitable pour produire un diaporama, un cahier d'exercices et un guide d'animation.
+
+Exigences de qualité NON négociables :
+- Chaque concept est EXPLIQUÉ (2 à 5 phrases claires), jamais seulement nommé.
+- Chaque séquence contient un EXEMPLE CONCRET ancré dans un contexte métier réaliste (situation d'entreprise vécue), pas une généralité.
+- Chaque séquence pratique contient un EXERCICE réalisable dans le temps imparti, AVEC son corrigé (éléments de réponse attendus) et des critères de réussite observables.
+- Les notes d'animation aident un formateur à animer (posture, question à poser, piège fréquent).
+- Adapter explicitement les activités à la modalité indiquée.
+- Aucune allégation chiffrée (%, €, ROI, garantie) sans source vérifiable : à défaut, reformule sans chiffre.
+- Contenu 100 % en français professionnel.
+
+${AI_ACT_NOTICE}
+
+Réponds UNIQUEMENT en JSON valide conforme au format demandé (aucun texte autour, pas de markdown).`;
+}
+
+/**
+ * User prompt du contenu structuré d'UN module. Le worker itère module par module
+ * pour rester sous le plafond de tokens et garantir un JSON complet par appel.
+ */
+export function buildModuleContentStructuredUserPrompt(input: {
+  formationTitre: string;
+  modalite: string;
+  publicVise?: string | null;
+  objectifsFormation?: unknown;
+  module: ModuleADetailler;
+}): string {
+  const modalite = normaliserModalite(input.modalite);
+  const reglesModalite = reglesModalitePourPrompt(modalite);
+
+  const objectifsStr = input.objectifsFormation
+    ? typeof input.objectifsFormation === "string"
+      ? input.objectifsFormation
+      : JSON.stringify(input.objectifsFormation)
+    : "cf. objectifs du module";
+
+  const seqStr =
+    input.module.sequences && input.module.sequences.length > 0
+      ? input.module.sequences
+          .map(
+            (s) =>
+              `  - ${s.titre}${s.dureeMin ? ` (${s.dureeMin} min)` : ""}${s.description ? ` : ${s.description}` : ""}`,
+          )
+          .join("\n")
+      : "  (séquences à proposer à partir du titre et des objectifs du module)";
+
+  return `Détaille le module suivant de la formation « ${input.formationTitre} ».
+
+Public visé : ${input.publicVise ?? "professionnels en activité"}
+Modalité : ${input.modalite}
+Objectifs de la formation : ${objectifsStr}
+
+Module à détailler :
+- Titre : ${input.module.titre}
+- Durée : ${input.module.dureeMin ?? "à répartir"} min
+- Objectifs couverts : ${(input.module.objectifsCouverts ?? []).join(" ; ") || "cf. objectifs formation"}
+- Séquences prévues :
+${seqStr}
+
+CONSIGNES D'ADAPTATION À LA MODALITÉ :
+${reglesModalite}
+
+Retourne un JSON STRICTEMENT de la forme (respecte les clés et les types) :
+{
+  "moduleId": "${input.module.moduleId}",
+  "titre": "${input.module.titre.replace(/"/g, "'")}",
+  "introduction": "accroche du module : pourquoi c'est utile pour le stagiaire (2-4 phrases)",
+  "sequences": [
+    {
+      "titre": "...",
+      "dureeMin": 30,
+      "concepts": [ { "titre": "...", "explication": "2 à 5 phrases" } ],
+      "exempleConcret": "situation métier réaliste illustrant le concept",
+      "pointsVigilance": ["piège fréquent ou point d'attention"],
+      "exercice": {
+        "consigne": "énoncé clair et réalisable dans le temps imparti",
+        "dureeMin": 15,
+        "corrige": "éléments de réponse attendus (réservé formateur)",
+        "criteresReussite": ["critère observable"]
+      },
+      "noteFormateur": "conseil d'animation (posture, question à poser, piège)",
+      "adaptationPresentiel": "adaptation en salle si pertinent",
+      "adaptationDistanciel": "adaptation en classe virtuelle si pertinent"
+    }
+  ],
+  "synthese": "points clés à retenir en fin de module (3-5 phrases)",
+  "quiz": [
+    {
+      "question": "...",
+      "options": ["...", "..."],
+      "bonneReponseIndex": 0,
+      "explication": "pourquoi cette réponse est correcte"
+    }
+  ]
+}
+
+Règles : au moins 1 concept par séquence ; un exercice pour toute séquence à visée pratique ; 2 à 4 questions de quiz pour le module. Omets "exercice", "adaptationPresentiel" ou "adaptationDistanciel" si non pertinents (ne mets pas de valeur vide).`;
 }

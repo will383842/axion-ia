@@ -22,6 +22,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { readContenuDetaille } from "@/server/qualiopi/engine/content-schema";
 import { construireSupport, titreSupport } from "./support-builder";
 import { renderSupportToStored } from "./render-support";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -55,33 +56,49 @@ function jsonToStringArray(value: unknown): string[] {
 function toFormationInput(f: {
   titre: string;
   dureeHeures: number;
+  modalite?: string | null;
   objectifsPedagogiques: unknown;
   programmeDetaille: unknown;
   methodesPedagogiques: string;
   moyensTechniques: string;
   ressourcesPedagogiques: unknown;
 }): FormationInput {
-  // programmeDetaille : tableau de ModuleProgramme (JSON Prisma)
-  let programmeDetaille: FormationInput["programmeDetaille"] = [];
-  if (Array.isArray(f.programmeDetaille)) {
-    programmeDetaille = f.programmeDetaille as FormationInput["programmeDetaille"];
-  } else if (typeof f.programmeDetaille === "string") {
+  // programmeDetaille peut être :
+  //  - un TABLEAU de modules (formations issues du catalogue), ou
+  //  - un OBJET { modules:[...], persona, contenuDetaille, ... } (moteur IA).
+  // On extrait le tableau de modules pour le fallback squelette dans les 2 cas.
+  let raw: unknown = f.programmeDetaille;
+  if (typeof raw === "string") {
     try {
-      const p = JSON.parse(f.programmeDetaille) as unknown;
-      if (Array.isArray(p)) programmeDetaille = p as FormationInput["programmeDetaille"];
+      raw = JSON.parse(raw) as unknown;
     } catch {
-      /* ignore */
+      raw = null;
     }
   }
+  let programmeDetaille: FormationInput["programmeDetaille"] = [];
+  if (Array.isArray(raw)) {
+    programmeDetaille = raw as FormationInput["programmeDetaille"];
+  } else if (raw !== null && typeof raw === "object") {
+    const modules = (raw as Record<string, unknown>)["modules"];
+    if (Array.isArray(modules)) {
+      programmeDetaille = modules as FormationInput["programmeDetaille"];
+    }
+  }
+
+  // Contenu détaillé riche (chemin premium) — présent après l'étape « contenu »
+  // du moteur. `readContenuDetaille` est défensif (retourne null si absent/invalide).
+  const contenuDetaille = readContenuDetaille(f.programmeDetaille);
 
   return {
     titre: f.titre,
     dureeHeures: f.dureeHeures,
+    ...(f.modalite ? { modalite: f.modalite } : {}),
     objectifsPedagogiques: jsonToStringArray(f.objectifsPedagogiques),
     programmeDetaille,
     methodesPedagogiques: f.methodesPedagogiques ? [f.methodesPedagogiques] : [],
     moyensTechniques: f.moyensTechniques ? [f.moyensTechniques] : [],
     ressourcesPedagogiques: jsonToStringArray(f.ressourcesPedagogiques),
+    ...(contenuDetaille ? { contenuDetaille } : {}),
   };
 }
 
@@ -183,6 +200,7 @@ export async function genererSupport(
       id: true,
       titre: true,
       dureeHeures: true,
+      modalite: true,
       objectifsPedagogiques: true,
       programmeDetaille: true,
       methodesPedagogiques: true,
