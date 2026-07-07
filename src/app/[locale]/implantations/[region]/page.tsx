@@ -331,7 +331,7 @@ export default async function RegionPage({ params }: Props) {
         }
         tone="sand"
       >
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
           {(
             [
               {
@@ -485,7 +485,7 @@ export default async function RegionPage({ params }: Props) {
           }
           tone="paper"
         >
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {pilotVilles.map((ville) => (
               <li key={ville.slug}>
                 <Link
@@ -603,7 +603,7 @@ export default async function RegionPage({ params }: Props) {
                         ▾
                       </span>
                     </summary>
-                    <ul className="border-border/40 grid grid-cols-2 gap-x-3 gap-y-1 border-t px-5 py-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <ul className="border-border/40 grid grid-cols-2 gap-x-3 gap-y-1 border-t px-5 py-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                       {list.map((ville) => {
                         const isPilot = !!ville.copy;
                         return (

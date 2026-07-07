@@ -828,7 +828,7 @@ export default async function VilleHubPage({ params }: Props) {
           title={isFr ? `Contenus IA à ${ville.nameFr}` : `AI content for ${ville.nameFr}`}
         >
           <Container>
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {villeArticles.map((a) => (
                 <li key={a.id}>
                   <ArticleCard
