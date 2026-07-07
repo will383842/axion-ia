@@ -37,13 +37,24 @@ import {
   buildStructureUserPrompt,
   buildRefineSystemPrompt,
   buildRefineUserPrompt,
-  buildContentSystemPrompt,
-  buildContentUserPrompt,
   buildBackwardDesignSystemPrompt,
   buildBackwardDesignUserPrompt,
   buildPersonaSystemPrompt,
   buildPersonaUserPrompt,
+  buildModuleContentStructuredSystemPrompt,
+  buildModuleContentStructuredUserPrompt,
+  type ModuleADetailler,
 } from "@/server/qualiopi/engine/prompts";
+import {
+  ModuleContenuSchema,
+  CONTENU_DETAILLE_VERSION,
+  stripNullsDeep,
+  type ContenuDetaille,
+  type ModuleContenu,
+} from "@/server/qualiopi/engine/content-schema";
+import { evaluateContenuDetailleQuality } from "@/server/qualiopi/engine/content-quality";
+import { normaliserModalite } from "@/server/qualiopi/engine/modalite-pedagogie";
+import { axionIaStackGrounding } from "@/server/qualiopi/engine/grounding";
 import { evaluateFormationQuality } from "@/server/qualiopi/engine/evaluate";
 import { hasUnsourcedClaims } from "@/server/qualiopi/engine/anti-hallucination";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
@@ -82,6 +93,11 @@ interface FormationForEngine {
    * Absent si l'offre n'est pas chargée (fail-soft → buildPersonaUserPrompt accepte "").
    */
   publicVise?: string | null;
+  // Paramètres pédagogiques (chantier Excellence) — enrichissent la génération.
+  niveau?: string | null;
+  prerequis?: string | null;
+  secteurCible?: string | null;
+  outilsClient?: string | null;
 }
 
 // ── Trace FormationGenerationJob ─────────────────────────────────────────────
@@ -161,6 +177,26 @@ async function advanceStatut(
 
 // ── Étape 1 : generateStructure ───────────────────────────────────────────────
 
+/**
+ * Fusionne la structure générée dans le programme courant SANS écraser les blocs
+ * amont coûteux (backwardDesign, persona, adversarialCritique). La structure
+ * apporte titre/objectifs/modules/fil_rouge ; on préserve le reste (cf. revue
+ * M2 : l'ancien remplacement complet perdait persona + backwardDesign en base).
+ */
+function mergeStructureIntoProgramme(current: unknown, structureRaw: string): unknown {
+  const structure = parseOutputSafe(structureRaw);
+  // Si la structure n'est pas un objet exploitable, on la conserve telle quelle
+  // (cas de bord : sortie non-JSON → l'étape contenu échouera en fail-loud B2).
+  if (structure === null || typeof structure !== "object" || Array.isArray(structure)) {
+    return structure;
+  }
+  const base =
+    current !== null && typeof current === "object" && !Array.isArray(current)
+      ? (current as Record<string, unknown>)
+      : {};
+  return { ...base, ...(structure as Record<string, unknown>) };
+}
+
 async function stepGenerateStructure(
   formation: FormationForEngine,
   passesCourantes: number,
@@ -194,7 +230,7 @@ async function stepGenerateStructure(
       aiGenerated: true,
       aiModel: cached.modele,
       aiPromptVersion: promptVersion,
-      programmeDetaille: parseOutputSafe(output),
+      programmeDetaille: mergeStructureIntoProgramme(formation.programmeDetaille, output),
     });
     return;
   }
@@ -254,7 +290,7 @@ async function stepGenerateStructure(
     aiGenerated: true,
     aiModel: resp.model,
     aiPromptVersion: promptVersion,
-    programmeDetaille: parseOutputSafe(resp.output),
+    programmeDetaille: mergeStructureIntoProgramme(formation.programmeDetaille, resp.output),
   });
 }
 
@@ -748,57 +784,123 @@ async function stepRefine(
 
 // ── Étape 4 : generateContent ─────────────────────────────────────────────────
 
-async function stepGenerateContent(
-  formation: FormationForEngine,
-  passesCourantes: number,
-): Promise<void> {
-  const grille = await getActiveGrille();
-  const promptVersion = grille?.promptVersion ?? formation.aiPromptVersion ?? 1;
-  const langue = formation.langueGeneration;
+/**
+ * Plafond dur du nombre de modules détaillés par formation. Chaque module = 1
+ * appel IA séquentiel (~30-60 s) ; borner évite de dépasser le lockDuration du
+ * worker (5 min) et de faire exploser le cost cap. Une formation Qualiopi de 1-3
+ * jours dépasse rarement ~10 modules ; au-delà on tronque en le signalant.
+ */
+const MAX_MODULES_CONTENU = 12;
 
-  const systemPrompt = buildContentSystemPrompt(formation);
-  const userPrompt = buildContentUserPrompt(formation);
+/** Extrait la liste des modules structurés depuis programmeDetaille (objet ou tableau). */
+function extractModulesADetailler(programmeDetaille: unknown): ModuleADetailler[] {
+  let modulesRaw: unknown = null;
+  if (Array.isArray(programmeDetaille)) {
+    modulesRaw = programmeDetaille;
+  } else if (programmeDetaille !== null && typeof programmeDetaille === "object") {
+    modulesRaw = (programmeDetaille as Record<string, unknown>)["modules"];
+  }
+  if (!Array.isArray(modulesRaw)) return [];
+
+  if (modulesRaw.length > MAX_MODULES_CONTENU) {
+    console.warn(
+      `[qualiopi:engine] programmeDetaille contient ${modulesRaw.length} modules — tronqué à ${MAX_MODULES_CONTENU} pour le contenu détaillé.`,
+    );
+    modulesRaw = modulesRaw.slice(0, MAX_MODULES_CONTENU);
+  }
+
+  return (modulesRaw as unknown[]).map((m, i): ModuleADetailler => {
+    const mo = (m ?? {}) as Record<string, unknown>;
+    const ordre = typeof mo["ordre"] === "number" ? (mo["ordre"] as number) : i + 1;
+    const seqRaw = mo["sequences"];
+    const sequences = Array.isArray(seqRaw)
+      ? seqRaw.map((s) => {
+          const so = (s ?? {}) as Record<string, unknown>;
+          return {
+            titre: String(so["titre"] ?? ""),
+            ...(typeof so["dureeMin"] === "number" ? { dureeMin: so["dureeMin"] as number } : {}),
+            ...(typeof so["description"] === "string"
+              ? { description: so["description"] as string }
+              : {}),
+          };
+        })
+      : undefined;
+    return {
+      moduleId: String(mo["moduleId"] ?? `M${ordre}`),
+      titre: String(mo["titre"] ?? `Module ${ordre}`),
+      ...(typeof mo["dureeMinutes"] === "number"
+        ? { dureeMin: mo["dureeMinutes"] as number }
+        : typeof mo["dureeMin"] === "number"
+          ? { dureeMin: mo["dureeMin"] as number }
+          : {}),
+      ...(Array.isArray(mo["objectifsCouverts"])
+        ? { objectifsCouverts: (mo["objectifsCouverts"] as unknown[]).map(String) }
+        : {}),
+      ...(Array.isArray(mo["activites"])
+        ? { activites: (mo["activites"] as unknown[]).map(String) }
+        : {}),
+      ...(sequences ? { sequences } : {}),
+    };
+  });
+}
+
+/** Génère le contenu structuré d'UN module (cache + cost + trace). */
+async function generateModuleContent(
+  formation: FormationForEngine,
+  module: ModuleADetailler,
+  promptVersion: number,
+  passesCourantes: number,
+  grounding: string,
+): Promise<{ contenu: ModuleContenu; modele: string } | null> {
+  const langue = formation.langueGeneration;
+  const systemPrompt = buildModuleContentStructuredSystemPrompt(grounding);
+  const userPrompt = buildModuleContentStructuredUserPrompt({
+    formationTitre: formation.titre,
+    modalite: formation.modalite as string,
+    ...(formation.publicVise != null ? { publicVise: formation.publicVise } : {}),
+    objectifsFormation: formation.objectifsPedagogiques,
+    module,
+    ...(formation.niveau != null ? { niveau: formation.niveau } : {}),
+    ...(formation.prerequis != null ? { prerequis: formation.prerequis } : {}),
+    ...(formation.secteurCible != null ? { secteurCible: formation.secteurCible } : {}),
+    ...(formation.outilsClient != null ? { outilsClient: formation.outilsClient } : {}),
+  });
 
   const cacheKey = buildCacheKey(userPrompt, promptVersion, langue);
   const cached = await getCachedIa(cacheKey);
 
-  let contenuFinal: string;
-  let modeleUtilise: string;
-
+  let raw: unknown;
+  let modele: string;
   if (cached) {
+    raw = typeof cached.valeur === "string" ? parseOutputSafe(cached.valeur) : cached.valeur;
+    modele = cached.modele;
     await traceGenerationJob({
       formationId: formation.id,
-      etape: "contenu",
+      etape: `contenu_module:${module.moduleId}`,
       tentative: passesCourantes + 1,
       status: "cache_hit",
       tokensIn: 0,
       tokensOut: 0,
       coutUsd: 0,
-      modele: cached.modele,
+      modele,
       dureeMs: 0,
       cacheHit: true,
     });
-    contenuFinal =
-      typeof cached.valeur === "string" ? cached.valeur : JSON.stringify(cached.valeur);
-    modeleUtilise = cached.modele;
   } else {
-    await assertCostCapAvailable("anthropic", 0.2);
+    await assertCostCapAvailable("anthropic", 0.15);
     const startMs = Date.now();
-
     const resp = await withRetry(() =>
       anthropicProvider.generate({
         jobId: formation.id,
-        contentType: "formation_contenu",
+        contentType: "formation_contenu_module",
         role: "text",
         systemPrompt,
         userPrompt,
-        maxTokens: 8192,
-        temperature: 0.2,
+        maxTokens: 6144,
+        temperature: 0.3,
       }),
     );
-
     const dureeMs = Date.now() - startMs;
-
     await trackCost({
       jobId: formation.id,
       provider: "anthropic",
@@ -808,7 +910,6 @@ async function stepGenerateContent(
       tokensOutput: resp.tokensOutput,
       costUsd: resp.costUsd,
     });
-
     await setCachedIa({
       cle: cacheKey,
       valeur: resp.output,
@@ -819,10 +920,9 @@ async function stepGenerateContent(
       promptVersion,
       ttlSeconds: 7 * 24 * 3600,
     });
-
     await traceGenerationJob({
       formationId: formation.id,
-      etape: "contenu",
+      etape: `contenu_module:${module.moduleId}`,
       tentative: passesCourantes + 1,
       status: "success",
       tokensIn: resp.tokensInput,
@@ -832,28 +932,138 @@ async function stepGenerateContent(
       dureeMs,
       cacheHit: false,
     });
-
-    contenuFinal = resp.output;
-    modeleUtilise = resp.model;
+    raw = parseOutputSafe(resp.output);
+    modele = resp.model;
   }
 
-  // Anti-hallucination (warning only — non bloquant en V1)
-  if (hasUnsourcedClaims(contenuFinal)) {
+  // Validation Zod — un module mal formé est loggué et ignoré (fail-soft),
+  // le reste de la formation continue. `stripNullsDeep` normalise d'abord les
+  // `null` renvoyés par le LLM en `undefined` (sinon .optional()/.default()
+  // rejettent le champ et invalident tout le module — cf. revue B1).
+  const parsed = ModuleContenuSchema.safeParse(stripNullsDeep(raw));
+  if (!parsed.success) {
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} module=${module.moduleId} contenu invalide (ignoré) : ${parsed.error.message.slice(0, 300)}`,
+    );
+    return null;
+  }
+  return { contenu: parsed.data as ModuleContenu, modele };
+}
+
+async function stepGenerateContent(
+  formation: FormationForEngine,
+  passesCourantes: number,
+): Promise<void> {
+  const grille = await getActiveGrille();
+  const promptVersion = grille?.promptVersion ?? formation.aiPromptVersion ?? 1;
+  const modalite = normaliserModalite(formation.modalite as string);
+
+  const modules = extractModulesADetailler(formation.programmeDetaille);
+  const grounding = axionIaStackGrounding();
+
+  const modulesContenu: ModuleContenu[] = [];
+  let modeleUtilise = "";
+  for (const mod of modules) {
+    const result = await generateModuleContent(
+      formation,
+      mod,
+      promptVersion,
+      passesCourantes,
+      grounding,
+    );
+    if (result) {
+      modulesContenu.push(result.contenu);
+      modeleUtilise = result.modele;
+    }
+  }
+
+  // B2 — FAIL-LOUD si aucun module valide : ne JAMAIS avancer le statut avec un
+  // contenu vide (qui violerait de toute façon ContenuDetailleSchema.min(1) et
+  // ferait retomber les supports en squelette sans alerte). On lève une erreur
+  // visible + une alerte système, et le statut reste relançable.
+  if (modulesContenu.length === 0) {
+    void creerOuDedup({
+      code: "job_ia_echoue",
+      niveau: "important",
+      titre: "Contenu détaillé vide",
+      message:
+        `La génération du contenu détaillé de la formation ${formation.id} n'a produit ` +
+        `aucun module exploitable (${modules.length} module(s) en entrée). Relancer la génération.`,
+      cibleType: "Formation",
+      cibleId: formation.id,
+    }).catch(() => {});
+    throw new Error(
+      `[qualiopi:engine] formation=${formation.id} — 0 module de contenu valide généré ` +
+        `(${modules.length} en entrée). Statut non avancé (relançable).`,
+    );
+  }
+
+  // Anti-hallucination (warning only) — analyse le TEXTE pédagogique concaténé
+  // (pas le JSON brut : clés/échappements fausseraient la détection).
+  const contenuTexte = modulesContenu
+    .flatMap((m) => [
+      m.introduction,
+      m.synthese,
+      ...m.sequences.flatMap((s) => [s.exempleConcret, ...s.concepts.map((c) => c.explication)]),
+    ])
+    .join("\n");
+  if (hasUnsourcedClaims(contenuTexte)) {
     console.warn(
       `[qualiopi:engine] formation=${formation.id} — allégations non sourcées détectées (warning)`,
     );
   }
 
-  // Avancer statut → contenu_genere + créer FileValidation (AI Act art. 50)
+  const contenuDetaille: ContenuDetaille = {
+    version: CONTENU_DETAILLE_VERSION,
+    modalite,
+    modules: modulesContenu,
+    ...(modeleUtilise ? { genereAvec: modeleUtilise } : {}),
+    genereLe: new Date().toISOString(),
+  };
+
+  // Contrôle qualité déterministe (best practices Qualiopi) — tracé + aide au
+  // validateur humain. Non bloquant, mais un score « insuffisant » est loggué.
+  const qualite = evaluateContenuDetailleQuality(contenuDetaille, formation.dureeHeures);
+  if (qualite.verdict === "insuffisant") {
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} — qualité contenu ${qualite.score}/100 (${qualite.manques.length} manque(s)).`,
+    );
+  }
+
+  // M3 — Fusion array-safe : si programmeDetaille est un TABLEAU (formation
+  // catalogue), l'envelopper dans { modules: [...] } au lieu de le spreader
+  // (sinon corruption en clés numériques). Objet → merge de clés classique.
+  let currentProgramme: Record<string, unknown>;
+  if (Array.isArray(formation.programmeDetaille)) {
+    currentProgramme = { modules: formation.programmeDetaille };
+  } else if (
+    formation.programmeDetaille !== null &&
+    typeof formation.programmeDetaille === "object"
+  ) {
+    currentProgramme = formation.programmeDetaille as Record<string, unknown>;
+  } else {
+    currentProgramme = {};
+  }
+  const mergedProgramme = { ...currentProgramme, contenuDetaille };
+
+  // Avancer statut → contenu_genere + persister le contenu + FileValidation (AI Act art. 50)
   await prisma.$transaction(async (tx) => {
     await tx.formation.update({
       where: { id: formation.id },
       data: {
         statutGeneration: "contenu_genere",
         aiGenerated: true,
-        aiModel: modeleUtilise,
+        ...(modeleUtilise ? { aiModel: modeleUtilise } : {}),
         aiPromptVersion: promptVersion,
+        programmeDetaille: mergedProgramme as never,
       },
+    });
+
+    // m3 — Idempotence : purge une éventuelle FileValidation « contenu » en
+    // attente d'une génération précédente avant d'en recréer une (évite les
+    // doublons dans l'UI de validation lors d'une relance).
+    await tx.fileValidation.deleteMany({
+      where: { formationId: formation.id, etape: "contenu", statut: "en_attente" },
     });
 
     // FileValidation contenu (validation humaine obligatoire)
@@ -863,9 +1073,13 @@ async function stepGenerateContent(
         etape: "contenu",
         statut: "en_attente",
         contenuPropose: {
-          snapshot: contenuFinal.slice(0, 10_000),
+          nbModules: modulesContenu.length,
           modele: modeleUtilise,
           promptVersion,
+          modalite,
+          qualiteScore: qualite.score,
+          qualiteVerdict: qualite.verdict,
+          qualiteManques: qualite.manques.slice(0, 20),
           generatedAt: new Date().toISOString(),
         } as never,
       },
@@ -920,6 +1134,10 @@ export async function formationEngineWorkerHandler(
       methodesPedagogiques: true,
       seuilReussitePct: true,
       ratioPratiquePct: true,
+      niveau: true,
+      prerequis: true,
+      secteurCible: true,
+      outilsClient: true,
       aiPromptVersion: true,
       langueGeneration: true,
       statutGeneration: true,
@@ -954,6 +1172,11 @@ export async function formationEngineWorkerHandler(
     langueGeneration: row.langueGeneration,
     // T5 — Public visé depuis l'offre (fail-soft : null si absent)
     publicVise: row.offreSite?.publicViseFr ?? null,
+    // Paramètres pédagogiques (chantier Excellence)
+    niveau: row.niveau,
+    prerequis: row.prerequis,
+    secteurCible: row.secteurCible,
+    outilsClient: row.outilsClient,
   };
 
   switch (statut) {

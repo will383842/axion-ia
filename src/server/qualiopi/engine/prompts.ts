@@ -10,6 +10,10 @@
  */
 
 import type { GrilleCriteres } from "@/server/qualiopi/engine/grille-schema";
+import {
+  normaliserModalite,
+  reglesModalitePourPrompt,
+} from "@/server/qualiopi/engine/modalite-pedagogie";
 
 // ── Types des builders (compat worker) ───────────────────────────────────────
 
@@ -44,9 +48,52 @@ export interface FormationLike {
   };
   publicVise?: string | null;
   niveauExpertise?: string;
+  /** Niveau visé (enum NiveauFormation) — alternative à niveauExpertise. */
+  niveau?: string | null;
+  /** Prérequis explicites (ce que le stagiaire doit déjà savoir/avoir). */
+  prerequis?: string | null;
+  /** Secteur / métier cible — ancre les exemples générés. */
+  secteurCible?: string | null;
+  /** Outils/logiciels réellement utilisés par le client. */
+  outilsClient?: string | null;
   objectifGeneral?: string;
   nbModulesMin?: number;
   nbModulesMax?: number;
+}
+
+/** Paramètres pédagogiques enrichissant la génération (niveau, prérequis, secteur, outils). */
+export interface ContextePedagogique {
+  niveau?: string | null | undefined;
+  prerequis?: string | null | undefined;
+  secteurCible?: string | null | undefined;
+  outilsClient?: string | null | undefined;
+}
+
+/**
+ * Bloc de contexte pédagogique injecté dans les prompts (structure + contenu).
+ * Retourne "" si aucun paramètre renseigné. Pure.
+ */
+export function buildContextePedagogique(ctx: ContextePedagogique): string {
+  const lignes: string[] = [];
+  const niveau = ctx.niveau && ctx.niveau !== "tous_niveaux" ? ctx.niveau : "";
+  if (niveau)
+    lignes.push(
+      `- Niveau des participants : ${niveau} → calibre le vocabulaire, la profondeur et la difficulté des exercices en conséquence.`,
+    );
+  if (ctx.prerequis && ctx.prerequis.trim())
+    lignes.push(
+      `- Prérequis acquis : ${ctx.prerequis.trim()} → construis DESSUS, ne réexplique pas ces bases.`,
+    );
+  if (ctx.secteurCible && ctx.secteurCible.trim())
+    lignes.push(
+      `- Secteur/métier cible : ${ctx.secteurCible.trim()} → TOUS les exemples et exercices doivent être ancrés dans ce contexte métier.`,
+    );
+  if (ctx.outilsClient && ctx.outilsClient.trim())
+    lignes.push(
+      `- Outils utilisés par le client : ${ctx.outilsClient.trim()} → privilégie ces outils dans les mises en pratique.`,
+    );
+  if (lignes.length === 0) return "";
+  return `CONTEXTE PÉDAGOGIQUE (impératif — personnalise le contenu) :\n${lignes.join("\n")}`;
 }
 
 /**
@@ -93,6 +140,37 @@ ${AI_ACT_NOTICE}
 Réponds UNIQUEMENT en JSON valide (pas de markdown autour).`;
 }
 
+/**
+ * Fourchette recommandée de modules selon la durée (≈ 1 module / 45-90 min),
+ * bornée à 12 (aligné sur MAX_MODULES_CONTENU du worker). Pure.
+ */
+export function recommendedModuleRange(dureeHeures: number): { min: number; max: number } {
+  const totalMin = Math.max(30, Math.round(dureeHeures * 60));
+  const min = Math.min(12, Math.max(2, Math.round(totalMin / 90)));
+  const max = Math.min(12, Math.max(min + 1, Math.round(totalMin / 45)));
+  return { min, max: Math.max(min, max) };
+}
+
+/**
+ * Bloc de consignes d'adaptation à la DURÉE : nombre de modules proportionnel,
+ * temps pratique effectif (ratio réel de la formation) et cohérence horaire
+ * (la somme des durées de modules doit couvrir la durée totale). Pure.
+ */
+export function buildDureeGuidance(dureeHeures: number, ratioPratiquePct?: number | null): string {
+  const totalMin = Math.round(dureeHeures * 60);
+  const { min, max } = recommendedModuleRange(dureeHeures);
+  const ratio = ratioPratiquePct != null && ratioPratiquePct > 0 ? ratioPratiquePct : 60;
+  const pratiqueMin = Math.round((totalMin * ratio) / 100);
+  return [
+    "CONSIGNES D'ADAPTATION À LA DURÉE (impératif — le plan doit REMPLIR la durée, ni plus ni moins) :",
+    `- Durée totale à couvrir : ${dureeHeures} h (${totalMin} minutes).`,
+    `- Découpe en ${min} à ${max} modules cohérents (progression du simple au complexe).`,
+    `- La SOMME des "dureeMinutes" de tous les modules doit être ≈ ${totalMin} minutes (tolérance ±10 %).`,
+    `- Au moins ${ratio} % du temps en activités pratiques, soit ≈ ${pratiqueMin} minutes (indicateur 9 RNQ).`,
+    `- Adapte la profondeur au format : une formation courte va à l'essentiel ; une formation longue approfondit et multiplie les mises en pratique.`,
+  ].join("\n");
+}
+
 /** User prompt structure — construit depuis un objet Formation ou équivalent. */
 export function buildStructureUserPrompt(formation: FormationLike): string {
   const titre = formation.titre ?? formation.titreFr ?? "Formation";
@@ -121,12 +199,31 @@ ${typeof programmeDetaille.persona === "string" ? programmeDetaille.persona : JS
 `
       : "";
 
+  const reglesModalite = reglesModalitePourPrompt(normaliserModalite(modalite));
+  const dureeGuidance = buildDureeGuidance(duree, formation.ratioPratiquePct);
+  const ratio =
+    formation.ratioPratiquePct != null && formation.ratioPratiquePct > 0
+      ? formation.ratioPratiquePct
+      : 60;
+  const contextePedago = buildContextePedagogique({
+    niveau: formation.niveau ?? formation.niveauExpertise,
+    prerequis: formation.prerequis,
+    secteurCible: formation.secteurCible,
+    outilsClient: formation.outilsClient,
+  });
+  const contexteSection = contextePedago ? `\n${contextePedago}\n` : "";
+
   return `${personaSection}Génère un plan de formation structuré en JSON pour :
 
 Titre : ${titre}
 Durée totale : ${duree} heure(s)
 Modalité : ${modalite}
 Objectifs pédagogiques : ${objectifsStr}
+${contexteSection}
+${dureeGuidance}
+
+CONSIGNES D'ADAPTATION À LA MODALITÉ (à respecter dans le choix des activités) :
+${reglesModalite}
 
 Format JSON attendu (champs additifs obligatoires : fil_rouge, livrables_j0, livrables_j1, livrables_j30) :
 {
@@ -147,7 +244,7 @@ Format JSON attendu (champs additifs obligatoires : fil_rouge, livrables_j0, liv
       "evaluation": "description de l'évaluation ou null"
     }
   ],
-  "ratioPratiqueEstime": 0.65,
+  "ratioPratiqueEstime": ${(ratio / 100).toFixed(2)},
   "prerequisVerification": "description de la vérification des prérequis"
 }`;
 }
@@ -485,4 +582,136 @@ Plan de formation :
 ${programmeStr}
 
 Rédige le contenu complet de chaque module (introduction, développement, exercices, synthèse).`;
+}
+
+// ── Contenu STRUCTURÉ par module (chantier « Excellence formations ») ──────────
+
+/**
+ * Entrée d'un module à détailler (dérivée d'un module du programme structuré).
+ */
+export interface ModuleADetailler {
+  moduleId: string;
+  titre: string;
+  dureeMin?: number;
+  objectifsCouverts?: string[];
+  activites?: string[];
+  sequences?: Array<{ titre: string; dureeMin?: number; description?: string }>;
+}
+
+/**
+ * System prompt du contenu structuré : produit un JSON riche EXPLOITABLE par les
+ * supports (concepts expliqués, exemple métier, exercice AVEC corrigé, quiz,
+ * notes formateur, adaptations modalité) — et non du markdown libre non réutilisable.
+ */
+export function buildModuleContentStructuredSystemPrompt(grounding?: string): string {
+  const groundingSection = grounding ? `\n${grounding}\n` : "";
+  return `Tu es un concepteur pédagogique senior (organisme certifié Qualiopi, RNQ 2022) ET un praticien expert du sujet enseigné.
+Tu rédiges le contenu DÉTAILLÉ et OPÉRATIONNEL d'un module de formation professionnelle, directement exploitable pour produire un diaporama, un cahier d'exercices et un guide d'animation.
+
+Exigences de qualité NON négociables :
+- Chaque concept est EXPLIQUÉ (2 à 5 phrases claires), jamais seulement nommé.
+- Chaque séquence contient un EXEMPLE CONCRET ancré dans un contexte métier réaliste (situation d'entreprise vécue), pas une généralité.
+- Chaque séquence pratique contient un EXERCICE réalisable dans le temps imparti, AVEC son corrigé (éléments de réponse attendus) et des critères de réussite observables.
+- Les notes d'animation aident un formateur à animer (posture, question à poser, piège fréquent).
+- Adapter explicitement les activités à la modalité indiquée.
+- Aucune allégation chiffrée (%, €, ROI, garantie) sans source vérifiable : à défaut, reformule sans chiffre.
+- Contenu 100 % en français professionnel.
+${groundingSection}
+${AI_ACT_NOTICE}
+
+Réponds UNIQUEMENT en JSON valide conforme au format demandé (aucun texte autour, pas de markdown).`;
+}
+
+/**
+ * User prompt du contenu structuré d'UN module. Le worker itère module par module
+ * pour rester sous le plafond de tokens et garantir un JSON complet par appel.
+ */
+export function buildModuleContentStructuredUserPrompt(input: {
+  formationTitre: string;
+  modalite: string;
+  publicVise?: string | null;
+  objectifsFormation?: unknown;
+  module: ModuleADetailler;
+  niveau?: string | null;
+  prerequis?: string | null;
+  secteurCible?: string | null;
+  outilsClient?: string | null;
+}): string {
+  const modalite = normaliserModalite(input.modalite);
+  const reglesModalite = reglesModalitePourPrompt(modalite);
+  const contextePedago = buildContextePedagogique({
+    niveau: input.niveau,
+    prerequis: input.prerequis,
+    secteurCible: input.secteurCible,
+    outilsClient: input.outilsClient,
+  });
+
+  const objectifsStr = input.objectifsFormation
+    ? typeof input.objectifsFormation === "string"
+      ? input.objectifsFormation
+      : JSON.stringify(input.objectifsFormation)
+    : "cf. objectifs du module";
+
+  const seqStr =
+    input.module.sequences && input.module.sequences.length > 0
+      ? input.module.sequences
+          .map(
+            (s) =>
+              `  - ${s.titre}${s.dureeMin ? ` (${s.dureeMin} min)` : ""}${s.description ? ` : ${s.description}` : ""}`,
+          )
+          .join("\n")
+      : "  (séquences à proposer à partir du titre et des objectifs du module)";
+
+  return `Détaille le module suivant de la formation « ${input.formationTitre} ».
+
+Public visé : ${input.publicVise ?? "professionnels en activité"}
+Modalité : ${input.modalite}
+Objectifs de la formation : ${objectifsStr}
+
+Module à détailler :
+- Titre : ${input.module.titre}
+- Durée : ${input.module.dureeMin ?? "à répartir"} min
+- Objectifs couverts : ${(input.module.objectifsCouverts ?? []).join(" ; ") || "cf. objectifs formation"}
+- Activités prévues (issues du plan validé — à respecter) : ${(input.module.activites ?? []).join(" ; ") || "à proposer"}
+- Séquences prévues :
+${seqStr}
+${contextePedago ? `\n${contextePedago}\n` : ""}
+CONSIGNES D'ADAPTATION À LA MODALITÉ :
+${reglesModalite}
+
+Retourne un JSON STRICTEMENT de la forme (respecte les clés et les types) :
+{
+  "moduleId": "${input.module.moduleId}",
+  "titre": "${input.module.titre.replace(/"/g, "'")}",
+  "introduction": "accroche du module : pourquoi c'est utile pour le stagiaire (2-4 phrases)",
+  "sequences": [
+    {
+      "titre": "...",
+      "dureeMin": 30,
+      "concepts": [ { "titre": "...", "explication": "2 à 5 phrases" } ],
+      "exempleConcret": "situation métier réaliste illustrant le concept",
+      "pointsVigilance": ["piège fréquent ou point d'attention"],
+      "exercice": {
+        "consigne": "énoncé clair et réalisable dans le temps imparti",
+        "dureeMin": 15,
+        "corrige": "éléments de réponse attendus (réservé formateur)",
+        "criteresReussite": ["critère observable"]
+      },
+      "noteFormateur": "conseil d'animation (posture, question à poser, piège)",
+      "adaptationPresentiel": "adaptation en salle si pertinent",
+      "adaptationDistanciel": "adaptation en classe virtuelle si pertinent"
+    }
+  ],
+  "synthese": "points clés à retenir en fin de module (3-5 phrases)",
+  "quiz": [
+    {
+      "question": "...",
+      "options": ["...", "..."],
+      "bonneReponseIndex": 0,
+      "explication": "pourquoi cette réponse est correcte"
+    }
+  ]
+}
+
+Règles : au moins 1 concept par séquence ; un exercice pour toute séquence à visée pratique ; 2 à 4 questions de quiz pour le module. Omets "exercice", "adaptationPresentiel" ou "adaptationDistanciel" si non pertinents (ne mets pas de valeur vide).`;
 }

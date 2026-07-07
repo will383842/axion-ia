@@ -242,6 +242,10 @@ export default async function QualiopiFormationDetailPage({ params }: PageProps)
             seuilReussitePct: formation.seuilReussitePct ?? null,
             ratioPratiquePct: formation.ratioPratiquePct ?? null,
             accessibleHandicap: formation.accessibleHandicap,
+            niveau: formation.niveau,
+            prerequis: formation.prerequis,
+            secteurCible: formation.secteurCible,
+            outilsClient: formation.outilsClient,
           }}
         />
       </section>

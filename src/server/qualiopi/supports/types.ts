@@ -8,6 +8,7 @@
  */
 
 import type { SupportType } from "../../../../prisma/generated/client";
+import type { ContenuDetaille } from "@/server/qualiopi/engine/content-schema";
 
 // Ré-export pour les consommateurs qui n'importent que ce module.
 export type { SupportType } from "../../../../prisma/generated/client";
@@ -69,6 +70,14 @@ export interface FormationInput {
   moyensTechniques?: string[];
   ressourcesPedagogiques?: string[];
   dureeHeures: number;
+  /** Modalité de la formation (présentiel par défaut). Pilote les adaptations. */
+  modalite?: string;
+  /**
+   * Contenu pédagogique détaillé structuré (concepts, exemples, exercices+corrigés,
+   * quiz). Présent une fois la formation passée par l'étape « contenu » du moteur.
+   * Quand présent → les builders produisent des supports RICHES ; sinon fallback squelette.
+   */
+  contenuDetaille?: ContenuDetaille;
 }
 
 // ============================================================

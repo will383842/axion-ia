@@ -114,6 +114,55 @@ export async function startGenerationAction(
   return { data: { formationId, statutGeneration: formation.statutGeneration } };
 }
 
+// ── Action : enqueueBatchGenerationAction (génération en lot) ─────────────────
+
+const enqueueBatchSchema = z.object({
+  /** Nombre max de formations à enfiler d'un coup (garde-fou). Défaut 20. */
+  limite: z.number().int().min(1).max(50).optional(),
+});
+
+/**
+ * Enfile la génération IA pour TOUTES les formations en statut relançable
+ * (intention/structure_generee/contenu_evalue). Pour lancer d'un coup le
+ * catalogue (ex. les 17 formations) sans cliquer une par une. Borné par `limite`.
+ * Ne touche jamais aux formations en attente de validation humaine ou publiées.
+ */
+export async function enqueueBatchGenerationAction(
+  input: z.infer<typeof enqueueBatchSchema>,
+): Promise<ActionResult<{ enfilees: number; formationIds: string[] }>> {
+  const session = await requireAdminWrite();
+  const parsed = enqueueBatchSchema.safeParse(input);
+  if (!parsed.success) return { error: "Paramètres invalides." };
+
+  const limite = parsed.data.limite ?? 20;
+
+  let formations: Array<{ id: string }>;
+  try {
+    formations = await prisma.formation.findMany({
+      where: { statutGeneration: { in: RELANCABLE_STATUTS }, statut: { not: "archive" } },
+      select: { id: true },
+      orderBy: { numero: "asc" },
+      take: limite,
+    });
+  } catch {
+    return { error: "Erreur lors de la récupération des formations." };
+  }
+
+  for (const f of formations) {
+    await enqueueFormationGeneration({ formationId: f.id });
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.generation.batch",
+    targetType: "Formation",
+    targetId: null,
+    changes: { enfilees: formations.length, limite },
+    session,
+  });
+
+  return { data: { enfilees: formations.length, formationIds: formations.map((f) => f.id) } };
+}
+
 // ── Action : approveFileValidationAction ──────────────────────────────────────
 
 /**

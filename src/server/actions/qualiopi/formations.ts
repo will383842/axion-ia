@@ -81,6 +81,11 @@ const updateFormationSchema = z.object({
   seuilReussitePct: z.number().int().min(0).max(100).optional(),
   ratioPratiquePct: z.number().int().min(0).max(100).optional(),
   accessibleHandicap: z.boolean().optional(),
+  // Paramètres pédagogiques (chantier Excellence) — enrichissent la génération IA.
+  niveau: z.enum(["debutant", "intermediaire", "avance", "tous_niveaux"]).optional(),
+  prerequis: z.string().max(2000).optional(),
+  secteurCible: z.string().max(200).optional(),
+  outilsClient: z.string().max(2000).optional(),
   certificationType: z.enum(CERTIFICATION_TYPES).optional(),
   codeCpf: z.string().max(20).optional(),
 });
@@ -214,6 +219,10 @@ export async function updateFormationAction(
   if (fields.ratioPratiquePct !== undefined) dataChanges.ratioPratiquePct = fields.ratioPratiquePct;
   if (fields.accessibleHandicap !== undefined)
     dataChanges.accessibleHandicap = fields.accessibleHandicap;
+  if (fields.niveau !== undefined) dataChanges.niveau = fields.niveau;
+  if (fields.prerequis !== undefined) dataChanges.prerequis = fields.prerequis;
+  if (fields.secteurCible !== undefined) dataChanges.secteurCible = fields.secteurCible;
+  if (fields.outilsClient !== undefined) dataChanges.outilsClient = fields.outilsClient;
   if (fields.certificationType !== undefined)
     dataChanges.certificationType = fields.certificationType;
   if (fields.codeCpf !== undefined) dataChanges.codeCpf = fields.codeCpf;
@@ -667,6 +676,10 @@ export async function duplicateFormationAction(
       seuilReussitePct: true,
       ratioPratiquePct: true,
       accessibleHandicap: true,
+      niveau: true,
+      prerequis: true,
+      secteurCible: true,
+      outilsClient: true,
       typesActionQualiopi: true,
       langueGeneration: true,
     },
@@ -695,6 +708,10 @@ export async function duplicateFormationAction(
           moyensTechniques: source.moyensTechniques,
           ressourcesPedagogiques: source.ressourcesPedagogiques as never,
           seuilReussitePct: source.seuilReussitePct,
+          niveau: source.niveau,
+          prerequis: source.prerequis,
+          secteurCible: source.secteurCible,
+          outilsClient: source.outilsClient,
           ...(source.ratioPratiquePct !== null
             ? { ratioPratiquePct: source.ratioPratiquePct }
             : {}),

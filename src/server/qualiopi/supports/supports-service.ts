@@ -22,6 +22,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { readContenuDetaille } from "@/server/qualiopi/engine/content-schema";
 import { construireSupport, titreSupport } from "./support-builder";
 import { renderSupportToStored } from "./render-support";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -55,33 +56,49 @@ function jsonToStringArray(value: unknown): string[] {
 function toFormationInput(f: {
   titre: string;
   dureeHeures: number;
+  modalite?: string | null;
   objectifsPedagogiques: unknown;
   programmeDetaille: unknown;
   methodesPedagogiques: string;
   moyensTechniques: string;
   ressourcesPedagogiques: unknown;
 }): FormationInput {
-  // programmeDetaille : tableau de ModuleProgramme (JSON Prisma)
-  let programmeDetaille: FormationInput["programmeDetaille"] = [];
-  if (Array.isArray(f.programmeDetaille)) {
-    programmeDetaille = f.programmeDetaille as FormationInput["programmeDetaille"];
-  } else if (typeof f.programmeDetaille === "string") {
+  // programmeDetaille peut être :
+  //  - un TABLEAU de modules (formations issues du catalogue), ou
+  //  - un OBJET { modules:[...], persona, contenuDetaille, ... } (moteur IA).
+  // On extrait le tableau de modules pour le fallback squelette dans les 2 cas.
+  let raw: unknown = f.programmeDetaille;
+  if (typeof raw === "string") {
     try {
-      const p = JSON.parse(f.programmeDetaille) as unknown;
-      if (Array.isArray(p)) programmeDetaille = p as FormationInput["programmeDetaille"];
+      raw = JSON.parse(raw) as unknown;
     } catch {
-      /* ignore */
+      raw = null;
     }
   }
+  let programmeDetaille: FormationInput["programmeDetaille"] = [];
+  if (Array.isArray(raw)) {
+    programmeDetaille = raw as FormationInput["programmeDetaille"];
+  } else if (raw !== null && typeof raw === "object") {
+    const modules = (raw as Record<string, unknown>)["modules"];
+    if (Array.isArray(modules)) {
+      programmeDetaille = modules as FormationInput["programmeDetaille"];
+    }
+  }
+
+  // Contenu détaillé riche (chemin premium) — présent après l'étape « contenu »
+  // du moteur. `readContenuDetaille` est défensif (retourne null si absent/invalide).
+  const contenuDetaille = readContenuDetaille(f.programmeDetaille);
 
   return {
     titre: f.titre,
     dureeHeures: f.dureeHeures,
+    ...(f.modalite ? { modalite: f.modalite } : {}),
     objectifsPedagogiques: jsonToStringArray(f.objectifsPedagogiques),
     programmeDetaille,
     methodesPedagogiques: f.methodesPedagogiques ? [f.methodesPedagogiques] : [],
     moyensTechniques: f.moyensTechniques ? [f.moyensTechniques] : [],
     ressourcesPedagogiques: jsonToStringArray(f.ressourcesPedagogiques),
+    ...(contenuDetaille ? { contenuDetaille } : {}),
   };
 }
 
@@ -183,6 +200,7 @@ export async function genererSupport(
       id: true,
       titre: true,
       dureeHeures: true,
+      modalite: true,
       objectifsPedagogiques: true,
       programmeDetaille: true,
       methodesPedagogiques: true,
@@ -312,6 +330,60 @@ export async function regenererSupport(input: {
   }
 
   return genererSupport({ formationId: existing.formationId, type: existing.type });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// genererTousSupports — génération EN LOT des 7 supports d'une formation
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Les 7 types de supports produits pour une formation. */
+export const TOUS_SUPPORT_TYPES: readonly SupportType[] = [
+  "slides_formateur",
+  "slides_stagiaire",
+  "livret_stagiaire",
+  "memo",
+  "guide_animation",
+  "exercices",
+  "grille_eval",
+];
+
+export interface GenererTousSupportsResult {
+  formationId: string;
+  ok: Array<{ type: SupportType; id: string }>;
+  echecs: Array<{ type: SupportType; erreur: string }>;
+}
+
+/**
+ * Génère (ou régénère) les 7 supports d'une formation, séquentiellement.
+ * Un échec sur un type n'interrompt pas les autres (chaque type est isolé).
+ * Idéal pour un bouton « Générer tous les supports » ou un batch multi-formations.
+ *
+ * @throws Error si stub.invalid.
+ */
+export async function genererTousSupports(input: {
+  formationId: string;
+  enrichirIA?: boolean;
+}): Promise<GenererTousSupportsResult> {
+  if (isStub()) {
+    throw new Error("Génération de supports impossible en mode stub (build).");
+  }
+  const ok: GenererTousSupportsResult["ok"] = [];
+  const echecs: GenererTousSupportsResult["echecs"] = [];
+
+  for (const type of TOUS_SUPPORT_TYPES) {
+    try {
+      const res = await genererSupport({
+        formationId: input.formationId,
+        type,
+        ...(input.enrichirIA !== undefined ? { enrichirIA: input.enrichirIA } : {}),
+      });
+      ok.push({ type, id: res.id });
+    } catch (err) {
+      echecs.push({ type, erreur: err instanceof Error ? err.message : String(err) });
+    }
+  }
+
+  return { formationId: input.formationId, ok, echecs };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

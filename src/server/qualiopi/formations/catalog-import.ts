@@ -120,6 +120,8 @@ export interface FormationImportData {
   moyensTechniques: string;
   ressourcesPedagogiques: ReadonlyArray<{ type: string; libelle: string }>;
   accessibleHandicap: boolean;
+  /** Prérequis (depuis catalogue prerequisFr) — enrichit la génération IA. */
+  prerequis: string;
   ratioPratiquePct: number;
   certificationType: "aucune";
   typesActionQualiopi: ["classique"];
@@ -187,6 +189,7 @@ export function buildFormationImportData(
     ressourcesPedagogiques: RESSOURCES_PEDAGOGIQUES,
     // Formats sans prérequis, adaptables (référent handicap org, indicateur 26).
     accessibleHandicap: true,
+    prerequis: f.prerequisFr ?? "",
     ratioPratiquePct: RATIO_PRATIQUE_PCT,
     certificationType: "aucune",
     typesActionQualiopi: ["classique"],

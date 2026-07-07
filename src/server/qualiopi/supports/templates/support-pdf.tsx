@@ -10,7 +10,7 @@
  */
 
 import React from "react";
-import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, View, Text, StyleSheet } from "@react-pdf/renderer";
 import { QualiopiPage, DocSection, pdfStyles } from "@/server/qualiopi/documents/base-layout";
 import { brandColor, QUALIOPI_BRAND_FONTS } from "@/server/qualiopi/brand/brand-tokens";
 import type { SupportRenderInput, SupportContenu, BlocContenu } from "../types";
@@ -109,6 +109,119 @@ const local = StyleSheet.create({
     marginBottom: 2,
   },
   grilleItemText: {
+    fontSize: 10,
+    color: brandColor("fg"),
+    flex: 1,
+  },
+
+  // ---- Couverture (page de garde premium) ----
+  coverPage: {
+    paddingTop: 90,
+    paddingHorizontal: 56,
+    paddingBottom: 64,
+    fontFamily: QUALIOPI_BRAND_FONTS.sans,
+    backgroundColor: brandColor("paper"),
+    position: "relative",
+  },
+  coverBand: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 10,
+    backgroundColor: brandColor("terracotta"),
+  },
+  coverEyebrow: {
+    fontSize: 9,
+    fontFamily: QUALIOPI_BRAND_FONTS.sans,
+    fontWeight: "bold",
+    letterSpacing: 2,
+    textTransform: "uppercase",
+    color: brandColor("terracotta"),
+    marginBottom: 6,
+  },
+  coverOrg: {
+    fontSize: 13,
+    fontFamily: QUALIOPI_BRAND_FONTS.serif,
+    fontWeight: "bold",
+    color: brandColor("mocha"),
+    marginBottom: 48,
+  },
+  coverTypeLabel: {
+    fontSize: 11,
+    fontFamily: QUALIOPI_BRAND_FONTS.mono,
+    color: brandColor("terracotta-deep"),
+    letterSpacing: 1,
+    marginBottom: 10,
+  },
+  coverTitle: {
+    fontSize: 30,
+    fontFamily: QUALIOPI_BRAND_FONTS.serif,
+    fontWeight: "bold",
+    color: brandColor("mocha"),
+    lineHeight: 1.15,
+    marginBottom: 20,
+  },
+  coverRule: {
+    width: 80,
+    height: 3,
+    backgroundColor: brandColor("terracotta"),
+    marginBottom: 24,
+  },
+  coverMetaBox: {
+    marginTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: brandColor("border"),
+    paddingTop: 16,
+  },
+  coverMetaRow: {
+    flexDirection: "row",
+    marginBottom: 5,
+  },
+  coverMetaLabel: {
+    fontSize: 9,
+    fontWeight: "bold",
+    color: brandColor("fg-muted"),
+    width: 90,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  coverMetaValue: {
+    fontSize: 10,
+    color: brandColor("fg"),
+    flex: 1,
+  },
+  coverFooter: {
+    position: "absolute",
+    bottom: 44,
+    left: 56,
+    right: 56,
+    borderTopWidth: 1,
+    borderTopColor: brandColor("border"),
+    paddingTop: 10,
+  },
+  coverFooterLine: {
+    fontSize: 8,
+    color: brandColor("fg-muted"),
+    marginTop: 1,
+  },
+
+  // ---- Sommaire ----
+  tocRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    paddingVertical: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: brandColor("sand"),
+    marginBottom: 2,
+  },
+  tocNum: {
+    fontSize: 10,
+    fontFamily: QUALIOPI_BRAND_FONTS.mono,
+    color: brandColor("terracotta-deep"),
+    width: 24,
+  },
+  tocLabel: {
     fontSize: 10,
     color: brandColor("fg"),
     flex: 1,
@@ -244,6 +357,89 @@ function RenderSection({
 }
 
 // ============================================================
+// Couverture (page de garde premium)
+// ============================================================
+
+/** Formate une date ISO en JJ/MM/AAAA (défensif — retourne "" si invalide). */
+function formatDateFr(iso: string | undefined): string {
+  if (!iso) return "";
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
+  if (!m) return "";
+  return `${m[3]}/${m[2]}/${m[1]}`;
+}
+
+function CoverPage({
+  data,
+  identite,
+}: {
+  data: SupportPdfProps["data"];
+  identite: SupportPdfProps["identite"];
+}): React.ReactElement {
+  const formation = data.contenu.meta?.formation ?? data.titre;
+  const modalite = data.contenu.meta?.modalite;
+  const date = formatDateFr(data.contenu.meta?.date);
+  const ids = [
+    identite.qualiopi ? `Qualiopi ${identite.qualiopi}` : "",
+    identite.nda ? `NDA ${identite.nda}` : "",
+    identite.siret ? `SIRET ${identite.siret}` : "",
+  ]
+    .filter(Boolean)
+    .join("  ·  ");
+
+  return (
+    <Page size="A4" style={local.coverPage}>
+      <View style={local.coverBand} fixed />
+      <Text style={local.coverEyebrow}>Organisme de formation</Text>
+      <Text style={local.coverOrg}>{identite.raisonSociale || "Axion-IA SAS"}</Text>
+
+      <Text style={local.coverTypeLabel}>{typeLabelFr(data.type)}</Text>
+      <Text style={local.coverTitle}>{formation}</Text>
+      <View style={local.coverRule} />
+
+      <View style={local.coverMetaBox}>
+        {modalite ? (
+          <View style={local.coverMetaRow}>
+            <Text style={local.coverMetaLabel}>Modalité</Text>
+            <Text style={local.coverMetaValue}>{modalite}</Text>
+          </View>
+        ) : null}
+        <View style={local.coverMetaRow}>
+          <Text style={local.coverMetaLabel}>Version</Text>
+          <Text style={local.coverMetaValue}>{`v${String(data.version).padStart(2, "0")}`}</Text>
+        </View>
+        {date ? (
+          <View style={local.coverMetaRow}>
+            <Text style={local.coverMetaLabel}>Édité le</Text>
+            <Text style={local.coverMetaValue}>{date}</Text>
+          </View>
+        ) : null}
+      </View>
+
+      <View style={local.coverFooter} fixed>
+        {ids ? <Text style={local.coverFooterLine}>{ids}</Text> : null}
+        <Text style={local.coverFooterLine}>
+          Document pédagogique interne — reproduction interdite sans autorisation.
+        </Text>
+      </View>
+    </Page>
+  );
+}
+
+/** Sommaire : liste numérotée des sections (rendu si ≥ 4 sections). */
+function Sommaire({ sections }: { sections: SupportContenu["sections"] }): React.ReactElement {
+  return (
+    <DocSection title="Sommaire">
+      {sections.map((s, i) => (
+        <View key={i} style={local.tocRow}>
+          <Text style={local.tocNum}>{String(i + 1).padStart(2, "0")}</Text>
+          <Text style={local.tocLabel}>{s.titre}</Text>
+        </View>
+      ))}
+    </DocSection>
+  );
+}
+
+// ============================================================
 // Composant principal
 // ============================================================
 
@@ -265,8 +461,15 @@ export function SupportPdf({ data, identite }: SupportPdfProps): React.ReactElem
   const docNumber = `v${String(data.version).padStart(2, "0")}`;
   const docTitle = data.titre;
 
+  const sections = data.contenu.sections;
+  const showSommaire = sections.length >= 4;
+
   return (
     <Document>
+      {/* Page de garde premium */}
+      <CoverPage data={data} identite={identite} />
+
+      {/* Pages de contenu (en-tête + pied paginé de la charte) */}
       <QualiopiPage docTitle={docTitle} docNumber={docNumber} identite={identite}>
         {/* Tag type + version */}
         <View style={local.metaRow}>
@@ -274,8 +477,11 @@ export function SupportPdf({ data, identite }: SupportPdfProps): React.ReactElem
           <Text style={local.versionText}>Version {data.version}</Text>
         </View>
 
+        {/* Sommaire (supports à plusieurs sections) */}
+        {showSommaire ? <Sommaire sections={sections} /> : null}
+
         {/* Contenu — sections */}
-        {data.contenu.sections.map((section, i) => (
+        {sections.map((section, i) => (
           <RenderSection key={i} section={section} type={data.type} />
         ))}
 
