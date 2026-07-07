@@ -228,15 +228,9 @@ const VERTICALE_TO_SERVICE_ID: Record<VerticaleSlug, ServiceId> = {
 };
 
 function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
+  // Ordre SSOT (formations → 1-to-1 → audit → implémentation → sites web) —
+  // identique à la home et à tout le site (décision Will 2026-07-07).
   return [
-    {
-      slug: "audits",
-      labelFr: "Audit IA",
-      labelEn: "AI Audit",
-      descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). TPE, PME, ETI, grandes entreprises.`,
-      descEn: `AI audit in ${v} — 3 costed projects, 6-month roadmap, same-day result (Flash) or 2-4 weeks (Strategic). Micro-businesses, SMBs, mid-market, large enterprises.`,
-      mainServiceHref: "/audit",
-    },
     {
       slug: "interventions",
       labelFr: "Formations et interventions sur site",
@@ -246,20 +240,28 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       mainServiceHref: "/interventions",
     },
     {
-      slug: "implementations",
-      labelFr: "Implémentation IA",
-      labelEn: "AI Implementation",
-      descFr: `Agents IA, automatisations back-office, CRM/ERP augmentés — livrés en production à ${v}. ROI chiffré avant mission. Toutes tailles d'entreprise.`,
-      descEn: `AI agents, back-office automations, augmented CRM/ERP — delivered to production in ${v}. Costed ROI before engagement. All company sizes.`,
-      mainServiceHref: "/implementation",
-    },
-    {
       slug: "un-a-un",
       labelFr: "Accompagnement 1-to-1",
       labelEn: "1-to-1 coaching",
       descFr: `Journée 1-to-1 avec Williams à ${v} — cartographie IA de vos processus et 3 chantiers chiffrés, sans engagement. Dirigeants TPE, PME, ETI.`,
       descEn: `1-on-1 day with Williams in ${v} — AI mapping of your processes and 3 costed projects, no commitment. Leaders of SMBs and mid-market.`,
       mainServiceHref: "/un-a-un",
+    },
+    {
+      slug: "audits",
+      labelFr: "Audit IA",
+      labelEn: "AI Audit",
+      descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). TPE, PME, ETI, grandes entreprises.`,
+      descEn: `AI audit in ${v} — 3 costed projects, 6-month roadmap, same-day result (Flash) or 2-4 weeks (Strategic). Micro-businesses, SMBs, mid-market, large enterprises.`,
+      mainServiceHref: "/audit",
+    },
+    {
+      slug: "implementations",
+      labelFr: "Implémentation IA",
+      labelEn: "AI Implementation",
+      descFr: `Agents IA, automatisations back-office, CRM/ERP augmentés — livrés en production à ${v}. ROI chiffré avant mission. Toutes tailles d'entreprise.`,
+      descEn: `AI agents, back-office automations, augmented CRM/ERP — delivered to production in ${v}. Costed ROI before engagement. All company sizes.`,
+      mainServiceHref: "/implementation",
     },
     {
       slug: "sites-web-ia",
@@ -633,10 +635,10 @@ export default async function VilleHubPage({ params }: Props) {
               >
                 {(
                   [
-                    { id: "audit", labelFr: "Audit IA", labelEn: "AI audit" },
                     { id: "formations", labelFr: "Formation", labelEn: "Training" },
-                    { id: "implementation", labelFr: "Implémentation", labelEn: "Implementation" },
                     { id: "unAUn", labelFr: "Coaching 1-to-1", labelEn: "1-to-1 coaching" },
+                    { id: "audit", labelFr: "Audit IA", labelEn: "AI audit" },
+                    { id: "implementation", labelFr: "Implémentation", labelEn: "Implementation" },
                     { id: "sitesWeb", labelFr: "Web / SaaS IA", labelEn: "AI Web / SaaS" },
                   ] as const
                 ).map(({ id, labelFr, labelEn }) => {
