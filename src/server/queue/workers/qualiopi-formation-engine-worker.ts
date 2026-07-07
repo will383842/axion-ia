@@ -247,7 +247,10 @@ async function stepGenerateStructure(
       role: "text",
       systemPrompt,
       userPrompt,
-      maxTokens: 4096,
+      // 8192 (au lieu de 4096) : le JSON de structure complet (objectifs +
+      // fil_rouge + livrables j0/j1/j30 + modules) dépassait 4096 tokens → sortie
+      // tronquée → JSON invalide → score bas → boucle refine sans fin (témoin prod).
+      maxTokens: 8192,
       temperature: 0.2,
     }),
   );
@@ -361,7 +364,7 @@ async function stepBackwardDesign(
       role: "text",
       systemPrompt,
       userPrompt,
-      maxTokens: 2048,
+      maxTokens: 4096,
       temperature: 0.2,
     }),
   );
@@ -470,7 +473,7 @@ async function stepPersona(
       role: "text",
       systemPrompt,
       userPrompt,
-      maxTokens: 2048,
+      maxTokens: 4096,
       temperature: 0.3,
     }),
   );
@@ -735,7 +738,8 @@ async function stepRefine(
       role: "text",
       systemPrompt,
       userPrompt,
-      maxTokens: 4096,
+      // 8192 : même format que la structure (voir note structure) — éviter la troncature.
+      maxTokens: 8192,
       temperature: 0.3,
     }),
   );
@@ -900,7 +904,7 @@ async function generateModuleContent(
         role: "text",
         systemPrompt,
         userPrompt,
-        maxTokens: 6144,
+        maxTokens: 8192,
         temperature: 0.3,
       }),
     );
@@ -1451,13 +1455,20 @@ async function handleEvalDecision(
   const grille = await getActiveGrille();
   const nbPassesMax = grille?.nbPassesMax ?? 3;
 
-  if (!evalResult.valide && passesCourantes < nbPassesMax) {
+  // Boucle de raffinement de la STRUCTURE : on raffine tant que le score est sous
+  // le plancher ET qu'il reste des passes, PUIS on génère TOUJOURS le contenu.
+  // (Correctif témoin prod : l'ancienne version faisait 1 seul refine puis, si
+  // toujours invalide et passes non épuisées, ne relançait NI ne générait rien →
+  // formation bloquée à contenu_evalue indéfiniment.)
+  let currentEval = evalResult;
+  let passe = passesCourantes;
+  while (!currentEval.valide && passe < nbPassesMax) {
     console.log(
-      `[qualiopi:engine] formation=${formation.id} score=${evalResult.scoreGlobal} < plancher → refine (passe ${passesCourantes + 1}/${nbPassesMax})`,
+      `[qualiopi:engine] formation=${formation.id} score=${currentEval.scoreGlobal} < plancher → refine (passe ${passe + 1}/${nbPassesMax})`,
     );
-    await stepRefine(formation, passesCourantes, evalResult.scoreGlobal, evalResult.commentaire);
+    await stepRefine(formation, passe, currentEval.scoreGlobal, currentEval.commentaire);
 
-    // Recharger et ré-évaluer
+    // Recharger le programme raffiné avant de ré-évaluer.
     const updated = await prisma.formation.findUnique({
       where: { id: formation.id },
       select: {
@@ -1472,18 +1483,16 @@ async function handleEvalDecision(
       formation.objectifsPedagogiques = updated.objectifsPedagogiques;
     }
 
-    const reEval = await stepEvaluateQuality(formation, passesCourantes + 1);
-    if (reEval.valide || passesCourantes + 1 >= nbPassesMax) {
-      if (!reEval.valide) {
-        console.warn(
-          `[qualiopi:engine] formation=${formation.id} — passes max atteintes, génération forcée`,
-        );
-      }
-      await stepGenerateContent(formation, passesCourantes + 1);
-    }
-  } else {
-    await stepGenerateContent(formation, passesCourantes);
+    passe += 1;
+    currentEval = await stepEvaluateQuality(formation, passe);
   }
+
+  if (!currentEval.valide) {
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} — passes de structure épuisées (score ${currentEval.scoreGlobal}), génération du contenu forcée.`,
+    );
+  }
+  await stepGenerateContent(formation, passe);
 }
 
 function parseOutputSafe(output: string): unknown {
