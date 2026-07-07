@@ -519,6 +519,8 @@ export function construireSupport(type: SupportType, formation: FormationInput):
       titre: formation.titre,
       objectifsPedagogiques: formation.objectifsPedagogiques,
       contenuDetaille: formation.contenuDetaille,
+      ...(formation.filRouge ? { filRouge: formation.filRouge } : {}),
+      ...(formation.livrables ? { livrables: formation.livrables } : {}),
     });
   }
 

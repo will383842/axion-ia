@@ -89,6 +89,22 @@ function toFormationInput(f: {
   // du moteur. `readContenuDetaille` est défensif (retourne null si absent/invalide).
   const contenuDetaille = readContenuDetaille(f.programmeDetaille);
 
+  // Fil rouge + livrables J0/J+7/J+30 — issus de la structure (objet programmeDetaille).
+  const structObj =
+    raw !== null && typeof raw === "object" && !Array.isArray(raw)
+      ? (raw as Record<string, unknown>)
+      : null;
+  const filRouge =
+    typeof structObj?.["fil_rouge"] === "string" ? (structObj["fil_rouge"] as string) : "";
+  const livrables = structObj
+    ? {
+        j0: jsonToStringArray(structObj["livrables_j0"]),
+        j1: jsonToStringArray(structObj["livrables_j1"]),
+        j30: jsonToStringArray(structObj["livrables_j30"]),
+      }
+    : { j0: [], j1: [], j30: [] };
+  const hasLivrables = livrables.j0.length + livrables.j1.length + livrables.j30.length > 0;
+
   return {
     titre: f.titre,
     dureeHeures: f.dureeHeures,
@@ -99,6 +115,8 @@ function toFormationInput(f: {
     moyensTechniques: f.moyensTechniques ? [f.moyensTechniques] : [],
     ressourcesPedagogiques: jsonToStringArray(f.ressourcesPedagogiques),
     ...(contenuDetaille ? { contenuDetaille } : {}),
+    ...(filRouge ? { filRouge } : {}),
+    ...(hasLivrables ? { livrables } : {}),
   };
 }
 
