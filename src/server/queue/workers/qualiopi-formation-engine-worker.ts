@@ -1014,7 +1014,7 @@ async function stepGenerateContent(
 
   // Contrôle qualité déterministe (best practices Qualiopi) — tracé + aide au
   // validateur humain. Non bloquant, mais un score « insuffisant » est loggué.
-  const qualite = evaluateContenuDetailleQuality(contenuDetaille);
+  const qualite = evaluateContenuDetailleQuality(contenuDetaille, formation.dureeHeures);
   if (qualite.verdict === "insuffisant") {
     console.warn(
       `[qualiopi:engine] formation=${formation.id} — qualité contenu ${qualite.score}/100 (${qualite.manques.length} manque(s)).`,

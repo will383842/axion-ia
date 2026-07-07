@@ -72,6 +72,18 @@ describe("content-quality", () => {
     expect(r.verdict).not.toBe("excellent");
   });
 
+  it("signale une incohérence horaire (contenu trop court pour la durée)", () => {
+    // contenu(3,4) = 4 séquences × 30 min = 120 min ; on vise 8h (480 min).
+    const r = evaluateContenuDetailleQuality(contenu(3, 4), 8);
+    expect(r.stats.totalMinutes).toBe(120);
+    expect(r.manques.some((m) => m.includes("Volume horaire"))).toBe(true);
+  });
+
+  it("pas d'alerte horaire si la durée n'est pas fournie", () => {
+    const r = evaluateContenuDetailleQuality(contenu(3, 4));
+    expect(r.manques.some((m) => m.includes("Volume horaire"))).toBe(false);
+  });
+
   it("verdict insuffisant + score 0 si aucun module", () => {
     const vide: ContenuDetaille = {
       version: CONTENU_DETAILLE_VERSION,

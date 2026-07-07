@@ -97,6 +97,37 @@ ${AI_ACT_NOTICE}
 Réponds UNIQUEMENT en JSON valide (pas de markdown autour).`;
 }
 
+/**
+ * Fourchette recommandée de modules selon la durée (≈ 1 module / 45-90 min),
+ * bornée à 12 (aligné sur MAX_MODULES_CONTENU du worker). Pure.
+ */
+export function recommendedModuleRange(dureeHeures: number): { min: number; max: number } {
+  const totalMin = Math.max(30, Math.round(dureeHeures * 60));
+  const min = Math.min(12, Math.max(2, Math.round(totalMin / 90)));
+  const max = Math.min(12, Math.max(min + 1, Math.round(totalMin / 45)));
+  return { min, max: Math.max(min, max) };
+}
+
+/**
+ * Bloc de consignes d'adaptation à la DURÉE : nombre de modules proportionnel,
+ * temps pratique effectif (ratio réel de la formation) et cohérence horaire
+ * (la somme des durées de modules doit couvrir la durée totale). Pure.
+ */
+export function buildDureeGuidance(dureeHeures: number, ratioPratiquePct?: number | null): string {
+  const totalMin = Math.round(dureeHeures * 60);
+  const { min, max } = recommendedModuleRange(dureeHeures);
+  const ratio = ratioPratiquePct != null && ratioPratiquePct > 0 ? ratioPratiquePct : 60;
+  const pratiqueMin = Math.round((totalMin * ratio) / 100);
+  return [
+    "CONSIGNES D'ADAPTATION À LA DURÉE (impératif — le plan doit REMPLIR la durée, ni plus ni moins) :",
+    `- Durée totale à couvrir : ${dureeHeures} h (${totalMin} minutes).`,
+    `- Découpe en ${min} à ${max} modules cohérents (progression du simple au complexe).`,
+    `- La SOMME des "dureeMinutes" de tous les modules doit être ≈ ${totalMin} minutes (tolérance ±10 %).`,
+    `- Au moins ${ratio} % du temps en activités pratiques, soit ≈ ${pratiqueMin} minutes (indicateur 9 RNQ).`,
+    `- Adapte la profondeur au format : une formation courte va à l'essentiel ; une formation longue approfondit et multiplie les mises en pratique.`,
+  ].join("\n");
+}
+
 /** User prompt structure — construit depuis un objet Formation ou équivalent. */
 export function buildStructureUserPrompt(formation: FormationLike): string {
   const titre = formation.titre ?? formation.titreFr ?? "Formation";
@@ -126,13 +157,23 @@ ${typeof programmeDetaille.persona === "string" ? programmeDetaille.persona : JS
       : "";
 
   const reglesModalite = reglesModalitePourPrompt(normaliserModalite(modalite));
+  const dureeGuidance = buildDureeGuidance(duree, formation.ratioPratiquePct);
+  const ratio =
+    formation.ratioPratiquePct != null && formation.ratioPratiquePct > 0
+      ? formation.ratioPratiquePct
+      : 60;
+  const niveauSection = formation.niveauExpertise
+    ? `\nNiveau visé : ${formation.niveauExpertise}`
+    : "";
 
   return `${personaSection}Génère un plan de formation structuré en JSON pour :
 
 Titre : ${titre}
 Durée totale : ${duree} heure(s)
-Modalité : ${modalite}
+Modalité : ${modalite}${niveauSection}
 Objectifs pédagogiques : ${objectifsStr}
+
+${dureeGuidance}
 
 CONSIGNES D'ADAPTATION À LA MODALITÉ (à respecter dans le choix des activités) :
 ${reglesModalite}
@@ -156,7 +197,7 @@ Format JSON attendu (champs additifs obligatoires : fil_rouge, livrables_j0, liv
       "evaluation": "description de l'évaluation ou null"
     }
   ],
-  "ratioPratiqueEstime": 0.65,
+  "ratioPratiqueEstime": ${(ratio / 100).toFixed(2)},
   "prerequisVerification": "description de la vérification des prérequis"
 }`;
 }

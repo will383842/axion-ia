@@ -36,6 +36,7 @@ export interface QualiteContenuResult {
     nbSequencesAvecExemple: number;
     nbModulesAvecQuiz: number;
     nbModulesAvecSynthese: number;
+    totalMinutes: number;
   };
 }
 
@@ -43,8 +44,14 @@ const RATIO_PRATIQUE_MIN = 0.6; // Qualiopi indicateur 9
 
 /**
  * Évalue la qualité pédagogique d'un contenu détaillé. Pur & déterministe.
+ *
+ * @param dureeHeuresCible - Durée cible de la formation (optionnelle) : si fournie,
+ *   vérifie que la somme des durées de séquences couvre bien la durée (±25 %).
  */
-export function evaluateContenuDetailleQuality(contenu: ContenuDetaille): QualiteContenuResult {
+export function evaluateContenuDetailleQuality(
+  contenu: ContenuDetaille,
+  dureeHeuresCible?: number,
+): QualiteContenuResult {
   const manques: string[] = [];
   const modules = contenu.modules;
   const nbModules = modules.length;
@@ -93,6 +100,21 @@ export function evaluateContenuDetailleQuality(contenu: ContenuDetaille): Qualit
     );
   }
 
+  // Cohérence horaire : la somme des durées de séquences doit couvrir la durée
+  // cible de la formation (±25 %). Signale une formation sous- ou sur-dimensionnée.
+  const totalMinutes = modules
+    .flatMap((m) => m.sequences)
+    .reduce((acc, s) => acc + (s.dureeMin || 0), 0);
+  if (dureeHeuresCible != null && dureeHeuresCible > 0 && totalMinutes > 0) {
+    const cibleMin = dureeHeuresCible * 60;
+    const ecart = Math.abs(totalMinutes - cibleMin) / cibleMin;
+    if (ecart > 0.25) {
+      manques.push(
+        `Volume horaire ${totalMinutes} min vs ${cibleMin} min attendus (écart ${(ecart * 100).toFixed(0)} %) : contenu ${totalMinutes < cibleMin ? "trop court" : "trop long"} pour la durée.`,
+      );
+    }
+  }
+
   // ── Scoring pondéré (somme = 100) ──
   const pct = (num: number, den: number): number => (den > 0 ? num / den : 0);
   let score = 0;
@@ -137,6 +159,7 @@ export function evaluateContenuDetailleQuality(contenu: ContenuDetaille): Qualit
       nbSequencesAvecExemple,
       nbModulesAvecQuiz,
       nbModulesAvecSynthese,
+      totalMinutes,
     },
   };
 }
