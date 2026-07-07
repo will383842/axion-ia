@@ -89,9 +89,10 @@ const DEFAULT_ITEMS: ReadonlyArray<ServiceGridItem> = SERVICES.map((s) => ({ ser
 
 /** Colonnes responsive par variante — LARGEUR centralisée ici, plus dans les pages. */
 const GRID_CLASS: Record<ServicesGridVariant, string> = {
-  // 5 activités : 1 col mobile → 2 tablette → 3 desktop (Will 2026-07-07 : cartes
-  // plus larges/lisibles, 3 par ligne, layout 3+2). Fond teinté par service.
-  showcase: "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3",
+  // 5 activités : 1 col mobile → 2 (sm) → 3 dès md=768px (Will 2026-07-07 : 3 par
+  // ligne visibles plus tôt, y compris écran réduit/zoom léger ; layout 3+2).
+  // Fond teinté par service.
+  showcase: "grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3",
   // 1 col mobile → 2 → 5 desktop (bandeau « inclus avec tous nos services »).
   compact: "xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-5",
   // 5 activités : 2 col mobile → 5 dès md (strip presse compacte).
