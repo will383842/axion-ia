@@ -138,23 +138,6 @@ export interface AuditDetailConfig {
   /** Phrase de réassurance sous le hero (durée · lieu · livrable). */
   heroMetaFr?: string;
   heroMetaEn?: string;
-  /** Déroulé heure par heure (TPE = la journée). Rendu en timeline détaillée. */
-  dayTimeline?: ReadonlyArray<{
-    time: string;
-    titleFr: string;
-    titleEn: string;
-    descFr: string;
-    descEn: string;
-  }>;
-  /** Eyebrow + titre de la section déroulé horaire. */
-  dayTimelineEyebrowFr?: string;
-  dayTimelineEyebrowEn?: string;
-  dayTimelineTitleFr?: string;
-  dayTimelineTitleEn?: string;
-  dayTimelineTitleEmFr?: string;
-  dayTimelineTitleEmEn?: string;
-  dayTimelineDescFr?: string;
-  dayTimelineDescEn?: string;
   /** Livrables concrets repartis à l'issue de l'audit. */
   deliverables?: ReadonlyArray<{
     titleFr: string;
@@ -734,90 +717,6 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
       "Small businesses of 1 to 19 staff",
       "Artisans, retailers, liberal professions",
       "Freelancers who want a clear direction",
-    ],
-    dayTimelineEyebrowFr: "Votre journée, heure par heure",
-    dayTimelineEyebrowEn: "Your day, hour by hour",
-    dayTimelineTitleFr: "Comment se déroule",
-    dayTimelineTitleEn: "How your",
-    dayTimelineTitleEmFr: "votre journée d'audit",
-    dayTimelineTitleEmEn: "audit day unfolds",
-    dayTimelineDescFr:
-      "Une journée complète sur site, structurée pour repartir le soir avec une vision claire — et le plan chiffré sous 48 h. Voici exactement ce qui se passe, de votre arrivée au café du matin jusqu'à la restitution.",
-    dayTimelineDescEn:
-      "A full day on site, structured so you leave in the evening with a clear vision — and the costed plan within 48 h. Here is exactly what happens, from the morning coffee to the read-out.",
-    dayTimeline: [
-      {
-        time: "9 h 00",
-        titleFr: "Café & cadrage",
-        titleEn: "Coffee & framing",
-        descFr:
-          "On démarre ensemble autour d'un café : vos objectifs, vos irritants du quotidien, ce qui vous fait perdre du temps. On aligne les priorités de la journée en 30 minutes.",
-        descEn:
-          "We start together over a coffee: your goals, your daily pain points, what wastes your time. We align the day's priorities in 30 minutes.",
-      },
-      {
-        time: "9 h 30",
-        titleFr: "Immersion terrain",
-        titleEn: "Field immersion",
-        descFr:
-          "On vous observe travailler, vous et votre équipe. On note les tâches répétitives, les ressaisies, les allers-retours par mail — tout ce qui peut être automatisé ou augmenté par l'IA.",
-        descEn:
-          "We watch you and your team work. We note repetitive tasks, re-keying, email back-and-forth — everything AI can automate or augment.",
-      },
-      {
-        time: "11 h 00",
-        titleFr: "Cartographie des usages",
-        titleEn: "Use-case mapping",
-        descFr:
-          "On cartographie l'ensemble de votre activité fonction par fonction (devis, relances, compta, support, marketing…) et on repère où l'IA crée le plus de valeur chez vous.",
-        descEn:
-          "We map your whole activity function by function (quotes, follow-ups, accounting, support, marketing…) and pinpoint where AI creates the most value for you.",
-      },
-      {
-        time: "12 h 30",
-        titleFr: "Déjeuner (on continue d'échanger)",
-        titleEn: "Lunch (we keep talking)",
-        descFr:
-          "Pause déjeuner conviviale — souvent le moment où les vraies questions sortent. On répond à tout, sans jargon.",
-        descEn:
-          "A friendly lunch break — often when the real questions come out. We answer everything, no jargon.",
-      },
-      {
-        time: "14 h 00",
-        titleFr: "Démos live sur vos vrais cas",
-        titleEn: "Live demos on your real cases",
-        descFr:
-          "Le cœur de la journée : on teste l'IA en direct sur 2 à 3 cas réels de votre quotidien. Vous voyez le résultat de vos yeux, vous repartez avec des prompts testés et prêts à réutiliser.",
-        descEn:
-          "The heart of the day: we test AI live on 2-3 real cases from your daily work. You see the result with your own eyes and leave with tested, ready-to-reuse prompts.",
-      },
-      {
-        time: "16 h 00",
-        titleFr: "Priorisation & quick-wins",
-        titleEn: "Prioritisation & quick-wins",
-        descFr:
-          "On classe les opportunités par impact et facilité. On identifie ensemble 3 à 5 quick-wins activables tout de suite, sans tout bouleverser.",
-        descEn:
-          "We rank opportunities by impact and ease. Together we identify 3 to 5 quick-wins you can activate right away, without disruption.",
-      },
-      {
-        time: "16 h 45",
-        titleFr: "Restitution à chaud",
-        titleEn: "Hot read-out",
-        descFr:
-          "On vous résume ce qu'on a vu, ce qu'on recommande, et les prochaines étapes. Vous finissez la journée avec une vision claire — pas un rapport théorique.",
-        descEn:
-          "We sum up what we saw, what we recommend, and the next steps. You end the day with a clear vision — not a theoretical report.",
-      },
-      {
-        time: "Sous 48 h",
-        titleFr: "Votre plan d'action chiffré",
-        titleEn: "Your costed action plan",
-        descFr:
-          "On vous envoie le livrable : rapport de 8 à 15 pages avec outils recommandés, prompts testés, quick-wins priorisés et estimation du gain horaire mensuel. Directement actionnable.",
-        descEn:
-          "We send you the deliverable: an 8-15 page report with recommended tools, tested prompts, prioritised quick-wins and a monthly hourly-gain estimate. Directly actionable.",
-      },
     ],
     deliverables: [
       {
