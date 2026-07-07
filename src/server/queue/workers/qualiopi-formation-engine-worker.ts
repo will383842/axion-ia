@@ -963,10 +963,10 @@ async function stepGenerateContent(
 
   const modulesContenu: ModuleContenu[] = [];
   let modeleUtilise = "";
-  for (const module of modules) {
+  for (const mod of modules) {
     const result = await generateModuleContent(
       formation,
-      module,
+      mod,
       promptVersion,
       passesCourantes,
       grounding,

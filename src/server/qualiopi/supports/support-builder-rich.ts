@@ -15,12 +15,7 @@
  *    grille_eval). Les supports stagiaire ne les exposent jamais.
  */
 
-import type {
-  ContenuDetaille,
-  ModuleContenu,
-  SequenceContenu,
-  QuizItem,
-} from "../engine/content-schema";
+import type { ContenuDetaille, SequenceContenu, QuizItem } from "../engine/content-schema";
 import {
   normaliserModalite,
   rappelAnimationModalite,
