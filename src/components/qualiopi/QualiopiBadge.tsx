@@ -5,11 +5,13 @@ import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-menti
 interface QualiopiBadgeProps {
   className?: string;
   /**
-   * `card` (défaut) — bloc complet logo + mention + n° (footer, institutionnel).
+   * `card` (défaut) — bloc complet logo + mention (institutionnel, page /avis).
    * `inline` — pastille compacte texte seul (zéro image → Web Vitals safe) pour
    * les pages stratégiques (fiches formations, tarifs, home).
+   * `logo` — logo officiel seul, sans texte à côté (footer). ⚠️ décision Will :
+   * s'écarte de la règle d'usage « logo + mention obligatoire ».
    */
-  variant?: "card" | "inline";
+  variant?: "card" | "inline" | "logo";
 }
 
 /**
@@ -69,6 +71,33 @@ export async function QualiopiBadge({ className, variant = "card" }: QualiopiBad
           <path d="m9 12 2 2 4-4" />
         </svg>
         {label}
+      </span>
+    );
+  }
+
+  if (variant === "logo") {
+    // Logo officiel seul (footer) — aucun texte de mention à côté (décision Will).
+    return identity.logoPath ? (
+      // eslint-disable-next-line @next/next/no-img-element -- logo officiel Qualiopi : aucune modification graphique ni ré-encodage autorisés (règle d'usage de la marque), donc <img> brut et non next/image.
+      <img
+        src={identity.logoPath}
+        alt={
+          isFr ? "Logo Qualiopi — certification qualité" : "Qualiopi logo — quality certification"
+        }
+        width={84}
+        height={84}
+        loading="lazy"
+        decoding="async"
+        title={title}
+        className={`h-auto w-[84px] ${className ?? ""}`.trim()}
+      />
+    ) : (
+      <span
+        aria-hidden="true"
+        title={title}
+        className={`bg-sage-soft text-sage inline-flex h-11 items-center rounded-sm px-2.5 text-xs font-semibold tracking-wide uppercase ${className ?? ""}`.trim()}
+      >
+        Qualiopi
       </span>
     );
   }

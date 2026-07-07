@@ -171,10 +171,11 @@ export async function Footer() {
             <div className="mt-6">
               <SocialLinks />
             </div>
-            {/* Badge officiel Qualiopi — rendu uniquement en Phase B
-                (OF_PUBLIC_DISCLOSURE_ENABLED + certificat renseigné), sinon null.
-                Communication générale autorisée (jamais sur les PDF/attestations). */}
-            <QualiopiBadge className="mt-6 lg:max-w-[15rem]" />
+            {/* Logo officiel Qualiopi seul (sans texte) — rendu uniquement en
+                Phase B (OF_PUBLIC_DISCLOSURE_ENABLED + certificat renseigné),
+                sinon null. Communication générale autorisée (jamais sur les
+                PDF/attestations). */}
+            <QualiopiBadge variant="logo" className="mt-6" />
             {/* Liens réassurance OF — Phase B uniquement (pages gatées, sinon 404). */}
             {ofPublic ? (
               <ul className="mt-3 flex flex-col">
