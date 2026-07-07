@@ -1,53 +1,56 @@
-// Composant template — pages détail Audit (Flash, Ciblé, Stratégique PME,
-// Stratégique ETI). Sprint 14.10.8 (Will 2026-05-12).
+// Server Component — fiche détail d'UN niveau d'audit (Flash / Ciblé /
+// Stratégique PME / Stratégique ETI). Refonte 2026-07-07 (Will) : alignement
+// STRICT sur le template `FormationDetailPage` (pages /formations/[slug]).
+//   - HÉRO 2 colonnes + CARTE INFOS-CLÉS sticky (prix « à partir de » + durée +
+//     format + public + livrable + CTA).
+//   - PAS d'horaires détaillés, PAS de timeline heure par heure (demande Will).
+//   - Programme rendu en cartes par phase (sans horaires), résultats, modalités
+//     à icônes, secteurs, tarif par sous-tier, FAQ accordéon, villes, maillage.
 //
-// Pattern miroir d'`InterventionDetailPage` pour cohérence visuelle parfaite
-// entre /audit/* et /interventions/*. Réutilise les sous-composants partagés
-// `intervention-parts/` (Schedule, BenefitsGrid, FaqList) pour zéro duplication.
-//
-// Spécificité Audit : un bloc « Choisissez votre format » liste les sous-tiers
-// du tier (cartes cliquables), chacune avec son CTA :
-//   - ctaType="calendar" → réservation d'un appel sur /appel (Flash sur site 890 €)
-//   - ctaType="contact"  → /audit/demande?objet=<subTierId>
-//   - ctaType="quote"    → /audit/demande?objet=<subTierId> (sur devis)
+// Contenu 100 % dérivé du SSOT `audit-detail-configs.ts` + `pricing.ts`. Aucun
+// prix en dur. Le rythme de sections et la grammaire visuelle reproduisent
+// `FormationDetailPage` pour une harmonie parfaite entre /audit/* et
+// /formations/*.
 
 import type { ReactNode } from "react";
 import Image from "next/image";
 import {
   ArrowRight,
-  ArrowUpRight,
   Calendar,
-  FileText,
-  Mail,
-  Check,
   Clock,
-  Package,
+  FileText,
+  GraduationCap,
+  Mail,
+  MapPin,
+  ShieldCheck,
+  Sparkles,
+  Users,
 } from "lucide-react";
+
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
-import { CtaBlock } from "@/components/sections/CtaBlock";
-import { ContactBand } from "@/components/sections/ContactBand";
-import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
-import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
-import { InterventionBenefitsGrid } from "@/components/sections/intervention-parts/InterventionBenefitsGrid";
-import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
+import { ContactBand } from "@/components/sections/ContactBand";
+import { CtaBlock } from "@/components/sections/CtaBlock";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
+import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { type AuditTier, getAuditTierMeta } from "@/content/audit-taxonomy";
+import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { CLIENT_SECTORS } from "@/content/sectors";
+import { getVillesIndexableNow } from "@/content/villes";
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 
 interface Props {
   tier: AuditTier;
   locale: Locale;
 }
-
-const TIGHT_X = "lg:px-6 xl:px-10";
 
 /** Ordre canonique des 4 tiers audit — pour le maillage « autres niveaux ». */
 const ALL_AUDIT_TIERS: ReadonlyArray<AuditTier> = [
@@ -61,59 +64,96 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
   const isFr = locale === "fr";
   const config = AUDIT_DETAIL_CONFIGS[tier];
   const meta = getAuditTierMeta(tier);
+  const path = locale === "fr" ? meta.pathFr : meta.pathEn;
+  const info = config.infoCard;
 
-  const breadcrumbItems = [
-    { href: "/audit", label: isFr ? "Audit" : "Audit" },
-    {
-      href: locale === "fr" ? meta.pathFr : meta.pathEn,
-      label: isFr ? meta.labelFr : meta.labelEn,
-    },
-  ];
+  // ── Prix d'entrée (SSOT pricing.ts) — priceFlat (fixe) ou priceMin (range) ──
+  const tierPricing = getTierById(AUDIT_TIERS, tier);
+  const entryValue = tierPricing.priceFlat ?? tierPricing.priceMin ?? null;
+  const priceValue =
+    entryValue != null
+      ? formatAmount(entryValue, isFr ? "fr" : "en")
+      : isFr
+        ? "Sur devis"
+        : "On request";
 
-  // CTA hero : si tier a un slot calendrier (Flash), CTA "Pré-réserver"
-  // pointe vers le sous-tier featured (Flash terrain 890 €). Sinon, CTA
-  // "Demander un cadrage" pointe vers /audit/demande pré-rempli.
+  // ── CTA héro : réservation calendrier (Flash) ou cadrage par formulaire ────
   const featuredSubTier = config.subTiers.find((s) => s.isFeatured) ?? config.subTiers[0]!;
   const heroCtaHref =
     featuredSubTier.ctaType === "calendar"
       ? "/appel"
       : `/audit/demande?objet=${encodeURIComponent(featuredSubTier.contactObject ?? tier)}`;
+  const heroCtaIsCalendar = featuredSubTier.ctaType === "calendar";
 
-  // JSON-LD — Service (factory centralisée auto-injecte areasServed +
-  // dateModified) + FAQPage (factory auto-injecte Speakable).
+  const breadcrumbItems = [
+    { href: "/audit", label: isFr ? "Audit IA" : "AI audit" },
+    { href: path, label: isFr ? config.titleFr : config.titleEn },
+  ];
+
+  // ── Carte infos-clés (héro) — tout depuis le SSOT ──────────────────────────
+  const factRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
+    {
+      icon: Clock,
+      label: isFr ? "Durée" : "Duration",
+      value: isFr ? info.durationFr : info.durationEn,
+    },
+    {
+      icon: MapPin,
+      label: "Format",
+      value: isFr ? info.formatFr : info.formatEn,
+    },
+    {
+      icon: Users,
+      label: isFr ? "Pour qui" : "Who for",
+      value: isFr ? info.audienceFr : info.audienceEn,
+    },
+    {
+      icon: FileText,
+      label: isFr ? "Livrable" : "Deliverable",
+      value: isFr ? info.deliverableFr : info.deliverableEn,
+    },
+  ];
+
+  // Section Modalités — mêmes faits + intervenant + confidentialité (parité formation).
+  const modalitesRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
+    ...factRows,
+    {
+      icon: GraduationCap,
+      label: isFr ? "Intervenant" : "Consultant",
+      value: isFr ? "Un expert IA Axion-IA" : "An Axion-IA AI expert",
+    },
+    {
+      icon: ShieldCheck,
+      label: isFr ? "Confidentialité" : "Confidentiality",
+      value: isFr
+        ? "RGPD · données non utilisées pour entraîner les modèles"
+        : "GDPR · data never used to train models",
+    },
+  ];
+
+  // ── JSON-LD — Service + FAQPage + HowTo (dérivé des phases, pas d'horaires) ──
   const serviceJsonLd = buildServiceJsonLd({
     locale,
-    path: locale === "fr" ? meta.pathFr : meta.pathEn,
+    path,
     name: `${isFr ? config.titleFr : config.titleEn} · Axion-IA`,
     description: isFr ? config.promiseFr : config.promiseEn,
     serviceType: "AI audit",
   });
-
   const faqJsonLd = buildFaqJsonLd({
     items: config.faq.map((f) => ({
       question: isFr ? f.qFr : f.qEn,
       answer: isFr ? f.aFr : f.aEn,
     })),
   });
-
-  // HowTo JSON-LD — signal AEO « comment se déroule cet audit » dérivé du
-  // déroulé horaire (dayTimeline détaillé pour le Flash, sinon programme
-  // synthétique). Distinct par tier → pas de duplicate. Aligne /audit/* sur le
-  // standard /implementation.
-  const howToSteps = config.dayTimeline
-    ? config.dayTimeline.map((s) => ({
-        name: isFr ? s.titleFr : s.titleEn,
-        text: isFr ? s.descFr : s.descEn,
-      }))
-    : config.schedule.map((s) => ({
-        name: isFr ? s.titleFr : s.titleEn,
-        text: (isFr ? s.descriptionFr : s.descriptionEn) ?? (isFr ? s.titleFr : s.titleEn),
-      }));
+  const howToSteps = config.schedule.map((s) => ({
+    name: isFr ? s.titleFr : s.titleEn,
+    text: (isFr ? s.descriptionFr : s.descriptionEn) ?? (isFr ? s.titleFr : s.titleEn),
+  }));
   const howToJsonLd =
     howToSteps.length > 0
       ? buildHowToJsonLd({
           locale,
-          path: locale === "fr" ? meta.pathFr : meta.pathEn,
+          path,
           name: isFr
             ? `Comment se déroule ${config.titleFr.toLowerCase()}`
             : `How ${config.titleEn.toLowerCase()} unfolds`,
@@ -122,26 +162,19 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         })
       : null;
 
-  // Maillage interne — 3 autres niveaux d'audit + cross-link implémentation
-  // (funnel aval). Parité avec les SubPageExtras des autres verticales.
-  const relatedCards = [
-    ...ALL_AUDIT_TIERS.filter((t) => t !== tier).map((t) => {
-      const m = getAuditTierMeta(t);
-      const c = AUDIT_DETAIL_CONFIGS[t];
-      return {
-        href: locale === "fr" ? m.pathFr : m.pathEn,
-        label: isFr ? m.labelFr : m.labelEn,
-        description: isFr ? c.promiseFr : c.promiseEn,
-      };
-    }),
-    {
-      href: "/implementation",
-      label: isFr ? "Passer à l'implémentation IA" : "Move to AI implementation",
-      description: isFr
-        ? "Une fois l'audit cadré, déployer concrètement les cas d'usage priorisés."
-        : "Once the audit is framed, concretely deploy the prioritised use cases.",
-    },
-  ];
+  // Autres niveaux d'audit (maillage) — 3 tiers restants.
+  const siblings = ALL_AUDIT_TIERS.filter((t) => t !== tier).map((t) => {
+    const m = getAuditTierMeta(t);
+    const c = AUDIT_DETAIL_CONFIGS[t];
+    return {
+      href: locale === "fr" ? m.pathFr : m.pathEn,
+      label: isFr ? c.titleFr : c.titleEn,
+      em: isFr ? c.titleEmFr : c.titleEmEn,
+      description: isFr ? c.promiseFr : c.promiseEn,
+    };
+  });
+
+  const villes = getVillesIndexableNow().slice(0, 48);
 
   return (
     <>
@@ -149,27 +182,20 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO — 2 colonnes (texte + visuel) quand une image est fournie, sinon
-          colonne unique. Refonte 2026-05-31 (Will) : ratio texte/image soigné. */}
-      <section className="bg-halo-warm relative overflow-hidden py-12 sm:py-16 lg:py-20">
-        <Container className={cn("relative", TIGHT_X)}>
-          <div
-            className={cn(
-              config.heroImage
-                ? "grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14"
-                : "max-w-3xl",
-            )}
-          >
-            <div className={config.heroImage ? "max-w-2xl" : "max-w-3xl"}>
+      {/* ── HÉRO — contenu (gauche) + CARTE INFOS-CLÉS (droite) ──────────── */}
+      <section className="bg-halo-warm relative overflow-hidden py-12 md:py-16 lg:py-20">
+        <Container className="relative">
+          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+            <div className="max-w-2xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
                 {isFr ? "Audit IA" : "AI audit"}
+                {` · ${isFr ? info.durationFr : info.durationEn}`}
               </p>
-
-              <h1 className="display-editorial text-fg mt-5">
+              <h1 className="display-editorial text-fg mt-4">
                 {isFr ? config.titleFr : config.titleEn}{" "}
                 <span
                   className="text-terracotta-deep mx-2 italic"
@@ -178,19 +204,10 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
                   {isFr ? config.titleEmFr : config.titleEmEn}
                 </span>
               </h1>
-
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+              <p className="text-fg-soft mt-6 text-lg leading-relaxed md:text-xl" data-speakable>
                 {isFr ? config.promiseFr : config.promiseEn}
               </p>
-
-              {(isFr ? config.heroMetaFr : config.heroMetaEn) ? (
-                <p className="text-terracotta-deep mt-5 flex items-center gap-2 text-[14px] font-semibold">
-                  <Clock aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2.25} />
-                  {isFr ? config.heroMetaFr : config.heroMetaEn}
-                </p>
-              ) : null}
-
-              <ul className="mt-5 flex flex-wrap gap-2">
+              <ul className="mt-6 flex flex-wrap gap-2">
                 {(isFr ? config.chipsFr : config.chipsEn).map((chip) => (
                   <li
                     key={chip}
@@ -201,213 +218,358 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
                   </li>
                 ))}
               </ul>
-
-              <div className="mt-8 flex flex-wrap items-center gap-4">
+              <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Cta
                   href={heroCtaHref}
                   size="lg"
                   className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
                 >
-                  {featuredSubTier.ctaType === "calendar" ? (
+                  {heroCtaIsCalendar ? (
                     <Calendar aria-hidden="true" className="h-4 w-4" />
                   ) : (
                     <Mail aria-hidden="true" className="h-4 w-4" />
                   )}
                   {isFr ? config.ctaPrimaryLabelFr : config.ctaPrimaryLabelEn}
                 </Cta>
-                <Cta href="/audit" variant="outline" size="lg">
-                  {isFr ? "← Voir les 4 niveaux d'audit" : "← See the 4 audit levels"}
+                <Cta href="/contact" variant="outline" size="lg">
+                  {isFr ? "Nous écrire" : "Write to us"}
                 </Cta>
+                <span className="text-fg-muted text-[12px]">
+                  {isFr ? "Renseignements sans engagement" : "Enquiries, no commitment"}
+                </span>
               </div>
             </div>
 
-            {config.heroImage ? (
-              <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border lg:aspect-[5/4]">
-                <Image
-                  src={config.heroImage.src}
-                  alt={isFr ? config.heroImage.altFr : config.heroImage.altEn}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 92vw, 520px"
-                  className="object-cover"
-                />
+            {/* CARTE INFOS-CLÉS */}
+            <aside className="border-terracotta/25 bg-canvas shadow-card rounded-3xl border-2 p-6 lg:sticky lg:top-24 lg:mt-8 lg:p-7">
+              <div className="border-border border-b pb-5">
+                <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+                  {isFr ? "À partir de" : "From"}
+                </p>
+                <p
+                  className="text-terracotta mt-1 text-[2.5rem] leading-none font-medium tabular-nums"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {priceValue}
+                </p>
+                <p className="text-fg-muted mt-2 text-[13px]">
+                  {isFr ? info.scopeFr : info.scopeEn}
+                </p>
               </div>
-            ) : null}
+              <dl className="divide-border flex flex-col divide-y">
+                {factRows.map((row) => (
+                  <div key={row.label} className="flex items-start gap-3 py-3">
+                    <span className="bg-terracotta/10 text-terracotta mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+                      <row.icon aria-hidden="true" className="h-4 w-4" />
+                    </span>
+                    <div className="flex min-w-0 flex-col">
+                      <dt className="text-fg-muted text-[11.5px] font-semibold tracking-wide uppercase">
+                        {row.label}
+                      </dt>
+                      <dd className="text-fg text-[14px] leading-snug font-medium">{row.value}</dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-5">
+                <Cta
+                  href={heroCtaHref}
+                  size="lg"
+                  className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta w-full justify-center"
+                >
+                  {heroCtaIsCalendar ? (
+                    <Calendar aria-hidden="true" className="h-4 w-4" />
+                  ) : (
+                    <Mail aria-hidden="true" className="h-4 w-4" />
+                  )}
+                  {isFr ? config.ctaPrimaryLabelFr : config.ctaPrimaryLabelEn}
+                </Cta>
+              </div>
+            </aside>
           </div>
         </Container>
       </section>
 
-      {/* POUR QUI — 3 profils servis (optionnel). */}
-      {(isFr ? config.forWhomFr : config.forWhomEn) ? (
-        <section className="bg-paper border-border border-b py-8">
-          <Container className={TIGHT_X}>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-              <p className="text-fg-muted shrink-0 text-[12px] font-bold tracking-[0.16em] uppercase">
-                {isFr ? "Pour qui ?" : "Who for?"}
-              </p>
-              <ul className="flex flex-wrap gap-x-6 gap-y-2">
-                {(isFr ? config.forWhomFr! : config.forWhomEn!).map((who) => (
-                  <li key={who} className="text-fg flex items-center gap-2 text-[14px] font-medium">
-                    <Check
-                      aria-hidden="true"
-                      className="text-terracotta-deep h-4 w-4 shrink-0"
-                      strokeWidth={2.5}
-                    />
-                    {who}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Container>
-        </section>
+      {/* ── PREUVE SOCIALE (logos) ───────────────────────────────────────── */}
+      <ClientLogosMarqueeBand isFr={isFr} />
+
+      {/* ── IMAGE IMMERSIVE (si fournie) ─────────────────────────────────── */}
+      {config.heroImage ? (
+        <Container className="py-10 md:py-12">
+          <div className="border-border shadow-card relative aspect-[21/9] overflow-hidden rounded-3xl border">
+            <Image
+              src={config.heroImage.src}
+              alt={isFr ? config.heroImage.altFr : config.heroImage.altEn}
+              fill
+              sizes="(max-width: 1024px) 92vw, 1100px"
+              loading="lazy"
+              className="object-cover"
+            />
+          </div>
+        </Container>
       ) : null}
 
-      {/* SOUS-TIERS — Choisissez votre format (cartes cliquables).
-          tone sand pour casser avec hero halo-warm sans dupliquer le paper
-          du Programme qui suit. Rythme final : warm → sand → paper → default
-          → sand → dark (parité avec InterventionDetailPage). */}
+      {/* ── PROGRAMME (SANS horaires) — cartes par phase ─────────────────── */}
       <Section
         tone="sand"
-        eyebrow={isFr ? "Choisissez votre format" : "Choose your format"}
-        title={isFr ? "Formats" : "Available"}
-        titleEm={isFr ? "disponibles" : "formats"}
-        description={
-          isFr
-            ? "Chaque format correspond à un contexte précis. Cliquez sur le format qui colle à votre situation pour démarrer."
-            : "Each format addresses a specific context. Click the format that matches your situation to start."
-        }
-        contentClassName={TIGHT_X}
+        eyebrow={isFr ? config.scheduleEyebrowFr : config.scheduleEyebrowEn}
+        title={isFr ? "Le déroulé" : "How"}
+        titleEm={isFr ? "de la mission" : "it unfolds"}
+        description={isFr ? config.scheduleDescriptionFr : config.scheduleDescriptionEn}
       >
         <div
           className={cn(
-            "grid gap-6 lg:gap-7",
-            config.subTiers.length === 2 && "lg:grid-cols-2",
-            config.subTiers.length === 3 && "lg:grid-cols-3",
-            config.subTiers.length === 1 && "mx-auto max-w-2xl",
+            "mx-auto grid max-w-5xl gap-5",
+            config.schedule.length >= 3 ? "md:grid-cols-3" : "md:grid-cols-2",
           )}
         >
-          {config.subTiers.map((sub) => {
-            const href =
-              sub.ctaType === "calendar"
-                ? "/appel"
-                : `/audit/demande?objet=${encodeURIComponent(sub.contactObject ?? sub.subTierId)}`;
-            const Icon =
-              sub.ctaType === "calendar" ? Calendar : sub.ctaType === "quote" ? FileText : Mail;
-            const ctaLabel = isFr
-              ? sub.ctaType === "calendar"
-                ? "Réserver un appel"
-                : sub.ctaType === "quote"
-                  ? "Demander un cadrage"
-                  : "Pré-réserver cette mission"
-              : sub.ctaType === "calendar"
-                ? "Book a call"
-                : sub.ctaType === "quote"
-                  ? "Request framing"
-                  : "Pre-book this mission";
-            return (
-              <article
-                key={sub.subTierId}
-                className={cn(
-                  "bg-paper border-border shadow-subtle relative flex flex-col rounded-3xl border p-6 sm:p-7",
-                  sub.isFeatured && "ring-terracotta ring-2 ring-offset-2",
-                )}
-              >
-                {sub.isFeatured ? (
-                  <span className="bg-terracotta text-mocha-fg absolute -top-3 right-6 rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase shadow-sm">
-                    {isFr ? "Recommandé" : "Featured"}
-                  </span>
-                ) : null}
-                <h3 className="text-fg text-xl leading-tight font-semibold">
-                  {isFr ? sub.labelFr : sub.labelEn}
-                </h3>
-                <p className="text-fg-muted mt-1 text-[13px]">{isFr ? sub.rangeFr : sub.rangeEn}</p>
-                <div className="mt-4 flex items-baseline gap-2">
-                  <span className="text-terracotta-deep text-3xl font-bold tracking-tight tabular-nums">
-                    {isFr ? sub.priceLabelFr : sub.priceLabelEn}
-                  </span>
-                </div>
-                <p className="text-fg-soft mt-4 flex-1 text-[14.5px] leading-relaxed">
-                  {isFr ? sub.bodyFr : sub.bodyEn}
+          {config.schedule.map((phase, idx) => (
+            <div
+              key={idx}
+              className="border-border bg-bg shadow-card flex flex-col gap-3 rounded-2xl border p-6"
+            >
+              <p className="text-terracotta-deep text-[13px] font-bold tracking-[0.12em] uppercase">
+                {phase.time}
+              </p>
+              <p className="text-fg text-[15px] leading-snug font-semibold">
+                {isFr ? phase.titleFr : phase.titleEn}
+              </p>
+              {(isFr ? phase.descriptionFr : phase.descriptionEn) ? (
+                <p className="text-fg-soft text-sm leading-relaxed">
+                  {isFr ? phase.descriptionFr : phase.descriptionEn}
                 </p>
-                <div className="mt-6">
-                  <Cta
-                    href={href}
-                    size="lg"
-                    className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta w-full justify-center"
-                  >
-                    <Icon aria-hidden="true" className="h-4 w-4" />
-                    {ctaLabel}
-                  </Cta>
-                </div>
-              </article>
-            );
-          })}
+              ) : null}
+            </div>
+          ))}
         </div>
       </Section>
 
-      {/* DÉROULÉ HORAIRE DÉTAILLÉ (TPE = la journée) — rendu en 2 colonnes
-          (timeline à gauche, visuel sticky à droite) quand `dayTimeline` est
-          fourni. Sinon, on retombe sur le programme synthétique historique. */}
-      {config.dayTimeline ? (
-        <Section
-          tone="paper"
-          eyebrow={(isFr ? config.dayTimelineEyebrowFr : config.dayTimelineEyebrowEn) ?? ""}
-          title={(isFr ? config.dayTimelineTitleFr : config.dayTimelineTitleEn) ?? ""}
-          titleEm={(isFr ? config.dayTimelineTitleEmFr : config.dayTimelineTitleEmEn) ?? ""}
-          description={(isFr ? config.dayTimelineDescFr : config.dayTimelineDescEn) ?? ""}
-          contentClassName={TIGHT_X}
-        >
-          <ol className="border-border relative space-y-0 border-l-2 pl-0">
-            {config.dayTimeline.map((step, idx) => (
-              <li key={idx} className="relative pb-9 pl-8 last:pb-0">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta text-mocha-fg border-paper absolute top-0 -left-[15px] flex h-7 w-7 items-center justify-center rounded-full border-2 text-[10px] font-bold tabular-nums"
-                >
-                  {idx + 1}
-                </span>
-                <span className="text-terracotta-deep text-[12.5px] font-bold tracking-wide uppercase">
-                  {step.time}
-                </span>
-                <h3 className="text-fg mt-1 text-lg leading-snug font-semibold">
-                  {isFr ? step.titleFr : step.titleEn}
-                </h3>
-                <p className="text-fg-soft mt-1.5 max-w-2xl text-[14.5px] leading-relaxed">
-                  {isFr ? step.descFr : step.descEn}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </Section>
-      ) : (
-        <Section
-          tone="paper"
-          eyebrow={isFr ? config.scheduleEyebrowFr : config.scheduleEyebrowEn}
-          title={isFr ? "Comment" : "How"}
-          titleEm={isFr ? "ça se passe" : "it works"}
-          description={isFr ? config.scheduleDescriptionFr : config.scheduleDescriptionEn}
-          contentClassName={TIGHT_X}
-        >
-          <InterventionSchedule items={config.schedule} isFr={isFr} hideTravelNote />
-        </Section>
-      )}
-
-      {/* 4 BÉNÉFICES */}
+      {/* ── RÉSULTATS & BÉNÉFICES — cartes à icônes ──────────────────────── */}
       <Section
         eyebrow={isFr ? "Ce que vous obtenez" : "What you get"}
-        title={isFr ? "4 bénéfices" : "4 benefits"}
-        titleEm={isFr ? "concrets et chiffrés" : "concrete and quantified"}
+        title={isFr ? "Des résultats concrets" : "Concrete results"}
+        titleEm={isFr ? "et chiffrés" : "and quantified"}
         description={
           isFr
-            ? "À l'issue de l'audit, voici ce que vous emportez — quel que soit le sous-tier choisi."
-            : "By the end of the audit, here's what you take away — whichever sub-tier you chose."
+            ? "À l'issue de l'audit, voici ce que vous emportez — quel que soit le format choisi."
+            : "By the end of the audit, here's what you take away — whichever format you chose."
         }
-        contentClassName={TIGHT_X}
       >
-        <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
+        <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl list-none gap-4 p-0 lg:grid-cols-4">
+          {config.benefits.map((b) => (
+            <li
+              key={b.titleFr}
+              className="border-border bg-bg shadow-card flex flex-col gap-3 rounded-2xl border p-6"
+            >
+              <span className="bg-terracotta text-mocha-fg shadow-cta-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                <b.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <h3 className="text-fg text-[15px] leading-snug font-bold tracking-tight">
+                {isFr ? b.titleFr : b.titleEn}
+              </h3>
+              <p className="text-fg-soft text-[13.5px] leading-relaxed">
+                {isFr ? b.bodyFr : b.bodyEn}
+              </p>
+            </li>
+          ))}
+        </ul>
       </Section>
 
-      {/* BANDEAU CONTACT — orientation (parité pages-intention). */}
+      {/* ── MODALITÉS — cartes à icônes ──────────────────────────────────── */}
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Modalités" : "Practical info"}
+        title={isFr ? "Toutes les informations" : "All the"}
+        titleEm={isFr ? "pratiques" : "practical details"}
+      >
+        <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {modalitesRows.map((row) => (
+            <div
+              key={row.label}
+              className="border-border bg-bg shadow-card hover:shadow-elevated group flex flex-col gap-3 rounded-2xl border p-5 transition hover:-translate-y-1"
+            >
+              <span className="bg-terracotta text-mocha-fg shadow-cta-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl transition group-hover:scale-110">
+                <row.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <dt className="text-terracotta-deep text-[11.5px] font-bold tracking-[0.1em] uppercase">
+                {row.label}
+              </dt>
+              <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {/* ── SECTEURS D'ACTIVITÉ ──────────────────────────────────────────── */}
+      <Section
+        tone="sand"
+        eyebrow={isFr ? "Tous secteurs" : "All sectors"}
+        title={isFr ? "Adapté à" : "Tailored to"}
+        titleEm={isFr ? "votre secteur" : "your sector"}
+        description={
+          isFr
+            ? "L'analyse et les recommandations sont ajustées à votre domaine d'activité et à vos métiers."
+            : "The analysis and recommendations are adjusted to your field and your roles."
+        }
+      >
+        <ul className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
+          {CLIENT_SECTORS.map((s) => (
+            <li key={s.slug}>
+              <Link
+                href={`/secteurs/${s.slug}` as never}
+                className="shadow-subtle hover:shadow-elevated group bg-canvas flex h-full flex-col overflow-hidden rounded-2xl transition hover:-translate-y-0.5"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={`/illustrations/secteurs/${s.slug}.avif`}
+                    alt={
+                      isFr
+                        ? `Audit IA « ${config.titleFr} » pour ${s.fullFr} — Axion-IA`
+                        : `AI audit "${config.titleEn}" for ${s.fullFr} — Axion-IA`
+                    }
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, (min-width: 479px) 50vw, 100vw"
+                    loading="lazy"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="bg-canvas/90 shadow-subtle absolute top-2.5 left-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg text-base"
+                  >
+                    {s.emoji}
+                  </span>
+                </div>
+                <div className="flex flex-1 items-center justify-between gap-2 p-4">
+                  <span className="text-fg text-sm font-semibold tracking-tight">{s.labelFr}</span>
+                  <ArrowRight aria-hidden="true" className="text-terracotta h-4 w-4 shrink-0" />
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* ── TARIF (sous-tiers) ───────────────────────────────────────────── */}
+      <Section
+        eyebrow={isFr ? "Tarif" : "Pricing"}
+        title={
+          config.subTiers.length > 1
+            ? isFr
+              ? "Un format selon"
+              : "A format for"
+            : isFr
+              ? "Tarif de"
+              : "Price of"
+        }
+        titleEm={
+          config.subTiers.length > 1
+            ? isFr
+              ? "votre situation"
+              : "your situation"
+            : isFr
+              ? "l'audit"
+              : "the audit"
+        }
+        description={
+          isFr
+            ? "Chaque format correspond à un contexte précis. Choisissez celui qui colle à votre situation pour démarrer."
+            : "Each format addresses a specific context. Pick the one that matches your situation to start."
+        }
+      >
+        <Container className="max-w-5xl">
+          <ul
+            className={cn(
+              "grid gap-5 md:gap-6",
+              config.subTiers.length >= 3 && "lg:grid-cols-3",
+              config.subTiers.length === 2 && "lg:grid-cols-2",
+              config.subTiers.length === 1 && "mx-auto max-w-md",
+            )}
+          >
+            {config.subTiers.map((sub) => {
+              const href =
+                sub.ctaType === "calendar"
+                  ? "/appel"
+                  : `/audit/demande?objet=${encodeURIComponent(sub.contactObject ?? sub.subTierId)}`;
+              const Icon =
+                sub.ctaType === "calendar" ? Calendar : sub.ctaType === "quote" ? FileText : Mail;
+              const ctaLabel = isFr
+                ? sub.ctaType === "calendar"
+                  ? "Réserver un appel"
+                  : sub.ctaType === "quote"
+                    ? "Demander un cadrage"
+                    : "Pré-réserver cette mission"
+                : sub.ctaType === "calendar"
+                  ? "Book a call"
+                  : sub.ctaType === "quote"
+                    ? "Request framing"
+                    : "Pre-book this mission";
+              return (
+                <li key={sub.subTierId} className="relative">
+                  {sub.isFeatured ? (
+                    <span className="bg-terracotta text-mocha-fg shadow-subtle absolute -top-3 left-6 z-10 inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
+                      <Sparkles aria-hidden="true" className="h-3 w-3" />
+                      {isFr ? "Recommandé" : "Featured"}
+                    </span>
+                  ) : null}
+                  <article
+                    className={cn(
+                      "bg-paper relative flex h-full flex-col rounded-3xl border-2 p-7 transition-all lg:p-8",
+                      sub.isFeatured
+                        ? "border-terracotta shadow-card"
+                        : "border-border-strong hover:border-terracotta hover:shadow-card",
+                    )}
+                  >
+                    <p className="text-fg-muted text-[12px] font-bold tracking-[0.16em] uppercase">
+                      {isFr ? sub.labelFr : sub.labelEn}
+                    </p>
+                    <p className="text-fg-muted mt-1 text-[13px]">
+                      {isFr ? sub.rangeFr : sub.rangeEn}
+                    </p>
+                    <p className="mt-4 flex items-baseline gap-1.5">
+                      <span
+                        className="text-fg text-[clamp(2rem,4.5vw,3rem)] leading-none font-medium tracking-tight tabular-nums"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        {isFr ? sub.priceLabelFr : sub.priceLabelEn}
+                      </span>
+                    </p>
+                    <p className="text-fg-soft mt-4 flex-1 text-[14.5px] leading-relaxed">
+                      {isFr ? sub.bodyFr : sub.bodyEn}
+                    </p>
+                    <div className="mt-6">
+                      <Cta href={href} size="lg" className="w-full justify-center">
+                        <Icon aria-hidden="true" className="h-4 w-4" />
+                        {ctaLabel}
+                      </Cta>
+                    </div>
+                  </article>
+                </li>
+              );
+            })}
+          </ul>
+        </Container>
+      </Section>
+
+      {/* ── FAQ (FaqAccordion centralisé) ────────────────────────────────── */}
+      {config.faq.length > 0 ? (
+        <Section
+          eyebrow="FAQ"
+          title={isFr ? "Questions" : "Questions"}
+          titleEm={isFr ? "fréquentes" : "we hear often"}
+        >
+          <div className="mx-auto max-w-3xl">
+            <FaqAccordion
+              items={config.faq.map((f, i) => ({
+                id: `faq-${i + 1}`,
+                question: isFr ? f.qFr : f.qEn,
+                answer: isFr ? f.aFr : f.aEn,
+              }))}
+            />
+          </div>
+        </Section>
+      ) : null}
+
+      {/* ── BANDEAU CONTACT ──────────────────────────────────────────────── */}
       <ContactBand
         isFr={isFr}
         eyebrow={isFr ? "Pas sûr du bon niveau d'audit ?" : "Not sure which audit level?"}
@@ -421,111 +583,93 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         track="-audit-detail"
       />
 
-      {/* LIVRABLES — ce que le client repart avec (optionnel). tone sand. */}
-      {config.deliverables ? (
+      {/* ── VILLES (maillage compact) ────────────────────────────────────── */}
+      <Section
+        tone="sand"
+        eyebrow={isFr ? "Partout en France" : "Across France"}
+        title={isFr ? "Cet audit," : "This audit,"}
+        titleEm={isFr ? "près de chez vous" : "near you"}
+        description={
+          isFr
+            ? "Nous intervenons en présentiel ou à distance, dans toute la France."
+            : "We operate on site or remotely, throughout France."
+        }
+      >
+        <ul role="list" className="flex flex-wrap gap-x-2 gap-y-2.5">
+          {villes.map((v) => (
+            <li key={v.slug}>
+              <Link
+                href={`/audit/par-ville/${v.slug}` as never}
+                className="text-fg-soft bg-canvas border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+              >
+                {isFr ? `Audit IA ${v.nameFr}` : `AI audit ${v.nameFr}`}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* ── AUTRES NIVEAUX D'AUDIT (maillage) ────────────────────────────── */}
+      {siblings.length > 0 ? (
         <Section
           tone="sand"
-          eyebrow={isFr ? "Ce que vous repartez avec" : "What you walk away with"}
-          title={isFr ? "Vos" : "Your"}
-          titleEm={isFr ? "livrables concrets" : "concrete deliverables"}
-          description={
-            isFr
-              ? "Pas de promesses en l'air : des documents et des outils directement actionnables, livrés à l'issue de l'audit."
-              : "No empty promises: documents and tools you can act on immediately, delivered at the end of the audit."
-          }
-          contentClassName={TIGHT_X}
+          eyebrow={isFr ? "Autres niveaux d'audit" : "Other audit levels"}
+          title={isFr ? "Pour aller" : "Go"}
+          titleEm={isFr ? "plus loin" : "further"}
         >
-          <ul className="grid list-none gap-6 p-0 md:grid-cols-3">
-            {config.deliverables.map((d) => (
-              <li
-                key={d.titleFr}
-                className="border-border bg-paper shadow-subtle flex flex-col rounded-2xl border p-6"
+          <div className="xs:grid-cols-2 grid gap-5 lg:grid-cols-3">
+            {siblings.map((s) => (
+              <Link
+                key={s.href}
+                href={s.href as never}
+                className="border-border bg-bg shadow-card hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition hover:-translate-y-1"
               >
-                <span className="bg-terracotta-soft text-terracotta-deep mb-5 flex h-12 w-12 items-center justify-center rounded-2xl">
-                  <Package aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
-                </span>
-                <h3 className="text-fg text-[16px] leading-snug font-bold tracking-tight">
-                  {isFr ? d.titleFr : d.titleEn}
-                </h3>
-                <p className="text-fg-soft mt-2.5 text-[14px] leading-relaxed">
-                  {isFr ? d.descFr : d.descEn}
+                <p className="text-fg text-[15px] leading-snug font-semibold">
+                  {s.label} <span className="text-terracotta-deep italic">{s.em}</span>
                 </p>
-              </li>
+                <p className="text-fg-soft mt-2 line-clamp-3 flex-1 text-sm leading-relaxed">
+                  {s.description}
+                </p>
+                <span className="text-terracotta bg-terracotta/10 mt-4 inline-flex items-center gap-1 self-start rounded-full px-3 py-1 text-[13px] font-semibold transition group-hover:gap-2">
+                  {isFr ? "Découvrir" : "Discover"}
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+              </Link>
             ))}
-          </ul>
+          </div>
         </Section>
       ) : null}
 
-      {/* FAQ — tone sand (aligné sur InterventionDetailPage). */}
-      <Section
-        tone="sand"
-        eyebrow="FAQ"
-        title={isFr ? "Questions" : "Questions"}
-        titleEm={isFr ? "fréquentes" : "we hear often"}
-        contentClassName={TIGHT_X}
-      >
-        <InterventionFaqList items={config.faq} isFr={isFr} />
-      </Section>
-
-      {/* Maillage interne — autres niveaux d'audit + implémentation (parité /implementation). */}
-      <Section
-        tone="paper"
-        eyebrow={isFr ? "Autres niveaux d'audit" : "Other audit levels"}
-        title={isFr ? "Pour aller" : "Go"}
-        titleEm={isFr ? "plus loin" : "further"}
-        contentClassName={TIGHT_X}
-      >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {relatedCards.map((c) => (
-            <Link
-              key={c.href}
-              href={c.href as never}
-              className="border-border bg-bg hover:border-terracotta hover:shadow-card focus-visible:ring-terracotta flex h-full flex-col rounded-2xl border p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <p className="text-fg text-[15px] leading-snug font-semibold">{c.label}</p>
-              <p className="text-fg-soft mt-2 line-clamp-2 flex-1 text-sm leading-relaxed">
-                {c.description}
-              </p>
-              <span className="text-terracotta-deep mt-4 inline-flex items-center gap-1 text-[13px] font-medium">
-                {isFr ? "Découvrir" : "Discover"}
-                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </span>
-            </Link>
-          ))}
-        </div>
-      </Section>
-
-      {/* COUVERTURE FRANCE + KB — maillage national (parité pages-intention). */}
-      <LocalCoverageSection
-        isFr={isFr}
-        serviceLabelFr="L'audit IA"
-        serviceLabelEn="AI audit"
-        serviceSlug="audit"
-        tone="sand"
-      />
       <RelatedKnowledge service="audit" />
 
+      {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Choisissez le format qui vous convient" : "Choose the format that suits you"}
+        title={isFr ? "Cadrer votre audit IA" : "Scope your AI audit"}
+        titleEm={isFr ? "sereinement" : "with confidence"}
         description={
           isFr
-            ? "Pas sûr·e du sous-tier adapté ? Un appel où l'on prend le temps de cadrer votre projet à la perfection — pour choisir ensemble le format juste. Réponse sous 48 h ouvrées. Sans engagement."
-            : "Not sure which sub-tier suits you? A call where we take the time to scope your project perfectly — to choose the right format together. Reply within 48 business hours. No commitment."
+            ? "Un appel où l'on prend le temps de cadrer votre projet à la perfection — pour choisir ensemble le format juste. Réponse sous 48 h ouvrées. Sans engagement."
+            : "A call where we take the time to scope your project perfectly — to choose the right format together. Reply within 48 business hours. No commitment."
         }
         cta={
-          <Cta
-            href={heroCtaHref}
-            size="lg"
-            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
-          >
-            {featuredSubTier.ctaType === "calendar" ? (
-              <Calendar aria-hidden="true" className="h-4 w-4" />
-            ) : (
-              <Mail aria-hidden="true" className="h-4 w-4" />
-            )}
-            {isFr ? config.ctaPrimaryLabelFr : config.ctaPrimaryLabelEn}
-          </Cta>
+          <>
+            <Cta
+              href={heroCtaHref}
+              size="lg"
+              className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+            >
+              {heroCtaIsCalendar ? (
+                <Calendar aria-hidden="true" className="h-4 w-4" />
+              ) : (
+                <Mail aria-hidden="true" className="h-4 w-4" />
+              )}
+              {isFr ? config.ctaPrimaryLabelFr : config.ctaPrimaryLabelEn}
+            </Cta>
+            <Cta href="/contact" variant="outline" size="lg">
+              {isFr ? "Nous écrire" : "Write to us"}
+            </Cta>
+          </>
         }
         tone="dark"
       />

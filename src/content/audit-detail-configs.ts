@@ -165,6 +165,24 @@ export interface AuditDetailConfig {
   /** « Pour qui » — 3 profils que ce tier sert le mieux. */
   forWhomFr?: ReadonlyArray<string>;
   forWhomEn?: ReadonlyArray<string>;
+
+  // ── Refonte 2026-07-07 (Will) — alignement sur le template FormationDetailPage
+  //    (héro + carte infos-clés, PAS de timeline horaire). `infoCard` alimente
+  //    à la fois la carte sticky du héro et la section Modalités. Valeurs
+  //    dérivées du contenu existant (aucune fabrication).
+  infoCard: {
+    /** Sous-titre sous le prix (périmètre couvert). */
+    scopeFr: string;
+    scopeEn: string;
+    durationFr: string;
+    durationEn: string;
+    formatFr: string;
+    formatEn: string;
+    audienceFr: string;
+    audienceEn: string;
+    deliverableFr: string;
+    deliverableEn: string;
+  };
 }
 
 // ============================================================================
@@ -670,6 +688,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "On-site AI audit",
     titleEmFr: "1 journée complète · sur site",
     titleEmEn: "1 full day · on site",
+    infoCard: {
+      scopeFr: "Toute l'entreprise · sur site",
+      scopeEn: "Whole company · on site",
+      durationFr: "1 journée complète (9 h-17 h)",
+      durationEn: "1 full day (9 a.m.-5 p.m.)",
+      formatFr: "Présentiel dans vos locaux",
+      formatEn: "On site, at your premises",
+      audienceFr: "TPE 1-19 salariés · artisans · commerçants · indépendants",
+      audienceEn: "Small businesses 1-19 staff · artisans · retailers · freelancers",
+      deliverableFr: "Rapport 8-15 pages + prompts testés, sous 48 h",
+      deliverableEn: "8-15 page report + tested prompts, within 48 h",
+    },
     promiseFr: `Audit IA complet pour TPE, artisan ou commerçant. Une journée complète sur place : on cartographie toute votre activité, on teste l'IA en live sur vos vrais cas, et on livre un plan d'action chiffré sous 48 h. Réservation directe au calendrier (${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })}).`,
     promiseEn: `Complete AI audit for a small business, artisan or retailer. One full day on site: we map your entire activity, test AI live on your real cases, and deliver a costed action plan within 48 h. Direct calendar booking (${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })}).`,
     chipsFr: ["Plan sous 48 h", "Démos live · vos cas", "Confidentialité totale"],
@@ -822,6 +852,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "Targeted audit",
     titleEmFr: "1 département · 3 semaines",
     titleEmEn: "1 department · 3 weeks",
+    infoCard: {
+      scopeFr: "1 département ciblé",
+      scopeEn: "1 targeted department",
+      durationFr: "3 à 4 semaines",
+      durationEn: "3 to 4 weeks",
+      formatFr: "À distance ou mix site + visio",
+      formatEn: "Remote or mix on-site + remote",
+      audienceFr: "PME · 1 département (marketing, RH, ops, finance, juridique, support)",
+      audienceEn: "SME · 1 department (marketing, HR, ops, finance, legal, support)",
+      deliverableFr: "Rapport 10-40 pages + plan d'exécution priorisé",
+      deliverableEn: "10-40 page report + prioritised execution plan",
+    },
     promiseFr: `Audit IA focalisé sur 1 département précis (marketing, RH, opérations, finance, juridique, support). Cartographie complète, scoring opportunités ROI/complexité, plan d'exécution priorisé. 3 sous-tiers Solo (${formatAmount(PRICE_CIBLE_SOLO, "fr", { compact: true })}) · Standard (${formatAmount(PRICE_CIBLE_STANDARD, "fr", { compact: true })}) · Avancé (${formatAmount(PRICE_CIBLE_AVANCE, "fr", { compact: true })}) selon la complexité.`,
     promiseEn: `AI audit focused on 1 specific department (marketing, HR, ops, finance, legal, support). Complete mapping, ROI/complexity scoring, prioritised execution plan. 3 sub-tiers: Solo (${formatAmount(PRICE_CIBLE_SOLO, "en", { compact: true })}) · Standard (${formatAmount(PRICE_CIBLE_STANDARD, "en", { compact: true })}) · Advanced (${formatAmount(PRICE_CIBLE_AVANCE, "en", { compact: true })}) depending on complexity.`,
     chipsFr: ["Cartographie complète", "Scoring ROI/complexité", "Plan chiffré 3-12 mois"],
@@ -845,6 +887,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "SME Strategic audit",
     titleEmFr: "multi-départements · roadmap 12-24 mois",
     titleEmEn: "multi-department · 12-24 month roadmap",
+    infoCard: {
+      scopeFr: "Multi-départements (2 à 4 services)",
+      scopeEn: "Multi-department (2 to 4 services)",
+      durationFr: "5 à 6 semaines",
+      durationEn: "5 to 6 weeks",
+      formatFr: "Mix site + visio · restitution COMEX",
+      formatEn: "Mix on-site + remote · EXCOM read-out",
+      audienceFr: "PME 20-250 salariés · plusieurs services concernés",
+      audienceEn: "SME 20-250 staff · several departments concerned",
+      deliverableFr: "Plan 25-60 pages + roadmap stratégique 12-24 mois",
+      deliverableEn: "25-60 page plan + 12-24 month strategic roadmap",
+    },
     promiseFr: `Audit IA complet multi-départements pour PME ambitieuses (20 à 250 salariés). Cartographie 2-4 services majeurs, plan d'exécution chiffré, roadmap stratégique 12-24 mois, restitution COMEX. 2 sous-tiers : 20-50 salariés (${formatAmount(PRICE_PME_20_50, "fr", { compact: true })}) · 50-250 salariés (${formatAmount(PRICE_PME_50_250, "fr", { compact: true })}).`,
     promiseEn: `Full multi-department AI audit for ambitious SMEs (20 to 250 staff). Maps 2-4 major services, quantified execution plan, 12-24 month strategic roadmap, EXCOM restitution. 2 sub-tiers: 20-50 staff (${formatAmount(PRICE_PME_20_50, "en", { compact: true })}) · 50-250 staff (${formatAmount(PRICE_PME_50_250, "en", { compact: true })}).`,
     chipsFr: ["2-4 services majeurs", "Restitution COMEX", "AI Act + RGPD by default"],
@@ -913,6 +967,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "Mid-cap Strategic audit",
     titleEmFr: "transverse · gouvernance · board-ready",
     titleEmEn: "transverse · governance · board-ready",
+    infoCard: {
+      scopeFr: "Transverse multi-BU · gouvernance",
+      scopeEn: "Transverse multi-BU · governance",
+      durationFr: "9 semaines (multi-BU sur devis)",
+      durationEn: "9 weeks (multi-BU on request)",
+      formatFr: "Multi-sites · restitution COMEX + board",
+      formatEn: "Multi-site · EXCOM + board read-out",
+      audienceFr: "ETI 250-5000 salariés & grandes entreprises",
+      audienceEn: "Mid-caps 250-5000 staff & large enterprises",
+      deliverableFr: "Plan 60-80 pages board-ready + gouvernance + 30 j d'accompagnement",
+      deliverableEn: "60-80 page board-ready plan + governance + 30-day support",
+    },
     promiseFr: `Audit IA transverse pour ETI (250-5000 salariés) et grandes entreprises. Cartographie multi-BU, gouvernance IA + comité de pilotage, livrables board-ready, conformité AI Act 2026 + RGPD + sectoriel. À partir de ${formatAmount(PRICE_ETI_BASE, "fr")} pour 1-2 BU, sur devis pour multi-BU.`,
     promiseEn: `Transverse AI audit for mid-cap (250-5000 staff) and large enterprises. Multi-BU mapping, AI governance + steering committee, board-ready deliverables, 2026 AI Act + GDPR + sector compliance. From ${formatAmount(PRICE_ETI_BASE, "en", { compact: true })} for 1-2 BU, on request for multi-BU.`,
     chipsFr: ["Multi-BU", "Gouvernance IA + comité", "Board-ready · 30 j accompagnement"],
