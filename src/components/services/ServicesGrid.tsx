@@ -175,8 +175,16 @@ export function ServicesGrid({
   className,
 }: ServicesGridProps) {
   const resolved = items ?? DEFAULT_ITEMS;
+  // Showcase 5 services : rangée 3 (haut) + 2 (bas) qui remplissent toute la
+  // largeur. Grille 6 colonnes au lg → les 3 premières cartes prennent 2 colonnes,
+  // les 2 dernières 3 colonnes (pas de "trou" à droite sur la 2e ligne ; cartes du
+  // bas plus larges / rectangulaires). md reste 2 colonnes (tablette).
+  const isShowcase5 = variant === "showcase" && resolved.length === 5;
+  const ulClass = isShowcase5
+    ? "grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-6"
+    : GRID_CLASS[variant];
   return (
-    <ul role="list" className={cn(GRID_CLASS[variant], className)}>
+    <ul role="list" className={cn(ulClass, className)}>
       {resolved.map((item, index) => {
         const service = SERVICE_BY_ID[item.serviceId];
         const visual = SERVICE_VISUAL[item.serviceId];
@@ -258,10 +266,16 @@ export function ServicesGrid({
         );
 
         // Showcase : fade-in décalé (parité home). a11y : <li> parent direct de <ul>.
+        // Span asymétrique showcase-5 : 3 cartes span 2 puis 2 cartes span 3 (lg).
+        const showcaseSpan = isShowcase5
+          ? index < 3
+            ? "lg:col-span-2"
+            : "lg:col-span-3"
+          : undefined;
         return (
           <li
             key={item.key ?? item.serviceId}
-            className={variant === "compact" ? undefined : "h-full"}
+            className={cn(variant === "compact" ? undefined : "h-full", showcaseSpan)}
           >
             {variant === "showcase" ? <FadeInOnView delay={index * 80}>{card}</FadeInOnView> : card}
           </li>
