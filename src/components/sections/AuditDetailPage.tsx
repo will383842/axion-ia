@@ -497,12 +497,12 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
                   ? "Réserver un appel"
                   : sub.ctaType === "quote"
                     ? "Demander un cadrage"
-                    : "Pré-réserver cette mission"
+                    : "Écrire un message"
                 : sub.ctaType === "calendar"
                   ? "Book a call"
                   : sub.ctaType === "quote"
                     ? "Request framing"
-                    : "Pre-book this mission";
+                    : "Send a message";
               return (
                 <li key={sub.subTierId} className="relative">
                   {sub.isFeatured ? (
