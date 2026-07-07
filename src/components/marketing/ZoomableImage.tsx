@@ -96,7 +96,14 @@ export function ZoomableImage({
           </button>
         </DialogTrigger>
 
-        <DialogContent className="w-auto max-w-[96vw] overflow-hidden rounded-xl p-2 sm:max-w-5xl sm:p-3">
+        {/* aria-describedby={undefined} = opt-out explicite Radix : une lightbox
+            d'image n'a pas de description séparée (le DialogTitle = alt la nomme
+            déjà). Sans ça, Radix logue « Missing Description or aria-describedby
+            for {DialogContent} » en console (audit 2026-07-07). */}
+        <DialogContent
+          aria-describedby={undefined}
+          className="w-auto max-w-[96vw] overflow-hidden rounded-xl p-2 sm:max-w-5xl sm:p-3"
+        >
           <DialogTitle className="sr-only">{alt}</DialogTitle>
           <div className="max-h-[88vh] overflow-auto">
             <Image {...zoomProps} />
