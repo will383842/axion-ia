@@ -4,7 +4,12 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { recommendedModuleRange, buildDureeGuidance, buildStructureUserPrompt } from "./prompts";
+import {
+  recommendedModuleRange,
+  buildDureeGuidance,
+  buildStructureUserPrompt,
+  buildContextePedagogique,
+} from "./prompts";
 
 describe("adaptation à la durée", () => {
   it("propose plus de modules pour une formation longue", () => {
@@ -39,5 +44,39 @@ describe("adaptation à la durée", () => {
     expect(prompt).toContain("240 minutes");
     expect(prompt).toContain("75 %");
     expect(prompt).toContain("0.75"); // ratioPratiqueEstime aligné
+  });
+});
+
+describe("contexte pédagogique", () => {
+  it("retourne '' si aucun paramètre (ou tous_niveaux)", () => {
+    expect(buildContextePedagogique({})).toBe("");
+    expect(buildContextePedagogique({ niveau: "tous_niveaux" })).toBe("");
+    expect(buildContextePedagogique({ prerequis: "  " })).toBe("");
+  });
+
+  it("injecte niveau, prérequis, secteur et outils quand renseignés", () => {
+    const ctx = buildContextePedagogique({
+      niveau: "debutant",
+      prerequis: "savoir utiliser un navigateur",
+      secteurCible: "cabinet d'avocats",
+      outilsClient: "Microsoft 365",
+    });
+    expect(ctx).toContain("debutant");
+    expect(ctx).toContain("savoir utiliser un navigateur");
+    expect(ctx).toContain("cabinet d'avocats");
+    expect(ctx).toContain("Microsoft 365");
+  });
+
+  it("le prompt de structure intègre le contexte pédagogique", () => {
+    const prompt = buildStructureUserPrompt({
+      titre: "IA & droit",
+      dureeHeures: 7,
+      modalite: "presentiel",
+      objectifsPedagogiques: ["Rédiger plus vite"],
+      niveau: "debutant",
+      secteurCible: "cabinet d'avocats",
+    });
+    expect(prompt).toContain("cabinet d'avocats");
+    expect(prompt).toContain("debutant");
   });
 });

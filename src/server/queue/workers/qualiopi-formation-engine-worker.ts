@@ -93,6 +93,11 @@ interface FormationForEngine {
    * Absent si l'offre n'est pas chargée (fail-soft → buildPersonaUserPrompt accepte "").
    */
   publicVise?: string | null;
+  // Paramètres pédagogiques (chantier Excellence) — enrichissent la génération.
+  niveau?: string | null;
+  prerequis?: string | null;
+  secteurCible?: string | null;
+  outilsClient?: string | null;
 }
 
 // ── Trace FormationGenerationJob ─────────────────────────────────────────────
@@ -855,6 +860,10 @@ async function generateModuleContent(
     ...(formation.publicVise != null ? { publicVise: formation.publicVise } : {}),
     objectifsFormation: formation.objectifsPedagogiques,
     module,
+    ...(formation.niveau != null ? { niveau: formation.niveau } : {}),
+    ...(formation.prerequis != null ? { prerequis: formation.prerequis } : {}),
+    ...(formation.secteurCible != null ? { secteurCible: formation.secteurCible } : {}),
+    ...(formation.outilsClient != null ? { outilsClient: formation.outilsClient } : {}),
   });
 
   const cacheKey = buildCacheKey(userPrompt, promptVersion, langue);
@@ -1125,6 +1134,10 @@ export async function formationEngineWorkerHandler(
       methodesPedagogiques: true,
       seuilReussitePct: true,
       ratioPratiquePct: true,
+      niveau: true,
+      prerequis: true,
+      secteurCible: true,
+      outilsClient: true,
       aiPromptVersion: true,
       langueGeneration: true,
       statutGeneration: true,
@@ -1159,6 +1172,11 @@ export async function formationEngineWorkerHandler(
     langueGeneration: row.langueGeneration,
     // T5 — Public visé depuis l'offre (fail-soft : null si absent)
     publicVise: row.offreSite?.publicViseFr ?? null,
+    // Paramètres pédagogiques (chantier Excellence)
+    niveau: row.niveau,
+    prerequis: row.prerequis,
+    secteurCible: row.secteurCible,
+    outilsClient: row.outilsClient,
   };
 
   switch (statut) {

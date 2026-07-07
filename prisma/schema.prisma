@@ -5097,6 +5097,14 @@ enum ModaliteFormation {
   hybride
 }
 
+/// Niveau visé des participants — pilote la profondeur/registre du contenu généré.
+enum NiveauFormation {
+  debutant
+  intermediaire
+  avance
+  tous_niveaux
+}
+
 enum CertificationType {
   aucune
   rs
@@ -5153,6 +5161,15 @@ model Formation {
   indicateursPubliesAt     DateTime?                 @map("indicateurs_publies_at")
   seuilReussitePct         Int                       @default(70) @map("seuil_reussite_pct")
   ratioPratiquePct         Int?                      @map("ratio_pratique_pct")
+  // ── Paramètres pédagogiques enrichissant la génération IA (chantier Excellence) ──
+  /// Niveau visé des participants — calibre profondeur/vocabulaire/difficulté.
+  niveau                   NiveauFormation           @default(tous_niveaux)
+  /// Prérequis explicites (ce que le stagiaire doit déjà savoir/avoir). Vide = aucun.
+  prerequis                String                    @default("") @map("prerequis") @db.Text
+  /// Secteur / métier cible (ex. « cabinet d'avocats ») — ancre les exemples générés.
+  secteurCible             String                    @default("") @map("secteur_cible") @db.VarChar(200)
+  /// Outils/logiciels réellement utilisés par le client (ex. « Microsoft 365 + Salesforce »).
+  outilsClient             String                    @default("") @map("outils_client") @db.Text
   accessibleHandicap       Boolean                   @default(false) @map("accessible_handicap")
   certificationType        CertificationType         @default(aucune) @map("certification_type")
   codeCpf                  String?                   @map("code_cpf") @db.VarChar(20)

@@ -48,9 +48,52 @@ export interface FormationLike {
   };
   publicVise?: string | null;
   niveauExpertise?: string;
+  /** Niveau visé (enum NiveauFormation) — alternative à niveauExpertise. */
+  niveau?: string | null;
+  /** Prérequis explicites (ce que le stagiaire doit déjà savoir/avoir). */
+  prerequis?: string | null;
+  /** Secteur / métier cible — ancre les exemples générés. */
+  secteurCible?: string | null;
+  /** Outils/logiciels réellement utilisés par le client. */
+  outilsClient?: string | null;
   objectifGeneral?: string;
   nbModulesMin?: number;
   nbModulesMax?: number;
+}
+
+/** Paramètres pédagogiques enrichissant la génération (niveau, prérequis, secteur, outils). */
+export interface ContextePedagogique {
+  niveau?: string | null | undefined;
+  prerequis?: string | null | undefined;
+  secteurCible?: string | null | undefined;
+  outilsClient?: string | null | undefined;
+}
+
+/**
+ * Bloc de contexte pédagogique injecté dans les prompts (structure + contenu).
+ * Retourne "" si aucun paramètre renseigné. Pure.
+ */
+export function buildContextePedagogique(ctx: ContextePedagogique): string {
+  const lignes: string[] = [];
+  const niveau = ctx.niveau && ctx.niveau !== "tous_niveaux" ? ctx.niveau : "";
+  if (niveau)
+    lignes.push(
+      `- Niveau des participants : ${niveau} → calibre le vocabulaire, la profondeur et la difficulté des exercices en conséquence.`,
+    );
+  if (ctx.prerequis && ctx.prerequis.trim())
+    lignes.push(
+      `- Prérequis acquis : ${ctx.prerequis.trim()} → construis DESSUS, ne réexplique pas ces bases.`,
+    );
+  if (ctx.secteurCible && ctx.secteurCible.trim())
+    lignes.push(
+      `- Secteur/métier cible : ${ctx.secteurCible.trim()} → TOUS les exemples et exercices doivent être ancrés dans ce contexte métier.`,
+    );
+  if (ctx.outilsClient && ctx.outilsClient.trim())
+    lignes.push(
+      `- Outils utilisés par le client : ${ctx.outilsClient.trim()} → privilégie ces outils dans les mises en pratique.`,
+    );
+  if (lignes.length === 0) return "";
+  return `CONTEXTE PÉDAGOGIQUE (impératif — personnalise le contenu) :\n${lignes.join("\n")}`;
 }
 
 /**
@@ -162,17 +205,21 @@ ${typeof programmeDetaille.persona === "string" ? programmeDetaille.persona : JS
     formation.ratioPratiquePct != null && formation.ratioPratiquePct > 0
       ? formation.ratioPratiquePct
       : 60;
-  const niveauSection = formation.niveauExpertise
-    ? `\nNiveau visé : ${formation.niveauExpertise}`
-    : "";
+  const contextePedago = buildContextePedagogique({
+    niveau: formation.niveau ?? formation.niveauExpertise,
+    prerequis: formation.prerequis,
+    secteurCible: formation.secteurCible,
+    outilsClient: formation.outilsClient,
+  });
+  const contexteSection = contextePedago ? `\n${contextePedago}\n` : "";
 
   return `${personaSection}Génère un plan de formation structuré en JSON pour :
 
 Titre : ${titre}
 Durée totale : ${duree} heure(s)
-Modalité : ${modalite}${niveauSection}
+Modalité : ${modalite}
 Objectifs pédagogiques : ${objectifsStr}
-
+${contexteSection}
 ${dureeGuidance}
 
 CONSIGNES D'ADAPTATION À LA MODALITÉ (à respecter dans le choix des activités) :
@@ -585,9 +632,19 @@ export function buildModuleContentStructuredUserPrompt(input: {
   publicVise?: string | null;
   objectifsFormation?: unknown;
   module: ModuleADetailler;
+  niveau?: string | null;
+  prerequis?: string | null;
+  secteurCible?: string | null;
+  outilsClient?: string | null;
 }): string {
   const modalite = normaliserModalite(input.modalite);
   const reglesModalite = reglesModalitePourPrompt(modalite);
+  const contextePedago = buildContextePedagogique({
+    niveau: input.niveau,
+    prerequis: input.prerequis,
+    secteurCible: input.secteurCible,
+    outilsClient: input.outilsClient,
+  });
 
   const objectifsStr = input.objectifsFormation
     ? typeof input.objectifsFormation === "string"
@@ -618,7 +675,7 @@ Module à détailler :
 - Activités prévues (issues du plan validé — à respecter) : ${(input.module.activites ?? []).join(" ; ") || "à proposer"}
 - Séquences prévues :
 ${seqStr}
-
+${contextePedago ? `\n${contextePedago}\n` : ""}
 CONSIGNES D'ADAPTATION À LA MODALITÉ :
 ${reglesModalite}
 

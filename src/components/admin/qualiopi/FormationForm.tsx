@@ -25,6 +25,7 @@ import { createFormationAction, updateFormationAction } from "@/server/actions/q
 // ─────────────────────────────────────────────────────────────────────────────
 
 type ModaliteFormation = "presentiel" | "distanciel" | "hybride";
+type NiveauFormation = "debutant" | "intermediaire" | "avance" | "tous_niveaux";
 
 interface OffreSiteOption {
   id: string;
@@ -54,6 +55,10 @@ interface FormationFormEditProps {
     seuilReussitePct: number | null;
     ratioPratiquePct: number | null;
     accessibleHandicap: boolean;
+    niveau: NiveauFormation;
+    prerequis: string;
+    secteurCible: string;
+    outilsClient: string;
   };
 }
 
@@ -67,6 +72,13 @@ const MODALITE_OPTIONS: Array<{ value: ModaliteFormation; label: string }> = [
   { value: "presentiel", label: "Présentiel" },
   { value: "distanciel", label: "Distanciel" },
   { value: "hybride", label: "Hybride" },
+];
+
+const NIVEAU_OPTIONS: Array<{ value: NiveauFormation; label: string }> = [
+  { value: "tous_niveaux", label: "Tous niveaux" },
+  { value: "debutant", label: "Débutant" },
+  { value: "intermediaire", label: "Intermédiaire" },
+  { value: "avance", label: "Avancé" },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -113,6 +125,16 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
   );
   const [accessibleHandicap, setAccessibleHandicap] = useState(
     props.id !== undefined ? props.initial.accessibleHandicap : false,
+  );
+  const [niveau, setNiveau] = useState<NiveauFormation>(
+    props.id !== undefined ? props.initial.niveau : "tous_niveaux",
+  );
+  const [prerequis, setPrerequis] = useState(props.id !== undefined ? props.initial.prerequis : "");
+  const [secteurCible, setSecteurCible] = useState(
+    props.id !== undefined ? props.initial.secteurCible : "",
+  );
+  const [outilsClient, setOutilsClient] = useState(
+    props.id !== undefined ? props.initial.outilsClient : "",
   );
 
   // ── Offre sélectionnée (pour afficher la plage durée) ─────────────────────
@@ -187,6 +209,18 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
     }
     if (accessibleHandicap !== props.initial.accessibleHandicap) {
       updatePayload.accessibleHandicap = accessibleHandicap;
+    }
+    if (niveau !== props.initial.niveau) {
+      updatePayload.niveau = niveau;
+    }
+    if (prerequis.trim() !== props.initial.prerequis) {
+      updatePayload.prerequis = prerequis.trim();
+    }
+    if (secteurCible.trim() !== props.initial.secteurCible) {
+      updatePayload.secteurCible = secteurCible.trim();
+    }
+    if (outilsClient.trim() !== props.initial.outilsClient) {
+      updatePayload.outilsClient = outilsClient.trim();
     }
 
     startTransition(async () => {
@@ -437,6 +471,84 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
           Accessible aux personnes en situation de handicap (référent handicap)
         </label>
       </div>
+
+      {/* ── Paramètres pédagogiques (enrichissent la génération IA) ── */}
+      <fieldset className="rounded border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+        <legend className="px-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-muted)]">
+          Paramètres pédagogiques (améliorent la génération IA)
+        </legend>
+
+        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          {/* Niveau */}
+          <div>
+            <label htmlFor="ff-edit-niveau" className={labelCls}>
+              Niveau des participants
+            </label>
+            <select
+              id="ff-edit-niveau"
+              value={niveau}
+              onChange={(e) => setNiveau(e.target.value as NiveauFormation)}
+              className={inputCls}
+            >
+              {NIVEAU_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+            <p className={hintCls}>Calibre profondeur, vocabulaire et difficulté.</p>
+          </div>
+
+          {/* Secteur cible */}
+          <div>
+            <label htmlFor="ff-edit-secteur" className={labelCls}>
+              Secteur / métier cible
+            </label>
+            <input
+              id="ff-edit-secteur"
+              type="text"
+              value={secteurCible}
+              onChange={(e) => setSecteurCible(e.target.value)}
+              maxLength={200}
+              className={inputCls}
+              placeholder="ex. cabinet d'avocats, BTP, santé…"
+            />
+            <p className={hintCls}>Ancre les exemples sur ce métier.</p>
+          </div>
+        </div>
+
+        {/* Prérequis */}
+        <div className="mt-[var(--space-admin-4)]">
+          <label htmlFor="ff-edit-prerequis" className={labelCls}>
+            Prérequis
+          </label>
+          <textarea
+            id="ff-edit-prerequis"
+            value={prerequis}
+            onChange={(e) => setPrerequis(e.target.value)}
+            rows={2}
+            maxLength={2000}
+            className={inputCls}
+            placeholder="Ce que le stagiaire doit déjà savoir/avoir (vide = aucun)…"
+          />
+        </div>
+
+        {/* Outils client */}
+        <div className="mt-[var(--space-admin-4)]">
+          <label htmlFor="ff-edit-outils" className={labelCls}>
+            Outils / logiciels du client
+          </label>
+          <textarea
+            id="ff-edit-outils"
+            value={outilsClient}
+            onChange={(e) => setOutilsClient(e.target.value)}
+            rows={2}
+            maxLength={2000}
+            className={inputCls}
+            placeholder="ex. Microsoft 365, Salesforce…"
+          />
+        </div>
+      </fieldset>
 
       {error && (
         <p
