@@ -56,6 +56,10 @@ export interface AccentClasses {
   text: string;
   /** Teinte d'accent appliquée au survol (flèche/CTA) — littéral pour le JIT. */
   textHover: string;
+  /** Fond teinté de la carte entière (variante showcase — « fond de couleur »). */
+  surface: string;
+  /** Puce d'icône PLEINE (fond accent + icône ivoire) — sur carte teintée. */
+  chipSolid: string;
 }
 
 /** Classes littérales par accent — WCAG AA vérifié (deep sur paper ≥ 4.5:1). */
@@ -68,6 +72,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     ring: "focus-visible:ring-terracotta",
     text: "text-terracotta",
     textHover: "group-hover:text-terracotta",
+    surface: "bg-terracotta-soft",
+    chipSolid: "bg-terracotta text-paper",
   },
   ochre: {
     chip: "bg-ochre-soft text-ochre-deep",
@@ -77,6 +83,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     ring: "focus-visible:ring-ochre",
     text: "text-ochre-deep",
     textHover: "group-hover:text-ochre-deep",
+    surface: "bg-ochre-soft",
+    chipSolid: "bg-ochre text-paper",
   },
   primary: {
     chip: "bg-primary-soft text-primary",
@@ -86,6 +94,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     ring: "focus-visible:ring-primary",
     text: "text-primary",
     textHover: "group-hover:text-primary",
+    surface: "bg-primary-soft",
+    chipSolid: "bg-primary text-paper",
   },
   sage: {
     chip: "bg-sage-soft text-sage",
@@ -95,6 +105,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     ring: "focus-visible:ring-sage",
     text: "text-sage",
     textHover: "group-hover:text-sage",
+    surface: "bg-sage-soft",
+    chipSolid: "bg-sage text-paper",
   },
   plum: {
     chip: "bg-plum-soft text-plum-deep",
@@ -104,6 +116,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     ring: "focus-visible:ring-plum",
     text: "text-plum-deep",
     textHover: "group-hover:text-plum-deep",
+    surface: "bg-plum-soft",
+    chipSolid: "bg-plum text-paper",
   },
 };
 

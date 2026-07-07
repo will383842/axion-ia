@@ -53,8 +53,9 @@ interface ServicesGridProps {
 
 /** Colonnes responsive par variante — LARGEUR centralisée ici, plus dans les pages. */
 const GRID_CLASS: Record<ServicesGridVariant, string> = {
-  // 5 activités : 2 col mobile → 3 tablette → 5 desktop (dominance visuelle home).
-  showcase: "grid gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-5",
+  // 5 activités : 1 col mobile → 2 tablette → 3 desktop (Will 2026-07-07 : cartes
+  // plus larges/lisibles, 3 par ligne, layout 3+2). Fond teinté par service.
+  showcase: "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3",
   // 1 col mobile → 2 → 5 desktop (bandeau « inclus avec tous nos services »).
   compact: "xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-5",
   // 5 activités : 2 col mobile → 5 dès md (strip presse compacte).
@@ -67,10 +68,13 @@ function cardShellClass(variant: ServicesGridVariant, accent: AccentClasses): st
     "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
   switch (variant) {
     case "showcase":
+      // Fond TEINTÉ par service (« fond de couleur » vs blanc) → contraste fort
+      // entre les 5 blocs. Définition par ombre + liseré d'accent (pas de bordure
+      // sable qui salirait la teinte). Le liseré supérieur reste rendu en JSX.
       return cn(
         base,
-        "border-border bg-paper hover:shadow-elevated border-2 p-6 duration-300 hover:-translate-y-1 md:p-7",
-        accent.hoverBorder,
+        "shadow-subtle hover:shadow-elevated p-7 duration-300 hover:-translate-y-1 md:p-8",
+        accent.surface,
         accent.ring,
       );
     case "compact":
@@ -107,13 +111,15 @@ function ChipIcon({
         ? "h-12 w-12 rounded-2xl"
         : "h-12 w-12 rounded-xl";
   const iconSize = variant === "showcase" ? "h-7 w-7" : "h-6 w-6";
+  // Showcase : puce PLEINE (fond accent, icône ivoire) — ressort sur la carte
+  // teintée. Autres variantes : puce douce qui se remplit au survol.
+  const chipColor = variant === "showcase" ? accent.chipSolid : cn(accent.chip, accent.chipHover);
   return (
     <span
       className={cn(
         "inline-flex items-center justify-center transition-colors duration-300",
         shape,
-        accent.chip,
-        accent.chipHover,
+        chipColor,
       )}
     >
       <Icon className={iconSize} aria-hidden="true" />

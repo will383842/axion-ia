@@ -491,10 +491,11 @@ export default async function Home({ params }: HomeProps) {
                   </p>
                   {/* Spacer flex */}
                   <div className="flex-1" />
-                  {/* CTA Découvrir — teinté à l'accent du service */}
+                  {/* CTA Découvrir — teinté à l'accent du service. Séparateur en
+                      hairline neutre (border-fg/10) : lisible sur toute teinte de fond. */}
                   <span
                     className={cn(
-                      "border-border mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold transition-colors",
+                      "border-fg/10 mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold transition-colors",
                       accent.text,
                     )}
                   >
