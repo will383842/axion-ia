@@ -2,16 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  MapPin,
-  Building2,
-  Briefcase,
-  Wrench,
-  UserCog,
-  Globe,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, MapPin, Building2, Briefcase } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { fmtPopulation } from "@/lib/intl";
@@ -28,6 +19,9 @@ import { ClientLogosBand } from "@/components/sections/ClientLogosBand";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FounderTrustSection } from "@/components/sections/FounderTrustSection";
 import { RegionAudienceSection } from "@/components/sections/RegionAudienceSection";
+import { cn } from "@/lib/utils";
+import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
+import type { ServiceId } from "@/content/services";
 
 import { REGIONS, getRegion } from "@/content/regions";
 import { getVillesByRegion } from "@/content/villes";
@@ -338,91 +332,97 @@ export default async function RegionPage({ params }: Props) {
         tone="sand"
       >
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {[
-            {
-              href: "/audit" as const,
-              icon: Briefcase,
-              label: isFr ? "Audit IA" : "AI audit",
-              detail: isFr
-                ? `4 niveaux · Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} → Stratégique ETI dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "fr", { compact: true })}`
-                : `4 tiers · Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} → Mid-cap strategic from ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "en", { compact: true })}`,
-              accent: "primary" as const,
-            },
-            {
-              href: "/interventions" as const,
-              icon: Building2,
-              label: isFr ? "Formation IA" : "AI training",
-              detail: isFr
-                ? `Sur site · dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} · groupes 1-30`
-                : `On-site · from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} · groups of 1-30`,
-              accent: "terracotta" as const,
-            },
-            {
-              href: "/un-a-un" as const,
-              icon: UserCog,
-              label: isFr ? "Coaching 1-to-1" : "1-to-1 coaching",
-              detail: isFr
-                ? `Journée 1-to-1 (dirigeant ou collaborateur) · dès ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "fr", { compact: true })} · ROI J+1`
-                : `1-on-1 day (executive or team member) · from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "en", { compact: true })} · day-one ROI`,
-              accent: "sage" as const,
-            },
-            {
-              href: "/implementation" as const,
-              icon: Wrench,
-              label: isFr ? "Implémentation IA" : "AI implementation",
-              detail: isFr
-                ? `Pilote IA dès ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "fr", { compact: true })} · production 6-12 sem.`
-                : `AI pilot from ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "en", { compact: true })} · 6-12 wk production`,
-              accent: "terracotta-deep" as const,
-            },
-            {
-              href: "/sites-web-augmentes" as const,
-              icon: Globe,
-              label: isFr ? "Plateforme web / SaaS IA" : "AI web platform / SaaS",
-              detail: isFr
-                ? "Sur devis · sites & SaaS IA sur mesure · RGPD Europe"
-                : "Quote · custom AI sites & SaaS · EU GDPR",
-              accent: "primary" as const,
-            },
-          ].map(({ href, icon: Icon, label, detail, accent }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                data-cta-tracking="region_canonical_link"
-                data-source-region={region.slug}
-                data-source-target={href}
-                className="group bg-paper hover:border-terracotta focus-visible:ring-terracotta border-border-strong/40 shadow-subtle hover:shadow-card flex h-full flex-col rounded-2xl border-2 p-5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <span
-                  className={`mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md ${
-                    accent === "primary"
-                      ? "bg-primary-soft text-primary"
-                      : accent === "terracotta"
-                        ? "bg-terracotta-soft text-terracotta-deep"
-                        : accent === "terracotta-deep"
-                          ? "bg-terracotta-soft text-terracotta-deep"
-                          : "bg-sand-deep text-sage"
-                  }`}
+          {(
+            [
+              {
+                serviceId: "formations",
+                href: "/interventions" as const,
+                label: isFr ? "Formation IA" : "AI training",
+                detail: isFr
+                  ? `Sur site · dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} · groupes 1-30`
+                  : `On-site · from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} · groups of 1-30`,
+              },
+              {
+                serviceId: "unAUn",
+                href: "/un-a-un" as const,
+                label: isFr ? "Coaching 1-to-1" : "1-to-1 coaching",
+                detail: isFr
+                  ? `Journée 1-to-1 (dirigeant ou collaborateur) · dès ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "fr", { compact: true })} · ROI J+1`
+                  : `1-on-1 day (executive or team member) · from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "en", { compact: true })} · day-one ROI`,
+              },
+              {
+                serviceId: "audit",
+                href: "/audit" as const,
+                label: isFr ? "Audit IA" : "AI audit",
+                detail: isFr
+                  ? `4 niveaux · Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} → Stratégique ETI dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "fr", { compact: true })}`
+                  : `4 tiers · Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} → Mid-cap strategic from ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "en", { compact: true })}`,
+              },
+              {
+                serviceId: "implementation",
+                href: "/implementation" as const,
+                label: isFr ? "Implémentation IA" : "AI implementation",
+                detail: isFr
+                  ? `Pilote IA dès ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "fr", { compact: true })} · production 6-12 sem.`
+                  : `AI pilot from ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "en", { compact: true })} · 6-12 wk production`,
+              },
+              {
+                serviceId: "sitesWeb",
+                href: "/sites-web-augmentes" as const,
+                label: isFr ? "Plateforme web / SaaS IA" : "AI web platform / SaaS",
+                detail: isFr
+                  ? "Sur devis · sites & SaaS IA sur mesure · RGPD Europe"
+                  : "Quote · custom AI sites & SaaS · EU GDPR",
+              },
+            ] as const
+          ).map(({ serviceId, href, label, detail }) => {
+            // Icône + couleur d'accent SSOT + fond teinté (cohérent home/villes/secteurs).
+            const { Icon, accent } = SERVICE_VISUAL[serviceId as ServiceId];
+            const a = ACCENT_CLASSES[accent];
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  data-cta-tracking="region_canonical_link"
+                  data-source-region={region.slug}
+                  data-source-target={href}
+                  className={cn(
+                    "group shadow-subtle hover:shadow-elevated flex h-full flex-col rounded-2xl p-5 transition hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                    a.surface,
+                    a.ring,
+                  )}
                 >
-                  <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
-                </span>
-                <h3
-                  className="text-fg text-lg leading-tight font-semibold"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {label}
-                </h3>
-                <p className="text-fg-soft mt-2 flex-1 text-sm leading-relaxed">{detail}</p>
-                <p className="text-terracotta mt-4 inline-flex items-center gap-1.5 text-sm font-semibold">
-                  {isFr ? "Voir le service" : "See service"}
-                  <ArrowUpRight
-                    aria-hidden="true"
-                    className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </p>
-              </Link>
-            </li>
-          ))}
+                  <span
+                    className={cn(
+                      "mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl",
+                      a.chipSolid,
+                    )}
+                  >
+                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2} />
+                  </span>
+                  <h3
+                    className="text-fg text-lg leading-tight font-semibold"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {label}
+                  </h3>
+                  <p className="text-fg-soft mt-2 flex-1 text-sm leading-relaxed">{detail}</p>
+                  <p
+                    className={cn(
+                      "mt-4 inline-flex items-center gap-1.5 text-sm font-semibold",
+                      a.text,
+                    )}
+                  >
+                    {isFr ? "Voir le service" : "See service"}
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </p>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </Section>
 

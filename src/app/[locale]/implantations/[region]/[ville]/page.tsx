@@ -19,20 +19,15 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  MapPin,
-  Building2,
-  Briefcase,
-  UserCog,
-  Wrench,
-  Globe,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, MapPin, Building2 } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { cn } from "@/lib/utils";
+import { ServicesGrid } from "@/components/services/ServicesGrid";
+import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
+import type { ServiceId } from "@/content/services";
 import { Cta } from "@/components/marketing/Cta";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { getBlogArticlesByVille } from "@/server/content-gen/blog/get-articles-by-ville";
@@ -43,7 +38,6 @@ import { ClientLogosBand } from "@/components/sections/ClientLogosBand";
 import { FounderTrustSection } from "@/components/sections/FounderTrustSection";
 import { PricingGridVille } from "@/components/sections/PricingGridVille";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { Link } from "@/i18n/navigation";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { fmtPopulation } from "@/lib/intl";
 
@@ -222,16 +216,21 @@ interface VerticaleMeta {
   readonly mainServiceHref: string;
 }
 
+// Mapping slug verticale ville → id de service SSOT (résolution du VISUEL partagé :
+// icône + couleur d'accent). Les hrefs/labels/descriptions restent ceux de la ville
+// (ordre propre, `/interventions`, contenu unique par ville = SEO anti-doorway).
+const VERTICALE_TO_SERVICE_ID: Record<VerticaleSlug, ServiceId> = {
+  audits: "audit",
+  interventions: "formations",
+  implementations: "implementation",
+  "un-a-un": "unAUn",
+  "sites-web-ia": "sitesWeb",
+};
+
 function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
+  // Ordre SSOT (formations → 1-to-1 → audit → implémentation → sites web) —
+  // identique à la home et à tout le site (décision Will 2026-07-07).
   return [
-    {
-      slug: "audits",
-      labelFr: "Audit IA",
-      labelEn: "AI Audit",
-      descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). TPE, PME, ETI, grandes entreprises.`,
-      descEn: `AI audit in ${v} — 3 costed projects, 6-month roadmap, same-day result (Flash) or 2-4 weeks (Strategic). Micro-businesses, SMBs, mid-market, large enterprises.`,
-      mainServiceHref: "/audit",
-    },
     {
       slug: "interventions",
       labelFr: "Formations et interventions sur site",
@@ -241,20 +240,28 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       mainServiceHref: "/interventions",
     },
     {
-      slug: "implementations",
-      labelFr: "Implémentation IA",
-      labelEn: "AI Implementation",
-      descFr: `Agents IA, automatisations back-office, CRM/ERP augmentés — livrés en production à ${v}. ROI chiffré avant mission. Toutes tailles d'entreprise.`,
-      descEn: `AI agents, back-office automations, augmented CRM/ERP — delivered to production in ${v}. Costed ROI before engagement. All company sizes.`,
-      mainServiceHref: "/implementation",
-    },
-    {
       slug: "un-a-un",
       labelFr: "Accompagnement 1-to-1",
       labelEn: "1-to-1 coaching",
       descFr: `Journée 1-to-1 avec Williams à ${v} — cartographie IA de vos processus et 3 chantiers chiffrés, sans engagement. Dirigeants TPE, PME, ETI.`,
       descEn: `1-on-1 day with Williams in ${v} — AI mapping of your processes and 3 costed projects, no commitment. Leaders of SMBs and mid-market.`,
       mainServiceHref: "/un-a-un",
+    },
+    {
+      slug: "audits",
+      labelFr: "Audit IA",
+      labelEn: "AI Audit",
+      descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). TPE, PME, ETI, grandes entreprises.`,
+      descEn: `AI audit in ${v} — 3 costed projects, 6-month roadmap, same-day result (Flash) or 2-4 weeks (Strategic). Micro-businesses, SMBs, mid-market, large enterprises.`,
+      mainServiceHref: "/audit",
+    },
+    {
+      slug: "implementations",
+      labelFr: "Implémentation IA",
+      labelEn: "AI Implementation",
+      descFr: `Agents IA, automatisations back-office, CRM/ERP augmentés — livrés en production à ${v}. ROI chiffré avant mission. Toutes tailles d'entreprise.`,
+      descEn: `AI agents, back-office automations, augmented CRM/ERP — delivered to production in ${v}. Costed ROI before engagement. All company sizes.`,
+      mainServiceHref: "/implementation",
     },
     {
       slug: "sites-web-ia",
@@ -619,29 +626,36 @@ export default async function VilleHubPage({ params }: Props) {
                   ? " : audit IA, formation à l'IA pour vos équipes, implémentation, coaching 1-to-1 dirigeants et plateformes/SaaS web IA. De la TPE à l'ETI."
                   : ": AI audit, AI training for your teams, implementation, 1-to-1 executive coaching and AI web/SaaS platforms. From SME to mid-market."}
               </p>
-              {/* Badges 5 services — compréhension immédiate des prestations.
-                  Petits pills terracotta-soft avec icône Lucide. */}
+              {/* Badges 5 services — pills TEINTÉS par service (icône + couleur
+                  d'accent SSOT services-visual.ts). Cohérent avec la grille ci-dessous
+                  et le reste du site (home/visibilité/presse). */}
               <ul
                 aria-label={isFr ? "Nos 5 services" : "Our 5 services"}
                 className="mt-6 flex flex-wrap gap-2"
               >
                 {(
                   [
-                    { Icon: Briefcase, labelFr: "Audit IA", labelEn: "AI audit" },
-                    { Icon: Building2, labelFr: "Formation", labelEn: "Training" },
-                    { Icon: Wrench, labelFr: "Implémentation", labelEn: "Implementation" },
-                    { Icon: UserCog, labelFr: "Coaching 1-to-1", labelEn: "1-to-1 coaching" },
-                    { Icon: Globe, labelFr: "Web / SaaS IA", labelEn: "AI Web / SaaS" },
+                    { id: "formations", labelFr: "Formation", labelEn: "Training" },
+                    { id: "unAUn", labelFr: "Coaching 1-to-1", labelEn: "1-to-1 coaching" },
+                    { id: "audit", labelFr: "Audit IA", labelEn: "AI audit" },
+                    { id: "implementation", labelFr: "Implémentation", labelEn: "Implementation" },
+                    { id: "sitesWeb", labelFr: "Web / SaaS IA", labelEn: "AI Web / SaaS" },
                   ] as const
-                ).map(({ Icon, labelFr, labelEn }) => (
-                  <li
-                    key={labelFr}
-                    className="bg-terracotta-soft text-terracotta-deep border-terracotta/30 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
-                  >
-                    <Icon aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />
-                    {isFr ? labelFr : labelEn}
-                  </li>
-                ))}
+                ).map(({ id, labelFr, labelEn }) => {
+                  const { Icon, accent } = SERVICE_VISUAL[id];
+                  return (
+                    <li
+                      key={id}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold tracking-tight",
+                        ACCENT_CLASSES[accent].chip,
+                      )}
+                    >
+                      <Icon aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />
+                      {isFr ? labelFr : labelEn}
+                    </li>
+                  );
+                })}
               </ul>
               {/* Stats inline */}
               <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
@@ -734,40 +748,45 @@ export default async function VilleHubPage({ params }: Props) {
             </p>
           </div>
 
-          <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {verticales.map((v) => (
-              <li key={v.slug} className="h-full">
-                <Link
-                  href={v.mainServiceHref as never}
-                  data-source-ville={ville.slug}
-                  data-service-module={v.slug}
-                  className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated focus-visible:ring-terracotta relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="bg-terracotta absolute inset-x-0 top-0 h-1.5 origin-left"
-                  />
-                  <h3
-                    className="text-fg text-[clamp(1.5rem,2vw,2rem)] leading-[1.06] font-semibold tracking-tight"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {isFr ? v.labelFr : v.labelEn}
-                  </h3>
+          {/* Grille centralisée — même design que la home (variante showcase :
+              fond teinté par service, puce pleine, icône SSOT, 3/ligne). Les items
+              gardent l'ordre, les hrefs (`/interventions`), les labels et surtout
+              les DESCRIPTIONS uniques par ville (SEO anti-doorway) + le tracking. */}
+          <ServicesGrid
+            variant="showcase"
+            isFr={isFr}
+            items={verticales.map((v) => ({
+              serviceId: VERTICALE_TO_SERVICE_ID[v.slug],
+              href: v.mainServiceHref,
+              title: isFr ? v.labelFr : v.labelEn,
+              data: { "data-source-ville": ville.slug, "data-service-module": v.slug },
+              key: v.slug,
+            }))}
+            renderBody={({ index, accent }) => {
+              const v = verticales[index];
+              if (!v) return null;
+              return (
+                <>
                   <p className="text-fg-soft mt-4 text-sm leading-relaxed">
                     {isFr ? v.descFr : v.descEn}
                   </p>
                   <div className="flex-1" />
-                  <span className="border-border text-terracotta group-hover:text-terracotta-deep mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold">
+                  <span
+                    className={cn(
+                      "border-fg/10 mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold transition-colors",
+                      accent.text,
+                    )}
+                  >
                     {isFr ? "Découvrir le module" : "Discover the module"}
                     <ArrowRight
                       className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                       aria-hidden="true"
                     />
                   </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                </>
+              );
+            }}
+          />
         </Container>
       </section>
 

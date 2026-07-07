@@ -12,10 +12,13 @@ import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
-import { SectorHeroMedia, SERVICE_ICON } from "@/components/secteurs/SectorVisuals";
+import { SectorHeroMedia } from "@/components/secteurs/SectorVisuals";
 import { CLIENT_SECTORS, getClientSector, type ClientSectorSlug } from "@/content/sectors";
 import { SECTOR_PHOTO_CREDITS } from "@/content/secteurs/sector-photos";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
+import { cn } from "@/lib/utils";
+import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
+import type { ServiceId } from "@/content/services";
 import { getPageImages } from "@/lib/seo/page-images";
 import { FOUNDER } from "@/lib/brand";
 import {
@@ -32,6 +35,23 @@ import {
   buildPageImageGraphJsonLd,
   SITE_URL,
 } from "@/lib/seo";
+
+// Mapping slug SERVICE_DEFS (KB) → id de service SSOT (icône + couleur d'accent).
+const SECTOR_SVC_TO_SERVICE_ID: Record<string, ServiceId> = {
+  audit: "audit",
+  implementation: "implementation",
+  "interventions-formations": "formations",
+  "un-a-un": "unAUn",
+  "sites-web-augmentes": "sitesWeb",
+};
+// Ordre canonique SSOT (formations → 1-to-1 → audit → implémentation → sites web).
+const SSOT_SERVICE_ORDER: Record<ServiceId, number> = {
+  formations: 0,
+  unAUn: 1,
+  audit: 2,
+  implementation: 3,
+  sitesWeb: 4,
+};
 
 // ============================================================================
 // Pilier /secteurs/[secteur] — refonte visuelle (2026-07-03). Déroule les 5
@@ -100,6 +120,14 @@ export default async function SecteurPilier({ params }: Props) {
   // Lexique métier agrégé (chips) + activité phare (bloc avant/après).
   const lexicon = Array.from(new Set(activities.flatMap((a) => a.pain!.sectorLexicon)));
   const flagship = activities[0];
+
+  // Grille des 5 solutions : affichée dans l'ORDRE SSOT (comme le reste du site).
+  // `activities` (ordre SERVICE_DEFS) reste tel quel pour l'activité phare.
+  const orderedActivities = [...activities].sort(
+    (a, b) =>
+      SSOT_SERVICE_ORDER[SECTOR_SVC_TO_SERVICE_ID[a.svc.slug] ?? "sitesWeb"] -
+      SSOT_SERVICE_ORDER[SECTOR_SVC_TO_SERVICE_ID[b.svc.slug] ?? "sitesWeb"],
+  );
 
   // Images de la page (cf. page-images.ts) : photo héro sectorielle + portrait fondateur.
   const sectorImages = getPageImages(`/secteurs/${sector.slug}`);
@@ -263,20 +291,24 @@ export default async function SecteurPilier({ params }: Props) {
         }
       >
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          {activities.map(({ svc, pain }) => {
-            const Icon = SERVICE_ICON[svc.slug] ?? Sparkles;
+          {orderedActivities.map(({ svc, pain }) => {
+            // Icône + couleur d'accent SSOT (cohérent home/villes/presse).
+            const serviceId = SECTOR_SVC_TO_SERVICE_ID[svc.slug] ?? "sitesWeb";
+            const { Icon, accent } = SERVICE_VISUAL[serviceId];
+            const a = ACCENT_CLASSES[accent];
             return (
               <article
                 key={svc.slug}
                 className="border-border hover:border-border-strong hover:shadow-card group flex flex-col gap-4 rounded-2xl border p-6 transition"
               >
                 <div className="flex items-center gap-3">
-                  <span className="bg-halo-warm flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-                    <Icon
-                      className="text-terracotta h-5 w-5"
-                      strokeWidth={1.6}
-                      aria-hidden="true"
-                    />
+                  <span
+                    className={cn(
+                      "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
+                      a.chip,
+                    )}
+                  >
+                    <Icon className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
                   </span>
                   <h3 className="text-fg text-lg font-semibold">{svc.labelFr}</h3>
                 </div>
@@ -293,7 +325,10 @@ export default async function SecteurPilier({ params }: Props) {
                 <div className="flex flex-wrap gap-3 pt-1">
                   <Link
                     href={`/${loc}/secteurs/${sector.slug}/${svc.slug}`}
-                    className="text-terracotta text-sm font-semibold underline-offset-4 hover:underline"
+                    className={cn(
+                      "text-sm font-semibold underline-offset-4 hover:underline",
+                      a.text,
+                    )}
                   >
                     {isFr ? "Voir le cas d'usage →" : "See the use case →"}
                   </Link>

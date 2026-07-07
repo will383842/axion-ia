@@ -3,7 +3,14 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { SERVICES, serviceOfficial, serviceNavShort, type ServiceDef } from "@/content/services";
+import {
+  SERVICES,
+  SERVICE_BY_ID,
+  serviceOfficial,
+  serviceNavShort,
+  type ServiceDef,
+  type ServiceId,
+} from "@/content/services";
 import {
   SERVICE_VISUAL,
   ACCENT_CLASSES,
@@ -33,23 +40,52 @@ export type ServicesGridVariant = "showcase" | "compact" | "strip";
 
 type HrefProp = React.ComponentProps<typeof Link>["href"];
 
+/**
+ * Item de grille. Par défaut la grille rend les 5 `SERVICES` dans l'ordre SSOT.
+ * Une page peut fournir ses propres items (ex. pages VILLE : ordre différent,
+ * href propre `/interventions`, titre ville-spécifique, tracking analytics) tout
+ * en conservant le VISUEL partagé (icône + couleur) résolu par `serviceId`.
+ */
+export interface ServiceGridItem {
+  /** Clé de visuel (icône + accent) ET de nom par défaut. */
+  serviceId: ServiceId;
+  /** Cible du lien — défaut : href SSOT du service. */
+  href?: string;
+  /** Titre affiché — défaut : navShort (showcase) / nom officiel (autres). */
+  title?: React.ReactNode;
+  /** Attributs `data-*` posés sur le lien (tracking, ex. data-source-ville). */
+  data?: Record<`data-${string}`, string | undefined>;
+  /** Clé React — défaut : serviceId. */
+  key?: string;
+}
+
 export interface ServiceCardContext {
   service: ServiceDef;
   visual: ServiceVisual;
   accent: AccentClasses;
   index: number;
   isFr: boolean;
+  /** Item résolu de la carte (utile pour un renderBody piloté par les données). */
+  item: ServiceGridItem;
 }
 
 interface ServicesGridProps {
   variant: ServicesGridVariant;
   isFr: boolean;
+  /**
+   * Items custom (ordre / href / titre / tracking). Défaut : les 5 `SERVICES`
+   * dans l'ordre SSOT. Le visuel reste toujours résolu depuis `services-visual.ts`.
+   */
+  items?: ReadonlyArray<ServiceGridItem>;
   /** Contenu injecté sous le titre de chaque carte (texte propre à la page). */
   renderBody?: (ctx: ServiceCardContext) => React.ReactNode;
-  /** Libellé accessible du lien (défaut : nom officiel du service). */
+  /** Libellé accessible du lien (défaut : titre / nom officiel du service). */
   cardAriaLabel?: (ctx: ServiceCardContext) => string;
   className?: string;
 }
+
+/** Items par défaut = les 5 services SSOT dans l'ordre canonique. */
+const DEFAULT_ITEMS: ReadonlyArray<ServiceGridItem> = SERVICES.map((s) => ({ serviceId: s.id }));
 
 /** Colonnes responsive par variante — LARGEUR centralisée ici, plus dans les pages. */
 const GRID_CLASS: Record<ServicesGridVariant, string> = {
@@ -130,24 +166,34 @@ function ChipIcon({
 export function ServicesGrid({
   variant,
   isFr,
+  items,
   renderBody,
   cardAriaLabel,
   className,
 }: ServicesGridProps) {
+  const resolved = items ?? DEFAULT_ITEMS;
   return (
     <ul role="list" className={cn(GRID_CLASS[variant], className)}>
-      {SERVICES.map((service, index) => {
-        const visual = SERVICE_VISUAL[service.id];
+      {resolved.map((item, index) => {
+        const service = SERVICE_BY_ID[item.serviceId];
+        const visual = SERVICE_VISUAL[item.serviceId];
         const accent = ACCENT_CLASSES[visual.accent];
         const official = serviceOfficial(service, isFr);
-        const ctx: ServiceCardContext = { service, visual, accent, index, isFr };
+        // Nom affiché : override d'item, sinon navShort (showcase) / officiel.
+        const displayName =
+          item.title ?? (variant === "showcase" ? serviceNavShort(service, isFr) : official);
+        // aria-label textuel : titre s'il est une string, sinon nom officiel.
+        const ariaName = typeof displayName === "string" ? displayName : official;
+        const href = item.href ?? service.href;
+        const ctx: ServiceCardContext = { service, visual, accent, index, isFr, item };
         const body = renderBody?.(ctx);
 
         const card = (
           <Link
-            href={service.href as HrefProp}
-            aria-label={cardAriaLabel?.(ctx) ?? official}
+            href={href as HrefProp}
+            aria-label={cardAriaLabel?.(ctx) ?? ariaName}
             className={cardShellClass(variant, accent)}
+            {...item.data}
           >
             {/* Liseré d'accent supérieur (showcase + strip). */}
             {variant !== "compact" ? (
@@ -173,7 +219,7 @@ export function ServicesGrid({
                   </span>
                 </span>
                 <span className="text-fg flex items-start justify-between gap-2 text-base leading-tight font-semibold">
-                  {official}
+                  {displayName}
                   <ArrowUpRight
                     className={cn(
                       "text-fg-muted mt-0.5 h-4 w-4 shrink-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
@@ -194,14 +240,14 @@ export function ServicesGrid({
                   className="text-fg text-[clamp(1.75rem,2.5vw,2.5rem)] leading-[1.02] font-semibold tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {serviceNavShort(service, isFr)}
+                  {displayName}
                 </h3>
                 {body}
               </>
             ) : (
               <>
                 <ChipIcon variant={variant} visual={visual} accent={accent} />
-                <span className="text-fg text-sm font-semibold tracking-tight">{official}</span>
+                <span className="text-fg text-sm font-semibold tracking-tight">{displayName}</span>
                 {body}
               </>
             )}
@@ -210,7 +256,10 @@ export function ServicesGrid({
 
         // Showcase : fade-in décalé (parité home). a11y : <li> parent direct de <ul>.
         return (
-          <li key={service.id} className={variant === "compact" ? undefined : "h-full"}>
+          <li
+            key={item.key ?? item.serviceId}
+            className={variant === "compact" ? undefined : "h-full"}
+          >
             {variant === "showcase" ? <FadeInOnView delay={index * 80}>{card}</FadeInOnView> : card}
           </li>
         );

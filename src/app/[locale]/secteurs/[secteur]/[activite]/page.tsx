@@ -141,7 +141,18 @@ export default async function SecteurActivite({ params }: Props) {
     : null;
 
   // Activités sœurs (même secteur) pour le maillage interne.
-  const siblings = SERVICE_DEFS.filter((s) => s.slug !== service.slug);
+  // Ordre canonique SSOT (formations → 1-to-1 → audit → implémentation → sites web),
+  // identique au reste du site (tri local, la source SERVICE_DEFS reste inchangée).
+  const SSOT_SERVICE_DEFS_ORDER: Record<string, number> = {
+    "interventions-formations": 0,
+    "un-a-un": 1,
+    audit: 2,
+    implementation: 3,
+    "sites-web-augmentes": 4,
+  };
+  const siblings = SERVICE_DEFS.filter((s) => s.slug !== service.slug).sort(
+    (a, b) => (SSOT_SERVICE_DEFS_ORDER[a.slug] ?? 9) - (SSOT_SERVICE_DEFS_ORDER[b.slug] ?? 9),
+  );
 
   return (
     <>

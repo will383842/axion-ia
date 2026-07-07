@@ -17,20 +17,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import type { LucideIcon } from "lucide-react";
-import {
-  PenLine,
-  Star,
-  MapPin,
-  ShieldCheck,
-  BadgeCheck,
-  Search,
-  GraduationCap,
-  Rocket,
-  UserRound,
-  Globe,
-  Scale,
-} from "lucide-react";
+import { PenLine, Star, MapPin, ShieldCheck, BadgeCheck, Scale } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -43,6 +30,9 @@ import { Cta } from "@/components/marketing/Cta";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { cn } from "@/lib/utils";
+import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
+import type { ServiceId } from "@/content/services";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -114,13 +104,13 @@ const FAQ_ITEMS = [
   },
 ];
 
-/** Icône lucide par service (facette « par service »). */
-const SERVICE_ICONS: Record<string, LucideIcon> = {
-  audits: Search,
-  interventions_formations: GraduationCap,
-  implementations: Rocket,
-  un_a_un: UserRound,
-  sites_web_augmentes: Globe,
+/** Clé de facette service (avis) → id de service SSOT (icône + couleur d'accent). */
+const AVIS_KEY_TO_SERVICE_ID: Record<string, ServiceId> = {
+  audits: "audit",
+  interventions_formations: "formations",
+  implementations: "implementation",
+  un_a_un: "unAUn",
+  sites_web_augmentes: "sitesWeb",
 };
 
 function toFilters(sp: Record<string, string | undefined>): {
@@ -407,20 +397,31 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
         >
           <ul className="grid list-none gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
             {topServices.map((f) => {
-              const Icon = SERVICE_ICONS[f.key] ?? Star;
+              // Icône + couleur d'accent SSOT (cohérent tout le site) ; fallback neutre.
+              const serviceId = AVIS_KEY_TO_SERVICE_ID[f.key];
+              const visual = serviceId ? SERVICE_VISUAL[serviceId] : null;
+              const Icon = visual?.Icon ?? Star;
+              const a = visual ? ACCENT_CLASSES[visual.accent] : null;
               return (
                 <li key={f.key}>
                   <Link
                     href={{ pathname: "/avis/service/[service]", params: { service: f.key } }}
                     className="border-border bg-canvas shadow-subtle hover:shadow-elevated flex h-full flex-col gap-3 rounded-2xl border p-6 transition hover:-translate-y-0.5"
                   >
-                    <span className="bg-terracotta/10 text-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                    <span
+                      className={cn(
+                        "inline-flex h-11 w-11 items-center justify-center rounded-xl",
+                        a ? a.chip : "bg-terracotta/10 text-terracotta",
+                      )}
+                    >
                       <Icon aria-hidden="true" className="h-5 w-5" />
                     </span>
                     <span className="text-fg text-lg font-semibold tracking-tight">
                       {serviceLineLabel(f.key)}
                     </span>
-                    <span className="text-terracotta mt-auto text-sm font-medium">
+                    <span
+                      className={cn("mt-auto text-sm font-medium", a ? a.text : "text-terracotta")}
+                    >
                       {f.count} avis →
                     </span>
                   </Link>

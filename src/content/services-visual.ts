@@ -16,8 +16,7 @@
 // Une classe construite dynamiquement (`bg-${accent}-soft`) ne serait PAS
 // générée. Ne jamais interpoler — toujours des chaînes entières.
 
-import type { ComponentType } from "react";
-import { GraduationCap, UserRound, Search, Cog, Globe } from "lucide-react";
+import { GraduationCap, UserRound, Search, Cog, Globe, type LucideIcon } from "lucide-react";
 
 import type { ServiceId } from "@/content/services";
 
@@ -25,8 +24,8 @@ import type { ServiceId } from "@/content/services";
 export type ServiceAccent = "terracotta" | "ochre" | "primary" | "sage" | "plum";
 
 export interface ServiceVisual {
-  /** Icône Lucide unique du service — MÊME icône partout. */
-  Icon: ComponentType<{ className?: string }>;
+  /** Icône Lucide unique du service — MÊME icône partout (accepte className, strokeWidth…). */
+  Icon: LucideIcon;
   /** Accent couleur du service — donne le « pep par activité ». */
   accent: ServiceAccent;
 }

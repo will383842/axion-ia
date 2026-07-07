@@ -8,15 +8,7 @@
 //   - Sinon : stub minimal noindex follow (anti-doorway HCU 2024).
 
 import type { Metadata } from "next";
-import {
-  ArrowUpRight,
-  Briefcase,
-  Building2,
-  MapPin,
-  MonitorSmartphone,
-  Users,
-  Wrench,
-} from "lucide-react";
+import { ArrowUpRight, MapPin, Users } from "lucide-react";
 import { notFound, permanentRedirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -32,6 +24,8 @@ import { Link } from "@/i18n/navigation";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { VilleServiceDetailSection } from "@/components/sections/VilleServiceDetailSection";
+import { cn } from "@/lib/utils";
+import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
 
 import { getRegion } from "@/content/regions";
 import { VILLES, getIndexableVilles, getVille, isVilleIndexable } from "@/content/villes";
@@ -71,8 +65,7 @@ const SERVICE_META = {
     nameEn: "AI audit",
     eyebrowFr: "Audit IA opérationnel",
     eyebrowEn: "Operational AI audit",
-    icon: Briefcase,
-    accent: "primary" as const,
+    serviceId: "audit" as const,
     tiers: AUDIT_TIERS,
   },
   // Refonte 2026-06-11 — la verticale « interventions » (offre collective) est
@@ -87,8 +80,7 @@ const SERVICE_META = {
     nameEn: "Corporate AI training",
     eyebrowFr: "Formation IA en entreprise (intra)",
     eyebrowEn: "Corporate AI training (in-house)",
-    icon: Building2,
-    accent: "terracotta" as const,
+    serviceId: "formations" as const,
     tiers: INTERVENTION_TIERS,
   },
   implementation: {
@@ -99,8 +91,7 @@ const SERVICE_META = {
     nameEn: "Operational AI implementation",
     eyebrowFr: "Implémentation IA opérationnelle",
     eyebrowEn: "Operational AI implementation",
-    icon: Wrench,
-    accent: "sage" as const,
+    serviceId: "implementation" as const,
     tiers: IMPLEMENTATION_TIERS,
   },
   // Sprint S+2 City Domination — 4e verticale.
@@ -117,8 +108,7 @@ const SERVICE_META = {
     nameEn: "1-to-1 AI coaching for executives",
     eyebrowFr: "Accompagnement IA 1-to-1 (dirigeant)",
     eyebrowEn: "1-to-1 AI coaching (executive)",
-    icon: Users,
-    accent: "mocha" as const,
+    serviceId: "unAUn" as const,
     tiers: UN_A_UN_TIERS,
   },
   // 2026-06-04 (Will) — 5e verticale City Domination : sites web & plateformes
@@ -133,8 +123,7 @@ const SERVICE_META = {
     nameEn: "AI-augmented website & SaaS creation",
     eyebrowFr: "Agence web & IA",
     eyebrowEn: "Web & AI agency",
-    icon: MonitorSmartphone,
-    accent: "terracotta" as const,
+    serviceId: "sitesWeb" as const,
     tiers: CODAGE_TIERS,
   },
 } as const;
@@ -483,7 +472,9 @@ export async function renderVilleServicePage({
         <div className="flex flex-wrap items-center gap-3">
           <Cta
             href="/appel"
-            variant={meta.accent === "terracotta" ? "terracotta" : "primary"}
+            variant={
+              SERVICE_VISUAL[meta.serviceId].accent === "terracotta" ? "terracotta" : "primary"
+            }
             size="lg"
             shape="pill"
             track={`ville_service_${service}_book`}
@@ -615,14 +606,16 @@ export async function renderVilleServicePage({
           (clés alignées) et `unAUn` pour la 4e (mapping séparé car ServiceKey
           contient un tiret invalide en propriété TS littérale). */}
       {(() => {
-        const otherServices: ServiceKey[] = (
-          ["audit", "interventions", "implementation", "un-a-un", "sites-web-augmentes"] as const
-        ).filter((s) => {
-          if (s === service) return false;
-          if (s === "un-a-un") return !!ville.copy?.services?.unAUn;
-          if (s === "sites-web-augmentes") return !!ville.copy?.services?.sitesWeb;
-          return !!ville.copy?.services?.[s];
-        });
+        const otherServices: ServiceKey[] =
+          // Ordre SSOT (formations → 1-to-1 → audit → implémentation → sites web).
+          (
+            ["interventions", "un-a-un", "audit", "implementation", "sites-web-augmentes"] as const
+          ).filter((s) => {
+            if (s === service) return false;
+            if (s === "un-a-un") return !!ville.copy?.services?.unAUn;
+            if (s === "sites-web-augmentes") return !!ville.copy?.services?.sitesWeb;
+            return !!ville.copy?.services?.[s];
+          });
         if (otherServices.length === 0) return null;
         return (
           <Section
@@ -639,7 +632,9 @@ export async function renderVilleServicePage({
             <ul className="grid gap-4 lg:grid-cols-2">
               {otherServices.map((s) => {
                 const otherMeta = SERVICE_META[s];
-                const Icon = otherMeta.icon;
+                // Icône + couleur d'accent SSOT + fond teinté (cohérent tout le site).
+                const { Icon, accent } = SERVICE_VISUAL[otherMeta.serviceId];
+                const a = ACCENT_CLASSES[accent];
                 return (
                   <li key={s}>
                     <Link
@@ -647,15 +642,22 @@ export async function renderVilleServicePage({
                       data-source-region={ville.region}
                       data-source-ville={ville.slug}
                       data-cta-tracking={`ville_sister_service_${s}`}
-                      className="border-border bg-paper hover:border-terracotta-deep focus-visible:ring-terracotta group block rounded-2xl border-2 p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                      className={cn(
+                        "group shadow-subtle block rounded-2xl p-6 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-elevated)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                        a.surface,
+                        a.ring,
+                      )}
                     >
-                      <Icon
-                        aria-hidden="true"
-                        className="text-terracotta-deep mb-4 h-6 w-6"
-                        strokeWidth={2}
-                      />
+                      <span
+                        className={cn(
+                          "mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl",
+                          a.chipSolid,
+                        )}
+                      >
+                        <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={2} />
+                      </span>
                       <h3
-                        className="text-fg group-hover:text-terracotta text-xl font-semibold tracking-tight transition"
+                        className="text-fg text-xl font-semibold tracking-tight"
                         style={{ fontFamily: "var(--font-serif)" }}
                       >
                         {isFr ? otherMeta.nameFr : otherMeta.nameEn}{" "}
