@@ -83,9 +83,41 @@ function quizFormateur(quiz: QuizItem[]): BlocContenu[] {
   }));
 }
 
+// ── Fil rouge + livrables (issus de la structure, lever « excellence ») ───────
+
+/** Extras structurels (fil rouge + livrables J0/J+7/J+30) injectés dans les supports. */
+export interface SupportExtras {
+  filRouge?: string;
+  livrables?: { j0: string[]; j1: string[]; j30: string[] };
+}
+
+/** Bloc « Fil rouge » pour une introduction (vide si absent). */
+function filRougeBlocs(extras?: SupportExtras): BlocContenu[] {
+  return extras?.filRouge && extras.filRouge.trim()
+    ? [{ type: "note", texte: `Fil rouge du parcours : ${extras.filRouge.trim()}` }]
+    : [];
+}
+
+/** Section « Ce que vous saurez faire » depuis les livrables J0/J+7/J+30 (null si vide). */
+function livrablesSection(extras?: SupportExtras): SectionContenu | null {
+  const l = extras?.livrables;
+  if (!l) return null;
+  const items: string[] = [
+    ...l.j0.map((x) => `Dès la formation : ${x}`),
+    ...l.j1.map((x) => `Sous une semaine : ${x}`),
+    ...l.j30.map((x) => `À 30 jours : ${x}`),
+  ];
+  if (items.length === 0) return null;
+  return { titre: "Ce que vous saurez faire", blocs: [{ type: "objectif", items }] };
+}
+
 // ── Slides formateur (version animée, avec corrigés + notes) ──────────────────
 
-function slidesFormateur(titre: string, c: ContenuDetaille): SectionContenu[] {
+function slidesFormateur(
+  titre: string,
+  c: ContenuDetaille,
+  extras?: SupportExtras,
+): SectionContenu[] {
   const modalite = normaliserModalite(c.modalite);
   const sections: SectionContenu[] = [];
 
@@ -93,9 +125,12 @@ function slidesFormateur(titre: string, c: ContenuDetaille): SectionContenu[] {
     titre: "Introduction",
     blocs: [
       { type: "paragraphe", texte: titre },
+      ...filRougeBlocs(extras),
       { type: "note", texte: rappelAnimationModalite(modalite) },
     ],
   });
+  const livr = livrablesSection(extras);
+  if (livr) sections.push(livr);
 
   for (const mod of c.modules) {
     sections.push({
@@ -137,9 +172,18 @@ function slidesFormateur(titre: string, c: ContenuDetaille): SectionContenu[] {
 
 // ── Slides stagiaire (rédigé, sans corrigés ni réponses de quiz) ──────────────
 
-function slidesStagiaire(titre: string, c: ContenuDetaille): SectionContenu[] {
+function slidesStagiaire(
+  titre: string,
+  c: ContenuDetaille,
+  extras?: SupportExtras,
+): SectionContenu[] {
   const sections: SectionContenu[] = [];
-  sections.push({ titre: "Présentation", blocs: [{ type: "paragraphe", texte: titre }] });
+  sections.push({
+    titre: "Présentation",
+    blocs: [{ type: "paragraphe", texte: titre }, ...filRougeBlocs(extras)],
+  });
+  const livr = livrablesSection(extras);
+  if (livr) sections.push(livr);
 
   for (const mod of c.modules) {
     sections.push({ titre: mod.titre, blocs: [{ type: "paragraphe", texte: mod.introduction }] });
@@ -163,7 +207,12 @@ function slidesStagiaire(titre: string, c: ContenuDetaille): SectionContenu[] {
 
 // ── Livret stagiaire ──────────────────────────────────────────────────────────
 
-function livretStagiaire(titre: string, objectifs: string[], c: ContenuDetaille): SectionContenu[] {
+function livretStagiaire(
+  titre: string,
+  objectifs: string[],
+  c: ContenuDetaille,
+  extras?: SupportExtras,
+): SectionContenu[] {
   const sections: SectionContenu[] = [];
   sections.push({
     titre: "Bienvenue",
@@ -172,6 +221,7 @@ function livretStagiaire(titre: string, objectifs: string[], c: ContenuDetaille)
         type: "paragraphe",
         texte: `Bienvenue dans la formation « ${titre} ». Ce livret rassemble l'essentiel de votre parcours.`,
       },
+      ...filRougeBlocs(extras),
     ],
   });
   if (objectifs.length > 0) {
@@ -180,6 +230,8 @@ function livretStagiaire(titre: string, objectifs: string[], c: ContenuDetaille)
       blocs: [{ type: "objectif", items: objectifs }],
     });
   }
+  const livr = livrablesSection(extras);
+  if (livr) sections.push(livr);
   for (const mod of c.modules) {
     const blocs: BlocContenu[] = [{ type: "paragraphe", texte: mod.introduction }];
     for (const seq of mod.sequences) {
@@ -321,19 +373,29 @@ function grilleEval(objectifs: string[], c: ContenuDetaille): SectionContenu[] {
  */
 export function construireSupportRiche(
   type: SupportType,
-  input: { titre: string; objectifsPedagogiques: string[]; contenuDetaille: ContenuDetaille },
+  input: {
+    titre: string;
+    objectifsPedagogiques: string[];
+    contenuDetaille: ContenuDetaille;
+    filRouge?: string;
+    livrables?: { j0: string[]; j1: string[]; j30: string[] };
+  },
 ): SupportContenu {
   const { titre, objectifsPedagogiques: objectifs, contenuDetaille: c } = input;
+  const extras: SupportExtras = {
+    ...(input.filRouge ? { filRouge: input.filRouge } : {}),
+    ...(input.livrables ? { livrables: input.livrables } : {}),
+  };
   let sections: SectionContenu[];
   switch (type) {
     case "slides_formateur":
-      sections = slidesFormateur(titre, c);
+      sections = slidesFormateur(titre, c, extras);
       break;
     case "slides_stagiaire":
-      sections = slidesStagiaire(titre, c);
+      sections = slidesStagiaire(titre, c, extras);
       break;
     case "livret_stagiaire":
-      sections = livretStagiaire(titre, objectifs, c);
+      sections = livretStagiaire(titre, objectifs, c, extras);
       break;
     case "memo":
       sections = memo(c);

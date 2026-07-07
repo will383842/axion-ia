@@ -9,6 +9,8 @@ import {
   buildDureeGuidance,
   buildStructureUserPrompt,
   buildContextePedagogique,
+  buildModuleContentStructuredUserPrompt,
+  buildContentCritiqueSystemPrompt,
 } from "./prompts";
 
 describe("adaptation à la durée", () => {
@@ -78,5 +80,35 @@ describe("contexte pédagogique", () => {
     });
     expect(prompt).toContain("cabinet d'avocats");
     expect(prompt).toContain("debutant");
+  });
+});
+
+describe("auto-correction & critique du contenu", () => {
+  const baseModule = {
+    formationTitre: "IA Express",
+    modalite: "presentiel",
+    objectifsFormation: ["Utiliser un LLM"],
+    module: { moduleId: "M1", titre: "Module 1" },
+  };
+
+  it("les consignes d'amélioration sont injectées dans le prompt de contenu", () => {
+    const withConsignes = buildModuleContentStructuredUserPrompt({
+      ...baseModule,
+      consignes: "AXE_A_CORRIGER : exemples trop génériques",
+    });
+    expect(withConsignes).toContain("CONSIGNES D'AMÉLIORATION");
+    expect(withConsignes).toContain("AXE_A_CORRIGER");
+    // absentes si pas de consignes
+    expect(buildModuleContentStructuredUserPrompt(baseModule)).not.toContain(
+      "CONSIGNES D'AMÉLIORATION",
+    );
+  });
+
+  it("le prompt système de critique challenge concret/transférabilité/exercices", () => {
+    const sys = buildContentCritiqueSystemPrompt().toLowerCase();
+    expect(sys).toContain("avocat du diable");
+    expect(sys).toContain("transférabilité");
+    expect(sys).toContain("exercices");
+    expect(sys).toContain('"axes"');
   });
 });

@@ -141,6 +141,30 @@ describe("support-builder-rich", () => {
     expect(flat).toContain("ADAPT_DISTANCIEL");
   });
 
+  it("fil rouge + livrables descendent dans le livret et les slides", () => {
+    const s = construireSupportRiche("livret_stagiaire", {
+      titre: "IA Express",
+      objectifsPedagogiques: objectifs,
+      contenuDetaille: CONTENU,
+      filRouge: "FIL_ROUGE_TEST : automatiser un rapport hebdo",
+      livrables: { j0: ["LIVRABLE_J0"], j1: ["LIVRABLE_J1"], j30: ["LIVRABLE_J30"] },
+    });
+    const flat = JSON.stringify(s);
+    expect(flat).toContain("FIL_ROUGE_TEST");
+    expect(flat).toContain("LIVRABLE_J0");
+    expect(flat).toContain("LIVRABLE_J30");
+    expect(flat).toContain("Ce que vous saurez faire");
+  });
+
+  it("pas de section livrables si aucun livrable", () => {
+    const s = construireSupportRiche("slides_stagiaire", {
+      titre: "IA Express",
+      objectifsPedagogiques: objectifs,
+      contenuDetaille: CONTENU,
+    });
+    expect(JSON.stringify(s)).not.toContain("Ce que vous saurez faire");
+  });
+
   it("construireSupport garde le fallback squelette sans contenuDetaille", () => {
     const input: FormationInput = {
       titre: "IA Express",

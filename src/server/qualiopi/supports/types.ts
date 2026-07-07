@@ -78,6 +78,10 @@ export interface FormationInput {
    * Quand présent → les builders produisent des supports RICHES ; sinon fallback squelette.
    */
   contenuDetaille?: ContenuDetaille;
+  /** Projet fil rouge (mise en situation traversante) issu de la structure. */
+  filRouge?: string;
+  /** Livrables/actions concrètes attendus à J0 / J+7 / J+30 (structure). */
+  livrables?: { j0: string[]; j1: string[]; j30: string[] };
 }
 
 // ============================================================

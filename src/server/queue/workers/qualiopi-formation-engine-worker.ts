@@ -43,6 +43,8 @@ import {
   buildPersonaUserPrompt,
   buildModuleContentStructuredSystemPrompt,
   buildModuleContentStructuredUserPrompt,
+  buildContentCritiqueSystemPrompt,
+  buildContentCritiqueUserPrompt,
   type ModuleADetailler,
 } from "@/server/qualiopi/engine/prompts";
 import {
@@ -245,7 +247,10 @@ async function stepGenerateStructure(
       role: "text",
       systemPrompt,
       userPrompt,
-      maxTokens: 4096,
+      // 8192 (au lieu de 4096) : le JSON de structure complet (objectifs +
+      // fil_rouge + livrables j0/j1/j30 + modules) dépassait 4096 tokens → sortie
+      // tronquée → JSON invalide → score bas → boucle refine sans fin (témoin prod).
+      maxTokens: 8192,
       temperature: 0.2,
     }),
   );
@@ -359,7 +364,7 @@ async function stepBackwardDesign(
       role: "text",
       systemPrompt,
       userPrompt,
-      maxTokens: 2048,
+      maxTokens: 4096,
       temperature: 0.2,
     }),
   );
@@ -468,7 +473,7 @@ async function stepPersona(
       role: "text",
       systemPrompt,
       userPrompt,
-      maxTokens: 2048,
+      maxTokens: 4096,
       temperature: 0.3,
     }),
   );
@@ -733,7 +738,8 @@ async function stepRefine(
       role: "text",
       systemPrompt,
       userPrompt,
-      maxTokens: 4096,
+      // 8192 : même format que la structure (voir note structure) — éviter la troncature.
+      maxTokens: 8192,
       temperature: 0.3,
     }),
   );
@@ -851,6 +857,7 @@ async function generateModuleContent(
   promptVersion: number,
   passesCourantes: number,
   grounding: string,
+  consignes?: string,
 ): Promise<{ contenu: ModuleContenu; modele: string } | null> {
   const langue = formation.langueGeneration;
   const systemPrompt = buildModuleContentStructuredSystemPrompt(grounding);
@@ -864,6 +871,7 @@ async function generateModuleContent(
     ...(formation.prerequis != null ? { prerequis: formation.prerequis } : {}),
     ...(formation.secteurCible != null ? { secteurCible: formation.secteurCible } : {}),
     ...(formation.outilsClient != null ? { outilsClient: formation.outilsClient } : {}),
+    ...(consignes ? { consignes } : {}),
   });
 
   const cacheKey = buildCacheKey(userPrompt, promptVersion, langue);
@@ -896,7 +904,7 @@ async function generateModuleContent(
         role: "text",
         systemPrompt,
         userPrompt,
-        maxTokens: 6144,
+        maxTokens: 8192,
         temperature: 0.3,
       }),
     );
@@ -950,6 +958,95 @@ async function generateModuleContent(
   return { contenu: parsed.data as ModuleContenu, modele };
 }
 
+/** Nombre max de passes d'auto-correction du contenu (best-of). Borne le coût. */
+const MAX_CONTENT_REFINE_PASSES = 1;
+
+/** Génère TOUS les modules d'une formation (optionnellement avec consignes de raffinement). */
+async function generateAllModules(
+  formation: FormationForEngine,
+  modules: ModuleADetailler[],
+  promptVersion: number,
+  passesCourantes: number,
+  grounding: string,
+  consignes?: string,
+): Promise<{ modules: ModuleContenu[]; modele: string }> {
+  const out: ModuleContenu[] = [];
+  let modele = "";
+  for (const mod of modules) {
+    const r = await generateModuleContent(
+      formation,
+      mod,
+      promptVersion,
+      passesCourantes,
+      grounding,
+      consignes,
+    );
+    if (r) {
+      out.push(r.contenu);
+      modele = r.modele;
+    }
+  }
+  return { modules: out, modele };
+}
+
+/**
+ * Lever « critique adversariale du contenu » : un appel IA qui challenge le
+ * contenu détaillé et renvoie des axes d'amélioration. Fail-soft (retourne []).
+ */
+async function critiqueContenuAxes(
+  formation: FormationForEngine,
+  contenuJson: string,
+  passesCourantes: number,
+): Promise<string[]> {
+  try {
+    await assertCostCapAvailable("anthropic", 0.05);
+    const startMs = Date.now();
+    const resp = await withRetry(() =>
+      anthropicProvider.generate({
+        jobId: formation.id,
+        contentType: "formation_contenu_critique",
+        role: "text",
+        systemPrompt: buildContentCritiqueSystemPrompt(),
+        userPrompt: buildContentCritiqueUserPrompt(contenuJson.slice(0, 20_000)),
+        maxTokens: 1024,
+        temperature: 0.4,
+      }),
+    );
+    await trackCost({
+      jobId: formation.id,
+      provider: "anthropic",
+      model: resp.model,
+      tokensInput:
+        resp.tokensInput + (resp.cacheReadInputTokens ?? 0) + (resp.cacheCreationInputTokens ?? 0),
+      tokensOutput: resp.tokensOutput,
+      costUsd: resp.costUsd,
+    });
+    const parsed = parseOutputSafe(resp.output) as { axes?: unknown; verdict?: unknown } | null;
+    const axes = parsed?.axes;
+    const list = Array.isArray(axes) ? axes.map((a) => String(a)).slice(0, 6) : [];
+    await traceGenerationJob({
+      formationId: formation.id,
+      etape: "contenu_critique",
+      tentative: passesCourantes + 1,
+      status: "success",
+      tokensIn: resp.tokensInput,
+      tokensOut: resp.tokensOutput,
+      coutUsd: resp.costUsd,
+      modele: resp.model,
+      dureeMs: Date.now() - startMs,
+      cacheHit: false,
+      metadata: { verdict: parsed?.verdict, axes: list },
+    });
+    return list;
+  } catch (err) {
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} critiqueContenu fail-soft:`,
+      err instanceof Error ? err.message : String(err),
+    );
+    return [];
+  }
+}
+
 async function stepGenerateContent(
   formation: FormationForEngine,
   passesCourantes: number,
@@ -961,21 +1058,67 @@ async function stepGenerateContent(
   const modules = extractModulesADetailler(formation.programmeDetaille);
   const grounding = axionIaStackGrounding();
 
-  const modulesContenu: ModuleContenu[] = [];
-  let modeleUtilise = "";
-  for (const mod of modules) {
-    const result = await generateModuleContent(
+  const buildContenu = (mods: ModuleContenu[], modele: string): ContenuDetaille => ({
+    version: CONTENU_DETAILLE_VERSION,
+    modalite,
+    modules: mods,
+    ...(modele ? { genereAvec: modele } : {}),
+    genereLe: new Date().toISOString(),
+  });
+
+  // ── Passe 0 : génération initiale de tous les modules ──
+  let bestGen = await generateAllModules(
+    formation,
+    modules,
+    promptVersion,
+    passesCourantes,
+    grounding,
+  );
+  let best = buildContenu(bestGen.modules, bestGen.modele);
+  let bestQ = evaluateContenuDetailleQuality(best, formation.dureeHeures);
+  let refinePasses = 0;
+
+  // ── Leviers 1 + 3 : auto-correction pilotée par les manques déterministes ET
+  //    la critique adversariale du contenu, tant que la qualité n'est pas
+  //    « excellent » (best-of : on ne garde que si le score s'améliore). ──
+  while (
+    bestGen.modules.length > 0 &&
+    bestQ.verdict !== "excellent" &&
+    refinePasses < MAX_CONTENT_REFINE_PASSES
+  ) {
+    refinePasses++;
+    const axes = await critiqueContenuAxes(
       formation,
-      mod,
-      promptVersion,
+      JSON.stringify(best.modules),
       passesCourantes,
-      grounding,
     );
-    if (result) {
-      modulesContenu.push(result.contenu);
-      modeleUtilise = result.modele;
+    const consignes = [...bestQ.manques, ...axes].slice(0, 12).join("\n");
+    if (!consignes.trim()) break;
+    console.log(
+      `[qualiopi:engine] formation=${formation.id} — auto-correction contenu passe ${refinePasses} (score ${bestQ.score}).`,
+    );
+    const retryGen = await generateAllModules(
+      formation,
+      modules,
+      promptVersion,
+      passesCourantes + refinePasses,
+      grounding,
+      consignes,
+    );
+    if (retryGen.modules.length === 0) break;
+    const retry = buildContenu(retryGen.modules, retryGen.modele);
+    const retryQ = evaluateContenuDetailleQuality(retry, formation.dureeHeures);
+    if (retryQ.score > bestQ.score) {
+      bestGen = retryGen;
+      best = retry;
+      bestQ = retryQ;
     }
   }
+
+  const modulesContenu = bestGen.modules;
+  const modeleUtilise = bestGen.modele;
+  const contenuDetaille = best;
+  const qualite = bestQ;
 
   // B2 — FAIL-LOUD si aucun module valide : ne JAMAIS avancer le statut avec un
   // contenu vide (qui violerait de toute façon ContenuDetailleSchema.min(1) et
@@ -1013,20 +1156,9 @@ async function stepGenerateContent(
     );
   }
 
-  const contenuDetaille: ContenuDetaille = {
-    version: CONTENU_DETAILLE_VERSION,
-    modalite,
-    modules: modulesContenu,
-    ...(modeleUtilise ? { genereAvec: modeleUtilise } : {}),
-    genereLe: new Date().toISOString(),
-  };
-
-  // Contrôle qualité déterministe (best practices Qualiopi) — tracé + aide au
-  // validateur humain. Non bloquant, mais un score « insuffisant » est loggué.
-  const qualite = evaluateContenuDetailleQuality(contenuDetaille, formation.dureeHeures);
   if (qualite.verdict === "insuffisant") {
     console.warn(
-      `[qualiopi:engine] formation=${formation.id} — qualité contenu ${qualite.score}/100 (${qualite.manques.length} manque(s)).`,
+      `[qualiopi:engine] formation=${formation.id} — qualité contenu ${qualite.score}/100 après ${refinePasses} auto-correction(s) (${qualite.manques.length} manque(s)).`,
     );
   }
 
@@ -1080,6 +1212,7 @@ async function stepGenerateContent(
           qualiteScore: qualite.score,
           qualiteVerdict: qualite.verdict,
           qualiteManques: qualite.manques.slice(0, 20),
+          refinePasses,
           generatedAt: new Date().toISOString(),
         } as never,
       },
@@ -1322,13 +1455,20 @@ async function handleEvalDecision(
   const grille = await getActiveGrille();
   const nbPassesMax = grille?.nbPassesMax ?? 3;
 
-  if (!evalResult.valide && passesCourantes < nbPassesMax) {
+  // Boucle de raffinement de la STRUCTURE : on raffine tant que le score est sous
+  // le plancher ET qu'il reste des passes, PUIS on génère TOUJOURS le contenu.
+  // (Correctif témoin prod : l'ancienne version faisait 1 seul refine puis, si
+  // toujours invalide et passes non épuisées, ne relançait NI ne générait rien →
+  // formation bloquée à contenu_evalue indéfiniment.)
+  let currentEval = evalResult;
+  let passe = passesCourantes;
+  while (!currentEval.valide && passe < nbPassesMax) {
     console.log(
-      `[qualiopi:engine] formation=${formation.id} score=${evalResult.scoreGlobal} < plancher → refine (passe ${passesCourantes + 1}/${nbPassesMax})`,
+      `[qualiopi:engine] formation=${formation.id} score=${currentEval.scoreGlobal} < plancher → refine (passe ${passe + 1}/${nbPassesMax})`,
     );
-    await stepRefine(formation, passesCourantes, evalResult.scoreGlobal, evalResult.commentaire);
+    await stepRefine(formation, passe, currentEval.scoreGlobal, currentEval.commentaire);
 
-    // Recharger et ré-évaluer
+    // Recharger le programme raffiné avant de ré-évaluer.
     const updated = await prisma.formation.findUnique({
       where: { id: formation.id },
       select: {
@@ -1343,18 +1483,16 @@ async function handleEvalDecision(
       formation.objectifsPedagogiques = updated.objectifsPedagogiques;
     }
 
-    const reEval = await stepEvaluateQuality(formation, passesCourantes + 1);
-    if (reEval.valide || passesCourantes + 1 >= nbPassesMax) {
-      if (!reEval.valide) {
-        console.warn(
-          `[qualiopi:engine] formation=${formation.id} — passes max atteintes, génération forcée`,
-        );
-      }
-      await stepGenerateContent(formation, passesCourantes + 1);
-    }
-  } else {
-    await stepGenerateContent(formation, passesCourantes);
+    passe += 1;
+    currentEval = await stepEvaluateQuality(formation, passe);
   }
+
+  if (!currentEval.valide) {
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} — passes de structure épuisées (score ${currentEval.scoreGlobal}), génération du contenu forcée.`,
+    );
+  }
+  await stepGenerateContent(formation, passe);
 }
 
 function parseOutputSafe(output: string): unknown {

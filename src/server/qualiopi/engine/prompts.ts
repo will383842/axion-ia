@@ -636,9 +636,15 @@ export function buildModuleContentStructuredUserPrompt(input: {
   prerequis?: string | null;
   secteurCible?: string | null;
   outilsClient?: string | null;
+  /** Consignes d'amélioration (passe de raffinement) — issues des manques + critique. */
+  consignes?: string | null;
 }): string {
   const modalite = normaliserModalite(input.modalite);
   const reglesModalite = reglesModalitePourPrompt(modalite);
+  const consignesSection =
+    input.consignes && input.consignes.trim()
+      ? `\n⚠️ CONSIGNES D'AMÉLIORATION PRIORITAIRES (corrige ces points par rapport à une version précédente) :\n${input.consignes.trim()}\n`
+      : "";
   const contextePedago = buildContextePedagogique({
     niveau: input.niveau,
     prerequis: input.prerequis,
@@ -675,7 +681,7 @@ Module à détailler :
 - Activités prévues (issues du plan validé — à respecter) : ${(input.module.activites ?? []).join(" ; ") || "à proposer"}
 - Séquences prévues :
 ${seqStr}
-${contextePedago ? `\n${contextePedago}\n` : ""}
+${contextePedago ? `\n${contextePedago}\n` : ""}${consignesSection}
 CONSIGNES D'ADAPTATION À LA MODALITÉ :
 ${reglesModalite}
 
@@ -714,4 +720,32 @@ Retourne un JSON STRICTEMENT de la forme (respecte les clés et les types) :
 }
 
 Règles : au moins 1 concept par séquence ; un exercice pour toute séquence à visée pratique ; 2 à 4 questions de quiz pour le module. Omets "exercice", "adaptationPresentiel" ou "adaptationDistanciel" si non pertinents (ne mets pas de valeur vide).`;
+}
+
+// ── Critique adversariale du CONTENU (lever « excellence ») ────────────────────
+
+/**
+ * System prompt : avocat du diable qui challenge le CONTENU pédagogique détaillé
+ * (pas seulement la structure) et renvoie des axes d'amélioration actionnables.
+ */
+export function buildContentCritiqueSystemPrompt(): string {
+  return `Tu es un formateur expert exigeant, en posture d'AVOCAT DU DIABLE.
+On te soumet le contenu pédagogique détaillé d'une formation. Ton rôle : le critiquer sans complaisance pour en révéler les faiblesses réelles, sous 4 angles :
+- CONCRET : les exemples sont-ils réellement ancrés dans une situation métier vécue, ou restent-ils génériques ?
+- TRANSFÉRABILITÉ : le stagiaire pourra-t-il vraiment appliquer ça à son poste dès le lendemain ?
+- EXERCICES : sont-ils réalisables dans le temps imparti, avec un corrigé utile, et évaluent-ils le bon objectif ?
+- ENGAGEMENT : le contenu donne-t-il envie et évite-t-il le survol superficiel ?
+
+Sois précis et actionnable. Ne félicite pas : liste ce qui doit être amélioré.
+
+${AI_ACT_NOTICE}
+
+Réponds UNIQUEMENT en JSON valide : { "verdict": "OK|ATTENTION|CRITIQUE", "axes": ["axe d'amélioration actionnable", ...] }`;
+}
+
+/** User prompt : soumet le contenu détaillé (JSON compact) à la critique. */
+export function buildContentCritiqueUserPrompt(contenuJson: string): string {
+  return `Critique le contenu pédagogique détaillé suivant et renvoie le JSON demandé (max 6 axes, les plus importants) :
+
+${contenuJson}`;
 }
