@@ -75,6 +75,17 @@ export type QualiopiPole =
  */
 export type DocumentsPole = "activite" | "outils";
 
+/**
+ * Pôle du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08.
+ * Découpe les 10 onglets quotidiens en 3 blocs métier. Clés distinctes.
+ */
+export type MainPole = "agenda" | "facturation" | "relation";
+
+/**
+ * Pôle du groupe `image-bank` — refonte UX 2026-07-08. 3 blocs. Clés distinctes.
+ */
+export type ImageBankPole = "bibliotheque" | "organisation" | "admin";
+
 export interface AdminNavItem {
   href: string;
   label: string;
@@ -90,7 +101,7 @@ export interface AdminNavItem {
    * `<AdminSidebarNav>` de regrouper les items en accordéon par pôle.
    * (cf. DECISION-IA.md §1 — refonte UX content-gen 2026-06-16.)
    */
-  subGroup?: ContentGenPole | QualiopiPole | DocumentsPole;
+  subGroup?: ContentGenPole | QualiopiPole | DocumentsPole | MainPole | ImageBankPole;
   /**
    * Niveau d'exposition. Défaut implicite `"simple"`.
    * En mode Simple, la sidebar masque les items `tier: "advanced"` et les
@@ -186,6 +197,28 @@ export const DOCUMENTS_POLE_LABELS: Record<DocumentsPole, string> = {
 
 export const DOCUMENTS_POLE_ORDER: ReadonlyArray<DocumentsPole> = ["activite", "outils"];
 
+/** Pôles du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08. */
+export const MAIN_POLE_LABELS: Record<MainPole, string> = {
+  agenda: "Agenda & réservations",
+  facturation: "Facturation",
+  relation: "Contacts & recrutement",
+};
+
+export const MAIN_POLE_ORDER: ReadonlyArray<MainPole> = ["agenda", "facturation", "relation"];
+
+/** Pôles du groupe `image-bank` — refonte UX 2026-07-08. */
+export const IMAGE_BANK_POLE_LABELS: Record<ImageBankPole, string> = {
+  bibliotheque: "Bibliothèque",
+  organisation: "Organisation & qualité",
+  admin: "Administration",
+};
+
+export const IMAGE_BANK_POLE_ORDER: ReadonlyArray<ImageBankPole> = [
+  "bibliotheque",
+  "organisation",
+  "admin",
+];
+
 /**
  * Maps génériques « groupe → pôles » consommées par `<AdminSidebarNav>` pour
  * rendre N'IMPORTE quel groupe sous-divisé en accordéon de pôles, sans coder en
@@ -194,15 +227,19 @@ export const DOCUMENTS_POLE_ORDER: ReadonlyArray<DocumentsPole> = ["activite", "
  * entre groupes pour un état plié/déplié `Set<string>` sans collision.
  */
 export const GROUP_POLE_ORDER: Partial<Record<AdminNavGroup, ReadonlyArray<string>>> = {
+  main: MAIN_POLE_ORDER,
   content_gen: CONTENT_GEN_POLE_ORDER,
   qualiopi: QUALIOPI_POLE_ORDER,
   "documents-interventions": DOCUMENTS_POLE_ORDER,
+  "image-bank": IMAGE_BANK_POLE_ORDER,
 };
 
 export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<string, string>>>> = {
+  main: MAIN_POLE_LABELS,
   content_gen: CONTENT_GEN_POLE_LABELS,
   qualiopi: QUALIOPI_POLE_LABELS,
   "documents-interventions": DOCUMENTS_POLE_LABELS,
+  "image-bank": IMAGE_BANK_POLE_LABELS,
 };
 
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
@@ -210,7 +247,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "content",
   "content_gen",
   "qualiopi",
-  "prospection",
+  // "prospection" retiré du menu (doublon Axion CRM Pro) — lien externe conservé.
   "documents-interventions",
   "coaching-1to1",
   "image-bank",
@@ -230,26 +267,67 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
 export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> {
   const base = `/fr/${adminPrefix}`;
   return [
-    // ── main ─────────────────────────────────────────────────────────────
-    { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main" },
-    { href: `${base}/calendrier`, label: "Calendrier", icon: "📅", group: "main" },
-    { href: `${base}/reservations`, label: "Réservations", icon: "📋", group: "main" },
-    { href: `${base}/devis`, label: "Devis", icon: "📄", group: "main" },
-    { href: `${base}/factures`, label: "Factures", icon: "🧾", group: "main" },
-    { href: `${base}/paiements`, label: "Paiements", icon: "💶", group: "main" },
-    { href: `${base}/echeanciers`, label: "Échéanciers", icon: "📅", group: "main" },
-    { href: `${base}/options`, label: "Options 48h", icon: "⏳", group: "main" },
+    // ── main (« Activité quotidienne ») — 3 pôles (refonte UX 2026-07-08) ───
+    // ▸ AGENDA & RÉSERVATIONS
+    { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main", subGroup: "agenda" },
+    {
+      href: `${base}/calendrier`,
+      label: "Calendrier",
+      icon: "📅",
+      group: "main",
+      subGroup: "agenda",
+    },
+    {
+      href: `${base}/reservations`,
+      label: "Réservations",
+      icon: "📋",
+      group: "main",
+      subGroup: "agenda",
+    },
+    {
+      href: `${base}/options`,
+      label: "Options 48h",
+      icon: "⏳",
+      group: "main",
+      subGroup: "agenda",
+    },
+    // ▸ FACTURATION
+    { href: `${base}/devis`, label: "Devis", icon: "📄", group: "main", subGroup: "facturation" },
+    {
+      href: `${base}/factures`,
+      label: "Factures",
+      icon: "🧾",
+      group: "main",
+      subGroup: "facturation",
+    },
+    {
+      href: `${base}/paiements`,
+      label: "Paiements",
+      icon: "💶",
+      group: "main",
+      subGroup: "facturation",
+    },
+    {
+      href: `${base}/echeanciers`,
+      label: "Échéanciers",
+      icon: "📅",
+      group: "main",
+      subGroup: "facturation",
+    },
+    // ▸ CONTACTS & RECRUTEMENT
     {
       href: `${base}/contacts/messages`,
-      label: "Contacts & messages",
+      label: "Contacts",
       icon: "📥",
       group: "main",
+      subGroup: "relation",
     },
     {
       href: `${base}/candidatures`,
       label: "Candidatures emploi",
       icon: "📨",
       group: "main",
+      subGroup: "relation",
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
@@ -748,41 +826,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "administration",
     },
-    // ── Prospection & Base Entreprises (module prospection) ──────────────
-    { href: `${base}/prospection`, label: "Tableau de bord", icon: "🧭", group: "prospection" },
-    {
-      href: `${base}/prospection/departements`,
-      label: "Départements",
-      icon: "🇫🇷",
-      group: "prospection",
-    },
-    { href: `${base}/prospection/campagnes`, label: "Campagnes", icon: "🎯", group: "prospection" },
-    {
-      href: `${base}/prospection/entreprises`,
-      label: "Base entreprises",
-      icon: "🏢",
-      group: "prospection",
-    },
-    { href: `${base}/prospection/contacts`, label: "Contacts", icon: "📇", group: "prospection" },
-    {
-      href: `${base}/prospection/couverture`,
-      label: "Couverture",
-      icon: "🗺️",
-      group: "prospection",
-    },
-    { href: `${base}/prospection/carte`, label: "Carte", icon: "📍", group: "prospection" },
-    {
-      href: `${base}/prospection/activites`,
-      label: "Par activité",
-      icon: "📊",
-      group: "prospection",
-    },
-    { href: `${base}/prospection/personnes`, label: "Personnes", icon: "👥", group: "prospection" },
-    { href: `${base}/prospection/exports`, label: "Exports", icon: "📤", group: "prospection" },
-    { href: `${base}/prospection/journal`, label: "Journal", icon: "📜", group: "prospection" },
-    { href: `${base}/prospection/rgpd`, label: "RGPD", icon: "🛡️", group: "prospection" },
-    { href: `${base}/prospection/doublons`, label: "Doublons", icon: "🔀", group: "prospection" },
-    { href: `${base}/prospection/reglages`, label: "Réglages", icon: "⚙️", group: "prospection" },
+    // ── Prospection (module INTERNE retiré de la nav — refonte UX 2026-07-08) ──
+    //   Les 14 onglets internes faisaient DOUBLON avec l'appli séparée
+    //   « Axion CRM Pro » (app.axion-crm-pro.com), déjà accessible via le lien
+    //   externe « Prospection ↗ » épinglé en tête de sidebar (cf. AdminSidebarNav).
+    //   Le module interne était « en sommeil / à retirer ». On le sort du menu
+    //   (et de la palette) ; les pages `/prospection/*` restent routables
+    //   directement le temps d'une éventuelle dépose définitive. Le groupe
+    //   `prospection` est donc retiré de ADMIN_NAV_GROUP_ORDER ci-dessus.
     // ── Documents (hub à 2 niveaux : Activités + Autres) ─────────────────
     //   Activités : Formations / 1-to-1 / Audit (kits pédagogiques Qualiopi,
     //   InterventionDocument) + Implémentations / Sites web (buckets de fichiers
@@ -865,37 +916,80 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🧑‍🏫",
       group: "coaching-1to1",
     },
-    // ── banque d'images (image-bank V1) ──────────────────────────────────
-    { href: `${base}/image-bank`, label: "Vue d'ensemble", icon: "🖼️", group: "image-bank" },
-    { href: `${base}/image-bank/library`, label: "Bibliothèque", icon: "📚", group: "image-bank" },
-    { href: `${base}/image-bank/upload`, label: "Téléverser", icon: "⬆️", group: "image-bank" },
+    // ── banque d'images — 3 pôles (refonte UX 2026-07-08) ─────────────────
+    // ▸ BIBLIOTHÈQUE
+    {
+      href: `${base}/image-bank`,
+      label: "Vue d'ensemble",
+      icon: "🖼️",
+      group: "image-bank",
+      subGroup: "bibliotheque",
+    },
+    {
+      href: `${base}/image-bank/library`,
+      label: "Bibliothèque",
+      icon: "📚",
+      group: "image-bank",
+      subGroup: "bibliotheque",
+    },
+    {
+      href: `${base}/image-bank/upload`,
+      label: "Téléverser",
+      icon: "⬆️",
+      group: "image-bank",
+      subGroup: "bibliotheque",
+    },
     {
       href: `${base}/image-bank/bulk-import`,
       label: "Import CSV en masse",
       icon: "📦",
       group: "image-bank",
+      subGroup: "bibliotheque",
+    },
+    // ▸ ORGANISATION & QUALITÉ
+    {
+      href: `${base}/image-bank/categories`,
+      label: "Catégories",
+      icon: "🏷️",
+      group: "image-bank",
+      subGroup: "organisation",
+    },
+    {
+      href: `${base}/image-bank/tags`,
+      label: "Étiquettes",
+      icon: "🔖",
+      group: "image-bank",
+      subGroup: "organisation",
     },
     {
       href: `${base}/image-bank/quality`,
       label: "File de qualité",
       icon: "🔍",
       group: "image-bank",
+      subGroup: "organisation",
     },
     {
       href: `${base}/image-bank/analytics`,
       label: "Statistiques",
       icon: "📊",
       group: "image-bank",
+      subGroup: "organisation",
     },
-    { href: `${base}/image-bank/categories`, label: "Catégories", icon: "🏷️", group: "image-bank" },
-    { href: `${base}/image-bank/tags`, label: "Étiquettes", icon: "🔖", group: "image-bank" },
+    // ▸ ADMINISTRATION
     {
       href: `${base}/image-bank/usage-logs`,
       label: "Journaux d'utilisation (RGPD)",
       icon: "🛡️",
       group: "image-bank",
+      subGroup: "admin",
     },
-    { href: `${base}/image-bank/settings`, label: "Réglages", icon: "⚙️", group: "image-bank" },
+    {
+      href: `${base}/image-bank/settings`,
+      label: "Réglages",
+      icon: "⚙️",
+      group: "image-bank",
+      subGroup: "admin",
+    },
     // ── salle de presse (communiqués + kit média de marque) ──────────────
     { href: `${base}/presse`, label: "Vue d'ensemble", icon: "📰", group: "presse" },
     { href: `${base}/presse/communiques`, label: "Communiqués", icon: "🗞️", group: "presse" },

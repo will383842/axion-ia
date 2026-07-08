@@ -8,17 +8,18 @@ import {
   QUALIOPI_POLE_LABELS,
   DOCUMENTS_POLE_ORDER,
   DOCUMENTS_POLE_LABELS,
+  GROUP_POLE_ORDER,
+  GROUP_POLE_LABELS,
 } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
   it("returns 114 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour))", () => {
     const items = buildAdminNav("admin-test-prefix");
-    // +14 pôle Prospection & Base Entreprises 2026-07-04 (dashboard, départements,
-    // campagnes, entreprises, contacts, couverture, carte, par activité, personnes,
-    // exports, journal, rgpd, doublons, réglages) → 117 → 131.
-    // +1 Avis clients 2026-07-06 (groupe content, modération avis) → 132.
-    // -1 Témoignages 2026-07-06 (système Testimonial décommissionné) → 131.
-    expect(items.length).toBe(131);
+    // +14 pôle Prospection & Base Entreprises 2026-07-04 → 131.
+    // -14 Prospection interne RETIRÉ de la nav 2026-07-08 (doublon Axion CRM Pro,
+    //     lien externe conservé) → 117. (Relabels/pôles main·image-bank·qualiopi·
+    //     documents ne changent PAS le compte : métadonnées `subGroup` uniquement.)
+    expect(items.length).toBe(117);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
@@ -81,6 +82,32 @@ describe("buildAdminNav SSOT", () => {
     for (const p of DOCUMENTS_POLE_ORDER) {
       expect(DOCUMENTS_POLE_LABELS[p]).toBeDefined();
     }
+  });
+
+  // Garde générique : pour TOUT groupe déclaré dans GROUP_POLE_ORDER
+  // (main, content_gen, qualiopi, documents, image-bank), chaque item du groupe
+  // doit porter un subGroup listé ET étiqueté — sinon il disparaît du rendu en
+  // pôles (groupItems.filter). Couvre tous les groupes à pôles d'un coup.
+  it("tout item d'un groupe à pôles porte un subGroup valide + étiqueté", () => {
+    const items = buildAdminNav("p");
+    for (const [group, poleOrder] of Object.entries(GROUP_POLE_ORDER)) {
+      const groupItems = items.filter((it) => it.group === group);
+      expect(groupItems.length, `groupe ${group} vide`).toBeGreaterThan(0);
+      const labels = GROUP_POLE_LABELS[group as keyof typeof GROUP_POLE_LABELS];
+      for (const it of groupItems) {
+        expect(it.subGroup, `« ${it.label} » (${group}) sans pôle`).toBeDefined();
+        expect(poleOrder as ReadonlyArray<string>).toContain(it.subGroup);
+        expect(labels?.[it.subGroup as string], `pôle ${it.subGroup} sans libellé`).toBeDefined();
+      }
+    }
+  });
+
+  // Refonte UX 2026-07-08 : le module Prospection interne est retiré de la nav
+  // (doublon avec l'appli externe Axion CRM Pro). Verrou anti-réintroduction.
+  it("le groupe prospection n'est plus dans la nav", () => {
+    const items = buildAdminNav("p");
+    expect(items.some((it) => it.group === "prospection")).toBe(false);
+    expect(ADMIN_NAV_GROUP_ORDER).not.toContain("prospection");
   });
 });
 
