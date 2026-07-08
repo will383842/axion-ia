@@ -75,6 +75,12 @@ export interface FormationEngineJobData {
   formationId: string;
   /** Nombre de passes de raffinement déjà effectuées (pour boucle refine). */
   passesCourantes?: number;
+  /**
+   * Auto-génération : si true, le worker génère TOUS les supports + le diaporama
+   * de la formation (au lieu du pipeline de contenu). Enfilé par la publication
+   * (validation humaine) → les documents sortent seuls, sans clic.
+   */
+  generateSupports?: boolean;
 }
 
 // ── Formation type minimal pour le pipeline ──────────────────────────────────
@@ -1246,6 +1252,40 @@ async function stepAssemble(formation: FormationForEngine): Promise<void> {
 
 // ── Handler principal exporté ─────────────────────────────────────────────────
 
+/**
+ * Auto-génération : produit tous les supports pédagogiques + le diaporama de
+ * projection d'une formation. Chaque étape est fail-soft (un échec n'interrompt
+ * pas les autres). Imports dynamiques pour éviter d'alourdir le chargement du
+ * worker et rester résilient (deck-service tire @react-pdf/sharp/pptx).
+ */
+async function autoGenererSupports(formationId: string): Promise<void> {
+  console.log(`[qualiopi:engine] auto-génération supports formation=${formationId}`);
+  try {
+    const { genererTousSupports } = await import("@/server/qualiopi/supports/supports-service");
+    const res = await genererTousSupports({ formationId });
+    console.log(
+      `[qualiopi:engine] supports ok=${res.ok.length} echecs=${res.echecs.length} formation=${formationId}`,
+    );
+  } catch (err) {
+    console.warn(
+      `[qualiopi:engine] auto-génération supports fail-soft formation=${formationId}:`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+  try {
+    const { genererDeck } = await import("@/server/qualiopi/supports/deck/deck-service");
+    const deck = await genererDeck({ formationId });
+    console.log(
+      `[qualiopi:engine] diaporama ok slides=${deck.nbSlides} pptx=${deck.pptxDisponible} formation=${formationId}`,
+    );
+  } catch (err) {
+    console.warn(
+      `[qualiopi:engine] auto-génération diaporama fail-soft formation=${formationId}:`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
 export async function formationEngineWorkerHandler(
   job: Job<FormationEngineJobData>,
 ): Promise<void> {
@@ -1254,6 +1294,13 @@ export async function formationEngineWorkerHandler(
 
   if (!formationId) {
     throw new UnrecoverableError("formationId manquant dans le job");
+  }
+
+  // Auto-génération des supports (déclenchée à la publication) : on produit tous
+  // les supports + le diaporama, puis on s'arrête (pas de pipeline de contenu).
+  if (job.data.generateSupports === true) {
+    await autoGenererSupports(formationId);
+    return;
   }
 
   const row = await prisma.formation.findUnique({

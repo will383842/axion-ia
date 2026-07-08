@@ -19,6 +19,7 @@
 export type SlideKind =
   | "cover" // page de garde
   | "agenda" // sommaire des modules
+  | "jour" // ouverture d'une JOURNÉE (formations multi-jours)
   | "section" // ouverture d'un module (respiration + visuel)
   | "content" // une idée : titre + puces courtes
   | "quiz" // question de quiz (réponse en notes)

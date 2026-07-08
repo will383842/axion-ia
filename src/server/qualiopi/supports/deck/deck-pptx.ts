@@ -35,7 +35,7 @@ interface PptxInstance {
 const hex = (c: string): string => c.replace("#", "");
 
 function isDark(kind: Slide["kind"]): boolean {
-  return kind === "cover" || kind === "section" || kind === "closing";
+  return kind === "cover" || kind === "jour" || kind === "section" || kind === "closing";
 }
 
 function slideBg(kind: Slide["kind"]): string {
@@ -43,6 +43,8 @@ function slideBg(kind: Slide["kind"]): string {
     case "cover":
     case "closing":
       return hex(C.mocha);
+    case "jour":
+      return hex(C.terracotta);
     case "section":
       return hex(C.primary);
     case "quiz":

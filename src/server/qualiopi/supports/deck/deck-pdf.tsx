@@ -98,6 +98,8 @@ function bg(kind: Slide["kind"]): string {
   switch (kind) {
     case "cover":
       return C.mocha;
+    case "jour":
+      return C.terracotta;
     case "section":
       return C.primary;
     case "closing":
@@ -112,7 +114,7 @@ function bg(kind: Slide["kind"]): string {
 }
 
 function isDark(kind: Slide["kind"]): boolean {
-  return kind === "cover" || kind === "section" || kind === "closing";
+  return kind === "cover" || kind === "jour" || kind === "section" || kind === "closing";
 }
 
 function SlidePage({

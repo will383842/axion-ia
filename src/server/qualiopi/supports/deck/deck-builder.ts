@@ -12,7 +12,17 @@
 
 import type { ContenuDetaille, ModuleContenu, SequenceContenu } from "../../engine/content-schema";
 import { libelleModalite, normaliserModalite } from "../../engine/modalite-pedagogie";
+import { grouperParJour } from "./deck-days";
 import type { DeckModel, Slide } from "./deck-model";
+
+/** Formate une durée en minutes → « 3h30 » / « 45 min ». */
+function dureeH(min: number): string {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  if (h > 0 && m > 0) return `${h}h${String(m).padStart(2, "0")}`;
+  if (h > 0) return `${h}h`;
+  return `${m} min`;
+}
 
 /** Tronque une chaîne à N caractères pour rester lisible à l'écran. */
 function court(s: string, max = 90): string {
@@ -134,10 +144,42 @@ export function construireDeck(input: {
     }
   }
 
-  // 4. Les modules
-  c.modules.forEach((mod, i) => {
-    slides.push(...slidesModule(mod, i, modalite));
-  });
+  // 4. Les modules — regroupés par JOURNÉE si formation multi-jours.
+  const jours = grouperParJour(c.modules);
+  const multiJours = jours.length > 1;
+  let indexGlobal = 0;
+  for (const jour of jours) {
+    if (multiJours) {
+      // Slide d'ouverture de journée (objectifs + programme du jour).
+      slides.push({
+        kind: "jour",
+        eyebrow: `Journée ${jour.numero} / ${jours.length}`,
+        titre: `Jour ${jour.numero}`,
+        puces: jour.modules.map((m) => court(m.titre, 70)),
+        notes:
+          (jour.numero > 1 ? "Ouvrir par un rappel des points clés de la veille. " : "") +
+          `Programme du jour (${dureeH(jour.dureeMin)}) : ${jour.modules.map((m) => m.titre).join(" ; ")}.`,
+        imageKey: "section",
+      });
+    }
+    for (const mod of jour.modules) {
+      slides.push(...slidesModule(mod, indexGlobal, modalite));
+      indexGlobal++;
+    }
+    if (multiJours) {
+      // Bilan de fin de journée.
+      slides.push({
+        kind: "synthese",
+        eyebrow: `Journée ${jour.numero}`,
+        titre: `Bilan du jour ${jour.numero}`,
+        puces: jour.modules.map((m) => court(m.synthese, 110)).slice(0, 6),
+        notes:
+          jour.numero < jours.length
+            ? "Récapituler, répondre aux questions, annoncer le programme de demain."
+            : "Bilan global de la formation, tour de table, prochaines étapes.",
+      });
+    }
+  }
 
   // 5. Clôture
   slides.push({

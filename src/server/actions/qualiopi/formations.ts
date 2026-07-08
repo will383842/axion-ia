@@ -28,6 +28,7 @@ import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { setCertification } from "@/server/qualiopi/formations/certification-service";
 import { revalidateFormationPages } from "@/server/actions/qualiopi/_revalidate";
+import { enqueueFormationGeneration } from "@/server/queue/queues";
 import {
   countLockingSessions,
   appendVersionEntry,
@@ -360,11 +361,16 @@ export async function publishFormationAction(id: string): Promise<ActionResult<{
     data: { statutGeneration: "publie" },
   });
 
+  // Auto-génération : la formation est validée + publiée → on enfile la
+  // production de TOUS les supports + le diaporama (fail-soft, en tâche de fond).
+  // Les documents apparaissent seuls dans la console, sans clic manuel.
+  await enqueueFormationGeneration({ formationId: idParsed.data, generateSupports: true });
+
   await logQualiopiActivity({
     action: "qualiopi.formation.publish",
     targetType: "Formation",
     targetId: idParsed.data,
-    changes: { statutGeneration: "publie" },
+    changes: { statutGeneration: "publie", autoSupports: true },
     session,
   });
 

@@ -161,14 +161,23 @@ export function buildDureeGuidance(dureeHeures: number, ratioPratiquePct?: numbe
   const { min, max } = recommendedModuleRange(dureeHeures);
   const ratio = ratioPratiquePct != null && ratioPratiquePct > 0 ? ratioPratiquePct : 60;
   const pratiqueMin = Math.round((totalMin * ratio) / 100);
-  return [
+  // Multi-jours : une journée de formation OF = ~7h. Au-delà, concevoir une
+  // progression étalée sur plusieurs journées (rappel de la veille, bilan de jour).
+  const nbJours = Math.max(1, Math.ceil(dureeHeures / 7));
+  const lignes = [
     "CONSIGNES D'ADAPTATION À LA DURÉE (impératif — le plan doit REMPLIR la durée, ni plus ni moins) :",
     `- Durée totale à couvrir : ${dureeHeures} h (${totalMin} minutes).`,
     `- Découpe en ${min} à ${max} modules cohérents (progression du simple au complexe).`,
     `- La SOMME des "dureeMinutes" de tous les modules doit être ≈ ${totalMin} minutes (tolérance ±10 %).`,
     `- Au moins ${ratio} % du temps en activités pratiques, soit ≈ ${pratiqueMin} minutes (indicateur 9 RNQ).`,
     `- Adapte la profondeur au format : une formation courte va à l'essentiel ; une formation longue approfondit et multiplie les mises en pratique.`,
-  ].join("\n");
+  ];
+  if (nbJours > 1) {
+    lignes.push(
+      `- Formation sur ${nbJours} JOURNÉES (~7 h/jour) : conçois une progression étalée sur ${nbJours} jours. Chaque journée forme un tout cohérent (ouverture avec objectifs du jour, montée en compétence, bilan de fin de journée) ; les modules d'un même thème restent groupés dans la même journée. Prévois un rappel des acquis en ouverture des journées 2 et suivantes.`,
+    );
+  }
+  return lignes.join("\n");
 }
 
 /** User prompt structure — construit depuis un objet Formation ou équivalent. */
