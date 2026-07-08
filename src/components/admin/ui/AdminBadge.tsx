@@ -35,7 +35,7 @@ export function AdminBadge({
   return (
     <span
       className={cn(
-        "admin-badge-v2 inline-flex items-center rounded-[var(--radius-admin-sm)] font-semibold tracking-wide uppercase",
+        "admin-badge-v2 inline-flex items-center rounded-full font-semibold tracking-wide uppercase",
         compact
           ? "px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]"
           : "px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]",

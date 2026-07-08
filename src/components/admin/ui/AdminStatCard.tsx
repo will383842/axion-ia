@@ -59,7 +59,7 @@ export function AdminStatCard({
     <div
       className={cn(
         "admin-stat-card flex flex-col gap-[var(--space-admin-2)]",
-        "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]",
+        "rounded-[var(--radius-admin-xl)] border border-[color:var(--color-admin-border)]",
         "bg-[color:var(--color-admin-paper)]",
         "p-[var(--space-admin-6)] shadow-[var(--shadow-admin-1)]",
         href && "transition-shadow hover:shadow-[var(--shadow-admin-2)]",
