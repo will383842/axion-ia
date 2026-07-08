@@ -12,8 +12,9 @@
  *   1,2,4,5,9,11,12,21,23,26,27,30,31,32 (+7,16 si certifiant).
  *
  * Conditionnels :
- *   "cert"  → 3, 7, 16 (formations certifiantes)
- *   "app"   → 13, 14, 15 (apprentissage/CFA)
+ *   "cert"  → 3, 7, 16 (formations certifiantes RNCP/RS)
+ *   "app"   → 13, 14, 15, 20, 29 (apprentissage/CFA — colonnes AFC/CBC/VAE VIDES
+ *             dans la liste officielle Acuria « CERT PPS LIAI QUA 1 V3 »)
  *   "afest" → 28 (AFEST)
  */
 
@@ -185,8 +186,12 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 20,
     critere: 4,
-    libelleOfficiel: "Personnels dédiés à l'accompagnement (handicap/CFA selon cas)",
+    // Apprentissage/CFA uniquement (personnels dédiés à l'accompagnement des
+    // apprentis) → NON applicable en action de formation continue (AFC).
+    // Réf. liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » : colonne AFC vide.
+    libelleOfficiel: "Personnels dédiés à l'accompagnement des apprentis",
     super: false,
+    conditionnel: "app",
   },
 
   // Critère 5 — Qualification du personnel
@@ -244,8 +249,12 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 29,
     critere: 6,
-    libelleOfficiel: "Insertion professionnelle / débouchés",
+    // Apprentissage/CFA uniquement (insertion professionnelle des apprentis) → NON
+    // applicable en action de formation continue (AFC).
+    // Réf. liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » : colonne AFC vide.
+    libelleOfficiel: "Insertion professionnelle des apprentis",
     super: false,
+    conditionnel: "app",
   },
 
   // Critère 7 — Appréciations et amélioration continue
@@ -279,10 +288,11 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
  *
  * - Tronc commun (conditionnel undefined) : toujours applicables.
  * - "cert"  : applicable si "certifiante" ∈ typesAction.
- * - "app"   : APPRENTISSAGE/CFA (off.13/14/15). Axion-IA n'exerce pas
+ * - "app"   : APPRENTISSAGE/CFA (off.13/14/15/20/29). Axion-IA n'exerce pas
  *             l'apprentissage → jamais applicable (découplé de l'AFEST). Ne PAS
  *             le rattacher à "alternance_afest" : ce sont des indicateurs apprenti
- *             (citoyenneté/droits de l'apprenti), distincts de l'AFEST (off.28).
+ *             (citoyenneté/droits/insertion/personnels dédiés apprentis), distincts
+ *             de l'AFEST (off.28). Cf. liste officielle Acuria CERT PPS LIAI QUA 1 V3.
  * - "afest" : applicable si "alternance_afest" ∈ typesAction (off.28).
  *
  * Retourne les numéros triés ascendants.

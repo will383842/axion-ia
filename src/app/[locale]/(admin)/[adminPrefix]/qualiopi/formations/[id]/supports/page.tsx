@@ -17,10 +17,12 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getFormationById } from "@/server/qualiopi/formations/formations";
 import { GenererSupportButton } from "@/components/admin/qualiopi/GenererSupportButton";
+import { GenererTousSupportsButton } from "@/components/admin/qualiopi/GenererTousSupportsButton";
 import {
   genererSupportAction,
   regenererSupportAction,
   supprimerSupportAction,
+  genererTousSupportsAction,
 } from "@/server/actions/qualiopi/supports";
 import type {
   SupportType,
@@ -142,8 +144,10 @@ export default async function QualiopiFormationSupportsPage({ params }: PageProp
 
       <AdminPageHeader
         title={`Supports — ${formation.titre}`}
-        description={`7 types de supports pédagogiques à la charte pour la formation ${formation.numero}. Chaque type peut être généré indépendamment, avec ou sans enrichissement IA.`}
+        description={`7 types de supports pédagogiques à la charte pour la formation ${formation.numero}. Chaque type peut être généré indépendamment, ou tous d'un coup ci-dessous.`}
       />
+
+      <GenererTousSupportsButton formationId={id} genererTousAction={genererTousSupportsAction} />
 
       <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
         <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">

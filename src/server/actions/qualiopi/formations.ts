@@ -70,6 +70,12 @@ const createFormationSchema = z.object({
   typesActionQualiopi: z.array(z.enum(TYPES_ACTION_QUALIOPI)).optional(),
   estSurMesure: z.boolean().optional(),
   clientId: z.string().uuid().optional(),
+  // Paramètres pédagogiques saisissables dès la création (grounding IA) — mêmes
+  // contraintes que le schéma update.
+  niveau: z.enum(["debutant", "intermediaire", "avance", "tous_niveaux"]).optional(),
+  prerequis: z.string().max(2000).optional(),
+  secteurCible: z.string().max(200).optional(),
+  outilsClient: z.string().max(2000).optional(),
 });
 
 const updateFormationSchema = z.object({
@@ -152,6 +158,13 @@ export async function createFormationAction(
           : {}),
         ...(v.estSurMesure !== undefined ? { estSurMesure: v.estSurMesure } : {}),
         ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
+        // Paramètres pédagogiques (grounding IA dès la création — niveau/prérequis/
+        // secteur cible/outils client). Le schéma les acceptait déjà mais l'insertion
+        // ne les persistait pas → saisie possible seulement en édition (aller-retour).
+        ...(v.niveau !== undefined ? { niveau: v.niveau } : {}),
+        ...(v.prerequis !== undefined ? { prerequis: v.prerequis } : {}),
+        ...(v.secteurCible !== undefined ? { secteurCible: v.secteurCible } : {}),
+        ...(v.outilsClient !== undefined ? { outilsClient: v.outilsClient } : {}),
       },
       select: { id: true, numero: true },
     });

@@ -19,6 +19,8 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { BatchGenerationButton } from "@/components/admin/qualiopi/BatchGenerationButton";
+import { enqueueBatchGenerationAction } from "@/server/actions/qualiopi/engine";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -132,6 +134,19 @@ export default async function FormationEngineDashboardPage({ params }: PageProps
           value={`$${coutTotal.toFixed(4)}`}
           tone="default"
         />
+      </div>
+
+      {/* Génération en lot — lance le catalogue relançable (ex. les 17) en un clic */}
+      <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-4)]">
+        <h2 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+          Génération en lot
+        </h2>
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Enfile la génération IA de toutes les formations relançables (intention, structure
+          générée, contenu évalué). N&apos;affecte jamais les formations en attente de validation
+          humaine ou déjà publiées.
+        </p>
+        <BatchGenerationButton limite={20} enqueueAction={enqueueBatchGenerationAction} />
       </div>
 
       {validationsEnAttente > 0 && (

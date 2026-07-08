@@ -130,15 +130,38 @@ describe("evaluerConformite", () => {
     }
   });
 
-  it("les conditionnels APP (13,14,15) sont non_applicable pour une action classique", async () => {
-    // formation.findMany retourne une formation classique sans alternance_afest
+  it("les conditionnels APP (13,14,15,20,29) sont non_applicable pour une action classique (AFC)", async () => {
+    // formation.findMany retourne une formation classique sans alternance_afest.
+    // Aligné sur la liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » : en AFC, les
+    // indicateurs apprentissage/CFA 13,14,15,20,29 ont une colonne vide (non audités).
     mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["classique"] }]);
 
     const result = await evaluerConformite();
-    const appIndicateurs = result.indicateurs.filter((i) => [13, 14, 15].includes(i.numero));
+    const appIndicateurs = result.indicateurs.filter((i) =>
+      [13, 14, 15, 20, 29].includes(i.numero),
+    );
     for (const ind of appIndicateurs) {
       expect(ind.statut, `off.${ind.numero} doit être non_applicable`).toBe("non_applicable");
     }
+  });
+
+  it("off.5/6 DURCIS : a_completer si des formations existent mais aucune structurée/contenu", async () => {
+    // 2 formations au total, mais 0 sortie de « intention » (aucun objectif/contenu réel).
+    mockP.formation.count.mockImplementation((args?: { where?: { statutGeneration?: unknown } }) =>
+      Promise.resolve(args?.where?.statutGeneration !== undefined ? 0 : 2),
+    );
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["classique"] }]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 5)?.statut).toBe("a_completer");
+    expect(result.indicateurs.find((i) => i.numero === 6)?.statut).toBe("a_completer");
+  });
+
+  it("off.5/6 DURCIS : couverts si ≥1 formation structurée + contenu réellement produit", async () => {
+    mockP.formation.count.mockResolvedValue(3); // total ET filtrés (structure/contenu) = 3
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["classique"] }]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 5)?.statut).toBe("couvert");
+    expect(result.indicateurs.find((i) => i.numero === 6)?.statut).toBe("couvert");
   });
 
   it("off.31 couvert si au moins 1 réclamation existe", async () => {
@@ -374,11 +397,11 @@ describe("evaluerConformite", () => {
 
   // ── off.28 = AFEST (automatisé) ; off.13/14/15 = APPRENTISSAGE (non applicable) ──
 
-  it("off.13/14/15 (apprentissage/CFA) restent NON APPLICABLES même avec AFEST déclaré", async () => {
+  it("off.13/14/15/20/29 (apprentissage/CFA) restent NON APPLICABLES même avec AFEST déclaré", async () => {
     // alternance_afest déclaré ne doit PAS rendre les indicateurs apprenti applicables.
     mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
     const result = await evaluerConformite();
-    for (const numero of [13, 14, 15]) {
+    for (const numero of [13, 14, 15, 20, 29]) {
       const ind = result.indicateurs.find((i) => i.numero === numero);
       expect(ind?.statut, `off.${numero} (apprentissage) doit être non_applicable`).toBe(
         "non_applicable",
@@ -407,7 +430,7 @@ describe("evaluerConformite", () => {
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("couvert");
     // Les indicateurs apprentissage NE deviennent PAS couverts par l'AFEST.
-    for (const numero of [13, 14, 15]) {
+    for (const numero of [13, 14, 15, 20, 29]) {
       expect(result.indicateurs.find((i) => i.numero === numero)?.statut).toBe("non_applicable");
     }
   });

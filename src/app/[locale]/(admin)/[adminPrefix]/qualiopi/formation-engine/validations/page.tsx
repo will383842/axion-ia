@@ -3,10 +3,11 @@
  *
  * Liste les FileValidation en_attente : formation, étape, date, contenuPropose résumé.
  * La validation (approve/reject) est portée par les Server Actions
- * approveFileValidationAction / rejectFileValidationAction.
+ * approveFileValidationAction / rejectFileValidationAction, câblées ici via le
+ * composant client `ValidationActions` (point de contrôle humain — AI Act art. 50).
  *
- * Server Component pur — force-dynamic, noindex.
- * Pas de client bundle (pas de formulaire ici — actions depuis page détail).
+ * Server Component — force-dynamic, noindex. Les boutons d'action sont un îlot
+ * client (`ValidationActions`) recevant les server actions en props.
  */
 
 import type { Metadata } from "next";
@@ -16,6 +17,14 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import {
+  ValidationActions,
+  type EtapeValidation,
+} from "@/components/admin/qualiopi/ValidationActions";
+import {
+  approveFileValidationAction,
+  rejectFileValidationAction,
+} from "@/server/actions/qualiopi/engine";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -113,6 +122,7 @@ export default async function FormationEngineValidationsPage({ params }: PagePro
                 <th className={headCls}>Étape</th>
                 <th className={headCls}>Date</th>
                 <th className={headCls}>Aperçu contenu proposé</th>
+                <th className={headCls}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -167,6 +177,16 @@ export default async function FormationEngineValidationsPage({ params }: PagePro
                       )}
                     </div>
                   </td>
+
+                  {/* Actions — approuver / rejeter (point de contrôle humain) */}
+                  <td className={cellCls}>
+                    <ValidationActions
+                      id={v.id}
+                      etape={v.etape as EtapeValidation}
+                      approuverAction={approveFileValidationAction}
+                      rejeterAction={rejectFileValidationAction}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -175,8 +195,8 @@ export default async function FormationEngineValidationsPage({ params }: PagePro
       )}
 
       <p className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        Pour approuver ou rejeter une validation, accédez à la fiche de formation correspondante
-        depuis{" "}
+        Approuver fait avancer la génération (contenu → contenu validé → assemblage → publication).
+        Rejeter renvoie l&apos;étape en correction avec votre consigne. Retour aux{" "}
         <a
           href={`/${locale}/${adminPrefix}/qualiopi/formations`}
           className="underline hover:no-underline"

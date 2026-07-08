@@ -88,6 +88,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbDocsPresence,
     responsableQualiteNom,
     coachingAfestResult,
+    nbFormationsAvecStructure,
+    nbFormationsAvecContenu,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -175,6 +177,18 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         comptesRendus: { select: { misesEnSituation: true, phasesReflexives: true } },
       },
       take: COACHING_AFEST_SCAN_LIMIT,
+    }),
+    // Durcissement off.5 (objectifs définis et adaptés) : formations sorties de
+    //   « intention » (les objectifs pédagogiques sont posés dès le backward design),
+    //   hors archivées. Un simple titre en « intention » ne prouve pas d'objectifs.
+    prisma.formation.count({ where: { statutGeneration: { notIn: ["intention", "archive"] } } }),
+    // Durcissement off.6 (contenus et modalités adaptés) : formations dont le CONTENU
+    //   a réellement été généré/validé (signal distinct de off.5, pas la seule
+    //   existence d'une fiche).
+    prisma.formation.count({
+      where: {
+        statutGeneration: { in: ["contenu_genere", "contenu_valide", "assemble", "publie"] },
+      },
     }),
   ]);
 
@@ -281,8 +295,22 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     [`${nbFormations} formation(s)`, `${nbEvaluationsInitiales} positionnement(s) initial`],
     nbFormations > 0 && nbEvaluationsInitiales > 0,
   );
-  set(5, [`${nbFormations} formation(s) avec objectifs définis`], nbFormations > 0);
-  set(6, [`${nbFormations} formation(s) avec contenus et modalités`], nbFormations > 0);
+  // off.5 : objectifs définis — durci sur les formations réellement structurées
+  //         (sorties de « intention »), pas la seule existence d'une fiche.
+  set(
+    5,
+    [
+      `${nbFormationsAvecStructure} formation(s) avec objectifs pédagogiques définis (structure générée)`,
+    ],
+    nbFormationsAvecStructure > 0,
+  );
+  // off.6 : contenus et modalités adaptés — durci sur les formations dont le contenu
+  //         a été réellement produit (signal distinct de off.5).
+  set(
+    6,
+    [`${nbFormationsAvecContenu} formation(s) avec contenu et modalités réellement produits`],
+    nbFormationsAvecContenu > 0,
+  );
   // off.7 : adéquation contenus / exigences certification — couvert si ≥1 formation
   //         certifiante avec code RS/RNCP ET blocs de compétences définis
   set(

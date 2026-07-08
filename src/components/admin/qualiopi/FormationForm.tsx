@@ -173,6 +173,11 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
         offreSiteId,
         dureeHeures: dureeHeures as number,
         modalite,
+        // Paramètres pédagogiques dès la création (grounding IA) — omis si vides.
+        niveau,
+        ...(prerequis.trim() ? { prerequis: prerequis.trim() } : {}),
+        ...(secteurCible.trim() ? { secteurCible: secteurCible.trim() } : {}),
+        ...(outilsClient.trim() ? { outilsClient: outilsClient.trim() } : {}),
       });
 
       if ("error" in result) {
@@ -356,6 +361,84 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
             </select>
           </div>
         </div>
+
+        {/* Paramètres pédagogiques — saisissables dès la création (grounding IA) */}
+        <fieldset className="rounded border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+          <legend className="px-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-muted)]">
+            Paramètres pédagogiques (améliorent la génération IA)
+          </legend>
+
+          <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+            {/* Niveau */}
+            <div>
+              <label htmlFor="ff-create-niveau" className={labelCls}>
+                Niveau des participants
+              </label>
+              <select
+                id="ff-create-niveau"
+                value={niveau}
+                onChange={(e) => setNiveau(e.target.value as NiveauFormation)}
+                className={inputCls}
+              >
+                {NIVEAU_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+              <p className={hintCls}>Calibre profondeur, vocabulaire et difficulté.</p>
+            </div>
+
+            {/* Secteur cible */}
+            <div>
+              <label htmlFor="ff-create-secteur" className={labelCls}>
+                Secteur / métier cible
+              </label>
+              <input
+                id="ff-create-secteur"
+                type="text"
+                value={secteurCible}
+                onChange={(e) => setSecteurCible(e.target.value)}
+                maxLength={200}
+                className={inputCls}
+                placeholder="ex. cabinet d'avocats, BTP, santé…"
+              />
+              <p className={hintCls}>Ancre les exemples sur ce métier.</p>
+            </div>
+          </div>
+
+          {/* Prérequis */}
+          <div className="mt-[var(--space-admin-4)]">
+            <label htmlFor="ff-create-prerequis" className={labelCls}>
+              Prérequis
+            </label>
+            <textarea
+              id="ff-create-prerequis"
+              value={prerequis}
+              onChange={(e) => setPrerequis(e.target.value)}
+              rows={2}
+              maxLength={2000}
+              className={inputCls}
+              placeholder="Ce que le stagiaire doit déjà savoir/avoir (vide = aucun)…"
+            />
+          </div>
+
+          {/* Outils client */}
+          <div className="mt-[var(--space-admin-4)]">
+            <label htmlFor="ff-create-outils" className={labelCls}>
+              Outils / logiciels du client
+            </label>
+            <textarea
+              id="ff-create-outils"
+              value={outilsClient}
+              onChange={(e) => setOutilsClient(e.target.value)}
+              rows={2}
+              maxLength={2000}
+              className={inputCls}
+              placeholder="ex. Microsoft 365, Salesforce…"
+            />
+          </div>
+        </fieldset>
 
         {error && (
           <p

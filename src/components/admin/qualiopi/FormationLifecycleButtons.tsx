@@ -23,6 +23,8 @@ import {
   validateFormationAction,
   publishFormationAction,
   publierIndicateursAction,
+  archiveFormationAction,
+  duplicateFormationAction,
 } from "@/server/actions/qualiopi/formations";
 import { startGenerationAction } from "@/server/actions/qualiopi/engine";
 
@@ -247,8 +249,39 @@ export function FormationLifecycleButtons({
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [showIndicateursForm, setShowIndicateursForm] = useState(false);
+  const [confirmArchive, setConfirmArchive] = useState(false);
 
   const isArchive = statut === "archive" || statutGeneration === "archive";
+
+  function handleDuplicate() {
+    setError(null);
+    setInfo(null);
+    startTransition(async () => {
+      const result = await duplicateFormationAction(formationId);
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setInfo(
+          `Formation dupliquée — n° ${result.data.numero}. La copie repart en « intention » (non validée) ; retrouvez-la dans la liste des formations.`,
+        );
+        router.refresh();
+      }
+    });
+  }
+
+  function handleArchive() {
+    setError(null);
+    setInfo(null);
+    startTransition(async () => {
+      const result = await archiveFormationAction(formationId);
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setConfirmArchive(false);
+        router.refresh();
+      }
+    });
+  }
 
   function handleAction(fn: () => Promise<{ error: string } | { data: unknown }>) {
     setError(null);
@@ -298,6 +331,54 @@ export function FormationLifecycleButtons({
           >
             {isPending ? "En cours…" : "Lancer la génération IA"}
           </button>
+        )}
+
+        {/* Dupliquer — repart en « intention », non validée (cf. garde d'édition) */}
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={handleDuplicate}
+          className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] hover:border-[color:var(--color-admin-accent)] hover:text-[color:var(--color-admin-accent)] disabled:opacity-50"
+        >
+          Dupliquer
+        </button>
+
+        {/* Archiver — retire du catalogue actif (2 temps) */}
+        {!confirmArchive ? (
+          <button
+            type="button"
+            disabled={isPending}
+            onClick={() => {
+              setError(null);
+              setInfo(null);
+              setConfirmArchive(true);
+            }}
+            className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)] hover:border-[color:var(--color-admin-error)] disabled:opacity-50"
+          >
+            Archiver
+          </button>
+        ) : (
+          <span className="inline-flex items-center gap-[var(--space-admin-2)]">
+            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Retirer du catalogue actif ?
+            </span>
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={handleArchive}
+              className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-error)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)] disabled:opacity-50"
+            >
+              {isPending ? "…" : "Confirmer l'archivage"}
+            </button>
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={() => setConfirmArchive(false)}
+              className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] disabled:opacity-50"
+            >
+              Annuler
+            </button>
+          </span>
         )}
 
         {/* Valider (humain) */}
