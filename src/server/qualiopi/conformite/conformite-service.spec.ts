@@ -145,6 +145,25 @@ describe("evaluerConformite", () => {
     }
   });
 
+  it("off.5/6 DURCIS : a_completer si des formations existent mais aucune structurée/contenu", async () => {
+    // 2 formations au total, mais 0 sortie de « intention » (aucun objectif/contenu réel).
+    mockP.formation.count.mockImplementation((args?: { where?: { statutGeneration?: unknown } }) =>
+      Promise.resolve(args?.where?.statutGeneration !== undefined ? 0 : 2),
+    );
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["classique"] }]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 5)?.statut).toBe("a_completer");
+    expect(result.indicateurs.find((i) => i.numero === 6)?.statut).toBe("a_completer");
+  });
+
+  it("off.5/6 DURCIS : couverts si ≥1 formation structurée + contenu réellement produit", async () => {
+    mockP.formation.count.mockResolvedValue(3); // total ET filtrés (structure/contenu) = 3
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["classique"] }]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 5)?.statut).toBe("couvert");
+    expect(result.indicateurs.find((i) => i.numero === 6)?.statut).toBe("couvert");
+  });
+
   it("off.31 couvert si au moins 1 réclamation existe", async () => {
     mockP.reclamation.count.mockResolvedValue(2);
     const result = await evaluerConformite();
