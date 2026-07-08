@@ -1519,7 +1519,15 @@ export function startFormationEngineWorker(): Worker<FormationEngineJobData> {
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 2,
-      lockDuration: 300_000, // 5 min (génération IA longue)
+      // 30 min (au lieu de 5) : une génération complète (backward + persona +
+      // structure + refines + contenu par module + éventuelle passe d'auto-
+      // correction) peut dépasser 10 min. Avec un lock de 5 min, BullMQ
+      // considérait le job « stalled » et le RELANÇAIT en boucle (témoin prod :
+      // la formation restait figée à contenu_evalue, jobs dupliqués). Le lock est
+      // renouvelé automatiquement à mi-parcours ; 30 min donne une marge sûre.
+      lockDuration: 1_800_000,
+      // maxStalledCount 2 : tolère un faux positif de stall avant d'échouer.
+      maxStalledCount: 2,
       // Limite douce : 5 jobs IA par minute
       limiter: { max: 5, duration: 60_000 },
       removeOnComplete: { count: 500 },
