@@ -17,10 +17,12 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getFormationById } from "@/server/qualiopi/formations/formations";
 import { GenererSupportButton } from "@/components/admin/qualiopi/GenererSupportButton";
+import { GenererDeckButton } from "@/components/admin/qualiopi/GenererDeckButton";
 import {
   genererSupportAction,
   regenererSupportAction,
   supprimerSupportAction,
+  genererDeckAction,
 } from "@/server/actions/qualiopi/supports";
 import type {
   SupportType,
@@ -144,6 +146,18 @@ export default async function QualiopiFormationSupportsPage({ params }: PageProp
         title={`Supports — ${formation.titre}`}
         description={`7 types de supports pédagogiques à la charte pour la formation ${formation.numero}. Chaque type peut être généré indépendamment, avec ou sans enrichissement IA.`}
       />
+
+      {/* Panneau dédié — Diaporama de projection (PDF 16:9 + PowerPoint éditable) */}
+      <div className="mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+        <h2 className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-md)] font-semibold text-[color:var(--color-admin-fg)]">
+          Diaporama de projection
+        </h2>
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Le support projeté au vidéoprojecteur le jour J — format 16:9, 1 idée par slide, notes
+          orateur incluses. Nécessite un contenu détaillé généré au préalable.
+        </p>
+        <GenererDeckButton formationId={id} genererAction={genererDeckAction} />
+      </div>
 
       <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
         <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
