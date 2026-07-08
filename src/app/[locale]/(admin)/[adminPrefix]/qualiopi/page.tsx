@@ -19,6 +19,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { Eye, ShieldCheck, Languages } from "lucide-react";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AdminBreadcrumbs } from "@/components/admin/ui/AdminBreadcrumbs";
@@ -396,6 +397,7 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
         <AdminStatCard
           label="Divulgation publique"
           value={disclosureOn ? "Phase B — visible" : "Phase A — masquée"}
+          icon={Eye}
           tone={disclosureOn ? "warning" : "success"}
           meta={
             disclosureOn
@@ -406,12 +408,14 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
         <AdminStatCard
           label="Paramètres légaux renseignés"
           value={`${filledCount} / ${REQUIRED_LEGAL_KEYS.length}`}
+          icon={ShieldCheck}
           tone={filledCount === REQUIRED_LEGAL_KEYS.length ? "success" : "warning"}
           meta="NDA, Qualiopi, SIRET, adresses, référent handicap."
         />
         <AdminStatCard
           label="Langue de génération"
           value={String(config.langue_generation).toUpperCase()}
+          icon={Languages}
           meta="FR figé en v1 (en/de/es gelés)."
         />
       </div>
