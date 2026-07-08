@@ -20,7 +20,7 @@ export default async function CoachingFormateursPage(): Promise<React.ReactEleme
 
   return (
     <div className="space-y-4">
-      <h1 className="text-mocha text-xl font-semibold">Comptes formateurs</h1>
+      <h1 className="text-mocha text-xl font-semibold">Accès &amp; connexions formateurs</h1>
       <p className="text-fg-muted text-sm">
         Les formateurs se connectent à leur espace <strong>sans mot de passe</strong> (lien magique
         par e-mail). Désactiver un compte coupe l&apos;accès immédiatement. Vous pouvez aussi leur

@@ -861,7 +861,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/coaching/formateurs`,
-      label: "Comptes formateurs",
+      label: "Accès & connexions formateurs",
       icon: "🧑‍🏫",
       group: "coaching-1to1",
     },
