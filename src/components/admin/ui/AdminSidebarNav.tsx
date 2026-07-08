@@ -573,9 +573,10 @@ export function AdminSidebarNav({
           // Desktop : épinglé sous la topbar, hauteur = viewport − topbar.
           "sticky top-[var(--admin-topbar-h)] h-[calc(100svh-var(--admin-topbar-h))]",
           "transition-[width,transform] duration-[var(--duration-admin-base)] ease-[var(--easing-admin)]",
-          collapsed ? "w-[68px]" : "w-[248px]",
+          // Largeur alignée style SOS Expat 2026-07-08 : 320px ouverte / 80px repliée.
+          collapsed ? "w-[80px]" : "w-[320px]",
           // Mobile : overlay plein écran via translate-x (CLS=0, pas de reflow).
-          "max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-[var(--z-admin-sticky)] max-lg:h-svh max-lg:w-[284px]",
+          "max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-[var(--z-admin-sticky)] max-lg:h-svh max-lg:w-[320px]",
           mobileOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full",
           className,
         )}

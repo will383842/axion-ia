@@ -72,20 +72,22 @@
     /* Padding intérieur des cartes (P2 respiration juin 2026) — palier 20px
        intermédiaire entre 16 et 24 : assez d'air pour ne plus paraître
        « tassé » sans casser la densité. Consommé par AdminCard. */
-    --space-admin-card: 20px;
+    --space-admin-card: 24px;
 
-    /* ----- Typography (P2 respiration juin 2026 : base 14→15px — le corps des
-       tables/descriptions respire d'un cran ; reste sous le public 16-18). ----- */
-    --text-admin-xs: 11px;
-    --text-admin-sm: 12px;
-    --text-admin-md: 13px;
-    --text-admin-base: 15px;
-    --text-admin-lg: 16px;
-    --text-admin-xl: 20px;
-    --text-admin-2xl: 24px;
-    --lh-admin-tight: 1.35;
-    --lh-admin-body: 1.5;
-    --lh-admin-loose: 1.65;
+    /* ----- Typography (P3 « densité aérée » 2026-07-08, alignement style SOS
+       Expat : chaque cran +1-2px + interligne un peu plus généreux. Corps 16px
+       (= échelle Tailwind par défaut, plus lisible), en-têtes plus affirmés.
+       Reste ≤ public 16-18. Propagé par tokens → toute la console d'un coup. ----- */
+    --text-admin-xs: 12px;
+    --text-admin-sm: 13px;
+    --text-admin-md: 14px;
+    --text-admin-base: 16px;
+    --text-admin-lg: 18px;
+    --text-admin-xl: 22px;
+    --text-admin-2xl: 26px;
+    --lh-admin-tight: 1.4;
+    --lh-admin-body: 1.55;
+    --lh-admin-loose: 1.7;
 
     /* ----- Border radius — modernisé juin 2026 (P1 audit design console)
      * Était 4/6/8/12. Cartes/boutons/tables/inputs consomment surtout `md`
