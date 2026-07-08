@@ -102,11 +102,13 @@ describe("buildAdminNav SSOT", () => {
   });
 
   // Refonte UX 2026-07-08 : le module Prospection interne est retiré de la nav
-  // (doublon avec l'appli externe Axion CRM Pro). Verrou anti-réintroduction.
+  // (doublon avec l'appli externe Axion CRM Pro ; retiré aussi du type
+  // `AdminNavGroup` par #278 → le type garantit déjà son absence). Verrou
+  // runtime complémentaire (cast string car "prospection" n'est plus dans le type).
   it("le groupe prospection n'est plus dans la nav", () => {
     const items = buildAdminNav("p");
-    expect(items.some((it) => it.group === "prospection")).toBe(false);
-    expect(ADMIN_NAV_GROUP_ORDER).not.toContain("prospection");
+    expect(items.some((it) => (it.group as string) === "prospection")).toBe(false);
+    expect((ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>)).not.toContain("prospection");
   });
 });
 
