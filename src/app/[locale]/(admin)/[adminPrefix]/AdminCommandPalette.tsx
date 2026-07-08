@@ -28,11 +28,10 @@ import {
   buildAdminNav,
   ADMIN_NAV_GROUP_LABELS,
   ADMIN_NAV_GROUP_ORDER,
-  CONTENT_GEN_POLE_LABELS,
-  CONTENT_GEN_POLE_ORDER,
+  GROUP_POLE_LABELS,
+  GROUP_POLE_ORDER,
   type AdminNavItem,
   type AdminNavGroup,
-  type ContentGenPole,
 } from "@/lib/admin-nav";
 
 interface PaletteItem extends AdminNavItem {
@@ -42,23 +41,23 @@ interface PaletteItem extends AdminNavItem {
 
 /**
  * Calcule la clé d'ordre d'un groupe pour le rendu cmdk.
- * Les groupes suivent `ADMIN_NAV_GROUP_ORDER`. Au sein de `content_gen`,
- * les pôles suivent `CONTENT_GEN_POLE_ORDER` (du plus chaud au plus froid).
+ * Les groupes suivent `ADMIN_NAV_GROUP_ORDER`. Au sein d'un groupe sous-divisé
+ * en pôles (`content_gen`, `qualiopi`), les pôles suivent leur ordre déclaré
+ * dans `GROUP_POLE_ORDER` (du plus chaud au plus froid).
  */
-function groupSortKey(group: AdminNavGroup, subGroup?: ContentGenPole): number {
+function groupSortKey(group: AdminNavGroup, subGroup?: AdminNavItem["subGroup"]): number {
   const groupIndex = ADMIN_NAV_GROUP_ORDER.indexOf(group);
-  const poleIndex = subGroup ? CONTENT_GEN_POLE_ORDER.indexOf(subGroup) : 0;
-  // 100 places pour le rang groupe, +rang pôle pour content_gen.
-  return groupIndex * 100 + poleIndex;
+  const poleOrder = GROUP_POLE_ORDER[group];
+  const poleIndex = subGroup && poleOrder ? poleOrder.indexOf(subGroup) : 0;
+  // 100 places pour le rang groupe, +rang pôle pour les groupes à pôles.
+  return groupIndex * 100 + Math.max(poleIndex, 0);
 }
 
-/** Heading cmdk : « Génération de contenu · <Pôle> » pour content_gen, sinon libellé groupe. */
-function headingFor(group: AdminNavGroup, subGroup?: ContentGenPole): string {
+/** Heading cmdk : « <Groupe> · <Pôle> » pour les groupes à pôles, sinon libellé groupe. */
+function headingFor(group: AdminNavGroup, subGroup?: AdminNavItem["subGroup"]): string {
   const groupLabel = ADMIN_NAV_GROUP_LABELS[group];
-  if (group === "content_gen" && subGroup) {
-    return `${groupLabel} · ${CONTENT_GEN_POLE_LABELS[subGroup]}`;
-  }
-  return groupLabel;
+  const poleLabel = subGroup ? GROUP_POLE_LABELS[group]?.[subGroup] : undefined;
+  return poleLabel ? `${groupLabel} · ${poleLabel}` : groupLabel;
 }
 
 export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {

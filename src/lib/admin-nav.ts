@@ -46,6 +46,45 @@ export type AdminNavGroup =
  */
 export type ContentGenPole = "lancer" | "suivre" | "publier" | "villes" | "qualite" | "reglages";
 
+/**
+ * Pôle (sous-groupe niveau 1) du groupe `qualiopi` — refonte UX 2026-07-08.
+ *
+ * Le back-office Qualiopi comptait ~24 onglets en liste plate → écrasant et
+ * illisible. On les regroupe en 5 pôles orientés usage, ordonnés selon le flux
+ * métier réel : Formations & séances (production quotidienne) > Commercial
+ * (vente) > Conformité & audit (preuves Qualiopi) > Registres & veille (obligs
+ * périodiques) > Administration (setup/RGPD, rare). Même mécanisme d'accordéon
+ * que les pôles content_gen (cf. `<AdminSidebarNav>`).
+ *
+ * NB : clés volontairement DISTINCTES des `ContentGenPole` (pas de collision
+ * « reglages ») pour que l'état plié/déplié d'un pôle ne fuite pas d'un groupe
+ * à l'autre (Set<string> partagé côté sidebar).
+ */
+export type QualiopiPole =
+  | "formations"
+  | "commercial"
+  | "conformite"
+  | "registres"
+  | "administration";
+
+/**
+ * Pôle (sous-groupe niveau 1) du groupe `documents-interventions` — refonte UX
+ * 2026-07-08. Découpage léger : les buckets documentaires « par activité » vs
+ * les utilitaires (annuaire, import). Clés distinctes des autres pôles.
+ */
+export type DocumentsPole = "activite" | "outils";
+
+/**
+ * Pôle du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08.
+ * Découpe les 10 onglets quotidiens en 3 blocs métier. Clés distinctes.
+ */
+export type MainPole = "agenda" | "facturation" | "relation";
+
+/**
+ * Pôle du groupe `image-bank` — refonte UX 2026-07-08. 3 blocs. Clés distinctes.
+ */
+export type ImageBankPole = "bibliotheque" | "organisation" | "admin";
+
 export interface AdminNavItem {
   href: string;
   label: string;
@@ -56,11 +95,12 @@ export interface AdminNavItem {
   icon: string;
   group: AdminNavGroup;
   /**
-   * Pôle (sous-groupe N1) — uniquement renseigné pour `group: "content_gen"`.
-   * Permet à `<AdminSidebarNav>` de regrouper les items en accordéon par pôle.
+   * Pôle (sous-groupe N1) — renseigné pour `group: "content_gen"` (6 pôles) et
+   * `group: "qualiopi"` (5 pôles, refonte UX 2026-07-08). Permet à
+   * `<AdminSidebarNav>` de regrouper les items en accordéon par pôle.
    * (cf. DECISION-IA.md §1 — refonte UX content-gen 2026-06-16.)
    */
-  subGroup?: ContentGenPole;
+  subGroup?: ContentGenPole | QualiopiPole | DocumentsPole | MainPole | ImageBankPole;
   /**
    * Niveau d'exposition. Défaut implicite `"simple"`.
    * En mode Simple, la sidebar masque les items `tier: "advanced"` et les
@@ -121,6 +161,85 @@ export const CONTENT_GEN_POLE_ORDER: ReadonlyArray<ContentGenPole> = [
   "reglages",
 ];
 
+/**
+ * Libellés FR clairs des 5 pôles du groupe `qualiopi` (refonte UX 2026-07-08).
+ */
+export const QUALIOPI_POLE_LABELS: Record<QualiopiPole, string> = {
+  formations: "Formations & séances",
+  commercial: "Commercial",
+  conformite: "Conformité & audit",
+  registres: "Registres & veille",
+  administration: "Administration",
+};
+
+/**
+ * Ordre d'affichage des pôles `qualiopi` : du plus chaud (production
+ * quotidienne) au plus froid (setup/RGPD, rare).
+ */
+export const QUALIOPI_POLE_ORDER: ReadonlyArray<QualiopiPole> = [
+  "formations",
+  "commercial",
+  "conformite",
+  "registres",
+  "administration",
+];
+
+/**
+ * Libellés + ordre des 2 pôles du groupe `documents-interventions`
+ * (refonte UX 2026-07-08). Découpage léger : buckets documentaires vs outils.
+ */
+export const DOCUMENTS_POLE_LABELS: Record<DocumentsPole, string> = {
+  activite: "Par activité",
+  outils: "Outils",
+};
+
+export const DOCUMENTS_POLE_ORDER: ReadonlyArray<DocumentsPole> = ["activite", "outils"];
+
+/** Pôles du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08. */
+export const MAIN_POLE_LABELS: Record<MainPole, string> = {
+  agenda: "Agenda & réservations",
+  facturation: "Facturation",
+  relation: "Contacts & recrutement",
+};
+
+export const MAIN_POLE_ORDER: ReadonlyArray<MainPole> = ["agenda", "facturation", "relation"];
+
+/** Pôles du groupe `image-bank` — refonte UX 2026-07-08. */
+export const IMAGE_BANK_POLE_LABELS: Record<ImageBankPole, string> = {
+  bibliotheque: "Bibliothèque",
+  organisation: "Organisation & qualité",
+  admin: "Administration",
+};
+
+export const IMAGE_BANK_POLE_ORDER: ReadonlyArray<ImageBankPole> = [
+  "bibliotheque",
+  "organisation",
+  "admin",
+];
+
+/**
+ * Maps génériques « groupe → pôles » consommées par `<AdminSidebarNav>` pour
+ * rendre N'IMPORTE quel groupe sous-divisé en accordéon de pôles, sans coder en
+ * dur `content_gen`. Un groupe absent de ces maps est rendu en liste plate.
+ * Les valeurs sont des `string` (les clés de pôles), volontairement disjointes
+ * entre groupes pour un état plié/déplié `Set<string>` sans collision.
+ */
+export const GROUP_POLE_ORDER: Partial<Record<AdminNavGroup, ReadonlyArray<string>>> = {
+  main: MAIN_POLE_ORDER,
+  content_gen: CONTENT_GEN_POLE_ORDER,
+  qualiopi: QUALIOPI_POLE_ORDER,
+  "documents-interventions": DOCUMENTS_POLE_ORDER,
+  "image-bank": IMAGE_BANK_POLE_ORDER,
+};
+
+export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<string, string>>>> = {
+  main: MAIN_POLE_LABELS,
+  content_gen: CONTENT_GEN_POLE_LABELS,
+  qualiopi: QUALIOPI_POLE_LABELS,
+  "documents-interventions": DOCUMENTS_POLE_LABELS,
+  "image-bank": IMAGE_BANK_POLE_LABELS,
+};
+
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "content",
@@ -145,26 +264,67 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
 export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> {
   const base = `/fr/${adminPrefix}`;
   return [
-    // ── main ─────────────────────────────────────────────────────────────
-    { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main" },
-    { href: `${base}/calendrier`, label: "Calendrier", icon: "📅", group: "main" },
-    { href: `${base}/reservations`, label: "Réservations", icon: "📋", group: "main" },
-    { href: `${base}/devis`, label: "Devis", icon: "📄", group: "main" },
-    { href: `${base}/factures`, label: "Factures", icon: "🧾", group: "main" },
-    { href: `${base}/paiements`, label: "Paiements", icon: "💶", group: "main" },
-    { href: `${base}/echeanciers`, label: "Échéanciers", icon: "📅", group: "main" },
-    { href: `${base}/options`, label: "Options 48h", icon: "⏳", group: "main" },
+    // ── main (« Activité quotidienne ») — 3 pôles (refonte UX 2026-07-08) ───
+    // ▸ AGENDA & RÉSERVATIONS
+    { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main", subGroup: "agenda" },
+    {
+      href: `${base}/calendrier`,
+      label: "Calendrier",
+      icon: "📅",
+      group: "main",
+      subGroup: "agenda",
+    },
+    {
+      href: `${base}/reservations`,
+      label: "Réservations",
+      icon: "📋",
+      group: "main",
+      subGroup: "agenda",
+    },
+    {
+      href: `${base}/options`,
+      label: "Options 48h",
+      icon: "⏳",
+      group: "main",
+      subGroup: "agenda",
+    },
+    // ▸ FACTURATION
+    { href: `${base}/devis`, label: "Devis", icon: "📄", group: "main", subGroup: "facturation" },
+    {
+      href: `${base}/factures`,
+      label: "Factures",
+      icon: "🧾",
+      group: "main",
+      subGroup: "facturation",
+    },
+    {
+      href: `${base}/paiements`,
+      label: "Paiements",
+      icon: "💶",
+      group: "main",
+      subGroup: "facturation",
+    },
+    {
+      href: `${base}/echeanciers`,
+      label: "Échéanciers",
+      icon: "📅",
+      group: "main",
+      subGroup: "facturation",
+    },
+    // ▸ CONTACTS & RECRUTEMENT
     {
       href: `${base}/contacts/messages`,
-      label: "Contacts & messages",
+      label: "Contacts",
       icon: "📥",
       group: "main",
+      subGroup: "relation",
     },
     {
       href: `${base}/candidatures`,
       label: "Candidatures emploi",
       icon: "📨",
       group: "main",
+      subGroup: "relation",
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
@@ -484,160 +644,247 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/offres-emploi`, label: "Offres d'emploi", icon: "💼", group: "content" },
     { href: `${base}/faq`, label: "FAQ", icon: "❓", group: "content" },
     { href: `${base}/help`, label: "Centre d'aide", icon: "❔", group: "content" },
-    // ── Formation / Qualiopi (back-office OF — items ajoutés par tranche) ──
-    { href: `${base}/qualiopi`, label: "Vue d'ensemble", icon: "🎓", group: "qualiopi" },
-    { href: `${base}/qualiopi/config`, label: "Configuration", icon: "⚙️", group: "qualiopi" },
-    { href: `${base}/qualiopi/formations`, label: "Formations", icon: "📘", group: "qualiopi" },
+    // ── Formation / Qualiopi (back-office OF) ──────────────────────────────
+    //   Réorganisé en 5 pôles (refonte UX 2026-07-08) : les ~24 onglets étaient
+    //   en liste plate = écrasant. `subGroup` pilote l'accordéon par pôle
+    //   (cf. QUALIOPI_POLE_ORDER + `<AdminSidebarNav>`). L'ordre des items suit
+    //   l'ordre d'affichage voulu DANS chaque pôle (rendu = ordre source).
+    //
+    // ▸ FORMATIONS & SÉANCES (production quotidienne)
+    {
+      href: `${base}/qualiopi`,
+      label: "Vue d'ensemble",
+      icon: "🎓",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
+    {
+      href: `${base}/qualiopi/formations`,
+      label: "Formations",
+      icon: "📘",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
     {
       href: `${base}/qualiopi/formation-engine`,
       label: "Formation Engine",
       icon: "⚙️",
       group: "qualiopi",
+      subGroup: "formations",
     },
     {
       href: `${base}/qualiopi/formation-engine/validations`,
       label: "Validations IA",
       icon: "✅",
       group: "qualiopi",
+      subGroup: "formations",
     },
-    { href: `${base}/qualiopi/sessions`, label: "Sessions", icon: "📅", group: "qualiopi" },
-    { href: `${base}/qualiopi/formateurs`, label: "Formateurs", icon: "👨‍🏫", group: "qualiopi" },
-    { href: `${base}/qualiopi/stagiaires`, label: "Stagiaires", icon: "🧑‍🎓", group: "qualiopi" },
-    { href: `${base}/qualiopi/offres`, label: "Offres", icon: "🏷️", group: "qualiopi" },
-    { href: `${base}/qualiopi/clients`, label: "Clients (CRM)", icon: "🏢", group: "qualiopi" },
-    { href: `${base}/qualiopi/devis`, label: "Devis", icon: "📄", group: "qualiopi" },
     {
-      href: `${base}/qualiopi/indicateurs`,
-      label: "Indicateurs / BPF",
-      icon: "📊",
+      href: `${base}/qualiopi/sessions`,
+      label: "Sessions",
+      icon: "📅",
       group: "qualiopi",
+      subGroup: "formations",
+    },
+    {
+      href: `${base}/qualiopi/formateurs`,
+      label: "Formateurs",
+      icon: "👨‍🏫",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
+    {
+      href: `${base}/qualiopi/stagiaires`,
+      label: "Stagiaires",
+      icon: "🧑‍🎓",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
+    // ▸ COMMERCIAL (vente)
+    {
+      href: `${base}/qualiopi/offres`,
+      label: "Offres",
+      icon: "🏷️",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
+    {
+      href: `${base}/qualiopi/clients`,
+      label: "Clients (CRM)",
+      icon: "🏢",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
+    {
+      href: `${base}/qualiopi/devis`,
+      label: "Devis",
+      icon: "📄",
+      group: "qualiopi",
+      subGroup: "commercial",
     },
     {
       href: `${base}/qualiopi/financements`,
       label: "Financements / Facturation",
       icon: "💳",
       group: "qualiopi",
+      subGroup: "commercial",
     },
-    // ── Qualiopi · Conformité & registres T12 ──────────────────────────────
+    // ▸ CONFORMITÉ & AUDIT (preuves Qualiopi)
     {
       href: `${base}/qualiopi/conformite`,
       label: "Conformité",
       icon: "✅",
       group: "qualiopi",
+      subGroup: "conformite",
+    },
+    {
+      href: `${base}/qualiopi/indicateurs`,
+      label: "Indicateurs / BPF",
+      icon: "📊",
+      group: "qualiopi",
+      subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/pilotage`,
       label: "Pilotage",
-      icon: "📊",
+      icon: "📈",
       group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/reclamations`,
-      label: "Réclamations",
-      icon: "📬",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/veille`,
-      label: "Veille",
-      icon: "🔎",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/partenariats`,
-      label: "Partenariats",
-      icon: "🤝",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/sous-traitants`,
-      label: "Sous-traitants",
-      icon: "🏭",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/revue-direction`,
-      label: "Revue de direction",
-      icon: "📋",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/mode-auditeur`,
-      label: "Mode auditeur",
-      icon: "🔍",
-      group: "qualiopi",
+      subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/appreciations`,
       label: "Appréciations",
       icon: "⭐",
       group: "qualiopi",
+      subGroup: "conformite",
+    },
+    {
+      href: `${base}/qualiopi/reclamations`,
+      label: "Réclamations",
+      icon: "📬",
+      group: "qualiopi",
+      subGroup: "conformite",
+    },
+    {
+      href: `${base}/qualiopi/mode-auditeur`,
+      label: "Mode auditeur",
+      icon: "🔍",
+      group: "qualiopi",
+      subGroup: "conformite",
+    },
+    // ▸ REGISTRES & VEILLE (obligations périodiques)
+    {
+      href: `${base}/qualiopi/veille`,
+      label: "Veille",
+      icon: "🔎",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
+      href: `${base}/qualiopi/partenariats`,
+      label: "Partenariats",
+      icon: "🤝",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
+      href: `${base}/qualiopi/sous-traitants`,
+      label: "Sous-traitants",
+      icon: "🏭",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
+      href: `${base}/qualiopi/revue-direction`,
+      label: "Revue de direction",
+      icon: "📋",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    // ▸ ADMINISTRATION (setup / RGPD — rare)
+    {
+      href: `${base}/qualiopi/config`,
+      label: "Configuration",
+      icon: "⚙️",
+      group: "qualiopi",
+      subGroup: "administration",
     },
     {
       href: `${base}/qualiopi/rgpd`,
       label: "Demandes RGPD",
       icon: "🔐",
       group: "qualiopi",
+      subGroup: "administration",
     },
-    // ── Qualiopi · Alertes système T15 ────────────────────────────────────
     {
       href: `${base}/qualiopi/alertes`,
       label: "Alertes",
       icon: "🔔",
       group: "qualiopi",
+      subGroup: "administration",
     },
     // ── Documents (hub à 2 niveaux : Activités + Autres) ─────────────────
     //   Activités : Formations / 1-to-1 / Audit (kits pédagogiques Qualiopi,
     //   InterventionDocument) + Implémentations / Sites web (buckets de fichiers
     //   génériques, ConsoleDocument). Autres : documents transverses (plaquette,
     //   pièces admin). « Annuaire équipe » + « Importer un kit » = utilitaires.
+    // ▸ PAR ACTIVITÉ (buckets documentaires rattachés à une prestation + Autres)
     {
       href: `${base}/documents-interventions/formations`,
       label: "Formations",
       icon: "📘",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/un-a-un`,
       label: "1-to-1",
       icon: "👤",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/audit`,
       label: "Audit",
       icon: "🔍",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/implementations`,
       label: "Implémentations",
       icon: "⚙️",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/sites-web`,
       label: "Sites web",
       icon: "🌐",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/autres`,
       label: "Autres",
       icon: "📎",
       group: "documents-interventions",
+      subGroup: "activite",
     },
+    // ▸ OUTILS (utilitaires transverses)
     {
       href: `${base}/documents-interventions/destinataires`,
       label: "Annuaire équipe",
       icon: "✉️",
       group: "documents-interventions",
+      subGroup: "outils",
     },
     {
       href: `${base}/documents-interventions/import`,
       label: "Importer un kit",
       icon: "📦",
       group: "documents-interventions",
+      subGroup: "outils",
     },
     // ── Coaching 1-to-1 (séances AFEST remplies par les formateurs) ───────
     {
@@ -654,41 +901,84 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/coaching/formateurs`,
-      label: "Comptes formateurs",
+      label: "Accès & connexions formateurs",
       icon: "🧑‍🏫",
       group: "coaching-1to1",
     },
-    // ── banque d'images (image-bank V1) ──────────────────────────────────
-    { href: `${base}/image-bank`, label: "Vue d'ensemble", icon: "🖼️", group: "image-bank" },
-    { href: `${base}/image-bank/library`, label: "Bibliothèque", icon: "📚", group: "image-bank" },
-    { href: `${base}/image-bank/upload`, label: "Téléverser", icon: "⬆️", group: "image-bank" },
+    // ── banque d'images — 3 pôles (refonte UX 2026-07-08) ─────────────────
+    // ▸ BIBLIOTHÈQUE
+    {
+      href: `${base}/image-bank`,
+      label: "Vue d'ensemble",
+      icon: "🖼️",
+      group: "image-bank",
+      subGroup: "bibliotheque",
+    },
+    {
+      href: `${base}/image-bank/library`,
+      label: "Bibliothèque",
+      icon: "📚",
+      group: "image-bank",
+      subGroup: "bibliotheque",
+    },
+    {
+      href: `${base}/image-bank/upload`,
+      label: "Téléverser",
+      icon: "⬆️",
+      group: "image-bank",
+      subGroup: "bibliotheque",
+    },
     {
       href: `${base}/image-bank/bulk-import`,
       label: "Import CSV en masse",
       icon: "📦",
       group: "image-bank",
+      subGroup: "bibliotheque",
+    },
+    // ▸ ORGANISATION & QUALITÉ
+    {
+      href: `${base}/image-bank/categories`,
+      label: "Catégories",
+      icon: "🏷️",
+      group: "image-bank",
+      subGroup: "organisation",
+    },
+    {
+      href: `${base}/image-bank/tags`,
+      label: "Étiquettes",
+      icon: "🔖",
+      group: "image-bank",
+      subGroup: "organisation",
     },
     {
       href: `${base}/image-bank/quality`,
       label: "File de qualité",
       icon: "🔍",
       group: "image-bank",
+      subGroup: "organisation",
     },
     {
       href: `${base}/image-bank/analytics`,
       label: "Statistiques",
       icon: "📊",
       group: "image-bank",
+      subGroup: "organisation",
     },
-    { href: `${base}/image-bank/categories`, label: "Catégories", icon: "🏷️", group: "image-bank" },
-    { href: `${base}/image-bank/tags`, label: "Étiquettes", icon: "🔖", group: "image-bank" },
+    // ▸ ADMINISTRATION
     {
       href: `${base}/image-bank/usage-logs`,
       label: "Journaux d'utilisation (RGPD)",
       icon: "🛡️",
       group: "image-bank",
+      subGroup: "admin",
     },
-    { href: `${base}/image-bank/settings`, label: "Réglages", icon: "⚙️", group: "image-bank" },
+    {
+      href: `${base}/image-bank/settings`,
+      label: "Réglages",
+      icon: "⚙️",
+      group: "image-bank",
+      subGroup: "admin",
+    },
     // ── salle de presse (communiqués + kit média de marque) ──────────────
     { href: `${base}/presse`, label: "Vue d'ensemble", icon: "📰", group: "presse" },
     { href: `${base}/presse/communiques`, label: "Communiqués", icon: "🗞️", group: "presse" },
