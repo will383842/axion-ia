@@ -67,9 +67,11 @@ describe("INDICATEURS_RNQ", () => {
     expect(certNums.sort((a, b) => a - b)).toEqual([3, 7, 16]);
   });
 
-  it("les conditionnels app sont 13, 14, 15", () => {
+  it("les conditionnels app (apprentissage/CFA) sont 13, 14, 15, 20, 29", () => {
+    // Réf. liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » : ces indicateurs ont
+    // une colonne AFC/CBC/VAE vide (audités uniquement pour l'apprentissage/CFA).
     const appNums = INDICATEURS_RNQ.filter((i) => i.conditionnel === "app").map((i) => i.numero);
-    expect(appNums.sort((a, b) => a - b)).toEqual([13, 14, 15]);
+    expect(appNums.sort((a, b) => a - b)).toEqual([13, 14, 15, 20, 29]);
   });
 
   it("le conditionnel afest est 28", () => {
@@ -118,7 +120,7 @@ describe("INDICATEURS_RNQ", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("indicateursApplicables", () => {
-  it("action classique → exclut les 6 conditionnels (3,7,13,14,15,16,28)", () => {
+  it("action classique (AFC) → exclut les 9 conditionnels (3,7,13,14,15,16,20,28,29)", () => {
     const nums = indicateursApplicables(["classique"]);
     // Les conditionnels cert/app/afest ne doivent pas être présents
     expect(nums).not.toContain(3); // cert
@@ -127,13 +129,16 @@ describe("indicateursApplicables", () => {
     expect(nums).not.toContain(14); // app
     expect(nums).not.toContain(15); // app
     expect(nums).not.toContain(16); // cert
+    expect(nums).not.toContain(20); // app (apprentis) — AFC vide chez Acuria
     expect(nums).not.toContain(28); // afest
+    expect(nums).not.toContain(29); // app (apprentis) — AFC vide chez Acuria
   });
 
-  it("action classique → retourne 25 indicateurs tronc commun", () => {
+  it("action classique (AFC) → retourne 23 indicateurs tronc commun", () => {
     const nums = indicateursApplicables(["classique"]);
-    // 32 - 7 conditionnels = 25
-    expect(nums).toHaveLength(25);
+    // 32 - 9 conditionnels (cert 3,7,16 · app 13,14,15,20,29 · afest 28) = 23.
+    // Aligné sur la liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » (colonne AFC).
+    expect(nums).toHaveLength(23);
   });
 
   it("action certifiante → inclut off.3, 7, 16", () => {
@@ -143,13 +148,15 @@ describe("indicateursApplicables", () => {
     expect(nums).toContain(16);
   });
 
-  it("action alternance_afest → inclut off.28 mais PAS off.13/14/15 (apprentissage)", () => {
+  it("action alternance_afest → inclut off.28 mais PAS les indicateurs apprentissage", () => {
     const nums = indicateursApplicables(["alternance_afest"]);
-    // off.28 = AFEST (applicable) ; off.13/14/15 = apprentissage/CFA (jamais applicables).
+    // off.28 = AFEST (applicable) ; off.13/14/15/20/29 = apprentissage/CFA (jamais applicables).
     expect(nums).toContain(28);
     expect(nums).not.toContain(13);
     expect(nums).not.toContain(14);
     expect(nums).not.toContain(15);
+    expect(nums).not.toContain(20);
+    expect(nums).not.toContain(29);
   });
 
   it("retourne les numéros triés ascendants", () => {
@@ -158,11 +165,13 @@ describe("indicateursApplicables", () => {
     expect(nums).toEqual(sorted);
   });
 
-  it("tous types → 29 indicateurs (off.13/14/15 apprentissage jamais applicables)", () => {
+  it("tous types (hors apprentissage) → 27 indicateurs (off.13/14/15/20/29 jamais applicables)", () => {
     const nums = indicateursApplicables(["classique", "certifiante", "alternance_afest"]);
-    // 32 indicateurs RNQ − off.13/14/15 (apprentissage/CFA hors périmètre) = 29.
-    expect(nums).toHaveLength(29);
+    // 32 indicateurs RNQ − off.13/14/15/20/29 (apprentissage/CFA hors périmètre) = 27.
+    expect(nums).toHaveLength(27);
     expect(nums).not.toContain(13);
+    expect(nums).not.toContain(20);
+    expect(nums).not.toContain(29);
     expect(nums).toContain(28);
   });
 
