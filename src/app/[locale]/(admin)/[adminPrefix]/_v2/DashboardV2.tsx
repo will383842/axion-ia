@@ -5,6 +5,19 @@
 // (le fetch reste dans la page racine V1 pour éviter doublon DB).
 
 import Link from "next/link";
+import {
+  ClipboardCheck,
+  Hourglass,
+  CalendarDays,
+  Wallet,
+  CalendarClock,
+  CalendarRange,
+  TrendingUp,
+  AlertTriangle,
+  Inbox,
+  Newspaper,
+  Mail,
+} from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 
 interface DashboardSnapshotItem {
@@ -74,24 +87,28 @@ export function DashboardV2({
         <AdminStatCard
           label="Prêts à valider (D49)"
           value={kpis.pendingValidation}
+          icon={ClipboardCheck}
           tone={kpis.pendingValidation > 0 ? "warning" : "default"}
           href={`${base}/reservations?status=awaiting_admin_validation`}
         />
         <AdminStatCard
           label="Options à valider"
           value={kpis.pendingOptions}
+          icon={Hourglass}
           tone={kpis.pendingOptions > 0 ? "warning" : "default"}
           href={`${base}/options`}
         />
         <AdminStatCard
           label="Cadrages 7 prochains jours"
           value={kpis.cadragesUpcoming}
+          icon={CalendarDays}
           href={`${base}/calendrier`}
         />
         <AdminStatCard
           label="Paiements reçus aujourd'hui"
           value={kpis.paymentsTodayCount}
           meta={kpis.paymentsTodayAmount}
+          icon={Wallet}
           tone="success"
           href={`${base}/paiements`}
         />
@@ -101,12 +118,26 @@ export function DashboardV2({
         aria-label="Activité"
         className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4"
       >
-        <AdminStatCard label="Interventions cette semaine" value={kpis.bookingsWeek} />
-        <AdminStatCard label="Interventions ce mois" value={kpis.bookingsMonth} />
-        <AdminStatCard label="Encaissé ce mois" value={kpis.revenuesMonth} tone="success" />
+        <AdminStatCard
+          label="Interventions cette semaine"
+          value={kpis.bookingsWeek}
+          icon={CalendarClock}
+        />
+        <AdminStatCard
+          label="Interventions ce mois"
+          value={kpis.bookingsMonth}
+          icon={CalendarRange}
+        />
+        <AdminStatCard
+          label="Encaissé ce mois"
+          value={kpis.revenuesMonth}
+          icon={TrendingUp}
+          tone="success"
+        />
         <AdminStatCard
           label="Factures en retard"
           value={kpis.invoicesOverdue}
+          icon={AlertTriangle}
           tone={kpis.invoicesOverdue > 0 ? "destructive" : "default"}
           href={`${base}/factures?status=overdue`}
         />
@@ -171,9 +202,9 @@ export function DashboardV2({
         aria-label="Repères contenu"
         className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3"
       >
-        <AdminStatCard label="Soumissions totales" value={kpis.totalSubmissions} />
-        <AdminStatCard label="Articles publiés" value={kpis.totalArticles} />
-        <AdminStatCard label="Abonnés newsletter" value={kpis.totalSubscribers} />
+        <AdminStatCard label="Soumissions totales" value={kpis.totalSubmissions} icon={Inbox} />
+        <AdminStatCard label="Articles publiés" value={kpis.totalArticles} icon={Newspaper} />
+        <AdminStatCard label="Abonnés newsletter" value={kpis.totalSubscribers} icon={Mail} />
       </section>
 
       <AdminCard>

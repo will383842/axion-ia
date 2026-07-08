@@ -47,7 +47,7 @@ export function AdminCard({
     <Tag
       className={cn(
         "admin-card-v2",
-        "rounded-[var(--radius-admin-md,6px)]",
+        "rounded-[var(--radius-admin-xl,16px)]",
         "border border-[color:var(--color-admin-border)]",
         "bg-[color:var(--color-admin-paper)]",
         PADDING_CLASS[variant],

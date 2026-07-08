@@ -12,6 +12,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { CalendarDays, PlayCircle, CalendarClock, CheckCircle2 } from "lucide-react";
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -81,16 +82,18 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total sessions" value={sessions.length} />
+        <AdminStatCard label="Total sessions" value={sessions.length} icon={CalendarDays} />
         <AdminStatCard
           label="En cours"
           value={enCours}
+          icon={PlayCircle}
           tone={enCours > 0 ? "warning" : "default"}
         />
-        <AdminStatCard label="Planifiées" value={planifiees} />
+        <AdminStatCard label="Planifiées" value={planifiees} icon={CalendarClock} />
         <AdminStatCard
           label="Réalisées"
           value={realisees}
+          icon={CheckCircle2}
           tone={realisees > 0 ? "success" : "default"}
         />
       </div>
