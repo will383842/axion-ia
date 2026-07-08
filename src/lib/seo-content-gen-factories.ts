@@ -377,8 +377,11 @@ export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unkn
       //  - `text` / `author` / `datePublished` sur la Question et l'Answer
       //    (recommandés) : fournis honnêtement (auteur = Manon, la persona éditoriale
       //    nommée déjà porteuse du `author` de niveau page ; date = date de relecture).
-      //  - `upvoteCount` VOLONTAIREMENT omis : pas de faux votes (politique
-      //    anti-fabrication) — warning non critique laissé tel quel.
+      //  - `upvoteCount` (recommandé, GSC 2026-07-07 « Champ upvoteCount manquant
+      //    dans mainEntity.acceptedAnswer ») : émis à `0` par défaut. 0 = compte
+      //    HONNÊTE de votes communautaires réels (le site n'a pas de mécanisme de
+      //    vote) → lève le warning SANS fabriquer de faux votes (politique
+      //    anti-fabrication respectée).
       text: input.question,
       answerCount: 1,
       author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
@@ -389,7 +392,7 @@ export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unkn
         url: input.parentArticleUrl ?? url,
         author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
         datePublished: new Date(input.publishedAt).toISOString(),
-        ...(input.upvoteCount ? { upvoteCount: input.upvoteCount } : {}),
+        upvoteCount: input.upvoteCount ?? 0,
       },
       ...(input.parentArticleUrl
         ? { isPartOf: { "@type": "WebPage", url: input.parentArticleUrl } }

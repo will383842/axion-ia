@@ -1768,8 +1768,12 @@ interface ReviewJsonLdInput {
   bestRating?: number;
   /** Review body. */
   reviewBody: string;
-  /** Item being reviewed (Service, Product, Course or Organization). */
-  itemReviewed: { type: "Service" | "Product" | "Course" | "Organization"; name: string };
+  /**
+   * Item being reviewed. `Service` est EXCLU volontairement : Google le rejette
+   * comme host d'avis (« Type d'objet non valide pour itemReviewed »). Cf. SSOT
+   * `service-lines.ts` (types productisés).
+   */
+  itemReviewed: { type: "Product" | "Course" | "Organization"; name: string };
   /** Date in ISO format. */
   datePublished?: string;
 }
@@ -1786,25 +1790,33 @@ export function buildReviewJsonLd({
   itemReviewed,
   datePublished,
 }: ReviewJsonLdInput) {
+  // Forme « entité notée AVEC review nichée » (et NON un `Review` portant un
+  // `itemReviewed`). Google évalue l'entité `itemReviewed` comme item principal
+  // du rich result : un `Product` isolé (name seul) est jugé invalide car il exige
+  // `offers` / `review` / `aggregateRating` (GSC « Il faut indiquer offers, review
+  // ou aggregateRating » — 2026-07-07, /avis/[slug] type Product). En nichant la
+  // Review DANS l'entité, la propriété `review` satisfait cette exigence pour tous
+  // les types (Product / Course / Service / Organization). Cf. doc Google « Review
+  // snippet » (exemple Product + review). Un seul consommateur : `reviewToJsonLd`.
   return {
     "@context": "https://schema.org",
-    "@type": "Review",
-    author: {
-      "@type": "Person",
-      name: authorName,
-      ...(authorRole ? { jobTitle: authorRole } : {}),
+    "@type": itemReviewed.type,
+    name: itemReviewed.name,
+    review: {
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: authorName,
+        ...(authorRole ? { jobTitle: authorRole } : {}),
+      },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue,
+        bestRating,
+      },
+      reviewBody,
+      ...(datePublished ? { datePublished } : {}),
     },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue,
-      bestRating,
-    },
-    reviewBody,
-    itemReviewed: {
-      "@type": itemReviewed.type,
-      name: itemReviewed.name,
-    },
-    ...(datePublished ? { datePublished } : {}),
   } as const;
 }
 
@@ -1815,8 +1827,8 @@ interface AggregateRatingJsonLdInput {
   reviewCount: number;
   /** Best rating (defaults to 5). */
   bestRating?: number;
-  /** Item being rated. */
-  itemReviewed: { type: "Service" | "Product" | "Organization" | "Course"; name: string };
+  /** Item being rated (`Service` exclu : rejeté par Google comme host d'avis). */
+  itemReviewed: { type: "Product" | "Organization" | "Course"; name: string };
 }
 
 // AggregateRating JSON-LD — used to summarize multiple Reviews. Affiche
@@ -2146,7 +2158,9 @@ export function buildQAPageJsonLd({
   // GSC Rich Results 2026-07-03 — QAPage requiert `answerCount` sur la Question
   // (sinon INVALIDE). Champs recommandés `text`/`author`/`url`/`datePublished`
   // fournis honnêtement : auteur = l'Organisation (contenu site-authored), date
-  // si fournie. `upvoteCount` jamais fabriqué (politique anti-fabrication).
+  // si fournie. `upvoteCount` émis à 0 par défaut (compte honnête de votes
+  // communautaires réels = aucun ; lève le warning GSC « upvoteCount manquant »
+  // sans fabriquer de faux votes).
   const orgRef = { "@id": `${SITE_URL}/#organization` } as const;
   const dateIso = datePublished ? new Date(datePublished).toISOString() : undefined;
   const answerCount = 1 + (suggestedAnswers?.length ?? 0);
@@ -2169,9 +2183,7 @@ export function buildQAPageJsonLd({
           ? { "@type": "Person", name: acceptedAnswer.authorName }
           : orgRef,
         ...(dateIso ? { datePublished: dateIso } : {}),
-        ...(typeof acceptedAnswer.upvoteCount === "number"
-          ? { upvoteCount: acceptedAnswer.upvoteCount }
-          : {}),
+        upvoteCount: acceptedAnswer.upvoteCount ?? 0,
       },
       ...(suggestedAnswers && suggestedAnswers.length
         ? {
@@ -2179,7 +2191,7 @@ export function buildQAPageJsonLd({
               "@type": "Answer",
               text: a.text,
               author: a.authorName ? { "@type": "Person", name: a.authorName } : orgRef,
-              ...(typeof a.upvoteCount === "number" ? { upvoteCount: a.upvoteCount } : {}),
+              upvoteCount: a.upvoteCount ?? 0,
             })),
           }
         : {}),

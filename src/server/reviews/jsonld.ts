@@ -23,7 +23,12 @@ export function reviewItemReviewed(r: PublicReview): ItemReviewed {
     : { type: "Organization", name: "Axion-IA" };
 }
 
-/** JSON-LD `Review` d'un avis (pour la fiche `/avis/[slug]`). */
+/**
+ * JSON-LD d'un avis pour la fiche `/avis/[slug]` : entité notée (Product/Course/
+ * Service/Organization) en racine, avec la `Review` nichée dans `review`. Forme
+ * Google « Review snippet » — un `Product` isolé serait invalide (exige offers/
+ * review/aggregateRating). Cf. `buildReviewJsonLd`.
+ */
 export function reviewToJsonLd(r: PublicReview) {
   return buildReviewJsonLd({
     authorName: reviewAuthorName(r),

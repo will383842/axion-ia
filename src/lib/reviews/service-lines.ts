@@ -2,16 +2,21 @@
 // libellé FR, leur route publique canonique et le type schema.org à utiliser pour
 // l'AggregateRating par service.
 //
-// ⚠️ Le type JSON-LD conditionne l'éligibilité aux étoiles Google :
-// `Course`/`Product` sont éligibles au rich result « review snippet », `Service`
-// ne l'est pas (mais reste utile AEO/GEO/LLM + Bing). Cf. `buildAggregateRatingJsonLd`.
+// ⚠️ Le type JSON-LD conditionne la VALIDITÉ du balisage d'avis Google. La liste
+// des types acceptés pour `itemReviewed` / `aggregateRating` est FERMÉE (Product,
+// Course, Organization, LocalBusiness, Event, Book, SoftwareApplication…). `Service`
+// N'EN FAIT PAS PARTIE → GSC rejette « Type d'objet non valide pour le champ
+// itemReviewed » (2026-07-07, 50 fiches + 3 facettes). On mappe donc chaque gamme
+// vers un type éligible : `Course` pour la formation, `Product` pour les prestations
+// productisées (audit, implémentation, 1-à-1, sites web). Le type `ReviewItemType`
+// exclut volontairement `Service` pour interdire toute réintroduction.
 //
 // Fichier PUR (pas de "use server", pas d'I/O) → importable client ET serveur.
 
 import type { ServiceSector } from "../../../prisma/generated/client";
 
 /** Type schema.org porteur de la note pour un service donné. */
-export type ReviewItemType = "Course" | "Service" | "Product";
+export type ReviewItemType = "Course" | "Product";
 
 export interface ServiceLineMeta {
   readonly value: ServiceSector;
@@ -31,7 +36,7 @@ export const SERVICE_LINES: readonly ServiceLineMeta[] = [
     labelFr: "Audit IA",
     schemaName: "Audit IA Axion-IA",
     path: "/audit",
-    itemType: "Service",
+    itemType: "Product",
   },
   {
     value: "interventions_formations",
@@ -45,14 +50,14 @@ export const SERVICE_LINES: readonly ServiceLineMeta[] = [
     labelFr: "Implémentation IA",
     schemaName: "Implémentation IA Axion-IA",
     path: "/implementation",
-    itemType: "Service",
+    itemType: "Product",
   },
   {
     value: "un_a_un",
     labelFr: "Accompagnement 1-à-1",
     schemaName: "Accompagnement IA 1-à-1 Axion-IA",
     path: "/un-a-un",
-    itemType: "Service",
+    itemType: "Product",
   },
   {
     value: "sites_web_augmentes",
