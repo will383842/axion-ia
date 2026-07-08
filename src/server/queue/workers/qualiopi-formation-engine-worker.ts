@@ -55,6 +55,7 @@ import {
   type ModuleContenu,
 } from "@/server/qualiopi/engine/content-schema";
 import { evaluateContenuDetailleQuality } from "@/server/qualiopi/engine/content-quality";
+import { parseLlmJsonSafe } from "@/server/content-gen/shared/parse-llm-json";
 import { normaliserModalite } from "@/server/qualiopi/engine/modalite-pedagogie";
 import { axionIaStackGrounding } from "@/server/qualiopi/engine/grounding";
 import { evaluateFormationQuality } from "@/server/qualiopi/engine/evaluate";
@@ -1495,12 +1496,18 @@ async function handleEvalDecision(
   await stepGenerateContent(formation, passe);
 }
 
+/**
+ * Parse la sortie LLM en JSON de façon ROBUSTE. Le modèle enveloppe souvent son
+ * JSON dans des fences markdown (```json … ```) ou de la prose, malgré la
+ * consigne — un `JSON.parse` naïf échouait alors et stockait la CHAÎNE brute,
+ * d'où `programmeDetaille` = string → 0 module extrait → génération bloquée
+ * (cause racine témoin prod). `parseLlmJsonSafe` retire les fences et extrait le
+ * premier bloc `{…}`/`[…]`. On retombe sur la chaîne brute seulement si vraiment
+ * rien n'est parsable (fallback conservé).
+ */
 function parseOutputSafe(output: string): unknown {
-  try {
-    return JSON.parse(output);
-  } catch {
-    return output;
-  }
+  const parsed = parseLlmJsonSafe(output);
+  return parsed !== null ? parsed : output;
 }
 
 // ── Worker BullMQ ─────────────────────────────────────────────────────────────
