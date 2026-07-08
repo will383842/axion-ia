@@ -71,7 +71,6 @@
     "content-gen:check-prod-env": "bash scripts/content-gen/check-prod-env.sh",
     "image-bank:seed": "tsx prisma/seeds/image-bank/index.ts",
     "image-bank:isolation-check": "tsx scripts/image-bank/isolation-check.ts",
-    "prospection:isolation-check": "tsx scripts/prospection/isolation-check.ts",
     "qualiopi:seed": "tsx prisma/seeds/qualiopi/index.ts",
     "qualiopi:seed-demo": "tsx prisma/seeds/qualiopi/demo.ts",
     "qualiopi:isolation-check": "tsx scripts/qualiopi/isolation-check.ts",

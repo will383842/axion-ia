@@ -59,16 +59,6 @@ import { startFormationCronsWorker } from "./workers/qualiopi-formation-crons-wo
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
-// Prospection & Base Entreprises (T3+) — workers + crons cloisonnés en module.
-import { startProspectionStockIngestorWorker } from "./workers/prospection-stock-ingestor-worker";
-import { startProspectionDeltaWorker } from "./workers/prospection-delta-worker";
-import { startProspectionOrchestratorWorker } from "./workers/prospection-orchestrator-worker";
-import { startProspectionCollectWorker } from "./workers/prospection-collect-worker";
-import { startProspectionCoverageWorker } from "./workers/prospection-coverage-worker";
-import { startProspectionSchedulerWorker } from "./workers/prospection-scheduler-worker";
-import { startProspectionEnrichWorker } from "./workers/prospection-enrich-worker";
-import { startProspectionAnnuaireSanteWorker } from "./workers/prospection-annuaire-sante-worker";
-import { bootProspectionRepeatableJobs } from "@/server/prospection/queue/queues";
 
 async function main() {
   if (isBullmqDisabled()) {
@@ -144,22 +134,9 @@ async function main() {
     startFormationCronsWorker(),
     // Chatbot ingest — démarre uniquement si le flag est explicitement activé.
     ...(process.env.CHATBOT_ENABLED === "true" ? [startChatbotIngestWorker()] : []),
-    // Prospection & Base Entreprises (T3+) — ingestion Stock Sirene + delta.
-    startProspectionStockIngestorWorker(),
-    startProspectionDeltaWorker(),
-    // Prospection T4 — orchestration campagne, collecte, coverage rollup, scheduler.
-    startProspectionOrchestratorWorker(),
-    startProspectionCollectWorker(),
-    startProspectionCoverageWorker(),
-    startProspectionSchedulerWorker(),
-    // Prospection T5 — enrichissement 2 passes (site public + MX + responsables).
-    startProspectionEnrichWorker(),
-    // Prospection V2 — ingestion Annuaire Santé/RPPS (gardée par le flag AIPD).
-    startProspectionAnnuaireSanteWorker(),
   ];
 
   await bootRepeatableJobs();
-  await bootProspectionRepeatableJobs();
 
   console.log(`✓ ${workers.length} workers running. Cron jobs scheduled.`);
 
