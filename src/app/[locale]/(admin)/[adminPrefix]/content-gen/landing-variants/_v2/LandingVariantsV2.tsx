@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminTable } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { LandingVariantToggle } from "./LandingVariantToggle";
 
 const V1_VARIANTS = [
   { slug: "default", label: "Default (toutes audiences)" },
@@ -33,14 +34,24 @@ export async function LandingVariantsV2({ adminPrefix }: Props): Promise<React.R
   const columns: ReadonlyArray<AdminTableColumn<VariantRow>> = [
     { key: "slug", header: "Slug", cell: (v) => <code>{v.slug}</code> },
     { key: "label", header: "Libellé", cell: (v) => v.label },
-    { key: "active", header: "Actif", cell: (v) => (active.includes(v.slug) ? "✅" : "🚫") },
+    {
+      key: "active",
+      header: "Actif",
+      cell: (v) => (
+        <LandingVariantToggle
+          slug={v.slug}
+          active={active.includes(v.slug)}
+          locked={v.slug === "default"}
+        />
+      ),
+    },
   ];
 
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Variantes landing ville"
-        description="6 variantes V1 (default + 5 sectoriels). Toggle ON/OFF + override par ville."
+        description="6 variantes V1 (default + 5 sectoriels). Activez/désactivez chaque variante ci-dessous ; « default » (base) reste toujours active."
       />
 
       <AdminTable
