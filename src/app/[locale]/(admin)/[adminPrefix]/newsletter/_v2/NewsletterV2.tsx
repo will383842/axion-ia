@@ -13,6 +13,7 @@ import {
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { SubscriberRowActions } from "./SubscriberRowActions";
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
@@ -93,6 +94,11 @@ export function NewsletterV2({
       key: "unsubscribedAt",
       header: "Désabonné le",
       cell: (s) => (s.unsubscribedAt ? s.unsubscribedAt.toISOString().slice(0, 10) : "—"),
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      cell: (s) => <SubscriberRowActions id={s.id} status={s.status} />,
     },
   ];
 

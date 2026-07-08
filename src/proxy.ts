@@ -177,6 +177,11 @@ const authPipeline = auth(async (req) => {
   const adminPathRegex = new RegExp(`^/(fr|en)/${adminSegment}(?:/|$)`);
   if (adminPathRegex.test(req.nextUrl.pathname)) {
     req.headers.set("x-admin-route", "1");
+    // Propage le pathname courant aux Server Components admin (via `headers()`).
+    // Les layouts à onglets (documents-interventions, contacts) dérivent l'onglet
+    // actif de `x-pathname` ; sans lui ils retombaient sur `referer` (URL
+    // précédente en nav SPA, souvent absente au refresh) → onglet surligné faux.
+    req.headers.set("x-pathname", req.nextUrl.pathname);
   }
 
   // 2. Run intl (locale resolution + rewrites)

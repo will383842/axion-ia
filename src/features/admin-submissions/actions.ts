@@ -15,7 +15,13 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
-import type { SubmissionType, SubmissionStatus, Locale } from "../../../prisma/generated/client";
+import { decryptPii } from "@/lib/pii-crypto";
+import type {
+  SubmissionType,
+  SubmissionStatus,
+  Locale,
+  Prisma,
+} from "../../../prisma/generated/client";
 
 // ============================================================
 // AUTH guard helper (RBAC simple V1 : super_admin/admin/editor)
@@ -153,56 +159,42 @@ export async function listSubmissionsAction(
     }
   }
 
-  if (parsed.search) {
-    const q = parsed.search.trim();
-    if (q.length >= 2) {
-      where.OR = [
-        { contactEmail: { contains: q, mode: "insensitive" } },
-        { contactName: { contains: q, mode: "insensitive" } },
-        { companyName: { contains: q, mode: "insensitive" } },
-      ];
-    }
-  }
+  // NB : la recherche par email/nom N'EST PAS un filtre SQL. `contactEmail` /
+  // `contactName` sont chiffrés au repos (AES-GCM, IV aléatoire → non
+  // déterministe), donc un `contains` SQL ne matche jamais. On filtre en mémoire
+  // après déchiffrement (voir plus bas). `companyName` reste en clair.
 
-  const [total, items] = await Promise.all([
-    prisma.submission.count({ where }),
-    prisma.submission.findMany({
-      where,
-      orderBy: { submittedAt: "desc" },
-      skip: (parsed.page - 1) * parsed.pageSize,
-      take: parsed.pageSize,
-      select: {
-        id: true,
-        type: true,
-        status: true,
-        locale: true,
-        companyName: true,
-        contactName: true,
-        contactEmail: true,
-        sector: true,
-        assignedTo: true,
-        submittedAt: true,
-        replyCount: true,
-        needsAttention: true,
-        archivedAt: true,
-        lastRepliedAt: true,
-        // Form v2 — `details` JSON contient unifiedType pour distinguer les
-        // 12 types unifiés (le champ `type` DB n'a que 5 valeurs enum).
-        details: true,
-        // Sprint Notif Infra 2026-05-26 / fix P1-2 — récupère la dernière
-        // reply pour calculer lastReplyStatus (badge "Échec envoi").
-        replies: {
-          orderBy: { repliedAt: "desc" },
-          take: 1,
-          select: { deliveryStatus: true },
-        },
-      },
-    }),
-  ]);
+  // Sélection partagée liste + recherche.
+  const select = {
+    id: true,
+    type: true,
+    status: true,
+    locale: true,
+    companyName: true,
+    contactName: true,
+    contactEmail: true,
+    sector: true,
+    assignedTo: true,
+    submittedAt: true,
+    replyCount: true,
+    needsAttention: true,
+    archivedAt: true,
+    lastRepliedAt: true,
+    // Form v2 — `details` JSON contient unifiedType (le champ `type` DB n'a que
+    // 5 valeurs enum, vs 12 types unifiés).
+    details: true,
+    // Dernière reply → lastReplyStatus (badge "Échec envoi").
+    replies: {
+      orderBy: { repliedAt: "desc" },
+      take: 1,
+      select: { deliveryStatus: true },
+    },
+  } satisfies Prisma.SubmissionSelect;
 
-  // Mappe vers SubmissionListItem (flatten lastReplyStatus depuis replies[0]
-  // + extrait unifiedType depuis details JSON).
-  const mapped = items.map((s) => {
+  // Mappe une ligne DB → SubmissionListItem. DÉCHIFFRE le PII : contactName /
+  // contactEmail sont stockés chiffrés (enc:v1) par le formulaire ; decryptPii
+  // est un no-op sur les valeurs en clair (leads chatbot) → sûr partout.
+  const mapRow = (s: Prisma.SubmissionGetPayload<{ select: typeof select }>) => {
     const details =
       s.details && typeof s.details === "object" && !Array.isArray(s.details)
         ? (s.details as Record<string, unknown>)
@@ -215,8 +207,8 @@ export async function listSubmissionsAction(
       status: s.status,
       locale: s.locale,
       companyName: s.companyName,
-      contactName: s.contactName,
-      contactEmail: s.contactEmail,
+      contactName: decryptPii(s.contactName),
+      contactEmail: decryptPii(s.contactEmail),
       sector: s.sector,
       assignedTo: s.assignedTo,
       submittedAt: s.submittedAt,
@@ -227,7 +219,48 @@ export async function listSubmissionsAction(
       lastReplyStatus: s.replies[0]?.deliveryStatus ?? null,
       unifiedType,
     };
-  });
+  };
+
+  const searchQ =
+    parsed.search && parsed.search.trim().length >= 2 ? parsed.search.trim().toLowerCase() : null;
+
+  let mapped: ReturnType<typeof mapRow>[];
+  let total: number;
+  if (searchQ) {
+    // Scan borné des plus récents (matchant les AUTRES filtres) → déchiffre →
+    // filtre + pagine en mémoire. Une boîte admin dépasse rarement ce plafond.
+    const SEARCH_SCAN_CAP = 2000;
+    const scanned = await prisma.submission.findMany({
+      where,
+      orderBy: { submittedAt: "desc" },
+      take: SEARCH_SCAN_CAP,
+      select,
+    });
+    const filtered = scanned
+      .map(mapRow)
+      .filter(
+        (r) =>
+          (r.contactEmail ?? "").toLowerCase().includes(searchQ) ||
+          (r.contactName ?? "").toLowerCase().includes(searchQ) ||
+          (r.companyName ?? "").toLowerCase().includes(searchQ),
+      );
+    total = filtered.length;
+    const start = (parsed.page - 1) * parsed.pageSize;
+    mapped = filtered.slice(start, start + parsed.pageSize);
+  } else {
+    const [count, items] = await Promise.all([
+      prisma.submission.count({ where }),
+      prisma.submission.findMany({
+        where,
+        orderBy: { submittedAt: "desc" },
+        skip: (parsed.page - 1) * parsed.pageSize,
+        take: parsed.pageSize,
+        select,
+      }),
+    ]);
+    total = count;
+    mapped = items.map(mapRow);
+  }
 
   return {
     items: mapped,
@@ -261,7 +294,15 @@ export async function getSubmissionDetailAction(id: string) {
       },
     },
   });
-  return submission;
+  if (!submission) return submission;
+  // Déchiffre le PII stocké chiffré (enc:v1). No-op sur les valeurs en clair.
+  return {
+    ...submission,
+    contactName: decryptPii(submission.contactName),
+    contactEmail: decryptPii(submission.contactEmail),
+    contactPhone: decryptPii(submission.contactPhone),
+    address: decryptPii(submission.address),
+  };
 }
 
 // ============================================================
@@ -483,9 +524,17 @@ export async function exportSubmissionsCsvAction(
     if (/[",\n;]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
     return s;
   };
-  const lines = rows.map((r) =>
-    headers.map((h) => escape((r as unknown as Record<string, unknown>)[h])).join(";"),
-  );
+  const lines = rows.map((raw) => {
+    // Déchiffre le PII (enc:v1) pour un export lisible. No-op sur le clair.
+    const r: Record<string, unknown> = {
+      ...raw,
+      contactName: decryptPii(raw.contactName),
+      contactEmail: decryptPii(raw.contactEmail),
+      contactPhone: decryptPii(raw.contactPhone),
+      address: decryptPii(raw.address),
+    };
+    return headers.map((h) => escape(r[h])).join(";");
+  });
   // BOM UTF-8 + CRLF (Windows Excel friendly)
   const csv = "﻿" + headers.join(";") + "\r\n" + lines.join("\r\n");
   const filename = `axion-ia-submissions-${new Date().toISOString().slice(0, 10)}.csv`;
