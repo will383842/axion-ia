@@ -4,6 +4,8 @@ import {
   findActiveNavHref,
   ADMIN_NAV_GROUP_LABELS,
   ADMIN_NAV_GROUP_ORDER,
+  QUALIOPI_POLE_ORDER,
+  QUALIOPI_POLE_LABELS,
 } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
@@ -43,6 +45,24 @@ describe("buildAdminNav SSOT", () => {
     const hrefs = items.map((it) => it.href);
     const unique = new Set(hrefs);
     expect(unique.size).toBe(hrefs.length);
+  });
+
+  // Refonte UX 2026-07-08 : les onglets Qualiopi sont regroupés en 5 pôles
+  // (accordéon sidebar). On verrouille que CHAQUE item qualiopi porte un pôle
+  // valide — sinon il disparaîtrait du rendu en pôles (groupItems.filter).
+  it("chaque item qualiopi porte un subGroup dans QUALIOPI_POLE_ORDER", () => {
+    const items = buildAdminNav("p").filter((it) => it.group === "qualiopi");
+    expect(items.length).toBeGreaterThan(0);
+    for (const it of items) {
+      expect(it.subGroup, `« ${it.label} » sans pôle`).toBeDefined();
+      expect(QUALIOPI_POLE_ORDER as ReadonlyArray<string>).toContain(it.subGroup);
+    }
+  });
+
+  it("QUALIOPI_POLE_LABELS couvre tous les pôles de QUALIOPI_POLE_ORDER", () => {
+    for (const p of QUALIOPI_POLE_ORDER) {
+      expect(QUALIOPI_POLE_LABELS[p]).toBeDefined();
+    }
   });
 });
 

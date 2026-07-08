@@ -47,6 +47,27 @@ export type AdminNavGroup =
  */
 export type ContentGenPole = "lancer" | "suivre" | "publier" | "villes" | "qualite" | "reglages";
 
+/**
+ * Pôle (sous-groupe niveau 1) du groupe `qualiopi` — refonte UX 2026-07-08.
+ *
+ * Le back-office Qualiopi comptait ~24 onglets en liste plate → écrasant et
+ * illisible. On les regroupe en 5 pôles orientés usage, ordonnés selon le flux
+ * métier réel : Formations & séances (production quotidienne) > Commercial
+ * (vente) > Conformité & audit (preuves Qualiopi) > Registres & veille (obligs
+ * périodiques) > Administration (setup/RGPD, rare). Même mécanisme d'accordéon
+ * que les pôles content_gen (cf. `<AdminSidebarNav>`).
+ *
+ * NB : clés volontairement DISTINCTES des `ContentGenPole` (pas de collision
+ * « reglages ») pour que l'état plié/déplié d'un pôle ne fuite pas d'un groupe
+ * à l'autre (Set<string> partagé côté sidebar).
+ */
+export type QualiopiPole =
+  | "formations"
+  | "commercial"
+  | "conformite"
+  | "registres"
+  | "administration";
+
 export interface AdminNavItem {
   href: string;
   label: string;
@@ -57,11 +78,12 @@ export interface AdminNavItem {
   icon: string;
   group: AdminNavGroup;
   /**
-   * Pôle (sous-groupe N1) — uniquement renseigné pour `group: "content_gen"`.
-   * Permet à `<AdminSidebarNav>` de regrouper les items en accordéon par pôle.
+   * Pôle (sous-groupe N1) — renseigné pour `group: "content_gen"` (6 pôles) et
+   * `group: "qualiopi"` (5 pôles, refonte UX 2026-07-08). Permet à
+   * `<AdminSidebarNav>` de regrouper les items en accordéon par pôle.
    * (cf. DECISION-IA.md §1 — refonte UX content-gen 2026-06-16.)
    */
-  subGroup?: ContentGenPole;
+  subGroup?: ContentGenPole | QualiopiPole;
   /**
    * Niveau d'exposition. Défaut implicite `"simple"`.
    * En mode Simple, la sidebar masque les items `tier: "advanced"` et les
@@ -122,6 +144,46 @@ export const CONTENT_GEN_POLE_ORDER: ReadonlyArray<ContentGenPole> = [
   "qualite",
   "reglages",
 ];
+
+/**
+ * Libellés FR clairs des 5 pôles du groupe `qualiopi` (refonte UX 2026-07-08).
+ */
+export const QUALIOPI_POLE_LABELS: Record<QualiopiPole, string> = {
+  formations: "Formations & séances",
+  commercial: "Commercial",
+  conformite: "Conformité & audit",
+  registres: "Registres & veille",
+  administration: "Administration",
+};
+
+/**
+ * Ordre d'affichage des pôles `qualiopi` : du plus chaud (production
+ * quotidienne) au plus froid (setup/RGPD, rare).
+ */
+export const QUALIOPI_POLE_ORDER: ReadonlyArray<QualiopiPole> = [
+  "formations",
+  "commercial",
+  "conformite",
+  "registres",
+  "administration",
+];
+
+/**
+ * Maps génériques « groupe → pôles » consommées par `<AdminSidebarNav>` pour
+ * rendre N'IMPORTE quel groupe sous-divisé en accordéon de pôles, sans coder en
+ * dur `content_gen`. Un groupe absent de ces maps est rendu en liste plate.
+ * Les valeurs sont des `string` (les clés de pôles), volontairement disjointes
+ * entre groupes pour un état plié/déplié `Set<string>` sans collision.
+ */
+export const GROUP_POLE_ORDER: Partial<Record<AdminNavGroup, ReadonlyArray<string>>> = {
+  content_gen: CONTENT_GEN_POLE_ORDER,
+  qualiopi: QUALIOPI_POLE_ORDER,
+};
+
+export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<string, string>>>> = {
+  content_gen: CONTENT_GEN_POLE_LABELS,
+  qualiopi: QUALIOPI_POLE_LABELS,
+};
 
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
@@ -487,107 +549,184 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/offres-emploi`, label: "Offres d'emploi", icon: "💼", group: "content" },
     { href: `${base}/faq`, label: "FAQ", icon: "❓", group: "content" },
     { href: `${base}/help`, label: "Centre d'aide", icon: "❔", group: "content" },
-    // ── Formation / Qualiopi (back-office OF — items ajoutés par tranche) ──
-    { href: `${base}/qualiopi`, label: "Vue d'ensemble", icon: "🎓", group: "qualiopi" },
-    { href: `${base}/qualiopi/config`, label: "Configuration", icon: "⚙️", group: "qualiopi" },
-    { href: `${base}/qualiopi/formations`, label: "Formations", icon: "📘", group: "qualiopi" },
+    // ── Formation / Qualiopi (back-office OF) ──────────────────────────────
+    //   Réorganisé en 5 pôles (refonte UX 2026-07-08) : les ~24 onglets étaient
+    //   en liste plate = écrasant. `subGroup` pilote l'accordéon par pôle
+    //   (cf. QUALIOPI_POLE_ORDER + `<AdminSidebarNav>`). L'ordre des items suit
+    //   l'ordre d'affichage voulu DANS chaque pôle (rendu = ordre source).
+    //
+    // ▸ FORMATIONS & SÉANCES (production quotidienne)
+    {
+      href: `${base}/qualiopi`,
+      label: "Vue d'ensemble",
+      icon: "🎓",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
+    {
+      href: `${base}/qualiopi/formations`,
+      label: "Formations",
+      icon: "📘",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
     {
       href: `${base}/qualiopi/formation-engine`,
       label: "Formation Engine",
       icon: "⚙️",
       group: "qualiopi",
+      subGroup: "formations",
     },
     {
       href: `${base}/qualiopi/formation-engine/validations`,
       label: "Validations IA",
       icon: "✅",
       group: "qualiopi",
+      subGroup: "formations",
     },
-    { href: `${base}/qualiopi/sessions`, label: "Sessions", icon: "📅", group: "qualiopi" },
-    { href: `${base}/qualiopi/formateurs`, label: "Formateurs", icon: "👨‍🏫", group: "qualiopi" },
-    { href: `${base}/qualiopi/stagiaires`, label: "Stagiaires", icon: "🧑‍🎓", group: "qualiopi" },
-    { href: `${base}/qualiopi/offres`, label: "Offres", icon: "🏷️", group: "qualiopi" },
-    { href: `${base}/qualiopi/clients`, label: "Clients (CRM)", icon: "🏢", group: "qualiopi" },
-    { href: `${base}/qualiopi/devis`, label: "Devis", icon: "📄", group: "qualiopi" },
     {
-      href: `${base}/qualiopi/indicateurs`,
-      label: "Indicateurs / BPF",
-      icon: "📊",
+      href: `${base}/qualiopi/sessions`,
+      label: "Sessions",
+      icon: "📅",
       group: "qualiopi",
+      subGroup: "formations",
+    },
+    {
+      href: `${base}/qualiopi/formateurs`,
+      label: "Formateurs",
+      icon: "👨‍🏫",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
+    {
+      href: `${base}/qualiopi/stagiaires`,
+      label: "Stagiaires",
+      icon: "🧑‍🎓",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
+    // ▸ COMMERCIAL (vente)
+    {
+      href: `${base}/qualiopi/offres`,
+      label: "Offres",
+      icon: "🏷️",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
+    {
+      href: `${base}/qualiopi/clients`,
+      label: "Clients (CRM)",
+      icon: "🏢",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
+    {
+      href: `${base}/qualiopi/devis`,
+      label: "Devis",
+      icon: "📄",
+      group: "qualiopi",
+      subGroup: "commercial",
     },
     {
       href: `${base}/qualiopi/financements`,
       label: "Financements / Facturation",
       icon: "💳",
       group: "qualiopi",
+      subGroup: "commercial",
     },
-    // ── Qualiopi · Conformité & registres T12 ──────────────────────────────
+    // ▸ CONFORMITÉ & AUDIT (preuves Qualiopi)
     {
       href: `${base}/qualiopi/conformite`,
       label: "Conformité",
       icon: "✅",
       group: "qualiopi",
+      subGroup: "conformite",
+    },
+    {
+      href: `${base}/qualiopi/indicateurs`,
+      label: "Indicateurs / BPF",
+      icon: "📊",
+      group: "qualiopi",
+      subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/pilotage`,
       label: "Pilotage",
-      icon: "📊",
+      icon: "📈",
       group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/reclamations`,
-      label: "Réclamations",
-      icon: "📬",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/veille`,
-      label: "Veille",
-      icon: "🔎",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/partenariats`,
-      label: "Partenariats",
-      icon: "🤝",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/sous-traitants`,
-      label: "Sous-traitants",
-      icon: "🏭",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/revue-direction`,
-      label: "Revue de direction",
-      icon: "📋",
-      group: "qualiopi",
-    },
-    {
-      href: `${base}/qualiopi/mode-auditeur`,
-      label: "Mode auditeur",
-      icon: "🔍",
-      group: "qualiopi",
+      subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/appreciations`,
       label: "Appréciations",
       icon: "⭐",
       group: "qualiopi",
+      subGroup: "conformite",
+    },
+    {
+      href: `${base}/qualiopi/reclamations`,
+      label: "Réclamations",
+      icon: "📬",
+      group: "qualiopi",
+      subGroup: "conformite",
+    },
+    {
+      href: `${base}/qualiopi/mode-auditeur`,
+      label: "Mode auditeur",
+      icon: "🔍",
+      group: "qualiopi",
+      subGroup: "conformite",
+    },
+    // ▸ REGISTRES & VEILLE (obligations périodiques)
+    {
+      href: `${base}/qualiopi/veille`,
+      label: "Veille",
+      icon: "🔎",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
+      href: `${base}/qualiopi/partenariats`,
+      label: "Partenariats",
+      icon: "🤝",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
+      href: `${base}/qualiopi/sous-traitants`,
+      label: "Sous-traitants",
+      icon: "🏭",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
+      href: `${base}/qualiopi/revue-direction`,
+      label: "Revue de direction",
+      icon: "📋",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    // ▸ ADMINISTRATION (setup / RGPD — rare)
+    {
+      href: `${base}/qualiopi/config`,
+      label: "Configuration",
+      icon: "⚙️",
+      group: "qualiopi",
+      subGroup: "administration",
     },
     {
       href: `${base}/qualiopi/rgpd`,
       label: "Demandes RGPD",
       icon: "🔐",
       group: "qualiopi",
+      subGroup: "administration",
     },
-    // ── Qualiopi · Alertes système T15 ────────────────────────────────────
     {
       href: `${base}/qualiopi/alertes`,
       label: "Alertes",
       icon: "🔔",
       group: "qualiopi",
+      subGroup: "administration",
     },
     // ── Prospection & Base Entreprises (module prospection) ──────────────
     { href: `${base}/prospection`, label: "Tableau de bord", icon: "🧭", group: "prospection" },
