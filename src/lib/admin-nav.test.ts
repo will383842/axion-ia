@@ -9,12 +9,11 @@ import {
 describe("buildAdminNav SSOT", () => {
   it("returns 114 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour))", () => {
     const items = buildAdminNav("admin-test-prefix");
-    // +14 pôle Prospection & Base Entreprises 2026-07-04 (dashboard, départements,
-    // campagnes, entreprises, contacts, couverture, carte, par activité, personnes,
-    // exports, journal, rgpd, doublons, réglages) → 117 → 131.
-    // +1 Avis clients 2026-07-06 (groupe content, modération avis) → 132.
-    // -1 Témoignages 2026-07-06 (système Testimonial décommissionné) → 131.
-    expect(items.length).toBe(131);
+    // +1 Avis clients 2026-07-06 (groupe content, modération avis) → 118.
+    // -1 Témoignages 2026-07-06 (système Testimonial décommissionné) → 117.
+    // -14 module Prospection & Base Entreprises retiré 2026-07-08 (redondant
+    // avec l'app externe Axion CRM Pro) → 117.
+    expect(items.length).toBe(117);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
@@ -24,7 +23,7 @@ describe("buildAdminNav SSOT", () => {
     }
   });
 
-  it("covers all 11 groups in ADMIN_NAV_GROUP_ORDER", () => {
+  it("covers all groups in ADMIN_NAV_GROUP_ORDER", () => {
     const items = buildAdminNav("admin-test-prefix");
     const groups = new Set(items.map((it) => it.group));
     for (const g of ADMIN_NAV_GROUP_ORDER) {
