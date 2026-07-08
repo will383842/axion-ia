@@ -248,10 +248,10 @@ async function stepGenerateStructure(
       role: "text",
       systemPrompt,
       userPrompt,
-      // 8192 (au lieu de 4096) : le JSON de structure complet (objectifs +
-      // fil_rouge + livrables j0/j1/j30 + modules) dépassait 4096 tokens → sortie
-      // tronquée → JSON invalide → score bas → boucle refine sans fin (témoin prod).
-      maxTokens: 8192,
+      // 16384 : le JSON de structure complet (objectifs + fil_rouge + livrables
+      // j0/j1/j30 + modules) dépassait 8192 tokens au refine (prod 2026-07-08 Simone
+      // Blanc) → tronqué → JSON invalide → 0 module → stall. 16384 = marge suffisante.
+      maxTokens: 16384,
       temperature: 0.2,
     }),
   );
@@ -739,8 +739,8 @@ async function stepRefine(
       role: "text",
       systemPrompt,
       userPrompt,
-      // 8192 : même format que la structure (voir note structure) — éviter la troncature.
-      maxTokens: 8192,
+      // 16384 : même format que la structure (voir note structure) — éviter la troncature.
+      maxTokens: 16384,
       temperature: 0.3,
     }),
   );
@@ -905,7 +905,10 @@ async function generateModuleContent(
         role: "text",
         systemPrompt,
         userPrompt,
-        maxTokens: 8192,
+        // 16384 (au lieu de 8192) : la regénération d'un module avec consignes de
+        // correction (auto-correction best-of) dépassait 8192 → tronqué → module
+        // invalide → contenu jamais persisté (prod 2026-07-08 Simone Blanc).
+        maxTokens: 16384,
         temperature: 0.3,
       }),
     );
