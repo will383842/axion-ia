@@ -1086,11 +1086,13 @@ async function stepGenerateContent(
   let refinePasses = 0;
 
   // ── Leviers 1 + 3 : auto-correction pilotée par les manques déterministes ET
-  //    la critique adversariale du contenu, tant que la qualité n'est pas
-  //    « excellent » (best-of : on ne garde que si le score s'améliore). ──
+  //    la critique adversariale du contenu. On ne relance une passe (coûteuse :
+  //    N appels IA) QUE si la qualité est « insuffisante » — un contenu déjà
+  //    « correct »/« excellent » ne justifie pas de doubler le coût/temps.
+  //    Best-of : on ne garde le résultat de la passe que si le score s'améliore. ──
   while (
     bestGen.modules.length > 0 &&
-    bestQ.verdict !== "excellent" &&
+    bestQ.verdict === "insuffisant" &&
     refinePasses < MAX_CONTENT_REFINE_PASSES
   ) {
     refinePasses++;
