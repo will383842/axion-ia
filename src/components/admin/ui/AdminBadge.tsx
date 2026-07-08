@@ -12,6 +12,10 @@ interface AdminBadgeProps {
   tone?: AdminBadgeTone;
   /** Affichage compact (default true admin). */
   compact?: boolean;
+  /** Point de statut coloré (couleur = ton du badge) avant le libellé — style « produit ». */
+  dot?: boolean;
+  /** Anime le point (statuts en cours : processing/running/queued…). */
+  pulse?: boolean;
   className?: string;
 }
 
@@ -30,12 +34,14 @@ export function AdminBadge({
   children,
   tone = "neutral",
   compact = true,
+  dot = false,
+  pulse = false,
   className,
 }: AdminBadgeProps): React.ReactElement {
   return (
     <span
       className={cn(
-        "admin-badge-v2 inline-flex items-center rounded-full font-semibold tracking-wide uppercase",
+        "admin-badge-v2 inline-flex items-center gap-[var(--space-admin-2)] rounded-full font-semibold tracking-wide uppercase",
         compact
           ? "px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]"
           : "px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]",
@@ -43,6 +49,15 @@ export function AdminBadge({
         className,
       )}
     >
+      {dot ? (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "h-[6px] w-[6px] shrink-0 rounded-full bg-current",
+            pulse && "motion-safe:animate-pulse",
+          )}
+        />
+      ) : null}
       {children}
     </span>
   );
@@ -164,8 +179,17 @@ export function AdminStatusBadge({
   label,
   className,
 }: AdminStatusBadgeProps): React.ReactElement {
+  // Point pulsant pour les statuts « en cours » (feeling produit temps réel).
+  const pulse = /(^|_)(processing|running|queued|publishing|in_progress|awaiting)(_|$)/.test(
+    status.toLowerCase(),
+  );
   return (
-    <AdminBadge tone={statusToTone(type, status)} {...(className ? { className } : {})}>
+    <AdminBadge
+      tone={statusToTone(type, status)}
+      dot
+      pulse={pulse}
+      {...(className ? { className } : {})}
+    >
       {label ?? defaultLabel(status)}
     </AdminBadge>
   );
