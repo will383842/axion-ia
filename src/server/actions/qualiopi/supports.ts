@@ -21,6 +21,7 @@ import {
   supprimerSupport,
   type GenererTousSupportsResult,
 } from "@/server/qualiopi/supports/supports-service";
+import { genererDeck, type GenererDeckResult } from "@/server/qualiopi/supports/deck/deck-service";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -95,6 +96,37 @@ export async function genererSupportAction(input: {
     targetType: "SupportFormation",
     targetId: result.id,
     changes: { formationId: parsed.data.formationId, type: parsed.data.type },
+    session,
+  });
+
+  return { data: result };
+}
+
+/**
+ * Génère le DIAPORAMA DE PROJECTION (PDF 16:9 + PowerPoint éditable) d'une
+ * formation — le support qu'on met au vidéoprojecteur le jour J.
+ */
+export async function genererDeckAction(input: {
+  formationId: string;
+}): Promise<ActionResult<GenererDeckResult>> {
+  const session = await requireAdminWrite();
+  const parsed = z.object({ formationId: z.string().uuid() }).safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  let result: GenererDeckResult;
+  try {
+    result = await genererDeck({ formationId: parsed.data.formationId });
+  } catch (err) {
+    return {
+      error: err instanceof Error ? err.message : "Erreur lors de la génération du diaporama",
+    };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.support.deck",
+    targetType: "Formation",
+    targetId: parsed.data.formationId,
+    changes: { nbSlides: result.nbSlides, pptx: result.pptxDisponible },
     session,
   });
 
