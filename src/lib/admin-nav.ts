@@ -68,6 +68,13 @@ export type QualiopiPole =
   | "registres"
   | "administration";
 
+/**
+ * Pôle (sous-groupe niveau 1) du groupe `documents-interventions` — refonte UX
+ * 2026-07-08. Découpage léger : les buckets documentaires « par activité » vs
+ * les utilitaires (annuaire, import). Clés distinctes des autres pôles.
+ */
+export type DocumentsPole = "activite" | "outils";
+
 export interface AdminNavItem {
   href: string;
   label: string;
@@ -83,7 +90,7 @@ export interface AdminNavItem {
    * `<AdminSidebarNav>` de regrouper les items en accordéon par pôle.
    * (cf. DECISION-IA.md §1 — refonte UX content-gen 2026-06-16.)
    */
-  subGroup?: ContentGenPole | QualiopiPole;
+  subGroup?: ContentGenPole | QualiopiPole | DocumentsPole;
   /**
    * Niveau d'exposition. Défaut implicite `"simple"`.
    * En mode Simple, la sidebar masque les items `tier: "advanced"` et les
@@ -169,6 +176,17 @@ export const QUALIOPI_POLE_ORDER: ReadonlyArray<QualiopiPole> = [
 ];
 
 /**
+ * Libellés + ordre des 2 pôles du groupe `documents-interventions`
+ * (refonte UX 2026-07-08). Découpage léger : buckets documentaires vs outils.
+ */
+export const DOCUMENTS_POLE_LABELS: Record<DocumentsPole, string> = {
+  activite: "Par activité",
+  outils: "Outils",
+};
+
+export const DOCUMENTS_POLE_ORDER: ReadonlyArray<DocumentsPole> = ["activite", "outils"];
+
+/**
  * Maps génériques « groupe → pôles » consommées par `<AdminSidebarNav>` pour
  * rendre N'IMPORTE quel groupe sous-divisé en accordéon de pôles, sans coder en
  * dur `content_gen`. Un groupe absent de ces maps est rendu en liste plate.
@@ -178,11 +196,13 @@ export const QUALIOPI_POLE_ORDER: ReadonlyArray<QualiopiPole> = [
 export const GROUP_POLE_ORDER: Partial<Record<AdminNavGroup, ReadonlyArray<string>>> = {
   content_gen: CONTENT_GEN_POLE_ORDER,
   qualiopi: QUALIOPI_POLE_ORDER,
+  "documents-interventions": DOCUMENTS_POLE_ORDER,
 };
 
 export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<string, string>>>> = {
   content_gen: CONTENT_GEN_POLE_LABELS,
   qualiopi: QUALIOPI_POLE_LABELS,
+  "documents-interventions": DOCUMENTS_POLE_LABELS,
 };
 
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
@@ -768,53 +788,63 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //   InterventionDocument) + Implémentations / Sites web (buckets de fichiers
     //   génériques, ConsoleDocument). Autres : documents transverses (plaquette,
     //   pièces admin). « Annuaire équipe » + « Importer un kit » = utilitaires.
+    // ▸ PAR ACTIVITÉ (buckets documentaires rattachés à une prestation + Autres)
     {
       href: `${base}/documents-interventions/formations`,
       label: "Formations",
       icon: "📘",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/un-a-un`,
       label: "1-to-1",
       icon: "👤",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/audit`,
       label: "Audit",
       icon: "🔍",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/implementations`,
       label: "Implémentations",
       icon: "⚙️",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/sites-web`,
       label: "Sites web",
       icon: "🌐",
       group: "documents-interventions",
+      subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/autres`,
       label: "Autres",
       icon: "📎",
       group: "documents-interventions",
+      subGroup: "activite",
     },
+    // ▸ OUTILS (utilitaires transverses)
     {
       href: `${base}/documents-interventions/destinataires`,
       label: "Annuaire équipe",
       icon: "✉️",
       group: "documents-interventions",
+      subGroup: "outils",
     },
     {
       href: `${base}/documents-interventions/import`,
       label: "Importer un kit",
       icon: "📦",
       group: "documents-interventions",
+      subGroup: "outils",
     },
     // ── Coaching 1-to-1 (séances AFEST remplies par les formateurs) ───────
     {

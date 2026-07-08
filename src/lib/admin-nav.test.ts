@@ -6,6 +6,8 @@ import {
   ADMIN_NAV_GROUP_ORDER,
   QUALIOPI_POLE_ORDER,
   QUALIOPI_POLE_LABELS,
+  DOCUMENTS_POLE_ORDER,
+  DOCUMENTS_POLE_LABELS,
 } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
@@ -62,6 +64,22 @@ describe("buildAdminNav SSOT", () => {
   it("QUALIOPI_POLE_LABELS couvre tous les pôles de QUALIOPI_POLE_ORDER", () => {
     for (const p of QUALIOPI_POLE_ORDER) {
       expect(QUALIOPI_POLE_LABELS[p]).toBeDefined();
+    }
+  });
+
+  // Refonte UX 2026-07-08 : le groupe Documents est découpé en 2 pôles.
+  it("chaque item documents-interventions porte un subGroup dans DOCUMENTS_POLE_ORDER", () => {
+    const items = buildAdminNav("p").filter((it) => it.group === "documents-interventions");
+    expect(items.length).toBeGreaterThan(0);
+    for (const it of items) {
+      expect(it.subGroup, `« ${it.label} » sans pôle`).toBeDefined();
+      expect(DOCUMENTS_POLE_ORDER as ReadonlyArray<string>).toContain(it.subGroup);
+    }
+  });
+
+  it("DOCUMENTS_POLE_LABELS couvre tous les pôles de DOCUMENTS_POLE_ORDER", () => {
+    for (const p of DOCUMENTS_POLE_ORDER) {
+      expect(DOCUMENTS_POLE_LABELS[p]).toBeDefined();
     }
   });
 });
