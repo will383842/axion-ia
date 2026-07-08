@@ -42,8 +42,8 @@ export function AdminPageHeader({
         <div className="min-w-0">
           <h1
             className={cn(
-              "text-[length:var(--text-admin-xl,20px)] font-semibold",
-              "leading-[var(--lh-admin-tight,1.35)]",
+              "text-[length:var(--text-admin-xl,22px)] font-bold tracking-tight",
+              "leading-[var(--lh-admin-tight,1.4)]",
               "text-[color:var(--color-admin-fg)]",
               "truncate",
             )}

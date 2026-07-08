@@ -4,6 +4,7 @@
 // Server Component. 19 KPIs dashboard/content-gen/analytics à migrer.
 
 import Link from "next/link";
+import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type StatTone = "default" | "success" | "warning" | "destructive" | "info";
@@ -16,10 +17,22 @@ interface AdminStatCardProps {
   /** Meta texte (ex. "vs 7 jours"). */
   meta?: string;
   tone?: StatTone;
+  /** Icône lucide affichée en pastille teintée (haut-droite) — style KPI produit. */
+  icon?: LucideIcon;
   /** Si fournie, la card devient cliquable (lien vers détail). */
   href?: string;
   className?: string;
 }
+
+// Pastille d'icône teintée par tonalité (fond doux + icône colorée).
+const TONE_PASTILLE: Record<StatTone, string> = {
+  default: "bg-[color:var(--color-admin-neutral-soft)] text-[color:var(--color-admin-fg-muted)]",
+  success: "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]",
+  warning: "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
+  destructive:
+    "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]",
+  info: "bg-[color:var(--color-admin-info-soft)] text-[color:var(--color-admin-info)]",
+};
 
 // Refonte juin 2026 (P1 audit design console) — l'accent de tonalité passait
 // par une grosse bordure-gauche 4px (pattern « alerte Bootstrap » daté). On
@@ -52,6 +65,7 @@ export function AdminStatCard({
   delta,
   meta,
   tone = "default",
+  icon: Icon,
   href,
   className,
 }: AdminStatCardProps): React.ReactElement {
@@ -59,28 +73,41 @@ export function AdminStatCard({
     <div
       className={cn(
         "admin-stat-card flex flex-col gap-[var(--space-admin-2)]",
-        "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]",
+        "rounded-[var(--radius-admin-xl)] border border-[color:var(--color-admin-border)]",
         "bg-[color:var(--color-admin-paper)]",
         "p-[var(--space-admin-6)] shadow-[var(--shadow-admin-1)]",
         href && "transition-shadow hover:shadow-[var(--shadow-admin-2)]",
         className,
       )}
     >
-      <span
-        className={cn(
-          "flex items-center gap-[var(--space-admin-2)]",
-          "text-[length:var(--text-admin-xs)] font-semibold tracking-wide uppercase",
-          "text-[color:var(--color-admin-fg-muted)]",
-        )}
-      >
-        {TONE_DOT[tone] ? (
+      <div className="flex items-start justify-between gap-[var(--space-admin-3)]">
+        <span
+          className={cn(
+            "flex items-center gap-[var(--space-admin-2)]",
+            "text-[length:var(--text-admin-xs)] font-semibold tracking-wide uppercase",
+            "text-[color:var(--color-admin-fg-muted)]",
+          )}
+        >
+          {TONE_DOT[tone] ? (
+            <span
+              aria-hidden="true"
+              className={cn("h-[6px] w-[6px] shrink-0 rounded-full", TONE_DOT[tone])}
+            />
+          ) : null}
+          {label}
+        </span>
+        {Icon ? (
           <span
             aria-hidden="true"
-            className={cn("h-[6px] w-[6px] shrink-0 rounded-full", TONE_DOT[tone])}
-          />
+            className={cn(
+              "flex h-9 w-9 shrink-0 items-center justify-center rounded-full",
+              TONE_PASTILLE[tone],
+            )}
+          >
+            <Icon size={18} />
+          </span>
         ) : null}
-        {label}
-      </span>
+      </div>
       <div className="flex items-baseline gap-[var(--space-admin-3)]">
         <span
           className={cn(

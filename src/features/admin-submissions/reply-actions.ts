@@ -24,6 +24,7 @@ import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
+import { decryptPii } from "@/lib/pii-crypto";
 
 async function requireAdminWriteSession() {
   const session = await auth();
@@ -127,7 +128,7 @@ export async function replyToSubmissionAction(
 
   // 3. Enqueue email (le worker met à jour deliveryStatus + sent/failed).
   try {
-    await enqueueEmail("submission-reply", submission.contactEmail, submission.locale, {
+    await enqueueEmail("submission-reply", decryptPii(submission.contactEmail), submission.locale, {
       replyId,
       subject: data.subject,
       submissionId: submission.id,
@@ -284,7 +285,7 @@ export async function retryFailedReplyAction(
   });
 
   try {
-    await enqueueEmail("submission-reply", reply.toEmail, reply.submission.locale, {
+    await enqueueEmail("submission-reply", decryptPii(reply.toEmail), reply.submission.locale, {
       replyId: reply.id,
       subject: reply.subject,
       submissionId: reply.submissionId,

@@ -72,15 +72,20 @@ import {
   Cog,
   type LucideIcon,
 } from "lucide-react";
-import type { AdminNavItem, AdminNavGroup, ContentGenPole } from "@/lib/admin-nav";
+import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
 import {
   ADMIN_NAV_GROUP_LABELS,
   ADMIN_NAV_GROUP_ORDER,
-  CONTENT_GEN_POLE_LABELS,
-  CONTENT_GEN_POLE_ORDER,
+  GROUP_POLE_LABELS,
+  GROUP_POLE_ORDER,
   findActiveNavHref,
 } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
+
+// Toutes les clés de pôles, tous groupes confondus (content_gen + qualiopi).
+// Les clés sont disjointes entre groupes → un seul Set<string> pilote l'état
+// plié/déplié sans collision. Sert à initialiser « tous les pôles fermés ».
+const ALL_POLE_KEYS: ReadonlyArray<string> = Object.values(GROUP_POLE_ORDER).flat();
 
 // Mapping label nav → icône lucide. Fallback FolderOpen si non mappé.
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -207,11 +212,11 @@ export function AdminSidebarNav({
   });
   // Sous-accordéon des pôles content_gen : tous fermés par défaut SAUF le pôle
   // contenant la page courante (évite un flash + ne masque jamais le lien actif).
-  const [collapsedPoles, setCollapsedPoles] = useState<Set<ContentGenPole>>(() => {
-    const s = new Set<ContentGenPole>(CONTENT_GEN_POLE_ORDER);
+  const [collapsedPoles, setCollapsedPoles] = useState<Set<string>>(() => {
+    const s = new Set<string>(ALL_POLE_KEYS);
     const activeHref = findActiveNavHref(items, pathname);
     const hit = items.find((it) => it.href === activeHref);
-    if (hit?.group === "content_gen" && hit.subGroup) s.delete(hit.subGroup);
+    if (hit?.subGroup) s.delete(hit.subGroup);
     return s;
   });
   const [search, setSearch] = useState("");
@@ -229,7 +234,7 @@ export function AdminSidebarNav({
         const g = window.localStorage.getItem(GROUPS_COLLAPSED_LS_KEY);
         if (g) setCollapsedGroups(new Set(JSON.parse(g) as AdminNavGroup[]));
         const p = window.localStorage.getItem(CONTENT_GEN_POLES_COLLAPSED_LS_KEY);
-        if (p) setCollapsedPoles(new Set(JSON.parse(p) as ContentGenPole[]));
+        if (p) setCollapsedPoles(new Set(JSON.parse(p) as string[]));
       } catch {
         // localStorage non disponible : ignore.
       }
@@ -301,7 +306,7 @@ export function AdminSidebarNav({
 
   // Pliage d'un pôle content_gen — indépendant (plusieurs pôles peuvent rester
   // ouverts en même temps, contrairement à l'accordéon mono-section des groupes).
-  const togglePole = (pole: ContentGenPole) => {
+  const togglePole = (pole: string) => {
     setCollapsedPoles((prev) => {
       const next = new Set(prev);
       if (next.has(pole)) next.delete(pole);
@@ -336,10 +341,11 @@ export function AdminSidebarNav({
     const hit = items.find((it) => it.href === activeHref);
     return hit ? hit.group : null;
   }, [items, activeHref]);
-  // Pôle content_gen contenant la page courante (null hors content_gen).
-  const activePole = useMemo<ContentGenPole | null>(() => {
+  // Pôle (content_gen OU qualiopi) contenant la page courante (null si l'item
+  // actif n'appartient à aucun pôle).
+  const activePole = useMemo<string | null>(() => {
     const hit = items.find((it) => it.href === activeHref);
-    return hit?.group === "content_gen" ? (hit.subGroup ?? null) : null;
+    return hit?.subGroup ?? null;
   }, [items, activeHref]);
 
   // Auto-ouvre le pôle contenant la page courante (au montage + à chaque
@@ -572,9 +578,10 @@ export function AdminSidebarNav({
           // Desktop : épinglé sous la topbar, hauteur = viewport − topbar.
           "sticky top-[var(--admin-topbar-h)] h-[calc(100svh-var(--admin-topbar-h))]",
           "transition-[width,transform] duration-[var(--duration-admin-base)] ease-[var(--easing-admin)]",
-          collapsed ? "w-[68px]" : "w-[248px]",
+          // Largeur alignée style SOS Expat 2026-07-08 : 320px ouverte / 80px repliée.
+          collapsed ? "w-[80px]" : "w-[320px]",
           // Mobile : overlay plein écran via translate-x (CLS=0, pas de reflow).
-          "max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-[var(--z-admin-sticky)] max-lg:h-svh max-lg:w-[284px]",
+          "max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-[var(--z-admin-sticky)] max-lg:h-svh max-lg:w-[320px]",
           mobileOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full",
           className,
         )}
@@ -723,9 +730,12 @@ export function AdminSidebarNav({
             // mais volontairement masqués de la sidebar (placeholders non livrés).
             const groupItems = filtered.filter((it) => it.group === g && it.parent == null);
             if (groupItems.length === 0) return null;
-            // Le groupe « Génération de contenu » est rendu en sous-pôles
-            // (Lancer/Suivre/…) — hors mode réduit et hors recherche.
-            const renderAsPoles = g === "content_gen" && !collapsed && !searchActive;
+            // Les groupes déclarés dans GROUP_POLE_ORDER (« Génération de
+            // contenu », « Formation / Qualiopi ») sont rendus en sous-pôles
+            // (accordéon) — hors mode réduit et hors recherche.
+            const poleOrder = GROUP_POLE_ORDER[g];
+            const poleLabels = GROUP_POLE_LABELS[g];
+            const renderAsPoles = poleOrder != null && !collapsed && !searchActive;
             const GroupIcon = GROUP_ICON_MAP[g] ?? FolderOpen;
             // Accordéon : fermé par défaut. N'agit qu'en mode étendu et hors
             // recherche. Le groupe actif est auto-ouvert par effet (cf. plus
@@ -802,7 +812,7 @@ export function AdminSidebarNav({
                     // pôle (Lancer/Suivre/…) est un en-tête repliable au-dessus
                     // de ses onglets. La page courante ouvre son pôle d'office.
                     <div className="mt-[2px] ml-[calc(var(--space-admin-3)+9px)] flex flex-col gap-[var(--space-admin-2)] border-l border-[color:var(--color-admin-rail-border)] pl-[var(--space-admin-2)]">
-                      {CONTENT_GEN_POLE_ORDER.map((pole) => {
+                      {(poleOrder ?? []).map((pole) => {
                         const poleItems = groupItems.filter((it) => it.subGroup === pole);
                         if (poleItems.length === 0) return null;
                         const poleClosed = collapsedPoles.has(pole) && activePole !== pole;
@@ -820,7 +830,7 @@ export function AdminSidebarNav({
                                 "transition-colors hover:bg-[color:var(--color-admin-rail-hover)] hover:text-[color:var(--color-admin-rail-fg)]",
                               )}
                             >
-                              <span className="truncate">{CONTENT_GEN_POLE_LABELS[pole]}</span>
+                              <span className="truncate">{poleLabels?.[pole] ?? pole}</span>
                               <ChevronRight
                                 size={14}
                                 aria-hidden="true"

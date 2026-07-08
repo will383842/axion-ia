@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import {
   buildAdminNav,
   ADMIN_NAV_GROUP_LABELS,
-  CONTENT_GEN_POLE_LABELS,
+  GROUP_POLE_LABELS,
   type AdminNavItem,
 } from "@/lib/admin-nav";
 
@@ -189,10 +189,14 @@ export function buildBreadcrumbsFromPath(
     );
   }
 
-  // Pôle (content_gen uniquement) : crumb intermédiaire non cliquable
+  // Pôle (content_gen ou qualiopi) : crumb intermédiaire non cliquable
   // (un pôle n'est pas une page, c'est un regroupement de sidebar).
-  if (sectionItem.group === "content_gen" && sectionItem.subGroup) {
-    crumbs.push({ label: CONTENT_GEN_POLE_LABELS[sectionItem.subGroup] });
+  const sectionPoleLabels = GROUP_POLE_LABELS[sectionItem.group];
+  const sectionPoleLabel = sectionItem.subGroup
+    ? sectionPoleLabels?.[sectionItem.subGroup]
+    : undefined;
+  if (sectionPoleLabel) {
+    crumbs.push({ label: sectionPoleLabel });
   }
 
   // Page N2 (parent) si on est sur un N3, avec lien cliquable.

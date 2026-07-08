@@ -10,6 +10,7 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
 import { sendEmail } from "@/lib/email/client";
+import { decryptPii } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
 import type { EmailJobData, EmailJobName } from "../types";
@@ -95,7 +96,11 @@ async function handleSubmissionReply(payload: Record<string, unknown>): Promise<
 
   try {
     const result = await sendEmail({
-      to: reply.toEmail,
+      // `toEmail` est stocké CHIFFRÉ au repos (enc:v1, PII contact). On déchiffre
+      // au seul moment de l'envoi. Sans ça, sendEmail recevait le ciphertext
+      // comme destinataire → SMTP rejette → deliveryStatus=failed (bug « la
+      // réponse ne part pas »). decryptPii = no-op sur une valeur déjà en clair.
+      to: decryptPii(reply.toEmail),
       subject: reply.subject,
       html: reply.bodyHtml,
       text: reply.bodyText,

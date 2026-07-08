@@ -72,14 +72,16 @@ export function AdminTable<T>({
     <div
       className={cn(
         "admin-table-wrapper w-full overflow-x-auto",
-        "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]",
-        "bg-[color:var(--color-admin-paper)]",
+        // Modernisation 2026-07-08 (style SOS) : radius xl + ombre douce = table
+        // "carte" au lieu du cadre plat.
+        "rounded-[var(--radius-admin-xl)] border border-[color:var(--color-admin-border)]",
+        "bg-[color:var(--color-admin-paper)] shadow-[var(--shadow-admin-1)]",
         className,
       )}
     >
       <table className="w-full border-collapse text-[length:var(--text-admin-base)]">
         {caption ? <caption className="sr-only">{caption}</caption> : null}
-        <thead className="bg-[color:var(--color-admin-paper-alt)]">
+        <thead>
           <tr>
             {columns.map((col) => {
               const ariaSort =
@@ -117,7 +119,7 @@ export function AdminTable<T>({
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, i) => {
+          {rows.map((row) => {
             const id = getRowId(row);
             return (
               <tr
@@ -125,7 +127,6 @@ export function AdminTable<T>({
                 className={cn(
                   "transition-colors",
                   "hover:bg-[color:var(--color-admin-surface-hover)]",
-                  i % 2 === 1 ? "bg-[color:var(--color-admin-paper-alt)]" : "",
                 )}
               >
                 {columns.map((col) => (
