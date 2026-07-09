@@ -1356,6 +1356,101 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  // ===== Simulateur de gains (/roi) =====
+  // Photos Unsplash curées localement (cf. `src/content/roi/roi-photos.ts` +
+  // `scripts/curate-roi-unsplash.mjs`). Elles remplacent les anciens
+  // `IllustrationPlaceholder` qui s'affichaient tels quels en production.
+  // L'attribution photographe est rendue sur la page (CGU Unsplash §9).
+  {
+    path: "/roi",
+    images: [
+      {
+        src: "/illustrations/roi/hero.avif",
+        nameFr: "Simulateur de gains de temps IA — Axion-IA",
+        nameEn: "AI time-savings simulator — Axion-IA",
+        altFr:
+          "Horloge murale au-dessus d'un bureau clair — symbole des heures rendues à l'équipe par une formation IA Axion-IA.",
+        altEn:
+          "Wall clock above a bright desk — symbolising the hours returned to the team by an Axion-IA AI training.",
+        width: 1600,
+        height: 1000,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/roi/banner.avif",
+        nameFr: "Équipe qui retrouve du temps grâce à l'IA — Axion-IA",
+        nameEn: "Team regaining time thanks to AI — Axion-IA",
+        altFr:
+          "Trois collaboratrices travaillent ensemble autour d'une table dans un bureau lumineux : le temps rendu par l'IA est réinvesti dans le collectif.",
+        altEn:
+          "Three colleagues working together around a table in a bright office: the time freed by AI is reinvested in teamwork.",
+        width: 1600,
+        height: 700,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/roi/redaction.avif",
+        nameFr: "Rédaction d'emails et de documents assistée par IA",
+        nameEn: "AI-assisted email and document writing",
+        altFr:
+          "Mains rédigeant un email sur un ordinateur portable — première famille de tâches répétitives allégée par l'IA : la rédaction.",
+        altEn:
+          "Hands writing an email on a laptop — the first family of repetitive tasks lightened by AI: writing.",
+        width: 1200,
+        height: 800,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/roi/recherche.avif",
+        nameFr: "Recherche d'information en entreprise assistée par IA",
+        nameEn: "AI-assisted business information research",
+        altFr:
+          "Collaboratrice cherchant une information à son bureau — deuxième famille de tâches répétitives allégée par l'IA : la recherche d'information.",
+        altEn:
+          "Employee looking up information at her desk — the second family of repetitive tasks lightened by AI: information research.",
+        width: 1200,
+        height: 800,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/roi/synthese.avif",
+        nameFr: "Comptes-rendus et synthèses générés avec l'IA",
+        nameEn: "Minutes and summaries generated with AI",
+        altFr:
+          "Stylo posé sur des notes manuscrites — troisième famille de tâches répétitives allégée par l'IA : la synthèse et les comptes-rendus.",
+        altEn:
+          "Pen resting on handwritten notes — the third family of repetitive tasks lightened by AI: summaries and minutes.",
+        width: 1200,
+        height: 800,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/roi/reporting.avif",
+        nameFr: "Reporting et tableaux de bord automatisés par l'IA",
+        nameEn: "AI-automated reporting and dashboards",
+        altFr:
+          "Tableau de bord analytique affiché sur un ordinateur portable — quatrième famille de tâches répétitives allégée par l'IA : le reporting.",
+        altEn:
+          "Analytics dashboard on a laptop screen — the fourth family of repetitive tasks lightened by AI: reporting.",
+        width: 1200,
+        height: 800,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        nameFr: "Williams — Fondateur Axion-IA, auteur du modèle d'estimation",
+        nameEn: "Williams — Axion-IA founder, author of the estimation model",
+        altFr:
+          "Portrait de Williams, fondateur d'Axion-IA. Il conçoit les formations IA dont ce simulateur estime les gains de temps pour les équipes.",
+        altEn:
+          "Portrait of Williams, Axion-IA founder. He designs the AI trainings whose time savings this simulator estimates for teams.",
+        width: 800,
+        height: 1000,
+        slot: "portrait",
+      },
+    ],
+  },
   ...SECTOR_PAGE_IMAGES,
   ...FAQ_PAGE_IMAGES,
 ];
