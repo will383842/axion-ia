@@ -90,7 +90,12 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
           tone={enCours > 0 ? "warning" : "default"}
           icon={Hourglass}
         />
-        <AdminStatCard label="Résolues / clôturées" value={resolues} tone="success" icon={CheckCircle2} />
+        <AdminStatCard
+          label="Résolues / clôturées"
+          value={resolues}
+          tone="success"
+          icon={CheckCircle2}
+        />
       </div>
 
       {/* Formulaire création */}

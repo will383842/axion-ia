@@ -84,12 +84,7 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
         <AdminStatCard label="Total" value={clients.length} icon={Hash} />
         <AdminStatCard label="Prospects" value={prospects} icon={Users} />
-        <AdminStatCard
-          label="Devis envoyés"
-          value={devisEnvoyes}
-          tone="warning"
-          icon={FileText}
-        />
+        <AdminStatCard label="Devis envoyés" value={devisEnvoyes} tone="warning" icon={FileText} />
         <AdminStatCard label="Clients actifs" value={actifs} tone="success" icon={CheckCircle2} />
       </div>
 

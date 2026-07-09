@@ -132,11 +132,7 @@ export async function CityEquityV2({ adminPrefix: _adminPrefix, campaignId, tier
           tone={gapCitiesCount > 0 ? "warning" : "default"}
           icon={AlertTriangle}
         />
-        <AdminStatCard
-          label="Moy. contenus/ville"
-          value={avgPerCity.toFixed(1)}
-          icon={BarChart3}
-        />
+        <AdminStatCard label="Moy. contenus/ville" value={avgPerCity.toFixed(1)} icon={BarChart3} />
         <AdminStatCard
           label="Types de contenus"
           value={String(contentTypes.length)}

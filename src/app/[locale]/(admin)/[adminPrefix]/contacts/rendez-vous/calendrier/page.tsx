@@ -96,7 +96,10 @@ export default async function RdvCalendrierPage({
                       </span>{" "}
                       — {r.title}
                       {r.contactName ? (
-                        <span className="text-[color:var(--color-admin-fg-muted)]"> · {r.contactName}</span>
+                        <span className="text-[color:var(--color-admin-fg-muted)]">
+                          {" "}
+                          · {r.contactName}
+                        </span>
                       ) : null}
                     </span>
                     <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">

@@ -78,7 +78,12 @@ export function MonthGridCalendar({ year, month, days, todayKey }: Props): React
           );
 
           return info?.href ? (
-            <Link key={key} href={info.href} className="block" aria-label={`${info.count} rendez-vous le ${key}`}>
+            <Link
+              key={key}
+              href={info.href}
+              className="block"
+              aria-label={`${info.count} rendez-vous le ${key}`}
+            >
               {inner}
             </Link>
           ) : (

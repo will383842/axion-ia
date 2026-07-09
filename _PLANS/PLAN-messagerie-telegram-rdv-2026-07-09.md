@@ -16,6 +16,7 @@
 **Le bug des réponses ET le « je ne reçois pas mes messages Telegram » ont la MÊME cause racine : les variables d'environnement sont présentes sur le container `worker` mais PAS sur le container `app` (ou désalignées).**
 
 Vérifié en prod :
+
 - Bot Telegram = **@axion_ia_notif_bot** (« Axion-IA Notifications »), actif, poste dans un **supergroupe** (chat_id `-100…`).
 - `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` = **présents sur le worker uniquement**, **absents de l'app web**.
 - Or `notify()` est appelé **depuis l'app web** (formulaires, contact, chatbot, Calendly, candidatures) → sans token → **notifications silencieusement perdues**.
@@ -24,11 +25,13 @@ Vérifié en prod :
 ➡️ **Une grande partie du problème se règle par la CONFIG (Coolify), pas par le code.** Le code ci-dessous rend ces échecs **visibles, non-silencieux et rejouables** ; la remédiation immédiate est un alignement des env vars sur l'app **et** le worker.
 
 **Diagnostic exact à lancer (Étape 0, sans exposer de secret)** — lire l'`errorMsg` des réponses échouées :
+
 ```sql
 SELECT delivery_status, error_msg, retry_count, failed_at
 FROM submission_replies WHERE delivery_status = 'failed'
 ORDER BY failed_at DESC LIMIT 5;
 ```
+
 - `error_msg` mentionne `[encrypted — key missing]` / adresse invalide → **PII_ENCRYPTION_KEY worker**.
 - erreur crypto (GCM auth) → **clé désalignée app↔worker**.
 - `ECONNREFUSED` / timeout SMTP → **SMTP_HOST worker** (localhost dans le conteneur isolé).
@@ -39,19 +42,20 @@ ORDER BY failed_at DESC LIMIT 5;
 
 Décision Will : **réutiliser @axion_ia_notif_bot** et router vers **3 groupes Telegram** distincts (1 token, 1 webhook).
 
-| Groupe | Contenu | Env |
-|---|---|---|
-| 📅 **RDV** | RDV Calendly, réservations | `TELEGRAM_CHAT_ID_RDV` |
-| 💬 **Messages** | Tous les messages (12 types) + leads chatbot | `TELEGRAM_CHAT_ID_MESSAGES` |
-| 🔔 **Système** | Incidents, backups, candidatures, newsletter, avis | `TELEGRAM_CHAT_ID_SYSTEM` (= chat actuel) |
+| Groupe          | Contenu                                            | Env                                       |
+| --------------- | -------------------------------------------------- | ----------------------------------------- |
+| 📅 **RDV**      | RDV Calendly, réservations                         | `TELEGRAM_CHAT_ID_RDV`                    |
+| 💬 **Messages** | Tous les messages (12 types) + leads chatbot       | `TELEGRAM_CHAT_ID_MESSAGES`               |
+| 🔔 **Système**  | Incidents, backups, candidatures, newsletter, avis | `TELEGRAM_CHAT_ID_SYSTEM` (= chat actuel) |
 
-Routage dans `src/server/notifications/routing.ts` (category → chat_id). Fallback : si un `CHAT_ID_*` manque, retomber sur `TELEGRAM_CHAT_ID` (rétro-compatible).
+Routage dans `src/server/notifications/routing.ts` (category → chat*id). Fallback : si un `CHAT_ID*\*`manque, retomber sur`TELEGRAM_CHAT_ID` (rétro-compatible).
 
 ---
 
 ## 2. Brique A — Réponses fiables + confirmation « envoyé ✓ »
 
 ### Fiabiliser l'envoi (code)
+
 - **`src/lib/pii-crypto.ts`** : exporter `PII_DECRYPT_PLACEHOLDER` + `isDecryptedEmailUsable(v)` (additif ; ne PAS transformer `decryptPii` en throw global).
 - **`src/server/queue/queues.ts`** (`enqueueEmail`) : retourner `Job | null` (aujourd'hui no-op silencieux si queue indisponible → reply reste `pending` + faux `{ok:true}`).
 - **`src/features/admin-submissions/reply-actions.ts`** :
@@ -63,6 +67,7 @@ Routage dans `src/server/notifications/routing.ts` (category → chat_id). Fallb
 - **`src/server/queue/worker.ts`** : check boot non-fatal (alerter si `PII_ENCRYPTION_KEY` absente, **ne pas** `process.exit`).
 
 ### Confirmation à l'admin (UX — priorité #1)
+
 - **`src/components/admin/contacts/ReplyComposer.tsx`** : machine d'états `idle → sending → queued → sent | failed`.
   - **sending** : champs + `×` + Annuler disabled, `aria-busy`.
   - **queued** : « Réponse enregistrée, envoi en cours ⏳ ».
@@ -72,6 +77,7 @@ Routage dans `src/server/notifications/routing.ts` (category → chat_id). Fallb
 - Tests `ReplyComposer.test.tsx` + `reply-actions.test.ts`.
 
 ### ⚠️ Config (sinon le code ne suffit pas)
+
 - `PII_ENCRYPTION_KEY`, `SMTP_HOST`, `ADMIN_REPLY_FROM` alignés sur **app ET worker**. **C'est très probablement LE fix racine.**
 
 ---
@@ -91,6 +97,7 @@ Routage dans `src/server/notifications/routing.ts` (category → chat_id). Fallb
 2. **Réponse texte** : reply natif Telegram → `sendSubmissionReplyInternal` (refacto DRY de `replyToSubmissionAction`) → email client + `SubmissionReply` (apparaît en console). Marche en privacy mode.
 
 Fichiers (cloisonnés) :
+
 - `src/app/api/telegram/webhook/route.ts` (POST, `nodejs`, `force-dynamic`) — auth **double** (secret token timing-safe + allowlist `from.id`), dédup `update_id`, 200 < 100 ms, enqueue.
 - `src/server/telegram/inbound/{verify,router,callback-data}.ts` — HMAC `callback_data` (≤ 64 o, 0 PII).
 - `src/server/queue/workers/telegram-inbound-worker.ts` (BullMQ, retry, idempotent `actedAt`).
@@ -102,24 +109,29 @@ Fichiers (cloisonnés) :
 ## 5. Brique D — Onglet « RV téléphonique » + Vue calendrier
 
 ### Sources (2 entités, PAS de nouvelle table)
+
 - `CalendlyEvent` (actif) + `Booking` (legacy gelé, lecture seule) → couche **normalisation read-only** → `UnifiedRdv` (namespacé `cal_`/`bk_`).
 - ⚠️ `CalendlyEvent.startTime` souvent **null** → placement sur jour de capture + badge « heure ? ». Bucketing **Europe/Paris**.
 
 ### Onglet « RV téléphonique » (liste)
+
 - Route `contacts/rendez-vous/page.tsx` (RSC). `AdminTable` + filtres `<form GET>` (0 JS client). Colonne Type/canal. Lignes → détail existant.
 
 ### Vue calendrier (clic date → détail)
+
 - Route `contacts/rendez-vous/calendrier/page.tsx` (RSC).
 - Extraire `buildMonthGrid()` → `src/lib/calendar-grid.ts` + `MonthGridCalendar.tsx` (RSC générique). CSS : **ajouter** `.admin-calendar-cell--rdv*` (0 régression Booking).
 - Cellule = nb RDV + dots statut, cliquable → `?date=YYYY-MM-DD` → panneau « RDV du jour ». **100 % RSC, 0 lib, 0 KB client.**
 
 ### Fichiers
+
 - `src/features/admin-rendezvous/{types,normalize,queries}.ts`, `src/lib/calendar-grid.ts`, `MonthGridCalendar.tsx`, 4 pages/composants `contacts/rendez-vous/`.
 - Modifs : `admin-nav.ts` (groupe `rendez-vous`), `CalendrierV2.tsx` (import util), `admin.css`.
 
 ---
 
 ## 6. Brique E — Navigation finale
+
 ```
 📅 Rendez-vous
    ├─ RV téléphonique   → /contacts/rendez-vous            (liste unifiée)
@@ -140,11 +152,12 @@ Fichiers (cloisonnés) :
 4. **Test E2E** final en prod.
 5. Merge/PR.
 
-*(Je ne peux pas créer les bots/groupes ni écrire les secrets Coolify — règle de sécurité. Je fournis le code + les valeurs à coller.)*
+_(Je ne peux pas créer les bots/groupes ni écrire les secrets Coolify — règle de sécurité. Je fournis le code + les valeurs à coller.)_
 
 ---
 
 ## 8. Tests / vérification
+
 - **Unitaires (Gate A)** : reply (enqueue null → failed ; invalid_recipient ; payload sans PII ; composer sent/failed/polling/retry) ; telegram (callback-data ≤64o + HMAC ; verify secret+allowlist ; worker idempotent ; couverture notify) ; RDV (normalize purs, dayKey Paris ; buildMonthGrid non-régression).
 - **Build-safety (ADR 0026)** : webhook + workers no-op avec `stub.invalid` ; `force-dynamic`.
 - **E2E prod** : réponse console → ✓ + email ; réponse Telegram → SubmissionReply + email ; bouton Confirmer → mutation + email ; POST sans secret → 401 ; clic date → RDV du jour.
@@ -153,6 +166,7 @@ Fichiers (cloisonnés) :
 ---
 
 ## 9. Ordre d'implémentation
+
 1. **Brique A + config** (débloque les réponses) — code + Étape 0 diagnostic.
 2. **Brique B** (scope + 3 groupes) — réception triée.
 3. **Brique D+E** (RV + calendrier + nav) — code-only, sans blocage.
@@ -163,4 +177,5 @@ Briques A, B, D, E = **implémentables en autopilote maintenant** (code). Activa
 ---
 
 ### Références
+
 ADR 0010 (PII Telegram), 0026 (build stub), 0029 (hub notify), 0031 (reply system). Bot : @axion_ia_notif_bot. Fichiers : `src/server/notifications/*`, `src/features/admin-submissions/reply-actions.ts`, `src/features/admin-rendezvous/*` (nouveau), `CalendlyEvent`/`Booking`.

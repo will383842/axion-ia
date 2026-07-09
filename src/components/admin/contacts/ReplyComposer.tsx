@@ -213,7 +213,11 @@ export function ReplyComposer({
         setState({ phase: "queued", replyId });
         router.refresh();
       } else {
-        setState({ phase: "failed", replyId, message: replyErrorLabel(r.error ?? "enqueue_failed") });
+        setState({
+          phase: "failed",
+          replyId,
+          message: replyErrorLabel(r.error ?? "enqueue_failed"),
+        });
       }
     });
   }
@@ -389,11 +393,7 @@ export function ReplyComposer({
                 >
                   Annuler
                 </button>
-                <button
-                  type="submit"
-                  className="admin-button"
-                  disabled={state.phase === "sending"}
-                >
+                <button type="submit" className="admin-button" disabled={state.phase === "sending"}>
                   {state.phase === "sending" ? "Envoi…" : "Envoyer"}
                 </button>
               </>

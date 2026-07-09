@@ -54,8 +54,7 @@ export async function SubmissionDetailContent({
   // Présentation lisible : on SORT le message + les métas utiles (ville/source)
   // du JSON brut pour les afficher en clair. Le reste (JSON, IP, User-Agent) part
   // dans un repli « Informations techniques » masqué par défaut.
-  const messageText =
-    details && typeof details.message === "string" ? details.message.trim() : "";
+  const messageText = details && typeof details.message === "string" ? details.message.trim() : "";
   const ville = details && typeof details.ville === "string" ? details.ville : null;
   const sourceUrl = details && typeof details.source === "string" ? details.source : null;
   const titreSociete =

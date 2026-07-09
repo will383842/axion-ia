@@ -94,11 +94,7 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
           icon={CheckCircle2}
         />
         <AdminStatCard label="Jobs 24 h" value={stats.dailyPlanJobs24h} icon={Clock} />
-        <AdminStatCard
-          label="Concurrency workers"
-          value={batches.workersConcurrency}
-          icon={Cpu}
-        />
+        <AdminStatCard label="Concurrency workers" value={batches.workersConcurrency} icon={Cpu} />
       </section>
 
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">

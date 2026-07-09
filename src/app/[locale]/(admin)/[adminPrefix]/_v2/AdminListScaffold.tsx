@@ -87,9 +87,7 @@ export function AdminListScaffold({
           columns={columns}
           rows={rows}
           getRowId={(r) => r.id}
-          {...(rowClickable
-            ? { rowHref: (r: AdminListScaffoldRow) => r.detailHref }
-            : {})}
+          {...(rowClickable ? { rowHref: (r: AdminListScaffoldRow) => r.detailHref } : {})}
           rowAction={(r) =>
             r.detailHref ? (
               rowClickable ? (

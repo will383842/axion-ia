@@ -58,7 +58,9 @@ export async function listRendezVous(
   if (filters.q) {
     const q = filters.q.toLowerCase();
     rows = rows.filter((r) =>
-      [r.title, r.contactName, r.contactEmail].some((v) => v != null && v.toLowerCase().includes(q)),
+      [r.title, r.contactName, r.contactEmail].some(
+        (v) => v != null && v.toLowerCase().includes(q),
+      ),
     );
   }
 
