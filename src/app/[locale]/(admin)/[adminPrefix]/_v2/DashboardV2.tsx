@@ -3,29 +3,23 @@
 // Dashboard V2 — utilise AdminPageShell + AdminStatCard + AdminCard.
 // Server Component, prend `adminPrefix` + données déjà fetchées en props
 // (le fetch reste dans la page racine V1 pour éviter doublon DB).
+//
+// Nettoyage 2026-07-09 (audit vestiges booking) :
+//   Les sections « Aujourd'hui » (Prêts à valider / Options à valider /
+//   Cadrages / Paiements du jour), « Activité » (Interventions semaine+mois /
+//   Encaissé / Factures en retard) et les 4 SnapshotCard (readyToValidate,
+//   pendingOptionRows, waitingClientRows, cadrageRows) lisaient les tables de
+//   l'ancien flux de réservation payante (Booking / BookingOption / Payment /
+//   Invoice). Ce flux est éteint : Calendly a remplacé le créneau public
+//   (`createBookingAction` / `postOption48hAction` n'existent plus) et Stripe
+//   est neutralisé → ces blocs affichaient 0 / listes vides en permanence,
+//   au prix de 13 requêtes DB inutiles à chaque ouverture de l'accueil admin.
+//   Retirés ici (les onglets correspondants sont déjà masqués, cf. PR #283).
+//   Restent les 3 repères contenu + l'activité récente, réellement alimentés.
 
 import Link from "next/link";
-import {
-  ClipboardCheck,
-  Hourglass,
-  CalendarDays,
-  Wallet,
-  CalendarClock,
-  CalendarRange,
-  TrendingUp,
-  AlertTriangle,
-  Inbox,
-  Newspaper,
-  Mail,
-} from "lucide-react";
+import { Inbox, Newspaper, Mail } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
-
-interface DashboardSnapshotItem {
-  id: string;
-  href: string;
-  primary: string;
-  secondary?: string;
-}
 
 interface DashboardV2Props {
   adminPrefix: string;
@@ -33,23 +27,10 @@ interface DashboardV2Props {
   role: string;
   logoutAction: () => Promise<void> | void;
   kpis: {
-    pendingValidation: number;
-    pendingOptions: number;
-    cadragesUpcoming: number;
-    paymentsTodayCount: number;
-    paymentsTodayAmount: string;
-    bookingsWeek: number;
-    bookingsMonth: number;
-    revenuesMonth: string;
-    invoicesOverdue: number;
     totalSubmissions: number;
     totalArticles: number;
     totalSubscribers: number;
   };
-  readyToValidate: ReadonlyArray<DashboardSnapshotItem>;
-  pendingOptionRows: ReadonlyArray<DashboardSnapshotItem>;
-  waitingClientRows: ReadonlyArray<DashboardSnapshotItem>;
-  cadrageRows: ReadonlyArray<DashboardSnapshotItem>;
   activityRows: ReadonlyArray<{ id: string; primary: string; secondary: string }>;
 }
 
@@ -59,10 +40,6 @@ export function DashboardV2({
   role,
   logoutAction,
   kpis,
-  readyToValidate,
-  pendingOptionRows,
-  waitingClientRows,
-  cadrageRows,
   activityRows,
 }: DashboardV2Props): React.ReactElement {
   const base = `/fr/${adminPrefix}`;
@@ -81,91 +58,13 @@ export function DashboardV2({
       />
 
       <section
-        aria-label="Aujourd'hui"
-        className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4"
+        aria-label="Repères contenu"
+        className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3"
       >
-        <AdminStatCard
-          label="Prêts à valider (D49)"
-          value={kpis.pendingValidation}
-          icon={ClipboardCheck}
-          tone={kpis.pendingValidation > 0 ? "warning" : "default"}
-          href={`${base}/reservations?status=awaiting_admin_validation`}
-        />
-        <AdminStatCard
-          label="Options à valider"
-          value={kpis.pendingOptions}
-          icon={Hourglass}
-          tone={kpis.pendingOptions > 0 ? "warning" : "default"}
-          href={`${base}/options`}
-        />
-        <AdminStatCard
-          label="Cadrages 7 prochains jours"
-          value={kpis.cadragesUpcoming}
-          icon={CalendarDays}
-          href={`${base}/calendrier`}
-        />
-        <AdminStatCard
-          label="Paiements reçus aujourd'hui"
-          value={kpis.paymentsTodayCount}
-          meta={kpis.paymentsTodayAmount}
-          icon={Wallet}
-          tone="success"
-          href={`${base}/paiements`}
-        />
+        <AdminStatCard label="Soumissions totales" value={kpis.totalSubmissions} icon={Inbox} />
+        <AdminStatCard label="Articles publiés" value={kpis.totalArticles} icon={Newspaper} />
+        <AdminStatCard label="Abonnés newsletter" value={kpis.totalSubscribers} icon={Mail} />
       </section>
-
-      <section
-        aria-label="Activité"
-        className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4"
-      >
-        <AdminStatCard
-          label="Interventions cette semaine"
-          value={kpis.bookingsWeek}
-          icon={CalendarClock}
-        />
-        <AdminStatCard
-          label="Interventions ce mois"
-          value={kpis.bookingsMonth}
-          icon={CalendarRange}
-        />
-        <AdminStatCard
-          label="Encaissé ce mois"
-          value={kpis.revenuesMonth}
-          icon={TrendingUp}
-          tone="success"
-        />
-        <AdminStatCard
-          label="Factures en retard"
-          value={kpis.invoicesOverdue}
-          icon={AlertTriangle}
-          tone={kpis.invoicesOverdue > 0 ? "destructive" : "default"}
-          href={`${base}/factures?status=overdue`}
-        />
-      </section>
-
-      <SnapshotCard
-        title="Prêts à valider sur le calendrier (D49)"
-        description="Acompte reçu, en attente du clic « Valider sur le calendrier »."
-        emptyLabel="Aucun booking en attente — rien à faire ici."
-        items={readyToValidate}
-      />
-      <SnapshotCard
-        title="Demandes options à valider"
-        description="Parcours A — visiteurs en attente du clic « Envoyer contrat + acompte »."
-        emptyLabel="Aucune option en attente."
-        items={pendingOptionRows}
-      />
-      <SnapshotCard
-        title="En attente du client"
-        description="Contrat envoyé et lien de paiement actif — pas encore d'acompte reçu."
-        emptyLabel="Aucun booking en attente client."
-        items={waitingClientRows}
-      />
-      <SnapshotCard
-        title="Cadrages à venir (14 j)"
-        emptyLabel="Aucun cadrage planifié."
-        items={cadrageRows}
-      />
 
       <AdminCard className="mb-[var(--space-admin-6)]">
         <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
@@ -197,15 +96,6 @@ export function DashboardV2({
           </Link>
         </p>
       </AdminCard>
-
-      <section
-        aria-label="Repères contenu"
-        className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3"
-      >
-        <AdminStatCard label="Soumissions totales" value={kpis.totalSubmissions} icon={Inbox} />
-        <AdminStatCard label="Articles publiés" value={kpis.totalArticles} icon={Newspaper} />
-        <AdminStatCard label="Abonnés newsletter" value={kpis.totalSubscribers} icon={Mail} />
-      </section>
 
       <AdminCard>
         <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
@@ -248,56 +138,5 @@ export function DashboardV2({
         </ul>
       </AdminCard>
     </AdminPageShell>
-  );
-}
-
-interface SnapshotCardProps {
-  title: string;
-  description?: string;
-  emptyLabel: string;
-  items: ReadonlyArray<DashboardSnapshotItem>;
-}
-
-function SnapshotCard({
-  title,
-  description,
-  emptyLabel,
-  items,
-}: SnapshotCardProps): React.ReactElement {
-  return (
-    <AdminCard className="mb-[var(--space-admin-6)]">
-      <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
-        {title}
-      </h2>
-      {description ? (
-        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
-          {description}
-        </p>
-      ) : null}
-      {items.length === 0 ? (
-        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          {emptyLabel}
-        </p>
-      ) : (
-        <ul className="flex flex-col gap-[var(--space-admin-3)]">
-          {items.map((it) => (
-            <li
-              key={it.id}
-              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
-            >
-              <Link
-                href={it.href}
-                className="font-medium text-[color:var(--color-admin-info)] hover:underline"
-              >
-                {it.primary}
-              </Link>
-              {it.secondary ? (
-                <span className="ml-[var(--space-admin-2)]">{it.secondary}</span>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      )}
-    </AdminCard>
   );
 }
