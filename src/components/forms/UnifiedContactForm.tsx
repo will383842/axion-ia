@@ -20,13 +20,31 @@ import { useForm } from "react-hook-form";
 import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Check, ChevronDown } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  ChevronDown,
+  ScanSearch,
+  Boxes,
+  GraduationCap,
+  UserRound,
+  FileText,
+  Handshake,
+  Newspaper,
+  Briefcase,
+  Mic,
+  LineChart,
+  LifeBuoy,
+  MessageCircle,
+  type LucideIcon,
+} from "lucide-react";
 import {
   unifiedContactSchema,
   UNIFIED_CONTACT_TYPES,
   TYPE_GROUPS,
   COMPANY_SIZES,
   TIMING_WEEKS,
+  unifiedTypeHint,
   type UnifiedContactInput,
   type UnifiedContactType,
 } from "@/lib/schemas/unified-contact-schema";
@@ -51,8 +69,10 @@ const LABELS = {
     titleEm: "en quelques secondes",
     subtitle:
       "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 24 h ouvrées. Sans engagement.",
-    typeLabel: "Objet de votre demande",
+    typeLabel: "Que pouvons-nous faire pour vous ?",
+    typePrompt: "Choisissez ce qui décrit le mieux votre demande — un seul suffit.",
     typeHelp: "Vous ne trouvez pas votre cas ? Choisissez « Autre » — le formulaire sert à tout.",
+    typeGroupHint: "Un autre sujet ?",
     typeOptions: {
       // Groupe 1 — Projet IA pour mon entreprise
       audit: "Audit IA",
@@ -128,8 +148,10 @@ const LABELS = {
     titleEm: "in seconds",
     subtitle:
       "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 24 h ouvrées. Sans engagement.",
-    typeLabel: "What is your request about?",
+    typeLabel: "What can we do for you?",
+    typePrompt: "Pick the one that best describes your request — just one.",
     typeHelp: "Not sure where you fit? Pick « Other » — this form covers everything.",
+    typeGroupHint: "Something else?",
     typeOptions: {
       // Group 1 — AI project for my company
       audit: "AI audit",
@@ -200,6 +222,26 @@ const LABELS = {
     trustPills: ["RGPD · UE", "Réponse 24 h ouvrées", "Sans engagement"],
   },
 } as const;
+
+// ---- Icônes par type (grille de sélection visuelle) ------------------------
+// Chaque intention a son icône lucide — la sélection devient scannable d'un
+// coup d'œil (pattern 2026 : Linear, Vercel, Stripe). Remplace le dropdown
+// caché qui pré-affichait « Autre demande » comme un fallback (refonte
+// 2026-07-09 : sélecteur visuel, zéro friction).
+const TYPE_ICONS: Record<UnifiedContactType, LucideIcon> = {
+  audit: ScanSearch,
+  implementation: Boxes,
+  formation: GraduationCap,
+  un_a_un: UserRound,
+  devis: FileText,
+  partenariat: Handshake,
+  presse: Newspaper,
+  recrutement: Briefcase,
+  speaker: Mic,
+  investisseur: LineChart,
+  support_client: LifeBuoy,
+  autre: MessageCircle,
+};
 
 // ---- Props -----------------------------------------------------------------
 
@@ -300,29 +342,15 @@ function UnifiedContactFormBody({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Type dropdown state — pattern bouton-trigger qui ouvre un popover listbox.
-  // Form v2 2026-05-28 : remplace le segmented control 12 boutons par un
-  // dropdown compact (mobile-first, Linear/Stripe pattern). Click outside +
-  // Escape ferment le panel.
-  const [typeOpen, setTypeOpen] = React.useState(false);
-  const typeDropdownRef = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
-    if (!typeOpen) return;
-    function onClickOutside(e: MouseEvent) {
-      if (!typeDropdownRef.current?.contains(e.target as Node)) {
-        setTypeOpen(false);
-      }
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setTypeOpen(false);
-    }
-    document.addEventListener("mousedown", onClickOutside);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onClickOutside);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [typeOpen]);
+  // Sélection du type — grille de chips visuels (refonte 2026-07-09). Plus de
+  // dropdown/popover : les 12 intentions sont toutes visibles, sélectionnables
+  // en un tap, sans état d'ouverture ni gestion click-outside/Escape.
+  const selectType = React.useCallback(
+    (opt: UnifiedContactType) => setValue("type", opt, { shouldValidate: true, shouldDirty: true }),
+    // setValue est stable (react-hook-form) — dépendances vides volontaires.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   const {
     token: turnstileToken,
@@ -381,25 +409,25 @@ function UnifiedContactFormBody({
     return (
       <div
         className={cn(
-          "bg-paper border-terracotta/30 shadow-card rounded-3xl border-2 p-8 sm:p-10",
+          "rounded-3xl border-2 border-terracotta/30 bg-paper p-8 shadow-card sm:p-10",
           className,
         )}
         role="status"
       >
-        <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
-          <Check aria-hidden="true" strokeWidth={3} className="text-terracotta-deep h-4 w-4" />
-          <span className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
+        <div className="bg-halo-warm mb-5 inline-flex items-center gap-2 rounded-full border border-terracotta/30 px-4 py-1.5">
+          <Check aria-hidden="true" strokeWidth={3} className="h-4 w-4 text-terracotta-deep" />
+          <span className="text-[12px] font-semibold tracking-[0.16em] text-terracotta-deep uppercase">
             {t.eyebrow}
           </span>
         </div>
         <p
-          className="text-fg text-2xl leading-snug font-medium tracking-tight sm:text-3xl"
+          className="text-2xl leading-snug font-medium tracking-tight text-fg sm:text-3xl"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           {t.success}
         </p>
         {submissionId ? (
-          <p className="text-fg-muted mt-3 text-sm">
+          <p className="mt-3 text-sm text-fg-muted">
             {t.referenceLabel} :{" "}
             <span className="font-mono text-xs tabular-nums">{submissionId}</span>
           </p>
@@ -427,111 +455,125 @@ function UnifiedContactFormBody({
     >
       <HoneypotField />
 
-      {/* Type — dropdown trigger + popover listbox (Form v2 2026-05-28).
-          Pattern Linear/Stripe : 1 bouton compact qui ouvre les 12 choix en
-          2 groupes. Économise ~140px de hauteur vs segmented control, mobile-
-          first (panel full-width responsive), keyboard navigable (Escape +
-          click outside ferment). */}
+      {/* Objet de la demande — grille de chips visuels (refonte 2026-07-09).
+          Remplace le dropdown/popover qui pré-affichait « Autre demande » comme
+          un fallback (effet « pré-rempli / cassé »). Les 12 intentions sont
+          désormais visibles d'un coup d'œil, sélectionnables en un tap : le
+          Projet IA en grille prominente à icônes, les autres demandes en
+          pastilles discrètes dessous. Un helper dynamique décrit l'intention
+          choisie. Zéro friction, mobile-first, sans état d'ouverture. */}
       {!lockType ? (
-        <div className="space-y-1.5" ref={typeDropdownRef}>
-          <label htmlFor="type-trigger" className="text-fg block text-base font-bold sm:text-lg">
+        <fieldset className="space-y-3.5">
+          <legend className="mb-1 block text-base font-bold text-fg sm:text-lg">
             {t.typeLabel}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
-          </label>
-          <div className="relative">
-            <button
-              id="type-trigger"
-              type="button"
-              aria-haspopup="listbox"
-              aria-expanded={typeOpen}
-              aria-controls="type-listbox"
-              onClick={() => setTypeOpen((v) => !v)}
-              className={cn(
-                "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left text-[15px] font-medium transition-all focus-visible:ring-2 focus-visible:outline-none",
-                type && "border-terracotta bg-halo-warm text-terracotta-deep",
-                !type && "text-fg-muted",
-              )}
-            >
-              <span className="flex items-center gap-2">
-                {type ? (
-                  <>
-                    <Check aria-hidden="true" strokeWidth={3} className="h-4 w-4 shrink-0" />
-                    <span className="text-fg font-semibold">{t.typeOptions[type]}</span>
-                  </>
-                ) : (
-                  <span>{t.typeHelp}</span>
-                )}
-              </span>
-              <ChevronDown
-                aria-hidden="true"
-                className={cn("h-4 w-4 shrink-0 transition-transform", typeOpen && "rotate-180")}
-              />
-            </button>
-            {typeOpen ? (
-              <div
-                id="type-listbox"
-                role="listbox"
-                aria-label={t.typeLabel}
-                className="bg-paper border-border shadow-card absolute top-full right-0 left-0 z-20 mt-2 max-h-[60vh] overflow-y-auto rounded-xl border-2 p-2"
-              >
-                {(["projet", "autre"] as const).map((groupKey, gIdx) => (
-                  <div
-                    key={groupKey}
-                    className={cn(gIdx > 0 && "border-border mt-2 border-t pt-2")}
+            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
+          </legend>
+
+          {/* Groupe 1 — Projet IA : chips prominents (icône + libellé) */}
+          <div
+            role="radiogroup"
+            aria-label={t.typeGroups.projet}
+            className="grid grid-cols-2 gap-2.5 sm:grid-cols-3"
+          >
+            {TYPE_GROUPS.projet.map((opt) => {
+              const Icon = TYPE_ICONS[opt];
+              const isSel = type === opt;
+              return (
+                <button
+                  key={opt}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSel}
+                  onClick={() => selectType(opt)}
+                  className={cn(
+                    "group flex flex-col items-start gap-2 rounded-2xl border-2 p-3.5 text-left transition-all focus-visible:ring-4 focus-visible:ring-terracotta/40 focus-visible:outline-none",
+                    isSel
+                      ? "border-terracotta bg-terracotta-soft shadow-sm"
+                      : "border-border bg-paper hover:border-terracotta/50 hover:bg-terracotta-soft/30",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex h-9 w-9 items-center justify-center rounded-xl transition-colors",
+                      isSel
+                        ? "bg-terracotta text-mocha-fg"
+                        : "bg-sand text-fg-soft group-hover:bg-terracotta-soft group-hover:text-terracotta-deep",
+                    )}
                   >
-                    <p className="text-fg-muted px-3 pt-2 pb-1 text-[10.5px] font-semibold tracking-[0.16em] uppercase">
-                      {t.typeGroups[groupKey]}
-                    </p>
-                    <ul className="space-y-0.5">
-                      {TYPE_GROUPS[groupKey].map((opt) => {
-                        const isSel = type === opt;
-                        return (
-                          <li key={opt}>
-                            <button
-                              type="button"
-                              role="option"
-                              aria-selected={isSel}
-                              onClick={() => {
-                                setValue("type", opt, { shouldValidate: true, shouldDirty: true });
-                                setTypeOpen(false);
-                              }}
-                              className={cn(
-                                "hover:bg-halo-warm focus-visible:ring-terracotta flex w-full items-start gap-2.5 rounded-lg px-3 py-2 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none",
-                                isSel && "bg-halo-warm",
-                              )}
-                            >
-                              <Check
-                                aria-hidden="true"
-                                strokeWidth={3}
-                                className={cn(
-                                  "mt-0.5 h-4 w-4 shrink-0",
-                                  isSel ? "text-terracotta-deep" : "text-transparent",
-                                )}
-                              />
-                              <span
-                                className={cn(
-                                  "flex-1 text-[14px] font-semibold",
-                                  isSel ? "text-terracotta-deep" : "text-fg",
-                                )}
-                              >
-                                {t.typeOptions[opt]}
-                              </span>
-                            </button>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            ) : null}
+                    <Icon aria-hidden="true" className="h-[18px] w-[18px]" strokeWidth={1.9} />
+                  </span>
+                  <span
+                    className={cn(
+                      "text-[13.5px] leading-tight font-semibold",
+                      isSel ? "text-terracotta-deep" : "text-fg",
+                    )}
+                  >
+                    {t.typeOptions[opt]}
+                  </span>
+                </button>
+              );
+            })}
           </div>
+
+          {/* Groupe 2 — Autres demandes : pastilles discrètes (hiérarchie) */}
+          <div className="border-t border-border/70 pt-3.5">
+            <p className="mb-2 text-[11px] font-semibold tracking-[0.14em] text-fg-muted uppercase">
+              {t.typeGroupHint}
+            </p>
+            <div role="radiogroup" aria-label={t.typeGroups.autre} className="flex flex-wrap gap-2">
+              {TYPE_GROUPS.autre.map((opt) => {
+                const Icon = TYPE_ICONS[opt];
+                const isSel = type === opt;
+                return (
+                  <button
+                    key={opt}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSel}
+                    onClick={() => selectType(opt)}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-all focus-visible:ring-4 focus-visible:ring-terracotta/40 focus-visible:outline-none",
+                      isSel
+                        ? "border-terracotta bg-terracotta-soft text-terracotta-deep"
+                        : "border-border bg-paper text-fg-soft hover:border-terracotta/50 hover:text-fg",
+                    )}
+                  >
+                    <Icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" strokeWidth={1.9} />
+                    {t.typeOptions[opt]}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Helper dynamique : décrit l'intention choisie (ou invite à choisir) */}
+          <p
+            className={cn(
+              "flex items-start gap-2 text-[13px] leading-relaxed",
+              type ? "text-fg-soft" : "text-fg-muted",
+            )}
+            aria-live="polite"
+          >
+            {type ? (
+              <>
+                <ArrowRight
+                  aria-hidden="true"
+                  className="mt-[3px] h-3.5 w-3.5 shrink-0 text-terracotta"
+                  strokeWidth={2.5}
+                />
+                <span>{unifiedTypeHint(type, locale)}</span>
+              </>
+            ) : (
+              <span>{t.typePrompt}</span>
+            )}
+          </p>
+
           {errors.type ? (
-            <p role="alert" className="text-accent-red text-xs">
+            <p role="alert" className="text-xs text-accent-red">
               {errors.type.message ?? t.typeRequired}
             </p>
           ) : null}
-        </div>
+        </fieldset>
       ) : (
         <input type="hidden" {...register("type")} />
       )}
@@ -541,7 +583,7 @@ function UnifiedContactFormBody({
         <div className="grid gap-2">
           <Label htmlFor="unified-nom">
             {t.nom}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
           </Label>
           <Input
             id="unified-nom"
@@ -552,7 +594,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.nom ? "unified-nom-err" : undefined}
           />
           {errors.nom ? (
-            <p id="unified-nom-err" role="alert" className="text-accent-red text-xs">
+            <p id="unified-nom-err" role="alert" className="text-xs text-accent-red">
               {errors.nom.message}
             </p>
           ) : null}
@@ -560,7 +602,7 @@ function UnifiedContactFormBody({
         <div className="grid gap-2">
           <Label htmlFor="unified-email">
             {t.email}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
           </Label>
           <Input
             id="unified-email"
@@ -572,7 +614,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.email ? "unified-email-err" : undefined}
           />
           {errors.email ? (
-            <p id="unified-email-err" role="alert" className="text-accent-red text-xs">
+            <p id="unified-email-err" role="alert" className="text-xs text-accent-red">
               {errors.email.message}
             </p>
           ) : null}
@@ -584,7 +626,7 @@ function UnifiedContactFormBody({
         <div className="grid gap-2">
           <Label htmlFor="unified-telephone">
             {t.telephone}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
           </Label>
           <Input
             id="unified-telephone"
@@ -597,7 +639,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.telephone ? "unified-tel-err" : undefined}
           />
           {errors.telephone ? (
-            <p id="unified-tel-err" role="alert" className="text-accent-red text-xs">
+            <p id="unified-tel-err" role="alert" className="text-xs text-accent-red">
               {errors.telephone.message}
             </p>
           ) : null}
@@ -605,7 +647,7 @@ function UnifiedContactFormBody({
         <div className="grid gap-2">
           <Label htmlFor="unified-ville">
             {t.ville}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
           </Label>
           <Input
             id="unified-ville"
@@ -616,7 +658,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.ville ? "unified-ville-err" : undefined}
           />
           {errors.ville ? (
-            <p id="unified-ville-err" role="alert" className="text-accent-red text-xs">
+            <p id="unified-ville-err" role="alert" className="text-xs text-accent-red">
               {errors.ville.message}
             </p>
           ) : null}
@@ -628,7 +670,7 @@ function UnifiedContactFormBody({
         <div className="flex items-baseline justify-between gap-3">
           <Label htmlFor="unified-message">
             {t.message}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
           </Label>
           <span
             className={cn(
@@ -649,20 +691,20 @@ function UnifiedContactFormBody({
           aria-describedby={errors.message ? "unified-msg-err" : undefined}
         />
         {errors.message ? (
-          <p id="unified-msg-err" role="alert" className="text-accent-red text-xs">
+          <p id="unified-msg-err" role="alert" className="text-xs text-accent-red">
             {errors.message.message}
           </p>
         ) : null}
       </div>
 
       {/* Toggle avancé */}
-      <div className="border-border border-t pt-5">
+      <div className="border-t border-border pt-5">
         <button
           type="button"
           onClick={() => setAdvancedOpen((v) => !v)}
           aria-expanded={advancedOpen}
           aria-controls="unified-advanced"
-          className="text-fg hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex items-center gap-2 rounded text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
+          className="inline-flex items-center gap-2 rounded text-sm font-semibold text-fg hover:text-terracotta-deep focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
         >
           <ChevronDown
             aria-hidden="true"
@@ -672,7 +714,7 @@ function UnifiedContactFormBody({
         </button>
         {advancedOpen ? (
           <div id="unified-advanced" className="mt-4 space-y-4">
-            <p className="text-fg-muted text-[12.5px] leading-relaxed">{t.advancedHint}</p>
+            <p className="text-[12.5px] leading-relaxed text-fg-muted">{t.advancedHint}</p>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
                 <Label htmlFor="unified-companyName">{t.companyName}</Label>
@@ -688,7 +730,7 @@ function UnifiedContactFormBody({
                 <select
                   id="unified-companySize"
                   {...register("companySize")}
-                  className="border-border bg-paper text-fg focus-visible:ring-terracotta h-10 rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
+                  className="h-10 rounded-md border border-border bg-paper px-3 text-sm text-fg focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
                 >
                   <option value="">—</option>
                   {COMPANY_SIZES.map((s) => (
@@ -713,7 +755,7 @@ function UnifiedContactFormBody({
                 <select
                   id="unified-timingWeeks"
                   {...register("timingWeeks")}
-                  className="border-border bg-paper text-fg focus-visible:ring-terracotta h-10 rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
+                  className="h-10 rounded-md border border-border bg-paper px-3 text-sm text-fg focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
                 >
                   <option value="">—</option>
                   {TIMING_WEEKS.map((w) => (
@@ -749,13 +791,13 @@ function UnifiedContactFormBody({
         />
         <Label
           htmlFor="unified-consent"
-          className="text-fg-soft cursor-pointer text-[13px] leading-relaxed"
+          className="cursor-pointer text-[13px] leading-relaxed text-fg-soft"
         >
           {t.consent}
         </Label>
       </div>
       {errors.consent ? (
-        <p role="alert" className="text-accent-red text-xs">
+        <p role="alert" className="text-xs text-accent-red">
           {errors.consent.message}
         </p>
       ) : null}
@@ -783,10 +825,10 @@ function UnifiedContactFormBody({
       </Button>
 
       {/* Trust pills */}
-      <ul className="text-fg-muted flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
+      <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-fg-muted">
         {t.trustPills.map((p) => (
           <li key={p} className="inline-flex items-center gap-1.5">
-            <Check aria-hidden="true" strokeWidth={3} className="text-terracotta-deep h-3 w-3" />
+            <Check aria-hidden="true" strokeWidth={3} className="h-3 w-3 text-terracotta-deep" />
             {p}
           </li>
         ))}
