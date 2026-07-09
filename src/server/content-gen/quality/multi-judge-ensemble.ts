@@ -169,4 +169,5 @@ export async function runMultiJudge(
   return composeMultiJudge([internalJudge, llmJudge], llmJudge);
 }
 
-const JUDGE_MODEL_LABEL = "claude-sonnet-4-6" as const;
+// Will 2026-07-09 : le juge LLM (reviewArticle) tourne désormais sur gpt-4o.
+const JUDGE_MODEL_LABEL = "gpt-4o" as const;

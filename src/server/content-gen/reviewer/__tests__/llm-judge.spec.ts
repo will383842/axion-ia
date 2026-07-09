@@ -12,16 +12,17 @@
  * 8. Verdict improve : 7 <= globalScore < 8.5 OU >=1 P1.
  * 9. Verdict reject : globalScore < 7 OU >=1 P0.
  * 10. issues : severity P0/P1/P2 + default fallback.
- * 11. reviewArticle : appelle anthropicProvider avec systemPrompt + userPrompt.
+ * 11. reviewArticle : appelle openaiProvider avec systemPrompt + userPrompt.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const generateMock = vi.fn<(...args: unknown[]) => Promise<{ output: string }>>();
 
-vi.mock("@/server/content-gen/providers/anthropic", () => ({
-  anthropicProvider: {
-    key: "anthropic",
+// Will 2026-07-09 : le juge tourne sur OpenAI (plus sur Claude).
+vi.mock("@/server/content-gen/providers/openai", () => ({
+  openaiProvider: {
+    key: "openai",
     supportedRoles: ["text"],
     generate: (...args: unknown[]) => generateMock(...args),
   },
@@ -283,8 +284,8 @@ describe("parseJudgeResponse — issues", () => {
   });
 });
 
-describe("reviewArticle — integration with anthropic provider", () => {
-  it("calls anthropicProvider.generate with system + user prompts", async () => {
+describe("reviewArticle — integration with openai provider", () => {
+  it("calls openaiProvider.generate with system + user prompts", async () => {
     const raw = makeRawJudgeJson({
       scores: {
         factualAccuracy: 9,
@@ -308,7 +309,7 @@ describe("reviewArticle — integration with anthropic provider", () => {
     expect(result.verdict).toBe("publish");
     expect(generateMock).toHaveBeenCalledTimes(1);
     const callArgs = generateMock.mock.calls[0]?.[0] as Record<string, unknown>;
-    expect(callArgs["model"]).toBe("claude-sonnet-4-6");
+    expect(callArgs["model"]).toBe("gpt-4o");
     expect(callArgs["systemPrompt"]).toBe(JUDGE_SYSTEM_PROMPT);
     expect(callArgs["userPrompt"]).toContain("audit IA conformite");
     expect(callArgs["userPrompt"]).toContain("Audit IA conformite RGPD pour PME");

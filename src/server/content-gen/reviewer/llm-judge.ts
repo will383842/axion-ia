@@ -21,7 +21,10 @@
  *   - reject : globalScore < 6.0 OU >=1 P0 issue (escalate humain)
  */
 
-import { anthropicProvider } from "@/server/content-gen/providers/anthropic";
+// DÉCISION Will 2026-07-09 : le juge qualité tourne sur OpenAI (comme la
+// génération), plus sur Claude. Il notait CHAQUE article via claude-sonnet-4-6
+// (hardcodé, sans fallback) → poste majeur de consommation Anthropic invisible.
+import { openaiProvider } from "@/server/content-gen/providers/openai";
 import {
   analyzeDiversity,
   type DiversityScore,
@@ -29,7 +32,7 @@ import {
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-export const JUDGE_MODEL = "claude-sonnet-4-6" as const;
+export const JUDGE_MODEL = "gpt-4o" as const;
 
 export const JUDGE_THRESHOLDS = {
   /** globalScore minimum pour publish direct. */
@@ -376,7 +379,7 @@ export async function reviewArticle(
   thresholds: JudgeThresholds = JUDGE_THRESHOLDS,
 ): Promise<JudgeResult> {
   const userPrompt = buildUserPrompt(article);
-  const response = await anthropicProvider.generate({
+  const response = await openaiProvider.generate({
     jobId: article.jobId,
     contentType: article.contentType ?? "editorial_review",
     role: "text",
