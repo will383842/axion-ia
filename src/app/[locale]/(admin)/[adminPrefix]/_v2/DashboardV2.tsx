@@ -14,7 +14,9 @@
 //   (`createBookingAction` / `postOption48hAction` n'existent plus) et Stripe
 //   est neutralisé → ces blocs affichaient 0 / listes vides en permanence,
 //   au prix de 13 requêtes DB inutiles à chaque ouverture de l'accueil admin.
-//   Retirés ici (les onglets correspondants sont déjà masqués, cf. PR #283).
+//   Retirés ici (les onglets correspondants sont déjà masqués, cf. PR 283).
+//   NB : ne pas préfixer un numéro de PR par « # » dans src/app —
+//   `scripts/check-anti-hex.sh` y verrait une couleur hex codée en dur.
 //   Restent les 3 repères contenu + l'activité récente, réellement alimentés.
 
 import Link from "next/link";
