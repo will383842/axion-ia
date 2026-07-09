@@ -20,14 +20,25 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { createContext, useContext, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import type { ReviewStats } from "../review-stats";
 
 /**
- * Stats avis injectées par `renderEmailTemplate` (valeurs réelles depuis la DB).
- * Défaut neutre = pas d'avis (build/stub) → le bandeau masque la ligne avis.
+ * Stats avis injectées par `renderEmailTemplate` juste avant le rendu (valeurs
+ * réelles depuis la DB). Défaut neutre = pas d'avis (build/stub) → le bandeau
+ * masque la ligne avis.
+ *
+ * Volontairement un porteur au niveau module et NON un React Context :
+ * `createContext` est une API Client-only, interdite dans un module importé
+ * côté serveur (RSC) → cassait le build. Sûr contre les rendus concurrents :
+ * `renderEmailTemplate` fait `setReviewStats(...)` puis `render(element)`, et le
+ * parcours React (`renderToStaticMarkup`) est SYNCHRONE — il lit la valeur avant
+ * que la boucle d'événements ne rende la main, donc aucune interleave possible.
  */
-export const ReviewStatsContext = createContext<ReviewStats>({ count: 0, avg: 0 });
+let CURRENT_REVIEW_STATS: ReviewStats = { count: 0, avg: 0 };
+export function setReviewStats(stats: ReviewStats): void {
+  CURRENT_REVIEW_STATS = stats;
+}
 
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -265,7 +276,7 @@ export function EmailLayout({
   locale,
 }: EmailLayoutProps) {
   const t = TXT[locale];
-  const rs = useContext(ReviewStatsContext);
+  const rs = CURRENT_REVIEW_STATS;
   // Ligne avis RÉELLE (masquée sous 5 avis — même seuil que l'AggregateRating du site).
   const showReviews = rs.count >= 5 && rs.avg > 0;
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
