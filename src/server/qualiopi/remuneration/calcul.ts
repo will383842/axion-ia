@@ -54,7 +54,12 @@ export type FeeLineNature = "analytique" | "honoraire_du";
  */
 export type TvaRegimeHonoraires = "franchise_293b" | "exonere_formation" | "assujetti_20";
 
-/** Statut d'une prestation (miroir enum Prisma `PrestationStatut`). */
+/**
+ * Statut d'une prestation, vocabulaire PROPRE au moteur — il n'existe aucun enum
+ * Prisma de ce nom. C'est le dénominateur commun des trois sources : il coïncide
+ * exactement avec `CoachingSessionStatut`, et vaut `TrainingSessionStatut` moins
+ * `en_cours` (que `mapStatutSession` ramène à `planifiee`).
+ */
 export type PrestationStatut = "planifiee" | "realisee" | "annulee" | "reportee";
 
 /**
@@ -137,16 +142,22 @@ function specificite(regle: RegleRemuneration): number {
  * égale, la règle au `effectiveFrom` le plus récent ≤ date gagne. Retourne
  * `null` si aucune règle ne s'applique (l'appelant applique alors le fallback
  * legacy `tarifJourneeHtCents` du formateur).
+ *
+ * Générique sur `R` : la règle retournée est EXACTEMENT celle passée en entrée,
+ * champs supplémentaires compris. Le persisteur peut donc y lire l'`id` de la
+ * règle résolue (pour `TrainerFeeLine.ruleId`) sans avoir à la retrouver après
+ * coup — une seconde recherche par valeur serait ambiguë entre deux versions
+ * d'un même barème.
  */
-export function resolveRegle(
-  regles: readonly RegleRemuneration[],
+export function resolveRegle<R extends RegleRemuneration>(
+  regles: readonly R[],
   query: {
     trainerId: string;
     prestationType: PrestationType;
     interventionSlug: string | null;
     date: Date;
   },
-): RegleRemuneration | null {
+): R | null {
   const candidates = regles.filter(
     (r) =>
       r.trainerId === query.trainerId &&
@@ -156,7 +167,7 @@ export function resolveRegle(
       couvreDate(r, query.date),
   );
 
-  let best: RegleRemuneration | null = null;
+  let best: R | null = null;
   let bestSpec = -1;
   for (const r of candidates) {
     const spec = specificite(r);
