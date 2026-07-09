@@ -89,7 +89,7 @@ const topbar: React.CSSProperties = {
   backgroundColor: C.orange,
   backgroundImage: `linear-gradient(90deg, ${C.orange} 0%, #d1561f 55%, ${C.orangeDeep} 100%)`,
 };
-const wrapper: React.CSSProperties = { margin: "0 auto", maxWidth: "700px", width: "100%" };
+const wrapper: React.CSSProperties = { margin: "0 auto", maxWidth: "920px", width: "100%" };
 const header: React.CSSProperties = { padding: "26px 0 20px", textAlign: "center" };
 const taglineStyle: React.CSSProperties = {
   fontSize: "11px",
