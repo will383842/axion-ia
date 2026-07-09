@@ -296,6 +296,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //   ne garde que le Tableau de bord → relabellisé « Vue d'ensemble ».
     //   Réversible : retirer `parent`. (Suppression dure code/schéma = séparé.)
     { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main", subGroup: "agenda" },
+    // Planning unifié des prestations (formations collectives + coaching 1-to-1).
+    // Distinct du « Calendrier » booking ci-dessous, qui est un vestige masqué.
+    {
+      href: `${base}/planning`,
+      label: "Planning",
+      icon: "🗓️",
+      group: "main",
+      subGroup: "agenda",
+    },
     {
       href: `${base}/calendrier`,
       label: "Calendrier",

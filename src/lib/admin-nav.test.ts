@@ -22,7 +22,10 @@ describe("buildAdminNav SSOT", () => {
     // (Candidatures aux offres + Messages recrutement). +6 items vs base 117 = 123.
     // +2 (2026-07-09) : « RV téléphonique » (liste unifiée) + « Calendrier RDV »
     // dans le groupe Rendez-vous. = 125.
-    expect(items.length).toBe(125);
+    // +1 (2026-07-09) : « Planning » — calendrier unifié des prestations
+    // (formations collectives + coaching 1-to-1), groupe main / sous-groupe
+    // agenda. Distinct du « Calendrier » booking, vestige masqué. = 126.
+    expect(items.length).toBe(126);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
