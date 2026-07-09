@@ -51,6 +51,12 @@ const listSubmissionsSchema = z.object({
   type: z.enum(["audit", "implementation", "intervention", "contact", "all"]).default("all"),
   /** Filtre fin sur details.unifiedType (ex « recrutement » → onglet Commercial). */
   unifiedType: z.string().optional(),
+  /**
+   * Filtre multi-types sur details.unifiedType (ex onglet « Clients » = audit +
+   * implementation + formation + un_a_un + devis + support_client). Prioritaire
+   * sur `unifiedType` si fourni.
+   */
+  unifiedTypeIn: z.array(z.string()).optional(),
   status: z.enum(["new", "in_progress", "processed", "archived", "all"]).default("all"),
   locale: z.enum(["fr", "en", "all"]).default("all"),
   search: z.string().optional(),
@@ -119,8 +125,15 @@ export async function listSubmissionsAction(
     : never = {};
 
   if (parsed.type !== "all") where.type = parsed.type;
-  // Filtre fin recrutement/commercial (details.unifiedType en JSON Postgres).
-  if (parsed.unifiedType) {
+  // Filtre par catégorie (details.unifiedType en JSON Postgres). `unifiedTypeIn`
+  // (onglet « Clients » = plusieurs types) → OR de equals ; sinon type unique.
+  // NB : `where.OR` est libre ici (la recherche est filtrée EN MÉMOIRE après
+  // déchiffrement, cf. plus bas — elle ne pose plus de clause OR SQL).
+  if (parsed.unifiedTypeIn && parsed.unifiedTypeIn.length > 0) {
+    (where as { OR?: unknown }).OR = parsed.unifiedTypeIn.map((t) => ({
+      details: { path: ["unifiedType"], equals: t },
+    }));
+  } else if (parsed.unifiedType) {
     (where as { details?: unknown }).details = {
       path: ["unifiedType"],
       equals: parsed.unifiedType,

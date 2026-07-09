@@ -322,15 +322,33 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "contacts",
     },
     {
-      href: `${base}/contacts/commercial`,
-      label: "Recrutement",
-      icon: "🤝",
+      href: `${base}/contacts/clients`,
+      label: "Clients",
+      icon: "💼",
       group: "contacts",
     },
     {
       href: `${base}/contacts/presse`,
       label: "Presse",
       icon: "📰",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/partenariats`,
+      label: "Partenariats",
+      icon: "🤝",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Recrutement",
+      icon: "🧑‍💼",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/investisseurs`,
+      label: "Investisseurs",
+      icon: "📈",
       group: "contacts",
     },
     {
