@@ -59,6 +59,9 @@ async function fetchFormations(
         dateDebut: true,
         dateFin: true,
         statut: true,
+        // Id du formateur : nécessaire au regroupement de la vue « charge »
+        // (regrouper par nom serait ambigu entre homonymes).
+        formateurPrincipalId: true,
         lieuType: true,
         lieuIntitule: true,
         lieuAdresse: true,
@@ -82,6 +85,7 @@ async function fetchFormations(
       fin: r.dateFin,
       statut: r.statut as PlanningStatut,
       formateurNom: nomComplet(r.formateurPrincipal),
+      formateurId: r.formateurPrincipalId ?? null,
       clientNom: r.client?.raisonSociale ?? null,
       lieu: formatLieu(r),
     }));
@@ -113,6 +117,8 @@ async function fetchCoachings(
         dateSeance: true,
         dateSeanceFin: true,
         statut: true,
+        // Id du formateur (cf. fetchFormations) pour la vue « charge ».
+        trainerId: true,
         beneficiaireNom: true,
         beneficiaireEntreprise: true,
         lieuType: true,
@@ -137,6 +143,7 @@ async function fetchCoachings(
       fin: r.dateSeanceFin,
       statut: r.statut as PlanningStatut,
       formateurNom: nomComplet(r.trainer),
+      formateurId: r.trainerId ?? null,
       clientNom: r.beneficiaireEntreprise ?? r.beneficiaireNom ?? null,
       lieu: formatLieu(r),
     }));
@@ -154,6 +161,25 @@ function sortWithinDay(arr: PlanningEvent[]): void {
 }
 
 /**
+ * Union normalisée formation + coaching chevauchant [from, to], après filtre
+ * `type` en mémoire. Brique commune à `getPlanningMonth` (qui regroupe ensuite
+ * par jour) et `getPlanningRange` (qui renvoie la liste à plat). Le scope
+ * date/statut/formateur est appliqué en amont dans les requêtes Prisma.
+ */
+async function fetchPlanningEvents(
+  from: Date,
+  to: Date,
+  filters: PlanningFilters,
+): Promise<PlanningEvent[]> {
+  const [formations, coachings] = await Promise.all([
+    fetchFormations(from, to, filters),
+    fetchCoachings(from, to, filters),
+  ]);
+  const events = [...formations, ...coachings];
+  return filters.type !== undefined ? events.filter((e) => e.type === filters.type) : events;
+}
+
+/**
  * Événements du mois, regroupés par clé jour « YYYY-MM-DD » (Europe/Paris).
  * Seules les cases DU mois demandé sont retournées (une formation à cheval sur
  * deux mois n'apparaît que sur les jours du mois affiché).
@@ -164,13 +190,7 @@ export async function getPlanningMonth(
   filters: PlanningFilters = {},
 ): Promise<Map<string, PlanningEvent[]>> {
   const { from, to } = monthBounds(year, month);
-  const [formations, coachings] = await Promise.all([
-    fetchFormations(from, to, filters),
-    fetchCoachings(from, to, filters),
-  ]);
-
-  let events = [...formations, ...coachings];
-  if (filters.type !== undefined) events = events.filter((e) => e.type === filters.type);
+  const events = await fetchPlanningEvents(from, to, filters);
 
   const prefix = `${year}-${pad2(month)}`;
   const byDay = new Map<string, PlanningEvent[]>();
@@ -186,6 +206,31 @@ export async function getPlanningMonth(
 
   for (const arr of byDay.values()) sortWithinDay(arr);
   return byDay;
+}
+
+/**
+ * Prestations chevauchant une PLAGE arbitraire [from, to], à plat et triées par
+ * date de début (déterministe). Contrairement à `getPlanningMonth`, on ne
+ * regroupe PAS par jour ni ne découpe une prestation multi-jours : chaque
+ * prestation apparaît une seule fois — c'est la forme attendue par l'export
+ * iCal (un événement = un VEVENT couvrant sa durée réelle).
+ *
+ * Les bornes sont élargies d'un jour de chaque côté (bords de fuseau), comme
+ * pour le mois. Stub-safe : Prisma en erreur → [] (les fetch catchent déjà).
+ */
+export async function getPlanningRange(
+  from: Date,
+  to: Date,
+  filters: PlanningFilters = {},
+): Promise<PlanningEvent[]> {
+  const fromMargin = new Date(from);
+  fromMargin.setUTCDate(fromMargin.getUTCDate() - 1);
+  const toMargin = new Date(to);
+  toMargin.setUTCDate(toMargin.getUTCDate() + 1);
+
+  const events = await fetchPlanningEvents(fromMargin, toMargin, filters);
+  sortWithinDay(events); // tri par début puis titre — réutilisé tel quel
+  return events;
 }
 
 /**

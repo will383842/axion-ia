@@ -191,6 +191,21 @@ export default async function PlanningPage({
         )}
       </form>
 
+      {/* Export iCal : visible uniquement quand un formateur est filtré. Le
+          formateur abonne son agenda (Google/Outlook) à ce flux .ics en lecture
+          seule — les UID stables évitent les doublons à chaque re-synchro. */}
+      {filters.trainerId !== undefined && (
+        <div className="mb-[var(--space-admin-5)]">
+          <a
+            href={`${base}/ics?trainerId=${encodeURIComponent(filters.trainerId)}&mois=6`}
+            className="admin-button-ghost"
+            download
+          >
+            Exporter l&apos;agenda (.ics)
+          </a>
+        </div>
+      )}
+
       <MonthGridCalendar year={year} month={month} days={days} todayKey={dayKeyInParis(now)} />
 
       {selectedDate !== null && (
