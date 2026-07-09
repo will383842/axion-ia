@@ -10,20 +10,34 @@ const mockUpdate = vi.fn();
 const mockTrainerFindUnique = vi.fn();
 const mockSessionFindUnique = vi.fn();
 const mockSessionUpdate = vi.fn();
+const mockSessionFormateurDeleteMany = vi.fn();
+const mockSessionFormateurUpsert = vi.fn();
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
-    trainer: {
-      create: (...args: unknown[]) => mockCreate(...args),
-      update: (...args: unknown[]) => mockUpdate(...args),
-      findUnique: (...args: unknown[]) => mockTrainerFindUnique(...args),
+vi.mock("@/lib/prisma", () => {
+  const sessionFormateur = {
+    deleteMany: (...args: unknown[]) => mockSessionFormateurDeleteMany(...args),
+    upsert: (...args: unknown[]) => mockSessionFormateurUpsert(...args),
+  };
+  const tx = {
+    trainingSession: { update: (...args: unknown[]) => mockSessionUpdate(...args) },
+    sessionFormateur,
+  };
+  return {
+    prisma: {
+      trainer: {
+        create: (...args: unknown[]) => mockCreate(...args),
+        update: (...args: unknown[]) => mockUpdate(...args),
+        findUnique: (...args: unknown[]) => mockTrainerFindUnique(...args),
+      },
+      trainingSession: {
+        findUnique: (...args: unknown[]) => mockSessionFindUnique(...args),
+        update: (...args: unknown[]) => mockSessionUpdate(...args),
+      },
+      sessionFormateur,
+      $transaction: async (cb: (t: typeof tx) => unknown) => cb(tx),
     },
-    trainingSession: {
-      findUnique: (...args: unknown[]) => mockSessionFindUnique(...args),
-      update: (...args: unknown[]) => mockSessionUpdate(...args),
-    },
-  },
-}));
+  };
+});
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
@@ -48,6 +62,8 @@ beforeEach(() => {
   mockTrainerFindUnique.mockReset();
   mockSessionFindUnique.mockReset();
   mockSessionUpdate.mockReset();
+  mockSessionFormateurDeleteMany.mockReset();
+  mockSessionFormateurUpsert.mockReset();
 });
 
 describe("createTrainerAction", () => {
@@ -139,6 +155,39 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     expect(r).toEqual({ data: { sessionId: SESSION_ID } });
     const arg = mockSessionUpdate.mock.calls[0]?.[0] as { data: { formateurPrincipalId: string } };
     expect(arg.data.formateurPrincipalId).toBe(TRAINER_ID);
+  });
+
+  it("dual-write : upsert la ligne SessionFormateur principal + snapshot tarif", async () => {
+    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "salarie",
+      formationsHabilitees: [FORMATION_ID],
+      sousTraitantVerifieAt: null,
+      tarifJourneeHtCents: 90000,
+    });
+    mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
+    await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    const upsertArg = mockSessionFormateurUpsert.mock.calls[0]?.[0] as {
+      where: { sessionId_trainerId: { sessionId: string; trainerId: string } };
+      create: { role: string; tarifHtCents: number | null };
+    };
+    expect(upsertArg.where.sessionId_trainerId).toEqual({
+      sessionId: SESSION_ID,
+      trainerId: TRAINER_ID,
+    });
+    expect(upsertArg.create.role).toBe("principal");
+    expect(upsertArg.create.tarifHtCents).toBe(90000);
+    // L'ancien principal (autre formateur) est retiré avant de poser le nouveau.
+    expect(mockSessionFormateurDeleteMany).toHaveBeenCalled();
+  });
+
+  it("dual-write : le retrait (trainerId null) supprime le principal sans upsert", async () => {
+    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
+    await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: null });
+    expect(mockSessionFormateurDeleteMany).toHaveBeenCalled();
+    expect(mockSessionFormateurUpsert).not.toHaveBeenCalled();
   });
 
   it("REFUSE un formateur non habilité sur la formation", async () => {

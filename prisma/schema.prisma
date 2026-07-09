@@ -5309,6 +5309,8 @@ model TrainingSession {
   documents         DocumentGenere[]
   relevesConnexion  ReleveConnexionImport[]
   facturesFormation FactureFormation[]
+  /// Jointure normalisée session ↔ formateur (remplace `coFormateurs` Json).
+  sessionFormateurs SessionFormateur[]
 
   @@index([formationId])
   @@index([clientId])
@@ -5358,11 +5360,45 @@ model Trainer {
   afestHabiliteAt      DateTime?            @map("afest_habilite_at")
   magicLinks           FormateurMagicLink[]
   coachingSessions     CoachingSession[]
+  /// Affectations normalisées aux sessions (principal + co-animateurs).
+  sessionFormateurs    SessionFormateur[]
 
   @@index([statut])
   @@index([actif])
   @@index([region])
   @@map("trainers")
+}
+
+/// Rôle d'un formateur sur une session de formation collective.
+enum SessionFormateurRole {
+  principal
+  co_formateur
+  assistant
+  tuteur_afest
+}
+
+/// Jointure normalisée session ↔ formateur. Remplace le champ Json
+/// `TrainingSession.coFormateurs` (non indexable, non agrégeable) : socle de la
+/// charge par formateur et du commissionnement. Le formateur `principal` reste
+/// dupliqué dans `TrainingSession.formateurPrincipalId` (cache dénormalisé lu par
+/// la garde d'habilitation) ; un index partiel SQL garantit un seul `principal`
+/// par session. `tarifHtCents` = snapshot du tarif du formateur figé à
+/// l'affectation (la rémunération ne dérive pas si le tarif change ensuite).
+model SessionFormateur {
+  id            String               @id @default(uuid()) @db.Uuid
+  sessionId     String               @map("session_id") @db.Uuid
+  session       TrainingSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  trainerId     String               @map("trainer_id") @db.Uuid
+  trainer       Trainer              @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  role          SessionFormateurRole @default(co_formateur)
+  heuresAnimees Decimal?             @map("heures_animees") @db.Decimal(6, 2)
+  tarifHtCents  Int?                 @map("tarif_ht_cents")
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @updatedAt @map("updated_at")
+
+  @@unique([sessionId, trainerId], map: "session_formateur_unique")
+  @@index([trainerId, sessionId])
+  @@map("session_formateurs")
 }
 
 /// Stagiaire. PII ; détails handicap chiffrés AES-256-GCM (pii-crypto).

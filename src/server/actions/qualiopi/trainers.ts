@@ -304,8 +304,11 @@ export async function assignTrainerToSessionAction(
   }
   if (!trainingSession) return { error: "Session introuvable" };
 
+  // Snapshot du tarif du formateur à l'affectation (figé sur la ligne SessionFormateur).
+  let tarifSnapshot: number | null = null;
+
   if (trainerId !== null) {
-    let trainer: TrainerHabilitationFields | null;
+    let trainer: (TrainerHabilitationFields & { tarifJourneeHtCents: number | null }) | null;
     try {
       trainer = await prisma.trainer.findUnique({
         where: { id: trainerId },
@@ -314,6 +317,7 @@ export async function assignTrainerToSessionAction(
           statut: true,
           formationsHabilitees: true,
           sousTraitantVerifieAt: true,
+          tarifJourneeHtCents: true,
         },
       });
     } catch {
@@ -325,12 +329,33 @@ export async function assignTrainerToSessionAction(
     if (!check.ok) {
       return { error: `Assignation refusée : ${check.raison}` };
     }
+    tarifSnapshot = trainer.tarifJourneeHtCents ?? null;
   }
 
+  // Dual-write transactionnel : la FK `formateurPrincipalId` (source de vérité,
+  // lue par la garde d'habilitation) ET la table normalisée `SessionFormateur`
+  // (rôle principal, snapshot tarif) restent synchrones. Un seul principal par
+  // session (index partiel SQL) → on retire l'ancien avant de poser le nouveau.
   try {
-    await prisma.trainingSession.update({
-      where: { id: sessionId },
-      data: { formateurPrincipalId: trainerId },
+    await prisma.$transaction(async (tx) => {
+      await tx.trainingSession.update({
+        where: { id: sessionId },
+        data: { formateurPrincipalId: trainerId },
+      });
+      await tx.sessionFormateur.deleteMany({
+        where: {
+          sessionId,
+          role: "principal",
+          ...(trainerId !== null ? { trainerId: { not: trainerId } } : {}),
+        },
+      });
+      if (trainerId !== null) {
+        await tx.sessionFormateur.upsert({
+          where: { sessionId_trainerId: { sessionId, trainerId } },
+          create: { sessionId, trainerId, role: "principal", tarifHtCents: tarifSnapshot },
+          update: { role: "principal", tarifHtCents: tarifSnapshot },
+        });
+      }
     });
   } catch {
     return { error: "Erreur lors de l'assignation du formateur" };
