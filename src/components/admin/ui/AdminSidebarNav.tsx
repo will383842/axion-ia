@@ -130,6 +130,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 // Icône d'« onglet principal » par groupe (niveau 1 de la hiérarchie).
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   main: Activity,
+  contacts: Inbox,
   content: Newspaper,
   content_gen: Sparkles,
   qualiopi: GraduationCap,

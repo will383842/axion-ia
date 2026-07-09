@@ -24,6 +24,7 @@
 
 export type AdminNavGroup =
   | "main"
+  | "contacts"
   | "content"
   | "content_gen"
   | "qualiopi"
@@ -78,7 +79,7 @@ export type DocumentsPole = "activite" | "outils";
  * Pôle du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08.
  * Découpe les 10 onglets quotidiens en 3 blocs métier. Clés distinctes.
  */
-export type MainPole = "agenda" | "facturation" | "relation";
+export type MainPole = "agenda" | "facturation";
 
 /**
  * Pôle du groupe `image-bank` — refonte UX 2026-07-08. 3 blocs. Clés distinctes.
@@ -121,6 +122,7 @@ export interface AdminNavItem {
 
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
+  contacts: "Contacts",
   content: "Contenu",
   content_gen: "Génération de contenu",
   qualiopi: "Formation / Qualiopi",
@@ -199,10 +201,9 @@ export const DOCUMENTS_POLE_ORDER: ReadonlyArray<DocumentsPole> = ["activite", "
 export const MAIN_POLE_LABELS: Record<MainPole, string> = {
   agenda: "Agenda & réservations",
   facturation: "Facturation",
-  relation: "Contacts & recrutement",
 };
 
-export const MAIN_POLE_ORDER: ReadonlyArray<MainPole> = ["agenda", "facturation", "relation"];
+export const MAIN_POLE_ORDER: ReadonlyArray<MainPole> = ["agenda", "facturation"];
 
 /** Pôles du groupe `image-bank` — refonte UX 2026-07-08. */
 export const IMAGE_BANK_POLE_LABELS: Record<ImageBankPole, string> = {
@@ -242,6 +243,7 @@ export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<st
 
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
+  "contacts",
   "content",
   "content_gen",
   "qualiopi",
@@ -311,20 +313,31 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "main",
       subGroup: "facturation",
     },
-    // ▸ CONTACTS & RECRUTEMENT
+    // ── Contacts (groupe INDÉPENDANT — refonte UX 2026-07-09 : sorti de « main »
+    //    et de la barre d'onglets interne ; 3 canaux séparés + candidatures) ──
     {
       href: `${base}/contacts/messages`,
-      label: "Contacts",
+      label: "Tous les messages",
       icon: "📥",
-      group: "main",
-      subGroup: "relation",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Recrutement",
+      icon: "🤝",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/calendly`,
+      label: "RDV Calendly",
+      icon: "📅",
+      group: "contacts",
     },
     {
       href: `${base}/candidatures`,
       label: "Candidatures emploi",
       icon: "📨",
-      group: "main",
-      subGroup: "relation",
+      group: "contacts",
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
