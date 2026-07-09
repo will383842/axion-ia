@@ -90,6 +90,26 @@ export function encryptPii<T extends string | null | undefined>(plaintext: T): T
 }
 
 /**
+ * Placeholder renvoyé par `decryptPii()` quand un ciphertext `enc:v1:` est
+ * présent mais que la clé `PII_ENCRYPTION_KEY` est absente. Exporté pour que
+ * les appelants (envoi d'email, etc.) détectent un déchiffrement raté sans
+ * dépendre d'une chaîne codée en dur.
+ */
+export const PII_DECRYPT_PLACEHOLDER = "[encrypted — key missing]";
+
+/**
+ * `true` si `value` est une adresse email exploitable : non vide, pas le
+ * placeholder de déchiffrement raté, et de forme email plausible. Garde à
+ * utiliser AVANT d'envoyer un email vers une adresse PII déchiffrée (sinon on
+ * envoie vers le placeholder → rejet SMTP → « Échec envoi »).
+ */
+export function isDecryptedEmailUsable(value: string | null | undefined): boolean {
+  if (!value) return false;
+  if (value === PII_DECRYPT_PLACEHOLDER) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+/**
  * Déchiffre une valeur PII. Si la valeur n'a pas le préfixe `enc:v1:` ou si
  * la clé est absente → retourne inchangé (compat cleartext legacy).
  *
@@ -107,7 +127,7 @@ export function decryptPii<T extends string | null | undefined>(value: T): T {
     // Clé absente mais ciphertext présent : impossible de décrypter. Renvoyer
     // un placeholder explicite plutôt que throw (ne pas casser les pages admin
     // si un dev oublie de set la clé).
-    return "[encrypted — key missing]" as T;
+    return PII_DECRYPT_PLACEHOLDER as T;
   }
 
   const parts = value.slice(PREFIX_V1.length).split(":");

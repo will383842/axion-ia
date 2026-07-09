@@ -41,12 +41,25 @@ let _transport: Transporter | null = null;
 
 function getTransport(): Transporter {
   if (_transport) return _transport;
+  const host = process.env.SMTP_HOST ?? "localhost";
+  const port = Number(process.env.SMTP_PORT ?? 2525);
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  const hasAuth = Boolean(user && pass);
+
   _transport = nodemailer.createTransport({
-    host: process.env.SMTP_HOST ?? "localhost",
-    port: Number(process.env.SMTP_PORT ?? 2525),
-    // Mailhog/PowerMTA local : pas de TLS ni d'auth.
-    secure: false,
-    ignoreTLS: true,
+    host,
+    port,
+    // Deux modes selon la présence d'identifiants :
+    //  - SMTP authentifié (Zoho, SES, Brevo…) : TLS + auth. Port 465 = SMTPS
+    //    implicite ; 587/25 = STARTTLS (requireTLS). NÉCESSAIRE pour un relais
+    //    externe (sinon connexion rejetée / non chiffrée).
+    //  - Relais local sans auth (PowerMTA/Mailhog sur localhost) : ni TLS ni
+    //    auth — comportement legacy conservé quand SMTP_USER/PASS absents.
+    secure: port === 465,
+    ...(hasAuth
+      ? { auth: { user: user as string, pass: pass as string }, requireTLS: port !== 465 }
+      : { ignoreTLS: true }),
   });
   return _transport;
 }

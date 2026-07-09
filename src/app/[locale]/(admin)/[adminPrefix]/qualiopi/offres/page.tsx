@@ -19,6 +19,7 @@ import {
   toggleOffreActifAction,
   verifyAllOffresCoherenceAction,
 } from "@/server/actions/qualiopi/offres";
+import { FileText, CheckCircle2, AlertTriangle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -71,12 +72,13 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Offres au catalogue" value={offres.length} />
-        <AdminStatCard label="Offres actives" value={actives} tone="success" />
+        <AdminStatCard label="Offres au catalogue" value={offres.length} icon={FileText} />
+        <AdminStatCard label="Offres actives" value={actives} tone="success" icon={CheckCircle2} />
         <AdminStatCard
           label="Inactives"
           value={offres.length - actives}
           tone={offres.length - actives > 0 ? "warning" : "default"}
+          icon={AlertTriangle}
         />
       </div>
 

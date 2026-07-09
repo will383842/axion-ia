@@ -3,6 +3,7 @@
 // Image bank Overview V2 — AdminPageShell + AdminPageHeader + AdminStatCard.
 
 import Link from "next/link";
+import { CheckCircle2, Gauge, Hourglass, Image as ImageIcon } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 
 interface ImageRow {
@@ -58,23 +59,31 @@ export function OverviewV2({
         aria-label="KPIs image-bank"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
       >
-        <AdminStatCard label="Total des images" value={totalCount} href={`${base}/library`} />
+        <AdminStatCard
+          label="Total des images"
+          value={totalCount}
+          href={`${base}/library`}
+          icon={ImageIcon}
+        />
         <AdminStatCard
           label="Publiées"
           value={publishedCount}
           tone="success"
           href={`${base}/library?status=published`}
+          icon={CheckCircle2}
         />
         <AdminStatCard
           label="À vérifier"
           value={pendingReviewCount}
           tone={pendingReviewCount > 0 ? "warning" : "default"}
           href={`${base}/quality`}
+          icon={Hourglass}
         />
         <AdminStatCard
           label="Score SEO moyen"
           value={`${avgSeoScore}/100`}
           tone={avgSeoScore >= 80 ? "success" : "warning"}
+          icon={Gauge}
         />
       </section>
 

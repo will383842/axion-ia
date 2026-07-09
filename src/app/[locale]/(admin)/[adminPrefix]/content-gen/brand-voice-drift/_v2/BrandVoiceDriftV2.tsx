@@ -5,6 +5,7 @@
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import { FileText, AlertTriangle, AlertOctagon } from "lucide-react";
 import { getBrandVoiceDriftStats } from "@/server/actions/content-gen/brand-voice";
 import { RecalibrateBrandVoiceForm } from "./RecalibrateBrandVoiceForm";
 
@@ -70,18 +71,21 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
               label="Articles analysés"
               value={String(stats.articlesAnalyzed)}
               meta="fenêtre du dernier passage"
+              icon={FileText}
             />
             <AdminStatCard
               label="Articles flaggés (< 0.80)"
               value={String(stats.articlesFlagged)}
               meta="alerte de dérive 30j"
               tone={stats.articlesFlagged > 0 ? "warning" : "default"}
+              icon={AlertTriangle}
             />
             <AdminStatCard
               label="Articles needs_review (< 0.70)"
               value={String(stats.articlesNeedsReview)}
               meta="dérive sévère 30j"
               tone={stats.articlesNeedsReview > 0 ? "destructive" : "default"}
+              icon={AlertOctagon}
             />
           </div>
         </AdminCard>

@@ -15,6 +15,7 @@ import {
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { GeoEventsBanner } from "@/components/admin/content-gen/GeoEventsBanner";
 import { getGlobalGeoStats, listRegionGeoStats } from "@/server/actions/content-gen/geo";
+import { MapPin, CheckCircle2, Clock, AlertTriangle, Hourglass, TrendingUp } from "lucide-react";
 
 type RegionRow = Awaited<ReturnType<typeof listRegionGeoStats>>[number];
 
@@ -66,16 +67,18 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
         <AdminStatCard
           label="Régions actives"
           value={regions.filter((r) => r.publicationPhase === 1).length}
+          icon={MapPin}
         />
-        <AdminStatCard label="Publiés total" value={global.publishedJobs} />
-        <AdminStatCard label="En cours" value={global.runningJobs} />
+        <AdminStatCard label="Publiés total" value={global.publishedJobs} icon={CheckCircle2} />
+        <AdminStatCard label="En cours" value={global.runningJobs} icon={Clock} />
         <AdminStatCard
           label="Échecs"
           value={global.failedJobs}
           tone={global.failedJobs > 0 ? "warning" : "default"}
+          icon={AlertTriangle}
         />
-        <AdminStatCard label="En revue" value={global.pendingReviewJobs} />
-        <AdminStatCard label="Vélocité 7 j" value={global.velocity7dJobs} />
+        <AdminStatCard label="En revue" value={global.pendingReviewJobs} icon={Hourglass} />
+        <AdminStatCard label="Vélocité 7 j" value={global.velocity7dJobs} icon={TrendingUp} />
       </section>
 
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">

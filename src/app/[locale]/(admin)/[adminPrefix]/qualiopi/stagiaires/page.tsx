@@ -14,6 +14,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listTrainees } from "@/server/qualiopi/trainees/trainees";
+import { Hash, Accessibility, ShieldCheck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -57,9 +58,14 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
       </div>
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Total" value={trainees.length} />
-        <AdminStatCard label="Situation de handicap" value={handicap} />
-        <AdminStatCard label="Consentement formation" value={consentis} tone="success" />
+        <AdminStatCard label="Total" value={trainees.length} icon={Hash} />
+        <AdminStatCard label="Situation de handicap" value={handicap} icon={Accessibility} />
+        <AdminStatCard
+          label="Consentement formation"
+          value={consentis}
+          tone="success"
+          icon={ShieldCheck}
+        />
       </div>
 
       {trainees.length === 0 ? (

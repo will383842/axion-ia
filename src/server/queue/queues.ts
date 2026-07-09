@@ -608,12 +608,14 @@ export async function enqueueEmail(
   locale: "fr" | "en",
   payload: Record<string, unknown>,
   options?: { delayMs?: number; marketing?: boolean; jobId?: string },
-): Promise<void> {
+): Promise<{ enqueued: boolean }> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
       console.warn(`[bullmq] no connection, skipping enqueueEmail(${template}, ${to})`);
     }
-    return;
+    // Retour détectable : les appelants qui exigent une garantie de mise en file
+    // (ex. reply admin) peuvent marquer un échec explicite au lieu d'un faux succès.
+    return { enqueued: false };
   }
   const data: EmailJobData = options?.marketing
     ? { template, to, locale, payload, marketing: true }
@@ -626,6 +628,7 @@ export async function enqueueEmail(
     data,
     Object.keys(addOptions).length > 0 ? addOptions : undefined,
   );
+  return { enqueued: true };
 }
 
 /**

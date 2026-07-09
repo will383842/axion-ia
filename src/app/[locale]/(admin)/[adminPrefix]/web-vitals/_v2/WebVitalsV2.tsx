@@ -13,6 +13,7 @@ import {
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { BarChart3, Link as LinkIcon, AlertTriangle, Database } from "lucide-react";
 
 const WINDOW_HOURS = 24;
 const MIN_SAMPLES = 5;
@@ -169,17 +170,23 @@ export function WebVitalsV2({
         aria-label="KPIs RUM"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
       >
-        <AdminStatCard label="Samples 24h" value={totalSamples.toLocaleString("fr-FR")} />
-        <AdminStatCard label="Routes mesurées" value={routeCount} />
+        <AdminStatCard
+          label="Samples 24h"
+          value={totalSamples.toLocaleString("fr-FR")}
+          icon={BarChart3}
+        />
+        <AdminStatCard label="Routes mesurées" value={routeCount} icon={LinkIcon} />
         <AdminStatCard
           label="Lignes hors budget"
           value={breachCount}
           tone={breachCount > 0 ? "destructive" : "default"}
+          icon={AlertTriangle}
         />
         <AdminStatCard
           label="Source"
           value={isLive ? "Live (DB)" : "Snapshot worker"}
           meta={computedAt ? new Date(computedAt).toLocaleString("fr-FR") : "—"}
+          icon={Database}
         />
       </section>
 

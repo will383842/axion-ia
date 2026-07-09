@@ -13,6 +13,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { CheckCircle2, Hourglass, Trash2 } from "lucide-react";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -113,12 +114,14 @@ export default async function QualiopiRgpdPage({ params }: PageProps) {
           label="En attente"
           value={enAttente}
           tone={enAttente > 0 ? "warning" : "success"}
+          icon={Hourglass}
         />
-        <AdminStatCard label="Traitées" value={traitees} tone="success" />
+        <AdminStatCard label="Traitées" value={traitees} tone="success" icon={CheckCircle2} />
         <AdminStatCard
           label="Suppressions à traiter"
           value={suppressions}
           tone={suppressions > 0 ? "warning" : "default"}
+          icon={Trash2}
         />
       </div>
 

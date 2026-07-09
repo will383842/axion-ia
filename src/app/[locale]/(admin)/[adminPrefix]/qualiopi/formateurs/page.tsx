@@ -8,6 +8,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { AlertTriangle, Handshake, Hash, Users } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -65,13 +66,14 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
       </div>
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={trainers.length} />
-        <AdminStatCard label="Salariés" value={salaries} />
-        <AdminStatCard label="Sous-traitants" value={sousTraitants} />
+        <AdminStatCard label="Total" value={trainers.length} icon={Hash} />
+        <AdminStatCard label="Salariés" value={salaries} icon={Users} />
+        <AdminStatCard label="Sous-traitants" value={sousTraitants} icon={Handshake} />
         <AdminStatCard
           label="Sous-traitants à vérifier"
           value={sousTraitantsAVerifier}
           tone={sousTraitantsAVerifier > 0 ? "warning" : "success"}
+          icon={AlertTriangle}
         />
       </div>
 

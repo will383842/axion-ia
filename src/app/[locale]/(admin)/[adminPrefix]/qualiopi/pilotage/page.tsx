@@ -15,6 +15,21 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { getPilotage, type MetriqueValeur } from "@/server/qualiopi/conformite/pilotage-service";
+import {
+  Briefcase,
+  Clock,
+  CheckCircle2,
+  AlertTriangle,
+  Target,
+  Smile,
+  MessageSquareWarning,
+  Wrench,
+  FileText,
+  GraduationCap,
+  Accessibility,
+  Handshake,
+  ShieldCheck,
+} from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -101,6 +116,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
           label={pilotage.m1_prestations.libelle}
           value={afficherValeur(pilotage.m1_prestations)}
           tone="default"
+          icon={Briefcase}
         />
         {/* M2 — Taux d'entrée dans le délai */}
         <AdminStatCard
@@ -111,6 +127,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
             if (n === null) return "default";
             return n >= 80 ? "success" : n >= 60 ? "warning" : "destructive";
           })()}
+          icon={Clock}
         />
         {/* M3 — Taux de complétion */}
         <AdminStatCard
@@ -121,6 +138,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
             if (n === null) return "default";
             return n >= 80 ? "success" : n >= 60 ? "warning" : "destructive";
           })()}
+          icon={CheckCircle2}
         />
         {/* M4 — Taux d'abandon */}
         <AdminStatCard
@@ -131,6 +149,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
             if (n === null) return "default";
             return n <= 10 ? "success" : n <= 25 ? "warning" : "destructive";
           })()}
+          icon={AlertTriangle}
         />
       </div>
 
@@ -148,6 +167,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
             if (n === null) return "default";
             return n >= 80 ? "success" : n >= 60 ? "warning" : "destructive";
           })()}
+          icon={Target}
         />
         {/* M6 — Satisfaction globale */}
         <AdminStatCard
@@ -158,6 +178,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
             if (n === null) return "default";
             return n >= 80 ? "success" : n >= 60 ? "warning" : "destructive";
           })()}
+          icon={Smile}
         />
         {/* M7 — Incidents */}
         <AdminStatCard
@@ -168,6 +189,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
             if (n === null || n === 0) return "success";
             return n <= 3 ? "warning" : "destructive";
           })()}
+          icon={AlertTriangle}
         />
       </div>
 
@@ -185,18 +207,21 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
             if (n === null || n === 0) return "success";
             return n <= 3 ? "warning" : "destructive";
           })()}
+          icon={MessageSquareWarning}
         />
         {/* M9 — Actions correctives */}
         <AdminStatCard
           label={pilotage.m9_actions_correctives.libelle}
           value={afficherValeur(pilotage.m9_actions_correctives)}
           tone="warning"
+          icon={Wrench}
         />
         {/* M10 — Mise à jour documentaire */}
         <AdminStatCard
           label={pilotage.m10_maj_documentaire.libelle}
           value={afficherValeur(pilotage.m10_maj_documentaire)}
           tone="default"
+          icon={FileText}
         />
       </div>
 
@@ -210,18 +235,21 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
           label={pilotage.m11_formateurs_a_jour.libelle}
           value={afficherValeur(pilotage.m11_formateurs_a_jour)}
           tone="default"
+          icon={GraduationCap}
         />
         {/* M12 — Adaptations handicap */}
         <AdminStatCard
           label={pilotage.m12_adaptations_handicap.libelle}
           value={afficherValeur(pilotage.m12_adaptations_handicap)}
           tone="default"
+          icon={Accessibility}
         />
         {/* M13 — Sous-traitances évaluées */}
         <AdminStatCard
           label={pilotage.m13_sous_traitances_evaluees.libelle}
           value={afficherValeur(pilotage.m13_sous_traitances_evaluees)}
           tone="default"
+          icon={Handshake}
         />
         {/* M14 — Conformité dossiers */}
         <AdminStatCard
@@ -232,6 +260,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
             if (n === null) return "default";
             return n >= 90 ? "success" : n >= 70 ? "warning" : "destructive";
           })()}
+          icon={ShieldCheck}
         />
       </div>
 

@@ -69,6 +69,8 @@ beforeEach(() => {
   authMock.mockResolvedValue({
     user: { id: "admin-1", role: "admin", name: "Will" },
   });
+  // enqueueEmail renvoie désormais { enqueued: boolean } (retour détectable).
+  enqueueEmailMock.mockResolvedValue({ enqueued: true });
 });
 
 describe("replyToSubmissionAction", () => {
@@ -99,9 +101,11 @@ describe("replyToSubmissionAction", () => {
       "fr",
       expect.objectContaining({ subject: "Re: votre demande" }),
     );
+    // Sécurité : plus de PII (email en clair) dans le payload de queue — le
+    // worker re-déchiffre l'adresse depuis la DB. L'arg `to` est donc vide.
     expect(enqueueEmailMock).toHaveBeenCalledWith(
       "submission-reply",
-      "user@example.com",
+      "",
       "fr",
       expect.objectContaining({ replyId: REPLY_ID }),
     );

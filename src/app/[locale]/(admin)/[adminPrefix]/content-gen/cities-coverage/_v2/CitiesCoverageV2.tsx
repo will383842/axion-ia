@@ -13,6 +13,7 @@ import {
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { MapPin, CheckCircle2, Hourglass, TrendingUp } from "lucide-react";
 import {
   getCitiesStats,
   getLandingIndexabilityByTier,
@@ -183,12 +184,18 @@ export async function CitiesCoverageV2({
 
       {/* Progress global */}
       <div className="mb-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-4)]">
-        <AdminStatCard label="Villes ciblées" value={String(stats.total)} />
-        <AdminStatCard label="Couvertes" value={String(stats.covered)} tone="success" />
+        <AdminStatCard label="Villes ciblées" value={String(stats.total)} icon={MapPin} />
+        <AdminStatCard
+          label="Couvertes"
+          value={String(stats.covered)}
+          tone="success"
+          icon={CheckCircle2}
+        />
         <AdminStatCard
           label="À couvrir"
           value={String(stats.uncovered)}
           tone={stats.uncovered > 100 ? "warning" : "default"}
+          icon={Hourglass}
         />
         <AdminStatCard
           label="Progression"
@@ -200,6 +207,7 @@ export async function CitiesCoverageV2({
                 ? "warning"
                 : "destructive"
           }
+          icon={TrendingUp}
         />
       </div>
 

@@ -18,7 +18,12 @@
 //     de routing. Si besoin d'une vraie queue persistante (retry +
 //     audit-trail), Sprint+1 ajoutera `notificationsQueue`.
 
-import { getRouting, shouldDispatchAsync } from "./routing";
+import {
+  getRouting,
+  shouldDispatchAsync,
+  telegramGroupFor,
+  resolveTelegramChatId,
+} from "./routing";
 import { formatNotification } from "./format";
 import { sendTelegramRaw } from "./channels/telegram";
 import { sendSentryBreadcrumb } from "./channels/sentry";
@@ -49,8 +54,14 @@ async function dispatchChannels(
 
   for (const ch of channels) {
     if (ch === "telegram") {
+      // Routage 3 groupes : chaque catégorie → son groupe (RDV/Messages/Système).
+      const tgChatId = resolveTelegramChatId(telegramGroupFor(category));
       tasks.push(
-        sendTelegramRaw({ text: formattedText, silent: severity === "info" })
+        sendTelegramRaw({
+          text: formattedText,
+          silent: severity === "info",
+          ...(tgChatId ? { chatId: tgChatId } : {}),
+        })
           .then((ok) => {
             results.telegram = ok ? "sent" : "failed";
           })

@@ -11,6 +11,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { FileText, Hourglass, CheckCircle2, AlertTriangle } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -155,21 +156,24 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
 
       {/* Stats */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total factures" value={factures.length} />
+        <AdminStatCard label="Total factures" value={factures.length} icon={FileText} />
         <AdminStatCard
           label="Émises"
           value={nbEmises}
           tone={nbEmises > 0 ? "warning" : "default"}
+          icon={Hourglass}
         />
         <AdminStatCard
           label="Payées"
           value={nbPayees}
           tone={nbPayees > 0 ? "success" : "default"}
+          icon={CheckCircle2}
         />
         <AdminStatCard
           label="Alertes validation"
           value={nbAlertes}
           tone={nbAlertes > 0 ? "destructive" : "default"}
+          icon={AlertTriangle}
         />
       </div>
 

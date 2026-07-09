@@ -4,6 +4,7 @@
 // AdminEmptyState.
 
 import Link from "next/link";
+import { Hourglass, AlertTriangle, Gauge } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -42,16 +43,18 @@ export function QualityV2({ base, images }: Props): React.ReactElement {
         aria-label="KPIs quality"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-3"
       >
-        <AdminStatCard label="Total à valider" value={images.length} />
+        <AdminStatCard label="Total à valider" value={images.length} icon={Hourglass} />
         <AdminStatCard
           label="Validateurs auto échoués"
           value={validatorsCount}
           tone={validatorsCount > 0 ? "warning" : "default"}
+          icon={AlertTriangle}
         />
         <AdminStatCard
           label="Taxonomie incertaine"
           value={taxonomyCount}
           tone={taxonomyCount > 0 ? "warning" : "default"}
+          icon={Gauge}
         />
       </section>
 

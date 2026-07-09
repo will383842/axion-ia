@@ -16,11 +16,16 @@ export interface TelegramChannelOptions {
   silent?: boolean;
   /** Timeout réseau ms (défaut 3000). */
   timeoutMs?: number;
+  /**
+   * chat_id cible (routage par groupe). Défaut : `TELEGRAM_CHAT_ID` (legacy
+   * 1-groupe). Voir `resolveTelegramChatId()` dans routing.ts.
+   */
+  chatId?: string;
 }
 
 export async function sendTelegramRaw(opts: TelegramChannelOptions): Promise<boolean> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const chatId = opts.chatId ?? process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) {
     if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "production") {
       console.warn("[notif:telegram] missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID");

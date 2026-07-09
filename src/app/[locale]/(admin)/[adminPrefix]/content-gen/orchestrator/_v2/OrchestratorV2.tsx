@@ -14,6 +14,7 @@ import {
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { getOrchestratorStats } from "@/server/actions/content-gen/geo";
 import { getBatchSettings } from "@/server/actions/content-gen/policies";
+import { Layers, Target, CheckCircle2, Clock, Cpu } from "lucide-react";
 
 interface Props {
   adminPrefix: string;
@@ -81,11 +82,19 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
         aria-label="KPIs orchestrateur"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-5"
       >
-        <AdminStatCard label="Campagnes actives" value={stats.activeCampaigns.length} />
-        <AdminStatCard label="Cible cumulée" value={stats.totalActiveTarget} />
-        <AdminStatCard label="Générées (campagnes)" value={stats.totalActiveGenerated} />
-        <AdminStatCard label="Jobs 24 h" value={stats.dailyPlanJobs24h} />
-        <AdminStatCard label="Concurrency workers" value={batches.workersConcurrency} />
+        <AdminStatCard
+          label="Campagnes actives"
+          value={stats.activeCampaigns.length}
+          icon={Layers}
+        />
+        <AdminStatCard label="Cible cumulée" value={stats.totalActiveTarget} icon={Target} />
+        <AdminStatCard
+          label="Générées (campagnes)"
+          value={stats.totalActiveGenerated}
+          icon={CheckCircle2}
+        />
+        <AdminStatCard label="Jobs 24 h" value={stats.dailyPlanJobs24h} icon={Clock} />
+        <AdminStatCard label="Concurrency workers" value={batches.workersConcurrency} icon={Cpu} />
       </section>
 
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">

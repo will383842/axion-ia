@@ -22,6 +22,7 @@ import {
   AdminStatCard,
   AdminBadge,
 } from "@/components/admin/ui";
+import { CheckCircle2, AlertTriangle, Gauge, Hourglass } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -143,6 +144,7 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
           value={stats.countWith.toLocaleString("fr-FR")}
           meta={`sur ${stats.totalPublished.toLocaleString("fr-FR")} publiés`}
           tone={coverageTone}
+          icon={CheckCircle2}
         />
         <AdminStatCard
           label="Articles sans embedding"
@@ -155,12 +157,14 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
                 ? "warning"
                 : "destructive"
           }
+          icon={AlertTriangle}
         />
         <AdminStatCard
           label="Couverture"
           value={`${stats.coveragePct} %`}
           meta="des articles publiés"
           tone={coverageTone}
+          icon={Gauge}
         />
         <AdminStatCard
           label="Jours restants estimés"
@@ -173,6 +177,7 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
                 ? "warning"
                 : "destructive"
           }
+          icon={Hourglass}
         />
       </div>
 

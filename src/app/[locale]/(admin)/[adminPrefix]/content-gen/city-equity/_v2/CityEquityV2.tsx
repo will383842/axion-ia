@@ -13,6 +13,7 @@ import {
   getContentTypeEquitySummary,
   type CityEquityRow,
 } from "@/server/actions/content-gen/city-equity";
+import { MapPin, AlertTriangle, BarChart3, FileText } from "lucide-react";
 
 const TIER_LABELS: Record<number, string> = {
   1: "Tier 1 ≥100k",
@@ -124,14 +125,19 @@ export async function CityEquityV2({ adminPrefix: _adminPrefix, campaignId, tier
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] sm:grid-cols-4">
-        <AdminStatCard label="Villes couvertes" value={String(rows.length)} />
+        <AdminStatCard label="Villes couvertes" value={String(rows.length)} icon={MapPin} />
         <AdminStatCard
           label="Villes avec gap"
           value={String(gapCitiesCount)}
           tone={gapCitiesCount > 0 ? "warning" : "default"}
+          icon={AlertTriangle}
         />
-        <AdminStatCard label="Moy. contenus/ville" value={avgPerCity.toFixed(1)} />
-        <AdminStatCard label="Types de contenus" value={String(contentTypes.length)} />
+        <AdminStatCard label="Moy. contenus/ville" value={avgPerCity.toFixed(1)} icon={BarChart3} />
+        <AdminStatCard
+          label="Types de contenus"
+          value={String(contentTypes.length)}
+          icon={FileText}
+        />
       </div>
 
       {/* Résumé par type */}

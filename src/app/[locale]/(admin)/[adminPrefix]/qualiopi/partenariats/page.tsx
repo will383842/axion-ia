@@ -19,6 +19,7 @@ import {
 } from "@/server/actions/qualiopi/partenariats";
 import { PartenariatForm } from "@/components/admin/qualiopi/PartenariatForm";
 import { PartenariatRowActions } from "@/components/admin/qualiopi/PartenariatRowActions";
+import { Hash, CheckCircle2, Handshake } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -57,12 +58,18 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Total" value={partenariats.length} />
-        <AdminStatCard label="Actifs" value={actifs} tone={actifs > 0 ? "success" : "default"} />
+        <AdminStatCard label="Total" value={partenariats.length} icon={Hash} />
+        <AdminStatCard
+          label="Actifs"
+          value={actifs}
+          tone={actifs > 0 ? "success" : "default"}
+          icon={CheckCircle2}
+        />
         <AdminStatCard
           label="Réseau handicap actifs"
           value={handicap}
           tone={handicap > 0 ? "success" : "warning"}
+          icon={Handshake}
         />
       </div>
 

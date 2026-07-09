@@ -4,8 +4,20 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 const replyActionMock = vi.fn().mockResolvedValue({ ok: true, replyId: "ck123" });
+const statusActionMock = vi
+  .fn()
+  .mockResolvedValue({ status: "sent", errorMsg: null, retryCount: 0 });
+const retryActionMock = vi.fn().mockResolvedValue({ ok: true });
 vi.mock("@/features/admin-submissions/reply-actions", () => ({
   replyToSubmissionAction: (...args: unknown[]) => replyActionMock(...args),
+  getReplyDeliveryStatusAction: (...args: unknown[]) => statusActionMock(...args),
+  retryFailedReplyAction: (...args: unknown[]) => retryActionMock(...args),
+}));
+
+// ReplyComposer utilise useRouter().refresh() — mock le router (pas de contexte
+// App Router dans les tests unitaires).
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh: vi.fn(), push: vi.fn(), replace: vi.fn() }),
 }));
 
 import { ReplyComposer } from "../ReplyComposer";

@@ -24,6 +24,9 @@
 
 export type AdminNavGroup =
   | "main"
+  | "contacts"
+  | "rendez-vous"
+  | "recrutement"
   | "content"
   | "content_gen"
   | "qualiopi"
@@ -78,7 +81,7 @@ export type DocumentsPole = "activite" | "outils";
  * Pôle du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08.
  * Découpe les 10 onglets quotidiens en 3 blocs métier. Clés distinctes.
  */
-export type MainPole = "agenda" | "facturation" | "relation";
+export type MainPole = "agenda" | "facturation";
 
 /**
  * Pôle du groupe `image-bank` — refonte UX 2026-07-08. 3 blocs. Clés distinctes.
@@ -121,6 +124,9 @@ export interface AdminNavItem {
 
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
+  contacts: "Contacts",
+  "rendez-vous": "Rendez-vous",
+  recrutement: "Recrutement",
   content: "Contenu",
   content_gen: "Génération de contenu",
   qualiopi: "Formation / Qualiopi",
@@ -202,10 +208,9 @@ export const MAIN_POLE_LABELS: Record<MainPole, string> = {
   // « facturation » est entièrement masqué (pôle vide → header auto-caché).
   agenda: "Vue d'ensemble",
   facturation: "Facturation",
-  relation: "Contacts & recrutement",
 };
 
-export const MAIN_POLE_ORDER: ReadonlyArray<MainPole> = ["agenda", "facturation", "relation"];
+export const MAIN_POLE_ORDER: ReadonlyArray<MainPole> = ["agenda", "facturation"];
 
 /** Pôles du groupe `image-bank` — refonte UX 2026-07-08. */
 export const IMAGE_BANK_POLE_LABELS: Record<ImageBankPole, string> = {
@@ -245,6 +250,9 @@ export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<st
 
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
+  "contacts",
+  "rendez-vous",
+  "recrutement",
   "content",
   "content_gen",
   "qualiopi",
@@ -345,20 +353,70 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "facturation",
       parent: `${base}`,
     },
-    // ▸ CONTACTS & RECRUTEMENT
+    // ── Contacts — MESSAGES ÉCRITS (groupe indépendant, refonte UX 2026-07-09).
+    //    Catégories métier. Les appels (Calendly) et le recrutement (candidatures)
+    //    ont leurs PROPRES groupes ci-dessous — distinction message/appel/candidature.
     {
       href: `${base}/contacts/messages`,
-      label: "Contacts",
+      label: "Tous les messages",
       icon: "📥",
-      group: "main",
-      subGroup: "relation",
+      group: "contacts",
     },
     {
+      href: `${base}/contacts/clients`,
+      label: "Clients",
+      icon: "💼",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/presse`,
+      label: "Presse",
+      icon: "📰",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/partenariats`,
+      label: "Partenariats",
+      icon: "🤝",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/investisseurs`,
+      label: "Investisseurs",
+      icon: "📈",
+      group: "contacts",
+    },
+    // ── Rendez-vous — APPELS (Calendly ≠ messages écrits) ───────────────────
+    {
+      href: `${base}/contacts/rendez-vous`,
+      label: "RV téléphonique",
+      icon: "📞",
+      group: "rendez-vous",
+    },
+    {
+      href: `${base}/contacts/rendez-vous/calendrier`,
+      label: "Calendrier RDV",
+      icon: "🗓️",
+      group: "rendez-vous",
+    },
+    {
+      href: `${base}/contacts/calendly`,
+      label: "Appels Calendly",
+      icon: "📅",
+      group: "rendez-vous",
+    },
+    // ── Recrutement — candidatures regroupées (offres publiées + spontanées) ──
+    {
       href: `${base}/candidatures`,
-      label: "Candidatures emploi",
+      label: "Candidatures aux offres",
       icon: "📨",
-      group: "main",
-      subGroup: "relation",
+      group: "recrutement",
+    },
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Messages recrutement",
+      icon: "🧑‍💼",
+      group: "recrutement",
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },

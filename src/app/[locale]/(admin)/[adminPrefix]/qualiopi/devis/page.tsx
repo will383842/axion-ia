@@ -13,6 +13,7 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { Hash, FileText, Send, CheckCircle2 } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
 import { listClients } from "@/server/qualiopi/crm/clients";
 
@@ -96,10 +97,10 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
       </div>
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={devisList.length} />
-        <AdminStatCard label="Brouillons" value={brouillons} />
-        <AdminStatCard label="Envoyés" value={envoyes} tone="warning" />
-        <AdminStatCard label="Acceptés" value={acceptes} tone="success" />
+        <AdminStatCard label="Total" value={devisList.length} icon={Hash} />
+        <AdminStatCard label="Brouillons" value={brouillons} icon={FileText} />
+        <AdminStatCard label="Envoyés" value={envoyes} tone="warning" icon={Send} />
+        <AdminStatCard label="Acceptés" value={acceptes} tone="success" icon={CheckCircle2} />
       </div>
 
       {devisList.length === 0 ? (

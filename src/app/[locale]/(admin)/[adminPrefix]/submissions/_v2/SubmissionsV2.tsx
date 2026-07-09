@@ -46,18 +46,32 @@ interface Props {
    * `/submissions` (legacy redirect) ; passer `/contacts/messages` quand la
    * route canonique est utilisée (cf. fix P0-1 audit 2026-05-27).
    */
-  basePath?: "submissions" | "contacts/messages" | "contacts/commercial";
+  basePath?:
+    | "submissions"
+    | "contacts/messages"
+    | "contacts/commercial"
+    | "contacts/presse"
+    | "contacts/clients"
+    | "contacts/partenariats"
+    | "contacts/investisseurs";
+  /**
+   * Force le filtre par catégorie (onglets Clients/Presse/Partenariats/…).
+   * Prioritaire sur le filtre `unifiedType` de l'URL.
+   */
+  forcedTypes?: ReadonlyArray<string>;
 }
 
 export async function SubmissionsV2({
   adminPrefix,
   searchParams,
   basePath = "submissions",
+  forcedTypes,
 }: Props): Promise<React.ReactElement> {
   const includeArchived = searchParams["includeArchived"] === "true";
   const result = await listSubmissionsAction({
     type: searchParams["type"] as never,
     unifiedType: searchParams["unifiedType"],
+    ...(forcedTypes && forcedTypes.length > 0 ? { unifiedTypeIn: [...forcedTypes] } : {}),
     status: searchParams["status"] as never,
     locale: searchParams["locale"] as never,
     search: searchParams["search"],
@@ -75,11 +89,15 @@ export async function SubmissionsV2({
   }).toString()}`;
 
   const base = `/fr/${adminPrefix}/${basePath}`;
+  // Le détail existe UNIQUEMENT à /contacts/messages/[id] (canonique). Les vues
+  // filtrées (commercial, presse) pointent donc là — sinon /contacts/commercial/[id]
+  // ou /contacts/presse/[id] (inexistants) → 404 au clic sur une ligne.
+  const detailBase = `/fr/${adminPrefix}/contacts/messages`;
   const rows = result.items.map((s) => {
     const r = replyBadge(s);
     return {
       id: s.id,
-      detailHref: `${base}/${s.id}`,
+      detailHref: `${detailBase}/${s.id}`,
       cells: [
         s.submittedAt.toISOString().slice(0, 10),
         resolveSubmissionLabel(s.type, s.unifiedType),
@@ -131,6 +149,7 @@ export async function SubmissionsV2({
         totalPages={result.totalPages}
         columnHeaders={["Date", "Type", "Réponse", "Statut", "Société", "Contact", "Langue"]}
         rows={rows}
+        rowClickable
         paginationBaseHref={base}
         paginationPreservedParams={{
           type: searchParams["type"],

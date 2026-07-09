@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 import { listExternalLinks } from "@/server/actions/content-gen/external-links";
 import { TriggerVerificationButton } from "./TriggerVerificationButton";
+import { Link as LinkIcon, CheckCircle2, AlertTriangle, ShieldAlert } from "lucide-react";
 
 interface Props {
   adminPrefix: string;
@@ -88,6 +89,7 @@ export async function ExternalLinksV2({
             label="Total liens"
             value={String(result.stats.total)}
             meta="catalogue bootstrap + seed + manual"
+            icon={LinkIcon}
           />
           <AdminStatCard
             label="Éligibles selection"
@@ -96,18 +98,21 @@ export async function ExternalLinksV2({
             tone={
               result.stats.healthyForSelection >= result.stats.total * 0.8 ? "default" : "warning"
             }
+            icon={CheckCircle2}
           />
           <AdminStatCard
             label="Paywall détecté"
             value={String(result.stats.paywalls)}
             meta="exclus de selectExternalLinks()"
             tone={result.stats.paywalls > 0 ? "warning" : "default"}
+            icon={AlertTriangle}
           />
           <AdminStatCard
             label="Concurrents détectés"
             value={String(result.stats.competitors)}
             meta="filtre dur — ne sortent jamais"
             tone={result.stats.competitors > 0 ? "destructive" : "default"}
+            icon={ShieldAlert}
           />
         </div>
       </AdminCard>

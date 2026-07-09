@@ -26,6 +26,7 @@ import {
   rejectFileValidationAction,
 } from "@/server/actions/qualiopi/engine";
 import { prisma } from "@/lib/prisma";
+import { Hourglass, GraduationCap } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -101,11 +102,13 @@ export default async function FormationEngineValidationsPage({ params }: PagePro
           label="Validations en attente"
           value={validations.length}
           tone={validations.length > 0 ? "warning" : "default"}
+          icon={Hourglass}
         />
         <AdminStatCard
           label="Formations concernées"
           value={new Set(validations.map((v) => v.formation.id)).size}
           tone="default"
+          icon={GraduationCap}
         />
       </div>
 

@@ -7,6 +7,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { FileText, CheckCircle2, CalendarDays } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -65,16 +66,18 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Total revues" value={revues.length} />
+        <AdminStatCard label="Total revues" value={revues.length} icon={FileText} />
         <AdminStatCard
           label="Validées"
           value={validees}
           tone={validees > 0 ? "success" : "default"}
+          icon={CheckCircle2}
         />
         <AdminStatCard
           label={`Revue ${currentYear}`}
           value={revueAnneeEnCours ? "Créée" : "Manquante"}
           tone={revueAnneeEnCours ? "success" : "warning"}
+          icon={CalendarDays}
         />
       </div>
 
