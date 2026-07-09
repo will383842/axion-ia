@@ -6,7 +6,11 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { parseCoFormateurs, buildSessionFormateurRows } from "./session-formateurs";
+import {
+  parseCoFormateurs,
+  buildSessionFormateurRows,
+  resolvePrincipalTrainerId,
+} from "./session-formateurs";
 
 describe("parseCoFormateurs", () => {
   it("retourne [] pour une valeur non tableau", () => {
@@ -29,6 +33,42 @@ describe("parseCoFormateurs", () => {
   it("ignore heuresAnimees non finies / non numériques", () => {
     const [row] = parseCoFormateurs([{ trainerId: "t1", heuresAnimees: "7" }]);
     expect(row?.heuresAnimees).toBeUndefined();
+  });
+});
+
+describe("resolvePrincipalTrainerId", () => {
+  it("préfère la FK formateurPrincipalId", () => {
+    expect(
+      resolvePrincipalTrainerId({
+        formateurPrincipalId: "t1",
+        coFormateurs: [{ trainerId: "t2", role: "principal" }],
+      }),
+    ).toBe("t1");
+  });
+
+  it("sans FK, prend l'entrée JSON déclarée principal", () => {
+    expect(
+      resolvePrincipalTrainerId({
+        formateurPrincipalId: null,
+        coFormateurs: [
+          { trainerId: "t2", role: "co_formateur" },
+          { trainerId: "t3", role: "principal" },
+        ],
+      }),
+    ).toBe("t3");
+  });
+
+  it("sans FK ni rôle principal, prend la 1ʳᵉ entrée (compat lecteurs legacy)", () => {
+    expect(
+      resolvePrincipalTrainerId({
+        formateurPrincipalId: null,
+        coFormateurs: [{ trainerId: "t2" }],
+      }),
+    ).toBe("t2");
+  });
+
+  it("retourne null si aucun formateur", () => {
+    expect(resolvePrincipalTrainerId({ formateurPrincipalId: null, coFormateurs: [] })).toBeNull();
   });
 });
 

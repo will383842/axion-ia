@@ -30,6 +30,7 @@
 import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -93,14 +94,21 @@ function modaliteLabelLower(
   return "mixte";
 }
 
-/** Extrait le 1er co-formateur d'un champ Json coFormateurs. */
-async function resolveFormateurNom(coFormateurs: unknown, fallback: string): Promise<string> {
-  const arr = Array.isArray(coFormateurs) ? coFormateurs : [];
-  const premier = arr[0] as { id?: string; nom?: string; prenom?: string } | undefined;
-  if (premier?.id) {
+/**
+ * Nom du formateur principal d'une session. FK `formateurPrincipalId` prioritaire
+ * (fiable, écrite par l'assignation), repli sur le Json `coFormateurs` (legacy),
+ * puis `fallback` (raison sociale). Corrige le nom du formateur sur les documents
+ * légaux (auparavant toujours le fallback car coFormateurs est vide en pratique).
+ */
+async function resolveFormateurNom(
+  input: { formateurPrincipalId: string | null; coFormateurs: unknown },
+  fallback: string,
+): Promise<string> {
+  const principalTrainerId = resolvePrincipalTrainerId(input);
+  if (principalTrainerId) {
     try {
       const t = await prisma.trainer.findUnique({
-        where: { id: premier.id },
+        where: { id: principalTrainerId },
         select: { nom: true, prenom: true },
       });
       if (t) return `${t.prenom} ${t.nom}`.trim();
@@ -108,6 +116,9 @@ async function resolveFormateurNom(coFormateurs: unknown, fallback: string): Pro
       // fall through
     }
   }
+  // Repli legacy : nom inline éventuel dans coFormateurs[0].
+  const arr = Array.isArray(input.coFormateurs) ? input.coFormateurs : [];
+  const premier = arr[0] as { nom?: string; prenom?: string } | undefined;
   if (premier?.nom) {
     return [premier.prenom, premier.nom].filter(Boolean).join(" ");
   }
@@ -467,6 +478,7 @@ export async function genererConvocationAction(input: {
           formationSnapshot: true,
           formation: { select: { dureeHeures: true } },
           coFormateurs: true,
+          formateurPrincipalId: true,
           numeroDossierOpco: true,
           financementType: true,
         },
@@ -480,7 +492,10 @@ export async function genererConvocationAction(input: {
   const trainee = enrollment.trainee;
   // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
-  const formateurNom = await resolveFormateurNom(session.coFormateurs, identite.raisonSociale);
+  const formateurNom = await resolveFormateurNom(
+    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
+    identite.raisonSociale,
+  );
 
   const nomStagiaire = `${trainee.prenom} ${trainee.nom}`.trim();
   const financement = session.financementType ?? undefined;
@@ -550,6 +565,7 @@ export async function genererEmargementAction(input: {
       dateDebut: true,
       modalite: true,
       coFormateurs: true,
+      formateurPrincipalId: true,
       enrollments: {
         where: { statut: { notIn: ["exclu", "abandon"] } },
         select: {
@@ -561,7 +577,10 @@ export async function genererEmargementAction(input: {
   if (!session) return { error: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
-  const formateurNom = await resolveFormateurNom(session.coFormateurs, identite.raisonSociale);
+  const formateurNom = await resolveFormateurNom(
+    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
+    identite.raisonSociale,
+  );
 
   const participants = session.enrollments.map((e) => ({
     nom: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
@@ -685,6 +704,7 @@ export async function genererGrilleEvaluationAction(input: {
           titreSession: true,
           dateDebut: true,
           coFormateurs: true,
+          formateurPrincipalId: true,
           formationSnapshot: true,
           formation: { select: { objectifsPedagogiques: true } },
         },
@@ -696,7 +716,10 @@ export async function genererGrilleEvaluationAction(input: {
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;
   const trainee = enrollment.trainee;
-  const formateurNom = await resolveFormateurNom(session.coFormateurs, identite.raisonSociale);
+  const formateurNom = await resolveFormateurNom(
+    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
+    identite.raisonSociale,
+  );
   // Objectifs depuis le snapshot légal (WS5), repli LIVE si legacy.
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const rawObjectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
@@ -1243,6 +1266,7 @@ export async function genererLettreMissionAction(input: {
       dateFin: true,
       modalite: true,
       coFormateurs: true,
+      formateurPrincipalId: true,
       formationSnapshot: true,
       formation: { select: { dureeHeures: true } },
     },
@@ -1252,7 +1276,11 @@ export async function genererLettreMissionAction(input: {
   // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
 
-  // Résolution du formateur principal
+  // Résolution du formateur principal — FK prioritaire, repli Json legacy.
+  const principalTrainerId = resolvePrincipalTrainerId({
+    formateurPrincipalId: session.formateurPrincipalId,
+    coFormateurs: session.coFormateurs,
+  });
   const arr = Array.isArray(session.coFormateurs) ? session.coFormateurs : [];
   const premierRaw = arr[0] as { id?: string; nom?: string; prenom?: string } | undefined;
   let trainer: {
@@ -1264,9 +1292,9 @@ export async function genererLettreMissionAction(input: {
     sousTraitantNda: string | null;
   } | null = null;
 
-  if (premierRaw?.id) {
+  if (principalTrainerId) {
     trainer = await prisma.trainer.findUnique({
-      where: { id: premierRaw.id },
+      where: { id: principalTrainerId },
       select: {
         nom: true,
         prenom: true,
@@ -1408,14 +1436,17 @@ export async function genererLivretAccueilAction(input: {
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
-    select: { id: true, coFormateurs: true },
+    select: { id: true, coFormateurs: true, formateurPrincipalId: true },
   });
   if (!session) return { error: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
 
   // Contact pédagogique — formateur principal ou identité OF
-  const formateurNom = await resolveFormateurNom(session.coFormateurs, identite.raisonSociale);
+  const formateurNom = await resolveFormateurNom(
+    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
+    identite.raisonSociale,
+  );
   const dateVersion = formatDateFr(new Date());
 
   const doc = await generateDocument({

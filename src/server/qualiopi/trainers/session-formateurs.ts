@@ -83,13 +83,31 @@ function nonPrincipalRole(role: string | undefined): SessionFormateurRoleValue {
  *   `co_formateur` ; les rôles `assistant` / `tuteur_afest` sont conservés ;
  * - dédup par `trainerId` ; idempotent et déterministe.
  */
+/**
+ * Résout l'ID du formateur PRINCIPAL d'une session (source unique).
+ * Ordre : FK `formateurPrincipalId` (fiable, écrite par l'assignation) → 1ʳᵉ
+ * entrée JSON déclarée `principal` → 1ʳᵉ entrée JSON → null. Utilisé par les
+ * générateurs de documents (convention, attestation) et l'émargement pour
+ * nommer le bon formateur au lieu du fallback raison sociale.
+ */
+export function resolvePrincipalTrainerId(input: {
+  formateurPrincipalId: string | null;
+  coFormateurs: unknown;
+}): string | null {
+  if (input.formateurPrincipalId) return input.formateurPrincipalId;
+  const entries = parseCoFormateurs(input.coFormateurs);
+  return entries.find((e) => e.role === "principal")?.trainerId ?? entries[0]?.trainerId ?? null;
+}
+
 export function buildSessionFormateurRows(input: {
   formateurPrincipalId: string | null;
   coFormateurs: unknown;
 }): SessionFormateurRow[] {
   const entries = parseCoFormateurs(input.coFormateurs);
 
-  // Détermine L'UNIQUE principal : la FK prime, sinon la 1ʳᵉ entrée JSON principal.
+  // L'UNIQUE principal : la FK prime, sinon la 1ʳᵉ entrée JSON *déclarée* principal.
+  // (Pas de fallback entries[0] ici : un co-formateur non désigné ne devient PAS
+  // principal — contrairement au résolveur des lecteurs, cf. resolvePrincipalTrainerId.)
   const principalId =
     input.formateurPrincipalId ?? entries.find((e) => e.role === "principal")?.trainerId ?? null;
 

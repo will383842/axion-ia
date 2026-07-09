@@ -27,6 +27,7 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
+import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import { getFinaleReussite } from "./evaluations-service";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
@@ -92,6 +93,7 @@ export async function genererAttestationPourEnrollment(
           dateFin: true,
           modalite: true,
           coFormateurs: true,
+          formateurPrincipalId: true,
           // Snapshot légal (WS5) prioritaire ; formation LIVE = repli legacy.
           formationSnapshot: true,
           formation: {
@@ -189,18 +191,19 @@ export async function genererAttestationPourEnrollment(
   const dureeHeures = formation.dureeHeures ?? 0;
   const heuresSuivies = Math.round((tauxPct * dureeHeures) / 100);
 
-  // Formateur principal (1er co-formateur — coFormateurs est un champ Json)
+  // Formateur principal : FK formateurPrincipalId prioritaire (fiable), repli sur
+  // le Json coFormateurs (legacy), puis raison sociale. Corrige le nom du
+  // formateur sur l'attestation (auparavant toujours la raison sociale car
+  // coFormateurs est vide en pratique — jamais écrit par l'app).
   let formateurNom = identite.raisonSociale;
-  const coFormateursRaw = session.coFormateurs;
-  const coFormateursArr = Array.isArray(coFormateursRaw) ? coFormateursRaw : [];
-  const premierCoFormateur = coFormateursArr[0] as
-    | { id?: string; nom?: string; prenom?: string }
-    | undefined;
-
-  if (premierCoFormateur?.id) {
+  const principalTrainerId = resolvePrincipalTrainerId({
+    formateurPrincipalId: session.formateurPrincipalId,
+    coFormateurs: session.coFormateurs,
+  });
+  if (principalTrainerId) {
     try {
       const trainer = await prisma.trainer.findUnique({
-        where: { id: premierCoFormateur.id },
+        where: { id: principalTrainerId },
         select: { nom: true, prenom: true },
       });
       if (trainer) {
@@ -209,8 +212,13 @@ export async function genererAttestationPourEnrollment(
     } catch {
       // fallback identité raisonSociale
     }
-  } else if (premierCoFormateur?.nom) {
-    formateurNom = [premierCoFormateur.prenom, premierCoFormateur.nom].filter(Boolean).join(" ");
+  } else {
+    // Repli legacy : nom inline éventuellement présent dans coFormateurs[0].
+    const arr = Array.isArray(session.coFormateurs) ? session.coFormateurs : [];
+    const premier = arr[0] as { nom?: string; prenom?: string } | undefined;
+    if (premier?.nom) {
+      formateurNom = [premier.prenom, premier.nom].filter(Boolean).join(" ");
+    }
   }
 
   // Objectifs pédagogiques → string lisible
