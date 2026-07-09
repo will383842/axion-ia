@@ -25,7 +25,9 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-07-09) : « Planning » — calendrier unifié des prestations
     // (formations collectives + coaching 1-to-1), groupe main / sous-groupe
     // agenda. Distinct du « Calendrier » booking, vestige masqué. = 126.
-    expect(items.length).toBe(126);
+    // +1 (2026-07-09) : « Charge formateurs » — taux d'occupation mensuel par
+    // formateur (cockpit de pilotage). = 127.
+    expect(items.length).toBe(127);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

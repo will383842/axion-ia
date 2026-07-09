@@ -36,6 +36,16 @@ export interface PlanningEvent {
   statut: PlanningStatut;
   /** Nom complet du formateur assigné, ou null si non assigné. */
   formateurNom: string | null;
+  /**
+   * Id (UUID) du formateur assigné, ou null si non assigné.
+   *
+   * Optionnel au niveau du type pour rester rétro-compatible avec les
+   * fabriques d'événements existantes (tests conflicts/queries) : la couche de
+   * lecture `queries.ts` le renseigne TOUJOURS. Il est indispensable à la vue
+   * « charge formateur », car deux formateurs peuvent être homonymes — on
+   * regroupe donc par id, jamais par nom.
+   */
+  formateurId?: string | null;
   /** Raison sociale du client / entreprise du bénéficiaire. */
   clientNom: string | null;
   /** Lieu formaté (cf. `formatLieu`), ou null si non renseigné. */
