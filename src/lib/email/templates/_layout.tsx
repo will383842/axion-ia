@@ -1,17 +1,11 @@
-// Layout commun à TOUS les templates emails (refonte P0 2026-06-21).
+// Layout commun à TOUS les templates emails — refonte design 2026-07-09 (v2 énergique).
 //
-// Pattern : un seul wrapper Html/Head/Body/Container avec brand header/footer.
-// Chaque template spécifie : title, intro/body (children), cta. Tous les liens
-// utilisent l'URL absolue (NEXT_PUBLIC_SITE_URL).
+// Modifier CE fichier modernise les ~55 templates d'un coup.
 //
-// P0 (corrige les 42 emails d'un coup) :
-//   - Bouton CTA BULLETPROOF (composant <Button> React Email → padding/rayon
-//     rendus via table + MSO conditional pour Outlook, qui aplatissait le <a>).
-//   - <meta color-scheme: light dark> + style dark-mode-safe (plus d'inversion
-//     sauvage des couleurs).
-//   - Footer LÉGAL enrichi : raison sociale SAS française + adresse + SIRET/RCS
-//     + n° TVA, lus depuis l'env (COMPANY_*), lignes omises si non renseignées.
-//   - List-Unsubscribe conservé.
+// Direction : chaud + énergique, orange de marque en couleur héro, formes
+// arrondies (pill), CTA pill orange avec glow, preuve Qualiopi. Best practices
+// conservées : bouton bulletproof Outlook, color-scheme light dark + dark-mode
+// safe, footer légal SAS (COMPANY_* env), List-Unsubscribe.
 
 import {
   Body,
@@ -19,19 +13,29 @@ import {
   Container,
   Head,
   Heading,
-  Hr,
   Html,
+  Img,
   Link,
   Preview,
   Section,
   Text,
 } from "@react-email/components";
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
+import type { ReviewStats } from "../review-stats";
+
+/**
+ * Stats avis injectées par `renderEmailTemplate` (valeurs réelles depuis la DB).
+ * Défaut neutre = pas d'avis (build/stub) → le bandeau masque la ligne avis.
+ */
+export const ReviewStatsContext = createContext<ReviewStats>({ count: 0, avg: 0 });
 
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
+const QUALIOPI_LOCKUP = `${BASE_URL}/email/axion-qualiopi-lockup.png`;
+const LINKEDIN_URL = process.env.COMPANY_LINKEDIN || "";
+const CONTACT_EMAIL = process.env.ADMIN_REPLY_FROM || "contact@axion-ia.com";
 
-// Identité légale (SAS française) — depuis l'env, placeholders omis si vides.
 const COMPANY = {
   name: process.env.COMPANY_NAME || "Axion-IA",
   address: process.env.COMPANY_ADDRESS || "",
@@ -39,79 +43,123 @@ const COMPANY = {
   vat: process.env.COMPANY_VAT_NUMBER || "",
 } as const;
 
-// Tokens visuels stricts (inline CSS only — pas de Tailwind dans l'email).
-const COLORS = {
-  text: "#1a1a1a",
-  textMuted: "#6b6b6b",
-  accent: "#1a4dd9",
-  accentText: "#ffffff",
-  border: "#e6e1d6",
-  bgEmail: "#faf8f3",
-  bgCard: "#ffffff",
+// Palette — terracotta de marque (chaud, éditorial, pas orange criard), ivoire, serif.
+const C = {
+  text: "#241d15",
+  muted: "#7a6f60",
+  heading: "#1c150e",
+  orange: "#c24a1b", // terracotta brique (accent éditorial du site) — CTA + accents
+  orangeDeep: "#8c3010", // terracotta foncé — hover / glow
+  orangeSoft: "#f7ebe2", // halo terracotta doux (bandeau confiance)
+  orangeTint: "#ecd9c9",
+  blue: "#1a4dd9", // liens texte inline (contraste)
+  border: "#eee2d2",
+  bgEmail: "#f6f1e8", // ivoire chaud
+  card: "#ffffff",
+  white: "#ffffff",
 } as const;
 
+const SERIF = "Georgia, 'Times New Roman', Times, serif";
+const SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+
 const main: React.CSSProperties = {
-  backgroundColor: COLORS.bgEmail,
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-  color: COLORS.text,
-  padding: "32px 0",
+  backgroundColor: C.bgEmail,
+  fontFamily: SANS,
+  color: C.text,
+  padding: "0 0 40px",
   margin: 0,
 };
-const container: React.CSSProperties = {
-  margin: "0 auto",
-  maxWidth: "560px",
-  backgroundColor: COLORS.bgCard,
-  borderRadius: "8px",
-  border: `1px solid ${COLORS.border}`,
-  padding: "32px",
+const topbar: React.CSSProperties = {
+  height: "6px",
+  lineHeight: "6px",
+  fontSize: "1px",
+  backgroundColor: C.orange,
+  backgroundImage: `linear-gradient(90deg, ${C.orange} 0%, #d1561f 55%, ${C.orangeDeep} 100%)`,
 };
-const brandStyle: React.CSSProperties = {
-  fontSize: "13px",
-  letterSpacing: "0.16em",
+const wrapper: React.CSSProperties = { margin: "0 auto", maxWidth: "700px", width: "100%" };
+const header: React.CSSProperties = { padding: "26px 0 20px", textAlign: "center" };
+const taglineStyle: React.CSSProperties = {
+  fontSize: "11px",
+  letterSpacing: "0.18em",
   textTransform: "uppercase",
-  color: COLORS.textMuted,
-  margin: "0 0 24px 0",
+  color: C.muted,
+  fontWeight: 700,
+  margin: "12px 0 0 0",
+};
+const card: React.CSSProperties = {
+  backgroundColor: C.card,
+  borderRadius: "20px",
+  border: `1px solid ${C.border}`,
+  padding: "38px 40px",
+  boxShadow: "0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)",
+};
+const eyebrowStyle: React.CSSProperties = {
+  fontSize: "12px",
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  fontWeight: 800,
+  color: C.orange,
+  margin: "0 0 12px 0",
 };
 const headingStyle: React.CSSProperties = {
-  fontSize: "22px",
-  fontWeight: 600,
-  margin: "0 0 12px 0",
-  color: COLORS.text,
-  lineHeight: 1.3,
+  fontFamily: SERIF,
+  fontSize: "29px",
+  fontWeight: 700,
+  margin: "0 0 18px 0",
+  color: C.heading,
+  lineHeight: 1.2,
 };
 const paragraphStyle: React.CSSProperties = {
-  fontSize: "15px",
-  lineHeight: 1.6,
-  color: COLORS.text,
-  margin: "12px 0",
+  fontSize: "16px",
+  lineHeight: 1.7,
+  color: C.text,
+  margin: "14px 0",
 };
-// Bouton bulletproof : @react-email/components <Button> génère un rendu
-// table + MSO conditional → padding/rayon respectés sur Outlook (Word engine).
+// CTA pill orange + glow (bulletproof via <Button> React Email).
 const ctaStyle: React.CSSProperties = {
-  backgroundColor: COLORS.accent,
-  color: COLORS.accentText,
-  padding: "12px 24px",
-  borderRadius: "6px",
+  backgroundColor: C.orange,
+  backgroundImage: `linear-gradient(180deg, #cf5527 0%, ${C.orange} 100%)`,
+  color: C.white,
+  padding: "16px 34px",
+  borderRadius: "999px",
   textDecoration: "none",
+  fontSize: "16px",
+  fontWeight: 700,
+  fontFamily: SANS,
+  boxShadow: "0 10px 22px -8px rgba(194,74,27,0.5)",
+};
+const trustBand: React.CSSProperties = {
+  backgroundColor: C.orangeSoft,
+  border: `1px solid ${C.orangeTint}`,
+  borderRadius: "16px",
+  padding: "18px 20px 14px",
+  margin: "16px 0 0 0",
+  textAlign: "center",
+};
+const starsStyle: React.CSSProperties = {
   fontSize: "15px",
-  fontWeight: 500,
+  fontWeight: 800,
+  color: C.orangeDeep,
+  letterSpacing: "0.02em",
+  margin: "12px 0 0 0",
 };
 const footerStyle: React.CSSProperties = {
   fontSize: "12px",
-  color: COLORS.textMuted,
-  lineHeight: 1.5,
-  margin: "0",
+  color: C.muted,
+  lineHeight: 1.6,
+  margin: 0,
+  textAlign: "center",
 };
 
-// Style dark-mode-safe : signale aux clients qu'on supporte les 2 schémas et
-// borne les couleurs (évite l'inversion automatique cassée de certains clients).
 const DARK_MODE_STYLE = `
   :root { color-scheme: light dark; supported-color-schemes: light dark; }
   @media (prefers-color-scheme: dark) {
-    .ax-body { background-color: #1a1815 !important; }
-    .ax-card { background-color: #26221d !important; border-color: #3d362f !important; }
-    .ax-text { color: #f7f3ea !important; }
-    .ax-muted { color: #b8ad9d !important; }
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
   }
 `;
 
@@ -120,31 +168,41 @@ export interface EmailLayoutProps {
   title: string;
   children: ReactNode;
   cta?: { label: string; href: string };
-  /** Footer bilingue. Lien de désabonnement optionnel. */
+  /** Surtitre (orange) au-dessus du titre. */
+  eyebrow?: string;
+  /** Bandeau confiance (Qualiopi + avis) — emails relationnels. */
+  trust?: boolean;
   unsubscribeHref?: string;
   locale: "fr" | "en";
 }
 
-const FOOTER_TEXT = {
+const TXT = {
   fr: {
+    tagline: "Audit · Formation · Intégration · Sites web IA · Coaching",
+    reviewsWord: "avis clients vérifiés",
+    qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     legalForm: "SAS française",
     siret: "SIRET",
     vat: "TVA",
     contact: "Contact :",
+    follow: "LinkedIn",
     rights: "Tous droits réservés.",
     unsubscribe: "Se désabonner",
   },
   en: {
+    tagline: "Audit · Training · Integration · AI websites · Coaching",
+    reviewsWord: "verified client reviews",
+    qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
     legalForm: "French company (SAS)",
     siret: "Reg. no.",
     vat: "VAT",
     contact: "Contact:",
+    follow: "LinkedIn",
     rights: "All rights reserved.",
     unsubscribe: "Unsubscribe",
   },
 } as const;
 
-/** Joint des fragments non vides avec un séparateur. */
 function joinDefined(parts: Array<string | undefined>, sep: string): string {
   return parts.filter((p): p is string => Boolean(p && p.trim())).join(sep);
 }
@@ -154,10 +212,17 @@ export function EmailLayout({
   title,
   children,
   cta,
+  eyebrow,
+  trust,
   unsubscribeHref,
   locale,
 }: EmailLayoutProps) {
-  const t = FOOTER_TEXT[locale];
+  const t = TXT[locale];
+  const rs = useContext(ReviewStatsContext);
+  // Ligne avis RÉELLE (masquée sous 5 avis — même seuil que l'AggregateRating du site).
+  const showReviews = rs.count >= 5 && rs.avg > 0;
+  const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
+  const reviewLine = `★★★★★  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
   const orgLine = joinDefined([`${COMPANY.name} · ${t.legalForm}`, COMPANY.address], " — ");
   const idLine = joinDefined(
     [
@@ -176,49 +241,108 @@ export function EmailLayout({
       </Head>
       <Preview>{preview}</Preview>
       <Body style={main} className="ax-body">
-        <Container style={container} className="ax-card">
-          <Text style={brandStyle} className="ax-muted">
-            {BRAND}
-          </Text>
-          <Heading style={headingStyle} className="ax-text">
-            {title}
-          </Heading>
-          {children}
-          {cta && (
-            <Section style={{ margin: "20px 0" }}>
-              <Button href={cta.href} style={ctaStyle}>
-                {cta.label}
-              </Button>
-            </Section>
-          )}
-          <Hr style={{ borderColor: COLORS.border, margin: "32px 0 16px 0" }} />
-          <Text style={footerStyle} className="ax-muted">
-            {orgLine}
-            {idLine ? (
-              <>
-                <br />
-                {idLine}
-              </>
-            ) : null}
-            <br />
-            {t.contact}{" "}
-            <Link href={`${BASE_URL}/contact`} style={{ color: COLORS.accent }}>
-              {BASE_URL.replace(/^https?:\/\//, "")}
+        {/* Bandeau accent haut — énergie de marque */}
+        <Section style={topbar}>&nbsp;</Section>
+
+        <Container style={wrapper}>
+          {/* En-tête : logo pill de marque */}
+          <Section style={header}>
+            <Link href={BASE_URL}>
+              <Img
+                src={LOGO_PILL}
+                width="210"
+                height="115"
+                alt={BRAND}
+                style={{ margin: "0 auto", display: "block", border: "0" }}
+              />
             </Link>
-            <br />© {new Date().getFullYear()} {COMPANY.name} — {t.rights}
-            {unsubscribeHref && (
-              <>
-                <br />
-                <Link href={unsubscribeHref} style={{ color: COLORS.textMuted }}>
-                  {t.unsubscribe}
-                </Link>
-              </>
+            <Text style={taglineStyle} className="ax-muted">
+              {t.tagline}
+            </Text>
+          </Section>
+
+          {/* Carte de contenu */}
+          <Container style={card} className="ax-card">
+            {eyebrow && <Text style={eyebrowStyle}>{eyebrow}</Text>}
+            <Heading style={headingStyle} className="ax-heading">
+              {title}
+            </Heading>
+            {children}
+            {cta && (
+              <Section style={{ textAlign: "center", margin: "30px 0 8px 0" }}>
+                <Button href={cta.href} style={ctaStyle}>
+                  {cta.label} &nbsp;→
+                </Button>
+              </Section>
             )}
-          </Text>
+            {trust && (
+              <Section style={trustBand} className="ax-trust">
+                <Img
+                  src={QUALIOPI_LOCKUP}
+                  width="340"
+                  height="227"
+                  alt={t.qualiopiAlt}
+                  style={{ margin: "0 auto", display: "block", border: "0", maxWidth: "100%" }}
+                />
+                {showReviews && <Text style={starsStyle}>{reviewLine}</Text>}
+              </Section>
+            )}
+          </Container>
+
+          {/* Footer social + légal */}
+          <Section style={{ padding: "26px 12px 0 12px" }}>
+            <Text style={footerStyle} className="ax-muted">
+              {orgLine}
+              {idLine ? (
+                <>
+                  <br />
+                  {idLine}
+                </>
+              ) : null}
+              <br />
+              {t.contact}{" "}
+              <Link
+                href={`mailto:${CONTACT_EMAIL}`}
+                style={{ color: C.orangeDeep, fontWeight: 600 }}
+              >
+                {CONTACT_EMAIL}
+              </Link>
+              {LINKEDIN_URL ? (
+                <>
+                  {"  ·  "}
+                  <Link href={LINKEDIN_URL} style={{ color: C.orangeDeep, fontWeight: 600 }}>
+                    {t.follow}
+                  </Link>
+                </>
+              ) : null}
+              <br />© {new Date().getFullYear()} {COMPANY.name} — {t.rights}
+              {unsubscribeHref && (
+                <>
+                  <br />
+                  <Link href={unsubscribeHref} style={{ color: C.muted }}>
+                    {t.unsubscribe}
+                  </Link>
+                </>
+              )}
+            </Text>
+          </Section>
         </Container>
       </Body>
     </Html>
   );
 }
 
-export const emailStyles = { paragraphStyle, headingStyle, ctaStyle, COLORS };
+export const emailStyles = {
+  paragraphStyle,
+  headingStyle,
+  ctaStyle,
+  COLORS: {
+    text: C.text,
+    textMuted: C.muted,
+    accent: C.blue,
+    terracotta: C.orange,
+    border: C.border,
+  },
+  SERIF,
+  SANS,
+};

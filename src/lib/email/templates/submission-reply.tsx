@@ -4,7 +4,7 @@
 // `"submission-reply"`. Le body est un markdown léger fourni par Will dans
 // l'admin, rendu en HTML (paragraphes + bold + italic + liens simples).
 
-import { Text } from "@react-email/components";
+import { Hr, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -140,11 +140,24 @@ export function SubmissionReplyEmail({
   payload: Record<string, unknown>;
 }) {
   const p = payload as unknown as Payload;
-  const signature = p.signature ?? "Williams Jullin\nAxion-IA · cabinet IA opérationnel";
+  // Signature : « Williams » (JAMAIS « Williams Jullin » — règle de marque).
+  const signature = p.signature ?? "Williams\nAxion-IA · cabinet IA opérationnel";
+  const [sigName, ...sigRest] = signature.split("\n");
   const paragraphs = p.bodyMarkdown.split(/\n\s*\n/).filter((para) => para.trim().length > 0);
+  const isEn = locale === "en";
 
   return (
-    <EmailLayout preview={p.subject} title={p.subject} locale={locale}>
+    <EmailLayout
+      preview={p.subject}
+      title={p.subject}
+      locale={locale}
+      eyebrow={isEn ? "A note from Williams" : "Un mot de Williams"}
+      cta={{
+        label: isEn ? "Book a call" : "Réserver un appel",
+        href: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com"}/fr/appel`,
+      }}
+      trust
+    >
       {paragraphs.map((para, i) => (
         <Text key={i} style={emailStyles.paragraphStyle}>
           {renderMarkdownParagraph(para)}
@@ -152,38 +165,46 @@ export function SubmissionReplyEmail({
       ))}
 
       {p.originalSubmissionExcerpt && (
-        <>
-          <Text
-            style={{
-              ...emailStyles.paragraphStyle,
-              color: emailStyles.COLORS.textMuted,
-              fontSize: "13px",
-              marginTop: "32px",
-              marginBottom: "4px",
-            }}
-          >
-            ─────────────────
-          </Text>
-          <Text
-            style={{
-              ...emailStyles.paragraphStyle,
-              color: emailStyles.COLORS.textMuted,
-              fontSize: "13px",
-              fontStyle: "italic",
-              borderLeft: `3px solid ${emailStyles.COLORS.border}`,
-              paddingLeft: "12px",
-            }}
-          >
-            Votre message initial :
-            <br />
-            {p.originalSubmissionExcerpt}
-          </Text>
-        </>
+        <Text
+          style={{
+            fontSize: "14px",
+            lineHeight: 1.6,
+            color: emailStyles.COLORS.textMuted,
+            fontStyle: "italic",
+            borderLeft: `3px solid ${emailStyles.COLORS.terracotta}`,
+            paddingLeft: "14px",
+            margin: "24px 0 0 0",
+          }}
+        >
+          {isEn ? "Your original message:" : "Votre message initial :"}
+          <br />
+          {p.originalSubmissionExcerpt}
+        </Text>
       )}
 
-      <Text style={{ ...emailStyles.paragraphStyle, marginTop: "32px", whiteSpace: "pre-line" }}>
-        {signature}
+      <Hr style={{ borderColor: emailStyles.COLORS.border, margin: "28px 0 16px 0" }} />
+      <Text
+        style={{
+          margin: 0,
+          fontSize: "15px",
+          fontWeight: 600,
+          color: emailStyles.COLORS.text,
+          fontFamily: emailStyles.SERIF,
+        }}
+      >
+        {sigName}
       </Text>
+      {sigRest.length > 0 && (
+        <Text
+          style={{
+            margin: "2px 0 0 0",
+            fontSize: "13px",
+            color: emailStyles.COLORS.textMuted,
+          }}
+        >
+          {sigRest.join(" · ")}
+        </Text>
+      )}
     </EmailLayout>
   );
 }
