@@ -32,6 +32,7 @@ import {
   CalendarClock,
   Hourglass,
   Inbox,
+  Briefcase,
   BookOpenText,
   BrainCircuit,
   PenLine,
@@ -131,6 +132,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   main: Activity,
   contacts: Inbox,
+  "rendez-vous": CalendarClock,
+  recrutement: Briefcase,
   content: Newspaper,
   content_gen: Sparkles,
   qualiopi: GraduationCap,

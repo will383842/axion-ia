@@ -25,6 +25,8 @@
 export type AdminNavGroup =
   | "main"
   | "contacts"
+  | "rendez-vous"
+  | "recrutement"
   | "content"
   | "content_gen"
   | "qualiopi"
@@ -123,6 +125,8 @@ export interface AdminNavItem {
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
   contacts: "Contacts",
+  "rendez-vous": "Rendez-vous",
+  recrutement: "Recrutement",
   content: "Contenu",
   content_gen: "Génération de contenu",
   qualiopi: "Formation / Qualiopi",
@@ -244,6 +248,8 @@ export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<st
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "contacts",
+  "rendez-vous",
+  "recrutement",
   "content",
   "content_gen",
   "qualiopi",
@@ -313,8 +319,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "main",
       subGroup: "facturation",
     },
-    // ── Contacts (groupe INDÉPENDANT — refonte UX 2026-07-09 : sorti de « main »
-    //    et de la barre d'onglets interne ; 3 canaux séparés + candidatures) ──
+    // ── Contacts — MESSAGES ÉCRITS (groupe indépendant, refonte UX 2026-07-09).
+    //    Catégories métier. Les appels (Calendly) et le recrutement (candidatures)
+    //    ont leurs PROPRES groupes ci-dessous — distinction message/appel/candidature.
     {
       href: `${base}/contacts/messages`,
       label: "Tous les messages",
@@ -340,28 +347,30 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "contacts",
     },
     {
-      href: `${base}/contacts/commercial`,
-      label: "Recrutement",
-      icon: "🧑‍💼",
-      group: "contacts",
-    },
-    {
       href: `${base}/contacts/investisseurs`,
       label: "Investisseurs",
       icon: "📈",
       group: "contacts",
     },
+    // ── Rendez-vous — APPELS (Calendly ≠ messages écrits) ───────────────────
     {
       href: `${base}/contacts/calendly`,
-      label: "RDV Calendly",
+      label: "Appels Calendly",
       icon: "📅",
-      group: "contacts",
+      group: "rendez-vous",
     },
+    // ── Recrutement — candidatures regroupées (offres publiées + spontanées) ──
     {
       href: `${base}/candidatures`,
-      label: "Candidatures emploi",
+      label: "Candidatures aux offres",
       icon: "📨",
-      group: "contacts",
+      group: "recrutement",
+    },
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Messages recrutement",
+      icon: "🧑‍💼",
+      group: "recrutement",
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
