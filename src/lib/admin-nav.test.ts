@@ -20,7 +20,9 @@ describe("buildAdminNav SSOT", () => {
     // des onglets internes — Contacts (messages écrits : Tous, Clients, Presse,
     // Partenariats, Investisseurs), Rendez-vous (Appels Calendly), Recrutement
     // (Candidatures aux offres + Messages recrutement). +6 items vs base 117 = 123.
-    expect(items.length).toBe(123);
+    // +2 (2026-07-09) : « RV téléphonique » (liste unifiée) + « Calendrier RDV »
+    // dans le groupe Rendez-vous. = 125.
+    expect(items.length).toBe(125);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

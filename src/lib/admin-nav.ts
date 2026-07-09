@@ -354,6 +354,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     // ── Rendez-vous — APPELS (Calendly ≠ messages écrits) ───────────────────
     {
+      href: `${base}/contacts/rendez-vous`,
+      label: "RV téléphonique",
+      icon: "📞",
+      group: "rendez-vous",
+    },
+    {
+      href: `${base}/contacts/rendez-vous/calendrier`,
+      label: "Calendrier RDV",
+      icon: "🗓️",
+      group: "rendez-vous",
+    },
+    {
       href: `${base}/contacts/calendly`,
       label: "Appels Calendly",
       icon: "📅",
