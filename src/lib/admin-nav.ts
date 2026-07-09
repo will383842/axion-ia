@@ -962,12 +962,24 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "image-bank",
       subGroup: "bibliotheque",
     },
+    // ⚠️ Les 5 items `parent`-masqués ci-dessous (bulk-import, categories, tags,
+    //   analytics, settings) sont des PLACEHOLDERS jamais livrés : leurs pages
+    //   rendent `AdminStubPageV2` (« Cette section est prévue Sprint 2.x »),
+    //   aucune donnée, aucune fonctionnalité. Ils promettaient 10 outils dans la
+    //   sidebar alors que 5 seulement existent (Vue d'ensemble, Bibliothèque,
+    //   Téléverser, File de qualité, Journaux d'utilisation).
+    //   Masqués via `parent` (filtre `it.parent == null` dans AdminSidebarNav) :
+    //   routes + command palette + breadcrumb conservés. Réversible — retirer
+    //   `parent` le jour où le Sprint 2.x est réellement livré.
+    //   NB : 4 autres stubs (licensing, seo-audit, sitemap-status, taxonomy)
+    //   n'ont jamais eu d'entrée de nav — routes accessibles par URL seulement.
     {
       href: `${base}/image-bank/bulk-import`,
       label: "Import CSV en masse",
       icon: "📦",
       group: "image-bank",
       subGroup: "bibliotheque",
+      parent: `${base}/image-bank`,
     },
     // ▸ ORGANISATION & QUALITÉ
     {
@@ -976,6 +988,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🏷️",
       group: "image-bank",
       subGroup: "organisation",
+      parent: `${base}/image-bank`,
     },
     {
       href: `${base}/image-bank/tags`,
@@ -983,6 +996,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🔖",
       group: "image-bank",
       subGroup: "organisation",
+      parent: `${base}/image-bank`,
     },
     {
       href: `${base}/image-bank/quality`,
@@ -997,6 +1011,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "📊",
       group: "image-bank",
       subGroup: "organisation",
+      parent: `${base}/image-bank`,
     },
     // ▸ ADMINISTRATION
     {
@@ -1012,6 +1027,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "⚙️",
       group: "image-bank",
       subGroup: "admin",
+      parent: `${base}/image-bank`,
     },
     // ── salle de presse (communiqués + kit média de marque) ──────────────
     { href: `${base}/presse`, label: "Vue d'ensemble", icon: "📰", group: "presse" },
