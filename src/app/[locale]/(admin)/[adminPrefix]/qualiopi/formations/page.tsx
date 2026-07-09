@@ -9,6 +9,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { CheckCircle2, GraduationCap, Hourglass } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -84,12 +85,13 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Total formations" value={formations.length} />
-        <AdminStatCard label="Publiées" value={publiees} tone="success" />
+        <AdminStatCard label="Total formations" value={formations.length} icon={GraduationCap} />
+        <AdminStatCard label="Publiées" value={publiees} tone="success" icon={CheckCircle2} />
         <AdminStatCard
           label="Brouillons / en cours"
           value={brouillons}
           tone={brouillons > 0 ? "warning" : "default"}
+          icon={Hourglass}
         />
       </div>
 

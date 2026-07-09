@@ -18,6 +18,17 @@ import { BpfDepenseForm } from "@/components/admin/qualiopi/BpfDepenseForm";
 import { RecomputeIndicateursButton } from "@/components/admin/qualiopi/RecomputeIndicateursButton";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
 import { computeBpf } from "@/server/qualiopi/bpf/service";
+import {
+  Gauge,
+  CheckCircle2,
+  UserCheck,
+  Clock,
+  CalendarDays,
+  Wallet,
+  Coins,
+  Users,
+  Handshake,
+} from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -156,6 +167,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
                     ? "warning"
                     : "destructive"
             }
+            icon={Gauge}
           />
           {!indicateurs.tauxSatisfaction.fiable && badgeEnCours}
           <p className={methodeCls}>{indicateurs.methodes.satisfaction}</p>
@@ -176,6 +188,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
                     ? "warning"
                     : "destructive"
             }
+            icon={CheckCircle2}
           />
           {!indicateurs.tauxReussite.fiable && badgeEnCours}
           <p className={methodeCls}>{indicateurs.methodes.reussite}</p>
@@ -198,6 +211,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
                     ? "warning"
                     : "destructive"
             }
+            icon={UserCheck}
           />
           {!indicateurs.tauxCompletion.fiable && badgeEnCours}
           <p className={methodeCls}>{indicateurs.methodes.completion}</p>
@@ -214,6 +228,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
             }
             meta={`${indicateurs.delaiAccesMoyen.nb} session(s) réalisée(s)`}
             tone="info"
+            icon={Clock}
           />
           <p className={methodeCls}>{indicateurs.methodes.delaiAcces}</p>
         </div>
@@ -228,11 +243,17 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
       </div>
 
       <div className="mb-[var(--space-admin-8)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4">
-        <AdminStatCard label="Sessions réalisées" value={bpf.nbSessions} tone="default" />
+        <AdminStatCard
+          label="Sessions réalisées"
+          value={bpf.nbSessions}
+          tone="default"
+          icon={CalendarDays}
+        />
         <AdminStatCard
           label="Stagiaires (distincts)"
           value={bpf.nbStagiairesDistincts}
           tone="default"
+          icon={UserCheck}
         />
         <AdminStatCard
           label="Heures-stagiaires"
@@ -240,11 +261,13 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
             bpf.nbHeuresStagiaires > 0 ? `${bpf.nbHeuresStagiaires.toLocaleString("fr-FR")} h` : "—"
           }
           tone="default"
+          icon={Clock}
         />
         <AdminStatCard
           label="CA total HT"
           value={bpf.caTotalHtCents > 0 ? formatEuros(bpf.caTotalHtCents) : "—"}
           tone="default"
+          icon={Wallet}
         />
       </div>
 
@@ -257,11 +280,13 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
           label="OPCO"
           value={bpf.caParFinanceur.opco > 0 ? formatEuros(bpf.caParFinanceur.opco) : "—"}
           tone="default"
+          icon={Coins}
         />
         <AdminStatCard
           label="CPF"
           value={bpf.caParFinanceur.cpf > 0 ? formatEuros(bpf.caParFinanceur.cpf) : "—"}
           tone="default"
+          icon={Coins}
         />
         <AdminStatCard
           label="France Travail"
@@ -271,16 +296,19 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
               : "—"
           }
           tone="default"
+          icon={Coins}
         />
         <AdminStatCard
           label="Direct"
           value={bpf.caParFinanceur.direct > 0 ? formatEuros(bpf.caParFinanceur.direct) : "—"}
           tone="default"
+          icon={Coins}
         />
         <AdminStatCard
           label="Mixte"
           value={bpf.caParFinanceur.mixte > 0 ? formatEuros(bpf.caParFinanceur.mixte) : "—"}
           tone="default"
+          icon={Coins}
         />
       </div>
 
@@ -293,11 +321,13 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
           label="Formateurs internes (salariés)"
           value={bpf.nbFormateursInternes}
           tone="default"
+          icon={Users}
         />
         <AdminStatCard
           label="Formateurs externes (sous-traitants)"
           value={bpf.nbFormateursExternes}
           tone="default"
+          icon={Handshake}
         />
       </div>
 

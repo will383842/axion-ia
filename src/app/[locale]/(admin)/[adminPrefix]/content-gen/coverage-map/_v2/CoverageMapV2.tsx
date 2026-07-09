@@ -11,6 +11,7 @@
 import { useDeferredValue, useMemo, useRef, useState } from "react";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { CheckCircle2, Gauge, MapPin, TrendingUp } from "lucide-react";
 
 import {
   AdminBadge,
@@ -127,21 +128,28 @@ export function CoverageMapV2({ initialData }: Props): React.ReactElement {
 
       {/* KPI nationaux (4 cards) */}
       <div className="mb-[var(--space-admin-6,16px)] grid grid-cols-2 gap-[var(--space-admin-4,8px)] sm:grid-cols-4">
-        <AdminStatCard label="Villes" value={String(initialData.nationalStats.totalCities)} />
+        <AdminStatCard
+          label="Villes"
+          value={String(initialData.nationalStats.totalCities)}
+          icon={MapPin}
+        />
         <AdminStatCard
           label="% couverture"
           value={`${initialData.nationalStats.coveragePct}%`}
           tone="info"
+          icon={Gauge}
         />
         <AdminStatCard
           label="Villes ≥ 50%"
           value={String(initialData.nationalStats.citiesAbove50)}
           tone="warning"
+          icon={TrendingUp}
         />
         <AdminStatCard
           label="Complètes"
           value={String(initialData.nationalStats.complete)}
           tone="success"
+          icon={CheckCircle2}
         />
       </div>
 

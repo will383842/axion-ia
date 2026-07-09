@@ -33,6 +33,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { ArrowUpDown, Eye, Hash, Pin } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -224,10 +225,14 @@ export function CitiesOrderV3({ initialRows, initialTotal }: Props): React.React
       />
 
       <div className="mb-[var(--space-admin-6,16px)] grid grid-cols-2 gap-[var(--space-admin-4,8px)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={String(stats.total)} />
-        <AdminStatCard label="Épinglées" value={String(stats.pinned)} />
-        <AdminStatCard label="Affichées" value={String(visibleRows.length)} />
-        <AdminStatCard label="Re-ordonnancement" value={isReordering ? "En cours…" : "Au repos"} />
+        <AdminStatCard label="Total" value={String(stats.total)} icon={Hash} />
+        <AdminStatCard label="Épinglées" value={String(stats.pinned)} icon={Pin} />
+        <AdminStatCard label="Affichées" value={String(visibleRows.length)} icon={Eye} />
+        <AdminStatCard
+          label="Re-ordonnancement"
+          value={isReordering ? "En cours…" : "Au repos"}
+          icon={ArrowUpDown}
+        />
       </div>
 
       <AdminCard>

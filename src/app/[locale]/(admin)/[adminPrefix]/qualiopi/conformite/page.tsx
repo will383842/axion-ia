@@ -19,6 +19,7 @@ import {
   evaluerConformite,
   type IndicateurConformite,
 } from "@/server/qualiopi/conformite/conformite-service";
+import { Gauge, CheckCircle2, Hourglass } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -112,12 +113,19 @@ export default async function QualiopiConformitePage({ params }: PageProps) {
           value={`${conformite.scorePct} %`}
           meta={`${conformite.nbCouverts} indicateur(s) couvert(s) sur ${conformite.nbApplicables} applicable(s)`}
           tone={toneBilan}
+          icon={Gauge}
         />
-        <AdminStatCard label="Indicateurs couverts" value={conformite.nbCouverts} tone="success" />
+        <AdminStatCard
+          label="Indicateurs couverts"
+          value={conformite.nbCouverts}
+          tone="success"
+          icon={CheckCircle2}
+        />
         <AdminStatCard
           label="À compléter"
           value={conformite.nbApplicables - conformite.nbCouverts}
           tone={conformite.nbApplicables - conformite.nbCouverts > 0 ? "warning" : "success"}
+          icon={Hourglass}
         />
       </div>
 

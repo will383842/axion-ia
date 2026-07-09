@@ -16,10 +16,11 @@ describe("buildAdminNav SSOT", () => {
   it("returns 114 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour))", () => {
     const items = buildAdminNav("admin-test-prefix");
     // Base 131 − 14 module Prospection retiré 2026-07-08 (#278) = 117.
-    // +2 groupe Contacts indépendant 2026-07-09 : « Recrutement » (/contacts/commercial)
-    // et « RDV Calendly » (/contacts/calendly) deviennent de vrais items de nav
-    // (avant : onglets internes). Contacts + Candidatures déplacés (compte inchangé). → 119.
-    expect(items.length).toBe(119);
+    // +3 groupe Contacts indépendant 2026-07-09 : « Recrutement » (/contacts/commercial),
+    // « Presse » (/contacts/presse) et « RDV Calendly » (/contacts/calendly) deviennent
+    // de vrais items de nav (avant : onglets internes / type noyé). Contacts +
+    // Candidatures déplacés (compte inchangé). → 120.
+    expect(items.length).toBe(120);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

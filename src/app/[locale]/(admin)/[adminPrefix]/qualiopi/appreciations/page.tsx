@@ -21,6 +21,7 @@ import {
   statsAppreciations,
 } from "@/server/actions/qualiopi/appreciations";
 import { AppreciationForm } from "@/components/admin/qualiopi/AppreciationForm";
+import { Hash, Gauge, UserCheck, Users, GraduationCap } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -83,15 +84,17 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
 
       {/* KPIs globaux */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-5)] sm:grid-cols-5">
-        <AdminStatCard label="Total" value={stats.global.count} />
+        <AdminStatCard label="Total" value={stats.global.count} icon={Hash} />
         <AdminStatCard
           label="Moyenne globale"
           value={renderMoyenne(stats.global.moyenne, stats.global.count)}
+          icon={Gauge}
         />
         <AdminStatCard
           label="Stagiaires"
           value={renderMoyenne(stats.parSource.stagiaire.moyenne, stats.parSource.stagiaire.count)}
           tone="default"
+          icon={UserCheck}
         />
         <AdminStatCard
           label="Entreprises"
@@ -100,11 +103,13 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
             stats.parSource.entreprise.count,
           )}
           tone="default"
+          icon={Users}
         />
         <AdminStatCard
           label="Formateurs"
           value={renderMoyenne(stats.parSource.formateur.moyenne, stats.parSource.formateur.count)}
           tone="default"
+          icon={GraduationCap}
         />
       </div>
 

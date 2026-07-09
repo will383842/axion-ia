@@ -328,6 +328,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "contacts",
     },
     {
+      href: `${base}/contacts/presse`,
+      label: "Presse",
+      icon: "📰",
+      group: "contacts",
+    },
+    {
       href: `${base}/contacts/calendly`,
       label: "RDV Calendly",
       icon: "📅",

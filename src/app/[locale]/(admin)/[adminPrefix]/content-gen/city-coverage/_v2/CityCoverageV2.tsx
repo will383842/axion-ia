@@ -8,6 +8,7 @@
 // AdminStatCard + AdminCard + AdminBadge.
 
 import Link from "next/link";
+import { MapPin, CheckCircle2, Gauge, ShieldCheck } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -112,6 +113,7 @@ export async function CityCoverageV2({ adminPrefix }: Props): Promise<React.Reac
           label="Villes pilote"
           value={summary.totals.totalCities}
           meta={`sur ${summary.totalCitiesInBase.toLocaleString("fr-FR")} villes INSEE en base`}
+          icon={MapPin}
         />
         <AdminStatCard
           label="Indexables Google"
@@ -120,18 +122,21 @@ export async function CityCoverageV2({ adminPrefix }: Props): Promise<React.Reac
             summary.totals.indexableCities === summary.totals.totalCities ? "success" : "warning"
           }
           meta="secteurs NAF sourcés présents"
+          icon={CheckCircle2}
         />
         <AdminStatCard
           label="Score moyen data"
           value={formatPct(summary.totals.avgScorePct)}
           tone={dimensionTone(summary.totals.avgScorePct)}
           meta={`${summary.totals.totalCriteriaGreen} / ${summary.totals.totalCriteria} critères verts`}
+          icon={Gauge}
         />
         <AdminStatCard
           label="Parfaitement sourcées"
           value={`${summary.totals.perfectCities} / ${summary.totals.totalCities}`}
           tone={summary.totals.perfectCities === summary.totals.totalCities ? "success" : "warning"}
           meta="18 / 18 critères verts"
+          icon={ShieldCheck}
         />
       </div>
 

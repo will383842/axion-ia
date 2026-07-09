@@ -14,6 +14,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { GraduationCap, Hourglass, Coins } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -123,16 +124,23 @@ export default async function FormationEngineDashboardPage({ params }: PageProps
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Formations en cours" value={enCours} tone="default" />
+        <AdminStatCard
+          label="Formations en cours"
+          value={enCours}
+          tone="default"
+          icon={GraduationCap}
+        />
         <AdminStatCard
           label="Validations en attente"
           value={validationsEnAttente}
           tone={validationsEnAttente > 0 ? "warning" : "default"}
+          icon={Hourglass}
         />
         <AdminStatCard
           label="Coût IA cumulé (USD)"
           value={`$${coutTotal.toFixed(4)}`}
           tone="default"
+          icon={Coins}
         />
       </div>
 

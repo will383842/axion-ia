@@ -14,6 +14,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { SubscriberRowActions } from "./SubscriberRowActions";
+import { CheckCircle2, Hourglass, MailX } from "lucide-react";
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
@@ -118,15 +119,25 @@ export function NewsletterV2({
         aria-label="KPIs newsletter"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
       >
-        <AdminStatCard label="Confirmés FR" value={stats.confirmed?.fr ?? 0} />
-        <AdminStatCard label="Confirmés EN" value={stats.confirmed?.en ?? 0} />
+        <AdminStatCard
+          label="Confirmés FR"
+          value={stats.confirmed?.fr ?? 0}
+          icon={CheckCircle2}
+        />
+        <AdminStatCard
+          label="Confirmés EN"
+          value={stats.confirmed?.en ?? 0}
+          icon={CheckCircle2}
+        />
         <AdminStatCard
           label="En attente (double opt-in)"
           value={(stats.pending?.fr ?? 0) + (stats.pending?.en ?? 0)}
+          icon={Hourglass}
         />
         <AdminStatCard
           label="Désabonnés"
           value={(stats.unsubscribed?.fr ?? 0) + (stats.unsubscribed?.en ?? 0)}
+          icon={MailX}
         />
       </section>
 

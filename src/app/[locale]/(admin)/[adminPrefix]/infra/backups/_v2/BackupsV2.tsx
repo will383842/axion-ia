@@ -3,6 +3,7 @@
 // FR-only, Server Component pur (aucun JS client).
 
 import Link from "next/link";
+import { CheckCircle2, AlertTriangle, XCircle, Database } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -128,18 +129,25 @@ export function BackupsV2({
         aria-label="KPIs sauvegardes"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
       >
-        <AdminStatCard label="Composants à jour" value={ok} tone={ok > 0 ? "success" : "default"} />
+        <AdminStatCard
+          label="Composants à jour"
+          value={ok}
+          tone={ok > 0 ? "success" : "default"}
+          icon={CheckCircle2}
+        />
         <AdminStatCard
           label="En retard / alerte"
           value={warn}
           tone={warn > 0 ? "warning" : "default"}
+          icon={AlertTriangle}
         />
         <AdminStatCard
           label="En échec / jamais"
           value={bad}
           tone={bad > 0 ? "destructive" : "default"}
+          icon={XCircle}
         />
-        <AdminStatCard label="Composants suivis" value={overview.length} />
+        <AdminStatCard label="Composants suivis" value={overview.length} icon={Database} />
       </section>
 
       {/* Vue d'ensemble par composant */}

@@ -7,6 +7,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { CheckCircle2, GraduationCap, Hash, ShieldCheck } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -65,14 +66,19 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total entrées" value={veilles.length} />
+        <AdminStatCard label="Total entrées" value={veilles.length} icon={Hash} />
         <AdminStatCard
           label="Avec action décidée"
           value={avecAction}
           tone={avecAction < veilles.length ? "warning" : "success"}
+          icon={CheckCircle2}
         />
-        <AdminStatCard label="Légale / réglementaire" value={parType("legale")} />
-        <AdminStatCard label="Pédagogique" value={parType("pedagogique")} />
+        <AdminStatCard
+          label="Légale / réglementaire"
+          value={parType("legale")}
+          icon={ShieldCheck}
+        />
+        <AdminStatCard label="Pédagogique" value={parType("pedagogique")} icon={GraduationCap} />
       </div>
 
       {/* Formulaire création */}

@@ -13,6 +13,7 @@ import {
 } from "@/components/admin/ui";
 import type { ChatbotDashboardStats, EscalationRow } from "@/features/admin-chatbot/actions";
 import { IngestionButton } from "./IngestionButton";
+import { MessagesSquare, MessageCircle, AlertTriangle, Database, Coins } from "lucide-react";
 
 function frDate(d: Date): string {
   return new Date(d).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
@@ -49,17 +50,27 @@ export function ChatbotDashboardV2({
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] lg:grid-cols-3">
-        <AdminStatCard label="Conversations" value={stats.conversations} />
-        <AdminStatCard label="Messages" value={stats.messages} />
+        <AdminStatCard label="Conversations" value={stats.conversations} icon={MessagesSquare} />
+        <AdminStatCard label="Messages" value={stats.messages} icon={MessageCircle} />
         <AdminStatCard
           label="Escalades ouvertes"
           value={stats.escalationsOpen}
           tone={stats.escalationsOpen > 0 ? "warning" : "default"}
           href={`${base}/escalades`}
           meta={`${stats.escalationsTotal} au total`}
+          icon={AlertTriangle}
         />
-        <AdminStatCard label="Réponses depuis le cache" value={stats.cacheHits} tone="info" />
-        <AdminStatCard label="Coût LLM estimé" value={`$${stats.costUsd.toFixed(2)}`} />
+        <AdminStatCard
+          label="Réponses depuis le cache"
+          value={stats.cacheHits}
+          tone="info"
+          icon={Database}
+        />
+        <AdminStatCard
+          label="Coût LLM estimé"
+          value={`$${stats.costUsd.toFixed(2)}`}
+          icon={Coins}
+        />
       </div>
 
       <AdminCard>

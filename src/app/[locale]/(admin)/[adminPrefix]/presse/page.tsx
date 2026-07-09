@@ -13,6 +13,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import { FileText, Clock, Image, Newspaper } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -68,6 +69,7 @@ export default async function PressOverviewPage({ params }: PageProps) {
           meta={`${releasesPublished} publié${releasesPublished > 1 ? "s" : ""}`}
           tone="info"
           href={`${base}/communiques`}
+          icon={FileText}
         />
         <AdminStatCard
           label="Brouillons communiqués"
@@ -75,6 +77,7 @@ export default async function PressOverviewPage({ params }: PageProps) {
           meta="non publiés"
           tone="warning"
           href={`${base}/communiques`}
+          icon={Clock}
         />
         <AdminStatCard
           label="Médias (kit)"
@@ -82,6 +85,7 @@ export default async function PressOverviewPage({ params }: PageProps) {
           meta={`${mediaPublished} publié${mediaPublished > 1 ? "s" : ""}`}
           tone="info"
           href={`${base}/kit-media`}
+          icon={Image}
         />
         <AdminStatCard
           label="Brouillons médias"
@@ -89,6 +93,7 @@ export default async function PressOverviewPage({ params }: PageProps) {
           meta="non publiés"
           tone="warning"
           href={`${base}/kit-media`}
+          icon={Clock}
         />
         <AdminStatCard
           label="Couverture médias"
@@ -96,6 +101,7 @@ export default async function PressOverviewPage({ params }: PageProps) {
           meta={`${coveragePublished} publié${coveragePublished > 1 ? "s" : ""}`}
           tone="info"
           href={`${base}/couverture`}
+          icon={Newspaper}
         />
       </div>
 

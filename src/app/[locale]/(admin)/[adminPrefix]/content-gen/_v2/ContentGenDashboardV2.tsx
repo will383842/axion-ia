@@ -7,6 +7,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import {
+  FileText,
+  ListChecks,
+  CheckCircle2,
+  AlertTriangle,
+  Hourglass,
+  Wallet,
+  Gauge,
+  ShieldCheck,
+  Database,
+} from "lucide-react";
 import { getDashboardKpis, getSectorBreakdownToday } from "@/server/actions/content-gen/dashboard";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import { regenerateTier1Corpus } from "@/server/actions/content-gen/regenerate";
@@ -154,6 +165,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
                 }
                 tone={c.failedToday > 0 ? "warning" : "default"}
                 href={href}
+                icon={FileText}
               />
             );
           })}
@@ -164,21 +176,27 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         aria-label="KPIs 7 jours"
         className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] md:grid-cols-4 lg:grid-cols-8"
       >
-        <AdminStatCard label="Tâches (7 j)" value={kpis.jobsRun7d} />
-        <AdminStatCard label="Publiés (7 j)" value={kpis.published7d} />
+        <AdminStatCard label="Tâches (7 j)" value={kpis.jobsRun7d} icon={ListChecks} />
+        <AdminStatCard label="Publiés (7 j)" value={kpis.published7d} icon={CheckCircle2} />
         <AdminStatCard
           label="Échecs (7 j)"
           value={kpis.failed7d}
           tone={kpis.failed7d > 0 ? "warning" : "default"}
+          icon={AlertTriangle}
         />
-        <AdminStatCard label="En revue" value={kpis.pendingReview} />
-        <AdminStatCard label="Coût 7 j (USD)" value={`$${kpis.costSpent7dUsd.toFixed(2)}`} />
+        <AdminStatCard label="En revue" value={kpis.pendingReview} icon={Hourglass} />
+        <AdminStatCard
+          label="Coût 7 j (USD)"
+          value={`$${kpis.costSpent7dUsd.toFixed(2)}`}
+          icon={Wallet}
+        />
         <AdminStatCard
           label="Score qualité moyen"
           value={kpis.avgQualityScore7d != null ? kpis.avgQualityScore7d.toFixed(1) : "—"}
+          icon={Gauge}
         />
-        <AdminStatCard label="Plagiat bloqués" value={kpis.plagiarismBlocks7d} />
-        <AdminStatCard label="Entrées KB" value={kpis.kbHealth.chunks} />
+        <AdminStatCard label="Plagiat bloqués" value={kpis.plagiarismBlocks7d} icon={ShieldCheck} />
+        <AdminStatCard label="Entrées KB" value={kpis.kbHealth.chunks} icon={Database} />
       </section>
 
       {/* P2 — Progression couverture villes */}

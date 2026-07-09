@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import { AlertTriangle, AlertCircle, Info, Hash } from "lucide-react";
 
 interface Alert {
   source: "sentry" | "uptimerobot" | "coolify" | "backups";
@@ -103,14 +104,16 @@ export function AlertsV2({
           label="Critiques"
           value={counts.critical}
           tone={counts.critical > 0 ? "destructive" : "default"}
+          icon={AlertTriangle}
         />
         <AdminStatCard
           label="Avertissements"
           value={counts.warning}
           tone={counts.warning > 0 ? "warning" : "default"}
+          icon={AlertCircle}
         />
-        <AdminStatCard label="Information" value={counts.info} />
-        <AdminStatCard label="Total" value={allAlerts.length} />
+        <AdminStatCard label="Information" value={counts.info} icon={Info} />
+        <AdminStatCard label="Total" value={allAlerts.length} icon={Hash} />
       </section>
 
       {unconfigured.length > 0 && (

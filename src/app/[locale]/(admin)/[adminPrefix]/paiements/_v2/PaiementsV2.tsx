@@ -1,6 +1,7 @@
 // Refonte admin mai 2026 — PR 6 — paiements V2 (KPIs trésorerie + liste).
 
 import Link from "next/link";
+import { Hash, Hourglass, Wallet } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import type {
   PaymentProvider,
@@ -165,14 +166,16 @@ export async function PaiementsV2({
           label="Encaissé ce mois"
           value={fmtEur(encaisseMois._sum.amountCents)}
           tone="success"
+          icon={Wallet}
         />
         <AdminStatCard
           label="Paiements en attente"
           value={enAttenteCount}
           meta={fmtEur(enAttenteAmount._sum.amountCents)}
           tone={enAttenteCount > 0 ? "warning" : "default"}
+          icon={Hourglass}
         />
-        <AdminStatCard label="Total filtré" value={total} />
+        <AdminStatCard label="Total filtré" value={total} icon={Hash} />
       </section>
       <AdminListScaffold
         title="Mouvements"

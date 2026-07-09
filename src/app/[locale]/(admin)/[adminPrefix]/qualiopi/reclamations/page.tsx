@@ -12,6 +12,7 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { Hash, Bell, Hourglass, CheckCircle2 } from "lucide-react";
 import { listReclamations } from "@/server/qualiopi/registres/reclamations-service";
 import {
   creerReclamationAction,
@@ -76,18 +77,20 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={reclamations.length} />
+        <AdminStatCard label="Total" value={reclamations.length} icon={Hash} />
         <AdminStatCard
           label="Nouvelles"
           value={nouvelles}
           tone={nouvelles > 0 ? "warning" : "default"}
+          icon={Bell}
         />
         <AdminStatCard
           label="En cours"
           value={enCours}
           tone={enCours > 0 ? "warning" : "default"}
+          icon={Hourglass}
         />
-        <AdminStatCard label="Résolues / clôturées" value={resolues} tone="success" />
+        <AdminStatCard label="Résolues / clôturées" value={resolues} tone="success" icon={CheckCircle2} />
       </div>
 
       {/* Formulaire création */}
