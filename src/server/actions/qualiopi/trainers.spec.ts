@@ -12,15 +12,23 @@ const mockSessionFindUnique = vi.fn();
 const mockSessionUpdate = vi.fn();
 const mockSessionFormateurDeleteMany = vi.fn();
 const mockSessionFormateurUpsert = vi.fn();
+const mockHabilitationDeleteMany = vi.fn();
+const mockHabilitationCreateMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => {
   const sessionFormateur = {
     deleteMany: (...args: unknown[]) => mockSessionFormateurDeleteMany(...args),
     upsert: (...args: unknown[]) => mockSessionFormateurUpsert(...args),
   };
+  const trainerHabilitation = {
+    deleteMany: (...args: unknown[]) => mockHabilitationDeleteMany(...args),
+    createMany: (...args: unknown[]) => mockHabilitationCreateMany(...args),
+  };
   const tx = {
+    trainer: { update: (...args: unknown[]) => mockUpdate(...args) },
     trainingSession: { update: (...args: unknown[]) => mockSessionUpdate(...args) },
     sessionFormateur,
+    trainerHabilitation,
   };
   return {
     prisma: {
@@ -34,6 +42,7 @@ vi.mock("@/lib/prisma", () => {
         update: (...args: unknown[]) => mockSessionUpdate(...args),
       },
       sessionFormateur,
+      trainerHabilitation,
       $transaction: async (cb: (t: typeof tx) => unknown) => cb(tx),
     },
   };
@@ -42,6 +51,11 @@ vi.mock("@/lib/prisma", () => {
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
+}));
+
+const mockGetTrainerConformite = vi.fn();
+vi.mock("@/server/qualiopi/trainers/documents", () => ({
+  getTrainerConformite: (...a: unknown[]) => mockGetTrainerConformite(...a),
 }));
 
 import {
@@ -103,6 +117,11 @@ describe("createTrainerAction", () => {
 });
 
 describe("setTrainerHabilitationsAction", () => {
+  beforeEach(() => {
+    mockHabilitationDeleteMany.mockReset().mockResolvedValue({ count: 0 });
+    mockHabilitationCreateMany.mockReset().mockResolvedValue({ count: 1 });
+  });
+
   it("remplace la liste des formations habilitées", async () => {
     mockUpdate.mockResolvedValue({ id: TRAINER_ID });
     const r = await setTrainerHabilitationsAction({
@@ -112,6 +131,42 @@ describe("setTrainerHabilitationsAction", () => {
     expect(r).toEqual({ data: { id: TRAINER_ID } });
     const arg = mockUpdate.mock.calls[0]?.[0] as { data: { formationsHabilitees: string[] } };
     expect(arg.data.formationsHabilitees).toEqual([FORMATION_ID]);
+  });
+
+  it("DUAL-WRITE : le tableau legacy ET la table normalisée sont écrits", async () => {
+    // Si la table divergeait du tableau, la garde d'habilitation deviendrait
+    // incohérente selon le lecteur : les deux écritures sont dans UNE transaction.
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+    await setTrainerHabilitationsAction({ id: TRAINER_ID, formationsHabilitees: [FORMATION_ID] });
+
+    expect(mockUpdate).toHaveBeenCalled();
+    const createArg = mockHabilitationCreateMany.mock.calls[0]?.[0] as {
+      data: { trainerId: string; formationId: string; habiliteById: string }[];
+      skipDuplicates: boolean;
+    };
+    expect(createArg.data).toEqual([
+      { trainerId: TRAINER_ID, formationId: FORMATION_ID, habiliteById: "admin-uuid" },
+    ]);
+    // Réhabiliter ne doit pas réécrire `habiliteAt` : la traçabilité Qualiopi
+    // date de la PREMIÈRE habilitation, pas du dernier envoi du formulaire.
+    expect(createArg.skipDuplicates).toBe(true);
+  });
+
+  it("retire de la table les habilitations qui ne sont plus dans la liste", async () => {
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+    await setTrainerHabilitationsAction({ id: TRAINER_ID, formationsHabilitees: [FORMATION_ID] });
+    const delArg = mockHabilitationDeleteMany.mock.calls[0]?.[0] as {
+      where: { trainerId: string; formationId: { notIn: string[] } };
+    };
+    expect(delArg.where.trainerId).toBe(TRAINER_ID);
+    expect(delArg.where.formationId.notIn).toEqual([FORMATION_ID]);
+  });
+
+  it("une liste VIDE efface la table sans tenter d'insérer", async () => {
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+    await setTrainerHabilitationsAction({ id: TRAINER_ID, formationsHabilitees: [] });
+    expect(mockHabilitationDeleteMany).toHaveBeenCalled();
+    expect(mockHabilitationCreateMany).not.toHaveBeenCalled();
   });
 });
 
@@ -152,7 +207,7 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     });
     mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
     const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
-    expect(r).toEqual({ data: { sessionId: SESSION_ID } });
+    expect(r).toEqual({ data: { sessionId: SESSION_ID, avertissements: [] } });
     const arg = mockSessionUpdate.mock.calls[0]?.[0] as { data: { formateurPrincipalId: string } };
     expect(arg.data.formateurPrincipalId).toBe(TRAINER_ID);
   });
@@ -221,7 +276,67 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
     mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
     const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: null });
-    expect(r).toEqual({ data: { sessionId: SESSION_ID } });
+    expect(r).toEqual({ data: { sessionId: SESSION_ID, avertissements: [] } });
     expect(mockTrainerFindUnique).not.toHaveBeenCalled();
+  });
+});
+
+describe("assignTrainerToSessionAction — conformité : avertit, ne bloque JAMAIS", () => {
+  beforeEach(() => {
+    // Ce fichier n'a pas de `clearAllMocks` global : sans ce reset, les appels
+    // des tests précédents feraient échouer `not.toHaveBeenCalled()`.
+    mockGetTrainerConformite.mockReset();
+    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "sous_traitant",
+      formationsHabilitees: [FORMATION_ID],
+      sousTraitantVerifieAt: new Date(),
+      tarifJourneeHtCents: 90_000,
+    });
+    mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
+  });
+
+  it("INVARIANT : un formateur non conforme est quand même assigné", async () => {
+    // Le seuil URSSAF n'est pas tranché juridiquement : bloquer sur ce fondement
+    // empêcherait de travailler à tort. On assigne, et on dit ce qui manque.
+    mockGetTrainerConformite.mockResolvedValue({
+      conforme: false,
+      manquements: [
+        { code: "nda", gravite: "bloquant", type: "nda_sous_traitant", message: "NDA manquant" },
+        { code: "rc", gravite: "alerte", type: "assurance_rc_pro", message: "RC pro expirée" },
+      ],
+    });
+
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+
+    expect("data" in r).toBe(true);
+    expect(mockSessionUpdate).toHaveBeenCalled(); // l'affectation est bien écrite
+    // Seuls les BLOQUANTS remontent : une alerte n'a pas à alarmer l'opérateur ici.
+    expect("data" in r && r.data.avertissements).toEqual(["NDA manquant"]);
+  });
+
+  it("un formateur conforme n'émet aucun avertissement", async () => {
+    mockGetTrainerConformite.mockResolvedValue({ conforme: true, manquements: [] });
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect("data" in r && r.data.avertissements).toEqual([]);
+  });
+
+  it("une conformité illisible (null) n'invente aucun avertissement", async () => {
+    mockGetTrainerConformite.mockResolvedValue(null);
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect("data" in r && r.data.avertissements).toEqual([]);
+  });
+
+  it("une conformité qui EXPLOSE ne fait pas échouer une affectation déjà écrite", async () => {
+    mockGetTrainerConformite.mockRejectedValue(new Error("db down"));
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect("data" in r).toBe(true);
+    expect("data" in r && r.data.avertissements).toEqual([]);
+  });
+
+  it("le retrait d'un formateur n'interroge pas la conformité", async () => {
+    await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: null });
+    expect(mockGetTrainerConformite).not.toHaveBeenCalled();
   });
 });

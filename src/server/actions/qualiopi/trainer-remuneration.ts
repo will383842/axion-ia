@@ -435,6 +435,21 @@ function champNombre(fd: FormData, nom: string): number | undefined {
 }
 
 /**
+ * Chemin de retour SÛR. Le champ `retour` arrive du formulaire, donc du client :
+ * `redirect()` accepte une URL absolue, et un `retour` forgé (`https://…`, ou le
+ * protocol-relative `//evil.tld`) ferait sortir l'opérateur du site depuis une
+ * action authentifiée. On n'accepte qu'un chemin interne.
+ */
+function retourSur(fd: FormData): string {
+  const v = champ(fd, "retour");
+  if (v === undefined) return "/";
+  if (!v.startsWith("/") || v.startsWith("//")) return "/";
+  // `\` est traité comme `/` par certains navigateurs → `/\evil.tld` s'échapperait.
+  if (v.includes("\\")) return "/";
+  return v;
+}
+
+/**
  * Lance le run depuis un `<form action={...}>`. Les erreurs repartent en query
  * string : une page serveur n'a pas d'état, et un `throw` afficherait l'écran
  * d'erreur de Next pour une simple saisie invalide.
@@ -443,7 +458,7 @@ function champNombre(fd: FormData, nom: string): number | undefined {
  * sinon le catch avalerait la redirection.
  */
 export async function runRemunerationFormAction(formData: FormData): Promise<void> {
-  const base = champ(formData, "retour") ?? "/";
+  const base = retourSur(formData);
   const res = await runRemunerationMensuelleAction({
     year: champNombre(formData, "year") ?? NaN,
     month: champNombre(formData, "month") ?? NaN,
@@ -465,7 +480,7 @@ export async function runRemunerationFormAction(formData: FormData): Promise<voi
 
 /** Change le statut d'un relevé depuis un `<form action={...}>`. */
 export async function transitionStatementFormAction(formData: FormData): Promise<void> {
-  const base = champ(formData, "retour") ?? "/";
+  const base = retourSur(formData);
   const to = champ(formData, "to");
   const id = champ(formData, "id");
   if (to === undefined || id === undefined) {

@@ -30,16 +30,22 @@ export function AssignFormateurForm({
   const [selected, setSelected] = useState<string>(currentTrainerId ?? "");
   const [error, setError] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
+  const [avertissements, setAvertissements] = useState<string[]>([]);
 
   function run(trainerId: string | null) {
     setError(null);
     setMsg(null);
+    setAvertissements([]);
     startTransition(async () => {
       const r = await assignTrainerToSessionAction({ sessionId, trainerId });
       if ("error" in r) {
         setError(r.error);
       } else {
         setMsg(trainerId ? "Formateur assigné." : "Formateur retiré.");
+        // L'affectation a réussi : ces manquements documentaires n'ont PAS bloqué
+        // (le seuil URSSAF n'est pas tranché juridiquement). Mais les taire
+        // reviendrait à envoyer un formateur non conforme chez un client.
+        setAvertissements(r.data.avertissements);
         router.refresh();
       }
     });
@@ -96,9 +102,11 @@ export function AssignFormateurForm({
       )}
 
       {error && (
+        // `--color-admin-error` n'existe pas (le jeton s'appelle `-destructive`) :
+        // le message d'erreur s'affichait dans la couleur héritée, donc pas en rouge.
         <p
           role="alert"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-destructive)]"
         >
           {error}
         </p>
@@ -110,6 +118,22 @@ export function AssignFormateurForm({
         >
           {msg}
         </p>
+      )}
+      {avertissements.length > 0 && (
+        // L'affectation a réussi. Ces manquements ne bloquent pas (le seuil URSSAF
+        // n'est pas tranché), mais envoyer un formateur non conforme chez un client
+        // engage l'organisme : on les met sous les yeux de l'opérateur.
+        <div
+          role="alert"
+          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
+        >
+          <p>Formateur assigné, mais sa conformité documentaire est incomplète :</p>
+          <ul className="mt-[var(--space-admin-2)] list-disc pl-[var(--space-admin-5)]">
+            {avertissements.map((a) => (
+              <li key={a}>{a}</li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

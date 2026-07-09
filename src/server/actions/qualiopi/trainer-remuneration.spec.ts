@@ -44,9 +44,18 @@ vi.mock("@/server/qualiopi/remuneration/statements", () => ({
   runRemunerationMensuelle: (...a: unknown[]) => mockRun(...a),
 }));
 
+const mockRedirect = vi.fn((url: string) => {
+  throw new Error(`REDIRECT:${url}`);
+});
+const mockRevalidatePath = vi.fn();
+
+vi.mock("next/navigation", () => ({ redirect: (u: string) => mockRedirect(u) }));
+vi.mock("next/cache", () => ({ revalidatePath: (p: string) => mockRevalidatePath(p) }));
+
 import {
   closeCompensationRuleAction,
   createCompensationRuleAction,
+  runRemunerationFormAction,
   runRemunerationMensuelleAction,
   transitionStatementAction,
 } from "./trainer-remuneration";
@@ -333,5 +342,49 @@ describe("closeCompensationRuleAction", () => {
     const res = await closeCompensationRuleAction({ id: ID, effectiveTo: "2026-09-01" });
     expect(res).toEqual({ data: { id: ID } });
     expect(mockRuleUpdate).toHaveBeenCalled();
+  });
+});
+
+describe("runRemunerationFormAction — redirection ouverte", () => {
+  beforeEach(() => {
+    mockRun.mockResolvedValue({
+      periode: { year: 2026, month: 6 },
+      prestationsLues: 0,
+      lignesEcrites: 0,
+      relevesEcrits: 0,
+      formateursIgnores: [],
+      anomalies: [],
+      dryRun: true,
+    });
+  });
+
+  /** Récupère l'URL passée à `redirect()` (qui lève par conception). */
+  async function urlDeRedirection(retour: string): Promise<string> {
+    const fd = new FormData();
+    fd.set("year", "2026");
+    fd.set("month", "6");
+    fd.set("dryRun", "1");
+    fd.set("retour", retour);
+    try {
+      await runRemunerationFormAction(fd);
+    } catch {
+      /* redirect() lève : c'est attendu */
+    }
+    return (mockRedirect.mock.calls.at(-1)?.[0] ?? "") as string;
+  }
+
+  it("accepte un chemin interne", async () => {
+    const url = await urlDeRedirection("/fr/adm/qualiopi/remuneration");
+    expect(url.startsWith("/fr/adm/qualiopi/remuneration?")).toBe(true);
+  });
+
+  it.each([
+    ["https://evil.tld", "URL absolue"],
+    ["//evil.tld", "protocol-relative"],
+    ["/\\evil.tld", "antislash traité comme slash par les navigateurs"],
+    ["javascript:alert(1)", "pseudo-protocole"],
+  ])("REFUSE « %s » (%s) et retombe sur la racine", async (retour) => {
+    const url = await urlDeRedirection(retour);
+    expect(url.startsWith("/?")).toBe(true);
   });
 });

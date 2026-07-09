@@ -52,8 +52,14 @@ function entrees(over: Partial<HubEntrees> = {}): HubEntrees {
     conformites: [],
     relevesEnAttente: [],
     anomalies: [],
+    indispos: new Map(),
     ...over,
   };
+}
+
+/** Jours d'indisponibilité d'un formateur, façon `joursIndisponibles`. */
+function indispos(trainerId: string, jours: string[]): Map<string, Set<string>> {
+  return new Map([[trainerId, new Set(jours)]]);
 }
 
 const hub = (e: Partial<HubEntrees>) => construireHub(entrees(e), MAINTENANT, PREFIX);
@@ -250,5 +256,63 @@ describe("ordre des signaux", () => {
   it("aDesSignauxCritiques est faux quand tout est en attention", () => {
     const s = hub({ charges: [charge({ tauxPct: 120 })] });
     expect(aDesSignauxCritiques(s)).toBe(false);
+  });
+});
+
+describe("formateur indisponible", () => {
+  // MAINTENANT = 2026-06-10T12:00Z. Une prestation le 20 juin, à venir.
+  const prestation = ev({
+    debut: new Date("2026-06-20T08:00:00Z"),
+    fin: new Date("2026-06-20T17:00:00Z"),
+  });
+
+  it("CRITIQUE : une formation vendue sur les congés du formateur", () => {
+    const s = hub({ events: [prestation], indispos: indispos("t1", ["2026-06-20"]) });
+    expect(s[0]?.code).toBe("formateur_indisponible");
+    expect(s[0]?.niveau).toBe("critique");
+    expect(s[0]?.items[0]?.label).toContain("1 jour(s)");
+  });
+
+  it("aucun chevauchement → aucun signal", () => {
+    expect(codes({ events: [prestation], indispos: indispos("t1", ["2026-06-25"]) })).toEqual([]);
+  });
+
+  it("les congés d'un AUTRE formateur ne déclenchent rien", () => {
+    expect(codes({ events: [prestation], indispos: indispos("t2", ["2026-06-20"]) })).toEqual([]);
+  });
+
+  it("une prestation PASSÉE sur un congé n'alarme plus (fait acquis)", () => {
+    const passee = ev({
+      debut: new Date("2026-06-01T08:00:00Z"),
+      fin: new Date("2026-06-01T17:00:00Z"),
+    });
+    expect(codes({ events: [passee], indispos: indispos("t1", ["2026-06-01"]) })).toEqual([]);
+  });
+
+  it("une prestation ANNULÉE sur un congé n'alarme pas", () => {
+    expect(
+      codes({
+        events: [{ ...prestation, statut: "annulee" }],
+        indispos: indispos("t1", ["2026-06-20"]),
+      }),
+    ).toEqual([]);
+  });
+
+  it("une prestation non staffée n'est pas testée contre des congés", () => {
+    const orpheline = { ...prestation, formateurId: null, formateurNom: null };
+    const s = hub({ events: [orpheline], indispos: indispos("t1", ["2026-06-20"]) });
+    expect(s.map((x) => x.code)).not.toContain("formateur_indisponible");
+  });
+
+  it("une formation multi-jours compte tous ses jours en conflit", () => {
+    const multi = ev({
+      debut: new Date("2026-06-20T08:00:00Z"),
+      fin: new Date("2026-06-22T17:00:00Z"),
+    });
+    const s = hub({
+      events: [multi],
+      indispos: indispos("t1", ["2026-06-21", "2026-06-22"]),
+    });
+    expect(s[0]?.items[0]?.label).toContain("2 jour(s)");
   });
 });

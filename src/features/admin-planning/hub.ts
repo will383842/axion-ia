@@ -25,6 +25,7 @@
 // Attention = de l'argent ou du confort en jeu, pas l'exécution.
 
 import { findConflicts, mobiliseLeFormateur } from "./conflicts";
+import { expandEventDayKeys } from "./expand";
 import { niveauCharge, type ChargeFormateur } from "./charge";
 import { planningDetailHref, type PlanningEvent } from "./types";
 
@@ -33,6 +34,7 @@ export type NiveauSignal = "critique" | "attention";
 export type CodeSignal =
   | "session_non_staffee"
   | "conflit_formateur"
+  | "formateur_indisponible"
   | "formateur_non_conforme"
   | "surcharge_formateur"
   | "releve_a_valider"
@@ -79,6 +81,9 @@ export interface AnomalieRemuneration {
   motif: string;
 }
 
+/** Jours d'indisponibilité, par formateur (`YYYY-MM-DD`). */
+export type IndisposParFormateur = ReadonlyMap<string, ReadonlySet<string>>;
+
 export interface HubEntrees {
   /** Prestations du mois, DÉDUPLIQUÉES par `key` (pas la Map jour→events). */
   events: readonly PlanningEvent[];
@@ -86,6 +91,8 @@ export interface HubEntrees {
   conformites: readonly ConformiteFormateur[];
   relevesEnAttente: readonly ReleveEnAttente[];
   anomalies: readonly AnomalieRemuneration[];
+  /** Congés / maladie / formation interne, en clés jour. */
+  indispos: IndisposParFormateur;
 }
 
 /* ────────────────────────────────────────────────────────────────────────────── */
@@ -187,6 +194,53 @@ function signalConflits(
     niveau: "critique",
     titre: `${items.length} conflit(s) de formateur`,
     explication: "Un formateur est affecté à deux prestations qui se chevauchent.",
+    items,
+  };
+}
+
+/**
+ * Une prestation planifiée tombe sur les congés du formateur qui doit l'animer.
+ *
+ * Toujours CRITIQUE, et sans doute le signal le plus embarrassant du cockpit :
+ * la formation est vendue, le client a la date, et le formateur est absent.
+ * Contrairement à une surcharge, cela ne s'absorbe pas — il faut reprogrammer ou
+ * remplacer.
+ *
+ * On n'inspecte que le FUTUR : une prestation passée qui chevauchait un congé est
+ * un fait acquis, pas une décision à prendre.
+ */
+function signalIndisponibles(
+  events: readonly PlanningEvent[],
+  indispos: IndisposParFormateur,
+  maintenant: Date,
+  adminPrefix: string,
+): Signal | null {
+  const items: SignalItem[] = [];
+  for (const e of events) {
+    const fid = formateurDe(e);
+    if (fid === null || !mobiliseLeFormateur(e) || !estAVenir(e, maintenant)) continue;
+
+    const joursIndispo = indispos.get(fid);
+    if (joursIndispo === undefined || joursIndispo.size === 0) continue;
+
+    // `expandEventDayKeys` est la SEULE source de vérité pour les jours qu'une
+    // prestation traverse (multi-jours, heure d'été). Les recalculer ici
+    // introduirait une seconde définition, qui divergerait un jour.
+    const chevauchements = expandEventDayKeys(e.debut, e.fin).filter((j) => joursIndispo.has(j));
+    if (chevauchements.length === 0) continue;
+
+    items.push({
+      label: `${e.formateurNom ?? "Formateur"} : « ${e.titre} » tombe sur ${chevauchements.length} jour(s) d'indisponibilité`,
+      href: planningDetailHref(adminPrefix, e),
+    });
+  }
+  if (items.length === 0) return null;
+
+  return {
+    code: "formateur_indisponible",
+    niveau: "critique",
+    titre: `${items.length} prestation(s) sur une indisponibilité`,
+    explication: "Le formateur affecté est en congés, malade ou en formation interne à ces dates.",
     items,
   };
 }
@@ -294,6 +348,7 @@ export function construireHub(
   const signaux = [
     signalNonStaffees(entrees.events, maintenant, adminPrefix),
     signalConflits(entrees.events, maintenant, adminPrefix),
+    signalIndisponibles(entrees.events, entrees.indispos, maintenant, adminPrefix),
     signalNonConformes(entrees.events, entrees.conformites, maintenant, adminPrefix),
     signalSurcharge(entrees.charges, adminPrefix),
     signalReleves(entrees.relevesEnAttente, adminPrefix),

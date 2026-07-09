@@ -18,6 +18,8 @@ import {
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
+import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
+import { listIndisposFormateur } from "@/server/qualiopi/trainers/availability-queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 
 export const dynamic = "force-dynamic";
@@ -85,7 +87,10 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   if (!trainer) notFound();
 
   const formations = await listFormationsLite();
-  const documents = await listTrainerDocumentsFull(trainer.id);
+  const [documents, indispos] = await Promise.all([
+    listTrainerDocumentsFull(trainer.id),
+    listIndisposFormateur(trainer.id),
+  ]);
   const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
 
   // Conformité documentaire (URSSAF, NDA, RC pro…). Les manquements « bloquant »
@@ -168,6 +173,8 @@ export default async function FicheFormateurPage({ params }: PageProps) {
 
       {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
       <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
+
+      <TrainerAvailabilityPanel trainerId={trainer.id} indispos={indispos} />
 
       <div className="mb-[var(--space-admin-6)]">
         <TrainerForm

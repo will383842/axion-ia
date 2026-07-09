@@ -5490,6 +5490,7 @@ model Formation {
   fileValidations FileValidation[]
   generationJobs  FormationGenerationJob[]
   documents       DocumentGenere[]
+  habilitations   TrainerHabilitation[]
 
   @@index([offreSiteId])
   @@index([clientId])
@@ -5656,11 +5657,73 @@ model Trainer {
   compensationRules    TrainerCompensationRule[]
   feeLines             TrainerFeeLine[]
   statements           TrainerStatement[]
+  habilitations        TrainerHabilitation[]
+  indisponibilites     TrainerAvailability[]
 
   @@index([statut])
   @@index([actif])
   @@index([region])
   @@map("trainers")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SOCLE FORMATEURS (pilier D) — habilitations normalisées + indisponibilités
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Habilitation d'un formateur sur UNE formation. Remplace `Trainer.formationsHabilitees`
+/// (`String[]`), qui n'offrait ni FK, ni index, ni traçabilité : on ne pouvait pas
+/// répondre à « qui peut animer cette formation ? » en SQL, ni savoir QUI a habilité
+/// QUAND. Le tableau reste écrit en dual-write le temps du backfill (zéro perte).
+model TrainerHabilitation {
+  id           String    @id @default(uuid()) @db.Uuid
+  trainerId    String    @map("trainer_id") @db.Uuid
+  trainer      Trainer   @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  formationId  String    @map("formation_id") @db.Uuid
+  formation    Formation @relation(fields: [formationId], references: [id], onDelete: Cascade)
+  /// Qui a prononcé l'habilitation, et quand. Exigence Qualiopi (ind. 21/22).
+  habiliteAt   DateTime  @default(now()) @map("habilite_at")
+  habiliteById String?   @map("habilite_by_id") @db.Uuid
+  note         String?   @db.Text
+
+  @@unique([trainerId, formationId], map: "trainer_habilitation_unique")
+  @@index([formationId])
+  @@map("trainer_habilitations")
+}
+
+/// Nature d'une indisponibilité. Toutes bloquent l'affectation de la même façon ;
+/// le type ne sert qu'à l'affichage et au reporting (combien de jours de congés ?).
+enum TrainerAvailabilityType {
+  conge
+  maladie
+  formation_interne
+  indisponible
+}
+
+/// Fenêtre pendant laquelle un formateur NE PEUT PAS être mobilisé.
+///
+/// Remplace `CapacityWindow`, vestige du module de réservation retiré : celui-ci
+/// comptait des créneaux globaux, jamais la disponibilité d'une personne.
+///
+/// Bornes INCLUSIVES en jours (`date`, pas `timestamp`) : un congé « du 3 au 7 »
+/// couvre le 3 ET le 7. Une demi-journée n'est pas modélisée — un formateur
+/// absent une demi-journée reste affectable, et l'arbitrage est humain.
+model TrainerAvailability {
+  id          String                  @id @default(uuid()) @db.Uuid
+  trainerId   String                  @map("trainer_id") @db.Uuid
+  trainer     Trainer                 @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  type        TrainerAvailabilityType @default(conge)
+  /// Premier jour indisponible (inclus).
+  dateDebut   DateTime                @map("date_debut") @db.Date
+  /// Dernier jour indisponible (INCLUS).
+  dateFin     DateTime                @map("date_fin") @db.Date
+  motif       String?                 @db.Text
+  createdById String?                 @map("created_by_id") @db.Uuid
+  createdAt   DateTime                @default(now()) @map("created_at")
+  updatedAt   DateTime                @updatedAt @map("updated_at")
+
+  @@index([trainerId, dateDebut, dateFin])
+  @@index([dateDebut])
+  @@map("trainer_availabilities")
 }
 
 /// Rôle d'un formateur sur une session de formation collective.

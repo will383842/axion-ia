@@ -31,6 +31,11 @@ vi.mock("@/server/qualiopi/remuneration/queries", () => ({
   listAnomaliesPeriode: (...a: unknown[]) => mockListAnomalies(...a),
 }));
 
+const mockListIndispos = vi.fn();
+vi.mock("@/server/qualiopi/trainers/availability-queries", () => ({
+  listIndisposEntre: (...a: unknown[]) => mockListIndispos(...a),
+}));
+
 import { deduplerEvents, formateursAffectes, getHubSignaux } from "./hub-queries";
 import type { PlanningEvent } from "./types";
 
@@ -61,6 +66,7 @@ beforeEach(() => {
   mockGetTrainerConformite.mockResolvedValue(null);
   mockListReleves.mockResolvedValue([]);
   mockListAnomalies.mockResolvedValue([]);
+  mockListIndispos.mockResolvedValue([]);
 });
 
 describe("deduplerEvents", () => {
@@ -203,5 +209,42 @@ describe("getHubSignaux", () => {
   it("un mois totalement sain ne produit aucun signal", async () => {
     const signaux = await getHubSignaux(2026, 6, "adm", MAINTENANT);
     expect(signaux).toEqual([]);
+  });
+});
+
+describe("getHubSignaux — indisponibilités", () => {
+  it("interroge une fenêtre ÉLARGIE d'un mois de part et d'autre", async () => {
+    // Un congé de trois semaines à cheval sur deux mois doit être vu depuis le
+    // mois affiché : filtrer sur la date de début le raterait.
+    await getHubSignaux(2026, 6, "adm", MAINTENANT);
+    const [debut, fin] = mockListIndispos.mock.calls[0] as [Date, Date];
+    expect(debut.toISOString()).toBe("2026-05-01T00:00:00.000Z");
+    expect(fin.toISOString()).toBe("2026-07-31T00:00:00.000Z");
+  });
+
+  it("convertit les fenêtres en jours et signale le chevauchement", async () => {
+    mockGetPlanningMonth.mockResolvedValue(
+      new Map([
+        [
+          "2026-06-20",
+          [ev({ debut: new Date("2026-06-20T08:00:00Z"), fin: new Date("2026-06-20T17:00:00Z") })],
+        ],
+      ]),
+    );
+    mockListTrainers.mockResolvedValue([{ id: "t1", prenom: "Ana", nom: "Roux" }]);
+    mockGetTrainerConformite.mockResolvedValue({ conforme: true, manquements: [] });
+    mockListIndispos.mockResolvedValue([
+      {
+        id: "a1",
+        trainerId: "t1",
+        type: "conge",
+        debut: "2026-06-18",
+        fin: "2026-06-22",
+        motif: null,
+      },
+    ]);
+
+    const signaux = await getHubSignaux(2026, 6, "adm", MAINTENANT);
+    expect(signaux.map((s) => s.code)).toContain("formateur_indisponible");
   });
 });

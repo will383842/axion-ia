@@ -31,6 +31,8 @@ import type { PlanningEvent } from "./types";
 import { getTrainerConformite } from "@/server/qualiopi/trainers/documents";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
 import { listAnomaliesPeriode, listRelevesPeriode } from "@/server/qualiopi/remuneration/queries";
+import { listIndisposEntre } from "@/server/qualiopi/trainers/availability-queries";
+import { joursIndisponibles } from "@/server/qualiopi/trainers/availability";
 
 /**
  * Aplatit la `Map<jour, events[]>` en une liste de prestations DISTINCTES.
@@ -69,14 +71,28 @@ export async function getHubSignaux(
   adminPrefix: string,
   maintenant: Date,
 ): Promise<Signal[]> {
-  const [byDay, charges, releves, anomalies] = await Promise.all([
+  // Fenêtre ÉLARGIE d'un mois de part et d'autre : un congé de trois semaines à
+  // cheval sur deux mois doit être vu depuis le mois affiché. `listIndisposEntre`
+  // intersecte, elle ne filtre pas sur la date de début.
+  const debutFenetre = new Date(Date.UTC(year, month - 2, 1));
+  const finFenetre = new Date(Date.UTC(year, month + 1, 0));
+
+  const [byDay, charges, releves, anomalies, indisposRows] = await Promise.all([
     getPlanningMonth(year, month),
     getChargeMois(year, month, joursOuvresDuMois(year, month)),
     listRelevesPeriode({ year, month }),
     listAnomaliesPeriode({ year, month }),
+    listIndisposEntre(debutFenetre, finFenetre),
   ]);
 
   const events = deduplerEvents(byDay);
+
+  const indispos = new Map<string, Set<string>>();
+  for (const row of indisposRows) {
+    const acc = indispos.get(row.trainerId) ?? new Set<string>();
+    for (const j of joursIndisponibles([row])) acc.add(j);
+    indispos.set(row.trainerId, acc);
+  }
 
   // Conformité : seulement les formateurs qu'on s'apprête à envoyer en mission.
   const affectes = new Set(formateursAffectes(events));
@@ -114,6 +130,7 @@ export async function getHubSignaux(
         .filter((r) => STATUTS_EN_ATTENTE.has(r.statut))
         .map((r) => ({ id: r.id, trainerNom: r.trainerNom, totalTtcCents: r.totalTtcCents })),
       anomalies: anomalies.map((a) => ({ id: a.id, trainerNom: a.trainerNom, motif: a.motif })),
+      indispos,
     },
     maintenant,
     adminPrefix,

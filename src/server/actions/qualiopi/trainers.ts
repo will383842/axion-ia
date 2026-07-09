@@ -19,6 +19,7 @@ import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
+import { getTrainerConformite } from "@/server/qualiopi/trainers/documents";
 import { getAllRegionSlugs } from "@/content/regions";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -197,8 +198,40 @@ export async function setTrainerHabilitationsAction(
   if (!parsed.success) return { error: "Données invalides" };
   const { id, formationsHabilitees } = parsed.data;
 
+  // ── Dual-write : le tableau legacy ET la table normalisée ────────────────────
+  // `Trainer.formationsHabilitees` (`String[]`) reste la source lue par
+  // `isTrainerHabilite` tant que le backfill n'a pas tourné en production. On
+  // écrit les deux dans UNE transaction : si la table diverge du tableau, la
+  // garde d'habilitation deviendrait incohérente selon le lecteur.
+  //
+  // La table est reconstruite en entier (delete + createMany) plutôt que
+  // patchée : un `set` remplace la liste, et rejouer un diff sur une liste courte
+  // coûterait plus en complexité qu'en écritures.
+  //
+  // ⚠️ La table porte une FK vers `formations` : un id de formation supprimée,
+  // toléré par le `String[]`, fait ÉCHOUER l'insert. C'est le but — mais cela
+  // signifie qu'un formateur habilité sur une formation supprimée ne pourra plus
+  // enregistrer ses habilitations tant qu'on ne l'aura pas retirée de la liste.
   try {
-    await prisma.trainer.update({ where: { id }, data: { formationsHabilitees } });
+    await prisma.$transaction(async (tx) => {
+      await tx.trainer.update({ where: { id }, data: { formationsHabilitees } });
+      await tx.trainerHabilitation.deleteMany({
+        where: { trainerId: id, formationId: { notIn: formationsHabilitees } },
+      });
+      if (formationsHabilitees.length > 0) {
+        await tx.trainerHabilitation.createMany({
+          data: formationsHabilitees.map((formationId) => ({
+            trainerId: id,
+            formationId,
+            habiliteById: session.userId,
+          })),
+          // Réhabiliter une formation déjà habilitée ne doit ni échouer sur
+          // l'unicité, ni réécrire `habiliteAt` (la traçabilité Qualiopi date de
+          // la PREMIÈRE habilitation, pas du dernier enregistrement du formulaire).
+          skipDuplicates: true,
+        });
+      }
+    });
   } catch {
     return { error: "Erreur lors de la mise à jour des habilitations." };
   }
@@ -287,7 +320,7 @@ const assignTrainerSchema = z.object({
  */
 export async function assignTrainerToSessionAction(
   input: z.infer<typeof assignTrainerSchema>,
-): Promise<ActionResult<{ sessionId: string }>> {
+): Promise<ActionResult<{ sessionId: string; avertissements: string[] }>> {
   const session = await requireAdminWrite();
   const parsed = assignTrainerSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -361,13 +394,43 @@ export async function assignTrainerToSessionAction(
     return { error: "Erreur lors de l'assignation du formateur" };
   }
 
+  // ── Conformité documentaire : AVERTISSEMENT, jamais blocage ──────────────────
+  // L'habilitation (ci-dessus) est un refus dur : un formateur non habilité sur
+  // une formation ne doit pas l'animer. La conformité documentaire, elle, est un
+  // signal : le seuil de vigilance URSSAF (art. L.8222-1) s'apprécie-t-il par
+  // mission ou sur le cumul annuel ? Tant qu'un juriste n'a pas tranché, bloquer
+  // une affectation sur ce fondement empêcherait de travailler à tort. On assigne,
+  // et on dit ce qui manque. Cf. `conformite.ts` (`vigilanceBloquante: false`).
+  //
+  // Une conformité illisible (formateur introuvable, base en erreur) ne bloque ni
+  // n'invente : `getTrainerConformite` rend `null`, on n'avertit de rien.
+  const avertissements: string[] = [];
+  if (trainerId !== null) {
+    const maintenant = new Date();
+    try {
+      const conformite = await getTrainerConformite(
+        trainerId,
+        maintenant.getFullYear(),
+        maintenant,
+      );
+      if (conformite !== null) {
+        for (const m of conformite.manquements) {
+          if (m.gravite === "bloquant") avertissements.push(m.message);
+        }
+      }
+    } catch {
+      // Ne jamais faire échouer une affectation déjà écrite en base pour un
+      // avertissement qu'on n'a pas su calculer.
+    }
+  }
+
   await logQualiopiActivity({
     action: "qualiopi.session.assign_formateur",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { formateurPrincipalId: trainerId },
+    changes: { formateurPrincipalId: trainerId, avertissements: avertissements.length },
     session,
   });
 
-  return { data: { sessionId } };
+  return { data: { sessionId, avertissements } };
 }
