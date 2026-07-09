@@ -197,7 +197,10 @@ export const DOCUMENTS_POLE_ORDER: ReadonlyArray<DocumentsPole> = ["activite", "
 
 /** Pôles du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08. */
 export const MAIN_POLE_LABELS: Record<MainPole, string> = {
-  agenda: "Agenda & réservations",
+  // « agenda » ne contient plus que le Tableau de bord (Calendrier/Réservations/
+  // Options 48h masqués — vestiges booking, cf. buildAdminNav). Relabellisé.
+  // « facturation » est entièrement masqué (pôle vide → header auto-caché).
+  agenda: "Vue d'ensemble",
   facturation: "Facturation",
   relation: "Contacts & recrutement",
 };
@@ -265,7 +268,25 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
   const base = `/fr/${adminPrefix}`;
   return [
     // ── main (« Activité quotidienne ») — 3 pôles (refonte UX 2026-07-08) ───
-    // ▸ AGENDA & RÉSERVATIONS
+    // ▸ VUE D'ENSEMBLE (ex-« Agenda & réservations »)
+    //   Les pôles « agenda » (Calendrier/Réservations/Options 48h) et
+    //   « facturation » (Devis/Factures/Paiements/Échéanciers) pilotaient
+    //   l'ancien flux de réservation payante, DOUBLEMENT éteint (audit 2026-07-09) :
+    //     1. Le créneau public a été remplacé par Calendly (`/appel`, iframe qui
+    //        écrit dans `CalendlyEvent`, consommé par « Contacts › Calendly ») ;
+    //        `createBookingAction`/`postOption48hAction` n'existent plus → plus
+    //        aucun Booking/BookingOption/Quote/Invoice/Payment ne se crée.
+    //     2. Stripe est neutralisé (`isStripeConfigured()` = false tant que
+    //        `STRIPE_ENABLED` ≠ "true").
+    //   La facturation VIVANTE est sous Qualiopi (« Qualiopi › Devis » = modèle
+    //   `Devis`, « Qualiopi › Financements » = `FactureFormation`). Les 7 items
+    //   ci-dessous sont donc morts (+ Devis/Factures redondants avec Qualiopi).
+    //   On les MASQUE via `parent` (filtre `it.parent == null` dans
+    //   AdminSidebarNav) : routes conservées (URL directe + command palette +
+    //   breadcrumb) mais retirées de la sidebar. Le pôle « facturation » se
+    //   vide → header masqué auto (poleItems.length === 0). Le pôle « agenda »
+    //   ne garde que le Tableau de bord → relabellisé « Vue d'ensemble ».
+    //   Réversible : retirer `parent`. (Suppression dure code/schéma = séparé.)
     { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main", subGroup: "agenda" },
     {
       href: `${base}/calendrier`,
@@ -273,6 +294,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "📅",
       group: "main",
       subGroup: "agenda",
+      parent: `${base}`,
     },
     {
       href: `${base}/reservations`,
@@ -280,6 +302,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "📋",
       group: "main",
       subGroup: "agenda",
+      parent: `${base}`,
     },
     {
       href: `${base}/options`,
@@ -287,15 +310,24 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "⏳",
       group: "main",
       subGroup: "agenda",
+      parent: `${base}`,
     },
-    // ▸ FACTURATION
-    { href: `${base}/devis`, label: "Devis", icon: "📄", group: "main", subGroup: "facturation" },
+    // ▸ FACTURATION (vestige — masqué, cf. bloc ci-dessus)
+    {
+      href: `${base}/devis`,
+      label: "Devis",
+      icon: "📄",
+      group: "main",
+      subGroup: "facturation",
+      parent: `${base}`,
+    },
     {
       href: `${base}/factures`,
       label: "Factures",
       icon: "🧾",
       group: "main",
       subGroup: "facturation",
+      parent: `${base}`,
     },
     {
       href: `${base}/paiements`,
@@ -303,6 +335,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "💶",
       group: "main",
       subGroup: "facturation",
+      parent: `${base}`,
     },
     {
       href: `${base}/echeanciers`,
@@ -310,6 +343,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "📅",
       group: "main",
       subGroup: "facturation",
+      parent: `${base}`,
     },
     // ▸ CONTACTS & RECRUTEMENT
     {
