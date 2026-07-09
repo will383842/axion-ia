@@ -93,6 +93,8 @@ export function BookingCompletedThanksEmail({
       preview={t.title}
       title={t.title}
       cta={{ label: t.cta, href: feedbackUrl }}
+      trust
+      snowball="referral"
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{greeting}</Text>

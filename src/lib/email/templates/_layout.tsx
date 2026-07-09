@@ -35,6 +35,8 @@ const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
 const QUALIOPI_LOCKUP = `${BASE_URL}/email/axion-qualiopi-lockup.png`;
 const LINKEDIN_URL = process.env.COMPANY_LINKEDIN || "";
 const CONTACT_EMAIL = process.env.ADMIN_REPLY_FROM || "contact@axion-ia.com";
+const REVIEW_URL = `${BASE_URL}/fr/avis`;
+const LINKEDIN_SHARE = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(BASE_URL)}`;
 
 const COMPANY = {
   name: process.env.COMPANY_NAME || "Axion-IA",
@@ -150,6 +152,33 @@ const footerStyle: React.CSSProperties = {
   margin: 0,
   textAlign: "center",
 };
+// Blocs « boule de neige » (parrainage / demande d'avis) — opt-in, post-prestation.
+const snowballCard: React.CSSProperties = {
+  backgroundColor: C.bgEmail,
+  border: `1px dashed ${C.orangeTint}`,
+  borderRadius: "14px",
+  padding: "16px 20px",
+  margin: "14px 0 0 0",
+  textAlign: "center",
+};
+const snowballTitle: React.CSSProperties = {
+  fontSize: "14px",
+  fontWeight: 700,
+  color: C.heading,
+  margin: "0 0 4px 0",
+};
+const snowballText: React.CSSProperties = {
+  fontSize: "13px",
+  lineHeight: 1.55,
+  color: C.muted,
+  margin: "0 0 8px 0",
+};
+const snowballLink: React.CSSProperties = {
+  fontSize: "13px",
+  fontWeight: 700,
+  color: C.orangeDeep,
+  textDecoration: "none",
+};
 
 const DARK_MODE_STYLE = `
   :root { color-scheme: light dark; supported-color-schemes: light dark; }
@@ -172,6 +201,8 @@ export interface EmailLayoutProps {
   eyebrow?: string;
   /** Bandeau confiance (Qualiopi + avis) — emails relationnels. */
   trust?: boolean;
+  /** Bloc « boule de neige » — parrainage / demande d'avis (post-prestation). */
+  snowball?: "referral" | "review" | "both";
   unsubscribeHref?: string;
   locale: "fr" | "en";
 }
@@ -181,6 +212,14 @@ const TXT = {
     tagline: "Audit · Formation · Intégration · Sites web IA · Coaching",
     reviewsWord: "avis clients vérifiés",
     qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
+    reviewTitle: "Votre avis nous aide énormément 🙏",
+    reviewText:
+      "30 secondes pour partager votre expérience — et aider d'autres dirigeants à franchir le pas de l'IA.",
+    reviewCta: "Laisser un avis",
+    referralTitle: "Un confrère pourrait en profiter ?",
+    referralText:
+      "Transférez-lui cet email, ou parlez d'Axion-IA autour de vous. Le bouche-à-oreille, c'est notre meilleure croissance.",
+    referralCta: "Partager sur LinkedIn",
     legalForm: "SAS française",
     siret: "SIRET",
     vat: "TVA",
@@ -193,6 +232,13 @@ const TXT = {
     tagline: "Audit · Training · Integration · AI websites · Coaching",
     reviewsWord: "verified client reviews",
     qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
+    reviewTitle: "Your feedback means a lot 🙏",
+    reviewText: "30 seconds to share your experience — and help other leaders take the AI leap.",
+    reviewCta: "Leave a review",
+    referralTitle: "Could a peer benefit from this?",
+    referralText:
+      "Forward this email, or spread the word about Axion-IA. Word of mouth is our best growth.",
+    referralCta: "Share on LinkedIn",
     legalForm: "French company (SAS)",
     siret: "Reg. no.",
     vat: "VAT",
@@ -214,6 +260,7 @@ export function EmailLayout({
   cta,
   eyebrow,
   trust,
+  snowball,
   unsubscribeHref,
   locale,
 }: EmailLayoutProps) {
@@ -285,6 +332,32 @@ export function EmailLayout({
                   style={{ margin: "0 auto", display: "block", border: "0", maxWidth: "100%" }}
                 />
                 {showReviews && <Text style={starsStyle}>{reviewLine}</Text>}
+              </Section>
+            )}
+            {(snowball === "review" || snowball === "both") && (
+              <Section style={snowballCard}>
+                <Text style={snowballTitle} className="ax-heading">
+                  {t.reviewTitle}
+                </Text>
+                <Text style={snowballText} className="ax-muted">
+                  {t.reviewText}
+                </Text>
+                <Link href={REVIEW_URL} style={snowballLink}>
+                  {t.reviewCta} →
+                </Link>
+              </Section>
+            )}
+            {(snowball === "referral" || snowball === "both") && (
+              <Section style={snowballCard}>
+                <Text style={snowballTitle} className="ax-heading">
+                  {t.referralTitle}
+                </Text>
+                <Text style={snowballText} className="ax-muted">
+                  {t.referralText}
+                </Text>
+                <Link href={LINKEDIN_SHARE} style={snowballLink}>
+                  {t.referralCta} →
+                </Link>
               </Section>
             )}
           </Container>
