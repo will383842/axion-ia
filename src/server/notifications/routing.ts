@@ -85,3 +85,60 @@ export function shouldDispatchAsync(severity: NotificationSeverity): boolean {
   // Async via queue pour error/critical (fire-and-forget, retry possible).
   return severity === "error" || severity === "critical";
 }
+
+// ── Routage Telegram par GROUPE (refonte 2026-07-09) ────────────────────────
+// 1 bot @axion_ia_notif_bot → 3 groupes séparés. Chaque catégorie est routée
+// vers son groupe ; le chat_id est résolu depuis l'env (fallback rétro-compatible
+// sur TELEGRAM_CHAT_ID si un groupe n'est pas encore configuré).
+
+export type TelegramGroup = "rdv" | "messages" | "system";
+
+/** 📅 RDV : réservations / options / Calendly (appels & rendez-vous). */
+const RDV_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<NotificationCategory>([
+  "BOOKING_CREATED",
+  "BOOKING_CANCELLED",
+  "OPTION_POSTED",
+  "OPTION_CONFIRMED",
+  "OPTION_REFUSED",
+  "OPTION_EXPIRED",
+  "CALENDLY_INVITEE_CREATED",
+  "CALENDLY_INVITEE_CANCELED",
+  "CALENDLY_INVITEE_RESCHEDULED",
+]);
+
+/** 💬 Messages : tout message entrant d'une personne (formulaires + leads). */
+const MESSAGE_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<NotificationCategory>([
+  "CONTACT_FORM_SUBMITTED",
+  "AUDIT_REQUEST_SUBMITTED",
+  "INTERVENTION_REQUEST_SUBMITTED",
+  "IMPLEMENTATION_REQUEST_SUBMITTED",
+  "QUOTE_REQUEST_RECEIVED",
+  "PRESS_REQUEST_SUBMITTED",
+  "RECRUITMENT_RECEIVED",
+  "JOB_APPLICATION_RECEIVED",
+  "SPEAKER_INVITATION_RECEIVED",
+  "INVESTOR_INQUIRY_RECEIVED",
+  "CUSTOMER_SUPPORT_REQUEST",
+]);
+
+/** Groupe cible d'une catégorie (défaut : 🔔 Système — newsletter, avis, ops…). */
+export function telegramGroupFor(category: NotificationCategory): TelegramGroup {
+  if (RDV_CATEGORIES.has(category)) return "rdv";
+  if (MESSAGE_CATEGORIES.has(category)) return "messages";
+  return "system";
+}
+
+/**
+ * Résout le chat_id Telegram d'un groupe depuis l'env. Fallback rétro-compatible
+ * sur `TELEGRAM_CHAT_ID` (comportement legacy 1-groupe) si le groupe n'a pas de
+ * chat_id dédié configuré.
+ */
+export function resolveTelegramChatId(group: TelegramGroup): string | undefined {
+  const byGroup =
+    group === "rdv"
+      ? process.env.TELEGRAM_CHAT_ID_RDV
+      : group === "messages"
+        ? process.env.TELEGRAM_CHAT_ID_MESSAGES
+        : process.env.TELEGRAM_CHAT_ID_SYSTEM;
+  return byGroup || process.env.TELEGRAM_CHAT_ID;
+}
