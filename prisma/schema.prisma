@@ -5341,6 +5341,15 @@ model TrainingSession {
   @@index([sessionParentId])
   @@index([sessionReporteeId])
   @@index([formateurPrincipalId])
+  // ── Index composites du cockpit (règle : égalité d'abord, plage ensuite). ──
+  /// Requête calendrier : sessions chevauchant une plage (`dateDebut <= to AND
+  /// dateFin >= from`). `dateFin` n'avait AUCUN index.
+  @@index([dateDebut, dateFin])
+  /// Calendrier filtré par statut / financement (prévisionnel).
+  @@index([statut, dateDebut])
+  @@index([financementType, dateDebut])
+  /// Charge d'un formateur sur une période.
+  @@index([formateurPrincipalId, dateDebut])
   @@map("training_sessions")
 }
 
@@ -5767,6 +5776,8 @@ model PresenceCreneau {
   @@unique([enrollmentId, date, demiJournee], map: "presence_creneau_unique")
   @@index([enrollmentId])
   @@index([importId])
+  /// Heatmap « demi-journées réalisées » par mois (cockpit). `date` n'avait aucun index.
+  @@index([date, present])
   @@map("presence_creneaux")
 }
 
@@ -5956,6 +5967,9 @@ model FactureFormation {
   @@index([enrollmentId])
   @@index([coachingContractId])
   @@index([statut])
+  /// Prévisionnel d'encaissement et relances impayés (cockpit).
+  @@index([statut, emiseAt])
+  @@index([echeanceAt])
   @@map("factures_formation")
 }
 
@@ -6865,6 +6879,8 @@ model CoachingSession {
   @@index([interventionSlug])
   @@index([dateSeance])
   @@index([estAfest])
+  /// Charge d'un formateur sur une période (cockpit).
+  @@index([trainerId, dateSeance])
   @@map("coaching_sessions")
 }
 
