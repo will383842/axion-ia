@@ -5091,6 +5091,70 @@ enum TrainerStatut {
   sous_traitant
 }
 
+/// Pièces justificatives REÇUES d'un formateur (à ne pas confondre avec
+/// `DocumentGenere`, les PDF produits par l'OF). Les pièces requises dépendent
+/// du statut : un salarié fournit un contrat de travail, un indépendant une
+/// attestation de vigilance URSSAF, un NDA, une RC pro…
+enum TrainerDocumentType {
+  // ── Salarié ──
+  contrat_travail
+  dpae
+  // ── Indépendant / sous-traitant ──
+  /// Art. L.8222-1 : à collecter dès 5 000 € HT de contrat, renouvelée tous les
+  /// 6 mois. Sans elle, l'OF est SOLIDAIREMENT responsable des cotisations
+  /// impayées du prestataire.
+  attestation_vigilance_urssaf
+  kbis_avis_sirene
+  nda_sous_traitant
+  attestation_qualiopi
+  assurance_rc_pro
+  contrat_sous_traitance
+  // ── Communs ──
+  cv
+  diplome
+  certification
+  autre
+}
+
+/// Cycle de validation d'une pièce. L'expiration n'est PAS un statut : elle se
+/// déduit de `dateExpiration`, sinon une pièce validée resterait « valide »
+/// après sa péremption.
+enum DocumentValidationStatut {
+  en_attente
+  valide
+  rejete
+}
+
+/// Pièce justificative d'un formateur. Alimente les contrôles de conformité
+/// (Qualiopi off.21/27, obligation de vigilance URSSAF) et les alertes
+/// d'expiration.
+model TrainerDocument {
+  id               String                   @id @default(uuid()) @db.Uuid
+  trainerId        String                   @map("trainer_id") @db.Uuid
+  trainer          Trainer                  @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  type             TrainerDocumentType
+  /// N° de la pièce (n° NDA, n° de police RC pro, code de vérification URSSAF…).
+  numeroPiece      String?                  @map("numero_piece") @db.VarChar(60)
+  fichierUrl       String?                  @map("fichier_url") @db.Text
+  hashSha256       String?                  @map("hash_sha256") @db.VarChar(64)
+  dateEmission     DateTime?                @map("date_emission")
+  /// Null = pièce sans échéance (un diplôme). Sinon pilote les alertes.
+  dateExpiration   DateTime?                @map("date_expiration")
+  statutValidation DocumentValidationStatut @default(en_attente) @map("statut_validation")
+  valideParUserId  String?                  @map("valide_par_user_id") @db.Uuid
+  valideAt         DateTime?                @map("valide_at")
+  rejetMotif       String?                  @map("rejet_motif") @db.Text
+  notes            String?                  @db.Text
+  createdAt        DateTime                 @default(now()) @map("created_at")
+  updatedAt        DateTime                 @updatedAt @map("updated_at")
+
+  @@index([trainerId])
+  @@index([type])
+  @@index([statutValidation])
+  @@index([dateExpiration])
+  @@map("trainer_documents")
+}
+
 enum ModaliteFormation {
   presentiel
   distanciel
@@ -5392,6 +5456,8 @@ model Trainer {
   coachingSessions     CoachingSession[]
   /// Affectations normalisées aux sessions (principal + co-animateurs).
   sessionFormateurs    SessionFormateur[]
+  /// Pièces justificatives reçues (contrat, vigilance URSSAF, NDA, RC pro…).
+  documents            TrainerDocument[]
 
   @@index([statut])
   @@index([actif])
