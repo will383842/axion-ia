@@ -57,7 +57,7 @@ import { startFormationEngineWorker } from "./workers/qualiopi-formation-engine-
 import { startFormationCronsWorker } from "./workers/qualiopi-formation-crons-worker";
 // Chatbot (T-05) — env-gated CHATBOT_ENABLED (réversible sans redeploy).
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
-import { bootRepeatableJobs } from "./queues";
+import { bootRepeatableJobs, isLegacyBookingWorkersEnabled } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
 async function main() {
@@ -69,10 +69,16 @@ async function main() {
 
   const workers = [
     startEmailWorker(),
-    startOptionExpirationWorker(),
-    startOptionReminderWorker(),
+    // Workers hérités du flux de réservation payante — OFF par défaut
+    // (audit 2026-07-09). Le flux est éteint : Calendly a remplacé le créneau
+    // public et Stripe est neutralisé, donc `option-expiration` (toutes les
+    // 5 min), `option-reminder` (horaire) et `booking-crons` (11 crons)
+    // scannaient des tables vides. Leurs repeatable jobs Redis sont purgés au
+    // boot par `bootRepeatableJobs()`. Réversible : LEGACY_BOOKING_WORKERS_ENABLED=true.
+    ...(isLegacyBookingWorkersEnabled()
+      ? [startOptionExpirationWorker(), startOptionReminderWorker(), startBookingCronsWorker()]
+      : []),
     startRetentionPurgeWorker(),
-    startBookingCronsWorker(),
     // Content Generator V1 — 14 workers (§ 13 master prompt v1.7 + Pass B P0-7
     // + Sprints 9-12.5 V2 + Audit final P0-3 + Sprint S6.3 doc-sync P3-15)
     startContentGenWorker(),
