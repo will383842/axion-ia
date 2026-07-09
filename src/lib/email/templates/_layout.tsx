@@ -89,7 +89,7 @@ const topbar: React.CSSProperties = {
   backgroundColor: C.orange,
   backgroundImage: `linear-gradient(90deg, ${C.orange} 0%, #d1561f 55%, ${C.orangeDeep} 100%)`,
 };
-const wrapper: React.CSSProperties = { margin: "0 auto", maxWidth: "920px", width: "100%" };
+const wrapper: React.CSSProperties = { margin: "0 auto", maxWidth: "1000px", width: "100%" };
 const header: React.CSSProperties = { padding: "26px 0 20px", textAlign: "center" };
 const taglineStyle: React.CSSProperties = {
   fontSize: "11px",
@@ -100,6 +100,10 @@ const taglineStyle: React.CSSProperties = {
   margin: "12px 0 0 0",
 };
 const card: React.CSSProperties = {
+  // maxWidth:100% OBLIGATOIRE — sinon le <Container> React Email impose son
+  // défaut caché max-width:37.5em (600px) et plafonne le bloc de texte, quelle
+  // que soit la largeur du wrapper. C'est CE défaut qui bloquait l'élargissement.
+  maxWidth: "100%",
   backgroundColor: C.card,
   borderRadius: "20px",
   border: `1px solid ${C.border}`,
