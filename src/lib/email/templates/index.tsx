@@ -8,7 +8,7 @@ import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
 import type { Locale } from "../../../../prisma/generated/client";
 import { getPublishedReviewStats } from "../review-stats";
-import { ReviewStatsContext } from "./_layout";
+import { setReviewStats } from "./_layout";
 import { BookingConfirmedEmail, bookingConfirmedSubject } from "./booking-confirmed";
 import { BookingCancelledEmail, bookingCancelledSubject } from "./booking-cancelled";
 import { OptionPostedEmail, optionPostedSubject } from "./option-posted";
@@ -334,15 +334,14 @@ export async function renderEmailTemplate(
   const tpl = TEMPLATES[name];
   const Component = tpl.component;
   const subject = tpl.subject(locale, payload);
-  // Injecte les stats avis RÉELLES (DB, cache 15 min) dans tout l'arbre → bandeau
-  // de confiance à jour sur tous les templates, sans changer chaque template.
+  // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance
+  // de tous les templates, sans changer chaque template. On pose la valeur AVANT
+  // chaque `render` synchrone (parcours React sync → pas d'interleave concurrent).
   const reviewStats = await getPublishedReviewStats();
-  const element = (
-    <ReviewStatsContext.Provider value={reviewStats}>
-      <Component locale={locale} payload={payload} />
-    </ReviewStatsContext.Provider>
-  );
+  const element = <Component locale={locale} payload={payload} />;
+  setReviewStats(reviewStats);
   const html = await render(element, { pretty: false });
+  setReviewStats(reviewStats);
   const text = await render(element, { plainText: true });
   return { subject, html, text };
 }
