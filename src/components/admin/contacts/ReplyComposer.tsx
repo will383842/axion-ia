@@ -3,8 +3,37 @@
 // Sprint Notif Infra 2026-05-26 / fix P1-3 audit 2026-05-27 — preview live
 // du markdown léger à droite du textarea.
 
-import { useState, useTransition } from "react";
-import { replyToSubmissionAction } from "@/features/admin-submissions/reply-actions";
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import {
+  replyToSubmissionAction,
+  retryFailedReplyAction,
+  getReplyDeliveryStatusAction,
+} from "@/features/admin-submissions/reply-actions";
+
+/** Machine d'états de l'envoi d'une réponse (feedback honnête à l'admin). */
+type ReplyUiState =
+  | { phase: "idle" }
+  | { phase: "sending" }
+  | { phase: "queued"; replyId: string; background?: boolean }
+  | { phase: "sent" }
+  | { phase: "failed"; replyId?: string; message: string };
+
+/** Codes d'erreur bruts → messages FR lisibles. */
+const REPLY_ERROR_LABELS: Record<string, string> = {
+  submission_not_found: "Demande introuvable.",
+  render_failed: "Erreur de génération de l'email.",
+  db_failed: "Échec d'enregistrement en base.",
+  enqueue_failed: "File d'envoi indisponible — réessayez dans un instant.",
+  invalid_recipient: "Adresse du destinataire illisible (à vérifier avec l'admin).",
+  unauthorized: "Session expirée — reconnectez-vous.",
+  forbidden: "Droits insuffisants.",
+  not_found: "Réponse introuvable.",
+  not_retryable: "Cette réponse n'est pas rejouable.",
+};
+function replyErrorLabel(code: string): string {
+  return REPLY_ERROR_LABELS[code] ?? `Échec de l'envoi (${code}).`;
+}
 
 /**
  * Rendu inline du markdown léger pour la preview composer. Mêmes règles que
@@ -103,14 +132,48 @@ export function ReplyComposer({
   contactEmail,
   defaultSubject,
 }: Props): React.ReactElement {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [template, setTemplate] = useState<TemplateValue>("default");
   const [subject, setSubject] = useState(defaultSubject ?? "Re: votre demande Axion-IA");
   const [body, setBody] = useState("");
   const [internalNote, setInternalNote] = useState("");
-  const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
-  const [done, setDone] = useState(false);
+  const [, startTransition] = useTransition();
+  const [state, setState] = useState<ReplyUiState>({ phase: "idle" });
+
+  // Le vrai « ✓ envoyée » vient du worker (envoi asynchrone). Tant qu'on est
+  // « queued », on interroge le statut réel toutes les 2 s (max ~12 s) jusqu'à
+  // sent/delivered (succès) ou failed/bounced (erreur). Au-delà → « en arrière-plan ».
+  useEffect(() => {
+    if (state.phase !== "queued" || state.background) return;
+    const replyId = state.replyId;
+    let attempts = 0;
+    let cancelled = false;
+    const timer = setInterval(async () => {
+      attempts += 1;
+      const st = await getReplyDeliveryStatusAction(replyId).catch(() => null);
+      if (cancelled) return;
+      if (st && (st.status === "sent" || st.status === "delivered")) {
+        clearInterval(timer);
+        setState({ phase: "sent" });
+        router.refresh();
+      } else if (st && (st.status === "failed" || st.status === "bounced")) {
+        clearInterval(timer);
+        setState({ phase: "failed", replyId, message: st.errorMsg ?? "L'envoi a échoué." });
+        router.refresh();
+      } else if (attempts >= 6) {
+        clearInterval(timer);
+        setState({ phase: "queued", replyId, background: true });
+      }
+    }, 2000);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [state, router]);
+
+  const inputsDisabled =
+    state.phase === "sending" || state.phase === "queued" || state.phase === "sent";
 
   function onTemplateChange(value: TemplateValue) {
     setTemplate(value);
@@ -120,7 +183,7 @@ export function ReplyComposer({
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
+    setState({ phase: "sending" });
     startTransition(async () => {
       const r = await replyToSubmissionAction({
         submissionId,
@@ -130,15 +193,35 @@ export function ReplyComposer({
         ...(internalNote ? { internalNote } : {}),
       });
       if (r.ok) {
-        setDone(true);
-        setTimeout(() => {
-          setOpen(false);
-          setDone(false);
-        }, 1500);
+        setState({ phase: "queued", replyId: r.replyId });
+        router.refresh();
       } else {
-        setError(r.error);
+        setState({
+          phase: "failed",
+          ...(r.replyId ? { replyId: r.replyId } : {}),
+          message: replyErrorLabel(r.error),
+        });
       }
     });
+  }
+
+  function onRetry(replyId: string) {
+    setState({ phase: "sending" });
+    startTransition(async () => {
+      const r = await retryFailedReplyAction(replyId);
+      if (r.ok) {
+        setState({ phase: "queued", replyId });
+        router.refresh();
+      } else {
+        setState({ phase: "failed", replyId, message: replyErrorLabel(r.error ?? "enqueue_failed") });
+      }
+    });
+  }
+
+  function onClose() {
+    setState({ phase: "idle" });
+    setOpen(false);
+    router.refresh();
   }
 
   if (!open) {
@@ -159,9 +242,10 @@ export function ReplyComposer({
       <div className="bg-paper relative w-full max-w-4xl rounded-lg border border-[color:var(--color-admin-border-default)] p-6 shadow-2xl">
         <button
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={onClose}
+          disabled={state.phase === "sending"}
           aria-label="Fermer"
-          className="absolute top-3 right-3 text-2xl leading-none text-[color:var(--color-admin-fg-muted)] hover:text-[color:var(--color-admin-fg-default)]"
+          className="absolute top-3 right-3 text-2xl leading-none text-[color:var(--color-admin-fg-muted)] hover:text-[color:var(--color-admin-fg-default)] disabled:opacity-40"
         >
           ×
         </button>
@@ -180,7 +264,7 @@ export function ReplyComposer({
               value={template}
               onChange={(e) => onTemplateChange(e.target.value as TemplateValue)}
               className="admin-input"
-              disabled={isPending}
+              disabled={inputsDisabled}
             >
               {TEMPLATES.map((t) => (
                 <option key={t.value} value={t.value}>
@@ -201,7 +285,7 @@ export function ReplyComposer({
               maxLength={500}
               required
               className="admin-input"
-              disabled={isPending}
+              disabled={inputsDisabled}
             />
           </div>
 
@@ -219,7 +303,7 @@ export function ReplyComposer({
                 maxLength={50_000}
                 required
                 className="admin-input admin-textarea font-mono text-sm"
-                disabled={isPending}
+                disabled={inputsDisabled}
                 aria-describedby="reply-body-preview"
               />
               <div
@@ -249,33 +333,71 @@ export function ReplyComposer({
               rows={2}
               maxLength={2000}
               className="admin-input admin-textarea text-sm"
-              disabled={isPending}
+              disabled={inputsDisabled}
             />
           </div>
 
-          {error && (
-            <p role="alert" className="admin-alert admin-alert-error">
-              {error}
+          {state.phase === "queued" && (
+            <p role="status" aria-live="polite" className="admin-alert admin-alert-info">
+              {state.background
+                ? "Réponse enregistrée. L'envoi se poursuit en arrière-plan — voir l'historique ci-dessous."
+                : "Réponse enregistrée, envoi en cours… ⏳"}
             </p>
           )}
-          {done && (
-            <p role="status" className="admin-alert admin-alert-success">
-              ✓ Réponse envoyée, fermeture automatique...
+          {state.phase === "sent" && (
+            <p role="status" aria-live="polite" className="admin-alert admin-alert-success">
+              ✓ Réponse envoyée à {contactName}.
+            </p>
+          )}
+          {state.phase === "failed" && (
+            <p role="alert" className="admin-alert admin-alert-error">
+              {state.message}
             </p>
           )}
 
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="admin-button-ghost"
-              disabled={isPending}
-            >
-              Annuler
-            </button>
-            <button type="submit" className="admin-button" disabled={isPending || done}>
-              {isPending ? "Envoi..." : "Envoyer"}
-            </button>
+            {state.phase === "queued" || state.phase === "sent" ? (
+              <button type="button" onClick={onClose} className="admin-button">
+                Fermer
+              </button>
+            ) : state.phase === "failed" ? (
+              <>
+                <button type="button" onClick={onClose} className="admin-button-ghost">
+                  Fermer
+                </button>
+                {state.replyId ? (
+                  <button
+                    type="button"
+                    onClick={() => onRetry(state.replyId as string)}
+                    className="admin-button"
+                  >
+                    ↻ Réessayer
+                  </button>
+                ) : (
+                  <button type="submit" className="admin-button">
+                    Renvoyer
+                  </button>
+                )}
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="admin-button-ghost"
+                  disabled={state.phase === "sending"}
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  className="admin-button"
+                  disabled={state.phase === "sending"}
+                >
+                  {state.phase === "sending" ? "Envoi…" : "Envoyer"}
+                </button>
+              </>
+            )}
           </div>
         </form>
       </div>

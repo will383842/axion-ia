@@ -24,7 +24,7 @@ import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
-import { decryptPii } from "@/lib/pii-crypto";
+import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 
 async function requireAdminWriteSession() {
   const session = await auth();
@@ -51,7 +51,11 @@ const replySchema = z.object({
   internalNote: z.string().max(2000).optional(),
 });
 
-export type ReplyToSubmissionState = { ok: true; replyId: string } | { ok: false; error: string };
+export type ReplyToSubmissionState =
+  | { ok: true; replyId: string }
+  // replyId présent si la reply a été persistée mais l'envoi a échoué (enqueue KO)
+  // → l'admin peut la réessayer via retryFailedReplyAction.
+  | { ok: false; error: string; replyId?: string };
 
 export async function replyToSubmissionAction(
   input: z.input<typeof replySchema>,
@@ -77,6 +81,13 @@ export async function replyToSubmissionAction(
     where: { id: data.submissionId },
   });
   if (!submission) return { ok: false, error: "submission_not_found" };
+
+  // 0. Pré-vol : déchiffrer + valider l'adresse DANS le process web (qui a la
+  //    clé). Si l'adresse est illisible (clé absente → placeholder) ou invalide,
+  //    on échoue AVANT de créer une reply orpheline, avec une erreur claire.
+  if (!isDecryptedEmailUsable(decryptPii(submission.contactEmail))) {
+    return { ok: false, error: "invalid_recipient" };
+  }
 
   // 1. Pre-render template HTML + plain text via @react-email/render.
   let rendered: { subject: string; html: string; text: string };
@@ -126,17 +137,20 @@ export async function replyToSubmissionAction(
 
   if (!replyId) return { ok: false, error: "db_failed" };
 
-  // 3. Enqueue email (le worker met à jour deliveryStatus + sent/failed).
+  // 3. Enqueue email (le worker re-déchiffre l'adresse depuis la DB → PAS de PII
+  //    dans le payload de queue). Si l'enqueue échoue (queue indisponible), on
+  //    marque la reply `failed` (rejouable) et on remonte l'échec à l'admin
+  //    (plus de faux succès pendant que la reply reste `pending` éternellement).
+  let enqueued = false;
   try {
-    await enqueueEmail("submission-reply", decryptPii(submission.contactEmail), submission.locale, {
+    const res = await enqueueEmail("submission-reply", "", submission.locale, {
       replyId,
       subject: data.subject,
       submissionId: submission.id,
     });
+    enqueued = res.enqueued;
   } catch (e) {
     Sentry.captureException(e);
-    // L'enqueue a échoué mais la reply existe avec status=pending — retry
-    // manuel possible via retryFailedReplyAction.
   }
 
   revalidatePath(adminPath("fr", "contacts/messages"));
@@ -144,6 +158,20 @@ export async function replyToSubmissionAction(
   // Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — invalide le
   // compteur unread cached du badge sidebar.
   updateTag("admin:contacts-unread");
+
+  if (!enqueued) {
+    await prisma.submissionReply
+      .update({
+        where: { id: replyId },
+        data: {
+          deliveryStatus: "failed",
+          failedAt: new Date(),
+          errorMsg: "enqueue_failed (file d'envoi indisponible)",
+        },
+      })
+      .catch((e) => Sentry.captureException(e));
+    return { ok: false, error: "enqueue_failed", replyId };
+  }
 
   return { ok: true, replyId };
 }
@@ -284,17 +312,67 @@ export async function retryFailedReplyAction(
     },
   });
 
+  let enqueued = false;
   try {
-    await enqueueEmail("submission-reply", decryptPii(reply.toEmail), reply.submission.locale, {
+    // Pas de PII dans le payload : le worker re-déchiffre depuis la DB.
+    const res = await enqueueEmail("submission-reply", "", reply.submission.locale, {
       replyId: reply.id,
       subject: reply.subject,
       submissionId: reply.submissionId,
     });
+    enqueued = res.enqueued;
   } catch (e) {
     Sentry.captureException(e);
+  }
+  if (!enqueued) {
+    await prisma.submissionReply
+      .update({
+        where: { id: reply.id },
+        data: {
+          deliveryStatus: "failed",
+          failedAt: new Date(),
+          errorMsg: "enqueue_failed (file d'envoi indisponible)",
+        },
+      })
+      .catch((e) => Sentry.captureException(e));
     return { ok: false, error: "enqueue_failed" };
   }
 
   revalidatePath(adminPath("fr", `contacts/messages/${reply.submissionId}`));
   return { ok: true };
+}
+
+// ============================================================
+// getReplyDeliveryStatusAction — polling léger du statut réel d'envoi
+// (le worker met à jour deliveryStatus de façon asynchrone). Sert au
+// ReplyComposer pour afficher « Réponse envoyée ✓ » ou l'erreur. Ne renvoie
+// JAMAIS de PII.
+// ============================================================
+
+export type ReplyDeliveryStatus = "pending" | "sent" | "delivered" | "failed" | "bounced";
+
+export async function getReplyDeliveryStatusAction(replyId: string): Promise<{
+  status: ReplyDeliveryStatus;
+  errorMsg: string | null;
+  retryCount: number;
+} | null> {
+  try {
+    await requireAdminWriteSession();
+  } catch {
+    return null;
+  }
+  const parsed = z.string().min(1).max(64).safeParse(replyId);
+  if (!parsed.success) return null;
+
+  const reply = await prisma.submissionReply.findUnique({
+    where: { id: parsed.data },
+    select: { deliveryStatus: true, errorMsg: true, retryCount: true },
+  });
+  if (!reply) return null;
+
+  return {
+    status: reply.deliveryStatus as ReplyDeliveryStatus,
+    errorMsg: reply.errorMsg,
+    retryCount: reply.retryCount,
+  };
 }

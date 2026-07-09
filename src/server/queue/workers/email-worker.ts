@@ -10,7 +10,7 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
 import { sendEmail } from "@/lib/email/client";
-import { decryptPii } from "@/lib/pii-crypto";
+import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
 import type { EmailJobData, EmailJobName } from "../types";
@@ -94,13 +94,30 @@ async function handleSubmissionReply(payload: Record<string, unknown>): Promise<
 
   const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
 
+  // `toEmail` est stocké CHIFFRÉ au repos (enc:v1, PII contact). On déchiffre au
+  // seul moment de l'envoi. decryptPii = no-op sur une valeur déjà en clair.
+  const to = decryptPii(reply.toEmail);
+
+  // Garde : si l'adresse est illisible — clé `PII_ENCRYPTION_KEY` absente ou
+  // désalignée sur le WORKER → decryptPii renvoie le placeholder — inutile de
+  // consommer les 5 retries BullMQ sur un problème de CONFIG. On marque `failed`
+  // avec un errorMsg distinctif (rejouable après alignement de la clé) et on NE
+  // throw PAS. C'est la cause racine #1 du « Échec envoi » (cf. plan §0).
+  if (!isDecryptedEmailUsable(to)) {
+    await prisma.submissionReply.update({
+      where: { id: reply.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: "recipient: adresse illisible (PII_ENCRYPTION_KEY worker absente/désalignée ?)",
+      },
+    });
+    return;
+  }
+
   try {
     const result = await sendEmail({
-      // `toEmail` est stocké CHIFFRÉ au repos (enc:v1, PII contact). On déchiffre
-      // au seul moment de l'envoi. Sans ça, sendEmail recevait le ciphertext
-      // comme destinataire → SMTP rejette → deliveryStatus=failed (bug « la
-      // réponse ne part pas »). decryptPii = no-op sur une valeur déjà en clair.
-      to: decryptPii(reply.toEmail),
+      to,
       subject: reply.subject,
       html: reply.bodyHtml,
       text: reply.bodyText,
