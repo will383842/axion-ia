@@ -63,8 +63,8 @@ export default async function Contact({ params }: Props) {
   const t = isFr
     ? {
         eyebrow: "Contact",
-        titleLead: "Parlons de votre ",
-        titleEm: "projet",
+        titleLead: "Parlons de ",
+        titleEm: "vous",
         subtitle:
           "Un seul formulaire pour toute demande — audit, intégration, formation, coaching ou partenariat. Chaque message est lu personnellement par un consultant senior.",
         reassure: [
@@ -79,8 +79,8 @@ export default async function Contact({ params }: Props) {
       }
     : {
         eyebrow: "Contact",
-        titleLead: "Let's talk about your ",
-        titleEm: "project",
+        titleLead: "Let's talk about ",
+        titleEm: "you",
         subtitle:
           "A single form for every request — audit, integration, training, coaching or partnership. Every message is read personally by a senior consultant.",
         reassure: [
@@ -145,7 +145,7 @@ export default async function Contact({ params }: Props) {
     <div className="contact-minimal bg-halo-warm">
       <style dangerouslySetInnerHTML={{ __html: hideFooterCss }} />
 
-      <Container className="border-b border-border py-3">
+      <Container className="border-border border-b py-3">
         <Breadcrumbs items={[{ href: "/contact", label: isFr ? "Contact" : "Contact" }]} />
       </Container>
 
@@ -154,14 +154,14 @@ export default async function Contact({ params }: Props) {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-start lg:gap-16">
             {/* ---- Colonne gauche : réassurance éditoriale (sticky au lg+) ---- */}
             <div className="lg:sticky lg:top-28">
-              <p className="text-[13px] font-medium tracking-[0.16em] text-fg-muted uppercase">
+              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
                   aria-hidden="true"
-                  className="mr-3 inline-block h-1.5 w-1.5 rounded-full bg-terracotta align-middle"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
                 {t.eyebrow}
               </p>
-              <h1 className="display-editorial mt-5 text-fg">
+              <h1 className="display-editorial text-fg mt-5">
                 {t.titleLead}
                 <span
                   className="text-terracotta italic"
@@ -170,7 +170,7 @@ export default async function Contact({ params }: Props) {
                   {t.titleEm}
                 </span>
               </h1>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-fg-soft sm:text-lg">
+              <p className="text-fg-soft mt-5 max-w-md text-base leading-relaxed sm:text-lg">
                 {t.subtitle}
               </p>
 
@@ -178,8 +178,8 @@ export default async function Contact({ params }: Props) {
                   trust pills du formulaire couvrent le rassurement mobile). */}
               <ul className="mt-9 hidden space-y-4 lg:block">
                 {t.reassure.map(({ icon: Icon, label }) => (
-                  <li key={label} className="flex items-start gap-3 text-fg-soft">
-                    <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-terracotta-soft text-terracotta-deep">
+                  <li key={label} className="text-fg-soft flex items-start gap-3">
+                    <span className="bg-terracotta-soft text-terracotta-deep mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
                       <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={2} />
                     </span>
                     <span className="text-[14.5px] leading-relaxed">{label}</span>
@@ -188,24 +188,24 @@ export default async function Contact({ params }: Props) {
               </ul>
 
               {/* Canaux alternatifs — desktop only */}
-              <div className="mt-9 hidden border-t border-border pt-6 lg:block">
-                <p className="text-[13px] text-fg-muted">{t.altLead}</p>
+              <div className="border-border mt-9 hidden border-t pt-6 lg:block">
+                <p className="text-fg-muted text-[13px]">{t.altLead}</p>
                 <div className="mt-3 flex flex-col gap-2.5">
                   <a
                     href="mailto:contact@axion-ia.com"
-                    className="inline-flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[14.5px] font-semibold text-fg transition-colors hover:text-terracotta-deep"
+                    className="text-fg hover:text-terracotta-deep inline-flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[14.5px] font-semibold transition-colors"
                   >
-                    <Mail aria-hidden="true" className="h-4 w-4 text-terracotta" strokeWidth={2} />
+                    <Mail aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
                     {t.emailLabel}
-                    <span className="font-normal text-fg-muted">contact@axion-ia.com</span>
+                    <span className="text-fg-muted font-normal">contact@axion-ia.com</span>
                   </a>
                   <Link
                     href="/appel"
-                    className="group inline-flex items-center gap-2 text-[14.5px] font-semibold text-fg transition-colors hover:text-terracotta-deep"
+                    className="group text-fg hover:text-terracotta-deep inline-flex items-center gap-2 text-[14.5px] font-semibold transition-colors"
                   >
                     <CalendarClock
                       aria-hidden="true"
-                      className="h-4 w-4 text-terracotta"
+                      className="text-terracotta h-4 w-4"
                       strokeWidth={2}
                     />
                     {t.callLabel}
@@ -219,7 +219,7 @@ export default async function Contact({ params }: Props) {
             </div>
 
             {/* ---- Colonne droite : carte formulaire ---- */}
-            <div className="rounded-3xl border border-border bg-paper p-5 shadow-card sm:p-7 lg:p-9">
+            <div className="border-border bg-paper shadow-card rounded-3xl border p-5 sm:p-7 lg:p-9">
               <UnifiedContactForm source="/contact" />
             </div>
           </div>

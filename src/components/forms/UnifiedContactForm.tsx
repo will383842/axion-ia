@@ -409,25 +409,25 @@ function UnifiedContactFormBody({
     return (
       <div
         className={cn(
-          "rounded-3xl border-2 border-terracotta/30 bg-paper p-8 shadow-card sm:p-10",
+          "border-terracotta/30 bg-paper shadow-card rounded-3xl border-2 p-8 sm:p-10",
           className,
         )}
         role="status"
       >
-        <div className="bg-halo-warm mb-5 inline-flex items-center gap-2 rounded-full border border-terracotta/30 px-4 py-1.5">
-          <Check aria-hidden="true" strokeWidth={3} className="h-4 w-4 text-terracotta-deep" />
-          <span className="text-[12px] font-semibold tracking-[0.16em] text-terracotta-deep uppercase">
+        <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
+          <Check aria-hidden="true" strokeWidth={3} className="text-terracotta-deep h-4 w-4" />
+          <span className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
             {t.eyebrow}
           </span>
         </div>
         <p
-          className="text-2xl leading-snug font-medium tracking-tight text-fg sm:text-3xl"
+          className="text-fg text-2xl leading-snug font-medium tracking-tight sm:text-3xl"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           {t.success}
         </p>
         {submissionId ? (
-          <p className="mt-3 text-sm text-fg-muted">
+          <p className="text-fg-muted mt-3 text-sm">
             {t.referenceLabel} :{" "}
             <span className="font-mono text-xs tabular-nums">{submissionId}</span>
           </p>
@@ -464,9 +464,9 @@ function UnifiedContactFormBody({
           choisie. Zéro friction, mobile-first, sans état d'ouverture. */}
       {!lockType ? (
         <fieldset className="space-y-3.5">
-          <legend className="mb-1 block text-base font-bold text-fg sm:text-lg">
+          <legend className="text-fg mb-1 block text-base font-bold sm:text-lg">
             {t.typeLabel}
-            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
           </legend>
 
           {/* Groupe 1 — Projet IA : chips prominents (icône + libellé) */}
@@ -486,7 +486,7 @@ function UnifiedContactFormBody({
                   aria-checked={isSel}
                   onClick={() => selectType(opt)}
                   className={cn(
-                    "group flex flex-col items-start gap-2 rounded-2xl border-2 p-3.5 text-left transition-all focus-visible:ring-4 focus-visible:ring-terracotta/40 focus-visible:outline-none",
+                    "group focus-visible:ring-terracotta/40 flex flex-col items-start gap-2 rounded-2xl border-2 p-3.5 text-left transition-all focus-visible:ring-4 focus-visible:outline-none",
                     isSel
                       ? "border-terracotta bg-terracotta-soft shadow-sm"
                       : "border-border bg-paper hover:border-terracotta/50 hover:bg-terracotta-soft/30",
@@ -516,8 +516,8 @@ function UnifiedContactFormBody({
           </div>
 
           {/* Groupe 2 — Autres demandes : pastilles discrètes (hiérarchie) */}
-          <div className="border-t border-border/70 pt-3.5">
-            <p className="mb-2 text-[11px] font-semibold tracking-[0.14em] text-fg-muted uppercase">
+          <div className="border-border/70 border-t pt-3.5">
+            <p className="text-fg-muted mb-2 text-[11px] font-semibold tracking-[0.14em] uppercase">
               {t.typeGroupHint}
             </p>
             <div role="radiogroup" aria-label={t.typeGroups.autre} className="flex flex-wrap gap-2">
@@ -532,7 +532,7 @@ function UnifiedContactFormBody({
                     aria-checked={isSel}
                     onClick={() => selectType(opt)}
                     className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-all focus-visible:ring-4 focus-visible:ring-terracotta/40 focus-visible:outline-none",
+                      "focus-visible:ring-terracotta/40 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-all focus-visible:ring-4 focus-visible:outline-none",
                       isSel
                         ? "border-terracotta bg-terracotta-soft text-terracotta-deep"
                         : "border-border bg-paper text-fg-soft hover:border-terracotta/50 hover:text-fg",
@@ -558,7 +558,7 @@ function UnifiedContactFormBody({
               <>
                 <ArrowRight
                   aria-hidden="true"
-                  className="mt-[3px] h-3.5 w-3.5 shrink-0 text-terracotta"
+                  className="text-terracotta mt-[3px] h-3.5 w-3.5 shrink-0"
                   strokeWidth={2.5}
                 />
                 <span>{unifiedTypeHint(type, locale)}</span>
@@ -569,7 +569,7 @@ function UnifiedContactFormBody({
           </p>
 
           {errors.type ? (
-            <p role="alert" className="text-xs text-accent-red">
+            <p role="alert" className="text-accent-red text-xs">
               {errors.type.message ?? t.typeRequired}
             </p>
           ) : null}
@@ -583,7 +583,7 @@ function UnifiedContactFormBody({
         <div className="grid gap-2">
           <Label htmlFor="unified-nom">
             {t.nom}
-            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
           </Label>
           <Input
             id="unified-nom"
@@ -594,7 +594,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.nom ? "unified-nom-err" : undefined}
           />
           {errors.nom ? (
-            <p id="unified-nom-err" role="alert" className="text-xs text-accent-red">
+            <p id="unified-nom-err" role="alert" className="text-accent-red text-xs">
               {errors.nom.message}
             </p>
           ) : null}
@@ -602,7 +602,7 @@ function UnifiedContactFormBody({
         <div className="grid gap-2">
           <Label htmlFor="unified-email">
             {t.email}
-            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
           </Label>
           <Input
             id="unified-email"
@@ -614,7 +614,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.email ? "unified-email-err" : undefined}
           />
           {errors.email ? (
-            <p id="unified-email-err" role="alert" className="text-xs text-accent-red">
+            <p id="unified-email-err" role="alert" className="text-accent-red text-xs">
               {errors.email.message}
             </p>
           ) : null}
@@ -626,7 +626,7 @@ function UnifiedContactFormBody({
         <div className="grid gap-2">
           <Label htmlFor="unified-telephone">
             {t.telephone}
-            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
           </Label>
           <Input
             id="unified-telephone"
@@ -639,7 +639,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.telephone ? "unified-tel-err" : undefined}
           />
           {errors.telephone ? (
-            <p id="unified-tel-err" role="alert" className="text-xs text-accent-red">
+            <p id="unified-tel-err" role="alert" className="text-accent-red text-xs">
               {errors.telephone.message}
             </p>
           ) : null}
@@ -647,7 +647,7 @@ function UnifiedContactFormBody({
         <div className="grid gap-2">
           <Label htmlFor="unified-ville">
             {t.ville}
-            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
           </Label>
           <Input
             id="unified-ville"
@@ -658,7 +658,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.ville ? "unified-ville-err" : undefined}
           />
           {errors.ville ? (
-            <p id="unified-ville-err" role="alert" className="text-xs text-accent-red">
+            <p id="unified-ville-err" role="alert" className="text-accent-red text-xs">
               {errors.ville.message}
             </p>
           ) : null}
@@ -670,7 +670,7 @@ function UnifiedContactFormBody({
         <div className="flex items-baseline justify-between gap-3">
           <Label htmlFor="unified-message">
             {t.message}
-            <span className="ml-1.5 font-bold text-terracotta-deep">*</span>
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
           </Label>
           <span
             className={cn(
@@ -691,20 +691,20 @@ function UnifiedContactFormBody({
           aria-describedby={errors.message ? "unified-msg-err" : undefined}
         />
         {errors.message ? (
-          <p id="unified-msg-err" role="alert" className="text-xs text-accent-red">
+          <p id="unified-msg-err" role="alert" className="text-accent-red text-xs">
             {errors.message.message}
           </p>
         ) : null}
       </div>
 
       {/* Toggle avancé */}
-      <div className="border-t border-border pt-5">
+      <div className="border-border border-t pt-5">
         <button
           type="button"
           onClick={() => setAdvancedOpen((v) => !v)}
           aria-expanded={advancedOpen}
           aria-controls="unified-advanced"
-          className="inline-flex items-center gap-2 rounded text-sm font-semibold text-fg hover:text-terracotta-deep focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
+          className="text-fg hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex items-center gap-2 rounded text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
         >
           <ChevronDown
             aria-hidden="true"
@@ -714,7 +714,7 @@ function UnifiedContactFormBody({
         </button>
         {advancedOpen ? (
           <div id="unified-advanced" className="mt-4 space-y-4">
-            <p className="text-[12.5px] leading-relaxed text-fg-muted">{t.advancedHint}</p>
+            <p className="text-fg-muted text-[12.5px] leading-relaxed">{t.advancedHint}</p>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
                 <Label htmlFor="unified-companyName">{t.companyName}</Label>
@@ -730,7 +730,7 @@ function UnifiedContactFormBody({
                 <select
                   id="unified-companySize"
                   {...register("companySize")}
-                  className="h-10 rounded-md border border-border bg-paper px-3 text-sm text-fg focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
+                  className="border-border bg-paper text-fg focus-visible:ring-terracotta h-10 rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
                 >
                   <option value="">—</option>
                   {COMPANY_SIZES.map((s) => (
@@ -755,7 +755,7 @@ function UnifiedContactFormBody({
                 <select
                   id="unified-timingWeeks"
                   {...register("timingWeeks")}
-                  className="h-10 rounded-md border border-border bg-paper px-3 text-sm text-fg focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
+                  className="border-border bg-paper text-fg focus-visible:ring-terracotta h-10 rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
                 >
                   <option value="">—</option>
                   {TIMING_WEEKS.map((w) => (
@@ -791,13 +791,13 @@ function UnifiedContactFormBody({
         />
         <Label
           htmlFor="unified-consent"
-          className="cursor-pointer text-[13px] leading-relaxed text-fg-soft"
+          className="text-fg-soft cursor-pointer text-[13px] leading-relaxed"
         >
           {t.consent}
         </Label>
       </div>
       {errors.consent ? (
-        <p role="alert" className="text-xs text-accent-red">
+        <p role="alert" className="text-accent-red text-xs">
           {errors.consent.message}
         </p>
       ) : null}
@@ -825,10 +825,10 @@ function UnifiedContactFormBody({
       </Button>
 
       {/* Trust pills */}
-      <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-fg-muted">
+      <ul className="text-fg-muted flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
         {t.trustPills.map((p) => (
           <li key={p} className="inline-flex items-center gap-1.5">
-            <Check aria-hidden="true" strokeWidth={3} className="h-3 w-3 text-terracotta-deep" />
+            <Check aria-hidden="true" strokeWidth={3} className="text-terracotta-deep h-3 w-3" />
             {p}
           </li>
         ))}
