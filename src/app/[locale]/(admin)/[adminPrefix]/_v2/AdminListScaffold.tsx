@@ -39,6 +39,12 @@ interface AdminListScaffoldProps {
   emptyDescription?: string;
   paginationBaseHref: string;
   paginationPreservedParams?: Record<string, string | undefined>;
+  /**
+   * Rend la LIGNE ENTIÈRE cliquable vers `detailHref` (clic n'importe où).
+   * Opt-in — à réserver aux listes sans cellule interactive. Remplace le lien
+   * « Détail → » par un simple chevron visuel.
+   */
+  rowClickable?: boolean;
 }
 
 export function AdminListScaffold({
@@ -54,6 +60,7 @@ export function AdminListScaffold({
   emptyDescription,
   paginationBaseHref,
   paginationPreservedParams,
+  rowClickable = false,
 }: AdminListScaffoldProps): React.ReactElement {
   const columns: ReadonlyArray<AdminTableColumn<AdminListScaffoldRow>> = columnHeaders.map(
     (header, i) => ({
@@ -80,14 +87,26 @@ export function AdminListScaffold({
           columns={columns}
           rows={rows}
           getRowId={(r) => r.id}
+          {...(rowClickable
+            ? { rowHref: (r: AdminListScaffoldRow) => r.detailHref }
+            : {})}
           rowAction={(r) =>
             r.detailHref ? (
-              <Link
-                href={r.detailHref}
-                className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-              >
-                Détail →
-              </Link>
+              rowClickable ? (
+                <span
+                  aria-hidden="true"
+                  className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-muted)]"
+                >
+                  ›
+                </span>
+              ) : (
+                <Link
+                  href={r.detailHref}
+                  className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
+                >
+                  Détail →
+                </Link>
+              )
             ) : null
           }
         />

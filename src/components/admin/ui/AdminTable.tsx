@@ -8,6 +8,7 @@
 // pas de state interne). La pagination est un composant séparé
 // (<AdminPagination> en PR 4).
 
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 export interface AdminTableColumn<T> {
@@ -31,6 +32,12 @@ interface AdminTableProps<T> {
   getRowId: (row: T) => string;
   /** Colonne actions (déroulant, lien détail) en dernière colonne. */
   rowAction?: (row: T) => React.ReactNode;
+  /**
+   * Rend la LIGNE ENTIÈRE cliquable (lien étiré) vers l'href retourné.
+   * Opt-in : à n'utiliser que sur des listes SANS élément interactif en cellule
+   * (le lien étiré recouvre la ligne). Clic n'importe où → ouvre le détail.
+   */
+  rowHref?: (row: T) => string | undefined;
   /**
    * Sort actuel (passé via searchParams) — utilisé pour aria-sort uniquement.
    * Le consumer fabrique les href triés (pas de mutation côté table).
@@ -60,6 +67,7 @@ export function AdminTable<T>({
   rows,
   getRowId,
   rowAction,
+  rowHref,
   currentSort,
   emptyState,
   caption,
@@ -121,15 +129,19 @@ export function AdminTable<T>({
         <tbody>
           {rows.map((row) => {
             const id = getRowId(row);
+            const href = rowHref?.(row);
             return (
               <tr
                 key={id}
                 className={cn(
                   "transition-colors",
                   "hover:bg-[color:var(--color-admin-surface-hover)]",
+                  // Ligne entière cliquable : `relative` établit le contexte pour
+                  // le lien étiré (absolute inset-0) placé dans la 1re cellule.
+                  href && "relative cursor-pointer",
                 )}
               >
-                {columns.map((col) => (
+                {columns.map((col, ci) => (
                   <td
                     key={col.key}
                     className={cn(
@@ -140,6 +152,13 @@ export function AdminTable<T>({
                       col.hiddenBelow ? HIDDEN_CLASS[col.hiddenBelow] : "",
                     )}
                   >
+                    {ci === 0 && href ? (
+                      <Link
+                        href={href}
+                        aria-label="Ouvrir le détail"
+                        className="absolute inset-0 z-[1] rounded-[var(--radius-admin-md)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-info)] focus-visible:outline-none"
+                      />
+                    ) : null}
                     {col.cell(row)}
                   </td>
                 ))}

@@ -51,10 +51,22 @@ export async function SubmissionDetailContent({
     details && typeof details.unifiedType === "string" ? details.unifiedType : null;
   const typeLabel = resolveSubmissionLabel(submission.type, unifiedType);
 
+  // Présentation lisible : on SORT le message + les métas utiles (ville/source)
+  // du JSON brut pour les afficher en clair. Le reste (JSON, IP, User-Agent) part
+  // dans un repli « Informations techniques » masqué par défaut.
+  const messageText =
+    details && typeof details.message === "string" ? details.message.trim() : "";
+  const ville = details && typeof details.ville === "string" ? details.ville : null;
+  const sourceUrl = details && typeof details.source === "string" ? details.source : null;
+  const titreSociete =
+    submission.companyName && submission.companyName !== "—"
+      ? submission.companyName
+      : submission.contactName;
+
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title={`${typeLabel} · ${submission.companyName}`}
+        title={`${typeLabel} · ${titreSociete}`}
         description={`Reçue le ${submission.submittedAt.toISOString().slice(0, 10)} · locale ${submission.locale.toUpperCase()}`}
         breadcrumbs={
           <a href={backHref} className="admin-link admin-back">
@@ -71,6 +83,24 @@ export async function SubmissionDetailContent({
         }
       />
       <div className="admin-detail-grid">
+        {messageText ? (
+          <div className="admin-card admin-card-wide">
+            <h2 className="admin-h2">Message</h2>
+            <p
+              className="text-[length:var(--text-admin-base)] leading-[var(--lh-admin-body)] text-[color:var(--color-admin-fg)]"
+              style={{ whiteSpace: "pre-wrap" }}
+            >
+              {messageText}
+            </p>
+            {(ville || sourceUrl) && (
+              <p className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {ville ? <>📍 {ville}</> : null}
+                {ville && sourceUrl ? " · " : null}
+                {sourceUrl ? <>reçu via {sourceUrl}</> : null}
+              </p>
+            )}
+          </div>
+        ) : null}
         <div className="admin-card">
           <h2 className="admin-h2">Identité société</h2>
           <dl className="admin-dl">
@@ -121,10 +151,6 @@ export async function SubmissionDetailContent({
             )}
           </dl>
         </div>
-        <div className="admin-card admin-card-wide">
-          <h2 className="admin-h2">Détails formulaire</h2>
-          <pre className="admin-json">{JSON.stringify(submission.details, null, 2)}</pre>
-        </div>
         {submission.bookings.length > 0 && (
           <div className="admin-card admin-card-wide">
             <h2 className="admin-h2">Réservations liées ({submission.bookings.length})</h2>
@@ -168,25 +194,28 @@ export async function SubmissionDetailContent({
           />
         </div>
         <ReplyHistory submissionId={submission.id} />
-        {(submission.ipAddress || submission.userAgent) && (
-          <div className="admin-card admin-card-wide">
-            <h2 className="admin-h2">Métadonnées techniques</h2>
-            <dl className="admin-dl">
-              {submission.ipAddress && (
-                <>
-                  <DT>IP</DT>
-                  <DD>{submission.ipAddress}</DD>
-                </>
-              )}
-              {submission.userAgent && (
-                <>
-                  <DT>User-Agent</DT>
-                  <DD className="admin-meta-small">{submission.userAgent}</DD>
-                </>
-              )}
-            </dl>
-          </div>
-        )}
+        <details className="admin-card admin-card-wide">
+          <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] select-none">
+            Informations techniques (données brutes, IP, navigateur)
+          </summary>
+          <dl className="admin-dl mt-[var(--space-admin-4)]">
+            {submission.ipAddress && (
+              <>
+                <DT>IP</DT>
+                <DD>{submission.ipAddress}</DD>
+              </>
+            )}
+            {submission.userAgent && (
+              <>
+                <DT>User-Agent</DT>
+                <DD className="admin-meta-small">{submission.userAgent}</DD>
+              </>
+            )}
+          </dl>
+          <pre className="admin-json mt-[var(--space-admin-4)]">
+            {JSON.stringify(submission.details, null, 2)}
+          </pre>
+        </details>
       </div>
     </AdminPageShell>
   );
