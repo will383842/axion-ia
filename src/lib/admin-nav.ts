@@ -809,6 +809,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "formations",
     },
     {
+      href: `${base}/qualiopi/remuneration`,
+      label: "Rémunération formateurs",
+      icon: "💶",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
+    {
       href: `${base}/qualiopi/stagiaires`,
       label: "Stagiaires",
       icon: "🧑‍🎓",

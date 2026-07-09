@@ -29,7 +29,10 @@ describe("buildAdminNav SSOT", () => {
     // formateur (cockpit de pilotage). = 127.
     // +1 (2026-07-09) : « Prévisionnel » — CA planifié/réalisé, encaissements
     // attendus, reste à facturer, impayés (cockpit de pilotage). = 128.
-    expect(items.length).toBe(128);
+    // +1 (2026-07-09) : « Rémunération formateurs » — run mensuel, relevés
+    // d'honoraires et anomalies (pilier C du commissionnement). Groupe qualiopi,
+    // sous-groupe formations, à côté de « Formateurs ». = 129.
+    expect(items.length).toBe(129);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
