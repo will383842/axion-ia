@@ -2,7 +2,17 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import {
+  Clock,
+  UserRound,
+  ShieldCheck,
+  BadgeCheck,
+  Mail,
+  CalendarClock,
+  ArrowUpRight,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
@@ -33,12 +43,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-// Page volontairement épurée : header global + titre + formulaire + (footer
-// global masqué via `<style>`). Toutes les sections d'autorité (3 portes,
-// FAQ, posture, CTA) ont été déplacées hors-page pour réduire le time-to-form
-// au strict minimum — décision Will 2026-05-26. Le formulaire est unifié et
-// couvre 7 cas (autre + devis + audit + implementation + formation + 1-à-1 +
-// partenariat) ; le formulaire sert à tout via `autre` par défaut.
+// Page épurée mais chaleureuse : header global + layout éditorial 2 colonnes
+// (panneau de réassurance sticky à gauche + carte formulaire à droite) au lg+,
+// empilé et form-first sur mobile. Footer global masqué via `<style>`. Les
+// sections d'autorité lourdes (3 portes, FAQ) restent hors-page pour garder un
+// time-to-form court. Refonte UX 2026-07-09 (Will) : le formulaire unifié couvre
+// 12 cas, sélecteur d'objet visuel (grille de chips) au lieu du dropdown caché.
 // ISR — la page consomme le layout partagé (bandeau + JSON-LD Qualiopi gated
 // Phase B, DB-sourcés au runtime). 24h suffit (formulaire, contenu stable).
 export const revalidate = 86400;
@@ -49,6 +59,40 @@ export default async function Contact({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+
+  const t = isFr
+    ? {
+        eyebrow: "Contact",
+        titleLead: "Parlons de ",
+        titleEm: "vous",
+        subtitle:
+          "Un seul formulaire pour toute demande — audit, intégration, formation, coaching ou partenariat. Chaque message est lu personnellement par un consultant senior.",
+        reassure: [
+          { icon: Clock, label: "Réponse sous 48 h ouvrées" },
+          { icon: UserRound, label: "Lu par un consultant senior, jamais un bot" },
+          { icon: ShieldCheck, label: "Données hébergées en UE · RGPD · aucune revente" },
+          { icon: BadgeCheck, label: "Échange sans engagement" },
+        ],
+        altLead: "Vous préférez un autre canal ?",
+        emailLabel: "Écrire directement",
+        callLabel: "Réserver un appel",
+      }
+    : {
+        eyebrow: "Contact",
+        titleLead: "Let's talk about ",
+        titleEm: "you",
+        subtitle:
+          "A single form for every request — audit, integration, training, coaching or partnership. Every message is read personally by a senior consultant.",
+        reassure: [
+          { icon: Clock, label: "Reply within 48 business hours" },
+          { icon: UserRound, label: "Read by a senior consultant, never a bot" },
+          { icon: ShieldCheck, label: "Data hosted in the EU · GDPR · no resale" },
+          { icon: BadgeCheck, label: "No-commitment conversation" },
+        ],
+        altLead: "Prefer another channel?",
+        emailLabel: "Email us directly",
+        callLabel: "Book a call",
+      };
 
   const contactJsonLd = {
     "@context": "https://schema.org",
@@ -105,31 +149,79 @@ export default async function Contact({ params }: Props) {
         <Breadcrumbs items={[{ href: "/contact", label: isFr ? "Contact" : "Contact" }]} />
       </Container>
 
-      <section className="py-14 sm:py-20 lg:py-24">
-        <Container className="max-w-2xl">
-          <header className="mb-10 text-center sm:mb-12">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              Contact
-            </p>
-            <h1 className="display-editorial text-fg mt-5">
-              {isFr ? "Contactez-" : "Contact "}
-              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
-                {isFr ? "nous" : "us"}
-              </span>
-            </h1>
-            <p className="text-fg-soft mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
-              {isFr
-                ? "Un formulaire unique pour toute demande. Réponse sous 48 h ouvrées, sans engagement."
-                : "A single form for every request. Reply within 48 business hours, no commitment."}
-            </p>
-          </header>
+      <section className="py-12 sm:py-16 lg:py-24">
+        <Container className="max-w-6xl">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-start lg:gap-16">
+            {/* ---- Colonne gauche : réassurance éditoriale (sticky au lg+) ---- */}
+            <div className="lg:sticky lg:top-28">
+              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {t.eyebrow}
+              </p>
+              <h1 className="display-editorial text-fg mt-5">
+                {t.titleLead}
+                <span
+                  className="text-terracotta italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {t.titleEm}
+                </span>
+              </h1>
+              <p className="text-fg-soft mt-5 max-w-md text-base leading-relaxed sm:text-lg">
+                {t.subtitle}
+              </p>
 
-          <div className="bg-paper border-border shadow-card rounded-3xl border p-6 sm:p-8 lg:p-10">
-            <UnifiedContactForm defaultType="autre" source="/contact" />
+              {/* Réassurance détaillée — desktop only (mobile = form-first ; les
+                  trust pills du formulaire couvrent le rassurement mobile). */}
+              <ul className="mt-9 hidden space-y-4 lg:block">
+                {t.reassure.map(({ icon: Icon, label }) => (
+                  <li key={label} className="text-fg-soft flex items-start gap-3">
+                    <span className="bg-terracotta-soft text-terracotta-deep mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
+                      <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={2} />
+                    </span>
+                    <span className="text-[14.5px] leading-relaxed">{label}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Canaux alternatifs — desktop only */}
+              <div className="border-border mt-9 hidden border-t pt-6 lg:block">
+                <p className="text-fg-muted text-[13px]">{t.altLead}</p>
+                <div className="mt-3 flex flex-col gap-2.5">
+                  <a
+                    href="mailto:contact@axion-ia.com"
+                    className="text-fg hover:text-terracotta-deep inline-flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[14.5px] font-semibold transition-colors"
+                  >
+                    <Mail aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
+                    {t.emailLabel}
+                    <span className="text-fg-muted font-normal">contact@axion-ia.com</span>
+                  </a>
+                  <Link
+                    href="/appel"
+                    className="group text-fg hover:text-terracotta-deep inline-flex items-center gap-2 text-[14.5px] font-semibold transition-colors"
+                  >
+                    <CalendarClock
+                      aria-hidden="true"
+                      className="text-terracotta h-4 w-4"
+                      strokeWidth={2}
+                    />
+                    {t.callLabel}
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* ---- Colonne droite : carte formulaire ---- */}
+            <div className="border-border bg-paper shadow-card rounded-3xl border p-5 sm:p-7 lg:p-9">
+              <UnifiedContactForm source="/contact" />
+            </div>
           </div>
         </Container>
       </section>
