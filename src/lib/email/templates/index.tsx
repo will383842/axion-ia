@@ -7,6 +7,8 @@ import { render } from "@react-email/render";
 import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
 import type { Locale } from "../../../../prisma/generated/client";
+import { getPublishedReviewStats } from "../review-stats";
+import { ReviewStatsContext } from "./_layout";
 import { BookingConfirmedEmail, bookingConfirmedSubject } from "./booking-confirmed";
 import { BookingCancelledEmail, bookingCancelledSubject } from "./booking-cancelled";
 import { OptionPostedEmail, optionPostedSubject } from "./option-posted";
@@ -332,7 +334,14 @@ export async function renderEmailTemplate(
   const tpl = TEMPLATES[name];
   const Component = tpl.component;
   const subject = tpl.subject(locale, payload);
-  const element = <Component locale={locale} payload={payload} />;
+  // Injecte les stats avis RÉELLES (DB, cache 15 min) dans tout l'arbre → bandeau
+  // de confiance à jour sur tous les templates, sans changer chaque template.
+  const reviewStats = await getPublishedReviewStats();
+  const element = (
+    <ReviewStatsContext.Provider value={reviewStats}>
+      <Component locale={locale} payload={payload} />
+    </ReviewStatsContext.Provider>
+  );
   const html = await render(element, { pretty: false });
   const text = await render(element, { plainText: true });
   return { subject, html, text };
