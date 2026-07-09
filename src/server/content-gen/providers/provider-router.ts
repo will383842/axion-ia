@@ -100,16 +100,16 @@ export function _resetCircuits(): void {
  * Lu depuis ProviderConfig DB en Day 2 (V1 hardcodé pour squelette).
  */
 const ROLE_TO_PROVIDERS = {
-  // P1 fix audit content-gen 2026-06-05 (A-P1-01) — fallback Claude câblé pour
-  // TOUT le contenu texte. Avant ce patch, `text: [openaiProvider]` faisait
-  // d'OpenAI un single point of failure : une panne OpenAI (503 / circuit
-  // ouvert) arrêtait ~80 % de la génération (blog-article, blog-from-rss,
-  // blog-from-title, blog-from-keywords, comparison, guide-pilier,
-  // faq-standalone, qa-derived appellent role:"text" sans preferredProvider).
-  // Le fallback ne se déclenche QUE sur erreur retryable : un cost-cap ou un
-  // content_filter (ProviderError.retryable=false) throw toujours sans bascule
-  // inutile (cf. boucle generate() ligne ~162).
-  text: [openaiProvider, anthropicProvider],
+  // ── DÉCISION Will 2026-07-09 : génération de contenu = OpenAI UNIQUEMENT ──
+  //   Le fallback Claude (ajouté A-P1-01 2026-06-05) drainait le crédit Anthropic
+  //   à l'insu du propriétaire : dès qu'OpenAI renvoyait un 429 (rate-limit OU
+  //   quota épuisé — mappé `rate_limited` retryable dans openai.ts:63), TOUTE la
+  //   génération texte basculait sur claude-sonnet-4-6 (2× plus cher). Bilan
+  //   cost_ledger : 754 appels Claude = 51,75 $. Le fallback est donc RETIRÉ.
+  //   Conséquence assumée : une panne/quota OpenAI fait ÉCHOUER le job (retry
+  //   BullMQ attempts:3) plutôt que de dépenser sur Anthropic.
+  //   ⚠️ NE PAS remettre `anthropicProvider` ici sans accord explicite de Will.
+  text: [openaiProvider],
   image: [openaiProvider], // V1 = OpenAI image (V2 = gpt_image + fallback Unsplash)
   data: [perplexityProvider],
   stock_image: [unsplashProvider],

@@ -88,7 +88,10 @@ export async function judgeBenefitConcreteness(args: {
       jobId: args.jobId,
       contentType: args.contentType,
       role: "text",
-      preferredProvider: "anthropic",
+      // Will 2026-07-09 : juge bénéfices sur OpenAI (plus de Claude). `text` ne
+      // route plus que vers openai ; on force explicitement pour rester robuste
+      // si le resolver `preferredProvider` revoyait anthropic un jour.
+      preferredProvider: "openai",
       systemPrompt: JUDGE_SYSTEM_PROMPT,
       userPrompt: buildJudgeUserPrompt(args.content, args.context),
       maxTokens: 300,

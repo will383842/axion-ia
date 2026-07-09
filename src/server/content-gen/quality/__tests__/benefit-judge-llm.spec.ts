@@ -24,7 +24,7 @@ describe("benefit-judge-llm (PH3)", () => {
     expect(r?.score).toBe(85);
   });
 
-  it("passe par provider-router (COST-TRACKÉ), role text + anthropic, jamais new Anthropic", async () => {
+  it("passe par provider-router (COST-TRACKÉ), role text + openai, jamais new Anthropic", async () => {
     generateMock.mockResolvedValue({
       output: '{"total":50,"passed":false,"feedback_court":"faible"}',
     });
@@ -37,7 +37,7 @@ describe("benefit-judge-llm (PH3)", () => {
     expect(generateMock).toHaveBeenCalledOnce();
     const arg = generateMock.mock.calls[0]?.[0] as Record<string, unknown>;
     expect(arg.role).toBe("text");
-    expect(arg.preferredProvider).toBe("anthropic");
+    expect(arg.preferredProvider).toBe("openai");
     expect(arg.jobId).toBe("j2");
     expect(arg.contentType).toBe("comparison");
   });
