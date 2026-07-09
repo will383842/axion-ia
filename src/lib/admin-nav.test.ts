@@ -32,7 +32,11 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-07-09) : « Rémunération formateurs » — run mensuel, relevés
     // d'honoraires et anomalies (pilier C du commissionnement). Groupe qualiopi,
     // sous-groupe formations, à côté de « Formateurs ». = 129.
-    expect(items.length).toBe(129);
+    // +2 (2026-07-09) : « Hub de pilotage » (signaux des 3 piliers : sessions non
+    // staffées, conflits, formateurs non conformes en mission, surcharge, relevés
+    // en attente, anomalies) et « Timeline ressources » (formateur × jours du
+    // mois). Groupe main / sous-groupe agenda, avec les autres vues cockpit. = 131.
+    expect(items.length).toBe(131);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

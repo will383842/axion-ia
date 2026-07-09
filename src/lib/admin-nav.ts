@@ -298,10 +298,27 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main", subGroup: "agenda" },
     // Planning unifié des prestations (formations collectives + coaching 1-to-1).
     // Distinct du « Calendrier » booking ci-dessous, qui est un vestige masqué.
+    // Le hub d'abord : c'est la page qui dit ce qui ne va pas. Les autres vues
+    // du cockpit répondent à une question qu'on est venu poser ; celle-ci répond
+    // à une question qu'on n'a pas encore pensé à se poser.
+    {
+      href: `${base}/planning/hub`,
+      label: "Hub de pilotage",
+      icon: "🚨",
+      group: "main",
+      subGroup: "agenda",
+    },
     {
       href: `${base}/planning`,
       label: "Planning",
       icon: "🗓️",
+      group: "main",
+      subGroup: "agenda",
+    },
+    {
+      href: `${base}/planning/timeline`,
+      label: "Timeline ressources",
+      icon: "📊",
       group: "main",
       subGroup: "agenda",
     },

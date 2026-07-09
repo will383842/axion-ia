@@ -138,3 +138,21 @@ export function construireCharge(
   });
   return lignes;
 }
+
+/**
+ * Nombre de jours ouvrés (lundi→vendredi) du mois : capacité cible par défaut.
+ *
+ * Calcul en UTC — on n'a besoin que du jour de la semaine, jamais de l'heure.
+ * Les jours fériés ne sont PAS déduits : ils varient (Alsace-Moselle, ponts) et
+ * l'opérateur ajuste la capacité à la main. Mieux vaut une capacité légèrement
+ * haute et explicite qu'un calendrier férié faux.
+ */
+export function joursOuvresDuMois(year: number, month: number): number {
+  const nbJours = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  let ouvres = 0;
+  for (let d = 1; d <= nbJours; d += 1) {
+    const jour = new Date(Date.UTC(year, month - 1, d)).getUTCDay(); // 0=dim..6=sam
+    if (jour !== 0 && jour !== 6) ouvres += 1;
+  }
+  return ouvres;
+}

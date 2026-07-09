@@ -13,6 +13,7 @@ import {
   niveauCharge,
   construireCharge,
   type FormateurRef,
+  joursOuvresDuMois,
 } from "./charge";
 import type { PlanningEvent, PlanningStatut } from "./types";
 
@@ -269,5 +270,32 @@ describe("joursMobilises — bornage au mois (filtreJour)", () => {
       (k) => k.startsWith("2026-07"),
     );
     expect(ligne?.joursMobilises).toBe(2);
+  });
+});
+
+describe("joursOuvresDuMois", () => {
+  it("juin 2026 : 30 jours dont 22 ouvrés", () => {
+    expect(joursOuvresDuMois(2026, 6)).toBe(22);
+  });
+
+  it("février 2026 (28 j, commence un dimanche) : 20 ouvrés", () => {
+    expect(joursOuvresDuMois(2026, 2)).toBe(20);
+  });
+
+  it("février bissextile 2024 : 21 ouvrés", () => {
+    expect(joursOuvresDuMois(2024, 2)).toBe(21);
+  });
+
+  it("ne déduit PAS les jours fériés (choix assumé, l'opérateur ajuste)", () => {
+    // Mai 2026 : 21 jours ouvrés bruts, malgré le 1er et le 8 mai fériés.
+    expect(joursOuvresDuMois(2026, 5)).toBe(21);
+  });
+
+  it("un mois n'a jamais moins de 20 ni plus de 23 jours ouvrés", () => {
+    for (let m = 1; m <= 12; m += 1) {
+      const n = joursOuvresDuMois(2026, m);
+      expect(n).toBeGreaterThanOrEqual(20);
+      expect(n).toBeLessThanOrEqual(23);
+    }
   });
 });

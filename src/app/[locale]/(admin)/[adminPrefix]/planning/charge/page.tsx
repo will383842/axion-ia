@@ -12,6 +12,7 @@
 import Link from "next/link";
 import { getChargeMois } from "@/features/admin-planning/charge-queries";
 import {
+  joursOuvresDuMois,
   niveauCharge,
   type ChargeFormateur,
   type NiveauCharge,
@@ -47,21 +48,6 @@ function parseMonth(v: string | undefined, fallback: number): number {
 function parseYear(v: string | undefined, fallback: number): number {
   const n = v !== undefined ? Number.parseInt(v, 10) : NaN;
   return Number.isInteger(n) && n >= 2000 && n <= 2100 ? n : fallback;
-}
-
-/**
- * Nombre de jours ouvrés (lundi→vendredi) du mois : capacité cible par défaut.
- * Calcul en UTC (on n'a besoin que du jour de semaine, pas de l'heure) — les
- * jours fériés ne sont pas déduits ici, l'utilisateur peut ajuster la capacité.
- */
-function joursOuvresDuMois(year: number, month: number): number {
-  const nbJours = new Date(Date.UTC(year, month, 0)).getUTCDate();
-  let ouvres = 0;
-  for (let d = 1; d <= nbJours; d += 1) {
-    const jour = new Date(Date.UTC(year, month - 1, d)).getUTCDay(); // 0=dim..6=sam
-    if (jour !== 0 && jour !== 6) ouvres += 1;
-  }
-  return ouvres;
 }
 
 /** Capacité entre 1 et 31, sinon la valeur par défaut (jours ouvrés). */
