@@ -21,6 +21,8 @@ import {
   type ConformiteConfig,
   type ConformiteResultat,
   type DocumentConformite,
+  type DocumentValidationStatutValue,
+  type TrainerDocumentTypeValue,
   type TrainerStatutValue,
 } from "./conformite";
 
@@ -36,6 +38,48 @@ export async function listTrainerDocuments(trainerId: string): Promise<DocumentC
         dateExpiration: true,
       },
       orderBy: [{ dateEmission: "desc" }, { createdAt: "desc" }],
+    });
+  } catch {
+    return [];
+  }
+}
+
+/** Une pièce telle que l'écran d'administration a besoin de l'afficher. */
+export interface TrainerDocumentRow {
+  id: string;
+  type: TrainerDocumentTypeValue;
+  numeroPiece: string | null;
+  fichierUrl: string | null;
+  dateEmission: Date | null;
+  dateExpiration: Date | null;
+  statutValidation: DocumentValidationStatutValue;
+  rejetMotif: string | null;
+  createdAt: Date;
+}
+
+/**
+ * Pièces d'un formateur avec TOUS les champs d'affichage (n° de pièce, URL,
+ * motif de rejet, date de création…), pour le panneau de saisie de la console.
+ *
+ * `listTrainerDocuments` ne renvoie que ce dont le moteur de conformité a besoin ;
+ * on ne l'élargit pas pour ne pas alourdir ce chemin critique. Stub-safe → [].
+ */
+export async function listTrainerDocumentsFull(trainerId: string): Promise<TrainerDocumentRow[]> {
+  try {
+    return await prisma.trainerDocument.findMany({
+      where: { trainerId },
+      select: {
+        id: true,
+        type: true,
+        numeroPiece: true,
+        fichierUrl: true,
+        dateEmission: true,
+        dateExpiration: true,
+        statutValidation: true,
+        rejetMotif: true,
+        createdAt: true,
+      },
+      orderBy: [{ createdAt: "desc" }],
     });
   } catch {
     return [];

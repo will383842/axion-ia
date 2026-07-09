@@ -20,7 +20,12 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { cumulAnnuelFormateurCents, getTrainerConformite, listTrainerDocuments } from "./documents";
+import {
+  cumulAnnuelFormateurCents,
+  getTrainerConformite,
+  listTrainerDocuments,
+  listTrainerDocumentsFull,
+} from "./documents";
 
 const NOW = new Date("2026-07-09T12:00:00Z");
 
@@ -52,6 +57,60 @@ describe("listTrainerDocuments", () => {
     await listTrainerDocuments("t1");
     const arg = mockDocumentFindMany.mock.calls[0]?.[0] as { where: { trainerId: string } };
     expect(arg.where.trainerId).toBe("t1");
+  });
+});
+
+describe("listTrainerDocumentsFull", () => {
+  it("stub-safe : une erreur Prisma rend [] sans throw", async () => {
+    mockDocumentFindMany.mockRejectedValue(new Error("no db"));
+    await expect(listTrainerDocumentsFull("t1")).resolves.toEqual([]);
+  });
+
+  it("scope sur le formateur et tri par création décroissante", async () => {
+    await listTrainerDocumentsFull("t1");
+    const arg = mockDocumentFindMany.mock.calls[0]?.[0] as {
+      where: { trainerId: string };
+      orderBy: Array<{ createdAt: string }>;
+      select: Record<string, boolean>;
+    };
+    expect(arg.where.trainerId).toBe("t1");
+    expect(arg.orderBy).toEqual([{ createdAt: "desc" }]);
+  });
+
+  it("sélectionne les champs d'affichage (n° pièce, URL, motif de rejet…)", async () => {
+    await listTrainerDocumentsFull("t1");
+    const arg = mockDocumentFindMany.mock.calls[0]?.[0] as { select: Record<string, boolean> };
+    for (const champ of [
+      "id",
+      "type",
+      "numeroPiece",
+      "fichierUrl",
+      "dateEmission",
+      "dateExpiration",
+      "statutValidation",
+      "rejetMotif",
+      "createdAt",
+    ]) {
+      expect(arg.select[champ]).toBe(true);
+    }
+  });
+
+  it("renvoie les lignes telles quelles", async () => {
+    const rows = [
+      {
+        id: "d1",
+        type: "nda_sous_traitant",
+        numeroPiece: "NDA-123",
+        fichierUrl: null,
+        dateEmission: new Date("2026-06-01T00:00:00Z"),
+        dateExpiration: null,
+        statutValidation: "en_attente",
+        rejetMotif: null,
+        createdAt: new Date("2026-07-01T00:00:00Z"),
+      },
+    ];
+    mockDocumentFindMany.mockResolvedValue(rows);
+    await expect(listTrainerDocumentsFull("t1")).resolves.toEqual(rows);
   });
 });
 

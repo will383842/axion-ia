@@ -11,9 +11,13 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
-import { getTrainerConformite } from "@/server/qualiopi/trainers/documents";
+import {
+  getTrainerConformite,
+  listTrainerDocumentsFull,
+} from "@/server/qualiopi/trainers/documents";
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
+import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 
 export const dynamic = "force-dynamic";
@@ -81,6 +85,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   if (!trainer) notFound();
 
   const formations = await listFormationsLite();
+  const documents = await listTrainerDocumentsFull(trainer.id);
   const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
 
   // Conformité documentaire (URSSAF, NDA, RC pro…). Les manquements « bloquant »
@@ -160,6 +165,9 @@ export default async function FicheFormateurPage({ params }: PageProps) {
           )}
         </div>
       )}
+
+      {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
+      <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
 
       <div className="mb-[var(--space-admin-6)]">
         <TrainerForm
