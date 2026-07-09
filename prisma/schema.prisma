@@ -5097,6 +5097,16 @@ enum ModaliteFormation {
   hybride
 }
 
+/// Lieu PHYSIQUE d'une prestation. Complète (sans remplacer) `modalite` : une
+/// session `presentiel` peut se tenir chez le client (`sur_site`) ou dans nos
+/// locaux (`nos_locaux`). Requis pour la convention L.6353-1 et la convocation
+/// (Qualiopi off.9 — information sur les conditions de déroulement).
+enum LieuType {
+  sur_site
+  nos_locaux
+  distanciel
+}
+
 /// Niveau visé des participants — pilote la profondeur/registre du contenu généré.
 enum NiveauFormation {
   debutant
@@ -5244,6 +5254,17 @@ model TrainingSession {
   dateFin                            DateTime                 @map("date_fin")
   dureeReelleHeures                  Int?                     @map("duree_reelle_heures")
   modalite                           ModaliteFormation
+  // ── Lieu de déroulement (Qualiopi off.9 + convention L.6353-1). Tout additif :
+  // null = session legacy, les documents retombent sur `modalite` seule. ──────
+  lieuType                           LieuType?                @map("lieu_type")
+  /// Intitulé libre du lieu (ex. « Siège du client », « Salle Fraunces »).
+  lieuIntitule                       String?                  @map("lieu_intitule") @db.VarChar(200)
+  lieuAdresse                        String?                  @map("lieu_adresse") @db.Text
+  lieuCodePostal                     String?                  @map("lieu_code_postal") @db.VarChar(10)
+  lieuVille                          String?                  @map("lieu_ville") @db.VarChar(120)
+  lieuSalle                          String?                  @map("lieu_salle") @db.VarChar(120)
+  /// URL de visioconférence (lieu de déroulement en distanciel).
+  lieuVisioUrl                       String?                  @map("lieu_visio_url") @db.Text
   icalUid                            String?                  @map("ical_uid") @db.VarChar(255)
   clientId                           String?                  @map("client_id") @db.Uuid
   client                             Client?                  @relation(fields: [clientId], references: [id], onDelete: SetNull)
@@ -6757,7 +6778,20 @@ model CoachingSession {
   bookingId                String?               @map("booking_id") @db.Uuid
   /// Slug d'intervention (cf. booking-catalog : dirigeant-vision-strategique, coaching-decouverte…).
   interventionSlug         String                @map("intervention_slug") @db.VarChar(80)
+  /// Début de la séance. Historiquement une date sans heure (minuit) → le
+  /// calendrier retombe sur un événement « journée entière » si `dateSeanceFin`
+  /// est null.
   dateSeance               DateTime              @map("date_seance")
+  /// Fin planifiée de la séance (créneau horaire). Null = séance legacy sans heure.
+  dateSeanceFin            DateTime?             @map("date_seance_fin")
+  // ── Lieu de déroulement (miroir TrainingSession). Tout additif. ─────────────
+  lieuType                 LieuType?             @map("lieu_type")
+  lieuIntitule             String?               @map("lieu_intitule") @db.VarChar(200)
+  lieuAdresse              String?               @map("lieu_adresse") @db.Text
+  lieuCodePostal           String?               @map("lieu_code_postal") @db.VarChar(10)
+  lieuVille                String?               @map("lieu_ville") @db.VarChar(120)
+  lieuSalle                String?               @map("lieu_salle") @db.VarChar(120)
+  lieuVisioUrl             String?               @map("lieu_visio_url") @db.Text
   statut                   CoachingSessionStatut @default(planifiee)
   beneficiaireNom          String?               @map("beneficiaire_nom") @db.VarChar(200)
   beneficiaireEmail        String?               @map("beneficiaire_email") @db.Citext
