@@ -5125,6 +5125,198 @@ enum DocumentValidationStatut {
   rejete
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// COMMISSIONNEMENT DES FORMATEURS (pilier C)
+//
+// Moteur de calcul (pur, testé) : `src/server/qualiopi/remuneration/calcul.ts`.
+// Ces modèles ne font que PERSISTER ce qu'il produit.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Modèle de rémunération d'une prestation.
+enum CompensationModel {
+  taux_journalier
+  taux_horaire
+  commission_ca_pct
+  forfait_prestation
+}
+
+/// Type de prestation rémunérée.
+enum PrestationType {
+  formation_collective
+  coaching_1to1
+  audit
+}
+
+/// Nature COMPTABLE de la ligne. Découle du STATUT du formateur, pas du modèle
+/// de rémunération :
+///   - `analytique`   : salarié — valorisation indicative du coût-formateur. Le
+///     salaire réel est en paie externe. JAMAIS « à payer », jamais au BPF.
+///   - `honoraire_du` : indépendant — honoraires réellement dus, à facturer par
+///     lui, à payer par l'OF, et à porter en charges du BPF.
+/// Snapshotée sur la ligne : changer le statut du formateur ne reclasse pas le passé.
+enum FeeLineNature {
+  analytique
+  honoraire_du
+}
+
+enum FeeLineStatut {
+  /// Prestation pas encore réalisée : montant estimé, non engageant.
+  previsionnel
+  /// Prestation réalisée : montant calculé.
+  calcule
+  /// Figé dans un relevé validé. Ne se recalcule plus (correction = ligne d'ajustement).
+  valide
+  /// Prestation annulée/reportée, ou ligne écartée.
+  annule
+}
+
+enum StatementStatut {
+  brouillon
+  a_valider
+  valide
+  /// Facture d'honoraires reçue du formateur. Gate DUR avant paiement.
+  facture_recue
+  paye
+  annule
+}
+
+/// Régime de TVA des HONORAIRES d'un indépendant. Dépend du régime fiscal DU
+/// FORMATEUR (celui qui facture), PAS de l'OF ni du financeur. `franchise_293b`
+/// et `exonere_formation` donnent tous deux 0 %, mais sur des bases légales
+/// DIFFÉRENTES — ne pas les confondre.
+enum TvaRegimeHonoraires {
+  franchise_293b
+  exonere_formation
+  assujetti_20
+}
+
+/// Une VERSION de barème d'un formateur. On ne mute JAMAIS une règle en vigueur :
+/// on la clôt (`effectiveTo`) et on en crée une nouvelle. `effectiveFrom` inclus,
+/// `effectiveTo` exclu. C'est ce qui garantit l'invariant comptable : changer un
+/// taux en septembre ne recalcule jamais les sessions de juin.
+model TrainerCompensationRule {
+  id                 String            @id @default(uuid()) @db.Uuid
+  trainerId          String            @map("trainer_id") @db.Uuid
+  trainer            Trainer           @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  /// Null = barème global du formateur (tous types de prestation).
+  prestationType     PrestationType?   @map("prestation_type")
+  /// Null = tous les slugs. Sinon cible fine (ex. un coaching précis).
+  interventionSlug   String?           @map("intervention_slug") @db.VarChar(80)
+  model              CompensationModel
+  tauxJourneeHtCents Int?              @map("taux_journee_ht_cents")
+  tauxHoraireHtCents Int?              @map("taux_horaire_ht_cents")
+  /// Pourcentage du CA HT (ex. 40.00). Decimal : jamais de flottant sur de l'argent.
+  commissionPct      Decimal?          @map("commission_pct") @db.Decimal(5, 2)
+  forfaitHtCents     Int?              @map("forfait_ht_cents")
+  effectiveFrom      DateTime          @map("effective_from")
+  /// Null = en vigueur.
+  effectiveTo        DateTime?         @map("effective_to")
+  note               String?           @db.Text
+  createdById        String?           @map("created_by_id") @db.Uuid
+  createdAt          DateTime          @default(now()) @map("created_at")
+
+  feeLines TrainerFeeLine[]
+
+  @@index([trainerId, prestationType, effectiveFrom])
+  @@index([trainerId, interventionSlug])
+  @@index([effectiveTo])
+  @@map("trainer_compensation_rules")
+}
+
+/// Ligne de rémunération d'un formateur pour UNE prestation. Colonne vertébrale
+/// monétaire, commune aux trois types de prestation. Le barème résolu y est
+/// SNAPSHOTÉ : le passé est figé par la copie, pas par une relecture.
+model TrainerFeeLine {
+  id                String         @id @default(uuid()) @db.Uuid
+  trainerId         String         @map("trainer_id") @db.Uuid
+  trainer           Trainer        @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  prestationType    PrestationType @map("prestation_type")
+  /// Rattachement souple : exactement une de ces références est renseignée.
+  sessionId         String?        @map("session_id") @db.Uuid
+  coachingSessionId String?        @map("coaching_session_id") @db.Uuid
+  bookingId         String?        @map("booking_id") @db.Uuid
+
+  ruleId String?                  @map("rule_id") @db.Uuid
+  rule   TrainerCompensationRule? @relation(fields: [ruleId], references: [id], onDelete: SetNull)
+
+  // ── Snapshot du barème résolu (fige le passé) ──
+  model                 CompensationModel
+  nature                FeeLineNature
+  tauxSnapshotCents     Int?              @map("taux_snapshot_cents")
+  commissionPctSnapshot Decimal?          @map("commission_pct_snapshot") @db.Decimal(5, 2)
+
+  // ── Base de calcul figée ──
+  heures      Decimal? @db.Decimal(6, 2)
+  nbJours     Decimal? @map("nb_jours") @db.Decimal(6, 2)
+  caBaseCents Int?     @map("ca_base_cents")
+
+  /// Le DÛ (ou la valorisation analytique si `nature = analytique`).
+  montantHtCents Int           @default(0) @map("montant_ht_cents")
+  statut         FeeLineStatut @default(previsionnel)
+  motif          String?       @db.Text
+
+  /// Période de rattachement (mois de réalisation) — pilote le relevé mensuel.
+  periodeYear  Int @map("periode_year")
+  periodeMonth Int @map("periode_month")
+
+  statementId String?           @map("statement_id") @db.Uuid
+  statement   TrainerStatement? @relation(fields: [statementId], references: [id], onDelete: SetNull)
+
+  calculatedAt DateTime? @map("calculated_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@index([trainerId, periodeYear, periodeMonth])
+  @@index([statut])
+  @@index([statementId])
+  @@index([sessionId])
+  @@index([coachingSessionId])
+  @@index([bookingId])
+  @@index([prestationType, periodeYear, periodeMonth])
+  @@map("trainer_fee_lines")
+}
+
+/// Relevé mensuel d'honoraires d'un INDÉPENDANT (jamais émis pour un salarié).
+/// Garde dure : on ne passe à `paye` qu'après réception d'une facture conforme.
+/// Le relevé est un PRÉ-DÉCOMPTE interne, pas une auto-facture.
+model TrainerStatement {
+  id           String          @id @default(uuid()) @db.Uuid
+  trainerId    String          @map("trainer_id") @db.Uuid
+  trainer      Trainer         @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  periodeYear  Int             @map("periode_year")
+  periodeMonth Int             @map("periode_month")
+  statut       StatementStatut @default(brouillon)
+
+  totalHtCents  Int                 @default(0) @map("total_ht_cents")
+  /// Snapshot du régime TVA du formateur au moment de la validation.
+  tvaRegime     TvaRegimeHonoraires @map("tva_regime")
+  tvaCents      Int                 @default(0) @map("tva_cents")
+  totalTtcCents Int                 @default(0) @map("total_ttc_cents")
+
+  // ── Rapprochement avec la facture d'honoraires REÇUE du formateur ──
+  numeroFacture          String?   @map("numero_facture") @db.VarChar(60)
+  dateFacture            DateTime? @map("date_facture")
+  montantFactureTtcCents Int?      @map("montant_facture_ttc_cents")
+  factureUrl             String?   @map("facture_url") @db.Text
+  echeanceAt             DateTime? @map("echeance_at")
+
+  // ── Paiement ──
+  payeAt            DateTime? @map("paye_at")
+  moyenPaiement     String?   @map("moyen_paiement") @db.VarChar(30)
+  referenceVirement String?   @map("reference_virement") @db.VarChar(80)
+
+  validatedById String?  @map("validated_by_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  feeLines TrainerFeeLine[]
+
+  @@unique([trainerId, periodeYear, periodeMonth], map: "statement_unique_trainer_periode")
+  @@index([statut])
+  @@index([echeanceAt])
+  @@map("trainer_statements")
+}
+
 /// Pièce justificative d'un formateur. Alimente les contrôles de conformité
 /// (Qualiopi off.21/27, obligation de vigilance URSSAF) et les alertes
 /// d'expiration.
@@ -5447,17 +5639,23 @@ model Trainer {
   bookingsAnimes  Booking[]         @relation("BookingFormateur")
 
   // Espace formateur passwordless + coaching 1-to-1 (2026-06-13).
-  lastFormateurLoginAt DateTime?            @map("last_formateur_login_at")
+  lastFormateurLoginAt DateTime?                 @map("last_formateur_login_at")
   /// Habilitation formateur/accompagnateur AFEST (D.6313-3-1 §2). Date de
   /// l'habilitation tracée. Null = non habilité. L'enforcement (obligatoire ou
   /// non) est piloté par le flag SiteSetting `qualiopi.afest_formateur_habilitation_requise`.
-  afestHabiliteAt      DateTime?            @map("afest_habilite_at")
+  afestHabiliteAt      DateTime?                 @map("afest_habilite_at")
   magicLinks           FormateurMagicLink[]
   coachingSessions     CoachingSession[]
   /// Affectations normalisées aux sessions (principal + co-animateurs).
   sessionFormateurs    SessionFormateur[]
   /// Pièces justificatives reçues (contrat, vigilance URSSAF, NDA, RC pro…).
   documents            TrainerDocument[]
+  /// Régime de TVA de SES honoraires (indépendant). Renseigné par un humain,
+  /// justificatif à l'appui : la machine calcule, elle ne devine pas le régime.
+  regimeTvaHonoraires  TvaRegimeHonoraires?      @map("regime_tva_honoraires")
+  compensationRules    TrainerCompensationRule[]
+  feeLines             TrainerFeeLine[]
+  statements           TrainerStatement[]
 
   @@index([statut])
   @@index([actif])
