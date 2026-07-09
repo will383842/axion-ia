@@ -108,7 +108,7 @@ describe("buildAdminNav SSOT", () => {
   it("le groupe prospection n'est plus dans la nav", () => {
     const items = buildAdminNav("p");
     expect(items.some((it) => (it.group as string) === "prospection")).toBe(false);
-    expect((ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>)).not.toContain("prospection");
+    expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("prospection");
   });
 });
 
