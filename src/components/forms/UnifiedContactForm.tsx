@@ -22,12 +22,11 @@ import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ArrowRight,
+  BadgeCheck,
   Check,
   ChevronDown,
-  ScanSearch,
-  Boxes,
-  GraduationCap,
-  UserRound,
+  Clock,
+  ShieldCheck,
   FileText,
   Handshake,
   Newspaper,
@@ -38,6 +37,7 @@ import {
   MessageCircle,
   type LucideIcon,
 } from "lucide-react";
+import { ACCENT_CLASSES, SERVICE_VISUAL, type ServiceAccent } from "@/content/services-visual";
 import {
   unifiedContactSchema,
   UNIFIED_CONTACT_TYPES,
@@ -68,7 +68,7 @@ const LABELS = {
     title: "Décrivez votre besoin",
     titleEm: "en quelques secondes",
     subtitle:
-      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 24 h ouvrées. Sans engagement.",
+      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 48 h ouvrées. Sans engagement.",
     typeLabel: "Que pouvons-nous faire pour vous ?",
     typePrompt: "Choisissez ce qui décrit le mieux votre demande — un seul suffit.",
     typeHelp: "Vous ne trouvez pas votre cas ? Choisissez « Autre » — le formulaire sert à tout.",
@@ -131,7 +131,7 @@ const LABELS = {
     submit: "Envoyer ma demande",
     sending: "Envoi…",
     success:
-      "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 24 h ouvrées. Votre projet a notre entière attention.",
+      "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 48 h ouvrées. Votre projet a notre entière attention.",
     failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
     captchaBlocked:
       "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur pour ce site), puis réessayez — ou écrivez-nous directement à contact@axion-ia.com.",
@@ -140,14 +140,14 @@ const LABELS = {
     typeRequired: "Choisissez un type pour continuer.",
     submitAgain: "Faire une autre demande",
     referenceLabel: "Référence",
-    trustPills: ["RGPD · UE", "Réponse 24 h ouvrées", "Sans engagement"],
+    trustPills: ["RGPD · UE", "Réponse 48 h ouvrées", "Sans engagement"],
   },
   en: {
     eyebrow: "Start a conversation",
     title: "Tell us about your need",
     titleEm: "in seconds",
     subtitle:
-      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 24 h ouvrées. Sans engagement.",
+      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 48 h ouvrées. Sans engagement.",
     typeLabel: "What can we do for you?",
     typePrompt: "Pick the one that best describes your request — just one.",
     typeHelp: "Not sure where you fit? Pick « Other » — this form covers everything.",
@@ -210,7 +210,7 @@ const LABELS = {
     submit: "Send my request",
     sending: "Sending…",
     success:
-      "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 24 h ouvrées. Votre projet a notre entière attention.",
+      "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 48 h ouvrées. Votre projet a notre entière attention.",
     failure: "An error occurred. Try again or email contact@axion-ia.com.",
     captchaBlocked:
       "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker for this site) and try again — or email us directly at contact@axion-ia.com.",
@@ -219,20 +219,26 @@ const LABELS = {
     typeRequired: "Pick a type to continue.",
     submitAgain: "Send another request",
     referenceLabel: "Reference",
-    trustPills: ["RGPD · UE", "Réponse 24 h ouvrées", "Sans engagement"],
+    trustPills: ["RGPD · UE", "Réponse 48 h ouvrées", "Sans engagement"],
   },
 } as const;
 
-// ---- Icônes par type (grille de sélection visuelle) ------------------------
+// ---- Icônes + accents par type (grille de sélection visuelle) --------------
 // Chaque intention a son icône lucide — la sélection devient scannable d'un
 // coup d'œil (pattern 2026 : Linear, Vercel, Stripe). Remplace le dropdown
 // caché qui pré-affichait « Autre demande » comme un fallback (refonte
 // 2026-07-09 : sélecteur visuel, zéro friction).
+//
+// Les 4 intentions qui correspondent à un service réel empruntent leur icône ET
+// leur accent à `SERVICE_VISUAL` (SSOT) : le visiteur retrouve exactement la
+// loupe bleue de l'Audit et l'engrenage sage de l'Implémentation qu'il vient de
+// voir dans le menu et sur les cartes services. `devis` n'est pas un service —
+// il prend le 5e accent libre (plum) pour compléter la palette.
 const TYPE_ICONS: Record<UnifiedContactType, LucideIcon> = {
-  audit: ScanSearch,
-  implementation: Boxes,
-  formation: GraduationCap,
-  un_a_un: UserRound,
+  audit: SERVICE_VISUAL.audit.Icon,
+  implementation: SERVICE_VISUAL.implementation.Icon,
+  formation: SERVICE_VISUAL.formations.Icon,
+  un_a_un: SERVICE_VISUAL.unAUn.Icon,
   devis: FileText,
   partenariat: Handshake,
   presse: Newspaper,
@@ -242,6 +248,30 @@ const TYPE_ICONS: Record<UnifiedContactType, LucideIcon> = {
   support_client: LifeBuoy,
   autre: MessageCircle,
 };
+
+// Groupe 2 = accent terracotta unique, à dessein : les « autres demandes » sont
+// des pastilles discrètes, la polychromie reste réservée au groupe commercial.
+const TYPE_ACCENT: Record<UnifiedContactType, ServiceAccent> = {
+  audit: SERVICE_VISUAL.audit.accent,
+  implementation: SERVICE_VISUAL.implementation.accent,
+  formation: SERVICE_VISUAL.formations.accent,
+  un_a_un: SERVICE_VISUAL.unAUn.accent,
+  devis: "plum",
+  partenariat: "terracotta",
+  presse: "terracotta",
+  recrutement: "terracotta",
+  speaker: "terracotta",
+  investisseur: "terracotta",
+  support_client: "terracotta",
+  autre: "terracotta",
+};
+
+/** Pastilles de réassurance sous le bouton — une couleur par promesse. */
+const TRUST_PILLS: ReadonlyArray<{ key: string; Icon: LucideIcon; accent: ServiceAccent }> = [
+  { key: "rgpd", Icon: ShieldCheck, accent: "primary" },
+  { key: "delai", Icon: Clock, accent: "terracotta" },
+  { key: "engagement", Icon: BadgeCheck, accent: "sage" },
+];
 
 // ---- Props -----------------------------------------------------------------
 
@@ -414,8 +444,10 @@ function UnifiedContactFormBody({
         )}
         role="status"
       >
-        <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
-          <Check aria-hidden="true" strokeWidth={3} className="text-terracotta-deep h-4 w-4" />
+        <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2.5 rounded-full border py-1.5 pr-4 pl-1.5">
+          <span className="bg-sage text-paper flex h-6 w-6 items-center justify-center rounded-full">
+            <Check aria-hidden="true" strokeWidth={3.5} className="h-3.5 w-3.5" />
+          </span>
           <span className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
             {t.eyebrow}
           </span>
@@ -477,6 +509,7 @@ function UnifiedContactFormBody({
           >
             {TYPE_GROUPS.projet.map((opt) => {
               const Icon = TYPE_ICONS[opt];
+              const a = ACCENT_CLASSES[TYPE_ACCENT[opt]];
               const isSel = type === opt;
               return (
                 <button
@@ -486,26 +519,43 @@ function UnifiedContactFormBody({
                   aria-checked={isSel}
                   onClick={() => selectType(opt)}
                   className={cn(
-                    "group focus-visible:ring-terracotta/40 flex flex-col items-start gap-2 rounded-2xl border-2 p-3.5 text-left transition-all focus-visible:ring-4 focus-visible:outline-none",
+                    "group relative flex flex-col items-start gap-2 rounded-2xl border-2 p-3.5 text-left transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                    a.ring,
                     isSel
-                      ? "border-terracotta bg-terracotta-soft shadow-sm"
-                      : "border-border bg-paper hover:border-terracotta/50 hover:bg-terracotta-soft/30",
+                      ? cn(a.borderSolid, a.surface, "shadow-sm")
+                      : cn("border-border bg-paper", a.hoverBorder, "hover:shadow-sm"),
                   )}
                 >
+                  {/* Coche de confirmation — l'état sélectionné ne repose pas que
+                      sur la couleur (WCAG 1.4.1 « use of color »). */}
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "absolute top-2.5 right-2.5 flex h-4 w-4 items-center justify-center rounded-full transition-opacity",
+                      a.chipSolid,
+                      isSel ? "opacity-100" : "opacity-0",
+                    )}
+                  >
+                    <Check className="h-2.5 w-2.5" strokeWidth={3.5} />
+                  </span>
+                  {/* Puce PLEINE dès le repos : les 5 accents sont saturés avant
+                      toute interaction. En version « soft » (bg-*-soft), le sage
+                      et le plum virent au gris sur l'ivoire — la grille perdait
+                      tout contraste. C'est cette puce qui porte le « pep ». */}
                   <span
                     className={cn(
-                      "flex h-9 w-9 items-center justify-center rounded-xl transition-colors",
-                      isSel
-                        ? "bg-terracotta text-mocha-fg"
-                        : "bg-sand text-fg-soft group-hover:bg-terracotta-soft group-hover:text-terracotta-deep",
+                      "flex h-9 w-9 items-center justify-center rounded-xl shadow-sm",
+                      a.chipSolid,
                     )}
                   >
                     <Icon aria-hidden="true" className="h-[18px] w-[18px]" strokeWidth={1.9} />
                   </span>
                   <span
                     className={cn(
-                      "text-[13.5px] leading-tight font-semibold",
-                      isSel ? "text-terracotta-deep" : "text-fg",
+                      "pr-4 text-[13.5px] leading-tight font-semibold transition-colors",
+                      // Sélectionné = texte sur `surface` (fond -soft) → `textOnSurface`.
+                      // Au repos, le fond est `bg-paper` : `text`/`textHover` conviennent.
+                      isSel ? a.textOnSurface : cn("text-fg", a.textHover),
                     )}
                   >
                     {t.typeOptions[opt]}
@@ -532,13 +582,17 @@ function UnifiedContactFormBody({
                     aria-checked={isSel}
                     onClick={() => selectType(opt)}
                     className={cn(
-                      "focus-visible:ring-terracotta/40 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-all focus-visible:ring-4 focus-visible:outline-none",
+                      "focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
                       isSel
-                        ? "border-terracotta bg-terracotta-soft text-terracotta-deep"
-                        : "border-border bg-paper text-fg-soft hover:border-terracotta/50 hover:text-fg",
+                        ? "border-terracotta bg-terracotta text-paper shadow-sm"
+                        : "border-border bg-paper text-fg-soft hover:border-terracotta hover:bg-terracotta-soft hover:text-terracotta-deep",
                     )}
                   >
-                    <Icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" strokeWidth={1.9} />
+                    {isSel ? (
+                      <Check aria-hidden="true" className="h-3.5 w-3.5 shrink-0" strokeWidth={3} />
+                    ) : (
+                      <Icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" strokeWidth={1.9} />
+                    )}
                     {t.typeOptions[opt]}
                   </button>
                 );
@@ -546,27 +600,32 @@ function UnifiedContactFormBody({
             </div>
           </div>
 
-          {/* Helper dynamique : décrit l'intention choisie (ou invite à choisir) */}
-          <p
-            className={cn(
-              "flex items-start gap-2 text-[13px] leading-relaxed",
-              type ? "text-fg-soft" : "text-fg-muted",
-            )}
-            aria-live="polite"
-          >
-            {type ? (
-              <>
-                <ArrowRight
-                  aria-hidden="true"
-                  className="text-terracotta mt-[3px] h-3.5 w-3.5 shrink-0"
-                  strokeWidth={2.5}
-                />
-                <span>{unifiedTypeHint(type, locale)}</span>
-              </>
-            ) : (
-              <span>{t.typePrompt}</span>
-            )}
-          </p>
+          {/* Helper dynamique : décrit l'intention choisie (ou invite à choisir).
+              Une fois un type choisi, l'encart se teinte de SON accent — la
+              couleur devient un accusé de réception du choix. */}
+          {type ? (
+            <p
+              className={cn(
+                "text-fg flex items-start gap-2.5 rounded-2xl px-3.5 py-3 text-[13px] leading-relaxed",
+                ACCENT_CLASSES[TYPE_ACCENT[type]].surface,
+              )}
+              aria-live="polite"
+            >
+              <ArrowRight
+                aria-hidden="true"
+                className={cn(
+                  "mt-[3px] h-3.5 w-3.5 shrink-0",
+                  ACCENT_CLASSES[TYPE_ACCENT[type]].textOnSurface,
+                )}
+                strokeWidth={2.5}
+              />
+              <span>{unifiedTypeHint(type, locale)}</span>
+            </p>
+          ) : (
+            <p className="text-fg-muted text-[13px] leading-relaxed" aria-live="polite">
+              {t.typePrompt}
+            </p>
+          )}
 
           {errors.type ? (
             <p role="alert" className="text-accent-red text-xs">
@@ -704,12 +763,17 @@ function UnifiedContactFormBody({
           onClick={() => setAdvancedOpen((v) => !v)}
           aria-expanded={advancedOpen}
           aria-controls="unified-advanced"
-          className="text-fg hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex items-center gap-2 rounded text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
+          className="group text-fg hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex items-center gap-2.5 rounded text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
-          <ChevronDown
-            aria-hidden="true"
-            className={cn("h-4 w-4 transition-transform", advancedOpen ? "rotate-180" : "rotate-0")}
-          />
+          <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-paper flex h-6 w-6 shrink-0 items-center justify-center rounded-lg transition-colors">
+            <ChevronDown
+              aria-hidden="true"
+              className={cn(
+                "h-4 w-4 transition-transform",
+                advancedOpen ? "rotate-180" : "rotate-0",
+              )}
+            />
+          </span>
           {t.advancedToggle}
         </button>
         {advancedOpen ? (
@@ -778,8 +842,8 @@ function UnifiedContactFormBody({
         ) : null}
       </div>
 
-      {/* Consent */}
-      <div className="flex items-start gap-3">
+      {/* Consent — encart sable : sépare l'engagement RGPD du reste des champs. */}
+      <div className="border-border bg-bg flex items-start gap-3 rounded-2xl border p-4">
         <Checkbox
           id="unified-consent"
           checked={!!consent}
@@ -817,19 +881,30 @@ function UnifiedContactFormBody({
         type="submit"
         loading={isSubmitting}
         size="lg"
-        className="w-full"
+        className="group shadow-elevated w-full"
         disabled={isSubmitting}
       >
         {isSubmitting ? t.sending : t.submit}
-        <ArrowRight aria-hidden="true" className="h-4 w-4" />
+        <ArrowRight
+          aria-hidden="true"
+          className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+        />
       </Button>
 
-      {/* Trust pills */}
-      <ul className="text-fg-muted flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-        {t.trustPills.map((p) => (
-          <li key={p} className="inline-flex items-center gap-1.5">
-            <Check aria-hidden="true" strokeWidth={3} className="text-terracotta-deep h-3 w-3" />
-            {p}
+      {/* Trust pills — une couleur par promesse (RGPD bleu, délai terracotta,
+          sans-engagement sage) : trois points d'ancrage plutôt qu'une ligne grise. */}
+      <ul className="flex flex-wrap items-center justify-center gap-2">
+        {TRUST_PILLS.map(({ key, Icon, accent }, i) => (
+          <li
+            key={key}
+            className="border-border bg-bg text-fg-soft inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-medium"
+          >
+            <Icon
+              aria-hidden="true"
+              strokeWidth={2.2}
+              className={cn("h-3.5 w-3.5 shrink-0", ACCENT_CLASSES[accent].text)}
+            />
+            {t.trustPills[i]}
           </li>
         ))}
       </ul>

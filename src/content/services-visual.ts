@@ -59,6 +59,17 @@ export interface AccentClasses {
   surface: string;
   /** Puce d'icône PLEINE (fond accent + icône ivoire) — sur carte teintée. */
   chipSolid: string;
+  /** Bordure d'accent AU REPOS (état sélectionné) — pendant non-hover de `hoverBorder`. */
+  borderSolid: string;
+  /**
+   * Texte d'accent posé SUR `surface` (fond `-soft`), et non sur paper/ivoire.
+   *
+   * ⚠️ Ne PAS utiliser `text` sur un fond `-soft` : `text` est calibré pour un
+   * fond clair (paper/bg). Sur terracotta, `text-terracotta` (#c24a1b) sur
+   * `bg-terracotta-soft` (#f5e3d8) ne donne que 3,93:1 → sous le seuil WCAG AA
+   * de 4,5:1 pour du texte < 18,66px. C'est la moitié « texte » de `chip`.
+   */
+  textOnSurface: string;
 }
 
 /** Classes littérales par accent — WCAG AA vérifié (deep sur paper ≥ 4.5:1). */
@@ -73,6 +84,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     textHover: "group-hover:text-terracotta",
     surface: "bg-terracotta-soft",
     chipSolid: "bg-terracotta text-paper",
+    borderSolid: "border-terracotta",
+    textOnSurface: "text-terracotta-deep",
   },
   ochre: {
     chip: "bg-ochre-soft text-ochre-deep",
@@ -84,6 +97,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     textHover: "group-hover:text-ochre-deep",
     surface: "bg-ochre-soft",
     chipSolid: "bg-ochre text-paper",
+    borderSolid: "border-ochre",
+    textOnSurface: "text-ochre-deep",
   },
   primary: {
     chip: "bg-primary-soft text-primary",
@@ -95,6 +110,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     textHover: "group-hover:text-primary",
     surface: "bg-primary-soft",
     chipSolid: "bg-primary text-paper",
+    borderSolid: "border-primary",
+    textOnSurface: "text-primary",
   },
   sage: {
     chip: "bg-sage-soft text-sage",
@@ -106,6 +123,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     textHover: "group-hover:text-sage",
     surface: "bg-sage-soft",
     chipSolid: "bg-sage text-paper",
+    borderSolid: "border-sage",
+    textOnSurface: "text-sage",
   },
   plum: {
     chip: "bg-plum-soft text-plum-deep",
@@ -117,6 +136,8 @@ export const ACCENT_CLASSES: Record<ServiceAccent, AccentClasses> = {
     textHover: "group-hover:text-plum-deep",
     surface: "bg-plum-soft",
     chipSolid: "bg-plum text-paper",
+    borderSolid: "border-plum",
+    textOnSurface: "text-plum-deep",
   },
 };
 
