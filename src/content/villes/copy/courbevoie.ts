@@ -132,11 +132,11 @@ export const COURBEVOIE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis et un site ?",
-            a: "Le devis part à partir de 24-48 h selon la complexité du projet, après un cadrage sur site à Courbevoie. Le planning de réalisation dépend du périmètre (vitrine, portail, SaaS, e-commerce) et est fixé avec vous avant le démarrage, sans engagement caché.",
+            a: "Le devis part à partir de 48 h selon la complexité du projet, après un cadrage sur site à Courbevoie. Le planning de réalisation dépend du périmètre (vitrine, portail, SaaS, e-commerce) et est fixé avec vous avant le démarrage, sans engagement caché.",
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre fixé au cadrage. UX/UI, version mobile, e-commerce multi-CMS et briques IA sont couverts en interne. Hébergement en UE par défaut, conformité RGPD, code et accès remis à la livraison : la plateforme reste reprenable par vos équipes ou tout prestataire, sans dépendance Axion-IA obligatoire. Devis à partir de 24-48 h selon la complexité.",
+          "Engagement contractuel sur le périmètre fixé au cadrage. UX/UI, version mobile, e-commerce multi-CMS et briques IA sont couverts en interne. Hébergement en UE par défaut, conformité RGPD, code et accès remis à la livraison : la plateforme reste reprenable par vos équipes ou tout prestataire, sans dépendance Axion-IA obligatoire. Devis à partir de 48 h selon la complexité.",
       },
       en: {
         hero: "In Courbevoie, one of the four communes that host the La Défense business district, global headquarters sit inside the towers — Saint-Gobain on place de l'Iris, TotalEnergies in the Coupole, Areva/Orano in its 178 m tower — while a dense web of micro-businesses and SMEs (consulting, finance, legal, software) subcontracts to them from Les Renardières, the Faubourg de l'Arche and Bécon. Axion-IA builds AI-augmented websites and SaaS platforms for these firms: client portals, secure document spaces and domain assistants, in custom code, EU-hosted and GDPR-compliant.",
@@ -218,11 +218,11 @@ export const COURBEVOIE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote and a site?",
-            a: "The quote goes out from 24-48 h depending on project complexity, after an on-site scoping in Courbevoie. The delivery schedule depends on the scope (showcase, portal, SaaS, e-commerce) and is set with you before kick-off, with no hidden commitment.",
+            a: "The quote goes out from 48 h depending on project complexity, after an on-site scoping in Courbevoie. The delivery schedule depends on the scope (showcase, portal, SaaS, e-commerce) and is set with you before kick-off, with no hidden commitment.",
           },
         ],
         guarantees:
-          "Contractual commitment on the scope set at kick-off. UX/UI, mobile version, multi-CMS e-commerce and AI components are covered in-house. EU hosting by default, GDPR compliance, code and access handed over at delivery: the platform can be taken over by your teams or any provider, with no mandatory Axion-IA dependency. Quote from 24-48 h depending on complexity.",
+          "Contractual commitment on the scope set at kick-off. UX/UI, mobile version, multi-CMS e-commerce and AI components are covered in-house. EU hosting by default, GDPR compliance, code and access handed over at delivery: the platform can be taken over by your teams or any provider, with no mandatory Axion-IA dependency. Quote from 48 h depending on complexity.",
       },
     },
   },

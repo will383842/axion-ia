@@ -40,8 +40,8 @@ export function SitesWebWhyNow({ isFr }: SitesWebWhyNowProps): ReactNode {
       icon: BadgeCheck,
       headline: isFr ? "Forfait fixe, pas un pari" : "Fixed fee, not a bet",
       sub: isFr
-        ? "Devis ferme sous 24-48 h, vous possédez le code."
-        : "Firm quote in 24-48 h, you own the code.",
+        ? "Devis ferme sous 48 h, vous possédez le code."
+        : "Firm quote in 48 h, you own the code.",
     },
   ];
 

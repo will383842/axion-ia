@@ -239,7 +239,7 @@ export const AVIGNON_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Avignon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Deux réalités locales dictent le cahier des charges — le pic d'été du Festival (In et Off) et la filière agroalimentaire/ingrédients naturels d'Agroparc. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Avignon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Avignon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Deux réalités locales dictent le cahier des charges — le pic d'été du Festival (In et Off) et la filière agroalimentaire/ingrédients naturels d'Agroparc. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Avignon, itérations à distance.",
         whyHere: [
           "Projets web & SaaS adaptés au tissu d'Avignon : hôtels et acteurs du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), compagnies et lieux du Festival Off (réservation type Ticket'Off, AF&C), e-commerce de terroir et viticulture.",
           "Filière agroalimentaire et ingrédients naturels d'Agroparc (INRAE, Givaudan France Naturals ex-Naturex, McCormick France) : portails B2B, configurateurs produits, traçabilité et recherche documentaire augmentée — pas seulement une vitrine.",
@@ -250,7 +250,7 @@ export const AVIGNON_COPY: VilleCopy = {
           {
             step: "Cadrage à Avignon",
             detail:
-              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. On qualifie d'emblée la contrainte locale (pic d'été touristique/Festival ou exigences agroalimentaires d'Agroparc). Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. On qualifie d'emblée la contrainte locale (pic d'été touristique/Festival ou exigences agroalimentaires d'Agroparc). Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -322,10 +322,10 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût « saison Festival ». Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût « saison Festival ». Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne.",
       },
       en: {
-        hero: "In Avignon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Two local realities drive the spec — the summer peak of the Festival (In and Off) and the food/natural-ingredients cluster of Agroparc. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Avignon kick-off, remote iterations.",
+        hero: "In Avignon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Two local realities drive the spec — the summer peak of the Festival (In and Off) and the food/natural-ingredients cluster of Agroparc. Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site Avignon kick-off, remote iterations.",
         whyHere: [
           "Web & SaaS projects tuned to Avignon's fabric: hotels and heritage-tourism players (Palais des Papes, Pont Saint-Bénézet), companies and venues of the Festival Off (Ticket'Off-style booking, AF&C), local-produce e-commerce and Côtes du Rhône wine.",
           "Agroparc food and natural-ingredients cluster (INRAE, Givaudan France Naturals ex-Naturex, McCormick France): B2B portals, product configurators, traceability and AI-augmented document search — not just a showcase site.",
@@ -336,7 +336,7 @@ export const AVIGNON_COPY: VilleCopy = {
           {
             step: "Scoping in Avignon",
             detail:
-              "On-site workshop: goals, user journeys, audit of the existing stack and content. We qualify the local constraint up front (summer tourism/Festival peak or Agroparc food-industry requirements). Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop: goals, user journeys, audit of the existing stack and content. We qualify the local constraint up front (summer tourism/Festival peak or Agroparc food-industry requirements). Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -408,7 +408,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift, no 'Festival season' surcharge. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift, no 'Festival season' surcharge. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house.",
       },
     },
   },

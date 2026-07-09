@@ -53,7 +53,7 @@ export const ALENCON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Alençon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de l'Orne (26 000 habitants intra-muros, 50 000 en agglomération), carrefour entre Normandie et Pays-de-la-Loire à 50 km du Mans et de sa gare TGV, où le tissu mêle sous-traitance automobile de l'écosystème Faurecia, agroalimentaire de la plaine d'Alençon, presses optiques MPO, artisanat héritier de la dentelle au point d'Alençon (UNESCO 2010) et santé départementale. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Alençon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Alençon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de l'Orne (26 000 habitants intra-muros, 50 000 en agglomération), carrefour entre Normandie et Pays-de-la-Loire à 50 km du Mans et de sa gare TGV, où le tissu mêle sous-traitance automobile de l'écosystème Faurecia, agroalimentaire de la plaine d'Alençon, presses optiques MPO, artisanat héritier de la dentelle au point d'Alençon (UNESCO 2010) et santé départementale. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Alençon, itérations à distance.",
         whyHere: [
           "Sous-traitance automobile rang 1 et rang 2 (écosystème Faurecia, équipementiers de Renault et Stellantis) le long de l'A28 : on construit des portails qualité, des outils de pilotage de production et des tableaux de bord clients connectés à votre MES, avec maintenance prédictive et contrôle visuel augmentés à l'IA pour réduire les rebuts en ligne.",
           "Agroalimentaire de la plaine d'Alençon (lait, viande bovine normande, céréales) relié aux filières régionales et à Lactalis à Laval (70 km) : on développe des portails de traçabilité produit, des plateformes fournisseurs et des recherches sémantiques sur vos référentiels qualité, du champ jusqu'à la commande client en ligne.",
@@ -64,7 +64,7 @@ export const ALENCON_COPY: VilleCopy = {
           {
             step: "Cadrage à Alençon",
             detail:
-              "Atelier sur site — centre historique autour de la Basilique Notre-Dame, zones d'activité de l'agglomération, sites industriels des sous-traitants auto le long de l'A28 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre historique autour de la Basilique Notre-Dame, zones d'activité de l'agglomération, sites industriels des sous-traitants auto le long de l'A28 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const ALENCON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Alençon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant que la moindre ligne de code ne soit écrite.",
+            a: "Oui. Après le cadrage sur site à Alençon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant que la moindre ligne de code ne soit écrite.",
           },
           {
             q: "Pouvez-vous outiller un sous-traitant automobile de l'Orne ?",
@@ -136,10 +136,10 @@ export const ALENCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison marchande ou en flux industriel continu. Web Vitals et accessibilité contrôlés et tenus au vert à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire local de l'Orne, du Mans ou de Caen, ou repris en interne par vos équipes à tout moment.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison marchande ou en flux industriel continu. Web Vitals et accessibilité contrôlés et tenus au vert à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire local de l'Orne, du Mans ou de Caen, ou repris en interne par vos équipes à tout moment.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Alençon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de l'Orne (26 000 habitants intra-muros, 50 000 en agglomération), carrefour entre Normandie et Pays-de-la-Loire à 50 km du Mans et de sa gare TGV, où le tissu mêle sous-traitance automobile de l'écosystème Faurecia, agroalimentaire de la plaine d'Alençon, presses optiques MPO, artisanat héritier de la dentelle au point d'Alençon (UNESCO 2010) et santé départementale. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Alençon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Alençon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de l'Orne (26 000 habitants intra-muros, 50 000 en agglomération), carrefour entre Normandie et Pays-de-la-Loire à 50 km du Mans et de sa gare TGV, où le tissu mêle sous-traitance automobile de l'écosystème Faurecia, agroalimentaire de la plaine d'Alençon, presses optiques MPO, artisanat héritier de la dentelle au point d'Alençon (UNESCO 2010) et santé départementale. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Alençon, itérations à distance.",
         whyHere: [
           "Sous-traitance automobile rang 1 et rang 2 (écosystème Faurecia, équipementiers de Renault et Stellantis) le long de l'A28 : on construit des portails qualité, des outils de pilotage de production et des tableaux de bord clients connectés à votre MES, avec maintenance prédictive et contrôle visuel augmentés à l'IA pour réduire les rebuts en ligne.",
           "Agroalimentaire de la plaine d'Alençon (lait, viande bovine normande, céréales) relié aux filières régionales et à Lactalis à Laval (70 km) : on développe des portails de traçabilité produit, des plateformes fournisseurs et des recherches sémantiques sur vos référentiels qualité, du champ jusqu'à la commande client en ligne.",
@@ -150,7 +150,7 @@ export const ALENCON_COPY: VilleCopy = {
           {
             step: "Cadrage à Alençon",
             detail:
-              "Atelier sur site — centre historique autour de la Basilique Notre-Dame, zones d'activité de l'agglomération, sites industriels des sous-traitants auto le long de l'A28 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre historique autour de la Basilique Notre-Dame, zones d'activité de l'agglomération, sites industriels des sous-traitants auto le long de l'A28 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const ALENCON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Alençon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant que la moindre ligne de code ne soit écrite.",
+            a: "Oui. Après le cadrage sur site à Alençon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant que la moindre ligne de code ne soit écrite.",
           },
           {
             q: "Pouvez-vous outiller un sous-traitant automobile de l'Orne ?",
@@ -222,7 +222,7 @@ export const ALENCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison marchande ou en flux industriel continu. Web Vitals et accessibilité contrôlés et tenus au vert à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire local de l'Orne, du Mans ou de Caen, ou repris en interne par vos équipes à tout moment.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison marchande ou en flux industriel continu. Web Vitals et accessibilité contrôlés et tenus au vert à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire local de l'Orne, du Mans ou de Caen, ou repris en interne par vos équipes à tout moment.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const WASQUEHAL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Wasquehal des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du Nord au cœur de la Métropole Européenne de Lille, tertiaire et de services, structurée autour du parc d'activités de la Pilaterie — plus de 120 hectares et environ 150 entreprises répartis sur quatre communes, desservis par la station de métro Les Prés et l'A22 — et héritière de l'écosystème VPC et e-commerce de la métropole. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Wasquehal, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Wasquehal des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du Nord au cœur de la Métropole Européenne de Lille, tertiaire et de services, structurée autour du parc d'activités de la Pilaterie — plus de 120 hectares et environ 150 entreprises répartis sur quatre communes, desservis par la station de métro Les Prés et l'A22 — et héritière de l'écosystème VPC et e-commerce de la métropole. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Wasquehal, itérations à distance.",
         whyHere: [
           "Héritage VPC et e-commerce de la métropole lilloise, dans le sillage de La Redoute toute proche à Roubaix : les PME de distribution et de vente à distance trouvent ici des boutiques sur mesure, multi-CMS (Shopify, WooCommerce, PrestaShop, Magento), avec recommandation produit, recherche sémantique du catalogue et service client augmenté à l'IA, calibrés pour absorber les pics des temps forts commerciaux.",
           "Parc d'activités de la Pilaterie — plus de 120 hectares, environ 150 entreprises, des sièges et back-offices comme la Voix du Nord ou Heineken aux côtés de PME tertiaires et d'éditeurs de logiciels : on greffe l'IA sur l'existant (widget, API, plugin) ou on construit un portail métier IA-native branché sur votre CRM/ERP, sans refonte coûteuse et compatible avec vos contraintes de SI.",
@@ -64,7 +64,7 @@ export const WASQUEHAL_COPY: VilleCopy = {
           {
             step: "Cadrage à Wasquehal",
             detail:
-              "Atelier sur site, dans vos bureaux du parc de la Pilaterie, votre commerce du centre-ville ou votre entrepôt e-commerce : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Nous remettons un devis ferme à partir de 24-48 h selon la complexité du projet.",
+              "Atelier sur site, dans vos bureaux du parc de la Pilaterie, votre commerce du centre-ville ou votre entrepôt e-commerce : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Nous remettons un devis ferme à partir de 48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const WASQUEHAL_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, de vos modèles et de votre catalogue. Et après le cadrage sur site à Wasquehal, on remet un devis ferme en forfait fixe — à partir de 24-48 h selon la complexité — sans régie ni dérive horaire cachée.",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, de vos modèles et de votre catalogue. Et après le cadrage sur site à Wasquehal, on remet un devis ferme en forfait fixe — à partir de 48 h selon la complexité — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de ventes pour les acteurs e-commerce de la Pilaterie. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Site et données transférables à tout moment à un prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de ventes pour les acteurs e-commerce de la Pilaterie. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Site et données transférables à tout moment à un prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Wasquehal des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du Nord au cœur de la Métropole Européenne de Lille, tertiaire et de services, structurée autour du parc d'activités de la Pilaterie — plus de 120 hectares et environ 150 entreprises répartis sur quatre communes, desservis par la station de métro Les Prés et l'A22 — et héritière de l'écosystème VPC et e-commerce de la métropole. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Wasquehal, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Wasquehal des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du Nord au cœur de la Métropole Européenne de Lille, tertiaire et de services, structurée autour du parc d'activités de la Pilaterie — plus de 120 hectares et environ 150 entreprises répartis sur quatre communes, desservis par la station de métro Les Prés et l'A22 — et héritière de l'écosystème VPC et e-commerce de la métropole. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Wasquehal, itérations à distance.",
         whyHere: [
           "Héritage VPC et e-commerce de la métropole lilloise, dans le sillage de La Redoute toute proche à Roubaix : les PME de distribution et de vente à distance trouvent ici des boutiques sur mesure, multi-CMS (Shopify, WooCommerce, PrestaShop, Magento), avec recommandation produit, recherche sémantique du catalogue et service client augmenté à l'IA, calibrés pour absorber les pics des temps forts commerciaux.",
           "Parc d'activités de la Pilaterie — plus de 120 hectares, environ 150 entreprises, des sièges et back-offices comme la Voix du Nord ou Heineken aux côtés de PME tertiaires et d'éditeurs de logiciels : on greffe l'IA sur l'existant (widget, API, plugin) ou on construit un portail métier IA-native branché sur votre CRM/ERP, sans refonte coûteuse et compatible avec vos contraintes de SI.",
@@ -150,7 +150,7 @@ export const WASQUEHAL_COPY: VilleCopy = {
           {
             step: "Cadrage à Wasquehal",
             detail:
-              "Atelier sur site, dans vos bureaux du parc de la Pilaterie, votre commerce du centre-ville ou votre entrepôt e-commerce : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Nous remettons un devis ferme à partir de 24-48 h selon la complexité du projet.",
+              "Atelier sur site, dans vos bureaux du parc de la Pilaterie, votre commerce du centre-ville ou votre entrepôt e-commerce : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Nous remettons un devis ferme à partir de 48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const WASQUEHAL_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, de vos modèles et de votre catalogue. Et après le cadrage sur site à Wasquehal, on remet un devis ferme en forfait fixe — à partir de 24-48 h selon la complexité — sans régie ni dérive horaire cachée.",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, de vos modèles et de votre catalogue. Et après le cadrage sur site à Wasquehal, on remet un devis ferme en forfait fixe — à partir de 48 h selon la complexité — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de ventes pour les acteurs e-commerce de la Pilaterie. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Site et données transférables à tout moment à un prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de ventes pour les acteurs e-commerce de la Pilaterie. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Site et données transférables à tout moment à un prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
       },
     },
   },

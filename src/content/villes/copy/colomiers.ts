@@ -132,11 +132,11 @@ export const COLOMIERS_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis et quelle technologie IA utilisez-vous ?",
-            a: "Devis à partir de 24-48 h selon la complexité. Côté IA, nous choisissons et justifions les modèles au cas par cas (Mistral, Claude, GPT) pour la recherche sémantique RAG, les agents conversationnels ou l'extraction documentaire — jamais imposés, toujours adaptés à vos contraintes de souveraineté et de coût.",
+            a: "Devis à partir de 48 h selon la complexité. Côté IA, nous choisissons et justifions les modèles au cas par cas (Mistral, Claude, GPT) pour la recherche sémantique RAG, les agents conversationnels ou l'extraction documentaire — jamais imposés, toujours adaptés à vos contraintes de souveraineté et de coût.",
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité. Code sur mesure, propriété intégrale du client, hébergement en Europe conforme RGPD par défaut, DPO sur demande. Aucun lock-in éditeur : votre site ou SaaS est transférable à tout intégrateur du bassin toulousain ou repris en interne après formation de vos équipes columériennes. UX/UI et version mobile soignées, e-commerce multi-CMS supporté, briques IA justifiées et choisies avec vous. Kick-off toujours en présentiel à Colomiers.",
+          "Devis à partir de 48 h selon la complexité. Code sur mesure, propriété intégrale du client, hébergement en Europe conforme RGPD par défaut, DPO sur demande. Aucun lock-in éditeur : votre site ou SaaS est transférable à tout intégrateur du bassin toulousain ou repris en interne après formation de vos équipes columériennes. UX/UI et version mobile soignées, e-commerce multi-CMS supporté, briques IA justifiées et choisies avec vous. Kick-off toujours en présentiel à Colomiers.",
       },
       en: {
         hero: "In Colomiers (31), the second city of western Toulouse on the doorstep of the Airbus sites in Blagnac and Saint-Martin-du-Touch, Axion-IA builds AI-augmented websites and SaaS platforms for a very specific fabric: tier-1 aerospace subcontracting (Safran Nacelles, Safran Cabin France, Goodrich Aerospace, Daher) spread across the Parc Aéronautique and the ZAC des Ramassiers, large-scale digital services (Sopra Steria, the 'Les Ailes de l'Europe' site), logistics (Carrefour Supply Chain, Daher) in the En Jacca industrial zone, plus hundreds of micro-businesses and shops in Le Perget and the town centre. Supplier portals, part configurators, technical catalogues, RAG semantic search — custom code, EU GDPR hosting, zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const COLOMIERS_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and which AI technology do you use?",
-            a: "Quote from 24-48 h depending on complexity. On the AI side, we select and justify models case by case (Mistral, Claude, GPT) for RAG semantic search, conversational agents or document extraction — never imposed, always tailored to your sovereignty and cost constraints.",
+            a: "Quote from 48 h depending on complexity. On the AI side, we select and justify models case by case (Mistral, Claude, GPT) for RAG semantic search, conversational agents or document extraction — never imposed, always tailored to your sovereignty and cost constraints.",
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity. Custom code, full client ownership, EU GDPR-compliant hosting by default, DPO on request. No vendor lock-in: your site or SaaS is transferable to any Toulouse-basin integrator or taken in-house after training your Colomiers teams. Polished UX/UI and mobile version, multi-CMS e-commerce supported, AI building blocks justified and chosen with you. Kick-off always in person in Colomiers.",
+          "Quote from 48 h depending on complexity. Custom code, full client ownership, EU GDPR-compliant hosting by default, DPO on request. No vendor lock-in: your site or SaaS is transferable to any Toulouse-basin integrator or taken in-house after training your Colomiers teams. Polished UX/UI and mobile version, multi-CMS e-commerce supported, AI building blocks justified and chosen with you. Kick-off always in person in Colomiers.",
       },
     },
   },

@@ -124,7 +124,7 @@ export const ANGLET_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis de site web ou de plateforme à Anglet ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Pour un e-shop standard la chiffrage est rapide ; pour une plateforme SaaS IA-native intégrée à un ERP aéro ou à un PIM surfwear, nous prenons le temps d'un cadrage technique avant chiffrage.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Pour un e-shop standard la chiffrage est rapide ; pour une plateforme SaaS IA-native intégrée à un ERP aéro ou à un PIM surfwear, nous prenons le temps d'un cadrage technique avant chiffrage.",
           },
           {
             q: "Travaillez-vous aussi avec les entreprises de la P.A. Maignon et le secteur touristique ?",
@@ -136,7 +136,7 @@ export const ANGLET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité, avec un périmètre fonctionnel écrit avant signature — aucune dérive cachée. Conception UX/UI et développement mobile-first, e-commerce multi-CMS ou plateforme sur mesure, briques IA intégrées (recherche sémantique, chatbot RAG multilingue, recommandation). Hébergement en Union européenne par défaut, conformité RGPD et AI Act, confidentialité industrielle cadrée pour les acteurs de la supply chain aéronautique d'Anglet. Vous restez propriétaire du code, des données et des accès : aucun verrou éditeur, aucune dépendance technique à Axion-IA, reprise possible par vos équipes ou tout intégrateur du Pays basque.",
+          "Devis remis à partir de 48 h selon la complexité, avec un périmètre fonctionnel écrit avant signature — aucune dérive cachée. Conception UX/UI et développement mobile-first, e-commerce multi-CMS ou plateforme sur mesure, briques IA intégrées (recherche sémantique, chatbot RAG multilingue, recommandation). Hébergement en Union européenne par défaut, conformité RGPD et AI Act, confidentialité industrielle cadrée pour les acteurs de la supply chain aéronautique d'Anglet. Vous restez propriétaire du code, des données et des accès : aucun verrou éditeur, aucune dépendance technique à Axion-IA, reprise possible par vos équipes ou tout intégrateur du Pays basque.",
       },
       en: {
         hero: "Anglet has an economic signature found nowhere else: within the same town coexist the Dassault Aviation aerospace site (8 avenue Marcel Dassault, ~900 staff, fuselages for Falcon and Rafale aircraft, composite parts) and the European capital of the boardsports industry, federated since 1999 by the EuroSIMA cluster born in Anglet — Quiksilver, Rip Curl, Billabong and ~200 surfwear and boardsports companies. In Anglet, Axion-IA builds AI-augmented websites and SaaS platforms for this dual fabric — aerospace and composites subcontracting on one side, boardsports e-commerce and outdoor brands on the other — alongside the 872 companies of the P.A. Maignon estate, the Groupe hospitalier de la Côte Basque and the software publishers of the neighbouring Izarbel technopole.",
@@ -210,7 +210,7 @@ export const ANGLET_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote for a website or platform in Anglet?",
-            a: "The quote is delivered from 24 to 48 hours depending on project complexity. For a standard e-shop the estimate is quick; for an AI-native SaaS platform integrated with an aerospace ERP or a surfwear PIM, we take the time for a technical framing before quoting.",
+            a: "The quote is delivered from 48 hours depending on project complexity. For a standard e-shop the estimate is quick; for an AI-native SaaS platform integrated with an aerospace ERP or a surfwear PIM, we take the time for a technical framing before quoting.",
           },
           {
             q: "Do you also work with P.A. Maignon companies and the tourism sector?",
@@ -222,7 +222,7 @@ export const ANGLET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24 to 48 hours depending on complexity, with a written functional scope before signature — no hidden drift. UX/UI design and mobile-first development, multi-CMS e-commerce or tailor-made platform, integrated AI components (semantic search, multilingual RAG chatbot, recommendation). EU hosting by default, GDPR and AI Act compliance, industrial confidentiality framed for the players of Anglet's aerospace supply chain. You remain the owner of the code, data and accesses: no vendor lock-in, no technical dependency on Axion-IA, with handover possible to your teams or any Basque Country integrator.",
+          "Quote delivered from 48 hours depending on complexity, with a written functional scope before signature — no hidden drift. UX/UI design and mobile-first development, multi-CMS e-commerce or tailor-made platform, integrated AI components (semantic search, multilingual RAG chatbot, recommendation). EU hosting by default, GDPR and AI Act compliance, industrial confidentiality framed for the players of Anglet's aerospace supply chain. You remain the owner of the code, data and accesses: no vendor lock-in, no technical dependency on Axion-IA, with handover possible to your teams or any Basque Country integrator.",
       },
     },
   },

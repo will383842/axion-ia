@@ -145,7 +145,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "sans inventer",
       answer:
         "On greffe sur votre site un assistant conversationnel ancré sur vos vrais contenus : il répond aux visiteurs avec des réponses sourcées, sait dire « je ne sais pas » et passe la main à un humain hors de son périmètre. Hébergé en UE, vos données restent chez vous.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change pour vous",
       benefits: [
@@ -256,7 +256,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "without making things up",
       answer:
         "We graft onto your site a conversational assistant grounded in your real content: it answers visitors with sourced replies, knows how to say « I don't know » and hands over to a human outside its scope. EU-hosted, your data stays yours.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes for you",
       benefits: [
@@ -412,7 +412,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "comprend vraiment",
       answer:
         "On remplace la recherche « mot-clé exact » de votre site ou e-commerce par une recherche sémantique : elle comprend l'intention du visiteur et trouve le bon contenu ou le bon produit, même formulé autrement. Résultat : moins d'abandons, plus de conversions.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -516,7 +516,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "truly understands",
       answer:
         "We replace your site's exact-keyword search with semantic search: it understands visitor intent and finds the right content or product, even phrased differently. Result: fewer bounces, more conversions.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -665,7 +665,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "sans tout refaire",
       answer:
         "Pas besoin de refondre votre site pour profiter de l'IA. On greffe la brique utile (chatbot ancré, recherche sémantique, automatisation) sur votre site existant, quelle que soit votre technologie — en quelques semaines, sans casser ce qui marche déjà.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -769,7 +769,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "without redoing it all",
       answer:
         "You don't need to rebuild your site to benefit from AI. We graft the useful brick (grounded chatbot, semantic search, automation) onto your existing site, whatever your technology — in a few weeks, without breaking what already works.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -915,7 +915,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "IA-native",
       answer:
         "Quand l'IA est au cœur de votre produit, on ne la greffe pas : on construit une plateforme sur mesure pensée autour d'elle dès la conception. Branchée sur vos données métier, hébergée en UE, code et propriété intégralement à vous.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -1020,7 +1020,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "AI-native platform",
       answer:
         "When AI is at the heart of your product, we don't graft it: we build a bespoke platform designed around it from day one. Wired to your business data, EU-hosted, code and ownership fully yours.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -1170,7 +1170,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "qui vendent",
       answer:
         "On ajoute à votre site ou e-commerce un moteur de recommandation IA qui comprend l'intention de chaque visiteur et suggère les bons produits complémentaires — cross-sell et up-sell automatiques. Résultat : un panier moyen plus élevé, sans effort manuel.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -1266,7 +1266,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "that sell",
       answer:
         "We add to your site or store an AI recommendation engine that understands each visitor's intent and suggests the right complementary products — automatic cross-sell and up-sell. Result: a higher average cart, with no manual effort.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -1410,7 +1410,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "WordPress",
       answer:
         "Votre site est sur WordPress ? On y greffe un chatbot IA ancré sur vos vrais contenus (articles, pages, FAQ), sans toucher à votre thème ni à vos extensions. Réponses sourcées, hébergement UE, en ligne en quelques semaines.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -1510,7 +1510,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "WordPress",
       answer:
         "Your site runs on WordPress? We graft an AI chatbot grounded in your real content (posts, pages, FAQ), without touching your theme or plugins. Sourced answers, EU hosting, live in a few weeks.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -1655,7 +1655,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "sur mesure",
       answer:
         "Vous avez une idée de produit où l'IA est centrale ? On conçoit et développe votre SaaS sur mesure, pensé autour de l'IA dès le départ, livré par jalons testables. Code et propriété intégralement à vous, hébergé en UE.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -1755,7 +1755,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "bespoke",
       answer:
         "Have a product idea where AI is central? We design and develop your bespoke SaaS, built around AI from day one, delivered by testable milestones. Code and ownership fully yours, EU-hosted.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -1902,7 +1902,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "Shopify avec l'IA",
       answer:
         "Votre boutique est sur Shopify ? On y greffe un assistant d'achat IA (ancré sur vos fiches produit) et des recommandations pertinentes, sans toucher à votre thème ni à vos apps. Moins de questions support, un panier moyen plus élevé.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -2002,7 +2002,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "Shopify with AI",
       answer:
         "Your store runs on Shopify? We graft an AI shopping assistant (grounded in your product sheets) and relevant recommendations, without touching your theme or apps. Fewer support questions, a higher average cart.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -2144,7 +2144,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "à chaque visiteur",
       answer:
         "On rend votre site capable d'adapter ses contenus et ses appels à l'action selon l'intention de chaque visiteur, comprise en temps réel — sans cookie tiers ni pistage publicitaire. Un message pertinent au bon moment, donc plus de conversions, conforme RGPD.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -2244,7 +2244,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "to each visitor",
       answer:
         "We make your site able to adapt its content and calls to action to each visitor's intent, understood in real time — without third-party cookies or ad tracking. A relevant message at the right moment, so more conversions, GDPR-compliant.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -2392,7 +2392,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "convertit",
       answer:
         "On conçoit l'expérience de votre site, application ou plateforme SaaS de bout en bout : recherche utilisateur, parcours, wireframes, design system, maquettes Figma et prototype testable. Une interface claire et fidèle à votre marque, validée avant le développement — du sur-mesure, pas un thème plaqué.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -2493,7 +2493,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "converts",
       answer:
         "We design the experience of your website, app or SaaS platform end to end: user research, journeys, wireframes, design system, Figma mockups and testable prototype. A clear interface true to your brand, validated before development — bespoke, not a slapped-on theme.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -2640,7 +2640,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "augmentée par l'IA",
       answer:
         "On greffe l'IA sur votre boutique WooCommerce sans la refondre ni la migrer vers une plateforme louée : assistant d'achat ancré sur votre catalogue, recommandations cross-sell, génération de fiches produit, recherche sémantique, relance de panier. Tout reste auto-hébergé — vous gardez la propriété de votre boutique, de vos données et du code.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -2741,7 +2741,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "augmented by AI",
       answer:
         "We graft AI onto your WooCommerce store without rebuilding it or migrating to a rented platform: buying assistant grounded in your catalogue, cross-sell recommendations, product sheet generation, semantic search, cart recovery. Everything stays self-hosted — you keep ownership of your store, data and code.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -2891,7 +2891,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "augmenté par l'IA",
       answer:
         "On développe un module PrestaShop sur mesure pour greffer l'IA sur votre boutique open-source : recherche produit sémantique, recommandations, génération et traduction de fiches, assistant d'achat. Idéal pour les boutiques multi-langues et internationales, sans quitter l'écosystème PrestaShop ni perdre la maîtrise de votre code.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -2991,7 +2991,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "augmented by AI",
       answer:
         "We develop a bespoke PrestaShop module to graft AI onto your open-source store: semantic product search, recommendations, sheet generation and translation, buying assistant. Ideal for multilingual and international stores, without leaving the PrestaShop ecosystem or losing control of your code.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [
@@ -3139,7 +3139,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "augmenté par l'IA",
       answer:
         "On greffe l'IA sur votre boutique Magento / Adobe Commerce à l'échelle des gros catalogues et du B2B : recherche sémantique sur des dizaines de milliers de références, recommandations par compte et segment, enrichissement de catalogue en masse, assistant d'achat. Intégré à votre API Magento, votre ERP et votre PIM — sans remettre en cause votre architecture.",
-      ctaPrimary: "Décrire mon projet · devis sous 24-48 h",
+      ctaPrimary: "Décrire mon projet · devis sous 48 h",
       ctaSecondary: "Voir le hub Sites web & SaaS",
       benefitsTitle: "Ce que ça change",
       benefits: [
@@ -3240,7 +3240,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       titleEm: "augmented by AI",
       answer:
         "We graft AI onto your Magento / Adobe Commerce store at large-catalogue and B2B scale: semantic search across tens of thousands of SKUs, per-account and per-segment recommendations, bulk catalogue enrichment, buying assistant. Integrated with your Magento API, ERP and PIM — without questioning your architecture.",
-      ctaPrimary: "Describe my project · quote in 24-48 h",
+      ctaPrimary: "Describe my project · quote in 48 h",
       ctaSecondary: "See the Websites & SaaS hub",
       benefitsTitle: "What it changes",
       benefits: [

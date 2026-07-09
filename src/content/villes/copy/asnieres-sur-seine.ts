@@ -134,7 +134,7 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité du projet. Hébergement UE par défaut, conformité RGPD et AI Act, revue des flux de données incluse. Code, prompts et intégrations livrés restent intégralement votre propriété — aucun lock-in éditeur, aucune dépendance contractuelle Axion-IA : votre équipe asniéroise ou tout intégrateur d'Île-de-France peut reprendre la main après la mission. UX/UI, mobile-first et e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, headless) couverts en interne. Recette et formation sur site dans vos locaux le long de la Seine.",
+          "Devis à partir de 48 h selon la complexité du projet. Hébergement UE par défaut, conformité RGPD et AI Act, revue des flux de données incluse. Code, prompts et intégrations livrés restent intégralement votre propriété — aucun lock-in éditeur, aucune dépendance contractuelle Axion-IA : votre équipe asniéroise ou tout intégrateur d'Île-de-France peut reprendre la main après la mission. UX/UI, mobile-first et e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, headless) couverts en interne. Recette et formation sur site dans vos locaux le long de la Seine.",
       },
       en: {
         hero: "Asnières-sur-Seine is the birthplace of Louis Vuitton: the rue de la Comète workshop, opened in 1859 on the banks of the Seine, still produces Haute Maroquinerie with nearly 200 artisans (special orders, precious and exotic leathers, rigid trunks). Around this luxury hub gravitate food-industry manufacturing (Lesieur, quai Aulagnier), audit and consulting (KPMG), the tertiary reconversion of the former PSA Peugeot Citroën brownfield (ZAC PSA, Nexity campus) and a dense layer of web, e-commerce and SEO agencies along the Quartier de Seine. Axion-IA designs AI-augmented websites and SaaS platforms for these Asnières micro-businesses, SMEs and mid-caps, on site at your offices along the Seine — from premium retail to e-commerce and financial services.",
@@ -220,7 +220,7 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on project complexity. EU hosting by default, GDPR and AI Act compliance, data-flow review included. The delivered code, prompts and integrations remain entirely your property — no vendor lock-in, no Axion-IA contractual dependency: your Asnières team or any Île-de-France integrator can take over after the mission. UX/UI, mobile-first and multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop, headless) covered in-house. Acceptance and training on site at your offices along the Seine.",
+          "Quote from 48 h depending on project complexity. EU hosting by default, GDPR and AI Act compliance, data-flow review included. The delivered code, prompts and integrations remain entirely your property — no vendor lock-in, no Axion-IA contractual dependency: your Asnières team or any Île-de-France integrator can take over after the mission. UX/UI, mobile-first and multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop, headless) covered in-house. Acceptance and training on site at your offices along the Seine.",
       },
     },
   },

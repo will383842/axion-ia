@@ -53,7 +53,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente aux Mureaux (78) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, portails de devis et catalogues techniques, agents et automatisations. Le tissu muriautin est dominé par la sous-traitance aéronautique-spatiale gravitant autour d'ArianeGroup (siège et assemblage des étages d'Ariane 6, en bord de Seine) et par la logistique industrielle de la Z.I. des Garennes (Carl Zeiss Vision, Phoenix Pharma, Eiffage Énergie). Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel aux Mureaux, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Mureaux (78) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, portails de devis et catalogues techniques, agents et automatisations. Le tissu muriautin est dominé par la sous-traitance aéronautique-spatiale gravitant autour d'ArianeGroup (siège et assemblage des étages d'Ariane 6, en bord de Seine) et par la logistique industrielle de la Z.I. des Garennes (Carl Zeiss Vision, Phoenix Pharma, Eiffage Énergie). Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel aux Mureaux, itérations à distance.",
         whyHere: [
           "Sous-traitants ArianeGroup (usineurs, mécanique de précision, fournisseurs de produits métalliques) : portails B2B avec devis automatisés, catalogues de pièces techniques et traçabilité documentaire, là où le contrôle qualité et la documentation pèsent lourd.",
           "Logistique et industrie de la Z.I. des Garennes (32 hectares, ~248 entreprises) : Phoenix Pharma (répartition pharmaceutique), Carl Zeiss Vision (verres et lunettes), Eiffage Énergie Systèmes, Loxam, Rexel — e-commerce B2B, portails commande et suivi, catalogues.",
@@ -64,7 +64,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
           {
             step: "Cadrage aux Mureaux",
             detail:
-              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus (catalogues, nomenclatures, fiches techniques). Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus (catalogues, nomenclatures, fiches techniques). Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const LES_MUREAUX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site aux Mureaux, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour un portail fournisseur industriel étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site aux Mureaux, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour un portail fournisseur industriel étendu. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la vallée de Seine ou repris en interne. Adapté à la confidentialité des fournisseurs ArianeGroup comme aux distributeurs de la Z.I. des Garennes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la vallée de Seine ou repris en interne. Adapté à la confidentialité des fournisseurs ArianeGroup comme aux distributeurs de la Z.I. des Garennes.",
       },
       en: {
-        hero: "In Les Mureaux (78), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, quote portals and technical catalogues, agents and automations. The local fabric is dominated by aerospace subcontracting around ArianeGroup (its HQ and Ariane 6 stage assembly, on the banks of the Seine) and by the industrial logistics of the Z.I. des Garennes (Carl Zeiss Vision, Phoenix Pharma, Eiffage Énergie). Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Les Mureaux kick-off, remote iterations.",
+        hero: "In Les Mureaux (78), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, quote portals and technical catalogues, agents and automations. The local fabric is dominated by aerospace subcontracting around ArianeGroup (its HQ and Ariane 6 stage assembly, on the banks of the Seine) and by the industrial logistics of the Z.I. des Garennes (Carl Zeiss Vision, Phoenix Pharma, Eiffage Énergie). Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site Les Mureaux kick-off, remote iterations.",
         whyHere: [
           "ArianeGroup subcontractors (precision machinists, metalwork, metal-part suppliers): B2B portals with automated quotes, technical part catalogues and documentary traceability, where quality control and documentation weigh heavily.",
           "Logistics and industry of the Z.I. des Garennes (32 hectares, ~248 companies): Phoenix Pharma (pharmaceutical distribution), Carl Zeiss Vision (lenses and eyewear), Eiffage Énergie Systèmes, Loxam, Rexel — B2B e-commerce, ordering and tracking portals, catalogues.",
@@ -150,7 +150,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
           {
             step: "Scoping in Les Mureaux",
             detail:
-              "On-site workshop: goals, user journeys, audit of the existing stack and content (catalogues, bills of materials, technical sheets). Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop: goals, user journeys, audit of the existing stack and content (catalogues, bills of materials, technical sheets). Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const LES_MUREAUX_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the on-site scoping in Les Mureaux, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extended industrial supplier portal. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the on-site scoping in Les Mureaux, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 48 h for a simple project, more for an extended industrial supplier portal. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Seine-valley provider or taken in-house. Suited to the confidentiality needs of ArianeGroup suppliers as much as Z.I. des Garennes distributors.",
+          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Seine-valley provider or taken in-house. Suited to the confidentiality needs of ArianeGroup suppliers as much as Z.I. des Garennes distributors.",
       },
     },
   },

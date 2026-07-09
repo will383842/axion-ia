@@ -132,11 +132,11 @@ export const MENTON_COPY: VilleCopy = {
           },
           {
             q: "Sous combien de temps recevons-nous un devis et où sont hébergées les données ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Toutes les plateformes que nous livrons à Menton sont hébergées dans l'Union européenne et conformes au RGPD, avec une attention particulière aux flux transfrontaliers France-Monaco-Italie pour les entreprises ayant une activité bi-nationale.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Toutes les plateformes que nous livrons à Menton sont hébergées dans l'Union européenne et conformes au RGPD, avec une attention particulière aux flux transfrontaliers France-Monaco-Italie pour les entreprises ayant une activité bi-nationale.",
           },
         ],
         guarantees:
-          "Code custom et hébergement dans l'Union européenne, conformité RGPD par défaut, avec prise en compte des flux transfrontaliers France-Monaco-Italie pour les acteurs frontaliers mentonnais. Aucun verrou éditeur : vous gardez la main pleine sur le CMS, les contenus multilingues et les modèles IA, avec un runbook remis et la possibilité de reprendre la maintenance en interne ou chez tout intégrateur de la Côte d'Azur. Devis remis à partir de 24 à 48 h selon la complexité.",
+          "Code custom et hébergement dans l'Union européenne, conformité RGPD par défaut, avec prise en compte des flux transfrontaliers France-Monaco-Italie pour les acteurs frontaliers mentonnais. Aucun verrou éditeur : vous gardez la main pleine sur le CMS, les contenus multilingues et les modèles IA, avec un runbook remis et la possibilité de reprendre la maintenance en interne ou chez tout intégrateur de la Côte d'Azur. Devis remis à partir de 48 h selon la complexité.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for Menton's micro-businesses and SMEs, on the Italian border. The local fabric is singular: prestige hospitality tied to Monaco's palaces (Menton supplies 15.5% of Monaco's accommodation-catering workforce), services for the 40% of cross-border workers, the international student ecosystem of Sciences Po's Mediterranean-Middle East campus (~400 students, 40 countries), the Menton Lemon PGI sector and the shops of Port de Garavan. We build multilingual FR/IT/EN sites, booking engines, e-commerce storefronts and business platforms — UX/UI, mobile, multi-CMS and AI — with owned code, EU/GDPR hosting, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const MENTON_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote and where is data hosted?",
-            a: "The quote is delivered from 24 to 48 hours depending on project complexity. All platforms we deliver in Menton are hosted in the European Union and GDPR-compliant, with particular attention to France-Monaco-Italy cross-border data flows for businesses with bi-national activity.",
+            a: "The quote is delivered from 48 hours depending on project complexity. All platforms we deliver in Menton are hosted in the European Union and GDPR-compliant, with particular attention to France-Monaco-Italy cross-border data flows for businesses with bi-national activity.",
           },
         ],
         guarantees:
-          "Custom code and hosting in the European Union, GDPR compliance by default, accounting for France-Monaco-Italy cross-border flows for Menton's cross-border players. No vendor lock-in: you keep full control of the CMS, multilingual content and AI models, with a runbook handed over and the option to take maintenance in-house or to any Côte d'Azur integrator. Quote delivered from 24 to 48 hours depending on complexity.",
+          "Custom code and hosting in the European Union, GDPR compliance by default, accounting for France-Monaco-Italy cross-border flows for Menton's cross-border players. No vendor lock-in: you keep full control of the CMS, multilingual content and AI models, with a runbook handed over and the option to take maintenance in-house or to any Côte d'Azur integrator. Quote delivered from 48 hours depending on complexity.",
       },
     },
   },

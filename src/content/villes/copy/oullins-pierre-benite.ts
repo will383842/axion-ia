@@ -132,11 +132,11 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je obtenir un devis ?",
-            a: "Nous établissons un devis à partir de 24 à 48 h selon la complexité. Un premier échange — sur site à Oullins-Pierre-Bénite, accessible par le métro B à 15 min de Part-Dieu, ou en visio — suffit à cadrer le périmètre, le socle technique et les fonctions IA pertinentes pour votre activité.",
+            a: "Nous établissons un devis à partir de 48 h selon la complexité. Un premier échange — sur site à Oullins-Pierre-Bénite, accessible par le métro B à 15 min de Part-Dieu, ou en visio — suffit à cadrer le périmètre, le socle technique et les fonctions IA pertinentes pour votre activité.",
           },
         ],
         guarantees:
-          "Vous restez propriétaire de tout : code source, accès, comptes et documentation vous sont transférés à la livraison, sans verrou éditeur ni dépendance contractuelle imposée à Axion-IA. Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception — un prérequis non négociable pour les données de santé de l'écosystème Hôpital Lyon Sud comme pour les documents réglementaires des industriels de la Vallée de la chimie. Tarifs publics, scope défini avant signature, devis à partir de 24 à 48 h selon la complexité. Vos équipes sont formées pour faire évoluer le site en autonomie après la mise en ligne.",
+          "Vous restez propriétaire de tout : code source, accès, comptes et documentation vous sont transférés à la livraison, sans verrou éditeur ni dépendance contractuelle imposée à Axion-IA. Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception — un prérequis non négociable pour les données de santé de l'écosystème Hôpital Lyon Sud comme pour les documents réglementaires des industriels de la Vallée de la chimie. Tarifs publics, scope défini avant signature, devis à partir de 48 h selon la complexité. Vos équipes sont formées pour faire évoluer le site en autonomie après la mise en ligne.",
       },
       en: {
         hero: "In Oullins-Pierre-Bénite (69), the southern gateway to the Lyon Métropole and the entrance to the Vallée de la chimie, Axion-IA builds AI-augmented websites and SaaS platforms for a two-sided fabric: on one side the micro-businesses and shops of Oullins' Grande Rue and town centre (bakeries, pharmacies, tradespeople, restaurants, healthcare providers around Hôpital Lyon Sud); on the other the SMEs and industrial subcontractors of the Pierre-Bénite chemical platform, in the orbit of Arkema, Daikin, Kem One and the Symbio hydrogen sector. Showcase sites, service portals, multi-CMS e-commerce, SaaS client areas — UX/UI, mobile and AI combined, with RAG chatbot, online booking, lead qualification and document search. Owned code, EU hosting compliant with GDPR, zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote?",
-            a: "We issue a quote from 24 to 48 h depending on complexity. A first exchange — on site in Oullins-Pierre-Bénite, reachable by Metro B 15 min from Part-Dieu, or by video call — is enough to frame the scope, the technical stack and the AI features relevant to your activity.",
+            a: "We issue a quote from 48 h depending on complexity. A first exchange — on site in Oullins-Pierre-Bénite, reachable by Metro B 15 min from Part-Dieu, or by video call — is enough to frame the scope, the technical stack and the AI features relevant to your activity.",
           },
         ],
         guarantees:
-          "You own everything: source code, accesses, accounts and documentation are transferred to you on delivery, with no vendor lock-in or contractual dependency imposed on Axion-IA. EU hosting by default, GDPR compliance built in from the design stage — a non-negotiable prerequisite for the health data of the Hôpital Lyon Sud ecosystem as well as the regulatory documents of the Vallée de la chimie industrials. Public pricing, scope defined before signature, quote from 24 to 48 h depending on complexity. Your teams are trained to evolve the site autonomously after go-live.",
+          "You own everything: source code, accesses, accounts and documentation are transferred to you on delivery, with no vendor lock-in or contractual dependency imposed on Axion-IA. EU hosting by default, GDPR compliance built in from the design stage — a non-negotiable prerequisite for the health data of the Hôpital Lyon Sud ecosystem as well as the regulatory documents of the Vallée de la chimie industrials. Public pricing, scope defined before signature, quote from 48 h depending on complexity. Your teams are trained to evolve the site autonomously after go-live.",
       },
     },
   },

@@ -128,7 +128,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité de votre projet. Après un premier échange sur votre activité — négoce, sous-traitance industrielle ou commerce — nous vous transmettons une proposition chiffrée claire, sans abonnement caché ni dépendance à un éditeur.",
+            a: "À partir de 48 h selon la complexité de votre projet. Après un premier échange sur votre activité — négoce, sous-traitance industrielle ou commerce — nous vous transmettons une proposition chiffrée claire, sans abonnement caché ni dépendance à un éditeur.",
           },
           {
             q: "Où sont hébergées les données et le site est-il conforme RGPD ?",
@@ -136,7 +136,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Hébergement en Union européenne par défaut et conformité RGPD sur l'ensemble de la plateforme. Devis clair à partir de 24 à 48 h selon la complexité, sans abonnement caché. Vous restez propriétaire du code, des contenus et des modèles IA : pas de verrou éditeur, reprise possible en interne ou par tout intégrateur de la Métropole de Lyon. Formation de vos équipes et documentation runbook remises à la mise en ligne, pour que votre site web ou plateforme SaaS reste maîtrisé à Vaulx-en-Velin après notre intervention.",
+          "Hébergement en Union européenne par défaut et conformité RGPD sur l'ensemble de la plateforme. Devis clair à partir de 48 h selon la complexité, sans abonnement caché. Vous restez propriétaire du code, des contenus et des modèles IA : pas de verrou éditeur, reprise possible en interne ou par tout intégrateur de la Métropole de Lyon. Formation de vos équipes et documentation runbook remises à la mise en ligne, pour que votre site web ou plateforme SaaS reste maîtrisé à Vaulx-en-Velin après notre intervention.",
       },
       en: {
         hero: "Vaulx-en-Velin, in the eastern Lyon Métropole, hosts nearly 2,500 businesses across four activity zones — the La Rize industrial estate (86 ha: wholesale trade, manufacturing, technical engineering), the La Soie estate (70 ha: components and materials wholesale), and the Carré de Soie, the former TASE silk factory site turned business district home to Alstom Transport's railway electronics headquarters (~800 engineers), Veolia, EDF and Technip. Axion-IA designs AI-augmented websites and SaaS platforms for these micro-businesses and SMEs — online quoting, technical configurators, semantic catalogue search, conversational agents — with controlled code, EU hosting and GDPR compliance, no vendor lock-in.",
@@ -214,7 +214,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote?",
-            a: "From 24 to 48 hours depending on the complexity of your project. After an initial exchange about your activity — wholesale, industrial subcontracting or retail — we send you a clear costed proposal, with no hidden subscription or vendor dependency.",
+            a: "From 48 hours depending on the complexity of your project. After an initial exchange about your activity — wholesale, industrial subcontracting or retail — we send you a clear costed proposal, with no hidden subscription or vendor dependency.",
           },
           {
             q: "Where is the data hosted and is the site GDPR-compliant?",
@@ -222,7 +222,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "EU hosting by default and GDPR compliance across the whole platform. Clear quote from 24 to 48 hours depending on complexity, with no hidden subscription. You remain owner of the code, content and AI models: no vendor lock-in, recoverable in-house or by any Lyon Métropole integrator. Team training and runbook documentation delivered at go-live, so your website or SaaS platform stays under control in Vaulx-en-Velin after our intervention.",
+          "EU hosting by default and GDPR compliance across the whole platform. Clear quote from 48 hours depending on complexity, with no hidden subscription. You remain owner of the code, content and AI models: no vendor lock-in, recoverable in-house or by any Lyon Métropole integrator. Team training and runbook documentation delivered at go-live, so your website or SaaS platform stays under control in Vaulx-en-Velin after our intervention.",
       },
     },
   },

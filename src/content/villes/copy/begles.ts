@@ -49,7 +49,7 @@ export const BEGLES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Bègles, au cœur de l'OIN Bordeaux Euratlantique, Axion-IA conçoit et augmente des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. À deux pas de la Cité Numérique (ex-centre de tri postal reconverti, Microsoft, OnePoint) et de son incubateur e-commerce & Retailtech, nous travaillons aussi bien le e-commerce que l'audiovisuel des Terres Neuves ou la cleantech du parc Eunice Newton. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bègles, itérations à distance.",
+        hero: "À Bègles, au cœur de l'OIN Bordeaux Euratlantique, Axion-IA conçoit et augmente des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. À deux pas de la Cité Numérique (ex-centre de tri postal reconverti, Microsoft, OnePoint) et de son incubateur e-commerce & Retailtech, nous travaillons aussi bien le e-commerce que l'audiovisuel des Terres Neuves ou la cleantech du parc Eunice Newton. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bègles, itérations à distance.",
         whyHere: [
           "Écosystème numérique de la Cité Numérique de Bègles : startups e-commerce et Retailtech de l'incubateur 2022 (Cali Intelligence, Fari Analytics, Locadeo, CibleR…), éditeurs, pure players et grands comptes type Microsoft ou OnePoint.",
           "Économie créative du parc des Terres Neuves (audiovisuel, musique, cinéma, Image Hub, studios virtuels HDR) : sites vitrines, portfolios riches médias et plateformes de diffusion qui tiennent la charge.",
@@ -60,7 +60,7 @@ export const BEGLES_COPY: VilleCopy = {
           {
             step: "Cadrage à Bègles",
             detail:
-              "Atelier sur site, dans vos locaux de la Cité Numérique, des Terres Neuves, du parc Eunice Newton ou de la ZAE Grand Port : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, dans vos locaux de la Cité Numérique, des Terres Neuves, du parc Eunice Newton ou de la ZAE Grand Port : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,10 +132,10 @@ export const BEGLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Bordeaux Métropole — de la Cité Numérique de Bègles aux Terres Neuves — ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Bordeaux Métropole — de la Cité Numérique de Bègles aux Terres Neuves — ou repris en interne.",
       },
       en: {
-        hero: "In Bègles, at the heart of the Bordeaux Euratlantique national-interest project, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Steps from the Cité Numérique (a converted former postal sorting centre, home to Microsoft and OnePoint) and its e-commerce & Retailtech incubator, we serve e-commerce, the Terres Neuves audiovisual cluster and the cleantech of the Eunice Newton park alike. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Bègles kick-off, remote iterations.",
+        hero: "In Bègles, at the heart of the Bordeaux Euratlantique national-interest project, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Steps from the Cité Numérique (a converted former postal sorting centre, home to Microsoft and OnePoint) and its e-commerce & Retailtech incubator, we serve e-commerce, the Terres Neuves audiovisual cluster and the cleantech of the Eunice Newton park alike. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Bègles kick-off, remote iterations.",
         whyHere: [
           "Digital ecosystem of the Cité Numérique de Bègles: e-commerce and Retailtech startups from the 2022 incubator (Cali Intelligence, Fari Analytics, Locadeo, CibleR…), software vendors, pure players and large groups such as Microsoft and OnePoint.",
           "Creative economy of the Terres Neuves park (audiovisual, music, film, Image Hub, HDR virtual studios): showcase sites, media-rich portfolios and streaming platforms built to handle the load.",
@@ -146,7 +146,7 @@ export const BEGLES_COPY: VilleCopy = {
           {
             step: "Scoping in Bègles",
             detail:
-              "On-site workshop at your offices in the Cité Numérique, Terres Neuves, Eunice Newton park or the Grand Port business zone: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop at your offices in the Cité Numérique, Terres Neuves, Eunice Newton park or the Grand Port business zone: goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,7 +218,7 @@ export const BEGLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Zero-downtime go-live when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Bordeaux Métropole provider — from the Cité Numérique de Bègles to Terres Neuves — or taken back in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Zero-downtime go-live when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Bordeaux Métropole provider — from the Cité Numérique de Bègles to Terres Neuves — or taken back in-house.",
       },
     },
   },

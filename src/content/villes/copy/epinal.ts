@@ -119,7 +119,7 @@ export const EPINAL_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer un e-commerce pour un commerçant ou une marque d'Épinal ?",
-            a: "Oui. Du commerçant indépendant du centre-ville à la marque patrimoniale (l'Imagerie d'Épinal est active depuis 1796), nous déployons des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou headless) avec moteur de recherche, recommandations IA et SEO local pour vendre au-delà des Vosges. Le devis est établi à partir de 24-48 h selon la complexité.",
+            a: "Oui. Du commerçant indépendant du centre-ville à la marque patrimoniale (l'Imagerie d'Épinal est active depuis 1796), nous déployons des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou headless) avec moteur de recherche, recommandations IA et SEO local pour vendre au-delà des Vosges. Le devis est établi à partir de 48 h selon la complexité.",
           },
           {
             q: "Travaillez-vous avec la filière bois et les acteurs de la Green Valley ?",
@@ -135,7 +135,7 @@ export const EPINAL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis établi à partir de 24-48 h selon la complexité, périmètre et livrables définis avant signature. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception. Code custom livré et documenté : vous restez propriétaire de votre stack, maintenable en interne ou par tout intégrateur du Grand Est, sans verrou éditeur ni dépendance contractuelle imposée. Performances et accessibilité (Web Vitals, mobile-first) validées en recette avant mise en production.",
+          "Devis établi à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception. Code custom livré et documenté : vous restez propriétaire de votre stack, maintenable en interne ou par tout intégrateur du Grand Est, sans verrou éditeur ni dépendance contractuelle imposée. Performances et accessibilité (Web Vitals, mobile-first) validées en recette avant mise en production.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Épinal and its agglomeration, from city-centre micro-businesses to the industrial players of the INOVA 3000 zone. The Épinal fabric is distinctive: a wood-and-paper sector shifting toward industrial ecology (Norske Skog Golbey, the Green Valley and its Écoparc, Pavatex of the Soprema group), automotive engineering with the Garrett Motion turbocharger plant in Thaon-les-Vosges, the healthcare hub of the Émile Durkheim hospital, and retail heir to the Imagerie d'Épinal (1796) that now needs to sell online. We deliver custom code — UX/UI, mobile, multi-CMS e-commerce, RAG chatbot, semantic search — hosted in the EU and GDPR-compliant, with no vendor lock-in.",
@@ -205,7 +205,7 @@ export const EPINAL_COPY: VilleCopy = {
           },
           {
             q: "Can you build an e-commerce store for an Épinal shopkeeper or brand?",
-            a: "Yes. From the independent city-centre shopkeeper to the heritage brand (the Imagerie d'Épinal has been active since 1796), we deploy multi-CMS e-commerce stores (Shopify, WooCommerce, PrestaShop or headless) with search engine, AI recommendations and local SEO to sell beyond the Vosges. The quote is issued from 24-48 h depending on complexity.",
+            a: "Yes. From the independent city-centre shopkeeper to the heritage brand (the Imagerie d'Épinal has been active since 1796), we deploy multi-CMS e-commerce stores (Shopify, WooCommerce, PrestaShop or headless) with search engine, AI recommendations and local SEO to sell beyond the Vosges. The quote is issued from 48 h depending on complexity.",
           },
           {
             q: "Do you work with the wood sector and Green Valley players?",
@@ -221,7 +221,7 @@ export const EPINAL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote issued from 24-48 h depending on complexity, with scope and deliverables defined before signature. EU hosting by default and GDPR compliance built in from design. Custom code delivered and documented: you remain owner of your stack, maintainable in-house or by any Grand Est integrator, with no vendor lock-in or imposed contractual dependency. Performance and accessibility (Web Vitals, mobile-first) validated at acceptance before go-live.",
+          "Quote issued from 48 h depending on complexity, with scope and deliverables defined before signature. EU hosting by default and GDPR compliance built in from design. Custom code delivered and documented: you remain owner of your stack, maintainable in-house or by any Grand Est integrator, with no vendor lock-in or imposed contractual dependency. Performance and accessibility (Web Vitals, mobile-first) validated at acceptance before go-live.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const MANOSQUE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Manosque des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la plus grande ville des Alpes-de-Haute-Provence, terre de Jean Giono et siège mondial de L'Occitane en Provence, où la filière cosmétique-lavande côtoie un tourisme provençal actif, l'écosystème high-tech de Cadarache-ITER et le site industriel de stockage souterrain Géosel-Géométhane. Que vous soyez un commerce du centre ancien, un producteur de lavande du plateau de Valensole, un hôtel du bassin de Gréoux-les-Bains ou un prestataire de la zone d'activité de Saint-Maurice, on augmente votre existant ou on construit du sur-mesure. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou ni abonnement imposé. Kick-off en présentiel à Manosque, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Manosque des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la plus grande ville des Alpes-de-Haute-Provence, terre de Jean Giono et siège mondial de L'Occitane en Provence, où la filière cosmétique-lavande côtoie un tourisme provençal actif, l'écosystème high-tech de Cadarache-ITER et le site industriel de stockage souterrain Géosel-Géométhane. Que vous soyez un commerce du centre ancien, un producteur de lavande du plateau de Valensole, un hôtel du bassin de Gréoux-les-Bains ou un prestataire de la zone d'activité de Saint-Maurice, on augmente votre existant ou on construit du sur-mesure. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou ni abonnement imposé. Kick-off en présentiel à Manosque, itérations à distance.",
         whyHere: [
           "Filière cosmétique et lavande tirée par le siège mondial de L'Occitane en Provence, premier employeur privé du bassin : un terrain idéal pour des boutiques e-commerce sur mesure multi-CMS (Shopify, WooCommerce, PrestaShop, Magento), des fiches produits enrichies par recherche sémantique et des parcours d'achat multilingues calibrés pour une clientèle internationale exigeante.",
           "Tourisme provençal et thermalisme du bassin (Gréoux-les-Bains, pays de Forcalquier, montagne de Lure, plateau de Valensole) : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut et conçus mobile-first, adaptés à l'hôtellerie, aux gîtes, aux producteurs de lavande et aux artisans d'art de la Haute-Provence qui captent une clientèle saisonnière.",
@@ -64,7 +64,7 @@ export const MANOSQUE_COPY: VilleCopy = {
           {
             step: "Cadrage à Manosque",
             detail:
-              "Atelier sur site (cœur de ville ancien autour de la porte Saunerie, zone d'activité de Saint-Maurice, abords de Cadarache) : objectifs, parcours utilisateurs, audit de la stack et des contenus, saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville ancien autour de la porte Saunerie, zone d'activité de Saint-Maurice, abords de Cadarache) : objectifs, parcours utilisateurs, audit de la stack et des contenus, saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const MANOSQUE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Manosque — sur site, zone de Saint-Maurice ou abords de Cadarache — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage à Manosque — sur site, zone de Saint-Maurice ou abords de Cadarache — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de la lavande de Valensole. Web Vitals, accessibilité et conformité AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à tout prestataire web local de la région Provence-Alpes-Côte d'Azur ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de la lavande de Valensole. Web Vitals, accessibilité et conformité AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à tout prestataire web local de la région Provence-Alpes-Côte d'Azur ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Manosque des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la plus grande ville des Alpes-de-Haute-Provence, terre de Jean Giono et siège mondial de L'Occitane en Provence, où la filière cosmétique-lavande côtoie un tourisme provençal actif, l'écosystème high-tech de Cadarache-ITER et le site industriel de stockage souterrain Géosel-Géométhane. Que vous soyez un commerce du centre ancien, un producteur de lavande du plateau de Valensole, un hôtel du bassin de Gréoux-les-Bains ou un prestataire de la zone d'activité de Saint-Maurice, on augmente votre existant ou on construit du sur-mesure. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou ni abonnement imposé. Kick-off en présentiel à Manosque, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Manosque des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la plus grande ville des Alpes-de-Haute-Provence, terre de Jean Giono et siège mondial de L'Occitane en Provence, où la filière cosmétique-lavande côtoie un tourisme provençal actif, l'écosystème high-tech de Cadarache-ITER et le site industriel de stockage souterrain Géosel-Géométhane. Que vous soyez un commerce du centre ancien, un producteur de lavande du plateau de Valensole, un hôtel du bassin de Gréoux-les-Bains ou un prestataire de la zone d'activité de Saint-Maurice, on augmente votre existant ou on construit du sur-mesure. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou ni abonnement imposé. Kick-off en présentiel à Manosque, itérations à distance.",
         whyHere: [
           "Filière cosmétique et lavande tirée par le siège mondial de L'Occitane en Provence, premier employeur privé du bassin : un terrain idéal pour des boutiques e-commerce sur mesure multi-CMS (Shopify, WooCommerce, PrestaShop, Magento), des fiches produits enrichies par recherche sémantique et des parcours d'achat multilingues calibrés pour une clientèle internationale exigeante.",
           "Tourisme provençal et thermalisme du bassin (Gréoux-les-Bains, pays de Forcalquier, montagne de Lure, plateau de Valensole) : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut et conçus mobile-first, adaptés à l'hôtellerie, aux gîtes, aux producteurs de lavande et aux artisans d'art de la Haute-Provence qui captent une clientèle saisonnière.",
@@ -150,7 +150,7 @@ export const MANOSQUE_COPY: VilleCopy = {
           {
             step: "Cadrage à Manosque",
             detail:
-              "Atelier sur site (cœur de ville ancien autour de la porte Saunerie, zone d'activité de Saint-Maurice, abords de Cadarache) : objectifs, parcours utilisateurs, audit de la stack et des contenus, saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville ancien autour de la porte Saunerie, zone d'activité de Saint-Maurice, abords de Cadarache) : objectifs, parcours utilisateurs, audit de la stack et des contenus, saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const MANOSQUE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Manosque — sur site, zone de Saint-Maurice ou abords de Cadarache — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage à Manosque — sur site, zone de Saint-Maurice ou abords de Cadarache — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de la lavande de Valensole. Web Vitals, accessibilité et conformité AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à tout prestataire web local de la région Provence-Alpes-Côte d'Azur ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de la lavande de Valensole. Web Vitals, accessibilité et conformité AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à tout prestataire web local de la région Provence-Alpes-Côte d'Azur ou repris en interne par vos équipes.",
       },
     },
   },

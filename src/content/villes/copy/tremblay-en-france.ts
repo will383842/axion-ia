@@ -90,13 +90,13 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou landing IA",
             detail:
-              "Pour artisans, commerces d'Aéroville et indépendants de Tremblay-en-France : site vitrine mobile-first, prise de rendez-vous, chatbot FAQ. Devis à partir de 24-48 h selon la complexité.",
+              "Pour artisans, commerces d'Aéroville et indépendants de Tremblay-en-France : site vitrine mobile-first, prise de rendez-vous, chatbot FAQ. Devis à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce",
             detail:
-              "Pour commissionnaires de transport, entrepôts e-commerce de Garonor et PME de Paris-Nord 2 : portail client de tracking, boutique multi-CMS, automatisation des bordereaux. Devis à partir de 24-48 h.",
+              "Pour commissionnaires de transport, entrepôts e-commerce de Garonor et PME de Paris-Nord 2 : portail client de tracking, boutique multi-CMS, automatisation des bordereaux. Devis à partir de 48 h.",
           },
           {
             sizeLabel: "ETI",
@@ -126,7 +126,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "Le devis est établi à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Le périmètre, les intégrations (TMS, WMS, EDI, API transporteurs) et le calendrier sont précisés avant toute signature.",
+            a: "Le devis est établi à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Le périmètre, les intégrations (TMS, WMS, EDI, API transporteurs) et le calendrier sont précisés avant toute signature.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD et la sécurité des données de flux ?",
@@ -134,7 +134,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis établi à partir de 24-48 h selon la complexité, périmètre et intégrations (TMS, WMS, EDI, API transporteurs) fixés avant signature. Code sur mesure livré dans les délais convenus, hébergement en Union européenne par défaut et conformité RGPD. La plateforme reste votre propriété pleine et entière, reprenable par vos équipes ou tout intégrateur du bassin de Roissy — aucun lock-in éditeur, aucune dépendance Axion-IA imposée.",
+          "Devis établi à partir de 48 h selon la complexité, périmètre et intégrations (TMS, WMS, EDI, API transporteurs) fixés avant signature. Code sur mesure livré dans les délais convenus, hébergement en Union européenne par défaut et conformité RGPD. La plateforme reste votre propriété pleine et entière, reprenable par vos équipes ou tout intégrateur du bassin de Roissy — aucun lock-in éditeur, aucune dépendance Axion-IA imposée.",
       },
       en: {
         hero: "Tremblay-en-France is one of the rare municipalities whose territory includes part of Paris-Charles-de-Gaulle airport and which hosts Air France's head office (Roissypôle, near Terminal 3). Axion-IA designs custom AI-augmented websites and SaaS platforms for the freight and logistics ecosystem of northern Île-de-France: carriers and freight forwarders at Aérolians Paris (FedEx Express, Daher, Mondial Relay), service providers at Paris-Nord 2, e-commerce warehouses at Garonor and airport subcontractors in the Tremblay-CDG zone. Custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -176,13 +176,13 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "Showcase site or AI landing page",
             detail:
-              "For craftsmen, Aéroville shops and Tremblay-en-France freelancers: mobile-first showcase site, booking, FAQ chatbot. Quote from 24-48 h depending on complexity.",
+              "For craftsmen, Aéroville shops and Tremblay-en-France freelancers: mobile-first showcase site, booking, FAQ chatbot. Quote from 48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
             price: "Business platform or e-commerce",
             detail:
-              "For freight forwarders, Garonor e-commerce warehouses and Paris-Nord 2 SMEs: customer tracking portal, multi-CMS shop, waybill automation. Quote from 24-48 h.",
+              "For freight forwarders, Garonor e-commerce warehouses and Paris-Nord 2 SMEs: customer tracking portal, multi-CMS shop, waybill automation. Quote from 48 h.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -212,7 +212,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "The quote is issued from 24-48 h depending on project complexity, after an initial framing exchange. Scope, integrations (TMS, WMS, EDI, carrier APIs) and timeline are specified before any signature.",
+            a: "The quote is issued from 48 h depending on project complexity, after an initial framing exchange. Scope, integrations (TMS, WMS, EDI, carrier APIs) and timeline are specified before any signature.",
           },
           {
             q: "How do you ensure GDPR compliance and flow data security?",
@@ -220,7 +220,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote issued from 24-48 h depending on complexity, with scope and integrations (TMS, WMS, EDI, carrier APIs) fixed before signature. Custom code delivered within the agreed timeline, EU hosting by default and GDPR compliance. The platform remains your full property, recoverable by your teams or any integrator in the Roissy area — no vendor lock-in, no imposed Axion-IA dependency.",
+          "Quote issued from 48 h depending on complexity, with scope and integrations (TMS, WMS, EDI, carrier APIs) fixed before signature. Custom code delivered within the agreed timeline, EU hosting by default and GDPR compliance. The platform remains your full property, recoverable by your teams or any integrator in the Roissy area — no vendor lock-in, no imposed Axion-IA dependency.",
       },
     },
   },

@@ -13,7 +13,7 @@ const COPY = {
   fr: {
     title: "Message bien reçu",
     intro: (n: string) => `Bonjour ${n},`,
-    body: "Nous avons bien reçu votre message. Notre équipe revient vers vous sous 24 heures ouvrées.",
+    body: "Nous avons bien reçu votre message. Notre équipe revient vers vous sous 48 heures ouvrées.",
     next: "Pour les sujets urgents (intervention sous 7 jours), pensez à passer directement par notre calendrier de réservation.",
     cta: "Voir le calendrier",
     refRow: (id: string) => `Référence : ${id}`,
@@ -21,7 +21,7 @@ const COPY = {
   en: {
     title: "Message received",
     intro: (n: string) => `Hello ${n},`,
-    body: "We received your message. Our team gets back to you within 24 working hours.",
+    body: "We received your message. Our team gets back to you within 48 working hours.",
     next: "For urgent topics (session within 7 days), please use our booking calendar directly.",
     cta: "View calendar",
     refRow: (id: string) => `Reference: ${id}`,

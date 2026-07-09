@@ -124,7 +124,7 @@ export const AUBAGNE_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis à Aubagne ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet, après un premier échange sur votre activité — vitrine d'artisan, e-boutique saisonnière, portail métier des Paluds ou site touristique Pagnol.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet, après un premier échange sur votre activité — vitrine d'artisan, e-boutique saisonnière, portail métier des Paluds ou site touristique Pagnol.",
           },
           {
             q: "Revendiquez-vous l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
@@ -136,7 +136,7 @@ export const AUBAGNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité, tarifs sur grille claire. Hébergement en Union européenne, conformité RGPD, DPO sur demande. Nous prenons en charge l'UX/UI, le mobile, l'e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et l'IA intégrée. À la livraison à Aubagne — atelier de santonnier, site des Paluds ou boutique du centre — vos équipes sont formées et vous gardez la pleine propriété du code, des accès et des comptes : aucun verrou éditeur, aucune dépendance contractuelle imposée à Axion-IA.",
+          "Devis remis à partir de 48 h selon la complexité, tarifs sur grille claire. Hébergement en Union européenne, conformité RGPD, DPO sur demande. Nous prenons en charge l'UX/UI, le mobile, l'e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et l'IA intégrée. À la livraison à Aubagne — atelier de santonnier, site des Paluds ou boutique du centre — vos équipes sont formées et vous gardez la pleine propriété du code, des accès et des comptes : aucun verrou éditeur, aucune dépendance contractuelle imposée à Axion-IA.",
       },
       en: {
         hero: "Aubagne (13) combines a high-tech industrial anchor — Sartorius Stedim, the biopharmaceutical equipment maker whose new technology and industrial campus opened in June 2025 on the Les Paluds industrial estate — with a dense fabric of micro-businesses and SMEs in the Huveaune valley: clay santon craft (Santons Escoffier), ceramics and tile-making, food processing, logistics and retail across Les Paluds (117 ha, over 1,000 firms) and the Napollon park at the foot of the Garlaban. Axion-IA designs AI-augmented websites and SaaS platforms for these Aubagne players, from the santon maker who needs an online store to the biopharma manufacturer who needs a business portal — UX/UI, mobile, multi-CMS e-commerce and AI, EU/GDPR hosting, no tech lock-in.",
@@ -210,7 +210,7 @@ export const AUBAGNE_COPY: VilleCopy = {
           },
           {
             q: "How long does it take to get a quote in Aubagne?",
-            a: "The quote is delivered from 24 to 48 h depending on project complexity, after an initial discussion of your activity — a craftsperson's showcase, a seasonal online store, a Les Paluds business portal or a Pagnol tourism site.",
+            a: "The quote is delivered from 48 h depending on project complexity, after an initial discussion of your activity — a craftsperson's showcase, a seasonal online store, a Les Paluds business portal or a Pagnol tourism site.",
           },
           {
             q: "Do you cover UX/UI, mobile and e-commerce, or only AI?",
@@ -222,7 +222,7 @@ export const AUBAGNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24 to 48 h depending on complexity, with clear pricing. EU hosting, GDPR compliance, DPO on request. We cover UX/UI, mobile, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and integrated AI. On delivery in Aubagne — a santon workshop, a Les Paluds site or an old-town shop — your teams are trained and you retain full ownership of the code, access and accounts: no vendor lock-in, no contractual dependency on Axion-IA.",
+          "Quote delivered from 48 h depending on complexity, with clear pricing. EU hosting, GDPR compliance, DPO on request. We cover UX/UI, mobile, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and integrated AI. On delivery in Aubagne — a santon workshop, a Les Paluds site or an old-town shop — your teams are trained and you retain full ownership of the code, access and accounts: no vendor lock-in, no contractual dependency on Axion-IA.",
       },
     },
   },

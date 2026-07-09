@@ -318,11 +318,11 @@ export const POITIERS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai avez-vous un devis et comment êtes-vous hébergés ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Tous nos sites et plateformes sont hébergés dans l'Union européenne, conformes au RGPD, avec un code et une stack qui restent votre propriété — pas de verrou éditeur ni d'abonnement caché.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Tous nos sites et plateformes sont hébergés dans l'Union européenne, conformes au RGPD, avec un code et une stack qui restent votre propriété — pas de verrou éditeur ni d'abonnement caché.",
           },
         ],
         guarantees:
-          "Axion-IA livre des sites et plateformes SaaS dont vous gardez la pleine maîtrise : code custom, prompts et architecture IA vous appartiennent, repris en interne ou par tout intégrateur de Nouvelle-Aquitaine. Hébergement en Union européenne conforme RGPD par défaut, DPO sur demande. Devis remis à partir de 24 à 48 h selon la complexité, tarifs publics sans abonnement caché ni dépendance à un éditeur unique. Nous nous déplaçons sur site à Poitiers, au Futuroscope et dans toute la Vienne.",
+          "Axion-IA livre des sites et plateformes SaaS dont vous gardez la pleine maîtrise : code custom, prompts et architecture IA vous appartiennent, repris en interne ou par tout intégrateur de Nouvelle-Aquitaine. Hébergement en Union européenne conforme RGPD par défaut, DPO sur demande. Devis remis à partir de 48 h selon la complexité, tarifs publics sans abonnement caché ni dépendance à un éditeur unique. Nous nous déplaçons sur site à Poitiers, au Futuroscope et dans toute la Vienne.",
       },
       en: {
         hero: "In Poitiers, AI-augmented web has a natural home: the Futuroscope Technopole concentrates France's leading outsourced customer-relations industry (Armatis, Arvato Services, CCA International, Carglass, Chronopost, Groupama, LaSer Contact) in the Téléport's \"@\" buildings, alongside Eurofins Cerep in bioanalysis, board-game publisher Libellud, Novamex/L'Arbre Vert and a university hospital of nearly 7,500 staff. Axion-IA builds AI-native sites and SaaS platforms for these players — RAG chatbots wired to your knowledge bases, ticket deflection, semantic search, booking and edtech portals — with code you control, EU/GDPR hosting, no vendor lock-in.",
@@ -404,11 +404,11 @@ export const POITIERS_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote, and where are you hosted?",
-            a: "A quote is delivered from 24 to 48 hours depending on project complexity. All our sites and platforms are hosted in the European Union, GDPR-compliant, with code and a stack that remain your property — no vendor lock-in or hidden subscription.",
+            a: "A quote is delivered from 48 hours depending on project complexity. All our sites and platforms are hosted in the European Union, GDPR-compliant, with code and a stack that remain your property — no vendor lock-in or hidden subscription.",
           },
         ],
         guarantees:
-          "Axion-IA delivers sites and SaaS platforms you fully control: custom code, prompts and AI architecture are yours, taken over in-house or by any Nouvelle-Aquitaine integrator. EU hosting, GDPR-compliant by default, DPO on request. Quote delivered from 24 to 48 hours depending on complexity, public pricing with no hidden subscription or single-vendor dependency. We travel on site in Poitiers, at the Futuroscope and across the Vienne.",
+          "Axion-IA delivers sites and SaaS platforms you fully control: custom code, prompts and AI architecture are yours, taken over in-house or by any Nouvelle-Aquitaine integrator. EU hosting, GDPR-compliant by default, DPO on request. Quote delivered from 48 hours depending on complexity, public pricing with no hidden subscription or single-vendor dependency. We travel on site in Poitiers, at the Futuroscope and across the Vienne.",
       },
     },
   },

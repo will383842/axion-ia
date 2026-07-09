@@ -49,7 +49,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Mantes-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le bassin industriel mantois, à deux pas du site Renault Flins-Aubergenville reconverti aux batteries et au recyclage et de la R&D moteurs Safran à Buchelay, avec son tissu dense de sous-traitants automobile-aéronautique, d'artisans BTP et de commerces du centre-ville mantevillois. Que vous soyez sur la zone d'activité du Mantois, en atelier ou en boutique, on greffe l'IA sur votre existant ou on construit IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mantes-la-Ville, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Mantes-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le bassin industriel mantois, à deux pas du site Renault Flins-Aubergenville reconverti aux batteries et au recyclage et de la R&D moteurs Safran à Buchelay, avec son tissu dense de sous-traitants automobile-aéronautique, d'artisans BTP et de commerces du centre-ville mantevillois. Que vous soyez sur la zone d'activité du Mantois, en atelier ou en boutique, on greffe l'IA sur votre existant ou on construit IA-native. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mantes-la-Ville, itérations à distance.",
         whyHere: [
           "Bassin industriel automobile et aéronautique : autour du site Renault Flins-Aubergenville (reconversion batteries-recyclage, plusieurs milliers d'emplois) et de la R&D moteurs Safran à Buchelay gravite un réseau dense de sous-traitants. Terrain idéal pour des portails fournisseurs, des plateformes de suivi qualité et des agents d'automatisation branchés sur l'ERP ou le MES, avec confidentialité industrielle stricte et hébergement UE.",
           "Tissu mixte de TPE artisans BTP du Mantois — plombiers, électriciens, menuisiers, peintres autour du centre-ville mantevillois et des zones d'activité : on greffe l'IA sur l'existant (agent de prise de RDV, devis chantier automatisé, classification de photos de chantier) ou on construit une vitrine claire mobile-first sans refonte coûteuse, pensée pour des artisans souvent sur le terrain.",
@@ -60,7 +60,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Mantes-la-Ville",
             detail:
-              "Atelier sur site — centre-ville mantevillois, atelier industriel ou zone d'activité du Mantois : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On cartographie vos secteurs (sous-traitance auto-aéro, BTP, commerce) et on remet un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville mantevillois, atelier industriel ou zone d'activité du Mantois : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On cartographie vos secteurs (sous-traitance auto-aéro, BTP, commerce) et on remet un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Mantes-la-Ville, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre, le prix et le planning sont posés avant le premier sprint, que vous soyez un sous-traitant industriel, une PME tertiaire ou un commerce mantevillois.",
+            a: "Oui. Après le cadrage à Mantes-la-Ville, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre, le prix et le planning sont posés avant le premier sprint, que vous soyez un sous-traitant industriel, une PME tertiaire ou un commerce mantevillois.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, le périmètre est posé avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine cadence industrielle ou en saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Tout est documenté et transférable à un prestataire local francilien ou repris en interne par vos équipes du Mantois.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, le périmètre est posé avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine cadence industrielle ou en saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Tout est documenté et transférable à un prestataire local francilien ou repris en interne par vos équipes du Mantois.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Mantes-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le bassin industriel mantois, à deux pas du site Renault Flins-Aubergenville reconverti aux batteries et au recyclage et de la R&D moteurs Safran à Buchelay, avec son tissu dense de sous-traitants automobile-aéronautique, d'artisans BTP et de commerces du centre-ville mantevillois. Que vous soyez sur la zone d'activité du Mantois, en atelier ou en boutique, on greffe l'IA sur votre existant ou on construit IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mantes-la-Ville, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Mantes-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le bassin industriel mantois, à deux pas du site Renault Flins-Aubergenville reconverti aux batteries et au recyclage et de la R&D moteurs Safran à Buchelay, avec son tissu dense de sous-traitants automobile-aéronautique, d'artisans BTP et de commerces du centre-ville mantevillois. Que vous soyez sur la zone d'activité du Mantois, en atelier ou en boutique, on greffe l'IA sur votre existant ou on construit IA-native. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mantes-la-Ville, itérations à distance.",
         whyHere: [
           "Bassin industriel automobile et aéronautique : autour du site Renault Flins-Aubergenville (reconversion batteries-recyclage, plusieurs milliers d'emplois) et de la R&D moteurs Safran à Buchelay gravite un réseau dense de sous-traitants. Terrain idéal pour des portails fournisseurs, des plateformes de suivi qualité et des agents d'automatisation branchés sur l'ERP ou le MES, avec confidentialité industrielle stricte et hébergement UE.",
           "Tissu mixte de TPE artisans BTP du Mantois — plombiers, électriciens, menuisiers, peintres autour du centre-ville mantevillois et des zones d'activité : on greffe l'IA sur l'existant (agent de prise de RDV, devis chantier automatisé, classification de photos de chantier) ou on construit une vitrine claire mobile-first sans refonte coûteuse, pensée pour des artisans souvent sur le terrain.",
@@ -146,7 +146,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Mantes-la-Ville",
             detail:
-              "Atelier sur site — centre-ville mantevillois, atelier industriel ou zone d'activité du Mantois : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On cartographie vos secteurs (sous-traitance auto-aéro, BTP, commerce) et on remet un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville mantevillois, atelier industriel ou zone d'activité du Mantois : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On cartographie vos secteurs (sous-traitance auto-aéro, BTP, commerce) et on remet un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -214,11 +214,11 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Mantes-la-Ville, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre, le prix et le planning sont posés avant le premier sprint, que vous soyez un sous-traitant industriel, une PME tertiaire ou un commerce mantevillois.",
+            a: "Oui. Après le cadrage à Mantes-la-Ville, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre, le prix et le planning sont posés avant le premier sprint, que vous soyez un sous-traitant industriel, une PME tertiaire ou un commerce mantevillois.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, le périmètre est posé avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine cadence industrielle ou en saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Tout est documenté et transférable à un prestataire local francilien ou repris en interne par vos équipes du Mantois.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, le périmètre est posé avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine cadence industrielle ou en saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Tout est documenté et transférable à un prestataire local francilien ou repris en interne par vos équipes du Mantois.",
       },
     },
   },

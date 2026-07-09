@@ -312,7 +312,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour obtenir un devis pour mon projet web à Tourcoing ?",
-            a: "Nous remettons un devis à partir de 24-48 h selon la complexité, après un premier échange de cadrage. Pour une boutique e-commerce à catalogue dense, un configurateur textile ou un SaaS sur mesure, le périmètre exact est défini ensemble avant la proposition chiffrée. Le devis détaille le scope, sans coûts cachés.",
+            a: "Nous remettons un devis à partir de 48 h selon la complexité, après un premier échange de cadrage. Pour une boutique e-commerce à catalogue dense, un configurateur textile ou un SaaS sur mesure, le périmètre exact est défini ensemble avant la proposition chiffrée. Le devis détaille le scope, sans coûts cachés.",
           },
           {
             q: "Où sont hébergées les données de ma boutique ou de mon SaaS ?",
@@ -320,7 +320,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24-48 h selon la complexité, avec un périmètre clair et sans coûts cachés. Code et contenus vous appartiennent intégralement : aucun verrou éditeur, votre site ou SaaS reste maintenable par vos équipes ou tout prestataire de la métropole lilloise. Hébergement en Union européenne conforme RGPD par défaut, on-premise sur demande. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA — interfaces validées sur vos contenus réels avant développement, performances optimisées (Web Vitals), formation et documentation remises à la mise en ligne.",
+          "Devis remis à partir de 48 h selon la complexité, avec un périmètre clair et sans coûts cachés. Code et contenus vous appartiennent intégralement : aucun verrou éditeur, votre site ou SaaS reste maintenable par vos équipes ou tout prestataire de la métropole lilloise. Hébergement en Union européenne conforme RGPD par défaut, on-premise sur demande. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA — interfaces validées sur vos contenus réels avant développement, performances optimisées (Web Vitals), formation et documentation remises à la mise en ligne.",
       },
       en: {
         hero: "Tourcoing is the cradle of French mail-order retail reborn in the digital era: the Roubaix-Tourcoing basin gave birth to distance selling (La Redoute, 3 Suisses) and today hosts Showroomprivé, a product-catalogue e-commerce expertise that runs through the whole local fabric. On the former textile brownfields of the Union district, CETI (European Centre for Innovative Textiles) and Plaine Images — 150+ creative and digital industry companies — embody the same shift: from factory to platform. In Tourcoing, Axion-IA designs AI-augmented websites and SaaS platforms for both worlds — e-merchants and pure players, technical-textile workshops (UTTI, Clubtex), creative studios and publishers of Plaine Images and Le Fresnoy. Custom code, UX/UI and mobile, multi-CMS e-commerce, EU/GDPR hosting, zero vendor lock-in.",
@@ -398,7 +398,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote for my web project in Tourcoing?",
-            a: "We provide a quote starting from 24-48 h depending on complexity, after an initial framing exchange. For a dense-catalogue e-commerce store, a textile configurator or a custom SaaS, the exact scope is defined together before the costed proposal. The quote details the scope, with no hidden costs.",
+            a: "We provide a quote starting from 48 h depending on complexity, after an initial framing exchange. For a dense-catalogue e-commerce store, a textile configurator or a custom SaaS, the exact scope is defined together before the costed proposal. The quote details the scope, with no hidden costs.",
           },
           {
             q: "Where is my store's or SaaS's data hosted?",
@@ -406,7 +406,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24-48 h depending on complexity, with a clear scope and no hidden costs. Code and content are entirely yours: no vendor lock-in, your website or SaaS stays maintainable by your teams or any provider in the Lille metropolis. EU hosting GDPR-compliant by default, on-premise on request. We claim UX/UI, mobile, multi-CMS e-commerce and AI integration — interfaces validated on your real content before development, performance optimized (Web Vitals), training and documentation delivered at go-live.",
+          "Quote delivered from 48 h depending on complexity, with a clear scope and no hidden costs. Code and content are entirely yours: no vendor lock-in, your website or SaaS stays maintainable by your teams or any provider in the Lille metropolis. EU hosting GDPR-compliant by default, on-premise on request. We claim UX/UI, mobile, multi-CMS e-commerce and AI integration — interfaces validated on your real content before development, performance optimized (Web Vitals), training and documentation delivered at go-live.",
       },
     },
   },

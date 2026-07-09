@@ -122,7 +122,7 @@ export const BEZONS_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Bezons ?",
-            a: "Un premier devis est remis à partir de 24 à 48 h selon la complexité du projet, après un échange de cadrage. Pour un site vitrine la trajectoire est courte ; pour une plateforme SaaS IA-native multi-modules, le périmètre est précisé avant chiffrage.",
+            a: "Un premier devis est remis à partir de 48 h selon la complexité du projet, après un échange de cadrage. Pour un site vitrine la trajectoire est courte ; pour une plateforme SaaS IA-native multi-modules, le périmètre est précisé avant chiffrage.",
           },
           {
             q: "Où sont hébergées les données et le code de ma plateforme ?",
@@ -134,7 +134,7 @@ export const BEZONS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Plateforme livrée en code custom, sans verrou éditeur : vous gardez l'intégralité du code source, des modèles IA et des accès, transférables à tout intégrateur d'Île-de-France ou repris en interne. Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande — un cadre adapté aux exigences de souveraineté de l'écosystème IT bezonnais (Atos, Eviden, Bull et leurs sous-traitants). Périmètre et livrables figés au démarrage, devis remis à partir de 24 à 48 h selon la complexité. Aucune dépendance contractuelle continue imposée.",
+          "Plateforme livrée en code custom, sans verrou éditeur : vous gardez l'intégralité du code source, des modèles IA et des accès, transférables à tout intégrateur d'Île-de-France ou repris en interne. Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande — un cadre adapté aux exigences de souveraineté de l'écosystème IT bezonnais (Atos, Eviden, Bull et leurs sous-traitants). Périmètre et livrables figés au démarrage, devis remis à partir de 48 h selon la complexité. Aucune dépendance contractuelle continue imposée.",
       },
       en: {
         hero: "Bezons (Val-d'Oise, 95870) is no generic office suburb: it is the address of Atos SE's and Eviden's world headquarters, housed together in the River Ouest building at 80 quai Voltaire, at the heart of a dense IT cluster where Bull and Dell occupy the Z.I. EST activity zone (24.63 hectares, nearly 329 companies). Axion-IA designs AI-augmented websites and SaaS platforms for the micro-businesses, SMEs and subcontractors orbiting this ecosystem of software publishers and corporate headquarters, twelve minutes from La Défense on the T2 tram. Custom code, European Union hosting compliant with GDPR, zero vendor lock-in — for Bezons leaders who want a platform they own, not a rental.",
@@ -208,7 +208,7 @@ export const BEZONS_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote in Bezons?",
-            a: "A first quote is delivered from 24 to 48 hours depending on project complexity, after a framing exchange. For a showcase site the path is short; for a multi-module AI-native SaaS platform, the scope is specified before pricing.",
+            a: "A first quote is delivered from 48 hours depending on project complexity, after a framing exchange. For a showcase site the path is short; for a multi-module AI-native SaaS platform, the scope is specified before pricing.",
           },
           {
             q: "Where are my platform's data and code hosted?",
@@ -220,7 +220,7 @@ export const BEZONS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Platform delivered in custom code, no vendor lock-in: you keep all source code, AI models and access, transferable to any Île-de-France integrator or brought in-house. EU hosting by default, GDPR and AI Act compliance, DPO on request — a framework suited to the sovereignty requirements of the Bezons IT ecosystem (Atos, Eviden, Bull and their subcontractors). Scope and deliverables fixed at the start, quote delivered from 24 to 48 hours depending on complexity. No mandatory ongoing contractual dependency.",
+          "Platform delivered in custom code, no vendor lock-in: you keep all source code, AI models and access, transferable to any Île-de-France integrator or brought in-house. EU hosting by default, GDPR and AI Act compliance, DPO on request — a framework suited to the sovereignty requirements of the Bezons IT ecosystem (Atos, Eviden, Bull and their subcontractors). Scope and deliverables fixed at the start, quote delivered from 48 hours depending on complexity. No mandatory ongoing contractual dependency.",
       },
     },
   },

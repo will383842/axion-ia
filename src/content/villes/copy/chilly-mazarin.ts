@@ -53,7 +53,7 @@ export const CHILLY_MAZARIN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Chilly-Mazarin des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie sud-parisienne adossée à la plateforme d'Orly (8 km) et à Rungis tout proche, où logistique, entreposage, commerce de gros et messagerie côtoient un tissu dense de PME tertiaires, de TPE de services et d'artisans. Le parc de la Vigne aux Loups (135 ha, plus de 250 entreprises) et les zones logistiques de la Butte aux Bergers et du Moulin à Vent ancrent ce dynamisme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chilly-Mazarin, itérations à distance le long de l'A6 et de l'A10.",
+        hero: "Axion-IA conçoit et augmente à Chilly-Mazarin des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie sud-parisienne adossée à la plateforme d'Orly (8 km) et à Rungis tout proche, où logistique, entreposage, commerce de gros et messagerie côtoient un tissu dense de PME tertiaires, de TPE de services et d'artisans. Le parc de la Vigne aux Loups (135 ha, plus de 250 entreprises) et les zones logistiques de la Butte aux Bergers et du Moulin à Vent ancrent ce dynamisme. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chilly-Mazarin, itérations à distance le long de l'A6 et de l'A10.",
         whyHere: [
           "Logistique et entreposage des parcs de la Butte aux Bergers et du Moulin à Vent, branchés sur Orly et Rungis : on greffe l'IA à votre WMS ou ERP pour des portails de suivi d'expéditions, des tableaux de bord de flux d'entrepôt et des automatisations de planning, le long des axes A6, A10 et N20, sans refonte lourde de votre outil métier existant.",
           "Commerce de gros et grossistes du bassin sud-parisien, dans la continuité de Rungis : on bâtit des catalogues B2B sur mesure, des portails de commande client et des boutiques e-commerce multi-CMS (PrestaShop, WooCommerce, Shopify, Magento) avec recherche sémantique sur des milliers de références, pensés pour les volumes du commerce inter-entreprises.",
@@ -64,7 +64,7 @@ export const CHILLY_MAZARIN_COPY: VilleCopy = {
           {
             step: "Cadrage à Chilly-Mazarin",
             detail:
-              "Atelier sur site dans vos locaux (parc de la Vigne aux Loups, zones logistiques de la Butte aux Bergers ou du Moulin à Vent, centre-ville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans vos locaux (parc de la Vigne aux Loups, zones logistiques de la Butte aux Bergers ou du Moulin à Vent, centre-ville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const CHILLY_MAZARIN_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Chilly-Mazarin — dans vos locaux du parc de la Vigne aux Loups, d'une zone logistique ou du centre-ville — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à Chilly-Mazarin — dans vos locaux du parc de la Vigne aux Loups, d'une zone logistique ou du centre-ville — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre vos commandes ni vos expéditions au départ des entrepôts de la Butte aux Bergers ou du Moulin à Vent. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire francilien — en Essonne ou ailleurs en Île-de-France — ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre vos commandes ni vos expéditions au départ des entrepôts de la Butte aux Bergers ou du Moulin à Vent. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire francilien — en Essonne ou ailleurs en Île-de-France — ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Chilly-Mazarin des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie sud-parisienne adossée à la plateforme d'Orly (8 km) et à Rungis tout proche, où logistique, entreposage, commerce de gros et messagerie côtoient un tissu dense de PME tertiaires, de TPE de services et d'artisans. Le parc de la Vigne aux Loups (135 ha, plus de 250 entreprises) et les zones logistiques de la Butte aux Bergers et du Moulin à Vent ancrent ce dynamisme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chilly-Mazarin, itérations à distance le long de l'A6 et de l'A10.",
+        hero: "Axion-IA conçoit et augmente à Chilly-Mazarin des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie sud-parisienne adossée à la plateforme d'Orly (8 km) et à Rungis tout proche, où logistique, entreposage, commerce de gros et messagerie côtoient un tissu dense de PME tertiaires, de TPE de services et d'artisans. Le parc de la Vigne aux Loups (135 ha, plus de 250 entreprises) et les zones logistiques de la Butte aux Bergers et du Moulin à Vent ancrent ce dynamisme. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chilly-Mazarin, itérations à distance le long de l'A6 et de l'A10.",
         whyHere: [
           "Logistique et entreposage des parcs de la Butte aux Bergers et du Moulin à Vent, branchés sur Orly et Rungis : on greffe l'IA à votre WMS ou ERP pour des portails de suivi d'expéditions, des tableaux de bord de flux d'entrepôt et des automatisations de planning, le long des axes A6, A10 et N20, sans refonte lourde de votre outil métier existant.",
           "Commerce de gros et grossistes du bassin sud-parisien, dans la continuité de Rungis : on bâtit des catalogues B2B sur mesure, des portails de commande client et des boutiques e-commerce multi-CMS (PrestaShop, WooCommerce, Shopify, Magento) avec recherche sémantique sur des milliers de références, pensés pour les volumes du commerce inter-entreprises.",
@@ -150,7 +150,7 @@ export const CHILLY_MAZARIN_COPY: VilleCopy = {
           {
             step: "Cadrage à Chilly-Mazarin",
             detail:
-              "Atelier sur site dans vos locaux (parc de la Vigne aux Loups, zones logistiques de la Butte aux Bergers ou du Moulin à Vent, centre-ville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans vos locaux (parc de la Vigne aux Loups, zones logistiques de la Butte aux Bergers ou du Moulin à Vent, centre-ville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const CHILLY_MAZARIN_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Chilly-Mazarin — dans vos locaux du parc de la Vigne aux Loups, d'une zone logistique ou du centre-ville — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à Chilly-Mazarin — dans vos locaux du parc de la Vigne aux Loups, d'une zone logistique ou du centre-ville — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre vos commandes ni vos expéditions au départ des entrepôts de la Butte aux Bergers ou du Moulin à Vent. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire francilien — en Essonne ou ailleurs en Île-de-France — ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre vos commandes ni vos expéditions au départ des entrepôts de la Butte aux Bergers ou du Moulin à Vent. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire francilien — en Essonne ou ailleurs en Île-de-France — ou reprise en interne par vos équipes.",
       },
     },
   },

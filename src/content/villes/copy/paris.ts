@@ -937,7 +937,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Paris des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Paris, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Paris des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Paris, itérations à distance.",
         whyHere: [
           "Projets web & SaaS parisiens : éditeurs de logiciel, scale-ups du Sentier, conseil 8e/9e, e-commerce et mode du Marais.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
@@ -948,7 +948,7 @@ export const PARIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Paris",
             detail:
-              "Atelier sur site : objectifs, parcours, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site : objectifs, parcours, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -1008,7 +1008,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe : périmètre, modules, prix et délai. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme étendue. Pas de régie, pas de dérive horaire cachée ; tout changement de périmètre fait l'objet d'un avenant explicite.",
+            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe : périmètre, modules, prix et délai. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme étendue. Pas de régie, pas de dérive horaire cachée ; tout changement de périmètre fait l'objet d'un avenant explicite.",
           },
           {
             q: "Qui est propriétaire du code et des données ?",
@@ -1020,10 +1020,10 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité du projet) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire francilien ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité du projet) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire francilien ou repris en interne.",
       },
       en: {
-        hero: "In Paris, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Paris kick-off, remote iterations.",
+        hero: "In Paris, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site Paris kick-off, remote iterations.",
         whyHere: [
           "Paris web & SaaS projects: software vendors, Sentier scale-ups, 8th/9th consulting, Marais e-commerce and fashion.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick.",
@@ -1034,7 +1034,7 @@ export const PARIS_COPY: VilleCopy = {
           {
             step: "Scoping in Paris",
             detail:
-              "On-site workshop: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop: goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -1094,7 +1094,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping, we deliver a firm quote on a fixed package: scope, modules, price and timeline. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extended platform. No time-and-materials, no hidden hourly drift; any scope change is an explicit amendment.",
+            a: "Yes. After scoping, we deliver a firm quote on a fixed package: scope, modules, price and timeline. Turnaround depends on complexity — from 48 h for a simple project, more for an extended platform. No time-and-materials, no hidden hourly drift; any scope change is an explicit amendment.",
           },
           {
             q: "Who owns the code and the data?",
@@ -1106,7 +1106,7 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 24-48 h depending on project complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Paris-region provider or taken in-house.",
+          "Firm quote on a fixed package (from 48 h depending on project complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Paris-region provider or taken in-house.",
       },
     },
   },

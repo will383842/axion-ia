@@ -53,7 +53,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Frontignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutique de vente directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bassin de Thau faite de domaines du Muscat de Frontignan AOP, de mas conchylicoles de l'étang, de restaurateurs de bord d'eau, des entreprises de la Z.A. La Peyrade et d'un héritage industriel et pétrolier — un tissu d'abord composé de TPE et de PME. Du port de plaisance de Frontignan-la-Peyrade aux caves du centre-ville, on greffe l'IA sur l'existant ou on repart d'une page blanche. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Frontignan, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Frontignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutique de vente directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bassin de Thau faite de domaines du Muscat de Frontignan AOP, de mas conchylicoles de l'étang, de restaurateurs de bord d'eau, des entreprises de la Z.A. La Peyrade et d'un héritage industriel et pétrolier — un tissu d'abord composé de TPE et de PME. Du port de plaisance de Frontignan-la-Peyrade aux caves du centre-ville, on greffe l'IA sur l'existant ou on repart d'une page blanche. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Frontignan, itérations à distance.",
         whyHere: [
           "Filière viticole AOP captive : un domaine du Muscat de Frontignan vend en cave, sur les marchés et à l'export — on bâtit une boutique de vente directe en ligne (WooCommerce, Shopify ou code sur mesure) avec étiquetage de millésimes, gestion des stocks par cuvée, traçabilité AOP et chatbot RAG multilingue pour la clientèle touristique du bassin de Thau et les acheteurs export.",
           "Conchyliculture de l'étang de Thau et zone fluviomaritime du port (ZIFMAR) : pour les mas ostréicoles et mytilicoles et les mareyeurs, on construit prise de commande en ligne, suivi des conditions sanitaires de l'étang, recherche sémantique sur les lots et agents conversationnels calibrés pour la clientèle locale comme touristique entre Sète et Mèze.",
@@ -64,7 +64,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           {
             step: "Cadrage à Frontignan",
             detail:
-              "Atelier sur site (centre-ville historique, domaine viticole, mas de l'étang de Thau, port de plaisance de la Peyrade, Z.A. La Peyrade) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville historique, domaine viticole, mas de l'étang de Thau, port de plaisance de la Peyrade, Z.A. La Peyrade) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -136,10 +136,10 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, remis à partir de 24-48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison des vendanges du Muscat ou au pic touristique estival autour du port de plaisance de Frontignan-la-Peyrade. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, transférable à tout prestataire local de l'Hérault ou de l'Occitanie ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe, remis à partir de 48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison des vendanges du Muscat ou au pic touristique estival autour du port de plaisance de Frontignan-la-Peyrade. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, transférable à tout prestataire local de l'Hérault ou de l'Occitanie ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Frontignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutique de vente directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bassin de Thau faite de domaines du Muscat de Frontignan AOP, de mas conchylicoles de l'étang, de restaurateurs de bord d'eau, des entreprises de la Z.A. La Peyrade et d'un héritage industriel et pétrolier — un tissu d'abord composé de TPE et de PME. Du port de plaisance de Frontignan-la-Peyrade aux caves du centre-ville, on greffe l'IA sur l'existant ou on repart d'une page blanche. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Frontignan, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Frontignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutique de vente directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bassin de Thau faite de domaines du Muscat de Frontignan AOP, de mas conchylicoles de l'étang, de restaurateurs de bord d'eau, des entreprises de la Z.A. La Peyrade et d'un héritage industriel et pétrolier — un tissu d'abord composé de TPE et de PME. Du port de plaisance de Frontignan-la-Peyrade aux caves du centre-ville, on greffe l'IA sur l'existant ou on repart d'une page blanche. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Frontignan, itérations à distance.",
         whyHere: [
           "Filière viticole AOP captive : un domaine du Muscat de Frontignan vend en cave, sur les marchés et à l'export — on bâtit une boutique de vente directe en ligne (WooCommerce, Shopify ou code sur mesure) avec étiquetage de millésimes, gestion des stocks par cuvée, traçabilité AOP et chatbot RAG multilingue pour la clientèle touristique du bassin de Thau et les acheteurs export.",
           "Conchyliculture de l'étang de Thau et zone fluviomaritime du port (ZIFMAR) : pour les mas ostréicoles et mytilicoles et les mareyeurs, on construit prise de commande en ligne, suivi des conditions sanitaires de l'étang, recherche sémantique sur les lots et agents conversationnels calibrés pour la clientèle locale comme touristique entre Sète et Mèze.",
@@ -150,7 +150,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           {
             step: "Cadrage à Frontignan",
             detail:
-              "Atelier sur site (centre-ville historique, domaine viticole, mas de l'étang de Thau, port de plaisance de la Peyrade, Z.A. La Peyrade) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville historique, domaine viticole, mas de l'étang de Thau, port de plaisance de la Peyrade, Z.A. La Peyrade) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -222,7 +222,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, remis à partir de 24-48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison des vendanges du Muscat ou au pic touristique estival autour du port de plaisance de Frontignan-la-Peyrade. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, transférable à tout prestataire local de l'Hérault ou de l'Occitanie ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe, remis à partir de 48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison des vendanges du Muscat ou au pic touristique estival autour du port de plaisance de Frontignan-la-Peyrade. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, transférable à tout prestataire local de l'Hérault ou de l'Occitanie ou repris en interne par vos équipes.",
       },
     },
   },

@@ -52,7 +52,7 @@ export const VALLAURIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Vallauris Golfe-Juan, Axion-IA conçoit et augmente des sites web, applications et plateformes SaaS avec l'IA intégrée, calibrés pour les trois pôles de la commune : les ateliers et galeries de céramique d'art du centre (héritage Madoura, AOC poterie, Biennale internationale), l'économie de la grande plaisance et du refit superyacht de Golfe-Juan (Port Camille Rayon, chantier MB92) et les prestataires de la zone d'activités rattachée à Sophia Antipolis. UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, e-commerce multi-CMS et automatisations. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Vallauris, itérations à distance.",
+        hero: "À Vallauris Golfe-Juan, Axion-IA conçoit et augmente des sites web, applications et plateformes SaaS avec l'IA intégrée, calibrés pour les trois pôles de la commune : les ateliers et galeries de céramique d'art du centre (héritage Madoura, AOC poterie, Biennale internationale), l'économie de la grande plaisance et du refit superyacht de Golfe-Juan (Port Camille Rayon, chantier MB92) et les prestataires de la zone d'activités rattachée à Sophia Antipolis. UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, e-commerce multi-CMS et automatisations. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Vallauris, itérations à distance.",
         whyHere: [
           "Céramique d'art et métiers d'art (label Ville et Métiers d'Art, AOC poterie depuis 1920, sillage Atelier Madoura/Picasso, Biennale internationale) : boutiques en ligne de pièces uniques, catalogue multilingue FR/EN/IT, fiches produits enrichies par IA et diffusion marketplaces pour les ~520 entreprises du centre.",
           "Grande plaisance et refit superyacht à Golfe-Juan : sites et portails pour les ~40 acteurs nautiques autour de Port Camille Rayon (838 anneaux, 11 ha, concession D-Marin) et du chantier MB92 — réservation d'anneaux, devis de chantier, suivi de flotte, espaces clients.",
@@ -63,7 +63,7 @@ export const VALLAURIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Vallauris",
             detail:
-              "Atelier sur site — au centre céramique, sur le port à Golfe-Juan ou en zone Sophia — objectifs, parcours utilisateurs, audit de la stack et des contenus (catalogue d'atelier, base anneaux/clients, fiches yachts). Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — au centre céramique, sur le port à Golfe-Juan ou en zone Sophia — objectifs, parcours utilisateurs, audit de la stack et des contenus (catalogue d'atelier, base anneaux/clients, fiches yachts). Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -127,7 +127,7 @@ export const VALLAURIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple (boutique d'atelier, site vitrine), davantage pour une plateforme portuaire ou un portail de chantier naval. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple (boutique d'atelier, site vitrine), davantage pour une plateforme portuaire ou un portail de chantier naval. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Avec quelles technologies travaillez-vous et mes données restent-elles en Europe ?",
@@ -135,10 +135,10 @@ export const VALLAURIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et multilingue (FR/EN/IT) contrôlés à la livraison — un atout pour la clientèle internationale des ateliers de céramique et des ports de Golfe-Juan. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire des Alpes-Maritimes ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et multilingue (FR/EN/IT) contrôlés à la livraison — un atout pour la clientèle internationale des ateliers de céramique et des ports de Golfe-Juan. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire des Alpes-Maritimes ou repris en interne.",
       },
       en: {
-        hero: "In Vallauris Golfe-Juan, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI, calibrated for the town's three economic poles: the art-ceramics workshops and galleries of the centre (Madoura heritage, pottery AOC, International Ceramic Biennial), the superyacht and marina economy of Golfe-Juan (Port Camille Rayon, MB92 shipyard), and the service providers of the activity zone tied to Sophia Antipolis. Bespoke UX/UI, RAG chatbot grounded in your content, semantic search, multi-CMS e-commerce and automations. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Vallauris kick-off, remote iterations.",
+        hero: "In Vallauris Golfe-Juan, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI, calibrated for the town's three economic poles: the art-ceramics workshops and galleries of the centre (Madoura heritage, pottery AOC, International Ceramic Biennial), the superyacht and marina economy of Golfe-Juan (Port Camille Rayon, MB92 shipyard), and the service providers of the activity zone tied to Sophia Antipolis. Bespoke UX/UI, RAG chatbot grounded in your content, semantic search, multi-CMS e-commerce and automations. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Vallauris kick-off, remote iterations.",
         whyHere: [
           "Art ceramics and crafts (Town and Crafts Arts label, pottery AOC since 1920, Atelier Madoura/Picasso legacy, International Biennial): online stores for one-off pieces, FR/EN/IT multilingual catalogues, AI-enriched product sheets and marketplace distribution for the ~520 businesses of the centre.",
           "Superyacht refit and marina economy in Golfe-Juan: sites and portals for the ~40 nautical players around Port Camille Rayon (838 berths, 11 ha, D-Marin concession) and the MB92 shipyard — berth booking, yard quotes, fleet tracking, client areas.",
@@ -149,7 +149,7 @@ export const VALLAURIS_COPY: VilleCopy = {
           {
             step: "Scoping in Vallauris",
             detail:
-              "On-site workshop — at the ceramics centre, on the Golfe-Juan harbour or in the Sophia zone — goals, user journeys, audit of the stack and content (workshop catalogue, berth/client base, yacht sheets). Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop — at the ceramics centre, on the Golfe-Juan harbour or in the Sophia zone — goals, user journeys, audit of the stack and content (workshop catalogue, berth/client base, yacht sheets). Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -213,7 +213,7 @@ export const VALLAURIS_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After on-site scoping, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project (workshop store, brochure site), more for a harbour platform or a shipyard portal. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After on-site scoping, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 48 h for a simple project (workshop store, brochure site), more for a harbour platform or a shipyard portal. No time-and-materials, no hidden hourly drift.",
           },
           {
             q: "Which technologies do you work with and does my data stay in Europe?",
@@ -221,7 +221,7 @@ export const VALLAURIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals, accessibility and multilingual handling (FR/EN/IT) checked at delivery — an asset for the international clientele of the ceramics workshops and Golfe-Juan harbours. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Alpes-Maritimes provider or taken in-house.",
+          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals, accessibility and multilingual handling (FR/EN/IT) checked at delivery — an asset for the international clientele of the ceramics workshops and Golfe-Juan harbours. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Alpes-Maritimes provider or taken in-house.",
       },
     },
   },

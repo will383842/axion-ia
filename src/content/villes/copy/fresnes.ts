@@ -92,7 +92,7 @@ export const FRESNES_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou e-commerce essentiel",
             detail:
-              "Pour artisans, commerçants et indépendants de Fresnes et du corridor A86 : site vitrine performant ou boutique multi-CMS, avec briques IA simples (chatbot, génération de contenu). Devis à partir de 24-48 h selon la complexité.",
+              "Pour artisans, commerçants et indépendants de Fresnes et du corridor A86 : site vitrine performant ou boutique multi-CMS, avec briques IA simples (chatbot, génération de contenu). Devis à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -136,7 +136,7 @@ export const FRESNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Toutes nos plateformes web et SaaS conçues à Fresnes sont développées en code custom, sans lock-in éditeur : vous restez propriétaire de la stack, du design system et du contenu. Hébergement en France ou en UE par défaut, conformité RGPD et AI Act, documentation et formation de vos équipes incluses. Devis à partir de 24-48 h selon la complexité, périmètre et livrables fixés au contrat. Maintenance assurée chez nous, en interne ou par tout intégrateur du Val-de-Marne — vous gardez la liberté de la délégation.",
+          "Toutes nos plateformes web et SaaS conçues à Fresnes sont développées en code custom, sans lock-in éditeur : vous restez propriétaire de la stack, du design system et du contenu. Hébergement en France ou en UE par défaut, conformité RGPD et AI Act, documentation et formation de vos équipes incluses. Devis à partir de 48 h selon la complexité, périmètre et livrables fixés au contrat. Maintenance assurée chez nous, en interne ou par tout intégrateur du Val-de-Marne — vous gardez la liberté de la délégation.",
       },
       en: {
         hero: "In Fresnes (94260, Val-de-Marne), Axion-IA builds AI-augmented websites and SaaS platforms for a very distinctive economic fabric in southern Paris, on the A86 ring road. The town hosts the headquarters of Fresenius Medical Care France — the world's leading private dialysis operator, on avenue des Pépinières — and the global HQ of MGI Digital Technology, a Euronext-listed mid-cap manufacturing digital printing and embellishment presses. Around them sit the P.A. Médicis and Cerisaie zones (Castorama, BUT, Renault Retail Group, Elior Restauration) and a singular public-sector cluster (Fresnes prison, EPSNF). We deliver business portals, multi-CMS e-commerce and AI-native interfaces — UX/UI, mobile and EU/GDPR hosting included.",
@@ -178,7 +178,7 @@ export const FRESNES_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Showcase site or essential e-commerce",
             detail:
-              "For artisans, retailers and freelancers in Fresnes and the A86 corridor: a high-performance showcase site or multi-CMS store, with simple AI blocks (chatbot, content generation). Quote within 24-48 h depending on complexity.",
+              "For artisans, retailers and freelancers in Fresnes and the A86 corridor: a high-performance showcase site or multi-CMS store, with simple AI blocks (chatbot, content generation). Quote within 48 h depending on complexity.",
           },
           {
             sizeLabel: "PME",
@@ -222,7 +222,7 @@ export const FRESNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Every web and SaaS platform we build in Fresnes is developed in custom code, with no vendor lock-in: you own the stack, the design system and the content. Hosting in France or the EU by default, GDPR and AI Act compliance, documentation and team training included. Quote within 24-48 h depending on complexity, with scope and deliverables set in the contract. Maintenance handled with us, in-house or by any Val-de-Marne integrator — you keep freedom of delegation.",
+          "Every web and SaaS platform we build in Fresnes is developed in custom code, with no vendor lock-in: you own the stack, the design system and the content. Hosting in France or the EU by default, GDPR and AI Act compliance, documentation and team training included. Quote within 48 h depending on complexity, with scope and deliverables set in the contract. Maintenance handled with us, in-house or by any Val-de-Marne integrator — you keep freedom of delegation.",
       },
     },
   },

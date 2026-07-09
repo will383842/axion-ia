@@ -53,7 +53,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Abbeville des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Ponthieu, son agroalimentaire laitier autour de la laiterie Lactinov du groupe Lact'Union route de Vauchelles, ses ateliers de serrurerie et de métallurgie héritiers du savoir-faire des Établissements Decayeux, et l'hôtellerie-restauration tournée vers la baie de Somme. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Abbeville, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Abbeville des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Ponthieu, son agroalimentaire laitier autour de la laiterie Lactinov du groupe Lact'Union route de Vauchelles, ses ateliers de serrurerie et de métallurgie héritiers du savoir-faire des Établissements Decayeux, et l'hôtellerie-restauration tournée vers la baie de Somme. Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Abbeville, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Tissu agroalimentaire laitier du Ponthieu : autour de la laiterie Lactinov (groupe Lact'Union, route de Vauchelles), qui collecte le lait de centaines de fermes du secteur, on bâtit pour les PME agroalimentaires des portails B2B de commande, des fiches produits avec traçabilité du lot et de la DLC, et de la recherche sémantique sur catalogue, ou on greffe l'IA sur l'ERP existant sans refonte.",
           "Métallurgie et serrurerie, dans la lignée des Établissements Decayeux et des ateliers de la Z.I. Est (près de 50 hectares d'activité industrielle) : on construit des configurateurs de devis en ligne, du catalogue technique illustré et des agents de relance, ou on automatise la chaîne devis-production sans toucher à l'outil métier.",
@@ -64,7 +64,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Abbeville",
             detail:
-              "Atelier sur site (centre historique autour de la collégiale Saint-Vulfran, Z.I. Est, abords de la baie de Somme) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre historique autour de la collégiale Saint-Vulfran, Z.I. Est, abords de la baie de Somme) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const ABBEVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic touristique de la baie de Somme. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, projet transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic touristique de la baie de Somme. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, projet transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Abbeville des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Ponthieu, son agroalimentaire laitier autour de la laiterie Lactinov du groupe Lact'Union route de Vauchelles, ses ateliers de serrurerie et de métallurgie héritiers du savoir-faire des Établissements Decayeux, et l'hôtellerie-restauration tournée vers la baie de Somme. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Abbeville, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Abbeville des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Ponthieu, son agroalimentaire laitier autour de la laiterie Lactinov du groupe Lact'Union route de Vauchelles, ses ateliers de serrurerie et de métallurgie héritiers du savoir-faire des Établissements Decayeux, et l'hôtellerie-restauration tournée vers la baie de Somme. Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Abbeville, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Tissu agroalimentaire laitier du Ponthieu : autour de la laiterie Lactinov (groupe Lact'Union, route de Vauchelles), qui collecte le lait de centaines de fermes du secteur, on bâtit pour les PME agroalimentaires des portails B2B de commande, des fiches produits avec traçabilité du lot et de la DLC, et de la recherche sémantique sur catalogue, ou on greffe l'IA sur l'ERP existant sans refonte.",
           "Métallurgie et serrurerie, dans la lignée des Établissements Decayeux et des ateliers de la Z.I. Est (près de 50 hectares d'activité industrielle) : on construit des configurateurs de devis en ligne, du catalogue technique illustré et des agents de relance, ou on automatise la chaîne devis-production sans toucher à l'outil métier.",
@@ -150,7 +150,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Abbeville",
             detail:
-              "Atelier sur site (centre historique autour de la collégiale Saint-Vulfran, Z.I. Est, abords de la baie de Somme) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre historique autour de la collégiale Saint-Vulfran, Z.I. Est, abords de la baie de Somme) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -222,7 +222,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic touristique de la baie de Somme. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, projet transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic touristique de la baie de Somme. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, projet transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
       },
     },
   },

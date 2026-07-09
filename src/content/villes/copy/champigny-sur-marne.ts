@@ -53,7 +53,7 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Champigny-sur-Marne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, demande de devis qualifiée, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pour les PME du BTP du Parc du Marché Rollay, les distributeurs et industriels de la ZAC des Nations (Zone Franche Urbaine) et les commerces des bords de Marne, à l'aube de la gare Champigny Centre du Grand Paris Express (lignes 15 Sud et Est, début 2027). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Champigny-sur-Marne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Champigny-sur-Marne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, demande de devis qualifiée, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pour les PME du BTP du Parc du Marché Rollay, les distributeurs et industriels de la ZAC des Nations (Zone Franche Urbaine) et les commerces des bords de Marne, à l'aube de la gare Champigny Centre du Grand Paris Express (lignes 15 Sud et Est, début 2027). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Champigny-sur-Marne, itérations à distance.",
         whyHere: [
           "Projets web & SaaS campinois ancrés sur le tissu réel : PME du BTP et de la construction du Parc du Marché Rollay, négoce et distribution B2B (SONEPAR France Distribution), instrumentation et services (AQUALABO Services), prestataires de santé à domicile (ELIVIE, OXYVIE).",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : un vrai site vitrine ou e-commerce pour les ~700 commerces et les artisans héritiers de la métallurgie campinoise.",
@@ -64,7 +64,7 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Champigny-sur-Marne",
             detail:
-              "Atelier sur site, dans votre atelier ou vos bureaux du Plateau, du Marché Rollay ou de la ZAC des Nations : objectifs, parcours utilisateurs (demande de devis BTP, prise de contact, catalogue), audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, dans votre atelier ou vos bureaux du Plateau, du Marché Rollay ou de la ZAC des Nations : objectifs, parcours utilisateurs (demande de devis BTP, prise de contact, catalogue), audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et où sont hébergées mes données ?",
-            a: "Après le cadrage sur site, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité — pas de régie ni de dérive horaire cachée. Toute la chaîne IA est hébergeable en UE (Hetzner Frankfurt), conforme RGPD : vous gardez la propriété complète du code, des bases et des modèles, sans abonnement imposé.",
+            a: "Après le cadrage sur site, on remet un devis ferme en forfait fixe, à partir de 48 h selon la complexité — pas de régie ni de dérive horaire cachée. Toute la chaîne IA est hébergeable en UE (Hetzner Frankfurt), conforme RGPD : vous gardez la propriété complète du code, des bases et des modèles, sans abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne — du Marché Rollay à la ZAC des Nations — ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne — du Marché Rollay à la ZAC des Nations — ou repris en interne.",
       },
       en: {
-        hero: "In Champigny-sur-Marne, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, qualified quote requests, RAG chatbot grounded in your content, semantic search, agents and automations. For the construction SMEs of the Marché Rollay business park, the B2B distributors and industrials of the ZAC des Nations (Urban Free Zone) and the shops along the banks of the Marne, on the eve of the Champigny Centre Grand Paris Express station (lines 15 South and East, early 2027). Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Champigny-sur-Marne kick-off, remote iterations.",
+        hero: "In Champigny-sur-Marne, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, qualified quote requests, RAG chatbot grounded in your content, semantic search, agents and automations. For the construction SMEs of the Marché Rollay business park, the B2B distributors and industrials of the ZAC des Nations (Urban Free Zone) and the shops along the banks of the Marne, on the eve of the Champigny Centre Grand Paris Express station (lines 15 South and East, early 2027). Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Champigny-sur-Marne kick-off, remote iterations.",
         whyHere: [
           "Champigny web & SaaS projects rooted in the real fabric: construction and building SMEs of the Marché Rollay park, B2B trade and distribution (SONEPAR France Distribution), instrumentation and services (AQUALABO Services), home-healthcare providers (ELIVIE, OXYVIE).",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick: a genuine showcase or e-commerce site for the ~700 shops and the craftspeople heir to Champigny's metalworking past.",
@@ -150,7 +150,7 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
           {
             step: "Scoping in Champigny-sur-Marne",
             detail:
-              "On-site workshop, in your workshop or offices on the Plateau, the Marché Rollay or the ZAC des Nations: goals, user journeys (BTP quote requests, contact, catalogue), audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop, in your workshop or offices on the Plateau, the Marché Rollay or the ZAC des Nations: goals, user journeys (BTP quote requests, contact, catalogue), audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and where is my data hosted?",
-            a: "After on-site scoping, we issue a firm fixed-price quote, from 24-48 h depending on complexity — no time-and-materials, no hidden hourly drift. The whole AI chain is hostable in the EU (Hetzner Frankfurt), GDPR-compliant: you keep full ownership of the code, databases and models, with no imposed subscription.",
+            a: "After on-site scoping, we issue a firm fixed-price quote, from 48 h depending on complexity — no time-and-materials, no hidden hourly drift. The whole AI chain is hostable in the EU (Hetzner Frankfurt), GDPR-compliant: you keep full ownership of the code, databases and models, with no imposed subscription.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals, accessibility and local SEO/AEO checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Val-de-Marne provider — from the Marché Rollay to the ZAC des Nations — or taken in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals, accessibility and local SEO/AEO checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Val-de-Marne provider — from the Marché Rollay to the ZAC des Nations — or taken in-house.",
       },
     },
   },

@@ -120,7 +120,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les start-up e-commerce de l'incubateur e-cité ?",
-            a: "Oui. e-cité étant dédié aux start-up de la vente en ligne, nous y intervenons sur des SaaS et boutiques sur mesure : tunnel d'achat, marketplace, intégration paiement et logistique, et briques IA (recommandation, recherche sémantique, support client automatisé). Devis à partir de 24-48 h selon la complexité du projet.",
+            a: "Oui. e-cité étant dédié aux start-up de la vente en ligne, nous y intervenons sur des SaaS et boutiques sur mesure : tunnel d'achat, marketplace, intégration paiement et logistique, et briques IA (recommandation, recherche sémantique, support client automatisé). Devis à partir de 48 h selon la complexité du projet.",
           },
           {
             q: "Quel CMS ou techno utilisez-vous pour un e-commerce caladois ?",
@@ -136,7 +136,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité. Hébergement Union européenne conforme RGPD par défaut, code et données restant intégralement votre propriété, sans verrou éditeur ni dépendance contractuelle obligatoire. Nous couvrons l'ensemble de la chaîne — UX/UI, développement mobile, e-commerce multi-CMS et IA — avec un kick-off sur place à Villefranche-sur-Saône. Les performances (Web Vitals, accessibilité, conformité) sont vérifiées avant mise en ligne ; maintenance et évolutions restent optionnelles, exécutables par vos équipes ou tout intégrateur de votre choix.",
+          "Devis à partir de 48 h selon la complexité. Hébergement Union européenne conforme RGPD par défaut, code et données restant intégralement votre propriété, sans verrou éditeur ni dépendance contractuelle obligatoire. Nous couvrons l'ensemble de la chaîne — UX/UI, développement mobile, e-commerce multi-CMS et IA — avec un kick-off sur place à Villefranche-sur-Saône. Les performances (Web Vitals, accessibilité, conformité) sont vérifiées avant mise en ligne ; maintenance et évolutions restent optionnelles, exécutables par vos équipes ou tout intégrateur de votre choix.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for businesses in Villefranche-sur-Saône (69), capital of the Beaujolais. Here the web need is very concrete: B2B ordering portals for wine merchants and wholesalers, online stores for estates and food brands, logistics platforms for players in the Z.I. Nord-Est industrial zone and the river port on the Saône. The city even created the e-cité incubator, dedicated to online-sales start-ups — proof that local e-commerce is a real trade. We deploy UX/UI, mobile development, multi-CMS e-commerce and AI (chatbot, semantic search, recommendation) on owned code, hosted in the European Union and GDPR-compliant.",
@@ -206,7 +206,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
           },
           {
             q: "Do you work with the e-commerce start-ups at the e-cité incubator?",
-            a: "Yes. As e-cité is dedicated to online-sales start-ups, we work there on custom SaaS and stores: checkout funnel, marketplace, payment and logistics integration, and AI blocks (recommendation, semantic search, automated customer support). Quote within 24-48 h depending on project complexity.",
+            a: "Yes. As e-cité is dedicated to online-sales start-ups, we work there on custom SaaS and stores: checkout funnel, marketplace, payment and logistics integration, and AI blocks (recommendation, semantic search, automated customer support). Quote within 48 h depending on project complexity.",
           },
           {
             q: "Which CMS or technology do you use for a Caladois e-commerce site?",
@@ -222,7 +222,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 24-48 h depending on complexity. GDPR-compliant European Union hosting by default, with code and data remaining entirely your property, no vendor lock-in or mandatory contractual dependency. We cover the full chain — UX/UI, mobile development, multi-CMS e-commerce and AI — with an on-site kick-off in Villefranche-sur-Saône. Performance (Web Vitals, accessibility, compliance) is verified before go-live; maintenance and evolutions stay optional, executable by your teams or any integrator of your choice.",
+          "Quote within 48 h depending on complexity. GDPR-compliant European Union hosting by default, with code and data remaining entirely your property, no vendor lock-in or mandatory contractual dependency. We cover the full chain — UX/UI, mobile development, multi-CMS e-commerce and AI — with an on-site kick-off in Villefranche-sur-Saône. Performance (Web Vitals, accessibility, compliance) is verified before go-live; maintenance and evolutions stay optional, executable by your teams or any integrator of your choice.",
       },
     },
   },

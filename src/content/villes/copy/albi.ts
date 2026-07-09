@@ -127,7 +127,7 @@ export const ALBI_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Nous vous remettons un devis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Pour les plateformes SaaS sur mesure du technopôle Albi-InnoProd, le chiffrage détaillé suit un atelier de cadrage technique.",
+            a: "Nous vous remettons un devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Pour les plateformes SaaS sur mesure du technopôle Albi-InnoProd, le chiffrage détaillé suit un atelier de cadrage technique.",
           },
           {
             q: "Qui possède le code et les données après le projet ?",
@@ -135,7 +135,7 @@ export const ALBI_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Nous livrons du code source propriétaire, hébergé en Union européenne et conforme RGPD, sans verrou éditeur : vos équipes albigeoises gardent la maîtrise pleine du site, du SaaS et des modèles IA après la mission. Devis remis à partir de 24-48 h selon la complexité, périmètre et livrables définis par écrit avant tout engagement. Optimisation Web Vitals mobile et desktop incluse. Pour les cas santé/galénique liés à l'écosystème RAPSODEE et Pierre Fabre, contraintes de traçabilité et de souveraineté des données appliquées dès la conception.",
+          "Nous livrons du code source propriétaire, hébergé en Union européenne et conforme RGPD, sans verrou éditeur : vos équipes albigeoises gardent la maîtrise pleine du site, du SaaS et des modèles IA après la mission. Devis remis à partir de 48 h selon la complexité, périmètre et livrables définis par écrit avant tout engagement. Optimisation Web Vitals mobile et desktop incluse. Pour les cas santé/galénique liés à l'écosystème RAPSODEE et Pierre Fabre, contraintes de traçabilité et de souveraineté des données appliquées dès la conception.",
       },
       en: {
         hero: "In Albi, Axion-IA builds AI-augmented websites and SaaS platforms for a highly distinctive local economy: the galenics and health sector structured around the RAPSODEE centre and the GALA platform of IMT Mines Albi-Carmaux and the Pierre Fabre ecosystem in the Tarn, the small-batch precision industry of the Nouvelle Fonderie Gillet, the deep-tech start-ups of the Albi-InnoProd technopole, pastel craftsmanship and the high-footfall heritage tourism of the UNESCO Episcopal City. We deliver proprietary code, hosted in the EU and GDPR-compliant, with RAG chatbots, semantic search and business automations integrated into your existing tools.",
@@ -213,7 +213,7 @@ export const ALBI_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote?",
-            a: "We provide a quote from 24-48 h depending on project complexity, after an initial framing exchange. For bespoke SaaS platforms at the Albi-InnoProd technopole, detailed costing follows a technical framing workshop.",
+            a: "We provide a quote from 48 h depending on project complexity, after an initial framing exchange. For bespoke SaaS platforms at the Albi-InnoProd technopole, detailed costing follows a technical framing workshop.",
           },
           {
             q: "Who owns the code and data after the project?",
@@ -221,7 +221,7 @@ export const ALBI_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "We deliver proprietary source code, hosted in the European Union and GDPR-compliant, with no vendor lock-in: your Albi teams keep full control of the site, the SaaS and the AI models after the engagement. Quote provided from 24-48 h depending on complexity, with scope and deliverables defined in writing before any commitment. Web Vitals optimisation for mobile and desktop included. For health/galenics cases tied to the RAPSODEE and Pierre Fabre ecosystem, data traceability and sovereignty constraints are applied from the design stage.",
+          "We deliver proprietary source code, hosted in the European Union and GDPR-compliant, with no vendor lock-in: your Albi teams keep full control of the site, the SaaS and the AI models after the engagement. Quote provided from 48 h depending on complexity, with scope and deliverables defined in writing before any commitment. Web Vitals optimisation for mobile and desktop included. For health/galenics cases tied to the RAPSODEE and Pierre Fabre ecosystem, data traceability and sovereignty constraints are applied from the design stage.",
       },
     },
   },

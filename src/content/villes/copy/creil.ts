@@ -124,7 +124,7 @@ export const CREIL_COPY: VilleCopy = {
           },
           {
             q: "Sous combien de temps obtient-on un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet. Après un premier échange de cadrage à Creil ou en visio, nous vous remettons un périmètre fonctionnel chiffré et clair — pas de devis opaque. Le calendrier de réalisation précis est calé ensuite avec vos équipes.",
+            a: "À partir de 48 h selon la complexité du projet. Après un premier échange de cadrage à Creil ou en visio, nous vous remettons un périmètre fonctionnel chiffré et clair — pas de devis opaque. Le calendrier de réalisation précis est calé ensuite avec vos équipes.",
           },
           {
             q: "À qui appartiennent le code et les données après le projet ?",
@@ -210,7 +210,7 @@ export const CREIL_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "From 24 to 48 h depending on project complexity. After an initial framing exchange in Creil or by video, we provide a clear, costed functional scope — no opaque quote. The precise delivery schedule is then set with your teams.",
+            a: "From 48 h depending on project complexity. After an initial framing exchange in Creil or by video, we provide a clear, costed functional scope — no opaque quote. The precise delivery schedule is then set with your teams.",
           },
           {
             q: "Who owns the code and data after the project?",

@@ -53,7 +53,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Romans-sur-Isère des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique de produits, agents et automatisations. Romans est une capitale française de la vente directe Made in France (1083, Saint-Jean, les marques du village Marques Avenue) et du cuir de luxe (Tanneries Roux, LVMH) : ce tissu de marques DTC et d'ateliers chaussure-cuir-agroalimentaire a des besoins web concrets — fiches produits, configurateurs, traçabilité, fidélité. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Romans-sur-Isère, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Romans-sur-Isère des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique de produits, agents et automatisations. Romans est une capitale française de la vente directe Made in France (1083, Saint-Jean, les marques du village Marques Avenue) et du cuir de luxe (Tanneries Roux, LVMH) : ce tissu de marques DTC et d'ateliers chaussure-cuir-agroalimentaire a des besoins web concrets — fiches produits, configurateurs, traçabilité, fidélité. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Romans-sur-Isère, itérations à distance.",
         whyHere: [
           "Marques DTC et Made in France romanaises : 1083 (jeans et chaussures vendus en ligne + 130 détaillants, atelier dans l'ancienne usine Charles Jourdan), Saint-Jean (ravioles, boutique d'usine et extension de site), nouvelles marques chaussure Millémil et Made in Romans — autant de catalogues e-commerce à concevoir, augmenter et automatiser.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma, fiches produits et tunnel d'achat — pas seulement la brique IA : indispensable pour des marques chaussure et agroalimentaire qui vendent en direct.",
@@ -64,7 +64,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
           {
             step: "Cadrage à Romans-sur-Isère",
             detail:
-              "Atelier sur site : objectifs commerciaux, parcours d'achat, audit de la stack e-commerce et des contenus (catalogue chaussure, ravioles, cuir). Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site : objectifs commerciaux, parcours d'achat, audit de la stack e-commerce et des contenus (catalogue chaussure, ravioles, cuir). Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique existante. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Romans-sur-Isère, de Valence Romans Agglo ou repris en interne. On revendique l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — sur le terrain réel des marques romanaises en vente directe.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique existante. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Romans-sur-Isère, de Valence Romans Agglo ou repris en interne. On revendique l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — sur le terrain réel des marques romanaises en vente directe.",
       },
       en: {
-        hero: "In Romans-sur-Isère, Axion-IA designs and augments websites, online stores and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic product search, agents and automations. Romans is a French capital of direct-to-consumer Made in France (1083, Saint-Jean, the brands of the Marques Avenue outlet) and luxury leather (Tanneries Roux, LVMH): this fabric of DTC brands and footwear-leather-food workshops has concrete web needs — product pages, configurators, traceability, loyalty. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site kick-off in Romans-sur-Isère, remote iterations.",
+        hero: "In Romans-sur-Isère, Axion-IA designs and augments websites, online stores and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic product search, agents and automations. Romans is a French capital of direct-to-consumer Made in France (1083, Saint-Jean, the brands of the Marques Avenue outlet) and luxury leather (Tanneries Roux, LVMH): this fabric of DTC brands and footwear-leather-food workshops has concrete web needs — product pages, configurators, traceability, loyalty. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site kick-off in Romans-sur-Isère, remote iterations.",
         whyHere: [
           "Romans DTC and Made in France brands: 1083 (jeans and shoes sold online + 130 retailers, workshop in the former Charles Jourdan factory), Saint-Jean (ravioles, factory store and site expansion), emerging footwear brands Millémil and Made in Romans — catalogs to design, augment and automate.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype, product pages and checkout funnel — not just the AI brick: essential for footwear and food brands selling direct.",
@@ -150,7 +150,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
           {
             step: "Scoping in Romans-sur-Isère",
             detail:
-              "On-site workshop: commercial goals, buying journeys, audit of the e-commerce stack and content (footwear catalog, ravioles, leather). Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop: commercial goals, buying journeys, audit of the e-commerce stack and content (footwear catalog, ravioles, leather). Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -222,7 +222,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing store. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Romans-sur-Isère or Valence Romans Agglo provider or taken in-house. We claim UX/UI, mobile, multi-CMS e-commerce and AI — on the real ground of Romans direct-to-consumer brands.",
+          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing store. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Romans-sur-Isère or Valence Romans Agglo provider or taken in-house. We claim UX/UI, mobile, multi-CMS e-commerce and AI — on the real ground of Romans direct-to-consumer brands.",
       },
     },
   },

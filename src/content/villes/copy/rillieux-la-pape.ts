@@ -120,7 +120,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous accompagner une entreprise qui s'installe dans le futur quartier Ostérode ?",
-            a: "Oui. Ostérode accueille dès l'été 2025 ses premières entreprises (Pro Urba, Axesspack, Xefi, Monin Mécanique) avec une desserte renforcée (ligne C5, Voie Lyonnaise n°7). Les structures qui s'y implantent ont besoin d'un site et d'outils numériques opérationnels dès leur arrivée : nous livrons un premier devis chiffré à partir de 24-48 h selon la complexité.",
+            a: "Oui. Ostérode accueille dès l'été 2025 ses premières entreprises (Pro Urba, Axesspack, Xefi, Monin Mécanique) avec une desserte renforcée (ligne C5, Voie Lyonnaise n°7). Les structures qui s'y implantent ont besoin d'un site et d'outils numériques opérationnels dès leur arrivée : nous livrons un premier devis chiffré à partir de 48 h selon la complexité.",
           },
           {
             q: "Faites-vous de l'e-commerce et des outils logistiques pour les acteurs du transport et du commerce ?",
@@ -136,7 +136,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis chiffré à partir de 24-48 h selon la complexité, tarifs publics sans devis opaque. Conception UX/UI mobile-first, e-commerce multi-CMS (WordPress, Shopify) ou code sur mesure selon votre besoin, briques IA intégrées (chatbot RAG, génération de devis, recherche sémantique). Hébergement en Union européenne conforme au RGPD par défaut. À la livraison, code, contenus et accès vous reviennent intégralement : aucune dépendance à Axion-IA, portabilité totale vers tout intégrateur de la région lyonnaise ou vos équipes internes.",
+          "Devis chiffré à partir de 48 h selon la complexité, tarifs publics sans devis opaque. Conception UX/UI mobile-first, e-commerce multi-CMS (WordPress, Shopify) ou code sur mesure selon votre besoin, briques IA intégrées (chatbot RAG, génération de devis, recherche sémantique). Hébergement en Union européenne conforme au RGPD par défaut. À la livraison, code, contenus et accès vous reviennent intégralement : aucune dépendance à Axion-IA, portabilité totale vers tout intégrateur de la région lyonnaise ou vos équipes internes.",
       },
       en: {
         hero: "Rillieux-la-Pape, on the north-east plateau of the Métropole de Lyon, is a production-driven territory: four activity zones — PERICA (nearly 300 companies and 5,000 jobs, industry and business services), Sermenaz (SMEs and services near the A46), Champ du Roy (retail and trades, including Castorama) and the future Ostérode district (15 hectares on a former military site, around 1,000 jobs targeted by 2028). Axion-IA designs AI-augmented websites and SaaS platforms for this fabric of industrial, logistics and trade micro-businesses and SMEs — precision subcontracting, transport, construction, local retail — with custom code, European Union hosting compliant with GDPR and zero vendor lock-in.",
@@ -206,7 +206,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           },
           {
             q: "Can you support a company moving into the future Ostérode district?",
-            a: "Yes. Ostérode welcomes its first companies from summer 2025 (Pro Urba, Axesspack, Xefi, Monin Mécanique) with enhanced access (line C5, Voie Lyonnaise n°7). Companies settling there need an operational website and digital tools on arrival: we deliver a first costed quote from 24-48 h depending on complexity.",
+            a: "Yes. Ostérode welcomes its first companies from summer 2025 (Pro Urba, Axesspack, Xefi, Monin Mécanique) with enhanced access (line C5, Voie Lyonnaise n°7). Companies settling there need an operational website and digital tools on arrival: we deliver a first costed quote from 48 h depending on complexity.",
           },
           {
             q: "Do you build e-commerce and logistics tools for transport and retail players?",
@@ -222,7 +222,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Costed quote from 24-48 h depending on complexity, public pricing with no opaque quotes. Mobile-first UX/UI design, multi-CMS e-commerce (WordPress, Shopify) or custom code as needed, integrated AI blocks (RAG chatbot, quote generation, semantic search). European Union hosting compliant with GDPR by default. On delivery, code, content and access return fully to you: no dependency on Axion-IA, full portability to any Lyon-area integrator or your in-house teams.",
+          "Costed quote from 48 h depending on complexity, public pricing with no opaque quotes. Mobile-first UX/UI design, multi-CMS e-commerce (WordPress, Shopify) or custom code as needed, integrated AI blocks (RAG chatbot, quote generation, semantic search). European Union hosting compliant with GDPR by default. On delivery, code, content and access return fully to you: no dependency on Axion-IA, full portability to any Lyon-area integrator or your in-house teams.",
       },
     },
   },

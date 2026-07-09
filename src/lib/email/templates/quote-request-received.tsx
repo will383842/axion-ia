@@ -1,7 +1,7 @@
 // Email — accusé de réception demande devis (Sprint X.5bis / Booking V1).
 //
 // Parcours B (D44) : visiteur soumet `/demande-devis` → submission qualifiée
-// → email de confirmation avec ETA 24-48h pour cadrage Will (négo libre, pas
+// → email de confirmation avec ETA 48h pour cadrage Will (négo libre, pas
 // d'ETA ferme).
 
 import { Text } from "@react-email/components";
@@ -19,7 +19,7 @@ const COPY = {
     title: "Demande de devis reçue",
     intro: (n: string) => `Bonjour ${n},`,
     body: (company: string) =>
-      `Nous avons bien reçu votre demande de devis pour ${company}. Williams vous recontactera sous 24 à 48 heures ouvrées pour un appel de cadrage personnalisé.`,
+      `Nous avons bien reçu votre demande de devis pour ${company}. Williams vous recontactera sous 48 heures ouvrées pour un appel de cadrage personnalisé.`,
     next: "Pendant ce temps, vous pouvez consulter nos formats standards ou nos cas concrets pour préciser votre besoin.",
     cta: "Voir les formats",
     refRow: (id: string) => `Référence : ${id}`,
@@ -28,7 +28,7 @@ const COPY = {
     title: "Quote request received",
     intro: (n: string) => `Hello ${n},`,
     body: (company: string) =>
-      `We received your quote request for ${company}. Williams will get back to you within 24 to 48 business hours for a personalized scoping call.`,
+      `We received your quote request for ${company}. Williams will get back to you within 48 business hours for a personalized scoping call.`,
     next: "In the meantime, you can browse our standard formats or case studies to refine your needs.",
     cta: "See formats",
     refRow: (id: string) => `Reference: ${id}`,

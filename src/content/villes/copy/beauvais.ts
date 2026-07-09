@@ -132,11 +132,11 @@ export const BEAUVAIS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et travaillez-vous dans tout l'Oise ?",
-            a: "Devis à partir de 24 à 48 h selon la complexité. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), avec un kick-off sur site dans vos locaux — usine, bureau d'études, atelier agroalimentaire ou entrepôt de l'Éco-Parc de Beauvais-Tillé. Nos consultants rejoignent Beauvais depuis Paris en 1h15 par l'A16.",
+            a: "Devis à partir de 48 h selon la complexité. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), avec un kick-off sur site dans vos locaux — usine, bureau d'études, atelier agroalimentaire ou entrepôt de l'Éco-Parc de Beauvais-Tillé. Nos consultants rejoignent Beauvais depuis Paris en 1h15 par l'A16.",
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité, sur grille tarifaire publique. Code sur mesure et modèles IA livrés sans verrou éditeur : vos équipes — ou tout intégrateur des Hauts-de-France — peuvent reprendre la maintenance. Sites et plateformes pensés UX/UI mobile et desktop, e-commerce multi-CMS, dans le respect du budget de performance Web Vitals. Hébergement en Europe et conformité RGPD par défaut, DPO sur demande. Vos données — références pièces de l'écosystème agroéquipement, fiches produits agroalimentaires, documentation agronomique — restent intégralement chez vous, en UE.",
+          "Devis à partir de 48 h selon la complexité, sur grille tarifaire publique. Code sur mesure et modèles IA livrés sans verrou éditeur : vos équipes — ou tout intégrateur des Hauts-de-France — peuvent reprendre la maintenance. Sites et plateformes pensés UX/UI mobile et desktop, e-commerce multi-CMS, dans le respect du budget de performance Web Vitals. Hébergement en Europe et conformité RGPD par défaut, DPO sur demande. Vos données — références pièces de l'écosystème agroéquipement, fiches produits agroalimentaires, documentation agronomique — restent intégralement chez vous, en UE.",
       },
       en: {
         hero: "In Beauvais, Axion-IA builds AI-augmented websites and SaaS platforms for an economic fabric whose agritech and farm-equipment focus is unique in France: Europe's largest tractor plant (Massey Ferguson / AGCO, ~54 ha Centre of Excellence, over 2,500 staff, exporting to 70 countries), GIMA transmissions, the agricultural software publisher Isagri (founded in 1983 within ISAB, now UniLaSalle, ~1,000 people at its Beauvais HQ), the UniLaSalle engineering school and its AgriLab open-innovation lab, all federated by the Beauvaisis territorial hub 'Innovation, Agritech and Agricultural Digital'. We serve first the micro-businesses and SMEs of the Oise — farm-equipment makers and subcontractors, agricultural cooperatives and traders, agri-food SMEs (Nestlé Grand Froid / Froneri, Paris Caramels), industry (Spontex, Biocodex), Beauvais-Tillé airport logistics, building trades and retailers — with custom code, hosted in Europe and GDPR-compliant.",
@@ -218,11 +218,11 @@ export const BEAUVAIS_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and do you cover the whole Oise?",
-            a: "Quote from 24 to 48 hours depending on complexity. We work in Beauvais and across the southern Oise (Compiègne, Creil, Clermont), with an on-site kick-off at your premises — plant, design office, agri-food workshop or Éco-Parc de Beauvais-Tillé warehouse. Our consultants reach Beauvais from Paris in 1h15 via the A16.",
+            a: "Quote from 48 hours depending on complexity. We work in Beauvais and across the southern Oise (Compiègne, Creil, Clermont), with an on-site kick-off at your premises — plant, design office, agri-food workshop or Éco-Parc de Beauvais-Tillé warehouse. Our consultants reach Beauvais from Paris in 1h15 via the A16.",
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity, on a public pricing grid. Custom code and AI models delivered with no vendor lock-in: your teams — or any Hauts-de-France integrator — can take over maintenance. Sites and platforms designed UX/UI for mobile and desktop, multi-CMS e-commerce, within the Web Vitals performance budget. Europe hosting and GDPR compliance by default, DPO on request. Your data — farm-equipment part references, agri-food product sheets, agronomic documentation — stays entirely with you, in the EU.",
+          "Quote from 48 hours depending on complexity, on a public pricing grid. Custom code and AI models delivered with no vendor lock-in: your teams — or any Hauts-de-France integrator — can take over maintenance. Sites and platforms designed UX/UI for mobile and desktop, multi-CMS e-commerce, within the Web Vitals performance budget. Europe hosting and GDPR compliance by default, DPO on request. Your data — farm-equipment part references, agri-food product sheets, agronomic documentation — stays entirely with you, in the EU.",
       },
     },
   },

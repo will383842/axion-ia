@@ -53,7 +53,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Bois-Colombes (92), Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu singulier : les sièges tertiaires de la ZAC des Bruyères — IBM France et son campus « Europe Avenue » avenue de l'Europe, Colgate-Palmolive France, Abeille Assurances (ex-Aviva), Coface, et le pôle gazier GRTgaz/NaTran avec Storengy et Elengy autour des immeubles Cityzen — autant que les TPE/PME de services, professions libérales et commerces de cette commune résidentielle aux portes de La Défense. Portails clients, espaces partenaires, applications métier IA-native : code sur mesure, hébergement en UE conforme RGPD, zéro verrou éditeur. Devis à partir de 24-48 h selon la complexité.",
+        hero: "À Bois-Colombes (92), Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu singulier : les sièges tertiaires de la ZAC des Bruyères — IBM France et son campus « Europe Avenue » avenue de l'Europe, Colgate-Palmolive France, Abeille Assurances (ex-Aviva), Coface, et le pôle gazier GRTgaz/NaTran avec Storengy et Elengy autour des immeubles Cityzen — autant que les TPE/PME de services, professions libérales et commerces de cette commune résidentielle aux portes de La Défense. Portails clients, espaces partenaires, applications métier IA-native : code sur mesure, hébergement en UE conforme RGPD, zéro verrou éditeur. Devis à partir de 48 h selon la complexité.",
         whyHere: [
           "Bois-Colombes concentre des sièges et DSI de grands groupes sur l'avenue de l'Europe et la ZAC des Bruyères — IBM France, Colgate-Palmolive, Abeille Assurances, Coface (env. 1 300 collaborateurs), GRTgaz/NaTran, Storengy, Elengy — qui ont des besoins de portails internes, extranets partenaires et applications métier à interfacer avec leurs systèmes existants.",
           "La ZAC des Bruyères, née sur les friches de l'ancienne usine Hispano-Suiza et desservie par la gare de Bécon-les-Bruyères, héberge des fonctions tertiaires (énergie/gaz, assurance, crédit-export, biens de grande consommation) où la production documentaire et le reporting sont des cas d'usage IA prioritaires pour un site ou une plateforme.",
@@ -124,7 +124,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous des sites e-commerce et vitrines pour les TPE et commerces de Bois-Colombes ?",
-            a: "Oui, c'est une part importante de notre activité locale. Pour les cabinets libéraux, agences et commerces de proximité de la commune, nous concevons des sites vitrines ou boutiques multi-CMS, en UX/UI mobile-first, avec prise de RDV, qualification et un assistant IA sur votre base documentaire. Devis à partir de 24-48 h selon la complexité.",
+            a: "Oui, c'est une part importante de notre activité locale. Pour les cabinets libéraux, agences et commerces de proximité de la commune, nous concevons des sites vitrines ou boutiques multi-CMS, en UX/UI mobile-first, avec prise de RDV, qualification et un assistant IA sur votre base documentaire. Devis à partir de 48 h selon la complexité.",
           },
           {
             q: "L'IA et les données de notre site restent-elles confidentielles et conformes RGPD ?",
@@ -136,10 +136,10 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites et plateformes hébergés en UE par défaut, conformité RGPD, DPO sur demande, code sur mesure dont vous restez propriétaire — aucun verrou éditeur ni dépendance contractuelle imposée. Devis chiffré à partir de 24-48 h selon la complexité, périmètre et livrables définis avant tout engagement, ateliers de conception en présentiel à Bois-Colombes et dans l'ouest francilien. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA intégrée. Documentation et transfert de compétences livrés en fin de mission : vos équipes ou votre prestataire reprennent la main, maintenance externalisable librement.",
+          "Sites et plateformes hébergés en UE par défaut, conformité RGPD, DPO sur demande, code sur mesure dont vous restez propriétaire — aucun verrou éditeur ni dépendance contractuelle imposée. Devis chiffré à partir de 48 h selon la complexité, périmètre et livrables définis avant tout engagement, ateliers de conception en présentiel à Bois-Colombes et dans l'ouest francilien. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA intégrée. Documentation et transfert de compétences livrés en fin de mission : vos équipes ou votre prestataire reprennent la main, maintenance externalisable librement.",
       },
       en: {
-        hero: 'In Bois-Colombes (92), Axion-IA builds AI-augmented websites and SaaS platforms for a distinctive fabric: the corporate headquarters of the ZAC des Bruyères — IBM France and its "Europe Avenue" campus on avenue de l\'Europe, Colgate-Palmolive France, Abeille Assurances (formerly Aviva), Coface, and the gas cluster GRTgaz/NaTran with Storengy and Elengy around the Cityzen buildings — alongside the service SMEs, liberal professions and shops of this residential town at the gates of La Défense. Client portals, partner extranets, AI-native business apps: custom code, EU hosting compliant with GDPR, no vendor lock-in. Quote from 24-48 h depending on complexity.',
+        hero: 'In Bois-Colombes (92), Axion-IA builds AI-augmented websites and SaaS platforms for a distinctive fabric: the corporate headquarters of the ZAC des Bruyères — IBM France and its "Europe Avenue" campus on avenue de l\'Europe, Colgate-Palmolive France, Abeille Assurances (formerly Aviva), Coface, and the gas cluster GRTgaz/NaTran with Storengy and Elengy around the Cityzen buildings — alongside the service SMEs, liberal professions and shops of this residential town at the gates of La Défense. Client portals, partner extranets, AI-native business apps: custom code, EU hosting compliant with GDPR, no vendor lock-in. Quote from 48 h depending on complexity.',
         whyHere: [
           "Bois-Colombes concentrates headquarters and IT divisions of major groups on avenue de l'Europe and in the ZAC des Bruyères — IBM France, Colgate-Palmolive, Abeille Assurances, Coface (about 1,300 staff), GRTgaz/NaTran, Storengy, Elengy — with strong needs for internal portals, partner extranets and business apps to interface with their existing systems.",
           "The ZAC des Bruyères, born on the former Hispano-Suiza factory wasteland and served by Bécon-les-Bruyères station, hosts tertiary functions (energy/gas, insurance, export credit, consumer goods) where document production and reporting are priority AI use cases for a website or platform.",
@@ -210,7 +210,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           },
           {
             q: "Do you build e-commerce and showcase sites for Bois-Colombes micro-businesses and shops?",
-            a: "Yes, it's a significant part of our local activity. For the town's liberal-profession practices, agencies and local shops, we design showcase sites or multi-CMS stores, with mobile-first UX/UI, booking, qualification and an AI assistant on your knowledge base. Quote from 24-48 h depending on complexity.",
+            a: "Yes, it's a significant part of our local activity. For the town's liberal-profession practices, agencies and local shops, we design showcase sites or multi-CMS stores, with mobile-first UX/UI, booking, qualification and an AI assistant on your knowledge base. Quote from 48 h depending on complexity.",
           },
           {
             q: "Do the AI and our website data stay confidential and GDPR-compliant?",
@@ -222,7 +222,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites and platforms hosted in the EU by default, GDPR compliance, DPO on request, custom code that you own — no vendor lock-in or imposed contractual dependency. Costed quote from 24-48 h depending on complexity, scope and deliverables defined before any commitment, in-person design workshops in Bois-Colombes and western Île-de-France. We deliver UX/UI, mobile, multi-CMS e-commerce and integrated AI. Documentation and skills transfer delivered at mission end: your teams or provider take over, maintenance freely outsourceable.",
+          "Sites and platforms hosted in the EU by default, GDPR compliance, DPO on request, custom code that you own — no vendor lock-in or imposed contractual dependency. Costed quote from 48 h depending on complexity, scope and deliverables defined before any commitment, in-person design workshops in Bois-Colombes and western Île-de-France. We deliver UX/UI, mobile, multi-CMS e-commerce and integrated AI. Documentation and skills transfer delivered at mission end: your teams or provider take over, maintenance freely outsourceable.",
       },
     },
   },

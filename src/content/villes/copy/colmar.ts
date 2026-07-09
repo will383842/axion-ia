@@ -132,11 +132,11 @@ export const COLMAR_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour obtenir un devis et qui possède le code final ?",
-            a: "Devis à partir de 24-48 h selon la complexité, après un échange de cadrage. Le code, les modèles et les intégrations restent intégralement chez vous : vous pouvez reprendre la maintenance en interne ou la confier à tout intégrateur du Grand Est, sans verrou éditeur ni dépendance contractuelle à Axion-IA.",
+            a: "Devis à partir de 48 h selon la complexité, après un échange de cadrage. Le code, les modèles et les intégrations restent intégralement chez vous : vous pouvez reprendre la maintenance en interne ou la confier à tout intégrateur du Grand Est, sans verrou éditeur ni dépendance contractuelle à Axion-IA.",
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité, périmètre et livrables définis par écrit avant toute signature. Hébergement en Union européenne par défaut, conformité RGPD, DPO sur demande. Aucun verrou éditeur : code source, modèles IA et intégrations (ERP industriel, logiciel de cave, PMS, catalogues du Biopôle) restent votre propriété, repris en interne ou par tout intégrateur du Grand Est. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA en une seule équipe — sites de vente directe pour les domaines de la route des vins, portails techniques pour l'industrie d'équipement, plateformes de réservation pour le tourisme colmarien.",
+          "Devis à partir de 48 h selon la complexité, périmètre et livrables définis par écrit avant toute signature. Hébergement en Union européenne par défaut, conformité RGPD, DPO sur demande. Aucun verrou éditeur : code source, modèles IA et intégrations (ERP industriel, logiciel de cave, PMS, catalogues du Biopôle) restent votre propriété, repris en interne ou par tout intégrateur du Grand Est. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA en une seule équipe — sites de vente directe pour les domaines de la route des vins, portails techniques pour l'industrie d'équipement, plateformes de réservation pour le tourisme colmarien.",
       },
       en: {
         hero: "Colmar combines an industrial hub built around Liebherr's France headquarters — three local entities: Liebherr-France SAS (crawler hydraulic, electric, tunnel and demolition excavators), Liebherr-Mining Equipment Colmar SAS (mining excavators) and Liebherr-Components Colmar SAS (high-power diesel engines) — with other manufacturers such as Ricoh Industrie France and Timken Europe, the Scapalsace logistics platform (E. Leclerc North-East), and a wine-science cluster unique in France, the Biopôle Adrien Zeller (INRAE Grand Est-Colmar, IFV, CIVA, RITTMO, UHA). Axion-IA designs AI-augmented websites and SaaS platforms for this fabric, from Alsace Wine Route estates to industrial engineering offices.",
@@ -218,11 +218,11 @@ export const COLMAR_COPY: VilleCopy = {
           },
           {
             q: "What is the turnaround for a quote and who owns the final code?",
-            a: "Quote from 24-48 h depending on complexity, after a framing exchange. The code, models and integrations stay entirely with you: you can take over maintenance in-house or hand it to any Grand Est integrator, with no vendor lock-in or contractual dependency on Axion-IA.",
+            a: "Quote from 48 h depending on complexity, after a framing exchange. The code, models and integrations stay entirely with you: you can take over maintenance in-house or hand it to any Grand Est integrator, with no vendor lock-in or contractual dependency on Axion-IA.",
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity, scope and deliverables defined in writing before any signature. EU hosting by default, GDPR compliance, DPO on request. No vendor lock-in: source code, AI models and integrations (industrial ERP, cellar software, PMS, Biopôle catalogues) remain your property, taken over in-house or by any Grand Est integrator. We deliver UX/UI, mobile, multi-CMS e-commerce and AI in a single team — direct-sale sites for Wine Route estates, technical portals for the equipment industry, booking platforms for Colmar tourism.",
+          "Quote from 48 h depending on complexity, scope and deliverables defined in writing before any signature. EU hosting by default, GDPR compliance, DPO on request. No vendor lock-in: source code, AI models and integrations (industrial ERP, cellar software, PMS, Biopôle catalogues) remain your property, taken over in-house or by any Grand Est integrator. We deliver UX/UI, mobile, multi-CMS e-commerce and AI in a single team — direct-sale sites for Wine Route estates, technical portals for the equipment industry, booking platforms for Colmar tourism.",
       },
     },
   },

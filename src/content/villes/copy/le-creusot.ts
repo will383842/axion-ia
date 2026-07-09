@@ -43,7 +43,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente au Creusot des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails fournisseurs, configurateurs techniques, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur industriel de la Communauté urbaine Le Creusot Montceau (CUCM), où la sous-traitance de précision gravite autour d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric, où l'Espace Coriolis aligne 90 hectares d'activité au pied de la gare TGV, et où le Technoparc héberge bureaux d'études et ateliers mécaniques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Creusot, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Creusot des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails fournisseurs, configurateurs techniques, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur industriel de la Communauté urbaine Le Creusot Montceau (CUCM), où la sous-traitance de précision gravite autour d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric, où l'Espace Coriolis aligne 90 hectares d'activité au pied de la gare TGV, et où le Technoparc héberge bureaux d'études et ateliers mécaniques. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Creusot, itérations à distance.",
         whyHere: [
           "Tissu de TPE/PME sous-traitantes de la mécanique de précision et de la métallurgie, héritières des forges Schneider et des aciers spéciaux d'ArcelorMittal Industeel : on greffe l'IA sur l'existant (extranet, ERP, GMAO) pour des portails fournisseurs, des configurateurs de pièces usinées et des moteurs de réponse aux appels d'offres, sans refonte coûteuse.",
           "Donneurs d'ordre exigeants — Framatome en composants nucléaires, Alstom sur les bogies TGV, Safran sur les disques moteurs aéronautiques — imposant ISO 9001 et EN 9100 : nos applications gèrent la traçabilité documentaire, la classification de plans et de comptes-rendus techniques par recherche sémantique, et la consolidation des dossiers de fabrication.",
@@ -54,7 +54,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
           {
             step: "Cadrage au Creusot",
             detail:
-              "Atelier sur site — Espace Coriolis au pied de la gare TGV, Technoparc, centre-ville ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes qualité ISO/EN. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — Espace Coriolis au pied de la gare TGV, Technoparc, centre-ville ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes qualité ISO/EN. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -122,14 +122,14 @@ export const LE_CREUSOT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site au Creusot — Espace Coriolis, Technoparc ou votre atelier — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site au Creusot — Espace Coriolis, Technoparc ou votre atelier — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un extranet ou un portail déjà en production sur votre SI industriel. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un prestataire local de Bourgogne-Franche-Comté ou repris en interne par vos équipes méthodes et qualité.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un extranet ou un portail déjà en production sur votre SI industriel. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un prestataire local de Bourgogne-Franche-Comté ou repris en interne par vos équipes méthodes et qualité.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente au Creusot des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails fournisseurs, configurateurs techniques, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur industriel de la Communauté urbaine Le Creusot Montceau (CUCM), où la sous-traitance de précision gravite autour d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric, où l'Espace Coriolis aligne 90 hectares d'activité au pied de la gare TGV, et où le Technoparc héberge bureaux d'études et ateliers mécaniques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Creusot, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Creusot des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails fournisseurs, configurateurs techniques, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur industriel de la Communauté urbaine Le Creusot Montceau (CUCM), où la sous-traitance de précision gravite autour d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric, où l'Espace Coriolis aligne 90 hectares d'activité au pied de la gare TGV, et où le Technoparc héberge bureaux d'études et ateliers mécaniques. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Creusot, itérations à distance.",
         whyHere: [
           "Tissu de TPE/PME sous-traitantes de la mécanique de précision et de la métallurgie, héritières des forges Schneider et des aciers spéciaux d'ArcelorMittal Industeel : on greffe l'IA sur l'existant (extranet, ERP, GMAO) pour des portails fournisseurs, des configurateurs de pièces usinées et des moteurs de réponse aux appels d'offres, sans refonte coûteuse.",
           "Donneurs d'ordre exigeants — Framatome en composants nucléaires, Alstom sur les bogies TGV, Safran sur les disques moteurs aéronautiques — imposant ISO 9001 et EN 9100 : nos applications gèrent la traçabilité documentaire, la classification de plans et de comptes-rendus techniques par recherche sémantique, et la consolidation des dossiers de fabrication.",
@@ -140,7 +140,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
           {
             step: "Cadrage au Creusot",
             detail:
-              "Atelier sur site — Espace Coriolis au pied de la gare TGV, Technoparc, centre-ville ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes qualité ISO/EN. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — Espace Coriolis au pied de la gare TGV, Technoparc, centre-ville ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes qualité ISO/EN. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -208,11 +208,11 @@ export const LE_CREUSOT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site au Creusot — Espace Coriolis, Technoparc ou votre atelier — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site au Creusot — Espace Coriolis, Technoparc ou votre atelier — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un extranet ou un portail déjà en production sur votre SI industriel. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un prestataire local de Bourgogne-Franche-Comté ou repris en interne par vos équipes méthodes et qualité.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un extranet ou un portail déjà en production sur votre SI industriel. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un prestataire local de Bourgogne-Franche-Comté ou repris en interne par vos équipes méthodes et qualité.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const MAUREPAS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Maurepas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin de Saint-Quentin-en-Yvelines structuré autour de la sous-traitance automobile, du travail des métaux et d'un tertiaire dense, avec la zone d'activités Pariwest — près de 114 hectares partagés avec Coignières et plus de 480 entreprises — comme cœur économique. On y travaille aussi bien avec un atelier mécanique qu'avec un acteur de la logistique ou de l'édition implanté sur le parc. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maurepas, itérations à distance par sprints.",
+        hero: "Axion-IA conçoit et augmente à Maurepas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin de Saint-Quentin-en-Yvelines structuré autour de la sous-traitance automobile, du travail des métaux et d'un tertiaire dense, avec la zone d'activités Pariwest — près de 114 hectares partagés avec Coignières et plus de 480 entreprises — comme cœur économique. On y travaille aussi bien avec un atelier mécanique qu'avec un acteur de la logistique ou de l'édition implanté sur le parc. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maurepas, itérations à distance par sprints.",
         whyHere: [
           "Filière automobile et travail des métaux : les ateliers, équipementiers et mécaniciens du bassin SQY travaillent pour des donneurs d'ordres exigeants en délais et en traçabilité. On construit des portails B2B, des configurateurs de devis et des espaces clients qui automatisent bons de commande, ordres de fabrication et suivis, et on greffe la recherche sémantique sur vos catalogues de pièces et nomenclatures techniques.",
           "Zone d'activités Pariwest, près de 114 hectares à cheval sur Maurepas et Coignières et plus de 480 entreprises gérées via l'association AZACOMA : commerces, logistique et services y cohabitent. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce mobile-first sans refonte lourde pour les TPE du parc qui veulent capter et convertir en ligne.",
@@ -64,7 +64,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           {
             step: "Cadrage à Maurepas",
             detail:
-              "Atelier sur site dans la ZA Pariwest, sur la frange RD13 ou dans vos locaux de l'agglomération SQY : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des flux avec vos donneurs d'ordres. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans la ZA Pariwest, sur la frange RD13 ou dans vos locaux de l'agglomération SQY : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des flux avec vos donneurs d'ordres. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et la grille de frais de mission sur l'ouest des Yvelines reste publique.",
+            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et la grille de frais de mission sur l'ouest des Yvelines reste publique.",
           },
           {
             q: "Pouvez-vous automatiser nos échanges de sous-traitance auto ?",
@@ -136,10 +136,10 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant, avec contrôle des Web Vitals et de l'accessibilité à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. L'ensemble est documenté et transférable à tout prestataire local de l'ouest francilien ou repris en interne par vos équipes de Maurepas, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant, avec contrôle des Web Vitals et de l'accessibilité à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. L'ensemble est documenté et transférable à tout prestataire local de l'ouest francilien ou repris en interne par vos équipes de Maurepas, sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Maurepas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin de Saint-Quentin-en-Yvelines structuré autour de la sous-traitance automobile, du travail des métaux et d'un tertiaire dense, avec la zone d'activités Pariwest — près de 114 hectares partagés avec Coignières et plus de 480 entreprises — comme cœur économique. On y travaille aussi bien avec un atelier mécanique qu'avec un acteur de la logistique ou de l'édition implanté sur le parc. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maurepas, itérations à distance par sprints.",
+        hero: "Axion-IA conçoit et augmente à Maurepas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin de Saint-Quentin-en-Yvelines structuré autour de la sous-traitance automobile, du travail des métaux et d'un tertiaire dense, avec la zone d'activités Pariwest — près de 114 hectares partagés avec Coignières et plus de 480 entreprises — comme cœur économique. On y travaille aussi bien avec un atelier mécanique qu'avec un acteur de la logistique ou de l'édition implanté sur le parc. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maurepas, itérations à distance par sprints.",
         whyHere: [
           "Filière automobile et travail des métaux : les ateliers, équipementiers et mécaniciens du bassin SQY travaillent pour des donneurs d'ordres exigeants en délais et en traçabilité. On construit des portails B2B, des configurateurs de devis et des espaces clients qui automatisent bons de commande, ordres de fabrication et suivis, et on greffe la recherche sémantique sur vos catalogues de pièces et nomenclatures techniques.",
           "Zone d'activités Pariwest, près de 114 hectares à cheval sur Maurepas et Coignières et plus de 480 entreprises gérées via l'association AZACOMA : commerces, logistique et services y cohabitent. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce mobile-first sans refonte lourde pour les TPE du parc qui veulent capter et convertir en ligne.",
@@ -150,7 +150,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           {
             step: "Cadrage à Maurepas",
             detail:
-              "Atelier sur site dans la ZA Pariwest, sur la frange RD13 ou dans vos locaux de l'agglomération SQY : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des flux avec vos donneurs d'ordres. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans la ZA Pariwest, sur la frange RD13 ou dans vos locaux de l'agglomération SQY : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des flux avec vos donneurs d'ordres. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et la grille de frais de mission sur l'ouest des Yvelines reste publique.",
+            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et la grille de frais de mission sur l'ouest des Yvelines reste publique.",
           },
           {
             q: "Pouvez-vous automatiser nos échanges de sous-traitance auto ?",
@@ -222,7 +222,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant, avec contrôle des Web Vitals et de l'accessibilité à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. L'ensemble est documenté et transférable à tout prestataire local de l'ouest francilien ou repris en interne par vos équipes de Maurepas, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant, avec contrôle des Web Vitals et de l'accessibilité à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. L'ensemble est documenté et transférable à tout prestataire local de l'ouest francilien ou repris en interne par vos équipes de Maurepas, sans dépendance à Axion-IA.",
       },
     },
   },

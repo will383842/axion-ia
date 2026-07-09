@@ -49,7 +49,7 @@ export const TRAPPES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Trappes des sites web, applications et plateformes SaaS avec l'IA intégrée, pour l'écosystème très particulier de la ZI de Trappes-Élancourt : industriels et équipementiers (KONE, Comau, Volvo Construction Equipment, Suzuki, FEV, ERAMET Ideas), opérateurs logistiques (entrepôt HQE Auchan, GXO, Geodis, Iron Mountain) et laboratoires d'essais (LNE). UX/UI sur mesure, chatbot RAG ancré sur vos référentiels qualité, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Trappes, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Trappes des sites web, applications et plateformes SaaS avec l'IA intégrée, pour l'écosystème très particulier de la ZI de Trappes-Élancourt : industriels et équipementiers (KONE, Comau, Volvo Construction Equipment, Suzuki, FEV, ERAMET Ideas), opérateurs logistiques (entrepôt HQE Auchan, GXO, Geodis, Iron Mountain) et laboratoires d'essais (LNE). UX/UI sur mesure, chatbot RAG ancré sur vos référentiels qualité, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Trappes, itérations à distance.",
         whyHere: [
           "Bassin double — industrie et logistique : nous adressons à la fois les équipementiers et robotique de la ZI de Trappes-Élancourt (KONE, Comau, Volvo CE, Suzuki, FEV, ERAMET Ideas) et les opérateurs d'entrepôts (Auchan Retail Logistique HQE, GXO, Geodis, Iron Mountain) — portails clients, suivi de flux, search documentaire.",
           "Culture de la mesure et de l'essai : avec le LNE (métrologie et essais, av. Roger Hennequin) et les centres d'ingénierie comme FEV, Trappes manipule des données d'essais et des rapports techniques que l'IA RAG sait indexer, comparer et restituer sans réinventer vos référentiels.",
@@ -60,7 +60,7 @@ export const TRAPPES_COPY: VilleCopy = {
           {
             step: "Cadrage à Trappes",
             detail:
-              "Atelier sur site dans la ZI de Trappes-Élancourt ou vos bureaux SQY : objectifs, parcours utilisateurs, audit de la stack et des contenus (référentiels qualité, catalogues, flux logistiques). Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans la ZI de Trappes-Élancourt ou vos bureaux SQY : objectifs, parcours utilisateurs, audit de la stack et des contenus (référentiels qualité, catalogues, flux logistiques). Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const TRAPPES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Trappes, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier industrielle ou logistique étendue. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à Trappes, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier industrielle ou logistique étendue. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec intégration à votre SI (ERP, WMS, CRM, outils d'essais). Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire des Yvelines ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec intégration à votre SI (ERP, WMS, CRM, outils d'essais). Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire des Yvelines ou repris en interne.",
       },
       en: {
-        hero: "In Trappes, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI, for the very specific ecosystem of the Trappes-Élancourt industrial zone: manufacturers and equipment makers (KONE, Comau, Volvo Construction Equipment, Suzuki, FEV, ERAMET Ideas), logistics operators (Auchan HQE warehouse, GXO, Geodis, Iron Mountain) and testing laboratories (LNE). Bespoke UX/UI, RAG chatbot grounded in your quality references, semantic search, agents and automations. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Trappes kick-off, remote iterations.",
+        hero: "In Trappes, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI, for the very specific ecosystem of the Trappes-Élancourt industrial zone: manufacturers and equipment makers (KONE, Comau, Volvo Construction Equipment, Suzuki, FEV, ERAMET Ideas), logistics operators (Auchan HQE warehouse, GXO, Geodis, Iron Mountain) and testing laboratories (LNE). Bespoke UX/UI, RAG chatbot grounded in your quality references, semantic search, agents and automations. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Trappes kick-off, remote iterations.",
         whyHere: [
           "A twofold base — industry and logistics: we serve both the equipment and robotics makers of the Trappes-Élancourt zone (KONE, Comau, Volvo CE, Suzuki, FEV, ERAMET Ideas) and the warehouse operators (Auchan Retail Logistique HQE, GXO, Geodis, Iron Mountain) — client portals, flow tracking, document search.",
           "A culture of measurement and testing: with the LNE (metrology and testing, av. Roger Hennequin) and engineering centres like FEV, Trappes handles test data and technical reports that RAG-based AI can index, compare and surface without reinventing your references.",
@@ -146,7 +146,7 @@ export const TRAPPES_COPY: VilleCopy = {
           {
             step: "Scoping in Trappes",
             detail:
-              "On-site workshop in the Trappes-Élancourt zone or your SQY offices: goals, journeys, audit of the existing stack and content (quality references, catalogues, logistics flows). Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop in the Trappes-Élancourt zone or your SQY offices: goals, journeys, audit of the existing stack and content (quality references, catalogues, logistics flows). Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -214,11 +214,11 @@ export const TRAPPES_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the on-site scoping in Trappes, we deliver a firm fixed-price quote. The turnaround depends on complexity — from 24-48 h for a simple project, longer for an extended industrial or logistics business platform. No time-and-materials, no hidden hour drift.",
+            a: "Yes. After the on-site scoping in Trappes, we deliver a firm fixed-price quote. The turnaround depends on complexity — from 48 h for a simple project, longer for an extended industrial or logistics business platform. No time-and-materials, no hidden hour drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hour drift. Go-live without downtime when augmenting the existing site, with integration into your IS (ERP, WMS, CRM, testing tools). Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Yvelines provider or taken in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hour drift. Go-live without downtime when augmenting the existing site, with integration into your IS (ERP, WMS, CRM, testing tools). Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Yvelines provider or taken in-house.",
       },
     },
   },

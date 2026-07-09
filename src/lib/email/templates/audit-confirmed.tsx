@@ -17,7 +17,7 @@ const COPY = {
     title: "Demande d'audit reçue",
     intro: (n: string) => `Bonjour ${n},`,
     body: (a: string | undefined, s: string | undefined, i: string | undefined) =>
-      `Nous avons bien reçu votre demande d'audit${a ? ` (${a})` : ""}${s ? ` pour entreprise ${s}` : ""}${i ? ` — secteur ${i}` : ""}. Notre équipe revient vers vous sous 24 heures ouvrées avec un calendrier de mission.`,
+      `Nous avons bien reçu votre demande d'audit${a ? ` (${a})` : ""}${s ? ` pour entreprise ${s}` : ""}${i ? ` — secteur ${i}` : ""}. Notre équipe revient vers vous sous 48 heures ouvrées avec un calendrier de mission.`,
     next: "L'audit dure 5 à 10 jours selon le périmètre. Vous recevrez un rapport actionnable avec quick-wins chiffrés et un plan d'action 90 jours.",
     cta: "Méthodologie d'audit",
     refRow: (id: string) => `Référence : ${id}`,
@@ -26,7 +26,7 @@ const COPY = {
     title: "Audit request received",
     intro: (n: string) => `Hello ${n},`,
     body: (a: string | undefined, s: string | undefined, i: string | undefined) =>
-      `We received your audit request${a ? ` (${a})` : ""}${s ? ` for ${s} company` : ""}${i ? ` — ${i} sector` : ""}. Our team gets back to you within 24 working hours with a mission calendar.`,
+      `We received your audit request${a ? ` (${a})` : ""}${s ? ` for ${s} company` : ""}${i ? ` — ${i} sector` : ""}. Our team gets back to you within 48 working hours with a mission calendar.`,
     next: "The audit takes 5 to 10 days depending on scope. You'll receive an actionable report with quantified quick-wins and a 90-day action plan.",
     cta: "Audit methodology",
     refRow: (id: string) => `Reference: ${id}`,

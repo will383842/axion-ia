@@ -53,7 +53,7 @@ export const CHAVILLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Chaville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Hauts-de-Seine, lovée entre la forêt de Meudon et le bois de Fausses-Reposes sur l'axe Paris-Versailles (la D910, ex-RN10, traverse la ville), où le tissu est fait de TPE et PME de services : professions libérales, conseil indépendant, commerce de proximité du marché et de la Place du Marché, structures culturelles comme l'Atrium, et petites activités tech portées par des cadres travaillant à Paris ou à La Défense. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaville, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chaville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Hauts-de-Seine, lovée entre la forêt de Meudon et le bois de Fausses-Reposes sur l'axe Paris-Versailles (la D910, ex-RN10, traverse la ville), où le tissu est fait de TPE et PME de services : professions libérales, conseil indépendant, commerce de proximité du marché et de la Place du Marché, structures culturelles comme l'Atrium, et petites activités tech portées par des cadres travaillant à Paris ou à La Défense. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaville, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales — avocats, experts-comptables, notaires de l'office de la Place du Marché, médecins, consultants : on construit des portails de prise de rendez-vous, des espaces clients sécurisés et des assistants IA RAG qui rédigent comptes rendus, actes et relances administratives à partir de vos seuls documents, sans dérive RGPD ni fuite hors UE.",
           "Conseil indépendant et petites activités tech portés par des cadres pendulaires entre Chaville, Paris et La Défense (Montparnasse à 15 min par le Transilien, La Défense à 25 min, Versailles à 10 min) : on greffe l'IA sur l'existant via widget, API ou plugin, ou on bâtit une plateforme SaaS métier mobile-first pour des dirigeants souvent en déplacement, branchée sur leur CRM ou leur ERP.",
@@ -64,7 +64,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Chaville",
             detail:
-              "Atelier sur site, dans le cœur de ville le long de l'avenue Roger Salengro ou près des gares Chaville-Rive Gauche et Chaville-Rive Droite : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier d'un cabinet, d'un commerce du marché ou d'une structure culturelle. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, dans le cœur de ville le long de l'avenue Roger Salengro ou près des gares Chaville-Rive Gauche et Chaville-Rive Droite : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier d'un cabinet, d'un commerce du marché ou d'une structure culturelle. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Chaville, on remet un devis ferme en forfait fixe, périmètre et livrables détaillés. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le prix annoncé est le prix payé.",
+            a: "Oui. Après le cadrage sur place à Chaville, on remet un devis ferme en forfait fixe, périmètre et livrables détaillés. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le prix annoncé est le prix payé.",
           },
           {
             q: "Quel site IA pour une profession libérale de Chaville ?",
@@ -136,10 +136,10 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et livrables écrits noir sur blanc. Mise en ligne sans downtime quand on augmente un site existant, sans couper l'activité d'un cabinet, d'un commerce du marché ou d'une billetterie. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout moment à un prestataire de l'ouest parisien ou repris en interne.",
+          "Devis ferme en forfait fixe (remis à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre et livrables écrits noir sur blanc. Mise en ligne sans downtime quand on augmente un site existant, sans couper l'activité d'un cabinet, d'un commerce du marché ou d'une billetterie. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout moment à un prestataire de l'ouest parisien ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Chaville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Hauts-de-Seine, lovée entre la forêt de Meudon et le bois de Fausses-Reposes sur l'axe Paris-Versailles (la D910, ex-RN10, traverse la ville), où le tissu est fait de TPE et PME de services : professions libérales, conseil indépendant, commerce de proximité du marché et de la Place du Marché, structures culturelles comme l'Atrium, et petites activités tech portées par des cadres travaillant à Paris ou à La Défense. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaville, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chaville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Hauts-de-Seine, lovée entre la forêt de Meudon et le bois de Fausses-Reposes sur l'axe Paris-Versailles (la D910, ex-RN10, traverse la ville), où le tissu est fait de TPE et PME de services : professions libérales, conseil indépendant, commerce de proximité du marché et de la Place du Marché, structures culturelles comme l'Atrium, et petites activités tech portées par des cadres travaillant à Paris ou à La Défense. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaville, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales — avocats, experts-comptables, notaires de l'office de la Place du Marché, médecins, consultants : on construit des portails de prise de rendez-vous, des espaces clients sécurisés et des assistants IA RAG qui rédigent comptes rendus, actes et relances administratives à partir de vos seuls documents, sans dérive RGPD ni fuite hors UE.",
           "Conseil indépendant et petites activités tech portés par des cadres pendulaires entre Chaville, Paris et La Défense (Montparnasse à 15 min par le Transilien, La Défense à 25 min, Versailles à 10 min) : on greffe l'IA sur l'existant via widget, API ou plugin, ou on bâtit une plateforme SaaS métier mobile-first pour des dirigeants souvent en déplacement, branchée sur leur CRM ou leur ERP.",
@@ -150,7 +150,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Chaville",
             detail:
-              "Atelier sur site, dans le cœur de ville le long de l'avenue Roger Salengro ou près des gares Chaville-Rive Gauche et Chaville-Rive Droite : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier d'un cabinet, d'un commerce du marché ou d'une structure culturelle. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, dans le cœur de ville le long de l'avenue Roger Salengro ou près des gares Chaville-Rive Gauche et Chaville-Rive Droite : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier d'un cabinet, d'un commerce du marché ou d'une structure culturelle. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Chaville, on remet un devis ferme en forfait fixe, périmètre et livrables détaillés. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le prix annoncé est le prix payé.",
+            a: "Oui. Après le cadrage sur place à Chaville, on remet un devis ferme en forfait fixe, périmètre et livrables détaillés. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le prix annoncé est le prix payé.",
           },
           {
             q: "Quel site IA pour une profession libérale de Chaville ?",
@@ -222,7 +222,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et livrables écrits noir sur blanc. Mise en ligne sans downtime quand on augmente un site existant, sans couper l'activité d'un cabinet, d'un commerce du marché ou d'une billetterie. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout moment à un prestataire de l'ouest parisien ou repris en interne.",
+          "Devis ferme en forfait fixe (remis à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre et livrables écrits noir sur blanc. Mise en ligne sans downtime quand on augmente un site existant, sans couper l'activité d'un cabinet, d'un commerce du marché ou d'une billetterie. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout moment à un prestataire de l'ouest parisien ou repris en interne.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const DOLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Dole des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le premier pôle économique du Jura — agroalimentaire jurassien, métallurgie et plasturgie autour du parc Innovia (70 hectares d'éco-activités) et du complexe chimique de Tavaux où INOVYN emploie environ 630 personnes, sans oublier le tissu dense de TPE artisanales et de commerces du centre historique, ville natale de Louis Pasteur. Adossés au canal du Rhône au Rhin et à l'échangeur autoroutier, vos flux logistiques méritent des outils en ligne à la hauteur. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dole, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dole des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le premier pôle économique du Jura — agroalimentaire jurassien, métallurgie et plasturgie autour du parc Innovia (70 hectares d'éco-activités) et du complexe chimique de Tavaux où INOVYN emploie environ 630 personnes, sans oublier le tissu dense de TPE artisanales et de commerces du centre historique, ville natale de Louis Pasteur. Adossés au canal du Rhône au Rhin et à l'échangeur autoroutier, vos flux logistiques méritent des outils en ligne à la hauteur. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dole, itérations à distance.",
         whyHere: [
           "Pôle agroalimentaire jurassien structurant, fédéré par le Grand Dole autour de ses producteurs et transformateurs : ces acteurs ont besoin de vente directe en ligne, de portails B2B revendeurs et de traçabilité amont-aval. On construit la boutique e-commerce (WooCommerce, Shopify ou PrestaShop) ou on greffe une recherche sémantique sur vos fiches produits et appellations.",
           "Écosystème industriel d'avant-garde sur le parc Innovia — 70 hectares dédiés aux éco-activités, à la biotech et aux nouvelles énergies, avec Ynsect et sa filière de protéines d'insectes pour l'alimentation animale : pour ces acteurs technologiques, on développe des plateformes SaaS IA-native branchées sur le SI (ERP, MES, qualité, R&D).",
@@ -64,7 +64,7 @@ export const DOLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Dole",
             detail:
-              "Atelier sur site — centre historique, zones d'activité, parc Innovia ou plateforme de Tavaux : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos process métier. On cartographie vos flux le long du canal du Rhône au Rhin. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre historique, zones d'activité, parc Innovia ou plateforme de Tavaux : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos process métier. On cartographie vos flux le long du canal du Rhône au Rhin. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const DOLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Dole, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
+            a: "Oui. Après le cadrage à Dole, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de production agroalimentaire ou d'activité du centre dolois. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire de Bourgogne-Franche-Comté ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de production agroalimentaire ou d'activité du centre dolois. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire de Bourgogne-Franche-Comté ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Dole des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le premier pôle économique du Jura — agroalimentaire jurassien, métallurgie et plasturgie autour du parc Innovia (70 hectares d'éco-activités) et du complexe chimique de Tavaux où INOVYN emploie environ 630 personnes, sans oublier le tissu dense de TPE artisanales et de commerces du centre historique, ville natale de Louis Pasteur. Adossés au canal du Rhône au Rhin et à l'échangeur autoroutier, vos flux logistiques méritent des outils en ligne à la hauteur. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dole, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dole des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le premier pôle économique du Jura — agroalimentaire jurassien, métallurgie et plasturgie autour du parc Innovia (70 hectares d'éco-activités) et du complexe chimique de Tavaux où INOVYN emploie environ 630 personnes, sans oublier le tissu dense de TPE artisanales et de commerces du centre historique, ville natale de Louis Pasteur. Adossés au canal du Rhône au Rhin et à l'échangeur autoroutier, vos flux logistiques méritent des outils en ligne à la hauteur. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dole, itérations à distance.",
         whyHere: [
           "Pôle agroalimentaire jurassien structurant, fédéré par le Grand Dole autour de ses producteurs et transformateurs : ces acteurs ont besoin de vente directe en ligne, de portails B2B revendeurs et de traçabilité amont-aval. On construit la boutique e-commerce (WooCommerce, Shopify ou PrestaShop) ou on greffe une recherche sémantique sur vos fiches produits et appellations.",
           "Écosystème industriel d'avant-garde sur le parc Innovia — 70 hectares dédiés aux éco-activités, à la biotech et aux nouvelles énergies, avec Ynsect et sa filière de protéines d'insectes pour l'alimentation animale : pour ces acteurs technologiques, on développe des plateformes SaaS IA-native branchées sur le SI (ERP, MES, qualité, R&D).",
@@ -150,7 +150,7 @@ export const DOLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Dole",
             detail:
-              "Atelier sur site — centre historique, zones d'activité, parc Innovia ou plateforme de Tavaux : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos process métier. On cartographie vos flux le long du canal du Rhône au Rhin. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre historique, zones d'activité, parc Innovia ou plateforme de Tavaux : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos process métier. On cartographie vos flux le long du canal du Rhône au Rhin. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const DOLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Dole, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
+            a: "Oui. Après le cadrage à Dole, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de production agroalimentaire ou d'activité du centre dolois. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire de Bourgogne-Franche-Comté ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de production agroalimentaire ou d'activité du centre dolois. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire de Bourgogne-Franche-Comté ou reprise en interne par vos équipes.",
       },
     },
   },

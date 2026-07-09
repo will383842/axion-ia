@@ -26,14 +26,14 @@ const COPY = {
     title: "Demande de devis qualifiée",
     titleEm: "pour projets sur-mesure",
     description:
-      "Pour les formats > 5 000 € HT, IA Custom, packs annuels ou transformations multi-services : remplissez ce formulaire qualifié. Williams vous recontactera sous 24-48 h ouvrées pour un appel de cadrage personnalisé." /* price-exempt: seuil de qualification devis, pas un tarif catalogue */,
+      "Pour les formats > 5 000 € HT, IA Custom, packs annuels ou transformations multi-services : remplissez ce formulaire qualifié. Williams vous recontactera sous 48 h ouvrées pour un appel de cadrage personnalisé." /* price-exempt: seuil de qualification devis, pas un tarif catalogue */,
     breadcrumb: "Demande de devis",
   },
   en: {
     title: "Qualified quote request",
     titleEm: "for custom projects",
     description:
-      "For formats > €5,000 (excl. VAT), custom AI, annual packs, or multi-department transformations: fill in this qualified form. Williams will get back to you within 24-48 business hours for a personalized scoping call." /* price-exempt: quote qualification threshold, not a catalogue price */,
+      "For formats > €5,000 (excl. VAT), custom AI, annual packs, or multi-department transformations: fill in this qualified form. Williams will get back to you within 48 business hours for a personalized scoping call." /* price-exempt: quote qualification threshold, not a catalogue price */,
     breadcrumb: "Quote request",
   },
 } as const;
@@ -50,8 +50,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Demande de devis · projets IA sur-mesure · Axion-IA"
       : "AI project quote request · Axion-IA",
     description: isFr
-      ? "Formulaire pour formats > 5 000 € HT, IA Custom, packs annuels. Réponse sous 24-48 h ouvrées." /* price-exempt: seuil de qualification devis */
-      : "Form for formats > €5,000, custom AI, annual packs. Reply within 24-48 business hours." /* price-exempt: quote qualification threshold */,
+      ? "Formulaire pour formats > 5 000 € HT, IA Custom, packs annuels. Réponse sous 48 h ouvrées." /* price-exempt: seuil de qualification devis */
+      : "Form for formats > €5,000, custom AI, annual packs. Reply within 48 business hours." /* price-exempt: quote qualification threshold */,
     alternates: { fr: "/demande-devis", en: "/request-quote" },
   });
 }

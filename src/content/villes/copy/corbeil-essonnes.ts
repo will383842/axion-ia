@@ -128,7 +128,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai livrez-vous un devis ?",
-            a: "À partir de 24-48 h selon la complexité. Un site vitrine TPE pour un commerce des Coquibus est cadré rapidement ; une plateforme SaaS pour un sous-traitant Safran ou un acteur de l'écosystème Altis/X-FAB demande un cadrage technique plus poussé avant chiffrage.",
+            a: "À partir de 48 h selon la complexité. Un site vitrine TPE pour un commerce des Coquibus est cadré rapidement ; une plateforme SaaS pour un sous-traitant Safran ou un acteur de l'écosystème Altis/X-FAB demande un cadrage technique plus poussé avant chiffrage.",
           },
           {
             q: "Mes données et mon site restent-ils ma propriété ?",
@@ -136,7 +136,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité, hébergement en Union européenne conforme RGPD par défaut. Code, contenus et accès vous appartiennent : aucun lock-in éditeur, votre site ou plateforme est repris en interne ou par tout intégrateur du Grand Paris Sud. Nous couvrons UX/UI, mobile, e-commerce multi-CMS et IA embarquée sur un même projet, avec optimisation Web Vitals et SEO local Corbeil-Essonnes / Essonne. Pour les secteurs sensibles du bassin — aéronautique (Safran), microélectronique (Altis/X-FAB), santé (CHSF) — nous appliquons souveraineté et confidentialité des données dès la conception.",
+          "Devis à partir de 48 h selon la complexité, hébergement en Union européenne conforme RGPD par défaut. Code, contenus et accès vous appartiennent : aucun lock-in éditeur, votre site ou plateforme est repris en interne ou par tout intégrateur du Grand Paris Sud. Nous couvrons UX/UI, mobile, e-commerce multi-CMS et IA embarquée sur un même projet, avec optimisation Web Vitals et SEO local Corbeil-Essonnes / Essonne. Pour les secteurs sensibles du bassin — aéronautique (Safran), microélectronique (Altis/X-FAB), santé (CHSF) — nous appliquons souveraineté et confidentialité des données dès la conception.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for the highly technical fabric of Corbeil-Essonnes (91, Essonne): subcontractors and engineering offices orbiting Safran Aircraft Engines (Évry-Corbeil site, engine machining and assembly, additive manufacturing, electron beam welding) and the microelectronics ecosystem inherited from Altis Semiconductor, taken over by X-FAB; healthcare players around the Centre Hospitalier Sud Francilien; food processing at Moulins Soufflet on the quai de l'Apport-Paris; trade, construction and logistics in the Apport-Paris, Coquibus and Montconseil business parks. UX/UI, mobile, multi-CMS e-commerce and embedded AI (RAG chatbot, semantic search, agents) — custom code, EU hosting, GDPR-compliant, zero vendor lock-in.",
@@ -214,7 +214,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
           },
           {
             q: "How fast do you deliver a quote?",
-            a: "From 24-48 h depending on complexity. A micro-business showcase site for a Coquibus shop is framed quickly; a SaaS platform for a Safran subcontractor or an Altis/X-FAB ecosystem player requires deeper technical framing before pricing.",
+            a: "From 48 h depending on complexity. A micro-business showcase site for a Coquibus shop is framed quickly; a SaaS platform for a Safran subcontractor or an Altis/X-FAB ecosystem player requires deeper technical framing before pricing.",
           },
           {
             q: "Do my data and my site remain my property?",
@@ -222,7 +222,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity, EU hosting GDPR-compliant by default. Code, content and access belong to you: no vendor lock-in, your site or platform can be taken back in-house or by any Grand Paris Sud integrator. We cover UX/UI, mobile, multi-CMS e-commerce and embedded AI in a single project, with Web Vitals optimization and local SEO Corbeil-Essonnes / Essonne. For the basin's sensitive sectors — aerospace (Safran), microelectronics (Altis/X-FAB), healthcare (CHSF) — we apply data sovereignty and confidentiality by design.",
+          "Quote from 48 h depending on complexity, EU hosting GDPR-compliant by default. Code, content and access belong to you: no vendor lock-in, your site or platform can be taken back in-house or by any Grand Paris Sud integrator. We cover UX/UI, mobile, multi-CMS e-commerce and embedded AI in a single project, with Web Vitals optimization and local SEO Corbeil-Essonnes / Essonne. For the basin's sensitive sectors — aerospace (Safran), microelectronics (Altis/X-FAB), healthcare (CHSF) — we apply data sovereignty and confidentiality by design.",
       },
     },
   },

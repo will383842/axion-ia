@@ -114,7 +114,7 @@ export const PAU_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps faut-il pour obtenir un devis pour un site ou une plateforme SaaS à Pau ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet. Après un premier échange de cadrage (visio ou sur site à Hélioparc / en centre-ville), nous vous transmettons un périmètre chiffré clair, sans devis opaque.",
+            a: "À partir de 48 h selon la complexité du projet. Après un premier échange de cadrage (visio ou sur site à Hélioparc / en centre-ville), nous vous transmettons un périmètre chiffré clair, sans devis opaque.",
           },
           {
             q: "Accompagnez-vous les éditeurs logiciels et startups d'Hélioparc et de la French Tech Pau Béarn ?",
@@ -134,7 +134,7 @@ export const PAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Périmètre et livrables définis à la signature, devis transparent à partir de 24 à 48 h selon la complexité. Code custom (TypeScript, Python, FastAPI) et UX/UI sur mesure, e-commerce multi-CMS et briques IA intégrés sans recours à plusieurs prestataires. Hébergement en Union européenne, conformité RGPD documentée. Aucun lock-in : code source, modèles et accès restent chez vous, repris en interne ou par tout intégrateur de la French Tech Pau Béarn.",
+          "Périmètre et livrables définis à la signature, devis transparent à partir de 48 h selon la complexité. Code custom (TypeScript, Python, FastAPI) et UX/UI sur mesure, e-commerce multi-CMS et briques IA intégrés sans recours à plusieurs prestataires. Hébergement en Union européenne, conformité RGPD documentée. Aucun lock-in : code source, modèles et accès restent chez vous, repris en interne ou par tout intégrateur de la French Tech Pau Béarn.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Pau, rooted in the real fabric of the Pau Béarn Pyrénées agglomeration: software publishers and startups from the Atelier Numérique and the La Banquiz accelerator at the Hélioparc technopole, aerospace subcontractors around Safran Helicopter Engines (Bordes), and energy engineering teams orbiting TotalEnergies' CSTJF — home to the Pangea supercomputer. We build IA-native platforms in custom code (TypeScript, Python, FastAPI): RAG chatbots, semantic search, conversational agents, e-commerce portals. EU hosting, GDPR compliance, zero vendor lock-in.",
@@ -200,7 +200,7 @@ export const PAU_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does it take to get a quote for a website or SaaS platform in Pau?",
-            a: "From 24 to 48 hours depending on project complexity. After an initial framing exchange (video or on site at Hélioparc / in the city centre), we send you a clear costed scope, with no opaque quoting.",
+            a: "From 48 hours depending on project complexity. After an initial framing exchange (video or on site at Hélioparc / in the city centre), we send you a clear costed scope, with no opaque quoting.",
           },
           {
             q: "Do you support software publishers and startups at Hélioparc and French Tech Pau Béarn?",
@@ -220,7 +220,7 @@ export const PAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Scope and deliverables defined at signature, transparent quote from 24 to 48 hours depending on complexity. Custom code (TypeScript, Python, FastAPI) and bespoke UX/UI, multi-CMS e-commerce and AI building blocks integrated without juggling several providers. EU hosting, documented GDPR compliance. No lock-in: source code, models and accesses stay with you, taken over in-house or by any French Tech Pau Béarn integrator.",
+          "Scope and deliverables defined at signature, transparent quote from 48 hours depending on complexity. Custom code (TypeScript, Python, FastAPI) and bespoke UX/UI, multi-CMS e-commerce and AI building blocks integrated without juggling several providers. EU hosting, documented GDPR compliance. No lock-in: source code, models and accesses stay with you, taken over in-house or by any French Tech Pau Béarn integrator.",
       },
     },
   },

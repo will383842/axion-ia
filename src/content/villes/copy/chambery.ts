@@ -128,7 +128,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
           {
             q: "Le délai pour obtenir un devis sites web / SaaS à Chambéry ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange de cadrage, nous vous renvoyons un périmètre chiffré et clair. La gare TGV Chambéry-Challes-les-Eaux et l'A43 facilitent nos venues sur site à Savoie Technolac, à Bissy ou dans les stations.",
+            a: "À partir de 48 h selon la complexité. Après un premier échange de cadrage, nous vous renvoyons un périmètre chiffré et clair. La gare TGV Chambéry-Challes-les-Eaux et l'A43 facilitent nos venues sur site à Savoie Technolac, à Bissy ou dans les stations.",
           },
           {
             q: "Mes données et mon code restent-ils chez moi après le projet ?",
@@ -136,7 +136,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre défini à la signature. Devis à partir de 24 à 48 h selon la complexité. Hébergement en UE conforme RGPD par défaut, DPO sur demande. Aucun lock-in éditeur : code source, modèles IA, contenus et accès restent intégralement votre propriété, transférables à tout intégrateur de la French Tech Alpes ou repris par vos équipes. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA appliquée — une seule équipe pour tout votre projet sites web et SaaS à Chambéry.",
+          "Engagement contractuel sur le périmètre défini à la signature. Devis à partir de 48 h selon la complexité. Hébergement en UE conforme RGPD par défaut, DPO sur demande. Aucun lock-in éditeur : code source, modèles IA, contenus et accès restent intégralement votre propriété, transférables à tout intégrateur de la French Tech Alpes ou repris par vos équipes. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA appliquée — une seule équipe pour tout votre projet sites web et SaaS à Chambéry.",
       },
       en: {
         hero: "In Chambéry, digital is no abstraction: it clusters at the Savoie Technolac park (~230 companies, ~1,000 researchers, the INES solar-energy institute) and lives in editors born here — Pixminds (Lexip mouse, awarded at CES Las Vegas), Lunabee Studio (mobile apps), Geomap-imagis and GeoCode (GIS geo-solutions), or Resalab, the white-label booking SaaS adopted by alpine tourism offices. Axion-IA designs AI-augmented websites and SaaS platforms on site for this fabric: Technolac editors, Alpes Tourisme Lab startups, hotel-restaurants of the Tarentaise/Maurienne resorts, Savoyard brands (Opinel, Cafés Folliet) and Bissy industrials. Custom code, EU GDPR-compliant hosting, zero vendor lock-in.",
@@ -214,7 +214,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
           {
             q: "How long for a websites / SaaS quote in Chambéry?",
-            a: "From 24 to 48 hours depending on complexity. After an initial framing exchange, we send back a clear, costed scope. The Chambéry-Challes-les-Eaux TGV station and the A43 make on-site visits to Savoie Technolac, Bissy or the resorts easy.",
+            a: "From 48 hours depending on complexity. After an initial framing exchange, we send back a clear, costed scope. The Chambéry-Challes-les-Eaux TGV station and the A43 make on-site visits to Savoie Technolac, Bissy or the resorts easy.",
           },
           {
             q: "Do my data and code stay with me after the project?",
@@ -222,7 +222,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment on the scope defined at signature. Quote from 24 to 48 hours depending on complexity. EU GDPR-compliant hosting by default, DPO on request. No vendor lock-in: source code, AI models, content and access remain entirely your property, transferable to any French Tech Alpes integrator or taken back in-house. We claim UX/UI, mobile, multi-CMS e-commerce and applied AI — a single team for your entire websites and SaaS project in Chambéry.",
+          "Contractual commitment on the scope defined at signature. Quote from 48 hours depending on complexity. EU GDPR-compliant hosting by default, DPO on request. No vendor lock-in: source code, AI models, content and access remain entirely your property, transferable to any French Tech Alpes integrator or taken back in-house. We claim UX/UI, mobile, multi-CMS e-commerce and applied AI — a single team for your entire websites and SaaS project in Chambéry.",
       },
     },
   },

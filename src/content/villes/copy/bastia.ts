@@ -124,7 +124,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis, et où intervenez-vous autour de Bastia ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Nous intervenons à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale, avec déplacements sur site organisés via l'aéroport Bastia-Poretta.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Nous intervenons à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale, avec déplacements sur site organisés via l'aéroport Bastia-Poretta.",
           },
           {
             q: "Où sont hébergées les données et suis-je dépendant de vous ensuite ?",
@@ -132,7 +132,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24-48 h selon la complexité. Code custom et propriété pleine de votre stack — aucun verrou éditeur ni dépendance contractuelle Axion-IA. UX/UI et mobile-first, e-commerce multi-CMS et intégration IA (chatbot RAG, recherche sémantique, génération et traduction de contenus). Hébergement dans l'Union européenne, conformité RGPD stricte. Intervention sur site à Bastia, dans les communes voisines et sur la plaine orientale. Aucun chiffre ni référence client inventés : nos exemples renvoient à des acteurs et secteurs réels de l'économie bastiaise.",
+          "Devis remis à partir de 48 h selon la complexité. Code custom et propriété pleine de votre stack — aucun verrou éditeur ni dépendance contractuelle Axion-IA. UX/UI et mobile-first, e-commerce multi-CMS et intégration IA (chatbot RAG, recherche sémantique, génération et traduction de contenus). Hébergement dans l'Union européenne, conformité RGPD stricte. Intervention sur site à Bastia, dans les communes voisines et sur la plaine orientale. Aucun chiffre ni référence client inventés : nos exemples renvoient à des acteurs et secteurs réels de l'économie bastiaise.",
       },
       en: {
         hero: "AI-augmented websites and SaaS platforms in Bastia (2B): we build custom tools for the real economy of Haute-Corse's préfecture — seasonal booking and checkout flows tuned to the peaks of the Port of Bastia (2.07M passengers in 2023, Corsica's leading freight port, CCI-managed since 1920), online stores for local retail (La Rocade Furiani, Port Toga) and AOP regional grocers (Patrimonio wines, coppa, brocciu, Corsican honey, like U Paese or A Campagna), business portals for maritime and logistics operators such as Corsica Linea and Corsica Ferries, and applications for the tertiary firms of the Erbajolo Technology Park. Custom code, mobile-first UX/UI, multi-CMS e-commerce, EU/GDPR hosting, zero vendor lock-in.",
@@ -210,7 +210,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote, and where do you operate around Bastia?",
-            a: "Quotes are issued from 24-48 h depending on project complexity. We operate in Bastia and neighbouring communes (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) as well as across the eastern plain, with on-site visits arranged via Bastia-Poretta airport.",
+            a: "Quotes are issued from 48 h depending on project complexity. We operate in Bastia and neighbouring communes (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) as well as across the eastern plain, with on-site visits arranged via Bastia-Poretta airport.",
           },
           {
             q: "Where is data hosted, and am I dependent on you afterwards?",
@@ -218,7 +218,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quotes issued from 24-48 h depending on complexity. Custom code and full ownership of your stack — no vendor lock-in or Axion-IA contractual dependency. Mobile-first UX/UI, multi-CMS e-commerce and AI integration (RAG chatbot, semantic search, content generation and translation). Hosting within the European Union, strict GDPR compliance. On-site work in Bastia, neighbouring communes and the eastern plain. No invented figures or client references: our examples point to real players and sectors of the Bastia economy.",
+          "Quotes issued from 48 h depending on complexity. Custom code and full ownership of your stack — no vendor lock-in or Axion-IA contractual dependency. Mobile-first UX/UI, multi-CMS e-commerce and AI integration (RAG chatbot, semantic search, content generation and translation). Hosting within the European Union, strict GDPR compliance. On-site work in Bastia, neighbouring communes and the eastern plain. No invented figures or client references: our examples point to real players and sectors of the Bastia economy.",
       },
     },
   },

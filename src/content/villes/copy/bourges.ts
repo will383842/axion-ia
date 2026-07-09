@@ -53,7 +53,7 @@ export const BOURGES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Bourges, Axion-IA conçoit et augmente des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre contexte local est singulier — un pôle défense/munitions (MBDA, KNDS/Nexter, DGA Techniques terrestres) qui impose confidentialité et hébergement souverain, doublé d'un tourisme patrimonial appelé à exploser avec Bourges Capitale européenne de la culture 2028. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourges, itérations à distance.",
+        hero: "À Bourges, Axion-IA conçoit et augmente des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre contexte local est singulier — un pôle défense/munitions (MBDA, KNDS/Nexter, DGA Techniques terrestres) qui impose confidentialité et hébergement souverain, doublé d'un tourisme patrimonial appelé à exploser avec Bourges Capitale européenne de la culture 2028. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourges, itérations à distance.",
         whyHere: [
           "Projets web & SaaS berruyers : sous-traitants de la mécanique de précision et de la métallurgie gravitant autour de MBDA, KNDS/Nexter et de la DGA Techniques terrestres, où le portail et la documentation technique exigent une chaîne maîtrisée.",
           "Tourisme et culture : avec la cathédrale Saint-Étienne (UNESCO), le palais Jacques Cœur, le Printemps de Bourges et le label Capitale européenne de la culture 2028, billetterie, réservation, contenus multilingues et parcours visiteurs deviennent stratégiques.",
@@ -64,7 +64,7 @@ export const BOURGES_COPY: VilleCopy = {
           {
             step: "Cadrage à Bourges",
             detail:
-              "Atelier sur site (technopôle Lahitolle, zone industrielle ou centre-ville) : objectifs, parcours utilisateurs, audit de la stack et des contenus, niveau de sensibilité des données. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (technopôle Lahitolle, zone industrielle ou centre-ville) : objectifs, parcours utilisateurs, audit de la stack et des contenus, niveau de sensibilité des données. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const BOURGES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour un portail métier industriel ou un système de billetterie étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour un portail métier industriel ou un système de billetterie étendu. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Données sensibles cloisonnées, hébergement souverain UE possible — un prérequis dans la filière défense berruyère. Code source, bases et modèles livrés dans votre infrastructure, conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Cher ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Données sensibles cloisonnées, hébergement souverain UE possible — un prérequis dans la filière défense berruyère. Code source, bases et modèles livrés dans votre infrastructure, conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Cher ou repris en interne.",
       },
       en: {
-        hero: "In Bourges, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Our local context is singular — a defence/munitions hub (MBDA, KNDS/Nexter, DGA Techniques terrestres) demanding confidentiality and sovereign hosting, alongside a heritage tourism set to surge with Bourges European Capital of Culture 2028. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Bourges kick-off, remote iterations.",
+        hero: "In Bourges, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Our local context is singular — a defence/munitions hub (MBDA, KNDS/Nexter, DGA Techniques terrestres) demanding confidentiality and sovereign hosting, alongside a heritage tourism set to surge with Bourges European Capital of Culture 2028. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Bourges kick-off, remote iterations.",
         whyHere: [
           "Bourges web & SaaS projects: precision-engineering and metalworking subcontractors orbiting MBDA, KNDS/Nexter and DGA Techniques terrestres, where portals and technical documentation require a controlled chain.",
           "Tourism and culture: with Saint-Étienne Cathedral (UNESCO), the Jacques Cœur palace, the Printemps de Bourges festival and the European Capital of Culture 2028 label, ticketing, booking, multilingual content and visitor journeys become strategic.",
@@ -150,7 +150,7 @@ export const BOURGES_COPY: VilleCopy = {
           {
             step: "Scoping in Bourges",
             detail:
-              "On-site workshop (Lahitolle technopole, industrial zone or city centre): goals, journeys, audit of the stack and content, data sensitivity level. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop (Lahitolle technopole, industrial zone or city centre): goals, journeys, audit of the stack and content, data sensitivity level. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const BOURGES_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping, we issue a firm fixed-price quote. Turnaround depends on complexity — from 24-48 h for a simple project, more for an industrial business portal or an extended ticketing system. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After scoping, we issue a firm fixed-price quote. Turnaround depends on complexity — from 48 h for a simple project, more for an industrial business portal or an extended ticketing system. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Sensitive data partitioned, EU sovereign hosting available — a prerequisite in the Bourges defence sector. Source code, databases and models delivered into your infrastructure, GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in the Cher or taken in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Sensitive data partitioned, EU sovereign hosting available — a prerequisite in the Bourges defence sector. Source code, databases and models delivered into your infrastructure, GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in the Cher or taken in-house.",
       },
     },
   },

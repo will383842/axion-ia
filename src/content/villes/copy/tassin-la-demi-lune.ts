@@ -53,7 +53,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Tassin-la-Demi-Lune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour l'ouest lyonnais, où le tissu compte plus de 3 600 entreprises et près de 300 commerces : professions libérales — santé, droit, expertise comptable —, cabinets de conseil, agences immobilières et PME de services à l'échelle de proximité. Tassin appartient au Pôle économique Ouest du Grand Lyon (tertiaire à environ 86 %), à 15 min de Lyon, tout près du campus Lyon Ouest d'Écully et de la zone d'activités Techlid. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Tassin, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Tassin-la-Demi-Lune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour l'ouest lyonnais, où le tissu compte plus de 3 600 entreprises et près de 300 commerces : professions libérales — santé, droit, expertise comptable —, cabinets de conseil, agences immobilières et PME de services à l'échelle de proximité. Tassin appartient au Pôle économique Ouest du Grand Lyon (tertiaire à environ 86 %), à 15 min de Lyon, tout près du campus Lyon Ouest d'Écully et de la zone d'activités Techlid. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Tassin, itérations à distance.",
         whyHere: [
           "Cœur de cible libéral et médical : pour les cabinets de santé, de droit et d'expertise comptable du quartier de la Demi-Lune et le long de l'avenue Charles-de-Gaulle, on greffe une prise de rendez-vous en ligne, un espace client sécurisé et un agent IA de premier contact qui qualifie les demandes hors horaires d'ouverture, sans refonte lourde de l'existant ni rupture de l'agenda en place.",
           "Densité de cabinets de conseil et d'agences immobilières : avec plus de 3 600 entreprises et 300 commerces, on livre des sites vitrines haut de gamme, des boutiques e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des portails de mandats à recherche sémantique, calibrés pour la clientèle résidentielle exigeante de l'ouest lyonnais et de Sainte-Foy-lès-Lyon.",
@@ -64,7 +64,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Tassin",
             detail:
-              "Atelier sur site au centre de la Demi-Lune (axes vers Écully, Charbonnières-les-Bains et Francheville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On cartographie les irritants et on remet un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site au centre de la Demi-Lune (axes vers Écully, Charbonnières-les-Bains et Francheville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On cartographie les irritants et on remet un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Tassin, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme SaaS. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez.",
+            a: "Oui. Après le cadrage sur place à Tassin, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme SaaS. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez.",
           },
           {
             q: "Pouvez-vous automatiser les rendez-vous d'un cabinet libéral ?",
@@ -136,10 +136,10 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, agenda, espace client et tunnel e-commerce compris. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution documentée et transférable à tout prestataire de la Métropole de Lyon ou reprise en interne par vos équipes, sans dépendance technique durable envers Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, agenda, espace client et tunnel e-commerce compris. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution documentée et transférable à tout prestataire de la Métropole de Lyon ou reprise en interne par vos équipes, sans dépendance technique durable envers Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Tassin-la-Demi-Lune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour l'ouest lyonnais, où le tissu compte plus de 3 600 entreprises et près de 300 commerces : professions libérales — santé, droit, expertise comptable —, cabinets de conseil, agences immobilières et PME de services à l'échelle de proximité. Tassin appartient au Pôle économique Ouest du Grand Lyon (tertiaire à environ 86 %), à 15 min de Lyon, tout près du campus Lyon Ouest d'Écully et de la zone d'activités Techlid. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Tassin, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Tassin-la-Demi-Lune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour l'ouest lyonnais, où le tissu compte plus de 3 600 entreprises et près de 300 commerces : professions libérales — santé, droit, expertise comptable —, cabinets de conseil, agences immobilières et PME de services à l'échelle de proximité. Tassin appartient au Pôle économique Ouest du Grand Lyon (tertiaire à environ 86 %), à 15 min de Lyon, tout près du campus Lyon Ouest d'Écully et de la zone d'activités Techlid. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Tassin, itérations à distance.",
         whyHere: [
           "Cœur de cible libéral et médical : pour les cabinets de santé, de droit et d'expertise comptable du quartier de la Demi-Lune et le long de l'avenue Charles-de-Gaulle, on greffe une prise de rendez-vous en ligne, un espace client sécurisé et un agent IA de premier contact qui qualifie les demandes hors horaires d'ouverture, sans refonte lourde de l'existant ni rupture de l'agenda en place.",
           "Densité de cabinets de conseil et d'agences immobilières : avec plus de 3 600 entreprises et 300 commerces, on livre des sites vitrines haut de gamme, des boutiques e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des portails de mandats à recherche sémantique, calibrés pour la clientèle résidentielle exigeante de l'ouest lyonnais et de Sainte-Foy-lès-Lyon.",
@@ -150,7 +150,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Tassin",
             detail:
-              "Atelier sur site au centre de la Demi-Lune (axes vers Écully, Charbonnières-les-Bains et Francheville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On cartographie les irritants et on remet un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site au centre de la Demi-Lune (axes vers Écully, Charbonnières-les-Bains et Francheville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On cartographie les irritants et on remet un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Tassin, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme SaaS. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez.",
+            a: "Oui. Après le cadrage sur place à Tassin, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme SaaS. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez.",
           },
           {
             q: "Pouvez-vous automatiser les rendez-vous d'un cabinet libéral ?",
@@ -222,7 +222,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, agenda, espace client et tunnel e-commerce compris. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution documentée et transférable à tout prestataire de la Métropole de Lyon ou reprise en interne par vos équipes, sans dépendance technique durable envers Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, agenda, espace client et tunnel e-commerce compris. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution documentée et transférable à tout prestataire de la Métropole de Lyon ou reprise en interne par vos équipes, sans dépendance technique durable envers Axion-IA.",
       },
     },
   },

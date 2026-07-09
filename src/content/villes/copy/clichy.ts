@@ -128,7 +128,7 @@ export const CLICHY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un échange de cadrage rapide, nous vous transmettons un périmètre clair et un devis détaillé. Le kick-off se fait ensuite sur site à Clichy ou en proche couronne (Levallois, Asnières, Saint-Ouen, Paris 17e).",
+            a: "À partir de 48 h selon la complexité. Après un échange de cadrage rapide, nous vous transmettons un périmètre clair et un devis détaillé. Le kick-off se fait ensuite sur site à Clichy ou en proche couronne (Levallois, Asnières, Saint-Ouen, Paris 17e).",
           },
           {
             q: "Mes données et mon site sont-ils hébergés en conformité RGPD ?",
@@ -136,7 +136,7 @@ export const CLICHY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis détaillé à partir de 24 à 48 h selon la complexité, périmètre et livrables fixés par écrit avant tout démarrage. Conception UX/UI et mobile, e-commerce multi-CMS et briques IA développées sur mesure. Hébergement en Union européenne par défaut, conformité RGPD, propriété pleine du code et des données côté client. Kick-off et recette en présentiel à Clichy (rue Martre, rue Marc Bloch, Écoquartier du Bac, incubateur Intencity) ou en proche couronne. À la livraison, votre équipe est formée et autonome — aucun verrou éditeur, aucune dépendance imposée.",
+          "Devis détaillé à partir de 48 h selon la complexité, périmètre et livrables fixés par écrit avant tout démarrage. Conception UX/UI et mobile, e-commerce multi-CMS et briques IA développées sur mesure. Hébergement en Union européenne par défaut, conformité RGPD, propriété pleine du code et des données côté client. Kick-off et recette en présentiel à Clichy (rue Martre, rue Marc Bloch, Écoquartier du Bac, incubateur Intencity) ou en proche couronne. À la livraison, votre équipe est formée et autonome — aucun verrou éditeur, aucune dépendance imposée.",
       },
       en: {
         hero: "Clichy holds a rare profile for inner-ring Paris: two head offices of international and national scale are physically based here — L'Oréal's world headquarters at 41 rue Martre (renovation led by architect Jean-Michel Wilmotte, plus 6,550 m² in the Link-It building) and Monoprix's head office at 14-16 rue Marc Bloch, which runs the Monop', Monoprix Maison and Naturalia banners. Around them sit Beaujon Hospital (AP-HP), a dense fabric of advertising and communication agencies, service micro-businesses and shops, and the conversion of former industrial land into new offices (Écoquartier du Bac, ZAC Bac d'Asnières). In Clichy, Axion-IA designs AI-augmented websites and SaaS platforms for this beauty-cosmetics, retail/distribution and communication hub, on site then remotely.",
@@ -214,7 +214,7 @@ export const CLICHY_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote?",
-            a: "From 24 to 48 hours depending on complexity. After a quick framing exchange, we send a clear scope and a detailed quote. The kick-off then takes place on site in Clichy or the inner ring (Levallois, Asnières, Saint-Ouen, Paris 17th).",
+            a: "From 48 hours depending on complexity. After a quick framing exchange, we send a clear scope and a detailed quote. The kick-off then takes place on site in Clichy or the inner ring (Levallois, Asnières, Saint-Ouen, Paris 17th).",
           },
           {
             q: "Are my data and site hosted in GDPR compliance?",
@@ -222,7 +222,7 @@ export const CLICHY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote from 24 to 48 hours depending on complexity, scope and deliverables set in writing before any start. UX/UI and mobile design, multi-CMS e-commerce and AI bricks built to measure. EU hosting by default, GDPR compliance, full client ownership of code and data. Kick-off and acceptance in person in Clichy (rue Martre, rue Marc Bloch, Écoquartier du Bac, Intencity incubator) or the inner ring; travel costs, reduced at this distance from Paris, billed separately. On delivery, your team is trained and autonomous — no vendor lock-in, no imposed dependence.",
+          "Detailed quote from 48 hours depending on complexity, scope and deliverables set in writing before any start. UX/UI and mobile design, multi-CMS e-commerce and AI bricks built to measure. EU hosting by default, GDPR compliance, full client ownership of code and data. Kick-off and acceptance in person in Clichy (rue Martre, rue Marc Bloch, Écoquartier du Bac, Intencity incubator) or the inner ring; travel costs, reduced at this distance from Paris, billed separately. On delivery, your team is trained and autonomous — no vendor lock-in, no imposed dependence.",
       },
     },
   },

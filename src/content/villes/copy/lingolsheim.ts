@@ -53,7 +53,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lingolsheim des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Strasbourg, ville résidentielle et tertiaire faite de TPE du commerce de proximité, d'artisans du bâtiment, de cabinets de santé et de professions libérales, mais aussi des entreprises du Parc Eiffel des Tanneries, reliées au centre strasbourgeois par le tram B et à l'A35 par le Grand Contournement Ouest. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur place à Lingolsheim, itérations à distance depuis Strasbourg.",
+        hero: "Axion-IA conçoit et augmente à Lingolsheim des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Strasbourg, ville résidentielle et tertiaire faite de TPE du commerce de proximité, d'artisans du bâtiment, de cabinets de santé et de professions libérales, mais aussi des entreprises du Parc Eiffel des Tanneries, reliées au centre strasbourgeois par le tram B et à l'A35 par le Grand Contournement Ouest. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur place à Lingolsheim, itérations à distance depuis Strasbourg.",
         whyHere: [
           "Deuxième commune de l'Eurométropole, ville résidentielle desservie par le tram B et raccordée à l'A35 par le Grand Contournement Ouest ouvert en 2021 : le commerce de proximité et l'artisanat du bâtiment lingolsheimois gagnent une vitrine e-commerce mobile-first et un moteur de devis automatisé, calibrés pour une clientèle locale qui réserve depuis son smartphone.",
           "Densité de cabinets de santé et de professions libérales, juridiques et comptables : nous construisons des portails de prise de rendez-vous, des assistants de tri des demandes entrantes et du traitement documentaire respectant le secret professionnel et le RGPD, conçus mobile-first pour les patients et clients de l'Eurométropole.",
@@ -64,7 +64,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           {
             step: "Cadrage à Lingolsheim",
             detail:
-              "Atelier sur site (centre-ville, commerces de la rue du Maréchal Foch, Parc Eiffel des Tanneries, écoquartier Les Tanneries) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville, commerces de la rue du Maréchal Foch, Parc Eiffel des Tanneries, écoquartier Les Tanneries) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Lingolsheim — centre-ville ou Parc des Tanneries — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à quoi vous engager avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à Lingolsheim — centre-ville ou Parc des Tanneries — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à quoi vous engager avant de démarrer.",
           },
           {
             q: "Quel site IA pour un cabinet de santé ou une profession libérale ici ?",
@@ -136,10 +136,10 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce ou un cabinet en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local de l'Eurométropole de Strasbourg ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce ou un cabinet en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local de l'Eurométropole de Strasbourg ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lingolsheim des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Strasbourg, ville résidentielle et tertiaire faite de TPE du commerce de proximité, d'artisans du bâtiment, de cabinets de santé et de professions libérales, mais aussi des entreprises du Parc Eiffel des Tanneries, reliées au centre strasbourgeois par le tram B et à l'A35 par le Grand Contournement Ouest. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur place à Lingolsheim, itérations à distance depuis Strasbourg.",
+        hero: "Axion-IA conçoit et augmente à Lingolsheim des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Strasbourg, ville résidentielle et tertiaire faite de TPE du commerce de proximité, d'artisans du bâtiment, de cabinets de santé et de professions libérales, mais aussi des entreprises du Parc Eiffel des Tanneries, reliées au centre strasbourgeois par le tram B et à l'A35 par le Grand Contournement Ouest. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur place à Lingolsheim, itérations à distance depuis Strasbourg.",
         whyHere: [
           "Deuxième commune de l'Eurométropole, ville résidentielle desservie par le tram B et raccordée à l'A35 par le Grand Contournement Ouest ouvert en 2021 : le commerce de proximité et l'artisanat du bâtiment lingolsheimois gagnent une vitrine e-commerce mobile-first et un moteur de devis automatisé, calibrés pour une clientèle locale qui réserve depuis son smartphone.",
           "Densité de cabinets de santé et de professions libérales, juridiques et comptables : nous construisons des portails de prise de rendez-vous, des assistants de tri des demandes entrantes et du traitement documentaire respectant le secret professionnel et le RGPD, conçus mobile-first pour les patients et clients de l'Eurométropole.",
@@ -150,7 +150,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           {
             step: "Cadrage à Lingolsheim",
             detail:
-              "Atelier sur site (centre-ville, commerces de la rue du Maréchal Foch, Parc Eiffel des Tanneries, écoquartier Les Tanneries) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville, commerces de la rue du Maréchal Foch, Parc Eiffel des Tanneries, écoquartier Les Tanneries) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Lingolsheim — centre-ville ou Parc des Tanneries — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à quoi vous engager avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à Lingolsheim — centre-ville ou Parc des Tanneries — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à quoi vous engager avant de démarrer.",
           },
           {
             q: "Quel site IA pour un cabinet de santé ou une profession libérale ici ?",
@@ -222,7 +222,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce ou un cabinet en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local de l'Eurométropole de Strasbourg ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce ou un cabinet en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local de l'Eurométropole de Strasbourg ou repris en interne par vos équipes.",
       },
     },
   },

@@ -130,11 +130,11 @@ export const COLOMBES_COPY: VilleCopy = {
           },
           {
             q: "Quels sont vos délais pour démarrer un projet à Colombes ?",
-            a: "Un devis est établi à partir de 24 à 48 h selon la complexité du projet. Le kick-off sur site à Colombes se planifie ensuite sous quelques jours ouvrés. Les projets sont jalonnés par lots avec un livrable utile à chaque étape, du design validé jusqu'à la mise en ligne.",
+            a: "Un devis est établi à partir de 48 h selon la complexité du projet. Le kick-off sur site à Colombes se planifie ensuite sous quelques jours ouvrés. Les projets sont jalonnés par lots avec un livrable utile à chaque étape, du design validé jusqu'à la mise en ligne.",
           },
         ],
         guarantees:
-          "Chaque site ou plateforme SaaS livré à Colombes est développé en code custom, versionné et documenté, et reste votre propriété pleine et entière — aucun verrou éditeur, aucune dépendance contractuelle à Axion-IA. L'hébergement est en Union européenne et conforme RGPD par défaut, avec minimisation des données et clauses de confidentialité dans chaque devis, ce qui répond aux exigences des acteurs pharma et santé de la ville (UCB Pharma, Biogaran). Le devis est établi à partir de 24 à 48 h selon la complexité, sans prix croisé ni abonnement caché, et le transfert de propriété du code et de la documentation est complet à la livraison.",
+          "Chaque site ou plateforme SaaS livré à Colombes est développé en code custom, versionné et documenté, et reste votre propriété pleine et entière — aucun verrou éditeur, aucune dépendance contractuelle à Axion-IA. L'hébergement est en Union européenne et conforme RGPD par défaut, avec minimisation des données et clauses de confidentialité dans chaque devis, ce qui répond aux exigences des acteurs pharma et santé de la ville (UCB Pharma, Biogaran). Le devis est établi à partir de 48 h selon la complexité, sans prix croisé ni abonnement caché, et le transfert de propriété du code et de la documentation est complet à la livraison.",
       },
       en: {
         hero: "In Colombes, Axion-IA designs AI-augmented websites and SaaS platforms for a distinctive economic fabric: tertiary headquarters and offices backing onto La Défense — Arkema and UCB Pharma on rue d'Estienne d'Orves, Shell in the Les Portes de la Défense building, plus Oracle, Tetra Pak, PepsiCo, Biogaran and Snef, federated by the Club Colombes Expansion — and the dense network of SMEs and micro-businesses (94% with fewer than 10 employees) across the Kléber and Equilibre parks and the Fossés-Jean technology park. We build bespoke AI-native platforms: customer portals, multi-CMS e-commerce, line-of-business SaaS with RAG chatbot and semantic search — custom code, UX/UI and mobile, European Union hosting compliant with GDPR, no vendor lock-in.",
@@ -216,11 +216,11 @@ export const COLOMBES_COPY: VilleCopy = {
           },
           {
             q: "What are your lead times to start a project in Colombes?",
-            a: "A quote is issued from 24 to 48 hours depending on the complexity of the project. The on-site kick-off in Colombes is then scheduled within a few working days. Projects are milestoned in batches with a useful deliverable at each step, from validated design through to go-live.",
+            a: "A quote is issued from 48 hours depending on the complexity of the project. The on-site kick-off in Colombes is then scheduled within a few working days. Projects are milestoned in batches with a useful deliverable at each step, from validated design through to go-live.",
           },
         ],
         guarantees:
-          "Every website or SaaS platform delivered in Colombes is developed in custom code, versioned and documented, and remains your full and entire property — no vendor lock-in, no contractual dependency on Axion-IA. Hosting is in the European Union and GDPR-compliant by default, with data minimisation and confidentiality clauses in every quote, which meets the requirements of the city's pharma and health players (UCB Pharma, Biogaran). The quote is issued from 24 to 48 hours depending on complexity, with no cross-pricing and no hidden subscription, and the transfer of ownership of the code and documentation is complete on delivery.",
+          "Every website or SaaS platform delivered in Colombes is developed in custom code, versioned and documented, and remains your full and entire property — no vendor lock-in, no contractual dependency on Axion-IA. Hosting is in the European Union and GDPR-compliant by default, with data minimisation and confidentiality clauses in every quote, which meets the requirements of the city's pharma and health players (UCB Pharma, Biogaran). The quote is issued from 48 hours depending on complexity, with no cross-pricing and no hidden subscription, and the transfer of ownership of the code and documentation is complete on delivery.",
       },
     },
   },

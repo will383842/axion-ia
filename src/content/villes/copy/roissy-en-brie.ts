@@ -50,7 +50,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Roissy-en-Brie des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 229 habitants de Paris-Vallée de la Marne, à 25 km au sud-est de Paris, où le tissu repose sur le commerce de détail, le transport routier, la restauration et la construction — plus de 1 100 établissements locaux recensés, répartis entre le centre-ville et des zones structurantes comme la Z.I. des 50 Arpents, le Techniparc de la ZAC de la Vallée et le parc commercial Gecko. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Roissy-en-Brie, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Roissy-en-Brie des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 229 habitants de Paris-Vallée de la Marne, à 25 km au sud-est de Paris, où le tissu repose sur le commerce de détail, le transport routier, la restauration et la construction — plus de 1 100 établissements locaux recensés, répartis entre le centre-ville et des zones structurantes comme la Z.I. des 50 Arpents, le Techniparc de la ZAC de la Vallée et le parc commercial Gecko. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Roissy-en-Brie, itérations à distance.",
         whyHere: [
           "Commerce de détail dominant et clientèle de proximité reliée par le RER E (gare de Roissy-en-Brie, branche Tournan) : entre le centre-ville et le parc commercial Gecko, le terrain est idéal pour des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et des parcours click-and-collect augmentés à l'IA, plutôt que des sites vitrines figés qui ne convertissent pas la demande locale.",
           "Forte densité de transporteurs routiers, de logisticiens et d'artisans du BTP, ancrée sur la Z.I. des 50 Arpents (pôle logistique d'une dizaine d'hectares, plus d'une centaine d'entreprises) et les zones voisines de Pontault-Combault et Émerainville : on greffe des automatisations métier — extraction de bons de commande, suivi de chantier, suivi de tournées, devis — directement sur vos logiciels existants, sans refonte coûteuse.",
@@ -61,7 +61,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
           {
             step: "Cadrage à Roissy-en-Brie",
             detail:
-              "Atelier sur site — centre-ville, abords de la gare RER E, Z.I. des 50 Arpents, Techniparc de la ZAC de la Vallée ou zones voisines de Pontault-Combault et Émerainville : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville, abords de la gare RER E, Z.I. des 50 Arpents, Techniparc de la ZAC de la Vallée ou zones voisines de Pontault-Combault et Émerainville : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Roissy-en-Brie, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Roissy-en-Brie, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour une boutique du parc Gecko ou un transporteur des 50 Arpents en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire local de Seine-et-Marne ou de Paris-Vallée de la Marne, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour une boutique du parc Gecko ou un transporteur des 50 Arpents en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire local de Seine-et-Marne ou de Paris-Vallée de la Marne, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Roissy-en-Brie des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 229 habitants de Paris-Vallée de la Marne, à 25 km au sud-est de Paris, où le tissu repose sur le commerce de détail, le transport routier, la restauration et la construction — plus de 1 100 établissements locaux recensés, répartis entre le centre-ville et des zones structurantes comme la Z.I. des 50 Arpents, le Techniparc de la ZAC de la Vallée et le parc commercial Gecko. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Roissy-en-Brie, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Roissy-en-Brie des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 229 habitants de Paris-Vallée de la Marne, à 25 km au sud-est de Paris, où le tissu repose sur le commerce de détail, le transport routier, la restauration et la construction — plus de 1 100 établissements locaux recensés, répartis entre le centre-ville et des zones structurantes comme la Z.I. des 50 Arpents, le Techniparc de la ZAC de la Vallée et le parc commercial Gecko. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Roissy-en-Brie, itérations à distance.",
         whyHere: [
           "Commerce de détail dominant et clientèle de proximité reliée par le RER E (gare de Roissy-en-Brie, branche Tournan) : entre le centre-ville et le parc commercial Gecko, le terrain est idéal pour des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et des parcours click-and-collect augmentés à l'IA, plutôt que des sites vitrines figés qui ne convertissent pas la demande locale.",
           "Forte densité de transporteurs routiers, de logisticiens et d'artisans du BTP, ancrée sur la Z.I. des 50 Arpents (pôle logistique d'une dizaine d'hectares, plus d'une centaine d'entreprises) et les zones voisines de Pontault-Combault et Émerainville : on greffe des automatisations métier — extraction de bons de commande, suivi de chantier, suivi de tournées, devis — directement sur vos logiciels existants, sans refonte coûteuse.",
@@ -147,7 +147,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
           {
             step: "Cadrage à Roissy-en-Brie",
             detail:
-              "Atelier sur site — centre-ville, abords de la gare RER E, Z.I. des 50 Arpents, Techniparc de la ZAC de la Vallée ou zones voisines de Pontault-Combault et Émerainville : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville, abords de la gare RER E, Z.I. des 50 Arpents, Techniparc de la ZAC de la Vallée ou zones voisines de Pontault-Combault et Émerainville : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Roissy-en-Brie, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Roissy-en-Brie, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour une boutique du parc Gecko ou un transporteur des 50 Arpents en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire local de Seine-et-Marne ou de Paris-Vallée de la Marne, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour une boutique du parc Gecko ou un transporteur des 50 Arpents en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire local de Seine-et-Marne ou de Paris-Vallée de la Marne, ou reprise en interne par vos équipes.",
       },
     },
   },

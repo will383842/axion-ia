@@ -466,8 +466,8 @@ export function AuditFaqSection({
       titleEm={isFr ? "sans détour" : "without spin"}
       description={
         isFr
-          ? "Les 6 questions que tout dirigeant pose avant de réserver. Si la vôtre n'y est pas, écrivez-nous — on répond sous 24 h ouvrées."
-          : "The 6 questions every leader asks before booking. Not yours? Write us — we reply within 24 business hours."
+          ? "Les 6 questions que tout dirigeant pose avant de réserver. Si la vôtre n'y est pas, écrivez-nous — on répond sous 48 h ouvrées."
+          : "The 6 questions every leader asks before booking. Not yours? Write us — we reply within 48 business hours."
       }
       contentClassName="lg:px-6 xl:px-10 max-w-4xl"
     >

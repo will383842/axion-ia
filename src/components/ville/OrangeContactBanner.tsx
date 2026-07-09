@@ -40,8 +40,8 @@ export function OrangeContactBanner({ isFr, villeSlug }: OrangeContactBannerProp
           </h2>
           <p className="text-paper max-w-2xl text-base leading-relaxed sm:text-lg">
             {isFr
-              ? "Chaque demande est lue personnellement par un consultant senior Axion-IA et reçoit une réponse cadrée sous 24 h ouvrées. Nous vous recontactons par téléphone ou par mail selon votre préférence — votre projet a notre entière attention."
-              : "Chaque demande est lue personnellement par un consultant senior Axion-IA et reçoit une réponse cadrée sous 24 h ouvrées. Nous vous recontactons par téléphone ou par mail selon votre préférence — votre projet a notre entière attention."}
+              ? "Chaque demande est lue personnellement par un consultant senior Axion-IA et reçoit une réponse cadrée sous 48 h ouvrées. Nous vous recontactons par téléphone ou par mail selon votre préférence — votre projet a notre entière attention."
+              : "Chaque demande est lue personnellement par un consultant senior Axion-IA et reçoit une réponse cadrée sous 48 h ouvrées. Nous vous recontactons par téléphone ou par mail selon votre préférence — votre projet a notre entière attention."}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link

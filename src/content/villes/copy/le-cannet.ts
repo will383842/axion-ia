@@ -132,11 +132,11 @@ export const LE_CANNET_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site ou une plateforme SaaS ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Le devis précise le périmètre, la stack retenue, la brique IA et les livrables — sans montant caché ni dérive horaire.",
+            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Le devis précise le périmètre, la stack retenue, la brique IA et les livrables — sans montant caché ni dérive horaire.",
           },
         ],
         guarantees:
-          "Code applicatif livré et documenté, propriété intégrale du client — aucun verrou éditeur, aucune solution no-code propriétaire. Hébergement en Union européenne par défaut, conformité RGPD (DPA signé avant toute collecte, minimisation, traçabilité), DPO sur demande. Performance Web Vitals stricte intégrée dès la conception. Devis transparent à partir de 24 à 48 h selon la complexité ; périmètre, stack et brique IA détaillés avant signature. La plateforme reste maintenable par vos équipes ou tout intégrateur de la région, sans contrat de prestation continue imposé.",
+          "Code applicatif livré et documenté, propriété intégrale du client — aucun verrou éditeur, aucune solution no-code propriétaire. Hébergement en Union européenne par défaut, conformité RGPD (DPA signé avant toute collecte, minimisation, traçabilité), DPO sur demande. Performance Web Vitals stricte intégrée dès la conception. Devis transparent à partir de 48 h selon la complexité ; périmètre, stack et brique IA détaillés avant signature. La plateforme reste maintenable par vos équipes ou tout intégrateur de la région, sans contrat de prestation continue imposé.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for businesses in Le Cannet (Alpes-Maritimes, Cannes Pays de Lérins agglomeration). The local fabric — 1,281 employer establishments, 1,024 new businesses created in 2024 of which 276 in specialised, technical and administrative-support services — is dominated by B2B service micro-firms, neighbourhood retail (boulevard Carnot, Rocheville, Vieux Cannet), French Riviera hospitality and a dense silver economy (senior-services residences, six care homes). We deliver bespoke application code — UX/UI, mobile, multi-CMS e-commerce, RAG chatbot, AI agents — hosted in the EU and GDPR-compliant, with no vendor lock-in and no no-code dependency.",
@@ -218,11 +218,11 @@ export const LE_CANNET_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote for a site or SaaS platform?",
-            a: "We provide a quote from 24 to 48 hours depending on project complexity, after an initial framing exchange. The quote sets out scope, chosen stack, AI layer and deliverables — no hidden amounts, no hourly drift.",
+            a: "We provide a quote from 48 hours depending on project complexity, after an initial framing exchange. The quote sets out scope, chosen stack, AI layer and deliverables — no hidden amounts, no hourly drift.",
           },
         ],
         guarantees:
-          "Application code delivered and documented, fully owned by the client — no vendor lock-in, no proprietary no-code solution. EU hosting by default, GDPR compliance (DPA signed before any collection, minimisation, traceability), DPO on request. Strict Web Vitals performance built in from design. Transparent quote from 24 to 48 hours depending on complexity; scope, stack and AI layer detailed before signature. The platform stays maintainable by your teams or any regional integrator, with no mandatory ongoing service contract.",
+          "Application code delivered and documented, fully owned by the client — no vendor lock-in, no proprietary no-code solution. EU hosting by default, GDPR compliance (DPA signed before any collection, minimisation, traceability), DPO on request. Strict Web Vitals performance built in from design. Transparent quote from 48 hours depending on complexity; scope, stack and AI layer detailed before signature. The platform stays maintainable by your teams or any regional integrator, with no mandatory ongoing service contract.",
       },
     },
   },

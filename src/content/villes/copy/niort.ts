@@ -125,7 +125,7 @@ export const NIORT_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis sur un projet web ou SaaS à Niort ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet. Le kick-off se fait sur site à Niort ou dans la zone Espace Mendès France à Chauray ; les développements sont menés à distance avec démos hebdomadaires et recette sur place.",
+            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet. Le kick-off se fait sur site à Niort ou dans la zone Espace Mendès France à Chauray ; les développements sont menés à distance avec démos hebdomadaires et recette sur place.",
           },
           {
             q: "Où sont hébergées les données et qui garde la main sur le code ?",
@@ -133,7 +133,7 @@ export const NIORT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité. Code TypeScript/Python sur mesure et versionné, vous en gardez la pleine propriété — aucun lock-in éditeur, aucune dépendance Axion-IA. Hébergement Union européenne par défaut (OVHcloud, Scaleway), contrat DPA et conformité RGPD documentée ; pour les acteurs assurantiels niortais et leurs sous-traitants, alignement sur les exigences ACPR, Solvabilité II et DORA. UX/UI mobile-first, e-commerce multi-CMS et briques IA (RAG, search sémantique, recommandation) intégrés sans surcouche propriétaire. Kick-off et recette sur site à Niort ; développements à distance avec démos hebdomadaires.",
+          "Devis remis à partir de 48 h selon la complexité. Code TypeScript/Python sur mesure et versionné, vous en gardez la pleine propriété — aucun lock-in éditeur, aucune dépendance Axion-IA. Hébergement Union européenne par défaut (OVHcloud, Scaleway), contrat DPA et conformité RGPD documentée ; pour les acteurs assurantiels niortais et leurs sous-traitants, alignement sur les exigences ACPR, Solvabilité II et DORA. UX/UI mobile-first, e-commerce multi-CMS et briques IA (RAG, search sémantique, recommandation) intégrés sans surcouche propriétaire. Kick-off et recette sur site à Niort ; développements à distance avec démos hebdomadaires.",
       },
       en: {
         hero: "Niort is no ordinary web market: France's 4th financial centre and capital of mutual insurance, it hosts the national headquarters of MACIF, MAIF, MAAF and SMACL, plus IMA (Inter Mutuelles Assistance) and Groupama CRAMA Centre Atlantique's regional HQ. Axion-IA builds AI-augmented websites and SaaS platforms for the Niort area tailored to this ecosystem: policyholder portals and AssurTech journeys compliant with ACPR/Solvency II, 'made in France' e-commerce in the CAMIF tradition, and front-offices for the roughly 120 digital SMEs orbiting the mutual insurers. Custom TypeScript/Python code, EU/GDPR hosting, zero vendor lock-in.",
@@ -211,7 +211,7 @@ export const NIORT_COPY: VilleCopy = {
           },
           {
             q: "What is the timeline for a quote on a web or SaaS project in Niort?",
-            a: "We deliver a quote from 24 to 48 hours depending on project complexity. The kick-off takes place on site in Niort or in the Espace Mendès France zone in Chauray; development is run remotely with weekly demos and on-site acceptance.",
+            a: "We deliver a quote from 48 hours depending on project complexity. The kick-off takes place on site in Niort or in the Espace Mendès France zone in Chauray; development is run remotely with weekly demos and on-site acceptance.",
           },
           {
             q: "Where is data hosted and who keeps control of the code?",
@@ -219,7 +219,7 @@ export const NIORT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24 to 48 hours depending on complexity. Custom, versioned TypeScript/Python code that you fully own — no vendor lock-in, no Axion-IA dependency. EU hosting by default (OVHcloud, Scaleway), DPA contract and documented GDPR compliance; for Niort insurance players and their subcontractors, alignment with ACPR, Solvency II and DORA requirements. Mobile-first UX/UI, multi-CMS e-commerce and AI components (RAG, semantic search, recommendation) integrated without proprietary overlay. Kick-off and acceptance on site in Niort; development run remotely with weekly demos.",
+          "Quote delivered from 48 hours depending on complexity. Custom, versioned TypeScript/Python code that you fully own — no vendor lock-in, no Axion-IA dependency. EU hosting by default (OVHcloud, Scaleway), DPA contract and documented GDPR compliance; for Niort insurance players and their subcontractors, alignment with ACPR, Solvency II and DORA requirements. Mobile-first UX/UI, multi-CMS e-commerce and AI components (RAG, semantic search, recommendation) integrated without proprietary overlay. Kick-off and acceptance on site in Niort; development run remotely with weekly demos.",
       },
     },
   },

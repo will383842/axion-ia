@@ -113,7 +113,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps pour recevoir un devis pour mon site ou ma plateforme à Draguignan ?",
-            a: "Nous renvoyons un devis à partir de 24 à 48 h selon la complexité du projet. Un site vitrine pour un commerce du centre dracénois est chiffré plus vite qu'une plateforme SaaS avec intégrations ; le brief de cadrage initial nous permet de préciser le périmètre.",
+            a: "Nous renvoyons un devis à partir de 48 h selon la complexité du projet. Un site vitrine pour un commerce du centre dracénois est chiffré plus vite qu'une plateforme SaaS avec intégrations ; le brief de cadrage initial nous permet de préciser le périmètre.",
           },
           {
             q: "Faites-vous de l'e-commerce pour les commerçants du centre-ville et de la Z.I. Saint-Hermentaire ?",
@@ -133,7 +133,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité. Développement en code custom, hébergement dans l'Union européenne et conformité RGPD par défaut (minimisation, registre des traitements). Nous revendiquons la chaîne complète : UX/UI, responsive mobile, e-commerce multi-CMS et briques IA. Vous gardez la maîtrise pleine de votre site ou plateforme — code, contenus et données transférables, sans verrou éditeur ni dépendance no-code.",
+          "Devis à partir de 48 h selon la complexité. Développement en code custom, hébergement dans l'Union européenne et conformité RGPD par défaut (minimisation, registre des traitements). Nous revendiquons la chaîne complète : UX/UI, responsive mobile, e-commerce multi-CMS et briques IA. Vous gardez la maîtrise pleine de votre site ou plateforme — code, contenus et données transférables, sans verrou éditeur ni dépendance no-code.",
       },
       en: {
         hero: "In Draguignan, sub-prefecture of the Var and capital of the Dracénie, activity centres on the historic-centre retail (over 400 shops, commercial vacancy cut from 15% to under 6% in three years), the trade and construction businesses of the Saint-Hermentaire industrial zone, healthcare around the Centre Hospitalier de la Dracénie, the Military Schools garrison (artillery and infantry) and the AOC Côtes de Provence vineyards of the Nartuby plain. Axion-IA builds AI-augmented websites and SaaS platforms for these Dracénie organisations — custom code, EU GDPR-compliant hosting, no no-code lock-in.",
@@ -199,7 +199,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
         faq: [
           {
             q: "How long to get a quote for my site or platform in Draguignan?",
-            a: "We return a quote within 24 to 48 hours depending on project complexity. A showcase site for a Draguignan town-centre shop is quoted faster than a SaaS platform with integrations; the initial framing brief lets us scope it precisely.",
+            a: "We return a quote within 48 hours depending on project complexity. A showcase site for a Draguignan town-centre shop is quoted faster than a SaaS platform with integrations; the initial framing brief lets us scope it precisely.",
           },
           {
             q: "Do you build e-commerce for town-centre shops and the Saint-Hermentaire industrial zone?",
@@ -219,7 +219,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 24 to 48 hours depending on complexity. Custom-code development, European Union hosting and GDPR compliance by default (minimisation, processing register). We own the full chain: UX/UI, responsive mobile, multi-CMS e-commerce and AI building blocks. You keep full control of your site or platform — code, content and data transferable, with no vendor lock-in or no-code dependency. Travel costs to Draguignan and the Dracénie are calculated case by case by zone.",
+          "Quote within 48 hours depending on complexity. Custom-code development, European Union hosting and GDPR compliance by default (minimisation, processing register). We own the full chain: UX/UI, responsive mobile, multi-CMS e-commerce and AI building blocks. You keep full control of your site or platform — code, content and data transferable, with no vendor lock-in or no-code dependency. Travel costs to Draguignan and the Dracénie are calculated case by case by zone.",
       },
     },
   },

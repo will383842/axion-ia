@@ -132,11 +132,11 @@ export const EVREUX_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "Un devis est établi à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Le périmètre, les intégrations et les contraintes réglementaires éventuelles déterminent le détail de la proposition.",
+            a: "Un devis est établi à partir de 48 h selon la complexité, après un premier échange de cadrage. Le périmètre, les intégrations et les contraintes réglementaires éventuelles déterminent le détail de la proposition.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception et journalisation des traitements pour les contenus sensibles pharma et cosmétique. Code, modèles IA et contenus restent intégralement chez vous, repris en interne ou par tout intégrateur normand — aucun verrou éditeur. Pour les acteurs liés à la Base aérienne 105 et à la filière aéronautique, gestion des accès et des flux documentaires bilingues FR/DE possible. Devis établi à partir de 24 à 48 h selon la complexité.",
+          "Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception et journalisation des traitements pour les contenus sensibles pharma et cosmétique. Code, modèles IA et contenus restent intégralement chez vous, repris en interne ou par tout intégrateur normand — aucun verrou éditeur. Pour les acteurs liés à la Base aérienne 105 et à la filière aéronautique, gestion des accès et des flux documentaires bilingues FR/DE possible. Devis établi à partir de 48 h selon la complexité.",
       },
       en: {
         hero: "Évreux, capital of the Eure, brings together three demanding worlds: regulated pharma and cosmetics (the GSK site producing inhaled medicines for asthma and COPD, ~1,100 staff; Delpharm, a dry-form medicines contract manufacturer; dual membership of Cosmetic Valley and Polepharma), industrial subcontracting on the Long Buisson business park (Compin, Schneider Electric, Sofrastock logistics), and the aeronautical defence cluster of Air Base 105, the Eure's leading employer with its Franco-German C-130J transport squadron. Axion-IA builds AI-augmented websites and SaaS platforms for these players — supplier portals, quote configurators, B2B qualification assistants — covering UX/UI, mobile, multi-CMS e-commerce and AI, with GDPR-compliant EU hosting.",
@@ -218,11 +218,11 @@ export const EVREUX_COPY: VilleCopy = {
           },
           {
             q: "How quickly can we get a quote?",
-            a: "A quote is issued from 24 to 48 hours depending on complexity, after an initial framing exchange. Scope, integrations and any regulatory constraints determine the detail of the proposal.",
+            a: "A quote is issued from 48 hours depending on complexity, after an initial framing exchange. Scope, integrations and any regulatory constraints determine the detail of the proposal.",
           },
         ],
         guarantees:
-          "EU hosting by default, GDPR compliance built in from the design stage and processing logs for sensitive pharma and cosmetics content. Code, AI models and content remain entirely with you, reclaimable in-house or by any Normandy integrator — no vendor lock-in. For players linked to Air Base 105 and the aeronautics chain, access management and bilingual FR/DE document flows are available. Quote issued from 24 to 48 hours depending on complexity.",
+          "EU hosting by default, GDPR compliance built in from the design stage and processing logs for sensitive pharma and cosmetics content. Code, AI models and content remain entirely with you, reclaimable in-house or by any Normandy integrator — no vendor lock-in. For players linked to Air Base 105 and the aeronautics chain, access management and bilingual FR/DE document flows are available. Quote issued from 48 hours depending on complexity.",
       },
     },
   },

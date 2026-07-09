@@ -53,7 +53,7 @@ export const LA_GARDE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Garde des sites web, boutiques en ligne et plateformes SaaS dopées à l'IA : UX/UI mobile-first, prise de rendez-vous et devis en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune varoise de la métropole toulonnaise où cohabitent l'Université de Toulon, le pôle d'activité de Toulon-Est (630 entreprises, ~12 000 emplois sur 220 ha) et un tissu dense de TPE du commerce, des services et de l'artisanat du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Garde, itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à La Garde des sites web, boutiques en ligne et plateformes SaaS dopées à l'IA : UX/UI mobile-first, prise de rendez-vous et devis en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune varoise de la métropole toulonnaise où cohabitent l'Université de Toulon, le pôle d'activité de Toulon-Est (630 entreprises, ~12 000 emplois sur 220 ha) et un tissu dense de TPE du commerce, des services et de l'artisanat du bâtiment. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Garde, itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Pôle universitaire : l'Université de Toulon, dont le campus de La Garde s'étend sur 32 hectares avec l'IUT, SeaTech et les STAPS, irrigue la ville d'une population étudiante et d'activités numériques. Terrain idéal pour des portails de services, des plateformes pédagogiques ou associatives et des assistants conversationnels multilingues calibrés sur vos contenus.",
           "Zone industrielle Toulon-Est et grandes enseignes : sur ce parc d'activité de 220 ha partagé avec La Farlède et La Crau (Décathlon, Boulanger, Castorama), on conçoit pour les commerces gardéens des sites vitrines et e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec click-and-collect, fiches produits et recherche sémantique qui transforment la fréquentation locale en ventes en ligne.",
@@ -64,7 +64,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           {
             step: "Cadrage à La Garde",
             detail:
-              "Atelier sur site — centre-ville, abords du campus de l'Université de Toulon ou parc de Toulon-Est — pour cerner objectifs, parcours utilisateurs et auditer votre stack et vos contenus. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
+              "Atelier sur site — centre-ville, abords du campus de l'Université de Toulon ou parc de Toulon-Est — pour cerner objectifs, parcours utilisateurs et auditer votre stack et vos contenus. Devis ferme remis à partir de 48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Garde, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à La Garde, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous équiper un commerce de la zone Toulon-Est ?",
@@ -136,10 +136,10 @@ export const LA_GARDE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pleine saison commerciale ou de rentrée. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in technique. Le projet reste transférable à tout prestataire local de la métropole toulonnaise ou repris en interne par vos équipes gardéennes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pleine saison commerciale ou de rentrée. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in technique. Le projet reste transférable à tout prestataire local de la métropole toulonnaise ou repris en interne par vos équipes gardéennes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à La Garde des sites web, boutiques en ligne et plateformes SaaS dopées à l'IA : UX/UI mobile-first, prise de rendez-vous et devis en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune varoise de la métropole toulonnaise où cohabitent l'Université de Toulon, le pôle d'activité de Toulon-Est (630 entreprises, ~12 000 emplois sur 220 ha) et un tissu dense de TPE du commerce, des services et de l'artisanat du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Garde, itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à La Garde des sites web, boutiques en ligne et plateformes SaaS dopées à l'IA : UX/UI mobile-first, prise de rendez-vous et devis en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune varoise de la métropole toulonnaise où cohabitent l'Université de Toulon, le pôle d'activité de Toulon-Est (630 entreprises, ~12 000 emplois sur 220 ha) et un tissu dense de TPE du commerce, des services et de l'artisanat du bâtiment. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Garde, itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Pôle universitaire : l'Université de Toulon, dont le campus de La Garde s'étend sur 32 hectares avec l'IUT, SeaTech et les STAPS, irrigue la ville d'une population étudiante et d'activités numériques. Terrain idéal pour des portails de services, des plateformes pédagogiques ou associatives et des assistants conversationnels multilingues calibrés sur vos contenus.",
           "Zone industrielle Toulon-Est et grandes enseignes : sur ce parc d'activité de 220 ha partagé avec La Farlède et La Crau (Décathlon, Boulanger, Castorama), on conçoit pour les commerces gardéens des sites vitrines et e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec click-and-collect, fiches produits et recherche sémantique qui transforment la fréquentation locale en ventes en ligne.",
@@ -150,7 +150,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           {
             step: "Cadrage à La Garde",
             detail:
-              "Atelier sur site — centre-ville, abords du campus de l'Université de Toulon ou parc de Toulon-Est — pour cerner objectifs, parcours utilisateurs et auditer votre stack et vos contenus. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
+              "Atelier sur site — centre-ville, abords du campus de l'Université de Toulon ou parc de Toulon-Est — pour cerner objectifs, parcours utilisateurs et auditer votre stack et vos contenus. Devis ferme remis à partir de 48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Garde, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à La Garde, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous équiper un commerce de la zone Toulon-Est ?",
@@ -222,7 +222,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pleine saison commerciale ou de rentrée. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in technique. Le projet reste transférable à tout prestataire local de la métropole toulonnaise ou repris en interne par vos équipes gardéennes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pleine saison commerciale ou de rentrée. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in technique. Le projet reste transférable à tout prestataire local de la métropole toulonnaise ou repris en interne par vos équipes gardéennes.",
       },
     },
   },

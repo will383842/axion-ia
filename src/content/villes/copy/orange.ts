@@ -132,11 +132,11 @@ export const ORANGE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et où sont hébergées les données ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Vos données et votre site sont hébergés en Union européenne, en conformité RGPD, sans enfermement propriétaire : code, modèles et accès restent à votre nom.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Vos données et votre site sont hébergés en Union européenne, en conformité RGPD, sans enfermement propriétaire : code, modèles et accès restent à votre nom.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité, sans montant opaque. Hébergement en Union européenne et conformité RGPD par défaut : minimisation des données, et pour les prestataires de la BA 115, contraintes de confidentialité prises en compte dès la conception. Aucun verrou éditeur — le code, les modèles IA et les accès du site ou de la plateforme restent intégralement à votre nom, repris en interne ou par tout prestataire du Vaucluse après notre mission. Nous revendiquons l'ensemble de la chaîne : UX/UI, mobile, e-commerce multi-CMS et intégration IA.",
+          "Devis remis à partir de 48 h selon la complexité, sans montant opaque. Hébergement en Union européenne et conformité RGPD par défaut : minimisation des données, et pour les prestataires de la BA 115, contraintes de confidentialité prises en compte dès la conception. Aucun verrou éditeur — le code, les modèles IA et les accès du site ou de la plateforme restent intégralement à votre nom, repris en interne ou par tout prestataire du Vaucluse après notre mission. Nous revendiquons l'ensemble de la chaîne : UX/UI, mobile, e-commerce multi-CMS et intégration IA.",
       },
       en: {
         hero: 'Orange (84100, Vaucluse) rests on a rare foundation: the Orange-Caritat Air Base 115 "Capitaine de Seynes", home to over 3,000 direct jobs and the 1/5 Vendée fighter squadron flying Rafale jets, which alone accounts for nearly 10% of local employment and sustains a whole network of maintenance and subcontracting SMEs. Alongside it, the Saint-Gobain Isover industrial heritage, the Coudoulet (43 hectares, nearly 90 companies) and Crémades activity zones, the A7-A9 logistics crossroads, heritage tourism around the UNESCO-listed Roman Theatre and the Chorégies festival, and the AOC Côtes du Rhône vineyard (Orange Wine Competition since 1952) form a fabric of micro-businesses and SMEs we equip with AI-augmented websites and SaaS platforms hosted in the European Union.',
@@ -218,11 +218,11 @@ export const ORANGE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and where is data hosted?",
-            a: "A quote is delivered from 24 to 48 hours depending on project complexity. Your data and site are hosted in the European Union, GDPR-compliant, with no proprietary lock-in: code, models and access stay in your name.",
+            a: "A quote is delivered from 48 hours depending on project complexity. Your data and site are hosted in the European Union, GDPR-compliant, with no proprietary lock-in: code, models and access stay in your name.",
           },
         ],
         guarantees:
-          "Quote delivered from 24 to 48 hours depending on complexity, with no opaque pricing. EU hosting and GDPR compliance by default: data minimisation, and for BA 115 suppliers, confidentiality constraints handled from the design stage. No vendor lock-in — the code, AI models and access to your site or platform stay entirely in your name, taken over in-house or by any Vaucluse provider after our mission. We cover the full chain: UX/UI, mobile, multi-CMS e-commerce and AI integration.",
+          "Quote delivered from 48 hours depending on complexity, with no opaque pricing. EU hosting and GDPR compliance by default: data minimisation, and for BA 115 suppliers, confidentiality constraints handled from the design stage. No vendor lock-in — the code, AI models and access to your site or platform stay entirely in your name, taken over in-house or by any Vaucluse provider after our mission. We cover the full chain: UX/UI, mobile, multi-CMS e-commerce and AI integration.",
       },
     },
   },

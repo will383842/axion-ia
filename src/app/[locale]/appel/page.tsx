@@ -274,8 +274,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
               </h2>
               <p className="text-paper mt-4 text-base leading-relaxed">
                 {isFr
-                  ? "Décrivez votre projet par message — nous vous répondons sous 24 h ouvrées avec une proposition de créneau ou une réponse écrite directe."
-                  : "Describe your project by message — we reply within 24 working hours with a proposed slot or a direct written answer."}
+                  ? "Décrivez votre projet par message — nous vous répondons sous 48 h ouvrées avec une proposition de créneau ou une réponse écrite directe."
+                  : "Describe your project by message — we reply within 48 working hours with a proposed slot or a direct written answer."}
               </p>
               <Link
                 href={"/contact" as never}

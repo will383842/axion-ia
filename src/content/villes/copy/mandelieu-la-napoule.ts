@@ -53,7 +53,7 @@ export const MANDELIEU_LA_NAPOULE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Mandelieu-la-Napoule des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure haut de gamme et mobile-first, moteur de réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette station de la Côte d'Azur aux portes de Cannes, capitale du mimosa, où l'économie saisonnière vit du golf — dont le Golf Old Course Cannes-Mandelieu, plus ancien parcours de la Riviera —, du yachting, de l'hôtellerie et d'une clientèle internationale exigeante. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mandelieu-la-Napoule, le long du port de la Rague, au pied du Château de la Napoule ou dans la zone des Tourrades, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Mandelieu-la-Napoule des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure haut de gamme et mobile-first, moteur de réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette station de la Côte d'Azur aux portes de Cannes, capitale du mimosa, où l'économie saisonnière vit du golf — dont le Golf Old Course Cannes-Mandelieu, plus ancien parcours de la Riviera —, du yachting, de l'hôtellerie et d'une clientèle internationale exigeante. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mandelieu-la-Napoule, le long du port de la Rague, au pied du Château de la Napoule ou dans la zone des Tourrades, puis itérations à distance.",
         whyHere: [
           "Économie 100 % saisonnière et balnéaire : hôtels, restaurants et plages vivent des pics estivaux et du calendrier des festivals cannois voisins. Pour les commerces de la Z.A. Les Tourrades et les établissements du front de mer, nous bâtissons des sites de réservation directe et des parcours clients mobile-first qui absorbent les rushs sans saturer l'accueil ni multiplier les commissions des plateformes tierces.",
           "Capitale du mimosa et destination golfique de référence : le Golf Old Course Cannes-Mandelieu, ses 74 hectares et le corso fleuri du mimosa font vivre clubs, hôtels et événementiel. Vitrines premium, billetterie en ligne, e-commerce de produits dérivés et agents conversationnels multilingues valorisent cette image haut de gamme tout en automatisant les demandes de tee-times et de séjours.",
@@ -64,7 +64,7 @@ export const MANDELIEU_LA_NAPOULE_COPY: VilleCopy = {
           {
             step: "Cadrage à Mandelieu-la-Napoule",
             detail:
-              "Atelier sur site (centre-ville, port de la Rague, quartier de Capitou, abords du Château de la Napoule ou de vos golfs) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville, port de la Rague, quartier de Capitou, abords du Château de la Napoule ou de vos golfs) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const MANDELIEU_LA_NAPOULE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Mandelieu-la-Napoule, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Mandelieu-la-Napoule, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison estivale, pendant le corso du mimosa ou un festival cannois. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in technique. Solution transférable à tout prestataire local des Alpes-Maritimes ou du bassin cannois, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison estivale, pendant le corso du mimosa ou un festival cannois. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in technique. Solution transférable à tout prestataire local des Alpes-Maritimes ou du bassin cannois, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Mandelieu-la-Napoule des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure haut de gamme et mobile-first, moteur de réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette station de la Côte d'Azur aux portes de Cannes, capitale du mimosa, où l'économie saisonnière vit du golf — dont le Golf Old Course Cannes-Mandelieu, plus ancien parcours de la Riviera —, du yachting, de l'hôtellerie et d'une clientèle internationale exigeante. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mandelieu-la-Napoule, le long du port de la Rague, au pied du Château de la Napoule ou dans la zone des Tourrades, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Mandelieu-la-Napoule des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure haut de gamme et mobile-first, moteur de réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette station de la Côte d'Azur aux portes de Cannes, capitale du mimosa, où l'économie saisonnière vit du golf — dont le Golf Old Course Cannes-Mandelieu, plus ancien parcours de la Riviera —, du yachting, de l'hôtellerie et d'une clientèle internationale exigeante. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mandelieu-la-Napoule, le long du port de la Rague, au pied du Château de la Napoule ou dans la zone des Tourrades, puis itérations à distance.",
         whyHere: [
           "Économie 100 % saisonnière et balnéaire : hôtels, restaurants et plages vivent des pics estivaux et du calendrier des festivals cannois voisins. Pour les commerces de la Z.A. Les Tourrades et les établissements du front de mer, nous bâtissons des sites de réservation directe et des parcours clients mobile-first qui absorbent les rushs sans saturer l'accueil ni multiplier les commissions des plateformes tierces.",
           "Capitale du mimosa et destination golfique de référence : le Golf Old Course Cannes-Mandelieu, ses 74 hectares et le corso fleuri du mimosa font vivre clubs, hôtels et événementiel. Vitrines premium, billetterie en ligne, e-commerce de produits dérivés et agents conversationnels multilingues valorisent cette image haut de gamme tout en automatisant les demandes de tee-times et de séjours.",
@@ -150,7 +150,7 @@ export const MANDELIEU_LA_NAPOULE_COPY: VilleCopy = {
           {
             step: "Cadrage à Mandelieu-la-Napoule",
             detail:
-              "Atelier sur site (centre-ville, port de la Rague, quartier de Capitou, abords du Château de la Napoule ou de vos golfs) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville, port de la Rague, quartier de Capitou, abords du Château de la Napoule ou de vos golfs) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const MANDELIEU_LA_NAPOULE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Mandelieu-la-Napoule, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Mandelieu-la-Napoule, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison estivale, pendant le corso du mimosa ou un festival cannois. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in technique. Solution transférable à tout prestataire local des Alpes-Maritimes ou du bassin cannois, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison estivale, pendant le corso du mimosa ou un festival cannois. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in technique. Solution transférable à tout prestataire local des Alpes-Maritimes ou du bassin cannois, ou reprise en interne par vos équipes.",
       },
     },
   },

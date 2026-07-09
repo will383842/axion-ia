@@ -63,7 +63,7 @@ export const CACHAN_COPY: VilleCopy = {
           {
             step: "Cadrage à Cachan",
             detail:
-              "Kick-off sur site à Cachan — dans vos locaux, à La Fabrique ou au coworking Start Way — pour cartographier vos parcours utilisateurs réels, vos contraintes métier (bureau d'études, commerce de proximité, profession libérale) et les cas où l'IA apporte un gain concret. Devis remis à partir de 24-48 h selon la complexité.",
+              "Kick-off sur site à Cachan — dans vos locaux, à La Fabrique ou au coworking Start Way — pour cartographier vos parcours utilisateurs réels, vos contraintes métier (bureau d'études, commerce de proximité, profession libérale) et les cas où l'IA apporte un gain concret. Devis remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Architecture & design UX/UI",
@@ -131,11 +131,11 @@ export const CACHAN_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi autour de Cachan et dans quel délai recevez-vous un devis ?",
-            a: "Nous intervenons à Cachan et dans les communes limitrophes — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — ainsi que sur tout le Val-de-Marne et l'Île-de-France, à 15 min de Paris en RER B (et bientôt ligne 15 Sud). Le devis est remis à partir de 24-48 h selon la complexité du projet.",
+            a: "Nous intervenons à Cachan et dans les communes limitrophes — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — ainsi que sur tout le Val-de-Marne et l'Île-de-France, à 15 min de Paris en RER B (et bientôt ligne 15 Sud). Le devis est remis à partir de 48 h selon la complexité du projet.",
           },
         ],
         guarantees:
-          "Site et SaaS développés en code custom, hébergement Union européenne et conformité RGPD by design. UX/UI, mobile-first et e-commerce multi-CMS inclus, intégration IA là où elle crée de la valeur — sans dépendance à une plateforme propriétaire. Vous gardez la propriété pleine du code, des données et des accès : reprise possible en interne ou par tout prestataire francilien, zéro lock-in Axion-IA. Devis à partir de 24-48 h selon la complexité, tarifs transparents.",
+          "Site et SaaS développés en code custom, hébergement Union européenne et conformité RGPD by design. UX/UI, mobile-first et e-commerce multi-CMS inclus, intégration IA là où elle crée de la valeur — sans dépendance à une plateforme propriétaire. Vous gardez la propriété pleine du code, des données et des accès : reprise possible en interne ou par tout prestataire francilien, zéro lock-in Axion-IA. Devis à partir de 48 h selon la complexité, tarifs transparents.",
       },
       en: {
         hero: "Cachan is going through a singular economic shift: the departure of École normale supérieure Paris-Saclay to the Renzo Piano campus in Gif-sur-Yvette has freed up land in the heart of town, while ESTP (civil engineering and construction) keeps its campus there and the opening of the Line 15 South station at Arcueil-Cachan (Q1 2027) sets up a wave of new arrivals. On this ground — engineering firms, La Fabrique and Start Way coworking startups, retailers of the RD920, town-centre and La Plaine hubs — Axion-IA builds AI-augmented websites and SaaS platforms, in custom code, EU hosting and GDPR compliance.",
@@ -149,7 +149,7 @@ export const CACHAN_COPY: VilleCopy = {
           {
             step: "Framing in Cachan",
             detail:
-              "On-site kick-off in Cachan — at your premises, at La Fabrique or Start Way coworking — to map your real user journeys, business constraints (design office, local retailer, professional practice) and where AI delivers a concrete gain. Quote delivered from 24-48 h depending on complexity.",
+              "On-site kick-off in Cachan — at your premises, at La Fabrique or Start Way coworking — to map your real user journeys, business constraints (design office, local retailer, professional practice) and where AI delivers a concrete gain. Quote delivered from 48 h depending on complexity.",
           },
           {
             step: "Architecture & UX/UI design",
@@ -217,11 +217,11 @@ export const CACHAN_COPY: VilleCopy = {
           },
           {
             q: "Do you also work around Cachan, and how fast do you send a quote?",
-            a: "We work in Cachan and neighbouring towns — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — as well as across Val-de-Marne and Île-de-France, 15 minutes from Paris by RER B (and soon Line 15 South). The quote is delivered from 24-48 h depending on project complexity.",
+            a: "We work in Cachan and neighbouring towns — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — as well as across Val-de-Marne and Île-de-France, 15 minutes from Paris by RER B (and soon Line 15 South). The quote is delivered from 48 h depending on project complexity.",
           },
         ],
         guarantees:
-          "Websites and SaaS built in custom code, European Union hosting and GDPR compliance by design. UX/UI, mobile-first and multi-CMS e-commerce included, AI integration where it creates value — with no dependency on a proprietary platform. You keep full ownership of code, data and access: recoverable in-house or by any Île-de-France provider, zero Axion-IA lock-in. Quote from 24-48 h depending on complexity, transparent pricing.",
+          "Websites and SaaS built in custom code, European Union hosting and GDPR compliance by design. UX/UI, mobile-first and multi-CMS e-commerce included, AI integration where it creates value — with no dependency on a proprietary platform. You keep full ownership of code, data and access: recoverable in-house or by any Île-de-France provider, zero Axion-IA lock-in. Quote from 48 h depending on complexity, transparent pricing.",
       },
     },
   },

@@ -49,7 +49,7 @@ export const BRUGES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bruges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de banlieue nord immédiate de Bordeaux (33), soudée au tissu tertiaire de Bordeaux Lac et de son palais des congrès, aux industries périphériques de la rocade A630 et à un artisanat BTP dense, à deux pas de la réserve naturelle des marais de Bruges. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Bruges, à une quinzaine de minutes de tramway C du centre bordelais, puis itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à Bruges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de banlieue nord immédiate de Bordeaux (33), soudée au tissu tertiaire de Bordeaux Lac et de son palais des congrès, aux industries périphériques de la rocade A630 et à un artisanat BTP dense, à deux pas de la réserve naturelle des marais de Bruges. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Bruges, à une quinzaine de minutes de tramway C du centre bordelais, puis itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Le quartier d'affaires de Bordeaux Lac, aux portes de Bruges, concentre sièges régionaux, grand pôle e-commerce girondin, hôtellerie et le parc / palais des congrès : ces acteurs cherchent portails clients, outils internes augmentés et boutiques performantes — terrain idéal pour des plateformes SaaS métier et des sites e-commerce branchés sur le CRM, l'ERP et les outils de réservation.",
           "Les industries périphériques de la rocade A630 (mécanique, métallerie, transformation, sous-traitance bordelaise) et leurs ateliers cherchent à fluidifier leurs flux : on greffe agents, recherche sémantique dans la documentation technique et automatisation des devis sur l'existant, sans imposer une refonte lourde de l'outillage ni de la GMAO en place.",
@@ -60,7 +60,7 @@ export const BRUGES_COPY: VilleCopy = {
           {
             step: "Cadrage à Bruges",
             detail:
-              "Atelier sur site — zone tertiaire de Bordeaux Lac, abords de la rocade A630, cœur de Bruges près de la mairie ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et du SI existants. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — zone tertiaire de Bordeaux Lac, abords de la rocade A630, cœur de Bruges près de la mairie ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et du SI existants. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -120,7 +120,7 @@ export const BRUGES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Bruges, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage à Bruges, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous équiper un artisan BTP brugeais ?",
@@ -132,10 +132,10 @@ export const BRUGES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne et migration sans downtime quand on augmente un site ou une boutique déjà en activité à Bruges ou Bordeaux Lac. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Projet documenté et transférable à tout prestataire de la métropole bordelaise ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne et migration sans downtime quand on augmente un site ou une boutique déjà en activité à Bruges ou Bordeaux Lac. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Projet documenté et transférable à tout prestataire de la métropole bordelaise ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Bruges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de banlieue nord immédiate de Bordeaux (33), soudée au tissu tertiaire de Bordeaux Lac et de son palais des congrès, aux industries périphériques de la rocade A630 et à un artisanat BTP dense, à deux pas de la réserve naturelle des marais de Bruges. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Bruges, à une quinzaine de minutes de tramway C du centre bordelais, puis itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à Bruges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de banlieue nord immédiate de Bordeaux (33), soudée au tissu tertiaire de Bordeaux Lac et de son palais des congrès, aux industries périphériques de la rocade A630 et à un artisanat BTP dense, à deux pas de la réserve naturelle des marais de Bruges. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Bruges, à une quinzaine de minutes de tramway C du centre bordelais, puis itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Le quartier d'affaires de Bordeaux Lac, aux portes de Bruges, concentre sièges régionaux, grand pôle e-commerce girondin, hôtellerie et le parc / palais des congrès : ces acteurs cherchent portails clients, outils internes augmentés et boutiques performantes — terrain idéal pour des plateformes SaaS métier et des sites e-commerce branchés sur le CRM, l'ERP et les outils de réservation.",
           "Les industries périphériques de la rocade A630 (mécanique, métallerie, transformation, sous-traitance bordelaise) et leurs ateliers cherchent à fluidifier leurs flux : on greffe agents, recherche sémantique dans la documentation technique et automatisation des devis sur l'existant, sans imposer une refonte lourde de l'outillage ni de la GMAO en place.",
@@ -146,7 +146,7 @@ export const BRUGES_COPY: VilleCopy = {
           {
             step: "Cadrage à Bruges",
             detail:
-              "Atelier sur site — zone tertiaire de Bordeaux Lac, abords de la rocade A630, cœur de Bruges près de la mairie ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et du SI existants. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — zone tertiaire de Bordeaux Lac, abords de la rocade A630, cœur de Bruges près de la mairie ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et du SI existants. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -206,7 +206,7 @@ export const BRUGES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Bruges, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage à Bruges, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous équiper un artisan BTP brugeais ?",
@@ -218,7 +218,7 @@ export const BRUGES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne et migration sans downtime quand on augmente un site ou une boutique déjà en activité à Bruges ou Bordeaux Lac. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Projet documenté et transférable à tout prestataire de la métropole bordelaise ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne et migration sans downtime quand on augmente un site ou une boutique déjà en activité à Bruges ou Bordeaux Lac. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Projet documenté et transférable à tout prestataire de la métropole bordelaise ou repris en interne par vos équipes.",
       },
     },
   },

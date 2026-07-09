@@ -132,11 +132,11 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité de votre projet. Nous démarrons par un atelier de cadrage sur site à Rueil-Malmaison ou à proximité du Mobipôle RER A, puis vous remettons un périmètre et un devis détaillés.",
+            a: "À partir de 48 h selon la complexité de votre projet. Nous démarrons par un atelier de cadrage sur site à Rueil-Malmaison ou à proximité du Mobipôle RER A, puis vous remettons un périmètre et un devis détaillés.",
           },
         ],
         guarantees:
-          "Nous nous engageons sur un code sur mesure intégralement transféré, sans verrou éditeur ni dépendance technique. Hébergement en Union européenne et conformité RGPD par défaut. UX/UI, responsive mobile, e-commerce multi-CMS et briques IA sont assurés par un seul interlocuteur, du cadrage à Rueil-Malmaison jusqu'à la mise en ligne. Devis à partir de 24 à 48 h selon la complexité ; frais de déplacement éventuels calculés au cas par cas selon la zone. Vos équipes repartent autonomes, documentation et runbook remis.",
+          "Nous nous engageons sur un code sur mesure intégralement transféré, sans verrou éditeur ni dépendance technique. Hébergement en Union européenne et conformité RGPD par défaut. UX/UI, responsive mobile, e-commerce multi-CMS et briques IA sont assurés par un seul interlocuteur, du cadrage à Rueil-Malmaison jusqu'à la mise en ligne. Devis à partir de 48 h selon la complexité ; frais de déplacement éventuels calculés au cas par cas selon la zone. Vos équipes repartent autonomes, documentation et runbook remis.",
       },
       en: {
         hero: "In Rueil-Malmaison, Axion-IA designs AI-augmented websites and SaaS platforms for the ecosystem orbiting the Rueil-sur-Seine business district — home to more than 70% of the city's jobs and nearly 187 companies, steps from the Mobipôle RER A hub. Between Schneider Electric's headquarters (rue Joseph Monier), Danone's largest global headquarters (the Convergence building, rue des Deux Gares) and the PSA/Stellantis group head office, a dense fabric of consulting firms, engineering offices, design bureaus, commercial real-estate players and service providers thrives. We build them showcase sites, client portals and AI-native business applications — RAG chatbot, semantic search, booking and lead qualification — with custom code, EU GDPR-compliant hosting and no vendor lock-in.",
@@ -218,11 +218,11 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           },
           {
             q: "How fast can I get a quote?",
-            a: "From 24 to 48 hours depending on the complexity of your project. We start with an on-site framing workshop in Rueil-Malmaison or near the Mobipôle RER A hub, then deliver a detailed scope and quote.",
+            a: "From 48 hours depending on the complexity of your project. We start with an on-site framing workshop in Rueil-Malmaison or near the Mobipôle RER A hub, then deliver a detailed scope and quote.",
           },
         ],
         guarantees:
-          "We commit to custom code fully transferred to you, with no vendor lock-in or imposed technical dependency. Hosting in the European Union and GDPR compliance by default. UX/UI, mobile responsive, multi-CMS e-commerce and AI components are handled by a single contact, from framing in Rueil-Malmaison to go-live. Quote from 24 to 48 hours depending on complexity; any travel costs calculated case by case by zone. Your teams leave autonomous, documentation and runbook delivered.",
+          "We commit to custom code fully transferred to you, with no vendor lock-in or imposed technical dependency. Hosting in the European Union and GDPR compliance by default. UX/UI, mobile responsive, multi-CMS e-commerce and AI components are handled by a single contact, from framing in Rueil-Malmaison to go-live. Quote from 48 hours depending on complexity; any travel costs calculated case by case by zone. Your teams leave autonomous, documentation and runbook delivered.",
       },
     },
   },

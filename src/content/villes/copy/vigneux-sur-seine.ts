@@ -132,11 +132,11 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis ?",
-            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet, après un premier échange. Le périmètre, les briques IA retenues et le mode d'hébergement sont précisés avant toute signature, sans coûts cachés.",
+            a: "Nous transmettons un devis à partir de 48 h selon la complexité du projet, après un premier échange. Le périmètre, les briques IA retenues et le mode d'hébergement sont précisés avant toute signature, sans coûts cachés.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne par défaut et conformité RGPD sur l'ensemble des sites et plateformes livrés. Devis transmis à partir de 24-48 h selon la complexité, périmètre clair avant signature. Aucun verrou éditeur : le code, les contenus et les données restent intégralement les vôtres, repris par votre équipe ou tout prestataire après formation. Nous revendiquons une couverture complète — UX/UI, mobile, e-commerce multi-CMS et briques IA — adaptée au tissu de proximité de Vigneux-sur-Seine.",
+          "Hébergement en Union européenne par défaut et conformité RGPD sur l'ensemble des sites et plateformes livrés. Devis transmis à partir de 48 h selon la complexité, périmètre clair avant signature. Aucun verrou éditeur : le code, les contenus et les données restent intégralement les vôtres, repris par votre équipe ou tout prestataire après formation. Nous revendiquons une couverture complète — UX/UI, mobile, e-commerce multi-CMS et briques IA — adaptée au tissu de proximité de Vigneux-sur-Seine.",
       },
       en: {
         hero: "In Vigneux-sur-Seine (91270), a Seine-side town of the Val d'Yerres Val de Seine agglomeration, the local economy is built on small and mid-sized local businesses: building-trade craftspeople, transport and logistics firms in the Bac d'Ablon and Clos de la Régale business zones, shops, restaurants and professional services — set against the Croix-Blanche urban-renewal programme and a leisure economy centred on the Port-aux-Cerises lakeside park. Axion-IA designs AI-augmented websites and SaaS platforms for these businesses — smart quotes, online booking, order tracking, e-commerce — hosted in the European Union, GDPR-compliant, with no vendor lock-in.",
@@ -218,11 +218,11 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote?",
-            a: "We send a quote from 24-48 h depending on project complexity, after an initial conversation. The scope, chosen AI blocks and hosting model are specified before any signature, with no hidden costs.",
+            a: "We send a quote from 48 h depending on project complexity, after an initial conversation. The scope, chosen AI blocks and hosting model are specified before any signature, with no hidden costs.",
           },
         ],
         guarantees:
-          "EU hosting by default and GDPR compliance across every site and platform delivered. Quote sent from 24-48 h depending on complexity, with a clear scope before signature. No vendor lock-in: the code, content and data remain entirely yours, taken over by your team or any provider after training. We claim full coverage — UX/UI, mobile, multi-CMS e-commerce and AI building blocks — tailored to the local-business fabric of Vigneux-sur-Seine.",
+          "EU hosting by default and GDPR compliance across every site and platform delivered. Quote sent from 48 h depending on complexity, with a clear scope before signature. No vendor lock-in: the code, content and data remain entirely yours, taken over by your team or any provider after training. We claim full coverage — UX/UI, mobile, multi-CMS e-commerce and AI building blocks — tailored to the local-business fabric of Vigneux-sur-Seine.",
       },
     },
   },

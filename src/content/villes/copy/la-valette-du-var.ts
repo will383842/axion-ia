@@ -51,7 +51,7 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Valette-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire de l'aire toulonnaise (23 719 habitants, 8 km de Toulon), où la ZAC Valgora — premier parc de services du Var — voisine le centre commercial Grand Var et ses 135+ enseignes, l'un des plus grands pôles marchands du département. Tissu fait de TPE et de PME du commerce, des services aux entreprises et des professions libérales, prolongé par l'éco-quartier Entrevert et le futur projet urbain mixte de l'Avenue de l'Université. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à La Valette-du-Var, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Valette-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire de l'aire toulonnaise (23 719 habitants, 8 km de Toulon), où la ZAC Valgora — premier parc de services du Var — voisine le centre commercial Grand Var et ses 135+ enseignes, l'un des plus grands pôles marchands du département. Tissu fait de TPE et de PME du commerce, des services aux entreprises et des professions libérales, prolongé par l'éco-quartier Entrevert et le futur projet urbain mixte de l'Avenue de l'Université. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à La Valette-du-Var, itérations à distance.",
         whyHere: [
           "Pôle tertiaire dense : la ZAC Valgora rassemble une centaine d'entreprises de services au cœur du Var, sous gestion de la métropole Toulon-Provence-Méditerranée. Terrain idéal pour des portails clients, des espaces SaaS métier et des CRM augmentés à l'IA branchés sur l'existant — devis, facturation et reporting automatisés pour les sociétés de services et bureaux d'études installés à Valgora.",
           "Pôle marchand majeur : le centre commercial Grand Var et ses 135+ enseignes, complété par plus de 200 commerces et services de proximité autour de l'Avenue de l'Université, forment l'un des premiers bassins de chalandise varois. On y construit des vitrines e-commerce sur mesure (WooCommerce, Shopify, PrestaShop, Magento) avec click-and-collect, programmes de fidélité et gestion de stocks assistée par l'IA.",
@@ -62,7 +62,7 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           {
             step: "Cadrage à La Valette-du-Var",
             detail:
-              "Atelier sur site — ZAC Valgora, centre-ville ou abords du Grand Var et de l'Avenue de l'Université : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des intégrations. On repart avec un devis ferme à partir de 24-48 h selon la complexité, sans dérive.",
+              "Atelier sur site — ZAC Valgora, centre-ville ou abords du Grand Var et de l'Avenue de l'Université : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des intégrations. On repart avec un devis ferme à partir de 48 h selon la complexité, sans dérive.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Valette-du-Var — ZAC Valgora, centre-ville ou abords du Grand Var — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, périmètre et livrables écrits noir sur blanc.",
+            a: "Oui. Après le cadrage sur site à La Valette-du-Var — ZAC Valgora, centre-ville ou abords du Grand Var — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, périmètre et livrables écrits noir sur blanc.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre et prix écrits, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une enseigne du Grand Var en pleine saison. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire varois de l'aire toulonnaise ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : périmètre et prix écrits, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une enseigne du Grand Var en pleine saison. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire varois de l'aire toulonnaise ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à La Valette-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire de l'aire toulonnaise (23 719 habitants, 8 km de Toulon), où la ZAC Valgora — premier parc de services du Var — voisine le centre commercial Grand Var et ses 135+ enseignes, l'un des plus grands pôles marchands du département. Tissu fait de TPE et de PME du commerce, des services aux entreprises et des professions libérales, prolongé par l'éco-quartier Entrevert et le futur projet urbain mixte de l'Avenue de l'Université. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à La Valette-du-Var, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Valette-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire de l'aire toulonnaise (23 719 habitants, 8 km de Toulon), où la ZAC Valgora — premier parc de services du Var — voisine le centre commercial Grand Var et ses 135+ enseignes, l'un des plus grands pôles marchands du département. Tissu fait de TPE et de PME du commerce, des services aux entreprises et des professions libérales, prolongé par l'éco-quartier Entrevert et le futur projet urbain mixte de l'Avenue de l'Université. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à La Valette-du-Var, itérations à distance.",
         whyHere: [
           "Pôle tertiaire dense : la ZAC Valgora rassemble une centaine d'entreprises de services au cœur du Var, sous gestion de la métropole Toulon-Provence-Méditerranée. Terrain idéal pour des portails clients, des espaces SaaS métier et des CRM augmentés à l'IA branchés sur l'existant — devis, facturation et reporting automatisés pour les sociétés de services et bureaux d'études installés à Valgora.",
           "Pôle marchand majeur : le centre commercial Grand Var et ses 135+ enseignes, complété par plus de 200 commerces et services de proximité autour de l'Avenue de l'Université, forment l'un des premiers bassins de chalandise varois. On y construit des vitrines e-commerce sur mesure (WooCommerce, Shopify, PrestaShop, Magento) avec click-and-collect, programmes de fidélité et gestion de stocks assistée par l'IA.",
@@ -148,7 +148,7 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           {
             step: "Cadrage à La Valette-du-Var",
             detail:
-              "Atelier sur site — ZAC Valgora, centre-ville ou abords du Grand Var et de l'Avenue de l'Université : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des intégrations. On repart avec un devis ferme à partir de 24-48 h selon la complexité, sans dérive.",
+              "Atelier sur site — ZAC Valgora, centre-ville ou abords du Grand Var et de l'Avenue de l'Université : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des intégrations. On repart avec un devis ferme à partir de 48 h selon la complexité, sans dérive.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Valette-du-Var — ZAC Valgora, centre-ville ou abords du Grand Var — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, périmètre et livrables écrits noir sur blanc.",
+            a: "Oui. Après le cadrage sur site à La Valette-du-Var — ZAC Valgora, centre-ville ou abords du Grand Var — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, périmètre et livrables écrits noir sur blanc.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre et prix écrits, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une enseigne du Grand Var en pleine saison. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire varois de l'aire toulonnaise ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : périmètre et prix écrits, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une enseigne du Grand Var en pleine saison. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire varois de l'aire toulonnaise ou repris en interne par vos équipes.",
       },
     },
   },

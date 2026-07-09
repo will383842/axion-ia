@@ -128,7 +128,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet. Un site vitrine pour artisan est cadré rapidement ; une plateforme SaaS logistique avec intégration ERP demande un échange plus poussé. Dans tous les cas, le devis est public et sans engagement.",
+            a: "À partir de 48 h selon la complexité du projet. Un site vitrine pour artisan est cadré rapidement ; une plateforme SaaS logistique avec intégration ERP demande un échange plus poussé. Dans tous les cas, le devis est public et sans engagement.",
           },
           {
             q: "Où sont hébergées mes données et est-ce conforme RGPD ?",
@@ -136,7 +136,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis public et sans engagement, à partir de 24 à 48 h selon la complexité. Hébergement en Union européenne, conformité RGPD intégrée dès la conception, traçabilité des traitements. Vous gardez la pleine maîtrise du code, des contenus et des intégrations après livraison — site reprenable par tout prestataire ou par vos équipes, aucun verrou éditeur ni dépendance Axion-IA. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA appliquée, ancrés dans la réalité économique de La Courneuve.",
+          "Devis public et sans engagement, à partir de 48 h selon la complexité. Hébergement en Union européenne, conformité RGPD intégrée dès la conception, traçabilité des traitements. Vous gardez la pleine maîtrise du code, des contenus et des intégrations après livraison — site reprenable par tout prestataire ou par vos équipes, aucun verrou éditeur ni dépendance Axion-IA. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA appliquée, ancrés dans la réalité économique de La Courneuve.",
       },
       en: {
         hero: "In La Courneuve, the economy plays out across the Mermoz and Rateau business zones — over 270 trading, logistics and recycling firms, around 1,700 jobs, activity parks such as Gicram, Urbaparc and the Parc des Damiers — in the shadow of the Banque de France cash centre, a fully automated site built on the former Babcock factory. Axion-IA designs AI-augmented websites and SaaS platforms for these players: online product catalogues, automated quoting, order and flow tracking, client portals. Custom code, European Union hosting compliant with GDPR, zero vendor lock-in — built for a fabric in full Grand Paris transformation, as the Six-Routes station (lines 16 and 17, 2027) arrives.",
@@ -214,7 +214,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
           {
             q: "How long to receive a quote?",
-            a: "From 24 to 48 hours depending on project complexity. A craftsperson's showcase site is framed quickly; a logistics SaaS platform with ERP integration calls for a deeper discussion. In all cases the quote is public and non-binding.",
+            a: "From 48 hours depending on project complexity. A craftsperson's showcase site is framed quickly; a logistics SaaS platform with ERP integration calls for a deeper discussion. In all cases the quote is public and non-binding.",
           },
           {
             q: "Where is my data hosted and is it GDPR-compliant?",
@@ -222,7 +222,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Public, non-binding quote, from 24 to 48 hours depending on complexity. European Union hosting, GDPR compliance built in from the design stage, processing traceability. You keep full control of the code, content and integrations after delivery — the site can be taken over by any provider or your own teams, with no vendor lock-in or Axion-IA dependency. We claim UX/UI, mobile, multi-CMS e-commerce and applied AI, grounded in the real economy of La Courneuve.",
+          "Public, non-binding quote, from 48 hours depending on complexity. European Union hosting, GDPR compliance built in from the design stage, processing traceability. You keep full control of the code, content and integrations after delivery — the site can be taken over by any provider or your own teams, with no vendor lock-in or Axion-IA dependency. We claim UX/UI, mobile, multi-CMS e-commerce and applied AI, grounded in the real economy of La Courneuve.",
       },
     },
   },

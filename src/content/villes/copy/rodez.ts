@@ -53,7 +53,7 @@ export const RODEZ_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Rodez des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale de l'Aveyron, où la filière semencière et agroalimentaire (RAGT, Unicor, Lactalis-Valmont, Sodiaal) structure le bassin aux côtés de l'industrie de la zone de Cantaranne à Onet-le-Château (Bosch), du commerce de centre-ville autour du Foirail, des professions de santé et d'un tourisme culturel porté par le musée Soulages et la cathédrale de grès rose. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Rodez, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Rodez des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale de l'Aveyron, où la filière semencière et agroalimentaire (RAGT, Unicor, Lactalis-Valmont, Sodiaal) structure le bassin aux côtés de l'industrie de la zone de Cantaranne à Onet-le-Château (Bosch), du commerce de centre-ville autour du Foirail, des professions de santé et d'un tourisme culturel porté par le musée Soulages et la cathédrale de grès rose. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Rodez, itérations à distance.",
         whyHere: [
           "Filière semencière et agroalimentaire structurante : RAGT et son écosystème de coopératives, la coopérative Unicor (dont le siège est sur l'agglomération), Lactalis-Valmont et Sodiaal forment un terrain idéal pour des plateformes de traçabilité, des portails producteurs et de la gestion documentaire augmentée à l'IA, branchés sur vos ERP et votre SI existants.",
           "Tourisme culturel autour du musée Soulages, dédié à Pierre Soulages né à Rodez, et de la cathédrale de grès rose : hôtels, restaurants et lieux d'accueil ruthénois gagnent à un chatbot RAG multilingue, à la réservation directe et à la gestion d'avis, calibrés pour une clientèle française et internationale en pleine saison.",
@@ -64,7 +64,7 @@ export const RODEZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Rodez",
             detail:
-              "Atelier sur site, au centre-ville autour du Foirail ou dans les zones d'activité de Cantaranne et Bel-Air à Onet-le-Château : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, au centre-ville autour du Foirail ou dans les zones d'activité de Cantaranne et Bel-Air à Onet-le-Château : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,14 +136,14 @@ export const RODEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Rodez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale.",
+            a: "Oui. Après le cadrage sur site à Rodez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique ou en période de commandes agricoles. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est transférable à tout prestataire de l'Aveyron ou de l'Occitanie, ou repris par vos équipes en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique ou en période de commandes agricoles. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est transférable à tout prestataire de l'Aveyron ou de l'Occitanie, ou repris par vos équipes en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Rodez des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale de l'Aveyron, où la filière semencière et agroalimentaire (RAGT, Unicor, Lactalis-Valmont, Sodiaal) structure le bassin aux côtés de l'industrie de la zone de Cantaranne à Onet-le-Château (Bosch), du commerce de centre-ville autour du Foirail, des professions de santé et d'un tourisme culturel porté par le musée Soulages et la cathédrale de grès rose. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Rodez, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Rodez des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale de l'Aveyron, où la filière semencière et agroalimentaire (RAGT, Unicor, Lactalis-Valmont, Sodiaal) structure le bassin aux côtés de l'industrie de la zone de Cantaranne à Onet-le-Château (Bosch), du commerce de centre-ville autour du Foirail, des professions de santé et d'un tourisme culturel porté par le musée Soulages et la cathédrale de grès rose. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Rodez, itérations à distance.",
         whyHere: [
           "Filière semencière et agroalimentaire structurante : RAGT et son écosystème de coopératives, la coopérative Unicor (dont le siège est sur l'agglomération), Lactalis-Valmont et Sodiaal forment un terrain idéal pour des plateformes de traçabilité, des portails producteurs et de la gestion documentaire augmentée à l'IA, branchés sur vos ERP et votre SI existants.",
           "Tourisme culturel autour du musée Soulages, dédié à Pierre Soulages né à Rodez, et de la cathédrale de grès rose : hôtels, restaurants et lieux d'accueil ruthénois gagnent à un chatbot RAG multilingue, à la réservation directe et à la gestion d'avis, calibrés pour une clientèle française et internationale en pleine saison.",
@@ -154,7 +154,7 @@ export const RODEZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Rodez",
             detail:
-              "Atelier sur site, au centre-ville autour du Foirail ou dans les zones d'activité de Cantaranne et Bel-Air à Onet-le-Château : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, au centre-ville autour du Foirail ou dans les zones d'activité de Cantaranne et Bel-Air à Onet-le-Château : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -226,11 +226,11 @@ export const RODEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Rodez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale.",
+            a: "Oui. Après le cadrage sur site à Rodez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique ou en période de commandes agricoles. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est transférable à tout prestataire de l'Aveyron ou de l'Occitanie, ou repris par vos équipes en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique ou en période de commandes agricoles. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est transférable à tout prestataire de l'Aveyron ou de l'Occitanie, ou repris par vos équipes en interne.",
       },
     },
   },

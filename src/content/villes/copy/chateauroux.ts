@@ -92,7 +92,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou boutique de proximité",
             detail:
-              "Pour artisans, commerçants et producteurs castelroussins du Berry : site vitrine mobile-first ou petite boutique e-commerce, prise de contact et devis automatisés, SEO local Châteauroux. Devis à partir de 24-48 h selon la complexité.",
+              "Pour artisans, commerçants et producteurs castelroussins du Berry : site vitrine mobile-first ou petite boutique e-commerce, prise de contact et devis automatisés, SEO local Châteauroux. Devis à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -136,7 +136,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Hébergement en Union européenne et conformité RGPD par défaut. Vous restez propriétaire du code source et de vos données, sans verrou éditeur : votre site ou plateforme est maintenable en interne ou par tout prestataire de l'Indre après notre mission. Devis à partir de 24-48 h selon la complexité, périmètre et livrables définis au cadrage. UX/UI, version mobile, e-commerce multi-CMS et briques IA sont calibrés pour votre secteur castelroussin — logistique, aéronautique, agroalimentaire ou relation client — jamais un gabarit générique recyclé.",
+          "Hébergement en Union européenne et conformité RGPD par défaut. Vous restez propriétaire du code source et de vos données, sans verrou éditeur : votre site ou plateforme est maintenable en interne ou par tout prestataire de l'Indre après notre mission. Devis à partir de 48 h selon la complexité, périmètre et livrables définis au cadrage. UX/UI, version mobile, e-commerce multi-CMS et briques IA sont calibrés pour votre secteur castelroussin — logistique, aéronautique, agroalimentaire ou relation client — jamais un gabarit générique recyclé.",
       },
       en: {
         hero: 'In Châteauroux, digital is built around the former NATO base turned logistics and aviation platform: Châteauroux-Centre "Marcel Dassault" airport (charter freight, 25 hectares of aircraft storage for around fifty planes, MRO hub with Dale Aviation, Vallair, Satys, Egide), the Ozans business park labelled a France 2030 turnkey industrial site (Soprema Steel, DCB Logistics), Safran Seats in Issoudun and the Armatis customer-relations BPO. Axion-IA designs AI-augmented websites and SaaS platforms — UX/UI, mobile, multi-CMS e-commerce, conversational agents — for logistics, aviation, agri-food and service SMEs across the Berry region, hosted in the European Union and GDPR-compliant.',
@@ -178,7 +178,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "Showcase site or local store",
             detail:
-              "For Châteauroux craftspeople, merchants and Berry producers: mobile-first showcase site or small e-commerce store, automated contact and quotes, local SEO for Châteauroux. Quote within 24-48 h depending on complexity.",
+              "For Châteauroux craftspeople, merchants and Berry producers: mobile-first showcase site or small e-commerce store, automated contact and quotes, local SEO for Châteauroux. Quote within 48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -222,7 +222,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "European Union hosting and GDPR compliance by default. You retain ownership of the source code and your data, with no vendor lock-in: your site or platform can be maintained in-house or by any Indre provider after our mission. Quote within 24-48 h depending on complexity, with scope and deliverables defined at kick-off. UX/UI, mobile version, multi-CMS e-commerce and AI components are calibrated for your Châteauroux sector — logistics, aviation, agri-food or customer relations — never a recycled generic template.",
+          "European Union hosting and GDPR compliance by default. You retain ownership of the source code and your data, with no vendor lock-in: your site or platform can be maintained in-house or by any Indre provider after our mission. Quote within 48 h depending on complexity, with scope and deliverables defined at kick-off. UX/UI, mobile version, multi-CMS e-commerce and AI components are calibrated for your Châteauroux sector — logistics, aviation, agri-food or customer relations — never a recycled generic template.",
       },
     },
   },

@@ -132,7 +132,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour obtenir un devis à Goussainville ?",
-            a: "Nous établissons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange. Pour les missions sur site dans les zones d'activité goussainvilloises ou au Vieux Pays, nous calons rapidement un cadrage en présentiel.",
+            a: "Nous établissons un devis à partir de 48 h selon la complexité du projet, après un premier échange. Pour les missions sur site dans les zones d'activité goussainvilloises ou au Vieux Pays, nous calons rapidement un cadrage en présentiel.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote in Goussainville?",
-            a: "We provide a quote from 24 to 48 hours depending on project complexity, after an initial discussion. For on-site missions in Goussainville's activity zones or at the Vieux Pays, we quickly set up in-person framing.",
+            a: "We provide a quote from 48 hours depending on project complexity, after an initial discussion. For on-site missions in Goussainville's activity zones or at the Vieux Pays, we quickly set up in-person framing.",
           },
         ],
         guarantees:

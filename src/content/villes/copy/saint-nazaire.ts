@@ -128,7 +128,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité de votre projet. Pour un site vitrine, le chiffrage est rapide ; pour un portail fournisseur ou une plateforme SaaS intégrée à votre ERP/GPAO, nous prenons le temps d'un court cadrage avant de vous remettre une proposition ferme.",
+            a: "À partir de 48 h selon la complexité de votre projet. Pour un site vitrine, le chiffrage est rapide ; pour un portail fournisseur ou une plateforme SaaS intégrée à votre ERP/GPAO, nous prenons le temps d'un court cadrage avant de vous remettre une proposition ferme.",
           },
           {
             q: "Où sont hébergées les données et le site ?",
@@ -136,7 +136,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis transparent à partir de 24 à 48 h selon la complexité, sans dérive horaire cachée. Conception UX/UI et mobile soignée, performances web optimisées, hébergement en Union européenne et conformité RGPD dès la conception. Vous gardez le contrôle : code, accès et données restent chez vous, exécutables par tout prestataire de la French Tech Saint-Nazaire La Baule Pornic ou repris en interne — aucun verrou éditeur, aucune dépendance contractuelle imposée.",
+          "Devis transparent à partir de 48 h selon la complexité, sans dérive horaire cachée. Conception UX/UI et mobile soignée, performances web optimisées, hébergement en Union européenne et conformité RGPD dès la conception. Vous gardez le contrôle : code, accès et données restent chez vous, exécutables par tout prestataire de la French Tech Saint-Nazaire La Baule Pornic ou repris en interne — aucun verrou éditeur, aucune dépendance contractuelle imposée.",
       },
       en: {
         hero: "In Saint-Nazaire we build AI-augmented websites and SaaS platforms for the companies of this estuary factory-city: subcontractors of Chantiers de l'Atlantique and Airbus, SMEs in the naval-aerospace supply chain, and marine-energy players around the Banc de Guérande offshore wind farm and the Nantes Saint-Nazaire seaport. Fast brochure sites, supplier portals, parts-quote configurators, multi-CMS B2B e-commerce and custom business platforms — with RAG chatbot, semantic search and content generation, owned code, careful UX/UI and mobile, EU hosting and GDPR compliance by design.",
@@ -214,7 +214,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote?",
-            a: "From 24 to 48 hours depending on the complexity of your project. For a brochure site the costing is quick; for a supplier portal or a SaaS platform integrated with your ERP/MES, we take time for a short framing before issuing a firm proposal.",
+            a: "From 48 hours depending on the complexity of your project. For a brochure site the costing is quick; for a supplier portal or a SaaS platform integrated with your ERP/MES, we take time for a short framing before issuing a firm proposal.",
           },
           {
             q: "Where are the data and the site hosted?",
@@ -222,7 +222,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Transparent quote from 24 to 48 hours depending on complexity, with no hidden hourly drift. Careful UX/UI and mobile design, optimised web performance, EU hosting and GDPR compliance by design. You stay in control: code, access and data remain with you, executable by any French Tech Saint-Nazaire La Baule Pornic provider or taken back in-house — no vendor lock-in, no imposed contractual dependency.",
+          "Transparent quote from 48 hours depending on complexity, with no hidden hourly drift. Careful UX/UI and mobile design, optimised web performance, EU hosting and GDPR compliance by design. You stay in control: code, access and data remain with you, executable by any French Tech Saint-Nazaire La Baule Pornic provider or taken back in-house — no vendor lock-in, no imposed contractual dependency.",
       },
     },
   },

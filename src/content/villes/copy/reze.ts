@@ -51,7 +51,7 @@ export const REZE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Rezé des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Que vous teniez une enseigne d'Atout-Sud, un négoce de gros au MIN Nantes-Agropolia (ZAC de la Brosse) ou un commerce de Trentemoult, on part de votre réalité rive sud de la Loire. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Rezé, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Rezé des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Que vous teniez une enseigne d'Atout-Sud, un négoce de gros au MIN Nantes-Agropolia (ZAC de la Brosse) ou un commerce de Trentemoult, on part de votre réalité rive sud de la Loire. Devis à partir de 48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Rezé, itérations à distance.",
         whyHere: [
           "Distribution multicanal d'Atout-Sud : pour les enseignes type E.Leclerc Atout-Sud, Leroy Merlin, Boulanger ou But, on relie site, drive, click & collect et stock magasin, avec recherche produit et recommandation IA.",
           "Grossistes du MIN Nantes-Agropolia (ZAC de la Brosse, ~100 négoces alimentaires) : portails B2B de commande, catalogues à prix variables, suivi de lots et traçabilité — 2e marché de gros de France après Rungis.",
@@ -62,7 +62,7 @@ export const REZE_COPY: VilleCopy = {
           {
             step: "Cadrage à Rezé",
             detail:
-              "Atelier sur site (Atout-Sud, MIN, Pont-Rousseau ou Trentemoult) : objectifs, parcours clients, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (Atout-Sud, MIN, Pont-Rousseau ou Trentemoult) : objectifs, parcours clients, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -126,7 +126,7 @@ export const REZE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple (site vitrine Trentemoult), davantage pour un portail grossiste branché ERP. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple (site vitrine Trentemoult), davantage pour un portail grossiste branché ERP. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Avec quelles technologies travaillez-vous ?",
@@ -134,10 +134,10 @@ export const REZE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act 2026 : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Nantes Métropole ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act 2026 : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Nantes Métropole ou repris en interne.",
       },
       en: {
-        hero: "In Rezé, Axion-IA designs and augments websites, online stores and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Whether you run a store in the Atout-Sud retail zone, a wholesale business at the MIN Nantes-Agropolia market (ZAC de la Brosse) or a shop in Trentemoult, we start from your reality on the south bank of the Loire. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Rezé kick-off, remote iterations.",
+        hero: "In Rezé, Axion-IA designs and augments websites, online stores and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Whether you run a store in the Atout-Sud retail zone, a wholesale business at the MIN Nantes-Agropolia market (ZAC de la Brosse) or a shop in Trentemoult, we start from your reality on the south bank of the Loire. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Rezé kick-off, remote iterations.",
         whyHere: [
           "Atout-Sud multichannel retail: for stores like E.Leclerc Atout-Sud, Leroy Merlin, Boulanger or But, we connect website, drive, click & collect and in-store stock, with AI product search and recommendation.",
           "MIN Nantes-Agropolia wholesalers (ZAC de la Brosse, ~100 food traders): B2B ordering portals, variable-price catalogues, lot tracking and traceability — France's 2nd wholesale market after Rungis.",
@@ -148,7 +148,7 @@ export const REZE_COPY: VilleCopy = {
           {
             step: "Scoping in Rezé",
             detail:
-              "On-site workshop (Atout-Sud, MIN, Pont-Rousseau or Trentemoult): goals, customer journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop (Atout-Sud, MIN, Pont-Rousseau or Trentemoult): goals, customer journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -212,7 +212,7 @@ export const REZE_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After on-site scoping, we issue a firm fixed-price quote. The lead time depends on complexity — from 24-48 h for a simple project (Trentemoult showcase site), longer for an ERP-wired wholesale portal. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After on-site scoping, we issue a firm fixed-price quote. The lead time depends on complexity — from 48 h for a simple project (Trentemoult showcase site), longer for an ERP-wired wholesale portal. No time-and-materials, no hidden hourly drift.",
           },
           {
             q: "Which technologies do you work with?",
@@ -220,7 +220,7 @@ export const REZE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR and AI Act 2026 compliant: full ownership, no imposed subscription, transferable to any Nantes Métropole provider or taken back in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR and AI Act 2026 compliant: full ownership, no imposed subscription, transferable to any Nantes Métropole provider or taken back in-house.",
       },
     },
   },

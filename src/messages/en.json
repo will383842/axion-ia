@@ -38,7 +38,7 @@
     "priceFrom": "from",
     "contact": "Contact",
     "contactLong": "Contact us",
-    "contactAria": "Email us — reply within 24 business hours",
+    "contactAria": "Email us — reply within 48 business hours",
     "bookCall": "Réserver un appel",
     "bookCallAria": "Réserver un appel — rendez-vous téléphonique"
   },
@@ -250,7 +250,7 @@
     "videosTitleEm": "AI transformation",
     "videosTitlePart2": ".",
     "videosDescription": "Three testimonials, three company sizes, three industries.",
-    "ctaBlockMicroProofs": "Reply within 24h · No commitment · 100% personalised",
+    "ctaBlockMicroProofs": "Reply within 48h · No commitment · 100% personalised",
     "founderEyebrow": "TOP 1% AI EXPERTS IN FRANCE",
     "founderTitleLine1": "We don't promise excellence.",
     "founderTitleLine2": "We deliver it.",

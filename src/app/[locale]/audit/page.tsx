@@ -115,8 +115,8 @@ export default async function AuditHub({ params }: Props) {
       {
         name: isFr ? "Niveau d'audit calibré" : "Calibrated audit tier",
         text: isFr
-          ? "On vous recommande le niveau d'audit IA optimal selon votre taille : Audit sur place (TPE), Ciblé (PME), Stratégique PME ou Stratégique ETI. Devis transparent à partir de 24-48 h ouvrées selon la complexité."
-          : "We recommend the optimal AI audit tier based on your size: On-site audit (small business), Targeted (SME), Strategic SME or Strategic mid-cap. Transparent quote from 24-48 business hours depending on complexity.",
+          ? "On vous recommande le niveau d'audit IA optimal selon votre taille : Audit sur place (TPE), Ciblé (PME), Stratégique PME ou Stratégique ETI. Devis transparent à partir de 48 h ouvrées selon la complexité."
+          : "We recommend the optimal AI audit tier based on your size: On-site audit (small business), Targeted (SME), Strategic SME or Strategic mid-cap. Transparent quote from 48 business hours depending on complexity.",
       },
       {
         name: isFr ? "Kick-off et restitution" : "Kick-off and read-out",

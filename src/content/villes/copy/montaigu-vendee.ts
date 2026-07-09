@@ -51,7 +51,7 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Montaigu-Vendée des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle agroalimentaire et industriel du nord Vendée — l'un des plus denses du département avec plus de 1 500 entreprises recensées sur le territoire de Terres de Montaigu — où cohabitent grands donneurs d'ordres (Sodebo à Saint-Georges-de-Montaigu, Haworth France, Microcar à Boufféré, Laiterie de Montaigu, siège transport DB Schenker) et un dense réseau de TPE/PME sous-traitantes, commerces et services répartis dans les parcs d'activités. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montaigu, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montaigu-Vendée des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle agroalimentaire et industriel du nord Vendée — l'un des plus denses du département avec plus de 1 500 entreprises recensées sur le territoire de Terres de Montaigu — où cohabitent grands donneurs d'ordres (Sodebo à Saint-Georges-de-Montaigu, Haworth France, Microcar à Boufféré, Laiterie de Montaigu, siège transport DB Schenker) et un dense réseau de TPE/PME sous-traitantes, commerces et services répartis dans les parcs d'activités. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montaigu, itérations à distance.",
         whyHere: [
           "Territoire agroalimentaire structurant autour de Sodebo (site unique à Saint-Georges-de-Montaigu) et de la Laiterie de Montaigu : on construit des portails fournisseurs, des espaces clients B2B et des sites qui automatisent bons de livraison, traçabilité et fiches produits — avec recherche sémantique sur catalogue ou, sans IA imposée, une refonte propre branchée sur vos flux logistiques. Idéal pour les sous-traitants installés dans la Z.I. Les Landes-de-Roussais.",
           "Donneurs d'ordres industriels comme Haworth France (mobilier de bureau) et Microcar (véhicules électriques à Boufféré) : leurs sous-traitants et équipementiers gagnent une vitrine e-commerce sur mesure ou un configurateur produit branché sur leur catalogue et leur ERP, mobile-first pour les acheteurs et les commerciaux terrain qui circulent entre les parcs Vendée-Sud Loire et La Daunière Nord.",
@@ -62,7 +62,7 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
           {
             step: "Cadrage à Montaigu-Vendée",
             detail:
-              "Atelier sur site (cœur de Montaigu, zones d'activité de Boufféré près de la sortie 4 de l'A83, parc Vendée-Sud Loire ou Z.I. Les Landes-de-Roussais) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux fournisseurs. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de Montaigu, zones d'activité de Boufféré près de la sortie 4 de l'A83, parc Vendée-Sud Loire ou Z.I. Les Landes-de-Roussais) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux fournisseurs. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Montaigu-Vendée — au cœur de Montaigu ou dans votre zone d'activité — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de chantier.",
+            a: "Oui. Après le cadrage sur place à Montaigu-Vendée — au cœur de Montaigu ou dans votre zone d'activité — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de chantier.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de livraisons. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, documentés pour audit CNIL : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est transférable à un prestataire local du nord Vendée ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de livraisons. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, documentés pour audit CNIL : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est transférable à un prestataire local du nord Vendée ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Montaigu-Vendée des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle agroalimentaire et industriel du nord Vendée — l'un des plus denses du département avec plus de 1 500 entreprises recensées sur le territoire de Terres de Montaigu — où cohabitent grands donneurs d'ordres (Sodebo à Saint-Georges-de-Montaigu, Haworth France, Microcar à Boufféré, Laiterie de Montaigu, siège transport DB Schenker) et un dense réseau de TPE/PME sous-traitantes, commerces et services répartis dans les parcs d'activités. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montaigu, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montaigu-Vendée des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle agroalimentaire et industriel du nord Vendée — l'un des plus denses du département avec plus de 1 500 entreprises recensées sur le territoire de Terres de Montaigu — où cohabitent grands donneurs d'ordres (Sodebo à Saint-Georges-de-Montaigu, Haworth France, Microcar à Boufféré, Laiterie de Montaigu, siège transport DB Schenker) et un dense réseau de TPE/PME sous-traitantes, commerces et services répartis dans les parcs d'activités. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montaigu, itérations à distance.",
         whyHere: [
           "Territoire agroalimentaire structurant autour de Sodebo (site unique à Saint-Georges-de-Montaigu) et de la Laiterie de Montaigu : on construit des portails fournisseurs, des espaces clients B2B et des sites qui automatisent bons de livraison, traçabilité et fiches produits — avec recherche sémantique sur catalogue ou, sans IA imposée, une refonte propre branchée sur vos flux logistiques. Idéal pour les sous-traitants installés dans la Z.I. Les Landes-de-Roussais.",
           "Donneurs d'ordres industriels comme Haworth France (mobilier de bureau) et Microcar (véhicules électriques à Boufféré) : leurs sous-traitants et équipementiers gagnent une vitrine e-commerce sur mesure ou un configurateur produit branché sur leur catalogue et leur ERP, mobile-first pour les acheteurs et les commerciaux terrain qui circulent entre les parcs Vendée-Sud Loire et La Daunière Nord.",
@@ -148,7 +148,7 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
           {
             step: "Cadrage à Montaigu-Vendée",
             detail:
-              "Atelier sur site (cœur de Montaigu, zones d'activité de Boufféré près de la sortie 4 de l'A83, parc Vendée-Sud Loire ou Z.I. Les Landes-de-Roussais) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux fournisseurs. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de Montaigu, zones d'activité de Boufféré près de la sortie 4 de l'A83, parc Vendée-Sud Loire ou Z.I. Les Landes-de-Roussais) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux fournisseurs. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Montaigu-Vendée — au cœur de Montaigu ou dans votre zone d'activité — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de chantier.",
+            a: "Oui. Après le cadrage sur place à Montaigu-Vendée — au cœur de Montaigu ou dans votre zone d'activité — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de chantier.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de livraisons. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, documentés pour audit CNIL : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est transférable à un prestataire local du nord Vendée ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de livraisons. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, documentés pour audit CNIL : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est transférable à un prestataire local du nord Vendée ou repris en interne par vos équipes.",
       },
     },
   },

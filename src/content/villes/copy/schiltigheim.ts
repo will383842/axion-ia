@@ -123,7 +123,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour recevoir un devis à Schiltigheim ?",
-            a: "Nous renvoyons un devis à partir de 24-48 h selon la complexité du projet. Le périmètre fonctionnel, l'arborescence et les cas d'usage IA sont cadrés lors d'un premier échange à distance avant chiffrage.",
+            a: "Nous renvoyons un devis à partir de 48 h selon la complexité du projet. Le périmètre fonctionnel, l'arborescence et les cas d'usage IA sont cadrés lors d'un premier échange à distance avant chiffrage.",
           },
           {
             q: "Où sont hébergées les données du site et est-ce conforme RGPD ?",
@@ -209,7 +209,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
           },
           {
             q: "How quickly do I get a quote in Schiltigheim?",
-            a: "We return a quote within 24-48 h depending on project complexity. Functional scope, sitemap and AI use cases are framed during an initial remote exchange before pricing.",
+            a: "We return a quote within 48 h depending on project complexity. Functional scope, sitemap and AI use cases are framed during an initial remote exchange before pricing.",
           },
           {
             q: "Where is the site data hosted and is it GDPR-compliant?",

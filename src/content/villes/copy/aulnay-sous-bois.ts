@@ -122,7 +122,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis site web ou SaaS à Aulnay-sous-Bois ?",
-            a: "Le devis est établi à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nous nous déplaçons sur site à Aulnay (RER B, A1/A3) pour comprendre vos flux avant de chiffrer.",
+            a: "Le devis est établi à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Nous nous déplaçons sur site à Aulnay (RER B, A1/A3) pour comprendre vos flux avant de chiffrer.",
           },
           {
             q: "Gérez-vous les contraintes de traçabilité des industriels de la ZI Les Mardelles ?",
@@ -134,7 +134,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Tous nos sites et plateformes SaaS livrés à Aulnay-sous-Bois sont en code custom, hébergés en Europe par défaut, avec un plan RGPD documenté. Devis à partir de 24-48 h selon la complexité. Vous conservez la pleine propriété du code, des contenus et des intégrations (e-commerce multi-CMS, portails logistiques, agents IA) — aucun lock-in éditeur, reprise possible en interne ou par tout intégrateur francilien. UX/UI, version mobile et conformité incluses dès la conception.",
+          "Tous nos sites et plateformes SaaS livrés à Aulnay-sous-Bois sont en code custom, hébergés en Europe par défaut, avec un plan RGPD documenté. Devis à partir de 48 h selon la complexité. Vous conservez la pleine propriété du code, des contenus et des intégrations (e-commerce multi-CMS, portails logistiques, agents IA) — aucun lock-in éditeur, reprise possible en interne ou par tout intégrateur francilien. UX/UI, version mobile et conformité incluses dès la conception.",
       },
       en: {
         hero: "In Aulnay-sous-Bois, professional web work revolves first around logistics and retail: operators at Garonor and the SEGRO Logistics Park need customer portals, shipment tracking and document agents wired into their TMS/WMS; the retailers of O'Parinor (Carrefour hypermarket, 180+ stores) want e-commerce storefronts and click-and-collect; the manufacturers of the ZI Les Mardelles, like the L'Oréal site, face regulatory traceability requirements that few agencies know how to turn into interfaces. Axion-IA builds AI-augmented websites and SaaS platforms for these players — UX/UI, mobile, multi-CMS e-commerce, RAG chatbot, semantic search — in custom code, hosted in Europe and GDPR-compliant.",
@@ -208,7 +208,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "What's the lead time for a website or SaaS quote in Aulnay-sous-Bois?",
-            a: "The quote is issued from 24-48 h depending on project complexity, after an initial framing exchange. We travel on site in Aulnay (RER B, A1/A3) to understand your flows before pricing.",
+            a: "The quote is issued from 48 h depending on project complexity, after an initial framing exchange. We travel on site in Aulnay (RER B, A1/A3) to understand your flows before pricing.",
           },
           {
             q: "Do you handle the traceability constraints of ZI Les Mardelles manufacturers?",
@@ -220,7 +220,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "All websites and SaaS platforms delivered in Aulnay-sous-Bois are custom-coded, hosted in Europe by default, with a documented GDPR plan. Quote from 24-48 h depending on complexity. You keep full ownership of the code, content and integrations (multi-CMS e-commerce, logistics portals, AI agents) — no vendor lock-in, recoverable in-house or by any Île-de-France integrator. UX/UI, mobile version and compliance included from the design stage.",
+          "All websites and SaaS platforms delivered in Aulnay-sous-Bois are custom-coded, hosted in Europe by default, with a documented GDPR plan. Quote from 48 h depending on complexity. You keep full ownership of the code, content and integrations (multi-CMS e-commerce, logistics portals, AI agents) — no vendor lock-in, recoverable in-house or by any Île-de-France integrator. UX/UI, mobile version and compliance included from the design stage.",
       },
     },
   },

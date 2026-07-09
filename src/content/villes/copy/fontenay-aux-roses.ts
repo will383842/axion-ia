@@ -49,7 +49,7 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de TPE du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
+        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de TPE du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
         whyHere: [
           "Pôle de recherche et de sûreté nucléaire structurant : le CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie, démantèlement) et l'IRSN-ASNR de l'avenue de la Division Leclerc, voisins de Centrale-Supélec sur le plateau de Saclay, appellent des portails documentaires augmentés à l'IA — recherche sémantique sur publications et rapports techniques, classification de documents réglementaires, agents de veille scientifique, le tout en hébergement UE conforme.",
           "Tissu résidentiel et professions libérales denses : cabinets médicaux, avocats et experts-comptables fontenaysiens, souvent installés autour du centre-ville et du quartier Scarron, gagnent à un site clair et mobile-first avec prise de RDV en ligne, chatbot de premier contact, formulaires sécurisés et automatisation des devis d'honoraires, sans complexité ni jargon inutile.",
@@ -60,7 +60,7 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           {
             step: "Cadrage à Fontenay-aux-Roses",
             detail:
-              "Atelier sur site (centre-ville autour de la halle du marché, abords du CEA et de l'IRSN-ASNR avenue de la Division Leclerc, gare RER B Fontenay-aux-Roses) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des données. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville autour de la halle du marché, abords du CEA et de l'IRSN-ASNR avenue de la Division Leclerc, gare RER B Fontenay-aux-Roses) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des données. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -120,7 +120,7 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Fontenay-aux-Roses, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre et le prix sont actés avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Fontenay-aux-Roses, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre et le prix sont actés avant le premier sprint.",
           },
           {
             q: "Pouvez-vous équiper un commerce de la halle du marché ?",
@@ -132,10 +132,10 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, pour ne jamais couper un cabinet ou un commerce en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in technique, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local des Hauts-de-Seine ou repris en interne par vos équipes, documentation à l'appui.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, pour ne jamais couper un cabinet ou un commerce en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in technique, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local des Hauts-de-Seine ou repris en interne par vos équipes, documentation à l'appui.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de TPE du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
+        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de TPE du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
         whyHere: [
           "Pôle de recherche et de sûreté nucléaire structurant : le CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie, démantèlement) et l'IRSN-ASNR de l'avenue de la Division Leclerc, voisins de Centrale-Supélec sur le plateau de Saclay, appellent des portails documentaires augmentés à l'IA — recherche sémantique sur publications et rapports techniques, classification de documents réglementaires, agents de veille scientifique, le tout en hébergement UE conforme.",
           "Tissu résidentiel et professions libérales denses : cabinets médicaux, avocats et experts-comptables fontenaysiens, souvent installés autour du centre-ville et du quartier Scarron, gagnent à un site clair et mobile-first avec prise de RDV en ligne, chatbot de premier contact, formulaires sécurisés et automatisation des devis d'honoraires, sans complexité ni jargon inutile.",
@@ -146,7 +146,7 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           {
             step: "Cadrage à Fontenay-aux-Roses",
             detail:
-              "Atelier sur site (centre-ville autour de la halle du marché, abords du CEA et de l'IRSN-ASNR avenue de la Division Leclerc, gare RER B Fontenay-aux-Roses) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des données. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville autour de la halle du marché, abords du CEA et de l'IRSN-ASNR avenue de la Division Leclerc, gare RER B Fontenay-aux-Roses) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des données. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -206,7 +206,7 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Fontenay-aux-Roses, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre et le prix sont actés avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Fontenay-aux-Roses, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre et le prix sont actés avant le premier sprint.",
           },
           {
             q: "Pouvez-vous équiper un commerce de la halle du marché ?",
@@ -218,7 +218,7 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, pour ne jamais couper un cabinet ou un commerce en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in technique, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local des Hauts-de-Seine ou repris en interne par vos équipes, documentation à l'appui.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, pour ne jamais couper un cabinet ou un commerce en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in technique, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local des Hauts-de-Seine ou repris en interne par vos équipes, documentation à l'appui.",
       },
     },
   },

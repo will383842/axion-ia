@@ -123,7 +123,7 @@ export const SURESNES_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis sur un site ou un SaaS à Suresnes ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Une visio de cadrage est possible rapidement, et le kick-off se tient ensuite dans vos locaux à Suresnes (quartier Carnot/Longchamp, abords de Foch ou centre-ville).",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Une visio de cadrage est possible rapidement, et le kick-off se tient ensuite dans vos locaux à Suresnes (quartier Carnot/Longchamp, abords de Foch ou centre-ville).",
           },
           {
             q: "Mes données patients, RH ou marque restent-elles confidentielles et hébergées en Europe ?",
@@ -135,7 +135,7 @@ export const SURESNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité. Hébergement en Union européenne par défaut, conformité RGPD systématique (et HDS pour les données de santé de l'écosystème Foch/Servier). Code custom sans no-code : votre site ou votre SaaS, son code et sa documentation restent intégralement entre vos mains, repris par tout intégrateur de l'ouest parisien (Paris Ouest La Défense) ou par vos équipes en interne — aucun verrou, aucune dépendance contractuelle à Axion-IA.",
+          "Devis remis à partir de 48 h selon la complexité. Hébergement en Union européenne par défaut, conformité RGPD systématique (et HDS pour les données de santé de l'écosystème Foch/Servier). Code custom sans no-code : votre site ou votre SaaS, son code et sa documentation restent intégralement entre vos mains, repris par tout intégrateur de l'ouest parisien (Paris Ouest La Défense) ou par vos équipes en interne — aucun verrou, aucune dépendance contractuelle à Axion-IA.",
       },
       en: {
         hero: "Suresnes is no dormitory town of western Paris: it is the global headquarters of two groups — Servier (pharmaceuticals, 50 rue Carnot) and Groupe Bel (The Laughing Cow, Babybel, located on allée de Longchamp on the former Coty perfume factory site) — and home to a hospital already recognised as a French benchmark for AI in healthcare, Hôpital Foch. Axion-IA designs AI-augmented websites and SaaS platforms here, in custom code, for a fabric where nearly two thirds of companies have fewer than ten employees: software publishers and digital agencies, health and medtech practices around Foch, food players (MRS Groupe, Griffith Foods, Eat Sentive) and the strong communication-marketing-data cluster present in Suresnes.",
@@ -209,7 +209,7 @@ export const SURESNES_COPY: VilleCopy = {
           },
           {
             q: "What are the lead times for a website or SaaS quote in Suresnes?",
-            a: "The quote is delivered from 24 to 48 hours depending on project complexity. A framing video call is possible quickly, and the kick-off then takes place at your offices in Suresnes (Carnot/Longchamp area, near Foch or downtown).",
+            a: "The quote is delivered from 48 hours depending on project complexity. A framing video call is possible quickly, and the kick-off then takes place at your offices in Suresnes (Carnot/Longchamp area, near Foch or downtown).",
           },
           {
             q: "Does my patient, HR or brand data stay confidential and hosted in Europe?",
@@ -221,7 +221,7 @@ export const SURESNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24 to 48 hours depending on complexity. Hosting in the European Union by default, systematic GDPR compliance (and HDS for health data in the Foch/Servier ecosystem). Custom code, no no-code: your site or SaaS, its code and its documentation stay entirely in your hands, taken over by any western-Paris integrator (Paris Ouest La Défense) or by your in-house teams — no lock-in, no contractual dependency on Axion-IA.",
+          "Quote delivered from 48 hours depending on complexity. Hosting in the European Union by default, systematic GDPR compliance (and HDS for health data in the Foch/Servier ecosystem). Custom code, no no-code: your site or SaaS, its code and its documentation stay entirely in your hands, taken over by any western-Paris integrator (Paris Ouest La Défense) or by your in-house teams — no lock-in, no contractual dependency on Axion-IA.",
       },
     },
   },

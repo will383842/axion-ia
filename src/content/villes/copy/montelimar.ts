@@ -128,11 +128,11 @@ export const MONTELIMAR_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis et restons-nous propriétaires de la plateforme ?",
-            a: "Le devis est établi à partir de 24-48 h selon la complexité, après un échange de cadrage sur place à Montélimar ou en visio. Vous restez intégralement propriétaire du code, des données et des briques IA : la plateforme est administrable par vos équipes ou par tout prestataire local, sans dépendance Axion-IA.",
+            a: "Le devis est établi à partir de 48 h selon la complexité, après un échange de cadrage sur place à Montélimar ou en visio. Vous restez intégralement propriétaire du code, des données et des briques IA : la plateforme est administrable par vos équipes ou par tout prestataire local, sans dépendance Axion-IA.",
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre défini au lancement à Montélimar. Hébergement en Union européenne par défaut, conformité RGPD, minimisation des données et DPO sur demande. Code, données et briques IA restent votre propriété pleine et entière : la plateforme est reprenable par vos équipes ou par tout prestataire de la Drôme, sans verrou éditeur. UX/UI mobile-first, e-commerce multi-CMS et SaaS sur mesure sont couverts par la même équipe. Devis établi à partir de 24-48 h selon la complexité.",
+          "Engagement contractuel sur le périmètre défini au lancement à Montélimar. Hébergement en Union européenne par défaut, conformité RGPD, minimisation des données et DPO sur demande. Code, données et briques IA restent votre propriété pleine et entière : la plateforme est reprenable par vos équipes ou par tout prestataire de la Drôme, sans verrou éditeur. UX/UI mobile-first, e-commerce multi-CMS et SaaS sur mesure sont couverts par la même équipe. Devis établi à partir de 48 h selon la complexité.",
       },
       en: {
         hero: "In Montélimar (26), the gateway to Provence, Axion-IA builds AI-augmented websites and SaaS platforms for the real businesses of southern Drôme: the IGP nougat houses (Arnaud Soubeyran, Chabert & Guillot, Diane de Poytiers) whose \"Nougat de Montélimar\" name has held an EU Protected Geographical Indication since 26 November 2024, Autajon's luxury folding-carton site, the Rhône valley logistics operators (Groupe Charles André at the ZI de Gournier, STIM) and the SMEs of the agglomeration's eleven business parks. E-commerce stores, B2B portals, customer areas: custom code, multi-CMS, mobile-first UX/UI and embedded AI, hosted in the European Union and GDPR-compliant.",
@@ -214,11 +214,11 @@ export const MONTELIMAR_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and do we own the platform?",
-            a: "Quotes are issued from 24-48 h depending on complexity, after a framing exchange on site in Montélimar or by video. You fully own the code, data and AI components: the platform is administered by your teams or any local provider, with no Axion-IA dependency.",
+            a: "Quotes are issued from 48 h depending on complexity, after a framing exchange on site in Montélimar or by video. You fully own the code, data and AI components: the platform is administered by your teams or any local provider, with no Axion-IA dependency.",
           },
         ],
         guarantees:
-          "Contractual commitment on the scope defined at kick-off in Montélimar. EU hosting by default, GDPR compliance, data minimisation and DPO on request. Code, data and AI components remain wholly yours: the platform can be taken over by your teams or any Drôme provider, with no vendor lock-in. Mobile-first UX/UI, multi-CMS e-commerce and custom SaaS are covered by the same team. Quotes issued from 24-48 h depending on complexity; any travel costs are quoted case by case based on the zone.",
+          "Contractual commitment on the scope defined at kick-off in Montélimar. EU hosting by default, GDPR compliance, data minimisation and DPO on request. Code, data and AI components remain wholly yours: the platform can be taken over by your teams or any Drôme provider, with no vendor lock-in. Mobile-first UX/UI, multi-CMS e-commerce and custom SaaS are covered by the same team. Quotes issued from 48 h depending on complexity; any travel costs are quoted case by case based on the zone.",
       },
     },
   },

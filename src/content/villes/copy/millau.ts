@@ -53,7 +53,7 @@ export const MILLAU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Millau, dans l'Aveyron, des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin où cohabitent le savoir-faire rare de la ganterie et de la mégisserie du cuir — illustré par une maison comme Causse Gantier, gantier depuis 1892 et membre des Métiers d'art de Chanel —, une économie touristique portée par le Viaduc et les gorges du Tarn, et le terroir voisin du Roquefort. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Lancement en présentiel à Millau, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Millau, dans l'Aveyron, des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin où cohabitent le savoir-faire rare de la ganterie et de la mégisserie du cuir — illustré par une maison comme Causse Gantier, gantier depuis 1892 et membre des Métiers d'art de Chanel —, une économie touristique portée par le Viaduc et les gorges du Tarn, et le terroir voisin du Roquefort. Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Lancement en présentiel à Millau, itérations à distance.",
         whyHere: [
           "Ganterie et maroquinerie d'excellence : des ateliers millavois comme Causse Gantier, gantier depuis 1892 et entré dans les Métiers d'art de Chanel en 2012, vendent à des maisons de luxe et à une clientèle internationale exigeante. Terrain idéal pour des vitrines e-commerce sur mesure, des configurateurs produit (cuir, coloris, taille) et un suivi de commande et des relances automatisés par l'IA.",
           "Économie touristique très saisonnière autour du Viaduc de Millau, des gorges du Tarn, du Larzac et des sports de pleine nature (parapente du Puech d'Andan, canoë, via ferrata) : nos chatbots et moteurs de réservation directe sont multilingues par défaut, calibrés pour l'hôtellerie, la restauration et les bases de loisirs qui absorbent les pics d'été et la fréquentation de l'aire du Viaduc.",
@@ -64,7 +64,7 @@ export const MILLAU_COPY: VilleCopy = {
           {
             step: "Cadrage à Millau",
             detail:
-              "Atelier sur site (cœur de ville autour de la place du Mandarous, abords du Viaduc, zones d'activité du bassin millavois) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité estivale. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville autour de la place du Mandarous, abords du Viaduc, zones d'activité du bassin millavois) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité estivale. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const MILLAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée, même à distance des grandes métropoles. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison estivale sur le Viaduc et les gorges du Tarn. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local d'Occitanie ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée, même à distance des grandes métropoles. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison estivale sur le Viaduc et les gorges du Tarn. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local d'Occitanie ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Millau, dans l'Aveyron, des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin où cohabitent le savoir-faire rare de la ganterie et de la mégisserie du cuir — illustré par une maison comme Causse Gantier, gantier depuis 1892 et membre des Métiers d'art de Chanel —, une économie touristique portée par le Viaduc et les gorges du Tarn, et le terroir voisin du Roquefort. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Lancement en présentiel à Millau, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Millau, dans l'Aveyron, des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin où cohabitent le savoir-faire rare de la ganterie et de la mégisserie du cuir — illustré par une maison comme Causse Gantier, gantier depuis 1892 et membre des Métiers d'art de Chanel —, une économie touristique portée par le Viaduc et les gorges du Tarn, et le terroir voisin du Roquefort. Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Lancement en présentiel à Millau, itérations à distance.",
         whyHere: [
           "Ganterie et maroquinerie d'excellence : des ateliers millavois comme Causse Gantier, gantier depuis 1892 et entré dans les Métiers d'art de Chanel en 2012, vendent à des maisons de luxe et à une clientèle internationale exigeante. Terrain idéal pour des vitrines e-commerce sur mesure, des configurateurs produit (cuir, coloris, taille) et un suivi de commande et des relances automatisés par l'IA.",
           "Économie touristique très saisonnière autour du Viaduc de Millau, des gorges du Tarn, du Larzac et des sports de pleine nature (parapente du Puech d'Andan, canoë, via ferrata) : nos chatbots et moteurs de réservation directe sont multilingues par défaut, calibrés pour l'hôtellerie, la restauration et les bases de loisirs qui absorbent les pics d'été et la fréquentation de l'aire du Viaduc.",
@@ -150,7 +150,7 @@ export const MILLAU_COPY: VilleCopy = {
           {
             step: "Cadrage à Millau",
             detail:
-              "Atelier sur site (cœur de ville autour de la place du Mandarous, abords du Viaduc, zones d'activité du bassin millavois) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité estivale. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville autour de la place du Mandarous, abords du Viaduc, zones d'activité du bassin millavois) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité estivale. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -222,7 +222,7 @@ export const MILLAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée, même à distance des grandes métropoles. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison estivale sur le Viaduc et les gorges du Tarn. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local d'Occitanie ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée, même à distance des grandes métropoles. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison estivale sur le Viaduc et les gorges du Tarn. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local d'Occitanie ou repris en interne par vos équipes.",
       },
     },
   },

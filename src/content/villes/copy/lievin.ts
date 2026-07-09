@@ -134,7 +134,7 @@ export const LIEVIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis sous 24 à 48 h selon la complexité. Code custom auditable, hébergement en UE conforme RGPD, aucune dépendance no-code ni verrou éditeur : votre plateforme — vitrine commerçante, SaaS sportech du Vivalley Park ou portail industriel de l'Alouette — reste intégralement portable et reprenable en interne ou par tout intégrateur. Nous revendiquons l'UX/UI, le mobile et l'e-commerce multi-CMS autant que l'IA.",
+          "Devis sous 48 h selon la complexité. Code custom auditable, hébergement en UE conforme RGPD, aucune dépendance no-code ni verrou éditeur : votre plateforme — vitrine commerçante, SaaS sportech du Vivalley Park ou portail industriel de l'Alouette — reste intégralement portable et reprenable en interne ou par tout intégrateur. Nous revendiquons l'UX/UI, le mobile et l'e-commerce multi-CMS autant que l'IA.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Liévin, where the sportech sector has organised around the Vivalley Campus (110 hectares dedicated to Sport | Health & Wellness) and its Vivalley Park business park. We equip incubated startups (Dynacenter, M Datas Performance, Be Human Performance, Cerveau Sport, Fitjiva) as well as the ZAC de l'Alouette manufacturers (Cérélia, Sonoco Consumer Products, Frigo Transports 62) and the Carrefour shopping-centre retailers. Custom code, EU/GDPR hosting, UX/UI + mobile + multi-CMS e-commerce, RAG chatbot and semantic search — no no-code, no opaque SaaS black box.",
@@ -220,7 +220,7 @@ export const LIEVIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 24 to 48 hours depending on complexity. Auditable custom code, EU GDPR-compliant hosting, no no-code dependency or vendor lock-in: your platform — retail storefront, Vivalley Park sportech SaaS or Alouette industrial portal — stays fully portable and recoverable in-house or by any integrator. We claim UX/UI, mobile and multi-CMS e-commerce as much as AI.",
+          "Quote within 48 hours depending on complexity. Auditable custom code, EU GDPR-compliant hosting, no no-code dependency or vendor lock-in: your platform — retail storefront, Vivalley Park sportech SaaS or Alouette industrial portal — stays fully portable and recoverable in-house or by any integrator. We claim UX/UI, mobile and multi-CMS e-commerce as much as AI.",
       },
     },
   },

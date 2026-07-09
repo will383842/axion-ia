@@ -132,11 +132,11 @@ export const NEVERS_COPY: VilleCopy = {
           },
           {
             q: "Quels sont les délais et où sont hébergées les données ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Tous les sites et plateformes sont hébergés en Union européenne, en conformité RGPD. Vous conservez la pleine maîtrise du code, des contenus et des accès après la mise en ligne, sans verrou éditeur ni dépendance contractuelle à Axion-IA.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Tous les sites et plateformes sont hébergés en Union européenne, en conformité RGPD. Vous conservez la pleine maîtrise du code, des contenus et des accès après la mise en ligne, sans verrou éditeur ni dépendance contractuelle à Axion-IA.",
           },
         ],
         guarantees:
-          "Nous nous engageons sur des sites et plateformes que vous maîtrisez réellement : code et contenus vous appartiennent, hébergement en Union européenne conforme RGPD, et aucun verrou éditeur. Devis remis à partir de 24-48 h selon la complexité. Nos consultants se déplacent à Nevers et sur le technopole de Magny-Cours, ou interviennent en visio. Nous couvrons l'ensemble du périmètre — UX/UI, mobile, e-commerce multi-CMS et briques IA — et formons vos équipes nivernaises pour qu'elles restent autonomes après notre intervention.",
+          "Nous nous engageons sur des sites et plateformes que vous maîtrisez réellement : code et contenus vous appartiennent, hébergement en Union européenne conforme RGPD, et aucun verrou éditeur. Devis remis à partir de 48 h selon la complexité. Nos consultants se déplacent à Nevers et sur le technopole de Magny-Cours, ou interviennent en visio. Nous couvrons l'ensemble du périmètre — UX/UI, mobile, e-commerce multi-CMS et briques IA — et formons vos équipes nivernaises pour qu'elles restent autonomes après notre intervention.",
       },
       en: {
         hero: "AI-augmented websites and SaaS platforms in Nevers: we build bespoke tools for the Nièvre ecosystem — the Magny-Cours motorsport cluster (Ligier Advanced Technologies, the Mygale brand, Oreca, Bodycote), mobility manufacturers such as Look Cycle and Minebea AccessSolutions, grand-feu art faience workshops, and sanctuary-tourism operators along the Loire à Vélo cycle route. Product configurators, parts and subcontracting portals, multi-CMS e-commerce, online booking, semantic search and conversational agents integrated with your existing tools. Custom code, polished UX/UI and mobile, EU-based GDPR-compliant hosting, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const NEVERS_COPY: VilleCopy = {
           },
           {
             q: "What are the timelines and where is the data hosted?",
-            a: "A quote is provided from 24-48 h depending on project complexity. All sites and platforms are hosted in the European Union, GDPR-compliant. You keep full control of the code, content and access after go-live, with no vendor lock-in or contractual dependency on Axion-IA.",
+            a: "A quote is provided from 48 h depending on project complexity. All sites and platforms are hosted in the European Union, GDPR-compliant. You keep full control of the code, content and access after go-live, with no vendor lock-in or contractual dependency on Axion-IA.",
           },
         ],
         guarantees:
-          "We commit to sites and platforms you genuinely control: code and content belong to you, hosting in the European Union is GDPR-compliant, and there is no vendor lock-in. Quote provided from 24-48 h depending on complexity. Our consultants travel to Nevers and the Magny-Cours technopole, or work by video. We cover the full scope — UX/UI, mobile, multi-CMS e-commerce and AI building blocks — and train your Nevers teams so they stay autonomous after our work.",
+          "We commit to sites and platforms you genuinely control: code and content belong to you, hosting in the European Union is GDPR-compliant, and there is no vendor lock-in. Quote provided from 48 h depending on complexity. Our consultants travel to Nevers and the Magny-Cours technopole, or work by video. We cover the full scope — UX/UI, mobile, multi-CMS e-commerce and AI building blocks — and train your Nevers teams so they stay autonomous after our work.",
       },
     },
   },

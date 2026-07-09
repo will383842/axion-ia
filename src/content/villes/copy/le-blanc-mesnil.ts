@@ -122,7 +122,7 @@ export const LE_BLANC_MESNIL_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis sur un projet de site ou de SaaS au Blanc-Mesnil ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet. Un site vitrine pour un commerce du centre n'a pas le même cadrage qu'une plateforme de traçabilité pour Paprec IDF Nord ou un portail SAV pour une filiale de la ZI du Coudray ; le périmètre est précisé lors du kick-off sur site.",
+            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet. Un site vitrine pour un commerce du centre n'a pas le même cadrage qu'une plateforme de traçabilité pour Paprec IDF Nord ou un portail SAV pour une filiale de la ZI du Coudray ; le périmètre est précisé lors du kick-off sur site.",
           },
           {
             q: "Travaillez-vous pour la filière recyclage et environnement du Blanc-Mesnil ?",
@@ -134,7 +134,7 @@ export const LE_BLANC_MESNIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Nous remettons un devis à partir de 24 à 48 h selon la complexité, sur périmètre précis et tarif clair, sans jeu de devis opaque. Tous nos sites web et plateformes SaaS sont codés sur mesure, hébergés en Union européenne et conformes RGPD par défaut. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce sur CMS multiples comme sur stack propriétaire, et l'intégration IA (chatbot RAG, recherche sémantique, agents). Vous restez propriétaire du code et des modèles, sans verrou éditeur ni dépendance Axion-IA : votre plateforme est maintenable par vos équipes ou par tout intégrateur d'Île-de-France après la mission.",
+          "Nous remettons un devis à partir de 48 h selon la complexité, sur périmètre précis et tarif clair, sans jeu de devis opaque. Tous nos sites web et plateformes SaaS sont codés sur mesure, hébergés en Union européenne et conformes RGPD par défaut. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce sur CMS multiples comme sur stack propriétaire, et l'intégration IA (chatbot RAG, recherche sémantique, agents). Vous restez propriétaire du code et des modèles, sans verrou éditeur ni dépendance Axion-IA : votre plateforme est maintenable par vos équipes ou par tout intégrateur d'Île-de-France après la mission.",
       },
       en: {
         hero: "Le Blanc-Mesnil has a distinctive economic profile in Paris's inner northern ring: a cluster of German companies based in the ZI du Coudray and Pont-Yblon zones — Miele (French HQ since 1960, avenue Albert-Einstein), Hella, MAN, Bott, Rhenus Freight International — alongside a strong logistics and e-commerce sector (Vente-Privée Logistique / Veepee, Amazon) and a major recycling hub (Paprec IDF Nord, around 250,000 tonnes of industrial waste processed per year). Axion-IA designs AI-augmented websites and SaaS platforms here, custom-coded in-house, for the micro-businesses, SMEs and group subsidiaries based in the Paris Terres d'Envol territory, 7 km from Paris between Roissy-CDG and Le Bourget.",
@@ -208,7 +208,7 @@ export const LE_BLANC_MESNIL_COPY: VilleCopy = {
           },
           {
             q: "How quickly do you provide a quote for a site or SaaS project in Le Blanc-Mesnil?",
-            a: "We provide a quote from 24 to 48 hours depending on project complexity. A showcase site for a town-centre retailer doesn't have the same scope as a traceability platform for Paprec IDF Nord or an after-sales portal for a ZI du Coudray subsidiary; the scope is confirmed at the on-site kick-off.",
+            a: "We provide a quote from 48 hours depending on project complexity. A showcase site for a town-centre retailer doesn't have the same scope as a traceability platform for Paprec IDF Nord or an after-sales portal for a ZI du Coudray subsidiary; the scope is confirmed at the on-site kick-off.",
           },
           {
             q: "Do you work for the recycling and environment sector in Le Blanc-Mesnil?",
@@ -220,7 +220,7 @@ export const LE_BLANC_MESNIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "We provide a quote from 24 to 48 hours depending on complexity, with a precise scope and clear pricing, no opaque quote game. All our websites and SaaS platforms are custom-coded, hosted in the European Union and GDPR-compliant by default. We claim UX/UI, mobile-first, e-commerce on multiple CMS as well as on a custom stack, and AI integration (RAG chatbot, semantic search, agents). You remain the owner of the code and models, with no vendor lock-in or Axion-IA dependency: your platform is maintainable by your teams or by any Île-de-France integrator after the engagement.",
+          "We provide a quote from 48 hours depending on complexity, with a precise scope and clear pricing, no opaque quote game. All our websites and SaaS platforms are custom-coded, hosted in the European Union and GDPR-compliant by default. We claim UX/UI, mobile-first, e-commerce on multiple CMS as well as on a custom stack, and AI integration (RAG chatbot, semantic search, agents). You remain the owner of the code and models, with no vendor lock-in or Axion-IA dependency: your platform is maintainable by your teams or by any Île-de-France integrator after the engagement.",
       },
     },
   },

@@ -132,7 +132,7 @@ export const SAINT_MEDARD_EN_JALLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis détaillé à partir de 24-48 h selon la complexité, sans engagement. Code source et documentation remis en fin de mission : vous gardez la pleine propriété de la plateforme, transférable à tout intégrateur d'Aerospace Valley / BAAS ou repris en interne, sans verrou Axion-IA. Hébergement en Union européenne par défaut, conformité RGPD, DPO sur demande, protocoles de confidentialité renforcés pour les industriels propulsion-défense de Saint-Médard-en-Jalles. Aucune dépendance contractuelle imposée au-delà de ce que vous validez.",
+          "Devis détaillé à partir de 48 h selon la complexité, sans engagement. Code source et documentation remis en fin de mission : vous gardez la pleine propriété de la plateforme, transférable à tout intégrateur d'Aerospace Valley / BAAS ou repris en interne, sans verrou Axion-IA. Hébergement en Union européenne par défaut, conformité RGPD, DPO sur demande, protocoles de confidentialité renforcés pour les industriels propulsion-défense de Saint-Médard-en-Jalles. Aucune dépendance contractuelle imposée au-delà de ce que vous validez.",
       },
       en: {
         hero: "In Saint-Médard-en-Jalles (Gironde), Axion-IA designs AI-augmented websites and SaaS platforms for a fabric unlike any other in France: the largest commune of Bordeaux Métropole is the birthplace of the aerospace industry and one of the sites where the solid propellant of the M51 missiles of France's Strategic Oceanic Force is loaded. We serve propulsion-defence manufacturers (ArianeGroup on the Centre and Issac sites, Roxel on Avenue Gay-Lussac in Magudas, taken over by MBDA in January 2025), their aerospace subcontracting chain across the OIM Bordeaux Aéroparc, plus the tertiary SMEs and shops among the town's 742 employer establishments. UX/UI design, mobile apps, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, agents): custom code, EU GDPR-compliant hosting, zero vendor lock-in.",
@@ -218,7 +218,7 @@ export const SAINT_MEDARD_EN_JALLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote from 24-48 h depending on complexity, no commitment. Source code and documentation handed over at mission end: you keep full ownership of the platform, transferable to any Aerospace Valley / BAAS integrator or taken over in-house, with no Axion-IA lock-in. EU hosting by default, GDPR compliance, DPO on request, reinforced confidentiality protocols for the propulsion-defence manufacturers of Saint-Médard-en-Jalles. No contractual dependency imposed beyond what you validate.",
+          "Detailed quote from 48 h depending on complexity, no commitment. Source code and documentation handed over at mission end: you keep full ownership of the platform, transferable to any Aerospace Valley / BAAS integrator or taken over in-house, with no Axion-IA lock-in. EU hosting by default, GDPR compliance, DPO on request, reinforced confidentiality protocols for the propulsion-defence manufacturers of Saint-Médard-en-Jalles. No contractual dependency imposed beyond what you validate.",
       },
     },
   },

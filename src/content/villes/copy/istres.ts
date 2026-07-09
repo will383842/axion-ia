@@ -132,11 +132,11 @@ export const ISTRES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et où sont hébergées les données ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet, après le cadrage sur place ou en visio. Tous les sites et plateformes que nous livrons sont hébergés dans l'Union européenne, conformes au RGPD, sans verrou éditeur : vous conservez la pleine propriété du code et des données.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet, après le cadrage sur place ou en visio. Tous les sites et plateformes que nous livrons sont hébergés dans l'Union européenne, conformes au RGPD, sans verrou éditeur : vous conservez la pleine propriété du code et des données.",
           },
         ],
         guarantees:
-          "Tous nos sites web et plateformes SaaS livrés à Istres sont hébergés dans l'Union européenne et conformes au RGPD, avec un soin particulier au cloisonnement des données sensibles pour les acteurs aéro-défense de la BA 125 et du technopôle Jean Sarrail. Vous restez propriétaire du code source et des données, sans verrou éditeur ni dépendance Axion-IA imposée : la solution est reprenable par vos équipes ou tout prestataire. Devis remis à partir de 24 à 48 h selon la complexité, périmètre et livrables définis par écrit avant tout démarrage.",
+          "Tous nos sites web et plateformes SaaS livrés à Istres sont hébergés dans l'Union européenne et conformes au RGPD, avec un soin particulier au cloisonnement des données sensibles pour les acteurs aéro-défense de la BA 125 et du technopôle Jean Sarrail. Vous restez propriétaire du code source et des données, sans verrou éditeur ni dépendance Axion-IA imposée : la solution est reprenable par vos équipes ou tout prestataire. Devis remis à partir de 48 h selon la complexité, périmètre et livrables définis par écrit avant tout démarrage.",
       },
       en: {
         hero: "In Istres, on the northern shore of the Étang de Berre, the local economy revolves around Air Base 125 Istres-Le Tubé — the largest base of the French Air and Space Force, home to Europe's longest runway, the DGA flight-test centre and the A330 MRTT \"Phénix\" fleet — and the Istres Jean Sarrail aeronautics technopark, where subcontractors of Dassault, Thales and Safran and Hynaéro's Fregate-F100 water bomber sit alongside the massified logistics of the CLÉSUD platform. Axion-IA builds AI-augmented websites and SaaS platforms for these players — aero-defence subcontracting portals, flight-test document tracking, logistics traceability — hosted in the EU, GDPR-compliant, with no vendor lock-in.",
@@ -218,11 +218,11 @@ export const ISTRES_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and where is the data hosted?",
-            a: "The quote is issued from 24 to 48 hours depending on project complexity, after the on-site or video kick-off. All sites and platforms we deliver are hosted in the European Union, GDPR-compliant, with no vendor lock-in: you keep full ownership of code and data.",
+            a: "The quote is issued from 48 hours depending on project complexity, after the on-site or video kick-off. All sites and platforms we deliver are hosted in the European Union, GDPR-compliant, with no vendor lock-in: you keep full ownership of code and data.",
           },
         ],
         guarantees:
-          "All websites and SaaS platforms we deliver in Istres are hosted in the European Union and GDPR-compliant, with particular care for the isolation of sensitive data for the aero-defence players of Air Base 125 and the Jean Sarrail technopark. You remain the owner of the source code and data, with no vendor lock-in or imposed Axion-IA dependency: the solution can be taken over by your teams or any provider. Quote issued from 24 to 48 hours depending on complexity, with scope and deliverables defined in writing before any start.",
+          "All websites and SaaS platforms we deliver in Istres are hosted in the European Union and GDPR-compliant, with particular care for the isolation of sensitive data for the aero-defence players of Air Base 125 and the Jean Sarrail technopark. You remain the owner of the source code and data, with no vendor lock-in or imposed Axion-IA dependency: the solution can be taken over by your teams or any provider. Quote issued from 48 hours depending on complexity, with scope and deliverables defined in writing before any start.",
       },
     },
   },

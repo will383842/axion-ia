@@ -132,11 +132,11 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et le site est-il conforme RGPD ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Tous nos sites sont hébergés dans l'Union européenne, conçus conformes RGPD dès le cadrage (minimisation des données, consentement, traçabilité) — une exigence de départ pour qui gère des données clients, fournisseurs ou étudiants.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Tous nos sites sont hébergés dans l'Union européenne, conçus conformes RGPD dès le cadrage (minimisation des données, consentement, traçabilité) — une exigence de départ pour qui gère des données clients, fournisseurs ou étudiants.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 24-48 h selon la complexité. Hébergement dans l'Union européenne, conformité RGPD intégrée dès le cadrage. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et la couche IA sur un même projet. Code et accès restent à votre nom, transférables à tout intégrateur ou repris en interne : aucun verrou éditeur, aucune dépendance Axion-IA imposée.",
+          "Devis remis à partir de 48 h selon la complexité. Hébergement dans l'Union européenne, conformité RGPD intégrée dès le cadrage. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et la couche IA sur un même projet. Code et accès restent à votre nom, transférables à tout intégrateur ou repris en interne : aucun verrou éditeur, aucune dépendance Axion-IA imposée.",
       },
       en: {
         hero: "In Joué-lès-Tours, the second city of Tours Métropole Val de Loire, the local fabric plays out on three fronts: the southern business parks (Liodière, Gutenberg, Cugnot, the Artisans zone) and their workshops, craftspeople and SMEs; the Deux Lions district with its University of Tours site (Polytech Tours, law faculty) and the L'Heure Tranquille shopping centre; and the conversion of the former Michelin site into the « Les Carmeries » business district (100,000 m² of offices, 5,000 jobs targeted long term). Axion-IA designs AI-augmented websites and SaaS platforms for these organisations: qualified quote requests, assisted catalogues, client portals. Custom code, UX/UI, mobile, multi-CMS e-commerce, EU hosting compliant with GDPR, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and is the site GDPR-compliant?",
-            a: "A quote is provided from 24-48 h depending on project complexity. All our sites are hosted in the European Union, designed GDPR-compliant from framing (data minimisation, consent, traceability) — a baseline requirement for anyone handling customer, supplier or student data.",
+            a: "A quote is provided from 48 h depending on project complexity. All our sites are hosted in the European Union, designed GDPR-compliant from framing (data minimisation, consent, traceability) — a baseline requirement for anyone handling customer, supplier or student data.",
           },
         ],
         guarantees:
-          "Quote provided from 24-48 h depending on complexity. Hosting in the European Union, GDPR compliance built in from framing. We deliver UX/UI, mobile, multi-CMS e-commerce and the AI layer within a single project. Code and access stay in your name, transferable to any integrator or brought in-house: no vendor lock-in, no imposed Axion-IA dependency.",
+          "Quote provided from 48 h depending on complexity. Hosting in the European Union, GDPR compliance built in from framing. We deliver UX/UI, mobile, multi-CMS e-commerce and the AI layer within a single project. Code and access stay in your name, transferable to any integrator or brought in-house: no vendor lock-in, no imposed Axion-IA dependency.",
       },
     },
   },

@@ -132,11 +132,11 @@ export const VALENCIENNES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "À partir de 24-48 h selon la complexité. Après un premier échange pour cerner votre métier — équipementier, fournisseur ferroviaire, studio numérique ou commerce du Hainaut — nous vous remettons un devis clair et chiffré, sans engagement et sans tarif caché.",
+            a: "À partir de 48 h selon la complexité. Après un premier échange pour cerner votre métier — équipementier, fournisseur ferroviaire, studio numérique ou commerce du Hainaut — nous vous remettons un devis clair et chiffré, sans engagement et sans tarif caché.",
           },
         ],
         guarantees:
-          "Hébergement dans l'Union européenne et conformité RGPD par défaut. Vous restez propriétaire du code, des accès et des données : aucun verrou éditeur, aucune dépendance imposée à Axion-IA, et toute reprise par vos équipes ou un autre prestataire du Hainaut reste possible. Devis à partir de 24-48 h selon la complexité, chiffré et sans tarif caché. UX/UI, mobile, e-commerce multi-CMS et couche IA sont calibrés sur votre secteur réel à Valenciennes — automobile, ferroviaire, numérique ou commerce — jamais un gabarit recyclé.",
+          "Hébergement dans l'Union européenne et conformité RGPD par défaut. Vous restez propriétaire du code, des accès et des données : aucun verrou éditeur, aucune dépendance imposée à Axion-IA, et toute reprise par vos équipes ou un autre prestataire du Hainaut reste possible. Devis à partir de 48 h selon la complexité, chiffré et sans tarif caché. UX/UI, mobile, e-commerce multi-CMS et couche IA sont calibrés sur votre secteur réel à Valenciennes — automobile, ferroviaire, numérique ou commerce — jamais un gabarit recyclé.",
       },
       en: {
         hero: "In Valenciennes, web and SaaS aren't built like in a services metropolis: they serve a highly specialised industrial fabric. The Toyota plant in Onnaing (around 5,000 staff, one vehicle every 58 seconds) and its network of automotive subcontractors, the Alstom rail hub at Petite-Forêt and Crespin (around 4,000 staff, formerly Bombardier), the Valenciennes headquarters of the European Union Agency for Railways (ERA) and the studios of the Serre Numérique (video games, serious games, 3D animation around the Rubika school) each have radically different digital needs. In Valenciennes, Axion-IA designs AI-augmented websites and SaaS platforms — UX/UI, mobile, multi-CMS e-commerce, conversational agents and semantic search — for these equipment suppliers, rail vendors, digital studios and the micro-businesses and SMEs of the Hainaut, with owned code and EU, GDPR-compliant hosting.",
@@ -218,11 +218,11 @@ export const VALENCIENNES_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "From 24-48 h depending on complexity. After an initial exchange to pin down your business — equipment maker, rail supplier, digital studio or Hainaut retailer — we provide a clear, costed quote, with no commitment and no hidden pricing.",
+            a: "From 48 h depending on complexity. After an initial exchange to pin down your business — equipment maker, rail supplier, digital studio or Hainaut retailer — we provide a clear, costed quote, with no commitment and no hidden pricing.",
           },
         ],
         guarantees:
-          "EU hosting and GDPR compliance by default. You remain the owner of the code, access and data: no vendor lock-in, no dependency imposed by Axion-IA, and a handover to your teams or another Hainaut provider stays possible. Quote from 24-48 h depending on complexity, costed and with no hidden pricing. UX/UI, mobile, multi-CMS e-commerce and the AI layer are calibrated to your real Valenciennes sector — automotive, rail, digital or retail — never a recycled template.",
+          "EU hosting and GDPR compliance by default. You remain the owner of the code, access and data: no vendor lock-in, no dependency imposed by Axion-IA, and a handover to your teams or another Hainaut provider stays possible. Quote from 48 h depending on complexity, costed and with no hidden pricing. UX/UI, mobile, multi-CMS e-commerce and the AI layer are calibrated to your real Valenciennes sector — automotive, rail, digital or retail — never a recycled template.",
       },
     },
   },

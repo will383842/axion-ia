@@ -135,7 +135,7 @@ export const CHELLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité du projet. Sites et plateformes en code custom (pas de no-code propriétaire), maintenables et auditables. UX/UI et développement mobile-first, e-commerce multi-CMS et briques IA inclus dans notre périmètre. Hébergement en UE, conformité RGPD documentée. Le code source, les contenus et les modèles IA vous appartiennent et restent portables vers tout intégrateur ou vos équipes internes — aucune dépendance contractuelle continue obligatoire.",
+          "Devis à partir de 48 h selon la complexité du projet. Sites et plateformes en code custom (pas de no-code propriétaire), maintenables et auditables. UX/UI et développement mobile-first, e-commerce multi-CMS et briques IA inclus dans notre périmètre. Hébergement en UE, conformité RGPD documentée. Le code source, les contenus et les modèles IA vous appartiennent et restent portables vers tout intégrateur ou vos équipes internes — aucune dépendance contractuelle continue obligatoire.",
       },
       en: {
         hero: "In Chelles, the second-largest town in Seine-et-Marne and the eastern gateway to Greater Paris, the local economy revolves around three realities: the Tuilerie business park (~200 companies, the area's leading employment hub, home to Numatic International, FAUN Environnement and Jean Lefebvre Île-de-France), the Terre-Ciel retail centre (Carrefour, Leroy Merlin) and a major mobility node at Chelles-Gournay (RER E terminus, Transilien P, future Grand Paris Express Line 16 in 2028). Axion-IA builds AI-augmented websites and SaaS platforms for these retailers, logistics firms and manufacturers — multi-CMS e-commerce storefronts, order-tracking portals, support agents — in custom code, hosted in the EU, with no vendor lock-in.",
@@ -221,7 +221,7 @@ export const CHELLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 24 to 48 hours depending on project complexity. Sites and platforms in custom code (no proprietary no-code), maintainable and auditable. Mobile-first UX/UI and development, multi-CMS e-commerce and AI building blocks all within our scope. EU hosting, documented GDPR compliance. The source code, content and AI models belong to you and stay portable to any integrator or your internal teams — no mandatory ongoing contractual dependency.",
+          "Quote within 48 hours depending on project complexity. Sites and platforms in custom code (no proprietary no-code), maintainable and auditable. Mobile-first UX/UI and development, multi-CMS e-commerce and AI building blocks all within our scope. EU hosting, documented GDPR compliance. The source code, content and AI models belong to you and stay portable to any integrator or your internal teams — no mandatory ongoing contractual dependency.",
       },
     },
   },

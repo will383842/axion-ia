@@ -130,11 +130,11 @@ export const MARTIGUES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis et qui détient le code ?",
-            a: "Un devis vous est remis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Vous détenez l'intégralité du code source et des données : tout est transférable à un autre prestataire de Provence-Alpes-Côte d'Azur ou repris par vos équipes. Pas de no-code propriétaire, pas de dépendance Axion-IA.",
+            a: "Un devis vous est remis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Vous détenez l'intégralité du code source et des données : tout est transférable à un autre prestataire de Provence-Alpes-Côte d'Azur ou repris par vos équipes. Pas de no-code propriétaire, pas de dépendance Axion-IA.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité, après un échange de cadrage. Code custom maintenable conçu pour durer, jamais de no-code propriétaire enfermant. Hébergement en Union européenne et conformité RGPD by design, avec registre de traitement fourni. Vous détenez l'intégralité du code source et des données, transférables à tout intégrateur de la région Provence-Alpes-Côte d'Azur ou repris en interne — aucun verrou Axion-IA. Pour les environnements industriels de la plateforme de Lavéra, les données techniques et HSE sensibles restent sur votre infrastructure.",
+          "Devis remis à partir de 48 h selon la complexité, après un échange de cadrage. Code custom maintenable conçu pour durer, jamais de no-code propriétaire enfermant. Hébergement en Union européenne et conformité RGPD by design, avec registre de traitement fourni. Vous détenez l'intégralité du code source et des données, transférables à tout intégrateur de la région Provence-Alpes-Côte d'Azur ou repris en interne — aucun verrou Axion-IA. Pour les environnements industriels de la plateforme de Lavéra, les données techniques et HSE sensibles restent sur votre infrastructure.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for the Martigues business fabric built around the Lavéra petrochemical platform — 650 hectares, one of the largest complexes in southern Europe, where Petroineos refines 210,000 barrels a day, where the Naphtachimie steam cracker has run since 1945, and where Ineos employs more than 1,000 people across nine companies. Around these prime contractors orbit more than 2,000 SMEs and industrial subcontractors in maintenance and services. We build them business portals, client extranets and document-management platforms in custom code — RAG chatbots on your HSE references, semantic search across your maintenance tender files, purchase-order extraction agents — hosted in the EU, GDPR-compliant, with no vendor lock-in.",
@@ -216,11 +216,11 @@ export const MARTIGUES_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote and who owns the code?",
-            a: "A quote is delivered within 24 to 48 hours depending on project complexity, after an initial framing exchange. You own all source code and data: everything is transferable to another Provence-Alpes-Côte d'Azur provider or taken in-house. No proprietary no-code, no Axion-IA dependency.",
+            a: "A quote is delivered within 48 hours depending on project complexity, after an initial framing exchange. You own all source code and data: everything is transferable to another Provence-Alpes-Côte d'Azur provider or taken in-house. No proprietary no-code, no Axion-IA dependency.",
           },
         ],
         guarantees:
-          "Quote delivered within 24 to 48 hours depending on complexity, after a framing exchange. Maintainable custom code built to last, never lock-in proprietary no-code. EU hosting and GDPR compliance by design, with processing register provided. You own all source code and data, transferable to any integrator in the Provence-Alpes-Côte d'Azur region or taken in-house — no Axion-IA lock-in. For the industrial environments of the Lavéra platform, sensitive technical and HSE data stays on your infrastructure.",
+          "Quote delivered within 48 hours depending on complexity, after a framing exchange. Maintainable custom code built to last, never lock-in proprietary no-code. EU hosting and GDPR compliance by design, with processing register provided. You own all source code and data, transferable to any integrator in the Provence-Alpes-Côte d'Azur region or taken in-house — no Axion-IA lock-in. For the industrial environments of the Lavéra platform, sensitive technical and HSE data stays on your infrastructure.",
       },
     },
   },

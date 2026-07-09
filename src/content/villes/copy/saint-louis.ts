@@ -50,7 +50,7 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Louis (Haut-Rhin) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière de 22 805 habitants soudée à Bâle (3,5 km) et Weil am Rhein (4 km), où le tissu vit du commerce transfrontalier, de la logistique liée à l'EuroAirport, du BTP et de la santé libérale. Du commerce du centre-ville aux acteurs du futur quartier d'affaires Euro3Lys et de la ZAC du Technoport, nous concevons des expériences bilingues FR/DE et des plateformes métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Louis, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Louis (Haut-Rhin) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière de 22 805 habitants soudée à Bâle (3,5 km) et Weil am Rhein (4 km), où le tissu vit du commerce transfrontalier, de la logistique liée à l'EuroAirport, du BTP et de la santé libérale. Du commerce du centre-ville aux acteurs du futur quartier d'affaires Euro3Lys et de la ZAC du Technoport, nous concevons des expériences bilingues FR/DE et des plateformes métier. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Louis, itérations à distance.",
         whyHere: [
           "Commerce transfrontalier capté par une clientèle suisse et allemande de l'autre côté du Rhin : on construit des vitrines e-commerce et des parcours d'achat bilingues FR/DE (Shopify, WooCommerce, PrestaShop) pensés pour des paniers, devises et habitudes différentes d'une rive à l'autre, des commerces du centre-ville aux futures enseignes du pôle commerce et loisirs du Technoport.",
           "Logistique et transport adossés à l'EuroAirport Bâle-Mulhouse-Fribourg (2 km, 7e aéroport français) et à l'A35 : portails de suivi, prise de RDV et agents d'automatisation pour transporteurs et prestataires de la zone aéroportuaire et du futur quartier d'affaires Euro3Lys (144 hectares), branchés sur leurs TMS et outils existants sans refonte du SI.",
@@ -61,7 +61,7 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Louis",
             detail:
-              "Atelier sur site (centre-ville près de la gare TER Saint-Louis, ZAC du Technoport, zone EuroAirport ou parc d'activités frontalier) : objectifs, parcours utilisateurs bilingues FR/DE, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville près de la gare TER Saint-Louis, ZAC du Technoport, zone EuroAirport ou parc d'activités frontalier) : objectifs, parcours utilisateurs bilingues FR/DE, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Saint-Louis, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique pour la zone frontalière ni pour les communes du Pays de Saint-Louis.",
+            a: "Oui. Après le cadrage à Saint-Louis, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique pour la zone frontalière ni pour les communes du Pays de Saint-Louis.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale transfrontalière. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, transferts hors UE documentés : propriété totale, aucun abonnement imposé, aucun lock-in. Solution transférable à tout prestataire local du Pays de Saint-Louis ou du Haut-Rhin, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale transfrontalière. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, transferts hors UE documentés : propriété totale, aucun abonnement imposé, aucun lock-in. Solution transférable à tout prestataire local du Pays de Saint-Louis ou du Haut-Rhin, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Louis (Haut-Rhin) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière de 22 805 habitants soudée à Bâle (3,5 km) et Weil am Rhein (4 km), où le tissu vit du commerce transfrontalier, de la logistique liée à l'EuroAirport, du BTP et de la santé libérale. Du commerce du centre-ville aux acteurs du futur quartier d'affaires Euro3Lys et de la ZAC du Technoport, nous concevons des expériences bilingues FR/DE et des plateformes métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Louis, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Louis (Haut-Rhin) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière de 22 805 habitants soudée à Bâle (3,5 km) et Weil am Rhein (4 km), où le tissu vit du commerce transfrontalier, de la logistique liée à l'EuroAirport, du BTP et de la santé libérale. Du commerce du centre-ville aux acteurs du futur quartier d'affaires Euro3Lys et de la ZAC du Technoport, nous concevons des expériences bilingues FR/DE et des plateformes métier. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Louis, itérations à distance.",
         whyHere: [
           "Commerce transfrontalier capté par une clientèle suisse et allemande de l'autre côté du Rhin : on construit des vitrines e-commerce et des parcours d'achat bilingues FR/DE (Shopify, WooCommerce, PrestaShop) pensés pour des paniers, devises et habitudes différentes d'une rive à l'autre, des commerces du centre-ville aux futures enseignes du pôle commerce et loisirs du Technoport.",
           "Logistique et transport adossés à l'EuroAirport Bâle-Mulhouse-Fribourg (2 km, 7e aéroport français) et à l'A35 : portails de suivi, prise de RDV et agents d'automatisation pour transporteurs et prestataires de la zone aéroportuaire et du futur quartier d'affaires Euro3Lys (144 hectares), branchés sur leurs TMS et outils existants sans refonte du SI.",
@@ -147,7 +147,7 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Louis",
             detail:
-              "Atelier sur site (centre-ville près de la gare TER Saint-Louis, ZAC du Technoport, zone EuroAirport ou parc d'activités frontalier) : objectifs, parcours utilisateurs bilingues FR/DE, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville près de la gare TER Saint-Louis, ZAC du Technoport, zone EuroAirport ou parc d'activités frontalier) : objectifs, parcours utilisateurs bilingues FR/DE, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Saint-Louis, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique pour la zone frontalière ni pour les communes du Pays de Saint-Louis.",
+            a: "Oui. Après le cadrage à Saint-Louis, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique pour la zone frontalière ni pour les communes du Pays de Saint-Louis.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale transfrontalière. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, transferts hors UE documentés : propriété totale, aucun abonnement imposé, aucun lock-in. Solution transférable à tout prestataire local du Pays de Saint-Louis ou du Haut-Rhin, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale transfrontalière. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, transferts hors UE documentés : propriété totale, aucun abonnement imposé, aucun lock-in. Solution transférable à tout prestataire local du Pays de Saint-Louis ou du Haut-Rhin, ou reprise en interne par vos équipes.",
       },
     },
   },

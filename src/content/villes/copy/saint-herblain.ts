@@ -51,7 +51,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA à Saint-Herblain, deuxième pôle tertiaire de Nantes Métropole. Le terrain local n'a rien d'abstrait : le Parc Ar Mor / Ar Mor Zénith (~53 ha, ~100 000 m² de bureaux, ~5 000 emplois autour du Zénith) concentre des éditeurs de logiciels et des ESN — RCA (SaaS pour la profession comptable, près d'un million d'utilisateurs), Sopra Steria (services numériques, plus de 1 500 collaborateurs dans l'aire nantaise), Alten, Extia, In Extenso. À côté, la ZILO (GRTgaz, Brenntag, Paprec Grand-Ouest) et la zone commerciale Atlantis structurent l'industrie fluviale et le commerce de détail. Nous y livrons des plateformes IA-native — chatbot RAG, recherche sémantique, agents conversationnels, portails e-commerce multi-CMS — en code custom, avec UX/UI et mobile soignés, hébergement en Union européenne conforme RGPD, sans verrou éditeur. Devis à partir de 24-48 h selon la complexité.",
+        hero: "Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA à Saint-Herblain, deuxième pôle tertiaire de Nantes Métropole. Le terrain local n'a rien d'abstrait : le Parc Ar Mor / Ar Mor Zénith (~53 ha, ~100 000 m² de bureaux, ~5 000 emplois autour du Zénith) concentre des éditeurs de logiciels et des ESN — RCA (SaaS pour la profession comptable, près d'un million d'utilisateurs), Sopra Steria (services numériques, plus de 1 500 collaborateurs dans l'aire nantaise), Alten, Extia, In Extenso. À côté, la ZILO (GRTgaz, Brenntag, Paprec Grand-Ouest) et la zone commerciale Atlantis structurent l'industrie fluviale et le commerce de détail. Nous y livrons des plateformes IA-native — chatbot RAG, recherche sémantique, agents conversationnels, portails e-commerce multi-CMS — en code custom, avec UX/UI et mobile soignés, hébergement en Union européenne conforme RGPD, sans verrou éditeur. Devis à partir de 48 h selon la complexité.",
         whyHere: [
           "Édition logicielle et SaaS B2B sont surreprésentés au Parc Ar Mor : un éditeur comme RCA y opère un SaaS comptable utilisé par près d'un million de personnes depuis 2007. Greffer un copilote IA, un search sémantique ou un agent de support sur une plateforme SaaS existante est exactement notre cœur de métier.",
           "Le tissu ESN/numérique herblinois (Sopra Steria, Alten, Extia, In Extenso) signifie que vos équipes parlent déjà API, intégration et conformité — nous livrons du code custom auditable, pas une boîte noire no-code, et la passation se fait sans friction avec vos développeurs.",
@@ -126,7 +126,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour obtenir un devis à Saint-Herblain ?",
-            a: "Devis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Pour un projet simple (site vitrine, landing) le devis est rapide ; pour une plateforme SaaS IA-native ou un e-commerce multi-CMS, nous prenons le temps de cadrer le périmètre sur site, généralement au Parc Ar Mor.",
+            a: "Devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un projet simple (site vitrine, landing) le devis est rapide ; pour une plateforme SaaS IA-native ou un e-commerce multi-CMS, nous prenons le temps de cadrer le périmètre sur site, généralement au Parc Ar Mor.",
           },
           {
             q: "Mes équipes gardent-elles la main après la livraison ?",
@@ -134,10 +134,10 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel sur un périmètre et un calendrier fixés à la signature. Hébergement en Union européenne conforme RGPD par défaut, avec registre des traitements et droits d'accès et d'effacement implémentés. Code TypeScript/Python auditable ligne par ligne, sans verrou éditeur ni boîte noire no-code : modèles, code et documentation restent intégralement chez vous, repris en interne ou par tout intégrateur de Nantes Métropole. Kick-off et recettes en présentiel à Saint-Herblain, vos développeurs ou ambassadeurs internes formés pour rester autonomes après la mise en production. Devis à partir de 24-48 h selon la complexité.",
+          "Engagement contractuel sur un périmètre et un calendrier fixés à la signature. Hébergement en Union européenne conforme RGPD par défaut, avec registre des traitements et droits d'accès et d'effacement implémentés. Code TypeScript/Python auditable ligne par ligne, sans verrou éditeur ni boîte noire no-code : modèles, code et documentation restent intégralement chez vous, repris en interne ou par tout intégrateur de Nantes Métropole. Kick-off et recettes en présentiel à Saint-Herblain, vos développeurs ou ambassadeurs internes formés pour rester autonomes après la mise en production. Devis à partir de 48 h selon la complexité.",
       },
       en: {
-        hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Saint-Herblain, the second-largest tertiary hub of Nantes Métropole. The local ground is concrete: the Parc Ar Mor / Ar Mor Zénith business district (~53 ha, ~100,000 sqm of offices, ~5,000 jobs around the Zénith) concentrates software publishers and IT services firms — RCA (SaaS for the accounting profession, nearly one million users), Sopra Steria (digital services, over 1,500 staff in the Nantes area), Alten, Extia, In Extenso. Nearby, the ZILO riverside industrial zone (GRTgaz, Brenntag, Paprec Grand-Ouest) and the Atlantis retail zone structure river-industry and retail. We deliver AI-native platforms — RAG chatbot, semantic search, conversational agents, multi-CMS e-commerce portals — in custom code, with polished UX/UI and mobile, EU GDPR-compliant hosting, no vendor lock-in. Quote from 24-48 h depending on complexity.",
+        hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Saint-Herblain, the second-largest tertiary hub of Nantes Métropole. The local ground is concrete: the Parc Ar Mor / Ar Mor Zénith business district (~53 ha, ~100,000 sqm of offices, ~5,000 jobs around the Zénith) concentrates software publishers and IT services firms — RCA (SaaS for the accounting profession, nearly one million users), Sopra Steria (digital services, over 1,500 staff in the Nantes area), Alten, Extia, In Extenso. Nearby, the ZILO riverside industrial zone (GRTgaz, Brenntag, Paprec Grand-Ouest) and the Atlantis retail zone structure river-industry and retail. We deliver AI-native platforms — RAG chatbot, semantic search, conversational agents, multi-CMS e-commerce portals — in custom code, with polished UX/UI and mobile, EU GDPR-compliant hosting, no vendor lock-in. Quote from 48 h depending on complexity.",
         whyHere: [
           "Software publishing and B2B SaaS are over-represented at Parc Ar Mor: a publisher like RCA runs an accounting SaaS used by nearly a million people since 2007. Grafting an AI copilot, semantic search or support agent onto an existing SaaS platform is precisely our core business.",
           "The local IT services / digital fabric (Sopra Steria, Alten, Extia, In Extenso) means your teams already speak API, integration and compliance — we deliver auditable custom code, not a no-code black box, and handover is frictionless with your developers.",
@@ -212,7 +212,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
           },
           {
             q: "How quickly do I get a quote in Saint-Herblain?",
-            a: "Quote from 24-48 h depending on project complexity, after an initial framing exchange. For a simple project (showcase site, landing) the quote is fast; for an AI-native SaaS platform or multi-CMS e-commerce, we take time to frame the scope on site, usually at Parc Ar Mor.",
+            a: "Quote from 48 h depending on project complexity, after an initial framing exchange. For a simple project (showcase site, landing) the quote is fast; for an AI-native SaaS platform or multi-CMS e-commerce, we take time to frame the scope on site, usually at Parc Ar Mor.",
           },
           {
             q: "Do my teams keep control after delivery?",
@@ -220,7 +220,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment on a scope and schedule fixed at signature. EU GDPR-compliant hosting by default, with processing register and access and erasure rights implemented. Auditable TypeScript/Python code, no vendor lock-in or no-code black box: models, code and documentation stay entirely with you, taken over in-house or by any Nantes Métropole integrator. Kick-off and acceptance in person in Saint-Herblain, your developers or internal ambassadors trained to stay autonomous after go-live. Quote from 24-48 h depending on complexity.",
+          "Contractual commitment on a scope and schedule fixed at signature. EU GDPR-compliant hosting by default, with processing register and access and erasure rights implemented. Auditable TypeScript/Python code, no vendor lock-in or no-code black box: models, code and documentation stay entirely with you, taken over in-house or by any Nantes Métropole integrator. Kick-off and acceptance in person in Saint-Herblain, your developers or internal ambassadors trained to stay autonomous after go-live. Quote from 48 h depending on complexity.",
       },
     },
   },

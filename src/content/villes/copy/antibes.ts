@@ -128,7 +128,7 @@ export const ANTIBES_COPY: VilleCopy = {
           },
           {
             q: "Sous combien de temps puis-je avoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Pour une e-boutique d'artisan du Safranier ou une vitrine de commerce, le chiffrage est rapide ; pour un portail brokerage yachting multilingue avec intégrations ou un SaaS IA-native, il faut un court cadrage pour préciser le périmètre avant de chiffrer.",
+            a: "À partir de 48 h selon la complexité. Pour une e-boutique d'artisan du Safranier ou une vitrine de commerce, le chiffrage est rapide ; pour un portail brokerage yachting multilingue avec intégrations ou un SaaS IA-native, il faut un court cadrage pour préciser le périmètre avant de chiffrer.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD pour une clientèle internationale fortunée ?",
@@ -136,7 +136,7 @@ export const ANTIBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement clair : périmètre, livrables et budget fixés au devis, sans dérive horaire cachée. Devis à partir de 24 à 48 h selon la complexité. Sites et plateformes multilingues (FR/EN/IT/RU selon la clientèle internationale du port), optimisés mobile et Web Vitals pour tenir la charge en haute saison. Hébergement Union européenne par défaut, DPA et conformité RGPD, DPO sur demande. Aucun lock-in : code, contenus, accès et modèles IA restent à vous, transférables à tout intégrateur de la Côte d'Azur ou repris en interne après la mission.",
+          "Engagement clair : périmètre, livrables et budget fixés au devis, sans dérive horaire cachée. Devis à partir de 48 h selon la complexité. Sites et plateformes multilingues (FR/EN/IT/RU selon la clientèle internationale du port), optimisés mobile et Web Vitals pour tenir la charge en haute saison. Hébergement Union européenne par défaut, DPA et conformité RGPD, DPO sur demande. Aucun lock-in : code, contenus, accès et modèles IA restent à vous, transférables à tout intégrateur de la Côte d'Azur ou repris en interne après la mission.",
       },
       en: {
         hero: "Antibes runs on three economic engines few cities combine: Port Vauban, Europe's largest marina (around 1,500 berths, yachts up to 160 m, a 16,000 m² refit yard, a €135M transformation by Atelier Philippe Prost), a direct IT spillover from Sophia Antipolis 7 km away (Amadeus and its 4,200-plus staff, Intel, STMicroelectronics), and premium tourism built around Juan-les-Pins and the Jazz à Juan festival. In Antibes, Axion-IA designs AI-augmented websites and SaaS platforms for these ecosystems: brokers and crew agencies of the IYCA district, hotels of the Cap and Juan-les-Pins, software publishers near the technopole, shops and artisans of the Safranier quarter. Custom code, native multilingual support, European Union GDPR hosting, zero vendor lock-in.",
@@ -214,7 +214,7 @@ export const ANTIBES_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote?",
-            a: "From 24 to 48 hours depending on complexity. For a Safranier artisan e-shop or a shop showcase, costing is fast; for a multilingual yachting brokerage portal with integrations or an AI-native SaaS, a short framing is needed to clarify scope before quoting.",
+            a: "From 48 hours depending on complexity. For a Safranier artisan e-shop or a shop showcase, costing is fast; for a multilingual yachting brokerage portal with integrations or an AI-native SaaS, a short framing is needed to clarify scope before quoting.",
           },
           {
             q: "How do you guarantee GDPR compliance for a wealthy international clientele?",
@@ -222,7 +222,7 @@ export const ANTIBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Clear commitment: scope, deliverables and budget fixed in the quote, with no hidden hourly drift. Quote from 24 to 48 hours depending on complexity. Multilingual sites and platforms (FR/EN/IT/RU per the port's international clientele), mobile- and Web-Vitals-optimized to hold the load in high season. European Union hosting by default, DPA and GDPR compliance, DPO on request. No lock-in: code, content, access and AI models remain yours, transferable to any Côte d'Azur integrator or taken in-house after the mission.",
+          "Clear commitment: scope, deliverables and budget fixed in the quote, with no hidden hourly drift. Quote from 48 hours depending on complexity. Multilingual sites and platforms (FR/EN/IT/RU per the port's international clientele), mobile- and Web-Vitals-optimized to hold the load in high season. European Union hosting by default, DPA and GDPR compliance, DPO on request. No lock-in: code, content, access and AI models remain yours, transferable to any Côte d'Azur integrator or taken in-house after the mission.",
       },
     },
   },

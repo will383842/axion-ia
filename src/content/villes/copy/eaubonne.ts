@@ -49,7 +49,7 @@ export const EAUBONNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Eaubonne, dans le Val-d'Oise (95), des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de banlieue nord-ouest francilienne où le tissu mêle artisans BTP, le marché couvert et les commerces du centre-ville, les professions de santé gravitant autour du Groupement Hospitalier Eaubonne-Montmorency (site Simone-Veil, 14 rue de Saint-Prix) et les PME industrielles de mécanique et métallerie du bassin Val Parisis. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Eaubonne, près de la gare Ermont-Eaubonne, itérations à distance, à 25 minutes de Paris Saint-Lazare.",
+        hero: "Axion-IA conçoit et augmente à Eaubonne, dans le Val-d'Oise (95), des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de banlieue nord-ouest francilienne où le tissu mêle artisans BTP, le marché couvert et les commerces du centre-ville, les professions de santé gravitant autour du Groupement Hospitalier Eaubonne-Montmorency (site Simone-Veil, 14 rue de Saint-Prix) et les PME industrielles de mécanique et métallerie du bassin Val Parisis. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Eaubonne, près de la gare Ermont-Eaubonne, itérations à distance, à 25 minutes de Paris Saint-Lazare.",
         whyHere: [
           "Densité d'artisans BTP (plomberie, électricité, menuiserie, peinture) au cœur du Val Parisis, autour de l'avenue de Paris et de la route de Saint-Leu : on construit des sites vitrines qui convertissent et on greffe des automatisations concrètes — devis de chantier générés, prise de RDV par agent IA, galeries avant/après classées automatiquement, relances clients sur les zones pavillonnaires d'Eaubonne et de Saint-Leu-la-Forêt.",
           "Groupement Hospitalier Eaubonne-Montmorency (site Simone-Veil, ~2 000 salariés, 14 rue de Saint-Prix) et professions de santé structurantes du Val-d'Oise est : on conçoit des portails patients, des prises de RDV en ligne et des chatbots RAG cadrés par le secret médical, avec une chaîne IA hébergeable en UE et conforme RGPD-santé, pour cabinets et praticiens libéraux du bassin Eaubonne–Montmorency.",
@@ -60,7 +60,7 @@ export const EAUBONNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Eaubonne",
             detail:
-              "Atelier sur site (centre-ville et marché couvert, abords de la gare Ermont-Eaubonne, ateliers PME du Val Parisis) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville et marché couvert, abords de la gare Ermont-Eaubonne, ateliers PME du Val Parisis) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const EAUBONNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Eaubonne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : vous savez ce que vous payez et ce que vous recevez, code et données compris.",
+            a: "Oui. Après le cadrage sur site à Eaubonne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : vous savez ce que vous payez et ce que vous recevez, code et données compris.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en jour de marché ou en pleine prise de RDV. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire du Val-d'Oise ou repris en interne par vos équipes, en toute autonomie.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en jour de marché ou en pleine prise de RDV. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire du Val-d'Oise ou repris en interne par vos équipes, en toute autonomie.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Eaubonne, dans le Val-d'Oise (95), des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de banlieue nord-ouest francilienne où le tissu mêle artisans BTP, le marché couvert et les commerces du centre-ville, les professions de santé gravitant autour du Groupement Hospitalier Eaubonne-Montmorency (site Simone-Veil, 14 rue de Saint-Prix) et les PME industrielles de mécanique et métallerie du bassin Val Parisis. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Eaubonne, près de la gare Ermont-Eaubonne, itérations à distance, à 25 minutes de Paris Saint-Lazare.",
+        hero: "Axion-IA conçoit et augmente à Eaubonne, dans le Val-d'Oise (95), des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de banlieue nord-ouest francilienne où le tissu mêle artisans BTP, le marché couvert et les commerces du centre-ville, les professions de santé gravitant autour du Groupement Hospitalier Eaubonne-Montmorency (site Simone-Veil, 14 rue de Saint-Prix) et les PME industrielles de mécanique et métallerie du bassin Val Parisis. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Eaubonne, près de la gare Ermont-Eaubonne, itérations à distance, à 25 minutes de Paris Saint-Lazare.",
         whyHere: [
           "Densité d'artisans BTP (plomberie, électricité, menuiserie, peinture) au cœur du Val Parisis, autour de l'avenue de Paris et de la route de Saint-Leu : on construit des sites vitrines qui convertissent et on greffe des automatisations concrètes — devis de chantier générés, prise de RDV par agent IA, galeries avant/après classées automatiquement, relances clients sur les zones pavillonnaires d'Eaubonne et de Saint-Leu-la-Forêt.",
           "Groupement Hospitalier Eaubonne-Montmorency (site Simone-Veil, ~2 000 salariés, 14 rue de Saint-Prix) et professions de santé structurantes du Val-d'Oise est : on conçoit des portails patients, des prises de RDV en ligne et des chatbots RAG cadrés par le secret médical, avec une chaîne IA hébergeable en UE et conforme RGPD-santé, pour cabinets et praticiens libéraux du bassin Eaubonne–Montmorency.",
@@ -146,7 +146,7 @@ export const EAUBONNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Eaubonne",
             detail:
-              "Atelier sur site (centre-ville et marché couvert, abords de la gare Ermont-Eaubonne, ateliers PME du Val Parisis) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville et marché couvert, abords de la gare Ermont-Eaubonne, ateliers PME du Val Parisis) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -214,11 +214,11 @@ export const EAUBONNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Eaubonne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : vous savez ce que vous payez et ce que vous recevez, code et données compris.",
+            a: "Oui. Après le cadrage sur site à Eaubonne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : vous savez ce que vous payez et ce que vous recevez, code et données compris.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en jour de marché ou en pleine prise de RDV. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire du Val-d'Oise ou repris en interne par vos équipes, en toute autonomie.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en jour de marché ou en pleine prise de RDV. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire du Val-d'Oise ou repris en interne par vos équipes, en toute autonomie.",
       },
     },
   },

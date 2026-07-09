@@ -248,7 +248,7 @@ export const NANTERRE_COPY: VilleCopy = {
           {
             step: "Cadrage à distance",
             detail:
-              "Brief confidentiel pour comprendre votre existant (CMS, ERP, CRM, intranet), votre secteur — concessions/BTP, équipement automobile, finance La Défense Ouest, recherche — et le périmètre du site ou de la plateforme SaaS visée. Devis remis à partir de 24-48 h selon la complexité.",
+              "Brief confidentiel pour comprendre votre existant (CMS, ERP, CRM, intranet), votre secteur — concessions/BTP, équipement automobile, finance La Défense Ouest, recherche — et le périmètre du site ou de la plateforme SaaS visée. Devis remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Kick-off sur site à Nanterre",
@@ -304,7 +304,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Nous lançons une activité dans l'éco-quartier des Groues à Nanterre : pouvez-vous livrer vite un site ou un SaaS ?",
-            a: "Oui. Les structures qui s'implantent aux Groues ou près du terminus RER E Nanterre-La Folie ont souvent besoin d'aller vite : site vitrine, e-commerce ou MVP de plateforme SaaS IA-native. Après cadrage, le devis est remis à partir de 24-48 h selon la complexité, et nous travaillons en sprints pour une première version en ligne rapidement, sans verrou éditeur.",
+            a: "Oui. Les structures qui s'implantent aux Groues ou près du terminus RER E Nanterre-La Folie ont souvent besoin d'aller vite : site vitrine, e-commerce ou MVP de plateforme SaaS IA-native. Après cadrage, le devis est remis à partir de 48 h selon la complexité, et nous travaillons en sprints pour une première version en ligne rapidement, sans verrou éditeur.",
           },
           {
             q: "L'IA de notre plateforme peut-elle exploiter nos documents techniques, par exemple pour un équipementier ou un acteur du BTP ?",
@@ -320,7 +320,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24-48 h selon la complexité, périmètre et livrables fixés au contrat. Hébergement en Union européenne par défaut, conformité RGPD et AI Act documentée et livrée avec le projet, DPO sur demande. Vous restez propriétaire du code, des modèles et des données : la plateforme est portable, maintenable en interne ou par tout intégrateur des Hauts-de-Seine, sans verrou éditeur ni dépendance contractuelle imposée. Kick-off et recette toujours en présentiel à Nanterre.",
+          "Devis remis à partir de 48 h selon la complexité, périmètre et livrables fixés au contrat. Hébergement en Union européenne par défaut, conformité RGPD et AI Act documentée et livrée avec le projet, DPO sur demande. Vous restez propriétaire du code, des modèles et des données : la plateforme est portable, maintenable en interne ou par tout intégrateur des Hauts-de-Seine, sans verrou éditeur ni dépendance contractuelle imposée. Kick-off et recette toujours en présentiel à Nanterre.",
       },
       en: {
         hero: "In Nanterre, the B2B fabric plays out on two fronts: the major headquarters on the western edge of La Défense — VINCI and its global HQ \"L'Archipel\" (74,000 m²) straddling the Nanterre-La Folie RER E station, Faurecia Sièges d'Automobile in the Champs-Pierreux business park, the tertiary offices of Nanterre-Préfecture — and the Les Groues eco-district, 76 hectares under construction set to host 12,000 jobs, SMEs, startups and fab-labs. Axion-IA builds AI-augmented websites and SaaS platforms for these players: client portals, RAG chatbots, semantic search and business automations, custom-coded, EU-hosted and GDPR-compliant, with no vendor lock-in.",
@@ -334,7 +334,7 @@ export const NANTERRE_COPY: VilleCopy = {
           {
             step: "Remote framing",
             detail:
-              "Confidential brief to understand your existing stack (CMS, ERP, CRM, intranet), your sector — concessions/construction, automotive equipment, La Défense Ouest finance, research — and the scope of the targeted website or SaaS platform. Quote delivered from 24-48 h depending on complexity.",
+              "Confidential brief to understand your existing stack (CMS, ERP, CRM, intranet), your sector — concessions/construction, automotive equipment, La Défense Ouest finance, research — and the scope of the targeted website or SaaS platform. Quote delivered from 48 h depending on complexity.",
           },
           {
             step: "On-site kick-off in Nanterre",
@@ -390,7 +390,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "We're launching an activity in the Les Groues eco-district in Nanterre: can you deliver a site or SaaS quickly?",
-            a: "Yes. Structures setting up in Les Groues or near the Nanterre-La Folie RER E terminus often need speed: showcase site, e-commerce or an AI-native SaaS MVP. After framing, the quote is delivered from 24-48 h depending on complexity, and we work in sprints to get a first version live quickly, with no vendor lock-in.",
+            a: "Yes. Structures setting up in Les Groues or near the Nanterre-La Folie RER E terminus often need speed: showcase site, e-commerce or an AI-native SaaS MVP. After framing, the quote is delivered from 48 h depending on complexity, and we work in sprints to get a first version live quickly, with no vendor lock-in.",
           },
           {
             q: "Can our platform's AI use our technical documents, for instance for an automotive supplier or a construction player?",
@@ -406,7 +406,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24-48 h depending on complexity, scope and deliverables fixed in the contract. EU hosting by default, documented GDPR and AI Act compliance delivered with the project, DPO on request. You remain owner of the code, models and data: the platform is portable, maintainable in-house or by any integrator in the Hauts-de-Seine, with no vendor lock-in or imposed contractual dependency. Kick-off and acceptance always in person in Nanterre.",
+          "Quote delivered from 48 h depending on complexity, scope and deliverables fixed in the contract. EU hosting by default, documented GDPR and AI Act compliance delivered with the project, DPO on request. You remain owner of the code, models and data: the platform is portable, maintainable in-house or by any integrator in the Hauts-de-Seine, with no vendor lock-in or imposed contractual dependency. Kick-off and acceptance always in person in Nanterre.",
       },
     },
   },

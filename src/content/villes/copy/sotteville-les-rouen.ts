@@ -124,7 +124,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Sotteville-lès-Rouen ?",
-            a: "À partir de 24-48 h selon la complexité. Après un premier échange de cadrage, nous revenons vers vous avec un périmètre clair et un devis ferme — sans devis opaque ni montant caché.",
+            a: "À partir de 48 h selon la complexité. Après un premier échange de cadrage, nous revenons vers vous avec un périmètre clair et un devis ferme — sans devis opaque ni montant caché.",
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement la partie IA ?",
@@ -136,7 +136,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité, périmètre et prix fermes avant signature, sans coût caché. Hébergement en Union européenne, conformité RGPD et AI Act intégrée dès la conception, minimisation des données. Vous restez propriétaire du code, des contenus et des intégrations : aucun verrou éditeur, plateforme portable vers vos équipes ou tout intégrateur de la Métropole rouennaise. Performance (Web Vitals), accessibilité et sécurité vérifiées avant mise en ligne.",
+          "Devis à partir de 48 h selon la complexité, périmètre et prix fermes avant signature, sans coût caché. Hébergement en Union européenne, conformité RGPD et AI Act intégrée dès la conception, minimisation des données. Vous restez propriétaire du code, des contenus et des intégrations : aucun verrou éditeur, plateforme portable vers vos équipes ou tout intégrateur de la Métropole rouennaise. Performance (Web Vitals), accessibilité et sécurité vérifiées avant mise en ligne.",
       },
       en: {
         hero: "Sotteville-lès-Rouen, the second economic hub of the Rouen Normandy Metropolis (~13,000 jobs), lives by the railway: the SNCF Rouen Quatre-Mares Technicentre (over 70,000 m², 800+ staff, modernised through a near-€250M investment backed by the Normandy Region) and the legacy of the Buddicom workshops feed a fabric of industrial subcontractors. Alongside, the East Industrial Zone (~89 ha, ~271 companies, ~5,000 direct jobs: Kimberly-Clark, SADE, Segafredo Zanetti, Transdev Normandie, Metro France, TK Elevator, ArcelorMittal Distribution) and the Jonquay river port structure a dense logistics network along the A13 and N138. In Sotteville-lès-Rouen, Axion-IA builds AI-augmented websites and SaaS platforms for these industrial, logistics and craft SMEs — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -210,7 +210,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote in Sotteville-lès-Rouen?",
-            a: "From 24-48 hours depending on complexity. After an initial framing exchange, we come back with a clear scope and a firm quote — no opaque pricing, no hidden amounts.",
+            a: "From 48 hours depending on complexity. After an initial framing exchange, we come back with a clear scope and a firm quote — no opaque pricing, no hidden amounts.",
           },
           {
             q: "Do you handle UX/UI, mobile and e-commerce, or only the AI part?",
@@ -222,7 +222,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 hours depending on complexity, firm scope and price before signing, no hidden costs. Hosting in the European Union, GDPR and AI Act compliance built in from design, data minimisation. You remain owner of the code, content and integrations: no vendor lock-in, platform portable to your teams or any integrator in the Rouen metropolis. Performance (Web Vitals), accessibility and security verified before go-live.",
+          "Quote from 48 hours depending on complexity, firm scope and price before signing, no hidden costs. Hosting in the European Union, GDPR and AI Act compliance built in from design, data minimisation. You remain owner of the code, content and integrations: no vendor lock-in, platform portable to your teams or any integrator in the Rouen metropolis. Performance (Web Vitals), accessibility and security verified before go-live.",
       },
     },
   },

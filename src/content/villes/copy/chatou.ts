@@ -92,7 +92,7 @@ export const CHATOU_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou boutique IA",
             detail:
-              "Antiquaires et marchands de la Foire de Chatou, artisans d'art, commerces et indépendants de la boucle de Seine : site vitrine ou boutique e-commerce avec fiches objets générées par IA et prise de contact qualifiée. Devis à partir de 24-48 h selon la complexité.",
+              "Antiquaires et marchands de la Foire de Chatou, artisans d'art, commerces et indépendants de la boucle de Seine : site vitrine ou boutique e-commerce avec fiches objets générées par IA et prise de contact qualifiée. Devis à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -128,7 +128,7 @@ export const CHATOU_COPY: VilleCopy = {
           },
           {
             q: "En combien de temps ai-je un devis pour un site à Chatou ?",
-            a: "À partir de 24-48 h selon la complexité après le cadrage initial. Nous précisons le périmètre, la stack et les briques IA, puis nous remettons un devis clair. Le kick-off se fait sur site à Chatou ou en visio.",
+            a: "À partir de 48 h selon la complexité après le cadrage initial. Nous précisons le périmètre, la stack et les briques IA, puis nous remettons un devis clair. Le kick-off se fait sur site à Chatou ou en visio.",
           },
           {
             q: "Où sont hébergées les données et suis-je dépendant d'Axion-IA ensuite ?",
@@ -136,7 +136,7 @@ export const CHATOU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis clair à partir de 24-48 h selon la complexité, périmètre et stack écrits avant tout développement. Hébergement en Union européenne par défaut, conformité RGPD et minimisation des données — un standard exigé par les profils sensibles de Chatou, du laboratoire pharmaceutique Mayoly Spindler à la R&D d'EDF Lab. Web Vitals optimisés (LCP, INP, CLS), accessibilité et SEO local. Zéro lock-in : code, contenus et modèles restent votre propriété, repris en interne ou par tout intégrateur de l'ouest parisien. Aucun chiffre de performance ni témoignage inventé : nous nous engageons sur un livrable défini contractuellement.",
+          "Devis clair à partir de 48 h selon la complexité, périmètre et stack écrits avant tout développement. Hébergement en Union européenne par défaut, conformité RGPD et minimisation des données — un standard exigé par les profils sensibles de Chatou, du laboratoire pharmaceutique Mayoly Spindler à la R&D d'EDF Lab. Web Vitals optimisés (LCP, INP, CLS), accessibilité et SEO local. Zéro lock-in : code, contenus et modèles restent votre propriété, repris en interne ou par tout intégrateur de l'ouest parisien. Aucun chiffre de performance ni témoignage inventé : nous nous engageons sur un livrable défini contractuellement.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms in Chatou (78), in the Seine loop. The town has a rare fabric: on the Île des Impressionnistes, EDF Lab Chatou — the EDF group's historic R&D site since 1946 and home of the National Hydraulics and Environment Laboratory (LNHE) and the Saint-Venant lab — coexists with the national antiques and ham fair, France's largest flea market (over 320 SNCAO-GA antique dealers since 1970). Add the headquarters of the family-owned pharmaceutical lab Mayoly Spindler (avenue de l'Europe), a Thales presence and more than 2,000 companies. We build bespoke AI-native platforms for these profiles: scientific computing portals, antiques marketplaces, e-commerce sites and multi-CMS storefronts — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -178,7 +178,7 @@ export const CHATOU_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "AI storefront or shop",
             detail:
-              "Antique dealers from the Foire de Chatou, art craftspeople, retailers and freelancers of the Seine loop: brochure site or e-commerce shop with AI-generated item listings and qualified contact capture. Quote from 24-48 h depending on complexity.",
+              "Antique dealers from the Foire de Chatou, art craftspeople, retailers and freelancers of the Seine loop: brochure site or e-commerce shop with AI-generated item listings and qualified contact capture. Quote from 48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -214,7 +214,7 @@ export const CHATOU_COPY: VilleCopy = {
           },
           {
             q: "How quickly do I get a quote for a website in Chatou?",
-            a: "From 24-48 h depending on complexity after the initial framing. We specify scope, stack and AI blocks, then deliver a clear quote. The kick-off takes place on site in Chatou or by video.",
+            a: "From 48 h depending on complexity after the initial framing. We specify scope, stack and AI blocks, then deliver a clear quote. The kick-off takes place on site in Chatou or by video.",
           },
           {
             q: "Where is data hosted and am I then dependent on Axion-IA?",
@@ -222,7 +222,7 @@ export const CHATOU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Clear quote from 24-48 h depending on complexity, scope and stack written before any development. EU hosting by default, GDPR compliance and data minimization — a standard required by Chatou's sensitive profiles, from the Mayoly Spindler pharmaceutical lab to EDF Lab R&D. Optimized Web Vitals (LCP, INP, CLS), accessibility and local SEO. Zero lock-in: code, content and models remain your property, taken over in-house or by any western-Paris integrator. No invented performance figures or testimonials: we commit to a contractually defined deliverable.",
+          "Clear quote from 48 h depending on complexity, scope and stack written before any development. EU hosting by default, GDPR compliance and data minimization — a standard required by Chatou's sensitive profiles, from the Mayoly Spindler pharmaceutical lab to EDF Lab R&D. Optimized Web Vitals (LCP, INP, CLS), accessibility and local SEO. Zero lock-in: code, content and models remain your property, taken over in-house or by any western-Paris integrator. No invented performance figures or testimonials: we commit to a contractually defined deliverable.",
       },
     },
   },

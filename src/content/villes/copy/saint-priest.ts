@@ -132,11 +132,11 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Saint-Priest ?",
-            a: "Un devis est remis à partir de 24 à 48 h selon la complexité du projet. La desserte par le tram T2, la rocade est et l'A43 nous permet de venir cadrer le projet sur site, de la ZI Mi-Plaine au Parc Technologique de Lyon, sans friction d'agenda.",
+            a: "Un devis est remis à partir de 48 h selon la complexité du projet. La desserte par le tram T2, la rocade est et l'A43 nous permet de venir cadrer le projet sur site, de la ZI Mi-Plaine au Parc Technologique de Lyon, sans friction d'agenda.",
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité, scope écrit avant signature. Sites et plateformes construits pour la performance (Web Vitals stricts) et la citabilité par les moteurs IA. Hébergement en Union européenne, conformité RGPD et AI Act cadrées dès la conception. Aucun verrou éditeur : code, contenus et données restent les vôtres, transférables à tout intégrateur de la métropole lyonnaise. Votre équipe est formée à l'édition et au pilotage du chatbot pour rester autonome après la mise en ligne.",
+          "Devis à partir de 48 h selon la complexité, scope écrit avant signature. Sites et plateformes construits pour la performance (Web Vitals stricts) et la citabilité par les moteurs IA. Hébergement en Union européenne, conformité RGPD et AI Act cadrées dès la conception. Aucun verrou éditeur : code, contenus et données restent les vôtres, transférables à tout intégrateur de la métropole lyonnaise. Votre équipe est formée à l'édition et au pilotage du chatbot pour rester autonome après la mise en ligne.",
       },
       en: {
         hero: "In Saint-Priest, Axion-IA builds AI-augmented websites and SaaS platforms for the densest industrial and logistics fabric in eastern Lyon: mechanical and metalworking subcontractors of the ZI Mi-Plaine (France's second largest industrial zone by employment), logistics and wholesale operators, tech SMEs and engineering offices of the Parc Technologique de Lyon-Porte des Alpes, suppliers orbiting Renault Trucks, Montabert or Boehringer Ingelheim. B2B quote front-ends, supplier portals, technical configurators, customer areas connected to your ERP: custom code, a RAG chatbot fed with your catalogues and datasheets, hosting in the European Union and GDPR compliance by design.",
@@ -218,11 +218,11 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
           },
           {
             q: "How fast can I get a quote in Saint-Priest?",
-            a: "A quote is provided from 24 to 48 hours depending on project complexity. The T2 tram, the eastern ring road and the A43 let us come and frame the project on site, from the ZI Mi-Plaine to the Parc Technologique de Lyon, without scheduling friction.",
+            a: "A quote is provided from 48 hours depending on project complexity. The T2 tram, the eastern ring road and the A43 let us come and frame the project on site, from the ZI Mi-Plaine to the Parc Technologique de Lyon, without scheduling friction.",
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity, written scope before signature. Sites and platforms built for performance (strict Web Vitals) and citability by AI engines. Hosting in the European Union, GDPR and AI Act compliance framed by design. No vendor lock-in: code, content and data remain yours, transferable to any integrator in the Lyon metropolitan area. Your team is trained on editing and chatbot management to stay autonomous after go-live.",
+          "Quote from 48 hours depending on complexity, written scope before signature. Sites and platforms built for performance (strict Web Vitals) and citability by AI engines. Hosting in the European Union, GDPR and AI Act compliance framed by design. No vendor lock-in: code, content and data remain yours, transferable to any integrator in the Lyon metropolitan area. Your team is trained on editing and chatbot management to stay autonomous after go-live.",
       },
     },
   },

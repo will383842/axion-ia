@@ -51,7 +51,7 @@ export const LANESTER_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lanester des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la 3e commune du Morbihan (23 263 habitants), tournée vers la construction navale civile et militaire — Naval Group, Kership Lorient (ex-chantier STX, repris en 2016) et Chantiers Piriou — et un tissu dense de TPE du commerce et de l'artisanat des zones Kerpont. La zone industrielle du Rohu, face au site Naval Group, structure une filière de sous-traitants à digitaliser, tandis que le grand centre commercial proche de Caudan irrigue le commerce local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Lanester, itérations à distance avec l'agglomération lorientaise.",
+        hero: "Axion-IA conçoit et augmente à Lanester des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la 3e commune du Morbihan (23 263 habitants), tournée vers la construction navale civile et militaire — Naval Group, Kership Lorient (ex-chantier STX, repris en 2016) et Chantiers Piriou — et un tissu dense de TPE du commerce et de l'artisanat des zones Kerpont. La zone industrielle du Rohu, face au site Naval Group, structure une filière de sous-traitants à digitaliser, tandis que le grand centre commercial proche de Caudan irrigue le commerce local. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Lanester, itérations à distance avec l'agglomération lorientaise.",
         whyHere: [
           "Écosystème naval structurant : autour de Naval Group, des Chantiers Piriou et de Kership Lorient — coentreprise Piriou/Naval Group qui construit coques de FREMM et navires jusqu'à 120 m — gravite une nuée de sous-traitants TPE-PME. Terrain idéal pour des portails fournisseurs, de la gestion documentaire qualité et des agents qui digèrent vos dossiers techniques sur la zone du Rohu.",
           "Zones d'activités Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec : commerces de détail et artisans BTP y sont concentrés, à deux pas du grand centre commercial proche de Caudan. On greffe l'IA sur l'existant — chatbot, devis automatisés, boutique WooCommerce ou Shopify — sans refonte coûteuse, ou on bâtit une vitrine mobile-first sur mesure pour capter le flux local.",
@@ -62,7 +62,7 @@ export const LANESTER_COPY: VilleCopy = {
           {
             step: "Cadrage à Lanester",
             detail:
-              "Atelier sur site — zones Kerpont-Kerrous, Lann-Gazec, centre ou zone industrielle du Rohu face à Naval Group : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité navale. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — zones Kerpont-Kerrous, Lann-Gazec, centre ou zone industrielle du Rohu face à Naval Group : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité navale. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const LANESTER_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Lanester — zones Kerpont, Lann-Gazec ou Rohu — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Lanester — zones Kerpont, Lann-Gazec ou Rohu — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et performance mobile-first contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, on-premise pour les données défense), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout prestataire web de Lorient ou de Bretagne sud, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et performance mobile-first contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, on-premise pour les données défense), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout prestataire web de Lorient ou de Bretagne sud, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lanester des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la 3e commune du Morbihan (23 263 habitants), tournée vers la construction navale civile et militaire — Naval Group, Kership Lorient (ex-chantier STX, repris en 2016) et Chantiers Piriou — et un tissu dense de TPE du commerce et de l'artisanat des zones Kerpont. La zone industrielle du Rohu, face au site Naval Group, structure une filière de sous-traitants à digitaliser, tandis que le grand centre commercial proche de Caudan irrigue le commerce local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Lanester, itérations à distance avec l'agglomération lorientaise.",
+        hero: "Axion-IA conçoit et augmente à Lanester des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la 3e commune du Morbihan (23 263 habitants), tournée vers la construction navale civile et militaire — Naval Group, Kership Lorient (ex-chantier STX, repris en 2016) et Chantiers Piriou — et un tissu dense de TPE du commerce et de l'artisanat des zones Kerpont. La zone industrielle du Rohu, face au site Naval Group, structure une filière de sous-traitants à digitaliser, tandis que le grand centre commercial proche de Caudan irrigue le commerce local. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Lanester, itérations à distance avec l'agglomération lorientaise.",
         whyHere: [
           "Écosystème naval structurant : autour de Naval Group, des Chantiers Piriou et de Kership Lorient — coentreprise Piriou/Naval Group qui construit coques de FREMM et navires jusqu'à 120 m — gravite une nuée de sous-traitants TPE-PME. Terrain idéal pour des portails fournisseurs, de la gestion documentaire qualité et des agents qui digèrent vos dossiers techniques sur la zone du Rohu.",
           "Zones d'activités Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec : commerces de détail et artisans BTP y sont concentrés, à deux pas du grand centre commercial proche de Caudan. On greffe l'IA sur l'existant — chatbot, devis automatisés, boutique WooCommerce ou Shopify — sans refonte coûteuse, ou on bâtit une vitrine mobile-first sur mesure pour capter le flux local.",
@@ -148,7 +148,7 @@ export const LANESTER_COPY: VilleCopy = {
           {
             step: "Cadrage à Lanester",
             detail:
-              "Atelier sur site — zones Kerpont-Kerrous, Lann-Gazec, centre ou zone industrielle du Rohu face à Naval Group : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité navale. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — zones Kerpont-Kerrous, Lann-Gazec, centre ou zone industrielle du Rohu face à Naval Group : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité navale. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const LANESTER_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Lanester — zones Kerpont, Lann-Gazec ou Rohu — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Lanester — zones Kerpont, Lann-Gazec ou Rohu — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et performance mobile-first contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, on-premise pour les données défense), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout prestataire web de Lorient ou de Bretagne sud, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et performance mobile-first contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, on-premise pour les données défense), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout prestataire web de Lorient ou de Bretagne sud, ou repris en interne par vos équipes.",
       },
     },
   },

@@ -130,11 +130,11 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour obtenir un devis à Montfermeil ?",
-            a: "Un devis sous 24 à 48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur place à Montfermeil — accès T4 (trois stations) et, à terme, gare Clichy-Montfermeil de la ligne 16 du Grand Paris Express.",
+            a: "Un devis sous 48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur place à Montfermeil — accès T4 (trois stations) et, à terme, gare Clichy-Montfermeil de la ligne 16 du Grand Paris Express.",
           },
         ],
         guarantees:
-          "Code custom dont vous gardez la pleine propriété, transférable à tout prestataire ou repris en interne — aucun verrou éditeur, aucune dépendance Axion-IA. Hébergement en Union européenne, conformité RGPD native et exigences données de santé prises en compte pour les acteurs médico-sociaux montfermeillois (GHI Le Raincy-Montfermeil, Centre des Ormes). Devis sous 24 à 48 h selon la complexité, tarifs et périmètre cadrés avant signature. Sites mobile-first, accessibles et soignés sur les performances. Vos référents internes sont formés pour rester autonomes après la mise en ligne.",
+          "Code custom dont vous gardez la pleine propriété, transférable à tout prestataire ou repris en interne — aucun verrou éditeur, aucune dépendance Axion-IA. Hébergement en Union européenne, conformité RGPD native et exigences données de santé prises en compte pour les acteurs médico-sociaux montfermeillois (GHI Le Raincy-Montfermeil, Centre des Ormes). Devis sous 48 h selon la complexité, tarifs et périmètre cadrés avant signature. Sites mobile-first, accessibles et soignés sur les performances. Vos référents internes sont formés pour rester autonomes après la mise en ligne.",
       },
       en: {
         hero: "Axion-IA's AI-augmented websites and SaaS platforms in Montfermeil (93) are built for the town's real fabric: healthcare and medico-social organisations around the Groupe Hospitalier Intercommunal Le Raincy-Montfermeil and the Centre de Long Séjour des Ormes (Énéal, Groupe SOS Seniors), culture and creation players gravitating around the Ateliers Médicis, local shops of the town-centre ZAC (rue Henri Barbusse, Tuilerie and Barbusse blocks) and BTP craftspeople driven by the Plateau urban renewal. We deliver accessible interfaces, mobile-first sites and AI-native SaaS (RAG chatbot, semantic search, smart booking) — custom code, European Union hosting, GDPR-compliant, zero vendor lock-in. Kick-off on site in Montfermeil, reachable via the T4 tram (three stations) and soon the Clichy-Montfermeil station on Line 16.",
@@ -216,11 +216,11 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
           {
             q: "How long does it take to get a quote in Montfermeil?",
-            a: "A quote within 24 to 48 hours depending on complexity, after an initial framing exchange. The kick-off takes place on site in Montfermeil — reachable via the T4 tram (three stations) and, in time, the Clichy-Montfermeil station on Line 16 of the Grand Paris Express.",
+            a: "A quote within 48 hours depending on complexity, after an initial framing exchange. The kick-off takes place on site in Montfermeil — reachable via the T4 tram (three stations) and, in time, the Clichy-Montfermeil station on Line 16 of the Grand Paris Express.",
           },
         ],
         guarantees:
-          "Custom code that you fully own, transferable to any vendor or taken in-house — no vendor lock-in, no Axion-IA dependency. European Union hosting, native GDPR compliance and health-data requirements handled for Montfermeil's medico-social players (GHI Le Raincy-Montfermeil, Centre des Ormes). Quote within 24 to 48 hours depending on complexity, pricing and scope agreed before signature. Mobile-first, accessible sites with careful performance. Your internal leads are trained to stay autonomous after go-live.",
+          "Custom code that you fully own, transferable to any vendor or taken in-house — no vendor lock-in, no Axion-IA dependency. European Union hosting, native GDPR compliance and health-data requirements handled for Montfermeil's medico-social players (GHI Le Raincy-Montfermeil, Centre des Ormes). Quote within 48 hours depending on complexity, pricing and scope agreed before signature. Mobile-first, accessible sites with careful performance. Your internal leads are trained to stay autonomous after go-live.",
       },
     },
   },

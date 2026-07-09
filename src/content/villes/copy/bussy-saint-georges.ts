@@ -125,7 +125,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24-48 h selon la complexité. Après un premier échange sur votre projet (vitrine ZAC du Sycomore, portail Gustave-Eiffel, plateforme esports), nous chiffrons le périmètre et l'architecture cible avant tout engagement.",
+            a: "À partir de 48 h selon la complexité. Après un premier échange sur votre projet (vitrine ZAC du Sycomore, portail Gustave-Eiffel, plateforme esports), nous chiffrons le périmètre et l'architecture cible avant tout engagement.",
           },
           {
             q: "Le code et les données restent-ils chez nous ?",
@@ -133,7 +133,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité, périmètre et architecture chiffrés avant signature. Code source intégralement remis, hébergement en Union européenne par défaut, conformité RGPD (minimisation, registre, sous-traitance encadrée). Nous revendiquons UX/UI et mobile, e-commerce multi-CMS et intégration IA (chatbot RAG, recherche sémantique, multilingue FR/anglais/chinois). Aucun verrou éditeur : votre plateforme reste maintenable par vos équipes ou un intégrateur tiers d'Île-de-France après la mission.",
+          "Devis à partir de 48 h selon la complexité, périmètre et architecture chiffrés avant signature. Code source intégralement remis, hébergement en Union européenne par défaut, conformité RGPD (minimisation, registre, sous-traitance encadrée). Nous revendiquons UX/UI et mobile, e-commerce multi-CMS et intégration IA (chatbot RAG, recherche sémantique, multilingue FR/anglais/chinois). Aucun verrou éditeur : votre plateforme reste maintenable par vos équipes ou un intégrateur tiers d'Île-de-France après la mission.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Bussy-Saint-Georges (77), where the local economy is built around the Gustave-Eiffel logistics park (104 ha, opened late 2007: IBM, Air Liquide, TD Synnex, Toyota Material Handling, Econocom, Logistique Galeries Lafayette, SURYS of the IN Groupe), the SME-focused ZAC Léonard-de-Vinci and the Sycomore eco-district. Across this fabric of 690 employer establishments (9,456 staff), we build bespoke AI-native platforms — distribution client portals, e-commerce order tracking, RAG chatbots, semantic search — in custom code, hosted in the European Union and GDPR-compliant.",
@@ -211,7 +211,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "From 24-48 h depending on complexity. After an initial discussion of your project (Sycomore showcase, Gustave-Eiffel portal, esports platform), we scope and cost the perimeter and target architecture before any commitment.",
+            a: "From 48 h depending on complexity. After an initial discussion of your project (Sycomore showcase, Gustave-Eiffel portal, esports platform), we scope and cost the perimeter and target architecture before any commitment.",
           },
           {
             q: "Do the code and data stay with us?",
@@ -219,7 +219,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity, scope and architecture costed before signature. Full source code handed over, European Union hosting by default, GDPR compliance (minimisation, register, framed sub-processing). We deliver UX/UI and mobile, multi-CMS e-commerce and AI integration (RAG chatbot, semantic search, multilingual FR/English/Chinese). No vendor lock-in: your platform stays maintainable by your teams or a third-party Île-de-France integrator after the mission.",
+          "Quote from 48 h depending on complexity, scope and architecture costed before signature. Full source code handed over, European Union hosting by default, GDPR compliance (minimisation, register, framed sub-processing). We deliver UX/UI and mobile, multi-CMS e-commerce and AI integration (RAG chatbot, semantic search, multilingual FR/English/Chinese). No vendor lock-in: your platform stays maintainable by your teams or a third-party Île-de-France integrator after the mission.",
       },
     },
   },

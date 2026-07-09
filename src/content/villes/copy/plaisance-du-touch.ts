@@ -51,7 +51,7 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de TPE et PME du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous.",
+        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de TPE et PME du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous.",
         whyHere: [
           "Commerce de détail dominant autour de l'hypermarché Corail et des zones commerçantes du centre : c'est le terrain idéal pour une vitrine e-commerce multi-CMS, du click-and-collect et un chatbot produit qui répond en continu aux clients du Grand Ouest Toulousain, depuis Tournefeuille jusqu'à Colomiers, sans saturer le personnel de caisse en heures de pointe.",
           "Restauration et services de proximité très présents le long de la commune et de la desserte Linéo 3 : nos modules de réservation directe, de prise de commande en ligne et d'agents conversationnels multilingues allègent l'accueil téléphonique des TPE plaisançoises sans toucher à leur logiciel de caisse ni à leur abonnement de livraison existant.",
@@ -62,7 +62,7 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
           {
             step: "Cadrage à Plaisance-du-Touch",
             detail:
-              "Atelier sur site — centre-ville, secteur de l'hypermarché Corail ou siège du Grand Ouest Toulousain Agglomération : objectifs, parcours utilisateurs, audit de la stack, de la caisse et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville, secteur de l'hypermarché Corail ou siège du Grand Ouest Toulousain Agglomération : objectifs, parcours utilisateurs, audit de la stack, de la caisse et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Plaisance-du-Touch — centre-ville, secteur Corail ou siège de l'agglomération — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
+            a: "Oui. Après le cadrage sur place à Plaisance-du-Touch — centre-ville, secteur Corail ou siège de l'agglomération — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale autour du secteur Corail. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire toulousain ou repris en interne par vos équipes plaisançoises.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale autour du secteur Corail. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire toulousain ou repris en interne par vos équipes plaisançoises.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de TPE et PME du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous.",
+        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de TPE et PME du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous.",
         whyHere: [
           "Commerce de détail dominant autour de l'hypermarché Corail et des zones commerçantes du centre : c'est le terrain idéal pour une vitrine e-commerce multi-CMS, du click-and-collect et un chatbot produit qui répond en continu aux clients du Grand Ouest Toulousain, depuis Tournefeuille jusqu'à Colomiers, sans saturer le personnel de caisse en heures de pointe.",
           "Restauration et services de proximité très présents le long de la commune et de la desserte Linéo 3 : nos modules de réservation directe, de prise de commande en ligne et d'agents conversationnels multilingues allègent l'accueil téléphonique des TPE plaisançoises sans toucher à leur logiciel de caisse ni à leur abonnement de livraison existant.",
@@ -148,7 +148,7 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
           {
             step: "Cadrage à Plaisance-du-Touch",
             detail:
-              "Atelier sur site — centre-ville, secteur de l'hypermarché Corail ou siège du Grand Ouest Toulousain Agglomération : objectifs, parcours utilisateurs, audit de la stack, de la caisse et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville, secteur de l'hypermarché Corail ou siège du Grand Ouest Toulousain Agglomération : objectifs, parcours utilisateurs, audit de la stack, de la caisse et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Plaisance-du-Touch — centre-ville, secteur Corail ou siège de l'agglomération — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
+            a: "Oui. Après le cadrage sur place à Plaisance-du-Touch — centre-ville, secteur Corail ou siège de l'agglomération — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale autour du secteur Corail. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire toulousain ou repris en interne par vos équipes plaisançoises.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale autour du secteur Corail. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire toulousain ou repris en interne par vos équipes plaisançoises.",
       },
     },
   },

@@ -280,7 +280,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou e-commerce IA essentiel",
             detail:
-              "Pour artisans, commerçants et indépendants vitriots — galeries, ateliers d'artistes du quartier MAC VAL, boutiques du centre-ville : site mobile-first, e-commerce simple, chatbot de premier contact, devis à partir de 24-48 h selon la complexité.",
+              "Pour artisans, commerçants et indépendants vitriots — galeries, ateliers d'artistes du quartier MAC VAL, boutiques du centre-ville : site mobile-first, e-commerce simple, chatbot de premier contact, devis à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -320,11 +320,11 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais et quelle autonomie après la livraison ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. À la livraison, le code, les contenus et les modèles restent chez vous : vos équipes administrent le site en autonomie après formation, et tout prestataire de Seine-Amont peut reprendre la maintenance. Aucun verrou éditeur, aucune dépendance contractuelle imposée par Axion-IA.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. À la livraison, le code, les contenus et les modèles restent chez vous : vos équipes administrent le site en autonomie après formation, et tout prestataire de Seine-Amont peut reprendre la maintenance. Aucun verrou éditeur, aucune dépendance contractuelle imposée par Axion-IA.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne par défaut, conformité RGPD et prise en compte de l'AI Act intégrées dès la conception — un impératif pour les acteurs de bioproduction et de R&D régulée de Vitry-sur-Seine. Aucun verrou éditeur : code custom, e-commerce multi-CMS et modèles IA restent votre propriété, repris en interne ou par tout intégrateur de Seine-Amont. Performance Web Vitals contractualisée et accessibilité visées dès le design. Devis à partir de 24-48 h selon la complexité.",
+          "Hébergement en Union européenne par défaut, conformité RGPD et prise en compte de l'AI Act intégrées dès la conception — un impératif pour les acteurs de bioproduction et de R&D régulée de Vitry-sur-Seine. Aucun verrou éditeur : code custom, e-commerce multi-CMS et modèles IA restent votre propriété, repris en interne ou par tout intégrateur de Seine-Amont. Performance Web Vitals contractualisée et accessibilité visées dès le design. Devis à partir de 48 h selon la complexité.",
       },
       en: {
         hero: "In Vitry-sur-Seine, Axion-IA builds AI-augmented websites and SaaS platforms for a singular economy: Sanofi's R&D and bioproduction platform, heir to the Poulenc chemical works on the Port-à-l'Anglais quay; the industrial firms and logistics operators returning to the Les Ardoines districts (Gare Ardoines and Seine Gare Vitry, a 90%-floodplain site); and the cultural-creative ecosystem clustered around the MAC VAL museum and Vitry's street-art scene. We deliver custom code — business portals, multi-CMS e-commerce, RAG chatbots, semantic search — hosted in the EU, with no single-vendor lock-in.",
@@ -366,7 +366,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Entry-level AI showcase or e-commerce site",
             detail:
-              "For Vitry artisans, retailers and freelancers — galleries and artist studios in the MAC VAL district, town-centre shops: mobile-first site, simple e-commerce, first-contact chatbot, quote from 24-48 h depending on complexity.",
+              "For Vitry artisans, retailers and freelancers — galleries and artist studios in the MAC VAL district, town-centre shops: mobile-first site, simple e-commerce, first-contact chatbot, quote from 48 h depending on complexity.",
           },
           {
             sizeLabel: "PME",
@@ -406,11 +406,11 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "What turnaround and what autonomy after delivery?",
-            a: "The quote is provided from 24-48 h depending on project complexity. On delivery, the code, content and models stay with you: your teams administer the site autonomously after training, and any Seine-Amont provider can take over maintenance. No vendor lock-in, no contractual dependency imposed by Axion-IA.",
+            a: "The quote is provided from 48 h depending on project complexity. On delivery, the code, content and models stay with you: your teams administer the site autonomously after training, and any Seine-Amont provider can take over maintenance. No vendor lock-in, no contractual dependency imposed by Axion-IA.",
           },
         ],
         guarantees:
-          "EU hosting by default, GDPR compliance and AI Act considerations built in from design — essential for Vitry-sur-Seine's regulated bioproduction and R&D players. No vendor lock-in: custom code, multi-CMS e-commerce and AI models remain your property, taken back in-house or by any Seine-Amont integrator. Contractualised Web Vitals performance and accessibility targeted from design. Quote from 24-48 h depending on complexity.",
+          "EU hosting by default, GDPR compliance and AI Act considerations built in from design — essential for Vitry-sur-Seine's regulated bioproduction and R&D players. No vendor lock-in: custom code, multi-CMS e-commerce and AI models remain your property, taken back in-house or by any Seine-Amont integrator. Contractualised Web Vitals performance and accessibility targeted from design. Quote from 48 h depending on complexity.",
       },
     },
   },

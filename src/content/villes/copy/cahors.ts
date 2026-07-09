@@ -50,7 +50,7 @@ export const CAHORS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Cahors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe de vin, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de préfecture du Lot bâtie sur une presqu'île formée par un méandre du Lot, où l'AOC Cahors, le commerce du secteur sauvegardé UNESCO autour du pont Valentré, la restauration touristique et les zones d'activité de Regourd et Cahors Sud font tourner un tissu dense de TPE viticoles, artisanales et de services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cahors, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cahors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe de vin, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de préfecture du Lot bâtie sur une presqu'île formée par un méandre du Lot, où l'AOC Cahors, le commerce du secteur sauvegardé UNESCO autour du pont Valentré, la restauration touristique et les zones d'activité de Regourd et Cahors Sud font tourner un tissu dense de TPE viticoles, artisanales et de services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cahors, itérations à distance.",
         whyHere: [
           "Vignoble AOC Cahors historique (vin rouge de Malbec exporté depuis le Moyen Âge), animé par l'Union interprofessionnelle des vins de Cahors et la Villa Malbec allées Fénelon : un terrain idéal pour des boutiques e-commerce de domaine, des systèmes d'allocation de cuvées, de la gestion de cave et des fiches produit multilingues optimisées pour l'export vers l'Europe du Nord et l'Amérique.",
           "Centre sauvegardé UNESCO et clientèle touristique estivale (pont Valentré, cathédrale Saint-Étienne, route vers Saint-Cirq-Lapopie classé Plus Beaux Villages, festival Cahors Juin Jardins) : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour la restauration, l'hôtellerie et le commerce du Vieux-Cahors, avec réservation et conciergerie automatisées.",
@@ -61,7 +61,7 @@ export const CAHORS_COPY: VilleCopy = {
           {
             step: "Cadrage à Cahors",
             detail:
-              "Atelier sur site (Vieux-Cahors secteur UNESCO, allées Fénelon près de la Villa Malbec, domaines des Côtes du Lot ou zone de Regourd) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (Vieux-Cahors secteur UNESCO, allées Fénelon près de la Villa Malbec, domaines des Côtes du Lot ou zone de Regourd) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const CAHORS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Cahors — sur site dans le Vieux-Cahors, aux allées Fénelon ou en zone de Regourd —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage à Cahors — sur site dans le Vieux-Cahors, aux allées Fénelon ou en zone de Regourd —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic touristique estival ou en pleine campagne de primeurs. Web Vitals (LCP, INP, CLS nul) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local du Lot ou d'Occitanie ou repris en interne par vos équipes du Grand Cahors.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic touristique estival ou en pleine campagne de primeurs. Web Vitals (LCP, INP, CLS nul) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local du Lot ou d'Occitanie ou repris en interne par vos équipes du Grand Cahors.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Cahors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe de vin, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de préfecture du Lot bâtie sur une presqu'île formée par un méandre du Lot, où l'AOC Cahors, le commerce du secteur sauvegardé UNESCO autour du pont Valentré, la restauration touristique et les zones d'activité de Regourd et Cahors Sud font tourner un tissu dense de TPE viticoles, artisanales et de services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cahors, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cahors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe de vin, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de préfecture du Lot bâtie sur une presqu'île formée par un méandre du Lot, où l'AOC Cahors, le commerce du secteur sauvegardé UNESCO autour du pont Valentré, la restauration touristique et les zones d'activité de Regourd et Cahors Sud font tourner un tissu dense de TPE viticoles, artisanales et de services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cahors, itérations à distance.",
         whyHere: [
           "Vignoble AOC Cahors historique (vin rouge de Malbec exporté depuis le Moyen Âge), animé par l'Union interprofessionnelle des vins de Cahors et la Villa Malbec allées Fénelon : un terrain idéal pour des boutiques e-commerce de domaine, des systèmes d'allocation de cuvées, de la gestion de cave et des fiches produit multilingues optimisées pour l'export vers l'Europe du Nord et l'Amérique.",
           "Centre sauvegardé UNESCO et clientèle touristique estivale (pont Valentré, cathédrale Saint-Étienne, route vers Saint-Cirq-Lapopie classé Plus Beaux Villages, festival Cahors Juin Jardins) : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour la restauration, l'hôtellerie et le commerce du Vieux-Cahors, avec réservation et conciergerie automatisées.",
@@ -147,7 +147,7 @@ export const CAHORS_COPY: VilleCopy = {
           {
             step: "Cadrage à Cahors",
             detail:
-              "Atelier sur site (Vieux-Cahors secteur UNESCO, allées Fénelon près de la Villa Malbec, domaines des Côtes du Lot ou zone de Regourd) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (Vieux-Cahors secteur UNESCO, allées Fénelon près de la Villa Malbec, domaines des Côtes du Lot ou zone de Regourd) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const CAHORS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Cahors — sur site dans le Vieux-Cahors, aux allées Fénelon ou en zone de Regourd —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage à Cahors — sur site dans le Vieux-Cahors, aux allées Fénelon ou en zone de Regourd —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic touristique estival ou en pleine campagne de primeurs. Web Vitals (LCP, INP, CLS nul) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local du Lot ou d'Occitanie ou repris en interne par vos équipes du Grand Cahors.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic touristique estival ou en pleine campagne de primeurs. Web Vitals (LCP, INP, CLS nul) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local du Lot ou d'Occitanie ou repris en interne par vos équipes du Grand Cahors.",
       },
     },
   },

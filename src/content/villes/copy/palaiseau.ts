@@ -122,7 +122,7 @@ export const PALAISEAU_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour démarrer un projet de site ou de SaaS à Palaiseau ?",
-            a: "Un devis est établi à partir de 24 à 48 h selon la complexité, après un premier échange. Le kick-off a ensuite lieu sur site à Palaiseau pour cadrer données, parcours utilisateurs et architecture avant tout développement.",
+            a: "Un devis est établi à partir de 48 h selon la complexité, après un premier échange. Le kick-off a ensuite lieu sur site à Palaiseau pour cadrer données, parcours utilisateurs et architecture avant tout développement.",
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
@@ -134,7 +134,7 @@ export const PALAISEAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis établi à partir de 24 à 48 h selon la complexité, kick-off sur site à Palaiseau. Code custom intégralement transféré, hébergement Union européenne conforme RGPD et AI Act (minimisation, journalisation, droit à l'effacement), aucun verrou éditeur ni dépendance contractuelle. Vos équipes — qu'il s'agisse d'une startup X-Tech, d'une spin-off de l'École polytechnique ou d'un centre R&D du plateau — gardent la maîtrise pleine du code, des modèles et des contenus, et le projet reste portable vers tout intégrateur du cluster Paris-Saclay.",
+          "Devis établi à partir de 48 h selon la complexité, kick-off sur site à Palaiseau. Code custom intégralement transféré, hébergement Union européenne conforme RGPD et AI Act (minimisation, journalisation, droit à l'effacement), aucun verrou éditeur ni dépendance contractuelle. Vos équipes — qu'il s'agisse d'une startup X-Tech, d'une spin-off de l'École polytechnique ou d'un centre R&D du plateau — gardent la maîtrise pleine du code, des modèles et des contenus, et le projet reste portable vers tout intégrateur du cluster Paris-Saclay.",
       },
       en: {
         hero: "In Palaiseau, Axion-IA builds AI-augmented websites and SaaS platforms for a fabric found nowhere else in France: the deeptech spin-offs from the X-Tech incubator at the Drahi – X Novation Center, the startups out of École polytechnique, Télécom Paris and ENSTA, and the R&D teams of the centres on the plateau (EDF Lab Paris-Saclay, Thales Research & Technology, Danone Research). We ship AI-native products — RAG chatbots on scientific corpora, semantic search engines, patent valorisation portals, experimental-data dashboards — in custom code, hosted in the European Union, with no vendor lock-in and no no-code.",
@@ -208,7 +208,7 @@ export const PALAISEAU_COPY: VilleCopy = {
           },
           {
             q: "How long before a website or SaaS project starts in Palaiseau?",
-            a: "A quote is issued from 24 to 48 h depending on complexity, after a first exchange. The kick-off then takes place on site in Palaiseau to frame data, user journeys and architecture before any development.",
+            a: "A quote is issued from 48 h depending on complexity, after a first exchange. The kick-off then takes place on site in Palaiseau to frame data, user journeys and architecture before any development.",
           },
           {
             q: "Do you handle UX/UI, mobile and e-commerce, or only the AI?",
@@ -220,7 +220,7 @@ export const PALAISEAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote issued from 24 to 48 h depending on complexity, kick-off on site in Palaiseau. Custom code fully transferred, European Union GDPR- and AI Act-compliant hosting (minimisation, logging, right to erasure), no vendor lock-in or contractual dependency. Your teams — whether an X-Tech startup, an École polytechnique spin-off or a plateau R&D centre — keep full control of the code, models and content, and the project stays portable to any integrator in the Paris-Saclay cluster.",
+          "Quote issued from 48 h depending on complexity, kick-off on site in Palaiseau. Custom code fully transferred, European Union GDPR- and AI Act-compliant hosting (minimisation, logging, right to erasure), no vendor lock-in or contractual dependency. Your teams — whether an X-Tech startup, an École polytechnique spin-off or a plateau R&D centre — keep full control of the code, models and content, and the project stays portable to any integrator in the Paris-Saclay cluster.",
       },
     },
   },

@@ -62,7 +62,7 @@ export const PANTIN_COPY: VilleCopy = {
           {
             step: "Cadrage à Pantin",
             detail:
-              "Kick-off sur site à Pantin — Magasins généraux, abords des Grands Moulins, ZAC du Port ou vos ateliers du canal de l'Ourcq — pour comprendre votre activité (atelier de mode, studio créatif, commerce, prestataire B2B), vos contraintes visuelles et vos outils existants. Devis à partir de 24-48 h selon la complexité.",
+              "Kick-off sur site à Pantin — Magasins généraux, abords des Grands Moulins, ZAC du Port ou vos ateliers du canal de l'Ourcq — pour comprendre votre activité (atelier de mode, studio créatif, commerce, prestataire B2B), vos contraintes visuelles et vos outils existants. Devis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI et maquettes",
@@ -122,7 +122,7 @@ export const PANTIN_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis et un site à Pantin ?",
-            a: "Devis à partir de 24-48 h selon la complexité. Le kick-off se tient sur site à Pantin — Magasins généraux, abords des Grands Moulins, ZAC du Port ou votre atelier du canal de l'Ourcq. Le calendrier de réalisation est fixé ensemble au cadrage selon le périmètre (vitrine, e-commerce ou SaaS sur mesure).",
+            a: "Devis à partir de 48 h selon la complexité. Le kick-off se tient sur site à Pantin — Magasins généraux, abords des Grands Moulins, ZAC du Port ou votre atelier du canal de l'Ourcq. Le calendrier de réalisation est fixé ensemble au cadrage selon le périmètre (vitrine, e-commerce ou SaaS sur mesure).",
           },
           {
             q: "Faites-vous du design UX/UI et du mobile, ou seulement du développement ?",
@@ -134,7 +134,7 @@ export const PANTIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites et plateformes livrés en code custom, hébergement en Union européenne et conformité RGPD par défaut (privacy by design). Devis à partir de 24-48 h selon la complexité, kick-off sur site à Pantin. Aucun verrou éditeur : code, données et accès vous appartiennent, reprenables en interne ou par tout intégrateur. Nous revendiquons l'ensemble du périmètre — UX/UI, mobile, e-commerce multi-CMS et intégration IA — sans sous-traiter le cœur du métier. Devis ferme avant signature, sans frais cachés.",
+          "Sites et plateformes livrés en code custom, hébergement en Union européenne et conformité RGPD par défaut (privacy by design). Devis à partir de 48 h selon la complexité, kick-off sur site à Pantin. Aucun verrou éditeur : code, données et accès vous appartiennent, reprenables en interne ou par tout intégrateur. Nous revendiquons l'ensemble du périmètre — UX/UI, mobile, e-commerce multi-CMS et intégration IA — sans sous-traiter le cœur du métier. Devis ferme avant signature, sans frais cachés.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for Pantin businesses along the Ourcq Canal. The city has become a recognized fashion and craftsmanship hub — Hermès leather workshops (over 1,500 staff across ~40,000 m²), Chanel laboratories and ateliers, the ESMOD fashion school housed in the former Banque de France headquarters, Laboratoires Boiron — backed by a creative-industries cluster (BETC at Les Magasins généraux, ranked world No. 1 in the 2024 WARC Creative 100) and a financial-services base at the Grands Moulins de Pantin (BNP Paribas Securities Services). Our core focus: the micro-businesses, SMEs, craft ateliers and creative studios of the canal — suppliers to the great houses, e-merchants, agencies — needing a custom-coded site or app, hosted in the EU and GDPR-compliant.",
@@ -148,7 +148,7 @@ export const PANTIN_COPY: VilleCopy = {
           {
             step: "Framing in Pantin",
             detail:
-              "On-site kick-off in Pantin — Les Magasins généraux, around the Grands Moulins, the ZAC du Port or your Ourcq Canal ateliers — to understand your business (fashion atelier, creative studio, retail, B2B provider), your visual constraints and your existing tools. Quote within 24-48 h depending on complexity.",
+              "On-site kick-off in Pantin — Les Magasins généraux, around the Grands Moulins, the ZAC du Port or your Ourcq Canal ateliers — to understand your business (fashion atelier, creative studio, retail, B2B provider), your visual constraints and your existing tools. Quote within 48 h depending on complexity.",
           },
           {
             step: "UX/UI design and mockups",
@@ -208,7 +208,7 @@ export const PANTIN_COPY: VilleCopy = {
           },
           {
             q: "What turnaround for a quote and a site in Pantin?",
-            a: "Quote within 24-48 h depending on complexity. The kick-off takes place on site in Pantin — Les Magasins généraux, around the Grands Moulins, the ZAC du Port or your Ourcq Canal atelier. The build schedule is set together at framing depending on scope (showcase, e-commerce or bespoke SaaS).",
+            a: "Quote within 48 h depending on complexity. The kick-off takes place on site in Pantin — Les Magasins généraux, around the Grands Moulins, the ZAC du Port or your Ourcq Canal atelier. The build schedule is set together at framing depending on scope (showcase, e-commerce or bespoke SaaS).",
           },
           {
             q: "Do you do UX/UI design and mobile, or only development?",
@@ -220,7 +220,7 @@ export const PANTIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites and platforms delivered in custom code, hosting in the European Union and GDPR compliance by default (privacy by design). Quote within 24-48 h depending on complexity, on-site kick-off in Pantin. No vendor lock-in: code, data and access belong to you, recoverable in-house or by any integrator. We claim the full scope — UX/UI, mobile, multi-CMS e-commerce and AI integration — without sub-contracting the core craft. Firm quote before signature, no hidden fees.",
+          "Sites and platforms delivered in custom code, hosting in the European Union and GDPR compliance by default (privacy by design). Quote within 48 h depending on complexity, on-site kick-off in Pantin. No vendor lock-in: code, data and access belong to you, recoverable in-house or by any integrator. We claim the full scope — UX/UI, mobile, multi-CMS e-commerce and AI integration — without sub-contracting the core craft. Firm quote before signature, no hidden fees.",
       },
     },
   },

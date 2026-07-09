@@ -51,7 +51,7 @@ export const CAVAILLON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Cavaillon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale française du melon, où le Marché d'Intérêt National (MIN) — 27 hectares, environ 76 entreprises et une douzaine de grossistes, près d'un million de tonnes de fruits et légumes par an — structure une filière de maraîchers, négociants et transporteurs frigorifiques, au pied de la colline Saint-Jacques et au cœur du Parc Naturel Régional du Luberon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cavaillon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cavaillon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale française du melon, où le Marché d'Intérêt National (MIN) — 27 hectares, environ 76 entreprises et une douzaine de grossistes, près d'un million de tonnes de fruits et légumes par an — structure une filière de maraîchers, négociants et transporteurs frigorifiques, au pied de la colline Saint-Jacques et au cœur du Parc Naturel Régional du Luberon. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cavaillon, itérations à distance.",
         whyHere: [
           "Capitale du melon et MIN structurant : sur ses 27 hectares, la halle réunit une douzaine de grossistes et près de 76 entreprises qui gèrent achats, lots et traçabilité au rythme d'un million de tonnes par an. Terrain idéal pour des portails fournisseurs, des catalogues e-commerce de produits du Luberon et des agents qui automatisent bons de commande et reporting branchés sur votre SI.",
           "Filière melon IGP et exploitations familiales de la vallée de la Durance : le syndicat des producteurs de melon de Cavaillon rassemble une cinquantaine de maraîchers et une dizaine d'expéditeurs autour de l'IGP « Melon de Cavaillon ». On greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — suivi qualité saisonnier, recherche sémantique sur fiches produits, boutique e-commerce de vente directe pour les producteurs.",
@@ -62,7 +62,7 @@ export const CAVAILLON_COPY: VilleCopy = {
           {
             step: "Cadrage à Cavaillon",
             detail:
-              "Atelier sur site (cœur de ville au pied de la colline Saint-Jacques, halle du MIN sur ses 27 hectares, zone d'activité proche de l'A7 sortie 25) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la forte saisonnalité du melon et des fruits et légumes. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville au pied de la colline Saint-Jacques, halle du MIN sur ses 27 hectares, zone d'activité proche de l'A7 sortie 25) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la forte saisonnalité du melon et des fruits et légumes. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const CAVAILLON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Cavaillon — au pied de la colline Saint-Jacques, dans la halle du MIN ou sur la zone d'activité proche de l'A7 — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur place à Cavaillon — au pied de la colline Saint-Jacques, dans la halle du MIN ou sur la zone d'activité proche de l'A7 — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison du melon de Cavaillon de juin à septembre. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, aucun lock-in technologique. L'ensemble est transférable à tout prestataire local du Vaucluse ou de la région PACA, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison du melon de Cavaillon de juin à septembre. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, aucun lock-in technologique. L'ensemble est transférable à tout prestataire local du Vaucluse ou de la région PACA, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Cavaillon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale française du melon, où le Marché d'Intérêt National (MIN) — 27 hectares, environ 76 entreprises et une douzaine de grossistes, près d'un million de tonnes de fruits et légumes par an — structure une filière de maraîchers, négociants et transporteurs frigorifiques, au pied de la colline Saint-Jacques et au cœur du Parc Naturel Régional du Luberon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cavaillon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cavaillon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale française du melon, où le Marché d'Intérêt National (MIN) — 27 hectares, environ 76 entreprises et une douzaine de grossistes, près d'un million de tonnes de fruits et légumes par an — structure une filière de maraîchers, négociants et transporteurs frigorifiques, au pied de la colline Saint-Jacques et au cœur du Parc Naturel Régional du Luberon. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cavaillon, itérations à distance.",
         whyHere: [
           "Capitale du melon et MIN structurant : sur ses 27 hectares, la halle réunit une douzaine de grossistes et près de 76 entreprises qui gèrent achats, lots et traçabilité au rythme d'un million de tonnes par an. Terrain idéal pour des portails fournisseurs, des catalogues e-commerce de produits du Luberon et des agents qui automatisent bons de commande et reporting branchés sur votre SI.",
           "Filière melon IGP et exploitations familiales de la vallée de la Durance : le syndicat des producteurs de melon de Cavaillon rassemble une cinquantaine de maraîchers et une dizaine d'expéditeurs autour de l'IGP « Melon de Cavaillon ». On greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — suivi qualité saisonnier, recherche sémantique sur fiches produits, boutique e-commerce de vente directe pour les producteurs.",
@@ -148,7 +148,7 @@ export const CAVAILLON_COPY: VilleCopy = {
           {
             step: "Cadrage à Cavaillon",
             detail:
-              "Atelier sur site (cœur de ville au pied de la colline Saint-Jacques, halle du MIN sur ses 27 hectares, zone d'activité proche de l'A7 sortie 25) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la forte saisonnalité du melon et des fruits et légumes. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville au pied de la colline Saint-Jacques, halle du MIN sur ses 27 hectares, zone d'activité proche de l'A7 sortie 25) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la forte saisonnalité du melon et des fruits et légumes. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const CAVAILLON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Cavaillon — au pied de la colline Saint-Jacques, dans la halle du MIN ou sur la zone d'activité proche de l'A7 — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur place à Cavaillon — au pied de la colline Saint-Jacques, dans la halle du MIN ou sur la zone d'activité proche de l'A7 — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison du melon de Cavaillon de juin à septembre. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, aucun lock-in technologique. L'ensemble est transférable à tout prestataire local du Vaucluse ou de la région PACA, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison du melon de Cavaillon de juin à septembre. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, aucun lock-in technologique. L'ensemble est transférable à tout prestataire local du Vaucluse ou de la région PACA, ou repris en interne par vos équipes.",
       },
     },
   },

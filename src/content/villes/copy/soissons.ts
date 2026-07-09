@@ -124,7 +124,7 @@ export const SOISSONS_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur mon projet de site ou SaaS à Soissons ?",
-            a: "Un premier devis est généralement remis à partir de 24 à 48 h selon la complexité, une fois le besoin cadré. Nous démarrons par un kick-off à Soissons ou sur Le Plateau pour qualifier le périmètre avant tout chiffrage détaillé.",
+            a: "Un premier devis est généralement remis à partir de 48 h selon la complexité, une fois le besoin cadré. Nous démarrons par un kick-off à Soissons ou sur Le Plateau pour qualifier le périmètre avant tout chiffrage détaillé.",
           },
           {
             q: "Faites-vous aussi l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
@@ -136,7 +136,7 @@ export const SOISSONS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité, après un kick-off à Soissons. Hébergement en Union européenne conforme RGPD, code et contenus livrés sans verrou éditeur : vous pouvez reprendre la maintenance en interne ou avec tout prestataire de l'Aisne. Nous couvrons l'ensemble de la chaîne — UX/UI, mobile, e-commerce multi-CMS et IA — et les cas d'usage sont ancrés dans le tissu réel du Soissonnais (sucre-betterave, ZA Le Plateau, plasturgie, commerce, maraîchage), jamais des modèles génériques recyclés.",
+          "Devis remis à partir de 48 h selon la complexité, après un kick-off à Soissons. Hébergement en Union européenne conforme RGPD, code et contenus livrés sans verrou éditeur : vous pouvez reprendre la maintenance en interne ou avec tout prestataire de l'Aisne. Nous couvrons l'ensemble de la chaîne — UX/UI, mobile, e-commerce multi-CMS et IA — et les cas d'usage sont ancrés dans le tissu réel du Soissonnais (sucre-betterave, ZA Le Plateau, plasturgie, commerce, maraîchage), jamais des modèles génériques recyclés.",
       },
       en: {
         hero: "In Soissons (02), the real economy isn't a downtown business district: it's the sugar-beet supply chain (Cristal Union, Tereos) under market pressure in 2024-2025, the Le Plateau business park in Courmelles — 180 hectares, nearly 580 employees, certified a turnkey industrial site by France's Territoires d'industrie programme — and a fabric of micro-businesses and SMEs in logistics, plastics, retail and market gardening across the Aisne valley. Axion-IA designs AI-augmented websites and SaaS platforms for these concrete trades: agri-food order intake, B2B industrial-supply quoting, transport route tracking, and storefronts for the historic-centre retailers. Custom code, EU hosting under GDPR, zero vendor lock-in.",
@@ -210,7 +210,7 @@ export const SOISSONS_COPY: VilleCopy = {
           },
           {
             q: "How fast do you quote a site or SaaS project in Soissons?",
-            a: "A first quote is generally provided from 24 to 48 hours depending on complexity, once the need is framed. We start with a kick-off in Soissons or at Le Plateau to qualify scope before any detailed pricing.",
+            a: "A first quote is generally provided from 48 hours depending on complexity, once the need is framed. We start with a kick-off in Soissons or at Le Plateau to qualify scope before any detailed pricing.",
           },
           {
             q: "Do you also do UX/UI, mobile and e-commerce, or only AI?",
@@ -222,7 +222,7 @@ export const SOISSONS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 24 to 48 hours depending on complexity, after a kick-off in Soissons. EU hosting under GDPR, code and content delivered without vendor lock-in: you can take maintenance in-house or with any Aisne provider. We cover the full chain — UX/UI, mobile, multi-CMS e-commerce and AI — and the use cases are grounded in the real Soissons fabric (sugar-beet, the Le Plateau park, plastics, retail, market gardening), never recycled generic templates.",
+          "Quote provided from 48 hours depending on complexity, after a kick-off in Soissons. EU hosting under GDPR, code and content delivered without vendor lock-in: you can take maintenance in-house or with any Aisne provider. We cover the full chain — UX/UI, mobile, multi-CMS e-commerce and AI — and the use cases are grounded in the real Soissons fabric (sugar-beet, the Le Plateau park, plastics, retail, market gardening), never recycled generic templates.",
       },
     },
   },

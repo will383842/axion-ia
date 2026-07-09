@@ -51,7 +51,7 @@ export const DENAIN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Denain des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire qui a tourné la page du charbon et de la sidérurgie pour devenir un hub logistique : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon, inaugurée en 2025 sur le Parc d'activités des Pierres Blanches (ex-friche Usinor de 85 ha), et l'usine Lesaffre qui s'implante sur le même bassin. Au cœur de la Porte du Hainaut, à 10 km de Valenciennes, à la jonction des autoroutes A2 et A21 le long du canal de l'Escaut. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Denain, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Denain des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire qui a tourné la page du charbon et de la sidérurgie pour devenir un hub logistique : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon, inaugurée en 2025 sur le Parc d'activités des Pierres Blanches (ex-friche Usinor de 85 ha), et l'usine Lesaffre qui s'implante sur le même bassin. Au cœur de la Porte du Hainaut, à 10 km de Valenciennes, à la jonction des autoroutes A2 et A21 le long du canal de l'Escaut. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Denain, itérations à distance.",
         whyHere: [
           "Bascule logistique sur les Pierres Blanches : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon (≈350 emplois), embranchée fer et à la jonction A2/A21 le long du canal de l'Escaut, appelle des portails de suivi de commandes, de gestion d'entrepôt et des tableaux de bord temps réel — terrain idéal pour des applications métier et des automatisations branchées sur votre WMS.",
           "Sous-traitance automobile et mécanique : à proximité de Toyota Onnaing et de Stellantis à Valenciennes-Trith, les PME industrielles héritières du tissu métallurgique denaisien gagnent un portail fournisseur, un reporting d'atelier ou une recherche sémantique dans les nomenclatures — on greffe l'IA sur l'existant, sans imposer de refonte coûteuse ni de migration risquée.",
@@ -62,7 +62,7 @@ export const DENAIN_COPY: VilleCopy = {
           {
             step: "Cadrage à Denain",
             detail:
-              "Atelier sur site — centre-ville, Parc d'activités des Pierres Blanches sur l'ex-friche Usinor, ateliers du bassin : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 24-48 h selon la complexité, sans engagement.",
+              "Atelier sur site — centre-ville, Parc d'activités des Pierres Blanches sur l'ex-friche Usinor, ateliers du bassin : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 48 h selon la complexité, sans engagement.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const DENAIN_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe, et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles, sans verrou. Après le cadrage sur site à Denain, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée, à partir de 24-48 h pour un projet simple.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles, sans verrou. Après le cadrage sur site à Denain, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée, à partir de 48 h pour un projet simple.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un outil déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes, à tout moment, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un outil déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes, à tout moment, sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Denain des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire qui a tourné la page du charbon et de la sidérurgie pour devenir un hub logistique : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon, inaugurée en 2025 sur le Parc d'activités des Pierres Blanches (ex-friche Usinor de 85 ha), et l'usine Lesaffre qui s'implante sur le même bassin. Au cœur de la Porte du Hainaut, à 10 km de Valenciennes, à la jonction des autoroutes A2 et A21 le long du canal de l'Escaut. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Denain, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Denain des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire qui a tourné la page du charbon et de la sidérurgie pour devenir un hub logistique : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon, inaugurée en 2025 sur le Parc d'activités des Pierres Blanches (ex-friche Usinor de 85 ha), et l'usine Lesaffre qui s'implante sur le même bassin. Au cœur de la Porte du Hainaut, à 10 km de Valenciennes, à la jonction des autoroutes A2 et A21 le long du canal de l'Escaut. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Denain, itérations à distance.",
         whyHere: [
           "Bascule logistique sur les Pierres Blanches : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon (≈350 emplois), embranchée fer et à la jonction A2/A21 le long du canal de l'Escaut, appelle des portails de suivi de commandes, de gestion d'entrepôt et des tableaux de bord temps réel — terrain idéal pour des applications métier et des automatisations branchées sur votre WMS.",
           "Sous-traitance automobile et mécanique : à proximité de Toyota Onnaing et de Stellantis à Valenciennes-Trith, les PME industrielles héritières du tissu métallurgique denaisien gagnent un portail fournisseur, un reporting d'atelier ou une recherche sémantique dans les nomenclatures — on greffe l'IA sur l'existant, sans imposer de refonte coûteuse ni de migration risquée.",
@@ -148,7 +148,7 @@ export const DENAIN_COPY: VilleCopy = {
           {
             step: "Cadrage à Denain",
             detail:
-              "Atelier sur site — centre-ville, Parc d'activités des Pierres Blanches sur l'ex-friche Usinor, ateliers du bassin : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 24-48 h selon la complexité, sans engagement.",
+              "Atelier sur site — centre-ville, Parc d'activités des Pierres Blanches sur l'ex-friche Usinor, ateliers du bassin : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 48 h selon la complexité, sans engagement.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const DENAIN_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe, et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles, sans verrou. Après le cadrage sur site à Denain, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée, à partir de 24-48 h pour un projet simple.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles, sans verrou. Après le cadrage sur site à Denain, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée, à partir de 48 h pour un projet simple.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un outil déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes, à tout moment, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un outil déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes, à tout moment, sans dépendance à Axion-IA.",
       },
     },
   },

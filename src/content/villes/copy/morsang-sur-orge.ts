@@ -50,7 +50,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Morsang-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune dense de l'Essonne (21 667 habitants, 4 936 hab/km²) à 23 km au sud de Paris, dont l'économie est fortement tertiaire (64 % des établissements) et faite de professions libérales, de PME de services et d'artisans répartis sur les zones du Buisson foireux et de la route de Corbeil, entre le parc Jean-Vilar et la rive ouest de l'Orge. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Morsang-sur-Orge, accessible par le tramway T12 ou la N20, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Morsang-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune dense de l'Essonne (21 667 habitants, 4 936 hab/km²) à 23 km au sud de Paris, dont l'économie est fortement tertiaire (64 % des établissements) et faite de professions libérales, de PME de services et d'artisans répartis sur les zones du Buisson foireux et de la route de Corbeil, entre le parc Jean-Vilar et la rive ouest de l'Orge. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Morsang-sur-Orge, accessible par le tramway T12 ou la N20, itérations à distance.",
         whyHere: [
           "Tissu très majoritairement tertiaire (64 % des établissements : conseil, finance, assurance), auquel s'ajoutent 15 % d'administration publique et de services collectifs : un terrain idéal pour des portails clients, des espaces de prise de rendez-vous en ligne et des parcours de service augmentés à l'IA autour du centre-ville et du complexe culturel Le Parc, plutôt que des refontes lourdes et coûteuses.",
           "Forte densité de professions libérales (santé, juridique) sur la rive ouest de l'Orge, à proximité du pôle hospitalo-universitaire d'Évry et de Paris-Saclay : nos chatbots RAG et nos agents automatisent la prise de RDV, la réponse aux patients ou clients et la génération de comptes-rendus, ancrés sur vos propres documents, avec une UX mobile-first soignée.",
@@ -61,7 +61,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
           {
             step: "Cadrage à Morsang-sur-Orge",
             detail:
-              "Atelier sur site (cabinet, commerce ou local des zones du Buisson foireux ou de la route de Corbeil, ou près du parc Jean-Vilar) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cabinet, commerce ou local des zones du Buisson foireux ou de la route de Corbeil, ou près du parc Jean-Vilar) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -121,7 +121,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement opaque, et un périmètre écrit noir sur blanc avant la première ligne de code.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement opaque, et un périmètre écrit noir sur blanc avant la première ligne de code.",
           },
           {
             q: "Pouvez-vous automatiser la prise de RDV d'un cabinet libéral ?",
@@ -133,10 +133,10 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée ni de régie. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Le tout documenté, repris en interne par vos équipes ou transférable à tout prestataire local de l'Essonne — Savigny-sur-Orge, Évry-Courcouronnes, Massy — sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée ni de régie. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Le tout documenté, repris en interne par vos équipes ou transférable à tout prestataire local de l'Essonne — Savigny-sur-Orge, Évry-Courcouronnes, Massy — sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Morsang-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune dense de l'Essonne (21 667 habitants, 4 936 hab/km²) à 23 km au sud de Paris, dont l'économie est fortement tertiaire (64 % des établissements) et faite de professions libérales, de PME de services et d'artisans répartis sur les zones du Buisson foireux et de la route de Corbeil, entre le parc Jean-Vilar et la rive ouest de l'Orge. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Morsang-sur-Orge, accessible par le tramway T12 ou la N20, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Morsang-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune dense de l'Essonne (21 667 habitants, 4 936 hab/km²) à 23 km au sud de Paris, dont l'économie est fortement tertiaire (64 % des établissements) et faite de professions libérales, de PME de services et d'artisans répartis sur les zones du Buisson foireux et de la route de Corbeil, entre le parc Jean-Vilar et la rive ouest de l'Orge. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Morsang-sur-Orge, accessible par le tramway T12 ou la N20, itérations à distance.",
         whyHere: [
           "Tissu très majoritairement tertiaire (64 % des établissements : conseil, finance, assurance), auquel s'ajoutent 15 % d'administration publique et de services collectifs : un terrain idéal pour des portails clients, des espaces de prise de rendez-vous en ligne et des parcours de service augmentés à l'IA autour du centre-ville et du complexe culturel Le Parc, plutôt que des refontes lourdes et coûteuses.",
           "Forte densité de professions libérales (santé, juridique) sur la rive ouest de l'Orge, à proximité du pôle hospitalo-universitaire d'Évry et de Paris-Saclay : nos chatbots RAG et nos agents automatisent la prise de RDV, la réponse aux patients ou clients et la génération de comptes-rendus, ancrés sur vos propres documents, avec une UX mobile-first soignée.",
@@ -147,7 +147,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
           {
             step: "Cadrage à Morsang-sur-Orge",
             detail:
-              "Atelier sur site (cabinet, commerce ou local des zones du Buisson foireux ou de la route de Corbeil, ou près du parc Jean-Vilar) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cabinet, commerce ou local des zones du Buisson foireux ou de la route de Corbeil, ou près du parc Jean-Vilar) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -207,7 +207,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement opaque, et un périmètre écrit noir sur blanc avant la première ligne de code.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement opaque, et un périmètre écrit noir sur blanc avant la première ligne de code.",
           },
           {
             q: "Pouvez-vous automatiser la prise de RDV d'un cabinet libéral ?",
@@ -219,7 +219,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée ni de régie. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Le tout documenté, repris en interne par vos équipes ou transférable à tout prestataire local de l'Essonne — Savigny-sur-Orge, Évry-Courcouronnes, Massy — sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée ni de régie. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Le tout documenté, repris en interne par vos équipes ou transférable à tout prestataire local de l'Essonne — Savigny-sur-Orge, Évry-Courcouronnes, Massy — sans dépendance à Axion-IA.",
       },
     },
   },

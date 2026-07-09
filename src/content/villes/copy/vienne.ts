@@ -124,7 +124,7 @@ export const VIENNE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis à Vienne ?",
-            a: "Nous fournissons un devis à partir de 24 à 48 h selon la complexité du projet. Une vitrine pour un commerce du centre-ville est cadrée plus vite qu'une plateforme SaaS métier pour une ETI de l'Espace Saint-Germain ou un opérateur logistique de Salaise-Sablons.",
+            a: "Nous fournissons un devis à partir de 48 h selon la complexité du projet. Une vitrine pour un commerce du centre-ville est cadrée plus vite qu'une plateforme SaaS métier pour une ETI de l'Espace Saint-Germain ou un opérateur logistique de Salaise-Sablons.",
           },
           {
             q: "Mes données et mon site restent-ils sous mon contrôle ?",
@@ -136,7 +136,7 @@ export const VIENNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en code maîtrisé, hébergés en Union européenne par défaut et conformes RGPD. Vous restez propriétaire du code et des données, sans verrou éditeur ni dépendance à Axion-IA : votre projet est repris ou maintenu par tout prestataire de la région ou par vos équipes. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA intégrée, avec une exigence de performance (Web Vitals) et de référencement local pour Vienne et la vallée du Rhône.",
+          "Devis à partir de 48 h selon la complexité. Sites et plateformes développés en code maîtrisé, hébergés en Union européenne par défaut et conformes RGPD. Vous restez propriétaire du code et des données, sans verrou éditeur ni dépendance à Axion-IA : votre projet est repris ou maintenu par tout prestataire de la région ou par vos équipes. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA intégrée, avec une exigence de performance (Web Vitals) et de référencement local pour Vienne et la vallée du Rhône.",
       },
       en: {
         hero: "In Vienne (38), Axion-IA designs AI-augmented websites and SaaS platforms for an economy where mass food processing (the Candia / Sodiaal / Yoplait / Logoplaste dairy site, ~600 staff, 1 to 1.5 million litres processed daily), engineering and service firms at the Espace Saint-Germain business park (~25,000 m² of offices, Ingerop, Saint-Gobain), Rhône river logistics (the Vienne Sud port at Salaise-Sablons, ~860,000 tonnes/year) and intense heritage tourism around the Roman antique theatre and the Jazz à Vienne festival all coexist. We build in controlled code: showcase sites, multi-CMS e-commerce, booking portals and business applications with integrated AI (semantic search, conversational agents, recommendation), hosted in the EU and GDPR-compliant, with no technical dependency imposed on Vienne business owners.",
@@ -210,7 +210,7 @@ export const VIENNE_COPY: VilleCopy = {
           },
           {
             q: "What are the lead times for a quote in Vienne?",
-            a: "We provide a quote from 24 to 48 hours depending on project complexity. A showcase site for a city-centre shop is scoped faster than a business SaaS platform for an Espace Saint-Germain mid-cap or a Salaise-Sablons logistics operator.",
+            a: "We provide a quote from 48 hours depending on project complexity. A showcase site for a city-centre shop is scoped faster than a business SaaS platform for an Espace Saint-Germain mid-cap or a Salaise-Sablons logistics operator.",
           },
           {
             q: "Do my data and site stay under my control?",
@@ -222,7 +222,7 @@ export const VIENNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity. Sites and platforms developed in controlled code, hosted in the European Union by default and GDPR-compliant. You remain owner of the code and data, with no vendor lock-in or dependency on Axion-IA: your project is taken over or maintained by any regional provider or your own teams. We cover UX/UI, mobile, multi-CMS e-commerce and integrated AI, with a performance requirement (Web Vitals) and local SEO for Vienne and the Rhône valley.",
+          "Quote from 48 hours depending on complexity. Sites and platforms developed in controlled code, hosted in the European Union by default and GDPR-compliant. You remain owner of the code and data, with no vendor lock-in or dependency on Axion-IA: your project is taken over or maintained by any regional provider or your own teams. We cover UX/UI, mobile, multi-CMS e-commerce and integrated AI, with a performance requirement (Web Vitals) and local SEO for Vienne and the Rhône valley.",
       },
     },
   },

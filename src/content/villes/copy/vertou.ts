@@ -53,7 +53,7 @@ export const VERTOU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Vertou des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour la 4e ville de Loire-Atlantique, porte Sud de Nantes Métropole le long de la Sèvre Nantaise, où cohabitent les domaines Muscadet AOC Sèvre-et-Maine fédérés autour du Château de la Frémoire, l'écosystème industriel Manitou, la chimie SNF Floerger, l'agroalimentaire de Tipiak et un BTP périurbain en pleine croissance le long du tramway TAN. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Vertou, itérations à distance, livraison clé en main et accompagnement à la prise en main.",
+        hero: "Axion-IA conçoit et augmente à Vertou des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour la 4e ville de Loire-Atlantique, porte Sud de Nantes Métropole le long de la Sèvre Nantaise, où cohabitent les domaines Muscadet AOC Sèvre-et-Maine fédérés autour du Château de la Frémoire, l'écosystème industriel Manitou, la chimie SNF Floerger, l'agroalimentaire de Tipiak et un BTP périurbain en pleine croissance le long du tramway TAN. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Vertou, itérations à distance, livraison clé en main et accompagnement à la prise en main.",
         whyHere: [
           "Vente directe viticole : les domaines Muscadet AOC Sèvre-et-Maine le long de la Sèvre Nantaise, fédérés autour du Château de la Frémoire (siège de la Fédération des Vins de Nantes depuis 1989) et de caves comme le Domaine des Cormiers, vendent au caveau, en négoce et à l'export — terrain idéal pour des boutiques e-commerce de vins, des fiches AOC enrichies et des chatbots multilingues pour la clientèle internationale.",
           "Tissu industriel structuré autour de Manitou (chariots élévateurs, bassin Ancenis-Vertou, 4 500 salariés) et de SNF Floerger (chimie des acrylamides) : on bâtit des portails fournisseurs, des configurateurs de produits et des outils de suivi commande pour les sous-traitants des ZI La Brosse, Tubé Nord et La Riollais, qui concentrent près d'un tiers des surfaces de zones d'activité du secteur, sans imposer de refonte lourde de leur SI existant.",
@@ -64,7 +64,7 @@ export const VERTOU_COPY: VilleCopy = {
           {
             step: "Cadrage à Vertou",
             detail:
-              "Atelier sur site (centre-ville le long de la Sèvre Nantaise, Château de la Frémoire, ZI La Brosse, Tubé Nord ou La Riollais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité viticole. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville le long de la Sèvre Nantaise, Château de la Frémoire, ZI La Brosse, Tubé Nord ou La Riollais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité viticole. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const VERTOU_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, recettes, registres de cave et fichiers fournisseurs. Après le cadrage à Vertou, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, recettes, registres de cave et fichiers fournisseurs. Après le cadrage à Vertou, on remet un devis ferme en forfait fixe, à partir de 48 h pour un projet simple, sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vendanges ou rush agroalimentaire. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire local des Pays de la Loire ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vendanges ou rush agroalimentaire. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire local des Pays de la Loire ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Vertou des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour la 4e ville de Loire-Atlantique, porte Sud de Nantes Métropole le long de la Sèvre Nantaise, où cohabitent les domaines Muscadet AOC Sèvre-et-Maine fédérés autour du Château de la Frémoire, l'écosystème industriel Manitou, la chimie SNF Floerger, l'agroalimentaire de Tipiak et un BTP périurbain en pleine croissance le long du tramway TAN. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Vertou, itérations à distance, livraison clé en main et accompagnement à la prise en main.",
+        hero: "Axion-IA conçoit et augmente à Vertou des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour la 4e ville de Loire-Atlantique, porte Sud de Nantes Métropole le long de la Sèvre Nantaise, où cohabitent les domaines Muscadet AOC Sèvre-et-Maine fédérés autour du Château de la Frémoire, l'écosystème industriel Manitou, la chimie SNF Floerger, l'agroalimentaire de Tipiak et un BTP périurbain en pleine croissance le long du tramway TAN. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Vertou, itérations à distance, livraison clé en main et accompagnement à la prise en main.",
         whyHere: [
           "Vente directe viticole : les domaines Muscadet AOC Sèvre-et-Maine le long de la Sèvre Nantaise, fédérés autour du Château de la Frémoire (siège de la Fédération des Vins de Nantes depuis 1989) et de caves comme le Domaine des Cormiers, vendent au caveau, en négoce et à l'export — terrain idéal pour des boutiques e-commerce de vins, des fiches AOC enrichies et des chatbots multilingues pour la clientèle internationale.",
           "Tissu industriel structuré autour de Manitou (chariots élévateurs, bassin Ancenis-Vertou, 4 500 salariés) et de SNF Floerger (chimie des acrylamides) : on bâtit des portails fournisseurs, des configurateurs de produits et des outils de suivi commande pour les sous-traitants des ZI La Brosse, Tubé Nord et La Riollais, qui concentrent près d'un tiers des surfaces de zones d'activité du secteur, sans imposer de refonte lourde de leur SI existant.",
@@ -150,7 +150,7 @@ export const VERTOU_COPY: VilleCopy = {
           {
             step: "Cadrage à Vertou",
             detail:
-              "Atelier sur site (centre-ville le long de la Sèvre Nantaise, Château de la Frémoire, ZI La Brosse, Tubé Nord ou La Riollais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité viticole. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville le long de la Sèvre Nantaise, Château de la Frémoire, ZI La Brosse, Tubé Nord ou La Riollais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité viticole. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const VERTOU_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, recettes, registres de cave et fichiers fournisseurs. Après le cadrage à Vertou, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, recettes, registres de cave et fichiers fournisseurs. Après le cadrage à Vertou, on remet un devis ferme en forfait fixe, à partir de 48 h pour un projet simple, sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vendanges ou rush agroalimentaire. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire local des Pays de la Loire ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vendanges ou rush agroalimentaire. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire local des Pays de la Loire ou repris en interne par vos équipes.",
       },
     },
   },

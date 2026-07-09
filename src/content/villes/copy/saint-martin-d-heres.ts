@@ -127,7 +127,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un projet de site ou de SaaS à Saint-Martin-d'Hères ?",
-            a: "À partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine TPE se chiffre vite ; une plateforme SaaS multi-modules pour éditeur ou industriel demande un cadrage plus détaillé avant chiffrage.",
+            a: "À partir de 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine TPE se chiffre vite ; une plateforme SaaS multi-modules pour éditeur ou industriel demande un cadrage plus détaillé avant chiffrage.",
           },
           {
             q: "L'hébergement et les données sont-ils conformes au RGPD ?",
@@ -135,7 +135,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité, périmètre et livrables fixés au contrat. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'IA appliquée (chatbot RAG, recherche sémantique, agents). Hébergement en Union européenne par défaut, conformité RGPD et AI Act. Aucun lock-in : le code et les modèles restent votre propriété, transférables à tout intégrateur de Saint-Martin-d'Hères, de Grenoble ou de la Métropole. Performances Web Vitals tenues sur vos pages stratégiques.",
+          "Devis à partir de 48 h selon la complexité, périmètre et livrables fixés au contrat. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'IA appliquée (chatbot RAG, recherche sémantique, agents). Hébergement en Union européenne par défaut, conformité RGPD et AI Act. Aucun lock-in : le code et les modèles restent votre propriété, transférables à tout intégrateur de Saint-Martin-d'Hères, de Grenoble ou de la Métropole. Performances Web Vitals tenues sur vos pages stratégiques.",
       },
       en: {
         hero: "Saint-Martin-d'Hères, the second-largest town in Isère after Grenoble, is a singular case for Axion-IA: this is where ALMA, a CAD/CAM software publisher founded in 1979 by mathematicians spun off from the University of Grenoble, became a world leader in cutting and sheet-metal software; where most of the Grenoble Alpes university campus stretches (Institut Néel, LNCMI, Polytech Grenoble); and where precision industry (SGL Carbon Technic, graphite heat exchangers) coexists with leading-edge healthcare (Clinique Belledonne, IVF). We design on site AI-augmented websites and SaaS platforms for these publishers, laboratories, manufacturers and SMEs across the town's business zones.",
@@ -213,7 +213,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote for a website or SaaS project in Saint-Martin-d'Hères?",
-            a: "From 24 to 48 hours depending on complexity, after an initial framing call. A micro-business showcase site is quoted quickly; a multi-module SaaS platform for a publisher or manufacturer needs more detailed framing before pricing.",
+            a: "From 48 hours depending on complexity, after an initial framing call. A micro-business showcase site is quoted quickly; a multi-module SaaS platform for a publisher or manufacturer needs more detailed framing before pricing.",
           },
           {
             q: "Are hosting and data GDPR-compliant?",
@@ -221,7 +221,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity, with scope and deliverables set in the contract. We claim UX/UI, mobile-first, multi-CMS e-commerce and applied AI (RAG chatbot, semantic search, agents). EU hosting by default, GDPR and AI Act compliance. No lock-in: code and models remain your property, transferable to any integrator in Saint-Martin-d'Hères, Grenoble or the Métropole. Web Vitals performance upheld on your strategic pages.",
+          "Quote from 48 hours depending on complexity, with scope and deliverables set in the contract. We claim UX/UI, mobile-first, multi-CMS e-commerce and applied AI (RAG chatbot, semantic search, agents). EU hosting by default, GDPR and AI Act compliance. No lock-in: code and models remain your property, transferable to any integrator in Saint-Martin-d'Hères, Grenoble or the Métropole. Web Vitals performance upheld on your strategic pages.",
       },
     },
   },

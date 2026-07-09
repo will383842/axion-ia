@@ -124,7 +124,7 @@ export const LAMBERSART_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis ?",
-            a: "Nous revenons vers vous avec un devis à partir de 24-48 h selon la complexité (simple vitrine pour un cabinet du centre vs plateforme SaaS IA pour une structure du Pont Royal). Le périmètre, les intégrations et l'hébergement sont chiffrés clairement avant tout démarrage.",
+            a: "Nous revenons vers vous avec un devis à partir de 48 h selon la complexité (simple vitrine pour un cabinet du centre vs plateforme SaaS IA pour une structure du Pont Royal). Le périmètre, les intégrations et l'hébergement sont chiffrés clairement avant tout démarrage.",
           },
           {
             q: "Faites-vous vraiment l'UX/UI, le mobile et l'e-commerce, ou juste l'IA ?",
@@ -132,7 +132,7 @@ export const LAMBERSART_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code, modèles IA et hébergement vous appartiennent intégralement : zéro verrou éditeur, stack transférable à tout intégrateur de la Métropole Européenne de Lille ou reprise en interne. Hébergement en Union européenne par défaut et conformité RGPD — un prérequis pour les données sensibles des acteurs défense/aéro du Pont Royal, des cabinets médicaux et juridiques de Lambersart et des e-commerces de proximité. Devis à partir de 24-48 h selon la complexité, périmètre et tarifs publics annoncés avant signature, sans dépendance contractuelle imposée après la mise en ligne.",
+          "Code, modèles IA et hébergement vous appartiennent intégralement : zéro verrou éditeur, stack transférable à tout intégrateur de la Métropole Européenne de Lille ou reprise en interne. Hébergement en Union européenne par défaut et conformité RGPD — un prérequis pour les données sensibles des acteurs défense/aéro du Pont Royal, des cabinets médicaux et juridiques de Lambersart et des e-commerces de proximité. Devis à partir de 48 h selon la complexité, périmètre et tarifs publics annoncés avant signature, sans dépendance contractuelle imposée après la mise en ligne.",
       },
       en: {
         hero: "In Lambersart, Axion-IA's AI-augmented websites and SaaS platforms address three distinct local realities: the tech players of the Pont Royal business park (Thales SIX GTS France and its communications-equipment / air-traffic ecosystem, the OPEN-Sopra Steria IT services firm, Engie), the construction and industrial-services SMEs of the La Cessoie zone (Nord France Constructions, Soc Nord Inox, Cofrino industrial refrigeration, Sixense, Pro Impec), and the independent professionals and local shops of the Canon d'Or district and the banks of the Deûle. We design AI-native platforms — RAG chatbots, semantic search, conversational agents, client portals — in custom code, with polished UX/UI and mobile, multi-CMS e-commerce, hosted in the EU and GDPR-compliant, with no vendor lock-in.",
@@ -210,7 +210,7 @@ export const LAMBERSART_COPY: VilleCopy = {
           },
           {
             q: "What is the turnaround for a quote?",
-            a: "We come back with a quote from 24-48 h depending on complexity (a simple showcase for a town-centre practice vs an AI SaaS platform for a Pont Royal structure). Scope, integrations and hosting are clearly costed before any start.",
+            a: "We come back with a quote from 48 h depending on complexity (a simple showcase for a town-centre practice vs an AI SaaS platform for a Pont Royal structure). Scope, integrations and hosting are clearly costed before any start.",
           },
           {
             q: "Do you really do UX/UI, mobile and e-commerce, or just the AI?",
@@ -218,7 +218,7 @@ export const LAMBERSART_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code, AI models and hosting belong entirely to you: zero vendor lock-in, stack transferable to any integrator in the Métropole Européenne de Lille or taken in-house. EU hosting by default and GDPR compliance — a prerequisite for the sensitive data of Pont Royal's defence/aero players, Lambersart's medical and legal practices and local e-commerce. Quote from 24-48 h depending on complexity, public scope and pricing announced before signature, with no imposed contractual dependency after go-live.",
+          "Code, AI models and hosting belong entirely to you: zero vendor lock-in, stack transferable to any integrator in the Métropole Européenne de Lille or taken in-house. EU hosting by default and GDPR compliance — a prerequisite for the sensitive data of Pont Royal's defence/aero players, Lambersart's medical and legal practices and local e-commerce. Quote from 48 h depending on complexity, public scope and pricing announced before signature, with no imposed contractual dependency after go-live.",
       },
     },
   },

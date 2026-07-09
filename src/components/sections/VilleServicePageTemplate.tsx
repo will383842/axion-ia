@@ -804,8 +804,8 @@ export async function renderVilleServicePage({
         description={
           isSitesWeb
             ? isFr
-              ? `Un appel pour cadrer votre site ou plateforme à ${ville.nameFr} : on identifie les briques IA à plus fort ROI, puis devis ferme à partir de 24-48 h selon la complexité du projet. Code et données à vous.`
-              : `A call to scope your site or platform in ${ville.nameFr}: we identify the highest-ROI AI bricks, then a firm quote from 24-48 h depending on project complexity. Code and data yours.`
+              ? `Un appel pour cadrer votre site ou plateforme à ${ville.nameFr} : on identifie les briques IA à plus fort ROI, puis devis ferme à partir de 48 h selon la complexité du projet. Code et données à vous.`
+              : `A call to scope your site or platform in ${ville.nameFr}: we identify the highest-ROI AI bricks, then a firm quote from 48 h depending on project complexity. Code and data yours.`
             : isFr
               ? `Réservez un appel pour cadrer ${meta.nameFr.toLowerCase()} à ${ville.nameFr} : on identifie vos priorités IA, puis on planifie la suite ensemble.`
               : `Book a call to scope ${meta.nameEn.toLowerCase()} in ${ville.nameFr}: we identify your AI priorities, then plan the next steps together.`

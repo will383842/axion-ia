@@ -53,7 +53,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Mons-en-Barœul des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ancienne cité ouvrière reconvertie en pôle tertiaire et résidentiel, intégrée à la métropole européenne de Lille, où le tissu mêle services aux entreprises, professions libérales, commerces et artisans aux portes immédiates de Lille et d'EuraTechnologies. Du quartier du Fort, dont l'ancien fort militaire est devenu un pôle culturel (conservatoire, bibliothèque, théâtre de verdure), aux zones tertiaires de l'est lillois, nous bâtissons des outils utiles. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mons-en-Barœul, itérations à distance via la ligne 2 du métro.",
+        hero: "Axion-IA conçoit et augmente à Mons-en-Barœul des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ancienne cité ouvrière reconvertie en pôle tertiaire et résidentiel, intégrée à la métropole européenne de Lille, où le tissu mêle services aux entreprises, professions libérales, commerces et artisans aux portes immédiates de Lille et d'EuraTechnologies. Du quartier du Fort, dont l'ancien fort militaire est devenu un pôle culturel (conservatoire, bibliothèque, théâtre de verdure), aux zones tertiaires de l'est lillois, nous bâtissons des outils utiles. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mons-en-Barœul, itérations à distance via la ligne 2 du métro.",
         whyHere: [
           "Cabinets libéraux denses (avocats, experts-comptables, conseils) dans l'orbite lilloise et autour du centre-ville montois : on bâtit des portails clients sécurisés, des prises de rendez-vous en ligne et des chatbots RAG qui répondent sur vos propres documents métier, sans saisie manuelle, et hébergés en UE pour les pièces sensibles de vos dossiers.",
           "Tissu de services aux entreprises et d'ESN nourri par la proximité immédiate d'EuraTechnologies, du quartier d'affaires de la ligne 2 et des sièges sociaux de la métropole (Villeneuve-d'Ascq voisine) : terrain idéal pour des plateformes SaaS IA-native et de la recherche sémantique branchées sur vos CRM et ERP existants.",
@@ -64,7 +64,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
           {
             step: "Cadrage à Mons-en-Barœul",
             detail:
-              "Atelier sur site (hôtel de ville, quartier d'affaires de la ligne 2, abords du Fort de Mons, zones tertiaires de l'est lillois) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
+              "Atelier sur site (hôtel de ville, quartier d'affaires de la ligne 2, abords du Fort de Mons, zones tertiaires de l'est lillois) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Mons-en-Barœul, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple : pas de régie, pas de dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Mons-en-Barœul, on remet un devis ferme en forfait fixe, à partir de 48 h pour un projet simple : pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en heures d'ouverture de vos commerces, cabinets ou guichets. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un autre prestataire de la métropole lilloise ou des Hauts-de-France, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en heures d'ouverture de vos commerces, cabinets ou guichets. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un autre prestataire de la métropole lilloise ou des Hauts-de-France, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Mons-en-Barœul des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ancienne cité ouvrière reconvertie en pôle tertiaire et résidentiel, intégrée à la métropole européenne de Lille, où le tissu mêle services aux entreprises, professions libérales, commerces et artisans aux portes immédiates de Lille et d'EuraTechnologies. Du quartier du Fort, dont l'ancien fort militaire est devenu un pôle culturel (conservatoire, bibliothèque, théâtre de verdure), aux zones tertiaires de l'est lillois, nous bâtissons des outils utiles. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mons-en-Barœul, itérations à distance via la ligne 2 du métro.",
+        hero: "Axion-IA conçoit et augmente à Mons-en-Barœul des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ancienne cité ouvrière reconvertie en pôle tertiaire et résidentiel, intégrée à la métropole européenne de Lille, où le tissu mêle services aux entreprises, professions libérales, commerces et artisans aux portes immédiates de Lille et d'EuraTechnologies. Du quartier du Fort, dont l'ancien fort militaire est devenu un pôle culturel (conservatoire, bibliothèque, théâtre de verdure), aux zones tertiaires de l'est lillois, nous bâtissons des outils utiles. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mons-en-Barœul, itérations à distance via la ligne 2 du métro.",
         whyHere: [
           "Cabinets libéraux denses (avocats, experts-comptables, conseils) dans l'orbite lilloise et autour du centre-ville montois : on bâtit des portails clients sécurisés, des prises de rendez-vous en ligne et des chatbots RAG qui répondent sur vos propres documents métier, sans saisie manuelle, et hébergés en UE pour les pièces sensibles de vos dossiers.",
           "Tissu de services aux entreprises et d'ESN nourri par la proximité immédiate d'EuraTechnologies, du quartier d'affaires de la ligne 2 et des sièges sociaux de la métropole (Villeneuve-d'Ascq voisine) : terrain idéal pour des plateformes SaaS IA-native et de la recherche sémantique branchées sur vos CRM et ERP existants.",
@@ -150,7 +150,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
           {
             step: "Cadrage à Mons-en-Barœul",
             detail:
-              "Atelier sur site (hôtel de ville, quartier d'affaires de la ligne 2, abords du Fort de Mons, zones tertiaires de l'est lillois) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
+              "Atelier sur site (hôtel de ville, quartier d'affaires de la ligne 2, abords du Fort de Mons, zones tertiaires de l'est lillois) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Mons-en-Barœul, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple : pas de régie, pas de dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Mons-en-Barœul, on remet un devis ferme en forfait fixe, à partir de 48 h pour un projet simple : pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en heures d'ouverture de vos commerces, cabinets ou guichets. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un autre prestataire de la métropole lilloise ou des Hauts-de-France, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en heures d'ouverture de vos commerces, cabinets ou guichets. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un autre prestataire de la métropole lilloise ou des Hauts-de-France, ou repris en interne par vos équipes.",
       },
     },
   },

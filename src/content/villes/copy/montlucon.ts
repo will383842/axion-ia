@@ -53,7 +53,7 @@ export const MONTLUCON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Montluçon, Axion-IA conçoit et augmente avec l'IA des sites web, applications et plateformes SaaS pour le tissu industriel du bassin : sous-traitants de mécanique de précision et d'électronique gravitant autour de Safran Electronics & Defense, ateliers héritiers de Dunlop et de la tradition métallurgique du « petit Manchester français », commerces et services. UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montluçon, itérations à distance.",
+        hero: "À Montluçon, Axion-IA conçoit et augmente avec l'IA des sites web, applications et plateformes SaaS pour le tissu industriel du bassin : sous-traitants de mécanique de précision et d'électronique gravitant autour de Safran Electronics & Defense, ateliers héritiers de Dunlop et de la tradition métallurgique du « petit Manchester français », commerces et services. UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montluçon, itérations à distance.",
         whyHere: [
           "Tissu industriel réel : sous-traitants mécanique et électronique de l'écosystème Safran Electronics & Defense (1 600+ salariés, systèmes inertiels, avionique, drones), ateliers de forge et métallurgie des poudres, héritiers de Dunlop et de Goodyear France.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : un portail donneurs d'ordres ou un site B2B à votre marque, conçu de bout en bout.",
@@ -64,7 +64,7 @@ export const MONTLUCON_COPY: VilleCopy = {
           {
             step: "Cadrage à Montluçon",
             detail:
-              "Atelier sur site, dans votre atelier ou bureau : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, dans votre atelier ou bureau : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const MONTLUCON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Montluçon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour un portail métier industriel branché sur un ERP. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage à Montluçon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour un portail métier industriel branché sur un ERP. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin de Montluçon et de l'Allier ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin de Montluçon et de l'Allier ou repris en interne.",
       },
       en: {
-        hero: 'In Montluçon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI for the area\'s industrial fabric: precision-mechanics and electronics subcontractors orbiting Safran Electronics & Defense, workshops descended from Dunlop and the metalworking tradition of the "little French Manchester", local retailers and services. Bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Montluçon kick-off, remote iterations.',
+        hero: 'In Montluçon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI for the area\'s industrial fabric: precision-mechanics and electronics subcontractors orbiting Safran Electronics & Defense, workshops descended from Dunlop and the metalworking tradition of the "little French Manchester", local retailers and services. Bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Montluçon kick-off, remote iterations.',
         whyHere: [
           "A real industrial fabric: mechanics and electronics subcontractors in the Safran Electronics & Defense ecosystem (1,600+ employees, inertial systems, avionics, drones), forging and powder-metallurgy workshops, heirs of Dunlop and Goodyear France.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick: a supplier portal or a B2B site in your brand, designed end to end.",
@@ -150,7 +150,7 @@ export const MONTLUCON_COPY: VilleCopy = {
           {
             step: "Scoping in Montluçon",
             detail:
-              "On-site workshop, in your workshop or office: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop, in your workshop or office: goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const MONTLUCON_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping in Montluçon, we issue a firm fixed-price quote. The lead time depends on complexity — from 24-48 h for a simple project, longer for an industrial business portal wired to an ERP. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After scoping in Montluçon, we issue a firm fixed-price quote. The lead time depends on complexity — from 48 h for a simple project, longer for an industrial business portal wired to an ERP. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Zero-downtime go-live when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in the Montluçon basin and Allier or taken back in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Zero-downtime go-live when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in the Montluçon basin and Allier or taken back in-house.",
       },
     },
   },

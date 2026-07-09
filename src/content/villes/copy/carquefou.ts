@@ -53,7 +53,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Carquefou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, portails B2B, configurateurs produits, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos catalogues, recherche sémantique et agents d'automatisation. Pensé pour le pôle industriel et logistique du nord nantais comme pour le technopôle tertiaire de la Fleuriaye — créé en 1997, plus de 40 000 m² de bureaux et près de 1 500 emplois dans les nouvelles technologies — où PMI, sous-traitants, négociants, logisticiens et éditeurs forment un tissu dense de TPE et PME. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carquefou, à 15 min de Nantes, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Carquefou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, portails B2B, configurateurs produits, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos catalogues, recherche sémantique et agents d'automatisation. Pensé pour le pôle industriel et logistique du nord nantais comme pour le technopôle tertiaire de la Fleuriaye — créé en 1997, plus de 40 000 m² de bureaux et près de 1 500 emplois dans les nouvelles technologies — où PMI, sous-traitants, négociants, logisticiens et éditeurs forment un tissu dense de TPE et PME. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carquefou, à 15 min de Nantes, puis itérations à distance.",
         whyHere: [
           "Pôle industriel et de sous-traitance autour de la Fleuriaye et de la ZAC du Clouet : pour les PMI et la fabrication de produits métalliques, on greffe sur l'existant un configurateur produit, un espace devis assisté et une base documentaire technique (fiches, plans, normes) interrogeable en langage naturel par vos opérateurs comme par vos clients, mobile-first pour l'atelier.",
           "Négoce et commerce de gros très présents dans le parc d'activités : on construit des portails B2B sur mesure ou en e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, tarifs clients différenciés, suivi de commandes, relance et facturation automatisées par agents IA branchés sur votre ERP.",
@@ -64,7 +64,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
           {
             step: "Cadrage à Carquefou",
             detail:
-              "Atelier sur site dans l'atelier, l'entrepôt ou les bureaux du parc de la Fleuriaye ou de la ZAC du Clouet : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans l'atelier, l'entrepôt ou les bureaux du parc de la Fleuriaye ou de la ZAC du Clouet : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const CARQUEFOU_COPY: VilleCopy = {
           },
           {
             q: "Mes données et catalogues restent-ils en Europe, et le devis est-il ferme ?",
-            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, catalogues et modèles. Côté budget, après le cadrage sur site à la Fleuriaye, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, catalogues et modèles. Côté budget, après le cadrage sur site à la Fleuriaye, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre la prise de commandes ni les flux logistiques du parc de la Fleuriaye. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du nord nantais ou de la métropole de Nantes, ou reprise en interne par vos équipes après formation.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre la prise de commandes ni les flux logistiques du parc de la Fleuriaye. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du nord nantais ou de la métropole de Nantes, ou reprise en interne par vos équipes après formation.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Carquefou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, portails B2B, configurateurs produits, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos catalogues, recherche sémantique et agents d'automatisation. Pensé pour le pôle industriel et logistique du nord nantais comme pour le technopôle tertiaire de la Fleuriaye — créé en 1997, plus de 40 000 m² de bureaux et près de 1 500 emplois dans les nouvelles technologies — où PMI, sous-traitants, négociants, logisticiens et éditeurs forment un tissu dense de TPE et PME. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carquefou, à 15 min de Nantes, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Carquefou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, portails B2B, configurateurs produits, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos catalogues, recherche sémantique et agents d'automatisation. Pensé pour le pôle industriel et logistique du nord nantais comme pour le technopôle tertiaire de la Fleuriaye — créé en 1997, plus de 40 000 m² de bureaux et près de 1 500 emplois dans les nouvelles technologies — où PMI, sous-traitants, négociants, logisticiens et éditeurs forment un tissu dense de TPE et PME. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carquefou, à 15 min de Nantes, puis itérations à distance.",
         whyHere: [
           "Pôle industriel et de sous-traitance autour de la Fleuriaye et de la ZAC du Clouet : pour les PMI et la fabrication de produits métalliques, on greffe sur l'existant un configurateur produit, un espace devis assisté et une base documentaire technique (fiches, plans, normes) interrogeable en langage naturel par vos opérateurs comme par vos clients, mobile-first pour l'atelier.",
           "Négoce et commerce de gros très présents dans le parc d'activités : on construit des portails B2B sur mesure ou en e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, tarifs clients différenciés, suivi de commandes, relance et facturation automatisées par agents IA branchés sur votre ERP.",
@@ -150,7 +150,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
           {
             step: "Cadrage à Carquefou",
             detail:
-              "Atelier sur site dans l'atelier, l'entrepôt ou les bureaux du parc de la Fleuriaye ou de la ZAC du Clouet : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans l'atelier, l'entrepôt ou les bureaux du parc de la Fleuriaye ou de la ZAC du Clouet : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const CARQUEFOU_COPY: VilleCopy = {
           },
           {
             q: "Mes données et catalogues restent-ils en Europe, et le devis est-il ferme ?",
-            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, catalogues et modèles. Côté budget, après le cadrage sur site à la Fleuriaye, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, catalogues et modèles. Côté budget, après le cadrage sur site à la Fleuriaye, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre la prise de commandes ni les flux logistiques du parc de la Fleuriaye. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du nord nantais ou de la métropole de Nantes, ou reprise en interne par vos équipes après formation.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre la prise de commandes ni les flux logistiques du parc de la Fleuriaye. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du nord nantais ou de la métropole de Nantes, ou reprise en interne par vos équipes après formation.",
       },
     },
   },

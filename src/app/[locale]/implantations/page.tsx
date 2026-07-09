@@ -428,8 +428,8 @@ export default async function ImplantationsHub({ params }: Props) {
               </h2>
               <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
                 {isFr
-                  ? "Décrivez votre besoin en 2 minutes. Un appel où l'on prend le temps de tout cadrer à la perfection. Réponse sous 24h ouvrées, sans engagement."
-                  : "Describe your need in 2 minutes. A call where we take the time to scope your project perfectly. Reply within 24 business hours, no commitment."}
+                  ? "Décrivez votre besoin en 2 minutes. Un appel où l'on prend le temps de tout cadrer à la perfection. Réponse sous 48h ouvrées, sans engagement."
+                  : "Describe your need in 2 minutes. A call where we take the time to scope your project perfectly. Reply within 48 business hours, no commitment."}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link

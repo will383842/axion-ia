@@ -132,11 +132,11 @@ export const DRAVEIL_COPY: VilleCopy = {
           },
           {
             q: "Comment se passe une mission depuis Paris ?",
-            a: "Nos consultants viennent de Paris (environ 25 minutes par le RER D via Juvisy-sur-Orge) et se déplacent sur tout le sud-est de l'Essonne : Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off et passation en présentiel — au commerce, au cabinet ou sur la ZA de Mainville ; itérations à distance. Devis sous 24 à 48 h selon la complexité.",
+            a: "Nos consultants viennent de Paris (environ 25 minutes par le RER D via Juvisy-sur-Orge) et se déplacent sur tout le sud-est de l'Essonne : Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off et passation en présentiel — au commerce, au cabinet ou sur la ZA de Mainville ; itérations à distance. Devis sous 48 h selon la complexité.",
           },
         ],
         guarantees:
-          "Devis transmis à partir de 24 à 48 h selon la complexité du projet. Sites et plateformes mobile-first, UX/UI soignée, e-commerce multi-CMS et briques IA intégrées à vos outils existants. Hébergement en Union européenne par défaut, conforme RGPD. Vous gardez la pleine propriété du code, des données et des accès — aucun verrou éditeur, projet transférable à tout prestataire francilien ou repris en interne. Pas de dépendance Axion-IA : à la livraison, vos équipes draveilloises sont autonomes.",
+          "Devis transmis à partir de 48 h selon la complexité du projet. Sites et plateformes mobile-first, UX/UI soignée, e-commerce multi-CMS et briques IA intégrées à vos outils existants. Hébergement en Union européenne par défaut, conforme RGPD. Vous gardez la pleine propriété du code, des données et des accès — aucun verrou éditeur, projet transférable à tout prestataire francilien ou repris en interne. Pas de dépendance Axion-IA : à la livraison, vos équipes draveilloises sont autonomes.",
       },
       en: {
         hero: "In Draveil (91210), the economy is not a metropolitan one: it is close to 3,968 businesses, the vast majority sole traders and micro-businesses — personal services, real estate, trades, logistics and transport, independent professionals — alongside the Mainville business park (Avenue de l'Europe, managed by the Val d'Yerres Val de Seine agglomeration), bus operator Keolis Seine Sénart, the AP-HP Joffre-Dupuytren geriatric hospital and the leisure economy of the Port aux Cerises. Axion-IA designs AI-augmented websites and SaaS platforms calibrated for this reality: online booking, smart quotes, client portals and automations useful to organisations that are often short on back-office staff — hosted in the European Union, GDPR-compliant.",
@@ -218,11 +218,11 @@ export const DRAVEIL_COPY: VilleCopy = {
           },
           {
             q: "How does a mission work from Paris?",
-            a: "Our consultants come from Paris (about 25 minutes via RER D through Juvisy-sur-Orge) and travel across south-east Essonne: Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off and handover in person — at the shop, the practice or the Mainville park; iterations remote. Quote within 24 to 48 hours depending on complexity.",
+            a: "Our consultants come from Paris (about 25 minutes via RER D through Juvisy-sur-Orge) and travel across south-east Essonne: Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off and handover in person — at the shop, the practice or the Mainville park; iterations remote. Quote within 48 hours depending on complexity.",
           },
         ],
         guarantees:
-          "Quote provided from 24 to 48 hours depending on project complexity. Mobile-first sites and platforms, polished UX/UI, multi-CMS e-commerce and AI building blocks integrated with your existing tools. EU hosting by default, GDPR-compliant. You keep full ownership of code, data and access — no vendor lock-in, project transferable to any Île-de-France provider or taken in-house. No Axion-IA dependency: at delivery, your Draveil teams are autonomous.",
+          "Quote provided from 48 hours depending on project complexity. Mobile-first sites and platforms, polished UX/UI, multi-CMS e-commerce and AI building blocks integrated with your existing tools. EU hosting by default, GDPR-compliant. You keep full ownership of code, data and access — no vendor lock-in, project transferable to any Île-de-France provider or taken in-house. No Axion-IA dependency: at delivery, your Draveil teams are autonomous.",
       },
     },
   },

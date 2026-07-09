@@ -53,7 +53,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Malo des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, réservation et e-commerce, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le tissu malouin — hôtellerie-restauration d'Intra-Muros, opérateurs du port (Brittany Ferries, Condor, Compagnie Corsaire), startups de la pépinière L'Odyssée sur Atalante Saint-Malo et agro-industrie du bassin Roullier/Timac Agro. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Malo, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Malo des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, réservation et e-commerce, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le tissu malouin — hôtellerie-restauration d'Intra-Muros, opérateurs du port (Brittany Ferries, Condor, Compagnie Corsaire), startups de la pépinière L'Odyssée sur Atalante Saint-Malo et agro-industrie du bassin Roullier/Timac Agro. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Malo, itérations à distance.",
         whyHere: [
           "Sites & SaaS calibrés pour la saisonnalité corsaire : pics extrêmes du village de la Route du Rhum (~1,5 M de visiteurs en 2022) et du festival Étonnants Voyageurs (~50 000 visiteurs) — réservation en ligne, file d'attente et e-commerce qui tiennent la charge.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — multilingue FR/EN/anglo-normand pour les flux ferries Jersey, Guernesey et Poole, pas seulement la brique IA.",
@@ -64,7 +64,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Malo",
             detail:
-              "Atelier sur site, d'Intra-Muros aux zones d'activités d'Atalante Saint-Malo : objectifs, parcours utilisateurs, pics saisonniers, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, d'Intra-Muros aux zones d'activités d'Atalante Saint-Malo : objectifs, parcours utilisateurs, pics saisonniers, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const SAINT_MALO_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime, planifiée hors haute saison touristique malouine. Montée en charge testée sur scénario de pointe (Route du Rhum, Étonnants Voyageurs). Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du pays malouin ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime, planifiée hors haute saison touristique malouine. Montée en charge testée sur scénario de pointe (Route du Rhum, Étonnants Voyageurs). Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du pays malouin ou repris en interne.",
       },
       en: {
-        hero: "In Saint-Malo, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, booking and e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Built for the Malo fabric — Intra-Muros hospitality, port operators (Brittany Ferries, Condor, Compagnie Corsaire), startups at the L'Odyssée incubator on Atalante Saint-Malo and the Roullier/Timac Agro agri-industrial cluster. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Saint-Malo kick-off, remote iterations.",
+        hero: "In Saint-Malo, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, booking and e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Built for the Malo fabric — Intra-Muros hospitality, port operators (Brittany Ferries, Condor, Compagnie Corsaire), startups at the L'Odyssée incubator on Atalante Saint-Malo and the Roullier/Timac Agro agri-industrial cluster. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Saint-Malo kick-off, remote iterations.",
         whyHere: [
           "Sites & SaaS calibrated for corsair seasonality: extreme peaks of the Route du Rhum village (~1.5 M visitors in 2022) and the Étonnants Voyageurs festival (~50,000 visitors) — online booking, queueing and e-commerce that hold under load.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — multilingual FR/EN for the Jersey, Guernsey and Poole ferry flows, not just the AI brick.",
@@ -150,7 +150,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
           {
             step: "Scoping in Saint-Malo",
             detail:
-              "On-site workshop, from Intra-Muros to the Atalante Saint-Malo business park: goals, user journeys, seasonal peaks, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop, from Intra-Muros to the Atalante Saint-Malo business park: goals, user journeys, seasonal peaks, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -222,7 +222,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live with no downtime, scheduled outside the Malo high tourist season. Load tested on a peak scenario (Route du Rhum, Étonnants Voyageurs). Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in the Malo area or taken over in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live with no downtime, scheduled outside the Malo high tourist season. Load tested on a peak scenario (Route du Rhum, Étonnants Voyageurs). Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in the Malo area or taken over in-house.",
       },
     },
   },

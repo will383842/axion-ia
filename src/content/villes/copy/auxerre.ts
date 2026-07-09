@@ -127,7 +127,7 @@ export const AUXERRE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai démarrez-vous un projet à Auxerre ?",
-            a: "Nous fournissons un devis à partir de 24 à 48 h selon la complexité du projet. Le cadrage initial se fait par un kick-off sur site à Auxerre ou dans votre commune de l'Auxerrois, puis nous alternons développement à distance et points d'avancement réguliers.",
+            a: "Nous fournissons un devis à partir de 48 h selon la complexité du projet. Le cadrage initial se fait par un kick-off sur site à Auxerre ou dans votre commune de l'Auxerrois, puis nous alternons développement à distance et points d'avancement réguliers.",
           },
           {
             q: "Mes données et mon site restent-ils conformes au RGPD et sans verrou éditeur ?",
@@ -135,7 +135,7 @@ export const AUXERRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis fourni à partir de 24 à 48 h selon la complexité. Code sur mesure que vous possédez, hébergement en Union européenne par défaut et conformité RGPD sur tous les sites et plateformes livrés. UX/UI et mobile-first, e-commerce multi-CMS et brique IA assemblés selon votre métier réel — ETI industrielle de Monéteau, domaine viticole du Chablisien, commerce du centre d'Auxerre ou nouvelle implantation d'AuxR_Parc. Aucun verrou éditeur : contenus, modèles et plateforme sont transférables à tout intégrateur ou repris en interne. Kick-off systématiquement à Auxerre ou dans l'Auxerrois.",
+          "Devis fourni à partir de 48 h selon la complexité. Code sur mesure que vous possédez, hébergement en Union européenne par défaut et conformité RGPD sur tous les sites et plateformes livrés. UX/UI et mobile-first, e-commerce multi-CMS et brique IA assemblés selon votre métier réel — ETI industrielle de Monéteau, domaine viticole du Chablisien, commerce du centre d'Auxerre ou nouvelle implantation d'AuxR_Parc. Aucun verrou éditeur : contenus, modèles et plateforme sont transférables à tout intégrateur ou repris en interne. Kick-off systématiquement à Auxerre ou dans l'Auxerrois.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for the Auxerre business community — capital of the Yonne department and its leading employment area, with 7,536 active businesses across the Auxerrois agglomeration. We work for local industrial mid-caps (HMY France in Monéteau, a leader in store fittings and retail furniture; food groups Duc and Eurial Ultra Frais) as well as for the Chablis wine estates (Irancy, Saint-Bris-le-Vineux, Chitry) wanting to sell online, and for downtown shops and services. Custom code, UX/UI and mobile-first, multi-CMS e-commerce, an AI layer (RAG chatbot, semantic search, agents) — hosted in the European Union, GDPR-compliant, with no vendor lock-in.",
@@ -213,7 +213,7 @@ export const AUXERRE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do you start a project in Auxerre?",
-            a: "We provide a quote from 24 to 48 hours depending on project complexity. Initial framing is done through an on-site kick-off in Auxerre or your Auxerrois commune, then we alternate remote development with regular progress reviews.",
+            a: "We provide a quote from 48 hours depending on project complexity. Initial framing is done through an on-site kick-off in Auxerre or your Auxerrois commune, then we alternate remote development with regular progress reviews.",
           },
           {
             q: "Do my data and site stay GDPR-compliant and lock-in free?",
@@ -221,7 +221,7 @@ export const AUXERRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 24 to 48 hours depending on complexity. Custom code that you own, EU hosting by default and GDPR compliance on every site and platform delivered. UX/UI and mobile-first, multi-CMS e-commerce and an AI layer assembled around your real business — Monéteau industrial mid-cap, Chablisien wine estate, downtown Auxerre shop or new AuxR_Parc arrival. No vendor lock-in: content, models and platform are transferable to any integrator or taken in-house. Kick-off always in Auxerre or the Auxerrois.",
+          "Quote provided from 48 hours depending on complexity. Custom code that you own, EU hosting by default and GDPR compliance on every site and platform delivered. UX/UI and mobile-first, multi-CMS e-commerce and an AI layer assembled around your real business — Monéteau industrial mid-cap, Chablisien wine estate, downtown Auxerre shop or new AuxR_Parc arrival. No vendor lock-in: content, models and platform are transferable to any integrator or taken in-house. Kick-off always in Auxerre or the Auxerrois.",
       },
     },
   },

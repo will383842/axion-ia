@@ -52,7 +52,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Ouen-l'Aumône des sites web, applications, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour le tissu du Parc d'activités des Béthunes — l'un des plus grands pôles logistiques d'Europe — comme pour les zones d'Épluches et de Maubuisson : logistique, commerce de gros, ateliers mécaniques et services aux entreprises au cœur de l'agglomération de Cergy-Pontoise. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Ouen-l'Aumône, le long de l'A15 et de la Francilienne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Ouen-l'Aumône des sites web, applications, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour le tissu du Parc d'activités des Béthunes — l'un des plus grands pôles logistiques d'Europe — comme pour les zones d'Épluches et de Maubuisson : logistique, commerce de gros, ateliers mécaniques et services aux entreprises au cœur de l'agglomération de Cergy-Pontoise. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Ouen-l'Aumône, le long de l'A15 et de la Francilienne, itérations à distance.",
         whyHere: [
           "Le Parc d'activités des Béthunes, l'un des plus grands pôles d'Europe, concentre logistique et commerce de gros le long de l'A15 et de la Francilienne : on construit des portails B2B mobile-first, des catalogues e-commerce multi-CMS et des espaces clients connectés à vos WMS et ERP pour fluidifier la prise de commande, le suivi de flux et la relation transporteurs à l'échelle de Cergy-Pontoise.",
           "Tissu de TPE/PME industrielles — fabrication de produits métalliques, de machines et d'équipements — hérité des distilleries et ateliers des Béthunes des XIXe et XXe siècles : on greffe l'IA sur l'existant, sans refonte coûteuse, via devis intelligent, recherche sémantique de pièces et configurateur produit, branchés sur vos outils métier dans les zones d'Épluches et de Maubuisson.",
@@ -63,7 +63,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Ouen-l'Aumône",
             detail:
-              "Atelier sur site dans le Parc d'activités des Béthunes ou dans les zones d'Épluches et de Maubuisson : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans le Parc d'activités des Béthunes ou dans les zones d'Épluches et de Maubuisson : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -131,14 +131,14 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données catalogue, clients et modèles. Et après le cadrage sur site dans le Parc des Béthunes, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données catalogue, clients et modèles. Et après le cadrage sur site dans le Parc des Béthunes, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison logistique. Web Vitals et accessibilité contrôlés à la livraison, mobile-first pour des utilisateurs en mobilité entre l'A15 et la Francilienne. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire local du Val-d'Oise ou repris en interne par vos équipes de Saint-Ouen-l'Aumône.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison logistique. Web Vitals et accessibilité contrôlés à la livraison, mobile-first pour des utilisateurs en mobilité entre l'A15 et la Francilienne. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire local du Val-d'Oise ou repris en interne par vos équipes de Saint-Ouen-l'Aumône.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Ouen-l'Aumône des sites web, applications, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour le tissu du Parc d'activités des Béthunes — l'un des plus grands pôles logistiques d'Europe — comme pour les zones d'Épluches et de Maubuisson : logistique, commerce de gros, ateliers mécaniques et services aux entreprises au cœur de l'agglomération de Cergy-Pontoise. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Ouen-l'Aumône, le long de l'A15 et de la Francilienne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Ouen-l'Aumône des sites web, applications, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour le tissu du Parc d'activités des Béthunes — l'un des plus grands pôles logistiques d'Europe — comme pour les zones d'Épluches et de Maubuisson : logistique, commerce de gros, ateliers mécaniques et services aux entreprises au cœur de l'agglomération de Cergy-Pontoise. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Ouen-l'Aumône, le long de l'A15 et de la Francilienne, itérations à distance.",
         whyHere: [
           "Le Parc d'activités des Béthunes, l'un des plus grands pôles d'Europe, concentre logistique et commerce de gros le long de l'A15 et de la Francilienne : on construit des portails B2B mobile-first, des catalogues e-commerce multi-CMS et des espaces clients connectés à vos WMS et ERP pour fluidifier la prise de commande, le suivi de flux et la relation transporteurs à l'échelle de Cergy-Pontoise.",
           "Tissu de TPE/PME industrielles — fabrication de produits métalliques, de machines et d'équipements — hérité des distilleries et ateliers des Béthunes des XIXe et XXe siècles : on greffe l'IA sur l'existant, sans refonte coûteuse, via devis intelligent, recherche sémantique de pièces et configurateur produit, branchés sur vos outils métier dans les zones d'Épluches et de Maubuisson.",
@@ -149,7 +149,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Ouen-l'Aumône",
             detail:
-              "Atelier sur site dans le Parc d'activités des Béthunes ou dans les zones d'Épluches et de Maubuisson : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans le Parc d'activités des Béthunes ou dans les zones d'Épluches et de Maubuisson : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -217,11 +217,11 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données catalogue, clients et modèles. Et après le cadrage sur site dans le Parc des Béthunes, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données catalogue, clients et modèles. Et après le cadrage sur site dans le Parc des Béthunes, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison logistique. Web Vitals et accessibilité contrôlés à la livraison, mobile-first pour des utilisateurs en mobilité entre l'A15 et la Francilienne. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire local du Val-d'Oise ou repris en interne par vos équipes de Saint-Ouen-l'Aumône.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison logistique. Web Vitals et accessibilité contrôlés à la livraison, mobile-first pour des utilisateurs en mobilité entre l'A15 et la Francilienne. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire local du Val-d'Oise ou repris en interne par vos équipes de Saint-Ouen-l'Aumône.",
       },
     },
   },

@@ -50,7 +50,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Deuil-la-Barre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 099 habitants du Val-d'Oise, à 9 km au nord de Paris, où l'économie repose sur un tissu dense de TPE : les quelque 88 entreprises de la ZAC du Moutier (rue Galliéni), les commerçants du marché des Mortefontaines, les restaurateurs, les professions libérales et les acteurs de santé du territoire. Deux pôles commerçants se côtoient depuis l'ouverture de la halte La Barre-Ormesson en 1891. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Deuil-la-Barre, itérations à distance — Paris à 13 minutes en Transilien ligne H.",
+        hero: "Axion-IA conçoit et augmente à Deuil-la-Barre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 099 habitants du Val-d'Oise, à 9 km au nord de Paris, où l'économie repose sur un tissu dense de TPE : les quelque 88 entreprises de la ZAC du Moutier (rue Galliéni), les commerçants du marché des Mortefontaines, les restaurateurs, les professions libérales et les acteurs de santé du territoire. Deux pôles commerçants se côtoient depuis l'ouverture de la halte La Barre-Ormesson en 1891. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Deuil-la-Barre, itérations à distance — Paris à 13 minutes en Transilien ligne H.",
         whyHere: [
           "Tissu de proximité piloté par le commerce de détail : la ZAC du Moutier (2,24 ha, rue Galliéni, environ 88 entreprises) côtoie le marché des Mortefontaines et ses quelque vingt commerçants alimentaires présents trois fois par semaine. On construit des vitrines e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop — et des parcours d'achat mobile-first calibrés pour cette clientèle de proximité du Val-d'Oise.",
           "Acteurs de santé présents sur la commune (centre d'imagerie médicale, professionnels de santé du territoire) : nos formulaires de prise de rendez-vous, espaces patients et chatbots restent hébergeables en UE et conformes RGPD pour les données sensibles, sans transit hors Europe sans DPA, avec chiffrement et registre des traitements à l'appui des cabinets libéraux deuillois.",
@@ -61,7 +61,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           {
             step: "Cadrage à Deuil-la-Barre",
             detail:
-              "Atelier sur site — ZAC du Moutier (rue Galliéni), cœur commerçant du marché des Mortefontaines ou cabinets libéraux : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. Devis ferme à partir de 24-48 h selon la complexité, sans dérive cachée.",
+              "Atelier sur site — ZAC du Moutier (rue Galliéni), cœur commerçant du marché des Mortefontaines ou cabinets libéraux : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. Devis ferme à partir de 48 h selon la complexité, sans dérive cachée.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Deuil-la-Barre, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé. Le code, les bases et les modèles vous reviennent à la livraison, hébergeables en UE et transférables à tout prestataire local du Val-d'Oise.",
+            a: "Oui. Après le cadrage sur site à Deuil-la-Barre, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé. Le code, les bases et les modèles vous reviennent à la livraison, hébergeables en UE et transférables à tout prestataire local du Val-d'Oise.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant d'un commerce de la ZAC du Moutier ou d'un cabinet de santé en activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, solution transférable à tout prestataire local du Val-d'Oise ou de l'agglomération Plaine Vallée, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant d'un commerce de la ZAC du Moutier ou d'un cabinet de santé en activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, solution transférable à tout prestataire local du Val-d'Oise ou de l'agglomération Plaine Vallée, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Deuil-la-Barre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 099 habitants du Val-d'Oise, à 9 km au nord de Paris, où l'économie repose sur un tissu dense de TPE : les quelque 88 entreprises de la ZAC du Moutier (rue Galliéni), les commerçants du marché des Mortefontaines, les restaurateurs, les professions libérales et les acteurs de santé du territoire. Deux pôles commerçants se côtoient depuis l'ouverture de la halte La Barre-Ormesson en 1891. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Deuil-la-Barre, itérations à distance — Paris à 13 minutes en Transilien ligne H.",
+        hero: "Axion-IA conçoit et augmente à Deuil-la-Barre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 099 habitants du Val-d'Oise, à 9 km au nord de Paris, où l'économie repose sur un tissu dense de TPE : les quelque 88 entreprises de la ZAC du Moutier (rue Galliéni), les commerçants du marché des Mortefontaines, les restaurateurs, les professions libérales et les acteurs de santé du territoire. Deux pôles commerçants se côtoient depuis l'ouverture de la halte La Barre-Ormesson en 1891. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Deuil-la-Barre, itérations à distance — Paris à 13 minutes en Transilien ligne H.",
         whyHere: [
           "Tissu de proximité piloté par le commerce de détail : la ZAC du Moutier (2,24 ha, rue Galliéni, environ 88 entreprises) côtoie le marché des Mortefontaines et ses quelque vingt commerçants alimentaires présents trois fois par semaine. On construit des vitrines e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop — et des parcours d'achat mobile-first calibrés pour cette clientèle de proximité du Val-d'Oise.",
           "Acteurs de santé présents sur la commune (centre d'imagerie médicale, professionnels de santé du territoire) : nos formulaires de prise de rendez-vous, espaces patients et chatbots restent hébergeables en UE et conformes RGPD pour les données sensibles, sans transit hors Europe sans DPA, avec chiffrement et registre des traitements à l'appui des cabinets libéraux deuillois.",
@@ -147,7 +147,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           {
             step: "Cadrage à Deuil-la-Barre",
             detail:
-              "Atelier sur site — ZAC du Moutier (rue Galliéni), cœur commerçant du marché des Mortefontaines ou cabinets libéraux : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. Devis ferme à partir de 24-48 h selon la complexité, sans dérive cachée.",
+              "Atelier sur site — ZAC du Moutier (rue Galliéni), cœur commerçant du marché des Mortefontaines ou cabinets libéraux : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. Devis ferme à partir de 48 h selon la complexité, sans dérive cachée.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Deuil-la-Barre, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé. Le code, les bases et les modèles vous reviennent à la livraison, hébergeables en UE et transférables à tout prestataire local du Val-d'Oise.",
+            a: "Oui. Après le cadrage sur site à Deuil-la-Barre, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé. Le code, les bases et les modèles vous reviennent à la livraison, hébergeables en UE et transférables à tout prestataire local du Val-d'Oise.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant d'un commerce de la ZAC du Moutier ou d'un cabinet de santé en activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, solution transférable à tout prestataire local du Val-d'Oise ou de l'agglomération Plaine Vallée, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant d'un commerce de la ZAC du Moutier ou d'un cabinet de santé en activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, solution transférable à tout prestataire local du Val-d'Oise ou de l'agglomération Plaine Vallée, ou reprise en interne par vos équipes.",
       },
     },
   },

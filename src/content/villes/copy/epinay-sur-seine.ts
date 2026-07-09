@@ -130,11 +130,11 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai ai-je un devis, et qui possède le code ?",
-            a: "Devis à partir de 24-48 h selon la complexité, après un premier échange de cadrage. Le code source et la documentation vous sont livrés intégralement : vos équipes ou tout prestataire de Plaine Commune peuvent reprendre la main, sans verrou éditeur ni abonnement captif.",
+            a: "Devis à partir de 48 h selon la complexité, après un premier échange de cadrage. Le code source et la documentation vous sont livrés intégralement : vos équipes ou tout prestataire de Plaine Commune peuvent reprendre la main, sans verrou éditeur ni abonnement captif.",
           },
         ],
         guarantees:
-          "Nous livrons un site ou une plateforme dont vous gardez la pleine propriété : code source et documentation remis, hébergement en Union européenne par défaut, conformité RGPD et AI Act intégrée (registre des traitements, droit à l'effacement, DPO sur demande). Performance et accessibilité visées dès la conception (mobile-first, Web Vitals). Aucun verrou éditeur : la stack reste reprenable par vos équipes ou par tout intégrateur du territoire Plaine Commune. Devis à partir de 24-48 h selon la complexité, sur tarifs publics.",
+          "Nous livrons un site ou une plateforme dont vous gardez la pleine propriété : code source et documentation remis, hébergement en Union européenne par défaut, conformité RGPD et AI Act intégrée (registre des traitements, droit à l'effacement, DPO sur demande). Performance et accessibilité visées dès la conception (mobile-first, Web Vitals). Aucun verrou éditeur : la stack reste reprenable par vos équipes ou par tout intégrateur du territoire Plaine Commune. Devis à partir de 48 h selon la complexité, sur tarifs publics.",
       },
       en: {
         hero: "In Épinay-sur-Seine (93), the local economy is shaped by three very concrete forces: urban delivery — the town is home to the headquarters of Star's Service, a last-mile operator with thousands of staff and vehicles handling parcel and meal distribution; mass retail, embodied by the Auchan hypermarket on Avenue De Lattre de Tassigny with its drive and home delivery; and the moving image, inherited from the Studios d'Épinay (formerly Éclair) and the Éclair site now turned into a community hub, at the heart of Plaine Commune's audiovisual cluster. Axion-IA builds AI-augmented websites and SaaS platforms for these players: custom code, EU/GDPR hosting, no vendor lock-in.",
@@ -216,11 +216,11 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote, and who owns the code?",
-            a: "Quote from 24-48 h depending on complexity, after an initial scoping call. Source code and documentation are fully delivered: your teams or any Plaine Commune provider can take over, with no vendor lock-in or captive subscription.",
+            a: "Quote from 48 h depending on complexity, after an initial scoping call. Source code and documentation are fully delivered: your teams or any Plaine Commune provider can take over, with no vendor lock-in or captive subscription.",
           },
         ],
         guarantees:
-          "We deliver a website or platform you fully own: source code and documentation handed over, EU hosting by default, GDPR and AI Act compliance built in (processing register, right to erasure, DPO on request). Performance and accessibility targeted from design (mobile-first, Web Vitals). No vendor lock-in: the stack remains maintainable by your teams or any Plaine Commune integrator. Quote from 24-48 h depending on complexity, on public pricing.",
+          "We deliver a website or platform you fully own: source code and documentation handed over, EU hosting by default, GDPR and AI Act compliance built in (processing register, right to erasure, DPO on request). Performance and accessibility targeted from design (mobile-first, Web Vitals). No vendor lock-in: the stack remains maintainable by your teams or any Plaine Commune integrator. Quote from 48 h depending on complexity, on public pricing.",
       },
     },
   },

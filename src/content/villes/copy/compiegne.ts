@@ -130,11 +130,11 @@ export const COMPIEGNE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis et un projet à Compiègne ?",
-            a: "Le devis est envoyé à partir de 24-48 h selon la complexité du projet. Le calendrier de réalisation (vitrine, e-commerce ou plateforme SaaS IA) est fixé ensemble au kick-off sur site à Compiègne, en fonction du périmètre et de vos intégrations existantes.",
+            a: "Le devis est envoyé à partir de 48 h selon la complexité du projet. Le calendrier de réalisation (vitrine, e-commerce ou plateforme SaaS IA) est fixé ensemble au kick-off sur site à Compiègne, en fonction du périmètre et de vos intégrations existantes.",
           },
         ],
         guarantees:
-          "Engagement clair : devis à partir de 24-48 h selon la complexité, périmètre et livrables définis avant le démarrage. UX/UI + mobile + e-commerce multi-CMS + briques IA en code custom. Hébergement en UE, conformité RGPD, DPA sur demande. Le code et les contenus vous appartiennent intégralement — aucune dépendance no-code propriétaire, aucun verrou éditeur : votre site ou plateforme reste maintenable par vos équipes ou tout intégrateur des Hauts-de-France après notre mission.",
+          "Engagement clair : devis à partir de 48 h selon la complexité, périmètre et livrables définis avant le démarrage. UX/UI + mobile + e-commerce multi-CMS + briques IA en code custom. Hébergement en UE, conformité RGPD, DPA sur demande. Le code et les contenus vous appartiennent intégralement — aucune dépendance no-code propriétaire, aucun verrou éditeur : votre site ou plateforme reste maintenable par vos équipes ou tout intégrateur des Hauts-de-France après notre mission.",
       },
       en: {
         hero: "In Compiègne, whose employment area remains one of the most industrialized in Hauts-de-France (18% of jobs in industry, against a clear 56% services majority), Axion-IA designs AI-augmented websites and SaaS platforms for a very specific fabric: industrial sites in the chemicals/green-chemistry and mechanical-systems sectors (Colgate-Palmolive on Avenue du Verma, Weylchem, DSM Résines, Saint-Gobain, CIE Automotive, Poclain Hydraulics), spin-offs and engineers from UTC, the ~10,500 businesses of the agglomeration (ARC) spread across the Parc Technologique des Rives de l'Oise, the Parc Tertiaire et Scientifique or the ZI Le Meux–Armancourt, and heritage-tourism players around the Imperial Château and the state forest. Custom code, EU/GDPR hosting, zero no-code dependency.",
@@ -216,11 +216,11 @@ export const COMPIEGNE_COPY: VilleCopy = {
           },
           {
             q: "What are the lead times for a quote and a project in Compiègne?",
-            a: "The quote is sent from 24-48 h depending on project complexity. The delivery schedule (showcase, e-commerce or AI SaaS platform) is set together at the on-site kick-off in Compiègne, based on scope and your existing integrations.",
+            a: "The quote is sent from 48 h depending on project complexity. The delivery schedule (showcase, e-commerce or AI SaaS platform) is set together at the on-site kick-off in Compiègne, based on scope and your existing integrations.",
           },
         ],
         guarantees:
-          "Clear commitment: quote from 24-48 h depending on complexity, scope and deliverables defined before start. UX/UI + mobile + multi-CMS e-commerce + custom-code AI blocks. EU hosting, GDPR compliance, DPA on request. The code and content are entirely yours — no proprietary no-code dependency, no vendor lock-in: your site or platform stays maintainable by your teams or any Hauts-de-France integrator after our mission.",
+          "Clear commitment: quote from 48 h depending on complexity, scope and deliverables defined before start. UX/UI + mobile + multi-CMS e-commerce + custom-code AI blocks. EU hosting, GDPR compliance, DPA on request. The code and content are entirely yours — no proprietary no-code dependency, no vendor lock-in: your site or platform stays maintainable by your teams or any Hauts-de-France integrator after our mission.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const AJACCIO_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Ajaccio des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie insulaire où le port de croisière a accueilli 336 290 voyageurs en 2025 et où le tissu est fait de TPE du tourisme, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ajaccio, itérations à distance pour limiter les contraintes insulaires.",
+        hero: "Axion-IA conçoit et augmente à Ajaccio des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie insulaire où le port de croisière a accueilli 336 290 voyageurs en 2025 et où le tissu est fait de TPE du tourisme, du BTP et des services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ajaccio, itérations à distance pour limiter les contraintes insulaires.",
         whyHere: [
           "Économie maritime captive : transporteurs comme Corsica Linea (siège bd Roi Jérôme, 9 navires) et Air Corsica (aéroport Napoléon Bonaparte) structurent l'accès à l'île — un terrain idéal pour des portails de réservation directe et des parcours clients augmentés à l'IA.",
           "Pic estival et clientèle de croisière internationale (jusqu'à plusieurs milliers de visiteurs débarqués par escale, ~221 escales prévues en 2026) : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour l'hôtellerie, la restauration et le commerce de centre-ville.",
@@ -64,7 +64,7 @@ export const AJACCIO_COPY: VilleCopy = {
           {
             step: "Cadrage à Ajaccio",
             detail:
-              "Atelier sur site — en cœur de ville, à l'aéroport ou en Z.I. (Vazzio, Baleone/Mezzavia) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — en cœur de ville, à l'aéroport ou en Z.I. (Vazzio, Baleone/Mezzavia) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const AJACCIO_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple (vitrine, brique IA greffée), davantage pour une plateforme de réservation ou un portail logistique étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur place, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple (vitrine, brique IA greffée), davantage pour une plateforme de réservation ou un portail logistique étendu. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de croisière. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire d'Ajaccio et de la Corse-du-Sud ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de croisière. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire d'Ajaccio et de la Corse-du-Sud ou repris en interne.",
       },
       en: {
-        hero: "In Ajaccio, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, direct booking, multilingual RAG chatbot grounded in your content, semantic search, agents and automations. Built for an island economy where the cruise port welcomed 336,290 travellers in 2025 and the business fabric is made of tourism, construction and service micro-businesses. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Ajaccio kick-off, remote iterations to ease island constraints.",
+        hero: "In Ajaccio, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, direct booking, multilingual RAG chatbot grounded in your content, semantic search, agents and automations. Built for an island economy where the cruise port welcomed 336,290 travellers in 2025 and the business fabric is made of tourism, construction and service micro-businesses. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Ajaccio kick-off, remote iterations to ease island constraints.",
         whyHere: [
           "Captive maritime economy: carriers such as Corsica Linea (HQ on boulevard Roi Jérôme, 9 ships) and Air Corsica (Napoléon Bonaparte airport) structure access to the island — ideal ground for direct booking portals and AI-augmented customer journeys.",
           "Summer peak and international cruise clientele (up to several thousand visitors disembarking per call, ~221 calls forecast for 2026): our chatbots and conversational agents are multilingual by default, calibrated for hospitality, restaurants and city-centre retail.",
@@ -150,7 +150,7 @@ export const AJACCIO_COPY: VilleCopy = {
           {
             step: "Scoping in Ajaccio",
             detail:
-              "On-site workshop — city centre, airport or industrial zone (Vazzio, Baleone/Mezzavia): goals, user journeys, audit of the existing stack, content and seasonality. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop — city centre, airport or industrial zone (Vazzio, Baleone/Mezzavia): goals, user journeys, audit of the existing stack, content and seasonality. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const AJACCIO_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the on-site scoping, we issue a firm fixed-price quote. Turnaround depends on complexity — from 24-48 h for a simple project (showcase, grafted AI brick), longer for an extended booking platform or logistics portal. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the on-site scoping, we issue a firm fixed-price quote. Turnaround depends on complexity — from 48 h for a simple project (showcase, grafted AI brick), longer for an extended booking platform or logistics portal. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site, including in peak cruise season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Ajaccio or Corse-du-Sud provider or taken in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site, including in peak cruise season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Ajaccio or Corse-du-Sud provider or taken in-house.",
       },
     },
   },

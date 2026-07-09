@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: locale === "fr" ? "Demander un audit IA · Axion-IA" : "Request an AI audit · Axion-IA",
     description:
       locale === "fr"
-        ? "Formulaire pour demander un audit IA Axion-IA — niveau (Flash / Ciblé / Stratégique PME / ETI), taille, secteur, lieu, périmètre. Devis personnalisé à partir de 24-48 h ouvrées selon la complexité."
-        : "Form to request an Axion-IA AI audit — level (Flash / Targeted / Strategic SMB / mid-cap), size, sector, location, scope. Personalised quote from 24-48 business hours depending on complexity.",
+        ? "Formulaire pour demander un audit IA Axion-IA — niveau (Flash / Ciblé / Stratégique PME / ETI), taille, secteur, lieu, périmètre. Devis personnalisé à partir de 48 h ouvrées selon la complexité."
+        : "Form to request an Axion-IA AI audit — level (Flash / Targeted / Strategic SMB / mid-cap), size, sector, location, scope. Personalised quote from 48 business hours depending on complexity.",
     alternates: { fr: "/audit/demande", en: "/audit/request" },
   });
 }
@@ -57,7 +57,7 @@ export default async function AuditRequest({ params }: Props) {
     },
     {
       icon: Clock,
-      label: isFr ? "Devis sous 24-48 h ouvrées" : "Quote in 24-48 business hours",
+      label: isFr ? "Devis sous 48 h ouvrées" : "Quote in 48 business hours",
     },
     {
       icon: Mail,
@@ -91,8 +91,8 @@ export default async function AuditRequest({ params }: Props) {
           </h1>
           <p className="text-fg-soft mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
             {isFr
-              ? "6 questions pour cadrer votre projet. Devis personnalisé à partir de 24-48 h ouvrées selon la complexité · TPE â†’ ETI · France & international."
-              : "6 questions to frame your project. Personalised quote from 24-48 business hours depending on complexity · Small â†’ enterprise · France & worldwide."}
+              ? "6 questions pour cadrer votre projet. Devis personnalisé à partir de 48 h ouvrées selon la complexité · TPE â†’ ETI · France & international."
+              : "6 questions to frame your project. Personalised quote from 48 business hours depending on complexity · Small â†’ enterprise · France & worldwide."}
           </p>
 
           {/* Bandeau réassurance — 4 pills */}

@@ -53,7 +53,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA à Villemomble (93), pour le tissu réel de la commune : artisans du BTP, commerçants de l'avenue Outrebon et des marchés Outrebon (Place de la Résistance) et Époque (Grande Rue), professionnels de santé de la Maison de Santé du 25 avenue du Raincy, et PME de services installées en ZA La Garenne ou à l'Hôtel d'entreprises près de l'A3/A86. Devis à partir de 24-48 h selon la complexité, hébergement en Union européenne et conformité RGPD, code et données qui restent les vôtres.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA à Villemomble (93), pour le tissu réel de la commune : artisans du BTP, commerçants de l'avenue Outrebon et des marchés Outrebon (Place de la Résistance) et Époque (Grande Rue), professionnels de santé de la Maison de Santé du 25 avenue du Raincy, et PME de services installées en ZA La Garenne ou à l'Hôtel d'entreprises près de l'A3/A86. Devis à partir de 48 h selon la complexité, hébergement en Union européenne et conformité RGPD, code et données qui restent les vôtres.",
         whyHere: [
           "Tissu de TPE-PME de proximité dense — environ une entreprise pour treize habitants : nos chantiers à Villemomble partent des besoins concrets d'un artisan BTP qui veut un devis en ligne, d'un commerçant Outrebon qui veut une vitrine connectée à la carte 'Cœurs de ville', ou d'un cabinet de la Maison de Santé qui veut une prise de RDV intelligente.",
           "La ZA La Garenne (environ 12,29 ha, près de 125 entreprises) et l'Hôtel d'entreprises près de l'A3/A86 concentrent des PME de services et ateliers artisanaux : portails clients, devis automatisés et outils SaaS métier sur mesure y répondent à des process réels.",
@@ -128,7 +128,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "Le devis arrive à partir de 24-48 h selon la complexité du projet. Il est établi après un premier échange de cadrage, idéalement sur site à Villemomble, pour chiffrer précisément le périmètre.",
+            a: "Le devis arrive à partir de 48 h selon la complexité du projet. Il est établi après un premier échange de cadrage, idéalement sur site à Villemomble, pour chiffrer précisément le périmètre.",
           },
           {
             q: "Où sont hébergées les données et qui garde le contrôle du site ?",
@@ -136,10 +136,10 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité, périmètre et livrables fixés au contrat. UX/UI mobile-first, e-commerce multi-CMS et briques IA (agents de RDV, devis automatisés, recherche sémantique) intégrés selon votre métier villemomblois. Hébergement en Union européenne par défaut et conformité RGPD. Vous conservez l'intégralité du code et des données, sans dépendance Axion-IA ni verrou éditeur : votre site reste repris par vos équipes ou tout intégrateur de l'est francilien.",
+          "Devis à partir de 48 h selon la complexité, périmètre et livrables fixés au contrat. UX/UI mobile-first, e-commerce multi-CMS et briques IA (agents de RDV, devis automatisés, recherche sémantique) intégrés selon votre métier villemomblois. Hébergement en Union européenne par défaut et conformité RGPD. Vous conservez l'intégralité du code et des données, sans dépendance Axion-IA ni verrou éditeur : votre site reste repris par vos équipes ou tout intégrateur de l'est francilien.",
       },
       en: {
-        hero: "Axion-IA builds AI-augmented websites and SaaS platforms in Villemomble (93), for the town's real fabric: building-trade craftspeople, retailers along avenue Outrebon and at the Outrebon (Place de la Résistance) and Époque (Grande Rue) markets, healthcare professionals at the Maison de Santé at 25 avenue du Raincy, and service SMEs based in the ZA La Garenne business park or the Hôtel d'entreprises near the A3/A86. Quote from 24-48 h depending on complexity, European Union hosting and GDPR compliance, code and data that stay yours.",
+        hero: "Axion-IA builds AI-augmented websites and SaaS platforms in Villemomble (93), for the town's real fabric: building-trade craftspeople, retailers along avenue Outrebon and at the Outrebon (Place de la Résistance) and Époque (Grande Rue) markets, healthcare professionals at the Maison de Santé at 25 avenue du Raincy, and service SMEs based in the ZA La Garenne business park or the Hôtel d'entreprises near the A3/A86. Quote from 48 h depending on complexity, European Union hosting and GDPR compliance, code and data that stay yours.",
         whyHere: [
           "A dense fabric of local micro-businesses and SMEs — roughly one business per thirteen residents: our Villemomble projects start from concrete needs, such as a building-trade craftsperson wanting online quotes, an Outrebon retailer wanting a storefront tied to the 'Cœurs de ville' loyalty card, or a Maison de Santé practice wanting smart appointment booking.",
           "The ZA La Garenne business park (about 12.29 hectares, nearly 125 companies) and the Hôtel d'entreprises near the A3/A86 concentrate service SMEs and craft workshops: client portals, automated quoting and bespoke SaaS tools answer real processes there.",
@@ -214,7 +214,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "The quote arrives from 24-48 h depending on project complexity. It is issued after an initial scoping exchange, ideally on site in Villemomble, to price the scope precisely.",
+            a: "The quote arrives from 48 h depending on project complexity. It is issued after an initial scoping exchange, ideally on site in Villemomble, to price the scope precisely.",
           },
           {
             q: "Where is the data hosted and who keeps control of the site?",
@@ -222,7 +222,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity, with scope and deliverables set in the contract. Mobile-first UX/UI, multi-CMS e-commerce and AI building blocks (booking agents, automated quoting, semantic search) integrated for your Villemomble trade. EU hosting by default and GDPR compliance. You keep all the code and data, with no Axion-IA dependency or vendor lock-in: your site stays maintainable by your teams or any eastern Île-de-France integrator.",
+          "Quote from 48 h depending on complexity, with scope and deliverables set in the contract. Mobile-first UX/UI, multi-CMS e-commerce and AI building blocks (booking agents, automated quoting, semantic search) integrated for your Villemomble trade. EU hosting by default and GDPR compliance. You keep all the code and data, with no Axion-IA dependency or vendor lock-in: your site stays maintainable by your teams or any eastern Île-de-France integrator.",
       },
     },
   },

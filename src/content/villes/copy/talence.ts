@@ -125,7 +125,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai avez-vous un devis pour mon projet de site ou SaaS ?",
-            a: "À partir de 24 à 48 h selon la complexité, après un échange de cadrage. Un site vitrine pour un cabinet Médoquine se chiffre vite ; une plateforme SaaS IA-native pour une spin-off deeptech demande un cadrage plus poussé des données et des intégrations.",
+            a: "À partir de 48 h selon la complexité, après un échange de cadrage. Un site vitrine pour un cabinet Médoquine se chiffre vite ; une plateforme SaaS IA-native pour une spin-off deeptech demande un cadrage plus poussé des données et des intégrations.",
           },
           {
             q: "Intervenez-vous au-delà de Talence, sur le Sud-Bordeaux ?",
@@ -133,7 +133,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom et plateforme entièrement reprenables : vous récupérez le code source, les modèles et les accès, sans verrou éditeur ni dépendance contractuelle — repris en interne ou par tout intégrateur de la French Tech Bordeaux. Hébergement en Union européenne par défaut, conformité RGPD et AI Act intégrée dès la conception, DPA fourni. Web Vitals optimisés (performance mobile, accessibilité). Devis à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature.",
+          "Code custom et plateforme entièrement reprenables : vous récupérez le code source, les modèles et les accès, sans verrou éditeur ni dépendance contractuelle — repris en interne ou par tout intégrateur de la French Tech Bordeaux. Hébergement en Union européenne par défaut, conformité RGPD et AI Act intégrée dès la conception, DPA fourni. Web Vitals optimisés (performance mobile, accessibilité). Devis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature.",
       },
       en: {
         hero: "Axion-IA designs websites and AI-augmented SaaS platforms in Talence (33), the southern inner ring of Bordeaux and a major scientific campus of Nouvelle-Aquitaine. We work with research spin-offs from the Haut-Carré domain, start-ups supported by the Talence Pépinière incubator and TISD, the laboratories of the Peixotto campus (LaBRI, IMS, ISM) and the healthcare professionals of the Médoquine district. AI-native platforms — RAG chatbots, semantic search, conversational agents —, showcase sites and multi-CMS e-commerce stores, all in custom code, hosted in the European Union and GDPR-compliant.",
@@ -211,7 +211,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
           {
             q: "How fast do you provide a quote for my site or SaaS project?",
-            a: "From 24 to 48 hours depending on complexity, after a framing exchange. A showcase site for a Médoquine practice is quick to cost; an AI-native SaaS platform for a deeptech spin-off requires deeper framing of data and integrations.",
+            a: "From 48 hours depending on complexity, after a framing exchange. A showcase site for a Médoquine practice is quick to cost; an AI-native SaaS platform for a deeptech spin-off requires deeper framing of data and integrations.",
           },
           {
             q: "Do you work beyond Talence, across South Bordeaux?",
@@ -219,7 +219,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fully resumable custom code and platform: you get the source code, the models and the access, with no vendor lock-in or contractual dependency — taken over in-house or by any French Tech Bordeaux integrator. European Union hosting by default, GDPR and AI Act compliance built in from design, DPA provided. Optimised Web Vitals (mobile performance, accessibility). Quote from 24 to 48 hours depending on complexity, scope and deliverables defined before signature.",
+          "Fully resumable custom code and platform: you get the source code, the models and the access, with no vendor lock-in or contractual dependency — taken over in-house or by any French Tech Bordeaux integrator. European Union hosting by default, GDPR and AI Act compliance built in from design, DPA provided. Optimised Web Vitals (mobile performance, accessibility). Quote from 48 hours depending on complexity, scope and deliverables defined before signature.",
       },
     },
   },

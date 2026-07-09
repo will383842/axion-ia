@@ -132,11 +132,11 @@ export const FREJUS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il rapide ?",
-            a: "Oui. Après un premier échange, nous remettons un devis à partir de 24-48 h selon la complexité du projet. La première rencontre se fait sur site à Fréjus, afin de bien comprendre votre activité et sa saisonnalité avant tout chiffrage.",
+            a: "Oui. Après un premier échange, nous remettons un devis à partir de 48 h selon la complexité du projet. La première rencontre se fait sur site à Fréjus, afin de bien comprendre votre activité et sa saisonnalité avant tout chiffrage.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne et conformité RGPD intégrées dès la conception, traitements documentés et données clients minimisées. UX/UI, mobile, e-commerce multi-CMS et IA réunis dans une même prestation, sans verrou éditeur : code, contenus et accès restent intégralement les vôtres, repris en interne ou confiés à tout prestataire de la région. Devis remis à partir de 24-48 h selon la complexité. La première rencontre a lieu sur site à Fréjus pour ancrer le projet dans la réalité de votre saison.",
+          "Hébergement en Union européenne et conformité RGPD intégrées dès la conception, traitements documentés et données clients minimisées. UX/UI, mobile, e-commerce multi-CMS et IA réunis dans une même prestation, sans verrou éditeur : code, contenus et accès restent intégralement les vôtres, repris en interne ou confiés à tout prestataire de la région. Devis remis à partir de 48 h selon la complexité. La première rencontre a lieu sur site à Fréjus pour ancrer le projet dans la réalité de votre saison.",
       },
       en: {
         hero: "In Fréjus, the economy runs to a seasonal beat: heritage tourism around the Roman arena and the Saint-Léonce episcopal city, boating and dining at Port-Fréjus, year-round events at the Base Nature François Léotard, and a dense fabric of small businesses in retail, trades and construction based at the Parc d'Activités du Capitou. Axion-IA builds AI-augmented websites and SaaS platforms for these companies — online booking, automated quotes, multilingual assistants — designed to absorb the summer peaks with lean teams. UX/UI, mobile, multi-CMS e-commerce and AI in a single engagement, on site in Fréjus.",
@@ -218,11 +218,11 @@ export const FREJUS_COPY: VilleCopy = {
           },
           {
             q: "Is the quote fast?",
-            a: "Yes. After a first exchange, we deliver a quote within 24-48 hours depending on project complexity. The first meeting takes place on site in Fréjus, so we fully understand your activity and its seasonality before any pricing.",
+            a: "Yes. After a first exchange, we deliver a quote within 48 hours depending on project complexity. The first meeting takes place on site in Fréjus, so we fully understand your activity and its seasonality before any pricing.",
           },
         ],
         guarantees:
-          "Hosting in the European Union and GDPR compliance built in from the design stage, documented processing and minimized customer data. UX/UI, mobile, multi-CMS e-commerce and AI in a single engagement, with no vendor lock-in: code, content and access remain entirely yours, taken in-house or handed to any regional provider. Quote delivered within 24-48 hours depending on complexity. The first meeting takes place on site in Fréjus to ground the project in the reality of your season.",
+          "Hosting in the European Union and GDPR compliance built in from the design stage, documented processing and minimized customer data. UX/UI, mobile, multi-CMS e-commerce and AI in a single engagement, with no vendor lock-in: code, content and access remain entirely yours, taken in-house or handed to any regional provider. Quote delivered within 48 hours depending on complexity. The first meeting takes place on site in Fréjus to ground the project in the reality of your season.",
       },
     },
   },

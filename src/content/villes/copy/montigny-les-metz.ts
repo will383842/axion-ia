@@ -50,7 +50,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Montigny-lès-Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vitrines et boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Metz (21 718 habitants, à moins de 2 km du centre messin), où près de 500 commerces de proximité, des artisans du bâtiment et des cabinets libéraux cohabitent avec le tertiaire dense du bassin lorrain, le siège BTP du groupe Demathieu Bard et le nouveau quartier Lizé né de l'ancienne caserne d'artillerie (755 logements, environ 4 560 m² de commerces). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Metz, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montigny-lès-Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vitrines et boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Metz (21 718 habitants, à moins de 2 km du centre messin), où près de 500 commerces de proximité, des artisans du bâtiment et des cabinets libéraux cohabitent avec le tertiaire dense du bassin lorrain, le siège BTP du groupe Demathieu Bard et le nouveau quartier Lizé né de l'ancienne caserne d'artillerie (755 logements, environ 4 560 m² de commerces). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Metz, itérations à distance.",
         whyHere: [
           "Centre commerçant indépendant fédéré par l'association Montigny Entreprendre : avec une majorité de boutiques en propre rue de Pont-à-Mousson et au cœur de ville, les commerçants gagnent à une vitrine e-commerce mobile-first (click & collect, catalogue, paiement, fiche Google) plutôt qu'à un site figé qui laisse fuir le trafic vers Metz. On conçoit l'UX/UI et l'on branche la recherche sémantique sur leur catalogue.",
           "Artisans et TPE du bâtiment du bassin lorrain : on greffe sur l'existant des automatisations concrètes — formulaires de devis intelligents, suivi de chantier, relances clients, agents qui trient les demandes — sans imposer une refonte coûteuse à des équipes sans service informatique. Le tissu est nourri par les chantiers du quartier Lizé et de l'Eurométropole.",
@@ -61,7 +61,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Montigny-lès-Metz",
             detail:
-              "Atelier sur site (cœur de ville rue de Pont-à-Mousson, quartier Lizé, zones d'activité de l'Eurométropole, ou vos locaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la concurrence messine. On formalise un cahier des charges et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville rue de Pont-à-Mousson, quartier Lizé, zones d'activité de l'Eurométropole, ou vos locaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la concurrence messine. On formalise un cahier des charges et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -129,14 +129,14 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place (cœur de ville, quartier Lizé ou vos locaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur place (cœur de ville, quartier Lizé ou vos locaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire lorrain de l'Eurométropole de Metz ou repris par vos équipes internes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire lorrain de l'Eurométropole de Metz ou repris par vos équipes internes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Montigny-lès-Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vitrines et boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Metz (21 718 habitants, à moins de 2 km du centre messin), où près de 500 commerces de proximité, des artisans du bâtiment et des cabinets libéraux cohabitent avec le tertiaire dense du bassin lorrain, le siège BTP du groupe Demathieu Bard et le nouveau quartier Lizé né de l'ancienne caserne d'artillerie (755 logements, environ 4 560 m² de commerces). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Metz, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montigny-lès-Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vitrines et boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Metz (21 718 habitants, à moins de 2 km du centre messin), où près de 500 commerces de proximité, des artisans du bâtiment et des cabinets libéraux cohabitent avec le tertiaire dense du bassin lorrain, le siège BTP du groupe Demathieu Bard et le nouveau quartier Lizé né de l'ancienne caserne d'artillerie (755 logements, environ 4 560 m² de commerces). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Metz, itérations à distance.",
         whyHere: [
           "Centre commerçant indépendant fédéré par l'association Montigny Entreprendre : avec une majorité de boutiques en propre rue de Pont-à-Mousson et au cœur de ville, les commerçants gagnent à une vitrine e-commerce mobile-first (click & collect, catalogue, paiement, fiche Google) plutôt qu'à un site figé qui laisse fuir le trafic vers Metz. On conçoit l'UX/UI et l'on branche la recherche sémantique sur leur catalogue.",
           "Artisans et TPE du bâtiment du bassin lorrain : on greffe sur l'existant des automatisations concrètes — formulaires de devis intelligents, suivi de chantier, relances clients, agents qui trient les demandes — sans imposer une refonte coûteuse à des équipes sans service informatique. Le tissu est nourri par les chantiers du quartier Lizé et de l'Eurométropole.",
@@ -147,7 +147,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Montigny-lès-Metz",
             detail:
-              "Atelier sur site (cœur de ville rue de Pont-à-Mousson, quartier Lizé, zones d'activité de l'Eurométropole, ou vos locaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la concurrence messine. On formalise un cahier des charges et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville rue de Pont-à-Mousson, quartier Lizé, zones d'activité de l'Eurométropole, ou vos locaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la concurrence messine. On formalise un cahier des charges et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -215,11 +215,11 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place (cœur de ville, quartier Lizé ou vos locaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur place (cœur de ville, quartier Lizé ou vos locaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire lorrain de l'Eurométropole de Metz ou repris par vos équipes internes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire lorrain de l'Eurométropole de Metz ou repris par vos équipes internes.",
       },
     },
   },

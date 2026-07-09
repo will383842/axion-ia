@@ -136,7 +136,7 @@ export const HYERES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis transparent envoyé à partir de 24-48 h selon la complexité, sans montant caché. Sites web et plateformes SaaS hébergés en UE, conformes RGPD dès la conception. Nous couvrons UX/UI, mobile, e-commerce multi-CMS et couche IA. Vous restez propriétaire du code, des contenus et des intégrations (caisse, PMS, channel manager, flux SICA) — aucune dépendance Axion-IA, reprise possible en interne ou par tout intégrateur de la Métropole Toulon Provence Méditerranée.",
+          "Devis transparent envoyé à partir de 48 h selon la complexité, sans montant caché. Sites web et plateformes SaaS hébergés en UE, conformes RGPD dès la conception. Nous couvrons UX/UI, mobile, e-commerce multi-CMS et couche IA. Vous restez propriétaire du code, des contenus et des intégrations (caisse, PMS, channel manager, flux SICA) — aucune dépendance Axion-IA, reprise possible en interne ou par tout intégrateur de la Métropole Toulon Provence Méditerranée.",
       },
       en: {
         hero: "Hyères-les-Palmiers concentrates an economy found nowhere else in France: the country's leading farming commune by number of growers, ~70% of national cut-flower output sold through the SICA Marché aux Fleurs (~400 growers, ~30M€ turnover), regulated island tourism to Porquerolles, Port-Cros and Le Levant, and Toulon-Hyères airport (Le Palyvestre). Axion-IA designs AI-augmented websites and SaaS platforms on site for this fabric: bassin horticulturists and nurseries, hotels and campsites, Côtes de Provence estates and Golden Islands ferry operators.",
@@ -222,7 +222,7 @@ export const HYERES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Transparent quote sent from 24-48 h depending on complexity, with no hidden amounts. Websites and SaaS platforms hosted in the EU, GDPR-compliant by design. We cover UX/UI, mobile, multi-CMS e-commerce and the AI layer. You stay owner of the code, content and integrations (POS, PMS, channel manager, SICA feeds) — no Axion-IA dependency, takeover possible in-house or by any integrator of the Métropole Toulon Provence Méditerranée. Any travel and lodging costs billed separately depending on the zone.",
+          "Transparent quote sent from 48 h depending on complexity, with no hidden amounts. Websites and SaaS platforms hosted in the EU, GDPR-compliant by design. We cover UX/UI, mobile, multi-CMS e-commerce and the AI layer. You stay owner of the code, content and integrations (POS, PMS, channel manager, SICA feeds) — no Axion-IA dependency, takeover possible in-house or by any integrator of the Métropole Toulon Provence Méditerranée. Any travel and lodging costs billed separately depending on the zone.",
       },
     },
   },

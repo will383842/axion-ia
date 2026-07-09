@@ -91,7 +91,7 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine IA-augmenté",
             detail:
-              "Pour indépendants, studios (type Virtual Regatta, Urban Expe à petite échelle) et cabinets isséens : site vitrine performant avec chatbot RAG sur votre offre et formulaire qualifié par IA. Devis à partir de 24-48 h selon la complexité.",
+              "Pour indépendants, studios (type Virtual Regatta, Urban Expe à petite échelle) et cabinets isséens : site vitrine performant avec chatbot RAG sur votre offre et formulaire qualifié par IA. Devis à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -135,7 +135,7 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité. Conformité RGPD et AI Act, hébergement UE par défaut. Code custom et plateforme entièrement portables : vous restez propriétaire du code, des modèles et de l'hébergement, sans contrat de maintenance obligatoire ni verrou éditeur — reprise possible par vos équipes ou tout intégrateur. Performance contrôlée sur les Web Vitals en recette. Nous revendiquons l'ensemble du périmètre : UX/UI desktop et mobile, e-commerce multi-CMS, et IA-native (chatbot RAG, search sémantique, agents, copilotes).",
+          "Devis à partir de 48 h selon la complexité. Conformité RGPD et AI Act, hébergement UE par défaut. Code custom et plateforme entièrement portables : vous restez propriétaire du code, des modèles et de l'hébergement, sans contrat de maintenance obligatoire ni verrou éditeur — reprise possible par vos équipes ou tout intégrateur. Performance contrôlée sur les Web Vitals en recette. Nous revendiquons l'ensemble du périmètre : UX/UI desktop et mobile, e-commerce multi-CMS, et IA-native (chatbot RAG, search sémantique, agents, copilotes).",
       },
       en: {
         hero: "In the Val de Seine business district, Issy-les-Moulineaux concentrates one of Île-de-France's densest SaaS and media fabrics: Orange's global headquarters (the Bridge building, at the foot of Issy Val de Seine station), the French headquarters of Microsoft and Cisco, Canal+, Coca-Cola Europacific Partners, Sodexo, Nestlé, and a pioneering municipal AI ecosystem (IssyGPT, launched late 2023 with Prisme.ai). Axion-IA designs AI-augmented websites and SaaS platforms here — RAG chatbots, semantic search, conversational agents, domain copilots — for Issy's software publishers, media agencies, firms and studios, in custom code, EU/GDPR hosting, with no vendor lock-in.",
@@ -177,7 +177,7 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "AI-augmented showcase site",
             detail:
-              "For Issy freelancers, studios (such as Virtual Regatta, Urban Expe at small scale) and firms: a fast showcase site with a RAG chatbot on your offering and an AI-qualified form. Quote from 24-48 h depending on complexity.",
+              "For Issy freelancers, studios (such as Virtual Regatta, Urban Expe at small scale) and firms: a fast showcase site with a RAG chatbot on your offering and an AI-qualified form. Quote from 48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -221,7 +221,7 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity. GDPR and AI Act compliance, EU hosting by default. Custom code and platform fully portable: you remain owner of the code, models and hosting, with no mandatory maintenance contract and no vendor lock-in — takeover possible by your teams or any integrator. Performance controlled on Web Vitals at acceptance. We claim the full scope: desktop and mobile UX/UI, multi-CMS e-commerce, and AI-native (RAG chatbot, semantic search, agents, copilots).",
+          "Quote from 48 h depending on complexity. GDPR and AI Act compliance, EU hosting by default. Custom code and platform fully portable: you remain owner of the code, models and hosting, with no mandatory maintenance contract and no vendor lock-in — takeover possible by your teams or any integrator. Performance controlled on Web Vitals at acceptance. We claim the full scope: desktop and mobile UX/UI, multi-CMS e-commerce, and AI-native (RAG chatbot, semantic search, agents, copilots).",
       },
     },
   },

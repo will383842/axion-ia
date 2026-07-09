@@ -128,7 +128,7 @@ export const TROYES_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour obtenir un devis ?",
-            a: "Un devis est remis à partir de 24-48 h selon la complexité, après un premier échange de cadrage. Nous précisons le périmètre (vitrine, boutique, plateforme SaaS), les intégrations nécessaires (stocks, ERP, transporteurs) et les fonctionnalités IA retenues avant tout chiffrage.",
+            a: "Un devis est remis à partir de 48 h selon la complexité, après un premier échange de cadrage. Nous précisons le périmètre (vitrine, boutique, plateforme SaaS), les intégrations nécessaires (stocks, ERP, transporteurs) et les fonctionnalités IA retenues avant tout chiffrage.",
           },
           {
             q: "Où sont hébergées les données et qui garde la main sur le code ?",
@@ -136,7 +136,7 @@ export const TROYES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité, périmètre et tarifs définis avant signature. Conception UX/UI et mobile, développement e-commerce multi-CMS et fonctionnalités IA (recherche sémantique, chatbot RAG, génération de fiches) inclus selon le palier retenu. Hébergement en Europe par défaut, conformité RGPD et AI Act, DPO sur demande. Aucun verrou éditeur : code, modèles et contenus restent votre propriété, repris en interne ou par tout intégrateur après la mission. Optimisation des Web Vitals et formation de vos équipes troyennes incluses.",
+          "Devis à partir de 48 h selon la complexité, périmètre et tarifs définis avant signature. Conception UX/UI et mobile, développement e-commerce multi-CMS et fonctionnalités IA (recherche sémantique, chatbot RAG, génération de fiches) inclus selon le palier retenu. Hébergement en Europe par défaut, conformité RGPD et AI Act, DPO sur demande. Aucun verrou éditeur : code, modèles et contenus restent votre propriété, repris en interne ou par tout intégrateur après la mission. Optimisation des Web Vitals et formation de vos équipes troyennes incluses.",
       },
       en: {
         hero: "Troyes (10), the historic capital of knitwear and hosiery, is the birthplace of textile brands born locally — Petit Bateau (founded in Troyes in 1893), Lacoste through the manufacturer Devanlay, Absorba — and grew into Europe's leading factory-outlet capital, home to the McArthurGlen Designer Outlet in Pont-Sainte-Marie that draws millions of visitors each year. Around it, the Parc logistique de l'Aube lines its e-commerce warehouses along the A5, the Technopole de l'Aube en Champagne incubates its start-ups, and the Université de Technologie de Troyes (UTT) works on cybersecurity, big data and supply chain. Axion-IA designs AI-augmented websites and SaaS platforms for this fabric — catalogues, outlet stores, order-fulfilment portals — hosted in Europe, with no vendor lock-in.",
@@ -214,7 +214,7 @@ export const TROYES_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote?",
-            a: "A quote is delivered from 24-48 h depending on complexity, after an initial framing exchange. We specify the scope (showcase, store, SaaS platform), the required integrations (stock, ERP, carriers) and the chosen AI features before any pricing.",
+            a: "A quote is delivered from 48 h depending on complexity, after an initial framing exchange. We specify the scope (showcase, store, SaaS platform), the required integrations (stock, ERP, carriers) and the chosen AI features before any pricing.",
           },
           {
             q: "Where is the data hosted and who keeps control of the code?",
@@ -222,7 +222,7 @@ export const TROYES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity, scope and pricing defined before signature. UX/UI and mobile design, multi-CMS e-commerce development and AI features (semantic search, RAG chatbot, sheet generation) included per the chosen tier. Hosting in Europe by default, GDPR and AI Act compliance, DPO on request. No vendor lock-in: code, models and content remain your property, taken over in-house or by any integrator after the mission. Web Vitals optimization and training of your Troyes teams included.",
+          "Quote from 48 h depending on complexity, scope and pricing defined before signature. UX/UI and mobile design, multi-CMS e-commerce development and AI features (semantic search, RAG chatbot, sheet generation) included per the chosen tier. Hosting in Europe by default, GDPR and AI Act compliance, DPO on request. No vendor lock-in: code, models and content remain your property, taken over in-house or by any integrator after the mission. Web Vitals optimization and training of your Troyes teams included.",
       },
     },
   },

@@ -123,7 +123,7 @@ export const ANGOULEME_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtenez-je un devis pour mon projet à Angoulême ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre métier — studio Magelis, éditeur de jeu, industriel ou packageur — nous vous envoyons un devis chiffré avec le périmètre, l'architecture proposée et la couche IA envisagée.",
+            a: "À partir de 48 h selon la complexité. Après un premier échange sur votre métier — studio Magelis, éditeur de jeu, industriel ou packageur — nous vous envoyons un devis chiffré avec le périmètre, l'architecture proposée et la couche IA envisagée.",
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement de l'IA ?",
@@ -135,7 +135,7 @@ export const ANGOULEME_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites et plateformes livrés en code custom ou multi-CMS, portables et exécutables par vos équipes ou tout intégrateur de Nouvelle-Aquitaine après la mission — aucun lock-in Axion-IA. Hébergement en Union européenne et conformité RGPD par défaut. Devis à partir de 24 à 48 h selon la complexité, périmètre et architecture détaillés avant toute ligne de code. Performances Web Vitals mesurées à la mise en production. Vous conservez la propriété complète du code, des modèles IA et des contenus, qu'il s'agisse d'un portfolio de studio Magelis, d'un portail industriel GrandAngoulême ou d'une boutique packaging.",
+          "Sites et plateformes livrés en code custom ou multi-CMS, portables et exécutables par vos équipes ou tout intégrateur de Nouvelle-Aquitaine après la mission — aucun lock-in Axion-IA. Hébergement en Union européenne et conformité RGPD par défaut. Devis à partir de 48 h selon la complexité, périmètre et architecture détaillés avant toute ligne de code. Performances Web Vitals mesurées à la mise en production. Vous conservez la propriété complète du code, des modèles IA et des contenus, qu'il s'agisse d'un portfolio de studio Magelis, d'un portail industriel GrandAngoulême ou d'une boutique packaging.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Angoulême, where two worlds few cities combine coexist: the image industries — Pôle Image Magelis, more than 200 companies, France's second largest animation production hub, with studios such as Blue Spirit, Unique Animation, La Station Animation and FOST, and the video game studios Hibernian Workshop and Bulwark Studios — and a heavy industrial base (Leroy-Somer, Schneider Electric, Saft, Naval Group, the paper-and-board packaging sector). We build AI-native platforms for both ecosystems: animation production pipelines, studio portfolios, mechatronics industrial ERPs, packaging e-commerce sites. Custom code, EU GDPR-compliant hosting, zero vendor lock-in.",
@@ -209,7 +209,7 @@ export const ANGOULEME_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote for my project in Angoulême?",
-            a: "From 24 to 48 hours depending on complexity. After an initial discussion about your business — Magelis studio, game publisher, industrial firm or packager — we send a costed quote with the scope, the proposed architecture and the planned AI layer.",
+            a: "From 48 hours depending on complexity. After an initial discussion about your business — Magelis studio, game publisher, industrial firm or packager — we send a costed quote with the scope, the proposed architecture and the planned AI layer.",
           },
           {
             q: "Do you do UX/UI, mobile and e-commerce, or only AI?",
@@ -221,7 +221,7 @@ export const ANGOULEME_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites and platforms delivered in custom code or multi-CMS, portable and runnable by your teams or any Nouvelle-Aquitaine integrator after the mission — no Axion-IA lock-in. EU hosting and GDPR compliance by default. Quote from 24 to 48 hours depending on complexity, with scope and architecture detailed before any line of code. Web Vitals performance measured at go-live. You retain full ownership of the code, AI models and content, whether it is a Magelis studio portfolio, a GrandAngoulême industrial portal or a packaging shop.",
+          "Sites and platforms delivered in custom code or multi-CMS, portable and runnable by your teams or any Nouvelle-Aquitaine integrator after the mission — no Axion-IA lock-in. EU hosting and GDPR compliance by default. Quote from 48 hours depending on complexity, with scope and architecture detailed before any line of code. Web Vitals performance measured at go-live. You retain full ownership of the code, AI models and content, whether it is a Magelis studio portfolio, a GrandAngoulême industrial portal or a packaging shop.",
       },
     },
   },

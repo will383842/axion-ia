@@ -126,7 +126,7 @@ export const ROANNE_COPY: VilleCopy = {
           },
           {
             q: "Quels sont les délais pour un devis à Roanne ?",
-            a: "À partir de 24-48 h selon la complexité du projet. Après un premier échange de cadrage, nous formalisons un devis détaillé puis venons sur site à Roanne ou dans l'agglomération (Mably, Riorges, Le Coteau, Villerest, Commelle-Vernay) pour le kick-off.",
+            a: "À partir de 48 h selon la complexité du projet. Après un premier échange de cadrage, nous formalisons un devis détaillé puis venons sur site à Roanne ou dans l'agglomération (Mably, Riorges, Le Coteau, Villerest, Commelle-Vernay) pour le kick-off.",
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
@@ -134,7 +134,7 @@ export const ROANNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité, kick-off sur site à Roanne. Nous concevons en code propriétaire (UX/UI, mobile, e-commerce multi-CMS et IA), sans no-code ni dépendance à une plateforme tierce : vous gardez la pleine propriété du code, des données et des modèles, maintenables en interne ou par tout prestataire du bassin roannais. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception (minimisation, traçabilité, clauses conformes au droit européen).",
+          "Devis à partir de 48 h selon la complexité, kick-off sur site à Roanne. Nous concevons en code propriétaire (UX/UI, mobile, e-commerce multi-CMS et IA), sans no-code ni dépendance à une plateforme tierce : vous gardez la pleine propriété du code, des données et des modèles, maintenables en interne ou par tout prestataire du bassin roannais. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception (minimisation, traçabilité, clauses conformes au droit européen).",
       },
       en: {
         hero: "Roanne, sub-prefecture of the Loire and central town of Roannais Agglomération (~81,000 inhabitants, 15 communes), concentrates a rare production economy: the KNDS France defence plant (ex-Nexter, armoured combat vehicles), the Michelin factory producing premium tyres for luxury cars, France's 2nd knitting and knitwear basin (Garnier Thiebaut, Carré Blanc, Griffon), a world-class gastronomic trio (Troisgros, Pralus, Révillon) and a dense agri-food sector (SICAREV, Mademoiselle Desserts, Refresco). Axion-IA designs AI-augmented websites and SaaS platforms on site for these players — from a knitwear brand's e-commerce store to the B2B portal of a mechanical subcontractor at ECOPARC Bonvert — in proprietary code, EU-hosted and GDPR-compliant.",
@@ -212,7 +212,7 @@ export const ROANNE_COPY: VilleCopy = {
           },
           {
             q: "What are the lead times for a quote in Roanne?",
-            a: "From 24-48 hours depending on project complexity. After an initial framing exchange, we formalise a detailed quote then come on site in Roanne or the agglomeration (Mably, Riorges, Le Coteau, Villerest, Commelle-Vernay) for the kick-off.",
+            a: "From 48 hours depending on project complexity. After an initial framing exchange, we formalise a detailed quote then come on site in Roanne or the agglomeration (Mably, Riorges, Le Coteau, Villerest, Commelle-Vernay) for the kick-off.",
           },
           {
             q: "Do you handle UX/UI, mobile and e-commerce, or only AI?",
@@ -220,7 +220,7 @@ export const ROANNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 hours depending on complexity, on-site kick-off in Roanne. We design in proprietary code (UX/UI, mobile, multi-CMS e-commerce and AI), with no no-code and no third-party platform dependency: you keep full ownership of code, data and models, maintainable in-house or by any Roanne-basin provider. EU hosting by default and GDPR compliance built in from design (minimisation, traceability, clauses compliant with European law).",
+          "Quote from 48 hours depending on complexity, on-site kick-off in Roanne. We design in proprietary code (UX/UI, mobile, multi-CMS e-commerce and AI), with no no-code and no third-party platform dependency: you keep full ownership of code, data and models, maintainable in-house or by any Roanne-basin provider. EU hosting by default and GDPR compliance built in from design (minimisation, traceability, clauses compliant with European law).",
       },
     },
   },

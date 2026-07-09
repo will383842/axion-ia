@@ -132,11 +132,11 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
           },
           {
             q: "Quel délai et quelles garanties pour un site à Pontault-Combault ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du périmètre. Hébergement en Union européenne et conformité RGPD intégrés dès la conception. Vous restez propriétaire du code, des données et du contenu, transférables à tout prestataire — aucun verrou éditeur. La desserte par le RER E et l'A4 nous permet d'intervenir sur site dans tout l'est francilien.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du périmètre. Hébergement en Union européenne et conformité RGPD intégrés dès la conception. Vous restez propriétaire du code, des données et du contenu, transférables à tout prestataire — aucun verrou éditeur. La desserte par le RER E et l'A4 nous permet d'intervenir sur site dans tout l'est francilien.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité, sans engagement opaque. Sites et plateformes conçus mobile-first avec budget de performance strict (vitesse, stabilité visuelle, recherche locale). Hébergement en Union européenne et conformité RGPD par défaut. Vous restez intégralement propriétaire du code, des données produit et du contenu : tout est transférable à un autre prestataire ou repris en interne, sans verrou éditeur ni dépendance à Axion-IA. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA appliquée — pas un assemblage de modèles génériques recyclés.",
+          "Devis remis à partir de 48 h selon la complexité, sans engagement opaque. Sites et plateformes conçus mobile-first avec budget de performance strict (vitesse, stabilité visuelle, recherche locale). Hébergement en Union européenne et conformité RGPD par défaut. Vous restez intégralement propriétaire du code, des données produit et du contenu : tout est transférable à un autre prestataire ou repris en interne, sans verrou éditeur ni dépendance à Axion-IA. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA appliquée — pas un assemblage de modèles génériques recyclés.",
       },
       en: {
         hero: "In Pontault-Combault, the economy revolves around shelves and warehouses rather than offices: the town hosts Costco's 2nd French warehouse (opened late 2021 in the ZAC des 4 Chênes), a Carrefour hypermarket, a Castorama and the off-price retailer Stokomani, alongside a cluster of imported-tile distributors (Grespania France, Ceramica Fusaro and Giacomini showrooms in the ZAC du Pontillault) and the Arpents logistics hub. Axion-IA designs AI-augmented websites and SaaS platforms for these retailers, distributors and logistics firms: multi-CMS e-commerce, product configurators and catalogues, click-and-collect, quote chatbots and semantic search — custom code, polished UX/UI and mobile, EU hosting compliant with GDPR.",
@@ -218,11 +218,11 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
           },
           {
             q: "What lead time and guarantees for a site in Pontault-Combault?",
-            a: "The quote is issued from 24 to 48 hours depending on scope complexity. EU hosting and GDPR compliance built in from design. You remain owner of the code, data and content, transferable to any provider — no vendor lock-in. RER E and A4 access let us work on site across eastern Île-de-France.",
+            a: "The quote is issued from 48 hours depending on scope complexity. EU hosting and GDPR compliance built in from design. You remain owner of the code, data and content, transferable to any provider — no vendor lock-in. RER E and A4 access let us work on site across eastern Île-de-France.",
           },
         ],
         guarantees:
-          "Quote issued from 24 to 48 hours depending on complexity, with no opaque commitment. Sites and platforms designed mobile-first with a strict performance budget (speed, visual stability, local search). EU hosting and GDPR compliance by default. You remain full owner of the code, product data and content: everything is transferable to another provider or brought in-house, with no vendor lock-in or dependency on Axion-IA. We claim UX/UI, mobile, multi-CMS e-commerce and applied AI — not a recycled assembly of generic models.",
+          "Quote issued from 48 hours depending on complexity, with no opaque commitment. Sites and platforms designed mobile-first with a strict performance budget (speed, visual stability, local search). EU hosting and GDPR compliance by default. You remain full owner of the code, product data and content: everything is transferable to another provider or brought in-house, with no vendor lock-in or dependency on Axion-IA. We claim UX/UI, mobile, multi-CMS e-commerce and applied AI — not a recycled assembly of generic models.",
       },
     },
   },

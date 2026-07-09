@@ -124,7 +124,7 @@ export const ARLES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Un devis vous est transmis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Nous n'avançons jamais de chiffre au hasard : le devis repose sur vos contenus réels et le périmètre fonctionnel défini ensemble.",
+            a: "Un devis vous est transmis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Nous n'avançons jamais de chiffre au hasard : le devis repose sur vos contenus réels et le périmètre fonctionnel défini ensemble.",
           },
           {
             q: "Travaillez-vous avec les entreprises du port fluvial et des zones d'activités d'Arles ?",
@@ -136,7 +136,7 @@ export const ARLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis transmis à partir de 24 à 48 h selon la complexité, fondé sur vos contenus réels et le périmètre défini ensemble — jamais un montant au hasard. Conception UX/UI, version mobile et e-commerce multi-CMS inclus dans notre périmètre. Hébergement en Union européenne conforme RGPD ; le code, les contenus et les données restent votre propriété et sont transférables à tout prestataire. Aucun verrou éditeur, aucun témoignage ni chiffre client inventé : nos références se construisent sur des projets réels à Arles et en Camargue.",
+          "Devis transmis à partir de 48 h selon la complexité, fondé sur vos contenus réels et le périmètre défini ensemble — jamais un montant au hasard. Conception UX/UI, version mobile et e-commerce multi-CMS inclus dans notre périmètre. Hébergement en Union européenne conforme RGPD ; le code, les contenus et les données restent votre propriété et sont transférables à tout prestataire. Aucun verrou éditeur, aucun témoignage ni chiffre client inventé : nos références se construisent sur des projets réels à Arles et en Camargue.",
       },
       en: {
         hero: "In Arles, the largest commune in metropolitan France, the economy rests on two pillars few cities combine: a world-class creative sector — LUMA Arles and its Atelier LUMA on the Parc des Ateliers, the Actes Sud publishing house, the Rencontres de la photographie running since 1970, and the ENSP, France's only national school dedicated to photography — and a real productive base, from the Rhône river port to the Z.I. Nord industrial zone and the Camargue PGI rice sector. Axion-IA builds AI-augmented websites and SaaS platforms for both worlds: indexed photo portfolios and catalogues, multilingual ticketing and booking platforms, agricultural traceability and port management tools. Custom code, EU hosting compliant with GDPR, no vendor lock-in.",
@@ -210,7 +210,7 @@ export const ARLES_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote?",
-            a: "A quote is sent from 24 to 48 hours depending on project complexity, after an initial framing exchange. We never put forward a random figure: the quote is based on your real content and the functional scope defined together.",
+            a: "A quote is sent from 48 hours depending on project complexity, after an initial framing exchange. We never put forward a random figure: the quote is based on your real content and the functional scope defined together.",
           },
           {
             q: "Do you work with river-port and activity-zone companies in Arles?",
@@ -222,7 +222,7 @@ export const ARLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote sent from 24 to 48 hours depending on complexity, based on your real content and the scope defined together — never a random figure. UX/UI design, mobile version and multi-CMS e-commerce included in our scope. EU hosting compliant with GDPR; the code, content and data remain your property and are transferable to any vendor. No vendor lock-in, no invented testimonials or client figures: our references are built on real projects in Arles and Camargue.",
+          "Quote sent from 48 hours depending on complexity, based on your real content and the scope defined together — never a random figure. UX/UI design, mobile version and multi-CMS e-commerce included in our scope. EU hosting compliant with GDPR; the code, content and data remain your property and are transferable to any vendor. No vendor lock-in, no invented testimonials or client figures: our references are built on real projects in Arles and Camargue.",
       },
     },
   },

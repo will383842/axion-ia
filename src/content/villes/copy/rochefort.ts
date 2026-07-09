@@ -49,7 +49,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Rochefort des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville arsenal fondée par Colbert en 1666, où l'aéronautique de précision (Stelia Aerospace pour les fuselages A350, Sabena Technics en MRO Boeing/Airbus), le nautisme du port de commerce, le thermalisme du Casino-Thermes et le tourisme patrimonial autour de la Corderie Royale, de l'Hermione et du Pont Transbordeur cohabitent avec un tissu dense de TPE charentaises, sous la marque de destination Rochefort Océan, au cœur de l'agglomération CARO et à 30 km de La Rochelle. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Rochefort, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Rochefort des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville arsenal fondée par Colbert en 1666, où l'aéronautique de précision (Stelia Aerospace pour les fuselages A350, Sabena Technics en MRO Boeing/Airbus), le nautisme du port de commerce, le thermalisme du Casino-Thermes et le tourisme patrimonial autour de la Corderie Royale, de l'Hermione et du Pont Transbordeur cohabitent avec un tissu dense de TPE charentaises, sous la marque de destination Rochefort Océan, au cœur de l'agglomération CARO et à 30 km de La Rochelle. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Rochefort, itérations à distance.",
         whyHere: [
           "Sous-traitance aéronautique exigeante dans l'écosystème Stelia Aerospace (fuselages A350 du groupe Airbus) et Sabena Technics (MRO Boeing/Airbus), à proximité de la BAN Rochefort et de l'École de formation des sous-officiers de l'armée de l'air : on développe des portails fournisseurs, des tableaux de bord qualité-traçabilité et des agents IA branchés sur vos ERP/MES, avec hébergement souverain compatible donneurs d'ordre.",
           "Tourisme patrimonial fort et saisonnier sous la marque Rochefort Océan (Corderie Royale de 374 m, Hermione, Pont Transbordeur de 1900, Île d'Aix, Fort Boyard) : nos sites de billetterie en ligne, moteurs de réservation et chatbots multilingues fluidifient l'achat de billets et renseignent les visiteurs internationaux en plein pic estival, sur mobile comme sur desktop.",
@@ -60,7 +60,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
           {
             step: "Cadrage à Rochefort",
             detail:
-              "Atelier sur site dans l'arsenal reconverti, sur les ZAC Béligon ou Les Pertuis, ou au port de commerce : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Rochefort Océan. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans l'arsenal reconverti, sur les ZAC Béligon ou Les Pertuis, ou au port de commerce : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Rochefort Océan. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -120,7 +120,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Rochefort — dans l'arsenal reconverti, sur les ZAC Béligon ou Les Pertuis — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à Rochefort — dans l'arsenal reconverti, sur les ZAC Béligon ou Les Pertuis — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
           },
           {
             q: "Gérez-vous la billetterie et le multilingue pour le tourisme ?",
@@ -132,10 +132,10 @@ export const ROCHEFORT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique autour de la Corderie Royale ou en flux de production aéronautique chez Stelia et Sabena Technics. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local de Charente-Maritime ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique autour de la Corderie Royale ou en flux de production aéronautique chez Stelia et Sabena Technics. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local de Charente-Maritime ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Rochefort des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville arsenal fondée par Colbert en 1666, où l'aéronautique de précision (Stelia Aerospace pour les fuselages A350, Sabena Technics en MRO Boeing/Airbus), le nautisme du port de commerce, le thermalisme du Casino-Thermes et le tourisme patrimonial autour de la Corderie Royale, de l'Hermione et du Pont Transbordeur cohabitent avec un tissu dense de TPE charentaises, sous la marque de destination Rochefort Océan, au cœur de l'agglomération CARO et à 30 km de La Rochelle. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Rochefort, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Rochefort des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville arsenal fondée par Colbert en 1666, où l'aéronautique de précision (Stelia Aerospace pour les fuselages A350, Sabena Technics en MRO Boeing/Airbus), le nautisme du port de commerce, le thermalisme du Casino-Thermes et le tourisme patrimonial autour de la Corderie Royale, de l'Hermione et du Pont Transbordeur cohabitent avec un tissu dense de TPE charentaises, sous la marque de destination Rochefort Océan, au cœur de l'agglomération CARO et à 30 km de La Rochelle. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Rochefort, itérations à distance.",
         whyHere: [
           "Sous-traitance aéronautique exigeante dans l'écosystème Stelia Aerospace (fuselages A350 du groupe Airbus) et Sabena Technics (MRO Boeing/Airbus), à proximité de la BAN Rochefort et de l'École de formation des sous-officiers de l'armée de l'air : on développe des portails fournisseurs, des tableaux de bord qualité-traçabilité et des agents IA branchés sur vos ERP/MES, avec hébergement souverain compatible donneurs d'ordre.",
           "Tourisme patrimonial fort et saisonnier sous la marque Rochefort Océan (Corderie Royale de 374 m, Hermione, Pont Transbordeur de 1900, Île d'Aix, Fort Boyard) : nos sites de billetterie en ligne, moteurs de réservation et chatbots multilingues fluidifient l'achat de billets et renseignent les visiteurs internationaux en plein pic estival, sur mobile comme sur desktop.",
@@ -146,7 +146,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
           {
             step: "Cadrage à Rochefort",
             detail:
-              "Atelier sur site dans l'arsenal reconverti, sur les ZAC Béligon ou Les Pertuis, ou au port de commerce : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Rochefort Océan. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans l'arsenal reconverti, sur les ZAC Béligon ou Les Pertuis, ou au port de commerce : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Rochefort Océan. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -206,7 +206,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Rochefort — dans l'arsenal reconverti, sur les ZAC Béligon ou Les Pertuis — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à Rochefort — dans l'arsenal reconverti, sur les ZAC Béligon ou Les Pertuis — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
           },
           {
             q: "Gérez-vous la billetterie et le multilingue pour le tourisme ?",
@@ -218,7 +218,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique autour de la Corderie Royale ou en flux de production aéronautique chez Stelia et Sabena Technics. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local de Charente-Maritime ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique autour de la Corderie Royale ou en flux de production aéronautique chez Stelia et Sabena Technics. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local de Charente-Maritime ou repris en interne par vos équipes.",
       },
     },
   },

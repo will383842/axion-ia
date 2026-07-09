@@ -51,7 +51,7 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Charenton-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Nous travaillons au plus près du tissu local — siège mondial d'EssilorLuxottica rue de Paris, siège de La Martiniquaise (Label 5, Poliakov) rue de l'Entrepôt, pôle bancaire Natixis/BPCE de l'avenue de la Liberté, parc d'affaires Coupole Liberté et commerces de Bercy 2. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Charenton-le-Pont, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Charenton-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Nous travaillons au plus près du tissu local — siège mondial d'EssilorLuxottica rue de Paris, siège de La Martiniquaise (Label 5, Poliakov) rue de l'Entrepôt, pôle bancaire Natixis/BPCE de l'avenue de la Liberté, parc d'affaires Coupole Liberté et commerces de Bercy 2. Devis à partir de 48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Charenton-le-Pont, itérations à distance.",
         whyHere: [
           "Tissu B2B haut de gamme à deux pas de Paris-Bercy : siège mondial d'EssilorLuxottica (147 rue de Paris), filiales et fournisseurs de l'optique, prestataires et sous-traitants gravitant autour du leader de la lunetterie.",
           "Négoce et industrie des vins & spiritueux avec le siège de La Martiniquaise (marques Label 5, Poliakov) rue de l'Entrepôt : nous concevons portails B2B, configurateurs de gammes, catalogues e-commerce multi-CMS et plateformes data pour ce secteur.",
@@ -62,7 +62,7 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Charenton-le-Pont",
             detail:
-              "Atelier sur site (vos bureaux du quartier Liberté, de la rue de Paris ou de la Coupole) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (vos bureaux du quartier Liberté, de la rue de Paris ou de la Coupole) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -134,10 +134,10 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes de Charenton-le-Pont.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes de Charenton-le-Pont.",
       },
       en: {
-        hero: "In Charenton-le-Pont, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. We work close to the local fabric — EssilorLuxottica's world headquarters on rue de Paris, La Martiniquaise's head office (Label 5, Poliakov) on rue de l'Entrepôt, the Natixis/BPCE banking hub on avenue de la Liberté, the Coupole Liberté business park and the Bercy 2 retail centre. Quote from 24-48 h depending on project complexity, EU/GDPR hosting, code and data yours. On-site Charenton-le-Pont kick-off, remote iterations.",
+        hero: "In Charenton-le-Pont, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. We work close to the local fabric — EssilorLuxottica's world headquarters on rue de Paris, La Martiniquaise's head office (Label 5, Poliakov) on rue de l'Entrepôt, the Natixis/BPCE banking hub on avenue de la Liberté, the Coupole Liberté business park and the Bercy 2 retail centre. Quote from 48 h depending on project complexity, EU/GDPR hosting, code and data yours. On-site Charenton-le-Pont kick-off, remote iterations.",
         whyHere: [
           "High-end B2B fabric next to Paris-Bercy: EssilorLuxottica's world headquarters (147 rue de Paris), optical subsidiaries and suppliers, plus the service providers and subcontractors orbiting the eyewear leader.",
           "Wines & spirits trade and industry with La Martiniquaise's head office (Label 5, Poliakov brands) on rue de l'Entrepôt: we build B2B portals, range configurators, multi-CMS e-commerce catalogues and data platforms for this sector.",
@@ -148,7 +148,7 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
           {
             step: "Scoping in Charenton-le-Pont",
             detail:
-              "On-site workshop (your offices in the Liberté district, rue de Paris or the Coupole): goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop (your offices in the Liberté district, rue de Paris or the Coupole): goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -220,7 +220,7 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Downtime-free go-live when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, transferable to any Île-de-France provider or taken in-house by your Charenton-le-Pont teams.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Downtime-free go-live when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, transferable to any Île-de-France provider or taken in-house by your Charenton-le-Pont teams.",
       },
     },
   },

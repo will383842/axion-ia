@@ -53,7 +53,7 @@ export const BETHUNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Béthune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du Pas-de-Calais marquée par la reconversion de l'ancien bassin minier — industrie pneumatique dans l'orbite Bridgestone, agroalimentaire, logistique — et porté par un dense tissu de TPE : artisans du BTP, commerçants de la Grand-Place et du beffroi classé à l'UNESCO, professions libérales. Au cœur de la Communauté d'agglomération Béthune-Bruay Artois Lys Romane, on relie votre vitrine ou votre boutique à vos outils métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Béthune, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Béthune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du Pas-de-Calais marquée par la reconversion de l'ancien bassin minier — industrie pneumatique dans l'orbite Bridgestone, agroalimentaire, logistique — et porté par un dense tissu de TPE : artisans du BTP, commerçants de la Grand-Place et du beffroi classé à l'UNESCO, professions libérales. Au cœur de la Communauté d'agglomération Béthune-Bruay Artois Lys Romane, on relie votre vitrine ou votre boutique à vos outils métier. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Béthune, itérations à distance.",
         whyHere: [
           "Héritage industriel et reconversion minière : autour de l'usine Bridgestone de Béthune (pneumatiques, l'un des plus gros employeurs privés du bassin) et des PME industrielles issues de l'après-mine, on greffe des portails de suivi de production, des interfaces de maintenance et des configurateurs B2B branchés sur votre SI, sans refonte lourde de l'existant.",
           "Agroalimentaire et traçabilité : pour les transformateurs et fournisseurs de l'Artois et de la Lys, on bâtit des plateformes de traçabilité lot par lot, des espaces clients et de la recherche sémantique sur fiches produits, recettes et certificats — conformes RGPD et exploitables par vos équipes terrain en atelier comme en chambre froide.",
@@ -64,7 +64,7 @@ export const BETHUNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Béthune",
             detail:
-              "Atelier sur site — centre historique autour de la Grand-Place et du beffroi classé UNESCO, parc d'activités de la Porte Nord ou votre atelier : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre historique autour de la Grand-Place et du beffroi classé UNESCO, parc d'activités de la Porte Nord ou votre atelier : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const BETHUNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Béthune, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+            a: "Oui. Après le cadrage à Béthune, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
           },
           {
             q: "Gérez-vous la traçabilité et les flux industriels et logistiques ?",
@@ -136,10 +136,10 @@ export const BETHUNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie déguisée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale béthunoise. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Le tout est documenté et transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie déguisée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale béthunoise. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Le tout est documenté et transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Béthune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du Pas-de-Calais marquée par la reconversion de l'ancien bassin minier — industrie pneumatique dans l'orbite Bridgestone, agroalimentaire, logistique — et porté par un dense tissu de TPE : artisans du BTP, commerçants de la Grand-Place et du beffroi classé à l'UNESCO, professions libérales. Au cœur de la Communauté d'agglomération Béthune-Bruay Artois Lys Romane, on relie votre vitrine ou votre boutique à vos outils métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Béthune, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Béthune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du Pas-de-Calais marquée par la reconversion de l'ancien bassin minier — industrie pneumatique dans l'orbite Bridgestone, agroalimentaire, logistique — et porté par un dense tissu de TPE : artisans du BTP, commerçants de la Grand-Place et du beffroi classé à l'UNESCO, professions libérales. Au cœur de la Communauté d'agglomération Béthune-Bruay Artois Lys Romane, on relie votre vitrine ou votre boutique à vos outils métier. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Béthune, itérations à distance.",
         whyHere: [
           "Héritage industriel et reconversion minière : autour de l'usine Bridgestone de Béthune (pneumatiques, l'un des plus gros employeurs privés du bassin) et des PME industrielles issues de l'après-mine, on greffe des portails de suivi de production, des interfaces de maintenance et des configurateurs B2B branchés sur votre SI, sans refonte lourde de l'existant.",
           "Agroalimentaire et traçabilité : pour les transformateurs et fournisseurs de l'Artois et de la Lys, on bâtit des plateformes de traçabilité lot par lot, des espaces clients et de la recherche sémantique sur fiches produits, recettes et certificats — conformes RGPD et exploitables par vos équipes terrain en atelier comme en chambre froide.",
@@ -150,7 +150,7 @@ export const BETHUNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Béthune",
             detail:
-              "Atelier sur site — centre historique autour de la Grand-Place et du beffroi classé UNESCO, parc d'activités de la Porte Nord ou votre atelier : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre historique autour de la Grand-Place et du beffroi classé UNESCO, parc d'activités de la Porte Nord ou votre atelier : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const BETHUNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Béthune, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+            a: "Oui. Après le cadrage à Béthune, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
           },
           {
             q: "Gérez-vous la traçabilité et les flux industriels et logistiques ?",
@@ -222,7 +222,7 @@ export const BETHUNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie déguisée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale béthunoise. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Le tout est documenté et transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie déguisée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale béthunoise. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Le tout est documenté et transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
     },
   },

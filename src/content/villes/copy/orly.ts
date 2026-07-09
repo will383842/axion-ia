@@ -53,7 +53,7 @@ export const ORLY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Orly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails B2B, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie soudée à l'aéroport Paris-Orly, deuxième plateforme de France opérée par le Groupe ADP, où s'entremêlent fret, transitaires, maintenance aéronautique et un tissu dense de TPE de services et de commerces du territoire Grand-Orly Seine Bièvre. Du quartier d'affaires Cœur d'Orly aux entrepôts de la zone SENIA, nous bâtissons des outils utiles dès le premier sprint. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Orly, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Orly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails B2B, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie soudée à l'aéroport Paris-Orly, deuxième plateforme de France opérée par le Groupe ADP, où s'entremêlent fret, transitaires, maintenance aéronautique et un tissu dense de TPE de services et de commerces du territoire Grand-Orly Seine Bièvre. Du quartier d'affaires Cœur d'Orly aux entrepôts de la zone SENIA, nous bâtissons des outils utiles dès le premier sprint. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Orly, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Économie aéroportuaire à forte contrainte de délais : transitaires et logisticiens autour de la plateforme Paris-Orly et de la zone fret de SOGARIS au sud francilien ont besoin de portails clients B2B, de suivis d'expédition en temps réel et d'agents qui qualifient les demandes 24/7 — exactement le type de site augmenté, branché sur le WMS, que nous construisons.",
           "Maintenance et services aéronautiques pointus : pour les sous-traitants techniques qui gravitent autour d'Air France Industries et des ateliers de la plateforme, nous bâtissons des plateformes métier sur mesure et des moteurs de recherche sémantique branchés sur la documentation, les catalogues de pièces et les procédures réglementaires.",
@@ -64,7 +64,7 @@ export const ORLY_COPY: VilleCopy = {
           {
             step: "Cadrage à Orly",
             detail:
-              "Atelier sur site, dans vos entrepôts ou bureaux des zones d'activités proches de l'aéroport Paris-Orly — zone SENIA, Cœur d'Orly ou abords de la SOGARIS : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, dans vos entrepôts ou bureaux des zones d'activités proches de l'aéroport Paris-Orly — zone SENIA, Cœur d'Orly ou abords de la SOGARIS : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const ORLY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Orly, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission. Vous savez exactement ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Orly, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission. Vous savez exactement ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous construire un portail B2B pour un transitaire ?",
@@ -136,10 +136,10 @@ export const ORLY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des outils opérés en flux tendu jour et nuit autour de la plateforme Paris-Orly. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Outil transférable à tout prestataire francilien ou repris en interne par vos équipes orlysiennes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des outils opérés en flux tendu jour et nuit autour de la plateforme Paris-Orly. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Outil transférable à tout prestataire francilien ou repris en interne par vos équipes orlysiennes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Orly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails B2B, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie soudée à l'aéroport Paris-Orly, deuxième plateforme de France opérée par le Groupe ADP, où s'entremêlent fret, transitaires, maintenance aéronautique et un tissu dense de TPE de services et de commerces du territoire Grand-Orly Seine Bièvre. Du quartier d'affaires Cœur d'Orly aux entrepôts de la zone SENIA, nous bâtissons des outils utiles dès le premier sprint. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Orly, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Orly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails B2B, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie soudée à l'aéroport Paris-Orly, deuxième plateforme de France opérée par le Groupe ADP, où s'entremêlent fret, transitaires, maintenance aéronautique et un tissu dense de TPE de services et de commerces du territoire Grand-Orly Seine Bièvre. Du quartier d'affaires Cœur d'Orly aux entrepôts de la zone SENIA, nous bâtissons des outils utiles dès le premier sprint. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Orly, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Économie aéroportuaire à forte contrainte de délais : transitaires et logisticiens autour de la plateforme Paris-Orly et de la zone fret de SOGARIS au sud francilien ont besoin de portails clients B2B, de suivis d'expédition en temps réel et d'agents qui qualifient les demandes 24/7 — exactement le type de site augmenté, branché sur le WMS, que nous construisons.",
           "Maintenance et services aéronautiques pointus : pour les sous-traitants techniques qui gravitent autour d'Air France Industries et des ateliers de la plateforme, nous bâtissons des plateformes métier sur mesure et des moteurs de recherche sémantique branchés sur la documentation, les catalogues de pièces et les procédures réglementaires.",
@@ -150,7 +150,7 @@ export const ORLY_COPY: VilleCopy = {
           {
             step: "Cadrage à Orly",
             detail:
-              "Atelier sur site, dans vos entrepôts ou bureaux des zones d'activités proches de l'aéroport Paris-Orly — zone SENIA, Cœur d'Orly ou abords de la SOGARIS : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, dans vos entrepôts ou bureaux des zones d'activités proches de l'aéroport Paris-Orly — zone SENIA, Cœur d'Orly ou abords de la SOGARIS : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const ORLY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Orly, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission. Vous savez exactement ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Orly, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission. Vous savez exactement ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous construire un portail B2B pour un transitaire ?",
@@ -222,7 +222,7 @@ export const ORLY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des outils opérés en flux tendu jour et nuit autour de la plateforme Paris-Orly. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Outil transférable à tout prestataire francilien ou repris en interne par vos équipes orlysiennes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des outils opérés en flux tendu jour et nuit autour de la plateforme Paris-Orly. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Outil transférable à tout prestataire francilien ou repris en interne par vos équipes orlysiennes.",
       },
     },
   },

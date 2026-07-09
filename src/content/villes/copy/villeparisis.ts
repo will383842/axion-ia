@@ -122,7 +122,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis et un premier rendez-vous à Villeparisis ?",
-            a: "Devis à partir de 24-48 h selon la complexité. Le kick-off se tient sur place à Villeparisis — accès direct en RER B (gare Villeparisis–Mitry-le-Neuf) ou via l'A104 — ou en visio si vous préférez démarrer plus vite.",
+            a: "Devis à partir de 48 h selon la complexité. Le kick-off se tient sur place à Villeparisis — accès direct en RER B (gare Villeparisis–Mitry-le-Neuf) ou via l'A104 — ou en visio si vous préférez démarrer plus vite.",
           },
           {
             q: "Travaillez-vous avec les artisans BTP et la filière matériaux locale ?",
@@ -134,7 +134,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Périmètre et livrables fixés au démarrage, sans dérive horaire cachée. Devis à partir de 24-48 h selon la complexité. Hébergement en Union européenne par défaut, conformité RGPD documentée, DPO sur demande. Le code, les données et la documentation restent intégralement chez vous, transférables à tout intégrateur d'Île-de-France ou repris en interne — aucun verrou éditeur. UX/UI, version mobile, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, agents) sont inclus dans notre périmètre, calibrés sur le métier réel de votre entreprise à Villeparisis.",
+          "Périmètre et livrables fixés au démarrage, sans dérive horaire cachée. Devis à partir de 48 h selon la complexité. Hébergement en Union européenne par défaut, conformité RGPD documentée, DPO sur demande. Le code, les données et la documentation restent intégralement chez vous, transférables à tout intégrateur d'Île-de-France ou repris en interne — aucun verrou éditeur. UX/UI, version mobile, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, agents) sont inclus dans notre périmètre, calibrés sur le métier réel de votre entreprise à Villeparisis.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for the real economic fabric of Villeparisis (77270): retailers and e-merchants of the ZAC de l'Ambrésis and the Salengro retail park (Bricoman, Electro Dépôt, Maxi Zoo, Basic-Fit and their neighbours on avenue Jean Monnet), road-transport and warehousing SMEs geared to Paris-CDG (Ekol Logistiques, Distribution Wissem, Foselev Île-de-France), BTP craftsmen fed by the local construction sector and players of the plaster industry inherited from the Le Pin–Villeparisis gypsum quarries. Custom code (TypeScript, Python, FastAPI), RAG chatbot, product search, conversational agents, EU hosting GDPR-compliant, no vendor lock-in — your teams stay in control after delivery.",
@@ -208,7 +208,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           },
           {
             q: "How fast can you provide a quote and a first meeting in Villeparisis?",
-            a: "Quote from 24-48 h depending on complexity. The kick-off is held on site in Villeparisis — direct access by RER B (Villeparisis–Mitry-le-Neuf station) or via the A104 — or by video call if you prefer to start sooner.",
+            a: "Quote from 48 h depending on complexity. The kick-off is held on site in Villeparisis — direct access by RER B (Villeparisis–Mitry-le-Neuf station) or via the A104 — or by video call if you prefer to start sooner.",
           },
           {
             q: "Do you work with BTP craftsmen and the local materials sector?",
@@ -220,7 +220,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Scope and deliverables fixed at kick-off, with no hidden hourly drift. Quote from 24-48 h depending on complexity. EU hosting by default, documented GDPR compliance, DPO on request. Code, data and documentation stay entirely with you, transferable to any Île-de-France integrator or taken in-house — no vendor lock-in. UX/UI, mobile version, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, agents) are included in our scope, calibrated to your real business in Villeparisis.",
+          "Scope and deliverables fixed at kick-off, with no hidden hourly drift. Quote from 48 h depending on complexity. EU hosting by default, documented GDPR compliance, DPO on request. Code, data and documentation stay entirely with you, transferable to any Île-de-France integrator or taken in-house — no vendor lock-in. UX/UI, mobile version, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, agents) are included in our scope, calibrated to your real business in Villeparisis.",
       },
     },
   },

@@ -49,7 +49,7 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Montigny-le-Bretonneux, commune centrale de Saint-Quentin-en-Yvelines (2e bassin d'emploi francilien après La Défense), des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Que vous soyez un siège implanté au Pas du Lac, une scale-up de la « Cyber Valley » SQY ou une PME de services aux entreprises, le devis part de 24-48 h selon la complexité du projet, l'hébergement reste en UE et le code comme les données vous appartiennent. Kick-off en présentiel à Montigny-le-Bretonneux, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montigny-le-Bretonneux, commune centrale de Saint-Quentin-en-Yvelines (2e bassin d'emploi francilien après La Défense), des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Que vous soyez un siège implanté au Pas du Lac, une scale-up de la « Cyber Valley » SQY ou une PME de services aux entreprises, le devis part de 48 h selon la complexité du projet, l'hébergement reste en UE et le code comme les données vous appartiennent. Kick-off en présentiel à Montigny-le-Bretonneux, itérations à distance.",
         whyHere: [
           "Projets web & SaaS du bassin SQY : sièges automobiles et mobilité (Nissan West Europe rue Jean-Pierre Timbaud, voisinage du Technocentre Renault et de la Software République à Guyancourt), services type Bouygues Energies & Services et Hertz France, PME tertiaires du Pas du Lac.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA, pour les portails clients et applications métier des sièges montignaciens.",
@@ -60,7 +60,7 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
           {
             step: "Cadrage à Montigny-le-Bretonneux",
             detail:
-              "Atelier sur site, dans vos bureaux du Pas du Lac ou ailleurs à SQY : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, dans vos bureaux du Pas du Lac ou ailleurs à SQY : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -135,7 +135,7 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
           "Engagement contractuel : périmètre et jalons fixés au devis, livrés dans les délais convenus. Hébergement des données en UE par défaut, conformité RGPD, DPO sur demande — un point d'autant plus suivi dans un territoire « Cyber Valley » comme Saint-Quentin-en-Yvelines. Code, bases et modèles livrés chez vous : votre site ou plateforme reste exploitable et maintenable par vos équipes ou tout prestataire de l'agglomération SQY, sans abonnement imposé ni lock-in Axion-IA.",
       },
       en: {
-        hero: 'In Montigny-le-Bretonneux, the central commune of Saint-Quentin-en-Yvelines (the Paris region\'s second-largest employment basin after La Défense), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, a RAG chatbot grounded in your content, semantic search, agents and automations. Whether you are a headquarters based in the Pas du Lac district, a scale-up in the SQY "Cyber Valley" or a B2B services SME, quotes start within 24-48 h depending on project complexity, hosting stays in the EU, and the code and data are yours. Kick-off on site in Montigny-le-Bretonneux, iterations remotely.',
+        hero: 'In Montigny-le-Bretonneux, the central commune of Saint-Quentin-en-Yvelines (the Paris region\'s second-largest employment basin after La Défense), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, a RAG chatbot grounded in your content, semantic search, agents and automations. Whether you are a headquarters based in the Pas du Lac district, a scale-up in the SQY "Cyber Valley" or a B2B services SME, quotes start within 48 h depending on project complexity, hosting stays in the EU, and the code and data are yours. Kick-off on site in Montigny-le-Bretonneux, iterations remotely.',
         whyHere: [
           "Web & SaaS projects across the SQY basin: automotive and mobility headquarters (Nissan West Europe on rue Jean-Pierre Timbaud, next to the Renault Technocentre and the Software République in Guyancourt), services firms such as Bouygues Energies & Services and Hertz France, and B2B SMEs in the Pas du Lac.",
           "Full UX/UI design when needed — research, wireframes, design system, Figma prototype — not just the AI layer, for the client portals and line-of-business apps of Montigny headquarters.",
@@ -146,7 +146,7 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
           {
             step: "Scoping in Montigny-le-Bretonneux",
             detail:
-              "On-site workshop, in your Pas du Lac offices or elsewhere in SQY: goals, user journeys, audit of your stack and content. Firm quote within 24-48 h depending on complexity.",
+              "On-site workshop, in your Pas du Lac offices or elsewhere in SQY: goals, user journeys, audit of your stack and content. Firm quote within 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",

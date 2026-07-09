@@ -130,11 +130,11 @@ export const VINCENNES_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis et un démarrage à Vincennes ?",
-            a: "Devis à partir de 24-48 h selon la complexité. Kick-off sur site à Vincennes (RER A, 3 min de Gare de Lyon) ou en visio. Le calendrier précis est fixé au cadrage selon le périmètre : vitrine, e-commerce, espace client ou plateforme SaaS.",
+            a: "Devis à partir de 48 h selon la complexité. Kick-off sur site à Vincennes (RER A, 3 min de Gare de Lyon) ou en visio. Le calendrier précis est fixé au cadrage selon le périmètre : vitrine, e-commerce, espace client ou plateforme SaaS.",
           },
         ],
         guarantees:
-          "Code sur mesure, maintenable et documenté : vos accès, vos modèles et votre code restent chez vous, transférables à tout prestataire francilien ou repris en interne — aucun verrou éditeur, aucune dépendance contractuelle à Axion-IA. Hébergement UE par défaut et conformité RGPD intégrée dès la conception, avec vigilance renforcée pour les professions libérales et les services financiers vincennois. Devis à partir de 24-48 h selon la complexité, périmètre et livrables fixés au cadrage.",
+          "Code sur mesure, maintenable et documenté : vos accès, vos modèles et votre code restent chez vous, transférables à tout prestataire francilien ou repris en interne — aucun verrou éditeur, aucune dépendance contractuelle à Axion-IA. Hébergement UE par défaut et conformité RGPD intégrée dès la conception, avec vigilance renforcée pour les professions libérales et les services financiers vincennois. Devis à partir de 48 h selon la complexité, périmètre et livrables fixés au cadrage.",
       },
       en: {
         hero: "In Vincennes (94), France's second densest city, Axion-IA builds AI-augmented websites and SaaS platforms for a fabric of over 12,000 establishments dominated by micro-businesses, SMEs, professional practices and financial services — the very city where BRED Banque Populaire was founded in 1919. Practices on avenue de Paris and rue de Fontenay, named headquarters (Magimix, Logista, Harris Interactive, Alban Muller, Bouygues Immobilier), town-centre retail and Domaine du Bois players: we deliver custom code (UX/UI, mobile, multi-CMS e-commerce, RAG chatbot, semantic search), EU-hosted, with no vendor lock-in.",
@@ -216,11 +216,11 @@ export const VINCENNES_COPY: VilleCopy = {
           },
           {
             q: "What lead time for a quote and start in Vincennes?",
-            a: "Quote from 24-48 h depending on complexity. On-site kick-off in Vincennes (RER A, 3 min from Gare de Lyon) or remote. The precise schedule is set at framing based on scope: showcase, e-commerce, client area or SaaS platform.",
+            a: "Quote from 48 h depending on complexity. On-site kick-off in Vincennes (RER A, 3 min from Gare de Lyon) or remote. The precise schedule is set at framing based on scope: showcase, e-commerce, client area or SaaS platform.",
           },
         ],
         guarantees:
-          "Custom, maintainable and documented code: your access, your models and your code stay with you, transferable to any Île-de-France provider or taken in-house — no vendor lock-in, no contractual dependency on Axion-IA. EU hosting by default and GDPR compliance built in from design, with reinforced care for Vincennes professional practices and financial services. Quote from 24-48 h depending on complexity, scope and deliverables set at framing.",
+          "Custom, maintainable and documented code: your access, your models and your code stay with you, transferable to any Île-de-France provider or taken in-house — no vendor lock-in, no contractual dependency on Axion-IA. EU hosting by default and GDPR compliance built in from design, with reinforced care for Vincennes professional practices and financial services. Quote from 48 h depending on complexity, scope and deliverables set at framing.",
       },
     },
   },

@@ -52,7 +52,7 @@ export const ALLAUCH_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Allauch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 443 habitants à 12 km de Marseille, où le tissu mêle artisans agro-alimentaires (nougat provençal, confiserie Moulin Bleu, La Chips d'Allauch depuis 1976, chèvrerie d'Allauch), une centaine de commerces répartis sur trois centres urbains et la trentaine d'entreprises du Parc d'Activités de Fontvieille (5 hectares, environ 300 emplois). Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Allauch, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Allauch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 443 habitants à 12 km de Marseille, où le tissu mêle artisans agro-alimentaires (nougat provençal, confiserie Moulin Bleu, La Chips d'Allauch depuis 1976, chèvrerie d'Allauch), une centaine de commerces répartis sur trois centres urbains et la trentaine d'entreprises du Parc d'Activités de Fontvieille (5 hectares, environ 300 emplois). Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Allauch, itérations à distance.",
         whyHere: [
           "Artisanat agro-alimentaire à forte identité — nougat provençal, confiserie Moulin Bleu (dernier confiseur du village), La Chips d'Allauch depuis 1976, fromages de la chèvrerie d'Allauch : on construit des boutiques e-commerce sur mesure (WooCommerce, Shopify ou code dédié) pour vendre ces produits du terroir en ligne, avec fiches produits, traçabilité, gestion des stocks et expédition au-delà du marché local.",
           "Une centaine de commerces dispersés sur trois centres urbains (le village historique et ses ruelles, Logis-Neuf, Pas-de-Trets) et une fréquentation touristique tirée par l'esplanade des moulins à vent et Notre-Dame du Château : nos vitrines mobile-first et nos chatbots multilingues calibrés pour le commerce de détail et la restauration captent une clientèle qui cherche en ligne avant de monter au village.",
@@ -63,7 +63,7 @@ export const ALLAUCH_COPY: VilleCopy = {
           {
             step: "Cadrage à Allauch",
             detail:
-              "Atelier sur site — au village, dans vos locaux du Parc d'Activités de Fontvieille ou dans un de vos points de vente du Logis-Neuf : objectifs, parcours utilisateurs, audit de la stack existante et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — au village, dans vos locaux du Parc d'Activités de Fontvieille ou dans un de vos points de vente du Logis-Neuf : objectifs, parcours utilisateurs, audit de la stack existante et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -131,14 +131,14 @@ export const ALLAUCH_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Allauch — au village, à Fontvieille ou dans vos points de vente — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la livraison : vous savez exactement ce que vous payez et ce que vous recevez.",
+            a: "Oui. Après le cadrage sur site à Allauch — au village, à Fontvieille ou dans vos points de vente — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la livraison : vous savez exactement ce que vous payez et ce que vous recevez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée ni de surprise à la livraison. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique. Web Vitals et accessibilité contrôlés et documentés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire de l'agglomération Aix-Marseille ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée ni de surprise à la livraison. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique. Web Vitals et accessibilité contrôlés et documentés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire de l'agglomération Aix-Marseille ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Allauch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 443 habitants à 12 km de Marseille, où le tissu mêle artisans agro-alimentaires (nougat provençal, confiserie Moulin Bleu, La Chips d'Allauch depuis 1976, chèvrerie d'Allauch), une centaine de commerces répartis sur trois centres urbains et la trentaine d'entreprises du Parc d'Activités de Fontvieille (5 hectares, environ 300 emplois). Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Allauch, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Allauch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 443 habitants à 12 km de Marseille, où le tissu mêle artisans agro-alimentaires (nougat provençal, confiserie Moulin Bleu, La Chips d'Allauch depuis 1976, chèvrerie d'Allauch), une centaine de commerces répartis sur trois centres urbains et la trentaine d'entreprises du Parc d'Activités de Fontvieille (5 hectares, environ 300 emplois). Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Allauch, itérations à distance.",
         whyHere: [
           "Artisanat agro-alimentaire à forte identité — nougat provençal, confiserie Moulin Bleu (dernier confiseur du village), La Chips d'Allauch depuis 1976, fromages de la chèvrerie d'Allauch : on construit des boutiques e-commerce sur mesure (WooCommerce, Shopify ou code dédié) pour vendre ces produits du terroir en ligne, avec fiches produits, traçabilité, gestion des stocks et expédition au-delà du marché local.",
           "Une centaine de commerces dispersés sur trois centres urbains (le village historique et ses ruelles, Logis-Neuf, Pas-de-Trets) et une fréquentation touristique tirée par l'esplanade des moulins à vent et Notre-Dame du Château : nos vitrines mobile-first et nos chatbots multilingues calibrés pour le commerce de détail et la restauration captent une clientèle qui cherche en ligne avant de monter au village.",
@@ -149,7 +149,7 @@ export const ALLAUCH_COPY: VilleCopy = {
           {
             step: "Cadrage à Allauch",
             detail:
-              "Atelier sur site — au village, dans vos locaux du Parc d'Activités de Fontvieille ou dans un de vos points de vente du Logis-Neuf : objectifs, parcours utilisateurs, audit de la stack existante et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — au village, dans vos locaux du Parc d'Activités de Fontvieille ou dans un de vos points de vente du Logis-Neuf : objectifs, parcours utilisateurs, audit de la stack existante et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -217,11 +217,11 @@ export const ALLAUCH_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Allauch — au village, à Fontvieille ou dans vos points de vente — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la livraison : vous savez exactement ce que vous payez et ce que vous recevez.",
+            a: "Oui. Après le cadrage sur site à Allauch — au village, à Fontvieille ou dans vos points de vente — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la livraison : vous savez exactement ce que vous payez et ce que vous recevez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée ni de surprise à la livraison. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique. Web Vitals et accessibilité contrôlés et documentés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire de l'agglomération Aix-Marseille ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée ni de surprise à la livraison. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique. Web Vitals et accessibilité contrôlés et documentés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire de l'agglomération Aix-Marseille ou repris en interne par vos équipes.",
       },
     },
   },

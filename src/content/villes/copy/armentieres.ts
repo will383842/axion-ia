@@ -51,7 +51,7 @@ export const ARMENTIERES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Armentières des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre cœur de cible reste les TPE et PME armentiéroises — commerçants de la Grand'Place, ateliers reconvertis de la Ruche des 2 Lys, agroalimentaire et logistique de la zone Eurolys — sans exclure les audits pour les ETI industrielles locales comme Beck-Crespel. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Armentières, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Armentières des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre cœur de cible reste les TPE et PME armentiéroises — commerçants de la Grand'Place, ateliers reconvertis de la Ruche des 2 Lys, agroalimentaire et logistique de la zone Eurolys — sans exclure les audits pour les ETI industrielles locales comme Beck-Crespel. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Armentières, itérations à distance.",
         whyHere: [
           "Tissu armentiérois cible : TPE commerçantes du centre-ville (plus d'une centaine de commerçants autour de la Grand'Place), jeunes pousses de la Ruche des 2 Lys — plus grand incubateur du Nord, ancienne usine textile reconvertie — et PME agroalimentaires comme Gelpass (surgelés bio AB).",
           "Pour la mécanique de précision exportatrice type Beck-Crespel (décolletage, attaches de sécurité nucléaire et pétrochimie), nous construisons portails clients, configurateurs et catalogues techniques branchés sur l'ERP, pas de simples vitrines.",
@@ -62,7 +62,7 @@ export const ARMENTIERES_COPY: VilleCopy = {
           {
             step: "Cadrage à Armentières",
             detail:
-              "Atelier sur site — centre-ville, Ruche des 2 Lys ou zone Eurolys : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville, Ruche des 2 Lys ou zone Eurolys : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const ARMENTIERES_COPY: VilleCopy = {
           },
           {
             q: "Avec quelles technologies et quel délai de devis travaillez-vous ?",
-            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. Après le cadrage sur site à Armentières, le devis ferme arrive à partir de 24-48 h selon la complexité — davantage pour un portail industriel étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. Après le cadrage sur site à Armentières, le devis ferme arrive à partir de 48 h selon la complexité — davantage pour un portail industriel étendu. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site ou une boutique existante. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, aucun verrou éditeur, transférable à tout prestataire de la métropole lilloise ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site ou une boutique existante. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, aucun verrou éditeur, transférable à tout prestataire de la métropole lilloise ou repris en interne.",
       },
       en: {
-        hero: "In Armentières, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Our core focus stays the town's micro-businesses and SMEs — Grand'Place retailers, repurposed workshops of the Ruche des 2 Lys, food and logistics firms of the Eurolys zone — without excluding audits for local industrial mid-caps such as Beck-Crespel. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Armentières kick-off, remote iterations.",
+        hero: "In Armentières, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Our core focus stays the town's micro-businesses and SMEs — Grand'Place retailers, repurposed workshops of the Ruche des 2 Lys, food and logistics firms of the Eurolys zone — without excluding audits for local industrial mid-caps such as Beck-Crespel. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Armentières kick-off, remote iterations.",
         whyHere: [
           "Armentières target fabric: town-centre retail micro-businesses (over a hundred merchants around the Grand'Place), early-stage ventures of the Ruche des 2 Lys — the largest incubator in the North, a repurposed former textile mill — and food SMEs such as Gelpass (organic-certified frozen products).",
           "For export-driven precision engineering like Beck-Crespel (bar-turning, safety fasteners for nuclear and petrochemicals), we build customer portals, configurators and technical catalogues wired into the ERP, not mere brochure sites.",
@@ -148,7 +148,7 @@ export const ARMENTIERES_COPY: VilleCopy = {
           {
             step: "Scoping in Armentières",
             detail:
-              "On-site workshop — town centre, Ruche des 2 Lys or Eurolys zone: goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop — town centre, Ruche des 2 Lys or Eurolys zone: goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -216,11 +216,11 @@ export const ARMENTIERES_COPY: VilleCopy = {
           },
           {
             q: "Which technologies and what quote turnaround do you work with?",
-            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. After the on-site scoping in Armentières, the firm quote arrives from 24-48 h depending on complexity — more for an extended industrial portal. No time-and-materials, no hidden hourly drift.",
+            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. After the on-site scoping in Armentières, the firm quote arrives from 48 h depending on complexity — more for an extended industrial portal. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site or store. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, no vendor lock-in, transferable to any Lille-area provider or taken in-house.",
+          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site or store. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, no vendor lock-in, transferable to any Lille-area provider or taken in-house.",
       },
     },
   },

@@ -123,7 +123,7 @@ export const LENS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour démarrer un projet de site ou de SaaS à Lens ?",
-            a: "Le devis est remis à partir de 24 à 48 heures selon la complexité du projet. Nous nous déplaçons sur site à Lens et sur Delta 3 / Euralogistic à Dourges pour le kick-off, puis travaillons en itérations avec des points réguliers. Le calendrier précis est fixé au cadrage.",
+            a: "Le devis est remis à partir de 48 heures selon la complexité du projet. Nous nous déplaçons sur site à Lens et sur Delta 3 / Euralogistic à Dourges pour le kick-off, puis travaillons en itérations avec des points réguliers. Le calendrier précis est fixé au cadrage.",
           },
           {
             q: "Travaillez-vous sur des plateformes pour le tourisme culturel et le RC Lens ?",
@@ -135,7 +135,7 @@ export const LENS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom (UX/UI, mobile, e-commerce multi-CMS et briques IA), hébergement des données en Union européenne et conformité RGPD par défaut, DPA sur demande. Devis remis à partir de 24 à 48 heures selon la complexité, kick-off sur site à Lens ou sur Delta 3 / Euralogistic à Dourges. Vous restez propriétaire intégral du code et de l'infrastructure : la plateforme est reprenable par vos équipes ou tout prestataire des Hauts-de-France, sans dépendance contractuelle ni verrou éditeur.",
+          "Code custom (UX/UI, mobile, e-commerce multi-CMS et briques IA), hébergement des données en Union européenne et conformité RGPD par défaut, DPA sur demande. Devis remis à partir de 48 heures selon la complexité, kick-off sur site à Lens ou sur Delta 3 / Euralogistic à Dourges. Vous restez propriétaire intégral du code et de l'infrastructure : la plateforme est reprenable par vos équipes ou tout prestataire des Hauts-de-France, sans dépendance contractuelle ni verrou éditeur.",
       },
       en: {
         hero: "Lens and the Lens-Liévin agglomeration have shifted from coal to services and logistics: the Delta 3 trimodal platform in Dourges (rail, road, waterway, ~330,000 sq m of warehouses) hosts the operations of Décathlon, Kiabi, Leroy Merlin, Dachser and Oxybul, while Lens Hospital remains the territory's largest employer with around 2,500 staff. In Lens, Axion-IA designs AI-augmented websites and SaaS platforms for this logistics, e-commerce, healthcare and tourism fabric: carrier portals, order tracking, multi-CMS storefronts, RAG chatbots — custom code, European Union hosting and GDPR compliance, with no vendor lock-in.",
@@ -209,7 +209,7 @@ export const LENS_COPY: VilleCopy = {
           },
           {
             q: "What lead time to start a website or SaaS project in Lens?",
-            a: "A quote is issued from 24 to 48 hours depending on project complexity. We travel on site to Lens and to Delta 3 / Euralogistic in Dourges for the kick-off, then work in iterations with regular check-ins. The precise schedule is set at framing.",
+            a: "A quote is issued from 48 hours depending on project complexity. We travel on site to Lens and to Delta 3 / Euralogistic in Dourges for the kick-off, then work in iterations with regular check-ins. The precise schedule is set at framing.",
           },
           {
             q: "Do you work on platforms for cultural tourism and RC Lens?",
@@ -221,7 +221,7 @@ export const LENS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Custom code (UX/UI, mobile, multi-CMS e-commerce and AI building blocks), data hosted in the European Union and GDPR compliance by default, DPA on request. Quote issued from 24 to 48 hours depending on complexity, on-site kick-off in Lens or at Delta 3 / Euralogistic in Dourges. You remain full owner of the code and infrastructure: the platform can be taken over by your teams or any Hauts-de-France provider, with no contractual dependency or vendor lock-in.",
+          "Custom code (UX/UI, mobile, multi-CMS e-commerce and AI building blocks), data hosted in the European Union and GDPR compliance by default, DPA on request. Quote issued from 48 hours depending on complexity, on-site kick-off in Lens or at Delta 3 / Euralogistic in Dourges. You remain full owner of the code and infrastructure: the platform can be taken over by your teams or any Hauts-de-France provider, with no contractual dependency or vendor lock-in.",
       },
     },
   },

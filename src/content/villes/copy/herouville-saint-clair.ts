@@ -53,7 +53,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Hérouville-Saint-Clair des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise, Hérouville vit du médico-social adossé au CHU et à l'Université de Caen Normandie, du numérique et de la cyber (campus EffiScience, pôle TES), du parc d'activités CITIS et d'employeurs comme Legallais, des centres de relation client et du commerce du Grand Parc. On greffe l'IA sur l'existant ou on bâtit du sur-mesure, sans refonte inutile : que vous soyez un cabinet de santé, une boutique du Grand Parc ou une PME de l'ingénierie du parc CITIS, on adapte le périmètre à votre réalité. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hérouville, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Hérouville-Saint-Clair des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise, Hérouville vit du médico-social adossé au CHU et à l'Université de Caen Normandie, du numérique et de la cyber (campus EffiScience, pôle TES), du parc d'activités CITIS et d'employeurs comme Legallais, des centres de relation client et du commerce du Grand Parc. On greffe l'IA sur l'existant ou on bâtit du sur-mesure, sans refonte inutile : que vous soyez un cabinet de santé, une boutique du Grand Parc ou une PME de l'ingénierie du parc CITIS, on adapte le périmètre à votre réalité. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hérouville, itérations à distance.",
         whyHere: [
           "Pôle santé et médico-social dense, adossé au CHU de Caen et à l'Université de Caen Normandie tout proches : on construit des portails de prise de rendez-vous, des espaces patients, des plateformes de coordination de soins et des assistants conformes RGPD, avec une vigilance forte sur les données de santé hébergées en UE et un parcours mobile-first pensé pour des usagers de tous âges.",
           "Écosystème numérique et cyber structuré autour du campus EffiScience et du pôle TES, dans la continuité du parc d'activités CITIS (plus de 400 entreprises, filière ingénierie et high-tech) : terrain idéal pour des plateformes SaaS IA-native, des agents métiers, de la recherche sémantique et des portails clients branchés sur vos systèmes existants (CRM, ERP, SI interne).",
@@ -64,7 +64,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           {
             step: "Cadrage à Hérouville",
             detail:
-              "Atelier sur site (quartier du Grand Parc, parc d'activités CITIS, abords du campus EffiScience) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos outils métiers. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (quartier du Grand Parc, parc d'activités CITIS, abords du campus EffiScience) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos outils métiers. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Hérouville (Grand Parc, CITIS ou EffiScience), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre et le prix sont posés avant de démarrer le développement.",
+            a: "Oui. Après le cadrage sur site à Hérouville (Grand Parc, CITIS ou EffiScience), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre et le prix sont posés avant de démarrer le développement.",
           },
           {
             q: "Pouvez-vous outiller un centre de relation client ?",
@@ -136,10 +136,10 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre posé avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — vigilance renforcée sur les données de santé du pôle médico-social caennais. Propriété totale, aucun verrou, aucun abonnement imposé : votre solution reste transférable à tout prestataire normand ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre posé avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — vigilance renforcée sur les données de santé du pôle médico-social caennais. Propriété totale, aucun verrou, aucun abonnement imposé : votre solution reste transférable à tout prestataire normand ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Hérouville-Saint-Clair des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise, Hérouville vit du médico-social adossé au CHU et à l'Université de Caen Normandie, du numérique et de la cyber (campus EffiScience, pôle TES), du parc d'activités CITIS et d'employeurs comme Legallais, des centres de relation client et du commerce du Grand Parc. On greffe l'IA sur l'existant ou on bâtit du sur-mesure, sans refonte inutile : que vous soyez un cabinet de santé, une boutique du Grand Parc ou une PME de l'ingénierie du parc CITIS, on adapte le périmètre à votre réalité. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hérouville, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Hérouville-Saint-Clair des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise, Hérouville vit du médico-social adossé au CHU et à l'Université de Caen Normandie, du numérique et de la cyber (campus EffiScience, pôle TES), du parc d'activités CITIS et d'employeurs comme Legallais, des centres de relation client et du commerce du Grand Parc. On greffe l'IA sur l'existant ou on bâtit du sur-mesure, sans refonte inutile : que vous soyez un cabinet de santé, une boutique du Grand Parc ou une PME de l'ingénierie du parc CITIS, on adapte le périmètre à votre réalité. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hérouville, itérations à distance.",
         whyHere: [
           "Pôle santé et médico-social dense, adossé au CHU de Caen et à l'Université de Caen Normandie tout proches : on construit des portails de prise de rendez-vous, des espaces patients, des plateformes de coordination de soins et des assistants conformes RGPD, avec une vigilance forte sur les données de santé hébergées en UE et un parcours mobile-first pensé pour des usagers de tous âges.",
           "Écosystème numérique et cyber structuré autour du campus EffiScience et du pôle TES, dans la continuité du parc d'activités CITIS (plus de 400 entreprises, filière ingénierie et high-tech) : terrain idéal pour des plateformes SaaS IA-native, des agents métiers, de la recherche sémantique et des portails clients branchés sur vos systèmes existants (CRM, ERP, SI interne).",
@@ -150,7 +150,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           {
             step: "Cadrage à Hérouville",
             detail:
-              "Atelier sur site (quartier du Grand Parc, parc d'activités CITIS, abords du campus EffiScience) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos outils métiers. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (quartier du Grand Parc, parc d'activités CITIS, abords du campus EffiScience) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos outils métiers. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Hérouville (Grand Parc, CITIS ou EffiScience), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre et le prix sont posés avant de démarrer le développement.",
+            a: "Oui. Après le cadrage sur site à Hérouville (Grand Parc, CITIS ou EffiScience), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre et le prix sont posés avant de démarrer le développement.",
           },
           {
             q: "Pouvez-vous outiller un centre de relation client ?",
@@ -222,7 +222,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre posé avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — vigilance renforcée sur les données de santé du pôle médico-social caennais. Propriété totale, aucun verrou, aucun abonnement imposé : votre solution reste transférable à tout prestataire normand ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre posé avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — vigilance renforcée sur les données de santé du pôle médico-social caennais. Propriété totale, aucun verrou, aucun abonnement imposé : votre solution reste transférable à tout prestataire normand ou reprise en interne par vos équipes.",
       },
     },
   },

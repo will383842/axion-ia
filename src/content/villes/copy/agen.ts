@@ -132,11 +132,11 @@ export const AGEN_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et comment se passe l'intervention à Agen ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité, avec un périmètre et un budget clairs. Le cadrage et la recette se font sur site à Agen ou dans l'agglo (Boé, Le Passage-d'Agen, Bon-Encontre, Foulayronnes), les itérations à distance. Vos équipes sont formées et autonomes à la livraison.",
+            a: "Le devis est remis à partir de 48 h selon la complexité, avec un périmètre et un budget clairs. Le cadrage et la recette se font sur site à Agen ou dans l'agglo (Boé, Le Passage-d'Agen, Bon-Encontre, Foulayronnes), les itérations à distance. Vos équipes sont formées et autonomes à la livraison.",
           },
         ],
         guarantees:
-          "Code sur mesure, propriété pleine de la solution et zéro verrou éditeur : vous reprenez la main quand vous voulez. Hébergement en Union européenne conforme au RGPD par défaut, traçabilité IGP et conformité qualité intégrées dès la conception pour les acteurs agroalimentaires et pharma agenais. UX/UI, accessibilité et performance mobile soignées sur chaque livrable. Devis transparent à partir de 24-48 h selon la complexité, périmètre contractuel défini avant développement, équipes formées et autonomes à la mise en ligne.",
+          "Code sur mesure, propriété pleine de la solution et zéro verrou éditeur : vous reprenez la main quand vous voulez. Hébergement en Union européenne conforme au RGPD par défaut, traçabilité IGP et conformité qualité intégrées dès la conception pour les acteurs agroalimentaires et pharma agenais. UX/UI, accessibilité et performance mobile soignées sur chaque livrable. Devis transparent à partir de 48 h selon la complexité, périmètre contractuel défini avant développement, équipes formées et autonomes à la mise en ligne.",
       },
       en: {
         hero: "Agen runs on three very concrete engines: pharma-chemistry (UPSA manufactures paracetamol — Efferalgan/Dafalgan — with ~1,500 staff, the top private employer in Lot-et-Garonne; CURIA produces the active ingredients), agri-food structured around the Agropole — Europe's only technopole dedicated to the sector, 91 companies and 3,100 jobs — and the Agen prune PGI value chain led by the France Prune / Maître Prunille cooperative (~12,000 t/year). Axion-IA builds AI-augmented websites and SaaS platforms for this fabric: terroir e-commerce with PGI traceability, cooperative trade portals, document tooling for the pharma industry. Custom code, polished UX/UI and mobile, EU GDPR-compliant hosting, zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const AGEN_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and how does the engagement in Agen work?",
-            a: "The quote is delivered from 24-48 h depending on complexity, with a clear scope and budget. Framing and acceptance happen on site in Agen or the agglo (Boé, Le Passage-d'Agen, Bon-Encontre, Foulayronnes), iterations remotely. Your teams are trained and autonomous at delivery.",
+            a: "The quote is delivered from 48 h depending on complexity, with a clear scope and budget. Framing and acceptance happen on site in Agen or the agglo (Boé, Le Passage-d'Agen, Bon-Encontre, Foulayronnes), iterations remotely. Your teams are trained and autonomous at delivery.",
           },
         ],
         guarantees:
-          "Custom code, full ownership of the solution and zero vendor lock-in: you take back control whenever you want. EU hosting GDPR-compliant by default, PGI traceability and quality compliance built in from the start for Agen agri-food and pharma players. Polished UX/UI, accessibility and mobile performance on every deliverable. Transparent quote from 24-48 h depending on complexity, contractual scope defined before development, teams trained and autonomous at go-live.",
+          "Custom code, full ownership of the solution and zero vendor lock-in: you take back control whenever you want. EU hosting GDPR-compliant by default, PGI traceability and quality compliance built in from the start for Agen agri-food and pharma players. Polished UX/UI, accessibility and mobile performance on every deliverable. Transparent quote from 48 h depending on complexity, contractual scope defined before development, teams trained and autonomous at go-live.",
       },
     },
   },

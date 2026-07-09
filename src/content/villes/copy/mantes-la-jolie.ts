@@ -92,13 +92,13 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou e-commerce augmenté",
             detail:
-              "Pour artisans, commerces (ZAC Buchelay 3000, centre-ville) et indépendants du Mantois : site mobile-first, prise de rendez-vous ou boutique en ligne, recherche assistée par IA. Devis à partir de 24-48 h selon la complexité.",
+              "Pour artisans, commerces (ZAC Buchelay 3000, centre-ville) et indépendants du Mantois : site mobile-first, prise de rendez-vous ou boutique en ligne, recherche assistée par IA. Devis à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
             price: "Portail B2B ou plateforme métier",
             detail:
-              "Pour PME industrielles et logisticiens de Mantes Innovaparc et du port de Limay-Porcheville : espace client, suivi commandes, catalogue technique recherchable, devis automatisés. Chiffrage à partir de 24-48 h selon la complexité.",
+              "Pour PME industrielles et logisticiens de Mantes Innovaparc et du port de Limay-Porcheville : espace client, suivi commandes, catalogue technique recherchable, devis automatisés. Chiffrage à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "ETI",
@@ -132,11 +132,11 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis et une mise en ligne à Mantes-la-Jolie ?",
-            a: "Le devis est établi à partir de 24-48 h selon la complexité, après un cadrage rapide. Le délai de mise en ligne dépend du périmètre : une vitrine pour un commerce de centre-ville est bien plus rapide qu'un portail B2B connecté à un ERP pour un sous-traitant de Mantes Innovaparc. Le calendrier est fixé ensemble au cadrage.",
+            a: "Le devis est établi à partir de 48 h selon la complexité, après un cadrage rapide. Le délai de mise en ligne dépend du périmètre : une vitrine pour un commerce de centre-ville est bien plus rapide qu'un portail B2B connecté à un ERP pour un sous-traitant de Mantes Innovaparc. Le calendrier est fixé ensemble au cadrage.",
           },
         ],
         guarantees:
-          "Devis établi à partir de 24-48 h selon la complexité, sans engagement. Hébergement en Union européenne conforme RGPD par défaut. Vous restez propriétaire du code, des contenus et des accès : aucun verrou éditeur, site et plateforme transférables à tout prestataire des Yvelines ou repris en interne. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA, avec un kick-off sur site à Mantes-la-Jolie et la formation de votre équipe pour la rendre autonome après la mise en ligne.",
+          "Devis établi à partir de 48 h selon la complexité, sans engagement. Hébergement en Union européenne conforme RGPD par défaut. Vous restez propriétaire du code, des contenus et des accès : aucun verrou éditeur, site et plateforme transférables à tout prestataire des Yvelines ou repris en interne. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA, avec un kick-off sur site à Mantes-la-Jolie et la formation de votre équipe pour la rendre autonome après la mise en ligne.",
       },
       en: {
         hero: "In Mantes-la-Jolie (78), the economy isn't only the Notre-Dame collegiate church and the Seine: it plays out in the Mantes Innovaparc business park in Buchelay (58 ha, ultimately targeting 2,500 jobs), at the Écopôle Seine Aval dedicated to eco-industries, and around a precision-engineering core — Safran Electronics & Defense in Mantes-la-Ville, Sulzer Pompes France, and the Airbus Defence and Space, Renault and Ciments Calcia sites. Axion-IA builds AI-augmented websites and SaaS platforms for this fabric: B2B portals for aerospace and automotive subcontractors, quoting and order-tracking areas, searchable technical catalogues — custom code, EU hosting, GDPR-compliant, no vendor lock-in.",
@@ -178,13 +178,13 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "Augmented brochure or e-commerce site",
             detail:
-              "For Mantois craftspeople, retailers (Buchelay 3000 ZAC, town centre) and freelancers: mobile-first site, online booking or store, AI-assisted search. Quote from 24-48 h depending on complexity.",
+              "For Mantois craftspeople, retailers (Buchelay 3000 ZAC, town centre) and freelancers: mobile-first site, online booking or store, AI-assisted search. Quote from 48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
             price: "B2B portal or business platform",
             detail:
-              "For industrial SMEs and logistics firms in Mantes Innovaparc and the Limay-Porcheville port: client area, order tracking, searchable technical catalogue, automated quotes. Costing from 24-48 h depending on complexity.",
+              "For industrial SMEs and logistics firms in Mantes Innovaparc and the Limay-Porcheville port: client area, order tracking, searchable technical catalogue, automated quotes. Costing from 48 h depending on complexity.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -218,11 +218,11 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
           },
           {
             q: "How soon can I get a quote and go live in Mantes-la-Jolie?",
-            a: "The quote is issued from 24-48 h depending on complexity, after a quick framing. Go-live time depends on scope: a brochure site for a town-centre shop is far quicker than an ERP-connected B2B portal for a Mantes Innovaparc subcontractor. The schedule is set together at framing.",
+            a: "The quote is issued from 48 h depending on complexity, after a quick framing. Go-live time depends on scope: a brochure site for a town-centre shop is far quicker than an ERP-connected B2B portal for a Mantes Innovaparc subcontractor. The schedule is set together at framing.",
           },
         ],
         guarantees:
-          "Quote issued from 24-48 h depending on complexity, no commitment. EU GDPR-compliant hosting by default. You keep ownership of the code, content and access: no vendor lock-in, site and platform transferable to any Yvelines provider or brought in-house. We cover UX/UI, mobile, multi-CMS e-commerce and AI integration, with an on-site kick-off in Mantes-la-Jolie and training so your team stays autonomous after go-live.",
+          "Quote issued from 48 h depending on complexity, no commitment. EU GDPR-compliant hosting by default. You keep ownership of the code, content and access: no vendor lock-in, site and platform transferable to any Yvelines provider or brought in-house. We cover UX/UI, mobile, multi-CMS e-commerce and AI integration, with an on-site kick-off in Mantes-la-Jolie and training so your team stays autonomous after go-live.",
       },
     },
   },

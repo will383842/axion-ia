@@ -53,7 +53,7 @@ export const VANNES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Vannes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Sur un territoire qui a vu naître des éditeurs SaaS comme MGDIS (dématérialisation des aides publiques) ou Medaviz (télémédecine) et qui ouvre en 2025 son campus cyberdéfense & data science au PIBS, nous travaillons avec une exigence cyber et RGPD native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vannes, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Vannes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Sur un territoire qui a vu naître des éditeurs SaaS comme MGDIS (dématérialisation des aides publiques) ou Medaviz (télémédecine) et qui ouvre en 2025 son campus cyberdéfense & data science au PIBS, nous travaillons avec une exigence cyber et RGPD native. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vannes, itérations à distance.",
         whyHere: [
           "Tissu SaaS vannetais réel : édition logicielle pour le secteur public (MGDIS, PIBS de Kerino), e-santé/télémédecine (Medaviz), groupes numériques comme Dimood, le tout accompagné par la technopole VIPE.",
           "Exigence cyber native : Vannes abrite l'ENSIBS (école d'ingénieurs cybersécurité), son Cyber Security Center équipé de la CyberRange Airbus, et le campus cyber & data science de 16 M€ ouvrant en 2025 — nous calons nos sites et SaaS sur ces standards (SecNumCloud, hébergement souverain).",
@@ -64,7 +64,7 @@ export const VANNES_COPY: VilleCopy = {
           {
             step: "Cadrage à Vannes",
             detail:
-              "Atelier sur site au PIBS, à Laroiseau ou dans vos locaux : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes cyber/RGPD. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site au PIBS, à Laroiseau ou dans vos locaux : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes cyber/RGPD. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const VANNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et durcissement sécurité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, compatible exigences SecNumCloud), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin Vannes-Lorient-Auray ou repris en interne, en lien avec les compétences cyber et data formées localement.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et durcissement sécurité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, compatible exigences SecNumCloud), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin Vannes-Lorient-Auray ou repris en interne, en lien avec les compétences cyber et data formées localement.",
       },
       en: {
-        hero: "In Vannes, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. On a territory that gave rise to SaaS publishers such as MGDIS (public-aid digitalisation) and Medaviz (telemedicine), and which opens its cyberdefence & data science campus at PIBS in 2025, we work with native cyber and GDPR requirements. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Vannes kick-off, remote iterations.",
+        hero: "In Vannes, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. On a territory that gave rise to SaaS publishers such as MGDIS (public-aid digitalisation) and Medaviz (telemedicine), and which opens its cyberdefence & data science campus at PIBS in 2025, we work with native cyber and GDPR requirements. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Vannes kick-off, remote iterations.",
         whyHere: [
           "A real Vannes SaaS fabric: public-sector software publishing (MGDIS, PIBS in Kerino), e-health/telemedicine (Medaviz), digital groups such as Dimood, all supported by the VIPE technopole.",
           "Native cyber requirement: Vannes hosts ENSIBS (cybersecurity engineering school), its Cyber Security Center equipped with the Airbus CyberRange, and the 16 M€ cyber & data science campus opening in 2025 — we align our sites and SaaS with these standards (SecNumCloud, sovereign hosting).",
@@ -150,7 +150,7 @@ export const VANNES_COPY: VilleCopy = {
           {
             step: "Scoping in Vannes",
             detail:
-              "On-site workshop at PIBS, in Laroiseau or at your premises: goals, journeys, audit of the stack, content and cyber/GDPR constraints. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop at PIBS, in Laroiseau or at your premises: goals, journeys, audit of the stack, content and cyber/GDPR constraints. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -222,7 +222,7 @@ export const VANNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals, accessibility and security hardening checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible, compatible with SecNumCloud-type requirements), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider across the Vannes-Lorient-Auray area or taken in-house, in line with locally trained cyber and data skills.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals, accessibility and security hardening checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible, compatible with SecNumCloud-type requirements), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider across the Vannes-Lorient-Auray area or taken in-house, in line with locally trained cyber and data skills.",
       },
     },
   },

@@ -54,7 +54,7 @@ export const EYSINES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Eysines des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de Bordeaux Métropole héritière du « potager de Bordeaux », où la zone maraîchère de 162 hectares le long de la jalle (une quinzaine d'exploitations en pomme de terre et citrouille, la SICA Maraîchère et son circuit de paniers) côtoie le marché dominical de Migron, place Florale, et la ZAC Carès-Cantinolle qui réunit des dizaines de PME, artisans et services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Eysines, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Eysines des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de Bordeaux Métropole héritière du « potager de Bordeaux », où la zone maraîchère de 162 hectares le long de la jalle (une quinzaine d'exploitations en pomme de terre et citrouille, la SICA Maraîchère et son circuit de paniers) côtoie le marché dominical de Migron, place Florale, et la ZAC Carès-Cantinolle qui réunit des dizaines de PME, artisans et services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Eysines, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Héritage maraîcher toujours vivant : la zone maraîchère de 162 hectares le long de la jalle abrite une quinzaine d'exploitations en pomme de terre et citrouille, et la SICA Maraîchère fédère des producteurs en circuit court avec livraison de paniers — terrain idéal pour des boutiques e-commerce de producteurs, des systèmes d'abonnement aux paniers et une traçabilité récolte automatisée par agent.",
           "Commerce de proximité animé par le marché dominical de Migron, place Florale, qui rassemble plus de soixante commerçants et producteurs : bouchers, primeurs, fromagers, fleuristes. Pour ces étals et les boutiques du cœur de ville, on bâtit des vitrines e-commerce mobile-first, click-and-collect et réservation en ligne, avec un chatbot multilingue qui répond aux questions d'horaires et de disponibilités.",
@@ -65,7 +65,7 @@ export const EYSINES_COPY: VilleCopy = {
           {
             step: "Cadrage à Eysines",
             detail:
-              "Atelier sur site (cœur de ville, place Florale à Migron, ZAC Carès-Cantinolle, zone maraîchère de la jalle) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité maraîchère. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville, place Florale à Migron, ZAC Carès-Cantinolle, zone maraîchère de la jalle) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité maraîchère. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -133,14 +133,14 @@ export const EYSINES_COPY: VilleCopy = {
           },
           {
             q: "Mes données clients restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Eysines, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Eysines, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie surprise. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison maraîchère ou pendant le pic du marché de Migron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes d'Eysines.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie surprise. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison maraîchère ou pendant le pic du marché de Migron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes d'Eysines.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Eysines des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de Bordeaux Métropole héritière du « potager de Bordeaux », où la zone maraîchère de 162 hectares le long de la jalle (une quinzaine d'exploitations en pomme de terre et citrouille, la SICA Maraîchère et son circuit de paniers) côtoie le marché dominical de Migron, place Florale, et la ZAC Carès-Cantinolle qui réunit des dizaines de PME, artisans et services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Eysines, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Eysines des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de Bordeaux Métropole héritière du « potager de Bordeaux », où la zone maraîchère de 162 hectares le long de la jalle (une quinzaine d'exploitations en pomme de terre et citrouille, la SICA Maraîchère et son circuit de paniers) côtoie le marché dominical de Migron, place Florale, et la ZAC Carès-Cantinolle qui réunit des dizaines de PME, artisans et services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Eysines, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Héritage maraîcher toujours vivant : la zone maraîchère de 162 hectares le long de la jalle abrite une quinzaine d'exploitations en pomme de terre et citrouille, et la SICA Maraîchère fédère des producteurs en circuit court avec livraison de paniers — terrain idéal pour des boutiques e-commerce de producteurs, des systèmes d'abonnement aux paniers et une traçabilité récolte automatisée par agent.",
           "Commerce de proximité animé par le marché dominical de Migron, place Florale, qui rassemble plus de soixante commerçants et producteurs : bouchers, primeurs, fromagers, fleuristes. Pour ces étals et les boutiques du cœur de ville, on bâtit des vitrines e-commerce mobile-first, click-and-collect et réservation en ligne, avec un chatbot multilingue qui répond aux questions d'horaires et de disponibilités.",
@@ -151,7 +151,7 @@ export const EYSINES_COPY: VilleCopy = {
           {
             step: "Cadrage à Eysines",
             detail:
-              "Atelier sur site (cœur de ville, place Florale à Migron, ZAC Carès-Cantinolle, zone maraîchère de la jalle) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité maraîchère. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville, place Florale à Migron, ZAC Carès-Cantinolle, zone maraîchère de la jalle) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité maraîchère. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -219,11 +219,11 @@ export const EYSINES_COPY: VilleCopy = {
           },
           {
             q: "Mes données clients restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Eysines, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Eysines, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie surprise. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison maraîchère ou pendant le pic du marché de Migron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes d'Eysines.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie surprise. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison maraîchère ou pendant le pic du marché de Migron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes d'Eysines.",
       },
     },
   },

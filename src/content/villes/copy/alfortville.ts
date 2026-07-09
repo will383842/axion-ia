@@ -130,11 +130,11 @@ export const ALFORTVILLE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis pour un projet à Alfortville ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Le kick-off se tient ensuite sur site à Alfortville — secteur Confluence, abords des gares RER D ou zones d'activité des bords de Seine.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Le kick-off se tient ensuite sur site à Alfortville — secteur Confluence, abords des gares RER D ou zones d'activité des bords de Seine.",
           },
         ],
         guarantees:
-          "Vous restez propriétaire du code source, des accès et des données : hébergement en UE conforme RGPD, aucun verrou éditeur, reprise possible par vos équipes ou tout intégrateur du Val-de-Marne. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA (chatbot RAG, search sémantique, agents) en code maîtrisé. Devis remis à partir de 24-48 h selon la complexité, kick-off sur site à Alfortville. Aucun chiffre client ni témoignage inventé : nos engagements sont contractuels et vérifiables.",
+          "Vous restez propriétaire du code source, des accès et des données : hébergement en UE conforme RGPD, aucun verrou éditeur, reprise possible par vos équipes ou tout intégrateur du Val-de-Marne. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA (chatbot RAG, search sémantique, agents) en code maîtrisé. Devis remis à partir de 48 h selon la complexité, kick-off sur site à Alfortville. Aucun chiffre client ni témoignage inventé : nos engagements sont contractuels et vérifiables.",
       },
       en: {
         hero: 'Alfortville spreads its ~8,700 businesses along a 350-hectare peninsula at the confluence of the Seine and Marne: a fabric overwhelmingly made of micro-firms (average ~3 staff), dominated by last-mile urban logistics — led by Star\'s Service on rue Félix Mothiro, 500-999 employees — the independent retail of "Little Armenia" (garment-making, food, services), and public works / fluid networks embodied by Valentin (a EUROVIA subsidiary). Axion-IA builds AI-augmented websites and SaaS platforms for these players, in owned source code, EU-hosted, from the shopkeeper on rue Étienne-Dolet to the riverside logistics mid-cap.',
@@ -216,11 +216,11 @@ export const ALFORTVILLE_COPY: VilleCopy = {
           },
           {
             q: "How fast can I get a quote for a project in Alfortville?",
-            a: "A quote is provided from 24-48 hours depending on project complexity, after an initial framing exchange. The kick-off then takes place on site in Alfortville — the Confluence area, near the RER D stations or the riverside business zones.",
+            a: "A quote is provided from 48 hours depending on project complexity, after an initial framing exchange. The kick-off then takes place on site in Alfortville — the Confluence area, near the RER D stations or the riverside business zones.",
           },
         ],
         guarantees:
-          "You remain the owner of the source code, access and data: EU GDPR-compliant hosting, no vendor lock-in, takeover possible by your teams or any Val-de-Marne integrator. We claim UX/UI, mobile, multi-CMS e-commerce and AI integration (RAG chatbot, semantic search, agents) in owned code. Quote provided from 24-48 hours depending on complexity, kick-off on site in Alfortville. No invented client figures or testimonials: our commitments are contractual and verifiable.",
+          "You remain the owner of the source code, access and data: EU GDPR-compliant hosting, no vendor lock-in, takeover possible by your teams or any Val-de-Marne integrator. We claim UX/UI, mobile, multi-CMS e-commerce and AI integration (RAG chatbot, semantic search, agents) in owned code. Quote provided from 48 hours depending on complexity, kick-off on site in Alfortville. No invented client figures or testimonials: our commitments are contractual and verifiable.",
       },
     },
   },

@@ -132,11 +132,11 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un site ou un SaaS à Marcq-en-Barœul ?",
-            a: "Un devis est établi à partir de 24-48 h selon la complexité du projet. La proximité de Lille permet un premier rendez-vous rapide sur site — au siège, dans un bureau du Parc Europe ou en commerce — pour cadrer le périmètre, le CMS ou la stack SaaS, et le niveau d'IA avant chiffrage.",
+            a: "Un devis est établi à partir de 48 h selon la complexité du projet. La proximité de Lille permet un premier rendez-vous rapide sur site — au siège, dans un bureau du Parc Europe ou en commerce — pour cadrer le périmètre, le CMS ou la stack SaaS, et le niveau d'IA avant chiffrage.",
           },
         ],
         guarantees:
-          "Code sur mesure et propriété intégrale : vos sources, vos contenus, vos modèles IA et votre design system restent chez vous, repris par n'importe quel intégrateur de la Métropole Européenne de Lille — aucun lock-in éditeur ni dépendance contractuelle à Axion-IA. Hébergement Europe RGPD par défaut, point cadré dès la conception compte tenu de la proximité immédiate de la frontière belge pour les boutiques e-commerce multi-pays. UX/UI, mobile, e-commerce multi-CMS et IA livrés par une seule équipe. Devis établi à partir de 24-48 h selon la complexité ; frais de déplacement depuis Lille transparents et distincts du forfait.",
+          "Code sur mesure et propriété intégrale : vos sources, vos contenus, vos modèles IA et votre design system restent chez vous, repris par n'importe quel intégrateur de la Métropole Européenne de Lille — aucun lock-in éditeur ni dépendance contractuelle à Axion-IA. Hébergement Europe RGPD par défaut, point cadré dès la conception compte tenu de la proximité immédiate de la frontière belge pour les boutiques e-commerce multi-pays. UX/UI, mobile, e-commerce multi-CMS et IA livrés par une seule équipe. Devis établi à partir de 48 h selon la complexité ; frais de déplacement depuis Lille transparents et distincts du forfait.",
       },
       en: {
         hero: "In Marcq-en-Barœul, home town to the headquarters of Promod (women's ready-to-wear, ~394 stores across 7 countries, founded in 1975 by Francis-Charles Pollet) and a base for Keolis Lille Métropole at Parc Europe, the need is not yet another brochure site: it is e-commerce and business software that hold up under multi-country load and mobility demands. Axion-IA designs sites and AI-augmented SaaS platforms here — UX/UI, mobile, multi-CMS e-commerce and intelligent agents — for fashion and retail brands, shared-mobility players, the tertiary HQs of Parc Europe and Parc Europe Jean Monnet, and the dense fabric of Marcq micro-businesses and SMEs. Custom code, EU GDPR hosting, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
           {
             q: "What is the timeline for a quote on a site or SaaS in Marcq-en-Barœul?",
-            a: "A quote is issued from 24-48 h depending on project complexity. Proximity to Lille allows a quick first on-site meeting — at the HQ, in a Parc Europe office or at a shop — to frame scope, CMS or SaaS stack, and the AI level before costing.",
+            a: "A quote is issued from 48 h depending on project complexity. Proximity to Lille allows a quick first on-site meeting — at the HQ, in a Parc Europe office or at a shop — to frame scope, CMS or SaaS stack, and the AI level before costing.",
           },
         ],
         guarantees:
-          "Custom code and full ownership: your sources, content, AI models and design system stay with you, resumable by any integrator of the European Metropolis of Lille — no vendor lock-in or contractual dependency on Axion-IA. EU GDPR hosting by default, framed from the design stage given the immediate proximity of the Belgian border for multi-country e-commerce stores. UX/UI, mobile, multi-CMS e-commerce and AI delivered by a single team. Quote issued from 24-48 h depending on complexity; travel costs from Lille transparent and separate from the package.",
+          "Custom code and full ownership: your sources, content, AI models and design system stay with you, resumable by any integrator of the European Metropolis of Lille — no vendor lock-in or contractual dependency on Axion-IA. EU GDPR hosting by default, framed from the design stage given the immediate proximity of the Belgian border for multi-country e-commerce stores. UX/UI, mobile, multi-CMS e-commerce and AI delivered by a single team. Quote issued from 48 h depending on complexity; travel costs from Lille transparent and separate from the package.",
       },
     },
   },

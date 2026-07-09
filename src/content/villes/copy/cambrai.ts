@@ -126,7 +126,7 @@ export const CAMBRAI_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour obtenir un devis et conformité RGPD ?",
-            a: "Devis à partir de 24 à 48 h selon la complexité du projet. Tous nos sites et plateformes sont hébergés dans l'Union européenne et conçus conformes RGPD : minimisation des données, registre des traitements, droit à l'effacement. Code custom auditable, pas de no-code opaque ni de lock-in éditeur.",
+            a: "Devis à partir de 48 h selon la complexité du projet. Tous nos sites et plateformes sont hébergés dans l'Union européenne et conçus conformes RGPD : minimisation des données, registre des traitements, droit à l'effacement. Code custom auditable, pas de no-code opaque ni de lock-in éditeur.",
           },
           {
             q: "Faites-vous vraiment l'UX/UI, le mobile, le e-commerce et l'IA, ou seulement une partie ?",
@@ -134,7 +134,7 @@ export const CAMBRAI_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité. Hébergement dans l'Union européenne et conformité RGPD par défaut (minimisation, registre, droit à l'effacement, DPO sur demande). Code custom auditable, zéro lock-in éditeur : votre site, vos contenus et vos accès restent intégralement chez vous, transférables à tout prestataire des Hauts-de-France ou repris en interne. UX/UI, mobile, e-commerce multi-CMS et IA couverts de bout en bout. Performances Web Vitals optimisées à la mise en ligne, et formation de vos équipes pour une autonomie réelle après la passation.",
+          "Devis à partir de 48 h selon la complexité. Hébergement dans l'Union européenne et conformité RGPD par défaut (minimisation, registre, droit à l'effacement, DPO sur demande). Code custom auditable, zéro lock-in éditeur : votre site, vos contenus et vos accès restent intégralement chez vous, transférables à tout prestataire des Hauts-de-France ou repris en interne. UX/UI, mobile, e-commerce multi-CMS et IA couverts de bout en bout. Performances Web Vitals optimisées à la mise en ligne, et formation de vos équipes pour une autonomie réelle après la passation.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Cambrai (59) and across the Cambrésis. Our ground is not an abstract business district: it is e-Valley, Europe's largest e-logistics park built on the former Cambrai-Épinoy Air Base 103, where players such as Haddad Brands (Converse, Levi's, Nike licences), Sun City and wholesaler Bils Deroo run massive e-commerce flows; it is also the luxury lace of Caudry (Sophie Hallette, Solstiss, Jean Bracq), the agri-food sector in full reconversion at Escaudœuvres (Tereos site taken over by Agristo) and confectioners like Afchain in the Cantimpré industrial zone. For these companies we build showcase sites, multi-CMS e-commerce stores and business platforms with embedded AI (semantic search, RAG chatbot, product-sheet generation, conversational agents) — custom code, European Union hosting, GDPR-compliant, zero vendor lock-in.",
@@ -212,7 +212,7 @@ export const CAMBRAI_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and is it GDPR-compliant?",
-            a: "Quote from 24 to 48 hours depending on project complexity. All our sites and platforms are hosted in the European Union and built GDPR-compliant: data minimisation, processing register, right to erasure. Auditable custom code, no opaque no-code and no vendor lock-in.",
+            a: "Quote from 48 hours depending on project complexity. All our sites and platforms are hosted in the European Union and built GDPR-compliant: data minimisation, processing register, right to erasure. Auditable custom code, no opaque no-code and no vendor lock-in.",
           },
           {
             q: "Do you really cover UX/UI, mobile, e-commerce and AI, or just part of it?",
@@ -220,7 +220,7 @@ export const CAMBRAI_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity. European Union hosting and GDPR compliance by default (minimisation, register, right to erasure, DPO on request). Auditable custom code, zero vendor lock-in: your site, your content and your access stay fully with you, transferable to any Hauts-de-France provider or taken in-house. UX/UI, mobile, multi-CMS e-commerce and AI covered end to end. Web Vitals performance optimised at go-live, and team training for real autonomy after handover.",
+          "Quote from 48 hours depending on complexity. European Union hosting and GDPR compliance by default (minimisation, register, right to erasure, DPO on request). Auditable custom code, zero vendor lock-in: your site, your content and your access stay fully with you, transferable to any Hauts-de-France provider or taken in-house. UX/UI, mobile, multi-CMS e-commerce and AI covered end to end. Web Vitals performance optimised at go-live, and team training for real autonomy after handover.",
       },
     },
   },

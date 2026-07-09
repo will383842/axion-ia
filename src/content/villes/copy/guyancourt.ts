@@ -128,7 +128,7 @@ export const GUYANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis ?",
-            a: "Nous revenons vers vous avec un devis à partir de 24 à 48 h selon la complexité du projet. Un site vitrine augmenté pour une TPE de Guyancourt est cadré vite ; une plateforme SaaS IA-native pour une ETI d'ingénierie demande un cadrage plus approfondi, d'où la fourchette.",
+            a: "Nous revenons vers vous avec un devis à partir de 48 h selon la complexité du projet. Un site vitrine augmenté pour une TPE de Guyancourt est cadré vite ; une plateforme SaaS IA-native pour une ETI d'ingénierie demande un cadrage plus approfondi, d'où la fourchette.",
           },
           {
             q: "Où sont hébergées les données et le site ?",
@@ -136,7 +136,7 @@ export const GUYANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code sur mesure, propriété et accès intégralement remis : pas de verrou éditeur ni de dépendance Axion-IA. Hébergement dans l'Union européenne, conforme RGPD, avec minimisation et traçabilité des traitements — essentiel pour les acteurs liés à la R&D automobile du Technocentre ou aux chantiers Bouygues Construction. Sites pensés mobile-first, UX/UI et e-commerce multi-CMS, optimisés Web Vitals et SEO local Guyancourt / Saint-Quentin-en-Yvelines. Devis à partir de 24 à 48 h selon la complexité, et formation de votre équipe à la livraison pour une autonomie complète.",
+          "Code sur mesure, propriété et accès intégralement remis : pas de verrou éditeur ni de dépendance Axion-IA. Hébergement dans l'Union européenne, conforme RGPD, avec minimisation et traçabilité des traitements — essentiel pour les acteurs liés à la R&D automobile du Technocentre ou aux chantiers Bouygues Construction. Sites pensés mobile-first, UX/UI et e-commerce multi-CMS, optimisés Web Vitals et SEO local Guyancourt / Saint-Quentin-en-Yvelines. Devis à partir de 48 h selon la complexité, et formation de votre équipe à la livraison pour une autonomie complète.",
       },
       en: {
         hero: "In Guyancourt, the local economy is driven by the Renault Technocentre — 173.54 hectares, over 9,000 engineers, Europe's leading automotive R&D centre — and by the global headquarters of Bouygues Construction, the Challenger building (68,000 m², 3,200 staff, avenue Eugène Freyssinet). Around them orbits a dense fabric of engineering design offices, subcontractors and technical service providers, fed by UVSQ graduates. Axion-IA builds them AI-augmented websites and SaaS platforms: technical documentation portals, B2B lead qualification, configurators and client areas — custom code, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -214,7 +214,7 @@ export const GUYANCOURT_COPY: VilleCopy = {
           },
           {
             q: "How long for a quote?",
-            a: "We come back with a quote from 24 to 48 hours depending on project complexity. An augmented showcase site for a Guyancourt micro-business is scoped quickly; an AI-native SaaS platform for an engineering mid-cap requires deeper scoping, hence the range.",
+            a: "We come back with a quote from 48 hours depending on project complexity. An augmented showcase site for a Guyancourt micro-business is scoped quickly; an AI-native SaaS platform for an engineering mid-cap requires deeper scoping, hence the range.",
           },
           {
             q: "Where are the data and the site hosted?",
@@ -222,7 +222,7 @@ export const GUYANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Custom code, ownership and access fully handed over: no vendor lock-in, no Axion-IA dependency. Hosting in the European Union, GDPR-compliant, with data minimisation and processing traceability — essential for players tied to the Technocentre's automotive R&D or Bouygues Construction projects. Sites built mobile-first, with UX/UI and multi-CMS e-commerce, optimised for Web Vitals and Guyancourt / Saint-Quentin-en-Yvelines local SEO. Quote from 24 to 48 hours depending on complexity, and team training at delivery for full autonomy.",
+          "Custom code, ownership and access fully handed over: no vendor lock-in, no Axion-IA dependency. Hosting in the European Union, GDPR-compliant, with data minimisation and processing traceability — essential for players tied to the Technocentre's automotive R&D or Bouygues Construction projects. Sites built mobile-first, with UX/UI and multi-CMS e-commerce, optimised for Web Vitals and Guyancourt / Saint-Quentin-en-Yvelines local SEO. Quote from 48 hours depending on complexity, and team training at delivery for full autonomy.",
       },
     },
   },

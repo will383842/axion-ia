@@ -51,7 +51,7 @@ export const LES_LILAS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente aux Lilas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 23 800 habitants à la porte Est de Paris, limitrophe du 19e, où près de 2 335 entreprises — dont 77 % de commerces et services — animent un tissu tertiaire structuré autour de la ZAC Cœur de Ville et de la ligne 11 du métro. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Lilas, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Lilas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 23 800 habitants à la porte Est de Paris, limitrophe du 19e, où près de 2 335 entreprises — dont 77 % de commerces et services — animent un tissu tertiaire structuré autour de la ZAC Cœur de Ville et de la ligne 11 du métro. Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Lilas, itérations à distance.",
         whyHere: [
           "Tissu tertiaire dense en lien direct avec Paris Est et le 19e : avec environ 2 335 entreprises locales dont plus de 1 800 en commerces et services, les cabinets de services aux entreprises et professions libérales gagnent un site vitrine performant, une prise de rendez-vous en ligne et des automatisations back-office greffées sur l'existant sans refonte lourde.",
           "Santé de proximité structurante autour de la Maternité des Lilas (180 salariés), de la médecine de ville et des cabinets libéraux : nous construisons des espaces patients et des outils internes RGPD-first, avec données sensibles hébergées en UE, registre des traitements maîtrisé et chatbot d'orientation ancré sur vos protocoles.",
@@ -62,7 +62,7 @@ export const LES_LILAS_COPY: VilleCopy = {
           {
             step: "Cadrage aux Lilas",
             detail:
-              "Atelier sur site — autour de la mairie, de la ZAC Cœur de Ville, des stations de la ligne 11 ou de votre cabinet : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — autour de la mairie, de la ZAC Cœur de Ville, des stations de la ligne 11 ou de votre cabinet : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -122,7 +122,7 @@ export const LES_LILAS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site aux Lilas — mairie, ZAC Cœur de Ville ou vos locaux — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur site aux Lilas — mairie, ZAC Cœur de Ville ou vos locaux — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
           {
             q: "Gérez-vous la prise de rendez-vous et le click-and-collect pour cabinets et commerces ?",
@@ -134,10 +134,10 @@ export const LES_LILAS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, sans interrompre votre activité ni vos prises de contact. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act 2026 : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Île-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, sans interrompre votre activité ni vos prises de contact. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act 2026 : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Île-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente aux Lilas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 23 800 habitants à la porte Est de Paris, limitrophe du 19e, où près de 2 335 entreprises — dont 77 % de commerces et services — animent un tissu tertiaire structuré autour de la ZAC Cœur de Ville et de la ligne 11 du métro. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Lilas, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Lilas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 23 800 habitants à la porte Est de Paris, limitrophe du 19e, où près de 2 335 entreprises — dont 77 % de commerces et services — animent un tissu tertiaire structuré autour de la ZAC Cœur de Ville et de la ligne 11 du métro. Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Lilas, itérations à distance.",
         whyHere: [
           "Tissu tertiaire dense en lien direct avec Paris Est et le 19e : avec environ 2 335 entreprises locales dont plus de 1 800 en commerces et services, les cabinets de services aux entreprises et professions libérales gagnent un site vitrine performant, une prise de rendez-vous en ligne et des automatisations back-office greffées sur l'existant sans refonte lourde.",
           "Santé de proximité structurante autour de la Maternité des Lilas (180 salariés), de la médecine de ville et des cabinets libéraux : nous construisons des espaces patients et des outils internes RGPD-first, avec données sensibles hébergées en UE, registre des traitements maîtrisé et chatbot d'orientation ancré sur vos protocoles.",
@@ -148,7 +148,7 @@ export const LES_LILAS_COPY: VilleCopy = {
           {
             step: "Cadrage aux Lilas",
             detail:
-              "Atelier sur site — autour de la mairie, de la ZAC Cœur de Ville, des stations de la ligne 11 ou de votre cabinet : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — autour de la mairie, de la ZAC Cœur de Ville, des stations de la ligne 11 ou de votre cabinet : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -208,7 +208,7 @@ export const LES_LILAS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site aux Lilas — mairie, ZAC Cœur de Ville ou vos locaux — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur site aux Lilas — mairie, ZAC Cœur de Ville ou vos locaux — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
           {
             q: "Gérez-vous la prise de rendez-vous et le click-and-collect pour cabinets et commerces ?",
@@ -220,7 +220,7 @@ export const LES_LILAS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, sans interrompre votre activité ni vos prises de contact. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act 2026 : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Île-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, sans interrompre votre activité ni vos prises de contact. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act 2026 : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Île-de-France ou repris en interne par vos équipes.",
       },
     },
   },

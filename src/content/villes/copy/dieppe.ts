@@ -132,11 +132,11 @@ export const DIEPPE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis et faut-il changer mes outils actuels ?",
-            a: "Le devis est établi à partir de 24-48 h selon la complexité de votre projet. Nous nous appuyons sur vos outils existants quand c'est possible — ERP industriel, CRM, logiciel de caisse ou de gestion d'hébergement — et évitons toute dépendance imposée. Le code et les accès restent à votre nom, vous restez libre de faire évoluer la plateforme.",
+            a: "Le devis est établi à partir de 48 h selon la complexité de votre projet. Nous nous appuyons sur vos outils existants quand c'est possible — ERP industriel, CRM, logiciel de caisse ou de gestion d'hébergement — et évitons toute dépendance imposée. Le code et les accès restent à votre nom, vous restez libre de faire évoluer la plateforme.",
           },
         ],
         guarantees:
-          "Devis établi à partir de 24-48 h selon la complexité. Hébergement en Union européenne et conformité RGPD par défaut, du site vitrine au SaaS multi-modules. Nous réunissons UX/UI, mobile, e-commerce multi-CMS et IA dans une même prestation, avec un kick-off sur site à Dieppe. Le code, les données et les accès restent intégralement à votre nom : la plateforme est reprenable par vos équipes dieppoises ou par tout prestataire normand, sans verrou éditeur ni contrat de maintenance obligatoire.",
+          "Devis établi à partir de 48 h selon la complexité. Hébergement en Union européenne et conformité RGPD par défaut, du site vitrine au SaaS multi-modules. Nous réunissons UX/UI, mobile, e-commerce multi-CMS et IA dans une même prestation, avec un kick-off sur site à Dieppe. Le code, les données et les accès restent intégralement à votre nom : la plateforme est reprenable par vos équipes dieppoises ou par tout prestataire normand, sans verrou éditeur ni contrat de maintenance obligatoire.",
       },
       en: {
         hero: "Dieppe brings together three economies nothing predestined to meet: the Manufacture Alpine Dieppe Jean Rédélé, where the A110 sports car is assembled (with an electric version announced for 2027); the Eurochannel Regional Business Park (78 ha across Martin-Église and Neuville-lès-Dieppe, ~70 companies and ~1,300 jobs); and the brand-new offshore wind sector, whose Dieppe-Le Tréport maintenance base was inaugurated near the port on 6 May 2026. Axion-IA builds AI-augmented websites and SaaS platforms for these companies: automotive subcontracting portals, offshore O&M applications, seasonal Côte d'Albâtre hotel booking and seafood e-commerce. UX/UI, mobile, multi-CMS e-commerce and AI in one engagement, owned code, EU/GDPR hosting, zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const DIEPPE_COPY: VilleCopy = {
           },
           {
             q: "What lead time for a quote, and do I have to change my current tools?",
-            a: "The quote is issued from 24-48 h depending on project complexity. We build on your existing tools where possible — industrial ERP, CRM, POS or accommodation software — and avoid any imposed dependency. Code and access stay in your name, you remain free to evolve the platform.",
+            a: "The quote is issued from 48 h depending on project complexity. We build on your existing tools where possible — industrial ERP, CRM, POS or accommodation software — and avoid any imposed dependency. Code and access stay in your name, you remain free to evolve the platform.",
           },
         ],
         guarantees:
-          "Quote issued from 24-48 h depending on complexity. EU hosting and GDPR compliance by default, from showcase site to multi-module SaaS. We combine UX/UI, mobile, multi-CMS e-commerce and AI in a single engagement, with an on-site kick-off in Dieppe. Code, data and access stay entirely in your name: the platform can be taken over by your Dieppe teams or any Normandy provider, with no vendor lock-in or mandatory maintenance contract.",
+          "Quote issued from 48 h depending on complexity. EU hosting and GDPR compliance by default, from showcase site to multi-module SaaS. We combine UX/UI, mobile, multi-CMS e-commerce and AI in a single engagement, with an on-site kick-off in Dieppe. Code, data and access stay entirely in your name: the platform can be taken over by your Dieppe teams or any Normandy provider, with no vendor lock-in or mandatory maintenance contract.",
       },
     },
   },

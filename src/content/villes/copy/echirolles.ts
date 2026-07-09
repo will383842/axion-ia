@@ -122,7 +122,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevez-vous un devis pour un projet à Échirolles ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Le kick-off se tient ensuite sur site à Échirolles, dans vos locaux de la ZA des Essarts, de Sud Galaxie ou ailleurs sur la commune.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Le kick-off se tient ensuite sur site à Échirolles, dans vos locaux de la ZA des Essarts, de Sud Galaxie ou ailleurs sur la commune.",
           },
           {
             q: "Pouvez-vous gérer les contraintes RGPD d'un projet santé comme à la Clinique des Cèdres ?",
@@ -134,7 +134,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : périmètre et livrables fixés au devis, remis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en code source, hébergés dans l'UE et conformes RGPD par défaut. Aucun verrou éditeur : le code, les données et la documentation vous appartiennent et sont repris en interne ou par tout intégrateur de la métropole grenobloise. Performances Web Vitals suivies à la livraison. Kick-off et recette toujours en présentiel sur site à Échirolles.",
+          "Engagement contractuel : périmètre et livrables fixés au devis, remis à partir de 48 h selon la complexité. Sites et plateformes développés en code source, hébergés dans l'UE et conformes RGPD par défaut. Aucun verrou éditeur : le code, les données et la documentation vous appartiennent et sont repris en interne ou par tout intégrateur de la métropole grenobloise. Performances Web Vitals suivies à la livraison. Kick-off et recette toujours en présentiel sur site à Échirolles.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Échirolles, the 2nd employment basin of Isère and 2nd city of the Grenoble metropolitan area. The town is distinctive: it hosts one of Bull/Atos's main R&D sites dedicated to high-performance computing (HPC), a rare retail density (Espace Comboire with ~150 stores, Grand'Place with ~80 shops), heavy industry (Caterpillar) and a private health hub (Clinique des Cèdres). We build IA-native platforms in source code — RAG chatbots, semantic search, conversational agents, multi-CMS e-commerce, UX/UI and mobile — hosted in the EU, GDPR-compliant, with no vendor lock-in.",
@@ -208,7 +208,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
           },
           {
             q: "How fast do you provide a quote for a project in Échirolles?",
-            a: "The quote is provided from 24 to 48 hours depending on project complexity, after an initial framing exchange. The kick-off then takes place on site in Échirolles, at your offices in the ZA des Essarts, Sud Galaxie or elsewhere in the town.",
+            a: "The quote is provided from 48 hours depending on project complexity, after an initial framing exchange. The kick-off then takes place on site in Échirolles, at your offices in the ZA des Essarts, Sud Galaxie or elsewhere in the town.",
           },
           {
             q: "Can you handle the GDPR constraints of a health project like the Clinique des Cèdres?",
@@ -220,7 +220,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: scope and deliverables fixed in the quote, provided from 24 to 48 hours depending on complexity. Sites and platforms built in source code, hosted in the EU and GDPR-compliant by default. No vendor lock-in: the code, data and documentation belong to you and are taken over in-house or by any Grenoble metro integrator. Web Vitals performance tracked at delivery. Kick-off and acceptance always in person on site in Échirolles.",
+          "Contractual commitment: scope and deliverables fixed in the quote, provided from 48 hours depending on complexity. Sites and platforms built in source code, hosted in the EU and GDPR-compliant by default. No vendor lock-in: the code, data and documentation belong to you and are taken over in-house or by any Grenoble metro integrator. Web Vitals performance tracked at delivery. Kick-off and acceptance always in person on site in Échirolles.",
       },
     },
   },

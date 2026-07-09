@@ -124,7 +124,7 @@ export const CANNES_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis ?",
-            a: "Un premier devis est transmis à partir de 24 à 48 h selon la complexité du projet, après un échange de cadrage en visio ou sur site à Cannes. Pour une plateforme multi-modules connectée à vos outils existants, le chiffrage demande davantage d'analyse qu'un site vitrine.",
+            a: "Un premier devis est transmis à partir de 48 h selon la complexité du projet, après un échange de cadrage en visio ou sur site à Cannes. Pour une plateforme multi-modules connectée à vos outils existants, le chiffrage demande davantage d'analyse qu'un site vitrine.",
           },
           {
             q: "Qui héberge et maintient le site après la livraison ?",
@@ -132,7 +132,7 @@ export const CANNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code sur mesure ou CMS justifié selon votre besoin, jamais imposé. Hébergement en Union européenne par défaut, conformité RGPD vérifiée — critique pour les données nominatives des publics internationaux accrédités au Palais des Festivals. Vous gardez la maîtrise pleine du code, des modèles IA et de l'hébergement : aucun verrou éditeur, déploiement repris en interne ou par tout intégrateur de la Côte d'Azur. UX/UI, performance mobile et Web Vitals validés avant mise en production. Devis transmis à partir de 24 à 48 h selon la complexité.",
+          "Code sur mesure ou CMS justifié selon votre besoin, jamais imposé. Hébergement en Union européenne par défaut, conformité RGPD vérifiée — critique pour les données nominatives des publics internationaux accrédités au Palais des Festivals. Vous gardez la maîtrise pleine du code, des modèles IA et de l'hébergement : aucun verrou éditeur, déploiement repris en interne ou par tout intégrateur de la Côte d'Azur. UX/UI, performance mobile et Web Vitals validés avant mise en production. Devis transmis à partir de 48 h selon la complexité.",
       },
       en: {
         hero: "Cannes is the only French city where the audiovisual industry, global B2B trade shows and generative AI converge in one place: the Palais des Festivals hosts the six RX France markets (MIPIM, MIPTV, MIPCOM, MAPIC, ILTM) and, since 2025, the World AI Film Festival (WAIFF), co-organised by the Maison de l'IA and Institut EuropIA. Axion-IA designs AI-augmented websites and SaaS platforms for this specific ecosystem — production and post-production firms at the Bastide Rouge campus (La Bocca), accreditation and events agencies, yachting brokers and shipyards at the Vieux-Port and Port Pierre Canto, prestige Croisette hospitality — with custom code, UX/UI, mobile, multi-CMS e-commerce and EU-based GDPR-compliant hosting.",
@@ -210,7 +210,7 @@ export const CANNES_COPY: VilleCopy = {
           },
           {
             q: "How long for a quote?",
-            a: "A first quote is sent from 24 to 48 hours depending on project complexity, after a framing exchange by video or on site in Cannes. A multi-module platform connected to your existing tools requires more analysis than a showcase site.",
+            a: "A first quote is sent from 48 hours depending on project complexity, after a framing exchange by video or on site in Cannes. A multi-module platform connected to your existing tools requires more analysis than a showcase site.",
           },
           {
             q: "Who hosts and maintains the site after delivery?",
@@ -218,7 +218,7 @@ export const CANNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Custom code or a justified CMS depending on your need, never imposed. EU hosting by default, GDPR compliance verified — critical for the personal data of the international audiences accredited at the Palais des Festivals. You keep full control of the code, AI models and hosting: no vendor lock-in, deployment taken over in-house or by any Côte d'Azur integrator. UX/UI, mobile performance and Web Vitals validated before go-live. Quote sent from 24 to 48 hours depending on complexity.",
+          "Custom code or a justified CMS depending on your need, never imposed. EU hosting by default, GDPR compliance verified — critical for the personal data of the international audiences accredited at the Palais des Festivals. You keep full control of the code, AI models and hosting: no vendor lock-in, deployment taken over in-house or by any Côte d'Azur integrator. UX/UI, mobile performance and Web Vitals validated before go-live. Quote sent from 48 hours depending on complexity.",
       },
     },
   },

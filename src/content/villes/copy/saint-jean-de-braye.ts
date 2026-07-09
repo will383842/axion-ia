@@ -50,7 +50,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Jean-de-Braye des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 147 habitants de l'est d'Orléans Métropole, à 5 km du centre d'Orléans, où le tissu mêle les industriels et sous-traitants de la grande zone d'activité P.A. Archimède (chimie, électronique, mécanique, dont Moteurs Leroy-Somer), les commerces, les artisans et les services de proximité desservis par le tramway ligne B. Reliée à l'A10 (15 km), à la RN 20 (11 km) et au pont René-Thinat, la commune profite d'un bassin élargi à Orléans, Semoy, Chécy et Combleux que vos parcours web et e-commerce doivent capter. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Saint-Jean-de-Braye, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Jean-de-Braye des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 147 habitants de l'est d'Orléans Métropole, à 5 km du centre d'Orléans, où le tissu mêle les industriels et sous-traitants de la grande zone d'activité P.A. Archimède (chimie, électronique, mécanique, dont Moteurs Leroy-Somer), les commerces, les artisans et les services de proximité desservis par le tramway ligne B. Reliée à l'A10 (15 km), à la RN 20 (11 km) et au pont René-Thinat, la commune profite d'un bassin élargi à Orléans, Semoy, Chécy et Combleux que vos parcours web et e-commerce doivent capter. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Saint-Jean-de-Braye, itérations à distance.",
         whyHere: [
           "La zone d'activité P.A. Archimède (environ 170 hectares, plusieurs centaines d'établissements) concentre des industriels et sous-traitants comme Moteurs Leroy-Somer ou Eiffage Énergie Systèmes Centre Loire : on greffe des portails clients, des configurateurs de devis et des tableaux de bord de suivi de production augmentés à l'IA sur vos ERP et MES existants, sans imposer de refonte coûteuse.",
           "Commerces et artisans du centre-bourg et des abords du tramway ligne B (en service depuis 2012), à portée immédiate d'Orléans : on construit des vitrines e-commerce mobile-first sous WordPress, Shopify, WooCommerce ou PrestaShop, avec prise de rendez-vous en ligne et chatbots multilingues pour capter la clientèle de toute la métropole.",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Jean-de-Braye",
             detail:
-              "Atelier sur site — siège, centre-bourg, abords du tramway ligne B ou bureaux de la zone P.A. Archimède : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux métiers. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — siège, centre-bourg, abords du tramway ligne B ou bureaux de la zone P.A. Archimède : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux métiers. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -129,14 +129,14 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saint-Jean-de-Braye, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé après la livraison.",
+            a: "Oui. Après le cadrage sur site à Saint-Jean-de-Braye, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé après la livraison.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail existant, y compris une boutique en activité ou un outil industriel de la zone P.A. Archimède connecté à vos clients. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire du Loiret ou de la région Centre-Val de Loire, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail existant, y compris une boutique en activité ou un outil industriel de la zone P.A. Archimède connecté à vos clients. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire du Loiret ou de la région Centre-Val de Loire, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Jean-de-Braye des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 147 habitants de l'est d'Orléans Métropole, à 5 km du centre d'Orléans, où le tissu mêle les industriels et sous-traitants de la grande zone d'activité P.A. Archimède (chimie, électronique, mécanique, dont Moteurs Leroy-Somer), les commerces, les artisans et les services de proximité desservis par le tramway ligne B. Reliée à l'A10 (15 km), à la RN 20 (11 km) et au pont René-Thinat, la commune profite d'un bassin élargi à Orléans, Semoy, Chécy et Combleux que vos parcours web et e-commerce doivent capter. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Saint-Jean-de-Braye, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Jean-de-Braye des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 147 habitants de l'est d'Orléans Métropole, à 5 km du centre d'Orléans, où le tissu mêle les industriels et sous-traitants de la grande zone d'activité P.A. Archimède (chimie, électronique, mécanique, dont Moteurs Leroy-Somer), les commerces, les artisans et les services de proximité desservis par le tramway ligne B. Reliée à l'A10 (15 km), à la RN 20 (11 km) et au pont René-Thinat, la commune profite d'un bassin élargi à Orléans, Semoy, Chécy et Combleux que vos parcours web et e-commerce doivent capter. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Saint-Jean-de-Braye, itérations à distance.",
         whyHere: [
           "La zone d'activité P.A. Archimède (environ 170 hectares, plusieurs centaines d'établissements) concentre des industriels et sous-traitants comme Moteurs Leroy-Somer ou Eiffage Énergie Systèmes Centre Loire : on greffe des portails clients, des configurateurs de devis et des tableaux de bord de suivi de production augmentés à l'IA sur vos ERP et MES existants, sans imposer de refonte coûteuse.",
           "Commerces et artisans du centre-bourg et des abords du tramway ligne B (en service depuis 2012), à portée immédiate d'Orléans : on construit des vitrines e-commerce mobile-first sous WordPress, Shopify, WooCommerce ou PrestaShop, avec prise de rendez-vous en ligne et chatbots multilingues pour capter la clientèle de toute la métropole.",
@@ -147,7 +147,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Jean-de-Braye",
             detail:
-              "Atelier sur site — siège, centre-bourg, abords du tramway ligne B ou bureaux de la zone P.A. Archimède : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux métiers. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — siège, centre-bourg, abords du tramway ligne B ou bureaux de la zone P.A. Archimède : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux métiers. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -215,11 +215,11 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saint-Jean-de-Braye, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé après la livraison.",
+            a: "Oui. Après le cadrage sur site à Saint-Jean-de-Braye, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé après la livraison.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail existant, y compris une boutique en activité ou un outil industriel de la zone P.A. Archimède connecté à vos clients. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire du Loiret ou de la région Centre-Val de Loire, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail existant, y compris une boutique en activité ou un outil industriel de la zone P.A. Archimède connecté à vos clients. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire du Loiret ou de la région Centre-Val de Loire, ou repris en interne par vos équipes.",
       },
     },
   },

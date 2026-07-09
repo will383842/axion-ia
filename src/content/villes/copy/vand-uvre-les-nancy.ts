@@ -128,7 +128,7 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis à Vandœuvre-lès-Nancy ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre projet — site vitrine de commerce, plateforme SaaS du Technopôle ou portail santé de Brabois — nous vous transmettons une proposition chiffrée et un périmètre clair, sans engagement de poursuivre avec nous.",
+            a: "À partir de 48 h selon la complexité. Après un premier échange sur votre projet — site vitrine de commerce, plateforme SaaS du Technopôle ou portail santé de Brabois — nous vous transmettons une proposition chiffrée et un périmètre clair, sans engagement de poursuivre avec nous.",
           },
           {
             q: "Le site ou la plateforme reste-t-il ma propriété ?",
@@ -136,7 +136,7 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité, périmètre écrit avant toute signature. Hébergement dans l'Union européenne et conformité RGPD par défaut, avec vigilance renforcée sur les données de santé pour les acteurs de Brabois. Le site ou la plateforme — code, contenus, accès — reste votre propriété, transférable à tout prestataire du Grand Nancy ou repris en interne, sans lock-in éditeur. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et les briques IA (chatbot RAG, recherche sémantique, génération assistée) sous un seul interlocuteur senior.",
+          "Devis à partir de 48 h selon la complexité, périmètre écrit avant toute signature. Hébergement dans l'Union européenne et conformité RGPD par défaut, avec vigilance renforcée sur les données de santé pour les acteurs de Brabois. Le site ou la plateforme — code, contenus, accès — reste votre propriété, transférable à tout prestataire du Grand Nancy ou repris en interne, sans lock-in éditeur. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et les briques IA (chatbot RAG, recherche sémantique, génération assistée) sous un seul interlocuteur senior.",
       },
       en: {
         hero: "Vandœuvre-lès-Nancy brings together two worlds in a single Grand Nancy commune: the Nancy-Brabois Technopole — 576 hectares, nearly 300 companies, ~16,000 jobs, 7,000 students, of which 55% in IT/electronics/telecoms and 20% in health-biotech around the Brabois Hospitals (Nancy University Hospital), the Lorraine Cancer Institute and the University of Lorraine (ENSAIA, ENSEM, ENSG) — and a fabric of ~2,150 SMEs and micro-businesses in retail and services, including the Urban Enterprise Zone of the Nations district and the Vélodrome and Roberval activity zones. Axion-IA designs AI-augmented websites and SaaS platforms for these players, on site in Vandœuvre, hosted in the EU.",
@@ -214,7 +214,7 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
           },
           {
             q: "How fast can I get a quote in Vandœuvre-lès-Nancy?",
-            a: "From 24 to 48 hours depending on complexity. After a first exchange about your project — a retail showcase site, a Technopole SaaS platform or a Brabois health portal — we send you a costed proposal and a clear scope, with no commitment to continue with us.",
+            a: "From 48 hours depending on complexity. After a first exchange about your project — a retail showcase site, a Technopole SaaS platform or a Brabois health portal — we send you a costed proposal and a clear scope, with no commitment to continue with us.",
           },
           {
             q: "Does the site or platform remain my property?",
@@ -222,7 +222,7 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity, written scope before any signature. EU hosting and GDPR compliance by default, with heightened care on health data for Brabois players. The site or platform — code, content, access — remains your property, transferable to any Grand Nancy provider or taken in-house, with no vendor lock-in. We cover UX/UI, mobile, multi-CMS e-commerce and AI blocks (RAG chatbot, semantic search, assisted generation) under a single senior point of contact.",
+          "Quote from 48 hours depending on complexity, written scope before any signature. EU hosting and GDPR compliance by default, with heightened care on health data for Brabois players. The site or platform — code, content, access — remains your property, transferable to any Grand Nancy provider or taken in-house, with no vendor lock-in. We cover UX/UI, mobile, multi-CMS e-commerce and AI blocks (RAG chatbot, semantic search, assisted generation) under a single senior point of contact.",
       },
     },
   },

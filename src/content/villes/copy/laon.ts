@@ -49,7 +49,7 @@ export const LAON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Laon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la cité médiévale perchée sur sa butte-témoin à 183 m, préfecture de l'Aisne et cœur de la Communauté d'agglomération du Pays de Laon, où le tissu mêle administration préfectorale, commerces de la ville haute, artisanat de restauration du patrimoine, tourisme autour de la cathédrale Notre-Dame et agriculture céréalière du plateau laonnois. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Laon, itérations à distance depuis Paris via l'A26 ou le TER en 1h35.",
+        hero: "Axion-IA conçoit et augmente à Laon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la cité médiévale perchée sur sa butte-témoin à 183 m, préfecture de l'Aisne et cœur de la Communauté d'agglomération du Pays de Laon, où le tissu mêle administration préfectorale, commerces de la ville haute, artisanat de restauration du patrimoine, tourisme autour de la cathédrale Notre-Dame et agriculture céréalière du plateau laonnois. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Laon, itérations à distance depuis Paris via l'A26 ou le TER en 1h35.",
         whyHere: [
           "Tourisme patrimonial structurant autour de la cathédrale Notre-Dame, des remparts du XIVe siècle et du plus grand secteur sauvegardé de France (370 ha) : nous bâtissons des sites de réservation directe et des chatbots RAG multilingues pour les hébergeurs, gîtes et restaurants de la ville haute qui accueillent des visiteurs venus de Paris en 1h35 de TER, avec moteurs de disponibilité, paiement en ligne et fiches patrimoine traduites automatiquement.",
           "Commerce de la ville haute et professions libérales : sur cette butte-témoin difficile d'accès en voiture, où le stationnement est rare entre la place du Général-Leclerc et le rempart Saint-Marcel, une vitrine e-commerce mobile-first et le click-and-collect compensent les contraintes et élargissent la zone de chalandise au-delà du pays de Laon vers Athies-sous-Laon, Chambry et le plateau, recherche sémantique de catalogue incluse.",
@@ -60,7 +60,7 @@ export const LAON_COPY: VilleCopy = {
           {
             step: "Cadrage à Laon",
             detail:
-              "Atelier sur site — ville haute, gare de Laon, zones d'activité du pays de Laon vers Athies-sous-Laon et Chambry : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique estivale. Devis ferme remis à partir de 24-48 h selon la complexité, sans engagement.",
+              "Atelier sur site — ville haute, gare de Laon, zones d'activité du pays de Laon vers Athies-sous-Laon et Chambry : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique estivale. Devis ferme remis à partir de 48 h selon la complexité, sans engagement.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const LAON_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète du code, des données et des modèles. Après le cadrage sur place à Laon, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, selon la complexité. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète du code, des données et des modèles. Après le cadrage sur place à Laon, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, selon la complexité. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée ni de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique estivale. Web Vitals, accessibilité RGAA et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée ni de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique estivale. Web Vitals, accessibilité RGAA et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Laon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la cité médiévale perchée sur sa butte-témoin à 183 m, préfecture de l'Aisne et cœur de la Communauté d'agglomération du Pays de Laon, où le tissu mêle administration préfectorale, commerces de la ville haute, artisanat de restauration du patrimoine, tourisme autour de la cathédrale Notre-Dame et agriculture céréalière du plateau laonnois. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Laon, itérations à distance depuis Paris via l'A26 ou le TER en 1h35.",
+        hero: "Axion-IA conçoit et augmente à Laon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la cité médiévale perchée sur sa butte-témoin à 183 m, préfecture de l'Aisne et cœur de la Communauté d'agglomération du Pays de Laon, où le tissu mêle administration préfectorale, commerces de la ville haute, artisanat de restauration du patrimoine, tourisme autour de la cathédrale Notre-Dame et agriculture céréalière du plateau laonnois. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Laon, itérations à distance depuis Paris via l'A26 ou le TER en 1h35.",
         whyHere: [
           "Tourisme patrimonial structurant autour de la cathédrale Notre-Dame, des remparts du XIVe siècle et du plus grand secteur sauvegardé de France (370 ha) : nous bâtissons des sites de réservation directe et des chatbots RAG multilingues pour les hébergeurs, gîtes et restaurants de la ville haute qui accueillent des visiteurs venus de Paris en 1h35 de TER, avec moteurs de disponibilité, paiement en ligne et fiches patrimoine traduites automatiquement.",
           "Commerce de la ville haute et professions libérales : sur cette butte-témoin difficile d'accès en voiture, où le stationnement est rare entre la place du Général-Leclerc et le rempart Saint-Marcel, une vitrine e-commerce mobile-first et le click-and-collect compensent les contraintes et élargissent la zone de chalandise au-delà du pays de Laon vers Athies-sous-Laon, Chambry et le plateau, recherche sémantique de catalogue incluse.",
@@ -146,7 +146,7 @@ export const LAON_COPY: VilleCopy = {
           {
             step: "Cadrage à Laon",
             detail:
-              "Atelier sur site — ville haute, gare de Laon, zones d'activité du pays de Laon vers Athies-sous-Laon et Chambry : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique estivale. Devis ferme remis à partir de 24-48 h selon la complexité, sans engagement.",
+              "Atelier sur site — ville haute, gare de Laon, zones d'activité du pays de Laon vers Athies-sous-Laon et Chambry : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique estivale. Devis ferme remis à partir de 48 h selon la complexité, sans engagement.",
           },
           {
             step: "Conception UX/UI",
@@ -214,11 +214,11 @@ export const LAON_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète du code, des données et des modèles. Après le cadrage sur place à Laon, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, selon la complexité. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète du code, des données et des modèles. Après le cadrage sur place à Laon, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, selon la complexité. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée ni de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique estivale. Web Vitals, accessibilité RGAA et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée ni de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique estivale. Web Vitals, accessibilité RGAA et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
       },
     },
   },

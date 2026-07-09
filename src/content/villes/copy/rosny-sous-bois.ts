@@ -43,7 +43,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Rosny-sous-Bois (93110), Axion-IA conçoit et augmente avec l'IA des sites web, applications et plateformes SaaS pour un tissu marqué par le commerce à grande échelle : enseignes de Westfield Rosny 2 et du centre Domus, distributeurs de l'ameublement et du bricolage (Leroy Merlin), et PME des zones d'activité de Rosny et Nanteuil (Frisquet, Fraikin, Verisure). UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos catalogues, recherche sémantique de produits et pièces, agents SAV et automatisations. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Rosny-sous-Bois (terminus métro 11 Rosny-Bois-Perrier depuis juin 2024, RER E), itérations à distance.",
+        hero: "À Rosny-sous-Bois (93110), Axion-IA conçoit et augmente avec l'IA des sites web, applications et plateformes SaaS pour un tissu marqué par le commerce à grande échelle : enseignes de Westfield Rosny 2 et du centre Domus, distributeurs de l'ameublement et du bricolage (Leroy Merlin), et PME des zones d'activité de Rosny et Nanteuil (Frisquet, Fraikin, Verisure). UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos catalogues, recherche sémantique de produits et pièces, agents SAV et automatisations. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Rosny-sous-Bois (terminus métro 11 Rosny-Bois-Perrier depuis juin 2024, RER E), itérations à distance.",
         whyHere: [
           "Profil retail dominant : commerçants et franchises de Westfield Rosny 2 (180 boutiques, 111 600 m²) et de Domus — fiches produits, recherche sémantique, recommandation et chatbot SAV intégrés à votre site ou marketplace.",
           "Distribution et négoce technique : catalogues volumineux de pièces et SAV pour acteurs type Frisquet (chaudières, chauffage) ou Fraikin (flotte de véhicules) — search produit/référence, configurateur et assistant de devis IA.",
@@ -54,7 +54,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Rosny-sous-Bois",
             detail:
-              "Atelier sur site (zone Westfield/Domus, ZA Nanteuil, Tour Rosny II ou vos locaux) : objectifs, parcours d'achat, audit de la stack, du catalogue et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (zone Westfield/Domus, ZA Nanteuil, Tour Rosny II ou vos locaux) : objectifs, parcours d'achat, audit de la stack, du catalogue et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -122,14 +122,14 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Rosny-sous-Bois, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme e-commerce ou un configurateur étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à Rosny-sous-Bois, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme e-commerce ou un configurateur étendu. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, montée en charge testée pour les pics de trafic du retail rosnéen. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'Est parisien (Rosny-sous-Bois, Montreuil, Noisy-le-Sec, Bondy) ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, montée en charge testée pour les pics de trafic du retail rosnéen. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'Est parisien (Rosny-sous-Bois, Montreuil, Noisy-le-Sec, Bondy) ou repris en interne.",
       },
       en: {
-        hero: "In Rosny-sous-Bois (93110), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI for an economy shaped by large-scale retail: stores of Westfield Rosny 2 and the Domus mall, furniture and DIY distributors (Leroy Merlin), and SMEs of the Rosny and Nanteuil business zones (Frisquet, Fraikin, Verisure). Bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your catalogues, semantic product and part search, after-sales agents and automations. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Rosny-sous-Bois (metro line 11 terminus Rosny-Bois-Perrier since June 2024, RER E), remote iterations.",
+        hero: "In Rosny-sous-Bois (93110), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI for an economy shaped by large-scale retail: stores of Westfield Rosny 2 and the Domus mall, furniture and DIY distributors (Leroy Merlin), and SMEs of the Rosny and Nanteuil business zones (Frisquet, Fraikin, Verisure). Bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your catalogues, semantic product and part search, after-sales agents and automations. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Rosny-sous-Bois (metro line 11 terminus Rosny-Bois-Perrier since June 2024, RER E), remote iterations.",
         whyHere: [
           "Retail-dominant profile: merchants and franchises of Westfield Rosny 2 (180 stores, 111,600 m²) and the Domus mall — product pages, semantic search, recommendation and after-sales chatbot built into your site or marketplace.",
           "Distribution and technical trade: large parts and after-sales catalogues for players like Frisquet (boilers, heating) or Fraikin (vehicle fleets) — product/reference search, configurator and AI quote assistant.",
@@ -140,7 +140,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Scoping in Rosny-sous-Bois",
             detail:
-              "On-site workshop (Westfield/Domus area, Nanteuil business zone, Tour Rosny II or your offices): goals, buying journeys, audit of the stack, catalogue and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop (Westfield/Domus area, Nanteuil business zone, Tour Rosny II or your offices): goals, buying journeys, audit of the stack, catalogue and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -208,11 +208,11 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After on-site scoping in Rosny-sous-Bois, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extended e-commerce platform or configurator. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After on-site scoping in Rosny-sous-Bois, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 48 h for a simple project, more for an extended e-commerce platform or configurator. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site, load-tested for Rosny retail traffic peaks. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any eastern-Paris provider (Rosny-sous-Bois, Montreuil, Noisy-le-Sec, Bondy) or taken in-house.",
+          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site, load-tested for Rosny retail traffic peaks. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any eastern-Paris provider (Rosny-sous-Bois, Montreuil, Noisy-le-Sec, Bondy) or taken in-house.",
       },
     },
   },

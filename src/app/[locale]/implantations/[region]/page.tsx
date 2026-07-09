@@ -439,13 +439,13 @@ export default async function RegionPage({ params }: Props) {
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 {isFr
-                  ? `Un projet IA en ${region.nameFr} ? Réponse sous 24 h.`
-                  : `An AI project in ${region.nameEn ?? region.nameFr}? Reply within 24 h.`}
+                  ? `Un projet IA en ${region.nameFr} ? Réponse sous 48 h.`
+                  : `An AI project in ${region.nameEn ?? region.nameFr}? Reply within 48 h.`}
               </h2>
               <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
                 {isFr
-                  ? "Décrivez votre projet en 2 minutes. On vous répond sous 24h — sans engagement."
-                  : "Describe your project in 2 minutes. We reply within 24h — no commitment."}
+                  ? "Décrivez votre projet en 2 minutes. On vous répond sous 48h — sans engagement."
+                  : "Describe your project in 2 minutes. We reply within 48h — no commitment."}
               </p>
             </div>
             <div className="flex shrink-0 flex-col gap-3 sm:flex-row">

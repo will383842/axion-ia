@@ -50,7 +50,7 @@ export const SEVRES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Sèvres des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Une ville de 22 303 habitants à 12 km à l'ouest de Paris, où la Manufacture nationale et le Musée national de la Céramique côtoient Strate École de Design, l'ESFF et un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires, à deux pas du pôle Boulogne-Billancourt – Issy-les-Moulineaux et de la Vallée de la culture des Hauts-de-Seine. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Sèvres, itérations à distance via le Transilien Sèvres-Rive-Gauche et la ligne 9 à Pont de Sèvres.",
+        hero: "Axion-IA conçoit et augmente à Sèvres des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Une ville de 22 303 habitants à 12 km à l'ouest de Paris, où la Manufacture nationale et le Musée national de la Céramique côtoient Strate École de Design, l'ESFF et un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires, à deux pas du pôle Boulogne-Billancourt – Issy-les-Moulineaux et de la Vallée de la culture des Hauts-de-Seine. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Sèvres, itérations à distance via le Transilien Sèvres-Rive-Gauche et la ligne 9 à Pont de Sèvres.",
         whyHere: [
           "Capitale de la porcelaine depuis 1756 : pour les céramistes et artisans d'art installés autour de la Manufacture nationale de Sèvres et du Musée national de la Céramique, on construit des boutiques e-commerce (Shopify, WooCommerce ou PrestaShop) qui rendent justice aux pièces premium, avec fiches produit riches et recherche sémantique par motif, époque, émail ou collection — pensées pour une clientèle de collectionneurs internationale.",
           "Écosystème de design produit avec Strate École de Design et l'ESFF (École supérieure de fonderie et forge) : aux studios de design industriel, bureaux d'ingénierie et jeunes diplômés-fondateurs, on livre des portfolios augmentés mobile-first, des configurateurs visuels et des plateformes de présentation client, avec recherche sémantique et agents qui qualifient les demandes entrantes.",
@@ -61,7 +61,7 @@ export const SEVRES_COPY: VilleCopy = {
           {
             step: "Cadrage à Sèvres",
             detail:
-              "Atelier sur site — quartier de la Manufacture, Pont de Sèvres ou centre-ville le long des axes RD 910 / N 118 : objectifs commerciaux, parcours utilisateurs, audit de la stack (CMS, hébergement) et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — quartier de la Manufacture, Pont de Sèvres ou centre-ville le long des axes RD 910 / N 118 : objectifs commerciaux, parcours utilisateurs, audit de la stack (CMS, hébergement) et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -129,14 +129,14 @@ export const SEVRES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Sèvres — quartier de la Manufacture, Pont de Sèvres ou centre-ville — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple, davantage pour une plateforme. Pas de régie, pas de dérive horaire cachée, un périmètre écrit et engageant.",
+            a: "Oui. Après le cadrage à Sèvres — quartier de la Manufacture, Pont de Sèvres ou centre-ville — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple, davantage pour une plateforme. Pas de régie, pas de dérive horaire cachée, un périmètre écrit et engageant.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de ventes ou d'expositions. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire local des Hauts-de-Seine ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de ventes ou d'expositions. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire local des Hauts-de-Seine ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Sèvres des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Une ville de 22 303 habitants à 12 km à l'ouest de Paris, où la Manufacture nationale et le Musée national de la Céramique côtoient Strate École de Design, l'ESFF et un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires, à deux pas du pôle Boulogne-Billancourt – Issy-les-Moulineaux et de la Vallée de la culture des Hauts-de-Seine. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Sèvres, itérations à distance via le Transilien Sèvres-Rive-Gauche et la ligne 9 à Pont de Sèvres.",
+        hero: "Axion-IA conçoit et augmente à Sèvres des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Une ville de 22 303 habitants à 12 km à l'ouest de Paris, où la Manufacture nationale et le Musée national de la Céramique côtoient Strate École de Design, l'ESFF et un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires, à deux pas du pôle Boulogne-Billancourt – Issy-les-Moulineaux et de la Vallée de la culture des Hauts-de-Seine. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Sèvres, itérations à distance via le Transilien Sèvres-Rive-Gauche et la ligne 9 à Pont de Sèvres.",
         whyHere: [
           "Capitale de la porcelaine depuis 1756 : pour les céramistes et artisans d'art installés autour de la Manufacture nationale de Sèvres et du Musée national de la Céramique, on construit des boutiques e-commerce (Shopify, WooCommerce ou PrestaShop) qui rendent justice aux pièces premium, avec fiches produit riches et recherche sémantique par motif, époque, émail ou collection — pensées pour une clientèle de collectionneurs internationale.",
           "Écosystème de design produit avec Strate École de Design et l'ESFF (École supérieure de fonderie et forge) : aux studios de design industriel, bureaux d'ingénierie et jeunes diplômés-fondateurs, on livre des portfolios augmentés mobile-first, des configurateurs visuels et des plateformes de présentation client, avec recherche sémantique et agents qui qualifient les demandes entrantes.",
@@ -147,7 +147,7 @@ export const SEVRES_COPY: VilleCopy = {
           {
             step: "Cadrage à Sèvres",
             detail:
-              "Atelier sur site — quartier de la Manufacture, Pont de Sèvres ou centre-ville le long des axes RD 910 / N 118 : objectifs commerciaux, parcours utilisateurs, audit de la stack (CMS, hébergement) et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — quartier de la Manufacture, Pont de Sèvres ou centre-ville le long des axes RD 910 / N 118 : objectifs commerciaux, parcours utilisateurs, audit de la stack (CMS, hébergement) et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -215,11 +215,11 @@ export const SEVRES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Sèvres — quartier de la Manufacture, Pont de Sèvres ou centre-ville — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple, davantage pour une plateforme. Pas de régie, pas de dérive horaire cachée, un périmètre écrit et engageant.",
+            a: "Oui. Après le cadrage à Sèvres — quartier de la Manufacture, Pont de Sèvres ou centre-ville — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple, davantage pour une plateforme. Pas de régie, pas de dérive horaire cachée, un périmètre écrit et engageant.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de ventes ou d'expositions. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire local des Hauts-de-Seine ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de ventes ou d'expositions. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire local des Hauts-de-Seine ou reprise en interne par vos équipes.",
       },
     },
   },

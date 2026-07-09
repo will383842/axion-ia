@@ -53,7 +53,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Longjumeau des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du sud francilien (Essonne) où la ville s'étire le long de l'historique RN20 dans la vallée de l'Yvette, autour d'un pôle santé structuré par l'hôpital, d'officines, de laboratoires et de répartiteurs pharmaceutiques, d'un commerce de proximité dense et de PME de services tournées vers le bassin d'emploi de Massy-Saclay. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Longjumeau, abords de la gare RER C et centre-ville, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Longjumeau des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du sud francilien (Essonne) où la ville s'étire le long de l'historique RN20 dans la vallée de l'Yvette, autour d'un pôle santé structuré par l'hôpital, d'officines, de laboratoires et de répartiteurs pharmaceutiques, d'un commerce de proximité dense et de PME de services tournées vers le bassin d'emploi de Massy-Saclay. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Longjumeau, abords de la gare RER C et centre-ville, puis itérations à distance.",
         whyHere: [
           "Pôle santé et établissement hospitalier de référence dans la vallée de l'Yvette : un site vitrine ou un portail patient avec prise de rendez-vous en ligne, FAQ automatisée et agent conversationnel conforme RGPD désengorge l'accueil sans jamais toucher aux données sensibles. On greffe aussi une recherche sémantique sur les pages d'information patient et une UX mobile-first pour une file active qui consulte depuis son téléphone.",
           "Pharmacie, laboratoires et répartition pharmaceutique : pour les officines et grossistes du secteur, on greffe sur l'existant de la recherche sémantique sur catalogues produits, de la classification de documents réglementaires et des automatisations de commandes, ou on construit un portail métier sur mesure connecté au logiciel d'officine, avec chatbot ancré sur vos fiches et hébergement UE.",
@@ -64,7 +64,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
           {
             step: "Cadrage à Longjumeau",
             detail:
-              "Atelier sur site (centre-ville le long de la RN20, abords de l'hôpital, officines de la vallée de l'Yvette, gare RER C) : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données santé. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville le long de la RN20, abords de l'hôpital, officines de la vallée de l'Yvette, gare RER C) : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données santé. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Longjumeau, on remet un devis ferme en forfait fixe avec un périmètre clair. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie au temps passé, pas de dérive horaire cachée, et chaque évolution de périmètre est chiffrée et validée avant d'être engagée.",
+            a: "Oui. Après le cadrage sur site à Longjumeau, on remet un devis ferme en forfait fixe avec un périmètre clair. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie au temps passé, pas de dérive horaire cachée, et chaque évolution de périmètre est chiffrée et validée avant d'être engagée.",
           },
           {
             q: "Pouvez-vous gérer la prise de rendez-vous pour une officine ou un cabinet de santé ?",
@@ -136,10 +136,10 @@ export const LONGJUMEAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre clair, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une officine, un laboratoire ou un cabinet de santé de la vallée de l'Yvette en activité continue. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud francilien (Massy, Palaiseau, Saclay) ou repris en interne sans rupture.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : périmètre clair, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une officine, un laboratoire ou un cabinet de santé de la vallée de l'Yvette en activité continue. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud francilien (Massy, Palaiseau, Saclay) ou repris en interne sans rupture.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Longjumeau des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du sud francilien (Essonne) où la ville s'étire le long de l'historique RN20 dans la vallée de l'Yvette, autour d'un pôle santé structuré par l'hôpital, d'officines, de laboratoires et de répartiteurs pharmaceutiques, d'un commerce de proximité dense et de PME de services tournées vers le bassin d'emploi de Massy-Saclay. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Longjumeau, abords de la gare RER C et centre-ville, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Longjumeau des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du sud francilien (Essonne) où la ville s'étire le long de l'historique RN20 dans la vallée de l'Yvette, autour d'un pôle santé structuré par l'hôpital, d'officines, de laboratoires et de répartiteurs pharmaceutiques, d'un commerce de proximité dense et de PME de services tournées vers le bassin d'emploi de Massy-Saclay. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Longjumeau, abords de la gare RER C et centre-ville, puis itérations à distance.",
         whyHere: [
           "Pôle santé et établissement hospitalier de référence dans la vallée de l'Yvette : un site vitrine ou un portail patient avec prise de rendez-vous en ligne, FAQ automatisée et agent conversationnel conforme RGPD désengorge l'accueil sans jamais toucher aux données sensibles. On greffe aussi une recherche sémantique sur les pages d'information patient et une UX mobile-first pour une file active qui consulte depuis son téléphone.",
           "Pharmacie, laboratoires et répartition pharmaceutique : pour les officines et grossistes du secteur, on greffe sur l'existant de la recherche sémantique sur catalogues produits, de la classification de documents réglementaires et des automatisations de commandes, ou on construit un portail métier sur mesure connecté au logiciel d'officine, avec chatbot ancré sur vos fiches et hébergement UE.",
@@ -150,7 +150,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
           {
             step: "Cadrage à Longjumeau",
             detail:
-              "Atelier sur site (centre-ville le long de la RN20, abords de l'hôpital, officines de la vallée de l'Yvette, gare RER C) : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données santé. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville le long de la RN20, abords de l'hôpital, officines de la vallée de l'Yvette, gare RER C) : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données santé. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Longjumeau, on remet un devis ferme en forfait fixe avec un périmètre clair. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie au temps passé, pas de dérive horaire cachée, et chaque évolution de périmètre est chiffrée et validée avant d'être engagée.",
+            a: "Oui. Après le cadrage sur site à Longjumeau, on remet un devis ferme en forfait fixe avec un périmètre clair. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie au temps passé, pas de dérive horaire cachée, et chaque évolution de périmètre est chiffrée et validée avant d'être engagée.",
           },
           {
             q: "Pouvez-vous gérer la prise de rendez-vous pour une officine ou un cabinet de santé ?",
@@ -222,7 +222,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre clair, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une officine, un laboratoire ou un cabinet de santé de la vallée de l'Yvette en activité continue. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud francilien (Massy, Palaiseau, Saclay) ou repris en interne sans rupture.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : périmètre clair, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une officine, un laboratoire ou un cabinet de santé de la vallée de l'Yvette en activité continue. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud francilien (Massy, Palaiseau, Saclay) ou repris en interne sans rupture.",
       },
     },
   },

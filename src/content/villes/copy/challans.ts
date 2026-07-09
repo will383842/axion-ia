@@ -53,7 +53,7 @@ export const CHALLANS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Challans des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce terroir multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Marais nord-vendéen, où la filière avicole et le canard de Challans Label Rouge côtoient un agroalimentaire dynamique, un commerce de centre-ville rythmé par le marché traditionnel et le festival Autrefois Challans, et un tourisme littoral saisonnier vers Saint-Jean-de-Monts, Saint-Gilles-Croix-de-Vie et Noirmoutier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Challans, itérations à distance, à 40 minutes de Nantes par la D937.",
+        hero: "Axion-IA conçoit et augmente à Challans des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce terroir multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Marais nord-vendéen, où la filière avicole et le canard de Challans Label Rouge côtoient un agroalimentaire dynamique, un commerce de centre-ville rythmé par le marché traditionnel et le festival Autrefois Challans, et un tourisme littoral saisonnier vers Saint-Jean-de-Monts, Saint-Gilles-Croix-de-Vie et Noirmoutier. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Challans, itérations à distance, à 40 minutes de Nantes par la D937.",
         whyHere: [
           "Filière canard de Challans et agroalimentaire avicole, portés par l'appellation Label Rouge et des transformateurs reconnus du nord-vendéen : éleveurs, abatteurs et conserveurs ont besoin de traçabilité fine et de vente directe. On construit des e-boutiques terroir et des portails B2B avec recommandation, étiquetage et suivi de lots automatisés, branchés sur vos outils existants, sans refonte du SI.",
           "Commerce de centre-ville rythmé par le marché traditionnel hebdomadaire et l'affluence du festival Autrefois Challans : pour les boutiques, primeurs, conserveurs et artisans, on greffe une vitrine e-commerce click-and-collect multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) et un chatbot RAG qui répond stocks, horaires de marché et disponibilités produits, le tout pensé mobile-first.",
@@ -64,7 +64,7 @@ export const CHALLANS_COPY: VilleCopy = {
           {
             step: "Cadrage à Challans",
             detail:
-              "Atelier sur site — centre-ville près du marché, parcs d'activités de la périphérie, exploitation avicole ou atelier de transformation : objectifs, parcours clients, audit de la stack, des contenus et de la saisonnalité touristique du littoral. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville près du marché, parcs d'activités de la périphérie, exploitation avicole ou atelier de transformation : objectifs, parcours clients, audit de la stack, des contenus et de la saisonnalité touristique du littoral. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const CHALLANS_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données clients, de réservation et de traçabilité. Après le cadrage sur site à Challans, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données clients, de réservation et de traçabilité. Après le cadrage sur site à Challans, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur le littoral ou en période de fêtes pour la volaille de Challans. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Pays de la Loire ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (remis à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur le littoral ou en période de fêtes pour la volaille de Challans. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Pays de la Loire ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Challans des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce terroir multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Marais nord-vendéen, où la filière avicole et le canard de Challans Label Rouge côtoient un agroalimentaire dynamique, un commerce de centre-ville rythmé par le marché traditionnel et le festival Autrefois Challans, et un tourisme littoral saisonnier vers Saint-Jean-de-Monts, Saint-Gilles-Croix-de-Vie et Noirmoutier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Challans, itérations à distance, à 40 minutes de Nantes par la D937.",
+        hero: "Axion-IA conçoit et augmente à Challans des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce terroir multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Marais nord-vendéen, où la filière avicole et le canard de Challans Label Rouge côtoient un agroalimentaire dynamique, un commerce de centre-ville rythmé par le marché traditionnel et le festival Autrefois Challans, et un tourisme littoral saisonnier vers Saint-Jean-de-Monts, Saint-Gilles-Croix-de-Vie et Noirmoutier. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Challans, itérations à distance, à 40 minutes de Nantes par la D937.",
         whyHere: [
           "Filière canard de Challans et agroalimentaire avicole, portés par l'appellation Label Rouge et des transformateurs reconnus du nord-vendéen : éleveurs, abatteurs et conserveurs ont besoin de traçabilité fine et de vente directe. On construit des e-boutiques terroir et des portails B2B avec recommandation, étiquetage et suivi de lots automatisés, branchés sur vos outils existants, sans refonte du SI.",
           "Commerce de centre-ville rythmé par le marché traditionnel hebdomadaire et l'affluence du festival Autrefois Challans : pour les boutiques, primeurs, conserveurs et artisans, on greffe une vitrine e-commerce click-and-collect multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) et un chatbot RAG qui répond stocks, horaires de marché et disponibilités produits, le tout pensé mobile-first.",
@@ -150,7 +150,7 @@ export const CHALLANS_COPY: VilleCopy = {
           {
             step: "Cadrage à Challans",
             detail:
-              "Atelier sur site — centre-ville près du marché, parcs d'activités de la périphérie, exploitation avicole ou atelier de transformation : objectifs, parcours clients, audit de la stack, des contenus et de la saisonnalité touristique du littoral. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — centre-ville près du marché, parcs d'activités de la périphérie, exploitation avicole ou atelier de transformation : objectifs, parcours clients, audit de la stack, des contenus et de la saisonnalité touristique du littoral. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const CHALLANS_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données clients, de réservation et de traçabilité. Après le cadrage sur site à Challans, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données clients, de réservation et de traçabilité. Après le cadrage sur site à Challans, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur le littoral ou en période de fêtes pour la volaille de Challans. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Pays de la Loire ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (remis à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur le littoral ou en période de fêtes pour la volaille de Challans. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Pays de la Loire ou repris en interne par vos équipes.",
       },
     },
   },

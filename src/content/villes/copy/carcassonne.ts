@@ -132,11 +132,11 @@ export const CARCASSONNE_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour un devis et qui maîtrise le site ensuite ?",
-            a: "Devis à partir de 24-48 h selon la complexité, après un premier échange. À la livraison, comptes, code et données sont à votre nom : vous pilotez le site en autonomie, sans dépendance à Axion-IA, et pouvez le confier à tout prestataire de l'Aude ou de Toulouse.",
+            a: "Devis à partir de 48 h selon la complexité, après un premier échange. À la livraison, comptes, code et données sont à votre nom : vous pilotez le site en autonomie, sans dépendance à Axion-IA, et pouvez le confier à tout prestataire de l'Aude ou de Toulouse.",
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité, à tarifs publics. Conception UX/UI et mobile-first, e-commerce multi-CMS et SaaS sur mesure augmentés par l'IA. Hébergement en Union européenne et conformité RGPD par défaut. Aucun verrou éditeur : code, comptes et données restent à votre nom, transférables à tout intégrateur audois ou toulousain. Vos équipes sont formées et autonomes après la mise en ligne.",
+          "Devis à partir de 48 h selon la complexité, à tarifs publics. Conception UX/UI et mobile-first, e-commerce multi-CMS et SaaS sur mesure augmentés par l'IA. Hébergement en Union européenne et conformité RGPD par défaut. Aucun verrou éditeur : code, comptes et données restent à votre nom, transférables à tout intégrateur audois ou toulousain. Vos équipes sont formées et autonomes après la mise en ligne.",
       },
       en: {
         hero: "Carcassonne is no ordinary city for the web: its UNESCO-listed medieval Cité is the 3rd most visited national monument in France (close to 800,000 entries to the Château comtal alone), its Salvaza airport pours in British, Irish and Belgian visitors via Ryanair, and its economy blends a sizeable luxury leather-goods maker (Algo / Groupe AS, ~1,100 staff, the Manufacture and Malleterie workshops) with the AOC Minervois, Corbières, Cabardès and Malepère wine estates that ring the city. Axion-IA designs and ships AI-augmented websites and SaaS platforms for these exact realities: multilingual booking and shop fronts for heritage tourism, online wine sales for estates, premium showcases for luxury craft — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const CARCASSONNE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and who controls the site afterwards?",
-            a: "Quote from 24-48 h depending on complexity, after a first exchange. On delivery, accounts, code and data are in your name: you run the site autonomously, with no Axion-IA dependency, and can hand it to any provider in the Aude or Toulouse.",
+            a: "Quote from 48 h depending on complexity, after a first exchange. On delivery, accounts, code and data are in your name: you run the site autonomously, with no Axion-IA dependency, and can hand it to any provider in the Aude or Toulouse.",
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity, at public rates. UX/UI and mobile-first design, multi-CMS e-commerce and custom AI-augmented SaaS. EU hosting and GDPR compliance by default. No vendor lock-in: code, accounts and data stay in your name, transferable to any integrator in the Aude or Toulouse. Your teams are trained and autonomous after go-live.",
+          "Quote from 48 h depending on complexity, at public rates. UX/UI and mobile-first design, multi-CMS e-commerce and custom AI-augmented SaaS. EU hosting and GDPR compliance by default. No vendor lock-in: code, accounts and data stay in your name, transferable to any integrator in the Aude or Toulouse. Your teams are trained and autonomous after go-live.",
       },
     },
   },

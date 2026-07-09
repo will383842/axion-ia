@@ -122,7 +122,7 @@ export const SANNOIS_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet. Après un premier échange à Sannois ou en visio, nous vous envoyons un périmètre chiffré clair, sans montant caché.",
+            a: "À partir de 48 h selon la complexité du projet. Après un premier échange à Sannois ou en visio, nous vous envoyons un périmètre chiffré clair, sans montant caché.",
           },
           {
             q: "Quels CMS et technologies utilisez-vous pour l'e-commerce ?",
@@ -134,7 +134,7 @@ export const SANNOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis clair à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature, sans montant caché. Code custom et contenus restent intégralement votre propriété — aucune dépendance Axion-IA, transférable à tout prestataire du Val Parisis ou repris en interne. Hébergement UE par défaut, conformité RGPD dès la conception. Sites et plateformes pensés mobile-first, performants (Web Vitals) et référencés localement autour de Sannois et de l'agglomération Val Parisis. UX/UI, développement, e-commerce multi-CMS et intégration IA assurés en interne, sans sous-traitance opaque.",
+          "Devis clair à partir de 48 h selon la complexité, périmètre et livrables définis avant signature, sans montant caché. Code custom et contenus restent intégralement votre propriété — aucune dépendance Axion-IA, transférable à tout prestataire du Val Parisis ou repris en interne. Hébergement UE par défaut, conformité RGPD dès la conception. Sites et plateformes pensés mobile-first, performants (Web Vitals) et référencés localement autour de Sannois et de l'agglomération Val Parisis. UX/UI, développement, e-commerce multi-CMS et intégration IA assurés en interne, sans sous-traitance opaque.",
       },
       en: {
         hero: "In Sannois, Axion-IA designs AI-augmented websites and SaaS platforms for a distinctive local economy: a town of ~27,000 residents with a heavily micro-business fabric (1,948 registered companies, over 70% in retail and services, and 419 very small firms of 1 to 9 staff), yet anchored by a genuine digital hub — Le Tremplin Val Parisis, the former Pépinière de Sannois, a 700 m² digital facility set right opposite the train station and run by the Wacano network and its community of 350+ companies. We equip both the merchants of the Place du Général Leclerc market and the young startups in its Digital, Fundraising and International accelerators. Custom code, careful UX/UI, mobile-first, multi-CMS e-commerce, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -208,7 +208,7 @@ export const SANNOIS_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote?",
-            a: "From 24 to 48 hours depending on project complexity. After a first exchange in Sannois or by video call, we send you a clear costed scope, with no hidden amount.",
+            a: "From 48 hours depending on project complexity. After a first exchange in Sannois or by video call, we send you a clear costed scope, with no hidden amount.",
           },
           {
             q: "Which CMS and technologies do you use for e-commerce?",
@@ -220,7 +220,7 @@ export const SANNOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Clear quote from 24 to 48 hours depending on complexity, with scope and deliverables defined before signature and no hidden amount. Custom code and content remain entirely your property — no Axion-IA dependency, transferable to any Val Parisis provider or taken in-house. EU hosting by default, GDPR compliance by design. Sites and platforms built mobile-first, performant (Web Vitals) and locally ranked around Sannois and the Val Parisis agglomeration. UX/UI, development, multi-CMS e-commerce and AI integration handled in-house, with no opaque subcontracting.",
+          "Clear quote from 48 hours depending on complexity, with scope and deliverables defined before signature and no hidden amount. Custom code and content remain entirely your property — no Axion-IA dependency, transferable to any Val Parisis provider or taken in-house. EU hosting by default, GDPR compliance by design. Sites and platforms built mobile-first, performant (Web Vitals) and locally ranked around Sannois and the Val Parisis agglomeration. UX/UI, development, multi-CMS e-commerce and AI integration handled in-house, with no opaque subcontracting.",
       },
     },
   },

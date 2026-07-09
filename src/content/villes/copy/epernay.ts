@@ -53,7 +53,7 @@ export const EPERNAY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Épernay des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation de visites de cave, vente de champagne en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Champagne, où l'économie se joue le long de l'avenue de Champagne — classée au patrimoine mondial de l'UNESCO depuis 2015 et bordée de plus de 100 km de caves creusées dans la craie — entre grandes maisons emblématiques et une multitude de vignerons indépendants, coopératives et négociants tournés vers l'export et l'œnotourisme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Épernay, près de la place de la République, itérations à distance dans la vallée de la Marne.",
+        hero: "Axion-IA conçoit et augmente à Épernay des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation de visites de cave, vente de champagne en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Champagne, où l'économie se joue le long de l'avenue de Champagne — classée au patrimoine mondial de l'UNESCO depuis 2015 et bordée de plus de 100 km de caves creusées dans la craie — entre grandes maisons emblématiques et une multitude de vignerons indépendants, coopératives et négociants tournés vers l'export et l'œnotourisme. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Épernay, près de la place de la République, itérations à distance dans la vallée de la Marne.",
         whyHere: [
           "Filière champagne tournée vers l'export et une clientèle internationale, des États-Unis au Japon : nos boutiques e-commerce (Shopify, WooCommerce, PrestaShop) et chatbots RAG sont multilingues par défaut, calibrés pour la vente directe de cuvées, l'allotement par marché, la gestion des commandes professionnelles et les contraintes de transport d'alcool par pays de destination.",
           "Avenue de Champagne classée à l'UNESCO et œnotourisme dense — maisons comme Moët & Chandon, Mercier et De Castellane, plus des dizaines de domaines visitables et leurs galeries souterraines : on construit des moteurs de réservation de visites de cave, d'ateliers de dégustation et de billetterie, branchés sur vos disponibilités réelles, avec parcours mobile-first pour les visiteurs en mobilité place de la République comme dans la vallée de la Marne.",
@@ -64,7 +64,7 @@ export const EPERNAY_COPY: VilleCopy = {
           {
             step: "Cadrage à Épernay",
             detail:
-              "Atelier sur site — cave, domaine ou bureau, le long de l'avenue de Champagne classée UNESCO ou dans la vallée de la Marne : objectifs commerciaux, parcours visiteurs et acheteurs, audit de la stack, des contenus et de la saisonnalité des ventes. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — cave, domaine ou bureau, le long de l'avenue de Champagne classée UNESCO ou dans la vallée de la Marne : objectifs commerciaux, parcours visiteurs et acheteurs, audit de la stack, des contenus et de la saisonnalité des ventes. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const EPERNAY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Épernay, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant le premier sprint de développement.",
+            a: "Oui. Après le cadrage sur site à Épernay, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant le premier sprint de développement.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison œnotouristique ou pendant les campagnes de vente de fin d'année. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Solution transférable à tout prestataire local de la Marne ou du Grand Est, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison œnotouristique ou pendant les campagnes de vente de fin d'année. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Solution transférable à tout prestataire local de la Marne ou du Grand Est, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Épernay des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation de visites de cave, vente de champagne en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Champagne, où l'économie se joue le long de l'avenue de Champagne — classée au patrimoine mondial de l'UNESCO depuis 2015 et bordée de plus de 100 km de caves creusées dans la craie — entre grandes maisons emblématiques et une multitude de vignerons indépendants, coopératives et négociants tournés vers l'export et l'œnotourisme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Épernay, près de la place de la République, itérations à distance dans la vallée de la Marne.",
+        hero: "Axion-IA conçoit et augmente à Épernay des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation de visites de cave, vente de champagne en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Champagne, où l'économie se joue le long de l'avenue de Champagne — classée au patrimoine mondial de l'UNESCO depuis 2015 et bordée de plus de 100 km de caves creusées dans la craie — entre grandes maisons emblématiques et une multitude de vignerons indépendants, coopératives et négociants tournés vers l'export et l'œnotourisme. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Épernay, près de la place de la République, itérations à distance dans la vallée de la Marne.",
         whyHere: [
           "Filière champagne tournée vers l'export et une clientèle internationale, des États-Unis au Japon : nos boutiques e-commerce (Shopify, WooCommerce, PrestaShop) et chatbots RAG sont multilingues par défaut, calibrés pour la vente directe de cuvées, l'allotement par marché, la gestion des commandes professionnelles et les contraintes de transport d'alcool par pays de destination.",
           "Avenue de Champagne classée à l'UNESCO et œnotourisme dense — maisons comme Moët & Chandon, Mercier et De Castellane, plus des dizaines de domaines visitables et leurs galeries souterraines : on construit des moteurs de réservation de visites de cave, d'ateliers de dégustation et de billetterie, branchés sur vos disponibilités réelles, avec parcours mobile-first pour les visiteurs en mobilité place de la République comme dans la vallée de la Marne.",
@@ -150,7 +150,7 @@ export const EPERNAY_COPY: VilleCopy = {
           {
             step: "Cadrage à Épernay",
             detail:
-              "Atelier sur site — cave, domaine ou bureau, le long de l'avenue de Champagne classée UNESCO ou dans la vallée de la Marne : objectifs commerciaux, parcours visiteurs et acheteurs, audit de la stack, des contenus et de la saisonnalité des ventes. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — cave, domaine ou bureau, le long de l'avenue de Champagne classée UNESCO ou dans la vallée de la Marne : objectifs commerciaux, parcours visiteurs et acheteurs, audit de la stack, des contenus et de la saisonnalité des ventes. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const EPERNAY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Épernay, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant le premier sprint de développement.",
+            a: "Oui. Après le cadrage sur site à Épernay, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant le premier sprint de développement.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison œnotouristique ou pendant les campagnes de vente de fin d'année. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Solution transférable à tout prestataire local de la Marne ou du Grand Est, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison œnotouristique ou pendant les campagnes de vente de fin d'année. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Solution transférable à tout prestataire local de la Marne ou du Grand Est, ou reprise en interne par vos équipes.",
       },
     },
   },

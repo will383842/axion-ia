@@ -123,7 +123,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un projet de site ou SaaS à Neuilly-sur-Marne ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine de commerce nivéen, c'est rapide ; pour une plateforme SaaS intégrée au SI d'une structure liée à Ville-Évrard, le chiffrage demande un cadrage technique préalable.",
+            a: "Le devis est remis à partir de 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine de commerce nivéen, c'est rapide ; pour une plateforme SaaS intégrée au SI d'une structure liée à Ville-Évrard, le chiffrage demande un cadrage technique préalable.",
           },
           {
             q: "Où hébergez-vous les données et sites de Neuilly-sur-Marne ?",
@@ -135,7 +135,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Tous nos sites et plateformes SaaS sont développés en code custom, hébergés dans l'Union européenne et conformes RGPD — minimisation des données, chiffrement et registre des traitements, traités dès l'architecture, ce qui est impératif pour les structures médico-sociales de l'écosystème Ville-Évrard / Maison Blanche. Devis à partir de 24 à 48 h selon la complexité. Vous conservez la pleine propriété du code, des données et des accès : aucun verrou éditeur, le projet est repris en interne ou par tout prestataire francilien. Nous revendiquons UX/UI, mobile et e-commerce multi-CMS autant que l'IA, sans dépendance plateforme imposée.",
+          "Tous nos sites et plateformes SaaS sont développés en code custom, hébergés dans l'Union européenne et conformes RGPD — minimisation des données, chiffrement et registre des traitements, traités dès l'architecture, ce qui est impératif pour les structures médico-sociales de l'écosystème Ville-Évrard / Maison Blanche. Devis à partir de 48 h selon la complexité. Vous conservez la pleine propriété du code, des données et des accès : aucun verrou éditeur, le projet est repris en interne ou par tout prestataire francilien. Nous revendiquons UX/UI, mobile et e-commerce multi-CMS autant que l'IA, sans dépendance plateforme imposée.",
       },
       en: {
         hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les organisations de Neuilly-sur-Marne (93330), en bordure de Marne à 13,1 km à l'est de Paris. La ville concentre un pôle public de santé mentale unique en Seine-Saint-Denis — l'EPS de Ville-Évrard (environ 2 537 agents, son IFSI) et l'EPS de Maison Blanche, tous deux sur le même domaine — auquel s'ajoutent l'éco-quartier du Parc de Maison Blanche (env. 40 000 m² d'activités tertiaires créées sur 58,6 ha d'ancien foncier hospitalier) et la Z.I. des Chanoux (37,68 ha, environ 664 entreprises). Pour ces structures médico-sociales, ces PME industrielles et ces commerces nivéens, nous construisons en code custom : portails patients/usagers, intranets, e-commerce multi-CMS et interfaces IA — UX/UI, mobile et hébergement UE conformes RGPD compris.",
@@ -209,7 +209,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un projet de site ou SaaS à Neuilly-sur-Marne ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine de commerce nivéen, c'est rapide ; pour une plateforme SaaS intégrée au SI d'une structure liée à Ville-Évrard, le chiffrage demande un cadrage technique préalable.",
+            a: "Le devis est remis à partir de 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine de commerce nivéen, c'est rapide ; pour une plateforme SaaS intégrée au SI d'une structure liée à Ville-Évrard, le chiffrage demande un cadrage technique préalable.",
           },
           {
             q: "Où hébergez-vous les données et sites de Neuilly-sur-Marne ?",
@@ -221,7 +221,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Tous nos sites et plateformes SaaS sont développés en code custom, hébergés dans l'Union européenne et conformes RGPD — minimisation des données, chiffrement et registre des traitements, traités dès l'architecture, ce qui est impératif pour les structures médico-sociales de l'écosystème Ville-Évrard / Maison Blanche. Devis à partir de 24 à 48 h selon la complexité. Vous conservez la pleine propriété du code, des données et des accès : aucun verrou éditeur, le projet est repris en interne ou par tout prestataire francilien. Nous revendiquons UX/UI, mobile et e-commerce multi-CMS autant que l'IA, sans dépendance plateforme imposée.",
+          "Tous nos sites et plateformes SaaS sont développés en code custom, hébergés dans l'Union européenne et conformes RGPD — minimisation des données, chiffrement et registre des traitements, traités dès l'architecture, ce qui est impératif pour les structures médico-sociales de l'écosystème Ville-Évrard / Maison Blanche. Devis à partir de 48 h selon la complexité. Vous conservez la pleine propriété du code, des données et des accès : aucun verrou éditeur, le projet est repris en interne ou par tout prestataire francilien. Nous revendiquons UX/UI, mobile et e-commerce multi-CMS autant que l'IA, sans dépendance plateforme imposée.",
       },
     },
   },

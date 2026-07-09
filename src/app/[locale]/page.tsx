@@ -1355,8 +1355,8 @@ export default async function Home({ params }: HomeProps) {
                 </h2>
                 <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
                   {isFr
-                    ? "Décrivez votre projet en 2 minutes. On vous répond sous 24h — sans engagement."
-                    : "Describe your project in 2 minutes. We reply within 24h — no commitment."}
+                    ? "Décrivez votre projet en 2 minutes. On vous répond sous 48h — sans engagement."
+                    : "Describe your project in 2 minutes. We reply within 48h — no commitment."}
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row">

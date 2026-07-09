@@ -51,7 +51,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Combs-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 350 habitants en Seine-et-Marne (77380), intégrée à l'agglomération Grand Paris Sud Seine Essonne Sénart, où le tissu mêle commerces du centre-ville, artisans BTP du plateau de Brie, PME logistiques le long de la Francilienne (RN 104, sorties 24-25) et exploitations céréalières occupant près de la moitié du foncier communal. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel près de la gare RER D Combs-la-Ville – Quincy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Combs-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 350 habitants en Seine-et-Marne (77380), intégrée à l'agglomération Grand Paris Sud Seine Essonne Sénart, où le tissu mêle commerces du centre-ville, artisans BTP du plateau de Brie, PME logistiques le long de la Francilienne (RN 104, sorties 24-25) et exploitations céréalières occupant près de la moitié du foncier communal. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel près de la gare RER D Combs-la-Ville – Quincy, itérations à distance.",
         whyHere: [
           "Carrefour logistique du sud francilien : avec la Francilienne (RN 104, sorties 24-25) et la proximité immédiate de Lieusaint et Moissy-Cramayel, les PME de transport et d'entreposage gagnent à des portails de suivi de tournées, à une recherche sémantique sur leurs bordereaux et à des agents qui automatisent devis, étiquettes et relances clients depuis l'ERP.",
           "Pôle commercial du Carré Sénart à deux pas et marché du centre-ville : pour le commerce de détail et la restauration combs-la-villais, on construit des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Magento) avec UX mobile-first et chatbots ancrés sur le catalogue, pour capter une clientèle de bassin de vie élargi entre Sénart et la vallée de l'Yerres.",
@@ -62,7 +62,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Combs-la-Ville",
             detail:
-              "Atelier sur site au centre-ville près de la gare RER D Combs-la-Ville – Quincy, ou dans les zones d'activités vers le Carré Sénart : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité, sans engagement caché.",
+              "Atelier sur site au centre-ville près de la gare RER D Combs-la-Ville – Quincy, ou dans les zones d'activités vers le Carré Sénart : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité, sans engagement caché.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -130,14 +130,14 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété de vos données et modèles. Après le cadrage à Combs-la-Ville, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété de vos données et modèles. Après le cadrage à Combs-la-Ville, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, remis à partir de 24-48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité. Web Vitals (LCP, INP, CLS visé nul) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Projet transférable à tout prestataire local de Seine-et-Marne ou repris en interne par vos équipes, formation incluse.",
+          "Devis ferme en forfait fixe, remis à partir de 48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité. Web Vitals (LCP, INP, CLS visé nul) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Projet transférable à tout prestataire local de Seine-et-Marne ou repris en interne par vos équipes, formation incluse.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Combs-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 350 habitants en Seine-et-Marne (77380), intégrée à l'agglomération Grand Paris Sud Seine Essonne Sénart, où le tissu mêle commerces du centre-ville, artisans BTP du plateau de Brie, PME logistiques le long de la Francilienne (RN 104, sorties 24-25) et exploitations céréalières occupant près de la moitié du foncier communal. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel près de la gare RER D Combs-la-Ville – Quincy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Combs-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 350 habitants en Seine-et-Marne (77380), intégrée à l'agglomération Grand Paris Sud Seine Essonne Sénart, où le tissu mêle commerces du centre-ville, artisans BTP du plateau de Brie, PME logistiques le long de la Francilienne (RN 104, sorties 24-25) et exploitations céréalières occupant près de la moitié du foncier communal. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel près de la gare RER D Combs-la-Ville – Quincy, itérations à distance.",
         whyHere: [
           "Carrefour logistique du sud francilien : avec la Francilienne (RN 104, sorties 24-25) et la proximité immédiate de Lieusaint et Moissy-Cramayel, les PME de transport et d'entreposage gagnent à des portails de suivi de tournées, à une recherche sémantique sur leurs bordereaux et à des agents qui automatisent devis, étiquettes et relances clients depuis l'ERP.",
           "Pôle commercial du Carré Sénart à deux pas et marché du centre-ville : pour le commerce de détail et la restauration combs-la-villais, on construit des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Magento) avec UX mobile-first et chatbots ancrés sur le catalogue, pour capter une clientèle de bassin de vie élargi entre Sénart et la vallée de l'Yerres.",
@@ -148,7 +148,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Combs-la-Ville",
             detail:
-              "Atelier sur site au centre-ville près de la gare RER D Combs-la-Ville – Quincy, ou dans les zones d'activités vers le Carré Sénart : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité, sans engagement caché.",
+              "Atelier sur site au centre-ville près de la gare RER D Combs-la-Ville – Quincy, ou dans les zones d'activités vers le Carré Sénart : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité, sans engagement caché.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -216,11 +216,11 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété de vos données et modèles. Après le cadrage à Combs-la-Ville, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété de vos données et modèles. Après le cadrage à Combs-la-Ville, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, remis à partir de 24-48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité. Web Vitals (LCP, INP, CLS visé nul) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Projet transférable à tout prestataire local de Seine-et-Marne ou repris en interne par vos équipes, formation incluse.",
+          "Devis ferme en forfait fixe, remis à partir de 48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité. Web Vitals (LCP, INP, CLS visé nul) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Projet transférable à tout prestataire local de Seine-et-Marne ou repris en interne par vos équipes, formation incluse.",
       },
     },
   },

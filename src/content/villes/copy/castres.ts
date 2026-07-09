@@ -132,11 +132,11 @@ export const CASTRES_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour obtenir un devis et où nous rencontrez-vous ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Nous nous déplaçons sur site à Castres et dans le sud du Tarn — Campus Chartreuse, zones de Mélou et de la Chartreuse, centre-ville — l'A69 Castres-Toulouse facilitant aussi les échanges avec le bassin toulousain.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Nous nous déplaçons sur site à Castres et dans le sud du Tarn — Campus Chartreuse, zones de Mélou et de la Chartreuse, centre-ville — l'A69 Castres-Toulouse facilitant aussi les échanges avec le bassin toulousain.",
           },
         ],
         guarantees:
-          "Tous nos sites et plateformes sont hébergés en Union européenne et conformes au RGPD, un point déterminant pour les acteurs castrais de la santé, de la dermo-cosmétique et de l'e-santé. Vous gardez la propriété intégrale du code et l'autonomie complète : aucun verrou éditeur, aucune dépendance contractuelle imposée. Le devis est remis à partir de 24 à 48 h selon la complexité, sur la base d'un périmètre clair et de tarifs publics. Vos équipes sont formées à l'administration de l'outil et peuvent reprendre la main en interne ou avec tout prestataire de leur choix.",
+          "Tous nos sites et plateformes sont hébergés en Union européenne et conformes au RGPD, un point déterminant pour les acteurs castrais de la santé, de la dermo-cosmétique et de l'e-santé. Vous gardez la propriété intégrale du code et l'autonomie complète : aucun verrou éditeur, aucune dépendance contractuelle imposée. Le devis est remis à partir de 48 h selon la complexité, sur la base d'un périmètre clair et de tarifs publics. Vos équipes sont formées à l'administration de l'outil et peuvent reprendre la main en interne ou avec tout prestataire de leur choix.",
       },
       en: {
         hero: "Castres (81, Tarn) is home to the global headquarters of the Pierre Fabre group — the Tarn's leading private employer, around 10,200 staff, €3.2bn revenue with 71% generated internationally — whose new 10,000 sqm Campus Chartreuse durably anchors the pharma and dermo-cosmetics industry in the area. Around it sits a digital ecosystem structured by the Castres-Mazamet Technopole (e-health, fine chemistry, IT services) and a dense fabric of micro-businesses and SMEs spread across the Mélou and Chartreuse zones. Axion-IA builds AI-augmented websites and SaaS platforms for these players — custom code, UX/UI, mobile, multi-CMS e-commerce — hosted in the European Union and GDPR-compliant.",
@@ -218,11 +218,11 @@ export const CASTRES_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and where do you meet us?",
-            a: "The quote is delivered from 24 to 48 hours depending on project complexity. We travel on site in Castres and the southern Tarn — Campus Chartreuse, Mélou and Chartreuse zones, town centre — with the A69 Castres-Toulouse motorway also easing exchanges with the Toulouse area.",
+            a: "The quote is delivered from 48 hours depending on project complexity. We travel on site in Castres and the southern Tarn — Campus Chartreuse, Mélou and Chartreuse zones, town centre — with the A69 Castres-Toulouse motorway also easing exchanges with the Toulouse area.",
           },
         ],
         guarantees:
-          "All our sites and platforms are hosted in the European Union and GDPR-compliant, a decisive point for Castres players in health, dermo-cosmetics and e-health. You keep full ownership of the code and complete autonomy: no vendor lock-in, no imposed contractual dependency. The quote is delivered from 24 to 48 hours depending on complexity, based on a clear scope and public pricing. Your teams are trained to administer the tool and can take over in-house or with any provider of their choice.",
+          "All our sites and platforms are hosted in the European Union and GDPR-compliant, a decisive point for Castres players in health, dermo-cosmetics and e-health. You keep full ownership of the code and complete autonomy: no vendor lock-in, no imposed contractual dependency. The quote is delivered from 48 hours depending on complexity, based on a clear scope and public pricing. Your teams are trained to administer the tool and can take over in-house or with any provider of their choice.",
       },
     },
   },

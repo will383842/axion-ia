@@ -89,7 +89,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou e-commerce essentiel",
             detail:
-              "Pour les artisans, commerces et indépendants du bassin et du Parc des entrepreneurs : site multi-CMS responsive, référencement local, première brique IA (assistant FAQ, génération de fiches). Devis à partir de 24-48 h selon la complexité.",
+              "Pour les artisans, commerces et indépendants du bassin et du Parc des entrepreneurs : site multi-CMS responsive, référencement local, première brique IA (assistant FAQ, génération de fiches). Devis à partir de 48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -129,11 +129,11 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "Un devis vous est remis à partir de 24-48 h selon la complexité du projet, après le brief de cadrage. Nous distinguons clairement le périmètre (vitrine, e-commerce, plateforme métier, SaaS IA-native) et les options, sans montant caché.",
+            a: "Un devis vous est remis à partir de 48 h selon la complexité du projet, après le brief de cadrage. Nous distinguons clairement le périmètre (vitrine, e-commerce, plateforme métier, SaaS IA-native) et les options, sans montant caché.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne par défaut, conformité RGPD (chiffrement, registre des traitements, DPO sur demande), adaptée aux acteurs sensibles du bassin — micro-électronique de défense (Sodern, MACOM European Semiconductor Center) et santé gériatrique (hôpital Émile-Roux AP-HP). Code custom livré et documenté : vous récupérez l'intégralité du code source, sans verrou éditeur ni dépendance Axion-IA, et la maintenance est reprenable en interne ou par tout intégrateur du Val-de-Marne. Respect des budgets de performance Web Vitals sur les pages clés. Devis à partir de 24-48 h selon la complexité.",
+          "Hébergement en Union européenne par défaut, conformité RGPD (chiffrement, registre des traitements, DPO sur demande), adaptée aux acteurs sensibles du bassin — micro-électronique de défense (Sodern, MACOM European Semiconductor Center) et santé gériatrique (hôpital Émile-Roux AP-HP). Code custom livré et documenté : vous récupérez l'intégralité du code source, sans verrou éditeur ni dépendance Axion-IA, et la maintenance est reprenable en interne ou par tout intégrateur du Val-de-Marne. Respect des budgets de performance Web Vitals sur les pages clés. Devis à partir de 48 h selon la complexité.",
       },
       en: {
         hero: "Limeil-Brévannes hosts a rare fabric for a 27,400-resident town in Val-de-Marne (94): Sodern (an ArianeGroup and CEA subsidiary, world leader in star trackers and neutron technology, on Avenue Descartes), the former OMMIC site now the MACOM European Semiconductor Center (a GaAs/GaN microwave MMIC foundry with ESA-qualified processes), the AP-HP Émile-Roux hospital (geriatrics) and the new Parc des entrepreneurs in the Temps Durables district. Axion-IA builds AI-augmented websites and SaaS platforms for these players — custom code, EU/GDPR hosting, zero vendor lock-in — from a microelectronics subcontractor's commercial portal to a local healthcare facility's business tool.",
@@ -175,7 +175,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Showcase site or essential e-commerce",
             detail:
-              "For craftspeople, shops and freelancers in the area and at the Parc des entrepreneurs: responsive multi-CMS site, local SEO, a first AI block (FAQ assistant, product-sheet generation). Quote within 24-48 h depending on complexity.",
+              "For craftspeople, shops and freelancers in the area and at the Parc des entrepreneurs: responsive multi-CMS site, local SEO, a first AI block (FAQ assistant, product-sheet generation). Quote within 48 h depending on complexity.",
           },
           {
             sizeLabel: "PME",
@@ -215,11 +215,11 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "A quote is provided within 24-48 h depending on project complexity, after the framing brief. We clearly separate scope (showcase, e-commerce, business platform, AI-native SaaS) and options, with no hidden amounts.",
+            a: "A quote is provided within 48 h depending on project complexity, after the framing brief. We clearly separate scope (showcase, e-commerce, business platform, AI-native SaaS) and options, with no hidden amounts.",
           },
         ],
         guarantees:
-          "EU hosting by default, GDPR compliance (encryption, processing register, DPO on request), suited to the area's sensitive players — defence microelectronics (Sodern, MACOM European Semiconductor Center) and geriatric healthcare (AP-HP Émile-Roux hospital). Custom code delivered and documented: you receive the full source code, with no vendor lock-in or Axion-IA dependency, and maintenance is resumable in-house or by any Val-de-Marne integrator. Web Vitals performance budgets upheld on key pages. Quote within 24-48 h depending on complexity.",
+          "EU hosting by default, GDPR compliance (encryption, processing register, DPO on request), suited to the area's sensitive players — defence microelectronics (Sodern, MACOM European Semiconductor Center) and geriatric healthcare (AP-HP Émile-Roux hospital). Custom code delivered and documented: you receive the full source code, with no vendor lock-in or Axion-IA dependency, and maintenance is resumable in-house or by any Val-de-Marne integrator. Web Vitals performance budgets upheld on key pages. Quote within 48 h depending on complexity.",
       },
     },
   },

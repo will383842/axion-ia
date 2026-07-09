@@ -52,7 +52,7 @@ export const LORMONT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lormont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la rive droite bordelaise (25 769 habitants, membre de Bordeaux Métropole) où l'économie s'articule autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet sur la Garonne et d'un tissu dense d'artisans du BTP. La commune relève aussi de la ZFU-Territoire Entrepreneur rive droite (avec Cenon, Floirac et Bordeaux), un cadre qui dynamise la création d'entreprise et l'arrivée de jeunes structures à Carriet. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lormont, itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à Lormont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la rive droite bordelaise (25 769 habitants, membre de Bordeaux Métropole) où l'économie s'articule autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet sur la Garonne et d'un tissu dense d'artisans du BTP. La commune relève aussi de la ZFU-Territoire Entrepreneur rive droite (avec Cenon, Floirac et Bordeaux), un cadre qui dynamise la création d'entreprise et l'arrivée de jeunes structures à Carriet. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lormont, itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Commerce de détail structurant : les enseignes et boutiques des centres des 4 Pavillons et de Génicart drainent un flux de clientèle métropolitaine, et le réaménagement de l'ancien centre commercial de Génicart en quartier mixte (logements, commerces, équipements près du tramway) redessine les usages — terrain idéal pour des boutiques e-commerce multi-CMS, du click-and-collect et des parcours d'achat augmentés à l'IA, branchés sur la fréquentation réelle.",
           "Logistique portuaire de Carriet sur la Garonne : la requalification des quais (avec un grand hall d'activités d'environ 37 000 m² en bord de Garonne) confirme la vocation logistique et productive du secteur. Pour les transporteurs et prestataires de la rive droite, on construit des portails clients, du suivi d'expédition en temps réel et des agents qui automatisent devis, planning et réponses aux demandes entrantes.",
@@ -63,7 +63,7 @@ export const LORMONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Lormont",
             detail:
-              "Atelier sur site (centres des 4 Pavillons ou de Génicart, quais de Carriet sur la Garonne, plateau de Génicart, tiers-lieu de Carriet) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centres des 4 Pavillons ou de Génicart, quais de Carriet sur la Garonne, plateau de Génicart, tiers-lieu de Carriet) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -123,7 +123,7 @@ export const LORMONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Lormont, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de lancer le développement.",
+            a: "Oui. Après le cadrage sur site à Lormont, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de lancer le développement.",
           },
           {
             q: "Pouvez-vous outiller la logistique portuaire de Carriet ?",
@@ -135,10 +135,10 @@ export const LORMONT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en période de forte affluence aux 4 Pavillons et à Génicart. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est transférable à un autre prestataire de Bordeaux Métropole ou de Nouvelle-Aquitaine, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en période de forte affluence aux 4 Pavillons et à Génicart. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est transférable à un autre prestataire de Bordeaux Métropole ou de Nouvelle-Aquitaine, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lormont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la rive droite bordelaise (25 769 habitants, membre de Bordeaux Métropole) où l'économie s'articule autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet sur la Garonne et d'un tissu dense d'artisans du BTP. La commune relève aussi de la ZFU-Territoire Entrepreneur rive droite (avec Cenon, Floirac et Bordeaux), un cadre qui dynamise la création d'entreprise et l'arrivée de jeunes structures à Carriet. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lormont, itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à Lormont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la rive droite bordelaise (25 769 habitants, membre de Bordeaux Métropole) où l'économie s'articule autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet sur la Garonne et d'un tissu dense d'artisans du BTP. La commune relève aussi de la ZFU-Territoire Entrepreneur rive droite (avec Cenon, Floirac et Bordeaux), un cadre qui dynamise la création d'entreprise et l'arrivée de jeunes structures à Carriet. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lormont, itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Commerce de détail structurant : les enseignes et boutiques des centres des 4 Pavillons et de Génicart drainent un flux de clientèle métropolitaine, et le réaménagement de l'ancien centre commercial de Génicart en quartier mixte (logements, commerces, équipements près du tramway) redessine les usages — terrain idéal pour des boutiques e-commerce multi-CMS, du click-and-collect et des parcours d'achat augmentés à l'IA, branchés sur la fréquentation réelle.",
           "Logistique portuaire de Carriet sur la Garonne : la requalification des quais (avec un grand hall d'activités d'environ 37 000 m² en bord de Garonne) confirme la vocation logistique et productive du secteur. Pour les transporteurs et prestataires de la rive droite, on construit des portails clients, du suivi d'expédition en temps réel et des agents qui automatisent devis, planning et réponses aux demandes entrantes.",
@@ -149,7 +149,7 @@ export const LORMONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Lormont",
             detail:
-              "Atelier sur site (centres des 4 Pavillons ou de Génicart, quais de Carriet sur la Garonne, plateau de Génicart, tiers-lieu de Carriet) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centres des 4 Pavillons ou de Génicart, quais de Carriet sur la Garonne, plateau de Génicart, tiers-lieu de Carriet) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -209,7 +209,7 @@ export const LORMONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Lormont, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de lancer le développement.",
+            a: "Oui. Après le cadrage sur site à Lormont, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de lancer le développement.",
           },
           {
             q: "Pouvez-vous outiller la logistique portuaire de Carriet ?",
@@ -221,7 +221,7 @@ export const LORMONT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en période de forte affluence aux 4 Pavillons et à Génicart. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est transférable à un autre prestataire de Bordeaux Métropole ou de Nouvelle-Aquitaine, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en période de forte affluence aux 4 Pavillons et à Génicart. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est transférable à un autre prestataire de Bordeaux Métropole ou de Nouvelle-Aquitaine, ou repris en interne par vos équipes.",
       },
     },
   },

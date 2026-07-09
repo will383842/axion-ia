@@ -53,7 +53,7 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à L'Isle-sur-la-Sorgue des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, galeries d'objets enrichies, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale provençale des antiquités et de la brocante, troisième place européenne du genre, où le tissu est fait de TPE de marchands d'art, de galeristes des villages d'antiquaires de la Gare et de l'Isle, d'hébergeurs de charme et de commerçants rythmés par les deux grandes foires internationales de Pâques et du 15 août qui drainent plus de 100 000 visiteurs au Parc Gautier et avenue des Quatre Otages. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à L'Isle-sur-la-Sorgue, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à L'Isle-sur-la-Sorgue des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, galeries d'objets enrichies, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale provençale des antiquités et de la brocante, troisième place européenne du genre, où le tissu est fait de TPE de marchands d'art, de galeristes des villages d'antiquaires de la Gare et de l'Isle, d'hébergeurs de charme et de commerçants rythmés par les deux grandes foires internationales de Pâques et du 15 août qui drainent plus de 100 000 visiteurs au Parc Gautier et avenue des Quatre Otages. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à L'Isle-sur-la-Sorgue, itérations à distance.",
         whyHere: [
           "Capitale des antiquités-brocante, troisième place d'Europe avec près de 250 boutiques permanentes réparties dans le Village des Antiquaires de la Gare, le Village Aux Antiquaires de l'Isle et le Passage du Pont : ce stock unique de pièces, photographié et décrit à la main, gagne à passer en galerie en ligne avec fiches enrichies par l'IA, estimation assistée et recherche sémantique pour qu'un acheteur étranger retrouve « commode Louis XV marqueterie » sans connaître le vocabulaire exact.",
           "Clientèle internationale drainée par les deux foires de Pâques et du 15 août, plus de 100 000 visiteurs au Parc Gautier et le long de l'avenue des Quatre Otages : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour répondre aux collectionneurs et touristes hors saison comme pendant les pics, et pour capter les demandes de réservation et de devis avant même l'ouverture des stands.",
@@ -64,7 +64,7 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
           {
             step: "Cadrage à L'Isle-sur-la-Sorgue",
             detail:
-              "Atelier sur site, dans votre galerie du Village des Antiquaires de la Gare, votre hôtel de charme ou votre boutique du centre le long de la Sorgue : objectifs, parcours acheteurs, audit de la stack, des contenus, du stock photographié et de la saisonnalité des foires de Pâques et du 15 août. Devis ferme à partir de 24-48 h.",
+              "Atelier sur site, dans votre galerie du Village des Antiquaires de la Gare, votre hôtel de charme ou votre boutique du centre le long de la Sorgue : objectifs, parcours acheteurs, audit de la stack, des contenus, du stock photographié et de la saisonnalité des foires de Pâques et du 15 août. Devis ferme à partir de 48 h.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à L'Isle-sur-la-Sorgue — dans votre galerie du Village des Antiquaires de la Gare, votre hôtel ou votre commerce du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à L'Isle-sur-la-Sorgue — dans votre galerie du Village des Antiquaires de la Gare, votre hôtel ou votre commerce du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, à partir de 24-48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même la veille d'une grande foire de Pâques ou du 15 août. Web Vitals, accessibilité et conformité RGPD / AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du Vaucluse ou du Comtat Venaissin, ou reprise en interne par vos équipes — vous n'êtes jamais captif.",
+          "Devis ferme en forfait fixe, à partir de 48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même la veille d'une grande foire de Pâques ou du 15 août. Web Vitals, accessibilité et conformité RGPD / AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du Vaucluse ou du Comtat Venaissin, ou reprise en interne par vos équipes — vous n'êtes jamais captif.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à L'Isle-sur-la-Sorgue des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, galeries d'objets enrichies, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale provençale des antiquités et de la brocante, troisième place européenne du genre, où le tissu est fait de TPE de marchands d'art, de galeristes des villages d'antiquaires de la Gare et de l'Isle, d'hébergeurs de charme et de commerçants rythmés par les deux grandes foires internationales de Pâques et du 15 août qui drainent plus de 100 000 visiteurs au Parc Gautier et avenue des Quatre Otages. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à L'Isle-sur-la-Sorgue, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à L'Isle-sur-la-Sorgue des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, galeries d'objets enrichies, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale provençale des antiquités et de la brocante, troisième place européenne du genre, où le tissu est fait de TPE de marchands d'art, de galeristes des villages d'antiquaires de la Gare et de l'Isle, d'hébergeurs de charme et de commerçants rythmés par les deux grandes foires internationales de Pâques et du 15 août qui drainent plus de 100 000 visiteurs au Parc Gautier et avenue des Quatre Otages. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à L'Isle-sur-la-Sorgue, itérations à distance.",
         whyHere: [
           "Capitale des antiquités-brocante, troisième place d'Europe avec près de 250 boutiques permanentes réparties dans le Village des Antiquaires de la Gare, le Village Aux Antiquaires de l'Isle et le Passage du Pont : ce stock unique de pièces, photographié et décrit à la main, gagne à passer en galerie en ligne avec fiches enrichies par l'IA, estimation assistée et recherche sémantique pour qu'un acheteur étranger retrouve « commode Louis XV marqueterie » sans connaître le vocabulaire exact.",
           "Clientèle internationale drainée par les deux foires de Pâques et du 15 août, plus de 100 000 visiteurs au Parc Gautier et le long de l'avenue des Quatre Otages : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour répondre aux collectionneurs et touristes hors saison comme pendant les pics, et pour capter les demandes de réservation et de devis avant même l'ouverture des stands.",
@@ -150,7 +150,7 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
           {
             step: "Cadrage à L'Isle-sur-la-Sorgue",
             detail:
-              "Atelier sur site, dans votre galerie du Village des Antiquaires de la Gare, votre hôtel de charme ou votre boutique du centre le long de la Sorgue : objectifs, parcours acheteurs, audit de la stack, des contenus, du stock photographié et de la saisonnalité des foires de Pâques et du 15 août. Devis ferme à partir de 24-48 h.",
+              "Atelier sur site, dans votre galerie du Village des Antiquaires de la Gare, votre hôtel de charme ou votre boutique du centre le long de la Sorgue : objectifs, parcours acheteurs, audit de la stack, des contenus, du stock photographié et de la saisonnalité des foires de Pâques et du 15 août. Devis ferme à partir de 48 h.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à L'Isle-sur-la-Sorgue — dans votre galerie du Village des Antiquaires de la Gare, votre hôtel ou votre commerce du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à L'Isle-sur-la-Sorgue — dans votre galerie du Village des Antiquaires de la Gare, votre hôtel ou votre commerce du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, à partir de 24-48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même la veille d'une grande foire de Pâques ou du 15 août. Web Vitals, accessibilité et conformité RGPD / AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du Vaucluse ou du Comtat Venaissin, ou reprise en interne par vos équipes — vous n'êtes jamais captif.",
+          "Devis ferme en forfait fixe, à partir de 48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même la veille d'une grande foire de Pâques ou du 15 août. Web Vitals, accessibilité et conformité RGPD / AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du Vaucluse ou du Comtat Venaissin, ou reprise en interne par vos équipes — vous n'êtes jamais captif.",
       },
     },
   },

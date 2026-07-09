@@ -122,7 +122,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour un devis ?",
-            a: "Un devis détaillé vous est remis à partir de 24-48 h selon la complexité du projet, après un premier cadrage que nous pouvons faire en présentiel dans votre boutique ou cabinet à Saint-Maur, ou en visioconférence.",
+            a: "Un devis détaillé vous est remis à partir de 48 h selon la complexité du projet, après un premier cadrage que nous pouvons faire en présentiel dans votre boutique ou cabinet à Saint-Maur, ou en visioconférence.",
           },
           {
             q: "Faites-vous le design UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
@@ -134,7 +134,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24-48 h selon la complexité. Code source et accès intégralement à vous, transférables à tout prestataire du Val-de-Marne ou repris en interne — zéro lock-in éditeur. Hébergement en Union européenne et conformité RGPD par défaut, avec registre des traitements et durées de conservation, indispensable pour les cabinets libéraux et de santé de Saint-Maur. Design UX/UI, mobile-first, e-commerce multi-CMS et briques IA inclus dans la même mission, sans sous-traitance opaque.",
+          "Devis remis à partir de 48 h selon la complexité. Code source et accès intégralement à vous, transférables à tout prestataire du Val-de-Marne ou repris en interne — zéro lock-in éditeur. Hébergement en Union européenne et conformité RGPD par défaut, avec registre des traitements et durées de conservation, indispensable pour les cabinets libéraux et de santé de Saint-Maur. Design UX/UI, mobile-first, e-commerce multi-CMS et briques IA inclus dans la même mission, sans sous-traitance opaque.",
       },
       en: {
         hero: "Saint-Maur-des-Fossés is a distinctly residential and service-led town: the 3rd largest in Val-de-Marne (76,572 inhabitants), it lives on independent local retail spread across Vieux Saint-Maur, La Varenne and Adamville, on liberal professions (health, law, accountancy around the Clinique Gaston Métivet) and on a record flow of sole traders — 1,854 business creations in 2024, 54% of them one-person structures. Axion-IA designs on site AI-augmented websites and SaaS platforms for this fabric: e-commerce storefronts for market traders, online booking for professional practices, sites for freelancers — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -208,7 +208,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
           },
           {
             q: "How long for a quote?",
-            a: "A detailed quote is provided from 24-48 h depending on project complexity, after an initial framing we can do in person at your shop or practice in Saint-Maur, or by video call.",
+            a: "A detailed quote is provided from 48 h depending on project complexity, after an initial framing we can do in person at your shop or practice in Saint-Maur, or by video call.",
           },
           {
             q: "Do you handle UX/UI design, mobile and e-commerce, or only AI?",
@@ -220,7 +220,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 24-48 h depending on complexity. Source code and accesses entirely yours, transferable to any Val-de-Marne provider or taken in-house — zero vendor lock-in. EU hosting and GDPR compliance by default, with processing register and retention periods, essential for Saint-Maur's liberal and health practices. UX/UI design, mobile-first, multi-CMS e-commerce and AI building blocks included in the same engagement, with no opaque subcontracting.",
+          "Quote provided from 48 h depending on complexity. Source code and accesses entirely yours, transferable to any Val-de-Marne provider or taken in-house — zero vendor lock-in. EU hosting and GDPR compliance by default, with processing register and retention periods, essential for Saint-Maur's liberal and health practices. UX/UI design, mobile-first, multi-CMS e-commerce and AI building blocks included in the same engagement, with no opaque subcontracting.",
       },
     },
   },

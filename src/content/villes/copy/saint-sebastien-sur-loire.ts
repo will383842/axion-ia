@@ -120,7 +120,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
           },
           {
             q: "Sous combien de temps obtient-on un devis ?",
-            a: "Le devis est établi à partir de 24 à 48 h selon la complexité du projet. Un site vitrine pour un commerce sébastiennais se chiffre vite ; une plateforme SaaS sur mesure avec intégrations stock, caisse ou comptabilité demande un cadrage plus précis avant chiffrage.",
+            a: "Le devis est établi à partir de 48 h selon la complexité du projet. Un site vitrine pour un commerce sébastiennais se chiffre vite ; une plateforme SaaS sur mesure avec intégrations stock, caisse ou comptabilité demande un cadrage plus précis avant chiffrage.",
           },
           {
             q: "Nous avons déjà un prestataire informatique local : pouvez-vous travailler avec lui ?",
@@ -132,7 +132,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis établi à partir de 24 à 48 h selon la complexité, sur scope précis et sans facturation horaire cachée. Sites et plateformes en UE, conformité RGPD, sauvegardes et plan de reprise documentés. UX/UI et mobile soignés, performances et référencement local Saint-Sébastien / Nantes Métropole vérifiés à la recette. Code, contenus et documentation vous appartiennent et sont transférables à vos équipes ou à votre prestataire informatique local : aucun verrou éditeur, maintenance optionnelle.",
+          "Devis établi à partir de 48 h selon la complexité, sur scope précis et sans facturation horaire cachée. Sites et plateformes en UE, conformité RGPD, sauvegardes et plan de reprise documentés. UX/UI et mobile soignés, performances et référencement local Saint-Sébastien / Nantes Métropole vérifiés à la recette. Code, contenus et documentation vous appartiennent et sont transférables à vos équipes ou à votre prestataire informatique local : aucun verrou éditeur, maintenance optionnelle.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Saint-Sébastien-sur-Loire (44), the third-largest town in Nantes Métropole on the south bank of the Loire. The local fabric is mostly micro-businesses and small SMEs: retailers in the La Jaunaie commercial zone (built around the Auchan hypermarket, with Darty, Norauto, Action, Go Sport, Sephora, Micromania, Courir), tertiary services in the Z.A. des Gripôts business park (staffing agencies, HR, accounting, acoustic studies, real estate, IT) and digital players such as the software house Code Lutin on avenue Jules Verne. We deliver fast showcase sites, multi-CMS e-commerce stores and bespoke business apps, with semantic search, RAG chatbots and conversational agents — clean code, careful UX/UI and mobile, EU hosting, GDPR compliance, no vendor lock-in.",
@@ -206,7 +206,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "The quote is issued from 24 to 48 h depending on project complexity. A showcase site for a Saint-Sébastien retailer is quick to price; a bespoke SaaS platform with stock, POS or accounting integrations needs more precise scoping before pricing.",
+            a: "The quote is issued from 48 h depending on project complexity. A showcase site for a Saint-Sébastien retailer is quick to price; a bespoke SaaS platform with stock, POS or accounting integrations needs more precise scoping before pricing.",
           },
           {
             q: "We already have a local IT provider: can you work with them?",
@@ -218,7 +218,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote issued from 24 to 48 h depending on complexity, on a precise scope and with no hidden hourly billing. Sites and platforms in the EU, GDPR compliance, documented backups and recovery plan. Careful UX/UI and mobile, performance and local SEO for Saint-Sébastien / Nantes Métropole checked at acceptance. Code, content and documentation belong to you and are transferable to your team or your local IT provider: no vendor lock-in, optional maintenance.",
+          "Quote issued from 48 h depending on complexity, on a precise scope and with no hidden hourly billing. Sites and platforms in the EU, GDPR compliance, documented backups and recovery plan. Careful UX/UI and mobile, performance and local SEO for Saint-Sébastien / Nantes Métropole checked at acceptance. Code, content and documentation belong to you and are transferable to your team or your local IT provider: no vendor lock-in, optional maintenance.",
       },
     },
   },

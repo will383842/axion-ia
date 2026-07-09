@@ -132,11 +132,11 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et quel est le délai pour un devis ?",
-            a: "Hébergement en Union européenne, conforme RGPD et AI Act, avec données clients maîtrisées dès la conception. Pour un devis, comptez à partir de 24-48 h selon la complexité du projet, après un premier échange. Nous nous déplaçons sur site à Saint-Raphaël et dans tout le bassin Fréjus-Saint-Raphaël, desservi par la gare TGV de Valescure et l'A8.",
+            a: "Hébergement en Union européenne, conforme RGPD et AI Act, avec données clients maîtrisées dès la conception. Pour un devis, comptez à partir de 48 h selon la complexité du projet, après un premier échange. Nous nous déplaçons sur site à Saint-Raphaël et dans tout le bassin Fréjus-Saint-Raphaël, desservi par la gare TGV de Valescure et l'A8.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne, conformité RGPD et AI Act intégrées dès la conception, données clients cartographiées et minimisées. Devis à partir de 24-48 h selon la complexité. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et l'IA appliquée — du site de réservation pour le nautisme de Port Santa Lucia à la plateforme SaaS métier pour les PME des Technoparcs Epsilon. Aucun lock-in : code, contenus et accès restent à votre nom, reprenables par vos équipes ou tout prestataire du bassin Fréjus-Saint-Raphaël.",
+          "Hébergement en Union européenne, conformité RGPD et AI Act intégrées dès la conception, données clients cartographiées et minimisées. Devis à partir de 48 h selon la complexité. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et l'IA appliquée — du site de réservation pour le nautisme de Port Santa Lucia à la plateforme SaaS métier pour les PME des Technoparcs Epsilon. Aucun lock-in : code, contenus et accès restent à votre nom, reprenables par vos équipes ou tout prestataire du bassin Fréjus-Saint-Raphaël.",
       },
       en: {
         hero: "Saint-Raphaël (Var) combines two economies few towns hold together: an intense coastal tourism and boating hub — Port Santa Lucia (1,636 berths, the 3rd-largest marina on the Côte d'Azur), the Clean Port-certified Old Port, the Valescure Golf course (1895) and its Najeti hotel offering — and a genuine B2B technology layer, the Epsilon I and II technology parks (38 ha) home to cosmetics, pharmaceuticals, molecular biology, precision mechanics and industrial computing firms. In Saint-Raphaël, Axion-IA designs AI-augmented websites and SaaS platforms for both worlds: booking engines and e-commerce for seafront hospitality and boating, and business portals and SaaS apps for the SMEs of the Epsilon parks and the Fréjus-Saint-Raphaël basin.",
@@ -218,11 +218,11 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           },
           {
             q: "Where is data hosted and how long for a quote?",
-            a: "Hosting in the European Union, GDPR- and AI Act-compliant, with customer data controlled by design. For a quote, allow from 24-48 h depending on project complexity, after an initial exchange. We travel on site in Saint-Raphaël and across the Fréjus-Saint-Raphaël basin, served by the Valescure TGV station and the A8.",
+            a: "Hosting in the European Union, GDPR- and AI Act-compliant, with customer data controlled by design. For a quote, allow from 48 h depending on project complexity, after an initial exchange. We travel on site in Saint-Raphaël and across the Fréjus-Saint-Raphaël basin, served by the Valescure TGV station and the A8.",
           },
         ],
         guarantees:
-          "Hosting in the European Union, GDPR and AI Act compliance built in by design, customer data mapped and minimized. Quote from 24-48 h depending on complexity. We claim UX/UI, mobile-first, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and applied AI — from a booking site for Port Santa Lucia boating to a business SaaS platform for the Epsilon technology-park SMEs. No lock-in: code, content and access stay in your name, recoverable by your teams or any Fréjus-Saint-Raphaël provider.",
+          "Hosting in the European Union, GDPR and AI Act compliance built in by design, customer data mapped and minimized. Quote from 48 h depending on complexity. We claim UX/UI, mobile-first, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and applied AI — from a booking site for Port Santa Lucia boating to a business SaaS platform for the Epsilon technology-park SMEs. No lock-in: code, content and access stay in your name, recoverable by your teams or any Fréjus-Saint-Raphaël provider.",
       },
     },
   },

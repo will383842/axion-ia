@@ -128,7 +128,7 @@ export const CALAIS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour démarrer un projet de site à Calais ?",
-            a: "Après un premier échange, nous fournissons un devis à partir de 24 à 48 h selon la complexité. Le cadrage se fait dans vos locaux à Calais ou à Coquelles, puis nous calons ensemble le calendrier de conception, développement et mise en ligne en fonction de l'ampleur du projet.",
+            a: "Après un premier échange, nous fournissons un devis à partir de 48 h selon la complexité. Le cadrage se fait dans vos locaux à Calais ou à Coquelles, puis nous calons ensemble le calendrier de conception, développement et mise en ligne en fonction de l'ampleur du projet.",
           },
           {
             q: "Travaillez-vous avec les acteurs de la dentelle de Calais ?",
@@ -136,7 +136,7 @@ export const CALAIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis fourni à partir de 24 à 48 h selon la complexité, sans montant caché. Sites et plateformes mobile-first, optimisés performance et accessibilité, hébergés dans l'Union européenne avec conformité RGPD et AI Act — un point sensible pour les flux de données transfrontaliers du transmanche. Code, accès et données restent à vous : aucun verrou éditeur, reprise possible en interne ou par tout prestataire de la Côte d'Opale. UX/UI, mobile, e-commerce multi-CMS et briques IA sont couverts par nos équipes.",
+          "Devis fourni à partir de 48 h selon la complexité, sans montant caché. Sites et plateformes mobile-first, optimisés performance et accessibilité, hébergés dans l'Union européenne avec conformité RGPD et AI Act — un point sensible pour les flux de données transfrontaliers du transmanche. Code, accès et données restent à vous : aucun verrou éditeur, reprise possible en interne ou par tout prestataire de la Côte d'Opale. UX/UI, mobile, e-commerce multi-CMS et briques IA sont couverts par nos équipes.",
       },
       en: {
         hero: "In Calais, Axion-IA designs AI-augmented websites and SaaS platforms for an economy built around cross-Channel trade: freight forwarders and hauliers plugged into the Port of Calais (France's leading passenger port, a third of roll-on freight to the United Kingdom) and the Eurotunnel terminal at Coquelles, cable manufacturers (Alcatel Submarine Networks, Nexans), logistics operators on the Transmarck-Turquerie estate along the A16, Leavers lace makers and Côte d'Opale tourism businesses. Transport quotation portals, shipment tracking, bilingual FR-EN e-commerce, semantic search over technical catalogues — custom code, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -214,7 +214,7 @@ export const CALAIS_COPY: VilleCopy = {
           },
           {
             q: "How quickly can a website project start in Calais?",
-            a: "After a first exchange, we provide a quote from 24 to 48 hours depending on complexity. Framing takes place at your premises in Calais or Coquelles, then we set the design, development and go-live schedule together according to the scope of the project.",
+            a: "After a first exchange, we provide a quote from 48 hours depending on complexity. Framing takes place at your premises in Calais or Coquelles, then we set the design, development and go-live schedule together according to the scope of the project.",
           },
           {
             q: "Do you work with the Calais lace makers?",
@@ -222,7 +222,7 @@ export const CALAIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 24 to 48 hours depending on complexity, with no hidden amount. Mobile-first sites and platforms, optimised for performance and accessibility, hosted within the European Union with GDPR and AI Act compliance — a sensitive point for the cross-border data flows of the cross-Channel trade. Code, access and data stay yours: no vendor lock-in, you can take over in-house or with any Côte d'Opale provider. UX/UI, mobile, multi-CMS e-commerce and AI building blocks are all covered by our teams.",
+          "Quote provided from 48 hours depending on complexity, with no hidden amount. Mobile-first sites and platforms, optimised for performance and accessibility, hosted within the European Union with GDPR and AI Act compliance — a sensitive point for the cross-border data flows of the cross-Channel trade. Code, access and data stay yours: no vendor lock-in, you can take over in-house or with any Côte d'Opale provider. UX/UI, mobile, multi-CMS e-commerce and AI building blocks are all covered by our teams.",
       },
     },
   },

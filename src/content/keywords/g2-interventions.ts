@@ -95,7 +95,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Un expert IA directement dans vos locaux — pour votre TPE",
       metaTitle: "Cabinet IA · intervention sur site TPE France",
       metaDescription:
-        "Axion-IA se déplace dans vos locaux pour former vos équipes à l'IA. Format 4h ou 1 jour, exercices sur vos vrais dossiers. Devis sous 24h.",
+        "Axion-IA se déplace dans vos locaux pour former vos équipes à l'IA. Format 4h ou 1 jour, exercices sur vos vrais dossiers. Devis sous 48h.",
       h2Variants: [
         "L'intervention sur site : pourquoi ça change tout pour une TPE",
         "Déroulé type d'une session 4h chez vous",
@@ -1234,7 +1234,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Formation IA sur site — intervenants experts dans toute la France",
       metaTitle: "Formation IA sur site France — Axion-IA",
       metaDescription:
-        "Axion-IA intervient dans toute la France pour former vos équipes à l'IA : formats 4h, 1 jour, 2 jours, 3 jours+. Devis sous 24h.",
+        "Axion-IA intervient dans toute la France pour former vos équipes à l'IA : formats 4h, 1 jour, 2 jours, 3 jours+. Devis sous 48h.",
       h2Variants: [
         "Pourquoi la formation sur site change les résultats",
         "Toutes les cibles : TPE, PME, ETI, écoles, organismes de formation",
@@ -1246,7 +1246,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       resultat: "équipes autonomes dès la fin de session",
       chiffre: "1",
       unite: "jour maximum pour un devis",
-      delai: "devis sous 24h",
+      delai: "devis sous 48h",
     },
     urlCible: "/fr/interventions-formations/",
     source: "manuel",

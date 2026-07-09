@@ -53,7 +53,7 @@ export const MEYZIEU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Meyzieu, dans l'est lyonnais, Axion-IA conçoit et augmente avec l'IA des sites web, catalogues et plateformes SaaS pour le tissu réel de la zone Meyzieu-Jonage / Mi-Plaine : PME industrielles, négoce B2B et transporteurs-logisticiens. UX/UI sur mesure, chatbot RAG ancré sur vos fiches techniques et vos contenus, recherche sémantique de pièces et références, portail client et demandes de devis enrichies. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Meyzieu, itérations à distance.",
+        hero: "À Meyzieu, dans l'est lyonnais, Axion-IA conçoit et augmente avec l'IA des sites web, catalogues et plateformes SaaS pour le tissu réel de la zone Meyzieu-Jonage / Mi-Plaine : PME industrielles, négoce B2B et transporteurs-logisticiens. UX/UI sur mesure, chatbot RAG ancré sur vos fiches techniques et vos contenus, recherche sémantique de pièces et références, portail client et demandes de devis enrichies. Devis à partir de 48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Meyzieu, itérations à distance.",
         whyHere: [
           "Cœur de cible local : les PME industrielles et le négoce de la zone Meyzieu-Jonage / Mi-Plaine (plus de 1 300 entreprises sur ~940 ha) ont besoin de catalogues techniques en ligne, de recherche de références et de portails de devis B2B, pas de vitrines génériques.",
           "Transport & logistique sur-représenté autour du Parc des Gaulnes (terminus T3, Rhônexpress, A46) : nous augmentons portails transporteurs, suivi de tournées, traçabilité d'expéditions et échanges EDI pour des acteurs du type Chronopost, UPS ou prestataires de la sous-traitance.",
@@ -64,7 +64,7 @@ export const MEYZIEU_COPY: VilleCopy = {
           {
             step: "Cadrage à Meyzieu",
             detail:
-              "Atelier sur site dans vos locaux de la zone Meyzieu-Jonage / Mi-Plaine ou du Parc des Gaulnes : objectifs, parcours utilisateurs, audit de la stack, du catalogue et des contenus techniques. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans vos locaux de la zone Meyzieu-Jonage / Mi-Plaine ou du Parc des Gaulnes : objectifs, parcours utilisateurs, audit de la stack, du catalogue et des contenus techniques. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const MEYZIEU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Meyzieu, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme logistique ou un catalogue technique étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à Meyzieu, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme logistique ou un catalogue technique étendu. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant, intégration aux logiciels de gestion et de stock déjà en place dans vos locaux de la Mi-Plaine ou du Parc des Gaulnes. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et documentés : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'est lyonnais ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant, intégration aux logiciels de gestion et de stock déjà en place dans vos locaux de la Mi-Plaine ou du Parc des Gaulnes. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et documentés : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'est lyonnais ou repris en interne.",
       },
       en: {
-        hero: "In Meyzieu, in eastern Lyon, Axion-IA designs and augments websites, catalogues and SaaS platforms with built-in AI for the real fabric of the Meyzieu-Jonage / Mi-Plaine industrial zone: industrial SMEs, B2B wholesalers and transport-logistics operators. Bespoke UX/UI, RAG chatbot grounded in your technical sheets and content, semantic part and reference search, client portal and enriched quote requests. Quote from 24-48 h depending on project complexity, EU/GDPR hosting, code and data yours. On-site Meyzieu kick-off, remote iterations.",
+        hero: "In Meyzieu, in eastern Lyon, Axion-IA designs and augments websites, catalogues and SaaS platforms with built-in AI for the real fabric of the Meyzieu-Jonage / Mi-Plaine industrial zone: industrial SMEs, B2B wholesalers and transport-logistics operators. Bespoke UX/UI, RAG chatbot grounded in your technical sheets and content, semantic part and reference search, client portal and enriched quote requests. Quote from 48 h depending on project complexity, EU/GDPR hosting, code and data yours. On-site Meyzieu kick-off, remote iterations.",
         whyHere: [
           "Local core target: the industrial SMEs and wholesalers of the Meyzieu-Jonage / Mi-Plaine zone (over 1,300 companies across ~940 ha) need online technical catalogues, reference search and B2B quote portals, not generic showcase sites.",
           "Transport & logistics over-represented around the Parc des Gaulnes (T3 terminus, Rhônexpress, A46): we augment carrier portals, route tracking, shipment traceability and EDI exchanges for operators such as Chronopost, UPS or industrial subcontractors.",
@@ -150,7 +150,7 @@ export const MEYZIEU_COPY: VilleCopy = {
           {
             step: "Scoping in Meyzieu",
             detail:
-              "On-site workshop at your premises in the Meyzieu-Jonage / Mi-Plaine zone or the Parc des Gaulnes: goals, user journeys, audit of the stack, catalogue and technical content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop at your premises in the Meyzieu-Jonage / Mi-Plaine zone or the Parc des Gaulnes: goals, user journeys, audit of the stack, catalogue and technical content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const MEYZIEU_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the on-site scoping in Meyzieu, we issue a firm fixed-price quote. The turnaround depends on complexity — from 24-48 h for a simple project, more for a logistics platform or an extensive technical catalogue. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the on-site scoping in Meyzieu, we issue a firm fixed-price quote. The turnaround depends on complexity — from 48 h for a simple project, more for a logistics platform or an extensive technical catalogue. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live with no service interruption when augmenting the existing site, integration with the management and stock software already in place at your Mi-Plaine or Parc des Gaulnes premises. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR-compliant and documented: full ownership, no imposed subscription, transferable to any eastern-Lyon provider or taken over in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live with no service interruption when augmenting the existing site, integration with the management and stock software already in place at your Mi-Plaine or Parc des Gaulnes premises. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR-compliant and documented: full ownership, no imposed subscription, transferable to any eastern-Lyon provider or taken over in-house.",
       },
     },
   },

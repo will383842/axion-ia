@@ -53,7 +53,7 @@ export const BIARRITZ_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Biarritz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, moteur de réservation directe, chatbot RAG multilingue FR/EN/ES ancré sur vos contenus, recherche sémantique, agents et automatisations. Calibré pour une station de la Côte basque où l'économie vit du tourisme premium, de l'hôtellerie de luxe et des palaces comme l'Hôtel du Palais ou le Sofitel Le Miramar, de la thalassothérapie, de la restauration autour des Halles de Biarritz, de l'événementiel et de l'écosystème surf né sur la Côte des Basques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Biarritz et dans tout le BAB, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Biarritz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, moteur de réservation directe, chatbot RAG multilingue FR/EN/ES ancré sur vos contenus, recherche sémantique, agents et automatisations. Calibré pour une station de la Côte basque où l'économie vit du tourisme premium, de l'hôtellerie de luxe et des palaces comme l'Hôtel du Palais ou le Sofitel Le Miramar, de la thalassothérapie, de la restauration autour des Halles de Biarritz, de l'événementiel et de l'écosystème surf né sur la Côte des Basques. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Biarritz et dans tout le BAB, itérations à distance.",
         whyHere: [
           "L'hôtellerie de luxe et les palaces structurent l'offre biarrote — Hôtel du Palais sur la Grande Plage, Sofitel Le Miramar, Regina face au phare : on construit des sites de réservation directe avec yield, conciergerie augmentée par chatbot et gestion automatisée des avis, pour reprendre la main sur les commissions des plateformes OTA et valoriser une marque haut de gamme.",
           "Clientèle internationale et frontière espagnole à 30 min via l'aéroport de Biarritz-Pays basque : nos chatbots RAG et agents conversationnels sont multilingues FR/EN/ES par défaut, pensés pour les restaurants du quartier Saint-Charles, les boutiques du centre-ville et les écoles de surf de la Côte des Basques qui accueillent une clientèle européenne et transfrontalière toute l'année.",
@@ -64,7 +64,7 @@ export const BIARRITZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Biarritz",
             detail:
-              "Atelier sur site (cœur de ville, quartier de la Grande Plage et de l'avenue Édouard VII, abords de la Côte des Basques, aéroport de Biarritz-Pays basque à 3 km, ou vos locaux dans le BAB) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville, quartier de la Grande Plage et de l'avenue Édouard VII, abords de la Côte des Basques, aéroport de Biarritz-Pays basque à 3 km, ou vos locaux dans le BAB) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const BIARRITZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison estivale sur la Côte basque. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire local du Pays basque ou de Nouvelle-Aquitaine, ou reprise en interne par vos équipes après transfert de compétences.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison estivale sur la Côte basque. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire local du Pays basque ou de Nouvelle-Aquitaine, ou reprise en interne par vos équipes après transfert de compétences.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Biarritz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, moteur de réservation directe, chatbot RAG multilingue FR/EN/ES ancré sur vos contenus, recherche sémantique, agents et automatisations. Calibré pour une station de la Côte basque où l'économie vit du tourisme premium, de l'hôtellerie de luxe et des palaces comme l'Hôtel du Palais ou le Sofitel Le Miramar, de la thalassothérapie, de la restauration autour des Halles de Biarritz, de l'événementiel et de l'écosystème surf né sur la Côte des Basques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Biarritz et dans tout le BAB, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Biarritz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, moteur de réservation directe, chatbot RAG multilingue FR/EN/ES ancré sur vos contenus, recherche sémantique, agents et automatisations. Calibré pour une station de la Côte basque où l'économie vit du tourisme premium, de l'hôtellerie de luxe et des palaces comme l'Hôtel du Palais ou le Sofitel Le Miramar, de la thalassothérapie, de la restauration autour des Halles de Biarritz, de l'événementiel et de l'écosystème surf né sur la Côte des Basques. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Biarritz et dans tout le BAB, itérations à distance.",
         whyHere: [
           "L'hôtellerie de luxe et les palaces structurent l'offre biarrote — Hôtel du Palais sur la Grande Plage, Sofitel Le Miramar, Regina face au phare : on construit des sites de réservation directe avec yield, conciergerie augmentée par chatbot et gestion automatisée des avis, pour reprendre la main sur les commissions des plateformes OTA et valoriser une marque haut de gamme.",
           "Clientèle internationale et frontière espagnole à 30 min via l'aéroport de Biarritz-Pays basque : nos chatbots RAG et agents conversationnels sont multilingues FR/EN/ES par défaut, pensés pour les restaurants du quartier Saint-Charles, les boutiques du centre-ville et les écoles de surf de la Côte des Basques qui accueillent une clientèle européenne et transfrontalière toute l'année.",
@@ -150,7 +150,7 @@ export const BIARRITZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Biarritz",
             detail:
-              "Atelier sur site (cœur de ville, quartier de la Grande Plage et de l'avenue Édouard VII, abords de la Côte des Basques, aéroport de Biarritz-Pays basque à 3 km, ou vos locaux dans le BAB) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville, quartier de la Grande Plage et de l'avenue Édouard VII, abords de la Côte des Basques, aéroport de Biarritz-Pays basque à 3 km, ou vos locaux dans le BAB) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -222,7 +222,7 @@ export const BIARRITZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison estivale sur la Côte basque. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire local du Pays basque ou de Nouvelle-Aquitaine, ou reprise en interne par vos équipes après transfert de compétences.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison estivale sur la Côte basque. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire local du Pays basque ou de Nouvelle-Aquitaine, ou reprise en interne par vos équipes après transfert de compétences.",
       },
     },
   },

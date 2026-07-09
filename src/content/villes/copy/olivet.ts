@@ -53,7 +53,7 @@ export const OLIVET_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de TPE de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de TPE de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
         whyHere: [
           "Territoire Cosmetic Valley : laboratoires, façonniers et marques de parfumerie-cosmétique gravitent autour d'Orléans et de son réseau de PME industrielles — on construit des vitrines e-commerce premium sous Shopify ou WooCommerce, des catalogues produits multilingues et des portails de suivi qualité augmentés par l'IA, branchés sur vos référentiels formulation et réglementaires.",
           "Tradition horticole et pépinières le long du Loiret : pour ces TPE saisonnières héritières des cultures maraîchères et ornementales de la vallée, on greffe un catalogue variétés en ligne, un configurateur de commande PrestaShop et un chatbot conseil planté sur vos fiches plantes, avec recherche sémantique par usage et exposition, sans refonte lourde.",
@@ -64,7 +64,7 @@ export const OLIVET_COPY: VilleCopy = {
           {
             step: "Cadrage à Olivet",
             detail:
-              "Atelier sur site (bords du Loiret, zones d'activité du sud d'Orléans, locaux de l'entreprise) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité horticole ou des cycles de lancement cosmétique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (bords du Loiret, zones d'activité du sud d'Orléans, locaux de l'entreprise) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité horticole ou des cycles de lancement cosmétique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const OLIVET_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une TPE de services ou une pépinière qui pilote sa trésorerie au plus juste.",
+            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une TPE de services ou une pépinière qui pilote sa trésorerie au plus juste.",
           },
           {
             q: "Gérez-vous la saisonnalité d'une pépinière ou d'un horticulteur ?",
@@ -136,10 +136,10 @@ export const OLIVET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vente horticole ou de lancement cosmétique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), documentés et conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Le projet est transférable à tout prestataire de la métropole orléanaise et du Loiret, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vente horticole ou de lancement cosmétique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), documentés et conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Le projet est transférable à tout prestataire de la métropole orléanaise et du Loiret, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de TPE de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de TPE de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
         whyHere: [
           "Territoire Cosmetic Valley : laboratoires, façonniers et marques de parfumerie-cosmétique gravitent autour d'Orléans et de son réseau de PME industrielles — on construit des vitrines e-commerce premium sous Shopify ou WooCommerce, des catalogues produits multilingues et des portails de suivi qualité augmentés par l'IA, branchés sur vos référentiels formulation et réglementaires.",
           "Tradition horticole et pépinières le long du Loiret : pour ces TPE saisonnières héritières des cultures maraîchères et ornementales de la vallée, on greffe un catalogue variétés en ligne, un configurateur de commande PrestaShop et un chatbot conseil planté sur vos fiches plantes, avec recherche sémantique par usage et exposition, sans refonte lourde.",
@@ -150,7 +150,7 @@ export const OLIVET_COPY: VilleCopy = {
           {
             step: "Cadrage à Olivet",
             detail:
-              "Atelier sur site (bords du Loiret, zones d'activité du sud d'Orléans, locaux de l'entreprise) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité horticole ou des cycles de lancement cosmétique. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (bords du Loiret, zones d'activité du sud d'Orléans, locaux de l'entreprise) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité horticole ou des cycles de lancement cosmétique. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const OLIVET_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une TPE de services ou une pépinière qui pilote sa trésorerie au plus juste.",
+            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une TPE de services ou une pépinière qui pilote sa trésorerie au plus juste.",
           },
           {
             q: "Gérez-vous la saisonnalité d'une pépinière ou d'un horticulteur ?",
@@ -222,7 +222,7 @@ export const OLIVET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vente horticole ou de lancement cosmétique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), documentés et conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Le projet est transférable à tout prestataire de la métropole orléanaise et du Loiret, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vente horticole ou de lancement cosmétique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), documentés et conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Le projet est transférable à tout prestataire de la métropole orléanaise et du Loiret, ou repris en interne par vos équipes.",
       },
     },
   },

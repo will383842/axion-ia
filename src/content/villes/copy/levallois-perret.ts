@@ -136,7 +136,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité. Conception UX/UI livrée avec design system, code et accès restant intégralement à votre nom — transférables à tout intégrateur francilien, sans verrou éditeur. Hébergement en UE par défaut et conformité RGPD dès la conception. Vos équipes éditent contenus et règles IA en autonomie après mise en ligne, grâce à une documentation runbook complète. Ateliers de cadrage et de recette tenus sur site dans vos locaux de Levallois-Perret.",
+          "Devis à partir de 48 h selon la complexité. Conception UX/UI livrée avec design system, code et accès restant intégralement à votre nom — transférables à tout intégrateur francilien, sans verrou éditeur. Hébergement en UE par défaut et conformité RGPD dès la conception. Vos équipes éditent contenus et règles IA en autonomie après mise en ligne, grâce à une documentation runbook complète. Ateliers de cadrage et de recette tenus sur site dans vos locaux de Levallois-Perret.",
       },
       en: {
         hero: "Levallois-Perret is one of Europe's most densely built communes and a premium tertiary stronghold of the Hauts-de-Seine: headquarters and major sites such as Devoteam (IT consultancy, rue Anatole France), L'Oréal (rue d'Alsace), Alstom (avenue André Malraux) and Saft sit alongside a tight fabric of consulting firms, communication agencies and creative studios — the legacy of a town that hosted the Eiffel workshops (Eiffel Tower components, the Statue of Liberty's frame), the Citroën factory and the Coty perfumery. Axion-IA designs AI-augmented websites and SaaS platforms for this demanding B2B clientele, from creative micro-businesses to the leadership of major HQs.",
@@ -222,7 +222,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24-48 h depending on complexity. UX/UI design delivered with a design system; code and access remain entirely in your name — transferable to any Paris-region integrator, with no vendor lock-in. EU hosting by default and GDPR compliance by design. Your teams edit content and AI rules autonomously after go-live, thanks to complete runbook documentation. Framing and QA workshops held on site at your Levallois-Perret offices.",
+          "Quote from 48 h depending on complexity. UX/UI design delivered with a design system; code and access remain entirely in your name — transferable to any Paris-region integrator, with no vendor lock-in. EU hosting by default and GDPR compliance by design. Your teams edit content and AI rules autonomously after go-live, thanks to complete runbook documentation. Framing and QA workshops held on site at your Levallois-Perret offices.",
       },
     },
   },

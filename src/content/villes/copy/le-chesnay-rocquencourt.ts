@@ -128,11 +128,11 @@ export const LE_CHESNAY_ROCQUENCOURT_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour un devis et quelles garanties ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Vous conservez la pleine propriété du code, des modèles et des intégrations, avec hébergement Europe conforme RGPD et zéro verrou éditeur. La conception démarre par un cadrage puis un kick-off sur site au Chesnay-Rocquencourt.",
+            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Vous conservez la pleine propriété du code, des modèles et des intégrations, avec hébergement Europe conforme RGPD et zéro verrou éditeur. La conception démarre par un cadrage puis un kick-off sur site au Chesnay-Rocquencourt.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne conforme au RGPD par défaut, DPO sur demande, et respect du secret professionnel pour les cabinets médicaux et juridiques du bassin versaillais. Code, modèles, intégrations et contenus restent intégralement votre propriété, transférables à tout intégrateur ou repris en interne — aucun verrou Axion-IA. Conception UX/UI, mobile et e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) couverts. Devis remis à partir de 24-48 h selon la complexité ; kick-off toujours sur site au Chesnay-Rocquencourt.",
+          "Hébergement en Union européenne conforme au RGPD par défaut, DPO sur demande, et respect du secret professionnel pour les cabinets médicaux et juridiques du bassin versaillais. Code, modèles, intégrations et contenus restent intégralement votre propriété, transférables à tout intégrateur ou repris en interne — aucun verrou Axion-IA. Conception UX/UI, mobile et e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) couverts. Devis remis à partir de 48 h selon la complexité ; kick-off toujours sur site au Chesnay-Rocquencourt.",
       },
       en: {
         hero: "Le Chesnay-Rocquencourt, a Yvelines commune formed by the 2019 merger of Le Chesnay and Rocquencourt (~31,900 residents, Versailles Grand Parc agglomeration), hosts Inria's national headquarters at the Domaine de Voluceau — the cradle of French computer-science research since the 1967 Plan Calcul, now home to the Digital Programs Agency and INESIA. Around it sit ~3,180 businesses: professional practices (doctors, lawyers, accountants, consultants), retail at Westfield Parly 2 and hospital services at André-Mignot. Axion-IA builds AI-augmented websites and SaaS platforms here, from the local practitioner's office to organisations across the Versailles basin.",
@@ -214,11 +214,11 @@ export const LE_CHESNAY_ROCQUENCOURT_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and what are the guarantees?",
-            a: "The quote is provided from 24-48 hours depending on project complexity. You keep full ownership of the code, models and integrations, with EU GDPR-compliant hosting and zero vendor lock-in. Design starts with a framing session then an on-site kick-off in Le Chesnay-Rocquencourt.",
+            a: "The quote is provided from 48 hours depending on project complexity. You keep full ownership of the code, models and integrations, with EU GDPR-compliant hosting and zero vendor lock-in. Design starts with a framing session then an on-site kick-off in Le Chesnay-Rocquencourt.",
           },
         ],
         guarantees:
-          "EU hosting compliant with GDPR by default, DPO on request, and respect for professional secrecy for medical and legal practices in the Versailles basin. Code, models, integrations and content remain entirely your property, transferable to any integrator or taken in-house — no Axion-IA lock-in. UX/UI, mobile and multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) covered. Quote provided from 24-48 hours depending on complexity; kick-off always on site in Le Chesnay-Rocquencourt.",
+          "EU hosting compliant with GDPR by default, DPO on request, and respect for professional secrecy for medical and legal practices in the Versailles basin. Code, models, integrations and content remain entirely your property, transferable to any integrator or taken in-house — no Axion-IA lock-in. UX/UI, mobile and multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) covered. Quote provided from 48 hours depending on complexity; kick-off always on site in Le Chesnay-Rocquencourt.",
       },
     },
   },

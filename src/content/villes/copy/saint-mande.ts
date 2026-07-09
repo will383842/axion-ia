@@ -52,7 +52,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Mandé des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 21 071 habitants sur seulement 0,92 km², en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris, où cohabitent des sièges sociaux structurants (IGN, Météo-France, Ubisoft installé en 2021), l'Hôpital d'Instruction des Armées Bégin avenue de Paris, un tissu serré de professions libérales et un commerce de proximité haut de gamme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Mandé, à 10 minutes de Paris par la ligne 1 (stations Saint-Mandé et Bérault), itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Mandé des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 21 071 habitants sur seulement 0,92 km², en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris, où cohabitent des sièges sociaux structurants (IGN, Météo-France, Ubisoft installé en 2021), l'Hôpital d'Instruction des Armées Bégin avenue de Paris, un tissu serré de professions libérales et un commerce de proximité haut de gamme. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Mandé, à 10 minutes de Paris par la ligne 1 (stations Saint-Mandé et Bérault), itérations à distance.",
         whyHere: [
           "Présence de sièges sociaux nationaux — l'IGN (Institut national de l'information géographique et forestière), Météo-France et Ubisoft installé en 2021 : on conçoit des portails métier, des outils internes et des plateformes SaaS IA-native branchés sur vos SI, on exploite vos données géographiques ou cartographiques par recherche sémantique, ou on greffe l'IA sur l'existant sans tout reconstruire ni vous enfermer dans un no-code.",
           "Densité record sur 0,92 km² et tissu de professions libérales (avocats, experts-comptables, notaires, professionnels de santé gravitant autour de l'Hôpital Bégin) : on bâtit des sites vitrines crédibles, des espaces clients sécurisés, de la prise de rendez-vous en ligne et des chatbots RAG multilingues calibrés pour le secret professionnel et les données médicales sensibles.",
@@ -63,7 +63,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Mandé",
             detail:
-              "Atelier sur site (cœur de ville avenue du Général-de-Gaulle, abords du Bois de Vincennes, sièges proches des stations Saint-Mandé ou Bérault) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville avenue du Général-de-Gaulle, abords du Bois de Vincennes, sièges proches des stations Saint-Mandé ou Bérault) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -131,14 +131,14 @@ export const SAINT_MANDE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Saint-Mandé, accessible en 10 minutes de Paris par la ligne 1, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur place à Saint-Mandé, accessible en 10 minutes de Paris par la ligne 1, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente un site déjà référencé localement. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni lock-in propriétaire. L'ensemble est transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes — du commerce de l'avenue du Général-de-Gaulle au siège type IGN ou Météo-France.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente un site déjà référencé localement. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni lock-in propriétaire. L'ensemble est transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes — du commerce de l'avenue du Général-de-Gaulle au siège type IGN ou Météo-France.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Mandé des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 21 071 habitants sur seulement 0,92 km², en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris, où cohabitent des sièges sociaux structurants (IGN, Météo-France, Ubisoft installé en 2021), l'Hôpital d'Instruction des Armées Bégin avenue de Paris, un tissu serré de professions libérales et un commerce de proximité haut de gamme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Mandé, à 10 minutes de Paris par la ligne 1 (stations Saint-Mandé et Bérault), itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Mandé des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 21 071 habitants sur seulement 0,92 km², en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris, où cohabitent des sièges sociaux structurants (IGN, Météo-France, Ubisoft installé en 2021), l'Hôpital d'Instruction des Armées Bégin avenue de Paris, un tissu serré de professions libérales et un commerce de proximité haut de gamme. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Mandé, à 10 minutes de Paris par la ligne 1 (stations Saint-Mandé et Bérault), itérations à distance.",
         whyHere: [
           "Présence de sièges sociaux nationaux — l'IGN (Institut national de l'information géographique et forestière), Météo-France et Ubisoft installé en 2021 : on conçoit des portails métier, des outils internes et des plateformes SaaS IA-native branchés sur vos SI, on exploite vos données géographiques ou cartographiques par recherche sémantique, ou on greffe l'IA sur l'existant sans tout reconstruire ni vous enfermer dans un no-code.",
           "Densité record sur 0,92 km² et tissu de professions libérales (avocats, experts-comptables, notaires, professionnels de santé gravitant autour de l'Hôpital Bégin) : on bâtit des sites vitrines crédibles, des espaces clients sécurisés, de la prise de rendez-vous en ligne et des chatbots RAG multilingues calibrés pour le secret professionnel et les données médicales sensibles.",
@@ -149,7 +149,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Mandé",
             detail:
-              "Atelier sur site (cœur de ville avenue du Général-de-Gaulle, abords du Bois de Vincennes, sièges proches des stations Saint-Mandé ou Bérault) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville avenue du Général-de-Gaulle, abords du Bois de Vincennes, sièges proches des stations Saint-Mandé ou Bérault) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -217,11 +217,11 @@ export const SAINT_MANDE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Saint-Mandé, accessible en 10 minutes de Paris par la ligne 1, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur place à Saint-Mandé, accessible en 10 minutes de Paris par la ligne 1, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente un site déjà référencé localement. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni lock-in propriétaire. L'ensemble est transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes — du commerce de l'avenue du Général-de-Gaulle au siège type IGN ou Météo-France.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente un site déjà référencé localement. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni lock-in propriétaire. L'ensemble est transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes — du commerce de l'avenue du Général-de-Gaulle au siège type IGN ou Météo-France.",
       },
     },
   },

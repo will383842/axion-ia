@@ -129,7 +129,7 @@ export const SARCELLES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevoir un devis pour un projet à Sarcelles ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet. Une boutique vitrine pour un joaillier se cadre vite ; une plateforme SaaS multi-tenant pour un éditeur Numixs ou un portail industriel intégré à l'ERP d'une ETI du Val de France demande un cadrage plus approfondi avant chiffrage.",
+            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet. Une boutique vitrine pour un joaillier se cadre vite ; une plateforme SaaS multi-tenant pour un éditeur Numixs ou un portail industriel intégré à l'ERP d'une ETI du Val de France demande un cadrage plus approfondi avant chiffrage.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD pour un site fait à Sarcelles ?",
@@ -137,7 +137,7 @@ export const SARCELLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité, périmètre et tarifs annoncés avant signature. Tous nos sites et plateformes SaaS sont développés en code custom et hébergés dans l'Union européenne, conformes RGPD avec registre de traitement et minimisation des données. Aucun verrou éditeur : le code, les données et la documentation vous appartiennent et sont repris en interne ou par tout prestataire francilien. UX/UI mobile-first, e-commerce multi-CMS et briques IA optionnelles selon votre métier — joaillerie, industrie du Val de France ou startup Numixs.",
+          "Devis remis à partir de 48 h selon la complexité, périmètre et tarifs annoncés avant signature. Tous nos sites et plateformes SaaS sont développés en code custom et hébergés dans l'Union européenne, conformes RGPD avec registre de traitement et minimisation des données. Aucun verrou éditeur : le code, les données et la documentation vous appartiennent et sont repris en interne ou par tout prestataire francilien. UX/UI mobile-first, e-commerce multi-CMS et briques IA optionnelles selon votre métier — joaillerie, industrie du Val de France ou startup Numixs.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for businesses in Sarcelles (Val-d'Oise, 59,173 inhabitants, sub-prefecture town). We serve three very different ecosystems: the city's diamond dealers, precious-stone wholesalers and jewellers (premium product catalogues, gemmological traceability, secure online sales), the manufacturers and logistics firms of the Parc d'Activité Technopolitain Val de France (75 ha, nearly 593 establishments — Daimler Buses France, Gilson, Sepur, Paprec) that need business portals and internal SaaS tools, and the young companies incubated at Station Numixs, attached to the Cergy IUT GEII department on the Sarcelles campus. Custom code, EU GDPR-compliant hosting, mobile-first UX/UI, multi-CMS e-commerce.",
@@ -215,7 +215,7 @@ export const SARCELLES_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote for a project in Sarcelles?",
-            a: "We provide a quote from 24 to 48 hours depending on project complexity. A showcase store for a jeweller is scoped quickly; a multi-tenant SaaS platform for a Numixs publisher or an industrial portal integrated with a Val de France mid-cap's ERP requires deeper framing before pricing.",
+            a: "We provide a quote from 48 hours depending on project complexity. A showcase store for a jeweller is scoped quickly; a multi-tenant SaaS platform for a Numixs publisher or an industrial portal integrated with a Val de France mid-cap's ERP requires deeper framing before pricing.",
           },
           {
             q: "How do you ensure GDPR compliance for a site built in Sarcelles?",
@@ -223,7 +223,7 @@ export const SARCELLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24 to 48 hours depending on complexity, with scope and pricing announced before signature. All our sites and SaaS platforms are developed in custom code and hosted in the European Union, GDPR-compliant with a processing register and data minimisation. No vendor lock-in: the code, data and documentation are yours and can be taken over in-house or by any Île-de-France provider. Mobile-first UX/UI, multi-CMS e-commerce and optional AI blocks depending on your trade — jewellery, Val de France industry or Numixs startup.",
+          "Quote delivered from 48 hours depending on complexity, with scope and pricing announced before signature. All our sites and SaaS platforms are developed in custom code and hosted in the European Union, GDPR-compliant with a processing register and data minimisation. No vendor lock-in: the code, data and documentation are yours and can be taken over in-house or by any Île-de-France provider. Mobile-first UX/UI, multi-CMS e-commerce and optional AI blocks depending on your trade — jewellery, Val de France industry or Numixs startup.",
       },
     },
   },

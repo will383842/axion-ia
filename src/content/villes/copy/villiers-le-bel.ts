@@ -121,7 +121,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour obtenir un devis pour mon site ou ma plateforme ?",
-            a: "Devis à partir de 24-48 h selon la complexité, après un premier échange. Pour un site vitrine de commerçant villierbellois le chiffrage est rapide ; pour un SaaS logistique multi-intégrations nous prenons le temps d'un cadrage technique avant d'engager un montant.",
+            a: "Devis à partir de 48 h selon la complexité, après un premier échange. Pour un site vitrine de commerçant villierbellois le chiffrage est rapide ; pour un SaaS logistique multi-intégrations nous prenons le temps d'un cadrage technique avant d'engager un montant.",
           },
           {
             q: "Travaillez-vous avec les TPE, artisans et entreprises adaptées de Villiers-le-Bel ?",
@@ -133,7 +133,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Nous concevons des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile-first, e-commerce multi-CMS — pour les entreprises de Villiers-le-Bel et de Roissy Pays de France. Devis à partir de 24-48 h selon la complexité. Hébergement en Union européenne, conformité RGPD et AI Act, DPA contractuel. Code, contenus et accès vous appartiennent : aucun verrou éditeur, reprise possible en interne ou par tout prestataire.",
+          "Nous concevons des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile-first, e-commerce multi-CMS — pour les entreprises de Villiers-le-Bel et de Roissy Pays de France. Devis à partir de 48 h selon la complexité. Hébergement en Union européenne, conformité RGPD et AI Act, DPA contractuel. Code, contenus et accès vous appartiennent : aucun verrou éditeur, reprise possible en interne ou par tout prestataire.",
       },
       en: {
         hero: "Villiers-le-Bel (95400, 30,053 residents, Roissy Pays de France) concentrates a fabric of very small businesses — wholesale trade, transport and logistics directly tied to Roissy-CDG, plus local trades and services — spread between the Technopolitain Val de France business park (20.26 ha, ~254 companies, in an Urban Free Zone) and the ZAC des Tissonvilliers III developed by Grand Paris Aménagement. Axion-IA designs AI-augmented websites and SaaS platforms for them, from a Technopolitain wholesaler's e-commerce to a carrier's logistics portal on Avenue des Entrepreneurs.",
@@ -207,7 +207,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
           },
           {
             q: "How fast can I get a quote for my site or platform?",
-            a: "Quote from 24-48h depending on complexity, after an initial discussion. For a Villiers-le-Bel retailer's showcase site the estimate is quick; for a multi-integration logistics SaaS we take time for a technical framing before committing to a figure.",
+            a: "Quote from 48h depending on complexity, after an initial discussion. For a Villiers-le-Bel retailer's showcase site the estimate is quick; for a multi-integration logistics SaaS we take time for a technical framing before committing to a figure.",
           },
           {
             q: "Do you work with Villiers-le-Bel micro-businesses, trades and adapted enterprises?",
@@ -219,7 +219,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "We design AI-augmented websites and SaaS platforms — UX/UI, mobile-first, multi-CMS e-commerce — for businesses in Villiers-le-Bel and Roissy Pays de France. Quote from 24-48h depending on complexity. European Union hosting, GDPR and AI Act compliance, contractual DPA. Code, content and access belong to you: no vendor lock-in, takeover possible in-house or by any provider.",
+          "We design AI-augmented websites and SaaS platforms — UX/UI, mobile-first, multi-CMS e-commerce — for businesses in Villiers-le-Bel and Roissy Pays de France. Quote from 48h depending on complexity. European Union hosting, GDPR and AI Act compliance, contractual DPA. Code, content and access belong to you: no vendor lock-in, takeover possible in-house or by any provider.",
       },
     },
   },

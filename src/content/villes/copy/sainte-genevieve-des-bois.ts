@@ -134,7 +134,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24-48 h selon la complexité. Code custom propriétaire, hébergement UE conforme RGPD, zéro no-code et zéro verrou éditeur : le site ou la plateforme vous appartient intégralement, repris en interne ou par tout prestataire de l'Essonne. UX/UI, mobile, e-commerce multi-CMS et IA couverts de bout en bout, des commerces de La Croix-Blanche aux PME de services génovéfaines, sans dépendance Axion-IA imposée.",
+          "Devis à partir de 48 h selon la complexité. Code custom propriétaire, hébergement UE conforme RGPD, zéro no-code et zéro verrou éditeur : le site ou la plateforme vous appartient intégralement, repris en interne ou par tout prestataire de l'Essonne. UX/UI, mobile, e-commerce multi-CMS et IA couverts de bout en bout, des commerces de La Croix-Blanche aux PME de services génovéfaines, sans dépendance Axion-IA imposée.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Sainte-Geneviève-des-Bois, the birthplace of French mass retail where Carrefour opened France's first hypermarket in 1963 and where La Croix-Blanche, the largest commercial park in Île-de-France, spans 700,000 m² with 250+ stores and ~4,164 jobs. We equip the park's retailers (Leroy Merlin, Decathlon, Boulanger, Fnac, Darty, Maisons du Monde, Kiabi), BTP craftspeople, business services and the public bodies of the Cœur d'Essonne Agglomération seat with custom code — UX/UI, mobile, multi-CMS e-commerce and AI — hosted in Europe, no no-code and no vendor lock-in.",
@@ -220,7 +220,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 24-48 h depending on complexity. Proprietary custom code, EU GDPR-compliant hosting, zero no-code and zero vendor lock-in: the site or platform is entirely yours, taken back in-house or by any Essonne provider. UX/UI, mobile, multi-CMS e-commerce and AI covered end to end, from La Croix-Blanche retailers to Sainte-Geneviève-des-Bois service SMEs, with no imposed Axion-IA dependency.",
+          "Quote within 48 h depending on complexity. Proprietary custom code, EU GDPR-compliant hosting, zero no-code and zero vendor lock-in: the site or platform is entirely yours, taken back in-house or by any Essonne provider. UX/UI, mobile, multi-CMS e-commerce and AI covered end to end, from La Croix-Blanche retailers to Sainte-Geneviève-des-Bois service SMEs, with no imposed Axion-IA dependency.",
       },
     },
   },

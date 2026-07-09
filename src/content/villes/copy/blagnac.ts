@@ -69,7 +69,7 @@ export const BLAGNAC_COPY: VilleCopy = {
           {
             step: "Architecture et maquettage",
             detail:
-              "Conception UX/UI desktop et mobile, choix de la stack (CMS headless, e-commerce, framework sur mesure) et des points d'intégration IA : chatbot RAG sur votre documentation, qualification automatique des leads, recherche sémantique. Devis à partir de 24-48 h selon la complexité.",
+              "Conception UX/UI desktop et mobile, choix de la stack (CMS headless, e-commerce, framework sur mesure) et des points d'intégration IA : chatbot RAG sur votre documentation, qualification automatique des leads, recherche sémantique. Devis à partir de 48 h selon la complexité.",
           },
           {
             step: "Développement et intégration IA",
@@ -132,11 +132,11 @@ export const BLAGNAC_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis ?",
-            a: "À partir de 24-48 h selon la complexité du projet. Nous cadrons le périmètre à Blagnac, puis vous transmettons une proposition chiffrée avec scope précis. Vous gardez ensuite la maîtrise complète du code et des contenus livrés.",
+            a: "À partir de 48 h selon la complexité du projet. Nous cadrons le périmètre à Blagnac, puis vous transmettons une proposition chiffrée avec scope précis. Vous gardez ensuite la maîtrise complète du code et des contenus livrés.",
           },
         ],
         guarantees:
-          "Conformité RGPD et AI Act, hébergement des données en UE par défaut. Sites et plateformes pensés performance (Web Vitals) et accessibilité, UX/UI desktop et mobile, e-commerce multi-CMS et IA intégrée. Code et contenus portables, repris par vos équipes ou tout intégrateur de l'écosystème toulousain — aucun verrou éditeur, aucune dépendance contractuelle durable. Devis à partir de 24-48 h selon la complexité, scope et livrables définis avant signature.",
+          "Conformité RGPD et AI Act, hébergement des données en UE par défaut. Sites et plateformes pensés performance (Web Vitals) et accessibilité, UX/UI desktop et mobile, e-commerce multi-CMS et IA intégrée. Code et contenus portables, repris par vos équipes ou tout intégrateur de l'écosystème toulousain — aucun verrou éditeur, aucune dépendance contractuelle durable. Devis à partir de 48 h selon la complexité, scope et livrables définis avant signature.",
       },
       en: {
         hero: "Blagnac brings together, on a single territory, Airbus' global headquarters, ATR (the Airbus/Leonardo joint venture) and the 272-hectare AéroConstellation zone that hosted the A380 final assembly line — Europe's largest aeronautics site. Around these prime contractors revolves a dense supply chain of design offices, precision-machining workshops, equipment suppliers and IT services firms (Capgemini, Sogeti, Derichebourg Aeronautics, Akka). Axion-IA builds AI-augmented websites and SaaS platforms for these players: aerospace tender qualification, traceable supplier portals, technical document search — EU-hosted, GDPR-compliant, with no vendor lock-in.",
@@ -155,7 +155,7 @@ export const BLAGNAC_COPY: VilleCopy = {
           {
             step: "Architecture and prototyping",
             detail:
-              "Desktop and mobile UX/UI design, stack selection (headless CMS, e-commerce, custom framework) and AI integration points: RAG chatbot on your documentation, automatic lead qualification, semantic search. Quote from 24-48 h depending on complexity.",
+              "Desktop and mobile UX/UI design, stack selection (headless CMS, e-commerce, custom framework) and AI integration points: RAG chatbot on your documentation, automatic lead qualification, semantic search. Quote from 48 h depending on complexity.",
           },
           {
             step: "Development and AI integration",
@@ -218,11 +218,11 @@ export const BLAGNAC_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote?",
-            a: "From 24-48 h depending on project complexity. We frame the scope in Blagnac, then send you a costed proposal with a precise scope. You then keep full control of the delivered code and content.",
+            a: "From 48 h depending on project complexity. We frame the scope in Blagnac, then send you a costed proposal with a precise scope. You then keep full control of the delivered code and content.",
           },
         ],
         guarantees:
-          "GDPR and AI Act compliance, EU data hosting by default. Sites and platforms built for performance (Web Vitals) and accessibility, desktop and mobile UX/UI, multi-CMS e-commerce and integrated AI. Portable code and content, taken over by your teams or any integrator in the Toulouse ecosystem — no vendor lock-in, no lasting contractual dependency. Quote from 24-48 h depending on complexity, scope and deliverables defined before signature.",
+          "GDPR and AI Act compliance, EU data hosting by default. Sites and platforms built for performance (Web Vitals) and accessibility, desktop and mobile UX/UI, multi-CMS e-commerce and integrated AI. Portable code and content, taken over by your teams or any integrator in the Toulouse ecosystem — no vendor lock-in, no lasting contractual dependency. Quote from 48 h depending on complexity, scope and deliverables defined before signature.",
       },
     },
   },

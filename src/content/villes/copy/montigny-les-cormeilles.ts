@@ -51,7 +51,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Montigny-lès-Cormeilles des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 22 457 habitants du Val-d'Oise, dans l'agglomération Val Parisis, où le tissu mêle TPE et PME du commerce de détail, du BTP, du transport et de la restauration, autour de zones structurantes comme la ZAC La Tuilerie (11,16 ha, enseignes type Leroy Merlin) et la ZAE RD 14. Avec la transformation de l'entrée de ville lancée en 2024 (~2 M€ d'aides d'État, près de 900 logements et rez-de-chaussée commerciaux d'ici 2030), les besoins de présence en ligne et de boutiques connectées explosent. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Cormeilles, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montigny-lès-Cormeilles des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 22 457 habitants du Val-d'Oise, dans l'agglomération Val Parisis, où le tissu mêle TPE et PME du commerce de détail, du BTP, du transport et de la restauration, autour de zones structurantes comme la ZAC La Tuilerie (11,16 ha, enseignes type Leroy Merlin) et la ZAE RD 14. Avec la transformation de l'entrée de ville lancée en 2024 (~2 M€ d'aides d'État, près de 900 logements et rez-de-chaussée commerciaux d'ici 2030), les besoins de présence en ligne et de boutiques connectées explosent. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Cormeilles, itérations à distance.",
         whyHere: [
           "Commerce de détail dense en cœur de ville et sur la ZAC La Tuilerie (11,16 ha, 64 entreprises, enseignes de bricolage et d'équipement type Leroy Merlin) : nous construisons des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) et des parcours d'achat mobile-first calibrés pour des clientèles de proximité et le click-and-collect.",
           "Transport terrestre et logistique structurants dans le bassin Val Parisis, à 25 km de Paris et 35 km de Roissy-CDG, avec la ZAE RD 14 (8,77 ha, 88 établissements le long de la RD14) : nous automatisons devis, planning et suivi de tournées par des agents IA branchés sur vos outils existants, du formulaire de transport à l'ERP.",
@@ -62,7 +62,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
           {
             step: "Cadrage à Montigny-lès-Cormeilles",
             detail:
-              "Atelier sur site (cœur de ville, ZAC La Tuilerie, ZAE RD 14 et Les Taignies, accès gares Montigny-Beauchamp et La Frette-Montigny) : on cadre objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville, ZAC La Tuilerie, ZAE RD 14 et Les Taignies, accès gares Montigny-Beauchamp et La Frette-Montigny) : on cadre objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Montigny-lès-Cormeilles, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint de développement.",
+            a: "Oui. Après le cadrage sur site à Montigny-lès-Cormeilles, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint de développement.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre figé par écrit. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence pour un commerce de la ZAC La Tuilerie ou un artisan en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou, transférable à tout prestataire local d'Île-de-France ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre figé par écrit. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence pour un commerce de la ZAC La Tuilerie ou un artisan en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou, transférable à tout prestataire local d'Île-de-France ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Montigny-lès-Cormeilles des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 22 457 habitants du Val-d'Oise, dans l'agglomération Val Parisis, où le tissu mêle TPE et PME du commerce de détail, du BTP, du transport et de la restauration, autour de zones structurantes comme la ZAC La Tuilerie (11,16 ha, enseignes type Leroy Merlin) et la ZAE RD 14. Avec la transformation de l'entrée de ville lancée en 2024 (~2 M€ d'aides d'État, près de 900 logements et rez-de-chaussée commerciaux d'ici 2030), les besoins de présence en ligne et de boutiques connectées explosent. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Cormeilles, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montigny-lès-Cormeilles des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 22 457 habitants du Val-d'Oise, dans l'agglomération Val Parisis, où le tissu mêle TPE et PME du commerce de détail, du BTP, du transport et de la restauration, autour de zones structurantes comme la ZAC La Tuilerie (11,16 ha, enseignes type Leroy Merlin) et la ZAE RD 14. Avec la transformation de l'entrée de ville lancée en 2024 (~2 M€ d'aides d'État, près de 900 logements et rez-de-chaussée commerciaux d'ici 2030), les besoins de présence en ligne et de boutiques connectées explosent. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Cormeilles, itérations à distance.",
         whyHere: [
           "Commerce de détail dense en cœur de ville et sur la ZAC La Tuilerie (11,16 ha, 64 entreprises, enseignes de bricolage et d'équipement type Leroy Merlin) : nous construisons des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) et des parcours d'achat mobile-first calibrés pour des clientèles de proximité et le click-and-collect.",
           "Transport terrestre et logistique structurants dans le bassin Val Parisis, à 25 km de Paris et 35 km de Roissy-CDG, avec la ZAE RD 14 (8,77 ha, 88 établissements le long de la RD14) : nous automatisons devis, planning et suivi de tournées par des agents IA branchés sur vos outils existants, du formulaire de transport à l'ERP.",
@@ -148,7 +148,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
           {
             step: "Cadrage à Montigny-lès-Cormeilles",
             detail:
-              "Atelier sur site (cœur de ville, ZAC La Tuilerie, ZAE RD 14 et Les Taignies, accès gares Montigny-Beauchamp et La Frette-Montigny) : on cadre objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme remis à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (cœur de ville, ZAC La Tuilerie, ZAE RD 14 et Les Taignies, accès gares Montigny-Beauchamp et La Frette-Montigny) : on cadre objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme remis à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Montigny-lès-Cormeilles, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint de développement.",
+            a: "Oui. Après le cadrage sur site à Montigny-lès-Cormeilles, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint de développement.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre figé par écrit. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence pour un commerce de la ZAC La Tuilerie ou un artisan en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou, transférable à tout prestataire local d'Île-de-France ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre figé par écrit. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence pour un commerce de la ZAC La Tuilerie ou un artisan en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou, transférable à tout prestataire local d'Île-de-France ou repris en interne.",
       },
     },
   },

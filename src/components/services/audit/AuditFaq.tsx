@@ -140,11 +140,11 @@ export function AuditFaq({ isFr, villeContext, villeSpecificFaqs }: AuditFaqProp
 
   const description = villeContext
     ? isFr
-      ? `Les 6 questions que tout dirigeant pose avant de réserver un audit IA, complétées de précisions pour les entreprises de ${villeContext.name}. Si la vôtre n'y est pas, écrivez-nous — on répond sous 24 h ouvrées.`
-      : `The 6 questions every leader asks before booking, plus specifics for ${villeContext.name}-area companies. Not yours? Write us — we reply within 24 business hours.`
+      ? `Les 6 questions que tout dirigeant pose avant de réserver un audit IA, complétées de précisions pour les entreprises de ${villeContext.name}. Si la vôtre n'y est pas, écrivez-nous — on répond sous 48 h ouvrées.`
+      : `The 6 questions every leader asks before booking, plus specifics for ${villeContext.name}-area companies. Not yours? Write us — we reply within 48 business hours.`
     : isFr
-      ? "Les 6 questions que tout dirigeant pose avant de réserver. Si la vôtre n'y est pas, écrivez-nous — on répond sous 24 h ouvrées."
-      : "The 6 questions every leader asks before booking. Not yours? Write us — we reply within 24 business hours.";
+      ? "Les 6 questions que tout dirigeant pose avant de réserver. Si la vôtre n'y est pas, écrivez-nous — on répond sous 48 h ouvrées."
+      : "The 6 questions every leader asks before booking. Not yours? Write us — we reply within 48 business hours.";
 
   return (
     <Section

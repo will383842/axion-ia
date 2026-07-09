@@ -50,7 +50,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente au Grand-Quevilly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 25 789 habitants de la métropole rouennaise, où la zone industrialo-portuaire de la rive gauche de la Seine — pétrochimie autour de Borealis/GPN (engrais, près de 360 salariés sur 100 hectares), stockage de produits liquides chez Rubis Terminal, valorisation des déchets à l'usine Vesta — côtoie la logistique HAROPA Port de Rouen, le commerce et les grands équipements culturels du Zénith de Rouen. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Grand-Quevilly, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Grand-Quevilly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 25 789 habitants de la métropole rouennaise, où la zone industrialo-portuaire de la rive gauche de la Seine — pétrochimie autour de Borealis/GPN (engrais, près de 360 salariés sur 100 hectares), stockage de produits liquides chez Rubis Terminal, valorisation des déchets à l'usine Vesta — côtoie la logistique HAROPA Port de Rouen, le commerce et les grands équipements culturels du Zénith de Rouen. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Grand-Quevilly, itérations à distance.",
         whyHere: [
           "Tissu de sous-traitants pétrochimiques et industriels gravitant autour de Borealis/GPN (engrais, près de 360 salariés, 100 hectares) et de Rubis Terminal : on greffe sur leur site ou leur SI des portails de suivi qualité, de traçabilité ICPE/Seveso et de devis, ou une plateforme métier sur mesure en code propre, sans imposer de refonte coûteuse ni de no-code propriétaire.",
           "Logistique fluviale et terrestre de la zone industrialo-portuaire HAROPA Port de Rouen, adossée à la Seine et à la nationale 338 (Sud III) reliée à l'A13 : nos agents et automatisations fluidifient le suivi des flux multimodaux, la facturation et le planning des prestataires transport et du commerce de gros, avec recherche sémantique sur les documents de transport.",
@@ -61,7 +61,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           {
             step: "Cadrage au Grand-Quevilly",
             detail:
-              "Atelier sur site (centre-ville, zone industrialo-portuaire de la rive gauche de la Seine, quartier du Bois Cany) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles ICPE. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville, zone industrialo-portuaire de la rive gauche de la Seine, quartier du Bois Cany) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles ICPE. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site au Grand-Quevilly, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur site au Grand-Quevilly, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — sans interrompre la production de la zone industrialo-portuaire ni la billetterie culturelle. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire de la métropole rouennaise ou de Normandie, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — sans interrompre la production de la zone industrialo-portuaire ni la billetterie culturelle. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire de la métropole rouennaise ou de Normandie, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente au Grand-Quevilly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 25 789 habitants de la métropole rouennaise, où la zone industrialo-portuaire de la rive gauche de la Seine — pétrochimie autour de Borealis/GPN (engrais, près de 360 salariés sur 100 hectares), stockage de produits liquides chez Rubis Terminal, valorisation des déchets à l'usine Vesta — côtoie la logistique HAROPA Port de Rouen, le commerce et les grands équipements culturels du Zénith de Rouen. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Grand-Quevilly, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Grand-Quevilly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 25 789 habitants de la métropole rouennaise, où la zone industrialo-portuaire de la rive gauche de la Seine — pétrochimie autour de Borealis/GPN (engrais, près de 360 salariés sur 100 hectares), stockage de produits liquides chez Rubis Terminal, valorisation des déchets à l'usine Vesta — côtoie la logistique HAROPA Port de Rouen, le commerce et les grands équipements culturels du Zénith de Rouen. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Grand-Quevilly, itérations à distance.",
         whyHere: [
           "Tissu de sous-traitants pétrochimiques et industriels gravitant autour de Borealis/GPN (engrais, près de 360 salariés, 100 hectares) et de Rubis Terminal : on greffe sur leur site ou leur SI des portails de suivi qualité, de traçabilité ICPE/Seveso et de devis, ou une plateforme métier sur mesure en code propre, sans imposer de refonte coûteuse ni de no-code propriétaire.",
           "Logistique fluviale et terrestre de la zone industrialo-portuaire HAROPA Port de Rouen, adossée à la Seine et à la nationale 338 (Sud III) reliée à l'A13 : nos agents et automatisations fluidifient le suivi des flux multimodaux, la facturation et le planning des prestataires transport et du commerce de gros, avec recherche sémantique sur les documents de transport.",
@@ -147,7 +147,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           {
             step: "Cadrage au Grand-Quevilly",
             detail:
-              "Atelier sur site (centre-ville, zone industrialo-portuaire de la rive gauche de la Seine, quartier du Bois Cany) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles ICPE. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (centre-ville, zone industrialo-portuaire de la rive gauche de la Seine, quartier du Bois Cany) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles ICPE. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site au Grand-Quevilly, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur site au Grand-Quevilly, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — sans interrompre la production de la zone industrialo-portuaire ni la billetterie culturelle. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire de la métropole rouennaise ou de Normandie, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — sans interrompre la production de la zone industrialo-portuaire ni la billetterie culturelle. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire de la métropole rouennaise ou de Normandie, ou repris en interne par vos équipes.",
       },
     },
   },

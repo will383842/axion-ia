@@ -53,7 +53,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Aix-les-Bains des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Aix conjugue un cœur thermal et touristique (2e station thermale de France après Dax, Thermes Chevalley et Marlioz, Casino Grand Cercle, Riviera des Alpes au bord du lac du Bourget) et un tissu industriel de premier plan — GE Grid Solutions en haute tension, le groupe Léon Grosse, Les Maroquineries des Alpes. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Aix-les-Bains, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Aix-les-Bains des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Aix conjugue un cœur thermal et touristique (2e station thermale de France après Dax, Thermes Chevalley et Marlioz, Casino Grand Cercle, Riviera des Alpes au bord du lac du Bourget) et un tissu industriel de premier plan — GE Grid Solutions en haute tension, le groupe Léon Grosse, Les Maroquineries des Alpes. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Aix-les-Bains, itérations à distance.",
         whyHere: [
           "Tourisme & thermalisme saisonnier : sites de réservation et portails curistes pour l'hôtellerie thermale, Valvital (Thermes Chevalley, rhumatologie/phlébologie) et le Domaine de Marlioz (voies respiratoires) — multilingue, pics de saison et gestion d'avis intégrés.",
           "Industrie & B2B : plateformes métier et portails clients pour les acteurs comme GE Grid Solutions (haute tension), le groupe BTP Léon Grosse ou Les Maroquineries des Alpes — branchés sur vos CRM/ERP, pas de simple vitrine.",
@@ -64,7 +64,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
           {
             step: "Cadrage à Aix-les-Bains",
             detail:
-              "Atelier sur site, au cabinet, à l'hôtel thermal ou en zone d'activité : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site, au cabinet, à l'hôtel thermal ou en zone d'activité : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, gestion intégrée des pics de saison thermale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin du lac du Bourget ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, gestion intégrée des pics de saison thermale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin du lac du Bourget ou repris en interne.",
       },
       en: {
-        hero: "In Aix-les-Bains, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Aix combines a thermal and tourism core (France's 2nd thermal spa town after Dax, the Chevalley and Marlioz spas, the Grand Cercle Casino, the Riviera des Alpes on Lake Bourget) with a leading industrial base — GE Grid Solutions in high-voltage equipment, the Léon Grosse construction group, Les Maroquineries des Alpes. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Aix-les-Bains kick-off, remote iterations.",
+        hero: "In Aix-les-Bains, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Aix combines a thermal and tourism core (France's 2nd thermal spa town after Dax, the Chevalley and Marlioz spas, the Grand Cercle Casino, the Riviera des Alpes on Lake Bourget) with a leading industrial base — GE Grid Solutions in high-voltage equipment, the Léon Grosse construction group, Les Maroquineries des Alpes. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Aix-les-Bains kick-off, remote iterations.",
         whyHere: [
           "Seasonal tourism & thermal spa: booking sites and spa-guest portals for thermal hotels, Valvital (Chevalley spa, rheumatology/phlebology) and the Marlioz estate (respiratory care) — multilingual, peak-season handling and review management built in.",
           "Industry & B2B: business platforms and client portals for players like GE Grid Solutions (high-voltage), the Léon Grosse construction group or Les Maroquineries des Alpes — wired into your CRM/ERP, not a mere brochure site.",
@@ -150,7 +150,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
           {
             step: "Scoping in Aix-les-Bains",
             detail:
-              "On-site workshop, at your office, thermal hotel or business park: goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop, at your office, thermal hotel or business park: goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -222,7 +222,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Zero-downtime go-live when augmenting an existing site, with built-in handling of thermal-season peaks. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered in your infrastructure (EU hosting available), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider around Lake Bourget or taken over in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Zero-downtime go-live when augmenting an existing site, with built-in handling of thermal-season peaks. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered in your infrastructure (EU hosting available), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider around Lake Bourget or taken over in-house.",
       },
     },
   },

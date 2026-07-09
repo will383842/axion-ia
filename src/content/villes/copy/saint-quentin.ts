@@ -132,11 +132,11 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Saint-Quentin ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Les axes A26 et A29 et la liaison ferroviaire vers Paris-Nord nous permettent de venir lancer le projet sur site dans tout le Saint-Quentinois.",
+            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Les axes A26 et A29 et la liaison ferroviaire vers Paris-Nord nous permettent de venir lancer le projet sur site dans tout le Saint-Quentinois.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne et conformité RGPD et AI Act intégrées dès la conception. Budget de performance respecté : sites rapides sur mobile (Web Vitals maîtrisés), pensés pour la recherche locale et B2B. Devis remis à partir de 24 à 48 h selon la complexité. Vous restez propriétaire de votre code, de vos données et de vos contenus, transférables à tout prestataire des Hauts-de-France ou repris en interne — aucun verrou éditeur, aucune dépendance contractuelle imposée.",
+          "Hébergement en Union européenne et conformité RGPD et AI Act intégrées dès la conception. Budget de performance respecté : sites rapides sur mobile (Web Vitals maîtrisés), pensés pour la recherche locale et B2B. Devis remis à partir de 48 h selon la complexité. Vous restez propriétaire de votre code, de vos données et de vos contenus, transférables à tout prestataire des Hauts-de-France ou repris en interne — aucun verrou éditeur, aucune dépendance contractuelle imposée.",
       },
       en: {
         hero: "Saint-Quentin concentrates an export-driven manufacturing base rare for a town in the Aisne: Yamaha Motor Manufacturing Europe (former MBK), France's last motorcycle and scooter plant, which started an electric-bike motor line in March 2024; the L'Oréal cosmetics hub with Soprocos (the CeraVe dermatological range produced for Europe, a €70m investment) and Fapagau perfumery in Gauchy; Le Creuset and its cookware foundries; Tereos in sugar and agri-industry. This fabric now leans on EuraTechnologies Saint-Quentin, an incubator dedicated to industry, robotics and digital (\"robonumérique\") on avenue Archimède. Axion-IA designs AI-augmented websites and SaaS platforms for these manufacturers, e-merchants and robonumeric startups, hosted in the European Union and GDPR-compliant.",
@@ -218,11 +218,11 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you provide a quote in Saint-Quentin?",
-            a: "We provide a quote from 24 to 48 hours depending on project complexity, after an initial framing call. The A26 and A29 motorways and the rail link to Paris-Nord let us come and launch the project on site across the Saint-Quentin area.",
+            a: "We provide a quote from 48 hours depending on project complexity, after an initial framing call. The A26 and A29 motorways and the rail link to Paris-Nord let us come and launch the project on site across the Saint-Quentin area.",
           },
         ],
         guarantees:
-          "EU hosting and GDPR and AI Act compliance built in from the design stage. Performance budget respected: fast mobile sites (controlled Web Vitals), built for local and B2B search. Quote provided from 24 to 48 hours depending on complexity. You remain owner of your code, your data and your content, transferable to any Hauts-de-France provider or taken in-house — no vendor lock-in, no imposed contractual dependency.",
+          "EU hosting and GDPR and AI Act compliance built in from the design stage. Performance budget respected: fast mobile sites (controlled Web Vitals), built for local and B2B search. Quote provided from 48 hours depending on complexity. You remain owner of your code, your data and your content, transferable to any Hauts-de-France provider or taken in-house — no vendor lock-in, no imposed contractual dependency.",
       },
     },
   },

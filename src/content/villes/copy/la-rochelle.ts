@@ -136,7 +136,7 @@ export const LA_ROCHELLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité du projet. Tous nos sites et plateformes SaaS sont livrés avec le code source et la documentation : vous en êtes propriétaire, sans verrou éditeur ni dépendance à Axion-IA, et la maintenance est reprenable en interne ou par tout prestataire de la French Tech Atlantic Valley. Hébergement en Union européenne et conformité RGPD par défaut sur l'ensemble des traitements (données clients export, réservations touristiques, flux documentaires portuaires). Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA sur une même mission, avec des Web Vitals soignés dès la conception.",
+          "Devis à partir de 48 h selon la complexité du projet. Tous nos sites et plateformes SaaS sont livrés avec le code source et la documentation : vous en êtes propriétaire, sans verrou éditeur ni dépendance à Axion-IA, et la maintenance est reprenable en interne ou par tout prestataire de la French Tech Atlantic Valley. Hébergement en Union européenne et conformité RGPD par défaut sur l'ensemble des traitements (données clients export, réservations touristiques, flux documentaires portuaires). Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA sur une même mission, avec des Web Vitals soignés dès la conception.",
       },
       en: {
         hero: "In La Rochelle (17), a website or SaaS platform isn't a cosmetic exercise: it exists to sell boats for export, smooth the port logistics of La Pallice and absorb the July-August tourist peaks. Axion-IA designs AI-augmented websites and SaaS products for boat builders (Fountaine Pajot, Dufour Yachts, Amel), the city's nautical supply chain, the industrial firms and logisticians of the Périgny industrial zone and the Grand Port Maritime, French Tech Atlantic Valley startups and tourism operators. UX/UI, mobile, multi-CMS e-commerce and AI (RAG chatbot, configurators, automated quotes, semantic search), code delivered to you, hosting in the European Union and GDPR compliance.",
@@ -222,7 +222,7 @@ export const LA_ROCHELLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 24 to 48 hours depending on project complexity. Every website and SaaS platform is delivered with source code and documentation: you own it, with no vendor lock-in or dependence on Axion-IA, and maintenance can be taken in-house or by any French Tech Atlantic Valley provider. EU hosting and GDPR compliance by default across all processing (export customer data, tourist bookings, port document flows). We deliver UX/UI, mobile, multi-CMS e-commerce and AI within a single engagement, with Web Vitals handled from the design stage.",
+          "Quote within 48 hours depending on project complexity. Every website and SaaS platform is delivered with source code and documentation: you own it, with no vendor lock-in or dependence on Axion-IA, and maintenance can be taken in-house or by any French Tech Atlantic Valley provider. EU hosting and GDPR compliance by default across all processing (export customer data, tourist bookings, port document flows). We deliver UX/UI, mobile, multi-CMS e-commerce and AI within a single engagement, with Web Vitals handled from the design stage.",
       },
     },
   },

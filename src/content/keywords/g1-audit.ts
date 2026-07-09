@@ -156,7 +156,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       resultat: "devis reçu en 24 h",
       chiffre: "24",
       unite: "heures",
-      delai: "sous 24 h",
+      delai: "sous 48 h",
     },
     urlCible: "/fr/audit/tpe-1-jour",
     canonicalParent: "/fr/audit/",
@@ -880,7 +880,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "Agence IA PME — diagnostic et priorisation pour une transformation qui tient la route",
       metaTitle: "Agence IA PME diagnostic priorisation | Axion-IA",
       metaDescription:
-        "Axion-IA, agence IA opérationnelle pour PME. Diagnostic process, priorisation ROI, feuille de route 6 mois. Devis sous 24 h.",
+        "Axion-IA, agence IA opérationnelle pour PME. Diagnostic process, priorisation ROI, feuille de route 6 mois. Devis sous 48 h.",
       h2Variants: [
         "Qu'est-ce qu'une agence IA fait concrètement pour une PME ?",
         "Comment une agence IA priorise les chantiers d'une PME ?",
@@ -908,9 +908,9 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Demandez votre devis audit IA PME — personnalisé selon votre taille et secteur",
-      metaTitle: "Devis audit IA PME | Axion-IA — Réponse sous 24 h",
+      metaTitle: "Devis audit IA PME | Axion-IA — Réponse sous 48 h",
       metaDescription:
-        "Audit IA PME sur mesure selon votre effectif et secteur. Devis gratuit envoyé sous 24 h. Aucun engagement. Cabinet IA certifié.",
+        "Audit IA PME sur mesure selon votre effectif et secteur. Devis gratuit envoyé sous 48 h. Aucun engagement. Cabinet IA certifié.",
       h2Variants: [
         "Comment est calculé le tarif d'un audit IA pour une PME ?",
         "Quel budget prévoir pour un audit IA selon la taille de la PME ?",
@@ -921,7 +921,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       resultat: "tarif sur mesure",
       chiffre: "24",
       unite: "heures",
-      delai: "sous 24 h",
+      delai: "sous 48 h",
     },
     urlCible: "/fr/audit/pme",
     canonicalParent: "/fr/audit/",

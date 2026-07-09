@@ -52,7 +52,7 @@ export const LUNEL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lunel des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Pays de Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, où le tissu est fait de TPE et PME du commerce, de la construction, du transport et de l'agriculture, réparties sur sept zones d'activité commerciales et artisanales d'environ 53 hectares. Hypermarchés Arpel et Preal en tête de la distribution locale, LRM sur les granulats : on s'adresse à cette économie concrète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lunel, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Lunel des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Pays de Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, où le tissu est fait de TPE et PME du commerce, de la construction, du transport et de l'agriculture, réparties sur sept zones d'activité commerciales et artisanales d'environ 53 hectares. Hypermarchés Arpel et Preal en tête de la distribution locale, LRM sur les granulats : on s'adresse à cette économie concrète. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lunel, itérations à distance.",
         whyHere: [
           "Économie très commerçante : 30,3 % des établissements relèvent du commerce-transport-hébergement, avec les hypermarchés Arpel et Preal en tête de la distribution lunelloise. On bâtit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et des vitrines locales, avec click-and-collect et recherche sémantique pour le commerce de centre-ville autour des arènes comme pour les enseignes de zone.",
           "Sept zones d'activité étalées sur environ 53 hectares regroupent près de 450 entreprises, dominées par les TPE et PME : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, ou on livre un site mobile-first sur mesure aux artisans du bâtiment, aux transporteurs terrestres et aux PME de services le long de la RN113 vers Montpellier.",
@@ -63,7 +63,7 @@ export const LUNEL_COPY: VilleCopy = {
           {
             step: "Cadrage à Lunel",
             detail:
-              "Atelier sur site dans le cœur de ville autour des arènes, sur l'une des sept zones d'activité ou près de la gare TER : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité commerciale du Pays de Lunel. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans le cœur de ville autour des arènes, sur l'une des sept zones d'activité ou près de la gare TER : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité commerciale du Pays de Lunel. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -131,14 +131,14 @@ export const LUNEL_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Lunel, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez, que ce soit une boutique e-commerce de centre-ville ou une plateforme métier pour une PME des zones d'activité.",
+            a: "Oui. Après le cadrage à Lunel, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez, que ce soit une boutique e-commerce de centre-ville ou une plateforme métier pour une PME des zones d'activité.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution documentée et transférable à tout prestataire d'Occitanie ou reprise en interne par vos équipes lunelloises, sans coût caché ni dépendance plateforme tierce.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution documentée et transférable à tout prestataire d'Occitanie ou reprise en interne par vos équipes lunelloises, sans coût caché ni dépendance plateforme tierce.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lunel des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Pays de Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, où le tissu est fait de TPE et PME du commerce, de la construction, du transport et de l'agriculture, réparties sur sept zones d'activité commerciales et artisanales d'environ 53 hectares. Hypermarchés Arpel et Preal en tête de la distribution locale, LRM sur les granulats : on s'adresse à cette économie concrète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lunel, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Lunel des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Pays de Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, où le tissu est fait de TPE et PME du commerce, de la construction, du transport et de l'agriculture, réparties sur sept zones d'activité commerciales et artisanales d'environ 53 hectares. Hypermarchés Arpel et Preal en tête de la distribution locale, LRM sur les granulats : on s'adresse à cette économie concrète. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lunel, itérations à distance.",
         whyHere: [
           "Économie très commerçante : 30,3 % des établissements relèvent du commerce-transport-hébergement, avec les hypermarchés Arpel et Preal en tête de la distribution lunelloise. On bâtit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et des vitrines locales, avec click-and-collect et recherche sémantique pour le commerce de centre-ville autour des arènes comme pour les enseignes de zone.",
           "Sept zones d'activité étalées sur environ 53 hectares regroupent près de 450 entreprises, dominées par les TPE et PME : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, ou on livre un site mobile-first sur mesure aux artisans du bâtiment, aux transporteurs terrestres et aux PME de services le long de la RN113 vers Montpellier.",
@@ -149,7 +149,7 @@ export const LUNEL_COPY: VilleCopy = {
           {
             step: "Cadrage à Lunel",
             detail:
-              "Atelier sur site dans le cœur de ville autour des arènes, sur l'une des sept zones d'activité ou près de la gare TER : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité commerciale du Pays de Lunel. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans le cœur de ville autour des arènes, sur l'une des sept zones d'activité ou près de la gare TER : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité commerciale du Pays de Lunel. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -217,11 +217,11 @@ export const LUNEL_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Lunel, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez, que ce soit une boutique e-commerce de centre-ville ou une plateforme métier pour une PME des zones d'activité.",
+            a: "Oui. Après le cadrage à Lunel, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez, que ce soit une boutique e-commerce de centre-ville ou une plateforme métier pour une PME des zones d'activité.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution documentée et transférable à tout prestataire d'Occitanie ou reprise en interne par vos équipes lunelloises, sans coût caché ni dépendance plateforme tierce.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution documentée et transférable à tout prestataire d'Occitanie ou reprise en interne par vos équipes lunelloises, sans coût caché ni dépendance plateforme tierce.",
       },
     },
   },

@@ -309,7 +309,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps faut-il pour obtenir un devis pour un site ou un SaaS à Dunkerque ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un SaaS IA-native impliquant des intégrations ERP ou des données industrielles, le chiffrage demande un atelier de cadrage plus poussé que pour un site vitrine.",
+            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un SaaS IA-native impliquant des intégrations ERP ou des données industrielles, le chiffrage demande un atelier de cadrage plus poussé que pour un site vitrine.",
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement la partie IA ?",
@@ -321,7 +321,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code source propriétaire livré au client, hébergement dans l'Union européenne conforme RGPD par défaut, et aucun lock-in éditeur : votre plateforme reste maintenable par vos équipes ou par tout intégrateur du Dunkerquois et des Hauts-de-France. Devis remis à partir de 24 à 48 h selon la complexité, périmètre et livrables fixés avant démarrage. Conception UX/UI, mobile et e-commerce multi-CMS incluse selon le scope retenu, avec formation de vos équipes et documentation à la passation.",
+          "Code source propriétaire livré au client, hébergement dans l'Union européenne conforme RGPD par défaut, et aucun lock-in éditeur : votre plateforme reste maintenable par vos équipes ou par tout intégrateur du Dunkerquois et des Hauts-de-France. Devis remis à partir de 48 h selon la complexité, périmètre et livrables fixés avant démarrage. Conception UX/UI, mobile et e-commerce multi-CMS incluse selon le scope retenu, avec formation de vos équipes et documentation à la passation.",
       },
       en: {
         hero: "Axion-IA designs AI-native websites and SaaS platforms in Dunkerque, France's 3rd maritime port and the country's leading hub for low-carbon reindustrialisation. We equip the subcontractors and service providers of the Grand Port Maritime, the SMEs in maintenance and logistics orbiting ArcelorMittal Dunkerque, Aluminium Dunkerque and the Gravelines power plant, as well as the new players in the battery sector (Verkor gigafactory in Bourbourg) and hydrogen (Dunkirk Hydrogen Valley, H2V, Air Liquide). RAG chatbots over technical documentation, order- and TEU-tracking portals, semantic search over quality reference systems, business conversational agents: custom code delivered to the client, European Union GDPR-compliant hosting, zero vendor lock-in.",
@@ -395,7 +395,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
           },
           {
             q: "How long does it take to get a quote for a website or SaaS in Dunkerque?",
-            a: "We provide a quote from 24 to 48 hours depending on project complexity, after an initial framing exchange. For an AI-native SaaS involving ERP integrations or industrial data, costing requires a more in-depth framing workshop than for a showcase site.",
+            a: "We provide a quote from 48 hours depending on project complexity, after an initial framing exchange. For an AI-native SaaS involving ERP integrations or industrial data, costing requires a more in-depth framing workshop than for a showcase site.",
           },
           {
             q: "Do you handle UX/UI, mobile and e-commerce, or only the AI part?",
@@ -407,7 +407,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Proprietary source code delivered to the client, European Union GDPR-compliant hosting by default, and no vendor lock-in: your platform stays maintainable by your teams or by any integrator in the Dunkerque area and Hauts-de-France. Quote provided from 24 to 48 hours depending on complexity, with scope and deliverables set before kick-off. UX/UI, mobile and multi-CMS e-commerce design included per the agreed scope, with team training and documentation at handover.",
+          "Proprietary source code delivered to the client, European Union GDPR-compliant hosting by default, and no vendor lock-in: your platform stays maintainable by your teams or by any integrator in the Dunkerque area and Hauts-de-France. Quote provided from 48 hours depending on complexity, with scope and deliverables set before kick-off. UX/UI, mobile and multi-CMS e-commerce design included per the agreed scope, with team training and documentation at handover.",
       },
     },
   },

@@ -50,8 +50,8 @@ export function VilleFaqGeolocalisee({ villeContext, faqs, isFr }: VilleFaqGeolo
   const heading = isFr ? `FAQ — ${villeContext.name}` : `FAQ — ${villeContext.name}`;
 
   const description = isFr
-    ? `Questions des dirigeants de TPE/PME/ETI/GE de ${villeContext.name}. Notre équipe d'experts répond sous 24 h ouvrées si la vôtre n'y est pas.`
-    : `Questions from TPE/PME/ETI/GE leaders in ${villeContext.name}. Our expert team replies within 24 business hours if yours isn't listed.`;
+    ? `Questions des dirigeants de TPE/PME/ETI/GE de ${villeContext.name}. Notre équipe d'experts répond sous 48 h ouvrées si la vôtre n'y est pas.`
+    : `Questions from TPE/PME/ETI/GE leaders in ${villeContext.name}. Our expert team replies within 48 business hours if yours isn't listed.`;
 
   // JSON-LD FAQPage + SpeakableSpecification (cible data-faq-q / data-faq-a).
   // Factory centralisée seo.ts — Speakable auto-injecté par défaut.

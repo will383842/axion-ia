@@ -53,7 +53,7 @@ export const AGDE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Agde des sites web, e-commerce et plateformes SaaS avec l'IA intégrée, pour un tissu où la saisonnalité est extrême : moteurs de réservation multilingues pour l'hôtellerie de plein air du Cap d'Agde et ses 3100 anneaux de port, boutiques en ligne pour les caves AOC Picpoul-de-Pinet, portails de traçabilité pour les conchyliculteurs de l'étang de Thau, et applications métier pour les jeunes pousses de l'incubateur GIGAMED au parc Héliopôle de Bessan. UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Agde, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Agde des sites web, e-commerce et plateformes SaaS avec l'IA intégrée, pour un tissu où la saisonnalité est extrême : moteurs de réservation multilingues pour l'hôtellerie de plein air du Cap d'Agde et ses 3100 anneaux de port, boutiques en ligne pour les caves AOC Picpoul-de-Pinet, portails de traçabilité pour les conchyliculteurs de l'étang de Thau, et applications métier pour les jeunes pousses de l'incubateur GIGAMED au parc Héliopôle de Bessan. UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Agde, itérations à distance.",
         whyHere: [
           "Saisonnalité balnéaire extrême : les hôtels, campings et résidences du Cap d'Agde (premier village naturiste d'Europe, 70 ha, et 3100 anneaux de plaisance) ont besoin de sites de réservation rapides, multilingues (FR/EN/DE/NL) et de yield management — pas d'une vitrine statique — avec données et paiements hébergés en UE/RGPD.",
           "E-commerce viticole AOC : les caves et négoces Picpoul-de-Pinet (1400 ha au bord de l'étang de Thau, ~45 000 hl/an) et Côtes-de-Thau attendent des boutiques en ligne avec recommandation produit, fiches multilingues pour l'export et tunnel de conversion mesuré.",
@@ -64,7 +64,7 @@ export const AGDE_COPY: VilleCopy = {
           {
             step: "Cadrage à Agde",
             detail:
-              "Atelier sur site — au Cap d'Agde, au Grau d'Agde, dans le centre historique ou au parc Héliopôle : objectifs, parcours utilisateurs, pics de saison, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site — au Cap d'Agde, au Grau d'Agde, dans le centre historique ou au parc Héliopôle : objectifs, parcours utilisateurs, pics de saison, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const AGDE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et les données hébergées en Europe ?",
-            a: "Oui sur les deux points. Après le cadrage à Agde, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité (davantage pour une plateforme métier étendue). Toute la chaîne — réservations, paiements, données clients collectées massivement l'été — est hébergeable en UE (Hetzner Frankfurt), conforme RGPD, sans transit hors UE sans DPA. Vous gardez la propriété totale.",
+            a: "Oui sur les deux points. Après le cadrage à Agde, on remet un devis ferme en forfait fixe, à partir de 48 h selon la complexité (davantage pour une plateforme métier étendue). Toute la chaîne — réservations, paiements, données clients collectées massivement l'été — est hébergeable en UE (Hetzner Frankfurt), conforme RGPD, sans transit hors UE sans DPA. Vous gardez la propriété totale.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, planifiée hors pic de saison pour les hôteliers et restaurateurs du Cap d'Agde. Web Vitals, accessibilité et SEO/AEO local (Cap d'Agde, Picpoul-de-Pinet, étang de Thau) contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'Agglo Hérault Méditerranée ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, planifiée hors pic de saison pour les hôteliers et restaurateurs du Cap d'Agde. Web Vitals, accessibilité et SEO/AEO local (Cap d'Agde, Picpoul-de-Pinet, étang de Thau) contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'Agglo Hérault Méditerranée ou repris en interne.",
       },
       en: {
-        hero: "In Agde, Axion-IA designs and augments websites, e-commerce stores and SaaS platforms with built-in AI for a fabric where seasonality is extreme: multilingual booking engines for the Cap d'Agde open-air hospitality sector and its 3,100-berth marina, online stores for Picpoul-de-Pinet AOC wineries, traceability portals for the Étang de Thau shellfish farmers, and business apps for the start-ups of the GIGAMED incubator at the Héliopôle park in Bessan. Bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Agde kick-off, remote iterations.",
+        hero: "In Agde, Axion-IA designs and augments websites, e-commerce stores and SaaS platforms with built-in AI for a fabric where seasonality is extreme: multilingual booking engines for the Cap d'Agde open-air hospitality sector and its 3,100-berth marina, online stores for Picpoul-de-Pinet AOC wineries, traceability portals for the Étang de Thau shellfish farmers, and business apps for the start-ups of the GIGAMED incubator at the Héliopôle park in Bessan. Bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Agde kick-off, remote iterations.",
         whyHere: [
           "Extreme seaside seasonality: hotels, campsites and resorts of the Cap d'Agde (Europe's largest naturist village, 70 ha, and a 3,100-berth marina) need fast, multilingual booking sites (FR/EN/DE/NL) with yield management — not a static showcase — with data and payments hosted in the EU/GDPR.",
           "AOC wine e-commerce: Picpoul-de-Pinet wineries and traders (1,400 ha along the Étang de Thau, ~45,000 hl/year) and Côtes-de-Thau cellars expect online stores with product recommendation, multilingual export sheets and a measured conversion funnel.",
@@ -150,7 +150,7 @@ export const AGDE_COPY: VilleCopy = {
           {
             step: "Scoping in Agde",
             detail:
-              "On-site workshop — at Cap d'Agde, Grau d'Agde, the historic centre or the Héliopôle park: goals, user journeys, peak-season patterns, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop — at Cap d'Agde, Grau d'Agde, the historic centre or the Héliopôle park: goals, user journeys, peak-season patterns, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const AGDE_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and is the data hosted in Europe?",
-            a: "Yes on both counts. After the Agde scoping, we issue a firm fixed-price quote, from 24-48 h depending on complexity (more for an extended business platform). The whole chain — bookings, payments, customer data collected massively in summer — can be hosted in the EU (Hetzner Frankfurt), GDPR-compliant, with no transit outside the EU without a DPA. You keep full ownership.",
+            a: "Yes on both counts. After the Agde scoping, we issue a firm fixed-price quote, from 48 h depending on complexity (more for an extended business platform). The whole chain — bookings, payments, customer data collected massively in summer — can be hosted in the EU (Hetzner Frankfurt), GDPR-compliant, with no transit outside the EU without a DPA. You keep full ownership.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Zero-downtime go-live when augmenting the existing site, scheduled off-peak for Cap d'Agde hoteliers and restaurateurs. Web Vitals, accessibility and local SEO/AEO (Cap d'Agde, Picpoul-de-Pinet, Étang de Thau) checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, transferable to any provider of the Agglo Hérault Méditerranée or taken in-house.",
+          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Zero-downtime go-live when augmenting the existing site, scheduled off-peak for Cap d'Agde hoteliers and restaurateurs. Web Vitals, accessibility and local SEO/AEO (Cap d'Agde, Picpoul-de-Pinet, Étang de Thau) checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, transferable to any provider of the Agglo Hérault Méditerranée or taken in-house.",
       },
     },
   },

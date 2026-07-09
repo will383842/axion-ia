@@ -50,7 +50,7 @@ export const HALLUIN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Halluin des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière du Nord (20 715 habitants, Métropole européenne de Lille) où l'économie tourne autour de la valorisation des déchets — l'Unité de Valorisation Énergétique exploitée par Veolia traite 350 000 t/an pour la MEL —, de la logistique transfrontalière franco-belge et d'un commerce de détail réparti en quatre pôles, dont le retail park Frunshopping collé à la frontière. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Halluin, itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à Halluin des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière du Nord (20 715 habitants, Métropole européenne de Lille) où l'économie tourne autour de la valorisation des déchets — l'Unité de Valorisation Énergétique exploitée par Veolia traite 350 000 t/an pour la MEL —, de la logistique transfrontalière franco-belge et d'un commerce de détail réparti en quatre pôles, dont le retail park Frunshopping collé à la frontière. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Halluin, itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Logistique cross-border franco-belge (Militzer und Münch France, flux via l'A22 sortie 18 vers Mouscron, Menen et Wervik) : nous construisons des portails de suivi de tournées, des interfaces de déclarations DEB et EORI et des tableaux de bord temps réel branchés sur vos WMS/TMS, avec une UX claire mobile-first côté chauffeurs et clients des deux pays.",
           "Filière valorisation et tri des déchets (Triselec Lille, Galloo France, Unité de Valorisation Énergétique Veolia qui alimente un réseau de chaleur de 20 km vers Lille, Roubaix et Tourcoing) : nous greffons recherche sémantique et agents sur vos catalogues matières, traçabilité, pesées et reporting réglementaire ISO 14001, ou construisons une plateforme métier IA-native sans refonte coûteuse de l'existant.",
@@ -61,7 +61,7 @@ export const HALLUIN_COPY: VilleCopy = {
           {
             step: "Cadrage à Halluin",
             detail:
-              "Atelier sur site (zone des Cinq-Voies, parc d'activité de la Viscourt, pôles commerciaux, plateformes logistiques) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux transfrontaliers. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (zone des Cinq-Voies, parc d'activité de la Viscourt, pôles commerciaux, plateformes logistiques) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux transfrontaliers. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const HALLUIN_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Halluin (zone des Cinq-Voies ou parc de la Viscourt), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'engagement annuel forcé : vous savez exactement ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage à Halluin (zone des Cinq-Voies ou parc de la Viscourt), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'engagement annuel forcé : vous savez exactement ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic logistique cross-border. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud Roubaix), conformes RGPD côté FR, GDPR côté BE et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local de la MEL ou repris en interne par votre IT.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic logistique cross-border. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud Roubaix), conformes RGPD côté FR, GDPR côté BE et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local de la MEL ou repris en interne par votre IT.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Halluin des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière du Nord (20 715 habitants, Métropole européenne de Lille) où l'économie tourne autour de la valorisation des déchets — l'Unité de Valorisation Énergétique exploitée par Veolia traite 350 000 t/an pour la MEL —, de la logistique transfrontalière franco-belge et d'un commerce de détail réparti en quatre pôles, dont le retail park Frunshopping collé à la frontière. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Halluin, itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à Halluin des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière du Nord (20 715 habitants, Métropole européenne de Lille) où l'économie tourne autour de la valorisation des déchets — l'Unité de Valorisation Énergétique exploitée par Veolia traite 350 000 t/an pour la MEL —, de la logistique transfrontalière franco-belge et d'un commerce de détail réparti en quatre pôles, dont le retail park Frunshopping collé à la frontière. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Halluin, itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Logistique cross-border franco-belge (Militzer und Münch France, flux via l'A22 sortie 18 vers Mouscron, Menen et Wervik) : nous construisons des portails de suivi de tournées, des interfaces de déclarations DEB et EORI et des tableaux de bord temps réel branchés sur vos WMS/TMS, avec une UX claire mobile-first côté chauffeurs et clients des deux pays.",
           "Filière valorisation et tri des déchets (Triselec Lille, Galloo France, Unité de Valorisation Énergétique Veolia qui alimente un réseau de chaleur de 20 km vers Lille, Roubaix et Tourcoing) : nous greffons recherche sémantique et agents sur vos catalogues matières, traçabilité, pesées et reporting réglementaire ISO 14001, ou construisons une plateforme métier IA-native sans refonte coûteuse de l'existant.",
@@ -147,7 +147,7 @@ export const HALLUIN_COPY: VilleCopy = {
           {
             step: "Cadrage à Halluin",
             detail:
-              "Atelier sur site (zone des Cinq-Voies, parc d'activité de la Viscourt, pôles commerciaux, plateformes logistiques) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux transfrontaliers. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site (zone des Cinq-Voies, parc d'activité de la Viscourt, pôles commerciaux, plateformes logistiques) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux transfrontaliers. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const HALLUIN_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Halluin (zone des Cinq-Voies ou parc de la Viscourt), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'engagement annuel forcé : vous savez exactement ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage à Halluin (zone des Cinq-Voies ou parc de la Viscourt), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'engagement annuel forcé : vous savez exactement ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic logistique cross-border. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud Roubaix), conformes RGPD côté FR, GDPR côté BE et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local de la MEL ou repris en interne par votre IT.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic logistique cross-border. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud Roubaix), conformes RGPD côté FR, GDPR côté BE et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local de la MEL ou repris en interne par votre IT.",
       },
     },
   },

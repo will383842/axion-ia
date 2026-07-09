@@ -937,7 +937,7 @@ export const METZ_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Metz, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Metz, itérations à distance.",
         whyHere: [
           "Projets web & SaaS messins : marché transfrontalier Luxembourg (~110 000 frontaliers lorrains), recherche IA (LORIA/Inria, Georgia Tech Lorraine), industrie auto (Stellantis Trémery), banque, PME mosellanes.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
@@ -948,7 +948,7 @@ export const METZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Metz",
             detail:
-              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -1012,7 +1012,7 @@ export const METZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme multilingue étendue. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme multilingue étendue. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Avec quelles technologies travaillez-vous ?",
@@ -1020,10 +1020,10 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région messine ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région messine ou repris en interne.",
       },
       en: {
-        hero: "In Metz, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Metz kick-off, remote iterations.",
+        hero: "In Metz, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site Metz kick-off, remote iterations.",
         whyHere: [
           "Metz web & SaaS projects: Luxembourg cross-border market (~110,000 commuters), AI research (LORIA/Inria, Georgia Tech Lorraine), automotive industry (Stellantis Trémery), banking, Moselle SMEs.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick.",
@@ -1034,7 +1034,7 @@ export const METZ_COPY: VilleCopy = {
           {
             step: "Scoping in Metz",
             detail:
-              "On-site workshop: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop: goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -1098,7 +1098,7 @@ export const METZ_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extended multilingual platform. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After scoping, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 48 h for a simple project, more for an extended multilingual platform. No time-and-materials, no hidden hourly drift.",
           },
           {
             q: "Which technologies do you work with?",
@@ -1106,7 +1106,7 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Metz-area provider or taken in-house.",
+          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Metz-area provider or taken in-house.",
       },
     },
   },
