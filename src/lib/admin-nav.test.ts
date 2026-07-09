@@ -27,7 +27,9 @@ describe("buildAdminNav SSOT", () => {
     // agenda. Distinct du « Calendrier » booking, vestige masqué. = 126.
     // +1 (2026-07-09) : « Charge formateurs » — taux d'occupation mensuel par
     // formateur (cockpit de pilotage). = 127.
-    expect(items.length).toBe(127);
+    // +1 (2026-07-09) : « Prévisionnel » — CA planifié/réalisé, encaissements
+    // attendus, reste à facturer, impayés (cockpit de pilotage). = 128.
+    expect(items.length).toBe(128);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

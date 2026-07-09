@@ -313,6 +313,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "agenda",
     },
     {
+      href: `${base}/planning/previsionnel`,
+      label: "Prévisionnel",
+      icon: "💶",
+      group: "main",
+      subGroup: "agenda",
+    },
+    {
       href: `${base}/calendrier`,
       label: "Calendrier",
       icon: "📅",
