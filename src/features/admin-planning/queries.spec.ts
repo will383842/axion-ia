@@ -18,7 +18,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { getPlanningMonth } from "./queries";
+import { getPlanningMonth, getTrainerConflicts } from "./queries";
 
 const LIEU_VIDE = {
   lieuType: null,
@@ -178,5 +178,67 @@ describe("getPlanningMonth", () => {
     mockTrainingFindMany.mockResolvedValue([formationRow({ formateurPrincipal: null })]);
     const byDay = await getPlanningMonth(2026, 7);
     expect(byDay.get("2026-07-09")?.[0]?.formateurNom).toBeNull();
+  });
+});
+
+describe("getTrainerConflicts", () => {
+  const cible = {
+    key: "formation:f1",
+    debut: new Date("2026-07-09T07:00:00Z"),
+    fin: new Date("2026-07-09T15:00:00Z"),
+    statut: "planifiee" as const,
+  };
+
+  it("remonte une prestation du formateur qui chevauche le créneau", async () => {
+    mockCoachingFindMany.mockResolvedValue([
+      coachingRow({ id: "c9", dateSeance: new Date("2026-07-09T09:00:00Z") }),
+    ]);
+    const conflits = await getTrainerConflicts("t-42", cible);
+    expect(conflits.map((c) => c.key)).toEqual(["coaching:c9"]);
+  });
+
+  it("exclut la cible elle-même", async () => {
+    mockTrainingFindMany.mockResolvedValue([formationRow()]); // id f1 = la cible
+    expect(await getTrainerConflicts("t-42", cible)).toEqual([]);
+  });
+
+  it("ignore une prestation annulée", async () => {
+    mockCoachingFindMany.mockResolvedValue([
+      coachingRow({ id: "c9", dateSeance: new Date("2026-07-09T09:00:00Z"), statut: "annulee" }),
+    ]);
+    expect(await getTrainerConflicts("t-42", cible)).toEqual([]);
+  });
+
+  it("ignore une prestation qui ne chevauche pas", async () => {
+    mockTrainingFindMany.mockResolvedValue([
+      formationRow({
+        id: "f2",
+        dateDebut: new Date("2026-07-09T15:00:00Z"), // jointif → pas de conflit
+        dateFin: new Date("2026-07-09T18:00:00Z"),
+      }),
+    ]);
+    expect(await getTrainerConflicts("t-42", cible)).toEqual([]);
+  });
+
+  it("scope les deux requêtes sur le formateur, fenêtre ± 1 jour", async () => {
+    await getTrainerConflicts("t-42", cible);
+    const tsArgs = mockTrainingFindMany.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    const csArgs = mockCoachingFindMany.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(tsArgs.where["formateurPrincipalId"]).toBe("t-42");
+    expect(csArgs.where["trainerId"]).toBe("t-42");
+    expect((tsArgs.where["dateFin"] as { gte: Date }).gte.toISOString()).toBe(
+      "2026-07-08T07:00:00.000Z",
+    );
+    expect((tsArgs.where["dateDebut"] as { lte: Date }).lte.toISOString()).toBe(
+      "2026-07-10T15:00:00.000Z",
+    );
+  });
+
+  it("cible annulée → aucun conflit, quelles que soient les autres prestations", async () => {
+    mockCoachingFindMany.mockResolvedValue([
+      coachingRow({ id: "c9", dateSeance: new Date("2026-07-09T09:00:00Z") }),
+    ]);
+    const conflits = await getTrainerConflicts("t-42", { ...cible, statut: "annulee" });
+    expect(conflits).toEqual([]);
   });
 });

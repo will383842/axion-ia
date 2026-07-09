@@ -9,9 +9,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlanningEventDetail } from "@/features/admin-planning/detail";
+import { getTrainerConflicts } from "@/features/admin-planning/queries";
 import {
   PLANNING_STATUT_LABELS,
   PLANNING_TYPE_LABELS,
+  planningDetailHref,
   type PlanningEventType,
 } from "@/features/admin-planning/types";
 import { planningTimeLabel } from "@/features/admin-planning/labels";
@@ -90,6 +92,19 @@ export default async function PlanningDetailPage({
   const retourHref = `${base}/planning?date=${dayKeyInParis(e.debut)}`;
   const fin = e.financement;
 
+  // Conflit de formateur : rien n'empêchait jusqu'ici d'affecter le même
+  // formateur à deux prestations simultanées (la garde d'habilitation ne
+  // vérifie pas la disponibilité).
+  const conflits =
+    e.formateur !== null
+      ? await getTrainerConflicts(e.formateur.id, {
+          key: `${e.type}:${e.id}`,
+          debut: e.debut,
+          fin: e.fin,
+          statut: e.statut,
+        })
+      : [];
+
   return (
     <>
       <AdminPageHeader
@@ -105,6 +120,28 @@ export default async function PlanningDetailPage({
           Fiche complète →
         </Link>
       </div>
+
+      {conflits.length > 0 && (
+        <div
+          role="alert"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning)] p-3"
+        >
+          <strong>
+            ⚠ Conflit de planning — {e.formateur?.nomComplet} est déjà mobilisé sur{" "}
+            {conflits.length} autre{conflits.length > 1 ? "s" : ""} prestation
+            {conflits.length > 1 ? "s" : ""} qui chevauche ce créneau.
+          </strong>
+          <ul className="mt-2 space-y-1">
+            {conflits.map((c) => (
+              <li key={c.key}>
+                <Link href={planningDetailHref(adminPrefix, c)}>
+                  {planningTimeLabel(c)} — {c.titre} ({PLANNING_TYPE_LABELS[c.type]})
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="admin-detail-grid">
         <AdminCard>

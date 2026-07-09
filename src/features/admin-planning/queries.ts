@@ -13,6 +13,7 @@
 import { prisma } from "@/lib/prisma";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { expandEventDayKeys } from "./expand";
+import { findConflicts, type ConflictTarget } from "./conflicts";
 import type { PlanningEvent, PlanningFilters, PlanningStatut } from "./types";
 
 const MAX_FETCH = 2000;
@@ -185,4 +186,31 @@ export async function getPlanningMonth(
 
   for (const arr of byDay.values()) sortWithinDay(arr);
   return byDay;
+}
+
+/**
+ * Autres prestations du formateur qui CHEVAUCHENT `cible`.
+ *
+ * Rien n'empêchait jusqu'ici d'affecter un formateur à deux prestations
+ * simultanées : la garde `isTrainerHabilite` ne vérifie que l'habilitation,
+ * jamais la disponibilité. Cette lecture alimente l'alerte de la fiche 360°.
+ *
+ * Fenêtre : la durée de la cible ± 1 jour (une prestation qui déborde la veille
+ * ou le lendemain doit être vue). Retourne [] si la cible est annulée/reportée.
+ */
+export async function getTrainerConflicts(
+  trainerId: string,
+  cible: ConflictTarget,
+): Promise<PlanningEvent[]> {
+  const from = new Date(cible.debut);
+  from.setUTCDate(from.getUTCDate() - 1);
+  const to = new Date(cible.fin ?? cible.debut);
+  to.setUTCDate(to.getUTCDate() + 1);
+
+  const [formations, coachings] = await Promise.all([
+    fetchFormations(from, to, { trainerId }),
+    fetchCoachings(from, to, { trainerId }),
+  ]);
+
+  return findConflicts(cible, [...formations, ...coachings]);
 }
