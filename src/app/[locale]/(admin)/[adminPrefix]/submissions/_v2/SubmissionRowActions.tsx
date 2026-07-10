@@ -1,4 +1,5 @@
 "use client";
+// use-client: actions par ligne interactives (menu, confirmation, useTransition).
 // Actions par ligne du listing messages (Contacts › Messages).
 //
 // Surface dans le tableau les Server Actions déjà existantes
