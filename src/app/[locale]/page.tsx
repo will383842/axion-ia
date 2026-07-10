@@ -27,7 +27,7 @@ import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { HomeReviewsCarousel } from "@/components/home/HomeReviewsCarousel";
 import { SERVICE_BY_ID, serviceNavShort, serviceOfficial } from "@/content/services";
 import { FAQ_GLOBAL } from "@/content/transversal";
-import { CLIENT_LOGOS, VIDEO_TESTIMONIALS, SECTORS } from "@/content/home-data";
+import { VIDEO_TESTIMONIALS, SECTORS } from "@/content/home-data";
 import {
   AUDIT_TIERS,
   IMPLEMENTATION_TIERS,
@@ -47,10 +47,11 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { ServicesGrid } from "@/components/services/ServicesGrid";
 import { Illustration } from "@/components/visual/Illustration";
-import { LogosMarquee } from "@/components/home/LogosMarquee";
+import { ClientLogosStrip } from "@/components/home/ClientLogosStrip";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { VideoTestimonials } from "@/components/home/VideoTestimonials";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 
@@ -103,6 +104,13 @@ export default async function Home({ params }: HomeProps) {
     getAggregateRating({}),
   ]);
   const homeReviewsOrgAgg = orgAggregateJsonLd(homeReviewsAgg);
+
+  // Badge sous le bandeau logos : nombre d'avis « top » affiché en dynamique.
+  // On ne retient que les 4★ et 5★ pour que le badge « Excellent » reste
+  // honnête à mesure que de nouveaux avis arrivent (demande Will 2026-07-10).
+  const homeTopReviewCount = homeReviewsAgg
+    ? homeReviewsAgg.breakdown[4] + homeReviewsAgg.breakdown[5]
+    : null;
 
   // Prix dérivés du SSOT pricing.ts — injectés dans les messages i18n via {price}/{priceRange}.
   // Sprint 14.10.5 : zéro hardcode. Range audit obsolète (290-1990 €) remplacé par
@@ -348,15 +356,16 @@ export default async function Home({ params }: HomeProps) {
         className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32"
       >
         <Container className="relative">
+          {/* Badge pastille centré sur la page (demande Will 2026-07-10) —
+              drapeau + positionnement N°1, au-dessus de la grille 2 colonnes. */}
+          <HeroBadge className="mb-10 sm:mb-12">
+            <span aria-hidden="true">🇫🇷</span>
+            {t("heroEyebrow")}
+          </HeroBadge>
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche : copy (titre garde sa taille géante) */}
             <div className="max-w-2xl">
-              <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-                {t("heroEyebrow")}
-              </p>
               <h1 id="hero-heading" className="display-editorial text-fg" data-speakable-hero>
-                {t("heroTitlePart1")}{" "}
                 <em className="italic-editorial text-terracotta not-italic">
                   <span className="italic">{t("heroTitleEm")}</span>
                 </em>
@@ -376,19 +385,25 @@ export default async function Home({ params }: HomeProps) {
                   href="/appel"
                   className="bg-terracotta text-paper cta-lift focus-visible:ring-terracotta inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
-                  {isFr ? "Réserver un appel" : "Book a call"}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-fg border-border-strong hover:bg-paper cta-lift focus-visible:ring-fg inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  {isFr ? "Nous contacter" : "Contact us"}
+                  {isFr
+                    ? "Je veux réserver un appel pour me renseigner"
+                    : "I want to book a call to learn more"}
+                  <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
                 </Link>
               </div>
-              <p className="text-fg-muted mt-6 text-sm leading-relaxed sm:text-base">
-                <span className="text-terracotta font-semibold">{t("heroProofLine")}</span>
-              </p>
+              {/* Chips bénéfices (remplacent l'ancienne proof-line) — calées sur
+                  le rendu de référence : puces à pastille terracotta. */}
+              <ul className="text-fg-soft mt-8 flex flex-col gap-x-6 gap-y-2.5 text-sm font-medium sm:flex-row sm:flex-wrap sm:items-center sm:text-base">
+                {[t("heroChip1"), t("heroChip2"), t("heroChip3")].map((chip) => (
+                  <li key={chip} className="flex items-center gap-2">
+                    <span
+                      aria-hidden="true"
+                      className="bg-terracotta inline-block h-2 w-2 shrink-0 rounded-full"
+                    />
+                    {chip}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Colonne droite : photo hero placeholder. Will drop l'image
@@ -512,18 +527,17 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── LOGOS CLIENTS — header retiré (polish v8 Will) ─────────────
-          Juste les 17 logos, pas de eyebrow/title/caption. Box normalisée
-          dans LogosMarquee pour que tous les logos paraissent à la même
-          taille visuelle (object-contain dans container fixe). */}
+      {/* ───────────── LOGOS CLIENTS — défilement 1 ligne + note terracotta ─────────────
+          Bandeau de logos sur une seule ligne qui défile (ClientLogosStrip),
+          suivi du badge « Excellent ★★★★★ {N} avis » avec le nombre d'avis
+          dynamique (note ≥ 4★). Pleine largeur (fades latéraux) → pas de
+          Container ici. */}
       <section
         id="clients"
         aria-label={isFr ? "Nos clients" : "Our clients"}
         className="bg-bg border-border border-t border-b py-12 sm:py-16"
       >
-        <Container>
-          <LogosMarquee logos={CLIENT_LOGOS} />
-        </Container>
+        <ClientLogosStrip isFr={isFr} reviewCount={homeTopReviewCount} />
       </section>
 
       {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS — full-bleed ─────────────

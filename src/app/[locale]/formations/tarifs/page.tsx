@@ -11,6 +11,7 @@ import { hasLocale } from "next-intl";
 
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -90,15 +91,16 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
       {/* HERO */}
       <section className="bg-halo-warm text-fg py-14 sm:py-16 lg:py-20">
         <Container>
+          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            Tarifs
+          </HeroBadge>
           <div className="max-w-3xl">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              Tarifs
-            </p>
-            <h1 className="display-editorial text-fg mt-5">Tarifs des formations</h1>
+            <h1 className="display-editorial text-fg">Tarifs des formations</h1>
             <p className="text-fg-soft mt-5 max-w-2xl text-lg leading-relaxed sm:text-xl">
               Tarifs HT <strong className="text-fg">par groupe</strong> (pas par personne), en
               intra-entreprise dans vos locaux. Exemple : une journée pour 10 salariés revient à

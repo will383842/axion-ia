@@ -32,6 +32,7 @@ import { BookOpenText, Compass, Sparkles, ArrowRight } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
@@ -148,15 +149,16 @@ export default async function GuidesHubPage({ params }: Props) {
           générique cohérente comme /comparaisons). Eyebrow + h1 + intro + pills. */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-16 sm:pt-14 sm:pb-20 lg:pt-16 lg:pb-24">
         <Container>
+          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? "Guides piliers" : "Pillar guides"}
+          </HeroBadge>
           <div className="max-w-3xl">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              {isFr ? "Guides piliers" : "Pillar guides"}
-            </p>
-            <h1 className="display-editorial text-fg mt-5">
+            <h1 className="display-editorial text-fg">
               {isFr ? "Guides IA " : "Operational AI "}
               <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
                 {isFr ? "opérationnelle" : "guides"}

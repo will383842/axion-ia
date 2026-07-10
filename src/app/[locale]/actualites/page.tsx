@@ -20,6 +20,7 @@ import { ArrowRight, Rss, Newspaper, ShieldCheck, CalendarClock } from "lucide-r
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
@@ -246,11 +247,15 @@ export default async function ActualitesHub({ params }: Props) {
 
       <Section tone="paper" className="pt-6 pb-16 lg:pt-10 lg:pb-24">
         <Container>
+          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            Veille IA opérationnelle
+          </HeroBadge>
           <div className="max-w-3xl">
-            <p className="text-fg-muted mb-6 text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-              Veille IA opérationnelle
-            </p>
             <h1 className="display-editorial text-fg">
               Actualités{" "}
               <em className="italic-editorial text-terracotta not-italic">

@@ -6,6 +6,7 @@ import { ArrowRight, ShieldCheck, Building2, Calendar, Globe2, Check, X } from "
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Cta } from "@/components/marketing/Cta";
 import { TimelineBlock } from "@/components/sections/TimelineBlock";
 import { TeamGrid } from "@/components/sections/TeamGrid";
@@ -306,16 +307,17 @@ export default async function About({ params }: Props) {
       {/* HERO 2-col custom — texte à gauche, AboutHeroSchema à droite */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
+          {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? "À propos" : "About"}
+          </HeroBadge>
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div className="max-w-xl">
-              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? "À propos" : "About"}
-              </p>
-              <h1 className="display-editorial text-fg mt-5">
+              <h1 className="display-editorial text-fg">
                 {isFr ? "Cabinet IA " : "Operational AI "}
                 <span
                   className="text-terracotta italic"

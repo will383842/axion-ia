@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Globe2, Building2, Mail, Clock } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { buildProductMetadata } from "@/lib/seo";
@@ -73,15 +74,16 @@ export default async function AuditRequest({ params }: Props) {
       {/* Hero compact — paddings réduits pour rapprocher le formulaire de la fold. */}
       <section className="bg-halo-warm relative overflow-hidden pt-8 pb-14 sm:pt-10 sm:pb-16 lg:pt-12 lg:pb-20">
         <Container className="relative">
-          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
+          <HeroBadge className="mb-8 sm:mb-10">
             <span
               aria-hidden="true"
-              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
             />
             {isFr ? "Demande d'audit · 6 étapes" : "Audit request · 6 steps"}
-          </p>
+          </HeroBadge>
           <h1
-            className="text-fg mt-4 text-[clamp(2rem,5vw,3.5rem)] leading-[1.04] font-medium tracking-tight"
+            className="text-fg text-[clamp(2rem,5vw,3.5rem)] leading-[1.04] font-medium tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {isFr ? "Demander un " : "Request an "}

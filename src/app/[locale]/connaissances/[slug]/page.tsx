@@ -15,6 +15,7 @@ import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Cta } from "@/components/marketing/Cta";
 import { ContactBand } from "@/components/sections/ContactBand";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -193,14 +194,15 @@ export default async function ConnaissanceDetail({ params }: Props) {
               { href: `/connaissances/${entry.slug}`, label: entry.title },
             ]}
           />
+          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {typeLabel}
+          </HeroBadge>
           <div className="mt-8 max-w-3xl">
-            <p className="text-terracotta-deep mb-5 flex items-center gap-2 text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
-              />
-              {typeLabel}
-            </p>
             <h1
               className={`text-fg font-semibold tracking-tight ${
                 titleLong
