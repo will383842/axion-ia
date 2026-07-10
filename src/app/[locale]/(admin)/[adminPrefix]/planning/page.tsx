@@ -12,6 +12,7 @@ import {
   PLANNING_STATUT_LABELS,
   PLANNING_TYPE_LABELS,
   planningDetailHref,
+  type PlanningEvent,
   type PlanningEventType,
   type PlanningFilters,
   type PlanningStatut,
@@ -39,7 +40,7 @@ const MONTHS = [
   "décembre",
 ];
 
-const TYPES: PlanningEventType[] = ["formation", "coaching"];
+const TYPES: PlanningEventType[] = ["formation", "coaching", "audit"];
 const STATUTS: PlanningStatut[] = ["planifiee", "en_cours", "realisee", "annulee", "reportee"];
 
 interface PageProps {
@@ -61,6 +62,49 @@ function parseMonth(v: string | undefined, fallback: number): number {
 function parseYear(v: string | undefined, fallback: number): number {
   const n = v !== undefined ? Number.parseInt(v, 10) : NaN;
   return Number.isInteger(n) && n >= 2000 && n <= 2100 ? n : fallback;
+}
+
+/** Petite pastille colorée (jetons admin). */
+function Pastille({ tone, children }: { tone: "vert" | "ambre" | "bleu"; children: string }) {
+  const bg = {
+    vert: "var(--color-admin-success-soft)",
+    ambre: "var(--color-admin-warning-soft)",
+    bleu: "var(--color-admin-info-soft)",
+  }[tone];
+  const fg = {
+    vert: "var(--color-admin-success-fg)",
+    ambre: "var(--color-admin-warning-fg)",
+    bleu: "var(--color-admin-info-fg)",
+  }[tone];
+  return (
+    <span
+      className="ml-1 inline-block rounded-full px-2 py-0.5 align-middle text-[length:var(--text-admin-xs)] font-medium"
+      style={{ backgroundColor: bg, color: fg }}
+    >
+      {children}
+    </span>
+  );
+}
+
+/**
+ * Pastilles « d'un coup d'œil » d'un événement du calendrier : étape commerciale
+ * (devis / validé), prise en charge OPCO, acompte reçu. On n'affiche que ce qui
+ * est pertinent — un événement sans devis ni OPCO ni acompte n'a aucune pastille.
+ */
+function PastillesEvent({ e }: { e: PlanningEvent }) {
+  const opcoPris = e.opcoStatut === "accord_recu" || e.opcoStatut === "paiement_recu";
+  const opcoEnCours = e.opcoStatut === "demande_en_cours";
+  const rien = e.commercialStatut === null && !opcoPris && !opcoEnCours && e.acompteRecu !== true;
+  if (rien) return null;
+  return (
+    <span className="inline-flex flex-wrap items-center gap-1">
+      {e.commercialStatut === "valide" && <Pastille tone="vert">Validé</Pastille>}
+      {e.commercialStatut === "en_devis" && <Pastille tone="ambre">En devis</Pastille>}
+      {opcoPris && <Pastille tone="bleu">OPCO</Pastille>}
+      {opcoEnCours && <Pastille tone="ambre">OPCO en cours</Pastille>}
+      {e.acompteRecu === true && <Pastille tone="vert">Acompte reçu</Pastille>}
+    </span>
+  );
 }
 
 export default async function PlanningPage({
@@ -117,7 +161,7 @@ export default async function PlanningPage({
     <>
       <AdminPageHeader
         title="Planning"
-        description={`${MONTHS[month - 1]} ${year} · ${totalDistinct} prestation${totalDistinct > 1 ? "s" : ""} (formations + 1-to-1)`}
+        description={`${MONTHS[month - 1]} ${year} · ${totalDistinct} prestation${totalDistinct > 1 ? "s" : ""} (formations + 1-to-1 + audits)`}
       />
 
       <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
@@ -214,7 +258,7 @@ export default async function PlanningPage({
           {dayEvents.length === 0 ? (
             <p className="text-[color:var(--color-admin-fg-muted)]">Aucune prestation ce jour.</p>
           ) : (
-            <ul className="mt-[var(--space-admin-3)] space-y-2">
+            <ul className="mt-[var(--space-admin-3)] space-y-2" data-audit-badges>
               {dayEvents.map((e) => (
                 <li key={e.key}>
                   <Link
@@ -230,6 +274,7 @@ export default async function PlanningPage({
                         {e.clientNom !== null ? ` · ${e.clientNom}` : ""}
                         {e.lieu !== null ? ` · ${e.lieu}` : ""}
                       </span>
+                      <PastillesEvent e={e} />
                     </span>
                     <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                       {PLANNING_STATUT_LABELS[e.statut]} ›
