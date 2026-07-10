@@ -17,7 +17,9 @@ interface NavLinkProps {
   multiline?: boolean;
   // Emoji affiché dans une tuile à gauche du label — drawer mobile 2026
   // uniquement (ignoré en desktop). Ajoute un repère visuel par onglet.
-  icon?: string;
+  // `| undefined` explicite : la valeur vient d'un lookup Record (→ `string |
+  // undefined` sous noUncheckedIndexedAccess) et doit passer exactOptionalPropertyTypes.
+  icon?: string | undefined;
 }
 
 // Editorial v3 — desktop on terracotta header (fixe, pas de scroll-aware) :
@@ -61,7 +63,7 @@ export function NavLink({
             "h-4 w-4 shrink-0 transition-all",
             isActive
               ? "text-terracotta"
-              : "text-fg-muted/40 group-hover:translate-x-0.5 group-hover:text-terracotta",
+              : "text-fg-muted/40 group-hover:text-terracotta group-hover:translate-x-0.5",
           )}
         />
       </Link>
