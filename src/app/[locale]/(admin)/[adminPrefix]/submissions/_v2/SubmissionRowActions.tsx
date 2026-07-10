@@ -1,4 +1,5 @@
 "use client";
+// use-client: useRouter + useTransition + appels Server Actions au clic (boutons interactifs par ligne).
 // Actions par ligne du listing messages (Contacts › Messages).
 //
 // Surface dans le tableau les Server Actions déjà existantes
