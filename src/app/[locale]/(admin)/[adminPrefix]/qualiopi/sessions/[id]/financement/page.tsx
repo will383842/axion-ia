@@ -17,6 +17,7 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 
 import { auth } from "@/auth";
+import { AcompteFormationPanel } from "@/components/admin/qualiopi/AcompteFormationPanel";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SetFinancementForm } from "@/components/admin/qualiopi/SetFinancementForm";
@@ -125,6 +126,10 @@ export default async function FinancementSessionPage({ params }: PageProps) {
       financementType: true,
       opcoStatut: true,
       opcoSubrogation: true,
+      acompteMontantCents: true,
+      acompteDateVersement: true,
+      acompteRecu: true,
+      acompteMoyen: true,
       conventionTripartiteSigneeAt: true,
       numeroDossierOpco: true,
       edofVerifieAt: true,
@@ -161,6 +166,13 @@ export default async function FinancementSessionPage({ params }: PageProps) {
   });
 
   if (!trainingSession) notFound();
+
+  // Colonne DATE (minuit UTC) → `YYYY-MM-DD` pour l'`<input type=date>` de l'acompte.
+  const ad = trainingSession.acompteDateVersement;
+  const acompteDateStr =
+    ad !== null
+      ? `${ad.getUTCFullYear()}-${String(ad.getUTCMonth() + 1).padStart(2, "0")}-${String(ad.getUTCDate()).padStart(2, "0")}`
+      : "";
 
   // Source unique de vérité : couvre OPCO, CPF/EDOF, CPF éligibilité, POEI 3 preuves.
   const financementValidations = await getFinancementValidations(trainingSession.id);
@@ -501,6 +513,16 @@ export default async function FinancementSessionPage({ params }: PageProps) {
           </div>
         </section>
       )}
+
+      <div className="mt-[var(--space-admin-6)]">
+        <AcompteFormationPanel
+          sessionId={trainingSession.id}
+          montantCents={trainingSession.acompteMontantCents}
+          dateVersement={acompteDateStr}
+          recu={trainingSession.acompteRecu}
+          moyen={trainingSession.acompteMoyen ?? ""}
+        />
+      </div>
     </AdminPageShell>
   );
 }
