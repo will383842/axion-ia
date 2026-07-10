@@ -46,15 +46,28 @@ export async function Header() {
 
   // Items supplémentaires uniquement dans le drawer mobile (pages stratégiques
   // accessibles depuis mobile, pas seulement depuis le footer).
+  // 2026-07-10 (Will) : retirés du drawer → Implantations, Stack IA, Centre
+  // d'aide (accessibles via footer / méga-menu Ressources desktop).
   const navMobileExtras = [
     { href: "/cas-concrets", label: t("nav.caseStudies") },
-    { href: "/implantations", label: t("nav.implantations") },
-    { href: "/stack-ia", label: isFr ? "Stack IA" : "AI Stack" },
     { href: "/blog", label: t("nav.blog") },
     { href: "/faq", label: "FAQ" },
-    { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
     { href: "/a-propos", label: t("nav.about") },
   ] as const;
+
+  // Emoji par onglet du drawer mobile (clé = href) — repère visuel « type 2026 »
+  // dans chaque rangée. Affiché uniquement dans le drawer (cf. NavLink mobile).
+  const mobileNavEmoji: Record<string, string> = {
+    "/formations": "🎓",
+    "/un-a-un": "🤝",
+    "/audit": "🔍",
+    "/implementation": "⚙️",
+    "/sites-web-augmentes": "🌐",
+    "/cas-concrets": "💡",
+    "/blog": "✍️",
+    "/faq": "❓",
+    "/a-propos": "👋",
+  };
 
   // Données du méga-menu « Formations IA » calculées CÔTÉ SERVEUR (le catalogue
   // catalog-v2 reste hors du bundle client) et passées en props au composant
@@ -256,28 +269,37 @@ export async function Header() {
             tablette/petit-laptop 992–1280 (où le header desktop débordait). */}
         <div className="ml-auto xl:hidden">
           <MobileNav>
-            <nav aria-label={t("nav.primaryLabel")} className="flex flex-col gap-1 text-base">
-              {/* Tagline B2B affichée en tête du drawer mobile pour le signal
-                  d'audience (le tagline desktop est xl-only). */}
-              <p className="text-fg-muted mb-2 text-[12px] font-medium tracking-tight">
-                {taglineB2B}
-              </p>
-              {/* Recherche site (mobile) — accès direct au champ /recherche. */}
+            <nav aria-label={t("nav.primaryLabel")} className="flex flex-col text-base">
+              {/* Recherche site (mobile) — champ factice cliquable vers /recherche,
+                  style « search bar » 2026 en tête du drawer. */}
               <Link
                 href={ROUTES.search}
                 aria-label={isFr ? "Rechercher sur le site" : "Search the site"}
-                className="text-fg hover:bg-border/40 focus-visible:ring-primary mb-1 flex items-center gap-2 rounded-md px-2 py-2 font-medium focus-visible:ring-2 focus-visible:outline-none"
+                className="border-border/70 bg-paper/70 text-fg-muted shadow-subtle hover:border-terracotta/40 focus-visible:ring-primary mb-4 flex items-center gap-3 rounded-2xl border px-3.5 py-3 text-[15px] font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
               >
-                <Search className="text-terracotta h-4 w-4" aria-hidden="true" />
-                <span>{isFr ? "Rechercher" : "Search"}</span>
+                <Search className="text-terracotta h-5 w-5 shrink-0" aria-hidden="true" />
+                <span>{isFr ? "Rechercher sur le site…" : "Search the site…"}</span>
               </Link>
-              {/* 6 items principaux */}
-              {navItems.map((item) => (
-                <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
-              ))}
+
+              {/* Section « Nos services » — 5 services (Tarifs retiré du drawer,
+                  reste accessible en desktop + footer). */}
+              <p className="text-fg-muted px-2.5 pb-1 text-[11px] font-semibold tracking-[0.14em] uppercase">
+                {isFr ? "Nos services" : "Our services"}
+              </p>
+              {navItems
+                .filter((item) => item.href !== "/tarifs")
+                .map((item) => (
+                  <NavLink
+                    key={item.href}
+                    href={item.href}
+                    label={item.label}
+                    variant="mobile"
+                    icon={mobileNavEmoji[item.href]}
+                  />
+                ))}
               {/* Sous-liens Formations (parité méga-menu desktop) — accès direct
                   au catalogue complet + aux 4 paliers durée depuis le drawer. */}
-              <ul className="border-border mt-0.5 mb-1 ml-3 flex flex-col gap-0.5 border-l pl-3">
+              <ul className="border-border/70 mt-1 mb-1 ml-6 flex flex-col gap-0.5 border-l pl-3">
                 <li>
                   <Link
                     href={"/formations/entreprise" as never}
@@ -297,18 +319,28 @@ export async function Header() {
                   </li>
                 ))}
               </ul>
-              {/* Items secondaires (pages stratégiques accessibles depuis mobile) */}
-              <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
+
+              {/* Section « Explorer » — pages stratégiques accessibles depuis mobile */}
+              <p className="text-fg-muted mt-4 px-2.5 pb-1 text-[11px] font-semibold tracking-[0.14em] uppercase">
+                {isFr ? "Explorer" : "Explore"}
+              </p>
               {navMobileExtras.map((item) => (
-                <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
+                <NavLink
+                  key={item.href}
+                  href={item.href}
+                  label={item.label}
+                  variant="mobile"
+                  icon={mobileNavEmoji[item.href]}
+                />
               ))}
+
               {/* Dual-CTA mobile — parité desktop : Appel primary + Contact ghost */}
               <Link
                 href={ROUTES.appel}
                 aria-label={t("cta.bookCallAria")}
                 data-cta="header-mobile-primary"
                 data-cta-tracking="cta_header_book_call_click"
-                className="bg-primary text-primary-fg mt-4 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold"
+                className="bg-primary text-primary-fg mt-5 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.55)]"
               >
                 <Phone className="h-4 w-4" aria-hidden="true" />
                 <span>{t("cta.bookCall")}</span>
@@ -323,6 +355,10 @@ export async function Header() {
                 <Mail className="h-4 w-4" aria-hidden="true" />
                 <span>{isFr ? "Nous écrire" : "Email us"}</span>
               </Link>
+              {/* Tagline B2B en pied de drawer — signal d'audience (desktop xl-only) */}
+              <p className="text-fg-muted mt-5 px-2.5 text-center text-[12px] font-medium tracking-tight">
+                {taglineB2B}
+              </p>
             </nav>
           </MobileNav>
         </div>

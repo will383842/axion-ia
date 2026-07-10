@@ -25,6 +25,17 @@ export function MobileNav({ children }: MobileNavProps) {
   const t = useTranslations("common");
   const [open, setOpen] = useState(false);
 
+  // Fermeture automatique du drawer dès qu'on sélectionne un lien : les enfants
+  // (liens) sont rendus côté serveur → impossible d'y brancher un onClick
+  // individuel. On capte le clic par délégation (bubbling) sur le contenu du
+  // Sheet : tout clic issu d'un `<a>` (souris ou clavier via Enter) referme le
+  // drawer. Corrige « le menu reste ouvert après un clic » (Will 2026-07-10).
+  // Handler porté par le composant `SheetContent` (custom) → pas de règle
+  // jsx-a11y sur élément statique, et pas de setState synchrone dans un effet.
+  const closeOnLinkClick = (e: React.MouseEvent<HTMLElement>) => {
+    if ((e.target as HTMLElement).closest("a")) setOpen(false);
+  };
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -36,13 +47,34 @@ export function MobileNav({ children }: MobileNavProps) {
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-sm sm:max-w-sm">
+      {/* Drawer 2026 : dégradé chaud paper→sand, coins gauche arrondis, bandeau
+          de marque en tête, corps scrollable. p-0/gap-0 annulent le padding du
+          variant Sheet pour piloter la mise en page ici. */}
+      <SheetContent
+        side="right"
+        onClick={closeOnLinkClick}
+        className="from-paper to-sand/40 flex w-full max-w-sm flex-col gap-0 overflow-hidden rounded-l-3xl border-l-0 bg-gradient-to-b p-0 sm:max-w-sm"
+      >
         <SheetTitle className="sr-only">{t("openMenu")}</SheetTitle>
         <SheetDescription className="sr-only">{`${BRAND.name} navigation`}</SheetDescription>
-        <div className="-m-6 flex h-full flex-col overflow-y-auto p-6">
-          <span className="text-fg mb-6 text-sm font-semibold tracking-tight">{BRAND.name}</span>
-          {children}
+        {/* Bandeau de marque — `pr-14` réserve la place du bouton fermeture (X)
+            positionné en absolu par SheetContent en haut à droite. */}
+        <div className="border-border/60 flex items-center border-b px-5 py-4 pr-14">
+          <span
+            className="text-fg text-lg font-medium tracking-tight"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            Axion
+            <span aria-hidden="true" className="text-fg/40 mx-0.5">
+              -
+            </span>
+            <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
+              IA
+            </span>
+          </span>
         </div>
+        {/* Corps scrollable */}
+        <div className="flex-1 overflow-y-auto px-4 pt-3 pb-8">{children}</div>
       </SheetContent>
     </Sheet>
   );
