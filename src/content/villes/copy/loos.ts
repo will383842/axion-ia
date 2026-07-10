@@ -53,7 +53,7 @@ export const LOOS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Loos des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails patients, prise de rendez-vous intelligente, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la Métropole Européenne de Lille adossée au pôle hospitalier régional (CHRU) et au parc Eurasanté — campus santé-biotech à cheval sur Lille et Loos, avec son Hub au 350 avenue Eugène Avinée et la ZAC Est Eurasanté. Le tissu local mêle cabinets de santé, structures paramédicales, professions libérales, commerces de proximité et PME de services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Loos, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Loos des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails patients, prise de rendez-vous intelligente, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la Métropole Européenne de Lille adossée au pôle hospitalier régional (CHRU) et au parc Eurasanté — campus santé-biotech à cheval sur Lille et Loos, avec son Hub au 350 avenue Eugène Avinée et la ZAC Est Eurasanté. Le tissu local mêle cabinets de santé, structures paramédicales, professions libérales, commerces de proximité et PME de services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Loos, itérations à distance.",
         whyHere: [
           "Le parc Eurasanté, campus santé-biotech à cheval sur Lille et Loos adossé au CHRU, concentre medtech, biotech et laboratoires (la ZAC Est Eurasanté à Loos, ~23 ha, accueille des dizaines d'entreprises dont Bayer Healthcare) : on y conçoit portails patients, espaces de recherche sécurisés et prise de rendez-vous, avec une chaîne IA hébergeable en UE et stricte sur les données sensibles.",
           "Professions libérales et structures paramédicales nombreuses autour du Hub Eurasanté (350 avenue Eugène Avinée) et du pôle hospitalier : nos chatbots RAG multilingues et nos automatisations de relances et de gestion documentaire allègent l'administratif des cabinets, sans jamais toucher à la confidentialité patient ni au secret médical.",
@@ -64,7 +64,7 @@ export const LOOS_COPY: VilleCopy = {
           {
             step: "Cadrage à Loos",
             detail:
-              "Atelier sur site — cabinet, locaux du parc Eurasanté ou de la ZAC Est, commerce de centre-ville rue du Maréchal Foch : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données de santé. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — cabinet, locaux du parc Eurasanté ou de la ZAC Est, commerce de centre-ville rue du Maréchal Foch : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données de santé. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,7 +128,7 @@ export const LOOS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Loos, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur site à Loos, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
           {
             q: "Pouvez-vous gérer la confidentialité des données patients ?",
@@ -136,10 +136,10 @@ export const LOOS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre l'activité d'un cabinet du pôle Eurasanté ni d'une boutique du centre de Loos. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre l'activité d'un cabinet du pôle Eurasanté ni d'une boutique du centre de Loos. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Loos des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails patients, prise de rendez-vous intelligente, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la Métropole Européenne de Lille adossée au pôle hospitalier régional (CHRU) et au parc Eurasanté — campus santé-biotech à cheval sur Lille et Loos, avec son Hub au 350 avenue Eugène Avinée et la ZAC Est Eurasanté. Le tissu local mêle cabinets de santé, structures paramédicales, professions libérales, commerces de proximité et PME de services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Loos, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Loos des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails patients, prise de rendez-vous intelligente, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la Métropole Européenne de Lille adossée au pôle hospitalier régional (CHRU) et au parc Eurasanté — campus santé-biotech à cheval sur Lille et Loos, avec son Hub au 350 avenue Eugène Avinée et la ZAC Est Eurasanté. Le tissu local mêle cabinets de santé, structures paramédicales, professions libérales, commerces de proximité et PME de services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Loos, itérations à distance.",
         whyHere: [
           "Le parc Eurasanté, campus santé-biotech à cheval sur Lille et Loos adossé au CHRU, concentre medtech, biotech et laboratoires (la ZAC Est Eurasanté à Loos, ~23 ha, accueille des dizaines d'entreprises dont Bayer Healthcare) : on y conçoit portails patients, espaces de recherche sécurisés et prise de rendez-vous, avec une chaîne IA hébergeable en UE et stricte sur les données sensibles.",
           "Professions libérales et structures paramédicales nombreuses autour du Hub Eurasanté (350 avenue Eugène Avinée) et du pôle hospitalier : nos chatbots RAG multilingues et nos automatisations de relances et de gestion documentaire allègent l'administratif des cabinets, sans jamais toucher à la confidentialité patient ni au secret médical.",
@@ -150,7 +150,7 @@ export const LOOS_COPY: VilleCopy = {
           {
             step: "Cadrage à Loos",
             detail:
-              "Atelier sur site — cabinet, locaux du parc Eurasanté ou de la ZAC Est, commerce de centre-ville rue du Maréchal Foch : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données de santé. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — cabinet, locaux du parc Eurasanté ou de la ZAC Est, commerce de centre-ville rue du Maréchal Foch : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données de santé. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -214,7 +214,7 @@ export const LOOS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Loos, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur site à Loos, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
           {
             q: "Pouvez-vous gérer la confidentialité des données patients ?",
@@ -222,7 +222,7 @@ export const LOOS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre l'activité d'un cabinet du pôle Eurasanté ni d'une boutique du centre de Loos. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre l'activité d'un cabinet du pôle Eurasanté ni d'une boutique du centre de Loos. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
     },
   },

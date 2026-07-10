@@ -132,11 +132,11 @@ export const TARBES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis, et où sont hébergées les données ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet. L'hébergement se fait dans l'Union européenne, en conformité RGPD, et vous gardez la maîtrise du code et des contenus, sans verrou propriétaire.",
+            a: "Nous remettons un devis à partir de 24-48 h selon la complexité du projet. L'hébergement se fait dans l'Union européenne, en conformité RGPD, et vous gardez la maîtrise du code et des contenus, sans verrou propriétaire.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Hébergement dans l'Union européenne et conformité RGPD par défaut. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et la couche IA (recherche sémantique, chatbot RAG, devis automatisés). Vous gardez la maîtrise pleine du code et des contenus, transférables à tout prestataire d'Occitanie ou repris en interne, sans dépendance imposée à Axion-IA.",
+          "Devis remis à partir de 24-48 h selon la complexité, périmètre et livrables définis avant signature. Hébergement dans l'Union européenne et conformité RGPD par défaut. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et la couche IA (recherche sémantique, chatbot RAG, devis automatisés). Vous gardez la maîtrise pleine du code et des contenus, transférables à tout prestataire d'Occitanie ou repris en interne, sans dépendance imposée à Axion-IA.",
       },
       en: {
         hero: "In Tarbes, prefecture of the Hautes-Pyrénées, the economy rests on three named, verifiable pillars: the Alstom Tarbes-Séméac plant, with nearly 800 staff, a world centre of excellence for rail traction systems (it supplies the traction chains for Grand Paris Express metro trainsets); the Pyrène Aéro-Pôle next to Tarbes-Lourdes-Pyrénées airport, with 3,400 jobs and 46 companies in aircraft maintenance, retrofit and recycling — including Tarmac Aerosave (world leader in aircraft recycling) and Daher; and a Pyrenean agri-food sector built around the Tarbais bean (Label Rouge and IGP). Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: rail subcontractors, Pyrène Aéro-Pôle aerospace suppliers, agri-food producers and Tarbes-Lourdes hospitality and tourism operators. UX/UI, mobile, multi-CMS e-commerce and AI, EU GDPR-compliant hosting, code you keep control of.",
@@ -218,11 +218,11 @@ export const TARBES_COPY: VilleCopy = {
           },
           {
             q: "How fast can I get a quote, and where is the data hosted?",
-            a: "We provide a quote from 48 h depending on project complexity. Hosting is in the European Union, GDPR-compliant, and you keep control of the code and content, with no proprietary lock-in.",
+            a: "We provide a quote from 24-48 h depending on project complexity. Hosting is in the European Union, GDPR-compliant, and you keep control of the code and content, with no proprietary lock-in.",
           },
         ],
         guarantees:
-          "Quote provided from 48 h depending on complexity, with scope and deliverables defined before signature. Hosting in the European Union and GDPR compliance by default. We cover UX/UI, mobile, multi-CMS e-commerce and the AI layer (semantic search, RAG chatbot, automated quotes). You keep full control of the code and content, transferable to any Occitanie provider or taken in-house, with no imposed dependency on Axion-IA.",
+          "Quote provided from 24-48 h depending on complexity, with scope and deliverables defined before signature. Hosting in the European Union and GDPR compliance by default. We cover UX/UI, mobile, multi-CMS e-commerce and the AI layer (semantic search, RAG chatbot, automated quotes). You keep full control of the code and content, transferable to any Occitanie provider or taken in-house, with no imposed dependency on Axion-IA.",
       },
     },
   },

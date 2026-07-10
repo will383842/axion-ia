@@ -130,11 +130,11 @@ export const ARRAS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis à Arras ?",
-            a: "À partir de 48 h selon la complexité du projet. Après un premier échange, nous cadrons le périmètre et vous transmettons un devis chiffré ; le kick-off se tient ensuite sur site à Arras ou dans la Communauté urbaine.",
+            a: "À partir de 24-48 h selon la complexité du projet. Après un premier échange, nous cadrons le périmètre et vous transmettons un devis chiffré ; le kick-off se tient ensuite sur site à Arras ou dans la Communauté urbaine.",
           },
         ],
         guarantees:
-          "Code custom dont vous gardez la pleine propriété, hébergement en Union européenne conforme RGPD avec registre de traitement fourni. UX/UI responsive et mobile-first, e-commerce multi-CMS au choix (jamais imposé), briques IA intégrées sans verrou éditeur. Aucune dépendance Axion-IA : reprise possible en interne ou par tout prestataire des Hauts-de-France. Devis à partir de 48 h selon la complexité, tarifs publics, scope contractuel défini avant tout développement.",
+          "Code custom dont vous gardez la pleine propriété, hébergement en Union européenne conforme RGPD avec registre de traitement fourni. UX/UI responsive et mobile-first, e-commerce multi-CMS au choix (jamais imposé), briques IA intégrées sans verrou éditeur. Aucune dépendance Axion-IA : reprise possible en interne ou par tout prestataire des Hauts-de-France. Devis à partir de 24-48 h selon la complexité, tarifs publics, scope contractuel défini avant tout développement.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Arras and its Urban Community (46 communes). The local fabric is clear-cut: food processing (Häagen-Dazs for thirty years, Cérélia and its France/Southern Europe head office at Actiparc, Ingredia, Vandemoortele), advanced biopharma with the LFB plasma-derived medicines gigafactory commissioned in late 2024 on Actiparc, and a major logistics hub at the A1/A26 motorway crossing (Actiparc, Artoipole). We build AI-native platforms for these sectors — traceability portals, supplier areas, B2B configurators, regulatory document search — in custom code, hosted in the EU, with no vendor lock-in.",
@@ -216,11 +216,11 @@ export const ARRAS_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote in Arras?",
-            a: "From 48 h depending on project complexity. After an initial exchange, we frame the scope and send you a costed quote; the kick-off then takes place on site in Arras or the Urban Community.",
+            a: "From 24-48 h depending on project complexity. After an initial exchange, we frame the scope and send you a costed quote; the kick-off then takes place on site in Arras or the Urban Community.",
           },
         ],
         guarantees:
-          "Custom code that you fully own, EU hosting compliant with GDPR with a processing register provided. Responsive, mobile-first UX/UI, multi-CMS e-commerce of your choice (never imposed), integrated AI blocks with no vendor lock-in. No Axion-IA dependency: re-takeable in-house or by any Hauts-de-France provider. Quote from 48 h depending on complexity, public pricing, contractual scope defined before any development.",
+          "Custom code that you fully own, EU hosting compliant with GDPR with a processing register provided. Responsive, mobile-first UX/UI, multi-CMS e-commerce of your choice (never imposed), integrated AI blocks with no vendor lock-in. No Axion-IA dependency: re-takeable in-house or by any Hauts-de-France provider. Quote from 24-48 h depending on complexity, public pricing, contractual scope defined before any development.",
       },
     },
   },

@@ -50,7 +50,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Brieuc des sites web, applications métier et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, nos projets épousent la signature briochine — la filière santé animale et sécurité sanitaire des aliments du Zoopôle de Ploufragan (ANSES, LABOCEA, ISPAIA), la filière automobile du Véhipôle, l'industrie (Le Joint Français) et l'agroalimentaire breton. Devis à partir de 48 h selon la complexité du projet, hébergement UE conforme RGPD, code et données à vous. Kick-off en présentiel à Saint-Brieuc, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Brieuc des sites web, applications métier et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, nos projets épousent la signature briochine — la filière santé animale et sécurité sanitaire des aliments du Zoopôle de Ploufragan (ANSES, LABOCEA, ISPAIA), la filière automobile du Véhipôle, l'industrie (Le Joint Français) et l'agroalimentaire breton. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE conforme RGPD, code et données à vous. Kick-off en présentiel à Saint-Brieuc, itérations à distance.",
         whyHere: [
           "Projets web & SaaS calibrés pour le tissu briochin : sous-traitants et entreprises du Zoopôle (santé animale, biotech, sécurité alimentaire — autour de l'ANSES Ploufragan, LABOCEA, ISPAIA), équipementiers du Véhipôle, industrie type Le Joint Français, agroalimentaire et acteurs du port du Légué.",
           "Données sensibles d'épidémiosurveillance, de traçabilité sanitaire et de biosécurité (filières avicole et porcine) : hébergement strictement UE, chaîne IA souveraine RGPD, registre des traitements documenté — un vrai atout pour les acteurs gravitant autour des laboratoires de référence de Ploufragan.",
@@ -61,7 +61,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Brieuc",
             detail:
-              "Atelier sur site : objectifs, parcours utilisateurs, audit de votre stack et de vos contenus. On tient compte des contraintes sectorielles locales (protocoles sanitaires Zoopôle, traçabilité agroalimentaire, contraintes industrielles type Le Joint Français). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de votre stack et de vos contenus. On tient compte des contraintes sectorielles locales (protocoles sanitaires Zoopôle, traçabilité agroalimentaire, contraintes industrielles type Le Joint Français). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Saint-Brieuc, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier branchée sur un SI industriel ou un référentiel sanitaire. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage à Saint-Brieuc, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier branchée sur un SI industriel ou un référentiel sanitaire. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Hébergement UE conforme RGPD, particulièrement adapté aux données sensibles des filières santé animale et agroalimentaire du Zoopôle. Code source, bases et modèles livrés dans votre infrastructure : propriété totale, aucun abonnement imposé, transférable à tout prestataire breton ou repris en interne. Nous codons en propre, sans solution no-code propriétaire.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Hébergement UE conforme RGPD, particulièrement adapté aux données sensibles des filières santé animale et agroalimentaire du Zoopôle. Code source, bases et modèles livrés dans votre infrastructure : propriété totale, aucun abonnement imposé, transférable à tout prestataire breton ou repris en interne. Nous codons en propre, sans solution no-code propriétaire.",
       },
       en: {
-        hero: "In Saint-Brieuc, Axion-IA designs and augments websites, business applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Here our projects match the local signature — the animal-health and food-safety cluster of the Ploufragan Zoopôle (ANSES, LABOCEA, ISPAIA), the Véhipôle automotive supply chain, industry (Le Joint Français) and Breton agri-food. Quote from 48 h depending on project complexity, EU hosting, GDPR-compliant, code and data yours. On-site Saint-Brieuc kick-off, remote iterations.",
+        hero: "In Saint-Brieuc, Axion-IA designs and augments websites, business applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Here our projects match the local signature — the animal-health and food-safety cluster of the Ploufragan Zoopôle (ANSES, LABOCEA, ISPAIA), the Véhipôle automotive supply chain, industry (Le Joint Français) and Breton agri-food. Quote from 24-48 h depending on project complexity, EU hosting, GDPR-compliant, code and data yours. On-site Saint-Brieuc kick-off, remote iterations.",
         whyHere: [
           "Web & SaaS projects calibrated for the Saint-Brieuc fabric: suppliers and companies of the Zoopôle (animal health, biotech, food safety — around ANSES Ploufragan, LABOCEA, ISPAIA), Véhipôle automotive suppliers, industry such as Le Joint Français, agri-food and the players of the Légué port.",
           "Sensitive epidemiological surveillance, sanitary traceability and biosecurity data (poultry and pig sectors): strictly EU hosting, GDPR-sovereign AI chain, documented processing register — a real asset for the players orbiting the Ploufragan reference laboratories.",
@@ -147,7 +147,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
           {
             step: "Scoping in Saint-Brieuc",
             detail:
-              "On-site workshop: goals, user journeys, audit of your stack and content. We account for local sector constraints (Zoopôle sanitary protocols, agri-food traceability, industrial constraints such as Le Joint Français). Firm quote from 48 h depending on complexity.",
+              "On-site workshop: goals, user journeys, audit of your stack and content. We account for local sector constraints (Zoopôle sanitary protocols, agri-food traceability, industrial constraints such as Le Joint Français). Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -215,11 +215,11 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping in Saint-Brieuc, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 48 h for a simple project, more for a business platform wired into an industrial IS or a sanitary reference system. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After scoping in Saint-Brieuc, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project, more for a business platform wired into an industrial IS or a sanitary reference system. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without service interruption when augmenting the existing site. Web Vitals and accessibility checked at delivery. EU hosting, GDPR-compliant, particularly suited to the sensitive data of the Zoopôle animal-health and agri-food sectors. Source code, databases and models delivered into your infrastructure: full ownership, no imposed subscription, transferable to any Breton provider or taken in-house. We write our own code, no proprietary no-code.",
+          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without service interruption when augmenting the existing site. Web Vitals and accessibility checked at delivery. EU hosting, GDPR-compliant, particularly suited to the sensitive data of the Zoopôle animal-health and agri-food sectors. Source code, databases and models delivered into your infrastructure: full ownership, no imposed subscription, transferable to any Breton provider or taken in-house. We write our own code, no proprietary no-code.",
       },
     },
   },

@@ -51,7 +51,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Saint-Ouen-sur-Seine, du back-office corporate de la ZAC Victor-Hugo (L'Oréal, Danone) au siège mondial d'Alstom, en passant par les éditeurs et services de la ZAC des Docks et les antiquaires du Marché aux Puces. Conception UX/UI, mobile, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, agents conversationnels) : code custom, hébergement Union européenne conforme RGPD, zéro verrou éditeur. Devis à partir de 48 h selon la complexité.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Saint-Ouen-sur-Seine, du back-office corporate de la ZAC Victor-Hugo (L'Oréal, Danone) au siège mondial d'Alstom, en passant par les éditeurs et services de la ZAC des Docks et les antiquaires du Marché aux Puces. Conception UX/UI, mobile, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, agents conversationnels) : code custom, hébergement Union européenne conforme RGPD, zéro verrou éditeur. Devis à partir de 24-48 h selon la complexité.",
         whyHere: [
           "La ZAC Victor-Hugo concentre des fonctions corporate et marketing (L'Oréal, Danone, Citroën, Nokia Siemens Networks France) qui ont besoin de portails internes, de plateformes produit et d'e-commerce B2B/D2C avec une couche IA — search sémantique sur catalogues, génération de fiches, assistants documentaires.",
           "Le Marché aux Puces de Paris–Saint-Ouen (14 marchés, 1 500+ marchands autour de la rue des Rosiers) regroupe des antiquaires et galeries dont les boutiques en ligne réclament une vraie ingénierie : catalogage photo assisté par IA, recherche visuelle de pièces, traduction multilingue automatisée pour une clientèle internationale.",
@@ -134,10 +134,10 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité. Code source intégralement livré, documentation runbook remise : vos équipes restent autonomes, sans dépendance Axion-IA ni verrou éditeur. Hébergement Union européenne conforme RGPD par défaut. Périmètre et budget fixés au cadrage à Saint-Ouen ; tout changement de scope fait l'objet d'un avenant explicite. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA dans un même projet — pas de sous-traitance opaque, pas de no-code imposé.",
+          "Devis à partir de 24-48 h selon la complexité. Code source intégralement livré, documentation runbook remise : vos équipes restent autonomes, sans dépendance Axion-IA ni verrou éditeur. Hébergement Union européenne conforme RGPD par défaut. Périmètre et budget fixés au cadrage à Saint-Ouen ; tout changement de scope fait l'objet d'un avenant explicite. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA dans un même projet — pas de sous-traitance opaque, pas de no-code imposé.",
       },
       en: {
-        hero: "Axion-IA builds AI-augmented websites and SaaS platforms for businesses in Saint-Ouen-sur-Seine, from the corporate back-office of the ZAC Victor-Hugo (L'Oréal, Danone) to Alstom's global headquarters, the software firms and services of the ZAC des Docks, and the antique dealers of the Flea Market. UX/UI design, mobile, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, conversational agents): custom code, EU hosting compliant with GDPR, zero vendor lock-in. Quote from 48 h depending on complexity.",
+        hero: "Axion-IA builds AI-augmented websites and SaaS platforms for businesses in Saint-Ouen-sur-Seine, from the corporate back-office of the ZAC Victor-Hugo (L'Oréal, Danone) to Alstom's global headquarters, the software firms and services of the ZAC des Docks, and the antique dealers of the Flea Market. UX/UI design, mobile, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, conversational agents): custom code, EU hosting compliant with GDPR, zero vendor lock-in. Quote from 24-48 h depending on complexity.",
         whyHere: [
           "The ZAC Victor-Hugo concentrates corporate and marketing functions (L'Oréal, Danone, Citroën, Nokia Siemens Networks France) that need internal portals, product platforms and B2B/D2C e-commerce with an AI layer — semantic catalogue search, content generation, document assistants.",
           "The Paris–Saint-Ouen Flea Market (14 markets, 1,500+ dealers around rue des Rosiers) gathers antique dealers and galleries whose online shops require real engineering: AI-assisted photo cataloguing, visual search of pieces, automated multilingual translation for an international clientele.",
@@ -220,7 +220,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 h depending on complexity. Source code fully delivered, runbook documentation handed over: your teams stay autonomous, with no Axion-IA dependency and no vendor lock-in. EU hosting compliant with GDPR by default. Scope and budget fixed at the Saint-Ouen framing; any scope change is the subject of an explicit amendment. We claim UX/UI, mobile, multi-CMS e-commerce and AI integration within a single project — no opaque subcontracting, no imposed no-code.",
+          "Quote from 24-48 h depending on complexity. Source code fully delivered, runbook documentation handed over: your teams stay autonomous, with no Axion-IA dependency and no vendor lock-in. EU hosting compliant with GDPR by default. Scope and budget fixed at the Saint-Ouen framing; any scope change is the subject of an explicit amendment. We claim UX/UI, mobile, multi-CMS e-commerce and AI integration within a single project — no opaque subcontracting, no imposed no-code.",
       },
     },
   },

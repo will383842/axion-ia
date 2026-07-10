@@ -329,7 +329,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
           {
             q: "En combien de temps livrez-vous un premier site ou prototype à Créteil ?",
-            a: "Le devis est établi à partir de 48 h selon la complexité après le brief de cadrage. Pour une TPE, un site vitrine ou une boutique en ligne IA-ready se déploie en quelques semaines ; une plateforme SaaS sur mesure ou un portail clinique s'étale sur plusieurs mois. Le calendrier précis est fixé au cadrage, avec un prototype cliquable validé tôt sur vos vraies données.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité après le brief de cadrage. Pour une TPE, un site vitrine ou une boutique en ligne IA-ready se déploie en quelques semaines ; une plateforme SaaS sur mesure ou un portail clinique s'étale sur plusieurs mois. Le calendrier précis est fixé au cadrage, avec un prototype cliquable validé tôt sur vos vraies données.",
           },
           {
             q: "Où sont hébergées les données et qui en garde la maîtrise ?",
@@ -341,7 +341,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre et les délais convenus à la signature (SOW à prix forfaitaire, devis établi à partir de 48 h selon la complexité). Conformité RGPD et hébergement en UE par défaut, option HDS pour les données de santé du pôle Mondor, accessibilité RGAA pour les projets publics. Aucun verrou éditeur : code custom, design system, modèles et documentation restent chez vous, repris par vos équipes ou tout intégrateur. Vos référents internes sont formés et autonomes après la mise en ligne.",
+          "Engagement contractuel sur le périmètre et les délais convenus à la signature (SOW à prix forfaitaire, devis établi à partir de 24-48 h selon la complexité). Conformité RGPD et hébergement en UE par défaut, option HDS pour les données de santé du pôle Mondor, accessibilité RGAA pour les projets publics. Aucun verrou éditeur : code custom, design system, modèles et documentation restent chez vous, repris par vos équipes ou tout intégrateur. Vos référents internes sont formés et autonomes après la mise en ligne.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms in Créteil, anchored in the real fabric of the Val-de-Marne préfecture: the health and life-sciences ecosystem orbiting the Henri-Mondor teaching hospital (AP-HP), the Mondor Biomedical Research Institute (IMRB, Inserm/UPEC, 17 teams) and the Bio&D incubator at the Échat centre. We craft patient platforms, clinical portals, MedTech/HealthTech sites, e-commerce spaces for the Créteil Soleil retail hub and business tools for Val-de-Marne public services — RAG chatbots, semantic search, conversational agents, UX/UI and mobile journeys. Custom code, EU/GDPR hosting (HDS option for health data), zero vendor lock-in.",
@@ -415,7 +415,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
           {
             q: "How quickly do you deliver a first site or prototype in Créteil?",
-            a: "The quote is issued from 48 hours depending on complexity after the framing brief. For a micro-business, an AI-ready showcase site or online store ships in a few weeks; a custom SaaS platform or clinical portal spans several months. The precise schedule is set at framing, with a clickable prototype validated early on your real data.",
+            a: "The quote is issued from 24-48 hours depending on complexity after the framing brief. For a micro-business, an AI-ready showcase site or online store ships in a few weeks; a custom SaaS platform or clinical portal spans several months. The precise schedule is set at framing, with a clickable prototype validated early on your real data.",
           },
           {
             q: "Where is the data hosted and who keeps control?",
@@ -427,7 +427,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment on the scope and timeline agreed at signature (fixed-price SOW, quote issued from 48 hours depending on complexity). GDPR compliance and EU hosting by default, HDS option for Mondor-hub health data, RGAA accessibility for public projects. No vendor lock-in: custom code, design system, models and documentation stay with you, reusable by your teams or any integrator. Your internal referents are trained and autonomous after go-live.",
+          "Contractual commitment on the scope and timeline agreed at signature (fixed-price SOW, quote issued from 24-48 hours depending on complexity). GDPR compliance and EU hosting by default, HDS option for Mondor-hub health data, RGAA accessibility for public projects. No vendor lock-in: custom code, design system, models and documentation stay with you, reusable by your teams or any integrator. Your internal referents are trained and autonomous after go-live.",
       },
     },
   },

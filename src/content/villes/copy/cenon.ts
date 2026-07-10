@@ -50,7 +50,7 @@ export const CENON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Cenon des sites web, boutiques en ligne, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la rive droite de la Garonne, dans les Hauts de Garonne (Cenon, Lormont, Floirac), où un tissu dense de TPE — commerce de détail, restauration, artisans BTP et services aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de Cenon, qui réunit plus de 200 sociétés au Rocher de Palmer, illustre ce dynamisme local. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cenon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cenon des sites web, boutiques en ligne, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la rive droite de la Garonne, dans les Hauts de Garonne (Cenon, Lormont, Floirac), où un tissu dense de TPE — commerce de détail, restauration, artisans BTP et services aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de Cenon, qui réunit plus de 200 sociétés au Rocher de Palmer, illustre ce dynamisme local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cenon, itérations à distance.",
         whyHere: [
           "Économie de proximité connectée au cœur bordelais : avec les tramways A et E, la gare TER Cenon et le Rocher de Palmer comme point de repère, vos clients arbitrent entre vous et les enseignes du centre. Un site rapide, mobile-first et une réservation directe en ligne, dopés par une recherche sémantique, deviennent décisifs pour capter une demande locale qui consulte d'abord sur smartphone.",
           "Forte densité d'artisans BTP et de travaux spécialisés sur les Hauts de Garonne, entre Cenon, Lormont et Floirac : on greffe l'IA sur l'existant — génération de devis, suivi de chantier, relances clients, automatisations métier — via widget, API ou plugin sur votre CMS, sans imposer de refonte lourde ni d'abonnement à une TPE.",
@@ -61,7 +61,7 @@ export const CENON_COPY: VilleCopy = {
           {
             step: "Cadrage à Cenon",
             detail:
-              "Atelier sur site — centre-ville, quartier de la gare TER, abords du Parc Palmer et du Rocher de Palmer, ou zones d'activité des Hauts de Garonne : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, quartier de la gare TER, abords du Parc Palmer et du Rocher de Palmer, ou zones d'activité des Hauts de Garonne : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const CENON_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles hébergées en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, modèles et code. Après le cadrage sur site à Cenon, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, modèles et code. Après le cadrage sur site à Cenon, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même pour un commerce ou un restaurant cenonnais en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou propriétaire imposé. L'ensemble est transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes, à tout moment et sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même pour un commerce ou un restaurant cenonnais en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou propriétaire imposé. L'ensemble est transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes, à tout moment et sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Cenon des sites web, boutiques en ligne, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la rive droite de la Garonne, dans les Hauts de Garonne (Cenon, Lormont, Floirac), où un tissu dense de TPE — commerce de détail, restauration, artisans BTP et services aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de Cenon, qui réunit plus de 200 sociétés au Rocher de Palmer, illustre ce dynamisme local. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cenon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cenon des sites web, boutiques en ligne, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la rive droite de la Garonne, dans les Hauts de Garonne (Cenon, Lormont, Floirac), où un tissu dense de TPE — commerce de détail, restauration, artisans BTP et services aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de Cenon, qui réunit plus de 200 sociétés au Rocher de Palmer, illustre ce dynamisme local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cenon, itérations à distance.",
         whyHere: [
           "Économie de proximité connectée au cœur bordelais : avec les tramways A et E, la gare TER Cenon et le Rocher de Palmer comme point de repère, vos clients arbitrent entre vous et les enseignes du centre. Un site rapide, mobile-first et une réservation directe en ligne, dopés par une recherche sémantique, deviennent décisifs pour capter une demande locale qui consulte d'abord sur smartphone.",
           "Forte densité d'artisans BTP et de travaux spécialisés sur les Hauts de Garonne, entre Cenon, Lormont et Floirac : on greffe l'IA sur l'existant — génération de devis, suivi de chantier, relances clients, automatisations métier — via widget, API ou plugin sur votre CMS, sans imposer de refonte lourde ni d'abonnement à une TPE.",
@@ -147,7 +147,7 @@ export const CENON_COPY: VilleCopy = {
           {
             step: "Cadrage à Cenon",
             detail:
-              "Atelier sur site — centre-ville, quartier de la gare TER, abords du Parc Palmer et du Rocher de Palmer, ou zones d'activité des Hauts de Garonne : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, quartier de la gare TER, abords du Parc Palmer et du Rocher de Palmer, ou zones d'activité des Hauts de Garonne : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const CENON_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles hébergées en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, modèles et code. Après le cadrage sur site à Cenon, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, modèles et code. Après le cadrage sur site à Cenon, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même pour un commerce ou un restaurant cenonnais en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou propriétaire imposé. L'ensemble est transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes, à tout moment et sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même pour un commerce ou un restaurant cenonnais en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou propriétaire imposé. L'ensemble est transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes, à tout moment et sans dépendance à Axion-IA.",
       },
     },
   },

@@ -49,7 +49,7 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Dizier des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture haut-marnaise labellisée Territoire d'Industrie, où la métallurgie, la fonderie, la mécanique de précision et les équipementiers automobile pèsent plus de 8 000 emplois industriels, aux côtés d'un monde agricole d'élevage bovin et de céréales et d'un tissu dense de TPE du commerce et de l'artisanat bragard. Des grands fondeurs comme ArcelorMittal, La Meusienne ou la Société des Fonderies de Saint-Dizier au commerce de la rue Gambetta, on couvre toute la chaîne. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Dizier, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Dizier des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture haut-marnaise labellisée Territoire d'Industrie, où la métallurgie, la fonderie, la mécanique de précision et les équipementiers automobile pèsent plus de 8 000 emplois industriels, aux côtés d'un monde agricole d'élevage bovin et de céréales et d'un tissu dense de TPE du commerce et de l'artisanat bragard. Des grands fondeurs comme ArcelorMittal, La Meusienne ou la Société des Fonderies de Saint-Dizier au commerce de la rue Gambetta, on couvre toute la chaîne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Dizier, itérations à distance.",
         whyHere: [
           "Pôle industriel historique de la Haute-Marne, premier département français pour la fonderie : autour des grands sites comme ArcelorMittal, La Meusienne (laminage, tubes, cintrage) et la Société des Fonderies de Saint-Dizier, on construit des portails B2B, configurateurs techniques et catalogues de pièces, ou on greffe une recherche sémantique sur vos documentations, plans et nomenclatures sans tout refondre.",
           "Activité agricole structurante du département — élevage bovin, grandes cultures céréalières et fromagerie : sites de vente directe, boutiques e-commerce de produits fermiers (WooCommerce, Shopify) et agents conversationnels pour gérer commandes, traçabilité et points de retrait au plus près des exploitations du Perthois et de la vallée de la Marne canalisée.",
@@ -60,7 +60,7 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Dizier",
             detail:
-              "Atelier sur site — atelier de fonderie en zone industrielle, exploitation agricole du Perthois, commerce de la rue Gambetta ou cabinet du centre-ville : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos contraintes métier. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — atelier de fonderie en zone industrielle, exploitation agricole du Perthois, commerce de la rue Gambetta ou cabinet du centre-ville : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos contraintes métier. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saint-Dizier — en zone industrielle, à l'exploitation ou au cabinet — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Saint-Dizier — en zone industrielle, à l'exploitation ou au cabinet — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine charge de production. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est documenté et transférable — repris en interne par vos équipes bragardes ou confié à un prestataire local du Grand-Est, à Saint-Dizier, Chaumont ou Reims, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine charge de production. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est documenté et transférable — repris en interne par vos équipes bragardes ou confié à un prestataire local du Grand-Est, à Saint-Dizier, Chaumont ou Reims, sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Dizier des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture haut-marnaise labellisée Territoire d'Industrie, où la métallurgie, la fonderie, la mécanique de précision et les équipementiers automobile pèsent plus de 8 000 emplois industriels, aux côtés d'un monde agricole d'élevage bovin et de céréales et d'un tissu dense de TPE du commerce et de l'artisanat bragard. Des grands fondeurs comme ArcelorMittal, La Meusienne ou la Société des Fonderies de Saint-Dizier au commerce de la rue Gambetta, on couvre toute la chaîne. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Dizier, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Dizier des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture haut-marnaise labellisée Territoire d'Industrie, où la métallurgie, la fonderie, la mécanique de précision et les équipementiers automobile pèsent plus de 8 000 emplois industriels, aux côtés d'un monde agricole d'élevage bovin et de céréales et d'un tissu dense de TPE du commerce et de l'artisanat bragard. Des grands fondeurs comme ArcelorMittal, La Meusienne ou la Société des Fonderies de Saint-Dizier au commerce de la rue Gambetta, on couvre toute la chaîne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Dizier, itérations à distance.",
         whyHere: [
           "Pôle industriel historique de la Haute-Marne, premier département français pour la fonderie : autour des grands sites comme ArcelorMittal, La Meusienne (laminage, tubes, cintrage) et la Société des Fonderies de Saint-Dizier, on construit des portails B2B, configurateurs techniques et catalogues de pièces, ou on greffe une recherche sémantique sur vos documentations, plans et nomenclatures sans tout refondre.",
           "Activité agricole structurante du département — élevage bovin, grandes cultures céréalières et fromagerie : sites de vente directe, boutiques e-commerce de produits fermiers (WooCommerce, Shopify) et agents conversationnels pour gérer commandes, traçabilité et points de retrait au plus près des exploitations du Perthois et de la vallée de la Marne canalisée.",
@@ -146,7 +146,7 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Dizier",
             detail:
-              "Atelier sur site — atelier de fonderie en zone industrielle, exploitation agricole du Perthois, commerce de la rue Gambetta ou cabinet du centre-ville : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos contraintes métier. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — atelier de fonderie en zone industrielle, exploitation agricole du Perthois, commerce de la rue Gambetta ou cabinet du centre-ville : objectifs, parcours utilisateurs, audit de la stack, des contenus et de vos contraintes métier. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -214,11 +214,11 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saint-Dizier — en zone industrielle, à l'exploitation ou au cabinet — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Saint-Dizier — en zone industrielle, à l'exploitation ou au cabinet — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine charge de production. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est documenté et transférable — repris en interne par vos équipes bragardes ou confié à un prestataire local du Grand-Est, à Saint-Dizier, Chaumont ou Reims, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine charge de production. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est documenté et transférable — repris en interne par vos équipes bragardes ou confié à un prestataire local du Grand-Est, à Saint-Dizier, Chaumont ou Reims, sans dépendance à Axion-IA.",
       },
     },
   },

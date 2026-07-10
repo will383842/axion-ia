@@ -124,7 +124,7 @@ export const BAGNEUX_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis de site ou de plateforme à Bagneux ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité, après un premier échange sur votre métier et votre objectif. Un site vitrine avec portail de devis se cadre vite ; une plateforme SaaS IA-native demande un cadrage technique plus poussé.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité, après un premier échange sur votre métier et votre objectif. Un site vitrine avec portail de devis se cadre vite ; une plateforme SaaS IA-native demande un cadrage technique plus poussé.",
           },
           {
             q: "Travaillez-vous avec les PME qui s'installent dans les bureaux neufs autour de la gare Lucie Aubrac ?",
@@ -136,7 +136,7 @@ export const BAGNEUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, tarifs publics et scope écrit avant signature. Sites et plateformes hébergés en UE par défaut, conformes RGPD et AI Act ; vos données et votre contenu restent maîtrisés et exportables. Code custom et documentation remis : aucun verrou éditeur, votre solution est reprenable en interne ou par tout prestataire du Grand Paris sud. Budgets de performance Web Vitals (LCP, INP, CLS) et compatibilité mobile vérifiés avant mise en ligne. Vos équipes balnéolaises sont formées pour rester autonomes sur le site et les outils IA après la livraison.",
+          "Devis remis à partir de 24-48 h selon la complexité, tarifs publics et scope écrit avant signature. Sites et plateformes hébergés en UE par défaut, conformes RGPD et AI Act ; vos données et votre contenu restent maîtrisés et exportables. Code custom et documentation remis : aucun verrou éditeur, votre solution est reprenable en interne ou par tout prestataire du Grand Paris sud. Budgets de performance Web Vitals (LCP, INP, CLS) et compatibilité mobile vérifiés avant mise en ligne. Vos équipes balnéolaises sont formées pour rester autonomes sur le site et les outils IA après la livraison.",
       },
       en: {
         hero: "Bagneux is scaling up: the launch of the Grand Paris Express Line 15 South at Bagneux–Lucie Aubrac station — one of the deepest in the network — together with the Line 4 extension since 2022, is bringing 119,000 sqm of new offices online across redevelopment zones including the Victor-Hugo eco-district. In Bagneux, Axion-IA designs AI-augmented websites and SaaS platforms for the real local fabric: micro-businesses in industrial machining and tooling, professional software publishers, industrial electrical and construction firms, retailers and tertiary players, alongside named employers such as the DGA central administration site (rue des Mathurins) and the Orange location on avenue Henri Ravera.",
@@ -210,7 +210,7 @@ export const BAGNEUX_COPY: VilleCopy = {
           },
           {
             q: "How long for a quote on a site or platform in Bagneux?",
-            a: "Quotes are issued from 48 hours depending on complexity, after a first exchange about your trade and your goal. A showcase site with a quote portal is scoped quickly; an AI-native SaaS platform requires deeper technical framing.",
+            a: "Quotes are issued from 24-48 hours depending on complexity, after a first exchange about your trade and your goal. A showcase site with a quote portal is scoped quickly; an AI-native SaaS platform requires deeper technical framing.",
           },
           {
             q: "Do you work with SMEs moving into the new offices around Lucie Aubrac station?",
@@ -222,7 +222,7 @@ export const BAGNEUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote issued from 48 hours depending on complexity, public pricing and written scope before signature. Sites and platforms hosted in the EU by default, GDPR and AI Act compliant; your data and content stay controlled and exportable. Custom code and documentation handed over: no vendor lock-in, your solution can be taken over in-house or by any Grand Paris South provider. Web Vitals performance budgets (LCP, INP, CLS) and mobile compatibility verified before go-live. Your Bagneux teams are trained to stay autonomous on the site and AI tools after delivery.",
+          "Quote issued from 24-48 hours depending on complexity, public pricing and written scope before signature. Sites and platforms hosted in the EU by default, GDPR and AI Act compliant; your data and content stay controlled and exportable. Custom code and documentation handed over: no vendor lock-in, your solution can be taken over in-house or by any Grand Paris South provider. Web Vitals performance budgets (LCP, INP, CLS) and mobile compatibility verified before go-live. Your Bagneux teams are trained to stay autonomous on the site and AI tools after delivery.",
       },
     },
   },

@@ -130,11 +130,11 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtenir un devis, et serai-je dépendant d'Axion-IA ensuite ?",
-            a: "Un devis vous est remis à partir de 48 h selon la complexité du projet. Aucune dépendance : le code est livré en Python/TypeScript, versionné et documenté, l'hébergement reste à votre nom, et l'ensemble peut être repris par votre équipe ou un prestataire local de la région stéphanoise. Pas de verrou éditeur, pas d'abonnement caché.",
+            a: "Un devis vous est remis à partir de 24 à 48 h selon la complexité du projet. Aucune dépendance : le code est livré en Python/TypeScript, versionné et documenté, l'hébergement reste à votre nom, et l'ensemble peut être repris par votre équipe ou un prestataire local de la région stéphanoise. Pas de verrou éditeur, pas d'abonnement caché.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Code custom Python/TypeScript versionné et documenté, livré sans dépendance no-code propriétaire et sans verrou éditeur. Hébergement en Union européenne par défaut, conformité RGPD (minimisation des données, registre des traitements, clauses de confidentialité dans chaque devis), avec option de déploiement souverain ou on-premise pour les briques IA sensibles — adapté aux acteurs industriels et de défense de Saint-Chamond. Le code et les données restent votre propriété, auditables par un tiers et reprenables en interne ou par un intégrateur de la vallée du Gier.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Code custom Python/TypeScript versionné et documenté, livré sans dépendance no-code propriétaire et sans verrou éditeur. Hébergement en Union européenne par défaut, conformité RGPD (minimisation des données, registre des traitements, clauses de confidentialité dans chaque devis), avec option de déploiement souverain ou on-premise pour les briques IA sensibles — adapté aux acteurs industriels et de défense de Saint-Chamond. Le code et les données restent votre propriété, auditables par un tiers et reprenables en interne ou par un intégrateur de la vallée du Gier.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for the businesses of Saint-Chamond, in the Gier valley. Here industry is anything but abstract: NBC-Sys (KNDS group, formerly GIAT) manufactures the armed forces' ARFA NRBC masks, Loire Industrie produces steel tubes and flanges on the Clos Marquet industrial estate, Agripolyane is doubling its plastics capacity, and the former Creusot-Loire wasteland is being reborn as the Novaciéries eco-district where Novasoie is relaunching technical silk. For these industrial subcontractors, metal-braiding makers heir to the Saint-Étienne lace trade, Novaciéries retailers and service SMEs, we deliver AI-native platforms — RAG chatbots over technical catalogues, product configurators, semantic part search — in custom code, EU-hosted, GDPR-compliant, with no vendor lock-in.",
@@ -216,11 +216,11 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           },
           {
             q: "How quickly do I get a quote, and will I then depend on Axion-IA?",
-            a: "A quote is delivered from 48 hours depending on project complexity. No dependency: code is delivered in Python/TypeScript, versioned and documented, hosting stays in your name, and everything can be taken over by your team or a local Saint-Étienne-area provider. No vendor lock-in, no hidden subscription.",
+            a: "A quote is delivered from 24 to 48 hours depending on project complexity. No dependency: code is delivered in Python/TypeScript, versioned and documented, hosting stays in your name, and everything can be taken over by your team or a local Saint-Étienne-area provider. No vendor lock-in, no hidden subscription.",
           },
         ],
         guarantees:
-          "Quote delivered from 48 hours depending on complexity. Versioned, documented custom Python/TypeScript code, delivered with no proprietary no-code dependency and no vendor lock-in. EU hosting by default, GDPR compliance (data minimisation, processing register, confidentiality clauses in every quote), with the option of sovereign or on-premise deployment for sensitive AI bricks — suited to Saint-Chamond's industrial and defence players. Code and data remain your property, third-party auditable and recoverable in-house or by a Gier valley integrator.",
+          "Quote delivered from 24 to 48 hours depending on complexity. Versioned, documented custom Python/TypeScript code, delivered with no proprietary no-code dependency and no vendor lock-in. EU hosting by default, GDPR compliance (data minimisation, processing register, confidentiality clauses in every quote), with the option of sovereign or on-premise deployment for sensitive AI bricks — suited to Saint-Chamond's industrial and defence players. Code and data remain your property, third-party auditable and recoverable in-house or by a Gier valley integrator.",
       },
     },
   },

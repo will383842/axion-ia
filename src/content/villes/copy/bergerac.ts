@@ -49,7 +49,7 @@ export const BERGERAC_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bergerac des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Une plateforme de vente directe pour un domaine des AOC Bergerac, Monbazillac ou Pécharmant n'a rien à voir avec un portail fournisseur sécurisé pour un sous-traitant de l'industrie de défense (Eurenco) ou un site multilingue pour l'œnotourisme et les hébergeurs alimentés par l'aéroport Roumanière. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Bergerac, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Bergerac des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Une plateforme de vente directe pour un domaine des AOC Bergerac, Monbazillac ou Pécharmant n'a rien à voir avec un portail fournisseur sécurisé pour un sous-traitant de l'industrie de défense (Eurenco) ou un site multilingue pour l'œnotourisme et les hébergeurs alimentés par l'aéroport Roumanière. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Bergerac, itérations à distance.",
         whyHere: [
           "Vignoble Bergerac & Duras : ~1 200 vignerons, 13 AOC (Monbazillac liquoreux, Pécharmant, Côtes de Bergerac, Saussignac, Montravel). Nous construisons des boutiques e-commerce vente directe producteur, des espaces club/allocation et des agents conversationnels d'œnotourisme reliés à l'écosystème CIVRB / Maison des Vins au Cloître des Récollets et au pôle Quai Cyrano.",
           "Réindustrialisation de défense Eurenco (ex-poudrerie SNPE, site depuis 1915) : effectif passé d'environ 200 à 500 salariés, nouvelle poudrerie d'obus d'artillerie. Pour ce tissu industriel sensible et ses sous-traitants, nous concevons des portails et applications métier avec hébergement UE souverain, contrôle d'accès strict et données qui ne sortent jamais de votre infrastructure.",
@@ -60,7 +60,7 @@ export const BERGERAC_COPY: VilleCopy = {
           {
             step: "Cadrage à Bergerac",
             detail:
-              "Atelier sur site — au chai, dans la conserverie, en bureau de la ZI de Campréal ou sur un site industriel : objectifs, parcours utilisateurs, audit de la stack et des contenus. Pour les sous-traitants Eurenco, revue préalable des contraintes d'accès et de confidentialité. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — au chai, dans la conserverie, en bureau de la ZI de Campréal ou sur un site industriel : objectifs, parcours utilisateurs, audit de la stack et des contenus. Pour les sous-traitants Eurenco, revue préalable des contraintes d'accès et de confidentialité. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const BERGERAC_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour une boutique vigneron simple, davantage pour une plateforme métier industrielle avec exigences de sécurité. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour une boutique vigneron simple, davantage pour une plateforme métier industrielle avec exigences de sécurité. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption quand on augmente un site existant. Web Vitals et accessibilité contrôlés à la livraison, parcours mobile-first et multilingue FR/EN/NL pour la clientèle touristique de Roumanière. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible, indispensable pour la filière industrielle Eurenco) : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Bergeracois ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption quand on augmente un site existant. Web Vitals et accessibilité contrôlés à la livraison, parcours mobile-first et multilingue FR/EN/NL pour la clientèle touristique de Roumanière. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible, indispensable pour la filière industrielle Eurenco) : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Bergeracois ou repris en interne.",
       },
       en: {
-        hero: "In Bergerac, Axion-IA designs and augments websites, online shops and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. A direct-sales platform for an estate in the Bergerac, Monbazillac or Pécharmant AOC has nothing in common with a secure supplier portal for a defence-industry subcontractor (Eurenco) or a multilingual site for the wine tourism and hospitality businesses fed by Roumanière airport. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Bergerac kick-off, remote iterations.",
+        hero: "In Bergerac, Axion-IA designs and augments websites, online shops and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. A direct-sales platform for an estate in the Bergerac, Monbazillac or Pécharmant AOC has nothing in common with a secure supplier portal for a defence-industry subcontractor (Eurenco) or a multilingual site for the wine tourism and hospitality businesses fed by Roumanière airport. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Bergerac kick-off, remote iterations.",
         whyHere: [
           "Bergerac & Duras vineyards: ~1,200 winegrowers, 13 AOCs (sweet Monbazillac, Pécharmant, Côtes de Bergerac, Saussignac, Montravel). We build direct-to-consumer e-commerce shops, club/allocation areas and wine-tourism conversational agents tied into the CIVRB / Maison des Vins ecosystem at the Cloître des Récollets and the Quai Cyrano hub.",
           "Eurenco defence reindustrialisation (former SNPE powder mill, on site since 1915): headcount up from around 200 to 500 staff, a new artillery-shell powder facility. For this sensitive industrial fabric and its subcontractors, we design portals and business apps with sovereign EU hosting, strict access control and data that never leaves your infrastructure.",
@@ -146,7 +146,7 @@ export const BERGERAC_COPY: VilleCopy = {
           {
             step: "Scoping in Bergerac",
             detail:
-              "On-site workshop — at the winery, in the cannery, in a Campréal estate office or at an industrial site: goals, user journeys, audit of the existing stack and content. For Eurenco subcontractors, upfront review of access and confidentiality constraints. Firm quote from 48 h depending on complexity.",
+              "On-site workshop — at the winery, in the cannery, in a Campréal estate office or at an industrial site: goals, user journeys, audit of the existing stack and content. For Eurenco subcontractors, upfront review of access and confidentiality constraints. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -214,11 +214,11 @@ export const BERGERAC_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping, we issue a firm fixed-price quote. The turnaround depends on complexity — from 48 h for a simple winegrower shop, longer for an industrial business platform with security requirements. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After scoping, we issue a firm fixed-price quote. The turnaround depends on complexity — from 24-48 h for a simple winegrower shop, longer for an industrial business platform with security requirements. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Downtime-free go-live when augmenting an existing site. Web Vitals and accessibility checked at delivery, mobile-first and FR/EN/NL multilingual journeys for the Roumanière tourist clientele. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting available, essential for the Eurenco industrial supply chain): full ownership, no imposed subscription, transferable to any Bergerac-area vendor or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Downtime-free go-live when augmenting an existing site. Web Vitals and accessibility checked at delivery, mobile-first and FR/EN/NL multilingual journeys for the Roumanière tourist clientele. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting available, essential for the Eurenco industrial supply chain): full ownership, no imposed subscription, transferable to any Bergerac-area vendor or taken in-house.",
       },
     },
   },

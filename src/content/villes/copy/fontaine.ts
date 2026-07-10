@@ -51,7 +51,7 @@ export const FONTAINE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Fontaine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune limitrophe de Grenoble (38600, ~22 020 habitants sur 6,74 km²), organisée autour des zones d'activités des Vouillants, des Plans et de L'Argentière, où dominent PME industrielles de produits métalliques, commerce de gros, BTP et services — sans oublier des structures d'insertion comme l'Espace Industriel d'Adaptation du boulevard Joliot-Curie. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontaine, à 2,5 km de la gare de Grenoble, desservie par la ligne A du tramway et l'A480 ; itérations à distance ensuite.",
+        hero: "Axion-IA conçoit et augmente à Fontaine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune limitrophe de Grenoble (38600, ~22 020 habitants sur 6,74 km²), organisée autour des zones d'activités des Vouillants, des Plans et de L'Argentière, où dominent PME industrielles de produits métalliques, commerce de gros, BTP et services — sans oublier des structures d'insertion comme l'Espace Industriel d'Adaptation du boulevard Joliot-Curie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontaine, à 2,5 km de la gare de Grenoble, desservie par la ligne A du tramway et l'A480 ; itérations à distance ensuite.",
         whyHere: [
           "Tissu industriel des zones Vouillants, Les Plans et L'Argentière (fabrication de produits métalliques, ateliers) : on greffe l'IA sur l'existant — portail client, configurateur de devis, suivi de production en ligne — sans imposer de refonte coûteuse aux PME et ateliers locaux, y compris aux structures d'insertion comme l'Espace Industriel d'Adaptation (ESAT) du boulevard Joliot-Curie qui sous-traite assemblage, conditionnement et préparation de commandes.",
           "Forte densité de commerce de gros et de BTP autour de Fontaine, dans une commune dense (3 267 hab/km²) reliée à Grenoble par les bus 19, 20, 50 et 53 : terrain idéal pour des boutiques e-commerce B2B multi-CMS (WooCommerce, PrestaShop, Magento), des catalogues produits avec recherche sémantique et des espaces de commande self-service reliés à votre ERP ou GPAO.",
@@ -62,7 +62,7 @@ export const FONTAINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Fontaine",
             detail:
-              "Atelier sur site dans les zones Vouillants, Les Plans ou L'Argentière, ou en cœur de ville près de la rue de la Liberté : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Accès rapide par la ligne A du tram et l'A480. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans les zones Vouillants, Les Plans ou L'Argentière, ou en cœur de ville près de la rue de la Liberté : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Accès rapide par la ligne A du tram et l'A480. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const FONTAINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Fontaine — accessible en quelques minutes par la ligne A du tram ou l'A480 depuis Grenoble — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage sur site à Fontaine — accessible en quelques minutes par la ligne A du tram ou l'A480 depuis Grenoble — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine activité de production des ateliers fontainois. Web Vitals, accessibilité (WCAG) et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est documenté et transférable — vous pouvez reprendre l'outil en interne ou le confier à n'importe quel prestataire de la région Auvergne-Rhône-Alpes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine activité de production des ateliers fontainois. Web Vitals, accessibilité (WCAG) et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est documenté et transférable — vous pouvez reprendre l'outil en interne ou le confier à n'importe quel prestataire de la région Auvergne-Rhône-Alpes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Fontaine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune limitrophe de Grenoble (38600, ~22 020 habitants sur 6,74 km²), organisée autour des zones d'activités des Vouillants, des Plans et de L'Argentière, où dominent PME industrielles de produits métalliques, commerce de gros, BTP et services — sans oublier des structures d'insertion comme l'Espace Industriel d'Adaptation du boulevard Joliot-Curie. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontaine, à 2,5 km de la gare de Grenoble, desservie par la ligne A du tramway et l'A480 ; itérations à distance ensuite.",
+        hero: "Axion-IA conçoit et augmente à Fontaine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune limitrophe de Grenoble (38600, ~22 020 habitants sur 6,74 km²), organisée autour des zones d'activités des Vouillants, des Plans et de L'Argentière, où dominent PME industrielles de produits métalliques, commerce de gros, BTP et services — sans oublier des structures d'insertion comme l'Espace Industriel d'Adaptation du boulevard Joliot-Curie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontaine, à 2,5 km de la gare de Grenoble, desservie par la ligne A du tramway et l'A480 ; itérations à distance ensuite.",
         whyHere: [
           "Tissu industriel des zones Vouillants, Les Plans et L'Argentière (fabrication de produits métalliques, ateliers) : on greffe l'IA sur l'existant — portail client, configurateur de devis, suivi de production en ligne — sans imposer de refonte coûteuse aux PME et ateliers locaux, y compris aux structures d'insertion comme l'Espace Industriel d'Adaptation (ESAT) du boulevard Joliot-Curie qui sous-traite assemblage, conditionnement et préparation de commandes.",
           "Forte densité de commerce de gros et de BTP autour de Fontaine, dans une commune dense (3 267 hab/km²) reliée à Grenoble par les bus 19, 20, 50 et 53 : terrain idéal pour des boutiques e-commerce B2B multi-CMS (WooCommerce, PrestaShop, Magento), des catalogues produits avec recherche sémantique et des espaces de commande self-service reliés à votre ERP ou GPAO.",
@@ -148,7 +148,7 @@ export const FONTAINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Fontaine",
             detail:
-              "Atelier sur site dans les zones Vouillants, Les Plans ou L'Argentière, ou en cœur de ville près de la rue de la Liberté : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Accès rapide par la ligne A du tram et l'A480. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans les zones Vouillants, Les Plans ou L'Argentière, ou en cœur de ville près de la rue de la Liberté : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Accès rapide par la ligne A du tram et l'A480. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const FONTAINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Fontaine — accessible en quelques minutes par la ligne A du tram ou l'A480 depuis Grenoble — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage sur site à Fontaine — accessible en quelques minutes par la ligne A du tram ou l'A480 depuis Grenoble — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine activité de production des ateliers fontainois. Web Vitals, accessibilité (WCAG) et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est documenté et transférable — vous pouvez reprendre l'outil en interne ou le confier à n'importe quel prestataire de la région Auvergne-Rhône-Alpes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine activité de production des ateliers fontainois. Web Vitals, accessibilité (WCAG) et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est documenté et transférable — vous pouvez reprendre l'outil en interne ou le confier à n'importe quel prestataire de la région Auvergne-Rhône-Alpes.",
       },
     },
   },

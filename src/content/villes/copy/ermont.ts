@@ -53,7 +53,7 @@ export const ERMONT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Ermont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. On travaille pour le commerce de proximité et la galerie marchande du Cora (avenue Georges Pompidou), les professions de santé gravitant autour de l'Hôpital Simone Veil, l'artisanat du bâtiment et la restauration de flux du quartier de la gare d'Ermont-Eaubonne. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Ermont, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Ermont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. On travaille pour le commerce de proximité et la galerie marchande du Cora (avenue Georges Pompidou), les professions de santé gravitant autour de l'Hôpital Simone Veil, l'artisanat du bâtiment et la restauration de flux du quartier de la gare d'Ermont-Eaubonne. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Ermont, itérations à distance.",
         whyHere: [
           "Commerce & galerie marchande : sites e-commerce et click-and-collect pour les boutiques de proximité et celles de la galerie du Cora Ermont (avenue Georges Pompidou), avec prise de commande en ligne et drive.",
           "Santé & professions libérales : prise de rendez-vous en ligne, rappels et pré-qualification pour les praticiens du bassin de l'Hôpital Simone Veil (Groupement Hospitalier Eaubonne-Montmorency) accessible depuis la gare.",
@@ -64,7 +64,7 @@ export const ERMONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Ermont",
             detail:
-              "Rencontre sur site — votre boutique de la galerie Cora, votre cabinet ou votre local du quartier de la gare. Objectifs, parcours clients, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Rencontre sur site — votre boutique de la galerie Cora, votre cabinet ou votre local du quartier de la gare. Objectifs, parcours clients, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,7 +128,7 @@ export const ERMONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Ermont, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à Ermont, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Mes données restent-elles en Europe ?",
@@ -136,10 +136,10 @@ export const ERMONT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD), propriété totale, aucun abonnement imposé, transférable à tout prestataire d'Ermont, de Val Parisis ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD), propriété totale, aucun abonnement imposé, transférable à tout prestataire d'Ermont, de Val Parisis ou repris en interne.",
       },
       en: {
-        hero: "In Ermont, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. We work for local retail and the Cora Ermont shopping gallery (Avenue Georges Pompidou), the healthcare practitioners around Hôpital Simone Veil, building trades and the commuter-flow catering around the Ermont-Eaubonne station district. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Ermont kick-off, remote iterations.",
+        hero: "In Ermont, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. We work for local retail and the Cora Ermont shopping gallery (Avenue Georges Pompidou), the healthcare practitioners around Hôpital Simone Veil, building trades and the commuter-flow catering around the Ermont-Eaubonne station district. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Ermont kick-off, remote iterations.",
         whyHere: [
           "Retail & shopping gallery: e-commerce and click-and-collect sites for local shops and those of the Cora Ermont gallery (Avenue Georges Pompidou), with online ordering and drive.",
           "Health & liberal professions: online booking, reminders and pre-qualification for practitioners in the catchment area of Hôpital Simone Veil (Eaubonne-Montmorency Hospital Group), reachable from the station.",
@@ -150,7 +150,7 @@ export const ERMONT_COPY: VilleCopy = {
           {
             step: "Scoping in Ermont",
             detail:
-              "On-site meeting — your Cora gallery shop, your practice or your unit in the station district. Goals, customer journeys, audit of the stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site meeting — your Cora gallery shop, your practice or your unit in the station district. Goals, customer journeys, audit of the stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -214,7 +214,7 @@ export const ERMONT_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the on-site scoping in Ermont, we issue a firm fixed-price quote. The turnaround depends on complexity — from 48 h for a simple project. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the on-site scoping in Ermont, we issue a firm fixed-price quote. The turnaround depends on complexity — from 24-48 h for a simple project. No time-and-materials, no hidden hourly drift.",
           },
           {
             q: "Does my data stay in Europe?",
@@ -222,7 +222,7 @@ export const ERMONT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without service interruption when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting), full ownership, no imposed subscription, transferable to any Ermont or Val Parisis provider or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without service interruption when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting), full ownership, no imposed subscription, transferable to any Ermont or Val Parisis provider or taken in-house.",
       },
     },
   },

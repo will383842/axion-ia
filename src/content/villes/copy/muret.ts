@@ -51,7 +51,7 @@ export const MURET_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Muret des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture de la Haute-Garonne de 26 079 habitants, 5e commune du département, adossée à la métropole toulousaine à 23 km et siège du Muretain Agglo, où cohabitent sous-traitants aéronautiques de la bande toulousaine (proximité Mecaprotec), pyrotechnie (Étienne Lacroix), pharmacie (écosystème Pierre Fabre) et un tissu dense de TPE du commerce de gros, du transport, de l'hôtellerie-restauration et de l'artisanat du bâtiment. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Muret, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Muret des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture de la Haute-Garonne de 26 079 habitants, 5e commune du département, adossée à la métropole toulousaine à 23 km et siège du Muretain Agglo, où cohabitent sous-traitants aéronautiques de la bande toulousaine (proximité Mecaprotec), pyrotechnie (Étienne Lacroix), pharmacie (écosystème Pierre Fabre) et un tissu dense de TPE du commerce de gros, du transport, de l'hôtellerie-restauration et de l'artisanat du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Muret, itérations à distance.",
         whyHere: [
           "Filière aéronautique sous-traitante structurée autour de l'aérodrome de Muret-Lherm et de la proximité de Mecaprotec (traitements de surface) : ces ateliers vivent de devis techniques, de reporting qualité et de traçabilité documentaire. C'est le terrain idéal pour des portails clients, des configurateurs de devis en ligne et des agents qui qualifient automatiquement les demandes entrantes, branchés sur l'ERP qualité et la GED.",
           "Position de sous-préfecture adossée à Toulouse, desservie par l'autoroute A64 (trois sorties) et par la gare de Muret, terminus de 14 lignes Tisséo vers le métro toulousain : nos sites mobile-first, nos boutiques e-commerce et nos chatbots multilingues captent une clientèle qui circule entre Muret et la métropole, au service des commerces de centre-ville et de l'hôtellerie-restauration.",
@@ -62,7 +62,7 @@ export const MURET_COPY: VilleCopy = {
           {
             step: "Cadrage à Muret",
             detail:
-              "Atelier sur site — centre-ville autour de la gare, zones d'activité du Muretain Agglo, aérodrome de Muret-Lherm : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des processus métier. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville autour de la gare, zones d'activité du Muretain Agglo, aérodrome de Muret-Lherm : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des processus métier. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -130,14 +130,14 @@ export const MURET_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Muret, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 48 h pour un périmètre simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet : le montant convenu est le montant facturé.",
+            a: "Oui. Après le cadrage sur site à Muret, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet : le montant convenu est le montant facturé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un atelier ou un commerce du Muretain qui ne peut pas couper son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire local de la région toulousaine ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un atelier ou un commerce du Muretain qui ne peut pas couper son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire local de la région toulousaine ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Muret des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture de la Haute-Garonne de 26 079 habitants, 5e commune du département, adossée à la métropole toulousaine à 23 km et siège du Muretain Agglo, où cohabitent sous-traitants aéronautiques de la bande toulousaine (proximité Mecaprotec), pyrotechnie (Étienne Lacroix), pharmacie (écosystème Pierre Fabre) et un tissu dense de TPE du commerce de gros, du transport, de l'hôtellerie-restauration et de l'artisanat du bâtiment. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Muret, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Muret des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture de la Haute-Garonne de 26 079 habitants, 5e commune du département, adossée à la métropole toulousaine à 23 km et siège du Muretain Agglo, où cohabitent sous-traitants aéronautiques de la bande toulousaine (proximité Mecaprotec), pyrotechnie (Étienne Lacroix), pharmacie (écosystème Pierre Fabre) et un tissu dense de TPE du commerce de gros, du transport, de l'hôtellerie-restauration et de l'artisanat du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Muret, itérations à distance.",
         whyHere: [
           "Filière aéronautique sous-traitante structurée autour de l'aérodrome de Muret-Lherm et de la proximité de Mecaprotec (traitements de surface) : ces ateliers vivent de devis techniques, de reporting qualité et de traçabilité documentaire. C'est le terrain idéal pour des portails clients, des configurateurs de devis en ligne et des agents qui qualifient automatiquement les demandes entrantes, branchés sur l'ERP qualité et la GED.",
           "Position de sous-préfecture adossée à Toulouse, desservie par l'autoroute A64 (trois sorties) et par la gare de Muret, terminus de 14 lignes Tisséo vers le métro toulousain : nos sites mobile-first, nos boutiques e-commerce et nos chatbots multilingues captent une clientèle qui circule entre Muret et la métropole, au service des commerces de centre-ville et de l'hôtellerie-restauration.",
@@ -148,7 +148,7 @@ export const MURET_COPY: VilleCopy = {
           {
             step: "Cadrage à Muret",
             detail:
-              "Atelier sur site — centre-ville autour de la gare, zones d'activité du Muretain Agglo, aérodrome de Muret-Lherm : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des processus métier. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville autour de la gare, zones d'activité du Muretain Agglo, aérodrome de Muret-Lherm : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des processus métier. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -216,11 +216,11 @@ export const MURET_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Muret, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 48 h pour un périmètre simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet : le montant convenu est le montant facturé.",
+            a: "Oui. Après le cadrage sur site à Muret, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet : le montant convenu est le montant facturé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un atelier ou un commerce du Muretain qui ne peut pas couper son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire local de la région toulousaine ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un atelier ou un commerce du Muretain qui ne peut pas couper son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire local de la région toulousaine ou repris en interne.",
       },
     },
   },

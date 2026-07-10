@@ -51,7 +51,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Roche-sur-Yon des sites web, applications, e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. La préfecture vendéenne abrite un vrai pôle numérique — l'éditeur SaaS public CIRIL Group (gamme CIVIL, hébergeur Cloud) — autant qu'un socle industriel (Atlantic Industrie / Groupe SEB ex-Calor, agroalimentaire vendéen). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Roche-sur-Yon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Roche-sur-Yon des sites web, applications, e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. La préfecture vendéenne abrite un vrai pôle numérique — l'éditeur SaaS public CIRIL Group (gamme CIVIL, hébergeur Cloud) — autant qu'un socle industriel (Atlantic Industrie / Groupe SEB ex-Calor, agroalimentaire vendéen). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Roche-sur-Yon, itérations à distance.",
         whyHere: [
           "Projets web & SaaS yonnais : éditeurs et hébergeurs Cloud locaux (dans la lignée de CIRIL Group, gamme CIVIL pour collectivités), industriels de l'électroménager (Atlantic Industrie / Groupe SEB, ZI des Ajoncs), agroalimentaire vendéen (Fleury Michon, Sodebo) et services aux entreprises (CER France / AGC Vendée).",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA, pour vitrines, portails clients ou applications métier.",
@@ -62,7 +62,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
           {
             step: "Cadrage à La Roche-sur-Yon",
             detail:
-              "Atelier sur site (gare TGV ou A87) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (gare TGV ou A87) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -126,7 +126,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à La Roche-sur-Yon, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme SaaS métier étendue. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage à La Roche-sur-Yon, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme SaaS métier étendue. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Avec quelles technologies travaillez-vous ?",
@@ -134,10 +134,10 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la Vendée — de La Roche-sur-Yon à l'écosystème French Tech Vendée — ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la Vendée — de La Roche-sur-Yon à l'écosystème French Tech Vendée — ou repris en interne.",
       },
       en: {
-        hero: "In La Roche-sur-Yon, Axion-IA designs and augments websites, applications, e-commerce and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. The Vendée prefecture hosts a genuine digital hub — public-sector SaaS publisher CIRIL Group (CIVIL suite, Cloud hosting) — alongside an industrial base (Atlantic Industrie / Groupe SEB ex-Calor, Vendée food processing). Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site La Roche-sur-Yon kick-off, remote iterations.",
+        hero: "In La Roche-sur-Yon, Axion-IA designs and augments websites, applications, e-commerce and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. The Vendée prefecture hosts a genuine digital hub — public-sector SaaS publisher CIRIL Group (CIVIL suite, Cloud hosting) — alongside an industrial base (Atlantic Industrie / Groupe SEB ex-Calor, Vendée food processing). Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site La Roche-sur-Yon kick-off, remote iterations.",
         whyHere: [
           "La Roche-sur-Yon web & SaaS projects: local software publishers and Cloud hosts (in the vein of CIRIL Group, CIVIL suite for local authorities), household-appliance industry (Atlantic Industrie / Groupe SEB, ZI des Ajoncs), Vendée food processing (Fleury Michon, Sodebo) and business services (CER France / AGC Vendée).",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick, for storefronts, client portals or business applications.",
@@ -148,7 +148,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
           {
             step: "Scoping in La Roche-sur-Yon",
             detail:
-              "On-site workshop (TGV station or A87): goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop (TGV station or A87): goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -212,7 +212,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping in La Roche-sur-Yon, we provide a firm fixed-price quote. Turnaround depends on complexity — from 48 h for a simple project, longer for an extended business SaaS platform. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After scoping in La Roche-sur-Yon, we provide a firm fixed-price quote. Turnaround depends on complexity — from 24-48 h for a simple project, longer for an extended business SaaS platform. No time-and-materials, no hidden hourly drift.",
           },
           {
             q: "Which technologies do you work with?",
@@ -220,7 +220,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without service interruption when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Vendée provider — from La Roche-sur-Yon to the French Tech Vendée ecosystem — or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without service interruption when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Vendée provider — from La Roche-sur-Yon to the French Tech Vendée ecosystem — or taken in-house.",
       },
     },
   },

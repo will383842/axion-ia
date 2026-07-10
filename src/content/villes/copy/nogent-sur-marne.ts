@@ -132,11 +132,11 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour démarrer un projet de site à Nogent-sur-Marne ?",
-            a: "Un devis est établi à partir de 48 heures selon la complexité. Le kick-off se tient sur site à Nogent-sur-Marne, puis nous alternons conception à distance et points de validation. Vous restez propriétaire du code et des accès, sans verrou éditeur.",
+            a: "Un devis est établi à partir de 24 à 48 heures selon la complexité. Le kick-off se tient sur site à Nogent-sur-Marne, puis nous alternons conception à distance et points de validation. Vous restez propriétaire du code et des accès, sans verrou éditeur.",
           },
         ],
         guarantees:
-          "Devis établi à partir de 48 heures selon la complexité. Hébergement en Europe et conformité RGPD par défaut, point central pour les données de santé des cabinets et de l'Hôpital Privé Armand Brillard comme pour les données clients des agences immobilières nogentaises. Vous restez propriétaire du code, des contenus et des accès : le site ou la plateforme est maintenable par votre équipe, par nous ou par tout prestataire, sans dépendance contractuelle ni verrou éditeur. UX/UI mobile-first, e-commerce multi-CMS et modules IA inclus selon le périmètre validé.",
+          "Devis établi à partir de 24 à 48 heures selon la complexité. Hébergement en Europe et conformité RGPD par défaut, point central pour les données de santé des cabinets et de l'Hôpital Privé Armand Brillard comme pour les données clients des agences immobilières nogentaises. Vous restez propriétaire du code, des contenus et des accès : le site ou la plateforme est maintenable par votre équipe, par nous ou par tout prestataire, sans dépendance contractuelle ni verrou éditeur. UX/UI mobile-first, e-commerce multi-CMS et modules IA inclus selon le périmètre validé.",
       },
       en: {
         hero: "Nogent-sur-Marne (94) concentrates its economy along the RER A station hub, where the Cité d'Affaires Nogent Baltard delivered by Eiffage Immobilier in 2019 lines up 7,400 sqm of tertiary offices set on a bridge structure above the RER A tracks, next to the Pavillon Baltard. Between the Hôpital Privé Armand Brillard and its new medical centre, the Bourrelier Group head office on rue Jean Monnet, the liberal professions and the premium retail of the Marne riverbanks, Axion-IA designs on site AI-augmented websites and SaaS platforms: patient booking, real-estate portals, event ticketing and booking, practice showcases. Custom code, EU GDPR hosting, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can a website project start in Nogent-sur-Marne?",
-            a: "A quote is issued from 48 hours depending on complexity. The kick-off takes place on site in Nogent-sur-Marne, then we alternate remote design and validation checkpoints. You keep ownership of the code and access, with no vendor lock-in.",
+            a: "A quote is issued from 24 to 48 hours depending on complexity. The kick-off takes place on site in Nogent-sur-Marne, then we alternate remote design and validation checkpoints. You keep ownership of the code and access, with no vendor lock-in.",
           },
         ],
         guarantees:
-          "Quote issued from 48 hours depending on complexity. EU hosting and GDPR compliance by default, a central point for the health data of practices and the Hôpital Privé Armand Brillard as well as the client data of Nogent estate agencies. You keep ownership of the code, content and access: the site or platform is maintainable by your team, by us or by any provider, with no contractual dependency or vendor lock-in. Mobile-first UX/UI, multi-CMS e-commerce and AI modules included within the validated scope.",
+          "Quote issued from 24 to 48 hours depending on complexity. EU hosting and GDPR compliance by default, a central point for the health data of practices and the Hôpital Privé Armand Brillard as well as the client data of Nogent estate agencies. You keep ownership of the code, content and access: the site or platform is maintainable by your team, by us or by any provider, with no contractual dependency or vendor lock-in. Mobile-first UX/UI, multi-CMS e-commerce and AI modules included within the validated scope.",
       },
     },
   },

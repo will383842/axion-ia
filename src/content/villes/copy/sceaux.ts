@@ -51,7 +51,7 @@ export const SCEAUX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Sceaux des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des Hauts-de-Seine (20 884 habitants) où dominent les cabinets juridiques et comptables, les professions libérales, le commerce du centre-ville et un pôle d'enseignement supérieur structurant : Faculté Jean-Monnet de l'Université Paris-Saclay, IUT de Sceaux, lycées Lakanal, Marie-Curie et Florian. Du marché de la place du Général-de-Gaulle aux abords du Parc de Sceaux dessiné par Le Nôtre, nous calibrons des expériences soignées. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sceaux, itérations à distance via le RER B (Châtelet en ~25 min).",
+        hero: "Axion-IA conçoit et augmente à Sceaux des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des Hauts-de-Seine (20 884 habitants) où dominent les cabinets juridiques et comptables, les professions libérales, le commerce du centre-ville et un pôle d'enseignement supérieur structurant : Faculté Jean-Monnet de l'Université Paris-Saclay, IUT de Sceaux, lycées Lakanal, Marie-Curie et Florian. Du marché de la place du Général-de-Gaulle aux abords du Parc de Sceaux dessiné par Le Nôtre, nous calibrons des expériences soignées. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sceaux, itérations à distance via le RER B (Châtelet en ~25 min).",
         whyHere: [
           "Tissu dense de cabinets juridiques, comptables et de conseil, prolongé par la Faculté Jean-Monnet (droit, économie, gestion) de Paris-Saclay : on bâtit des portails clients sécurisés, des espaces documentaires avec recherche sémantique et des assistants RAG qui répondent sur vos propres dossiers et jurisprudences, sans jamais exposer de données sensibles hors UE.",
           "Pôle d'enseignement supérieur de référence avec l'IUT de Sceaux et les lycées Lakanal, Marie-Curie et Florian : un public exigeant, mobile et connecté pour des sites institutionnels rapides (Web Vitals tenus), des plateformes pédagogiques et des outils d'admission ou d'orientation pensés mobile-first et accessibles.",
@@ -62,7 +62,7 @@ export const SCEAUX_COPY: VilleCopy = {
           {
             step: "Cadrage à Sceaux",
             detail:
-              "Atelier sur site dans le cœur de ville près de la gare RER Sceaux, vers le quartier Robinson (terminus) ou aux abords du Parc : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos logiciels métier. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site dans le cœur de ville près de la gare RER Sceaux, vers le quartier Robinson (terminus) ou aux abords du Parc : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos logiciels métier. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const SCEAUX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Sceaux — souvent près de la gare RER ou aux abords du Parc — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, un périmètre et un prix arrêtés avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Sceaux — souvent près de la gare RER ou aux abords du Parc — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, un périmètre et un prix arrêtés avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix arrêtés avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre un cabinet ou une boutique du centre-ville. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé, ensemble transférable à tout prestataire des Hauts-de-Seine ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix arrêtés avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre un cabinet ou une boutique du centre-ville. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé, ensemble transférable à tout prestataire des Hauts-de-Seine ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Sceaux des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des Hauts-de-Seine (20 884 habitants) où dominent les cabinets juridiques et comptables, les professions libérales, le commerce du centre-ville et un pôle d'enseignement supérieur structurant : Faculté Jean-Monnet de l'Université Paris-Saclay, IUT de Sceaux, lycées Lakanal, Marie-Curie et Florian. Du marché de la place du Général-de-Gaulle aux abords du Parc de Sceaux dessiné par Le Nôtre, nous calibrons des expériences soignées. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sceaux, itérations à distance via le RER B (Châtelet en ~25 min).",
+        hero: "Axion-IA conçoit et augmente à Sceaux des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des Hauts-de-Seine (20 884 habitants) où dominent les cabinets juridiques et comptables, les professions libérales, le commerce du centre-ville et un pôle d'enseignement supérieur structurant : Faculté Jean-Monnet de l'Université Paris-Saclay, IUT de Sceaux, lycées Lakanal, Marie-Curie et Florian. Du marché de la place du Général-de-Gaulle aux abords du Parc de Sceaux dessiné par Le Nôtre, nous calibrons des expériences soignées. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sceaux, itérations à distance via le RER B (Châtelet en ~25 min).",
         whyHere: [
           "Tissu dense de cabinets juridiques, comptables et de conseil, prolongé par la Faculté Jean-Monnet (droit, économie, gestion) de Paris-Saclay : on bâtit des portails clients sécurisés, des espaces documentaires avec recherche sémantique et des assistants RAG qui répondent sur vos propres dossiers et jurisprudences, sans jamais exposer de données sensibles hors UE.",
           "Pôle d'enseignement supérieur de référence avec l'IUT de Sceaux et les lycées Lakanal, Marie-Curie et Florian : un public exigeant, mobile et connecté pour des sites institutionnels rapides (Web Vitals tenus), des plateformes pédagogiques et des outils d'admission ou d'orientation pensés mobile-first et accessibles.",
@@ -148,7 +148,7 @@ export const SCEAUX_COPY: VilleCopy = {
           {
             step: "Cadrage à Sceaux",
             detail:
-              "Atelier sur site dans le cœur de ville près de la gare RER Sceaux, vers le quartier Robinson (terminus) ou aux abords du Parc : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos logiciels métier. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site dans le cœur de ville près de la gare RER Sceaux, vers le quartier Robinson (terminus) ou aux abords du Parc : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos logiciels métier. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const SCEAUX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Sceaux — souvent près de la gare RER ou aux abords du Parc — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, un périmètre et un prix arrêtés avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Sceaux — souvent près de la gare RER ou aux abords du Parc — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, un périmètre et un prix arrêtés avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix arrêtés avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre un cabinet ou une boutique du centre-ville. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé, ensemble transférable à tout prestataire des Hauts-de-Seine ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix arrêtés avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre un cabinet ou une boutique du centre-ville. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé, ensemble transférable à tout prestataire des Hauts-de-Seine ou repris en interne par vos équipes.",
       },
     },
   },

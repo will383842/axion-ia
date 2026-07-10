@@ -53,7 +53,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bourgoin-Jallieu des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos catalogues et fiches techniques, recherche sémantique, suivi d'expédition et automatisations. Pensé pour la réalité du Nord-Isère — logisticiens de la CAPI sur l'A43, textile technique et composites dans la lignée de Porcher Industries, négoce de gros et enseignes du Parc de la Maladière. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Bourgoin-Jallieu, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Bourgoin-Jallieu des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos catalogues et fiches techniques, recherche sémantique, suivi d'expédition et automatisations. Pensé pour la réalité du Nord-Isère — logisticiens de la CAPI sur l'A43, textile technique et composites dans la lignée de Porcher Industries, négoce de gros et enseignes du Parc de la Maladière. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Bourgoin-Jallieu, itérations à distance.",
         whyHere: [
           "Projets web & SaaS calés sur le tissu berjallien : logistique et entreposage de la CAPI (~10 000 emplois sur l'axe Lyon-Grenoble), textile technique et composites façon Porcher Industries, négoce de gros et industrie (Vicat, Thermador, Minimax, Radiall, Nemera).",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : configurateurs produit textile/composites, portails de suivi de commande, fiches techniques structurées.",
@@ -64,7 +64,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
           {
             step: "Cadrage à Bourgoin-Jallieu",
             detail:
-              "Atelier sur site (votre bureau, entrepôt de la CAPI ou commerce de la Maladière) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (votre bureau, entrepôt de la CAPI ou commerce de la Maladière) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et quel est le délai depuis Lyon ?",
-            a: "Après le cadrage, on remet un devis ferme en forfait fixe, à partir de 48 h selon la complexité. Nos consultants viennent de Lyon, à 35 min par l'A43, et se déplacent sur toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Pas de régie ni de dérive horaire cachée.",
+            a: "Après le cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité. Nos consultants viennent de Lyon, à 35 min par l'A43, et se déplacent sur toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Pas de régie ni de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison logistique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Nord-Isère ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison logistique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Nord-Isère ou repris en interne.",
       },
       en: {
-        hero: "In Bourgoin-Jallieu, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your catalogues and technical sheets, semantic search, shipment tracking and automations. Built for the reality of the Nord-Isère — CAPI logistics operators on the A43, technical textiles and composites in the lineage of Porcher Industries, wholesale trade and the retailers of the Parc de la Maladière. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Bourgoin-Jallieu, remote iterations.",
+        hero: "In Bourgoin-Jallieu, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your catalogues and technical sheets, semantic search, shipment tracking and automations. Built for the reality of the Nord-Isère — CAPI logistics operators on the A43, technical textiles and composites in the lineage of Porcher Industries, wholesale trade and the retailers of the Parc de la Maladière. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Bourgoin-Jallieu, remote iterations.",
         whyHere: [
           "Web & SaaS projects tuned to the Berjallie fabric: CAPI logistics and warehousing (~10,000 jobs on the Lyon-Grenoble axis), technical textiles and composites in the Porcher Industries tradition, wholesale trade and industry (Vicat, Thermador, Minimax, Radiall, Nemera).",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick: product configurators for textiles/composites, order-tracking portals, structured technical sheets.",
@@ -150,7 +150,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
           {
             step: "Scoping in Bourgoin-Jallieu",
             detail:
-              "On-site workshop (your office, a CAPI warehouse or a Maladière store): goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop (your office, a CAPI warehouse or a Maladière store): goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and how fast can you come from Lyon?",
-            a: "After scoping, we issue a firm fixed-price quote, from 48 h depending on complexity. Our consultants come from Lyon, 35 min away on the A43, and travel across the CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). No time-and-materials, no hidden hourly drift.",
+            a: "After scoping, we issue a firm fixed-price quote, from 24-48 h depending on complexity. Our consultants come from Lyon, 35 min away on the A43, and travel across the CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site, even in peak logistics season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Nord-Isère provider or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site, even in peak logistics season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Nord-Isère provider or taken in-house.",
       },
     },
   },

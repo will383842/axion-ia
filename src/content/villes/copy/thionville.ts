@@ -132,11 +132,11 @@ export const THIONVILLE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je obtenir un devis pour mon projet de site ou de plateforme à Thionville ?",
-            a: "Nous transmettons un devis à partir de 48 heures selon la complexité du projet. Un site vitrine pour un commerce du centre est cadré vite ; un portail logistique Europort ou une plateforme SaaS frontalière demande un atelier de cadrage plus approfondi avant chiffrage.",
+            a: "Nous transmettons un devis à partir de 24 à 48 heures selon la complexité du projet. Un site vitrine pour un commerce du centre est cadré vite ; un portail logistique Europort ou une plateforme SaaS frontalière demande un atelier de cadrage plus approfondi avant chiffrage.",
           },
         ],
         guarantees:
-          "Code sur mesure, sans verrou éditeur : vous restez propriétaire de votre site, de votre plateforme et de vos données, reprenables en interne ou par tout prestataire mosellan. Hébergement en Union européenne conforme au RGPD par défaut, DPO sur demande — un impératif dans le bassin transfrontalier de Thionville. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et les briques IA. Devis transmis à partir de 48 heures selon la complexité. Aucun chiffre de performance n'est promis sans mesure : engagements sur les temps de chargement et le référencement local définis contractuellement, vérifiables à la mise en ligne.",
+          "Code sur mesure, sans verrou éditeur : vous restez propriétaire de votre site, de votre plateforme et de vos données, reprenables en interne ou par tout prestataire mosellan. Hébergement en Union européenne conforme au RGPD par défaut, DPO sur demande — un impératif dans le bassin transfrontalier de Thionville. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et les briques IA. Devis transmis à partir de 24 à 48 heures selon la complexité. Aucun chiffre de performance n'est promis sans mesure : engagements sur les temps de chargement et le référencement local définis contractuellement, vérifiables à la mise en ligne.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for Thionville's distinctive economy, where over half the workforce of the employment zone commutes to Luxembourg and where business is structured around the border. We build bilingual portals, cross-border customer areas and quote and order-tracking tools for service SMEs facing the Grand Duchy, logistics operators on the Europort zone (Illange-Uckange), industrial subcontractors in the Fensch valley, and the supplier ecosystem around the EDF Cattenom nuclear plant and the CHR Metz-Thionville hospital. Custom code, UX/UI, mobile, multi-CMS e-commerce, GDPR-compliant EU hosting.",
@@ -218,11 +218,11 @@ export const THIONVILLE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote for my site or platform project in Thionville?",
-            a: "We send a quote from 48 hours depending on project complexity. A showcase site for a downtown retailer is scoped quickly; a Europort logistics portal or a cross-border SaaS platform requires a deeper framing workshop before pricing.",
+            a: "We send a quote from 24 to 48 hours depending on project complexity. A showcase site for a downtown retailer is scoped quickly; a Europort logistics portal or a cross-border SaaS platform requires a deeper framing workshop before pricing.",
           },
         ],
         guarantees:
-          "Custom code, no vendor lock-in: you own your site, your platform and your data, transferable in-house or to any Moselle provider. EU hosting, GDPR-compliant by default, DPO on request — essential in Thionville's cross-border basin. We cover UX/UI, mobile, multi-CMS e-commerce and AI features. Quote sent from 48 hours depending on complexity. No performance figure promised without measurement: load-time and local SEO commitments are defined contractually and verifiable at go-live.",
+          "Custom code, no vendor lock-in: you own your site, your platform and your data, transferable in-house or to any Moselle provider. EU hosting, GDPR-compliant by default, DPO on request — essential in Thionville's cross-border basin. We cover UX/UI, mobile, multi-CMS e-commerce and AI features. Quote sent from 24 to 48 hours depending on complexity. No performance figure promised without measurement: load-time and local SEO commitments are defined contractually and verifiable at go-live.",
       },
     },
   },

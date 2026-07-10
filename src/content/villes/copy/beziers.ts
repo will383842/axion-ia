@@ -133,7 +133,7 @@ export const BEZIERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis sous 48 h selon la complexité. Code custom, hébergement en Union européenne par défaut et conformité RGPD (minimisation, registre des traitements, clause DPA). Nous couvrons l'UX/UI, le mobile, le e-commerce multi-CMS et les briques IA, sans no-code propriétaire ni verrou éditeur : à la livraison, vous détenez le code, les modèles et les accès, et le projet reste reprenable par tout prestataire d'Occitanie ou en interne. Kick-off systématiquement sur site à Béziers — Capiscol, Mercorent, Béziers Ouest ou centre-ville.",
+          "Devis sous 24 à 48 h selon la complexité. Code custom, hébergement en Union européenne par défaut et conformité RGPD (minimisation, registre des traitements, clause DPA). Nous couvrons l'UX/UI, le mobile, le e-commerce multi-CMS et les briques IA, sans no-code propriétaire ni verrou éditeur : à la livraison, vous détenez le code, les modèles et les accès, et le projet reste reprenable par tout prestataire d'Occitanie ou en interne. Kick-off systématiquement sur site à Béziers — Capiscol, Mercorent, Béziers Ouest ou centre-ville.",
       },
       en: {
         hero: "In Béziers, Axion-IA designs AI-augmented websites and SaaS platforms for a three-faced local economy: the emerging cleantech industry around Genvia (the Schlumberger / CEA / Vinci / Vicat joint venture industrializing high-temperature hydrogen electrolyzers at the Cameron site in the Capiscol industrial zone), the historic wine-logistics sector (nearly 2,000 ha of vineyards, bottling and trade, with players such as Owens-Illinois at Béziers Ouest), and a highly seasonal heritage tourism economy (Canal du Midi, the 9 Fonseranes locks listed by UNESCO, the August Feria and its nearly one million visitors). We build custom code — UX/UI, mobile, multi-CMS e-commerce, RAG chatbot, agents — hosted in the EU, GDPR-compliant, with no vendor lock-in.",
@@ -219,7 +219,7 @@ export const BEZIERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 48 hours depending on complexity. Custom code, hosting in the European Union by default and GDPR compliance (minimization, processing register, DPA clause). We cover UX/UI, mobile, multi-CMS e-commerce and AI building blocks, with no proprietary no-code or vendor lock-in: on delivery you own the code, models and access, and the project remains resumable by any Occitanie vendor or in-house. Kick-off always on site in Béziers — Capiscol, Mercorent, Béziers Ouest or downtown.",
+          "Quote within 24 to 48 hours depending on complexity. Custom code, hosting in the European Union by default and GDPR compliance (minimization, processing register, DPA clause). We cover UX/UI, mobile, multi-CMS e-commerce and AI building blocks, with no proprietary no-code or vendor lock-in: on delivery you own the code, models and access, and the project remains resumable by any Occitanie vendor or in-house. Kick-off always on site in Béziers — Capiscol, Mercorent, Béziers Ouest or downtown.",
       },
     },
   },

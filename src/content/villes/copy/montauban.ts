@@ -51,7 +51,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Montauban des sites web, applications et plateformes SaaS avec l'IA intégrée, calés sur le tissu réel de la préfecture du Tarn-et-Garonne : distribution alimentaire et logistique RHD (Pro à Pro, siège Metro à Albasud), agroalimentaire à marque distributeur (biscuiterie Poult / Biscuit International), grossistes fruits et primeurs, électronique de précision et BTP. UX/UI sur mesure, portails clients et e-commerce B2B, chatbot RAG ancré sur vos catalogues, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montauban, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montauban des sites web, applications et plateformes SaaS avec l'IA intégrée, calés sur le tissu réel de la préfecture du Tarn-et-Garonne : distribution alimentaire et logistique RHD (Pro à Pro, siège Metro à Albasud), agroalimentaire à marque distributeur (biscuiterie Poult / Biscuit International), grossistes fruits et primeurs, électronique de précision et BTP. UX/UI sur mesure, portails clients et e-commerce B2B, chatbot RAG ancré sur vos catalogues, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montauban, itérations à distance.",
         whyHere: [
           "Projets web & SaaS montalbanais : distribution et logistique alimentaire RHD façon Pro à Pro (siège Metro, ~600 tournées/jour), agroalimentaire et biscuiterie à marque distributeur (Biscuit International / Poult, Albasud), commerce de gros fruits et primeurs.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : portail commande B2B, espace revendeur, catalogue produit, configurateur de tournées.",
@@ -62,7 +62,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
           {
             step: "Cadrage à Montauban",
             detail:
-              "Atelier sur site, au siège ou sur la zone Albasud : objectifs, parcours utilisateurs, audit de la stack et des contenus (catalogues, données de tournées, fiches produits agroalimentaires). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, au siège ou sur la zone Albasud : objectifs, parcours utilisateurs, audit de la stack et des contenus (catalogues, données de tournées, fiches produits agroalimentaires). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -134,10 +134,10 @@ export const MONTAUBAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour les e-commerce de gros et portails RHD en pleine saison. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Montauban et du Tarn-et-Garonne ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour les e-commerce de gros et portails RHD en pleine saison. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Montauban et du Tarn-et-Garonne ou repris en interne.",
       },
       en: {
-        hero: "In Montauban, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI, aligned to the real fabric of the Tarn-et-Garonne préfecture: food distribution and RHD logistics (Pro à Pro, Metro's head office at Albasud), private-label food manufacturing (Poult biscuit works / Biscuit International), fruit and produce wholesalers, precision electronics and construction. Bespoke UX/UI, customer portals and B2B e-commerce, RAG chatbot grounded in your catalogues, semantic search, agents and automations. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Montauban kick-off, remote iterations.",
+        hero: "In Montauban, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI, aligned to the real fabric of the Tarn-et-Garonne préfecture: food distribution and RHD logistics (Pro à Pro, Metro's head office at Albasud), private-label food manufacturing (Poult biscuit works / Biscuit International), fruit and produce wholesalers, precision electronics and construction. Bespoke UX/UI, customer portals and B2B e-commerce, RAG chatbot grounded in your catalogues, semantic search, agents and automations. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Montauban kick-off, remote iterations.",
         whyHere: [
           "Montauban web & SaaS projects: food distribution and RHD logistics in the Pro à Pro mould (Metro head office, ~600 delivery rounds/day), private-label food and biscuit manufacturing (Biscuit International / Poult, Albasud), fruit and produce wholesale.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick: B2B ordering portal, reseller area, product catalogue, delivery-round configurator.",
@@ -148,7 +148,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
           {
             step: "Scoping in Montauban",
             detail:
-              "On-site workshop, at your head office or on the Albasud park: goals, user journeys, audit of the existing stack and content (catalogues, delivery-round data, agri-food product sheets). Firm quote from 48 h depending on complexity.",
+              "On-site workshop, at your head office or on the Albasud park: goals, user journeys, audit of the existing stack and content (catalogues, delivery-round data, agri-food product sheets). Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -220,7 +220,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when we augment an existing site, including wholesale e-commerce and RHD portals in peak season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Montauban or Tarn-et-Garonne provider or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when we augment an existing site, including wholesale e-commerce and RHD portals in peak season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Montauban or Tarn-et-Garonne provider or taken in-house.",
       },
     },
   },

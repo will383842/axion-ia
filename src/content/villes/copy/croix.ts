@@ -53,7 +53,7 @@ export const CROIX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Croix des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Croix, commune résidentielle chic de la Métropole Européenne de Lille adossée à Roubaix, berceau du commerce textile et terre des grandes dynasties de la distribution, a aussi vu naître Exotec, première licorne industrielle française de la robotique logistique e-commerce. Le tissu local mêle TPE du commerce, professions libérales, sociétés de services et entreprises de la zone d'activités de la Gare, à deux pas du bassin e-commerce roubaisien. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Croix, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Croix des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Croix, commune résidentielle chic de la Métropole Européenne de Lille adossée à Roubaix, berceau du commerce textile et terre des grandes dynasties de la distribution, a aussi vu naître Exotec, première licorne industrielle française de la robotique logistique e-commerce. Le tissu local mêle TPE du commerce, professions libérales, sociétés de services et entreprises de la zone d'activités de la Gare, à deux pas du bassin e-commerce roubaisien. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Croix, itérations à distance.",
         whyHere: [
           "Voisinage immédiat de Roubaix, capitale historique de la vente à distance, et terre d'origine d'Exotec (robotique de préparation de commandes e-commerce) : on construit des boutiques en ligne sur mesure (Shopify, WooCommerce, PrestaShop, Magento) avec recommandations produits, recherche sémantique et qualification de contacts orientées conversion, branchées sur vos flux logistiques et votre stock.",
           "Tissu dense de commerces de proximité, d'artisans et de professions libérales dans une commune résidentielle aisée, abords du parc Barbieux et centre-ville : on greffe l'IA sur l'existant (widget, plugin WordPress, API) — relances, devis, suivi client, prise de rendez-vous — sans refonte coûteuse ni dépendance imposée, avec une UX/UI mobile-first soignée.",
@@ -64,7 +64,7 @@ export const CROIX_COPY: VilleCopy = {
           {
             step: "Cadrage à Croix",
             detail:
-              "Atelier sur site (centre de Croix, abords du parc Barbieux, axe tramway Mongy vers Roubaix, zone d'activités de la Gare) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux e-commerce. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre de Croix, abords du parc Barbieux, axe tramway Mongy vers Roubaix, zone d'activités de la Gare) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux e-commerce. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const CROIX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Croix — sur site, au centre-ville ou dans vos locaux de la zone de la Gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet.",
+            a: "Oui. Après le cadrage à Croix — sur site, au centre-ville ou dans vos locaux de la zone de la Gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique ou un site existant, même en pleine saison commerciale. Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local de la métropole lilloise ou repris en interne, documentation et transfert de compétences inclus.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique ou un site existant, même en pleine saison commerciale. Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local de la métropole lilloise ou repris en interne, documentation et transfert de compétences inclus.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Croix des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Croix, commune résidentielle chic de la Métropole Européenne de Lille adossée à Roubaix, berceau du commerce textile et terre des grandes dynasties de la distribution, a aussi vu naître Exotec, première licorne industrielle française de la robotique logistique e-commerce. Le tissu local mêle TPE du commerce, professions libérales, sociétés de services et entreprises de la zone d'activités de la Gare, à deux pas du bassin e-commerce roubaisien. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Croix, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Croix des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Croix, commune résidentielle chic de la Métropole Européenne de Lille adossée à Roubaix, berceau du commerce textile et terre des grandes dynasties de la distribution, a aussi vu naître Exotec, première licorne industrielle française de la robotique logistique e-commerce. Le tissu local mêle TPE du commerce, professions libérales, sociétés de services et entreprises de la zone d'activités de la Gare, à deux pas du bassin e-commerce roubaisien. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Croix, itérations à distance.",
         whyHere: [
           "Voisinage immédiat de Roubaix, capitale historique de la vente à distance, et terre d'origine d'Exotec (robotique de préparation de commandes e-commerce) : on construit des boutiques en ligne sur mesure (Shopify, WooCommerce, PrestaShop, Magento) avec recommandations produits, recherche sémantique et qualification de contacts orientées conversion, branchées sur vos flux logistiques et votre stock.",
           "Tissu dense de commerces de proximité, d'artisans et de professions libérales dans une commune résidentielle aisée, abords du parc Barbieux et centre-ville : on greffe l'IA sur l'existant (widget, plugin WordPress, API) — relances, devis, suivi client, prise de rendez-vous — sans refonte coûteuse ni dépendance imposée, avec une UX/UI mobile-first soignée.",
@@ -150,7 +150,7 @@ export const CROIX_COPY: VilleCopy = {
           {
             step: "Cadrage à Croix",
             detail:
-              "Atelier sur site (centre de Croix, abords du parc Barbieux, axe tramway Mongy vers Roubaix, zone d'activités de la Gare) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux e-commerce. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre de Croix, abords du parc Barbieux, axe tramway Mongy vers Roubaix, zone d'activités de la Gare) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux e-commerce. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const CROIX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Croix — sur site, au centre-ville ou dans vos locaux de la zone de la Gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet.",
+            a: "Oui. Après le cadrage à Croix — sur site, au centre-ville ou dans vos locaux de la zone de la Gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique ou un site existant, même en pleine saison commerciale. Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local de la métropole lilloise ou repris en interne, documentation et transfert de compétences inclus.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique ou un site existant, même en pleine saison commerciale. Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local de la métropole lilloise ou repris en interne, documentation et transfert de compétences inclus.",
       },
     },
   },

@@ -49,7 +49,7 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Teste-de-Buch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Du sous-traitant aéronautique de la BA 120 de Cazaux à l'ostréiculteur du Petit Port, de l'hôtelier du Pyla à la PME de la Z.A. Caillivole : devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Teste-de-Buch, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Teste-de-Buch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Du sous-traitant aéronautique de la BA 120 de Cazaux à l'ostréiculteur du Petit Port, de l'hôtelier du Pyla à la PME de la Z.A. Caillivole : devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Teste-de-Buch, itérations à distance.",
         whyHere: [
           "Filière télémétrie, spatial et défense au cœur de la commune : Safran Data Systems (stations sol et antennes de télémétrie, en bordure de l'aérodrome d'Arcachon) et l'écosystème de la Base Aérienne 120 de Cazaux (Dassault Aviation, Airbus Helicopters, MBDA) ont des besoins de portails techniques, search documentaire et plateformes data exigeants en souveraineté.",
           "Filière ostréicole, première de France : nous bâtissons sites e-commerce vente directe (huîtres du bassin), espaces B2B restaurateurs et outils de traçabilité pour les 120+ ostréiculteurs du Petit Port et les criées du bassin d'Arcachon.",
@@ -60,7 +60,7 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
           {
             step: "Cadrage à La Teste-de-Buch",
             detail:
-              "Atelier sur site — dans vos locaux de la Z.A. Caillivole, votre cabane ostréicole du Petit Port, votre hôtel du Pyla ou en bordure de l'aérodrome : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — dans vos locaux de la Z.A. Caillivole, votre cabane ostréicole du Petit Port, votre hôtel du Pyla ou en bordure de l'aérodrome : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,10 +132,10 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris avant un pic de saison du bassin d'Arcachon. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin d'Arcachon ou repris en interne. Pour les acteurs de la défense/spatial de Cazaux, cloisonnement et souveraineté des données appliqués dès la conception.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris avant un pic de saison du bassin d'Arcachon. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin d'Arcachon ou repris en interne. Pour les acteurs de la défense/spatial de Cazaux, cloisonnement et souveraineté des données appliqués dès la conception.",
       },
       en: {
-        hero: "In La Teste-de-Buch, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. From aerospace subcontractors of the BA 120 Cazaux air base to oyster farmers of the Petit Port, from Pyla hoteliers to SMEs of the Caillivole business zone: quote from 48 h depending on complexity, EU hosting, code and data yours. On-site kick-off in La Teste-de-Buch, remote iterations.",
+        hero: "In La Teste-de-Buch, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. From aerospace subcontractors of the BA 120 Cazaux air base to oyster farmers of the Petit Port, from Pyla hoteliers to SMEs of the Caillivole business zone: quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site kick-off in La Teste-de-Buch, remote iterations.",
         whyHere: [
           "Telemetry, space and defence cluster at the heart of the town: Safran Data Systems (ground stations and telemetry antennas, on the edge of the Arcachon aerodrome) and the Base Aérienne 120 Cazaux ecosystem (Dassault Aviation, Airbus Helicopters, MBDA) need technical portals, document search and data platforms with strict sovereignty requirements.",
           "France's leading oyster-farming sector: we build direct-sale e-commerce sites (Arcachon Basin oysters), B2B portals for restaurateurs and traceability tools for the 120+ oyster farmers of the Petit Port and the basin's fish markets.",
@@ -146,7 +146,7 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
           {
             step: "Scoping in La Teste-de-Buch",
             detail:
-              "On-site workshop — at your Caillivole business-zone offices, your Petit Port oyster cabin, your Pyla hotel or by the aerodrome: goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop — at your Caillivole business-zone offices, your Petit Port oyster cabin, your Pyla hotel or by the aerodrome: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,7 +218,7 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site, including ahead of an Arcachon Basin peak season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Arcachon Basin provider or taken in-house. For Cazaux defence/space players, data partitioning and sovereignty applied from the design stage.",
+          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site, including ahead of an Arcachon Basin peak season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Arcachon Basin provider or taken in-house. For Cazaux defence/space players, data partitioning and sovereignty applied from the design stage.",
       },
     },
   },

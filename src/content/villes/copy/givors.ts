@@ -53,7 +53,7 @@ export const GIVORS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Givors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails de commande B2B, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville du sud lyonnais, au confluent du Rhône et du Gier, héritière d'une tradition verrière (la Verrerie de Givors a marqué l'identité industrielle locale) et portée par un tissu de PME manufacturières, de prestataires logistiques le long de l'A47 et d'artisans du bâtiment. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, pas de verrou. Kick-off en présentiel à Givors, itérations à distance le long de l'axe rhodanien jusqu'à Lyon et Saint-Étienne.",
+        hero: "Axion-IA conçoit et augmente à Givors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails de commande B2B, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville du sud lyonnais, au confluent du Rhône et du Gier, héritière d'une tradition verrière (la Verrerie de Givors a marqué l'identité industrielle locale) et portée par un tissu de PME manufacturières, de prestataires logistiques le long de l'A47 et d'artisans du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, pas de verrou. Kick-off en présentiel à Givors, itérations à distance le long de l'axe rhodanien jusqu'à Lyon et Saint-Étienne.",
         whyHere: [
           "Tissu industriel et verrier de tradition : héritière de la Verrerie de Givors et adossée à la filière verre-emballage de la vallée du Rhône, la ville concentre des PME manufacturières. Pour elles, on construit des portails clients, des configurateurs de produits techniques et des catalogues en ligne reliés à votre ERP, avec devis automatisés, fiches matière et suivi de commande en temps réel.",
           "Carrefour logistique de la vallée du Rhône : positionnée sur l'A47 (Lyon–Saint-Étienne), desservie par la gare de Givors-Ville et bordée par le port fluvial sur le Rhône, Givors est un point de passage clé. Nos plateformes orchestrent prise de commande B2B, devis transport, suivi d'expédition et qualification des demandes entrantes par agents IA, pour les prestataires d'entreposage et de transport routier.",
@@ -64,7 +64,7 @@ export const GIVORS_COPY: VilleCopy = {
           {
             step: "Cadrage à Givors",
             detail:
-              "Atelier sur site (centre-ville, zones d'activités des Vernes, secteur de Grigny, vallée du Gier) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles ou logistiques. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, zones d'activités des Vernes, secteur de Grigny, vallée du Gier) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles ou logistiques. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const GIVORS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Givors — sur site, dans vos locaux du centre-ville, des Vernes ou de Grigny — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage à Givors — sur site, dans vos locaux du centre-ville, des Vernes ou de Grigny — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison industrielle ou logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes de Givors et du sud lyonnais.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison industrielle ou logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes de Givors et du sud lyonnais.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Givors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails de commande B2B, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville du sud lyonnais, au confluent du Rhône et du Gier, héritière d'une tradition verrière (la Verrerie de Givors a marqué l'identité industrielle locale) et portée par un tissu de PME manufacturières, de prestataires logistiques le long de l'A47 et d'artisans du bâtiment. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, pas de verrou. Kick-off en présentiel à Givors, itérations à distance le long de l'axe rhodanien jusqu'à Lyon et Saint-Étienne.",
+        hero: "Axion-IA conçoit et augmente à Givors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails de commande B2B, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville du sud lyonnais, au confluent du Rhône et du Gier, héritière d'une tradition verrière (la Verrerie de Givors a marqué l'identité industrielle locale) et portée par un tissu de PME manufacturières, de prestataires logistiques le long de l'A47 et d'artisans du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, pas de verrou. Kick-off en présentiel à Givors, itérations à distance le long de l'axe rhodanien jusqu'à Lyon et Saint-Étienne.",
         whyHere: [
           "Tissu industriel et verrier de tradition : héritière de la Verrerie de Givors et adossée à la filière verre-emballage de la vallée du Rhône, la ville concentre des PME manufacturières. Pour elles, on construit des portails clients, des configurateurs de produits techniques et des catalogues en ligne reliés à votre ERP, avec devis automatisés, fiches matière et suivi de commande en temps réel.",
           "Carrefour logistique de la vallée du Rhône : positionnée sur l'A47 (Lyon–Saint-Étienne), desservie par la gare de Givors-Ville et bordée par le port fluvial sur le Rhône, Givors est un point de passage clé. Nos plateformes orchestrent prise de commande B2B, devis transport, suivi d'expédition et qualification des demandes entrantes par agents IA, pour les prestataires d'entreposage et de transport routier.",
@@ -150,7 +150,7 @@ export const GIVORS_COPY: VilleCopy = {
           {
             step: "Cadrage à Givors",
             detail:
-              "Atelier sur site (centre-ville, zones d'activités des Vernes, secteur de Grigny, vallée du Gier) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles ou logistiques. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, zones d'activités des Vernes, secteur de Grigny, vallée du Gier) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles ou logistiques. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const GIVORS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Givors — sur site, dans vos locaux du centre-ville, des Vernes ou de Grigny — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage à Givors — sur site, dans vos locaux du centre-ville, des Vernes ou de Grigny — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison industrielle ou logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes de Givors et du sud lyonnais.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison industrielle ou logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes de Givors et du sud lyonnais.",
       },
     },
   },

@@ -124,7 +124,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 48 h selon la complexité. Après un premier échange à Annemasse pour comprendre votre activité, votre clientèle frontalière et vos outils actuels, nous vous transmettons un périmètre et un chiffrage clairs, sans engagement de poursuivre avec nous.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange à Annemasse pour comprendre votre activité, votre clientèle frontalière et vos outils actuels, nous vous transmettons un périmètre et un chiffrage clairs, sans engagement de poursuivre avec nous.",
           },
           {
             q: "Nos données et celles de nos clients franco-suisses sont-elles protégées ?",
@@ -136,7 +136,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, après un échange de cadrage sur site à Annemasse. UX/UI soignée et mobile-first, e-commerce multi-CMS (WooCommerce, Shopify) ou plateforme SaaS sur mesure, briques IA utiles (qualification de leads frontaliers, prise de rendez-vous, assistant bilingue, génération de devis CHF/EUR). Hébergement en Union européenne et conformité RGPD intégrée dès la conception, avec attention particulière aux flux franco-suisses. Code, accès et documentation vous appartiennent : la solution est transférable à tout prestataire de la région annemassienne ou reprise en interne, sans dépendance imposée ni lock-in éditeur.",
+          "Devis à partir de 24 à 48 h selon la complexité, après un échange de cadrage sur site à Annemasse. UX/UI soignée et mobile-first, e-commerce multi-CMS (WooCommerce, Shopify) ou plateforme SaaS sur mesure, briques IA utiles (qualification de leads frontaliers, prise de rendez-vous, assistant bilingue, génération de devis CHF/EUR). Hébergement en Union européenne et conformité RGPD intégrée dès la conception, avec attention particulière aux flux franco-suisses. Code, accès et documentation vous appartiennent : la solution est transférable à tout prestataire de la région annemassienne ou reprise en interne, sans dépendance imposée ni lock-in éditeur.",
       },
       en: {
         hero: "In Annemasse, the French urban hub of Greater Geneva and the second economic pole of the Franco-Swiss conurbation after the canton of Geneva, Axion-IA designs AI-augmented websites and SaaS platforms for a very specific fabric: cross-border retailers and services, industrial and craft SMEs in the Mont-Blanc, Borly/Les Érables business zones and the Technosite Altéa, and providers serving clients straddling two countries. Showcase site, multi-CMS e-commerce, business platform or client portal: we build polished, mobile-first UX/UI interfaces for a clientele that shuttles between Annemasse and Geneva, with useful AI building blocks (cross-border lead qualification, online booking, bilingual assistance, quote generation). Hosting in the European Union, GDPR compliance built in from the design stage, code and data that belong to you — zero vendor lock-in.",
@@ -210,7 +210,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "From 48 hours depending on complexity. After an initial exchange in Annemasse to understand your activity, your cross-border clientele and your current tools, we send you a clear scope and pricing, with no obligation to continue with us.",
+            a: "From 24 to 48 hours depending on complexity. After an initial exchange in Annemasse to understand your activity, your cross-border clientele and your current tools, we send you a clear scope and pricing, with no obligation to continue with us.",
           },
           {
             q: "Is our data and that of our Franco-Swiss clients protected?",
@@ -222,7 +222,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, after an on-site framing exchange in Annemasse. Polished, mobile-first UX/UI, multi-CMS e-commerce (WooCommerce, Shopify) or custom SaaS platform, useful AI blocks (cross-border lead qualification, online booking, bilingual assistant, CHF/EUR quote generation). Hosting in the European Union and GDPR compliance built in from the design stage, with particular attention to Franco-Swiss flows. Code, access and documentation belong to you: the solution is transferable to any provider in the Annemasse area or taken in-house, with no imposed dependency or vendor lock-in.",
+          "Quote from 24 to 48 hours depending on complexity, after an on-site framing exchange in Annemasse. Polished, mobile-first UX/UI, multi-CMS e-commerce (WooCommerce, Shopify) or custom SaaS platform, useful AI blocks (cross-border lead qualification, online booking, bilingual assistant, CHF/EUR quote generation). Hosting in the European Union and GDPR compliance built in from the design stage, with particular attention to Franco-Swiss flows. Code, access and documentation belong to you: the solution is transferable to any provider in the Annemasse area or taken in-house, with no imposed dependency or vendor lock-in.",
       },
     },
   },

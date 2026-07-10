@@ -125,7 +125,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Un premier devis chiffré est remis à partir de 48 h selon la complexité, après un échange de cadrage. Pour un projet aéroportuaire 24/7 ou un SaaS métier, le périmètre est précisé avant tout chiffrage ferme.",
+            a: "Un premier devis chiffré est remis à partir de 24 à 48 h selon la complexité, après un échange de cadrage. Pour un projet aéroportuaire 24/7 ou un SaaS métier, le périmètre est précisé avant tout chiffrage ferme.",
           },
           {
             q: "Où sont hébergées les données de notre site ou plateforme ?",
@@ -137,7 +137,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom et propriété complète : vous repartez avec le code source, les modèles et la documentation, sans verrou éditeur ni dépendance Axion-IA. Hébergement Union européenne par défaut et conformité RGPD stricte — un point essentiel pour les acteurs du pôle aviation civile d'Athis-Mons (CRNA Nord, DSAC-Nord, services Orly) et leurs données sensibles. Performance web tenue (LCP, INP, CLS conformes aux budgets Web Vitals) et accessibilité. Devis remis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature.",
+          "Code custom et propriété complète : vous repartez avec le code source, les modèles et la documentation, sans verrou éditeur ni dépendance Axion-IA. Hébergement Union européenne par défaut et conformité RGPD stricte — un point essentiel pour les acteurs du pôle aviation civile d'Athis-Mons (CRNA Nord, DSAC-Nord, services Orly) et leurs données sensibles. Performance web tenue (LCP, INP, CLS conformes aux budgets Web Vitals) et accessibilité. Devis remis à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Athis-Mons (Essonne, Grand-Orly Seine Bièvre territory), a town with a unique economic signature in the Paris region: at 9 rue de Champagne it hosts the CRNA Nord (en-route air navigation control centre, DSNA/DGAC), the DSAC-Nord and the SNA Région Parisienne, next to the Paris-Orly airport footprint, 13.6% of which sits on its territory. Around this hub revolve aeronautical subcontractors, airport services and a retail fabric (Carrefour Athis-Mons shopping centre, Pont d'Athis shops). We build business portals, multi-CMS e-commerce and internal tools with RAG chatbots, semantic search and agents — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -211,7 +211,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "A first costed quote is delivered from 48 hours depending on complexity, after a scoping exchange. For a 24/7 airport project or a business SaaS, the scope is clarified before any firm pricing.",
+            a: "A first costed quote is delivered from 24 to 48 hours depending on complexity, after a scoping exchange. For a 24/7 airport project or a business SaaS, the scope is clarified before any firm pricing.",
           },
           {
             q: "Where is our site or platform data hosted?",
@@ -223,7 +223,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Custom code and full ownership: you leave with the source code, the models and the documentation, with no vendor lock-in or Axion-IA dependency. EU hosting by default and strict GDPR compliance — essential for the players of the Athis-Mons civil-aviation hub (CRNA Nord, DSAC-Nord, Orly services) and their sensitive data. Web performance met (LCP, INP, CLS within Web Vitals budgets) and accessibility. Quote delivered from 48 hours depending on complexity, scope and deliverables defined before signature.",
+          "Custom code and full ownership: you leave with the source code, the models and the documentation, with no vendor lock-in or Axion-IA dependency. EU hosting by default and strict GDPR compliance — essential for the players of the Athis-Mons civil-aviation hub (CRNA Nord, DSAC-Nord, Orly services) and their sensitive data. Web performance met (LCP, INP, CLS within Web Vitals budgets) and accessibility. Quote delivered from 24 to 48 hours depending on complexity, scope and deliverables defined before signature.",
       },
     },
   },

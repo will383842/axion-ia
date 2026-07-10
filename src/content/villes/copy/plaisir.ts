@@ -128,7 +128,7 @@ export const PLAISIR_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis à Plaisir ?",
-            a: "À partir de 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine pour un commerçant du Grand Plaisir se chiffre vite ; une plateforme SaaS pour un sous-traitant aéronautique de SQY demande un cadrage plus poussé, donc un délai un peu plus long.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine pour un commerçant du Grand Plaisir se chiffre vite ; une plateforme SaaS pour un sous-traitant aéronautique de SQY demande un cadrage plus poussé, donc un délai un peu plus long.",
           },
           {
             q: "Mes données et celles de mes clients restent-elles en Europe ?",
@@ -136,7 +136,7 @@ export const PLAISIR_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, périmètre et livrables définis avant le développement. UX/UI desktop et mobile, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Sylius) ou code sur mesure, briques IA intégrées — adaptés au commerce du Grand Plaisir, à la logistique des Gâtines comme à la sous-traitance high-tech de SQY. Hébergement dans l'Union européenne par défaut, conformité RGPD intégrée dès la conception. Aucun verrou éditeur : code, contenus et accès restent à votre nom, repris en interne ou confiés à tout prestataire des Yvelines après la mission.",
+          "Devis à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant le développement. UX/UI desktop et mobile, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Sylius) ou code sur mesure, briques IA intégrées — adaptés au commerce du Grand Plaisir, à la logistique des Gâtines comme à la sous-traitance high-tech de SQY. Hébergement dans l'Union européenne par défaut, conformité RGPD intégrée dès la conception. Aucun verrou éditeur : code, contenus et accès restent à votre nom, repris en interne ou confiés à tout prestataire des Yvelines après la mission.",
       },
       en: {
         hero: "In Plaisir, the local economy plays out on three fronts: the Grand Plaisir retail hub (Auchan, Decathlon, IKEA), one of the largest in the Yvelines; the Gâtines industrial estate (46.7 ha) where Zodiac aerospace, the Lenôtre culinary school and the freight operator Hesnault — established back in 1961 — sit side by side; and the adjacency to the SQY High-tech cluster, 300 hectares and around 17,000 skilled jobs in aerospace, defense and security (Airbus, Thales, Safran). Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: storefronts and e-commerce for Grand Plaisir retailers, tracking portals for Gâtines logistics, business applications for SQY high-tech subcontractors. Custom code, EU GDPR-compliant hosting, zero vendor lock-in.",
@@ -214,7 +214,7 @@ export const PLAISIR_COPY: VilleCopy = {
           },
           {
             q: "How fast do I get a quote in Plaisir?",
-            a: "From 48 hours depending on complexity, after an initial scoping exchange. A storefront for a Grand Plaisir retailer is quick to price; a SaaS platform for an SQY aerospace subcontractor needs deeper scoping, so a slightly longer turnaround.",
+            a: "From 24 to 48 hours depending on complexity, after an initial scoping exchange. A storefront for a Grand Plaisir retailer is quick to price; a SaaS platform for an SQY aerospace subcontractor needs deeper scoping, so a slightly longer turnaround.",
           },
           {
             q: "Does my data, and my customers' data, stay in Europe?",
@@ -222,7 +222,7 @@ export const PLAISIR_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, with scope and deliverables defined before development. Desktop and mobile UX/UI, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop, Sylius) or custom code, integrated AI bricks — suited to Grand Plaisir retail, Gâtines logistics and SQY high-tech subcontracting alike. Hosting in the European Union by default, GDPR compliance built in from the design stage. No vendor lock-in: code, content and access stay in your name, taken back in-house or handed to any Yvelines provider after the mission.",
+          "Quote from 24 to 48 hours depending on complexity, with scope and deliverables defined before development. Desktop and mobile UX/UI, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop, Sylius) or custom code, integrated AI bricks — suited to Grand Plaisir retail, Gâtines logistics and SQY high-tech subcontracting alike. Hosting in the European Union by default, GDPR compliance built in from the design stage. No vendor lock-in: code, content and access stay in your name, taken back in-house or handed to any Yvelines provider after the mission.",
       },
     },
   },

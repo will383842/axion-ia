@@ -128,7 +128,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps avant d'avoir un devis ?",
-            a: "À partir de 48 h selon la complexité du projet. Après notre rencontre sur place à Gradignan, vous recevez un devis chiffré et lisible, sans jeu d'options opaques. Le périmètre est fixé avant toute ligne de code.",
+            a: "À partir de 24 à 48 h selon la complexité du projet. Après notre rencontre sur place à Gradignan, vous recevez un devis chiffré et lisible, sans jeu d'options opaques. Le périmètre est fixé avant toute ligne de code.",
           },
           {
             q: "Où sont hébergées les données de mes clients ?",
@@ -136,7 +136,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, périmètre fixé avant le développement. UX/UI, responsive mobile et e-commerce multi-CMS (WooCommerce, Shopify, Prestashop) ou code sur mesure pour un SaaS, avec intégration IA utile (prise de rendez-vous, devis, qualification, recherche sémantique). Hébergement en Union européenne, conformité RGPD intégrée dès la conception. Aucun verrou éditeur : le site et ses données restent repris par tout prestataire de la métropole bordelaise ou par vos équipes. Première rencontre toujours sur place à Gradignan, du commerce de Laurenzane à la Canopée.",
+          "Devis à partir de 24 à 48 h selon la complexité, périmètre fixé avant le développement. UX/UI, responsive mobile et e-commerce multi-CMS (WooCommerce, Shopify, Prestashop) ou code sur mesure pour un SaaS, avec intégration IA utile (prise de rendez-vous, devis, qualification, recherche sémantique). Hébergement en Union européenne, conformité RGPD intégrée dès la conception. Aucun verrou éditeur : le site et ses données restent repris par tout prestataire de la métropole bordelaise ou par vos équipes. Première rencontre toujours sur place à Gradignan, du commerce de Laurenzane à la Canopée.",
       },
       en: {
         hero: "In Gradignan, the local economy rests on a web of very small businesses spread across eight activity zones, on neighbourhood retail polarised by the Laurenzane shopping centre, and on a support ecosystem clustered at the Château de l'Ermitage (La Canopée coworking, the Gradignan Premières incubator, the Club des Entreprises). Axion-IA builds AI-augmented websites and SaaS platforms for these structures: retailers, healthcare and liberal professions, building-trade craftspeople and project leaders from the Talence-Pessac-Gradignan campus, who need a site that books appointments, qualifies enquiries and frees up time — not an over-engineered machine.",
@@ -214,7 +214,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           },
           {
             q: "How long before I get a quote?",
-            a: "From 48 hours depending on the project's complexity. After our on-site meeting in Gradignan, you receive a costed, readable quote with no opaque option games. Scope is fixed before any line of code.",
+            a: "From 24 to 48 hours depending on the project's complexity. After our on-site meeting in Gradignan, you receive a costed, readable quote with no opaque option games. Scope is fixed before any line of code.",
           },
           {
             q: "Where is my clients' data hosted?",
@@ -222,7 +222,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, scope fixed before development. UX/UI, mobile responsive and multi-CMS e-commerce (WooCommerce, Shopify, Prestashop) or custom code for a SaaS, with useful AI integration (booking, quotes, qualification, semantic search). EU hosting, GDPR compliance built in by design. No vendor lock-in: the site and its data can be taken over by any provider in the Bordeaux metro area or by your own teams. First meeting always on site in Gradignan, from a Laurenzane shop to La Canopée.",
+          "Quote from 24 to 48 hours depending on complexity, scope fixed before development. UX/UI, mobile responsive and multi-CMS e-commerce (WooCommerce, Shopify, Prestashop) or custom code for a SaaS, with useful AI integration (booking, quotes, qualification, semantic search). EU hosting, GDPR compliance built in by design. No vendor lock-in: the site and its data can be taken over by any provider in the Bordeaux metro area or by your own teams. First meeting always on site in Gradignan, from a Laurenzane shop to La Canopée.",
       },
     },
   },

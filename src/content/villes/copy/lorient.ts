@@ -132,11 +132,11 @@ export const LORIENT_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour obtenir un devis à Lorient ?",
-            a: "À partir de 48 h selon la complexité, après un premier échange. Nous nous déplaçons sur site à Lorient et dans le pays de Lorient (Lanester, Ploemeur, Hennebont, Caudan, Quéven) pour cadrer le projet, puis nous vous remettons un périmètre chiffré clair.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nous nous déplaçons sur site à Lorient et dans le pays de Lorient (Lanester, Ploemeur, Hennebont, Caudan, Quéven) pour cadrer le projet, puis nous vous remettons un périmètre chiffré clair.",
           },
         ],
         guarantees:
-          "Chaque site ou plateforme est livré avec un hébergement en Union européenne conforme RGPD, un code et des données dont vous restez intégralement propriétaire, et une documentation permettant à vos équipes ou à tout prestataire breton de reprendre la main — sans verrou éditeur ni dépendance contractuelle à Axion-IA. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA embarquée. Devis à partir de 48 h selon la complexité ; frais de déplacement sur Lorient et le pays de Lorient transparents et distincts du forfait.",
+          "Chaque site ou plateforme est livré avec un hébergement en Union européenne conforme RGPD, un code et des données dont vous restez intégralement propriétaire, et une documentation permettant à vos équipes ou à tout prestataire breton de reprendre la main — sans verrou éditeur ni dépendance contractuelle à Axion-IA. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA embarquée. Devis à partir de 24 à 48 h selon la complexité ; frais de déplacement sur Lorient et le pays de Lorient transparents et distincts du forfait.",
       },
       en: {
         hero: "Lorient (56) builds its economy on the sea and on high-technology composites: the Keroman fishing port — France's leading landing point for fresh fish, run by the SEM Lorient Keroman — feeds a dense seafood-processing sector (Cinq Degrés Ouest for shellfish, canneries such as Capitaine Cook), while the former submarine base, converted into Lorient La Base, hosts the Offshore Racing Centre and the Bretagne Sailing Valley, where some fifty companies (CDK Technologies, Multiplast, Lorima, Avel Robotics, SMM) build carbon sails, masts and hulls. Axion-IA designs AI-augmented websites and SaaS platforms for these Lorient micro-businesses and SMEs: B2B seafood-traceability portals, cannery e-commerce, and planning and reporting tools for offshore racing teams.",
@@ -218,11 +218,11 @@ export const LORIENT_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote in Lorient?",
-            a: "From 48 hours depending on complexity, after an initial exchange. We travel on site in Lorient and the pays de Lorient (Lanester, Ploemeur, Hennebont, Caudan, Quéven) to frame the project, then deliver a clear, costed scope. Transparent travel costs, separate from the package.",
+            a: "From 24 to 48 hours depending on complexity, after an initial exchange. We travel on site in Lorient and the pays de Lorient (Lanester, Ploemeur, Hennebont, Caudan, Quéven) to frame the project, then deliver a clear, costed scope. Transparent travel costs, separate from the package.",
           },
         ],
         guarantees:
-          "Every site or platform is delivered with European Union hosting, GDPR compliance, code and data you fully own, and documentation that lets your teams or any Breton provider take over — with no vendor lock-in and no contractual dependence on Axion-IA. We claim UX/UI, mobile, multi-CMS e-commerce and embedded AI. Quotes from 48 hours depending on complexity; travel costs across Lorient and the pays de Lorient are transparent and separate from the package.",
+          "Every site or platform is delivered with European Union hosting, GDPR compliance, code and data you fully own, and documentation that lets your teams or any Breton provider take over — with no vendor lock-in and no contractual dependence on Axion-IA. We claim UX/UI, mobile, multi-CMS e-commerce and embedded AI. Quotes from 24 to 48 hours depending on complexity; travel costs across Lorient and the pays de Lorient are transparent and separate from the package.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const DAX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de TPE du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de TPE du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
         whyHere: [
           "Première destination thermale de France : autour de la Fontaine chaude et de la Régie Municipale des Boues qui prépare le péloïde TERDAX, les dix-sept établissements thermaux et résidences de cure accueillent chaque saison des dizaines de milliers de curistes. Terrain idéal pour des portails de réservation directe de cures, un parcours d'accueil curiste augmenté à l'IA et un suivi multilingue des séjours, branchés sur vos plannings.",
           "Forte saisonnalité touristique et clientèle de passage venue par la gare TGV ou l'aéroport de Biarritz : nos chatbots RAG et agents conversationnels, multilingues par défaut, absorbent les pics de demandes de l'hôtellerie, des résidences de cure et de la restauration du cœur de ville sans surcharger les petites équipes dacquoises, avec relances et confirmations automatisées.",
@@ -64,7 +64,7 @@ export const DAX_COPY: VilleCopy = {
           {
             step: "Cadrage à Dax",
             detail:
-              "Atelier sur site (centre thermal, cœur de ville autour de la Fontaine chaude, quartier de la gare TGV) : objectifs, parcours curistes et clients, audit de la stack, des contenus et de la saisonnalité de la cure. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre thermal, cœur de ville autour de la Fontaine chaude, quartier de la gare TGV) : objectifs, parcours curistes et clients, audit de la stack, des contenus et de la saisonnalité de la cure. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const DAX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Dax, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
+            a: "Oui. Après le cadrage sur place à Dax, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de cures. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act pour les données sensibles des curistes : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire de Nouvelle-Aquitaine, sans dépendance durable à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de cures. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act pour les données sensibles des curistes : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire de Nouvelle-Aquitaine, sans dépendance durable à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de TPE du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de TPE du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
         whyHere: [
           "Première destination thermale de France : autour de la Fontaine chaude et de la Régie Municipale des Boues qui prépare le péloïde TERDAX, les dix-sept établissements thermaux et résidences de cure accueillent chaque saison des dizaines de milliers de curistes. Terrain idéal pour des portails de réservation directe de cures, un parcours d'accueil curiste augmenté à l'IA et un suivi multilingue des séjours, branchés sur vos plannings.",
           "Forte saisonnalité touristique et clientèle de passage venue par la gare TGV ou l'aéroport de Biarritz : nos chatbots RAG et agents conversationnels, multilingues par défaut, absorbent les pics de demandes de l'hôtellerie, des résidences de cure et de la restauration du cœur de ville sans surcharger les petites équipes dacquoises, avec relances et confirmations automatisées.",
@@ -150,7 +150,7 @@ export const DAX_COPY: VilleCopy = {
           {
             step: "Cadrage à Dax",
             detail:
-              "Atelier sur site (centre thermal, cœur de ville autour de la Fontaine chaude, quartier de la gare TGV) : objectifs, parcours curistes et clients, audit de la stack, des contenus et de la saisonnalité de la cure. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre thermal, cœur de ville autour de la Fontaine chaude, quartier de la gare TGV) : objectifs, parcours curistes et clients, audit de la stack, des contenus et de la saisonnalité de la cure. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const DAX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Dax, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
+            a: "Oui. Après le cadrage sur place à Dax, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de cures. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act pour les données sensibles des curistes : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire de Nouvelle-Aquitaine, sans dépendance durable à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de cures. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act pour les données sensibles des curistes : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire de Nouvelle-Aquitaine, sans dépendance durable à Axion-IA.",
       },
     },
   },

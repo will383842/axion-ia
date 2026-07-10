@@ -128,7 +128,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour recevoir un devis ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Un site vitrine pour un commerce garennois se chiffre vite ; un portail métier connecté au CRM d'une direction France du quartier Champs-Philippe demande un cadrage technique un peu plus poussé avant chiffrage.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Un site vitrine pour un commerce garennois se chiffre vite ; un portail métier connecté au CRM d'une direction France du quartier Champs-Philippe demande un cadrage technique un peu plus poussé avant chiffrage.",
           },
           {
             q: "Où sont hébergées les données et le site ?",
@@ -136,7 +136,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, frais de déplacement depuis Paris indiqués séparément du forfait. Hébergement en Europe par défaut et conformité RGPD : vous restez propriétaire de vos données, de votre code et de vos contenus. Le site et ses agents IA sont portables — repris en interne ou par tout prestataire de votre choix, sans verrou éditeur ni contrat de maintenance imposé. Nous couvrons l'ensemble de la chaîne sans sous-traiter : UX/UI, responsive mobile, e-commerce multi-CMS (Shopify, WooCommerce, Wix, sur-mesure) et couche IA (chatbot RAG, search sémantique, agents), des commerces de la rue de l'Aigle aux filiales France du quartier Champs-Philippe.",
+          "Devis remis à partir de 24-48 h selon la complexité, frais de déplacement depuis Paris indiqués séparément du forfait. Hébergement en Europe par défaut et conformité RGPD : vous restez propriétaire de vos données, de votre code et de vos contenus. Le site et ses agents IA sont portables — repris en interne ou par tout prestataire de votre choix, sans verrou éditeur ni contrat de maintenance imposé. Nous couvrons l'ensemble de la chaîne sans sous-traiter : UX/UI, responsive mobile, e-commerce multi-CMS (Shopify, WooCommerce, Wix, sur-mesure) et couche IA (chatbot RAG, search sémantique, agents), des commerces de la rue de l'Aigle aux filiales France du quartier Champs-Philippe.",
       },
       en: {
         hero: "In La Garenne-Colombes (Hauts-de-Seine), Axion-IA builds AI-augmented websites and SaaS platforms for the two worlds the town packs into under two square kilometres: on one side, the large-group subsidiaries installed to the west, in the orbit of Paris La Défense — Sage at Atrium Défense (Place de Belgique), Hyundai Motor France at Tour Nova (boulevard National), Bayer on the same axis — which need business portals, customer areas and conversational agents wired into their systems; on the other, the small businesses, the shops on rue de l'Aigle, the firms and independent professionals of the town centre who want a showcase or e-commerce site that books appointments and answers enquiries on its own. Custom code, EU hosting under GDPR, zero vendor lock-in.",
@@ -214,7 +214,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
           {
             q: "How quickly do you provide a quote?",
-            a: "The quote is delivered from 48 h depending on the complexity of the project, after an initial framing conversation. A showcase site for a local shop is quick to price; a business portal connected to the CRM of a France head office in the Champs-Philippe district needs slightly deeper technical framing before pricing.",
+            a: "The quote is delivered from 24-48 h depending on the complexity of the project, after an initial framing conversation. A showcase site for a local shop is quick to price; a business portal connected to the CRM of a France head office in the Champs-Philippe district needs slightly deeper technical framing before pricing.",
           },
           {
             q: "Where are the data and the site hosted?",
@@ -222,7 +222,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 48 h depending on complexity, travel costs from Paris shown separately from the package. Hosting in Europe by default and GDPR compliance: you remain the owner of your data, your code and your content. The site and its AI agents are portable — taken over in-house or by any provider of your choice, with no vendor lock-in or imposed maintenance contract. We cover the whole chain without subcontracting: UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, Wix, custom) and the AI layer (RAG chatbot, semantic search, agents), from the shops on rue de l'Aigle to the France subsidiaries of the Champs-Philippe district.",
+          "Quote delivered from 24-48 h depending on complexity, travel costs from Paris shown separately from the package. Hosting in Europe by default and GDPR compliance: you remain the owner of your data, your code and your content. The site and its AI agents are portable — taken over in-house or by any provider of your choice, with no vendor lock-in or imposed maintenance contract. We cover the whole chain without subcontracting: UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, Wix, custom) and the AI layer (RAG chatbot, semantic search, agents), from the shops on rue de l'Aigle to the France subsidiaries of the Champs-Philippe district.",
       },
     },
   },

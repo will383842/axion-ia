@@ -51,7 +51,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Cagnes-sur-Mer des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique et automatisations. Pensé pour le tissu local — commerçants et enseignes de l'orbite du Polygone Riviera, hôtellerie-restauration du Cros-de-Cagnes, agences immobilières du littoral, artisans BTP de la Z.A. Costamagna et PME agroalimentaires comme celles du Technopolis. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Cagnes-sur-Mer, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cagnes-sur-Mer des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique et automatisations. Pensé pour le tissu local — commerçants et enseignes de l'orbite du Polygone Riviera, hôtellerie-restauration du Cros-de-Cagnes, agences immobilières du littoral, artisans BTP de la Z.A. Costamagna et PME agroalimentaires comme celles du Technopolis. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Cagnes-sur-Mer, itérations à distance.",
         whyHere: [
           "Retail et e-commerce littoral : avec le Polygone Riviera (premier centre commercial à ciel ouvert de France, ~150 enseignes) à proximité, les commerçants cagnois ont besoin de vitrines omnicanal — boutique en ligne, click & collect, recherche produit sémantique — branchées sur WordPress, Shopify, WooCommerce ou PrestaShop.",
           "Tourisme et hôtellerie-restauration : pour le Cros-de-Cagnes, les hôtels et restaurants du bord de mer et les flux culturels du Musée Renoir et du Château-Musée Grimaldi, on construit réservation en ligne, FAQ multilingue automatisée et chatbot d'accueil.",
@@ -62,7 +62,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
           {
             step: "Cadrage à Cagnes-sur-Mer",
             detail:
-              "Atelier sur site (centre-ville, Cros-de-Cagnes, Z.A. Costamagna ou bâtiment Technopolis) : objectifs, parcours clients, audit de la stack e-commerce et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, Cros-de-Cagnes, Z.A. Costamagna ou bâtiment Technopolis) : objectifs, parcours clients, audit de la stack e-commerce et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -126,7 +126,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Cagnes-sur-Mer, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier ou un e-commerce étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à Cagnes-sur-Mer, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier ou un e-commerce étendu. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Mes données et mon site restent-ils ma propriété ?",
@@ -134,10 +134,10 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique existante — un point clé pour les commerçants et hôtels cagnois en haute saison. Web Vitals, accessibilité et mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la Métropole Nice Côte d'Azur ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique existante — un point clé pour les commerçants et hôtels cagnois en haute saison. Web Vitals, accessibilité et mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la Métropole Nice Côte d'Azur ou repris en interne.",
       },
       en: {
-        hero: "In Cagnes-sur-Mer, Axion-IA designs and augments websites, online stores and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search and automations. Built for the local fabric — retailers around the Polygone Riviera mall, Cros-de-Cagnes hotels and restaurants, coastal real-estate agencies, BTP craftsmen of the Costamagna business park and agri-food SMEs like those at the Technopolis building. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Cagnes-sur-Mer kick-off, remote iterations.",
+        hero: "In Cagnes-sur-Mer, Axion-IA designs and augments websites, online stores and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search and automations. Built for the local fabric — retailers around the Polygone Riviera mall, Cros-de-Cagnes hotels and restaurants, coastal real-estate agencies, BTP craftsmen of the Costamagna business park and agri-food SMEs like those at the Technopolis building. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Cagnes-sur-Mer kick-off, remote iterations.",
         whyHere: [
           "Coastal retail and e-commerce: with Polygone Riviera (France's first open-air shopping centre, ~150 stores) nearby, Cagnes retailers need omnichannel storefronts — online shop, click & collect, semantic product search — plugged into WordPress, Shopify, WooCommerce or PrestaShop.",
           "Tourism and hospitality: for Cros-de-Cagnes, the seafront hotels and restaurants and the cultural footfall of the Renoir Museum and Château-Musée Grimaldi, we build online booking, automated multilingual FAQ and a welcome chatbot.",
@@ -148,7 +148,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
           {
             step: "Scoping in Cagnes-sur-Mer",
             detail:
-              "On-site workshop (town centre, Cros-de-Cagnes, Costamagna business park or Technopolis building): goals, customer journeys, audit of the e-commerce stack and existing content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop (town centre, Cros-de-Cagnes, Costamagna business park or Technopolis building): goals, customer journeys, audit of the e-commerce stack and existing content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "Mobile-first UX/UI design",
@@ -212,7 +212,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the on-site scoping in Cagnes-sur-Mer, we issue a firm fixed-price quote. The lead time depends on complexity — from 48 h for a simple project, longer for a business platform or extended e-commerce. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the on-site scoping in Cagnes-sur-Mer, we issue a firm fixed-price quote. The lead time depends on complexity — from 24-48 h for a simple project, longer for a business platform or extended e-commerce. No time-and-materials, no hidden hourly drift.",
           },
           {
             q: "Do my data and my site stay my property?",
@@ -220,7 +220,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site or store — key for Cagnes retailers and hotels in high season. Web Vitals, accessibility and mobile checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in the Nice Côte d'Azur metropolitan area or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site or store — key for Cagnes retailers and hotels in high season. Web Vitals, accessibility and mobile checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in the Nice Côte d'Azur metropolitan area or taken in-house.",
       },
     },
   },

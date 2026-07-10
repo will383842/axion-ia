@@ -132,11 +132,11 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai démarrez-vous un projet à Ris-Orangis ?",
-            a: "Un premier devis est remis à partir de 48 h selon la complexité, après un échange de cadrage. Le kick-off se fait sur site à Ris-Orangis, puis les itérations se poursuivent à distance avec des points réguliers ; nos consultants se déplacent depuis Paris, à environ 25 km par l'A6 et le RER D.",
+            a: "Un premier devis est remis à partir de 24 à 48 h selon la complexité, après un échange de cadrage. Le kick-off se fait sur site à Ris-Orangis, puis les itérations se poursuivent à distance avec des points réguliers ; nos consultants se déplacent depuis Paris, à environ 25 km par l'A6 et le RER D.",
           },
         ],
         guarantees:
-          "Code et données vous appartiennent : aucun verrou éditeur, aucune dépendance contractuelle à Axion-IA, sites repris par n'importe quel prestataire francilien ou en interne. Hébergement Union européenne RGPD par défaut, sauvegardes et plan de reprise documentés. UX/UI, version mobile et accessibilité inclus dans chaque projet. Devis à partir de 48 h selon la complexité ; performances Web Vitals contrôlées avant mise en ligne.",
+          "Code et données vous appartiennent : aucun verrou éditeur, aucune dépendance contractuelle à Axion-IA, sites repris par n'importe quel prestataire francilien ou en interne. Hébergement Union européenne RGPD par défaut, sauvegardes et plan de reprise documentés. UX/UI, version mobile et accessibilité inclus dans chaque projet. Devis à partir de 24 à 48 h selon la complexité ; performances Web Vitals contrôlées avant mise en ligne.",
       },
       en: {
         hero: "In Ris-Orangis (91), Axion-IA builds AI-augmented websites and SaaS platforms for a very concrete local economy: hauliers and logistics operators in the Orme Pomponne and Terres Saint-Lazare business zones (L4 Logistics, Bansard International, ULS Transports, Lidl), data back-offices such as the PMU site at Bois de l'Hôtel-Dieu, retailers and construction trades across the southern Paris region, and cultural venues around Le Plan. Freight-tracking portals, B2B customer areas, RAG-powered business sites, chatbots and semantic search — custom code, European Union GDPR hosting, zero vendor lock-in. UX/UI, mobile and multi-CMS e-commerce included.",
@@ -218,11 +218,11 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you start a project in Ris-Orangis?",
-            a: "A first quote is provided from 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; our consultants travel from Paris, about 25 km via the A6 and RER D.",
+            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; our consultants travel from Paris, about 25 km via the A6 and RER D.",
           },
         ],
         guarantees:
-          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 48 hours depending on complexity; Web Vitals performance checked before go-live. Travel costs from Paris listed separately, with full transparency.",
+          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live. Travel costs from Paris listed separately, with full transparency.",
       },
     },
   },

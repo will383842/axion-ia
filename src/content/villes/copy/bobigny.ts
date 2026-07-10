@@ -53,7 +53,7 @@ export const BOBIGNY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bobigny des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations documentaires. On travaille pour l'écosystème réel de la préfecture de Seine-Saint-Denis — cabinets d'avocats et experts gravitant autour du Tribunal judiciaire de Bobigny, acteurs de santé liés à l'Hôpital Avicenne et au campus Sorbonne Paris Nord, TPE de commerce, transport et BTP, structures issues de la ZAC Écocité Canal de l'Ourcq. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bobigny, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Bobigny des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations documentaires. On travaille pour l'écosystème réel de la préfecture de Seine-Saint-Denis — cabinets d'avocats et experts gravitant autour du Tribunal judiciaire de Bobigny, acteurs de santé liés à l'Hôpital Avicenne et au campus Sorbonne Paris Nord, TPE de commerce, transport et BTP, structures issues de la ZAC Écocité Canal de l'Ourcq. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bobigny, itérations à distance.",
         whyHere: [
           "Écosystème judiciaire et administratif : sites et portails métier pour cabinets d'avocats, huissiers, experts et associations d'aide aux justiciables gravitant autour du Tribunal judiciaire de Bobigny et de l'Hôtel du Département.",
           "Santé et formation : applications conformes RGPD pour les acteurs liés à l'Hôpital Avicenne (AP-HP) et au campus Sorbonne Paris Nord — UFR SMBH et IUT de Bobigny au Bâtiment de l'Illustration.",
@@ -64,7 +64,7 @@ export const BOBIGNY_COPY: VilleCopy = {
           {
             step: "Cadrage à Bobigny",
             detail:
-              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus métier (juridique, santé, commerce). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus métier (juridique, santé, commerce). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const BOBIGNY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Bobigny, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier étendue. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage à Bobigny, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier étendue. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la Seine-Saint-Denis ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la Seine-Saint-Denis ou repris en interne.",
       },
       en: {
-        hero: "In Bobigny, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and document automation. We serve the real ecosystem of the Seine-Saint-Denis préfecture — law firms and experts around the Tribunal judiciaire de Bobigny, health players linked to Hôpital Avicenne and the Sorbonne Paris Nord campus, small retail, transport and construction businesses, companies emerging from the ZAC Écocité Canal de l'Ourcq. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Bobigny kick-off, remote iterations.",
+        hero: "In Bobigny, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and document automation. We serve the real ecosystem of the Seine-Saint-Denis préfecture — law firms and experts around the Tribunal judiciaire de Bobigny, health players linked to Hôpital Avicenne and the Sorbonne Paris Nord campus, small retail, transport and construction businesses, companies emerging from the ZAC Écocité Canal de l'Ourcq. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Bobigny kick-off, remote iterations.",
         whyHere: [
           "Judicial and administrative ecosystem: bespoke sites and business portals for law firms, bailiffs, experts and legal-aid associations around the Tribunal judiciaire de Bobigny and the Hôtel du Département.",
           "Health and education: GDPR-compliant applications for players linked to Hôpital Avicenne (AP-HP) and the Sorbonne Paris Nord campus — UFR SMBH and IUT de Bobigny in the Bâtiment de l'Illustration.",
@@ -150,7 +150,7 @@ export const BOBIGNY_COPY: VilleCopy = {
           {
             step: "Scoping in Bobigny",
             detail:
-              "On-site workshop: goals, user journeys, audit of the existing stack and business content (legal, health, retail). Firm quote from 48 h depending on complexity.",
+              "On-site workshop: goals, user journeys, audit of the existing stack and business content (legal, health, retail). Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const BOBIGNY_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the scoping in Bobigny, we issue a firm fixed-price quote. The turnaround depends on complexity — from 48 h for a simple project, longer for an extended business platform. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the scoping in Bobigny, we issue a firm fixed-price quote. The turnaround depends on complexity — from 24-48 h for a simple project, longer for an extended business platform. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live with no service interruption when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR-compliant: full ownership, no imposed subscription, transferable to any Seine-Saint-Denis provider or brought in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live with no service interruption when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR-compliant: full ownership, no imposed subscription, transferable to any Seine-Saint-Denis provider or brought in-house.",
       },
     },
   },

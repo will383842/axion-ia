@@ -132,11 +132,11 @@ export const LA_CIOTAT_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis pour un site ou une plateforme à La Ciotat ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un premier échange. Pour un site vitrine d'un loueur nautique du port, le cadrage est rapide ; pour un portail armateur multilingue agrégeant les intervenants d'un refit, nous prenons le temps de chiffrer précisément le périmètre.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange. Pour un site vitrine d'un loueur nautique du port, le cadrage est rapide ; pour un portail armateur multilingue agrégeant les intervenants d'un refit, nous prenons le temps de chiffrer précisément le périmètre.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Sites et plateformes SaaS hébergés en Union européenne, conformes RGPD, avec UX/UI, version mobile et e-commerce multi-CMS pris en charge en plus des briques IA. Code, contenus et configuration vous appartiennent : aucun verrou éditeur, aucun abonnement imposé, transfert possible à toute équipe interne ou prestataire régional. Pour la clientèle internationale du refit et du tourisme, multilingue et sécurité traités dès la conception.",
+          "Devis remis à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature. Sites et plateformes SaaS hébergés en Union européenne, conformes RGPD, avec UX/UI, version mobile et e-commerce multi-CMS pris en charge en plus des briques IA. Code, contenus et configuration vous appartiennent : aucun verrou éditeur, aucun abonnement imposé, transfert possible à toute équipe interne ou prestataire régional. Pour la clientèle internationale du refit et du tourisme, multilingue et sécurité traités dès la conception.",
       },
       en: {
         hero: "La Ciotat has turned its former shipbuilding yards into Europe's leading superyacht refit and maintenance hub, built around La Ciotat Shipyards (SPL), the Atlas ship lift (4,300 tonnes, yachts up to 115 m) and some fifty specialised firms — MB92 La Ciotat, Monaco Marine, Nautec and their painting, mechanics, fit-out, home-automation and marine-carpentry subcontractors. For these players, as for the digital companies of the Athélia parks and the tourism businesses around the harbour and the calanques, Axion-IA builds AI-augmented websites and SaaS platforms: refit-progress portals, multi-trade quote configurators, multilingual owner areas. Custom code, hosting in the European Union with GDPR compliance, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const LA_CIOTAT_COPY: VilleCopy = {
           },
           {
             q: "How soon can I get a quote for a website or platform in La Ciotat?",
-            a: "We provide a quote from 48 hours depending on project complexity, after a first exchange. For a harbour boat-rental showcase site, scoping is quick; for a multilingual owner portal aggregating a refit's contributors, we take the time to cost the scope precisely.",
+            a: "We provide a quote from 24 to 48 hours depending on project complexity, after a first exchange. For a harbour boat-rental showcase site, scoping is quick; for a multilingual owner portal aggregating a refit's contributors, we take the time to cost the scope precisely.",
           },
         ],
         guarantees:
-          "Quote provided from 48 hours depending on complexity, scope and deliverables defined before signature. Websites and SaaS platforms hosted in the European Union, GDPR-compliant, with UX/UI, mobile version and multi-CMS e-commerce covered alongside the AI components. Code, content and configuration are yours: no vendor lock-in, no imposed subscription, transfer possible to any in-house team or regional provider. For the international refit and tourism clientele, multilingual and security handled from the design stage.",
+          "Quote provided from 24 to 48 hours depending on complexity, scope and deliverables defined before signature. Websites and SaaS platforms hosted in the European Union, GDPR-compliant, with UX/UI, mobile version and multi-CMS e-commerce covered alongside the AI components. Code, content and configuration are yours: no vendor lock-in, no imposed subscription, transfer possible to any in-house team or regional provider. For the international refit and tourism clientele, multilingual and security handled from the design stage.",
       },
     },
   },

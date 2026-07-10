@@ -14,7 +14,7 @@ const COPY = {
     title: "Devis signé — passons au contrat",
     intro: (n: string) => `Bonjour ${n},`,
     body: (q: string) =>
-      `Votre devis ${q} est bien signé. Excellent. Nous passons maintenant à l'étape contrat + facture d'acompte, que vous recevrez sous 48 h ouvrées par email séparé.`,
+      `Votre devis ${q} est bien signé. Excellent. Nous passons maintenant à l'étape contrat + facture d'acompte, que vous recevrez sous 24-48 h ouvrées par email séparé.`,
     next: "L'intervention ne sera officiellement verrouillée dans notre calendrier qu'après réception de l'acompte (D50-D51).",
     cta: "Nous contacter",
   },
@@ -22,7 +22,7 @@ const COPY = {
     title: "Quote signed — moving to contract",
     intro: (n: string) => `Hello ${n},`,
     body: (q: string) =>
-      `Your quote ${q} is signed. Excellent. We now move to the contract + deposit invoice step, which you'll receive within 48 business hours by separate email.`,
+      `Your quote ${q} is signed. Excellent. We now move to the contract + deposit invoice step, which you'll receive within 24-48 business hours by separate email.`,
     next: "The session will only be officially locked in our calendar after the deposit is received (D50-D51).",
     cta: "Contact us",
   },

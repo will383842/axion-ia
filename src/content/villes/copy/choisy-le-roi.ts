@@ -50,7 +50,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Choisy-le-Roi des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ville à cheval sur la Seine dans l'EPT Grand-Orly Seine Bièvre, tournée vers la logistique fluviale, le génie technique et les services à l'environnement — de l'usine d'eau potable du SEDIF aux entreprises du Parc d'Activités Val de Seine. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Choisy-le-Roi, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Choisy-le-Roi des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ville à cheval sur la Seine dans l'EPT Grand-Orly Seine Bièvre, tournée vers la logistique fluviale, le génie technique et les services à l'environnement — de l'usine d'eau potable du SEDIF aux entreprises du Parc d'Activités Val de Seine. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Choisy-le-Roi, itérations à distance.",
         whyHere: [
           "Tissu local Choisy : industriels et fournisseurs techniques du Parc d'Activités Val de Seine (Fedrigoni France pour les papiers spéciaux, Cegelec pour le génie électrique et CVC), TPE/PME du transport terrestre, du commerce de gros et du BTP — portails clients, catalogues et e-commerce B2B augmentés par l'IA.",
           "Services à l'eau et à l'environnement structurants : avec l'usine d'eau potable Edmond-Pépin du SEDIF exploitée par Veolia (La Franciliane) et les obligations de reporting réglementaire (rejets en Seine), nous construisons des plateformes de suivi de données, d'extraction de documents techniques et de génération de rapports de conformité.",
@@ -61,7 +61,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           {
             step: "Cadrage à Choisy-le-Roi",
             detail:
-              "Atelier sur site (Parc d'Activités Val de Seine, centre-ville ou vos locaux le long de la Seine) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (Parc d'Activités Val de Seine, centre-ville ou vos locaux le long de la Seine) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -125,7 +125,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Choisy-le-Roi, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple (vitrine, brique IA), davantage pour une plateforme métier industrielle ou un portail de données réglementaires étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à Choisy-le-Roi, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple (vitrine, brique IA), davantage pour une plateforme métier industrielle ou un portail de données réglementaires étendu. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Avec quelles technologies travaillez-vous et intervenez-vous dans les communes voisines ?",
@@ -133,10 +133,10 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne ou repris en interne.",
       },
       en: {
-        hero: "In Choisy-le-Roi, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. A town straddling the Seine within the Grand-Orly Seine Bièvre territory, geared toward river logistics, technical engineering and environmental services — from the SEDIF drinking-water plant to the firms of the Val de Seine business park. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Choisy-le-Roi kick-off, remote iterations.",
+        hero: "In Choisy-le-Roi, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. A town straddling the Seine within the Grand-Orly Seine Bièvre territory, geared toward river logistics, technical engineering and environmental services — from the SEDIF drinking-water plant to the firms of the Val de Seine business park. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Choisy-le-Roi kick-off, remote iterations.",
         whyHere: [
           "Local Choisy fabric: industrial and technical suppliers of the Val de Seine business park (Fedrigoni France for specialty papers, Cegelec for electrical and HVAC engineering), micro-businesses and SMEs in land transport, wholesale trade and construction — customer portals, catalogues and B2B e-commerce augmented with AI.",
           "Structuring water and environmental services: with the SEDIF Edmond-Pépin drinking-water plant operated by Veolia (La Franciliane) and its regulatory reporting duties (Seine discharges), we build data-tracking platforms, technical-document extraction and compliance-report generation.",
@@ -147,7 +147,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           {
             step: "Scoping in Choisy-le-Roi",
             detail:
-              "On-site workshop (Val de Seine business park, town centre or your riverside offices): goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop (Val de Seine business park, town centre or your riverside offices): goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -211,7 +211,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After on-site scoping in Choisy-le-Roi, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 48 h for a simple project (brochure site, AI brick), more for an industrial business platform or an extended regulatory data portal. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After on-site scoping in Choisy-le-Roi, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project (brochure site, AI brick), more for an industrial business platform or an extended regulatory data portal. No time-and-materials, no hidden hourly drift.",
           },
           {
             q: "Which technologies do you work with, and do you cover neighbouring towns?",
@@ -219,7 +219,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Val-de-Marne provider or taken in-house.",
+          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Val-de-Marne provider or taken in-house.",
       },
     },
   },

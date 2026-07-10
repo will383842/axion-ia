@@ -49,7 +49,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Laurent-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée, pour un tissu local très spécifique : enseignes et commerces de CAP3000 (le plus grand centre commercial bord de mer de la Côte d'Azur), acteurs du port de plaisance en pleine recomposition, entreprises du parc d'activités P.A. Saint-Laurent et PME tournées vers le flux touristique de l'aéroport Nice-Côte d'Azur. UX/UI sur mesure, e-commerce omnicanal multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Saint-Laurent-du-Var, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Laurent-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée, pour un tissu local très spécifique : enseignes et commerces de CAP3000 (le plus grand centre commercial bord de mer de la Côte d'Azur), acteurs du port de plaisance en pleine recomposition, entreprises du parc d'activités P.A. Saint-Laurent et PME tournées vers le flux touristique de l'aéroport Nice-Côte d'Azur. UX/UI sur mesure, e-commerce omnicanal multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Saint-Laurent-du-Var, itérations à distance.",
         whyHere: [
           "Retail et e-commerce à fort volume : enseignes et commerces de l'écosystème CAP3000 (près de 300 boutiques, une cinquantaine de restaurants, ~10 millions de visiteurs/an) — un terrain idéal pour des sites omnicanaux, click & collect, catalogues et tunnels d'achat augmentés par l'IA.",
           "Nautisme et port de plaisance : avec plus de 1 000 anneaux et un programme de 34 M€ de travaux (nouvelle concession 20 ans dès 2026), les commerces du port, capitaineries, loueurs et services plaisanciers ont besoin de réservation en ligne, gestion d'anneaux et relation client digitalisée.",
@@ -60,7 +60,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Laurent-du-Var",
             detail:
-              "Atelier sur site — au pied de CAP3000, au port de plaisance ou dans la zone P.A. Saint-Laurent : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — au pied de CAP3000, au port de plaisance ou dans la zone P.A. Saint-Laurent : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,10 +132,10 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, gestion des pics de saisonnalité touristique azuréenne. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la métropole Nice Côte d'Azur ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, gestion des pics de saisonnalité touristique azuréenne. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la métropole Nice Côte d'Azur ou repris en interne.",
       },
       en: {
-        hero: "In Saint-Laurent-du-Var, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI, for a very specific local fabric: retailers of CAP3000 (the largest seaside shopping centre on the Côte d'Azur), operators of the marina under full redevelopment, businesses of the P.A. Saint-Laurent activity park and SMEs serving the tourist flow from Nice-Côte d'Azur airport. Bespoke UX/UI, omnichannel multi-CMS e-commerce, multilingual RAG chatbot, semantic search, agents and automations. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Saint-Laurent-du-Var kick-off, remote iterations.",
+        hero: "In Saint-Laurent-du-Var, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI, for a very specific local fabric: retailers of CAP3000 (the largest seaside shopping centre on the Côte d'Azur), operators of the marina under full redevelopment, businesses of the P.A. Saint-Laurent activity park and SMEs serving the tourist flow from Nice-Côte d'Azur airport. Bespoke UX/UI, omnichannel multi-CMS e-commerce, multilingual RAG chatbot, semantic search, agents and automations. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Saint-Laurent-du-Var kick-off, remote iterations.",
         whyHere: [
           "High-volume retail and e-commerce: brands and shops of the CAP3000 ecosystem (nearly 300 stores, around 50 restaurants, ~10 million visitors a year) — an ideal ground for omnichannel sites, click & collect, catalogues and AI-augmented checkout funnels.",
           "Marina and nautical sector: with over 1,000 berths and a 34 M€ works programme (new 20-year concession from 2026), the port's shops, harbour offices, charter firms and boater services need online booking, berth management and digitised customer relations.",
@@ -146,7 +146,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           {
             step: "Scoping in Saint-Laurent-du-Var",
             detail:
-              "On-site workshop — at the foot of CAP3000, at the marina or in the P.A. Saint-Laurent zone: goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop — at the foot of CAP3000, at the marina or in the P.A. Saint-Laurent zone: goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,7 +218,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site, with handling of Riviera tourist seasonality peaks. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, transferable to any provider in the Nice Côte d'Azur metropolitan area or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site, with handling of Riviera tourist seasonality peaks. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, transferable to any provider in the Nice Côte d'Azur metropolitan area or taken in-house.",
       },
     },
   },

@@ -54,7 +54,7 @@ const VILLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Ozoir-la-Ferrière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de 21 238 habitants du nord de la Brie, où coexistent les TPE du BTP, les commerçants du marché de la Place Horizon et les transporteurs et logisticiens des deux zones industrielles — la Z.I. Nord (21 ha, plus de 240 entreprises) et la Z.I. Sud, pôle logistique de près de 27 ha — profitant de la RN4 et de l'A4. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ozoir-la-Ferrière, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Ozoir-la-Ferrière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de 21 238 habitants du nord de la Brie, où coexistent les TPE du BTP, les commerçants du marché de la Place Horizon et les transporteurs et logisticiens des deux zones industrielles — la Z.I. Nord (21 ha, plus de 240 entreprises) et la Z.I. Sud, pôle logistique de près de 27 ha — profitant de la RN4 et de l'A4. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ozoir-la-Ferrière, itérations à distance.",
         whyHere: [
           "Artisanat BTP très dense dans la Brie : pour les couvreurs, maçons et électriciens ozoiriens, beaucoup installés autour de la Z.I. Nord, on bâtit des sites vitrines générateurs de devis, mobile-first, et des automatisations devis-relances qui transforment une demande locale en chantier signé sans saisie manuelle. Le prospect remplit un formulaire, le devis part vite, les relances se déclenchent seules.",
           "Commerce indépendant rythmé par le marché bi-hebdomadaire de la Place Horizon (mercredi et samedi matin) et les commerces de proximité du centre-ville : nos boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et nos chatbots prolongent la relation client au-delà des heures d'étal, avec click-and-collect, fidélisation et recherche de produits en langage naturel.",
@@ -65,7 +65,7 @@ const VILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Ozoir-la-Ferrière",
             detail:
-              "Atelier sur site — centre-ville autour de la Place Horizon, Z.I. Nord, Z.I. Sud ou gare RER d'Ozoir selon votre implantation : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville autour de la Place Horizon, Z.I. Nord, Z.I. Sud ou gare RER d'Ozoir selon votre implantation : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -133,14 +133,14 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Ozoir-la-Ferrière — au centre-ville, dans une des zones d'activités ou en visio — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à Ozoir-la-Ferrière — au centre-ville, dans une des zones d'activités ou en visio — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pic de chantiers ou de week-end de marché. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire web de Seine-et-Marne ou d'Île-de-France, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pic de chantiers ou de week-end de marché. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire web de Seine-et-Marne ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Ozoir-la-Ferrière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de 21 238 habitants du nord de la Brie, où coexistent les TPE du BTP, les commerçants du marché de la Place Horizon et les transporteurs et logisticiens des deux zones industrielles — la Z.I. Nord (21 ha, plus de 240 entreprises) et la Z.I. Sud, pôle logistique de près de 27 ha — profitant de la RN4 et de l'A4. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ozoir-la-Ferrière, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Ozoir-la-Ferrière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de 21 238 habitants du nord de la Brie, où coexistent les TPE du BTP, les commerçants du marché de la Place Horizon et les transporteurs et logisticiens des deux zones industrielles — la Z.I. Nord (21 ha, plus de 240 entreprises) et la Z.I. Sud, pôle logistique de près de 27 ha — profitant de la RN4 et de l'A4. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ozoir-la-Ferrière, itérations à distance.",
         whyHere: [
           "Artisanat BTP très dense dans la Brie : pour les couvreurs, maçons et électriciens ozoiriens, beaucoup installés autour de la Z.I. Nord, on bâtit des sites vitrines générateurs de devis, mobile-first, et des automatisations devis-relances qui transforment une demande locale en chantier signé sans saisie manuelle. Le prospect remplit un formulaire, le devis part vite, les relances se déclenchent seules.",
           "Commerce indépendant rythmé par le marché bi-hebdomadaire de la Place Horizon (mercredi et samedi matin) et les commerces de proximité du centre-ville : nos boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et nos chatbots prolongent la relation client au-delà des heures d'étal, avec click-and-collect, fidélisation et recherche de produits en langage naturel.",
@@ -151,7 +151,7 @@ const VILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Ozoir-la-Ferrière",
             detail:
-              "Atelier sur site — centre-ville autour de la Place Horizon, Z.I. Nord, Z.I. Sud ou gare RER d'Ozoir selon votre implantation : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville autour de la Place Horizon, Z.I. Nord, Z.I. Sud ou gare RER d'Ozoir selon votre implantation : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -219,11 +219,11 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Ozoir-la-Ferrière — au centre-ville, dans une des zones d'activités ou en visio — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à Ozoir-la-Ferrière — au centre-ville, dans une des zones d'activités ou en visio — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pic de chantiers ou de week-end de marché. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire web de Seine-et-Marne ou d'Île-de-France, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pic de chantiers ou de week-end de marché. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire web de Seine-et-Marne ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
     },
   },

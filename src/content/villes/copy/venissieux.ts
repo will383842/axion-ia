@@ -121,7 +121,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
           },
           {
             q: "Délais pour un devis sur un projet web ou SaaS à Vénissieux ?",
-            a: "Un devis est remis à partir de 48 h selon la complexité du projet. Pour un site vitrine ou e-commerce CMS, le chiffrage est rapide ; pour un SaaS sur mesure avec intégrations ERP/MES, un court cadrage technique précède le devis.",
+            a: "Un devis est remis à partir de 24-48 h selon la complexité du projet. Pour un site vitrine ou e-commerce CMS, le chiffrage est rapide ; pour un SaaS sur mesure avec intégrations ERP/MES, un court cadrage technique précède le devis.",
           },
           {
             q: "Où sont hébergées les données et le code de la plateforme ?",
@@ -133,7 +133,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre et le calendrier fixés à la signature. Devis remis à partir de 48 h selon la complexité. Hébergement en UE par défaut, contrat DPA et conformité RGPD, aucune donnée alimentant l'entraînement de modèles tiers — critique pour les équipementiers et sous-traitants poids lourds de Vénissieux soumis à des NDA. Code et documentation livrés et portables : votre IT ou tout intégrateur de la Métropole de Lyon peut reprendre la plateforme, sans verrou Axion-IA. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et les briques IA en code sur mesure.",
+          "Engagement contractuel sur le périmètre et le calendrier fixés à la signature. Devis remis à partir de 24-48 h selon la complexité. Hébergement en UE par défaut, contrat DPA et conformité RGPD, aucune donnée alimentant l'entraînement de modèles tiers — critique pour les équipementiers et sous-traitants poids lourds de Vénissieux soumis à des NDA. Code et documentation livrés et portables : votre IT ou tout intégrateur de la Métropole de Lyon peut reprendre la plateforme, sans verrou Axion-IA. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et les briques IA en code sur mesure.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for Vénissieux's productive fabric — the Rhône's 3rd-largest town, home to more than 3,000 companies. The need here isn't a decorative showcase: it's a supplier portal for an equipment maker like Aldes (whose global HVAC headquarters sits in Vénissieux), a configurator or extranet for the heavy-truck subcontractors orbiting Renault Trucks, or a B2B ordering platform for the wholesalers and logistics firms of the Lyon Sud-Est industrial zone and the Lyon-Corbas wholesale market. We deliver custom code — UX/UI, mobile, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, document generation) — hosted in the EU, with no vendor lock-in.",
@@ -207,7 +207,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
           },
           {
             q: "Lead time for a quote on a web or SaaS project in Vénissieux?",
-            a: "A quote is provided from 48 h depending on project complexity. For a showcase or CMS e-commerce site, pricing is quick; for a custom SaaS with ERP/MES integrations, a short technical framing precedes the quote.",
+            a: "A quote is provided from 24-48 h depending on project complexity. For a showcase or CMS e-commerce site, pricing is quick; for a custom SaaS with ERP/MES integrations, a short technical framing precedes the quote.",
           },
           {
             q: "Where are the platform's data and code hosted?",
@@ -219,7 +219,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment on scope and schedule fixed at signature. Quote provided from 48 h depending on complexity. EU hosting by default, DPA contract and GDPR compliance, no data feeding third-party model training — critical for Vénissieux equipment makers and heavy-truck subcontractors under NDAs. Code and documentation delivered and portable: your IT or any Métropole de Lyon integrator can take over the platform, with no Axion-IA lock-in. We cover UX/UI, mobile, multi-CMS e-commerce and AI building blocks in custom code.",
+          "Contractual commitment on scope and schedule fixed at signature. Quote provided from 24-48 h depending on complexity. EU hosting by default, DPA contract and GDPR compliance, no data feeding third-party model training — critical for Vénissieux equipment makers and heavy-truck subcontractors under NDAs. Code and documentation delivered and portable: your IT or any Métropole de Lyon integrator can take over the platform, with no Axion-IA lock-in. We cover UX/UI, mobile, multi-CMS e-commerce and AI building blocks in custom code.",
       },
     },
   },

@@ -124,7 +124,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 48 h selon la complexité. Un site vitrine e-commerce pour un commerce du centre-ville se chiffre vite ; un portail B2B industriel ou une plateforme SaaS pour un site de Vongy demande un cadrage plus détaillé avant chiffrage.",
+            a: "À partir de 24 à 48 h selon la complexité. Un site vitrine e-commerce pour un commerce du centre-ville se chiffre vite ; un portail B2B industriel ou une plateforme SaaS pour un site de Vongy demande un cadrage plus détaillé avant chiffrage.",
           },
           {
             q: "Où sont hébergées les données de mon site ou de ma plateforme ?",
@@ -136,7 +136,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, tarifs cadrés et transparents. Code sur mesure sans verrou éditeur : votre site ou plateforme SaaS est portable et reprenable par vos équipes ou tout intégrateur. Hébergement en Europe par défaut, conformité RGPD et vigilance sur les flux transfrontaliers vers la Suisse, essentielle pour les acteurs frontaliers et industriels de Thonon. UX/UI mobile-first, e-commerce multi-CMS et IA (chatbot, search sémantique, automatisation) couverts en interne — du commerce du Port de Rives à l'industriel de la ZI de Vongy.",
+          "Devis à partir de 24 à 48 h selon la complexité, tarifs cadrés et transparents. Code sur mesure sans verrou éditeur : votre site ou plateforme SaaS est portable et reprenable par vos équipes ou tout intégrateur. Hébergement en Europe par défaut, conformité RGPD et vigilance sur les flux transfrontaliers vers la Suisse, essentielle pour les acteurs frontaliers et industriels de Thonon. UX/UI mobile-first, e-commerce multi-CMS et IA (chatbot, search sémantique, automatisation) couverts en interne — du commerce du Port de Rives à l'industriel de la ZI de Vongy.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for the real economy of Thonon-les-Bains: the Vongy industrial estate manufacturers (Thales in electronics, the Rencast/Eurocast light-alloy aluminium foundry, VEKA PVC windows), the water and thermal sector (Eaux de Thonon, wellness establishments), and the lakeside tourism players around the Port de Rives, open to Lake Geneva and the cross-border clientele from Geneva. From product configurators to B2B portals and multilingual booking, we deliver custom code, hosted in Europe (GDPR), with no vendor lock-in — your Chablais teams stay in control.",
@@ -210,7 +210,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "From 48 hours depending on complexity. A showcase e-commerce site for a town-centre shop is quick to quote; an industrial B2B portal or a SaaS platform for a Vongy site requires more detailed framing before pricing.",
+            a: "From 24 to 48 hours depending on complexity. A showcase e-commerce site for a town-centre shop is quick to quote; an industrial B2B portal or a SaaS platform for a Vongy site requires more detailed framing before pricing.",
           },
           {
             q: "Where is my site or platform data hosted?",
@@ -222,7 +222,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, with framed and transparent pricing. Custom code with no vendor lock-in: your site or SaaS platform is portable and can be taken over by your teams or any integrator. European hosting by default, GDPR compliance and vigilance on cross-border flows toward Switzerland — essential for Thonon's cross-border and industrial players. Mobile-first UX/UI, multi-CMS e-commerce and AI (chatbot, semantic search, automation) covered in-house — from the Port de Rives shop to the Vongy industrial-estate manufacturer.",
+          "Quote from 24 to 48 hours depending on complexity, with framed and transparent pricing. Custom code with no vendor lock-in: your site or SaaS platform is portable and can be taken over by your teams or any integrator. European hosting by default, GDPR compliance and vigilance on cross-border flows toward Switzerland — essential for Thonon's cross-border and industrial players. Mobile-first UX/UI, multi-CMS e-commerce and AI (chatbot, semantic search, automation) covered in-house — from the Port de Rives shop to the Vongy industrial-estate manufacturer.",
       },
     },
   },

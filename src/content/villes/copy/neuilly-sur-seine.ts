@@ -130,11 +130,11 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis et quelle technologie utilisez-vous ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Nous livrons exclusivement du code custom (front, API, modèles IA intégrés) hébergé en Europe : vous restez propriétaire de la plateforme, sans abonnement éditeur imposé ni verrou technique, ce qui est critique pour les sièges et cabinets gérant des données de marque ou clients sensibles.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Nous livrons exclusivement du code custom (front, API, modèles IA intégrés) hébergé en Europe : vous restez propriétaire de la plateforme, sans abonnement éditeur imposé ni verrou technique, ce qui est critique pour les sièges et cabinets gérant des données de marque ou clients sensibles.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Conception UX/UI, développement web et mobile, e-commerce multi-CMS et briques IA livrés en code custom, hébergés en Europe et conformes RGPD dès la conception — un prérequis pour les marques de luxe, les cabinets d'audit et les professions libérales de Neuilly-sur-Seine. Vous restez intégralement propriétaire du code et de la plateforme, sans verrou éditeur ni dépendance Axion-IA : la solution est reprenable par vos équipes ou tout prestataire francilien après la mission.",
+          "Devis remis à partir de 24-48 h selon la complexité. Conception UX/UI, développement web et mobile, e-commerce multi-CMS et briques IA livrés en code custom, hébergés en Europe et conformes RGPD dès la conception — un prérequis pour les marques de luxe, les cabinets d'audit et les professions libérales de Neuilly-sur-Seine. Vous restez intégralement propriétaire du code et de la plateforme, sans verrou éditeur ni dépendance Axion-IA : la solution est reprenable par vos équipes ou tout prestataire francilien après la mission.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for Neuilly-sur-Seine, one of France's densest business districts — around 13,000 companies across 3.7 km² along avenue Charles-de-Gaulle (RN 13), between the Champs-Élysées and La Défense. Here the digital stakes are those of luxury and cosmetics headquarters (Chanel, Sephora-LVMH, Dior), media and advertising groups (Groupe M6, RTL, JCDecaux), consulting and audit firms (Deloitte, PwC, Bureau Veritas), branded food and beverage (Orangina Suntory) and a high density of business legal professions (lawyers, notaries). We deliver multilingual e-commerce interfaces, secure client portals and RAG semantic search engines in custom code, hosted in Europe and GDPR-compliant, with no vendor lock-in.",
@@ -216,11 +216,11 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and what technology do you use?",
-            a: "Quotes are issued from 48 h depending on project complexity. We deliver exclusively custom code (front, API, embedded AI models) hosted in Europe: you remain the platform owner, with no imposed vendor subscription or technical lock-in — critical for headquarters and firms handling sensitive brand or client data.",
+            a: "Quotes are issued from 24-48 h depending on project complexity. We deliver exclusively custom code (front, API, embedded AI models) hosted in Europe: you remain the platform owner, with no imposed vendor subscription or technical lock-in — critical for headquarters and firms handling sensitive brand or client data.",
           },
         ],
         guarantees:
-          "Quote issued from 48 h depending on complexity. UX/UI design, web and mobile development, multi-CMS e-commerce and AI building blocks delivered in custom code, hosted in Europe and GDPR-compliant from the design stage — a prerequisite for Neuilly-sur-Seine's luxury brands, audit firms and legal professions. You remain the full owner of the code and platform, with no vendor lock-in or Axion-IA dependency: the solution can be taken over by your teams or any Île-de-France provider after the engagement.",
+          "Quote issued from 24-48 h depending on complexity. UX/UI design, web and mobile development, multi-CMS e-commerce and AI building blocks delivered in custom code, hosted in Europe and GDPR-compliant from the design stage — a prerequisite for Neuilly-sur-Seine's luxury brands, audit firms and legal professions. You remain the full owner of the code and platform, with no vendor lock-in or Axion-IA dependency: the solution can be taken over by your teams or any Île-de-France provider after the engagement.",
       },
     },
   },

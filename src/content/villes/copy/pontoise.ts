@@ -120,7 +120,7 @@ export const PONTOISE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour recevoir un devis ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE, le périmètre se chiffre vite ; pour une plateforme SaaS ETI ou un portail hospitalier, nous prenons le temps d'un atelier préalable à Pontoise.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE, le périmètre se chiffre vite ; pour une plateforme SaaS ETI ou un portail hospitalier, nous prenons le temps d'un atelier préalable à Pontoise.",
           },
           {
             q: "Faites-vous de l'e-commerce et du mobile, ou seulement de l'IA ?",
@@ -132,7 +132,7 @@ export const PONTOISE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, après cadrage. Conception UX/UI, mobile et e-commerce multi-CMS intégrées au même projet que les briques IA. Hébergement en Union européenne et conformité RGPD par défaut, DPO sur demande. Vous conservez la pleine propriété du code, des accès et de la documentation : la plateforme est maintenable en interne ou par tout prestataire du bassin Cergy-Pontoise, sans dépendance ni lock-in Axion-IA. Pour les cabinets juridiques, structures de santé liées au CH René-Dubos et services publics du Val-d'Oise, confidentialité stricte et cloisonnement des données appliqués dès la conception.",
+          "Devis remis à partir de 24 à 48 h selon la complexité, après cadrage. Conception UX/UI, mobile et e-commerce multi-CMS intégrées au même projet que les briques IA. Hébergement en Union européenne et conformité RGPD par défaut, DPO sur demande. Vous conservez la pleine propriété du code, des accès et de la documentation : la plateforme est maintenable en interne ou par tout prestataire du bassin Cergy-Pontoise, sans dépendance ni lock-in Axion-IA. Pour les cabinets juridiques, structures de santé liées au CH René-Dubos et services publics du Val-d'Oise, confidentialité stricte et cloisonnement des données appliqués dès la conception.",
       },
       en: {
         hero: "Pontoise combines an administrative and judicial role that is rare for a city of its size — préfecture of Val-d'Oise, Cergy-Pontoise administrative court, commercial court on rue Victor Hugo — a reference hospital (René-Dubos), a genuine academic AI hub (CY Cergy Paris Université, ENSEA, the ETIS laboratory UMR CNRS 8051) and, on the left bank of the Oise, the Vert-Galant and Béthunes business parks. Axion-IA designs AI-augmented websites and SaaS platforms there for law and accounting firms, healthcare structures, public services and industrial SMEs across the Cergy-Pontoise area. Custom code, EU hosting, GDPR-compliant, no vendor lock-in.",
@@ -206,7 +206,7 @@ export const PONTOISE_COPY: VilleCopy = {
           },
           {
             q: "How fast do I get a quote?",
-            a: "The quote is delivered from 48 hours depending on project complexity, after an initial framing call. For a micro-business showcase site the scope is priced quickly; for a mid-cap SaaS platform or a hospital portal we take the time for a prior workshop in Pontoise.",
+            a: "The quote is delivered from 24 to 48 hours depending on project complexity, after an initial framing call. For a micro-business showcase site the scope is priced quickly; for a mid-cap SaaS platform or a hospital portal we take the time for a prior workshop in Pontoise.",
           },
           {
             q: "Do you do e-commerce and mobile, or only AI?",
@@ -218,7 +218,7 @@ export const PONTOISE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 48 hours depending on complexity, after framing. UX/UI, mobile and multi-CMS e-commerce design built into the same project as the AI blocks. EU hosting and GDPR compliance by default, DPO on request. You keep full ownership of the code, access and documentation: the platform is maintainable in-house or by any provider in the Cergy-Pontoise area, with no dependency or Axion-IA lock-in. For law firms, healthcare structures linked to René-Dubos Hospital and Val-d'Oise public services, strict confidentiality and data partitioning are applied from the design stage.",
+          "Quote delivered from 24 to 48 hours depending on complexity, after framing. UX/UI, mobile and multi-CMS e-commerce design built into the same project as the AI blocks. EU hosting and GDPR compliance by default, DPO on request. You keep full ownership of the code, access and documentation: the platform is maintainable in-house or by any provider in the Cergy-Pontoise area, with no dependency or Axion-IA lock-in. For law firms, healthcare structures linked to René-Dubos Hospital and Val-d'Oise public services, strict confidentiality and data partitioning are applied from the design stage.",
       },
     },
   },

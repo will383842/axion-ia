@@ -132,11 +132,11 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
           },
           {
             q: "Quels sont vos délais et où intervenez-vous ?",
-            a: "Nous établissons un devis à partir de 48 h selon la complexité, après le cadrage. Nous intervenons sur site à Charleville-Mézières et dans l'agglomération Ardenne Métropole — Villers-Semeuse, les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — et travaillons aussi en visio. Reims est à environ 1h par l'A34.",
+            a: "Nous établissons un devis à partir de 24-48 h selon la complexité, après le cadrage. Nous intervenons sur site à Charleville-Mézières et dans l'agglomération Ardenne Métropole — Villers-Semeuse, les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — et travaillons aussi en visio. Reims est à environ 1h par l'A34.",
           },
         ],
         guarantees:
-          "Vous restez propriétaire du code, des contenus et de tous les accès : aucun verrou éditeur, aucune dépendance contractuelle durable à Axion-IA. Hébergement en Union européenne, conformité RGPD par défaut. Sites optimisés pour la performance (Core Web Vitals) et le mobile, indispensables aux catalogues volumineux de pièces industrielles ou de produits e-commerce. Devis établi à partir de 48 h selon la complexité ; vos équipes sont formées pour gérer contenus et automatisations en autonomie après la livraison.",
+          "Vous restez propriétaire du code, des contenus et de tous les accès : aucun verrou éditeur, aucune dépendance contractuelle durable à Axion-IA. Hébergement en Union européenne, conformité RGPD par défaut. Sites optimisés pour la performance (Core Web Vitals) et le mobile, indispensables aux catalogues volumineux de pièces industrielles ou de produits e-commerce. Devis établi à partir de 24-48 h selon la complexité ; vos équipes sont formées pour gérer contenus et automatisations en autonomie après la livraison.",
       },
       en: {
         hero: "In Charleville-Mézières, the digital fabric lives in the shadow of an industrial reality: the Stellantis foundry at Les Ayvelles — Europe's largest automotive foundry, around 2,200 employees, in the middle of an aluminium shift to make parts for the e-208, Opel Corsa-e and DS3 — feeds a dense Ardennes mechanical subcontracting base (machining, casting, surface treatment in the Wheelabrator vein). Axion-IA designs AI-augmented websites and SaaS platforms for these subcontractors, but also for the city's singular ecosystem: leather goods and cast-iron craft (Maroquinerie des Ardennes in Bogny-sur-Meuse, Invicta stoves in Vivier-au-Court), agri-industry (Mondelez), and the world's only capital of puppet arts (biennial World Festival, ESNAM, International Institute, Pôle Jacques Félix). Custom code, UX/UI, mobile, multi-CMS e-commerce, EU hosting compliant with GDPR.",
@@ -218,11 +218,11 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
           },
           {
             q: "What are your timelines and where do you operate?",
-            a: "We provide a quote within 48 hours depending on complexity, after framing. We operate on site in Charleville-Mézières and across the Ardenne Métropole area — Villers-Semeuse, Les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — and also work remotely. Reims is about 1h away via the A34.",
+            a: "We provide a quote within 24-48 hours depending on complexity, after framing. We operate on site in Charleville-Mézières and across the Ardenne Métropole area — Villers-Semeuse, Les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — and also work remotely. Reims is about 1h away via the A34.",
           },
         ],
         guarantees:
-          "You remain the owner of the code, content and all accesses: no vendor lock-in, no lasting contractual dependency on Axion-IA. Hosting in the European Union, GDPR compliance by default. Sites optimised for performance (Core Web Vitals) and mobile, essential for large catalogues of industrial parts or e-commerce products. Quote provided within 48 hours depending on complexity; your teams are trained to manage content and automations autonomously after delivery.",
+          "You remain the owner of the code, content and all accesses: no vendor lock-in, no lasting contractual dependency on Axion-IA. Hosting in the European Union, GDPR compliance by default. Sites optimised for performance (Core Web Vitals) and mobile, essential for large catalogues of industrial parts or e-commerce products. Quote provided within 24-48 hours depending on complexity; your teams are trained to manage content and automations autonomously after delivery.",
       },
     },
   },

@@ -50,7 +50,7 @@ export const GARDANNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Gardanne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin minier reconverti où l'industrie lourde — Alteo et son alumine depuis 1893, centrale biomasse Gazel Énergie de 150 MW sur le site de Meyreuil-Gardanne — côtoie la microélectronique du campus Georges Charpak Provence de l'École des Mines de Saint-Étienne et un tissu dense de TPE-PME de la sous-traitance, du BTP et des services métropolitains répartis sur les ZA Morandat, Bompertuis, Avon, La Palun et Novactis. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gardanne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Gardanne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin minier reconverti où l'industrie lourde — Alteo et son alumine depuis 1893, centrale biomasse Gazel Énergie de 150 MW sur le site de Meyreuil-Gardanne — côtoie la microélectronique du campus Georges Charpak Provence de l'École des Mines de Saint-Étienne et un tissu dense de TPE-PME de la sous-traitance, du BTP et des services métropolitains répartis sur les ZA Morandat, Bompertuis, Avon, La Palun et Novactis. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gardanne, itérations à distance.",
         whyHere: [
           "Sous-traitance industrielle gravitant autour d'Alteo (alumine de spécialité depuis 1893, 400 salariés, 250 sous-traitants) et de la centrale Gazel Énergie : on construit des portails fournisseurs, configurateurs de devis et suivis de commandes augmentés à l'IA, branchés sur vos ERP/MES, pour fluidifier la chaîne donneur d'ordre et tracer chaque pièce du bassin minier reconverti.",
           "Bureaux d'études et R&D microélectronique liés au campus Georges Charpak Provence de l'École des Mines : interfaces techniques exigeantes, recherche sémantique sur documentation, brevets et data de caractérisation, et applications métier sur mesure pensées pour des équipes d'ingénieurs et de chercheurs habituées aux salles blanches et aux flux de prototypage.",
@@ -61,7 +61,7 @@ export const GARDANNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Gardanne",
             detail:
-              "Atelier sur site — cœur de ville place du marché, ZA Morandat sur l'ancien puits Yvon Morandat, Bompertuis ou Novactis : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux industriels. On cartographie vos cas d'usage et on remet un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — cœur de ville place du marché, ZA Morandat sur l'ancien puits Yvon Morandat, Bompertuis ou Novactis : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux industriels. On cartographie vos cas d'usage et on remet un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const GARDANNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Gardanne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez et ce que vous obtenez avant de signer, qu'il s'agisse d'une vitrine ou d'une plateforme SaaS IA-native.",
+            a: "Oui. Après le cadrage sur site à Gardanne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez et ce que vous obtenez avant de signer, qu'il s'agisse d'une vitrine ou d'une plateforme SaaS IA-native.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la Métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la Métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Gardanne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin minier reconverti où l'industrie lourde — Alteo et son alumine depuis 1893, centrale biomasse Gazel Énergie de 150 MW sur le site de Meyreuil-Gardanne — côtoie la microélectronique du campus Georges Charpak Provence de l'École des Mines de Saint-Étienne et un tissu dense de TPE-PME de la sous-traitance, du BTP et des services métropolitains répartis sur les ZA Morandat, Bompertuis, Avon, La Palun et Novactis. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gardanne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Gardanne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin minier reconverti où l'industrie lourde — Alteo et son alumine depuis 1893, centrale biomasse Gazel Énergie de 150 MW sur le site de Meyreuil-Gardanne — côtoie la microélectronique du campus Georges Charpak Provence de l'École des Mines de Saint-Étienne et un tissu dense de TPE-PME de la sous-traitance, du BTP et des services métropolitains répartis sur les ZA Morandat, Bompertuis, Avon, La Palun et Novactis. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gardanne, itérations à distance.",
         whyHere: [
           "Sous-traitance industrielle gravitant autour d'Alteo (alumine de spécialité depuis 1893, 400 salariés, 250 sous-traitants) et de la centrale Gazel Énergie : on construit des portails fournisseurs, configurateurs de devis et suivis de commandes augmentés à l'IA, branchés sur vos ERP/MES, pour fluidifier la chaîne donneur d'ordre et tracer chaque pièce du bassin minier reconverti.",
           "Bureaux d'études et R&D microélectronique liés au campus Georges Charpak Provence de l'École des Mines : interfaces techniques exigeantes, recherche sémantique sur documentation, brevets et data de caractérisation, et applications métier sur mesure pensées pour des équipes d'ingénieurs et de chercheurs habituées aux salles blanches et aux flux de prototypage.",
@@ -147,7 +147,7 @@ export const GARDANNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Gardanne",
             detail:
-              "Atelier sur site — cœur de ville place du marché, ZA Morandat sur l'ancien puits Yvon Morandat, Bompertuis ou Novactis : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux industriels. On cartographie vos cas d'usage et on remet un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — cœur de ville place du marché, ZA Morandat sur l'ancien puits Yvon Morandat, Bompertuis ou Novactis : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux industriels. On cartographie vos cas d'usage et on remet un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const GARDANNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Gardanne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez et ce que vous obtenez avant de signer, qu'il s'agisse d'une vitrine ou d'une plateforme SaaS IA-native.",
+            a: "Oui. Après le cadrage sur site à Gardanne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez et ce que vous obtenez avant de signer, qu'il s'agisse d'une vitrine ou d'une plateforme SaaS IA-native.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la Métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la Métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
       },
     },
   },

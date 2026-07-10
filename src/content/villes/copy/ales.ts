@@ -92,7 +92,7 @@ export const ALES_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou e-commerce augmenté",
             detail:
-              "Pour les indépendants, artisans, producteurs cévenols et commerces du centre-ville d'Alès : site vitrine ou boutique en ligne avec assistant IA de réponse aux clients et descriptifs produits générés. Devis à partir de 48 h selon la complexité.",
+              "Pour les indépendants, artisans, producteurs cévenols et commerces du centre-ville d'Alès : site vitrine ou boutique en ligne avec assistant IA de réponse aux clients et descriptifs produits générés. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -136,7 +136,7 @@ export const ALES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, sur scope écrit et tarifs clairs. Hébergement en Union européenne conforme RGPD par défaut, sauvegardes incluses. À la livraison, le code source, les accès et la documentation runbook vous appartiennent : vos équipes alésiennes administrent le site et les outils IA en autonomie, sans dépendance contractuelle ni verrou éditeur. Les performances (Web Vitals, mobile) et l'accessibilité sont contractualisées à la recette. Pour les contenus IA sensibles — fiches techniques de procédé, documentation réglementaire — une couche de validation humaine est intégrée.",
+          "Devis remis à partir de 24-48 h selon la complexité, sur scope écrit et tarifs clairs. Hébergement en Union européenne conforme RGPD par défaut, sauvegardes incluses. À la livraison, le code source, les accès et la documentation runbook vous appartiennent : vos équipes alésiennes administrent le site et les outils IA en autonomie, sans dépendance contractuelle ni verrou éditeur. Les performances (Web Vitals, mobile) et l'accessibilité sont contractualisées à la recette. Pour les contenus IA sensibles — fiches techniques de procédé, documentation réglementaire — une couche de validation humaine est intégrée.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Alès, a former Cévennes coal-mining basin reconverted into a hub for industrial catalysis (Axens at Salindres, the Salindres chemical platform), mechanical subcontracting and motorsport (Pôle Mécanique Alès-Cévennes). B2B portals, quote configurators, customer areas and document search engines for manufacturers, subcontractors and Cévennes green-tourism operators — custom code, RAG chatbot on your data, European Union hosting compliant with GDPR, no vendor lock-in. We cover UX/UI, mobile, multi-CMS e-commerce and end-to-end AI integration.",
@@ -178,7 +178,7 @@ export const ALES_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Showcase site or augmented e-commerce",
             detail:
-              "For freelancers, craftspeople, Cévennes producers and Alès town-centre shops: showcase site or online store with an AI customer-response assistant and generated product descriptions. Quote from 48 h depending on complexity.",
+              "For freelancers, craftspeople, Cévennes producers and Alès town-centre shops: showcase site or online store with an AI customer-response assistant and generated product descriptions. Quote from 24-48 h depending on complexity.",
           },
           {
             sizeLabel: "PME",
@@ -222,7 +222,7 @@ export const ALES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 48 h depending on complexity, on a written scope with clear pricing. European Union hosting, GDPR-compliant by default, backups included. At delivery, the source code, access and runbook documentation are yours: your Alès teams administer the site and AI tools autonomously, with no contractual dependency or vendor lock-in. Performance (Web Vitals, mobile) and accessibility are contractualised at acceptance. For sensitive AI content — process technical sheets, regulatory documentation — a human-validation layer is built in.",
+          "Quote delivered from 24-48 h depending on complexity, on a written scope with clear pricing. European Union hosting, GDPR-compliant by default, backups included. At delivery, the source code, access and runbook documentation are yours: your Alès teams administer the site and AI tools autonomously, with no contractual dependency or vendor lock-in. Performance (Web Vitals, mobile) and accessibility are contractualised at acceptance. For sensitive AI content — process technical sheets, regulatory documentation — a human-validation layer is built in.",
       },
     },
   },

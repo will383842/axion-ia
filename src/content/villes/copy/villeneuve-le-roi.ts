@@ -49,7 +49,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Villeneuve-le-Roi des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville du Val-de-Marne aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, plus de 30 000 emplois directs et indirects), où le tissu mêle services au sol aéroportuaires, logistique e-commerce vers Rungis, sous-traitance aéronautique, artisans BTP et commerces de proximité le long du RER C. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-le-Roi, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Villeneuve-le-Roi des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville du Val-de-Marne aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, plus de 30 000 emplois directs et indirects), où le tissu mêle services au sol aéroportuaires, logistique e-commerce vers Rungis, sous-traitance aéronautique, artisans BTP et commerces de proximité le long du RER C. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-le-Roi, itérations à distance.",
         whyHere: [
           "Bassin Orly captif (2e aéroport français, services au sol, catering, maintenance avions, ground handling, fret) : nous bâtissons des portails passagers et des espaces clients B2B avec chatbot RAG multilingue par défaut, calibrés pour des flux internationaux et opérés sans downtime sur des installations 24/7, jusqu'à Paray-Vieille-Poste et Athis-Mons.",
           "Logistique e-commerce dense sur l'axe A86/A6 vers le MIN de Rungis (premier marché de produits frais au monde) : nous greffons l'IA sur l'existant — suivi de tournées dernier kilomètre, prédiction de demande, agents service client B2B — ou construisons une plateforme métier branchée sur votre WMS et votre TMS via API.",
@@ -60,7 +60,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
           {
             step: "Cadrage à Villeneuve-le-Roi",
             detail:
-              "Atelier sur site (bord de Seine, gare RER C, abords de la zone aéroportuaire Orly) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes d'accès aéroportuaire. On cartographie vos flux métier réels, puis devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (bord de Seine, gare RER C, abords de la zone aéroportuaire Orly) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes d'accès aéroportuaire. On cartographie vos flux métier réels, puis devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, modèles et code. Après le cadrage à Villeneuve-le-Roi, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, modèles et code. Après le cadrage à Villeneuve-le-Roi, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des opérations aéroportuaires du bassin Orly et logistiques de Rungis qui tournent 24/7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Transférable à tout prestataire local d'Île-de-France ou repris en interne à tout moment.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des opérations aéroportuaires du bassin Orly et logistiques de Rungis qui tournent 24/7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Transférable à tout prestataire local d'Île-de-France ou repris en interne à tout moment.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Villeneuve-le-Roi des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville du Val-de-Marne aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, plus de 30 000 emplois directs et indirects), où le tissu mêle services au sol aéroportuaires, logistique e-commerce vers Rungis, sous-traitance aéronautique, artisans BTP et commerces de proximité le long du RER C. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-le-Roi, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Villeneuve-le-Roi des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville du Val-de-Marne aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, plus de 30 000 emplois directs et indirects), où le tissu mêle services au sol aéroportuaires, logistique e-commerce vers Rungis, sous-traitance aéronautique, artisans BTP et commerces de proximité le long du RER C. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-le-Roi, itérations à distance.",
         whyHere: [
           "Bassin Orly captif (2e aéroport français, services au sol, catering, maintenance avions, ground handling, fret) : nous bâtissons des portails passagers et des espaces clients B2B avec chatbot RAG multilingue par défaut, calibrés pour des flux internationaux et opérés sans downtime sur des installations 24/7, jusqu'à Paray-Vieille-Poste et Athis-Mons.",
           "Logistique e-commerce dense sur l'axe A86/A6 vers le MIN de Rungis (premier marché de produits frais au monde) : nous greffons l'IA sur l'existant — suivi de tournées dernier kilomètre, prédiction de demande, agents service client B2B — ou construisons une plateforme métier branchée sur votre WMS et votre TMS via API.",
@@ -146,7 +146,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
           {
             step: "Cadrage à Villeneuve-le-Roi",
             detail:
-              "Atelier sur site (bord de Seine, gare RER C, abords de la zone aéroportuaire Orly) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes d'accès aéroportuaire. On cartographie vos flux métier réels, puis devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (bord de Seine, gare RER C, abords de la zone aéroportuaire Orly) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes d'accès aéroportuaire. On cartographie vos flux métier réels, puis devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -214,11 +214,11 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, modèles et code. Après le cadrage à Villeneuve-le-Roi, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données, modèles et code. Après le cadrage à Villeneuve-le-Roi, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des opérations aéroportuaires du bassin Orly et logistiques de Rungis qui tournent 24/7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Transférable à tout prestataire local d'Île-de-France ou repris en interne à tout moment.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des opérations aéroportuaires du bassin Orly et logistiques de Rungis qui tournent 24/7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Transférable à tout prestataire local d'Île-de-France ou repris en interne à tout moment.",
       },
     },
   },

@@ -50,7 +50,7 @@ export const COUERON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Couëron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 24 100 habitants de Nantes Métropole où cohabitent la métallurgie spécialisée (héritage NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), le karting de compétition de Sodikart, leader mondial depuis 1981, les zones d'activité des Hauts de Couëron (plus de 380 entreprises cumulées sur près de 150 hectares — Groseron, Exail Robotics, Charier GC) et un tissu dense de TPE du commerce, du BTP et des services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Couëron, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Couëron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 24 100 habitants de Nantes Métropole où cohabitent la métallurgie spécialisée (héritage NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), le karting de compétition de Sodikart, leader mondial depuis 1981, les zones d'activité des Hauts de Couëron (plus de 380 entreprises cumulées sur près de 150 hectares — Groseron, Exail Robotics, Charier GC) et un tissu dense de TPE du commerce, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Couëron, itérations à distance.",
         whyHere: [
           "Métallurgie technique et alliages spécialisés (héritage NGK Berylco/Tréfimétaux, cuivre-béryllium) : on construit des portails clients B2B, configurateurs et catalogues techniques en ligne, augmentés d'une recherche sémantique qui interroge vos fiches matières, nuances et tolérances en langage naturel. Les acteurs industriels des Hauts de Couëron gagnent un canal commercial outillé sans alourdir leurs équipes techniques.",
           "Écosystème karting et équipementiers sport autour de Sodikart, leader mondial implanté depuis 1981, et de distributeurs spécialisés type Groseron : on bâtit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des configurateurs produits, avec un chatbot multilingue calibré pour une clientèle internationale de revendeurs, pilotes et acheteurs pros.",
@@ -61,7 +61,7 @@ export const COUERON_COPY: VilleCopy = {
           {
             step: "Cadrage à Couëron",
             detail:
-              "Atelier sur site (zones d'activité des Hauts de Couëron, centre-bourg le long de la Loire ou vos ateliers du bassin métallurgique) : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site (zones d'activité des Hauts de Couëron, centre-bourg le long de la Loire ou vos ateliers du bassin métallurgique) : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const COUERON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Couëron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, un peu plus pour une plateforme SaaS ou un e-commerce multilingue. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant la première ligne de code.",
+            a: "Oui. Après le cadrage sur site à Couëron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, un peu plus pour une plateforme SaaS ou un e-commerce multilingue. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant la première ligne de code.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité à Couëron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire local de Loire-Atlantique ou de Nantes Métropole, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité à Couëron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire local de Loire-Atlantique ou de Nantes Métropole, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Couëron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 24 100 habitants de Nantes Métropole où cohabitent la métallurgie spécialisée (héritage NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), le karting de compétition de Sodikart, leader mondial depuis 1981, les zones d'activité des Hauts de Couëron (plus de 380 entreprises cumulées sur près de 150 hectares — Groseron, Exail Robotics, Charier GC) et un tissu dense de TPE du commerce, du BTP et des services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Couëron, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Couëron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 24 100 habitants de Nantes Métropole où cohabitent la métallurgie spécialisée (héritage NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), le karting de compétition de Sodikart, leader mondial depuis 1981, les zones d'activité des Hauts de Couëron (plus de 380 entreprises cumulées sur près de 150 hectares — Groseron, Exail Robotics, Charier GC) et un tissu dense de TPE du commerce, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Couëron, itérations à distance.",
         whyHere: [
           "Métallurgie technique et alliages spécialisés (héritage NGK Berylco/Tréfimétaux, cuivre-béryllium) : on construit des portails clients B2B, configurateurs et catalogues techniques en ligne, augmentés d'une recherche sémantique qui interroge vos fiches matières, nuances et tolérances en langage naturel. Les acteurs industriels des Hauts de Couëron gagnent un canal commercial outillé sans alourdir leurs équipes techniques.",
           "Écosystème karting et équipementiers sport autour de Sodikart, leader mondial implanté depuis 1981, et de distributeurs spécialisés type Groseron : on bâtit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des configurateurs produits, avec un chatbot multilingue calibré pour une clientèle internationale de revendeurs, pilotes et acheteurs pros.",
@@ -147,7 +147,7 @@ export const COUERON_COPY: VilleCopy = {
           {
             step: "Cadrage à Couëron",
             detail:
-              "Atelier sur site (zones d'activité des Hauts de Couëron, centre-bourg le long de la Loire ou vos ateliers du bassin métallurgique) : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site (zones d'activité des Hauts de Couëron, centre-bourg le long de la Loire ou vos ateliers du bassin métallurgique) : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const COUERON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Couëron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, un peu plus pour une plateforme SaaS ou un e-commerce multilingue. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant la première ligne de code.",
+            a: "Oui. Après le cadrage sur site à Couëron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, un peu plus pour une plateforme SaaS ou un e-commerce multilingue. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant la première ligne de code.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité à Couëron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire local de Loire-Atlantique ou de Nantes Métropole, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité à Couëron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire local de Loire-Atlantique ou de Nantes Métropole, ou repris en interne par vos équipes.",
       },
     },
   },

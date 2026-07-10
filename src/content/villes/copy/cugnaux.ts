@@ -53,7 +53,7 @@ export const CUGNAUX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Cugnaux des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune du sud-ouest de Toulouse, à 15 minutes de la rocade ouest et du pôle aéronautique de Blagnac, irriguée par la ZAC de Francazal Sud (parc d'activités d'environ 6 hectares desservi par la RD15) et la zone industrielle du Casque, dont le tissu mêle artisans du BTP, commerces de centre-bourg et PME de sous-traitance industrielle gravitant autour des donneurs d'ordre aéro. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Cugnaux, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cugnaux des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune du sud-ouest de Toulouse, à 15 minutes de la rocade ouest et du pôle aéronautique de Blagnac, irriguée par la ZAC de Francazal Sud (parc d'activités d'environ 6 hectares desservi par la RD15) et la zone industrielle du Casque, dont le tissu mêle artisans du BTP, commerces de centre-bourg et PME de sous-traitance industrielle gravitant autour des donneurs d'ordre aéro. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Cugnaux, itérations à distance.",
         whyHere: [
           "Sous-traitance aéronautique et mécanique de précision : les PME cugnalaises qui fournissent les donneurs d'ordre de Blagnac et gravitent autour de l'ancienne base de Francazal ont besoin de portails clients B2B, de traçabilité documentaire et de plateformes connectées à leur SI — on les construit IA-native ou greffées sur l'existant, avec contrôle qualité par vision et agents de suivi de commandes.",
           "Forte densité d'artisans du BTP et de la construction résidentielle périurbaine, nombreux dans la ZAC de Francazal Sud et la zone du Casque : on déploie des sites vitrines avec devis en ligne, prise de RDV intelligente et relances automatisées, taillés pour des TPE sans service informatique qui consultent et répondent depuis le chantier sur smartphone.",
@@ -64,7 +64,7 @@ export const CUGNAUX_COPY: VilleCopy = {
           {
             step: "Cadrage à Cugnaux",
             detail:
-              "Atelier sur site dans le centre-bourg, sur la ZAC de Francazal Sud, dans la zone du Casque, votre atelier ou votre bureau : objectifs, parcours utilisateurs, audit de la stack et des contenus. On part de votre réalité de TPE ou de PME sous-traitante, pas d'un modèle générique. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans le centre-bourg, sur la ZAC de Francazal Sud, dans la zone du Casque, votre atelier ou votre bureau : objectifs, parcours utilisateurs, audit de la stack et des contenus. On part de votre réalité de TPE ou de PME sous-traitante, pas d'un modèle générique. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const CUGNAUX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Cugnaux — centre-bourg, ZAC de Francazal Sud, zone du Casque, atelier ou bureau — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+            a: "Oui. Après le cadrage sur site à Cugnaux — centre-bourg, ZAC de Francazal Sud, zone du Casque, atelier ou bureau — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, sans couper votre activité commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire de la région toulousaine ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, sans couper votre activité commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire de la région toulousaine ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Cugnaux des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune du sud-ouest de Toulouse, à 15 minutes de la rocade ouest et du pôle aéronautique de Blagnac, irriguée par la ZAC de Francazal Sud (parc d'activités d'environ 6 hectares desservi par la RD15) et la zone industrielle du Casque, dont le tissu mêle artisans du BTP, commerces de centre-bourg et PME de sous-traitance industrielle gravitant autour des donneurs d'ordre aéro. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Cugnaux, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cugnaux des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune du sud-ouest de Toulouse, à 15 minutes de la rocade ouest et du pôle aéronautique de Blagnac, irriguée par la ZAC de Francazal Sud (parc d'activités d'environ 6 hectares desservi par la RD15) et la zone industrielle du Casque, dont le tissu mêle artisans du BTP, commerces de centre-bourg et PME de sous-traitance industrielle gravitant autour des donneurs d'ordre aéro. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Cugnaux, itérations à distance.",
         whyHere: [
           "Sous-traitance aéronautique et mécanique de précision : les PME cugnalaises qui fournissent les donneurs d'ordre de Blagnac et gravitent autour de l'ancienne base de Francazal ont besoin de portails clients B2B, de traçabilité documentaire et de plateformes connectées à leur SI — on les construit IA-native ou greffées sur l'existant, avec contrôle qualité par vision et agents de suivi de commandes.",
           "Forte densité d'artisans du BTP et de la construction résidentielle périurbaine, nombreux dans la ZAC de Francazal Sud et la zone du Casque : on déploie des sites vitrines avec devis en ligne, prise de RDV intelligente et relances automatisées, taillés pour des TPE sans service informatique qui consultent et répondent depuis le chantier sur smartphone.",
@@ -150,7 +150,7 @@ export const CUGNAUX_COPY: VilleCopy = {
           {
             step: "Cadrage à Cugnaux",
             detail:
-              "Atelier sur site dans le centre-bourg, sur la ZAC de Francazal Sud, dans la zone du Casque, votre atelier ou votre bureau : objectifs, parcours utilisateurs, audit de la stack et des contenus. On part de votre réalité de TPE ou de PME sous-traitante, pas d'un modèle générique. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans le centre-bourg, sur la ZAC de Francazal Sud, dans la zone du Casque, votre atelier ou votre bureau : objectifs, parcours utilisateurs, audit de la stack et des contenus. On part de votre réalité de TPE ou de PME sous-traitante, pas d'un modèle générique. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const CUGNAUX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Cugnaux — centre-bourg, ZAC de Francazal Sud, zone du Casque, atelier ou bureau — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+            a: "Oui. Après le cadrage sur site à Cugnaux — centre-bourg, ZAC de Francazal Sud, zone du Casque, atelier ou bureau — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, sans couper votre activité commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire de la région toulousaine ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, sans couper votre activité commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire de la région toulousaine ou repris en interne par vos équipes.",
       },
     },
   },

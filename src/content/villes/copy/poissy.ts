@@ -84,7 +84,7 @@ export const POISSY_COPY: VilleCopy = {
           {
             step: "Mise en ligne & autonomie",
             detail:
-              "Recette sur site à Poissy, mise en production, mesure des performances et formation de vos équipes pour qu'elles administrent le site sans dépendance à Axion-IA. Devis détaillé fourni à partir de 48 h selon la complexité ; vous gardez la pleine maîtrise du code et des contenus.",
+              "Recette sur site à Poissy, mise en production, mesure des performances et formation de vos équipes pour qu'elles administrent le site sans dépendance à Axion-IA. Devis détaillé fourni à partir de 24-48 h selon la complexité ; vous gardez la pleine maîtrise du code et des contenus.",
           },
         ],
         pricing: [
@@ -132,11 +132,11 @@ export const POISSY_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour recevoir un devis et démarrer le projet à Poissy ?",
-            a: "Un devis détaillé est fourni à partir de 48 h selon la complexité du projet, après un premier échange. La desserte de Poissy par le RER A, le Transilien J et l'A14 nous permet de venir cadrer sur site rapidement, du Technoparc aux ateliers de la Seine aval.",
+            a: "Un devis détaillé est fourni à partir de 24-48 h selon la complexité du projet, après un premier échange. La desserte de Poissy par le RER A, le Transilien J et l'A14 nous permet de venir cadrer sur site rapidement, du Technoparc aux ateliers de la Seine aval.",
           },
         ],
         guarantees:
-          "Vous gardez la pleine maîtrise : le code, les contenus et les briques IA de votre site ou plateforme restent à vous, transférables à tout intégrateur ou repris en interne, sans verrou éditeur ni abonnement Axion-IA imposé. Hébergement dans l'Union européenne par défaut, conformité RGPD intégrée dès la conception, et respect de budgets de performance stricts (chargement rapide, stabilité visuelle) pour un site réellement efficace en conversion et en recherche locale. Devis détaillé à partir de 48 h selon la complexité ; vos équipes pisciacaises sont formées pour administrer la plateforme en autonomie après la mise en ligne.",
+          "Vous gardez la pleine maîtrise : le code, les contenus et les briques IA de votre site ou plateforme restent à vous, transférables à tout intégrateur ou repris en interne, sans verrou éditeur ni abonnement Axion-IA imposé. Hébergement dans l'Union européenne par défaut, conformité RGPD intégrée dès la conception, et respect de budgets de performance stricts (chargement rapide, stabilité visuelle) pour un site réellement efficace en conversion et en recherche locale. Devis détaillé à partir de 24-48 h selon la complexité ; vos équipes pisciacaises sont formées pour administrer la plateforme en autonomie après la mise en ligne.",
       },
       en: {
         hero: "Poissy is shifting before our eyes: the Stellantis plant, heir to the historic PSA Peugeot Citroën site, will stop assembling vehicles (DS3 Crossback, Opel Mokka and electric Mokka GSE) around 2028 to convert into a parts and dismantling centre, while the grEEn-campus delivered in spring 2025 (72,000 m² along the Seine) brings R&D, tertiary functions and software there, and the Powertrain Center of Excellence at 18 rue des Prés concentrates ~2,200 engineers on electrification. Axion-IA builds AI-augmented websites and SaaS platforms for this shifting basin: tier 2-3 subcontractors who must diversify beyond automotive, SMEs of the Technoparc and the ZA des Béthunes, and town-centre shops around the Collégiale Notre-Dame. UX/UI, mobile, multi-CMS e-commerce and AI combined, EU hosting, GDPR-compliant.",
@@ -170,7 +170,7 @@ export const POISSY_COPY: VilleCopy = {
           {
             step: "Launch & autonomy",
             detail:
-              "Acceptance on site in Poissy, go-live, performance measurement and team training so they run the site without Axion-IA dependency. Detailed quote provided from 48 h depending on complexity; you keep full control of code and content.",
+              "Acceptance on site in Poissy, go-live, performance measurement and team training so they run the site without Axion-IA dependency. Detailed quote provided from 24-48 h depending on complexity; you keep full control of code and content.",
           },
         ],
         pricing: [
@@ -218,11 +218,11 @@ export const POISSY_COPY: VilleCopy = {
           },
           {
             q: "How fast do I get a quote and start the project in Poissy?",
-            a: "A detailed quote is provided from 48 h depending on project complexity, after an initial exchange. Poissy's access via RER A, Transilien J and the A14 lets us come and frame on site quickly, from the Technoparc to the Seine-aval workshops.",
+            a: "A detailed quote is provided from 24-48 h depending on project complexity, after an initial exchange. Poissy's access via RER A, Transilien J and the A14 lets us come and frame on site quickly, from the Technoparc to the Seine-aval workshops.",
           },
         ],
         guarantees:
-          "You keep full control: the code, content and AI blocks of your site or platform remain yours, transferable to any integrator or taken in-house, with no vendor lock-in or imposed Axion-IA subscription. EU hosting by default, GDPR compliance built in from design, and adherence to strict performance budgets (fast loading, visual stability) for a site that truly performs in conversion and local search. Detailed quote from 48 h depending on complexity; your Poissy teams are trained to run the platform autonomously after launch.",
+          "You keep full control: the code, content and AI blocks of your site or platform remain yours, transferable to any integrator or taken in-house, with no vendor lock-in or imposed Axion-IA subscription. EU hosting by default, GDPR compliance built in from design, and adherence to strict performance budgets (fast loading, visual stability) for a site that truly performs in conversion and local search. Detailed quote from 24-48 h depending on complexity; your Poissy teams are trained to run the platform autonomously after launch.",
       },
     },
   },

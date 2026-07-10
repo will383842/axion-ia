@@ -49,7 +49,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Mitry-Mory des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de Seine-et-Marne portée par la zone Mitry-Compans — plus de 250 entreprises et 6 500 emplois sur 237,5 hectares, créée en 1972 — sa logistique, sa chimie et son imprimerie, les unités d'impression de Villette-aux-Aulnes et la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mitry-Mory, itérations à distance avec vos équipes terrain.",
+        hero: "Axion-IA conçoit et augmente à Mitry-Mory des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de Seine-et-Marne portée par la zone Mitry-Compans — plus de 250 entreprises et 6 500 emplois sur 237,5 hectares, créée en 1972 — sa logistique, sa chimie et son imprimerie, les unités d'impression de Villette-aux-Aulnes et la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mitry-Mory, itérations à distance avec vos équipes terrain.",
         whyHere: [
           "Logistique et entreposage dominants sur la zone Mitry-Compans (Air Liquide, Darty, et plus de 250 entreprises pour 6 500 emplois) : on construit des portails B2B, des espaces clients et des suivis de commande augmentés à l'IA, avec OCR des bons de livraison et recherche sémantique sur vos catalogues et vos stocks WMS.",
           "Industrie chimique et sites classés Seveso sur la zone (Gazechim, CCMP, Univar, Messer Gaz) soumis au PPRT Mitry-Mory/Compans : nos interfaces gèrent la documentation technique, les fiches de données de sécurité et les parcours réglementés, avec un chatbot RAG ancré sur vos procédures ICPE internes plutôt que sur le web ouvert.",
@@ -60,7 +60,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
           {
             step: "Cadrage à Mitry-Mory",
             detail:
-              "Atelier sur site (zone Mitry-Compans, parc d'activités de Villette-aux-Aulnes ou centre-ville près de la gare RER B) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (zone Mitry-Compans, parc d'activités de Villette-aux-Aulnes ou centre-ville près de la gare RER B) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -120,7 +120,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Mitry-Mory, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, vous savez exactement ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Mitry-Mory, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, vous savez exactement ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous outiller la logistique de Mitry-Compans ?",
@@ -132,10 +132,10 @@ export const MITRY_MORY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site en pleine activité d'entreposage ou de production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site en pleine activité d'entreposage ou de production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Mitry-Mory des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de Seine-et-Marne portée par la zone Mitry-Compans — plus de 250 entreprises et 6 500 emplois sur 237,5 hectares, créée en 1972 — sa logistique, sa chimie et son imprimerie, les unités d'impression de Villette-aux-Aulnes et la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mitry-Mory, itérations à distance avec vos équipes terrain.",
+        hero: "Axion-IA conçoit et augmente à Mitry-Mory des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de Seine-et-Marne portée par la zone Mitry-Compans — plus de 250 entreprises et 6 500 emplois sur 237,5 hectares, créée en 1972 — sa logistique, sa chimie et son imprimerie, les unités d'impression de Villette-aux-Aulnes et la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mitry-Mory, itérations à distance avec vos équipes terrain.",
         whyHere: [
           "Logistique et entreposage dominants sur la zone Mitry-Compans (Air Liquide, Darty, et plus de 250 entreprises pour 6 500 emplois) : on construit des portails B2B, des espaces clients et des suivis de commande augmentés à l'IA, avec OCR des bons de livraison et recherche sémantique sur vos catalogues et vos stocks WMS.",
           "Industrie chimique et sites classés Seveso sur la zone (Gazechim, CCMP, Univar, Messer Gaz) soumis au PPRT Mitry-Mory/Compans : nos interfaces gèrent la documentation technique, les fiches de données de sécurité et les parcours réglementés, avec un chatbot RAG ancré sur vos procédures ICPE internes plutôt que sur le web ouvert.",
@@ -146,7 +146,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
           {
             step: "Cadrage à Mitry-Mory",
             detail:
-              "Atelier sur site (zone Mitry-Compans, parc d'activités de Villette-aux-Aulnes ou centre-ville près de la gare RER B) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (zone Mitry-Compans, parc d'activités de Villette-aux-Aulnes ou centre-ville près de la gare RER B) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -206,7 +206,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Mitry-Mory, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, vous savez exactement ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Mitry-Mory, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, vous savez exactement ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous outiller la logistique de Mitry-Compans ?",
@@ -218,7 +218,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site en pleine activité d'entreposage ou de production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site en pleine activité d'entreposage ou de production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes.",
       },
     },
   },

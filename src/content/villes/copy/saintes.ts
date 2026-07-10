@@ -51,7 +51,7 @@ export const SAINTES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saintes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième ville de Charente-Maritime, sous-préfecture au tissu fait de tertiaire administratif et bancaire, de santé de proximité, de grande distribution coopérative autour de Coop Atlantique, d'un pôle industriel structuré sur la ZAC des Charriers (Technicentre SNCF, Saintronic, Cefam Atlas) et d'un tourisme gallo-romain (Arc de Germanicus, amphithéâtre, abbaye aux Dames). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Saintes, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saintes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième ville de Charente-Maritime, sous-préfecture au tissu fait de tertiaire administratif et bancaire, de santé de proximité, de grande distribution coopérative autour de Coop Atlantique, d'un pôle industriel structuré sur la ZAC des Charriers (Technicentre SNCF, Saintronic, Cefam Atlas) et d'un tourisme gallo-romain (Arc de Germanicus, amphithéâtre, abbaye aux Dames). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Saintes, itérations à distance.",
         whyHere: [
           "Économie tertiaire et coopérative dominante : avec le siège de Coop Atlantique, première coopérative de consommateurs de France, et un pôle commercial régional sur la rive droite de la Charente, on construit des portails adhérents, des back-offices augmentés par recherche sémantique et des boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) reliées à votre SI.",
           "Sous-préfecture dense en services administratifs, agences bancaires régionales et établissements de santé : nos chatbots RAG multilingues et agents conversationnels automatisent l'accueil, la prise de rendez-vous, l'orientation des usagers et la recherche documentaire, calibrés pour des données personnelles, médicales et financières hébergées en UE.",
@@ -62,7 +62,7 @@ export const SAINTES_COPY: VilleCopy = {
           {
             step: "Cadrage à Saintes",
             detail:
-              "Atelier sur site, en centre-ville rive droite de la Charente ou sur la ZAC des Charriers : objectifs, parcours utilisateurs, audit de la stack et des contenus, lecture de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, en centre-ville rive droite de la Charente ou sur la ZAC des Charriers : objectifs, parcours utilisateurs, audit de la stack et des contenus, lecture de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const SAINTES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saintes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
+            a: "Oui. Après le cadrage sur site à Saintes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique ou commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et anticipant l'AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire de Charente-Maritime ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique ou commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et anticipant l'AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire de Charente-Maritime ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saintes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième ville de Charente-Maritime, sous-préfecture au tissu fait de tertiaire administratif et bancaire, de santé de proximité, de grande distribution coopérative autour de Coop Atlantique, d'un pôle industriel structuré sur la ZAC des Charriers (Technicentre SNCF, Saintronic, Cefam Atlas) et d'un tourisme gallo-romain (Arc de Germanicus, amphithéâtre, abbaye aux Dames). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Saintes, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saintes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième ville de Charente-Maritime, sous-préfecture au tissu fait de tertiaire administratif et bancaire, de santé de proximité, de grande distribution coopérative autour de Coop Atlantique, d'un pôle industriel structuré sur la ZAC des Charriers (Technicentre SNCF, Saintronic, Cefam Atlas) et d'un tourisme gallo-romain (Arc de Germanicus, amphithéâtre, abbaye aux Dames). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Saintes, itérations à distance.",
         whyHere: [
           "Économie tertiaire et coopérative dominante : avec le siège de Coop Atlantique, première coopérative de consommateurs de France, et un pôle commercial régional sur la rive droite de la Charente, on construit des portails adhérents, des back-offices augmentés par recherche sémantique et des boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) reliées à votre SI.",
           "Sous-préfecture dense en services administratifs, agences bancaires régionales et établissements de santé : nos chatbots RAG multilingues et agents conversationnels automatisent l'accueil, la prise de rendez-vous, l'orientation des usagers et la recherche documentaire, calibrés pour des données personnelles, médicales et financières hébergées en UE.",
@@ -148,7 +148,7 @@ export const SAINTES_COPY: VilleCopy = {
           {
             step: "Cadrage à Saintes",
             detail:
-              "Atelier sur site, en centre-ville rive droite de la Charente ou sur la ZAC des Charriers : objectifs, parcours utilisateurs, audit de la stack et des contenus, lecture de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, en centre-ville rive droite de la Charente ou sur la ZAC des Charriers : objectifs, parcours utilisateurs, audit de la stack et des contenus, lecture de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const SAINTES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saintes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
+            a: "Oui. Après le cadrage sur site à Saintes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique ou commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et anticipant l'AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire de Charente-Maritime ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique ou commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et anticipant l'AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire de Charente-Maritime ou reprise en interne par vos équipes.",
       },
     },
   },

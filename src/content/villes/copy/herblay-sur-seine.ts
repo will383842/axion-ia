@@ -128,11 +128,11 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "En combien de temps recevons-nous un devis ?",
-            a: "À partir de 48 h selon la complexité. Après un échange de cadrage — sur site à Herblay ou en visio — nous chiffrons le scope précis (vitrine, e-commerce, SaaS, portail B2B), avec hébergement Europe conforme RGPD et un périmètre clair, sans coût caché.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un échange de cadrage — sur site à Herblay ou en visio — nous chiffrons le scope précis (vitrine, e-commerce, SaaS, portail B2B), avec hébergement Europe conforme RGPD et un périmètre clair, sans coût caché.",
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, périmètre défini avant signature. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'intégration IA (recherche sémantique, recommandation, agents conversationnels). Hébergement en Europe conforme RGPD par défaut. Vous conservez l'intégralité du code, des contenus et des modèles : la plateforme est reprenable par vos équipes ou tout intégrateur Val Parisis, sans verrou éditeur ni dépendance contractuelle obligatoire.",
+          "Devis à partir de 24 à 48 h selon la complexité, périmètre défini avant signature. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'intégration IA (recherche sémantique, recommandation, agents conversationnels). Hébergement en Europe conforme RGPD par défaut. Vous conservez l'intégralité du code, des contenus et des modèles : la plateforme est reprenable par vos équipes ou tout intégrateur Val Parisis, sans verrou éditeur ni dépendance contractuelle obligatoire.",
       },
       en: {
         hero: "In Herblay-sur-Seine, Axion-IA builds AI-augmented websites and SaaS platforms for a local economy shaped above all by big-box retail: the Patte d'Oie d'Herblay is described by Val Parisis as France's leading commercial axis by turnover, with IKEA, Leroy Merlin, Conforama, Decathlon, two Carrefour hypermarkets and an E.Leclerc across 65 hectares, alongside the Les Copistes business park (Celio France, Fournier Retail, Ludendo, Herblay Auto Plus). For these brands, their franchisees and their suppliers we build phygital platforms (drive-to-store, click-and-collect, product catalogue, kitchen configurators such as MLR Cuisines) with semantic search, conversational agents and GDPR-compliant European hosting — custom code, multi-CMS, no vendor lock-in.",
@@ -214,11 +214,11 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote?",
-            a: "From 48 hours depending on complexity. After a framing exchange — on site in Herblay or by video — we scope the precise perimeter (showcase, e-commerce, SaaS, B2B portal), with GDPR-compliant European hosting and a clear scope, no hidden costs.",
+            a: "From 24 to 48 hours depending on complexity. After a framing exchange — on site in Herblay or by video — we scope the precise perimeter (showcase, e-commerce, SaaS, B2B portal), with GDPR-compliant European hosting and a clear scope, no hidden costs.",
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, scope defined before signature. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI integration (semantic search, recommendation, conversational agents). GDPR-compliant European hosting by default. You keep the entire code, content and models: the platform can be taken over by your teams or any Val Parisis integrator, with no vendor lock-in or mandatory contractual dependency.",
+          "Quote from 24 to 48 hours depending on complexity, scope defined before signature. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI integration (semantic search, recommendation, conversational agents). GDPR-compliant European hosting by default. You keep the entire code, content and models: the platform can be taken over by your teams or any Val Parisis integrator, with no vendor lock-in or mandatory contractual dependency.",
       },
     },
   },

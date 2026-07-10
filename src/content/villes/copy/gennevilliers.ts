@@ -133,7 +133,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis sous 48 h selon la complexité, après un premier échange de cadrage. Code sur mesure et propriété intégrale de votre site ou plateforme : vous récupérez l'ensemble du code et des accès, sans verrou Axion-IA ni dépendance éditeur. Hébergement dans l'Union européenne, conformité RGPD documentée, et respect des budgets de performance Web Vitals. Nos tarifs sont publics et transparents.",
+          "Devis sous 24 à 48 h selon la complexité, après un premier échange de cadrage. Code sur mesure et propriété intégrale de votre site ou plateforme : vous récupérez l'ensemble du code et des accès, sans verrou Axion-IA ni dépendance éditeur. Hébergement dans l'Union européenne, conformité RGPD documentée, et respect des budgets de performance Web Vitals. Nos tarifs sont publics et transparents.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Gennevilliers, the largest multimodal hub in the Paris region with its 401-hectare port, ~250 companies and 8,000 direct jobs. Our focus: equipping carriers, building-material traders, e-commerce logistics operators and manufacturers in the local fabric — from the Thales SIX GTS France ecosystem (head office on avenue des Louvresses) to the mechanical SMEs descended from Carbone Lorraine/Mersen and the former Chausson plant. Custom code (UX/UI, mobile, multi-CMS e-commerce, generative AI), EU hosting compliant with GDPR, zero vendor lock-in.",
@@ -219,7 +219,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 48 hours depending on complexity, after an initial scoping discussion. Custom code and full ownership of your site or platform: you receive all code and access, with no Axion-IA lock-in or vendor dependency. Hosting within the European Union, documented GDPR compliance, and adherence to Web Vitals performance budgets. Our pricing is public and transparent.",
+          "Quote within 24 to 48 hours depending on complexity, after an initial scoping discussion. Custom code and full ownership of your site or platform: you receive all code and access, with no Axion-IA lock-in or vendor dependency. Hosting within the European Union, documented GDPR compliance, and adherence to Web Vitals performance budgets. Our pricing is public and transparent.",
       },
     },
   },

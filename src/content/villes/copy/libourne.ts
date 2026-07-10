@@ -52,7 +52,7 @@ export const LIBOURNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Libourne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture girondine de 25 036 habitants, au confluent de la Dordogne et de l'Isle, où le tissu mêle les domaines des AOC Saint-Émilion, Pomerol et Fronsac, le cœur marchand de la bastille desservi par le réseau gratuit Calibus, le centre hospitalier Robert-Boulin et la garnison militaire avec son école de santé des armées, et les zones d'activités gérées par La Cali. On fait tout, de la maquette Figma à la plateforme SaaS IA-native, en passant par l'e-commerce viticole multilingue. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Libourne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Libourne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture girondine de 25 036 habitants, au confluent de la Dordogne et de l'Isle, où le tissu mêle les domaines des AOC Saint-Émilion, Pomerol et Fronsac, le cœur marchand de la bastille desservi par le réseau gratuit Calibus, le centre hospitalier Robert-Boulin et la garnison militaire avec son école de santé des armées, et les zones d'activités gérées par La Cali. On fait tout, de la maquette Figma à la plateforme SaaS IA-native, en passant par l'e-commerce viticole multilingue. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Libourne, itérations à distance.",
         whyHere: [
           "Vignobles d'appellation tout autour (Saint-Émilion, Pomerol, Fronsac) : on construit des boutiques de vente directe au domaine, des fiches techniques multilingues générées par IA et des espaces acheteurs B2B avec relance automatisée, calibrés pour la clientèle internationale du négoce qui achète en primeurs comme en livrable. Recherche sémantique sur vos millésimes incluse.",
           "Cœur marchand de la bastille et commerces du centre desservis par le réseau gratuit Calibus : nos vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots ancrés sur vos contenus rapprochent boutiques et clients locaux, avec click-and-collect, gestion de stock et UX mobile-first pour les achats sur smartphone en rue piétonne.",
@@ -63,7 +63,7 @@ export const LIBOURNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Libourne",
             detail:
-              "Atelier sur site — quartier de la bastille, quais de la Dordogne, abords de la gare ou directement au chai d'un domaine de Pomerol : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des ventes (primeurs, vendanges, fêtes). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — quartier de la bastille, quais de la Dordogne, abords de la gare ou directement au chai d'un domaine de Pomerol : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des ventes (primeurs, vendanges, fêtes). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -131,14 +131,14 @@ export const LIBOURNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Libourne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de coût surprise à la livraison. Vous savez exactement ce que vous payez et ce que vous recevez.",
+            a: "Oui. Après le cadrage sur site à Libourne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de coût surprise à la livraison. Vous savez exactement ce que vous payez et ce que vous recevez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine campagne de primeurs, de vendanges ou de fêtes. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé. Outil transférable à tout prestataire de la région bordelaise ou repris en interne par vos équipes du Libournais.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine campagne de primeurs, de vendanges ou de fêtes. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé. Outil transférable à tout prestataire de la région bordelaise ou repris en interne par vos équipes du Libournais.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Libourne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture girondine de 25 036 habitants, au confluent de la Dordogne et de l'Isle, où le tissu mêle les domaines des AOC Saint-Émilion, Pomerol et Fronsac, le cœur marchand de la bastille desservi par le réseau gratuit Calibus, le centre hospitalier Robert-Boulin et la garnison militaire avec son école de santé des armées, et les zones d'activités gérées par La Cali. On fait tout, de la maquette Figma à la plateforme SaaS IA-native, en passant par l'e-commerce viticole multilingue. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Libourne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Libourne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture girondine de 25 036 habitants, au confluent de la Dordogne et de l'Isle, où le tissu mêle les domaines des AOC Saint-Émilion, Pomerol et Fronsac, le cœur marchand de la bastille desservi par le réseau gratuit Calibus, le centre hospitalier Robert-Boulin et la garnison militaire avec son école de santé des armées, et les zones d'activités gérées par La Cali. On fait tout, de la maquette Figma à la plateforme SaaS IA-native, en passant par l'e-commerce viticole multilingue. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Libourne, itérations à distance.",
         whyHere: [
           "Vignobles d'appellation tout autour (Saint-Émilion, Pomerol, Fronsac) : on construit des boutiques de vente directe au domaine, des fiches techniques multilingues générées par IA et des espaces acheteurs B2B avec relance automatisée, calibrés pour la clientèle internationale du négoce qui achète en primeurs comme en livrable. Recherche sémantique sur vos millésimes incluse.",
           "Cœur marchand de la bastille et commerces du centre desservis par le réseau gratuit Calibus : nos vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots ancrés sur vos contenus rapprochent boutiques et clients locaux, avec click-and-collect, gestion de stock et UX mobile-first pour les achats sur smartphone en rue piétonne.",
@@ -149,7 +149,7 @@ export const LIBOURNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Libourne",
             detail:
-              "Atelier sur site — quartier de la bastille, quais de la Dordogne, abords de la gare ou directement au chai d'un domaine de Pomerol : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des ventes (primeurs, vendanges, fêtes). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — quartier de la bastille, quais de la Dordogne, abords de la gare ou directement au chai d'un domaine de Pomerol : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des ventes (primeurs, vendanges, fêtes). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -217,11 +217,11 @@ export const LIBOURNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Libourne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de coût surprise à la livraison. Vous savez exactement ce que vous payez et ce que vous recevez.",
+            a: "Oui. Après le cadrage sur site à Libourne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de coût surprise à la livraison. Vous savez exactement ce que vous payez et ce que vous recevez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine campagne de primeurs, de vendanges ou de fêtes. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé. Outil transférable à tout prestataire de la région bordelaise ou repris en interne par vos équipes du Libournais.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine campagne de primeurs, de vendanges ou de fêtes. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé. Outil transférable à tout prestataire de la région bordelaise ou repris en interne par vos équipes du Libournais.",
       },
     },
   },

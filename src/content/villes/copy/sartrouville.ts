@@ -125,7 +125,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis de site ou de plateforme à Sartrouville ?",
-            a: "Un devis chiffré est remis à partir de 48 h selon la complexité du périmètre. Nous calons ensuite le calendrier précis au kick-off sur place, dans vos locaux du Prunay, des Perriers, des Sureaux ou du centre-ville.",
+            a: "Un devis chiffré est remis à partir de 24 à 48 h selon la complexité du périmètre. Nous calons ensuite le calendrier précis au kick-off sur place, dans vos locaux du Prunay, des Perriers, des Sureaux ou du centre-ville.",
           },
           {
             q: "Mon site ou mon SaaS reste-t-il ma propriété après la mission ?",
@@ -133,7 +133,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis chiffré à partir de 48 h selon la complexité, sans engagement. Sites et plateformes développés en code custom, hébergés en Europe et conformes RGPD dès la conception (minimisation des données, DPA contractuel). UX/UI desktop et mobile, e-commerce multi-CMS ou headless et modules IA (chatbot RAG, search sémantique, agents) revendiqués et livrés. Vous conservez la pleine propriété du code, des modèles et des contenus — repris en interne ou confiés à tout intégrateur des Yvelines, sans verrou éditeur ni dépendance Axion-IA.",
+          "Devis chiffré à partir de 24 à 48 h selon la complexité, sans engagement. Sites et plateformes développés en code custom, hébergés en Europe et conformes RGPD dès la conception (minimisation des données, DPA contractuel). UX/UI desktop et mobile, e-commerce multi-CMS ou headless et modules IA (chatbot RAG, search sémantique, agents) revendiqués et livrés. Vous conservez la pleine propriété du code, des modèles et des contenus — repris en interne ou confiés à tout intégrateur des Yvelines, sans verrou éditeur ni dépendance Axion-IA.",
       },
       en: {
         hero: "In Sartrouville, the second-largest town in the Yvelines department within the Seine loop, more than 300 companies and nearly 3,000 jobs are concentrated across four business zones in the north of the town — Le Prunay, Les Perriers, Les Sureaux, Les Trembleaux. Precision subcontractors for aeronautics and automotive, cosmetics manufacturers such as Académie Scientifique de Beauté, industrial distributors such as Fontana Fasteners, engineering offices and wholesalers all share one need: websites and SaaS platforms that keep pace with technical B2B. Axion-IA builds bespoke AI-native sites and applications for them — custom code, EU GDPR hosting, zero vendor lock-in.",
@@ -211,7 +211,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
           },
           {
             q: "What is the lead time for a site or platform quote in Sartrouville?",
-            a: "A costed quote is delivered from 48 hours depending on the complexity of the scope. We then set the precise schedule at the on-site kick-off, at your premises in Le Prunay, Les Perriers, Les Sureaux or the town centre.",
+            a: "A costed quote is delivered from 24 to 48 hours depending on the complexity of the scope. We then set the precise schedule at the on-site kick-off, at your premises in Le Prunay, Les Perriers, Les Sureaux or the town centre.",
           },
           {
             q: "Does my site or SaaS remain my property after the mission?",
@@ -219,7 +219,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Costed quote from 48 hours depending on complexity, with no commitment. Sites and platforms developed in custom code, hosted in Europe and GDPR-compliant by design (data minimization, contractual DPA). Desktop and mobile UX/UI, multi-CMS or headless e-commerce and AI modules (RAG chatbot, semantic search, agents) claimed and delivered. You keep full ownership of the code, models and content — taken in-house or entrusted to any Yvelines integrator, with no vendor lock-in or Axion-IA dependency.",
+          "Costed quote from 24 to 48 hours depending on complexity, with no commitment. Sites and platforms developed in custom code, hosted in Europe and GDPR-compliant by design (data minimization, contractual DPA). Desktop and mobile UX/UI, multi-CMS or headless e-commerce and AI modules (RAG chatbot, semantic search, agents) claimed and delivered. You keep full ownership of the code, models and content — taken in-house or entrusted to any Yvelines integrator, with no vendor lock-in or Axion-IA dependency.",
       },
     },
   },

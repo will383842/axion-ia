@@ -53,7 +53,7 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Joinville-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville des bords de Marne, berceau historique des studios de cinéma français installés dès les années 1910, dont le tissu mêle TPE de services, agences créatives, audiovisuel, professions libérales et commerces de l'avenue Galliéni et du centre-ville. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Joinville-le-Pont, le long du RER A et à deux pas de l'Île Fanac, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Joinville-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville des bords de Marne, berceau historique des studios de cinéma français installés dès les années 1910, dont le tissu mêle TPE de services, agences créatives, audiovisuel, professions libérales et commerces de l'avenue Galliéni et du centre-ville. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Joinville-le-Pont, le long du RER A et à deux pas de l'Île Fanac, puis itérations à distance.",
         whyHere: [
           "Héritage audiovisuel et agences créatives : héritière des studios de Joinville actifs dès les années 1910 puis exploités par Pathé et Gaumont, la ville garde une culture de production, post-production et métiers de l'image — terrain idéal pour des portfolios dynamiques, des sites de présentation de catalogue et des recherches sémantiques dans des médiathèques de projets, branchés sur vos rushes et références.",
           "Vie de bord de Marne et loisirs nautiques : guinguettes, restaurants, clubs d'aviron et de canoë-kayak, base nautique et événements saisonniers autour de l'Île Fanac réclament réservation en ligne, pages mobile-first et chatbots multilingues pour une clientèle francilienne et touristique de passage le long des quais.",
@@ -64,7 +64,7 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Joinville-le-Pont",
             detail:
-              "Atelier sur site (centre-ville autour de l'avenue Galliéni, bords de Marne, abords de la gare RER A) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de la saisonnalité estivale. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville autour de l'avenue Galliéni, bords de Marne, abords de la gare RER A) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de la saisonnalité estivale. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Joinville-le-Pont, autour de l'avenue Galliéni ou de la gare RER A, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
+            a: "Oui. Après le cadrage sur site à Joinville-le-Pont, autour de l'avenue Galliéni ou de la gare RER A, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison des bords de Marne. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble reste transférable à tout prestataire francilien ou repris en interne par vos équipes à Joinville-le-Pont.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison des bords de Marne. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble reste transférable à tout prestataire francilien ou repris en interne par vos équipes à Joinville-le-Pont.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Joinville-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville des bords de Marne, berceau historique des studios de cinéma français installés dès les années 1910, dont le tissu mêle TPE de services, agences créatives, audiovisuel, professions libérales et commerces de l'avenue Galliéni et du centre-ville. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Joinville-le-Pont, le long du RER A et à deux pas de l'Île Fanac, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Joinville-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville des bords de Marne, berceau historique des studios de cinéma français installés dès les années 1910, dont le tissu mêle TPE de services, agences créatives, audiovisuel, professions libérales et commerces de l'avenue Galliéni et du centre-ville. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Joinville-le-Pont, le long du RER A et à deux pas de l'Île Fanac, puis itérations à distance.",
         whyHere: [
           "Héritage audiovisuel et agences créatives : héritière des studios de Joinville actifs dès les années 1910 puis exploités par Pathé et Gaumont, la ville garde une culture de production, post-production et métiers de l'image — terrain idéal pour des portfolios dynamiques, des sites de présentation de catalogue et des recherches sémantiques dans des médiathèques de projets, branchés sur vos rushes et références.",
           "Vie de bord de Marne et loisirs nautiques : guinguettes, restaurants, clubs d'aviron et de canoë-kayak, base nautique et événements saisonniers autour de l'Île Fanac réclament réservation en ligne, pages mobile-first et chatbots multilingues pour une clientèle francilienne et touristique de passage le long des quais.",
@@ -150,7 +150,7 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Joinville-le-Pont",
             detail:
-              "Atelier sur site (centre-ville autour de l'avenue Galliéni, bords de Marne, abords de la gare RER A) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de la saisonnalité estivale. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville autour de l'avenue Galliéni, bords de Marne, abords de la gare RER A) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de la saisonnalité estivale. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Joinville-le-Pont, autour de l'avenue Galliéni ou de la gare RER A, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
+            a: "Oui. Après le cadrage sur site à Joinville-le-Pont, autour de l'avenue Galliéni ou de la gare RER A, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison des bords de Marne. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble reste transférable à tout prestataire francilien ou repris en interne par vos équipes à Joinville-le-Pont.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison des bords de Marne. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble reste transférable à tout prestataire francilien ou repris en interne par vos équipes à Joinville-le-Pont.",
       },
     },
   },

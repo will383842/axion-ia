@@ -129,7 +129,7 @@ export const MEAUX_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis pour un site ou un SaaS à Meaux ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Après un échange de cadrage sur site à Meaux ou en visio, nous chiffrons le périmètre (UX/UI, e-commerce, cas IA, intégrations) sans engagement.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Après un échange de cadrage sur site à Meaux ou en visio, nous chiffrons le périmètre (UX/UI, e-commerce, cas IA, intégrations) sans engagement.",
           },
           {
             q: "Où sont hébergées les données et garde-t-on la main sur la plateforme ?",
@@ -137,7 +137,7 @@ export const MEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Livrables en code custom, hébergés en Europe et conformes RGPD — avec hébergement de données de santé pour les projets liés au GHEF. Nous revendiquons UX/UI soignée, mobile-first, e-commerce multi-CMS (WooCommerce, Shopify, Prestashop) et IA (chatbot RAG, recherche sémantique, automatisation). Devis à partir de 48 h selon la complexité, périmètre et prix transparents avant signature. Vous gardez la pleine maîtrise du code, des modèles et des données, transférables à tout intégrateur ou repris en interne, sans verrou éditeur ni dépendance contractuelle.",
+          "Livrables en code custom, hébergés en Europe et conformes RGPD — avec hébergement de données de santé pour les projets liés au GHEF. Nous revendiquons UX/UI soignée, mobile-first, e-commerce multi-CMS (WooCommerce, Shopify, Prestashop) et IA (chatbot RAG, recherche sémantique, automatisation). Devis à partir de 24-48 h selon la complexité, périmètre et prix transparents avant signature. Vous gardez la pleine maîtrise du code, des modèles et des données, transférables à tout intégrateur ou repris en interne, sans verrou éditeur ni dépendance contractuelle.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Meaux, sub-prefecture of Seine-et-Marne at the heart of the Brie region. Our ground: the AOP food sector (Société Fromagère de Meaux Saint-Faron in the North industrial zone, Moutarderie Pommery), the healthcare hub around the Grand Hôpital de l'Est Francilien (GHEF) and its subcontractors, the logistics of the Parc d'Activités du Pays de Meaux (Gaches Chimie, C&A, Prologis, Les Saisons de Meaux shopping center) and the agglomeration's craftspeople and retailers. We deliver in custom code, EU/GDPR hosting, with RAG chatbot, semantic search and business automation — no no-code, no vendor lock-in.",
@@ -215,7 +215,7 @@ export const MEAUX_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote for a website or SaaS in Meaux?",
-            a: "A quote is provided from 48 h depending on project complexity. After a framing exchange on site in Meaux or by video call, we scope the perimeter (UX/UI, e-commerce, AI use cases, integrations) with no commitment.",
+            a: "A quote is provided from 24-48 h depending on project complexity. After a framing exchange on site in Meaux or by video call, we scope the perimeter (UX/UI, e-commerce, AI use cases, integrations) with no commitment.",
           },
           {
             q: "Where is data hosted and do we keep control of the platform?",
@@ -223,7 +223,7 @@ export const MEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Deliverables in custom code, hosted in Europe and GDPR-compliant — with health-data hosting for GHEF-related projects. We claim polished UX/UI, mobile-first, multi-CMS e-commerce (WooCommerce, Shopify, Prestashop) and AI (RAG chatbot, semantic search, automation). Quote from 48 h depending on complexity, transparent scope and price before signature. You keep full control of the code, models and data, transferable to any integrator or taken in-house, with no vendor lock-in or contractual dependency.",
+          "Deliverables in custom code, hosted in Europe and GDPR-compliant — with health-data hosting for GHEF-related projects. We claim polished UX/UI, mobile-first, multi-CMS e-commerce (WooCommerce, Shopify, Prestashop) and AI (RAG chatbot, semantic search, automation). Quote from 24-48 h depending on complexity, transparent scope and price before signature. You keep full control of the code, models and data, transferable to any integrator or taken in-house, with no vendor lock-in or contractual dependency.",
       },
     },
   },

@@ -128,11 +128,11 @@ export const WATTRELOS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis à Wattrelos ?",
-            a: "Un devis est établi à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Le périmètre (site vitrine, e-commerce, SaaS métier, brique IA) et les intégrations déterminent le calendrier précis, fixé au lancement.",
+            a: "Un devis est établi à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Le périmètre (site vitrine, e-commerce, SaaS métier, brique IA) et les intégrations déterminent le calendrier précis, fixé au lancement.",
           },
         ],
         guarantees:
-          "Nous travaillons en code custom, hébergement en Union européenne par défaut et conformité RGPD : pas de no-code opaque, pas de verrou éditeur. Le code, les données et l'hébergement restent intégralement à vous, reprenables par vos équipes ou tout intégrateur de la métropole lilloise (Roubaix, Tourcoing, Lille). Devis établi à partir de 48 h selon la complexité, périmètre et intégrations fixés au lancement. Nous revendiquons l'UX/UI, le mobile-first, le e-commerce multi-CMS et l'IA appliquée — du site vitrine d'artisan wattrelosien à la plateforme SaaS logistique connectée WMS/OMS.",
+          "Nous travaillons en code custom, hébergement en Union européenne par défaut et conformité RGPD : pas de no-code opaque, pas de verrou éditeur. Le code, les données et l'hébergement restent intégralement à vous, reprenables par vos équipes ou tout intégrateur de la métropole lilloise (Roubaix, Tourcoing, Lille). Devis établi à partir de 24 à 48 h selon la complexité, périmètre et intégrations fixés au lancement. Nous revendiquons l'UX/UI, le mobile-first, le e-commerce multi-CMS et l'IA appliquée — du site vitrine d'artisan wattrelosien à la plateforme SaaS logistique connectée WMS/OMS.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Wattrelos (59), at the heart of one of Europe's leading fashion e-commerce logistics hubs. This is where La Redoute runs its ultra-automated Quai 30 platform — now ID4Fashion with ID Logistics (up to ~45 million items/year) — and where Happychic operates the warehouse for its Jules, Brice and Bizzbee brands in the Winhoute zone (~40,000 m², ~50,000 items/day). For Wattrelos micro-businesses, SMEs, mid-caps and logistics players — from the Avelin, Beck, Winhoute and Martinoire zones to the Union eco-district — we build fast front-ends, business back-offices and AI layers (catalog semantic search, support chatbots, qualification agents) in custom code, EU-hosted, with no vendor lock-in.",
@@ -214,11 +214,11 @@ export const WATTRELOS_COPY: VilleCopy = {
           },
           {
             q: "What's the turnaround for a quote in Wattrelos?",
-            a: "A quote is issued from 48 hours depending on project complexity, after an initial framing exchange. The scope (showcase site, e-commerce, business SaaS, AI brick) and integrations determine the precise schedule, fixed at kick-off.",
+            a: "A quote is issued from 24 to 48 hours depending on project complexity, after an initial framing exchange. The scope (showcase site, e-commerce, business SaaS, AI brick) and integrations determine the precise schedule, fixed at kick-off.",
           },
         ],
         guarantees:
-          "We work in custom code, EU-hosted by default and GDPR-compliant: no opaque no-code, no vendor lock-in. The code, data and hosting remain entirely yours, reusable by your teams or any integrator in the Lille metropolis (Roubaix, Tourcoing, Lille). Quote issued from 48 hours depending on complexity, scope and integrations fixed at kick-off. We claim UX/UI, mobile-first, multi-CMS e-commerce and applied AI — from a Wattrelos craftsperson's showcase site to a WMS/OMS-connected logistics SaaS platform.",
+          "We work in custom code, EU-hosted by default and GDPR-compliant: no opaque no-code, no vendor lock-in. The code, data and hosting remain entirely yours, reusable by your teams or any integrator in the Lille metropolis (Roubaix, Tourcoing, Lille). Quote issued from 24 to 48 hours depending on complexity, scope and integrations fixed at kick-off. We claim UX/UI, mobile-first, multi-CMS e-commerce and applied AI — from a Wattrelos craftsperson's showcase site to a WMS/OMS-connected logistics SaaS platform.",
       },
     },
   },

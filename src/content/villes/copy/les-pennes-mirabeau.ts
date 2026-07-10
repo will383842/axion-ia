@@ -53,7 +53,7 @@ export const LES_PENNES_MIRABEAU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente aux Pennes-Mirabeau des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, catalogue intelligent, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune charnière entre Marseille, Aix-en-Provence et l'étang de Berre, qui partage avec Cabriès la zone de Plan de Campagne — l'une des plus grandes zones commerciales d'Europe — et structure un dense tissu de retail, de logistique, de restauration et de services entre La Gavotte, le Pin de Galle, le centre-village et les zones d'activité du Pas-des-Lanciers. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Pennes-Mirabeau, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Pennes-Mirabeau des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, catalogue intelligent, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune charnière entre Marseille, Aix-en-Provence et l'étang de Berre, qui partage avec Cabriès la zone de Plan de Campagne — l'une des plus grandes zones commerciales d'Europe — et structure un dense tissu de retail, de logistique, de restauration et de services entre La Gavotte, le Pin de Galle, le centre-village et les zones d'activité du Pas-des-Lanciers. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Pennes-Mirabeau, itérations à distance.",
         whyHere: [
           "Plan de Campagne, étendue sur Les Pennes-Mirabeau et Cabriès, est l'une des premières zones commerciales d'Europe : elle concentre des centaines d'enseignes d'ameublement, de bricolage, d'équipement de la maison et de prêt-à-porter, avec un flux de chalandise massif venu de toute la métropole. On construit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des catalogues augmentés à l'IA pour convertir ce trafic physique en ventes en ligne et en click-and-collect.",
           "Forte densité d'entrepôts et de PME logistiques le long de l'A7 et de l'A55, dopée par la proximité de l'aéroport Marseille-Provence (à 10 km), du Grand Port Maritime et de la gare du Pas-des-Lanciers : on développe des portails de suivi d'expédition, des agents de gestion documentaire (bons de livraison, douane, transport) et des automatisations de planning branchés sur votre SI et votre ERP.",
@@ -64,7 +64,7 @@ export const LES_PENNES_MIRABEAU_COPY: VilleCopy = {
           {
             step: "Cadrage aux Pennes-Mirabeau",
             detail:
-              "Atelier sur site — Plan de Campagne, zones d'activité du Pas-des-Lanciers, centre-village ou La Gavotte : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des volumes opérationnels (catalogue, commandes, flux logistiques). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — Plan de Campagne, zones d'activité du Pas-des-Lanciers, centre-village ou La Gavotte : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des volumes opérationnels (catalogue, commandes, flux logistiques). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const LES_PENNES_MIRABEAU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site aux Pennes-Mirabeau, on remet un devis ferme en forfait fixe, périmètre et livrables détaillés. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage sur site aux Pennes-Mirabeau, on remet un devis ferme en forfait fixe, périmètre et livrables détaillés. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : périmètre et livrables détaillés, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, y compris en pleine affluence commerciale. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local de la métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre et livrables détaillés, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, y compris en pleine affluence commerciale. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local de la métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente aux Pennes-Mirabeau des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, catalogue intelligent, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune charnière entre Marseille, Aix-en-Provence et l'étang de Berre, qui partage avec Cabriès la zone de Plan de Campagne — l'une des plus grandes zones commerciales d'Europe — et structure un dense tissu de retail, de logistique, de restauration et de services entre La Gavotte, le Pin de Galle, le centre-village et les zones d'activité du Pas-des-Lanciers. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Pennes-Mirabeau, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Pennes-Mirabeau des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, catalogue intelligent, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune charnière entre Marseille, Aix-en-Provence et l'étang de Berre, qui partage avec Cabriès la zone de Plan de Campagne — l'une des plus grandes zones commerciales d'Europe — et structure un dense tissu de retail, de logistique, de restauration et de services entre La Gavotte, le Pin de Galle, le centre-village et les zones d'activité du Pas-des-Lanciers. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Pennes-Mirabeau, itérations à distance.",
         whyHere: [
           "Plan de Campagne, étendue sur Les Pennes-Mirabeau et Cabriès, est l'une des premières zones commerciales d'Europe : elle concentre des centaines d'enseignes d'ameublement, de bricolage, d'équipement de la maison et de prêt-à-porter, avec un flux de chalandise massif venu de toute la métropole. On construit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des catalogues augmentés à l'IA pour convertir ce trafic physique en ventes en ligne et en click-and-collect.",
           "Forte densité d'entrepôts et de PME logistiques le long de l'A7 et de l'A55, dopée par la proximité de l'aéroport Marseille-Provence (à 10 km), du Grand Port Maritime et de la gare du Pas-des-Lanciers : on développe des portails de suivi d'expédition, des agents de gestion documentaire (bons de livraison, douane, transport) et des automatisations de planning branchés sur votre SI et votre ERP.",
@@ -150,7 +150,7 @@ export const LES_PENNES_MIRABEAU_COPY: VilleCopy = {
           {
             step: "Cadrage aux Pennes-Mirabeau",
             detail:
-              "Atelier sur site — Plan de Campagne, zones d'activité du Pas-des-Lanciers, centre-village ou La Gavotte : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des volumes opérationnels (catalogue, commandes, flux logistiques). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — Plan de Campagne, zones d'activité du Pas-des-Lanciers, centre-village ou La Gavotte : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des volumes opérationnels (catalogue, commandes, flux logistiques). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const LES_PENNES_MIRABEAU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site aux Pennes-Mirabeau, on remet un devis ferme en forfait fixe, périmètre et livrables détaillés. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage sur site aux Pennes-Mirabeau, on remet un devis ferme en forfait fixe, périmètre et livrables détaillés. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : périmètre et livrables détaillés, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, y compris en pleine affluence commerciale. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local de la métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre et livrables détaillés, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, y compris en pleine affluence commerciale. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local de la métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
       },
     },
   },

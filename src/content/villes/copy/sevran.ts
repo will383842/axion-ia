@@ -128,7 +128,7 @@ export const SEVRAN_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis ?",
-            a: "À partir de 48 h selon la complexité. Après un premier échange sur votre projet — commerce, plateforme logistique, site de services — nous revenons avec un périmètre, un planning et un tarif clairs, sans devis opaque.",
+            a: "À partir de 24-48 h selon la complexité. Après un premier échange sur votre projet — commerce, plateforme logistique, site de services — nous revenons avec un périmètre, un planning et un tarif clairs, sans devis opaque.",
           },
           {
             q: "Où sont hébergées les données et suis-je dépendant d'Axion-IA ensuite ?",
@@ -136,7 +136,7 @@ export const SEVRAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, avec périmètre, planning et tarif explicites avant signature. Hébergement des données en Union européenne, conformité RGPD, et code sur mesure sans lock-in éditeur : vous gardez la propriété et la maîtrise pleine de votre site ou de votre plateforme. Performances mesurées (Web Vitals) et formation de votre équipe à l'édition incluses, pour rester autonome après la mise en ligne — sans dépendance contractuelle à Axion-IA.",
+          "Devis à partir de 24-48 h selon la complexité, avec périmètre, planning et tarif explicites avant signature. Hébergement des données en Union européenne, conformité RGPD, et code sur mesure sans lock-in éditeur : vous gardez la propriété et la maîtrise pleine de votre site ou de votre plateforme. Performances mesurées (Web Vitals) et formation de votre équipe à l'édition incluses, pour rester autonome après la mise en ligne — sans dépendance contractuelle à Axion-IA.",
       },
       en: {
         hero: 'Sevran is scaling up: two Grand Paris Express stations (line 16) are arriving — Sevran-Beaudottes, expected in 2027 with more than 45,000 travelers a day, and Sevran-Livry — at the heart of the 120-hectare "Sevran Terre d\'avenir" project led by Grand Paris Aménagement. Across a territory of around 866 businesses and 3,800 employees, Axion-IA builds AI-augmented websites and SaaS platforms for the retailers, carriers, logistics firms and service SMEs of eastern Seine-Saint-Denis: custom code, UX/UI, mobile, multi-CMS e-commerce, EU hosting compliant with GDPR.',
@@ -214,7 +214,7 @@ export const SEVRAN_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote?",
-            a: "From 48 h depending on complexity. After a first exchange about your project — retail, logistics platform, services site — we come back with a clear scope, schedule and price, with no opaque quoting.",
+            a: "From 24-48 h depending on complexity. After a first exchange about your project — retail, logistics platform, services site — we come back with a clear scope, schedule and price, with no opaque quoting.",
           },
           {
             q: "Where is data hosted and am I dependent on Axion-IA afterwards?",
@@ -222,7 +222,7 @@ export const SEVRAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 h depending on complexity, with explicit scope, schedule and price before signing. Data hosted in the European Union, GDPR-compliant, and custom code with no vendor lock-in: you keep full ownership and control of your site or platform. Measured performance (Web Vitals) and training of your team to edit content are included, so you stay autonomous after go-live — with no contractual dependency on Axion-IA.",
+          "Quote from 24-48 h depending on complexity, with explicit scope, schedule and price before signing. Data hosted in the European Union, GDPR-compliant, and custom code with no vendor lock-in: you keep full ownership and control of your site or platform. Measured performance (Web Vitals) and training of your team to edit content are included, so you stay autonomous after go-live — with no contractual dependency on Axion-IA.",
       },
     },
   },

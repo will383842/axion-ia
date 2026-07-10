@@ -122,7 +122,7 @@ export const PESSAC_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour recevoir un devis à Pessac ?",
-            a: "Nous envoyons un devis à partir de 48 h selon la complexité du projet. Le devis détaille le périmètre (site vitrine, e-commerce multi-CMS, plateforme SaaS, briques IA) sans forfait caché. Le kick-off se tient ensuite sur site dans vos locaux pessacais.",
+            a: "Nous envoyons un devis à partir de 24 à 48 h selon la complexité du projet. Le devis détaille le périmètre (site vitrine, e-commerce multi-CMS, plateforme SaaS, briques IA) sans forfait caché. Le kick-off se tient ensuite sur site dans vos locaux pessacais.",
           },
           {
             q: "Concevez-vous des sites e-commerce, et avec quels CMS ?",
@@ -134,7 +134,7 @@ export const PESSAC_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis détaillé à partir de 48 h selon la complexité, sans forfait caché. Développement en code custom (TypeScript, Python, Node.js) avec UX/UI, version mobile et e-commerce multi-CMS ; briques IA hébergées en UE, conformes RGPD, données traitées sur votre infrastructure. Aucun verrou éditeur ni dépendance Axion-IA : code, modèles et documentation runbook restent intégralement chez vous, repris en interne ou par tout intégrateur de la French Tech Bordeaux. Adapté aux contraintes de souveraineté des acteurs défense, électronique et santé de Pessac.",
+          "Devis détaillé à partir de 24 à 48 h selon la complexité, sans forfait caché. Développement en code custom (TypeScript, Python, Node.js) avec UX/UI, version mobile et e-commerce multi-CMS ; briques IA hébergées en UE, conformes RGPD, données traitées sur votre infrastructure. Aucun verrou éditeur ni dépendance Axion-IA : code, modèles et documentation runbook restent intégralement chez vous, repris en interne ou par tout intégrateur de la French Tech Bordeaux. Adapté aux contraintes de souveraineté des acteurs défense, électronique et santé de Pessac.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms in Pessac, the third economic hub of Bordeaux Métropole, where the fabric is not a retail downtown but a cluster of specialized technology parks: the Grand Bersol zone (~19,000 jobs) with Thales Systèmes Aéroportés and Serma Technologies, the Cité de la Photonique and the Ampéris park run by SEML Route des Lasers, the biotech-health Bioparc, and the Europarc (AXA, Atos) and Canteranne (Renault, Monnaie de Paris) parks. For these players in airborne defense, optics-laser, biotech and tertiary services, we develop in custom code — business portals, RAG platforms, multi-CMS e-commerce, conversational agents — hosted in the EU, with no vendor lock-in.",
@@ -208,7 +208,7 @@ export const PESSAC_COPY: VilleCopy = {
           },
           {
             q: "How long to receive a quote in Pessac?",
-            a: "We send a quote from 48 hours depending on project complexity. The quote details the scope (showcase site, multi-CMS e-commerce, SaaS platform, AI building blocks) with no hidden package. The kick-off then takes place on site at your Pessac premises.",
+            a: "We send a quote from 24 to 48 hours depending on project complexity. The quote details the scope (showcase site, multi-CMS e-commerce, SaaS platform, AI building blocks) with no hidden package. The kick-off then takes place on site at your Pessac premises.",
           },
           {
             q: "Do you design e-commerce sites, and with which CMS?",
@@ -220,7 +220,7 @@ export const PESSAC_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote from 48 hours depending on complexity, with no hidden package. Development in custom code (TypeScript, Python, Node.js) with UX/UI, mobile version and multi-CMS e-commerce; AI building blocks hosted in the EU, GDPR-compliant, data processed on your infrastructure. No vendor lock-in or Axion-IA dependency: code, models and runbook documentation stay entirely with you, taken over in-house or by any French Tech Bordeaux integrator. Suited to the sovereignty constraints of Pessac's defense, electronics and health players.",
+          "Detailed quote from 24 to 48 hours depending on complexity, with no hidden package. Development in custom code (TypeScript, Python, Node.js) with UX/UI, mobile version and multi-CMS e-commerce; AI building blocks hosted in the EU, GDPR-compliant, data processed on your infrastructure. No vendor lock-in or Axion-IA dependency: code, models and runbook documentation stay entirely with you, taken over in-house or by any French Tech Bordeaux integrator. Suited to the sovereignty constraints of Pessac's defense, electronics and health players.",
       },
     },
   },

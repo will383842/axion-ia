@@ -124,7 +124,7 @@ export const QUIMPER_COPY: VilleCopy = {
           },
           {
             q: "En combien de temps obtient-on un devis pour un projet web à Quimper ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité, après un premier échange de cadrage. Pour un projet plus structurant (SaaS métier, e-commerce B2B agroalimentaire, portail technique naval/énergie), nous calons le périmètre lors du kick-off sur site à Quimper avant de chiffrer.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un projet plus structurant (SaaS métier, e-commerce B2B agroalimentaire, portail technique naval/énergie), nous calons le périmètre lors du kick-off sur site à Quimper avant de chiffrer.",
           },
           {
             q: "Travaillez-vous avec les acteurs du numérique et de l'énergie du technopôle Créac'h Gwen et de l'Odet ?",
@@ -136,7 +136,7 @@ export const QUIMPER_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Sites et plateformes développés en code custom (UX/UI, mobile, e-commerce multi-CMS et briques IA), hébergement en Union européenne et conformité RGPD by design. Vous conservez l'intégralité du code et des accès : aucun lock-in Axion-IA, la solution est reprise en interne ou par tout intégrateur breton. Kick-off et recette en présentiel à Quimper, du centre historique au technopôle Créac'h Gwen.",
+          "Devis remis à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature. Sites et plateformes développés en code custom (UX/UI, mobile, e-commerce multi-CMS et briques IA), hébergement en Union européenne et conformité RGPD by design. Vous conservez l'intégralité du code et des accès : aucun lock-in Axion-IA, la solution est reprise en interne ou par tout intégrateur breton. Kick-off et recette en présentiel à Quimper, du centre historique au technopôle Créac'h Gwen.",
       },
       en: {
         hero: "Quimper's economy is built on agri-food, which accounts for nearly 45% of jobs across the Cornouaille basin (Hénaff, Entremont/Eurosérum, Bonduelle in Rosporden, Krampouz), alongside a new-energy cluster at l'Odet (Bolloré/Blue Solutions in Ergué-Gabéric, Sabella and its tidal turbines), a naval fabric (Piriou, CDK Technologies) and a digital and embedded-electronics core at the Créac'h Gwen technopole (Cimut, Interface Concept). Axion-IA designs AI-augmented websites and SaaS platforms here, in custom French-language code, for these industrial SMEs, tourism operators (City of Art and History, Festival de Cornouaille) and craft makers such as the Locmaria faience workshops.",
@@ -210,7 +210,7 @@ export const QUIMPER_COPY: VilleCopy = {
           },
           {
             q: "How fast do I get a quote for a web project in Quimper?",
-            a: "The quote is delivered from 48 h depending on complexity, after an initial framing exchange. For a more structural project (business SaaS, B2B agri-food e-commerce, naval/energy technical portal), we set the scope during the on-site kick-off in Quimper before pricing.",
+            a: "The quote is delivered from 24 to 48 h depending on complexity, after an initial framing exchange. For a more structural project (business SaaS, B2B agri-food e-commerce, naval/energy technical portal), we set the scope during the on-site kick-off in Quimper before pricing.",
           },
           {
             q: "Do you work with the digital and energy players of the Créac'h Gwen technopole and l'Odet?",
@@ -222,7 +222,7 @@ export const QUIMPER_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 48 h depending on complexity, scope and deliverables defined before signature. Sites and platforms built in custom code (UX/UI, mobile, multi-CMS e-commerce and AI blocks), hosting in the European Union and GDPR compliance by design. You keep all the code and accesses: no Axion-IA lock-in, the solution is taken over in-house or by any Brittany integrator. Kick-off and acceptance in person in Quimper, from the historic centre to the Créac'h Gwen technopole.",
+          "Quote delivered from 24 to 48 h depending on complexity, scope and deliverables defined before signature. Sites and platforms built in custom code (UX/UI, mobile, multi-CMS e-commerce and AI blocks), hosting in the European Union and GDPR compliance by design. You keep all the code and accesses: no Axion-IA lock-in, the solution is taken over in-house or by any Brittany integrator. Kick-off and acceptance in person in Quimper, from the historic centre to the Créac'h Gwen technopole.",
       },
     },
   },

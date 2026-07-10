@@ -124,7 +124,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Les tarifs sont publics et le périmètre est défini avant signature, sans devis opaque.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Les tarifs sont publics et le périmètre est défini avant signature, sans devis opaque.",
           },
           {
             q: "Travaillez-vous sur place à Bagnolet et dans l'est parisien ?",
@@ -136,7 +136,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, tarifs publics et périmètre défini avant signature. Sites et plateformes hébergés dans l'Union européenne, conformes au RGPD et à l'AI Act dès la conception. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS (WordPress, Shopify, Prestashop, Webflow ou code sur mesure) et l'IA embarquée. À la livraison, vous conservez le code, les accès et les modèles : votre équipe à Bagnolet reste autonome, sans dépendance à Axion-IA ni à un éditeur unique.",
+          "Devis à partir de 24 à 48 h selon la complexité, tarifs publics et périmètre défini avant signature. Sites et plateformes hébergés dans l'Union européenne, conformes au RGPD et à l'AI Act dès la conception. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS (WordPress, Shopify, Prestashop, Webflow ou code sur mesure) et l'IA embarquée. À la livraison, vous conservez le code, les accès et les modèles : votre équipe à Bagnolet reste autonome, sans dépendance à Axion-IA ni à un éditeur unique.",
       },
       en: {
         hero: "Bagnolet (93170) holds the eastern gate of Paris: terminus of Line 3 at Gallieni, a ring-road interchange and an emerging business district forming along avenue Gallieni, around the Tour Gallièni (77 m, capacity for nearly 2,000 staff) and the Morning Gallieni coworking space. The town blends an image, sound and performing-arts cluster structured by the Campus Fonderie de l'Image and the CFPTS/CFA SVA, a retail and hospitality hub (Bel Est, Auchan, eastern Paris's leading hotel cluster) and a dense fabric of micro-businesses and SMEs. Axion-IA designs AI-augmented websites and SaaS platforms for these creative, tertiary and retail trades — custom code, EU hosting, GDPR compliant, no vendor lock-in.",
@@ -210,7 +210,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote?",
-            a: "We issue a quote from 48 hours depending on project complexity, after an initial framing discussion. Pricing is public and the scope is defined before signature, with no opaque quotes.",
+            a: "We issue a quote from 24 to 48 hours depending on project complexity, after an initial framing discussion. Pricing is public and the scope is defined before signature, with no opaque quotes.",
           },
           {
             q: "Do you work on site in Bagnolet and eastern Paris?",
@@ -222,7 +222,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, public pricing and scope defined before signature. Sites and platforms hosted in the European Union, GDPR and AI Act compliant by design. We cover UX/UI, mobile, multi-CMS e-commerce (WordPress, Shopify, Prestashop, Webflow or custom code) and embedded AI. On delivery you keep the code, the accesses and the models: your Bagnolet team stays autonomous, with no dependency on Axion-IA or a single vendor.",
+          "Quote from 24 to 48 hours depending on complexity, public pricing and scope defined before signature. Sites and platforms hosted in the European Union, GDPR and AI Act compliant by design. We cover UX/UI, mobile, multi-CMS e-commerce (WordPress, Shopify, Prestashop, Webflow or custom code) and embedded AI. On delivery you keep the code, the accesses and the models: your Bagnolet team stays autonomous, with no dependency on Axion-IA or a single vendor.",
       },
     },
   },

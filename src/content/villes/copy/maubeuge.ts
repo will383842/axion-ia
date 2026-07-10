@@ -130,11 +130,11 @@ export const MAUBEUGE_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et combien de temps pour démarrer ?",
-            a: "Hébergement exclusivement en Union européenne, conformité RGPD, traitements documentés et registre fourni. Le devis est établi à partir de 48 h selon la complexité du projet. Vous restez propriétaire du code, des modèles et des données, sans verrou éditeur.",
+            a: "Hébergement exclusivement en Union européenne, conformité RGPD, traitements documentés et registre fourni. Le devis est établi à partir de 24-48 h selon la complexité du projet. Vous restez propriétaire du code, des modèles et des données, sans verrou éditeur.",
           },
         ],
         guarantees:
-          "Code custom et données hébergés en Union européenne, conformité RGPD avec registre des traitements remis au client. Aucun verrou éditeur : vous récupérez l'intégralité du code, des accès et de la documentation, transférables à tout intégrateur des Hauts-de-France ou repris en interne. Devis établi à partir de 48 h selon la complexité ; tarifs publics consultables sur axion-ia.com. UX/UI mobile-first, e-commerce multi-CMS et intégration IA livrés par une même équipe, du parc de Grévaux-les-Guides aux ateliers du Val de Sambre.",
+          "Code custom et données hébergés en Union européenne, conformité RGPD avec registre des traitements remis au client. Aucun verrou éditeur : vous récupérez l'intégralité du code, des accès et de la documentation, transférables à tout intégrateur des Hauts-de-France ou repris en interne. Devis établi à partir de 24-48 h selon la complexité ; tarifs publics consultables sur axion-ia.com. UX/UI mobile-first, e-commerce multi-CMS et intégration IA livrés par une même équipe, du parc de Grévaux-les-Guides aux ateliers du Val de Sambre.",
       },
       en: {
         hero: "Axion-IA designs and ships AI-augmented websites and SaaS platforms for businesses in Maubeuge and the Val de Sambre, an area shaped by electric-vehicle manufacturing at the Renault Maubeuge plant (MCA, ElectriCity cluster) and Vallourec's seamless steel-tube metallurgy. We work for the suppliers and subcontractors of the Grévaux-les-Guides business park (Framatome, DAHER Technologies, Sumitomo Electric Wiring Systems Europe) as well as for the micro-businesses, SMEs and industrial firms of the agglomeration: client portals, quote configurators, B2B multi-CMS e-commerce, RAG chatbots over technical documentation — custom code, polished UX/UI and mobile, hosting in the European Union under GDPR, zero vendor lock-in.",
@@ -216,11 +216,11 @@ export const MAUBEUGE_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et combien de temps pour démarrer ?",
-            a: "Hébergement exclusivement en Union européenne, conformité RGPD, traitements documentés et registre fourni. Le devis est établi à partir de 48 h selon la complexité du projet. Vous restez propriétaire du code, des modèles et des données, sans verrou éditeur.",
+            a: "Hébergement exclusivement en Union européenne, conformité RGPD, traitements documentés et registre fourni. Le devis est établi à partir de 24-48 h selon la complexité du projet. Vous restez propriétaire du code, des modèles et des données, sans verrou éditeur.",
           },
         ],
         guarantees:
-          "Code custom et données hébergés en Union européenne, conformité RGPD avec registre des traitements remis au client. Aucun verrou éditeur : vous récupérez l'intégralité du code, des accès et de la documentation, transférables à tout intégrateur des Hauts-de-France ou repris en interne. Devis établi à partir de 48 h selon la complexité ; tarifs publics consultables sur axion-ia.com. UX/UI mobile-first, e-commerce multi-CMS et intégration IA livrés par une même équipe, du parc de Grévaux-les-Guides aux ateliers du Val de Sambre.",
+          "Code custom et données hébergés en Union européenne, conformité RGPD avec registre des traitements remis au client. Aucun verrou éditeur : vous récupérez l'intégralité du code, des accès et de la documentation, transférables à tout intégrateur des Hauts-de-France ou repris en interne. Devis établi à partir de 24-48 h selon la complexité ; tarifs publics consultables sur axion-ia.com. UX/UI mobile-first, e-commerce multi-CMS et intégration IA livrés par une même équipe, du parc de Grévaux-les-Guides aux ateliers du Val de Sambre.",
       },
     },
   },

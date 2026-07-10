@@ -71,8 +71,8 @@ export function SitesWebCapabilitiesGrid({ isFr }: SitesWebCapabilitiesGridProps
 
       <p className="text-fg-muted mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed">
         {isFr
-          ? "… et tout le reste. On cartographie précisément ce qui s'applique à votre projet, et on le chiffre sous 48 h selon la complexité."
-          : "… and everything else. We map exactly what fits your project, and cost it in 48 h depending on complexity."}
+          ? "… et tout le reste. On cartographie précisément ce qui s'applique à votre projet, et on le chiffre sous 24-48 h selon la complexité."
+          : "… and everything else. We map exactly what fits your project, and cost it in 24-48 h depending on complexity."}
       </p>
     </Section>
   );

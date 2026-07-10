@@ -50,7 +50,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lagny-sur-Marne des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le tissu de la Communauté d'agglomération Marne et Gondoire — près de 2 000 établissements actifs où dominent le commerce de détail, les services aux entreprises, les transports-logistique, la construction et l'industrie de proximité. De la rue Saint-Denis et du marché couvert du centre historique jusqu'aux zones d'activité de Saint-Thibault-des-Vignes, on transforme une clientèle locale et de passage en commandes en ligne. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lagny, à 35 minutes de Paris-Est par la ligne P depuis la gare de Lagny-Thorigny, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Lagny-sur-Marne des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le tissu de la Communauté d'agglomération Marne et Gondoire — près de 2 000 établissements actifs où dominent le commerce de détail, les services aux entreprises, les transports-logistique, la construction et l'industrie de proximité. De la rue Saint-Denis et du marché couvert du centre historique jusqu'aux zones d'activité de Saint-Thibault-des-Vignes, on transforme une clientèle locale et de passage en commandes en ligne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lagny, à 35 minutes de Paris-Est par la ligne P depuis la gare de Lagny-Thorigny, puis itérations à distance.",
         whyHere: [
           "Cœur commerçant dense le long de la Marne, autour de la rue Saint-Denis, du marché couvert et de l'ancienne abbaye Saint-Pierre devenue hôtel de ville : pour les boutiques, restaurants et artisans du centre historique de Lagny, on construit des vitrines et des e-commerce mobile-first qui transforment la clientèle de proximité en commandes, réservations et clics-and-collect en ligne.",
           "Plateforme logistique de la vallée de la Marne, à cheval sur l'A104 (Francilienne) et la RD 934, à proximité immédiate des zones d'activité de Saint-Thibault-des-Vignes et de Marne et Gondoire : les acteurs du transport terrestre et de l'entreposage profitent d'agents et d'automatisations qui digitalisent devis, suivi de tournées, bons de livraison et relations donneurs d'ordre.",
@@ -61,7 +61,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Lagny-sur-Marne",
             detail:
-              "Atelier sur site — centre-ville historique au bord de la Marne près de l'abbaye Saint-Pierre, ou zones d'activité de Saint-Thibault-des-Vignes et de l'axe Marne-la-Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack existante et des contenus. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville historique au bord de la Marne près de l'abbaye Saint-Pierre, ou zones d'activité de Saint-Thibault-des-Vignes et de l'axe Marne-la-Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack existante et des contenus. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Lagny, on remet un devis ferme en forfait fixe, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le délai et le prix dépendent uniquement de la complexité réelle du projet, validée ensemble au cadrage.",
+            a: "Oui. Après le cadrage sur site à Lagny, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le délai et le prix dépendent uniquement de la complexité réelle du projet, validée ensemble au cadrage.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pleine saison commerciale ou touristique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout moment à un prestataire local de Seine-et-Marne ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pleine saison commerciale ou touristique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout moment à un prestataire local de Seine-et-Marne ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lagny-sur-Marne des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le tissu de la Communauté d'agglomération Marne et Gondoire — près de 2 000 établissements actifs où dominent le commerce de détail, les services aux entreprises, les transports-logistique, la construction et l'industrie de proximité. De la rue Saint-Denis et du marché couvert du centre historique jusqu'aux zones d'activité de Saint-Thibault-des-Vignes, on transforme une clientèle locale et de passage en commandes en ligne. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lagny, à 35 minutes de Paris-Est par la ligne P depuis la gare de Lagny-Thorigny, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Lagny-sur-Marne des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le tissu de la Communauté d'agglomération Marne et Gondoire — près de 2 000 établissements actifs où dominent le commerce de détail, les services aux entreprises, les transports-logistique, la construction et l'industrie de proximité. De la rue Saint-Denis et du marché couvert du centre historique jusqu'aux zones d'activité de Saint-Thibault-des-Vignes, on transforme une clientèle locale et de passage en commandes en ligne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lagny, à 35 minutes de Paris-Est par la ligne P depuis la gare de Lagny-Thorigny, puis itérations à distance.",
         whyHere: [
           "Cœur commerçant dense le long de la Marne, autour de la rue Saint-Denis, du marché couvert et de l'ancienne abbaye Saint-Pierre devenue hôtel de ville : pour les boutiques, restaurants et artisans du centre historique de Lagny, on construit des vitrines et des e-commerce mobile-first qui transforment la clientèle de proximité en commandes, réservations et clics-and-collect en ligne.",
           "Plateforme logistique de la vallée de la Marne, à cheval sur l'A104 (Francilienne) et la RD 934, à proximité immédiate des zones d'activité de Saint-Thibault-des-Vignes et de Marne et Gondoire : les acteurs du transport terrestre et de l'entreposage profitent d'agents et d'automatisations qui digitalisent devis, suivi de tournées, bons de livraison et relations donneurs d'ordre.",
@@ -147,7 +147,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Lagny-sur-Marne",
             detail:
-              "Atelier sur site — centre-ville historique au bord de la Marne près de l'abbaye Saint-Pierre, ou zones d'activité de Saint-Thibault-des-Vignes et de l'axe Marne-la-Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack existante et des contenus. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville historique au bord de la Marne près de l'abbaye Saint-Pierre, ou zones d'activité de Saint-Thibault-des-Vignes et de l'axe Marne-la-Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack existante et des contenus. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Lagny, on remet un devis ferme en forfait fixe, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le délai et le prix dépendent uniquement de la complexité réelle du projet, validée ensemble au cadrage.",
+            a: "Oui. Après le cadrage sur site à Lagny, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le délai et le prix dépendent uniquement de la complexité réelle du projet, validée ensemble au cadrage.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pleine saison commerciale ou touristique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout moment à un prestataire local de Seine-et-Marne ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pleine saison commerciale ou touristique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout moment à un prestataire local de Seine-et-Marne ou repris en interne par vos équipes.",
       },
     },
   },

@@ -88,7 +88,7 @@ export const NARBONNE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou boutique IA essentielle",
             detail:
-              "Pour domaines viticoles, artisans, commerces du cœur de ville et hôteliers du littoral (Narbonne-Plage, Gruissan) : site vitrine multilingue rapide, vente directe simple, chatbot de réservation/contact. Devis à partir de 48 h selon la complexité.",
+              "Pour domaines viticoles, artisans, commerces du cœur de ville et hôteliers du littoral (Narbonne-Plage, Gruissan) : site vitrine multilingue rapide, vente directe simple, chatbot de réservation/contact. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -132,7 +132,7 @@ export const NARBONNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité. Code sur mesure livré dans les délais convenus à la signature, hébergement en Union européenne conforme RGPD, DPO sur demande. Vous restez propriétaire du code, des modèles et de la documentation : votre site ou plateforme SaaS est portable, reprenable par vos équipes ou tout intégrateur d'Occitanie — aucun lock-in éditeur. Nous revendiquons l'UX/UI, le responsive mobile, l'e-commerce multi-CMS et l'IA, sans dépendance contractuelle continue obligatoire.",
+          "Devis à partir de 24-48 h selon la complexité. Code sur mesure livré dans les délais convenus à la signature, hébergement en Union européenne conforme RGPD, DPO sur demande. Vous restez propriétaire du code, des modèles et de la documentation : votre site ou plateforme SaaS est portable, reprenable par vos équipes ou tout intégrateur d'Occitanie — aucun lock-in éditeur. Nous revendiquons l'UX/UI, le responsive mobile, l'e-commerce multi-CMS et l'IA, sans dépendance contractuelle continue obligatoire.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Narbonne (11), for an economy where e-commerce and data already weigh heavily: Groupe Narbonne (formerly Narbonne Accessoires), founded in the city in 1971, has sold online since 2002 and runs 69 stores from its 30,000 m² logistics platform in Lézignan-Corbières. We build AI-native platforms — RAG chatbot over your catalogue, semantic search, configurators, multilingual wine-tourism conversational agents — for the Narbonne area's AOC estates and cooperatives (Corbières, Minervois, La Clape, Fitou, the Val d'Orbieu network), the energy-transition players of Port-La-Nouvelle (floating offshore wind, Croix-Sud hydrogen) and the shops and hoteliers of the antique town centre. Custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -174,7 +174,7 @@ export const NARBONNE_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "Showcase site or essential AI shop",
             detail:
-              "For wine estates, craftspeople, town-centre shops and coastal hoteliers (Narbonne-Plage, Gruissan): fast multilingual showcase site, simple direct sales, booking/contact chatbot. Quote from 48 h depending on complexity.",
+              "For wine estates, craftspeople, town-centre shops and coastal hoteliers (Narbonne-Plage, Gruissan): fast multilingual showcase site, simple direct sales, booking/contact chatbot. Quote from 24-48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -218,7 +218,7 @@ export const NARBONNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 h depending on complexity. Custom code delivered within the timeline agreed at signature, hosting in the European Union under GDPR, DPO on request. You own the code, models and documentation: your site or SaaS platform is portable, transferable to your teams or any Occitanie integrator — no vendor lock-in. We deliver UX/UI, responsive mobile, multi-CMS e-commerce and AI, with no mandatory ongoing contractual dependency.",
+          "Quote from 24-48 h depending on complexity. Custom code delivered within the timeline agreed at signature, hosting in the European Union under GDPR, DPO on request. You own the code, models and documentation: your site or SaaS platform is portable, transferable to your teams or any Occitanie integrator — no vendor lock-in. We deliver UX/UI, responsive mobile, multi-CMS e-commerce and AI, with no mandatory ongoing contractual dependency.",
       },
     },
   },

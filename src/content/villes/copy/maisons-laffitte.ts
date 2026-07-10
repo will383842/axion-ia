@@ -52,7 +52,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Maisons-Laffitte des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la « Cité du Cheval » et son économie singulière, où la filière équestre — hippodrome à la plus longue ligne droite d'Europe (2 200 m) et centre d'entraînement de pur-sang parmi les premiers de France — côtoie un immobilier résidentiel haut de gamme et le Parc privé classé qui couvre 60 % de la commune et abrite près de 40 % des 23 093 habitants. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maisons-Laffitte, près de la gare RER A, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Maisons-Laffitte des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la « Cité du Cheval » et son économie singulière, où la filière équestre — hippodrome à la plus longue ligne droite d'Europe (2 200 m) et centre d'entraînement de pur-sang parmi les premiers de France — côtoie un immobilier résidentiel haut de gamme et le Parc privé classé qui couvre 60 % de la commune et abrite près de 40 % des 23 093 habitants. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maisons-Laffitte, près de la gare RER A, itérations à distance.",
         whyHere: [
           "Filière équestre unique en France : autour de l'hippodrome de Maisons-Laffitte et de son centre d'entraînement de pur-sang, écuries, entraîneurs et acteurs des courses jonglent avec plannings de pension, suivi vétérinaire, engagements et reporting aux propriétaires. C'est un terrain idéal pour des portails clients sur mesure, des plateformes de gestion d'écurie et des agents qui automatisent la facturation des pensions et les relances multilingues aux propriétaires étrangers.",
           "Immobilier résidentiel haut de gamme et Parc privé classé (60 % du territoire, environ 40 % des habitants) : les agences mansonniennes gèrent des biens d'exception, des hôtels particuliers et une clientèle exigeante au revenu médian élevé. Nous bâtissons des vitrines immobilières augmentées, des moteurs de recherche sémantique de biens, des configurateurs e-commerce et des CRM enrichis à l'IA pour qualifier mandats et leads sans perdre le haut de gamme du parcours.",
@@ -63,7 +63,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
           {
             step: "Cadrage à Maisons-Laffitte",
             detail:
-              "Atelier sur site — centre-ville, quartier de l'hippodrome ou écuries du Parc privé : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des courses et des transactions immobilières. On remet un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, quartier de l'hippodrome ou écuries du Parc privé : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des courses et des transactions immobilières. On remet un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -135,10 +135,10 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de courses ou de transactions. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé, transférable à tout prestataire des Yvelines ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de courses ou de transactions. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé, transférable à tout prestataire des Yvelines ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Maisons-Laffitte des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la « Cité du Cheval » et son économie singulière, où la filière équestre — hippodrome à la plus longue ligne droite d'Europe (2 200 m) et centre d'entraînement de pur-sang parmi les premiers de France — côtoie un immobilier résidentiel haut de gamme et le Parc privé classé qui couvre 60 % de la commune et abrite près de 40 % des 23 093 habitants. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maisons-Laffitte, près de la gare RER A, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Maisons-Laffitte des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la « Cité du Cheval » et son économie singulière, où la filière équestre — hippodrome à la plus longue ligne droite d'Europe (2 200 m) et centre d'entraînement de pur-sang parmi les premiers de France — côtoie un immobilier résidentiel haut de gamme et le Parc privé classé qui couvre 60 % de la commune et abrite près de 40 % des 23 093 habitants. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maisons-Laffitte, près de la gare RER A, itérations à distance.",
         whyHere: [
           "Filière équestre unique en France : autour de l'hippodrome de Maisons-Laffitte et de son centre d'entraînement de pur-sang, écuries, entraîneurs et acteurs des courses jonglent avec plannings de pension, suivi vétérinaire, engagements et reporting aux propriétaires. C'est un terrain idéal pour des portails clients sur mesure, des plateformes de gestion d'écurie et des agents qui automatisent la facturation des pensions et les relances multilingues aux propriétaires étrangers.",
           "Immobilier résidentiel haut de gamme et Parc privé classé (60 % du territoire, environ 40 % des habitants) : les agences mansonniennes gèrent des biens d'exception, des hôtels particuliers et une clientèle exigeante au revenu médian élevé. Nous bâtissons des vitrines immobilières augmentées, des moteurs de recherche sémantique de biens, des configurateurs e-commerce et des CRM enrichis à l'IA pour qualifier mandats et leads sans perdre le haut de gamme du parcours.",
@@ -149,7 +149,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
           {
             step: "Cadrage à Maisons-Laffitte",
             detail:
-              "Atelier sur site — centre-ville, quartier de l'hippodrome ou écuries du Parc privé : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des courses et des transactions immobilières. On remet un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, quartier de l'hippodrome ou écuries du Parc privé : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des courses et des transactions immobilières. On remet un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -221,7 +221,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de courses ou de transactions. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé, transférable à tout prestataire des Yvelines ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, pas de surprise en fin de projet. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de courses ou de transactions. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé, transférable à tout prestataire des Yvelines ou repris en interne par vos équipes.",
       },
     },
   },

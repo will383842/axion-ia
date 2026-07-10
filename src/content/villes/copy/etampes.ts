@@ -51,7 +51,7 @@ export const ETAMPES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Étampes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture du sud-Essonne où le tissu mêle les TPE du commerce de détail du centre médiéval, les enseignes de la zone commerciale du Plateau de Guinette le long de la RN191, l'industrie du parc Sudessor (autour de l'équipementier automobile Faurecia), les artisans du bâtiment, les logisticiens de la RN20 et les exploitations céréalières de la Beauce francilienne. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Étampes, accessible par le RER C (terminus) ou la RN20, puis itérations à distance avec vos équipes.",
+        hero: "Axion-IA conçoit et augmente à Étampes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture du sud-Essonne où le tissu mêle les TPE du commerce de détail du centre médiéval, les enseignes de la zone commerciale du Plateau de Guinette le long de la RN191, l'industrie du parc Sudessor (autour de l'équipementier automobile Faurecia), les artisans du bâtiment, les logisticiens de la RN20 et les exploitations céréalières de la Beauce francilienne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Étampes, accessible par le RER C (terminus) ou la RN20, puis itérations à distance avec vos équipes.",
         whyHere: [
           "Commerce de proximité du centre médiéval et enseignes du Plateau de Guinette : les boutiques de la rue Saint-Jacques comme les grandes surfaces de la zone commerciale de Guinette (E.Leclerc, Intersport, Kiabi) le long de la RN191 vivent d'une clientèle de quartier et de passage — on bâtit des vitrines e-commerce mobile-first avec clic-et-collect, fiche Google et chatbot de prise de commande ancré sur votre catalogue.",
           "Industrie du parc Sudessor et logistique de la RN20 : sur les 132 hectares du parc d'activités qui regroupe ~148 entreprises et ~3 300 emplois autour de l'équipementier Faurecia, et pour les PME de transport routier de l'axe Paris-Orléans, on développe des portails de suivi, des automatisations de devis et de bons de transport, et des agents qui digèrent vos flux d'expédition et de production.",
@@ -62,7 +62,7 @@ export const ETAMPES_COPY: VilleCopy = {
           {
             step: "Cadrage à Étampes",
             detail:
-              "Atelier sur site (centre historique autour de la collégiale Notre-Dame, zone commerciale du Plateau de Guinette sur la RN191, parc Sudessor, gare RER C terminus) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre historique autour de la collégiale Notre-Dame, zone commerciale du Plateau de Guinette sur la RN191, parc Sudessor, gare RER C terminus) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const ETAMPES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Étampes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
+            a: "Oui. Après le cadrage sur site à Étampes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du Plateau de Guinette en pleine saison ou un industriel du parc Sudessor en flux tendu. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud-Essonne ou repris en interne par vos équipes étampoises.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du Plateau de Guinette en pleine saison ou un industriel du parc Sudessor en flux tendu. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud-Essonne ou repris en interne par vos équipes étampoises.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Étampes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture du sud-Essonne où le tissu mêle les TPE du commerce de détail du centre médiéval, les enseignes de la zone commerciale du Plateau de Guinette le long de la RN191, l'industrie du parc Sudessor (autour de l'équipementier automobile Faurecia), les artisans du bâtiment, les logisticiens de la RN20 et les exploitations céréalières de la Beauce francilienne. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Étampes, accessible par le RER C (terminus) ou la RN20, puis itérations à distance avec vos équipes.",
+        hero: "Axion-IA conçoit et augmente à Étampes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture du sud-Essonne où le tissu mêle les TPE du commerce de détail du centre médiéval, les enseignes de la zone commerciale du Plateau de Guinette le long de la RN191, l'industrie du parc Sudessor (autour de l'équipementier automobile Faurecia), les artisans du bâtiment, les logisticiens de la RN20 et les exploitations céréalières de la Beauce francilienne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Étampes, accessible par le RER C (terminus) ou la RN20, puis itérations à distance avec vos équipes.",
         whyHere: [
           "Commerce de proximité du centre médiéval et enseignes du Plateau de Guinette : les boutiques de la rue Saint-Jacques comme les grandes surfaces de la zone commerciale de Guinette (E.Leclerc, Intersport, Kiabi) le long de la RN191 vivent d'une clientèle de quartier et de passage — on bâtit des vitrines e-commerce mobile-first avec clic-et-collect, fiche Google et chatbot de prise de commande ancré sur votre catalogue.",
           "Industrie du parc Sudessor et logistique de la RN20 : sur les 132 hectares du parc d'activités qui regroupe ~148 entreprises et ~3 300 emplois autour de l'équipementier Faurecia, et pour les PME de transport routier de l'axe Paris-Orléans, on développe des portails de suivi, des automatisations de devis et de bons de transport, et des agents qui digèrent vos flux d'expédition et de production.",
@@ -148,7 +148,7 @@ export const ETAMPES_COPY: VilleCopy = {
           {
             step: "Cadrage à Étampes",
             detail:
-              "Atelier sur site (centre historique autour de la collégiale Notre-Dame, zone commerciale du Plateau de Guinette sur la RN191, parc Sudessor, gare RER C terminus) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre historique autour de la collégiale Notre-Dame, zone commerciale du Plateau de Guinette sur la RN191, parc Sudessor, gare RER C terminus) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const ETAMPES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Étampes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
+            a: "Oui. Après le cadrage sur site à Étampes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du Plateau de Guinette en pleine saison ou un industriel du parc Sudessor en flux tendu. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud-Essonne ou repris en interne par vos équipes étampoises.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du Plateau de Guinette en pleine saison ou un industriel du parc Sudessor en flux tendu. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud-Essonne ou repris en interne par vos équipes étampoises.",
       },
     },
   },

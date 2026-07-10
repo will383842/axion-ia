@@ -127,7 +127,7 @@ export const DRANCY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis pour un projet de site ou de SaaS à Drancy ?",
-            a: "À partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Le devis est ferme et détaillé : scope, livrables, hébergement et accompagnement. Aucun jeu de devis opaque.",
+            a: "À partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Le devis est ferme et détaillé : scope, livrables, hébergement et accompagnement. Aucun jeu de devis opaque.",
           },
           {
             q: "Où sont hébergées les données et le site conçus à Drancy ?",
@@ -135,7 +135,7 @@ export const DRANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme à partir de 48 h selon la complexité, scope et livrables écrits avant tout démarrage. Conception UX/UI, mobile-first, e-commerce multi-CMS et briques IA en code sur mesure — jamais de plateforme no-code imposée. Hébergement en UE conforme RGPD par défaut. Vous gardez le code, les modèles et la documentation : projet portable, exécutable par tout intégrateur d'Île-de-France ou repris en interne, sans dépendance contractuelle à Axion-IA. Performance web tenue dès la conception.",
+          "Devis ferme à partir de 24 à 48 h selon la complexité, scope et livrables écrits avant tout démarrage. Conception UX/UI, mobile-first, e-commerce multi-CMS et briques IA en code sur mesure — jamais de plateforme no-code imposée. Hébergement en UE conforme RGPD par défaut. Vous gardez le code, les modèles et la documentation : projet portable, exécutable par tout intégrateur d'Île-de-France ou repris en interne, sans dépendance contractuelle à Axion-IA. Performance web tenue dès la conception.",
       },
       en: {
         hero: "Drancy is not just another commuter town in Seine-Saint-Denis: it is the industrial birthplace of elm.leblanc, founded here in 1932, now an Industry 4.0 Competence Center of the Bosch Thermotechnology division from which most gas boilers sold in France come out. Around the ZAC L'Avenir business zone sit Robert Bosch France, automotive supplier Hitachi Astemo, pharmaceutical distributor Alliance Healthcare Répartition, Carrefour Hypermarchés and Lidl, while the future Drancy-Bobigny station on Line 15 Est (works started September 2025) and the Le Bourget-Drancy transport hub (Lines 16/17) are reshaping local office real estate. For this industrial, logistics and retail fabric, Axion-IA builds AI-augmented websites and SaaS platforms — in custom code, hosted in the EU, with no no-code lock-in.",
@@ -213,7 +213,7 @@ export const DRANCY_COPY: VilleCopy = {
           },
           {
             q: "How quickly do I get a quote for a site or SaaS project in Drancy?",
-            a: "From 48 hours depending on the project's complexity, after an initial framing exchange. The quote is firm and detailed: scope, deliverables, hosting and support. No opaque quote games.",
+            a: "From 24 to 48 hours depending on the project's complexity, after an initial framing exchange. The quote is firm and detailed: scope, deliverables, hosting and support. No opaque quote games.",
           },
           {
             q: "Where are the data and the site designed in Drancy hosted?",
@@ -221,7 +221,7 @@ export const DRANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm quote from 48 hours depending on complexity, scope and deliverables written before any start. UX/UI design, mobile-first, multi-CMS e-commerce and AI building blocks in custom code — never an imposed no-code platform. GDPR-compliant EU hosting by default. You keep the code, the models and the documentation: portable project, executable by any Île-de-France integrator or taken over in-house, with no contractual dependency on Axion-IA. Web performance held from the design stage.",
+          "Firm quote from 24 to 48 hours depending on complexity, scope and deliverables written before any start. UX/UI design, mobile-first, multi-CMS e-commerce and AI building blocks in custom code — never an imposed no-code platform. GDPR-compliant EU hosting by default. You keep the code, the models and the documentation: portable project, executable by any Île-de-France integrator or taken over in-house, with no contractual dependency on Axion-IA. Web performance held from the design stage.",
       },
     },
   },

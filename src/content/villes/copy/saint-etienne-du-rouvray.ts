@@ -132,11 +132,11 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis et où est hébergé le site ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité du projet, après un échange de cadrage. L'hébergement est réalisé en Union européenne, avec conformité RGPD intégrée dès la conception ; pour les acteurs manipulant des données techniques sensibles (centres d'essais, labos), nous appliquons une gouvernance des accès renforcée.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet, après un échange de cadrage. L'hébergement est réalisé en Union européenne, avec conformité RGPD intégrée dès la conception ; pour les acteurs manipulant des données techniques sensibles (centres d'essais, labos), nous appliquons une gouvernance des accès renforcée.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, sur la base d'un cadrage réalisé à Saint-Étienne-du-Rouvray ou à distance. Hébergement en Union européenne et conformité RGPD intégrées dès la conception ; pour les structures du Madrillet et les centres d'essais manipulant des données techniques sensibles, gouvernance des accès renforcée. Vous restez propriétaire du code, des accès et de l'hébergement : sites livrés sans verrou éditeur, reprenables en interne ou par tout prestataire de la Métropole Rouen Normandie. Performances Web Vitals et accessibilité sous contrôle à la livraison.",
+          "Devis remis à partir de 24 à 48 h selon la complexité, sur la base d'un cadrage réalisé à Saint-Étienne-du-Rouvray ou à distance. Hébergement en Union européenne et conformité RGPD intégrées dès la conception ; pour les structures du Madrillet et les centres d'essais manipulant des données techniques sensibles, gouvernance des accès renforcée. Vous restez propriétaire du code, des accès et de l'hébergement : sites livrés sans verrou éditeur, reprenables en interne ou par tout prestataire de la Métropole Rouen Normandie. Performances Web Vitals et accessibilité sous contrôle à la livraison.",
       },
       en: {
         hero: "In Saint-Étienne-du-Rouvray, the economy runs on two fronts: the Rouen Madrillet Innovation technopark (200 hectares, ~2,500 jobs, ~80 companies and start-ups around ESIGELEC, ESITech, INSA Rouen, CESI and the CORIA, GPM and LITIS laboratories) and the Z.I. du Bord de Seine (~73 hectares of logistics and printing, home to Amazon France Transport, Dachser and Kiloutou). Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: technical showcases for deep-tech spin-offs, booking and tracking portals for logistics providers, client areas with semantic search. UX/UI, mobile, multi-CMS e-commerce and generative AI — code and hosting under control, in the EU, GDPR-compliant.",
@@ -218,11 +218,11 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote and where is the site hosted?",
-            a: "The quote is delivered from 48 hours depending on project complexity, after a framing exchange. Hosting is in the European Union, with GDPR compliance built in from the design stage; for players handling sensitive technical data (testing centres, labs), we apply reinforced access governance.",
+            a: "The quote is delivered from 24 to 48 hours depending on project complexity, after a framing exchange. Hosting is in the European Union, with GDPR compliance built in from the design stage; for players handling sensitive technical data (testing centres, labs), we apply reinforced access governance.",
           },
         ],
         guarantees:
-          "Quote delivered from 48 hours depending on complexity, based on a framing session run in Saint-Étienne-du-Rouvray or remotely. EU hosting and GDPR compliance built in from design; for Madrillet organisations and testing centres handling sensitive technical data, reinforced access governance. You remain the owner of the code, access and hosting: sites delivered with no vendor lock-in, recoverable in-house or by any Métropole Rouen Normandie provider. Web Vitals performance and accessibility under control at delivery.",
+          "Quote delivered from 24 to 48 hours depending on complexity, based on a framing session run in Saint-Étienne-du-Rouvray or remotely. EU hosting and GDPR compliance built in from design; for Madrillet organisations and testing centres handling sensitive technical data, reinforced access governance. You remain the owner of the code, access and hosting: sites delivered with no vendor lock-in, recoverable in-house or by any Métropole Rouen Normandie provider. Web Vitals performance and accessibility under control at delivery.",
       },
     },
   },

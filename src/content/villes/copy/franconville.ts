@@ -132,11 +132,11 @@ export const FRANCONVILLE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis et faut-il changer mes outils existants ?",
-            a: "Un devis est remis à partir de 48 h selon la complexité du projet. Nous nous greffons sur vos outils existants (caisse, CRM, gestion de stock) chaque fois que possible et évitons toute dépendance imposée : vous gardez la propriété du code et des données, hébergées dans l'Union européenne en conformité RGPD.",
+            a: "Un devis est remis à partir de 24 à 48 h selon la complexité du projet. Nous nous greffons sur vos outils existants (caisse, CRM, gestion de stock) chaque fois que possible et évitons toute dépendance imposée : vous gardez la propriété du code et des données, hébergées dans l'Union européenne en conformité RGPD.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Sites et plateformes hébergés dans l'Union européenne, en conformité RGPD, avec documentation des traitements et minimisation des données clients. Vous gardez la propriété du code et des accès, transférables à tout prestataire francilien ou repris en interne — aucune dépendance Axion-IA imposée.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Sites et plateformes hébergés dans l'Union européenne, en conformité RGPD, avec documentation des traitements et minimisation des données clients. Vous gardez la propriété du code et des accès, transférables à tout prestataire francilien ou repris en interne — aucune dépendance Axion-IA imposée.",
       },
       en: {
         hero: "In Franconville, the economy is retail-first: the town concentrates a regional commercial hub built around IKEA, E.Leclerc and the Quai des Marques outlet centre (operated by Marques Avenue Groupe, around 95 stores drawing roughly 1.4 million visitors a year), three business zones managed by Val Parisis — Porte du Parisis (about 2,000 jobs), Ermitage and Montfrais — and four neighbourhood retail clusters from the town centre to the station. Axion-IA designs AI-augmented websites and SaaS platforms for these merchants, brands, tradespeople and service firms, delivered on site, in the Val-d'Oise.",
@@ -218,11 +218,11 @@ export const FRANCONVILLE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and must I change my existing tools?",
-            a: "A quote is provided from 48 hours depending on project complexity. We integrate with your existing tools (POS, CRM, stock management) wherever possible and avoid any imposed dependency: you keep ownership of code and data, hosted in the European Union in GDPR compliance.",
+            a: "A quote is provided from 24 to 48 hours depending on project complexity. We integrate with your existing tools (POS, CRM, stock management) wherever possible and avoid any imposed dependency: you keep ownership of code and data, hosted in the European Union in GDPR compliance.",
           },
         ],
         guarantees:
-          "Quote provided from 48 hours depending on complexity. Sites and platforms hosted in the European Union, GDPR-compliant, with documented processing and customer-data minimisation. You keep ownership of code and access, transferable to any Île-de-France vendor or brought in-house — no imposed Axion-IA dependency. Travel costs across Franconville and Val Parisis are assessed case by case depending on the zone.",
+          "Quote provided from 24 to 48 hours depending on complexity. Sites and platforms hosted in the European Union, GDPR-compliant, with documented processing and customer-data minimisation. You keep ownership of code and access, transferable to any Île-de-France vendor or brought in-house — no imposed Axion-IA dependency. Travel costs across Franconville and Val Parisis are assessed case by case depending on the zone.",
       },
     },
   },

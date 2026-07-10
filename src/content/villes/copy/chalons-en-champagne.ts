@@ -50,7 +50,7 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Châlons-en-Champagne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. On travaille le tissu réel du bassin — opérateurs logistiques de la plateforme Paris-Vatry (FM Logistic, Geodis, Veolog, Scapest), agro-industrie (usine McCain de Matougues, coopératives Cristal Union/Prodeva), maison Joseph Perrier et services publics du projet Connecte Châlons. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Châlons-en-Champagne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Châlons-en-Champagne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. On travaille le tissu réel du bassin — opérateurs logistiques de la plateforme Paris-Vatry (FM Logistic, Geodis, Veolog, Scapest), agro-industrie (usine McCain de Matougues, coopératives Cristal Union/Prodeva), maison Joseph Perrier et services publics du projet Connecte Châlons. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Châlons-en-Champagne, itérations à distance.",
         whyHere: [
           "Châlons est un hub logistique : la plateforme Paris-Vatry (~30 entreprises, ~1 300 emplois) concentre FM Logistic, Geodis, Veolog (pour LVMH) et Scapest (E. Leclerc) — on construit portails clients, suivi d'expédition et automatisations branchées sur WMS/TMS et flux EDI douane.",
           "Agro-industrie du bassin : usine McCain de Matougues (620-650 t de frites/jour, ~300 agriculteurs partenaires), coopératives Cristal Union et déshydratation Prodeva à Vatry — extranets agriculteurs, traçabilité contrats, tableaux de bord production.",
@@ -61,7 +61,7 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Châlons-en-Champagne",
             detail:
-              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus — qu'il s'agisse d'un portail logistique Vatry, d'un extranet agriculteurs McCain ou d'une vitrine champagne. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus — qu'il s'agisse d'un portail logistique Vatry, d'un extranet agriculteurs McCain ou d'une vitrine champagne. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Châlons, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme logistique ou agro-industrielle étendue. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage à Châlons, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme logistique ou agro-industrielle étendue. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des flux logistiques Vatry en service continu. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin Marne ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des flux logistiques Vatry en service continu. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin Marne ou repris en interne.",
       },
       en: {
-        hero: "In Châlons-en-Champagne, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. We work the real local fabric — logistics operators of the Paris-Vatry platform (FM Logistic, Geodis, Veolog, Scapest), agri-industry (McCain's Matougues plant, Cristal Union/Prodeva cooperatives), the Joseph Perrier champagne house and the public services of the Connecte Châlons project. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Châlons-en-Champagne kick-off, remote iterations.",
+        hero: "In Châlons-en-Champagne, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. We work the real local fabric — logistics operators of the Paris-Vatry platform (FM Logistic, Geodis, Veolog, Scapest), agri-industry (McCain's Matougues plant, Cristal Union/Prodeva cooperatives), the Joseph Perrier champagne house and the public services of the Connecte Châlons project. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Châlons-en-Champagne kick-off, remote iterations.",
         whyHere: [
           "Châlons is a logistics hub: the Paris-Vatry platform (~30 companies, ~1,300 jobs) hosts FM Logistic, Geodis, Veolog (for LVMH) and Scapest (E. Leclerc) — we build customer portals, shipment tracking and automations wired to WMS/TMS and EDI/customs flows.",
           "Local agri-industry: McCain's Matougues plant (620-650 t of fries/day, ~300 partner farmers), Cristal Union cooperatives and Prodeva dehydration at Vatry — farmer extranets, contract traceability, production dashboards.",
@@ -147,7 +147,7 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
           {
             step: "Scoping in Châlons-en-Champagne",
             detail:
-              "On-site workshop: goals, user journeys, audit of the existing stack and content — whether a Vatry logistics portal, a McCain farmer extranet or a champagne storefront. Firm quote from 48 h depending on complexity.",
+              "On-site workshop: goals, user journeys, audit of the existing stack and content — whether a Vatry logistics portal, a McCain farmer extranet or a champagne storefront. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -215,11 +215,11 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping in Châlons we deliver a firm fixed-price quote. The turnaround depends on complexity — from 48 h for a simple project, longer for an extended logistics or agri-industrial platform. No time-and-materials, no hidden overrun.",
+            a: "Yes. After scoping in Châlons we deliver a firm fixed-price quote. The turnaround depends on complexity — from 24-48 h for a simple project, longer for an extended logistics or agri-industrial platform. No time-and-materials, no hidden overrun.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden time overrun. Zero-downtime go-live when augmenting an existing site, including continuously running Vatry logistics flows. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Marne-basin provider or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden time overrun. Zero-downtime go-live when augmenting an existing site, including continuously running Vatry logistics flows. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Marne-basin provider or taken in-house.",
       },
     },
   },

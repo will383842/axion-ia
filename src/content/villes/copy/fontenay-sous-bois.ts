@@ -53,7 +53,7 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Fontenay-sous-Bois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, à deux pas du campus technologique « Les Dunes » de la Société Générale et du quartier d'affaires de Val-de-Fontenay (RATP, AXA, BNP Paribas), nous travaillons surtout pour le tissu dense de TPE et PME qui gravite autour de ces sièges. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-sous-Bois, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Fontenay-sous-Bois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, à deux pas du campus technologique « Les Dunes » de la Société Générale et du quartier d'affaires de Val-de-Fontenay (RATP, AXA, BNP Paribas), nous travaillons surtout pour le tissu dense de TPE et PME qui gravite autour de ces sièges. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-sous-Bois, itérations à distance.",
         whyHere: [
           "Projets web & SaaS fontenaysiens : prestataires IT et sous-traitants des grands sièges de Val-de-Fontenay (campus « Les Dunes » de la Société Générale, RATP, AXA, BNP Paribas), éditeurs et ESN de l'est parisien.",
           "Exigences de niveau bancaire : nous savons construire des portails et SaaS qui tiennent les standards data, cybersécurité et architecture SI attendus par les donneurs d'ordre du quartier d'affaires.",
@@ -64,7 +64,7 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Fontenay-sous-Bois",
             detail:
-              "Atelier sur site, à Val-de-Fontenay ou dans vos locaux : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, à Val-de-Fontenay ou dans vos locaux : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier branchée sur votre SI. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier branchée sur votre SI. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et version mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'est parisien ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et version mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'est parisien ou repris en interne.",
       },
       en: {
-        hero: "In Fontenay-sous-Bois, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Here, a stone's throw from Société Générale's \"Les Dunes\" technology campus and the Val-de-Fontenay business district (RATP, AXA, BNP Paribas), we mostly serve the dense fabric of small and mid-sized firms orbiting these head offices. Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site Fontenay-sous-Bois kick-off, remote iterations.",
+        hero: "In Fontenay-sous-Bois, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Here, a stone's throw from Société Générale's \"Les Dunes\" technology campus and the Val-de-Fontenay business district (RATP, AXA, BNP Paribas), we mostly serve the dense fabric of small and mid-sized firms orbiting these head offices. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Fontenay-sous-Bois kick-off, remote iterations.",
         whyHere: [
           'Fontenay web & SaaS projects: IT providers and subcontractors of the major Val-de-Fontenay head offices (Société Générale\'s "Les Dunes" campus, RATP, AXA, BNP Paribas), software vendors and IT service firms of eastern Paris.',
           "Bank-grade requirements: we build portals and SaaS that meet the data, cybersecurity and IS-architecture standards expected by the district's clients.",
@@ -150,7 +150,7 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Scoping in Fontenay-sous-Bois",
             detail:
-              "On-site workshop, at Val-de-Fontenay or your premises: goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop, at Val-de-Fontenay or your premises: goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping, we issue a firm fixed-price quote. The turnaround depends on complexity — from 48 h for a simple project, longer for a platform wired into your IS. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After scoping, we issue a firm fixed-price quote. The turnaround depends on complexity — from 24-48 h for a simple project, longer for a platform wired into your IS. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site. Web Vitals, accessibility and mobile version checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any eastern-Paris provider or taken back in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site. Web Vitals, accessibility and mobile version checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any eastern-Paris provider or taken back in-house.",
       },
     },
   },

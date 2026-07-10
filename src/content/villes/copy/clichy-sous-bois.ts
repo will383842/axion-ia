@@ -50,7 +50,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Clichy-sous-Bois des sites web, boutiques en ligne et applications avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, prise de rendez-vous et automatisations. Le tissu local est en pleine recomposition — émergence d'un nouveau pôle commercial avec l'opération Clichy Cœur de Ville (ZAC du Bas-Clichy), rez-de-chaussée actifs de l'ORCOD-IN du Chêne Pointu, et arrivée des Ateliers Médicis — autant de commerces de proximité, artisans du bâtiment et porteurs de projets culturels à doter d'une vraie présence en ligne. Devis à partir de 48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Clichy-sous-Bois (accès tram T4), itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Clichy-sous-Bois des sites web, boutiques en ligne et applications avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, prise de rendez-vous et automatisations. Le tissu local est en pleine recomposition — émergence d'un nouveau pôle commercial avec l'opération Clichy Cœur de Ville (ZAC du Bas-Clichy), rez-de-chaussée actifs de l'ORCOD-IN du Chêne Pointu, et arrivée des Ateliers Médicis — autant de commerces de proximité, artisans du bâtiment et porteurs de projets culturels à doter d'une vraie présence en ligne. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Clichy-sous-Bois (accès tram T4), itérations à distance.",
         whyHere: [
           "Commerces de proximité et rez-de-chaussée actifs issus de l'opération Clichy Cœur de Ville / ZAC du Bas-Clichy : site vitrine, fiche Google, click-and-collect ou e-commerce léger pour capter une clientèle de quartier en pleine recomposition.",
           "Artisans du bâtiment portés par le chantier NPNRU (démolitions/reconstructions du Chêne Pointu) : sites de devis en ligne, prise de rendez-vous et suivi de chantier automatisés, sans plateforme no-code propriétaire.",
@@ -61,7 +61,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Clichy-sous-Bois",
             detail:
-              "Atelier sur site (accès tram T4, station Mairie de Clichy-sous-Bois ou Clichy-Montfermeil) : objectifs, audit de l'existant et des contenus, parcours clients. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (accès tram T4, station Mairie de Clichy-sous-Bois ou Clichy-Montfermeil) : objectifs, audit de l'existant et des contenus, parcours clients. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -113,7 +113,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
         faq: [
           {
             q: "Pouvez-vous équiper un commerce qui ouvre dans le nouveau centre-ville du Bas-Clichy ?",
-            a: "Oui. L'opération Clichy Cœur de Ville fait émerger un nouveau pôle commercial et des rez-de-chaussée actifs : nous livrons rapidement un site vitrine, une fiche Google optimisée, un module de click-and-collect ou une boutique e-commerce légère pour capter dès l'ouverture la clientèle de quartier. Devis à partir de 48 h.",
+            a: "Oui. L'opération Clichy Cœur de Ville fait émerger un nouveau pôle commercial et des rez-de-chaussée actifs : nous livrons rapidement un site vitrine, une fiche Google optimisée, un module de click-and-collect ou une boutique e-commerce légère pour capter dès l'ouverture la clientèle de quartier. Devis à partir de 24-48 h.",
           },
           {
             q: "Je suis artisan du bâtiment lié au chantier de rénovation : que pouvez-vous faire ?",
@@ -133,10 +133,10 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant. Web Vitals, accessibilité et référencement local (SEO/AEO) contrôlés à la livraison — un atout pour les commerces du nouveau centre-ville du Bas-Clichy et les structures culturelles des Ateliers Médicis. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Seine-Saint-Denis ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant. Web Vitals, accessibilité et référencement local (SEO/AEO) contrôlés à la livraison — un atout pour les commerces du nouveau centre-ville du Bas-Clichy et les structures culturelles des Ateliers Médicis. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Seine-Saint-Denis ou repris en interne.",
       },
       en: {
-        hero: "In Clichy-sous-Bois, Axion-IA designs and augments websites, online stores and applications with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, booking and automations. The local fabric is being reshaped — a new retail hub emerging through the Clichy Cœur de Ville operation (ZAC du Bas-Clichy), active ground floors of the Chêne Pointu ORCOD-IN, and the arrival of the Ateliers Médicis — meaning local shops, building-trade craftsmen and cultural project leaders all needing a real online presence. Quote from 48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Clichy-sous-Bois (T4 tram access), remote iterations.",
+        hero: "In Clichy-sous-Bois, Axion-IA designs and augments websites, online stores and applications with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, booking and automations. The local fabric is being reshaped — a new retail hub emerging through the Clichy Cœur de Ville operation (ZAC du Bas-Clichy), active ground floors of the Chêne Pointu ORCOD-IN, and the arrival of the Ateliers Médicis — meaning local shops, building-trade craftsmen and cultural project leaders all needing a real online presence. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Clichy-sous-Bois (T4 tram access), remote iterations.",
         whyHere: [
           "Local shops and active ground floors from the Clichy Cœur de Ville / ZAC du Bas-Clichy operation: showcase site, Google listing, click-and-collect or light e-commerce to capture a neighbourhood clientele in full transformation.",
           "Building-trade craftsmen driven by the NPNRU works (demolitions/reconstructions at Chêne Pointu): online quote sites, booking and automated worksite follow-up, with no proprietary no-code platform.",
@@ -147,7 +147,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Scoping in Clichy-sous-Bois",
             detail:
-              "On-site workshop (T4 tram access, Mairie de Clichy-sous-Bois or Clichy-Montfermeil stop): goals, audit of the existing site and content, customer journeys. Firm quote from 48 h depending on complexity.",
+              "On-site workshop (T4 tram access, Mairie de Clichy-sous-Bois or Clichy-Montfermeil stop): goals, audit of the existing site and content, customer journeys. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -199,7 +199,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
         faq: [
           {
             q: "Can you equip a shop opening in the new Bas-Clichy town centre?",
-            a: "Yes. The Clichy Cœur de Ville operation is creating a new retail hub and active ground floors: we quickly deliver a showcase site, an optimised Google listing, a click-and-collect module or a light e-commerce store to capture neighbourhood customers from day one. Quote from 48 h.",
+            a: "Yes. The Clichy Cœur de Ville operation is creating a new retail hub and active ground floors: we quickly deliver a showcase site, an optimised Google listing, a click-and-collect module or a light e-commerce store to capture neighbourhood customers from day one. Quote from 24-48 h.",
           },
           {
             q: "I am a building-trade craftsman tied to the renovation works — what can you do?",
@@ -219,7 +219,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without service interruption when augmenting an existing site. Web Vitals, accessibility and local search (SEO/AEO) checked at delivery — an asset for shops in the new Bas-Clichy town centre and for the cultural organisations of the Ateliers Médicis. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Seine-Saint-Denis provider or brought in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without service interruption when augmenting an existing site. Web Vitals, accessibility and local search (SEO/AEO) checked at delivery — an asset for shops in the new Bas-Clichy town centre and for the cultural organisations of the Ateliers Médicis. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Seine-Saint-Denis provider or brought in-house.",
       },
     },
   },

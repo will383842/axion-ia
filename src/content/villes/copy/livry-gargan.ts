@@ -50,7 +50,7 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Livry-Gargan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre terrain : les TPE/PME transport-logistique tirant parti du carrefour ex-RN3 × RN370 vers Roissy, les ~210 entreprises de la zone d'activités Poudrerie, les commerces de proximité de la place de la gare de Gargan et les professionnels de santé du bassin du GHI Le Raincy-Montfermeil. Devis à partir de 48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Livry-Gargan, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Livry-Gargan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre terrain : les TPE/PME transport-logistique tirant parti du carrefour ex-RN3 × RN370 vers Roissy, les ~210 entreprises de la zone d'activités Poudrerie, les commerces de proximité de la place de la gare de Gargan et les professionnels de santé du bassin du GHI Le Raincy-Montfermeil. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Livry-Gargan, itérations à distance.",
         whyHere: [
           "Tissu transport-logistique dominant : sociétés comme Transport Lanseur, GS Transport ou SA Transport, qui exploitent la proximité de Roissy via la RN370 — nous outillons portails de suivi de tournées, prise de commande en ligne et agents de réponse aux transporteurs.",
           "Zone d'activités Poudrerie en requalification (~14,6 ha, ~210 entreprises, projet 19/57 ha avec Paris & Métropole Aménagement) : artisans BTP/étanchéité et PME de services à qui nous livrons sites vitrines, devis en ligne et automatisations métier sans refonte lourde.",
@@ -61,7 +61,7 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
           {
             step: "Cadrage à Livry-Gargan",
             detail:
-              "Atelier sur site — en zone Poudrerie, en centre-ville près de la gare de Gargan ou dans vos locaux : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — en zone Poudrerie, en centre-ville près de la gare de Gargan ou dans vos locaux : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Livry-Gargan, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme logistique étendue. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site à Livry-Gargan, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme logistique étendue. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, transférable à tout prestataire francilien — du centre-ville de Livry-Gargan à la zone d'activités Poudrerie — ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, transférable à tout prestataire francilien — du centre-ville de Livry-Gargan à la zone d'activités Poudrerie — ou repris en interne.",
       },
       en: {
-        hero: "In Livry-Gargan, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Our ground: transport-logistics SMEs leveraging the former-RN3 × RN370 junction toward Roissy, the ~210 companies of the Poudrerie activity zone, the proximity shops around Gargan station square, and the healthcare practitioners of the GHI Le Raincy-Montfermeil catchment. Quote from 48 h depending on project complexity, EU/GDPR hosting, code and data yours. On-site Livry-Gargan kick-off, remote iterations.",
+        hero: "In Livry-Gargan, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Our ground: transport-logistics SMEs leveraging the former-RN3 × RN370 junction toward Roissy, the ~210 companies of the Poudrerie activity zone, the proximity shops around Gargan station square, and the healthcare practitioners of the GHI Le Raincy-Montfermeil catchment. Quote from 24-48 h depending on project complexity, EU/GDPR hosting, code and data yours. On-site Livry-Gargan kick-off, remote iterations.",
         whyHere: [
           "Dominant transport-logistics fabric: firms such as Transport Lanseur, GS Transport or SA Transport leveraging Roissy proximity via the RN370 — we build route-tracking portals, online ordering and carrier-response agents.",
           "Poudrerie activity zone under redevelopment (~14.6 ha, ~210 companies, 19/57 ha project with Paris & Métropole Aménagement): BTP/waterproofing artisans and service SMEs for whom we deliver showcase sites, online quotes and business automations without heavy rebuilds.",
@@ -147,7 +147,7 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
           {
             step: "Scoping in Livry-Gargan",
             detail:
-              "On-site workshop — in the Poudrerie zone, downtown near Gargan station or at your offices: goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop — in the Poudrerie zone, downtown near Gargan station or at your offices: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -215,11 +215,11 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the on-site scoping in Livry-Gargan, we issue a firm fixed-price quote. Turnaround depends on complexity — from 48 h for a simple project, longer for an extended logistics platform. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the on-site scoping in Livry-Gargan, we issue a firm fixed-price quote. Turnaround depends on complexity — from 24-48 h for a simple project, longer for an extended logistics platform. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. No-downtime go-live when augmenting an existing site. Web Vitals, accessibility and local SEO/AEO checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, transferable to any Île-de-France vendor — from downtown Livry-Gargan to the Poudrerie activity zone — or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. No-downtime go-live when augmenting an existing site. Web Vitals, accessibility and local SEO/AEO checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, transferable to any Île-de-France vendor — from downtown Livry-Gargan to the Poudrerie activity zone — or taken in-house.",
       },
     },
   },

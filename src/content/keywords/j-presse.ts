@@ -34,7 +34,7 @@ import type { KeywordSeed } from "./types";
 //
 //  Douleur : Le journaliste presse éco / tech a une deadline serrée.
 //  Il cherche sur Google un expert accessible, crédible, sachant parler
-//  aux non-techniciens, disponible sous 48 h.
+//  aux non-techniciens, disponible sous 24-48 h.
 //  Intent : informationnel (phase de sourcing expert avant contact direct).
 //  Pages cibles : /fr/presse/ + /fr/presse/intervenants/
 // ─────────────────────────────────────────────────────────────────────────────

@@ -52,7 +52,7 @@ export const ELANCOURT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Élancourt des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire industriel structuré par le parc d'activités de la Clef de Saint-Pierre, créé en 1990 sur 160 hectares à cheval avec Trappes, où cohabitent l'aérospatial et la défense (Thales DMS France, dont le siège est avenue Gay-Lussac, Airbus Defence and Space) et une centaine d'entreprises réunissant plus de 8 400 salariés, au cœur de Saint-Quentin-en-Yvelines et du périmètre Paris-Saclay. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Élancourt, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Élancourt des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire industriel structuré par le parc d'activités de la Clef de Saint-Pierre, créé en 1990 sur 160 hectares à cheval avec Trappes, où cohabitent l'aérospatial et la défense (Thales DMS France, dont le siège est avenue Gay-Lussac, Airbus Defence and Space) et une centaine d'entreprises réunissant plus de 8 400 salariés, au cœur de Saint-Quentin-en-Yvelines et du périmètre Paris-Saclay. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Élancourt, itérations à distance.",
         whyHere: [
           "Pôle aérospatial et défense de la Clef de Saint-Pierre (Thales DMS France et son siège avenue Gay-Lussac, Airbus Defence and Space, CRMA, Matra) : pour ces donneurs d'ordres et leurs sous-traitants, on construit des portails fournisseurs, des plateformes SaaS métier et des moteurs de recherche sémantique dans la documentation technique, avec NDA, hébergement souverain et code source auditable quand le secret défense l'exige.",
           "Centaine d'entreprises et 8 400 salariés concentrés sur les 160 hectares du parc, doublés d'un écosystème dense de sous-traitants industriels et de PME des Yvelines : plutôt qu'une refonte coûteuse, on greffe l'IA sur l'existant (widget, API, plugin ERP/MES) ou on livre une vitrine e-commerce B2B sur mesure, en WordPress, Shopify, WooCommerce, PrestaShop ou Magento selon votre stack.",
@@ -63,7 +63,7 @@ export const ELANCOURT_COPY: VilleCopy = {
           {
             step: "Cadrage à Élancourt",
             detail:
-              "Atelier sur site (parc d'activités de la Clef de Saint-Pierre, centre-ville, ZAC de Saint-Quentin-en-Yvelines) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité défense. On remet un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (parc d'activités de la Clef de Saint-Pierre, centre-ville, ZAC de Saint-Quentin-en-Yvelines) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité défense. On remet un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -131,14 +131,14 @@ export const ELANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données, de votre code et de vos modèles. Après le cadrage sur site à Élancourt, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données, de votre code et de vos modèles. Après le cadrage sur site à Élancourt, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback documenté. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, design system, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout moment à un prestataire local des Yvelines ou de Saint-Quentin-en-Yvelines, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback documenté. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, design system, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout moment à un prestataire local des Yvelines ou de Saint-Quentin-en-Yvelines, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Élancourt des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire industriel structuré par le parc d'activités de la Clef de Saint-Pierre, créé en 1990 sur 160 hectares à cheval avec Trappes, où cohabitent l'aérospatial et la défense (Thales DMS France, dont le siège est avenue Gay-Lussac, Airbus Defence and Space) et une centaine d'entreprises réunissant plus de 8 400 salariés, au cœur de Saint-Quentin-en-Yvelines et du périmètre Paris-Saclay. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Élancourt, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Élancourt des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire industriel structuré par le parc d'activités de la Clef de Saint-Pierre, créé en 1990 sur 160 hectares à cheval avec Trappes, où cohabitent l'aérospatial et la défense (Thales DMS France, dont le siège est avenue Gay-Lussac, Airbus Defence and Space) et une centaine d'entreprises réunissant plus de 8 400 salariés, au cœur de Saint-Quentin-en-Yvelines et du périmètre Paris-Saclay. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Élancourt, itérations à distance.",
         whyHere: [
           "Pôle aérospatial et défense de la Clef de Saint-Pierre (Thales DMS France et son siège avenue Gay-Lussac, Airbus Defence and Space, CRMA, Matra) : pour ces donneurs d'ordres et leurs sous-traitants, on construit des portails fournisseurs, des plateformes SaaS métier et des moteurs de recherche sémantique dans la documentation technique, avec NDA, hébergement souverain et code source auditable quand le secret défense l'exige.",
           "Centaine d'entreprises et 8 400 salariés concentrés sur les 160 hectares du parc, doublés d'un écosystème dense de sous-traitants industriels et de PME des Yvelines : plutôt qu'une refonte coûteuse, on greffe l'IA sur l'existant (widget, API, plugin ERP/MES) ou on livre une vitrine e-commerce B2B sur mesure, en WordPress, Shopify, WooCommerce, PrestaShop ou Magento selon votre stack.",
@@ -149,7 +149,7 @@ export const ELANCOURT_COPY: VilleCopy = {
           {
             step: "Cadrage à Élancourt",
             detail:
-              "Atelier sur site (parc d'activités de la Clef de Saint-Pierre, centre-ville, ZAC de Saint-Quentin-en-Yvelines) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité défense. On remet un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (parc d'activités de la Clef de Saint-Pierre, centre-ville, ZAC de Saint-Quentin-en-Yvelines) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes de confidentialité défense. On remet un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -217,11 +217,11 @@ export const ELANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données, de votre code et de vos modèles. Après le cadrage sur site à Élancourt, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données, de votre code et de vos modèles. Après le cadrage sur site à Élancourt, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback documenté. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, design system, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout moment à un prestataire local des Yvelines ou de Saint-Quentin-en-Yvelines, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback documenté. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, design system, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout moment à un prestataire local des Yvelines ou de Saint-Quentin-en-Yvelines, ou reprise en interne par vos équipes.",
       },
     },
   },

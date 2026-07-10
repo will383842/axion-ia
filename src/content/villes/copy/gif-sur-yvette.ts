@@ -53,7 +53,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Gif-sur-Yvette des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails deeptech, chatbot RAG multilingue ancré sur vos publications, recherche sémantique, agents et automatisations. Pensé pour le plateau de Saclay, où le CNRS (campus de 64 hectares, plus de 1 300 chercheurs et ingénieurs), le CEA, CentraleSupélec sur le plateau de Moulon et le synchrotron SOLEIL voisin nourrissent un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires scientifiques. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gif-sur-Yvette, itérations à distance avec vos fondateurs et vos équipes de recherche.",
+        hero: "Axion-IA conçoit et augmente à Gif-sur-Yvette des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails deeptech, chatbot RAG multilingue ancré sur vos publications, recherche sémantique, agents et automatisations. Pensé pour le plateau de Saclay, où le CNRS (campus de 64 hectares, plus de 1 300 chercheurs et ingénieurs), le CEA, CentraleSupélec sur le plateau de Moulon et le synchrotron SOLEIL voisin nourrissent un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires scientifiques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gif-sur-Yvette, itérations à distance avec vos fondateurs et vos équipes de recherche.",
         whyHere: [
           "Cluster scientifique Paris-Saclay (CNRS, CEA, CentraleSupélec sur le plateau de Moulon, grandes écoles) : nous construisons des portails de présentation deeptech et des plateformes de valorisation de la recherche, avec UX/UI sur mesure capable d'expliquer des travaux complexes — physique, matériaux, biologie — à des investisseurs et partenaires non spécialistes, et de structurer une data room claire.",
           "Tissu de spin-offs et jeunes PME innovantes issues des laboratoires (le CNRS revendique une soixantaine de startups nées de ses unités franciliennes) aux fonctions support limitées : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — recherche sémantique sur la documentation technique, chatbot RAG ancré sur vos publications et brevets, mobile-first pour vos visiteurs en conférence.",
@@ -64,7 +64,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
           {
             step: "Cadrage à Gif-sur-Yvette",
             detail:
-              "Atelier sur site (vos locaux sur le plateau de Saclay ou de Moulon, à proximité des centres CNRS/CEA, de CentraleSupélec et de l'université Paris-Saclay) : objectifs, parcours utilisateurs, audit de la stack, des contenus scientifiques et des contraintes de confidentialité. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (vos locaux sur le plateau de Saclay ou de Moulon, à proximité des centres CNRS/CEA, de CentraleSupélec et de l'université Paris-Saclay) : objectifs, parcours utilisateurs, audit de la stack, des contenus scientifiques et des contraintes de confidentialité. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Gif-sur-Yvette, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, ce qui sécurise des budgets de startup deeptech souvent calés sur une levée ou un appel à projets précis.",
+            a: "Oui. Après le cadrage sur site à Gif-sur-Yvette, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, ce qui sécurise des budgets de startup deeptech souvent calés sur une levée ou un appel à projets précis.",
           },
           {
             q: "Pouvez-vous valoriser nos publications et brevets en ligne ?",
@@ -136,10 +136,10 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, un atout pour des budgets de startup deeptech serrés et calés sur une levée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire francilien du plateau de Saclay ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, un atout pour des budgets de startup deeptech serrés et calés sur une levée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire francilien du plateau de Saclay ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Gif-sur-Yvette des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails deeptech, chatbot RAG multilingue ancré sur vos publications, recherche sémantique, agents et automatisations. Pensé pour le plateau de Saclay, où le CNRS (campus de 64 hectares, plus de 1 300 chercheurs et ingénieurs), le CEA, CentraleSupélec sur le plateau de Moulon et le synchrotron SOLEIL voisin nourrissent un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires scientifiques. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gif-sur-Yvette, itérations à distance avec vos fondateurs et vos équipes de recherche.",
+        hero: "Axion-IA conçoit et augmente à Gif-sur-Yvette des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails deeptech, chatbot RAG multilingue ancré sur vos publications, recherche sémantique, agents et automatisations. Pensé pour le plateau de Saclay, où le CNRS (campus de 64 hectares, plus de 1 300 chercheurs et ingénieurs), le CEA, CentraleSupélec sur le plateau de Moulon et le synchrotron SOLEIL voisin nourrissent un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires scientifiques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gif-sur-Yvette, itérations à distance avec vos fondateurs et vos équipes de recherche.",
         whyHere: [
           "Cluster scientifique Paris-Saclay (CNRS, CEA, CentraleSupélec sur le plateau de Moulon, grandes écoles) : nous construisons des portails de présentation deeptech et des plateformes de valorisation de la recherche, avec UX/UI sur mesure capable d'expliquer des travaux complexes — physique, matériaux, biologie — à des investisseurs et partenaires non spécialistes, et de structurer une data room claire.",
           "Tissu de spin-offs et jeunes PME innovantes issues des laboratoires (le CNRS revendique une soixantaine de startups nées de ses unités franciliennes) aux fonctions support limitées : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — recherche sémantique sur la documentation technique, chatbot RAG ancré sur vos publications et brevets, mobile-first pour vos visiteurs en conférence.",
@@ -150,7 +150,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
           {
             step: "Cadrage à Gif-sur-Yvette",
             detail:
-              "Atelier sur site (vos locaux sur le plateau de Saclay ou de Moulon, à proximité des centres CNRS/CEA, de CentraleSupélec et de l'université Paris-Saclay) : objectifs, parcours utilisateurs, audit de la stack, des contenus scientifiques et des contraintes de confidentialité. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (vos locaux sur le plateau de Saclay ou de Moulon, à proximité des centres CNRS/CEA, de CentraleSupélec et de l'université Paris-Saclay) : objectifs, parcours utilisateurs, audit de la stack, des contenus scientifiques et des contraintes de confidentialité. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Gif-sur-Yvette, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, ce qui sécurise des budgets de startup deeptech souvent calés sur une levée ou un appel à projets précis.",
+            a: "Oui. Après le cadrage sur site à Gif-sur-Yvette, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, ce qui sécurise des budgets de startup deeptech souvent calés sur une levée ou un appel à projets précis.",
           },
           {
             q: "Pouvez-vous valoriser nos publications et brevets en ligne ?",
@@ -222,7 +222,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, un atout pour des budgets de startup deeptech serrés et calés sur une levée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire francilien du plateau de Saclay ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, un atout pour des budgets de startup deeptech serrés et calés sur une levée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire francilien du plateau de Saclay ou repris en interne par vos équipes.",
       },
     },
   },

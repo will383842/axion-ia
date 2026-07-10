@@ -51,7 +51,7 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Chemillé-en-Anjou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune nouvelle de près de 22 000 habitants, l'une des plus vastes de France métropolitaine (323,98 km²), née en 2015 du regroupement de 13 communes déléguées au sein de Mauges Communauté, dans l'arrondissement de Cholet. Le tissu y est fait de TPE et PME familiales de l'horticulture et des plantes médicinales, de l'agroalimentaire, de l'artisanat et de la viticulture AOC Anjou et Coteaux du Layon. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chemillé, à 5 min de la sortie A87, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chemillé-en-Anjou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune nouvelle de près de 22 000 habitants, l'une des plus vastes de France métropolitaine (323,98 km²), née en 2015 du regroupement de 13 communes déléguées au sein de Mauges Communauté, dans l'arrondissement de Cholet. Le tissu y est fait de TPE et PME familiales de l'horticulture et des plantes médicinales, de l'agroalimentaire, de l'artisanat et de la viticulture AOC Anjou et Coteaux du Layon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chemillé, à 5 min de la sortie A87, itérations à distance.",
         whyHere: [
           "Capitale historique des plantes médicinales et des semences, Chemillé concentre une filière végétale rare en France : pour les horticulteurs, pépiniéristes et producteurs de simples des Mauges, on bâtit des catalogues en ligne avec recherche sémantique par variété, fiches culture, calendrier de plantation et gestion de stocks de plants — bien au-delà d'une simple vitrine, jusqu'à la vente directe e-commerce.",
           "Agroalimentaire dense et exigeant en traçabilité autour de Cholet : nos plateformes sur mesure relient production, planification et étiquetage, avec des agents IA qui automatisent devis, bons de livraison, étiquetage par lot et suivi qualité pour les ateliers, coopératives et conserveries locales, branchés sur leur ERP existant.",
@@ -62,7 +62,7 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
           {
             step: "Cadrage à Chemillé-en-Anjou",
             detail:
-              "Atelier sur site — bourg de Chemillé, zone d'activité des Mauges, exploitation horticole ou atelier agroalimentaire : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité plantation/vendanges. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — bourg de Chemillé, zone d'activité des Mauges, exploitation horticole ou atelier agroalimentaire : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité plantation/vendanges. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, catalogues et modèles. Après le cadrage sur site à Chemillé, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans régie ni dérive horaire.",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, catalogues et modèles. Après le cadrage sur site à Chemillé, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de plantation ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire des Mauges ou du Choletais, ou repris en interne par vos équipes à Chemillé.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de plantation ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire des Mauges ou du Choletais, ou repris en interne par vos équipes à Chemillé.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Chemillé-en-Anjou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune nouvelle de près de 22 000 habitants, l'une des plus vastes de France métropolitaine (323,98 km²), née en 2015 du regroupement de 13 communes déléguées au sein de Mauges Communauté, dans l'arrondissement de Cholet. Le tissu y est fait de TPE et PME familiales de l'horticulture et des plantes médicinales, de l'agroalimentaire, de l'artisanat et de la viticulture AOC Anjou et Coteaux du Layon. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chemillé, à 5 min de la sortie A87, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chemillé-en-Anjou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune nouvelle de près de 22 000 habitants, l'une des plus vastes de France métropolitaine (323,98 km²), née en 2015 du regroupement de 13 communes déléguées au sein de Mauges Communauté, dans l'arrondissement de Cholet. Le tissu y est fait de TPE et PME familiales de l'horticulture et des plantes médicinales, de l'agroalimentaire, de l'artisanat et de la viticulture AOC Anjou et Coteaux du Layon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chemillé, à 5 min de la sortie A87, itérations à distance.",
         whyHere: [
           "Capitale historique des plantes médicinales et des semences, Chemillé concentre une filière végétale rare en France : pour les horticulteurs, pépiniéristes et producteurs de simples des Mauges, on bâtit des catalogues en ligne avec recherche sémantique par variété, fiches culture, calendrier de plantation et gestion de stocks de plants — bien au-delà d'une simple vitrine, jusqu'à la vente directe e-commerce.",
           "Agroalimentaire dense et exigeant en traçabilité autour de Cholet : nos plateformes sur mesure relient production, planification et étiquetage, avec des agents IA qui automatisent devis, bons de livraison, étiquetage par lot et suivi qualité pour les ateliers, coopératives et conserveries locales, branchés sur leur ERP existant.",
@@ -148,7 +148,7 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
           {
             step: "Cadrage à Chemillé-en-Anjou",
             detail:
-              "Atelier sur site — bourg de Chemillé, zone d'activité des Mauges, exploitation horticole ou atelier agroalimentaire : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité plantation/vendanges. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — bourg de Chemillé, zone d'activité des Mauges, exploitation horticole ou atelier agroalimentaire : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité plantation/vendanges. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, catalogues et modèles. Après le cadrage sur site à Chemillé, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans régie ni dérive horaire.",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, catalogues et modèles. Après le cadrage sur site à Chemillé, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de plantation ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire des Mauges ou du Choletais, ou repris en interne par vos équipes à Chemillé.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de plantation ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire des Mauges ou du Choletais, ou repris en interne par vos équipes à Chemillé.",
       },
     },
   },

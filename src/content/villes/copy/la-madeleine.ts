@@ -51,7 +51,7 @@ export const LA_MADELEINE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Madeleine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 21 790 habitants, à 3 km au nord de Lille au cœur de la Métropole européenne de Lille, où le tissu mêle commerces le long de la rue du Général de Gaulle, le quartier d'affaires du Romarin redéveloppé depuis 1990 aux portes d'Euralille, le Parc LINEO le long de la rocade et l'A22, des sièges sociaux comme Supermarchés Match, services financiers et cabinets de conseil issus de la reconversion des anciennes friches textiles. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Madeleine, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Madeleine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 21 790 habitants, à 3 km au nord de Lille au cœur de la Métropole européenne de Lille, où le tissu mêle commerces le long de la rue du Général de Gaulle, le quartier d'affaires du Romarin redéveloppé depuis 1990 aux portes d'Euralille, le Parc LINEO le long de la rocade et l'A22, des sièges sociaux comme Supermarchés Match, services financiers et cabinets de conseil issus de la reconversion des anciennes friches textiles. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Madeleine, itérations à distance.",
         whyHere: [
           "Économie de centre-ville commerçant : la rue du Général de Gaulle, le pôle de proximité et l'axe des Grands Boulevards desservi par l'arrêt Romarin concentrent boutiques, restaurants et artisans — terrain idéal pour des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des parcours click-and-collect mobile-first augmentés à l'IA, branchés sur la caisse et le stock existants.",
           "Quartier d'affaires du Romarin et Parc LINEO le long de la rocade et de l'A22 : sièges sociaux, bureaux et locaux mixtes commerciaux-artisanaux accueillent des entreprises comme Supermarchés Match. Pour elles, on construit des portails clients, intranets et plateformes SaaS IA-native branchés sur vos ERP et CRM, sans refonte brutale du système d'information.",
@@ -62,7 +62,7 @@ export const LA_MADELEINE_COPY: VilleCopy = {
           {
             step: "Cadrage à La Madeleine",
             detail:
-              "Atelier sur site (centre-ville rue du Général de Gaulle, quartier d'affaires du Romarin, Parc LINEO, abords de la gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des intégrations existantes. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville rue du Général de Gaulle, quartier d'affaires du Romarin, Parc LINEO, abords de la gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des intégrations existantes. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const LA_MADELEINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Madeleine — au Romarin, au Parc LINEO ou dans vos locaux du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à La Madeleine — au Romarin, au Parc LINEO ou dans vos locaux du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de la métropole lilloise ou reprise en interne par vos équipes madeleinoises.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de la métropole lilloise ou reprise en interne par vos équipes madeleinoises.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à La Madeleine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 21 790 habitants, à 3 km au nord de Lille au cœur de la Métropole européenne de Lille, où le tissu mêle commerces le long de la rue du Général de Gaulle, le quartier d'affaires du Romarin redéveloppé depuis 1990 aux portes d'Euralille, le Parc LINEO le long de la rocade et l'A22, des sièges sociaux comme Supermarchés Match, services financiers et cabinets de conseil issus de la reconversion des anciennes friches textiles. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Madeleine, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Madeleine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 21 790 habitants, à 3 km au nord de Lille au cœur de la Métropole européenne de Lille, où le tissu mêle commerces le long de la rue du Général de Gaulle, le quartier d'affaires du Romarin redéveloppé depuis 1990 aux portes d'Euralille, le Parc LINEO le long de la rocade et l'A22, des sièges sociaux comme Supermarchés Match, services financiers et cabinets de conseil issus de la reconversion des anciennes friches textiles. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Madeleine, itérations à distance.",
         whyHere: [
           "Économie de centre-ville commerçant : la rue du Général de Gaulle, le pôle de proximité et l'axe des Grands Boulevards desservi par l'arrêt Romarin concentrent boutiques, restaurants et artisans — terrain idéal pour des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des parcours click-and-collect mobile-first augmentés à l'IA, branchés sur la caisse et le stock existants.",
           "Quartier d'affaires du Romarin et Parc LINEO le long de la rocade et de l'A22 : sièges sociaux, bureaux et locaux mixtes commerciaux-artisanaux accueillent des entreprises comme Supermarchés Match. Pour elles, on construit des portails clients, intranets et plateformes SaaS IA-native branchés sur vos ERP et CRM, sans refonte brutale du système d'information.",
@@ -148,7 +148,7 @@ export const LA_MADELEINE_COPY: VilleCopy = {
           {
             step: "Cadrage à La Madeleine",
             detail:
-              "Atelier sur site (centre-ville rue du Général de Gaulle, quartier d'affaires du Romarin, Parc LINEO, abords de la gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des intégrations existantes. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville rue du Général de Gaulle, quartier d'affaires du Romarin, Parc LINEO, abords de la gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des intégrations existantes. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const LA_MADELEINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Madeleine — au Romarin, au Parc LINEO ou dans vos locaux du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à La Madeleine — au Romarin, au Parc LINEO ou dans vos locaux du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de la métropole lilloise ou reprise en interne par vos équipes madeleinoises.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de la métropole lilloise ou reprise en interne par vos équipes madeleinoises.",
       },
     },
   },

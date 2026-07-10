@@ -130,11 +130,11 @@ export const TAVERNY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai avez-vous un devis, et quel délai pour le site ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité de votre projet. Le délai de réalisation dépend du périmètre : un site vitrine technique se livre en quelques semaines, un portail SaaS avec intégration ERP/GPAO s'étale sur plusieurs mois. Le planning précis est fixé au cadrage à Taverny.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité de votre projet. Le délai de réalisation dépend du périmètre : un site vitrine technique se livre en quelques semaines, un portail SaaS avec intégration ERP/GPAO s'étale sur plusieurs mois. Le planning précis est fixé au cadrage à Taverny.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, sans engagement. Développement en code custom (jamais de no-code fragile), hébergement dans l'Union européenne et conformité RGPD par défaut. UX/UI, version mobile, e-commerce multi-CMS et briques IA sont inclus dans notre périmètre. Vous restez propriétaire du code, des accès et des modèles : la solution est reprenable en interne ou par tout intégrateur d'Île-de-France, sans verrou éditeur ni dépendance contractuelle continue.",
+          "Devis remis à partir de 24-48 h selon la complexité, sans engagement. Développement en code custom (jamais de no-code fragile), hébergement dans l'Union européenne et conformité RGPD par défaut. UX/UI, version mobile, e-commerce multi-CMS et briques IA sont inclus dans notre périmètre. Vous restez propriétaire du code, des accès et des modèles : la solution est reprenable en interne ou par tout intégrateur d'Île-de-France, sans verrou éditeur ni dépendance contractuelle continue.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Taverny (Val-d'Oise), where the local economy is dominated by industrial subcontracting: the Châtaigniers business park (54.2 ha), the Chêne Bocquet and Écouardes parks together host around 165 companies and over 3,000 jobs, centred on precision engineering, springs and metal wire (CGR Comptoir Général du Ressort), machining (CIFR Industries) and boilermaking/sheet metal (CFP Industries). We build technical showcase sites, customer/supplier portals and SaaS back-offices where AI handles quotes, work orders, quality control reports and parts catalogues — in custom code, hosted in the EU and GDPR-compliant.",
@@ -216,11 +216,11 @@ export const TAVERNY_COPY: VilleCopy = {
           },
           {
             q: "How fast is the quote, and how long for the site?",
-            a: "The quote is delivered from 48 hours depending on project complexity. Delivery time depends on scope: a technical showcase site ships in a few weeks, a SaaS portal with ERP/MES integration spans several months. The precise schedule is set at the framing meeting in Taverny.",
+            a: "The quote is delivered from 24-48 hours depending on project complexity. Delivery time depends on scope: a technical showcase site ships in a few weeks, a SaaS portal with ERP/MES integration spans several months. The precise schedule is set at the framing meeting in Taverny.",
           },
         ],
         guarantees:
-          "Quote delivered from 48 hours depending on complexity, no commitment. Custom-code development (never fragile no-code), hosting in the European Union and GDPR compliance by default. UX/UI, mobile version, multi-CMS e-commerce and AI building blocks are all within our scope. You stay owner of the code, access and models: the solution can be taken over in-house or by any Île-de-France integrator, with no vendor lock-in or ongoing contractual dependency.",
+          "Quote delivered from 24-48 hours depending on complexity, no commitment. Custom-code development (never fragile no-code), hosting in the European Union and GDPR compliance by default. UX/UI, mobile version, multi-CMS e-commerce and AI building blocks are all within our scope. You stay owner of the code, access and models: the solution can be taken over in-house or by any Île-de-France integrator, with no vendor lock-in or ongoing contractual dependency.",
       },
     },
   },

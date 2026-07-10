@@ -130,11 +130,11 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site à Haguenau ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet. Williams se déplace ensuite sur site à Haguenau (gare TER à 15 min de Strasbourg, A4 via la D1340) pour le cadrage avant tout développement.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet. Williams se déplace ensuite sur site à Haguenau (gare TER à 15 min de Strasbourg, A4 via la D1340) pour le cadrage avant tout développement.",
           },
         ],
         guarantees:
-          "Tous nos sites et plateformes SaaS livrés à Haguenau sont développés en code custom et vous appartiennent : pas de verrou éditeur, pas d'abonnement plateforme imposé, code remis à vos équipes. Hébergement en Union européenne, conformité RGPD dès le cadrage (minimisation, registre des traitements, clauses sous-traitance signées). Devis à partir de 48 h selon la complexité, tarifs cadrés avant démarrage. Nous revendiquons UX/UI, mobile-first, e-commerce multi-CMS et briques IA, avec une mesure des Web Vitals à la livraison.",
+          "Tous nos sites et plateformes SaaS livrés à Haguenau sont développés en code custom et vous appartiennent : pas de verrou éditeur, pas d'abonnement plateforme imposé, code remis à vos équipes. Hébergement en Union européenne, conformité RGPD dès le cadrage (minimisation, registre des traitements, clauses sous-traitance signées). Devis à partir de 24 à 48 h selon la complexité, tarifs cadrés avant démarrage. Nous revendiquons UX/UI, mobile-first, e-commerce multi-CMS et briques IA, avec une mesure des Web Vitals à la livraison.",
       },
       en: {
         hero: "Custom AI-augmented websites and SaaS platforms in Haguenau: Axion-IA builds sites and business applications for Alsace's densest industrial fabric, where one job in three is industrial (versus one in five regionally). We serve the Industry 4.0 manufacturers and equipment makers of the Sandlach industrial zone (SEW Usocome, Schaeffler, Siemens, Mars Wrigley), the retail chains of the Taubenhof commercial zone (Decathlon, Norauto, King Jouet, Action) and the potter-artisans of Soufflenheim and Betschdorf. Fast front-ends, multi-CMS e-commerce, ERP-connected B2B portals, RAG chatbots and semantic search — custom code, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -216,11 +216,11 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote for a site in Haguenau?",
-            a: "We deliver a quote from 48 hours depending on project complexity. Williams then travels on site to Haguenau (TER station 15 minutes from Strasbourg, A4 via the D1340) for scoping before any development.",
+            a: "We deliver a quote from 24 to 48 hours depending on project complexity. Williams then travels on site to Haguenau (TER station 15 minutes from Strasbourg, A4 via the D1340) for scoping before any development.",
           },
         ],
         guarantees:
-          "Every website and SaaS platform we deliver in Haguenau is built in custom code and belongs to you: no vendor lock-in, no imposed platform subscription, code handed over to your teams. Hosting in the European Union, GDPR compliance from scoping onward (data minimisation, processing register, signed sub-processor clauses). Quote from 48 hours depending on complexity, pricing framed before kick-off. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks, with Web Vitals measured at delivery.",
+          "Every website and SaaS platform we deliver in Haguenau is built in custom code and belongs to you: no vendor lock-in, no imposed platform subscription, code handed over to your teams. Hosting in the European Union, GDPR compliance from scoping onward (data minimisation, processing register, signed sub-processor clauses). Quote from 24 to 48 hours depending on complexity, pricing framed before kick-off. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks, with Web Vitals measured at delivery.",
       },
     },
   },

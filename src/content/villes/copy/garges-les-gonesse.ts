@@ -62,7 +62,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           {
             step: "Cadrage à Garges-lès-Gonesse",
             detail:
-              "Réunion de lancement sur site — ZA de la Muette, ZA des Doucettes ou vos bureaux — pour cartographier vos flux réels (commandes, expéditions, devis, prise de rendez-vous) et définir le périmètre du site ou de la plateforme. Devis remis à partir de 48 h selon la complexité.",
+              "Réunion de lancement sur site — ZA de la Muette, ZA des Doucettes ou vos bureaux — pour cartographier vos flux réels (commandes, expéditions, devis, prise de rendez-vous) et définir le périmètre du site ou de la plateforme. Devis remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI et architecture",
@@ -134,7 +134,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Sites et plateformes en code custom, hébergés en Union européenne par défaut, conformes RGPD et AI Act ; registre des traitements et DPA sur demande. Vous restez propriétaire du code et des données, sans verrou éditeur : la solution est reprenable en interne ou par tout prestataire francilien. Nous revendiquons UX/UI, conception mobile, e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et briques IA — sans recourir à des plateformes no-code propriétaires.",
+          "Devis remis à partir de 24-48 h selon la complexité. Sites et plateformes en code custom, hébergés en Union européenne par défaut, conformes RGPD et AI Act ; registre des traitements et DPA sur demande. Vous restez propriétaire du code et des données, sans verrou éditeur : la solution est reprenable en interne ou par tout prestataire francilien. Nous revendiquons UX/UI, conception mobile, e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et briques IA — sans recourir à des plateformes no-code propriétaires.",
       },
       en: {
         hero: "Garges-lès-Gonesse (Val-d'Oise) is a logistics and retail town in the northern outer ring of Paris, structured by the Muette business zone (36.42 ha, over a thousand establishments) and the Doucettes zone, where carriers and logistics providers cluster — GIST France, Herport, IDF Logistique, SMTP, Aigle Transport & Logistique — around the Cora hypermarket on Boulevard de la Muette. Axion-IA designs and ships AI-augmented websites and SaaS platforms for these companies: shipment tracking, quotes and e-commerce, customer portals — all in custom code, hosted in the European Union and GDPR-compliant.",
@@ -148,7 +148,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           {
             step: "Kick-off in Garges-lès-Gonesse",
             detail:
-              "On-site launch meeting — Muette zone, Doucettes zone or your offices — to map your real flows (orders, shipments, quotes, bookings) and scope the site or platform. Quote issued from 48 h depending on complexity.",
+              "On-site launch meeting — Muette zone, Doucettes zone or your offices — to map your real flows (orders, shipments, quotes, bookings) and scope the site or platform. Quote issued from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design and architecture",
@@ -220,7 +220,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote issued from 48 h depending on complexity. Sites and platforms in custom code, hosted in the European Union by default, compliant with GDPR and the AI Act; processing records and DPA on request. You remain owner of the code and data, with no vendor lock-in: the solution can be taken over in-house or by any Île-de-France provider. We claim UX/UI, mobile design, multi-CMS e-commerce (WooCommerce, Shopify, PrestaShop) and AI building blocks — without resorting to proprietary no-code platforms.",
+          "Quote issued from 24-48 h depending on complexity. Sites and platforms in custom code, hosted in the European Union by default, compliant with GDPR and the AI Act; processing records and DPA on request. You remain owner of the code and data, with no vendor lock-in: the solution can be taken over in-house or by any Île-de-France provider. We claim UX/UI, mobile design, multi-CMS e-commerce (WooCommerce, Shopify, PrestaShop) and AI building blocks — without resorting to proprietary no-code platforms.",
       },
     },
   },

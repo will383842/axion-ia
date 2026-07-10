@@ -132,7 +132,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, sans surcoût géographique — nos tarifs sont identiques à Romainville, dans Est Ensemble et dans tout le Grand Paris. Hébergement en Union européenne conforme RGPD par défaut, avec contraintes de souveraineté renforcées pour les données sensibles des labos Biocitech. Aucun verrou éditeur : code, données et hébergement vous appartiennent et sont réversibles vers vos équipes ou tout intégrateur local. Kick-off et recette toujours en présentiel à Romainville, accessibles via le métro 11 (station Romainville-Carnot) ou le tram T1.",
+          "Devis à partir de 24 à 48 h selon la complexité, sans surcoût géographique — nos tarifs sont identiques à Romainville, dans Est Ensemble et dans tout le Grand Paris. Hébergement en Union européenne conforme RGPD par défaut, avec contraintes de souveraineté renforcées pour les données sensibles des labos Biocitech. Aucun verrou éditeur : code, données et hébergement vous appartiennent et sont réversibles vers vos équipes ou tout intégrateur local. Kick-off et recette toujours en présentiel à Romainville, accessibles via le métro 11 (station Romainville-Carnot) ou le tram T1.",
       },
       en: {
         hero: "Romainville (93230) is no generic suburb: it is a former Roussel-Uclaf pharmaceutical brownfield turned into a rare crossover between life sciences and contemporary art. The Biocitech park (102 avenue Gaston Roussel), the only ICPE-certified technology park in the Paris region, hosts biotech and fine-chemistry firms steps away from Komunuma, one of Europe's largest art districts (Fondation Fiminco, FRAC Île-de-France, galleries Air de Paris, In Situ and Vincent Sator). With the arrival of Métro line 11 (Romainville-Carnot station, June 2024), the brand-new Paddock Paris outlet retail and a fabric of ~1,400 businesses driven by services, construction and retail, Axion-IA designs AI-augmented websites and SaaS platforms here, on site, for organisations whose business needs are very different from a classic high-street shop.",
@@ -218,7 +218,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, with no geographic surcharge — our rates are identical in Romainville, across Est Ensemble and throughout Greater Paris. EU hosting compliant with GDPR by default, with reinforced sovereignty constraints for the sensitive data of Biocitech labs. No vendor lock-in: code, data and hosting belong to you and are reversible to your teams or any local integrator. Kick-off and acceptance always in person in Romainville, accessible via Métro line 11 (Romainville-Carnot station) or tram T1.",
+          "Quote from 24 to 48 hours depending on complexity, with no geographic surcharge — our rates are identical in Romainville, across Est Ensemble and throughout Greater Paris. EU hosting compliant with GDPR by default, with reinforced sovereignty constraints for the sensitive data of Biocitech labs. No vendor lock-in: code, data and hosting belong to you and are reversible to your teams or any local integrator. Kick-off and acceptance always in person in Romainville, accessible via Métro line 11 (Romainville-Carnot station) or tram T1.",
       },
     },
   },

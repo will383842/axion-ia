@@ -50,7 +50,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente au Bouscat des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle dense de Bordeaux Métropole (25 081 habitants, 4 750 hab/km²), limitrophe de Bordeaux, Bruges et Eysines, où l'économie repose sur le commerce de proximité de l'avenue de la Libération, les professions libérales de santé et de droit, l'expertise comptable et les services aux entreprises. La vie locale est rythmée par l'Hippodrome du Bouscat, le stade Sainte-Germaine et le parc de la Chêneraie. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Bouscat, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Bouscat des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle dense de Bordeaux Métropole (25 081 habitants, 4 750 hab/km²), limitrophe de Bordeaux, Bruges et Eysines, où l'économie repose sur le commerce de proximité de l'avenue de la Libération, les professions libérales de santé et de droit, l'expertise comptable et les services aux entreprises. La vie locale est rythmée par l'Hippodrome du Bouscat, le stade Sainte-Germaine et le parc de la Chêneraie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Bouscat, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales — santé humaine, cabinets juridiques et d'expertise comptable, nombreux autour de l'avenue de la Libération et des abords du parc de la Chêneraie : on déploie des sites de prise de rendez-vous en ligne, des portails patients et clients, et des chatbots RAG multilingues qui répondent 24/7 aux demandes courantes sans mobiliser le secrétariat ni saturer le standard téléphonique.",
           "Commerce de détail et restauration de centre-ville, le long de l'avenue de la Libération et autour des marchés et de la place Gambetta : vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), click-and-collect, fiches produits enrichies et recherche sémantique pour exister face aux grandes enseignes voisines de Bruges et d'Eysines et capter la clientèle de proximité sur smartphone.",
@@ -61,7 +61,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
           {
             step: "Cadrage au Bouscat",
             detail:
-              "Atelier sur site — cabinet libéral, commerce de l'avenue de la Libération, abords de l'Hippodrome, du parc de la Chêneraie ou du Castel d'Andorte : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux de rendez-vous. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — cabinet libéral, commerce de l'avenue de la Libération, abords de l'Hippodrome, du parc de la Chêneraie ou du Castel d'Andorte : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux de rendez-vous. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -121,7 +121,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site au Bouscat, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre validé en atelier est le périmètre facturé.",
+            a: "Oui. Après le cadrage sur site au Bouscat, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre validé en atelier est le périmètre facturé.",
           },
           {
             q: "Un cabinet ou un commerce du Bouscat, par où commencer ?",
@@ -133,10 +133,10 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — un cabinet de santé ou un commerce du Bouscat ne perd jamais son canal de réservation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé, projet transférable à tout prestataire de Bordeaux Métropole ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — un cabinet de santé ou un commerce du Bouscat ne perd jamais son canal de réservation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé, projet transférable à tout prestataire de Bordeaux Métropole ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente au Bouscat des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle dense de Bordeaux Métropole (25 081 habitants, 4 750 hab/km²), limitrophe de Bordeaux, Bruges et Eysines, où l'économie repose sur le commerce de proximité de l'avenue de la Libération, les professions libérales de santé et de droit, l'expertise comptable et les services aux entreprises. La vie locale est rythmée par l'Hippodrome du Bouscat, le stade Sainte-Germaine et le parc de la Chêneraie. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Bouscat, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Bouscat des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle dense de Bordeaux Métropole (25 081 habitants, 4 750 hab/km²), limitrophe de Bordeaux, Bruges et Eysines, où l'économie repose sur le commerce de proximité de l'avenue de la Libération, les professions libérales de santé et de droit, l'expertise comptable et les services aux entreprises. La vie locale est rythmée par l'Hippodrome du Bouscat, le stade Sainte-Germaine et le parc de la Chêneraie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Bouscat, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales — santé humaine, cabinets juridiques et d'expertise comptable, nombreux autour de l'avenue de la Libération et des abords du parc de la Chêneraie : on déploie des sites de prise de rendez-vous en ligne, des portails patients et clients, et des chatbots RAG multilingues qui répondent 24/7 aux demandes courantes sans mobiliser le secrétariat ni saturer le standard téléphonique.",
           "Commerce de détail et restauration de centre-ville, le long de l'avenue de la Libération et autour des marchés et de la place Gambetta : vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), click-and-collect, fiches produits enrichies et recherche sémantique pour exister face aux grandes enseignes voisines de Bruges et d'Eysines et capter la clientèle de proximité sur smartphone.",
@@ -147,7 +147,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
           {
             step: "Cadrage au Bouscat",
             detail:
-              "Atelier sur site — cabinet libéral, commerce de l'avenue de la Libération, abords de l'Hippodrome, du parc de la Chêneraie ou du Castel d'Andorte : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux de rendez-vous. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — cabinet libéral, commerce de l'avenue de la Libération, abords de l'Hippodrome, du parc de la Chêneraie ou du Castel d'Andorte : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux de rendez-vous. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -207,7 +207,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site au Bouscat, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre validé en atelier est le périmètre facturé.",
+            a: "Oui. Après le cadrage sur site au Bouscat, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre validé en atelier est le périmètre facturé.",
           },
           {
             q: "Un cabinet ou un commerce du Bouscat, par où commencer ?",
@@ -219,7 +219,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — un cabinet de santé ou un commerce du Bouscat ne perd jamais son canal de réservation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé, projet transférable à tout prestataire de Bordeaux Métropole ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — un cabinet de santé ou un commerce du Bouscat ne perd jamais son canal de réservation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé, projet transférable à tout prestataire de Bordeaux Métropole ou repris en interne.",
       },
     },
   },

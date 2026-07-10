@@ -49,7 +49,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Fleury-les-Aubrais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle d'emploi de ~10 000 postes d'Orléans Métropole, deuxième ville du Loiret avec ~21 800 habitants, structuré par la gare des Aubrais (1853, nœud Intercités vers Paris-Austerlitz) et les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies, où cohabitent industrie de pointe (Thales), logistique ferroviaire, artisanat BTP et commerce de proximité. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fleury-les-Aubrais, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Fleury-les-Aubrais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle d'emploi de ~10 000 postes d'Orléans Métropole, deuxième ville du Loiret avec ~21 800 habitants, structuré par la gare des Aubrais (1853, nœud Intercités vers Paris-Austerlitz) et les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies, où cohabitent industrie de pointe (Thales), logistique ferroviaire, artisanat BTP et commerce de proximité. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fleury-les-Aubrais, itérations à distance.",
         whyHere: [
           "Pôle d'emploi industriel structurant : avec Thales implantée localement et les sous-traitants des zones Dessaux et Lignerolles, le bassin concentre une part forte des ~10 000 emplois de la commune. On greffe maintenance prédictive, classification documentaire et portails B2B sur vos sites existants, ou on construit la plateforme métier branchée sur votre SI (ERP, GMAO).",
           "Hub ferroviaire de la gare des Aubrais (ouverte en 1853, ~7 000 voyageurs/jour, Intercités Paris-Austerlitz ~1 h) : la logistique, les transports terrestres et les services attenants au nœud ferroviaire gagnent à des portails clients, du suivi temps réel et des automatisations de devis pilotées par agents IA, intégrés à vos outils existants.",
@@ -60,7 +60,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Fleury-les-Aubrais",
             detail:
-              "Atelier sur site, dans les zones Dessaux, Fleury-Saran, Lignerolles, à l'Herveline ou aux abords de la gare des Aubrais : objectifs métier, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité du projet.",
+              "Atelier sur site, dans les zones Dessaux, Fleury-Saran, Lignerolles, à l'Herveline ou aux abords de la gare des Aubrais : objectifs métier, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Fleury-les-Aubrais ou en visio, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le code comme les données vous sont livrés en fin de projet.",
+            a: "Oui. Après le cadrage sur site à Fleury-les-Aubrais ou en visio, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le code comme les données vous sont livrés en fin de projet.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site marchand d'un commerce des Aubrais ou un portail logistique en activité relié à la gare. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Orléans Métropole ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site marchand d'un commerce des Aubrais ou un portail logistique en activité relié à la gare. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Orléans Métropole ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Fleury-les-Aubrais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle d'emploi de ~10 000 postes d'Orléans Métropole, deuxième ville du Loiret avec ~21 800 habitants, structuré par la gare des Aubrais (1853, nœud Intercités vers Paris-Austerlitz) et les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies, où cohabitent industrie de pointe (Thales), logistique ferroviaire, artisanat BTP et commerce de proximité. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fleury-les-Aubrais, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Fleury-les-Aubrais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle d'emploi de ~10 000 postes d'Orléans Métropole, deuxième ville du Loiret avec ~21 800 habitants, structuré par la gare des Aubrais (1853, nœud Intercités vers Paris-Austerlitz) et les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies, où cohabitent industrie de pointe (Thales), logistique ferroviaire, artisanat BTP et commerce de proximité. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fleury-les-Aubrais, itérations à distance.",
         whyHere: [
           "Pôle d'emploi industriel structurant : avec Thales implantée localement et les sous-traitants des zones Dessaux et Lignerolles, le bassin concentre une part forte des ~10 000 emplois de la commune. On greffe maintenance prédictive, classification documentaire et portails B2B sur vos sites existants, ou on construit la plateforme métier branchée sur votre SI (ERP, GMAO).",
           "Hub ferroviaire de la gare des Aubrais (ouverte en 1853, ~7 000 voyageurs/jour, Intercités Paris-Austerlitz ~1 h) : la logistique, les transports terrestres et les services attenants au nœud ferroviaire gagnent à des portails clients, du suivi temps réel et des automatisations de devis pilotées par agents IA, intégrés à vos outils existants.",
@@ -146,7 +146,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Fleury-les-Aubrais",
             detail:
-              "Atelier sur site, dans les zones Dessaux, Fleury-Saran, Lignerolles, à l'Herveline ou aux abords de la gare des Aubrais : objectifs métier, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité du projet.",
+              "Atelier sur site, dans les zones Dessaux, Fleury-Saran, Lignerolles, à l'Herveline ou aux abords de la gare des Aubrais : objectifs métier, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -214,11 +214,11 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Fleury-les-Aubrais ou en visio, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le code comme les données vous sont livrés en fin de projet.",
+            a: "Oui. Après le cadrage sur site à Fleury-les-Aubrais ou en visio, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le code comme les données vous sont livrés en fin de projet.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site marchand d'un commerce des Aubrais ou un portail logistique en activité relié à la gare. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Orléans Métropole ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site marchand d'un commerce des Aubrais ou un portail logistique en activité relié à la gare. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Orléans Métropole ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
       },
     },
   },

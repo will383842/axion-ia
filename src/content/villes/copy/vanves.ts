@@ -126,7 +126,7 @@ export const VANVES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis à Vanves ?",
-            a: "Le devis est établi à partir de 48 h selon la complexité de votre projet, après un premier échange. Pour les plateformes éditoriales ou audiovisuelles complexes, un cadrage court sur site rue Jean-Bleuzen précise le périmètre avant chiffrage.",
+            a: "Le devis est établi à partir de 24 à 48 h selon la complexité de votre projet, après un premier échange. Pour les plateformes éditoriales ou audiovisuelles complexes, un cadrage court sur site rue Jean-Bleuzen précise le périmètre avant chiffrage.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD et la propriété du code à Vanves ?",
@@ -134,7 +134,7 @@ export const VANVES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites et plateformes livrés en code custom dont vous êtes propriétaire, hébergés en Europe et conformes RGPD par défaut (minimisation des données, registre des traitements, clauses sous-traitance signées). Devis établi à partir de 48 h selon la complexité, périmètre et prix fixés avant démarrage, sans abonnement plateforme imposé. UX/UI, mobile et e-commerce multi-CMS inclus dans le périmètre lorsque le projet le requiert. Transfert de compétences à vos équipes en fin de mission : aucune dépendance Axion-IA, la plateforme reste reprenable par tout intégrateur.",
+          "Sites et plateformes livrés en code custom dont vous êtes propriétaire, hébergés en Europe et conformes RGPD par défaut (minimisation des données, registre des traitements, clauses sous-traitance signées). Devis établi à partir de 24 à 48 h selon la complexité, périmètre et prix fixés avant démarrage, sans abonnement plateforme imposé. UX/UI, mobile et e-commerce multi-CMS inclus dans le périmètre lorsque le projet le requiert. Transfert de compétences à vos équipes en fin de mission : aucune dépendance Axion-IA, la plateforme reste reprenable par tout intégrateur.",
       },
       en: {
         hero: "Axion-IA designs and ships AI-augmented websites and SaaS platforms for businesses in Vanves, Hauts-de-Seine, part of the Grand Paris Seine Ouest territory. The town concentrates a rare publishing, audiovisual and media cluster along rue Jean-Bleuzen and in the « Le Plateau » district: the HQ of Hachette Livre, Éditions Hazan, Audiens, France 3 Paris Île-de-France and French Virtual Studio. There we build AI-native platforms — catalogue and rights management portals, RAG editorial knowledge bases, audiovisual production tools, content e-commerce — in custom code, hosted in Europe and GDPR-compliant, with no vendor lock-in.",
@@ -212,7 +212,7 @@ export const VANVES_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote in Vanves?",
-            a: "A quote is issued from 48 hours depending on the complexity of your project, after a first exchange. For complex editorial or audiovisual platforms, a short on-site framing session on rue Jean-Bleuzen clarifies the scope before pricing.",
+            a: "A quote is issued from 24 to 48 hours depending on the complexity of your project, after a first exchange. For complex editorial or audiovisual platforms, a short on-site framing session on rue Jean-Bleuzen clarifies the scope before pricing.",
           },
           {
             q: "How do you guarantee GDPR compliance and code ownership in Vanves?",
@@ -220,7 +220,7 @@ export const VANVES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites and platforms delivered as custom code that you own, hosted in Europe and GDPR-compliant by default (data minimisation, processing register, signed processor clauses). Quote issued from 48 hours depending on complexity, scope and price set before kick-off, with no imposed platform subscription. UX/UI, mobile and multi-CMS e-commerce included in scope when the project requires it. Skills transfer to your teams at mission end: no Axion-IA dependency, the platform remains transferable to any integrator.",
+          "Sites and platforms delivered as custom code that you own, hosted in Europe and GDPR-compliant by default (data minimisation, processing register, signed processor clauses). Quote issued from 24 to 48 hours depending on complexity, scope and price set before kick-off, with no imposed platform subscription. UX/UI, mobile and multi-CMS e-commerce included in scope when the project requires it. Skills transfer to your teams at mission end: no Axion-IA dependency, the platform remains transferable to any integrator.",
       },
     },
   },

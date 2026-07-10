@@ -51,7 +51,7 @@ export const VOIRON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Voiron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants), aux portes du parc naturel régional de Chartreuse, où cohabitent l'agroalimentaire d'exception (liqueurs de Chartreuse, chocolaterie Bonnat), le textile historique (tissages Denantes), l'industrie de la zone de Champfeuillet, le tourisme de montagne et la santé. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Voiron, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Voiron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants), aux portes du parc naturel régional de Chartreuse, où cohabitent l'agroalimentaire d'exception (liqueurs de Chartreuse, chocolaterie Bonnat), le textile historique (tissages Denantes), l'industrie de la zone de Champfeuillet, le tourisme de montagne et la santé. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Voiron, itérations à distance.",
         whyHere: [
           "Patrimoine agroalimentaire à forte image de marque (liqueurs de Chartreuse, chocolaterie Bonnat) : nous construisons des vitrines e-commerce premium sur WordPress, Shopify ou PrestaShop et des parcours d'achat multilingues capables de raconter l'origine et le savoir-faire, avec paiement sécurisé, fiches produits enrichies et logistique connectée à votre gestion de stock.",
           "Économie touristique adossée au massif de Chartreuse et au monastère de la Grande Chartreuse : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut, calibrés pour l'hôtellerie, les hébergements de montagne et les activités de plein air, avec UX mobile-first pour des visiteurs qui réservent depuis leur smartphone en chemin vers Saint-Pierre-de-Chartreuse.",
@@ -62,7 +62,7 @@ export const VOIRON_COPY: VilleCopy = {
           {
             step: "Cadrage à Voiron",
             detail:
-              "Atelier sur site (cœur de ville, zone industrielle de Champfeuillet, parcs d'activité Parvis 1 et 2, gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Chartreuse. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (cœur de ville, zone industrielle de Champfeuillet, parcs d'activité Parvis 1 et 2, gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Chartreuse. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -122,7 +122,7 @@ export const VOIRON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Voiron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage sur place à Voiron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
           {
             q: "Gérez-vous le multilingue pour la clientèle touristique de Chartreuse ?",
@@ -134,10 +134,10 @@ export const VOIRON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de Chartreuse. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire local d'Auvergne-Rhône-Alpes ou repris en interne par vos équipes du Voironnais.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de Chartreuse. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire local d'Auvergne-Rhône-Alpes ou repris en interne par vos équipes du Voironnais.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Voiron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants), aux portes du parc naturel régional de Chartreuse, où cohabitent l'agroalimentaire d'exception (liqueurs de Chartreuse, chocolaterie Bonnat), le textile historique (tissages Denantes), l'industrie de la zone de Champfeuillet, le tourisme de montagne et la santé. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Voiron, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Voiron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants), aux portes du parc naturel régional de Chartreuse, où cohabitent l'agroalimentaire d'exception (liqueurs de Chartreuse, chocolaterie Bonnat), le textile historique (tissages Denantes), l'industrie de la zone de Champfeuillet, le tourisme de montagne et la santé. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Voiron, itérations à distance.",
         whyHere: [
           "Patrimoine agroalimentaire à forte image de marque (liqueurs de Chartreuse, chocolaterie Bonnat) : nous construisons des vitrines e-commerce premium sur WordPress, Shopify ou PrestaShop et des parcours d'achat multilingues capables de raconter l'origine et le savoir-faire, avec paiement sécurisé, fiches produits enrichies et logistique connectée à votre gestion de stock.",
           "Économie touristique adossée au massif de Chartreuse et au monastère de la Grande Chartreuse : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut, calibrés pour l'hôtellerie, les hébergements de montagne et les activités de plein air, avec UX mobile-first pour des visiteurs qui réservent depuis leur smartphone en chemin vers Saint-Pierre-de-Chartreuse.",
@@ -148,7 +148,7 @@ export const VOIRON_COPY: VilleCopy = {
           {
             step: "Cadrage à Voiron",
             detail:
-              "Atelier sur site (cœur de ville, zone industrielle de Champfeuillet, parcs d'activité Parvis 1 et 2, gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Chartreuse. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (cœur de ville, zone industrielle de Champfeuillet, parcs d'activité Parvis 1 et 2, gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Chartreuse. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -208,7 +208,7 @@ export const VOIRON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Voiron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage sur place à Voiron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
           {
             q: "Gérez-vous le multilingue pour la clientèle touristique de Chartreuse ?",
@@ -220,7 +220,7 @@ export const VOIRON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de Chartreuse. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire local d'Auvergne-Rhône-Alpes ou repris en interne par vos équipes du Voironnais.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de Chartreuse. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire local d'Auvergne-Rhône-Alpes ou repris en interne par vos équipes du Voironnais.",
       },
     },
   },

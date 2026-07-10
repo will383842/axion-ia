@@ -136,7 +136,7 @@ export const VITROLLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis détaillé fourni à partir de 48 h selon la complexité du projet. Nous revendiquons l'ensemble de la chaîne : UX/UI, développement mobile-first, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, agents). Hébergement en Union européenne conforme RGPD par défaut. Code, contenus et accès vous appartiennent et restent portables, repris en interne ou par tout prestataire de la métropole Aix-Marseille-Provence, sans dépendance contractuelle imposée ni lock-in éditeur.",
+          "Devis détaillé fourni à partir de 24-48 h selon la complexité du projet. Nous revendiquons l'ensemble de la chaîne : UX/UI, développement mobile-first, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, agents). Hébergement en Union européenne conforme RGPD par défaut. Code, contenus et accès vous appartiennent et restent portables, repris en interne ou par tout prestataire de la métropole Aix-Marseille-Provence, sans dépendance contractuelle imposée ni lock-in éditeur.",
       },
       en: {
         hero: "In Vitrolles, the local economy is built on three concrete realities: aerospace subcontracting around Airbus Helicopters and the TEAM Henri-Fabre cluster (spanning Vitrolles, Marignane and Saint-Victoret), a dense logistics hub anchored to Marseille-Provence Airport (Estroublans industrial zone, Anjoly business park, Daher, Géodis), and mass retail structured by the Carrefour Grand Vitrolles shopping centre at Le Griffon. Axion-IA designs AI-augmented websites and SaaS platforms for these companies: logistics tracking portals, quote configurators, supplier spaces for the aerospace chain, multi-CMS e-commerce for the retailers of the business parks. Custom code, EU hosting compliant with GDPR, no vendor lock-in.",
@@ -222,7 +222,7 @@ export const VITROLLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote provided from 48 h depending on project complexity. We cover the full chain: UX/UI, mobile-first development, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, agents). EU hosting compliant with GDPR by default. Code, content and access belong to you and stay portable, taken over in-house or by any provider in the Aix-Marseille-Provence metropolis, with no imposed contractual dependency or vendor lock-in.",
+          "Detailed quote provided from 24-48 h depending on project complexity. We cover the full chain: UX/UI, mobile-first development, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, agents). EU hosting compliant with GDPR by default. Code, content and access belong to you and stay portable, taken over in-house or by any provider in the Aix-Marseille-Provence metropolis, with no imposed contractual dependency or vendor lock-in.",
       },
     },
   },

@@ -122,7 +122,7 @@ export const CERGY_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour obtenir un devis à Cergy ?",
-            a: "Nous envoyons un devis à partir de 48 h selon la complexité du projet (site vitrine, e-commerce multi-CMS, plateforme SaaS IA-native). Le cadrage initial se tient sur site à Cergy ou dans votre commune de l'agglomération.",
+            a: "Nous envoyons un devis à partir de 24-48 h selon la complexité du projet (site vitrine, e-commerce multi-CMS, plateforme SaaS IA-native). Le cadrage initial se tient sur site à Cergy ou dans votre commune de l'agglomération.",
           },
           {
             q: "Faites-vous l'UX/UI et le mobile, ou seulement la partie IA ?",
@@ -134,7 +134,7 @@ export const CERGY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité. Développement en code custom (TypeScript, Python, Node.js), hébergement Europe et conformité RGPD par défaut, sans dépendance à une plateforme no-code captive. Vous conservez la pleine propriété du code, des prompts et des intégrations, transférables à tout intégrateur d'Île-de-France ou repris en interne. UX/UI, mobile, e-commerce multi-CMS et briques IA livrés par une seule équipe, du cadrage sur site à Cergy jusqu'à la passation.",
+          "Devis à partir de 24-48 h selon la complexité. Développement en code custom (TypeScript, Python, Node.js), hébergement Europe et conformité RGPD par défaut, sans dépendance à une plateforme no-code captive. Vous conservez la pleine propriété du code, des prompts et des intégrations, transférables à tout intégrateur d'Île-de-France ou repris en interne. UX/UI, mobile, e-commerce multi-CMS et briques IA livrés par une seule équipe, du cadrage sur site à Cergy jusqu'à la passation.",
       },
       en: {
         hero: "Cergy, prefecture of Val-d'Oise and heart of the Cergy-Pontoise agglomeration (~92,000 jobs, ~11,000 companies), concentrates a rare fabric: SPIE's European headquarters and the Saint-Christophe Campus (~1,800 staff across 30+ companies), the 3M / 3M Health headquarters, Louis Vuitton Malletier's largest logistics center worldwide, ESSEC and its Essec Ventures incubator, and three signature sectors — eco-mobility (Johnson Controls), cosmetics-health (Cosmetic Valley) and aerospace-security (ASTech, ~6,000 jobs). Axion-IA designs AI-augmented websites and SaaS platforms for this industry-services-retail mix, in custom code, EU hosting GDPR, with no vendor lock-in.",
@@ -208,7 +208,7 @@ export const CERGY_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote in Cergy?",
-            a: "We send a quote from 48 h depending on project complexity (showcase site, multi-CMS e-commerce, AI-native SaaS platform). The initial framing is held on site in Cergy or your agglomeration commune.",
+            a: "We send a quote from 24-48 h depending on project complexity (showcase site, multi-CMS e-commerce, AI-native SaaS platform). The initial framing is held on site in Cergy or your agglomeration commune.",
           },
           {
             q: "Do you handle UX/UI and mobile, or only the AI part?",
@@ -220,7 +220,7 @@ export const CERGY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 h depending on complexity. Development in custom code (TypeScript, Python, Node.js), EU hosting and GDPR compliance by default, with no dependency on a captive no-code platform. You keep full ownership of the code, prompts and integrations, transferable to any Île-de-France integrator or taken in-house. UX/UI, mobile, multi-CMS e-commerce and AI blocks delivered by a single team, from on-site framing in Cergy to handover.",
+          "Quote from 24-48 h depending on complexity. Development in custom code (TypeScript, Python, Node.js), EU hosting and GDPR compliance by default, with no dependency on a captive no-code platform. You keep full ownership of the code, prompts and integrations, transferable to any Île-de-France integrator or taken in-house. UX/UI, mobile, multi-CMS e-commerce and AI blocks delivered by a single team, from on-site framing in Cergy to handover.",
       },
     },
   },

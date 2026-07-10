@@ -53,7 +53,7 @@ export const VICHY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Vichy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, moteur de réservation de cures, vitrines e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la reine des villes d'eaux, où le thermalisme, le bien-être et le tourisme santé rythment une activité saisonnière portée par la Compagnie de Vichy (France Thermes), l'hôtellerie de cure, les spas et les instituts, dans le sillage de l'usine L'Oréal Cosmétique Active Production qui fabrique ici les marques Vichy et La Roche-Posay. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vichy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Vichy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, moteur de réservation de cures, vitrines e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la reine des villes d'eaux, où le thermalisme, le bien-être et le tourisme santé rythment une activité saisonnière portée par la Compagnie de Vichy (France Thermes), l'hôtellerie de cure, les spas et les instituts, dans le sillage de l'usine L'Oréal Cosmétique Active Production qui fabrique ici les marques Vichy et La Roche-Posay. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vichy, itérations à distance.",
         whyHere: [
           "Économie thermale saisonnière pilotée par la Compagnie de Vichy (France Thermes), l'un des premiers employeurs privés de l'agglomération : les établissements de cure et résidences de curistes connaissent des pics calés sur le calendrier des soins. Terrain idéal pour un moteur de réservation directe et un parcours patient augmenté à l'IA, qui lisse les plannings du quartier thermal et réduit les appels à l'accueil.",
           "Clientèle de cure fidèle et multilingue affluant vers les bords de l'Allier et le parc des Sources : nos chatbots RAG et agents conversationnels répondent par défaut en plusieurs langues, calibrés pour l'accueil thermal, les spas et l'hôtellerie de bien-être, avec recherche sémantique sur vos protocoles de soin et suivi personnalisé du curiste de saison en saison.",
@@ -64,7 +64,7 @@ export const VICHY_COPY: VilleCopy = {
           {
             step: "Cadrage à Vichy",
             detail:
-              "Atelier sur site dans le quartier thermal, au parc des Sources, sur les bords de l'Allier ou au CREPS : objectifs, parcours curistes et visiteurs, audit de la stack, des contenus et de la saisonnalité. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans le quartier thermal, au parc des Sources, sur les bords de l'Allier ou au CREPS : objectifs, parcours curistes et visiteurs, audit de la stack, des contenus et de la saisonnalité. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const VICHY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Vichy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de saison thermale ni en pleine montée en charge d'une boutique cosmétique.",
+            a: "Oui. Après le cadrage à Vichy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de saison thermale ni en pleine montée en charge d'une boutique cosmétique.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison thermale ou en pic de trafic e-commerce. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale de votre code et de vos données, aucun abonnement imposé, aucun verrou technique. Architecture documentée et transférable à tout prestataire de la région Auvergne-Rhône-Alpes ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison thermale ou en pic de trafic e-commerce. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale de votre code et de vos données, aucun abonnement imposé, aucun verrou technique. Architecture documentée et transférable à tout prestataire de la région Auvergne-Rhône-Alpes ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Vichy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, moteur de réservation de cures, vitrines e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la reine des villes d'eaux, où le thermalisme, le bien-être et le tourisme santé rythment une activité saisonnière portée par la Compagnie de Vichy (France Thermes), l'hôtellerie de cure, les spas et les instituts, dans le sillage de l'usine L'Oréal Cosmétique Active Production qui fabrique ici les marques Vichy et La Roche-Posay. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vichy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Vichy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, moteur de réservation de cures, vitrines e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la reine des villes d'eaux, où le thermalisme, le bien-être et le tourisme santé rythment une activité saisonnière portée par la Compagnie de Vichy (France Thermes), l'hôtellerie de cure, les spas et les instituts, dans le sillage de l'usine L'Oréal Cosmétique Active Production qui fabrique ici les marques Vichy et La Roche-Posay. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vichy, itérations à distance.",
         whyHere: [
           "Économie thermale saisonnière pilotée par la Compagnie de Vichy (France Thermes), l'un des premiers employeurs privés de l'agglomération : les établissements de cure et résidences de curistes connaissent des pics calés sur le calendrier des soins. Terrain idéal pour un moteur de réservation directe et un parcours patient augmenté à l'IA, qui lisse les plannings du quartier thermal et réduit les appels à l'accueil.",
           "Clientèle de cure fidèle et multilingue affluant vers les bords de l'Allier et le parc des Sources : nos chatbots RAG et agents conversationnels répondent par défaut en plusieurs langues, calibrés pour l'accueil thermal, les spas et l'hôtellerie de bien-être, avec recherche sémantique sur vos protocoles de soin et suivi personnalisé du curiste de saison en saison.",
@@ -150,7 +150,7 @@ export const VICHY_COPY: VilleCopy = {
           {
             step: "Cadrage à Vichy",
             detail:
-              "Atelier sur site dans le quartier thermal, au parc des Sources, sur les bords de l'Allier ou au CREPS : objectifs, parcours curistes et visiteurs, audit de la stack, des contenus et de la saisonnalité. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans le quartier thermal, au parc des Sources, sur les bords de l'Allier ou au CREPS : objectifs, parcours curistes et visiteurs, audit de la stack, des contenus et de la saisonnalité. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const VICHY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Vichy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de saison thermale ni en pleine montée en charge d'une boutique cosmétique.",
+            a: "Oui. Après le cadrage à Vichy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de saison thermale ni en pleine montée en charge d'une boutique cosmétique.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison thermale ou en pic de trafic e-commerce. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale de votre code et de vos données, aucun abonnement imposé, aucun verrou technique. Architecture documentée et transférable à tout prestataire de la région Auvergne-Rhône-Alpes ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison thermale ou en pic de trafic e-commerce. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale de votre code et de vos données, aucun abonnement imposé, aucun verrou technique. Architecture documentée et transférable à tout prestataire de la région Auvergne-Rhône-Alpes ou reprise en interne par vos équipes.",
       },
     },
   },

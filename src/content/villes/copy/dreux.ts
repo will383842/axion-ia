@@ -128,7 +128,7 @@ export const DREUX_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 48 h selon la complexité. Un site vitrine pour un commerce de la Z.A. des Châtelets se chiffre vite ; un SaaS réglementaire pour un industriel pharma demande un cadrage technique plus poussé. Dans tous les cas, le devis est clair, détaillé et sans engagement.",
+            a: "À partir de 24 à 48 h selon la complexité. Un site vitrine pour un commerce de la Z.A. des Châtelets se chiffre vite ; un SaaS réglementaire pour un industriel pharma demande un cadrage technique plus poussé. Dans tous les cas, le devis est clair, détaillé et sans engagement.",
           },
           {
             q: "Nos données et notre code restent-ils chez nous ?",
@@ -136,7 +136,7 @@ export const DREUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Hébergement en Union européenne par défaut et conformité RGPD intégrée dès le cadrage — un prérequis non négociable pour les façonniers pharmaceutiques et les acteurs de relation client de Dreux. Devis à partir de 48 h selon la complexité, scope écrit et tarifs transparents. Aucun verrou éditeur : code source, documentation et accès vous appartiennent, la plateforme est reprenable en interne ou par tout prestataire. UX/UI, mobile et e-commerce multi-CMS livrés par une équipe senior unique, sans sous-traitance opaque.",
+          "Hébergement en Union européenne par défaut et conformité RGPD intégrée dès le cadrage — un prérequis non négociable pour les façonniers pharmaceutiques et les acteurs de relation client de Dreux. Devis à partir de 24 à 48 h selon la complexité, scope écrit et tarifs transparents. Aucun verrou éditeur : code source, documentation et accès vous appartiennent, la plateforme est reprenable en interne ou par tout prestataire. UX/UI, mobile et e-commerce multi-CMS livrés par une équipe senior unique, sans sous-traitance opaque.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms in Dreux, one of the industrial capitals of the Polepharma cluster where pharmaceutical manufacturing accounts for nearly 30% of industrial jobs — Norgine Pharma, Beaufour Ipsen Industrie, Ethypharm, Sophartex, Léo Pharma. We also build e-commerce storefronts for the area's consumer brands, such as the Dammann Frères tea house and its Livraindières factory store, and customer-relations portals for service firms like those on the Châtelets business park. Custom code, GDPR-compliant EU hosting, integrated UX/UI, mobile and multi-CMS e-commerce, zero vendor lock-in.",
@@ -214,7 +214,7 @@ export const DREUX_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "From 48 hours depending on complexity. A showcase site for a Châtelets-zone shop is quick to price; a regulatory SaaS for a pharma manufacturer requires deeper technical framing. In every case the quote is clear, detailed and commitment-free.",
+            a: "From 24 to 48 hours depending on complexity. A showcase site for a Châtelets-zone shop is quick to price; a regulatory SaaS for a pharma manufacturer requires deeper technical framing. In every case the quote is clear, detailed and commitment-free.",
           },
           {
             q: "Do our data and code stay with us?",
@@ -222,7 +222,7 @@ export const DREUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "EU hosting by default and GDPR compliance built in from framing — a non-negotiable prerequisite for Dreux's pharmaceutical contract manufacturers and customer-relations players. Quote from 48 hours depending on complexity, written scope and transparent pricing. No vendor lock-in: source code, documentation and access are yours, and the platform can be taken over in-house or by any provider. UX/UI, mobile and multi-CMS e-commerce delivered by a single senior team, with no opaque subcontracting.",
+          "EU hosting by default and GDPR compliance built in from framing — a non-negotiable prerequisite for Dreux's pharmaceutical contract manufacturers and customer-relations players. Quote from 24 to 48 hours depending on complexity, written scope and transparent pricing. No vendor lock-in: source code, documentation and access are yours, and the platform can be taken over in-house or by any provider. UX/UI, mobile and multi-CMS e-commerce delivered by a single senior team, with no opaque subcontracting.",
       },
     },
   },

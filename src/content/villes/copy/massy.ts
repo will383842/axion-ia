@@ -124,7 +124,7 @@ export const MASSY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site ou un SaaS à Massy ?",
-            a: "Le devis est remis à partir de 48 heures selon la complexité du projet, après un premier échange de cadrage. Pour un SaaS métier multi-modules ou une intégration CRM/ERP lourde, nous prenons le temps de chiffrer précisément le périmètre avant de vous transmettre la proposition.",
+            a: "Le devis est remis à partir de 24 à 48 heures selon la complexité du projet, après un premier échange de cadrage. Pour un SaaS métier multi-modules ou une intégration CRM/ERP lourde, nous prenons le temps de chiffrer précisément le périmètre avant de vous transmettre la proposition.",
           },
           {
             q: "Où sont hébergées les données de la plateforme ?",
@@ -136,7 +136,7 @@ export const MASSY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable mis en ligne dans les délais convenus à la signature, devis remis à partir de 48 heures selon la complexité. Conformité RGPD et hébergement en Union européenne par défaut, DPO sur demande. Aucun verrou éditeur : le code, les modèles et les contenus de votre site ou SaaS restent intégralement chez vous, repris en interne ou transférables à tout intégrateur francilien. UX/UI, mobile, e-commerce multi-CMS et briques IA sont livrés et documentés ; vos référents internes sont formés et autonomes après la mise en ligne.",
+          "Engagement contractuel : livrable mis en ligne dans les délais convenus à la signature, devis remis à partir de 24 à 48 heures selon la complexité. Conformité RGPD et hébergement en Union européenne par défaut, DPO sur demande. Aucun verrou éditeur : le code, les modèles et les contenus de votre site ou SaaS restent intégralement chez vous, repris en interne ou transférables à tout intégrateur francilien. UX/UI, mobile, e-commerce multi-CMS et briques IA sont livrés et documentés ; vos référents internes sont formés et autonomes après la mise en ligne.",
       },
       en: {
         hero: "In Massy, the leading economic city of the Essonne (around 2,500 companies, 32,000 jobs), Axion-IA designs AI-augmented websites and SaaS platforms for the tertiary fabric of the Massy-Atlantis district and the Massy TGV station hub. This area concentrates major headquarters — Carrefour (French and global HQ), Crédit Agricole Consumer Finance / Sofinco, Orange Labs, Ericsson, CGG — and a dense ecosystem of IT services firms, consultancies and business-service providers around Atlantis (90 hectares, around 12,000 employees). For these organisations we deliver AI-native platforms: B2B portals, client areas, configurators and line-of-business SaaS with RAG chatbots, semantic search and conversational agents — custom code, polished UX/UI and mobile, multi-CMS e-commerce, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -210,7 +210,7 @@ export const MASSY_COPY: VilleCopy = {
           },
           {
             q: "How soon do we get a quote for a site or SaaS in Massy?",
-            a: "The quote is provided from 48 hours depending on the complexity of the project, after an initial framing exchange. For a multi-module line-of-business SaaS or a heavy CRM/ERP integration, we take the time to scope the perimeter precisely before sending the proposal.",
+            a: "The quote is provided from 24 to 48 hours depending on the complexity of the project, after an initial framing exchange. For a multi-module line-of-business SaaS or a heavy CRM/ERP integration, we take the time to scope the perimeter precisely before sending the proposal.",
           },
           {
             q: "Where is the platform's data hosted?",
@@ -222,7 +222,7 @@ export const MASSY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable put live within the timeline agreed at signature, quote provided from 48 hours depending on complexity. GDPR compliance and EU hosting by default, DPO on request. No vendor lock-in: the code, models and content of your site or SaaS stay entirely with you, taken over in-house or transferable to any Paris-region integrator. UX/UI, mobile, multi-CMS e-commerce and AI building blocks are delivered and documented; your internal owners are trained and autonomous after go-live.",
+          "Contractual commitment: deliverable put live within the timeline agreed at signature, quote provided from 24 to 48 hours depending on complexity. GDPR compliance and EU hosting by default, DPO on request. No vendor lock-in: the code, models and content of your site or SaaS stay entirely with you, taken over in-house or transferable to any Paris-region integrator. UX/UI, mobile, multi-CMS e-commerce and AI building blocks are delivered and documented; your internal owners are trained and autonomous after go-live.",
       },
     },
   },

@@ -130,11 +130,11 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
           },
           {
             q: "Quels sont les délais pour un devis de site web ou SaaS à Villeneuve-Saint-Georges ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet. Après cadrage sur site à Villeneuve-Saint-Georges, nous calons un calendrier précis : un site vitrine TPE va plus vite qu'une plateforme SaaS IA-native multi-sites pour une ETI logistique ou de santé.",
+            a: "Nous remettons un devis à partir de 24-48 h selon la complexité du projet. Après cadrage sur site à Villeneuve-Saint-Georges, nous calons un calendrier précis : un site vitrine TPE va plus vite qu'une plateforme SaaS IA-native multi-sites pour une ETI logistique ou de santé.",
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre et le calendrier fixés à la signature. Hébergement en Union européenne conforme RGPD par défaut, minimisation et traçabilité des données, conformité intégrée dès la conception. Devis remis à partir de 48 h selon la complexité. Le code, les contenus et la documentation vous appartiennent et sont repris par vos équipes ou tout prestataire de votre choix après la mission — aucun verrou éditeur ni dépendance Axion-IA. Performance web (Web Vitals) testée avant mise en ligne.",
+          "Engagement contractuel sur le périmètre et le calendrier fixés à la signature. Hébergement en Union européenne conforme RGPD par défaut, minimisation et traçabilité des données, conformité intégrée dès la conception. Devis remis à partir de 24-48 h selon la complexité. Le code, les contenus et la documentation vous appartiennent et sont repris par vos équipes ou tout prestataire de votre choix après la mission — aucun verrou éditeur ni dépendance Axion-IA. Performance web (Web Vitals) testée avant mise en ligne.",
       },
       en: {
         hero: "In Villeneuve-Saint-Georges, Axion-IA designs AI-augmented websites and SaaS platforms for an economy made up mostly of micro-businesses and SMEs: rail subcontractors orbiting the SNCF Villeneuve Maintenance Technicentre (TMV), tradespeople and industrial firms in the Flandres, Graviers, Plateau and Triage business zones (construction, boiler-making, chemicals, transport, food processing), retailers around the Val Pompadour hub and healthcare providers tied to the Lucie & Raymond Aubrac Intercommunal Hospital. Custom UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, quote and document automation) — proprietary code, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -216,11 +216,11 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
           },
           {
             q: "What are the lead times for a website or SaaS quote in Villeneuve-Saint-Georges?",
-            a: "We provide a quote from 48 h depending on project complexity. After on-site framing in Villeneuve-Saint-Georges, we set a precise schedule: a micro-business showcase site is faster than a multi-site AI-native SaaS platform for a logistics or healthcare mid-cap.",
+            a: "We provide a quote from 24-48 h depending on project complexity. After on-site framing in Villeneuve-Saint-Georges, we set a precise schedule: a micro-business showcase site is faster than a multi-site AI-native SaaS platform for a logistics or healthcare mid-cap.",
           },
         ],
         guarantees:
-          "Contractual commitment on the scope and schedule set at signature. EU GDPR-compliant hosting by default, data minimization and traceability, compliance built in from design. Quote provided from 48 h depending on complexity. The code, content and documentation belong to you and are taken over by your teams or any provider of your choice after the mission — no vendor lock-in or Axion-IA dependency. Web performance (Web Vitals) tested before go-live.",
+          "Contractual commitment on the scope and schedule set at signature. EU GDPR-compliant hosting by default, data minimization and traceability, compliance built in from design. Quote provided from 24-48 h depending on complexity. The code, content and documentation belong to you and are taken over by your teams or any provider of your choice after the mission — no vendor lock-in or Axion-IA dependency. Web performance (Web Vitals) tested before go-live.",
       },
     },
   },

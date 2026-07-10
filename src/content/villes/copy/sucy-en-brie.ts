@@ -132,11 +132,11 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et sous quel délai obtient-on un devis ?",
-            a: "L'hébergement est en Union européenne, conforme RGPD par défaut. Le devis est remis à partir de 48 h selon la complexité du projet, avec un scope précis et un prix clair, sans abonnement caché ni dépendance forcée à un éditeur.",
+            a: "L'hébergement est en Union européenne, conforme RGPD par défaut. Le devis est remis à partir de 24-48 h selon la complexité du projet, avec un scope précis et un prix clair, sans abonnement caché ni dépendance forcée à un éditeur.",
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre défini à la signature. Hébergement en Union européenne, conformité RGPD par défaut, DPO sur demande. Aucun enfermement éditeur : le code, les contenus et les données restent intégralement à vous, transférables à tout prestataire du Val-de-Marne ou repris en interne. Devis remis à partir de 48 h selon la complexité, scope et prix clairs sans abonnement caché. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'intégration IA sur mesure pour les entreprises de Sucy-en-Brie, de l'Écoparc aux Petits Carreaux.",
+          "Engagement contractuel sur le périmètre défini à la signature. Hébergement en Union européenne, conformité RGPD par défaut, DPO sur demande. Aucun enfermement éditeur : le code, les contenus et les données restent intégralement à vous, transférables à tout prestataire du Val-de-Marne ou repris en interne. Devis remis à partir de 24-48 h selon la complexité, scope et prix clairs sans abonnement caché. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'intégration IA sur mesure pour les entreprises de Sucy-en-Brie, de l'Écoparc aux Petits Carreaux.",
       },
       en: {
         hero: "Sucy-en-Brie (94370) combines two rarely co-located economic realities: a named luxury manufacturing site — the Manufacture Cartier Lunettes (Kering Eyewear, ~250 staff, rue Benjamin Franklin at the Écoparc) — and the largest business park in the Île-de-France region, the SEGRO Parc des Petits Carreaux (70 ha, ~150 companies, ~3,000 jobs, managed by Sofibus), shared with Bonneuil-sur-Marne. Around them, six activity parks (Sablière, Petit Marais, Les Portes de Sucy, Sucy Ouest) host a B2B fabric of light industry, logistics and services. Axion-IA builds AI-augmented websites and SaaS platforms for these companies — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
           },
           {
             q: "Where is data hosted and how fast do I get a quote?",
-            a: "Hosting is in the European Union, GDPR-compliant by default. The quote is delivered from 48 h depending on project complexity, with a precise scope and clear price, no hidden subscription or forced vendor dependency.",
+            a: "Hosting is in the European Union, GDPR-compliant by default. The quote is delivered from 24-48 h depending on project complexity, with a precise scope and clear price, no hidden subscription or forced vendor dependency.",
           },
         ],
         guarantees:
-          "Contractual commitment on the scope defined at signature. Hosting in the European Union, GDPR compliance by default, DPO on request. No vendor lock-in: code, content and data remain entirely yours, transferable to any Val-de-Marne provider or taken in-house. Quote delivered from 48 h depending on complexity, clear scope and price with no hidden subscription. We claim UX/UI, mobile-first, multi-CMS e-commerce and custom AI integration for Sucy-en-Brie companies, from the Écoparc to Petits Carreaux.",
+          "Contractual commitment on the scope defined at signature. Hosting in the European Union, GDPR compliance by default, DPO on request. No vendor lock-in: code, content and data remain entirely yours, transferable to any Val-de-Marne provider or taken in-house. Quote delivered from 24-48 h depending on complexity, clear scope and price with no hidden subscription. We claim UX/UI, mobile-first, multi-CMS e-commerce and custom AI integration for Sucy-en-Brie companies, from the Écoparc to Petits Carreaux.",
       },
     },
   },

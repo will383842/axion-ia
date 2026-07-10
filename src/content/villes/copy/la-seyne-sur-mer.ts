@@ -124,7 +124,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour recevoir un devis ?",
-            a: "Un devis est établi à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre se cadre vite ; pour une plateforme SaaS IA-native destinée à une PME du bassin naval, le chiffrage demande l'analyse de vos intégrations et de vos contraintes de données.",
+            a: "Un devis est établi à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre se cadre vite ; pour une plateforme SaaS IA-native destinée à une PME du bassin naval, le chiffrage demande l'analyse de vos intégrations et de vos contraintes de données.",
           },
           {
             q: "Williams se déplace-t-il à La Seyne-sur-Mer ?",
@@ -136,7 +136,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom intégralement transférable : vous restez propriétaire du code source, des accès et des données, sans verrou éditeur ni dépendance contractuelle obligatoire — la solution est reprenable en interne ou par tout prestataire de la région toulonnaise. Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception, cloisonnement renforcé pour les clients à exigence de souveraineté (défense navale, sciences de la mer). Devis établi à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Aucun chiffre de performance ni référence client n'est communiqué sans accord explicite.",
+          "Code custom intégralement transférable : vous restez propriétaire du code source, des accès et des données, sans verrou éditeur ni dépendance contractuelle obligatoire — la solution est reprenable en interne ou par tout prestataire de la région toulonnaise. Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception, cloisonnement renforcé pour les clients à exigence de souveraineté (défense navale, sciences de la mer). Devis établi à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature. Aucun chiffre de performance ni référence client n'est communiqué sans accord explicite.",
       },
       en: {
         hero: "La Seyne-sur-Mer concentre un écosystème de robotique sous-marine et de défense navale rare en France : le Technopôle de la Mer (premier technopôle européen de sécurité maritime, partagé avec Ollioules), Exail (ex-ECA Group, leader mondial des drones navals ROV/USV/AUV depuis plus de 50 ans), le site Naval Group d'Ollioules et le bassin de maintenance navale Toulon–La Seyne–Saint-Mandrier, CNIM héritier des chantiers FCM, plus le port scientifique de Brégaillon où Ifremer Méditerranée et l'infrastructure CNRS MEUST opèrent le plus grand port scientifique d'Europe. Axion-IA conçoit pour ce tissu — sous-traitants navals, PME de robotique marine, bureaux d'études, mais aussi commerces et prestataires touristiques des Sablettes et de Tamaris — des sites web et plateformes SaaS augmentés par l'IA, en code custom, hébergement UE conforme RGPD.",
@@ -210,7 +210,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour recevoir un devis ?",
-            a: "Un devis est établi à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre se cadre vite ; pour une plateforme SaaS IA-native destinée à une PME du bassin naval, le chiffrage demande l'analyse de vos intégrations et de vos contraintes de données.",
+            a: "Un devis est établi à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre se cadre vite ; pour une plateforme SaaS IA-native destinée à une PME du bassin naval, le chiffrage demande l'analyse de vos intégrations et de vos contraintes de données.",
           },
           {
             q: "Williams se déplace-t-il à La Seyne-sur-Mer ?",
@@ -222,7 +222,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom intégralement transférable : vous restez propriétaire du code source, des accès et des données, sans verrou éditeur ni dépendance contractuelle obligatoire — la solution est reprenable en interne ou par tout prestataire de la région toulonnaise. Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception, cloisonnement renforcé pour les clients à exigence de souveraineté (défense navale, sciences de la mer). Devis établi à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Aucun chiffre de performance ni référence client n'est communiqué sans accord explicite.",
+          "Code custom intégralement transférable : vous restez propriétaire du code source, des accès et des données, sans verrou éditeur ni dépendance contractuelle obligatoire — la solution est reprenable en interne ou par tout prestataire de la région toulonnaise. Hébergement en Union européenne par défaut, conformité RGPD intégrée dès la conception, cloisonnement renforcé pour les clients à exigence de souveraineté (défense navale, sciences de la mer). Devis établi à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature. Aucun chiffre de performance ni référence client n'est communiqué sans accord explicite.",
       },
     },
   },

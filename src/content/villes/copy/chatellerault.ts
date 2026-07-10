@@ -128,7 +128,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Un site vitrine pour artisan se chiffre vite ; un portail de sous-traitance connecté à un ERP demande un cadrage un peu plus long, calé lors du kick-off sur site à Châtellerault.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Un site vitrine pour artisan se chiffre vite ; un portail de sous-traitance connecté à un ERP demande un cadrage un peu plus long, calé lors du kick-off sur site à Châtellerault.",
           },
           {
             q: "Intervenez-vous sur place dans les zones industrielles du Grand Châtellerault ?",
@@ -136,7 +136,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Vous restez propriétaire intégral du code, des données et de la documentation : aucun lock-in éditeur, le site ou le SaaS est repris par n'importe quel intégrateur de la Vienne ou par vos équipes en interne. Hébergement UE par défaut, conformité RGPD, exigences de souveraineté cadrées dès la conception pour les sous-traitants aéro et défense. Périmètre, jalons et budget fixés avant signature, sans dérive cachée.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Vous restez propriétaire intégral du code, des données et de la documentation : aucun lock-in éditeur, le site ou le SaaS est repris par n'importe quel intégrateur de la Vienne ou par vos équipes en interne. Hébergement UE par défaut, conformité RGPD, exigences de souveraineté cadrées dès la conception pour les sous-traitants aéro et défense. Périmètre, jalons et budget fixés avant signature, sans dérive cachée.",
       },
       en: {
         hero: "Châtellerault, the second city of the Vienne, runs on an industrial base inherited from the former state Arms Manufacture: aerospace subcontracting (Safran Aircraft Engines, ~800 staff on military engine MRO; Nexteam Châtellerault Machining; Mecafi and its reactor blades), automotive equipment (Valeo Systèmes d'Essuyage, Hutchinson, Spirax Sarco) and foundry-machining concentrated on the ZI Nord des Varennes (117 ha, ~210 companies), the ZI du Sanital and the ZI de Saint-Ustre. Axion-IA builds, for these equipment makers, workshops and craftspeople, AI-augmented websites and SaaS platforms: supplier portals, quote configurators, order tracking wired to the shop-floor ERP — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -214,7 +214,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote?",
-            a: "The quote is delivered from 48 hours depending on project complexity. A showcase site for a craftsperson is priced quickly; a subcontracting portal connected to an ERP needs slightly longer framing, set during the on-site kick-off in Châtellerault.",
+            a: "The quote is delivered from 24 to 48 hours depending on project complexity. A showcase site for a craftsperson is priced quickly; a subcontracting portal connected to an ERP needs slightly longer framing, set during the on-site kick-off in Châtellerault.",
           },
           {
             q: "Do you come on site to the Grand Châtellerault industrial zones?",
@@ -222,7 +222,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 48 hours depending on complexity. You retain full ownership of the code, data and documentation: no vendor lock-in, the site or SaaS can be taken over by any integrator in the Vienne or by your in-house teams. EU hosting by default, GDPR compliance, sovereignty requirements framed from design for aerospace and defence subcontractors. Scope, milestones and budget fixed before signature, with no hidden drift.",
+          "Quote delivered from 24 to 48 hours depending on complexity. You retain full ownership of the code, data and documentation: no vendor lock-in, the site or SaaS can be taken over by any integrator in the Vienne or by your in-house teams. EU hosting by default, GDPR compliance, sovereignty requirements framed from design for aerospace and defence subcontractors. Scope, milestones and budget fixed before signature, with no hidden drift.",
       },
     },
   },

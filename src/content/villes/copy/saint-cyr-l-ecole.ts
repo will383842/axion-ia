@@ -51,7 +51,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de TPE du commerce et des services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
+        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de TPE du commerce et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
         whyHere: [
           "Filière aéronautique et aérotechnique structurante : l'aérodrome civil (1907, un des plus anciens de France), géré par le Groupe ADP, et l'héritage de l'Institut aérotechnique fondé en 1911 forment un terrain idéal pour des portails techniques, des plateformes de gestion de pièces et des outils documentaires augmentés par recherche sémantique sur catalogues, procédures et exigences de traçabilité, branchés sur votre GED et votre SI métier.",
           "Bassin d'enseignement marqué par le Lycée militaire (héritier de l'École spéciale militaire 1808-1940) et un réseau dense d'écoles et d'établissements : nous construisons des sites institutionnels accessibles (RGAA), des espaces élèves/parents sécurisés et des chatbots multilingues calibrés pour répondre aux questions récurrentes de scolarité, d'admission et de calendrier sans alourdir la charge administrative des secrétariats, avec une recherche sémantique sur règlements et procédures internes.",
@@ -62,7 +62,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Cyr-l'École",
             detail:
-              "Atelier sur site (centre-ville, abords de l'aérodrome géré par le Groupe ADP, quartier de la gare Transilien) : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des contraintes métier. On cartographie les processus à automatiser. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, abords de l'aérodrome géré par le Groupe ADP, quartier de la gare Transilien) : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des contraintes métier. On cartographie les processus à automatiser. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -122,7 +122,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saint-Cyr-l'École — en centre-ville, aux abords de l'aérodrome ou dans le quartier de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple, plus long pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de coût par exécution comme avec le no-code, et le périmètre est figé par écrit.",
+            a: "Oui. Après le cadrage sur site à Saint-Cyr-l'École — en centre-ville, aux abords de l'aérodrome ou dans le quartier de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple, plus long pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de coût par exécution comme avec le no-code, et le périmètre est figé par écrit.",
           },
           {
             q: "Gérez-vous des projets pour la filière aéronautique locale ?",
@@ -134,10 +134,10 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : périmètre figé par écrit, pas de dérive horaire cachée, pas de coût par exécution. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site institutionnel du Lycée militaire ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale. Web Vitals et accessibilité RGAA contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, en France), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in no-code, documentation et passation incluses, transférable à tout prestataire local de Versailles, Guyancourt ou Montigny-le-Bretonneux, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre figé par écrit, pas de dérive horaire cachée, pas de coût par exécution. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site institutionnel du Lycée militaire ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale. Web Vitals et accessibilité RGAA contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, en France), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in no-code, documentation et passation incluses, transférable à tout prestataire local de Versailles, Guyancourt ou Montigny-le-Bretonneux, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de TPE du commerce et des services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
+        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de TPE du commerce et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
         whyHere: [
           "Filière aéronautique et aérotechnique structurante : l'aérodrome civil (1907, un des plus anciens de France), géré par le Groupe ADP, et l'héritage de l'Institut aérotechnique fondé en 1911 forment un terrain idéal pour des portails techniques, des plateformes de gestion de pièces et des outils documentaires augmentés par recherche sémantique sur catalogues, procédures et exigences de traçabilité, branchés sur votre GED et votre SI métier.",
           "Bassin d'enseignement marqué par le Lycée militaire (héritier de l'École spéciale militaire 1808-1940) et un réseau dense d'écoles et d'établissements : nous construisons des sites institutionnels accessibles (RGAA), des espaces élèves/parents sécurisés et des chatbots multilingues calibrés pour répondre aux questions récurrentes de scolarité, d'admission et de calendrier sans alourdir la charge administrative des secrétariats, avec une recherche sémantique sur règlements et procédures internes.",
@@ -148,7 +148,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Cyr-l'École",
             detail:
-              "Atelier sur site (centre-ville, abords de l'aérodrome géré par le Groupe ADP, quartier de la gare Transilien) : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des contraintes métier. On cartographie les processus à automatiser. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, abords de l'aérodrome géré par le Groupe ADP, quartier de la gare Transilien) : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des contraintes métier. On cartographie les processus à automatiser. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -208,7 +208,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saint-Cyr-l'École — en centre-ville, aux abords de l'aérodrome ou dans le quartier de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple, plus long pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de coût par exécution comme avec le no-code, et le périmètre est figé par écrit.",
+            a: "Oui. Après le cadrage sur site à Saint-Cyr-l'École — en centre-ville, aux abords de l'aérodrome ou dans le quartier de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple, plus long pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de coût par exécution comme avec le no-code, et le périmètre est figé par écrit.",
           },
           {
             q: "Gérez-vous des projets pour la filière aéronautique locale ?",
@@ -220,7 +220,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : périmètre figé par écrit, pas de dérive horaire cachée, pas de coût par exécution. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site institutionnel du Lycée militaire ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale. Web Vitals et accessibilité RGAA contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, en France), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in no-code, documentation et passation incluses, transférable à tout prestataire local de Versailles, Guyancourt ou Montigny-le-Bretonneux, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre figé par écrit, pas de dérive horaire cachée, pas de coût par exécution. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site institutionnel du Lycée militaire ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale. Web Vitals et accessibilité RGAA contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, en France), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in no-code, documentation et passation incluses, transférable à tout prestataire local de Versailles, Guyancourt ou Montigny-le-Bretonneux, ou repris en interne par vos équipes.",
       },
     },
   },

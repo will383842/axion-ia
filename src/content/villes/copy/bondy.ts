@@ -132,11 +132,11 @@ export const BONDY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis pour mon site à Bondy ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un premier échange sur votre métier et vos besoins. L'atelier de cadrage se tient à Bondy, dans vos locaux ou sur votre point de vente le long du canal de l'Ourcq.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange sur votre métier et vos besoins. L'atelier de cadrage se tient à Bondy, dans vos locaux ou sur votre point de vente le long du canal de l'Ourcq.",
           },
         ],
         guarantees:
-          "Tous nos sites et plateformes sont hébergés en Union européenne et conçus conformes RGPD dès le cadrage (minimisation des données, consentement maîtrisé, mentions à jour). Vous restez propriétaire du code, des contenus et des données, transférables à tout prestataire sans verrou Axion-IA. Devis remis à partir de 48 h selon la complexité, périmètre et livrables écrits avant tout développement. Nous revendiquons l'ensemble de la chaîne — UX/UI sur mesure, version mobile, e-commerce multi-CMS et briques IA — au service d'un objectif unique : générer des contacts et des ventes pour les entreprises de Bondy.",
+          "Tous nos sites et plateformes sont hébergés en Union européenne et conçus conformes RGPD dès le cadrage (minimisation des données, consentement maîtrisé, mentions à jour). Vous restez propriétaire du code, des contenus et des données, transférables à tout prestataire sans verrou Axion-IA. Devis remis à partir de 24 à 48 h selon la complexité, périmètre et livrables écrits avant tout développement. Nous revendiquons l'ensemble de la chaîne — UX/UI sur mesure, version mobile, e-commerce multi-CMS et briques IA — au service d'un objectif unique : générer des contacts et des ventes pour les entreprises de Bondy.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Bondy (93), along the Canal de l'Ourcq and within the Est Ensemble intercommunality. The local fabric — around 7,000 businesses, overwhelmingly very small structures (retail, building trades and BTP firms, logistics in the Canal de l'Ourcq and Bondy Nord business zones, neighbourhood services) — needs sites that generate real leads, not decorative shop windows. We build qualified-quote, online-booking and e-commerce sites powered by AI, with bespoke UX/UI, polished mobile, multi-CMS integration and EU hosting compliant with GDPR. On the eve of the Grand Paris Express (Bondy and Pont de Bondy stations, Line 15 Est), a site that converts local search into enquiries becomes a strategic asset for a Bondy micro-business or SME.",
@@ -218,11 +218,11 @@ export const BONDY_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote for my site in Bondy?",
-            a: "We deliver a quote from 48 hours depending on the project's complexity, after a first discussion about your trade and needs. The kick-off workshop is held in Bondy, at your premises or your point of sale along the Canal de l'Ourcq.",
+            a: "We deliver a quote from 24 to 48 hours depending on the project's complexity, after a first discussion about your trade and needs. The kick-off workshop is held in Bondy, at your premises or your point of sale along the Canal de l'Ourcq.",
           },
         ],
         guarantees:
-          "All our sites and platforms are hosted in the European Union and designed GDPR-compliant from kick-off (data minimisation, controlled consent, up-to-date notices). You remain owner of the code, content and data, transferable to any provider with no Axion-IA lock-in. Quote delivered from 48 hours depending on complexity, with scope and deliverables written before any development. We claim the whole chain — bespoke UX/UI, mobile, multi-CMS e-commerce and AI bricks — in service of a single goal: generating leads and sales for Bondy businesses.",
+          "All our sites and platforms are hosted in the European Union and designed GDPR-compliant from kick-off (data minimisation, controlled consent, up-to-date notices). You remain owner of the code, content and data, transferable to any provider with no Axion-IA lock-in. Quote delivered from 24 to 48 hours depending on complexity, with scope and deliverables written before any development. We claim the whole chain — bespoke UX/UI, mobile, multi-CMS e-commerce and AI bricks — in service of a single goal: generating leads and sales for Bondy businesses.",
       },
     },
   },

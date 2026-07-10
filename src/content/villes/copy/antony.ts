@@ -122,7 +122,7 @@ export const ANTONY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai pouvez-vous chiffrer un projet à Antony ?",
-            a: "Nous fournissons un devis à partir de 48 h selon la complexité, après un échange de cadrage. Pour un site vitrine ou un e-commerce essentiel, l'estimation est rapide ; pour un SaaS réglementé destiné à un fabricant de dispositif médical d'Antonypôle, le chiffrage intègre les exigences de conformité et de sécurité.",
+            a: "Nous fournissons un devis à partir de 24-48 h selon la complexité, après un échange de cadrage. Pour un site vitrine ou un e-commerce essentiel, l'estimation est rapide ; pour un SaaS réglementé destiné à un fabricant de dispositif médical d'Antonypôle, le chiffrage intègre les exigences de conformité et de sécurité.",
           },
           {
             q: "Où sont hébergées les données et le code reste-t-il à nous ?",
@@ -134,7 +134,7 @@ export const ANTONY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel clair : périmètre, livrables et calendrier fixés à la signature, devis à partir de 48 h selon la complexité. Hébergement en UE par défaut et conformité RGPD — indispensable pour les laboratoires et fabricants de dispositifs médicaux d'Antonypôle comme pour les cabinets libéraux. Code source et modèles IA livrés et transférables : aucun lock-in éditeur, vos équipes restent autonomes après la mission. Nous revendiquons l'ensemble de la chaîne — UX/UI, développement mobile, e-commerce multi-CMS et IA — sans sous-traiter le cœur du projet.",
+          "Engagement contractuel clair : périmètre, livrables et calendrier fixés à la signature, devis à partir de 24-48 h selon la complexité. Hébergement en UE par défaut et conformité RGPD — indispensable pour les laboratoires et fabricants de dispositifs médicaux d'Antonypôle comme pour les cabinets libéraux. Code source et modèles IA livrés et transférables : aucun lock-in éditeur, vos équipes restent autonomes après la mission. Nous revendiquons l'ensemble de la chaîne — UX/UI, développement mobile, e-commerce multi-CMS et IA — sans sous-traiter le cœur du projet.",
       },
       en: {
         hero: "Antony (92) is not a generic tertiary commuter town: it is one of southern Île-de-France's biopharma and medical-device hubs. The Antonypôle park (61.92 ha, ~378 companies) concentrates Stallergenes Greer, Air Liquide Medical Systems, Dräger Medical, Moria and Diasorin, and the health/biotech sector alone accounts for ~3,800 jobs (15.5% of local employment). Axion-IA designs on site AI-augmented websites and SaaS platforms for these laboratories, medical-device makers, opticians (Essilor, Atol) and tertiary SMEs around La Croix-de-Berny — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -208,7 +208,7 @@ export const ANTONY_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you quote a project in Antony?",
-            a: "We provide a quote from 48 h depending on complexity, after a framing exchange. For a showcase site or essential e-commerce, the estimate is fast; for a regulated SaaS for an Antonypôle medical-device maker, the quote factors in compliance and security requirements.",
+            a: "We provide a quote from 24-48 h depending on complexity, after a framing exchange. For a showcase site or essential e-commerce, the estimate is fast; for a regulated SaaS for an Antonypôle medical-device maker, the quote factors in compliance and security requirements.",
           },
           {
             q: "Where is data hosted and do we keep the code?",
@@ -220,7 +220,7 @@ export const ANTONY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Clear contractual commitment: scope, deliverables and schedule fixed at signature, quote from 48 h depending on complexity. EU hosting by default and GDPR compliance — essential for Antonypôle laboratories and medical-device makers as well as private practices. Source code and AI models delivered and transferable: no vendor lock-in, your teams stay autonomous after the engagement. We own the full chain — UX/UI, mobile development, multi-CMS e-commerce and AI — without subcontracting the core of the project.",
+          "Clear contractual commitment: scope, deliverables and schedule fixed at signature, quote from 24-48 h depending on complexity. EU hosting by default and GDPR compliance — essential for Antonypôle laboratories and medical-device makers as well as private practices. Source code and AI models delivered and transferable: no vendor lock-in, your teams stay autonomous after the engagement. We own the full chain — UX/UI, mobile development, multi-CMS e-commerce and AI — without subcontracting the core of the project.",
       },
     },
   },

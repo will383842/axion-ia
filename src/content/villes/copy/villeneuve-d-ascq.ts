@@ -131,11 +131,11 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour obtenir un devis ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un échange de cadrage. Le devis détaille le périmètre (UX/UI, développement, briques IA, intégrations), les livrables et l'hébergement UE retenu.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un échange de cadrage. Le devis détaille le périmètre (UX/UI, développement, briques IA, intégrations), les livrables et l'hébergement UE retenu.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande — un standard non négociable pour les acteurs crédit/fintech (Cofidis) et e-commerce (Decathlon Digital, Auchan, Norauto) de Villeneuve-d'Ascq. Code custom intégralement transmis : vous gardez la propriété et la maîtrise de votre site ou SaaS — modèles, prompts, intégrations CMS/ERP — sans verrou éditeur ni dépendance contractuelle à Axion-IA. La plateforme est reprenable par vos équipes ou tout intégrateur de la métropole lilloise. Devis remis à partir de 48 h selon la complexité.",
+          "Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande — un standard non négociable pour les acteurs crédit/fintech (Cofidis) et e-commerce (Decathlon Digital, Auchan, Norauto) de Villeneuve-d'Ascq. Code custom intégralement transmis : vous gardez la propriété et la maîtrise de votre site ou SaaS — modèles, prompts, intégrations CMS/ERP — sans verrou éditeur ni dépendance contractuelle à Axion-IA. La plateforme est reprenable par vos équipes ou tout intégrateur de la métropole lilloise. Devis remis à partir de 24 à 48 h selon la complexité.",
       },
       en: {
         hero: "Villeneuve-d'Ascq is a rare case in France: across 27.46 km² and 23 business zones it combines headquarters with heavy digital stakes — Decathlon and its Decathlon Digital division (over 2,000 developers in e-commerce, mobile and cybersecurity), the Auchan group central buying office, Cofidis (consumer credit in nine European countries), Norauto International (Digital Commerce, Data) and Bonduelle — with a deep-tech hub: the Haute-Borne science park (over 200 companies, 8,500 jobs, CNRS labs IRCICA and IRI) adjoining the Cité scientifique campus. Axion-IA builds AI-augmented websites and SaaS platforms there — RAG chatbots, semantic search, conversational agents — in custom code, hosted in Europe (GDPR), with no vendor lock-in.",
@@ -217,11 +217,11 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote?",
-            a: "We deliver a quote from 48 hours depending on project complexity, after a framing exchange. The quote details scope (UX/UI, development, AI blocks, integrations), deliverables and the chosen EU hosting.",
+            a: "We deliver a quote from 24 to 48 hours depending on project complexity, after a framing exchange. The quote details scope (UX/UI, development, AI blocks, integrations), deliverables and the chosen EU hosting.",
           },
         ],
         guarantees:
-          "Hosting in the European Union by default, GDPR and AI Act compliance, DPO on request — a non-negotiable standard for the credit/fintech (Cofidis) and e-commerce (Decathlon Digital, Auchan, Norauto) players of Villeneuve-d'Ascq. Custom code fully handed over: you keep ownership and control of your site or SaaS — models, prompts, CMS/ERP integrations — with no vendor lock-in or contractual dependency on Axion-IA. The platform can be taken over by your teams or any integrator in the Lille metropolitan area. Quote delivered from 48 hours depending on complexity.",
+          "Hosting in the European Union by default, GDPR and AI Act compliance, DPO on request — a non-negotiable standard for the credit/fintech (Cofidis) and e-commerce (Decathlon Digital, Auchan, Norauto) players of Villeneuve-d'Ascq. Custom code fully handed over: you keep ownership and control of your site or SaaS — models, prompts, CMS/ERP integrations — with no vendor lock-in or contractual dependency on Axion-IA. The platform can be taken over by your teams or any integrator in the Lille metropolitan area. Quote delivered from 24 to 48 hours depending on complexity.",
       },
     },
   },

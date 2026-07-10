@@ -51,7 +51,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Chalon-sur-Saône des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos documents, recherche sémantique, agents et automatisations. Notre terrain : l'industrie de SaôneOr et du Grand Chalon — sous-traitance des donneurs d'ordre comme Framatome (composants nucléaires lourds, Chalon et Saint-Marcel), agroalimentaire (Vicky Foods), thermique (usine Atlantic de Virey-le-Grand), plasturgie (SGT), commerce et services. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chalon-sur-Saône, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chalon-sur-Saône des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos documents, recherche sémantique, agents et automatisations. Notre terrain : l'industrie de SaôneOr et du Grand Chalon — sous-traitance des donneurs d'ordre comme Framatome (composants nucléaires lourds, Chalon et Saint-Marcel), agroalimentaire (Vicky Foods), thermique (usine Atlantic de Virey-le-Grand), plasturgie (SGT), commerce et services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chalon-sur-Saône, itérations à distance.",
         whyHere: [
           "Tissu chalonnais à dominante industrielle : sous-traitants et fournisseurs de Framatome (cuves, générateurs de vapeur, projets EPR / Hinkley Point C / Sizewell C), de Saint-Gobain SEVA (superalliages) et des usines de SaôneOr — des portails fournisseurs et catalogues techniques où l'IA fait gagner un temps réel.",
           "Vague d'implantations récentes sur SaôneOr (label France 2030 « clé en main ») : Vicky Foods, Atlantic (pompes à chaleur, Virey-le-Grand), SGT — ces sites neufs ont besoin de sites vitrine, portails RH/recrutement et applications métier dès l'ouverture.",
@@ -62,7 +62,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
           {
             step: "Cadrage à Chalon-sur-Saône",
             detail:
-              "Atelier sur site (centre-ville, SaôneOr ou Saint-Marcel) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, SaôneOr ou Saint-Marcel) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Chalon-sur-Saône, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour un portail métier industriel branché sur un ERP/PLM. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage à Chalon-sur-Saône, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour un portail métier industriel branché sur un ERP/PLM. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Grand Chalon ou repris en interne — y compris pour les exigences de traçabilité des donneurs d'ordre industriels du bassin.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Grand Chalon ou repris en interne — y compris pour les exigences de traçabilité des donneurs d'ordre industriels du bassin.",
       },
       en: {
-        hero: "In Chalon-sur-Saône, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your documents, semantic search, agents and automations. Our turf: the industry of SaôneOr and the Grand Chalon — subcontractors of prime contractors like Framatome (heavy nuclear components, Chalon and Saint-Marcel), food processing (Vicky Foods), thermal (Atlantic's Virey-le-Grand plant), plastics (SGT), retail and services. Quote from 48 h depending on complexity, EU hosting, code and data yours. On-site Chalon-sur-Saône kick-off, remote iterations.",
+        hero: "In Chalon-sur-Saône, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your documents, semantic search, agents and automations. Our turf: the industry of SaôneOr and the Grand Chalon — subcontractors of prime contractors like Framatome (heavy nuclear components, Chalon and Saint-Marcel), food processing (Vicky Foods), thermal (Atlantic's Virey-le-Grand plant), plastics (SGT), retail and services. Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Chalon-sur-Saône kick-off, remote iterations.",
         whyHere: [
           "Predominantly industrial Chalon fabric: subcontractors and suppliers of Framatome (vessels, steam generators, EPR / Hinkley Point C / Sizewell C projects), Saint-Gobain SEVA (superalloys) and the SaôneOr factories — supplier portals and technical catalogues where AI saves real time.",
           "Recent wave of openings at SaôneOr (France 2030 'turnkey' label): Vicky Foods, Atlantic (heat pumps, Virey-le-Grand), SGT — these new sites need showcase sites, HR/recruitment portals and business apps from day one.",
@@ -148,7 +148,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
           {
             step: "Scoping in Chalon-sur-Saône",
             detail:
-              "On-site workshop (town centre, SaôneOr or Saint-Marcel): goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop (town centre, SaôneOr or Saint-Marcel): goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -216,11 +216,11 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the scoping in Chalon-sur-Saône, we issue a firm fixed-fee quote. The lead time depends on complexity — from 48 h for a simple project, longer for an industrial business portal wired into an ERP/PLM. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the scoping in Chalon-sur-Saône, we issue a firm fixed-fee quote. The lead time depends on complexity — from 24-48 h for a simple project, longer for an industrial business portal wired into an ERP/PLM. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-fee quote (from 48 h depending on complexity): no hidden hourly drift. Downtime-free go-live when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Grand Chalon provider or taken back in-house — including for the traceability requirements of the area's industrial prime contractors.",
+          "Firm fixed-fee quote (from 24-48 h depending on complexity): no hidden hourly drift. Downtime-free go-live when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Grand Chalon provider or taken back in-house — including for the traceability requirements of the area's industrial prime contractors.",
       },
     },
   },

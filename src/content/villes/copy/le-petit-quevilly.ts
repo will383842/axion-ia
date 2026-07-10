@@ -51,7 +51,7 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente au Petit-Quevilly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la Métropole Rouen Normandie (~22 208 habitants) où Seine Innopolis — pépinière-hôtel d'entreprises de 10 000 m² installée dans l'ancienne filature La Foudre (bâtiment de 1847) et animée par sa Cantine Numérique — côtoie un tissu d'éditeurs SaaS, d'agences digitales et de PME industrielles héritières de la chimie Malétra, réparties sur six zones d'activités dont l'Actipôle des Chartreux. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Petit-Quevilly, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Petit-Quevilly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la Métropole Rouen Normandie (~22 208 habitants) où Seine Innopolis — pépinière-hôtel d'entreprises de 10 000 m² installée dans l'ancienne filature La Foudre (bâtiment de 1847) et animée par sa Cantine Numérique — côtoie un tissu d'éditeurs SaaS, d'agences digitales et de PME industrielles héritières de la chimie Malétra, réparties sur six zones d'activités dont l'Actipôle des Chartreux. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Petit-Quevilly, itérations à distance.",
         whyHere: [
           "Seine Innopolis, pépinière-hôtel numérique de 10 000 m² dans l'ancienne filature La Foudre (1847) et sa Cantine Numérique : ce vivier d'éditeurs SaaS et de start-up en incubation est notre terrain pour construire des plateformes SaaS IA-native, des portails clients et des interfaces produit sur mesure, ou pour greffer une brique IA — recherche sémantique, agents — sur un produit déjà en exploitation.",
           "PME industrielles et tertiaires de l'Actipôle des Chartreux et des cinq autres zones d'activités du Petit-Quevilly : on refond leurs sites vitrines et boutiques e-commerce sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento, avec une UX/UI mobile-first et des automatisations devis-facturation reliées à leur ERP, le tout codé et livré chez elles sans plateforme no-code.",
@@ -62,7 +62,7 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           {
             step: "Cadrage au Petit-Quevilly",
             detail:
-              "Atelier sur site — à Seine Innopolis, dans sa Cantine Numérique, à l'Actipôle des Chartreux ou dans vos locaux : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — à Seine Innopolis, dans sa Cantine Numérique, à l'Actipôle des Chartreux ou dans vos locaux : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -134,10 +134,10 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, remis à partir de 48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un SaaS déjà en exploitation. Web Vitals et accessibilité contrôlés et mesurés à la livraison. Code source, bases et modèles livrés et documentés dans votre infrastructure (hébergement France/UE chez OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement no-code imposé, aucun verrou propriétaire. L'ensemble reste repris en interne ou transférable à tout prestataire local de la Métropole Rouen Normandie.",
+          "Devis ferme en forfait fixe, remis à partir de 24-48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un SaaS déjà en exploitation. Web Vitals et accessibilité contrôlés et mesurés à la livraison. Code source, bases et modèles livrés et documentés dans votre infrastructure (hébergement France/UE chez OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement no-code imposé, aucun verrou propriétaire. L'ensemble reste repris en interne ou transférable à tout prestataire local de la Métropole Rouen Normandie.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente au Petit-Quevilly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la Métropole Rouen Normandie (~22 208 habitants) où Seine Innopolis — pépinière-hôtel d'entreprises de 10 000 m² installée dans l'ancienne filature La Foudre (bâtiment de 1847) et animée par sa Cantine Numérique — côtoie un tissu d'éditeurs SaaS, d'agences digitales et de PME industrielles héritières de la chimie Malétra, réparties sur six zones d'activités dont l'Actipôle des Chartreux. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Petit-Quevilly, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Petit-Quevilly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de la Métropole Rouen Normandie (~22 208 habitants) où Seine Innopolis — pépinière-hôtel d'entreprises de 10 000 m² installée dans l'ancienne filature La Foudre (bâtiment de 1847) et animée par sa Cantine Numérique — côtoie un tissu d'éditeurs SaaS, d'agences digitales et de PME industrielles héritières de la chimie Malétra, réparties sur six zones d'activités dont l'Actipôle des Chartreux. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Petit-Quevilly, itérations à distance.",
         whyHere: [
           "Seine Innopolis, pépinière-hôtel numérique de 10 000 m² dans l'ancienne filature La Foudre (1847) et sa Cantine Numérique : ce vivier d'éditeurs SaaS et de start-up en incubation est notre terrain pour construire des plateformes SaaS IA-native, des portails clients et des interfaces produit sur mesure, ou pour greffer une brique IA — recherche sémantique, agents — sur un produit déjà en exploitation.",
           "PME industrielles et tertiaires de l'Actipôle des Chartreux et des cinq autres zones d'activités du Petit-Quevilly : on refond leurs sites vitrines et boutiques e-commerce sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento, avec une UX/UI mobile-first et des automatisations devis-facturation reliées à leur ERP, le tout codé et livré chez elles sans plateforme no-code.",
@@ -148,7 +148,7 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           {
             step: "Cadrage au Petit-Quevilly",
             detail:
-              "Atelier sur site — à Seine Innopolis, dans sa Cantine Numérique, à l'Actipôle des Chartreux ou dans vos locaux : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — à Seine Innopolis, dans sa Cantine Numérique, à l'Actipôle des Chartreux ou dans vos locaux : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -220,7 +220,7 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, remis à partir de 48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un SaaS déjà en exploitation. Web Vitals et accessibilité contrôlés et mesurés à la livraison. Code source, bases et modèles livrés et documentés dans votre infrastructure (hébergement France/UE chez OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement no-code imposé, aucun verrou propriétaire. L'ensemble reste repris en interne ou transférable à tout prestataire local de la Métropole Rouen Normandie.",
+          "Devis ferme en forfait fixe, remis à partir de 24-48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un SaaS déjà en exploitation. Web Vitals et accessibilité contrôlés et mesurés à la livraison. Code source, bases et modèles livrés et documentés dans votre infrastructure (hébergement France/UE chez OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement no-code imposé, aucun verrou propriétaire. L'ensemble reste repris en interne ou transférable à tout prestataire local de la Métropole Rouen Normandie.",
       },
     },
   },

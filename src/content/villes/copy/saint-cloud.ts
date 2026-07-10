@@ -119,7 +119,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer un e-commerce ou une boutique en ligne pour un commerce de Saint-Cloud ?",
-            a: "Oui. Nous développons l'e-commerce en multi-CMS (Shopify, WooCommerce, solutions headless) pour les commerces du centre-ville, de la gare Val d'Or et de la ZAC Bords de Seine : catalogue, paiement, mobile-first, et briques IA (recherche, recommandation, chatbot). Devis à partir de 48 h selon la complexité.",
+            a: "Oui. Nous développons l'e-commerce en multi-CMS (Shopify, WooCommerce, solutions headless) pour les commerces du centre-ville, de la gare Val d'Or et de la ZAC Bords de Seine : catalogue, paiement, mobile-first, et briques IA (recherche, recommandation, chatbot). Devis à partir de 24 à 48 h selon la complexité.",
           },
           {
             q: "Concevez-vous des sites événementiels ou de billetterie pour le Domaine national ou l'Hippodrome de Saint-Cloud ?",
@@ -135,7 +135,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, tarifs publics et périmètre défini avant signature. Sites et plateformes livrés en code custom, hébergement Union européenne conforme RGPD avec DPA contractuel. Vous gardez la maîtrise pleine du code source, des modèles IA et de l'hébergement : votre plateforme reste portable, reprenable par tout intégrateur de l'Ouest francilien (EPT Paris Ouest La Défense) ou par vos équipes en interne, sans dépendance contractuelle ni verrou éditeur. UX/UI, mobile et e-commerce multi-CMS inclus dans le périmètre.",
+          "Devis à partir de 24 à 48 h selon la complexité, tarifs publics et périmètre défini avant signature. Sites et plateformes livrés en code custom, hébergement Union européenne conforme RGPD avec DPA contractuel. Vous gardez la maîtrise pleine du code source, des modèles IA et de l'hébergement : votre plateforme reste portable, reprenable par tout intégrateur de l'Ouest francilien (EPT Paris Ouest La Défense) ou par vos équipes en interne, sans dépendance contractuelle ni verrou éditeur. UX/UI, mobile et e-commerce multi-CMS inclus dans le périmètre.",
       },
       en: {
         hero: "Saint-Cloud (92210, Hauts-de-Seine, Paris Ouest La Défense territory) is the only French town that hosts both the registered headquarters of Dassault Aviation, on Quai Marcel-Dassault along the Seine, and offices of Dassault Systèmes (3DS) in the « Les Bureaux de la Colline » business complex. Around these two poles revolves a dense fabric of head offices and services — Quotatis and the Compagnie Française des Loueurs de Skis at Les Bureaux de la Colline, Universal Medica (pharma/biotech/medtech), consulting firms and independent professionals — alongside the heritage and events economy of the Domaine national (Le Nôtre gardens) and the Saint-Cloud Racecourse. Axion-IA designs AI-augmented websites and SaaS platforms for these players, on site in Saint-Cloud then hybrid: custom code, EU/GDPR hosting, UX/UI, mobile and multi-CMS e-commerce, no vendor lock-in.",
@@ -205,7 +205,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
           },
           {
             q: "Can you build an e-commerce store for a Saint-Cloud retailer?",
-            a: "Yes. We build e-commerce in multi-CMS (Shopify, WooCommerce, headless solutions) for retailers in the town centre, near Val d'Or station and in the ZAC Bords de Seine: catalogue, payment, mobile-first, plus AI building blocks (search, recommendation, chatbot). Quote from 48 h depending on complexity.",
+            a: "Yes. We build e-commerce in multi-CMS (Shopify, WooCommerce, headless solutions) for retailers in the town centre, near Val d'Or station and in the ZAC Bords de Seine: catalogue, payment, mobile-first, plus AI building blocks (search, recommendation, chatbot). Quote from 24 to 48 h depending on complexity.",
           },
           {
             q: "Do you design event or ticketing sites for the Domaine national or the Saint-Cloud Racecourse?",
@@ -221,7 +221,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 h depending on complexity, public pricing and scope defined before signature. Sites and platforms delivered in custom code, European Union hosting compliant with GDPR with a contractual DPA. You keep full control of the source code, AI models and hosting: your platform stays portable, transferable to any integrator in western Île-de-France (Paris Ouest La Défense territory) or to your in-house teams, with no contractual dependency or vendor lock-in. UX/UI, mobile and multi-CMS e-commerce included in scope.",
+          "Quote from 24 to 48 h depending on complexity, public pricing and scope defined before signature. Sites and platforms delivered in custom code, European Union hosting compliant with GDPR with a contractual DPA. You keep full control of the source code, AI models and hosting: your platform stays portable, transferable to any integrator in western Île-de-France (Paris Ouest La Défense territory) or to your in-house teams, with no contractual dependency or vendor lock-in. UX/UI, mobile and multi-CMS e-commerce included in scope.",
       },
     },
   },

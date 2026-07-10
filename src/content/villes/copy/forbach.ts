@@ -51,7 +51,7 @@ export const FORBACH_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Forbach des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG bilingue FR/DE ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture mosellane du bassin houiller, frontalière de Sarrebruck, où 818 entreprises actives — 434 commerces de détail, 269 services et 115 unités industrielles — vivent au rythme d'un bassin transfrontalier d'environ un million d'habitants. La zone du Carrefour de l'Europe à Marienau (hypermarché Carrefour ex-Cora, Leroy Merlin, Brico Dépôt) concentre une part des flux commerciaux. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Forbach, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Forbach des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG bilingue FR/DE ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture mosellane du bassin houiller, frontalière de Sarrebruck, où 818 entreprises actives — 434 commerces de détail, 269 services et 115 unités industrielles — vivent au rythme d'un bassin transfrontalier d'environ un million d'habitants. La zone du Carrefour de l'Europe à Marienau (hypermarché Carrefour ex-Cora, Leroy Merlin, Brico Dépôt) concentre une part des flux commerciaux. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Forbach, itérations à distance.",
         whyHere: [
           "Économie commerciale frontalière : avec 434 commerces de détail et la zone du Carrefour de l'Europe à Marienau (hypermarché Carrefour ex-Cora, Leroy Merlin, Brico Dépôt) qui draine des flux quotidiens depuis la Sarre, un site vitrine ou une boutique e-commerce bilingue FR/DE capte la clientèle allemande aussi bien que mosellane — devis, panier, fiches produits et recherche sémantique dans les deux langues nativement.",
           "Tissu industriel hérité du charbon et de la sidérurgie (115 unités, Technopôle Forbach Sud) : sur ce passé du bassin houiller mosellan, on greffe l'IA sur l'existant — portail de suivi de production mobile-first, recherche sémantique sur la documentation technique, agents de saisie — sans refonte coûteuse de votre SI, avec un code livré et transférable.",
@@ -62,7 +62,7 @@ export const FORBACH_COPY: VilleCopy = {
           {
             step: "Cadrage à Forbach",
             detail:
-              "Atelier sur site, au centre-ville, dans la zone du Carrefour de l'Europe à Marienau ou au Technopôle Forbach Sud : objectifs, parcours utilisateurs FR/DE, audit de la stack, des contenus et des flux transfrontaliers. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, au centre-ville, dans la zone du Carrefour de l'Europe à Marienau ou au Technopôle Forbach Sud : objectifs, parcours utilisateurs FR/DE, audit de la stack, des contenus et des flux transfrontaliers. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const FORBACH_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Forbach — au centre-ville, à Marienau ou au Technopôle Forbach Sud — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le périmètre est verrouillé avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Forbach — au centre-ville, à Marienau ou au Technopôle Forbach Sud — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le périmètre est verrouillé avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre votre activité commerciale au Carrefour de l'Europe ni vos échanges transfrontaliers avec Sarrebruck. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison, en FR et DE. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in propriétaire, transférable à tout prestataire numérique du Grand Est ou repris en interne par vos équipes mosellanes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre votre activité commerciale au Carrefour de l'Europe ni vos échanges transfrontaliers avec Sarrebruck. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison, en FR et DE. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in propriétaire, transférable à tout prestataire numérique du Grand Est ou repris en interne par vos équipes mosellanes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Forbach des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG bilingue FR/DE ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture mosellane du bassin houiller, frontalière de Sarrebruck, où 818 entreprises actives — 434 commerces de détail, 269 services et 115 unités industrielles — vivent au rythme d'un bassin transfrontalier d'environ un million d'habitants. La zone du Carrefour de l'Europe à Marienau (hypermarché Carrefour ex-Cora, Leroy Merlin, Brico Dépôt) concentre une part des flux commerciaux. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Forbach, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Forbach des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG bilingue FR/DE ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture mosellane du bassin houiller, frontalière de Sarrebruck, où 818 entreprises actives — 434 commerces de détail, 269 services et 115 unités industrielles — vivent au rythme d'un bassin transfrontalier d'environ un million d'habitants. La zone du Carrefour de l'Europe à Marienau (hypermarché Carrefour ex-Cora, Leroy Merlin, Brico Dépôt) concentre une part des flux commerciaux. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Forbach, itérations à distance.",
         whyHere: [
           "Économie commerciale frontalière : avec 434 commerces de détail et la zone du Carrefour de l'Europe à Marienau (hypermarché Carrefour ex-Cora, Leroy Merlin, Brico Dépôt) qui draine des flux quotidiens depuis la Sarre, un site vitrine ou une boutique e-commerce bilingue FR/DE capte la clientèle allemande aussi bien que mosellane — devis, panier, fiches produits et recherche sémantique dans les deux langues nativement.",
           "Tissu industriel hérité du charbon et de la sidérurgie (115 unités, Technopôle Forbach Sud) : sur ce passé du bassin houiller mosellan, on greffe l'IA sur l'existant — portail de suivi de production mobile-first, recherche sémantique sur la documentation technique, agents de saisie — sans refonte coûteuse de votre SI, avec un code livré et transférable.",
@@ -148,7 +148,7 @@ export const FORBACH_COPY: VilleCopy = {
           {
             step: "Cadrage à Forbach",
             detail:
-              "Atelier sur site, au centre-ville, dans la zone du Carrefour de l'Europe à Marienau ou au Technopôle Forbach Sud : objectifs, parcours utilisateurs FR/DE, audit de la stack, des contenus et des flux transfrontaliers. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, au centre-ville, dans la zone du Carrefour de l'Europe à Marienau ou au Technopôle Forbach Sud : objectifs, parcours utilisateurs FR/DE, audit de la stack, des contenus et des flux transfrontaliers. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const FORBACH_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Forbach — au centre-ville, à Marienau ou au Technopôle Forbach Sud — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le périmètre est verrouillé avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Forbach — au centre-ville, à Marienau ou au Technopôle Forbach Sud — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et le périmètre est verrouillé avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre votre activité commerciale au Carrefour de l'Europe ni vos échanges transfrontaliers avec Sarrebruck. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison, en FR et DE. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in propriétaire, transférable à tout prestataire numérique du Grand Est ou repris en interne par vos équipes mosellanes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre votre activité commerciale au Carrefour de l'Europe ni vos échanges transfrontaliers avec Sarrebruck. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison, en FR et DE. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in propriétaire, transférable à tout prestataire numérique du Grand Est ou repris en interne par vos équipes mosellanes.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Villeneuve-la-Garenne des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des bords de Seine au nord des Hauts-de-Seine, où le grand pôle commercial Qwartz, la vaste plaine industrielle des Chanteraines, la zone industrielle du Val de Seine et la logistique fluviale et routière structurent un tissu dense de TPE et PME du commerce, de la distribution et des services. Avec ses parcs d'activités (Reniers, Étoile, Bongarde) et sa pépinière d'entreprises, le territoire concentre des besoins web concrets. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-la-Garenne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Villeneuve-la-Garenne des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des bords de Seine au nord des Hauts-de-Seine, où le grand pôle commercial Qwartz, la vaste plaine industrielle des Chanteraines, la zone industrielle du Val de Seine et la logistique fluviale et routière structurent un tissu dense de TPE et PME du commerce, de la distribution et des services. Avec ses parcs d'activités (Reniers, Étoile, Bongarde) et sa pépinière d'entreprises, le territoire concentre des besoins web concrets. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-la-Garenne, itérations à distance.",
         whyHere: [
           "Pôle commercial Qwartz et commerce de détail dominant : nous construisons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recommandations produits, recherche sémantique et qualification de contacts pour capter la clientèle de la zone de chalandise francilienne. Les enseignes et boutiques rayonnant autour du Qwartz et des bords de Seine y gagnent un canal en ligne aligné sur le flux physique du centre commercial.",
           "Plaine industrielle des Chanteraines et zone industrielle du Val de Seine : sur ces vastes emprises d'entrepôts, de locaux d'activités et de bureaux, on greffe des agents de suivi de commandes, de planification et de relances sur vos outils existants (gestion de stock, caisse, ERP) sans refonte lourde. La logistique fluviale et routière des bords de Seine y impose des sites et portails rapides, fiables et connectés au SI.",
@@ -64,7 +64,7 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Villeneuve-la-Garenne",
             detail:
-              "Atelier sur site (abords du Qwartz, plaine des Chanteraines, zone industrielle du Val de Seine, parcs d'activités Reniers ou Bongarde) : objectifs, parcours clients, audit de la stack, des contenus et des flux de commandes. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (abords du Qwartz, plaine des Chanteraines, zone industrielle du Val de Seine, parcs d'activités Reniers ou Bongarde) : objectifs, parcours clients, audit de la stack, des contenus et des flux de commandes. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Villeneuve-la-Garenne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation. Vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Villeneuve-la-Garenne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation. Vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise à la facturation. Mise en ligne sans downtime quand on augmente un site existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. À tout moment, le projet est transférable à un prestataire francilien de votre choix ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise à la facturation. Mise en ligne sans downtime quand on augmente un site existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. À tout moment, le projet est transférable à un prestataire francilien de votre choix ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Villeneuve-la-Garenne des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des bords de Seine au nord des Hauts-de-Seine, où le grand pôle commercial Qwartz, la vaste plaine industrielle des Chanteraines, la zone industrielle du Val de Seine et la logistique fluviale et routière structurent un tissu dense de TPE et PME du commerce, de la distribution et des services. Avec ses parcs d'activités (Reniers, Étoile, Bongarde) et sa pépinière d'entreprises, le territoire concentre des besoins web concrets. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-la-Garenne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Villeneuve-la-Garenne des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des bords de Seine au nord des Hauts-de-Seine, où le grand pôle commercial Qwartz, la vaste plaine industrielle des Chanteraines, la zone industrielle du Val de Seine et la logistique fluviale et routière structurent un tissu dense de TPE et PME du commerce, de la distribution et des services. Avec ses parcs d'activités (Reniers, Étoile, Bongarde) et sa pépinière d'entreprises, le territoire concentre des besoins web concrets. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-la-Garenne, itérations à distance.",
         whyHere: [
           "Pôle commercial Qwartz et commerce de détail dominant : nous construisons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recommandations produits, recherche sémantique et qualification de contacts pour capter la clientèle de la zone de chalandise francilienne. Les enseignes et boutiques rayonnant autour du Qwartz et des bords de Seine y gagnent un canal en ligne aligné sur le flux physique du centre commercial.",
           "Plaine industrielle des Chanteraines et zone industrielle du Val de Seine : sur ces vastes emprises d'entrepôts, de locaux d'activités et de bureaux, on greffe des agents de suivi de commandes, de planification et de relances sur vos outils existants (gestion de stock, caisse, ERP) sans refonte lourde. La logistique fluviale et routière des bords de Seine y impose des sites et portails rapides, fiables et connectés au SI.",
@@ -150,7 +150,7 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
           {
             step: "Cadrage à Villeneuve-la-Garenne",
             detail:
-              "Atelier sur site (abords du Qwartz, plaine des Chanteraines, zone industrielle du Val de Seine, parcs d'activités Reniers ou Bongarde) : objectifs, parcours clients, audit de la stack, des contenus et des flux de commandes. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (abords du Qwartz, plaine des Chanteraines, zone industrielle du Val de Seine, parcs d'activités Reniers ou Bongarde) : objectifs, parcours clients, audit de la stack, des contenus et des flux de commandes. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Villeneuve-la-Garenne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation. Vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Villeneuve-la-Garenne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation. Vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise à la facturation. Mise en ligne sans downtime quand on augmente un site existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. À tout moment, le projet est transférable à un prestataire francilien de votre choix ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise à la facturation. Mise en ligne sans downtime quand on augmente un site existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. À tout moment, le projet est transférable à un prestataire francilien de votre choix ou repris en interne par vos équipes.",
       },
     },
   },

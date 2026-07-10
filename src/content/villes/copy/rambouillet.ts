@@ -135,7 +135,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis détaillé établi à partir de 48 h selon la complexité, sans abonnement imposé. Code custom intégralement transférable : vous conservez la propriété du code, des accès et de la documentation, avec reprise possible en interne ou par tout prestataire des Yvelines — aucun verrou Axion-IA. Hébergement en UE par défaut, conformité RGPD documentée (DPA signé avant tout traitement). Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA sur un même projet.",
+          "Devis détaillé établi à partir de 24-48 h selon la complexité, sans abonnement imposé. Code custom intégralement transférable : vous conservez la propriété du code, des accès et de la documentation, avec reprise possible en interne ou par tout prestataire des Yvelines — aucun verrou Axion-IA. Hébergement en UE par défaut, conformité RGPD documentée (DPA signé avant tout traitement). Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'intégration IA sur un même projet.",
       },
       en: {
         hero: "Rambouillet is more than a forested sub-prefecture in the Yvelines: the town hosts the headquarters of EBP, a publisher of management software (accounting, payroll, invoicing, the Hubbix SaaS platform) part of the Cegid group since 2024, and concentrates in the Bel Air–La Forêt and Le Pâtis business parks a fabric of industrial SMEs (Rehau, Schüco, SNEF) and town-centre retailers. Axion-IA designs AI-augmented websites and SaaS platforms for these players — storefronts, customer portals, e-commerce, domain chatbots — in custom code, hosted in the EU, with no vendor lock-in.",
@@ -221,7 +221,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote issued from 48 hours depending on complexity, with no imposed subscription. Fully transferable custom code: you keep ownership of the code, access and documentation, recoverable in-house or by any Yvelines provider — no Axion-IA lock-in. EU hosting by default, documented GDPR compliance (DPA signed before any processing). We deliver UX/UI, mobile, multi-CMS e-commerce and AI integration on a single project; travel costs to Rambouillet and its agglomeration are calculated case by case depending on the zone.",
+          "Detailed quote issued from 24-48 hours depending on complexity, with no imposed subscription. Fully transferable custom code: you keep ownership of the code, access and documentation, recoverable in-house or by any Yvelines provider — no Axion-IA lock-in. EU hosting by default, documented GDPR compliance (DPA signed before any processing). We deliver UX/UI, mobile, multi-CMS e-commerce and AI integration on a single project; travel costs to Rambouillet and its agglomeration are calculated case by case depending on the zone.",
       },
     },
   },

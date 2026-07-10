@@ -51,7 +51,7 @@ export const SEVREMOINE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Sèvremoine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensée pour les Mauges, ce bassin industriel dense de TPE et PME né de la fusion de dix communes déléguées en 2015 (chef-lieu Saint-Macaire-en-Mauges), où l'agroalimentaire, la sélection génétique animale du Groupe Grimaud et la fabrication de produits métalliques structurent l'emploi de ses 25 797 habitants. On sert aussi le négoce et la logistique tournés vers l'arrondissement de Cholet. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Macaire-en-Mauges, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Sèvremoine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensée pour les Mauges, ce bassin industriel dense de TPE et PME né de la fusion de dix communes déléguées en 2015 (chef-lieu Saint-Macaire-en-Mauges), où l'agroalimentaire, la sélection génétique animale du Groupe Grimaud et la fabrication de produits métalliques structurent l'emploi de ses 25 797 habitants. On sert aussi le négoce et la logistique tournés vers l'arrondissement de Cholet. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Macaire-en-Mauges, itérations à distance.",
         whyHere: [
           "Sèvremoine accueille le Groupe Grimaud, acteur mondial de la sélection génétique animale et de la biologie, employeur majeur des Mauges : pour ce type d'ETI exportatrice, on construit des portails clients multilingues, des plateformes SaaS branchées sur le SI (ERP, traçabilité) et de la recherche sémantique sur catalogues techniques et fiches souches, indexés et interrogeables en langage naturel.",
           "Tissu agroalimentaire et industriel dense entre Saint-Macaire-en-Mauges et Torfou (élevage, transformation, sous-traitance métallique, négoce) : on greffe l'IA sur l'existant — suivi de production, relances clients, traçabilité de lots — via widget, API ou plugin WordPress/WooCommerce, sans refonte coûteuse, pour des TPE et PME souvent encore équipées de sites vitrines vieillissants.",
@@ -62,7 +62,7 @@ export const SEVREMOINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Sèvremoine",
             detail:
-              "Atelier sur site à Saint-Macaire-en-Mauges, dans les zones d'activité des Mauges ou au plus près de la gare TER de Torfou : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux métier. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site à Saint-Macaire-en-Mauges, dans les zones d'activité des Mauges ou au plus près de la gare TER de Torfou : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux métier. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -130,14 +130,14 @@ export const SEVREMOINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saint-Macaire-en-Mauges, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Saint-Macaire-en-Mauges, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper une chaîne de commandes ou un flux de production des Mauges. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Projet transférable à tout prestataire local des Mauges ou de l'arrondissement de Cholet, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper une chaîne de commandes ou un flux de production des Mauges. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Projet transférable à tout prestataire local des Mauges ou de l'arrondissement de Cholet, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Sèvremoine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensée pour les Mauges, ce bassin industriel dense de TPE et PME né de la fusion de dix communes déléguées en 2015 (chef-lieu Saint-Macaire-en-Mauges), où l'agroalimentaire, la sélection génétique animale du Groupe Grimaud et la fabrication de produits métalliques structurent l'emploi de ses 25 797 habitants. On sert aussi le négoce et la logistique tournés vers l'arrondissement de Cholet. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Macaire-en-Mauges, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Sèvremoine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensée pour les Mauges, ce bassin industriel dense de TPE et PME né de la fusion de dix communes déléguées en 2015 (chef-lieu Saint-Macaire-en-Mauges), où l'agroalimentaire, la sélection génétique animale du Groupe Grimaud et la fabrication de produits métalliques structurent l'emploi de ses 25 797 habitants. On sert aussi le négoce et la logistique tournés vers l'arrondissement de Cholet. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Macaire-en-Mauges, itérations à distance.",
         whyHere: [
           "Sèvremoine accueille le Groupe Grimaud, acteur mondial de la sélection génétique animale et de la biologie, employeur majeur des Mauges : pour ce type d'ETI exportatrice, on construit des portails clients multilingues, des plateformes SaaS branchées sur le SI (ERP, traçabilité) et de la recherche sémantique sur catalogues techniques et fiches souches, indexés et interrogeables en langage naturel.",
           "Tissu agroalimentaire et industriel dense entre Saint-Macaire-en-Mauges et Torfou (élevage, transformation, sous-traitance métallique, négoce) : on greffe l'IA sur l'existant — suivi de production, relances clients, traçabilité de lots — via widget, API ou plugin WordPress/WooCommerce, sans refonte coûteuse, pour des TPE et PME souvent encore équipées de sites vitrines vieillissants.",
@@ -148,7 +148,7 @@ export const SEVREMOINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Sèvremoine",
             detail:
-              "Atelier sur site à Saint-Macaire-en-Mauges, dans les zones d'activité des Mauges ou au plus près de la gare TER de Torfou : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux métier. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site à Saint-Macaire-en-Mauges, dans les zones d'activité des Mauges ou au plus près de la gare TER de Torfou : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux métier. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -216,11 +216,11 @@ export const SEVREMOINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Saint-Macaire-en-Mauges, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Saint-Macaire-en-Mauges, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper une chaîne de commandes ou un flux de production des Mauges. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Projet transférable à tout prestataire local des Mauges ou de l'arrondissement de Cholet, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper une chaîne de commandes ou un flux de production des Mauges. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Projet transférable à tout prestataire local des Mauges ou de l'arrondissement de Cholet, ou repris en interne par vos équipes.",
       },
     },
   },

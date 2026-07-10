@@ -50,7 +50,7 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Aubervilliers des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, catalogues e-commerce multilingues, chatbot RAG ancré sur vos produits, recherche visuelle de modèles, agents et automatisations. Pensé d'abord pour le commerce de gros prêt-à-porter du CIFA et du district textile (négociants wenzhou, import-export, marketplaces B2B), mais aussi pour la logistique de la zone EMGP, le BTP et le tertiaire du Parc du Millénaire. Devis à partir de 48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Aubervilliers, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Aubervilliers des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, catalogues e-commerce multilingues, chatbot RAG ancré sur vos produits, recherche visuelle de modèles, agents et automatisations. Pensé d'abord pour le commerce de gros prêt-à-porter du CIFA et du district textile (négociants wenzhou, import-export, marketplaces B2B), mais aussi pour la logistique de la zone EMGP, le BTP et le tertiaire du Parc du Millénaire. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Aubervilliers, itérations à distance.",
         whyHere: [
           "Capitale européenne du gros prêt-à-porter : le CIFA - Fashion Business Center (~280 grossistes, ~40 000 m²) et le district textile (~1 200 négociants, pour beaucoup originaires de Wenzhou) génèrent un besoin massif de catalogues e-commerce, fiches produits en masse et synchronisation marketplaces — notre terrain de jeu prioritaire.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma, parcours mobile-first — et e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento), pas seulement la brique IA.",
@@ -61,7 +61,7 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
           {
             step: "Cadrage à Aubervilliers",
             detail:
-              "Atelier sur site — CIFA, zone EMGP, Parc du Millénaire, ZAC Canal Porte d'Aubervilliers : objectifs, parcours acheteurs B2B, audit de votre stack, de votre catalogue et de vos canaux (marketplaces, WhatsApp Business, showroom). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — CIFA, zone EMGP, Parc du Millénaire, ZAC Canal Porte d'Aubervilliers : objectifs, parcours acheteurs B2B, audit de votre stack, de votre catalogue et de vos canaux (marketplaces, WhatsApp Business, showroom). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site (CIFA, EMGP, Parc du Millénaire), on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour un portail grossiste B2B étendu. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage sur site (CIFA, EMGP, Parc du Millénaire), on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour un portail grossiste B2B étendu. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique existante. Web Vitals, accessibilité et qualité des traductions FR/中文 contrôlés à la livraison. Code source, bases catalogue et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la Plaine Saint-Denis ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique existante. Web Vitals, accessibilité et qualité des traductions FR/中文 contrôlés à la livraison. Code source, bases catalogue et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la Plaine Saint-Denis ou repris en interne.",
       },
       en: {
-        hero: "In Aubervilliers, Axion-IA designs and augments websites, online stores and SaaS platforms with built-in AI: bespoke UX/UI, multilingual e-commerce catalogues, RAG chatbot grounded in your products, visual model search, agents and automations. Built first for the wholesale ready-to-wear trade of the CIFA Fashion Business Center and the textile district (Wenzhou traders, import-export, B2B marketplaces), but also for logistics in the EMGP zone, construction and Parc du Millénaire tertiary firms. Quote from 48 h depending on project complexity, EU/GDPR hosting, code and data yours. On-site Aubervilliers kick-off, remote iterations.",
+        hero: "In Aubervilliers, Axion-IA designs and augments websites, online stores and SaaS platforms with built-in AI: bespoke UX/UI, multilingual e-commerce catalogues, RAG chatbot grounded in your products, visual model search, agents and automations. Built first for the wholesale ready-to-wear trade of the CIFA Fashion Business Center and the textile district (Wenzhou traders, import-export, B2B marketplaces), but also for logistics in the EMGP zone, construction and Parc du Millénaire tertiary firms. Quote from 24-48 h depending on project complexity, EU/GDPR hosting, code and data yours. On-site Aubervilliers kick-off, remote iterations.",
         whyHere: [
           "Europe's wholesale ready-to-wear capital: the CIFA Fashion Business Center (~280 wholesalers, ~40,000 m²) and the textile district (~1,200 traders, many from Wenzhou) drive massive demand for e-commerce catalogues, bulk product sheets and marketplace sync — our priority ground here.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype, mobile-first journeys — and multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop, Magento), not just the AI brick.",
@@ -147,7 +147,7 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
           {
             step: "Scoping in Aubervilliers",
             detail:
-              "On-site workshop — CIFA, EMGP zone, Parc du Millénaire, ZAC Canal Porte d'Aubervilliers: goals, B2B buyer journeys, audit of your stack, catalogue and channels (marketplaces, WhatsApp Business, showroom). Firm quote from 48 h depending on complexity.",
+              "On-site workshop — CIFA, EMGP zone, Parc du Millénaire, ZAC Canal Porte d'Aubervilliers: goals, B2B buyer journeys, audit of your stack, catalogue and channels (marketplaces, WhatsApp Business, showroom). Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -215,11 +215,11 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After on-site scoping (CIFA, EMGP, Parc du Millénaire), we issue a firm fixed-price quote. Turnaround depends on complexity — from 48 h for a simple project, more for an extended B2B wholesaler portal. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After on-site scoping (CIFA, EMGP, Parc du Millénaire), we issue a firm fixed-price quote. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extended B2B wholesaler portal. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing store. Web Vitals, accessibility and FR/中文 translation quality checked at delivery. Source code, catalogue databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Plaine Saint-Denis vendor or taken back in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing store. Web Vitals, accessibility and FR/中文 translation quality checked at delivery. Source code, catalogue databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Plaine Saint-Denis vendor or taken back in-house.",
       },
     },
   },

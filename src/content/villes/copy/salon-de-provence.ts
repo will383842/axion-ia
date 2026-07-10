@@ -122,7 +122,7 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevez-vous un devis pour un projet à Salon-de-Provence ?",
-            a: "Nous transmettons un devis à partir de 48 h selon la complexité du projet — une vitrine de PME de la Gandonne est cadrée plus vite qu'une plateforme SaaS multi-modules pour un opérateur logistique de Clésud. Le devis détaille le périmètre et les livrables avant toute signature.",
+            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet — une vitrine de PME de la Gandonne est cadrée plus vite qu'une plateforme SaaS multi-modules pour un opérateur logistique de Clésud. Le devis détaille le périmètre et les livrables avant toute signature.",
           },
           {
             q: "Travaillez-vous avec n'importe quel CMS ou imposez-vous une plateforme ?",
@@ -134,7 +134,7 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrables remis dans les délais convenus à la signature, périmètre et prix fixés dans le devis (transmis à partir de 48 h selon la complexité), sans dérive cachée. Conformité RGPD, hébergement données en UE par défaut. Aucun lock-in : code, modèles, prompts et données restent intégralement chez vous, transférables à tout intégrateur de la région salonaise ou repris en interne. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — vos équipes conservent la maîtrise pleine de la plateforme après la mission.",
+          "Engagement contractuel : livrables remis dans les délais convenus à la signature, périmètre et prix fixés dans le devis (transmis à partir de 24-48 h selon la complexité), sans dérive cachée. Conformité RGPD, hébergement données en UE par défaut. Aucun lock-in : code, modèles, prompts et données restent intégralement chez vous, transférables à tout intégrateur de la région salonaise ou repris en interne. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — vos équipes conservent la maîtrise pleine de la plateforme après la mission.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Salon-de-Provence, at the crossroads of the A7 and A54 motorways. Three local realities shape our offer here: the soap and olive-oil brands selling Marseille soap online — Salon is France's 2nd-largest producer after Marseille, home to the Marius Fabre (since 1900) and Rampal Latour (a soapmaker lineage since 1828) factories; the logistics and e-commerce operators of the Clésud platform (Grans-Miramas, 720,000 sqm of warehouses connected to the Miramas marshalling yard, France's 2nd-largest), where ID Logistics, Maisons du Monde, Gifi, Alinéa and Rexel operate; and the ~519 micro-businesses and SMEs of the Gandonne business park. RAG chatbots, semantic catalog search, conversational agents, business copilots — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -208,7 +208,7 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do you provide a quote for a project in Salon-de-Provence?",
-            a: "We provide a quote from 48 h depending on project complexity — a Gandonne SME showcase is framed faster than a multi-module SaaS platform for a Clésud logistics operator. The quote details scope and deliverables before any signature.",
+            a: "We provide a quote from 24-48 h depending on project complexity — a Gandonne SME showcase is framed faster than a multi-module SaaS platform for a Clésud logistics operator. The quote details scope and deliverables before any signature.",
           },
           {
             q: "Do you work with any CMS or do you impose a platform?",
@@ -220,7 +220,7 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverables handed over within the timeline agreed at signature, scope and price fixed in the quote (provided from 48 h depending on complexity), with no hidden drift. GDPR compliance, EU data hosting by default. No lock-in: code, models, prompts and data stay entirely with you, transferable to any integrator in the Salon region or taken in-house. We claim UX/UI, mobile, multi-CMS e-commerce and AI — your teams keep full control of the platform after the mission.",
+          "Contractual commitment: deliverables handed over within the timeline agreed at signature, scope and price fixed in the quote (provided from 24-48 h depending on complexity), with no hidden drift. GDPR compliance, EU data hosting by default. No lock-in: code, models, prompts and data stay entirely with you, transferable to any integrator in the Salon region or taken in-house. We claim UX/UI, mobile, multi-CMS e-commerce and AI — your teams keep full control of the platform after the mission.",
       },
     },
   },

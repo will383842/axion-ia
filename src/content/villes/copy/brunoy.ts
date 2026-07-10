@@ -51,7 +51,7 @@ export const BRUNOY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Brunoy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de l'Essonne (~25 643 habitants), portée par les commerces du centre-ville et du Centre Commercial Talma, les professions libérales de santé et du droit, l'artisanat du bâtiment et les services à la personne du Val d'Yerres. Du commerce de quartier La Pyramide à l'étal des marchés des Bosserons et des Provinciales, on construit l'outil web qui transforme votre trafic local en rendez-vous. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brunoy, itérations à distance — la gare RER D vous relie à Paris-Gare-de-Lyon en 30 min.",
+        hero: "Axion-IA conçoit et augmente à Brunoy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de l'Essonne (~25 643 habitants), portée par les commerces du centre-ville et du Centre Commercial Talma, les professions libérales de santé et du droit, l'artisanat du bâtiment et les services à la personne du Val d'Yerres. Du commerce de quartier La Pyramide à l'étal des marchés des Bosserons et des Provinciales, on construit l'outil web qui transforme votre trafic local en rendez-vous. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brunoy, itérations à distance — la gare RER D vous relie à Paris-Gare-de-Lyon en 30 min.",
         whyHere: [
           "Tissu de commerces de proximité et d'artisans du bâtiment concentré au centre-ville, au Centre Commercial Talma (2 ha, une soixantaine d'enseignes) et sur les marchés des Bosserons et des Provinciales : on construit des vitrines et boutiques e-commerce mobile-first (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, paiement, prise de rendez-vous et devis en ligne, plutôt qu'une refonte lourde et coûteuse.",
           "Forte densité de professions libérales de santé et du droit, beaucoup installées au centre et dans le quartier prioritaire de La Pyramide : nos chatbots RAG répondent aux patients et clients à partir de vos seuls documents, prennent les rendez-vous et filtrent les demandes en plusieurs langues, sans jamais inventer ni divulguer une donnée sensible — chaîne hébergeable en UE et conforme RGPD.",
@@ -62,7 +62,7 @@ export const BRUNOY_COPY: VilleCopy = {
           {
             step: "Cadrage à Brunoy",
             detail:
-              "Atelier sur site (centre-ville, Centre Commercial Talma, locaux de la Maison de l'éco rue de la République ou visio) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, Centre Commercial Talma, locaux de la Maison de l'éco rue de la République ou visio) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const BRUNOY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Brunoy — au centre-ville, au Talma ou à la Maison de l'éco — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
+            a: "Oui. Après le cadrage sur site à Brunoy — au centre-ville, au Talma ou à la Maison de l'éco — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant — vos pages commerçantes et vos prises de rendez-vous restent en ligne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local du Val d'Yerres ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant — vos pages commerçantes et vos prises de rendez-vous restent en ligne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local du Val d'Yerres ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Brunoy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de l'Essonne (~25 643 habitants), portée par les commerces du centre-ville et du Centre Commercial Talma, les professions libérales de santé et du droit, l'artisanat du bâtiment et les services à la personne du Val d'Yerres. Du commerce de quartier La Pyramide à l'étal des marchés des Bosserons et des Provinciales, on construit l'outil web qui transforme votre trafic local en rendez-vous. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brunoy, itérations à distance — la gare RER D vous relie à Paris-Gare-de-Lyon en 30 min.",
+        hero: "Axion-IA conçoit et augmente à Brunoy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de l'Essonne (~25 643 habitants), portée par les commerces du centre-ville et du Centre Commercial Talma, les professions libérales de santé et du droit, l'artisanat du bâtiment et les services à la personne du Val d'Yerres. Du commerce de quartier La Pyramide à l'étal des marchés des Bosserons et des Provinciales, on construit l'outil web qui transforme votre trafic local en rendez-vous. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brunoy, itérations à distance — la gare RER D vous relie à Paris-Gare-de-Lyon en 30 min.",
         whyHere: [
           "Tissu de commerces de proximité et d'artisans du bâtiment concentré au centre-ville, au Centre Commercial Talma (2 ha, une soixantaine d'enseignes) et sur les marchés des Bosserons et des Provinciales : on construit des vitrines et boutiques e-commerce mobile-first (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, paiement, prise de rendez-vous et devis en ligne, plutôt qu'une refonte lourde et coûteuse.",
           "Forte densité de professions libérales de santé et du droit, beaucoup installées au centre et dans le quartier prioritaire de La Pyramide : nos chatbots RAG répondent aux patients et clients à partir de vos seuls documents, prennent les rendez-vous et filtrent les demandes en plusieurs langues, sans jamais inventer ni divulguer une donnée sensible — chaîne hébergeable en UE et conforme RGPD.",
@@ -148,7 +148,7 @@ export const BRUNOY_COPY: VilleCopy = {
           {
             step: "Cadrage à Brunoy",
             detail:
-              "Atelier sur site (centre-ville, Centre Commercial Talma, locaux de la Maison de l'éco rue de la République ou visio) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, Centre Commercial Talma, locaux de la Maison de l'éco rue de la République ou visio) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const BRUNOY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Brunoy — au centre-ville, au Talma ou à la Maison de l'éco — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
+            a: "Oui. Après le cadrage sur site à Brunoy — au centre-ville, au Talma ou à la Maison de l'éco — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant — vos pages commerçantes et vos prises de rendez-vous restent en ligne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local du Val d'Yerres ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant — vos pages commerçantes et vos prises de rendez-vous restent en ligne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local du Val d'Yerres ou repris en interne par vos équipes.",
       },
     },
   },

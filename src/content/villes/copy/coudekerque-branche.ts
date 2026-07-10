@@ -53,7 +53,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Coudekerque-Branche des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de l'agglomération de Dunkerque, troisième port maritime français, qui vit dans l'orbite du grand port industriel et de la sidérurgie du littoral, avec un tissu dense de TPE et PME en sous-traitance, maintenance, logistique portuaire, transport routier et commerce de proximité. Que vous soyez un transporteur du Tonkin, un atelier de maintenance ou une boutique du centre, on greffe l'IA sur votre site ou on le rebâtit de zéro. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Coudekerque-Branche, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Coudekerque-Branche des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de l'agglomération de Dunkerque, troisième port maritime français, qui vit dans l'orbite du grand port industriel et de la sidérurgie du littoral, avec un tissu dense de TPE et PME en sous-traitance, maintenance, logistique portuaire, transport routier et commerce de proximité. Que vous soyez un transporteur du Tonkin, un atelier de maintenance ou une boutique du centre, on greffe l'IA sur votre site ou on le rebâtit de zéro. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Coudekerque-Branche, itérations à distance.",
         whyHere: [
           "Économie gravitant autour du port industriel de Dunkerque et de la sidérurgie du littoral (ArcelorMittal Dunkerque, l'un des plus grands sites sidérurgiques de France à quelques kilomètres) : pour la sous-traitance et la maintenance industrielle, on bâtit des portails clients B2B, des configurateurs de devis et des espaces de suivi d'interventions qui parlent à vos ERP et logiciels de GMAO, avec recherche sémantique sur vos catalogues de pièces.",
           "Zones d'activités du Tonkin, rue Ledru Rollin et centre d'affaires CREANOR qui regroupe une centaine d'entreprises : on greffe l'IA sur l'existant — widget, API, plugin sur WordPress, PrestaShop ou WooCommerce — ou on construit une vitrine e-commerce sur mesure avec UX/UI dédiée, sans refonte coûteuse pour une TPE accolée au pôle Flandre Dunkerque.",
@@ -64,7 +64,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
           {
             step: "Cadrage à Coudekerque-Branche",
             detail:
-              "Atelier sur site (zones du Tonkin, rue Ledru Rollin, centre d'affaires CREANOR ou vos bureaux) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques liés au port. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (zones du Tonkin, rue Ledru Rollin, centre d'affaires CREANOR ou vos bureaux) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques liés au port. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site (zones du Tonkin, rue Ledru Rollin ou centre d'affaires CREANOR), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre verrouillé avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site (zones du Tonkin, rue Ledru Rollin ou centre d'affaires CREANOR), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre verrouillé avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, un périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre commandes ni expéditions portuaires. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, un périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre commandes ni expéditions portuaires. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Coudekerque-Branche des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de l'agglomération de Dunkerque, troisième port maritime français, qui vit dans l'orbite du grand port industriel et de la sidérurgie du littoral, avec un tissu dense de TPE et PME en sous-traitance, maintenance, logistique portuaire, transport routier et commerce de proximité. Que vous soyez un transporteur du Tonkin, un atelier de maintenance ou une boutique du centre, on greffe l'IA sur votre site ou on le rebâtit de zéro. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Coudekerque-Branche, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Coudekerque-Branche des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de l'agglomération de Dunkerque, troisième port maritime français, qui vit dans l'orbite du grand port industriel et de la sidérurgie du littoral, avec un tissu dense de TPE et PME en sous-traitance, maintenance, logistique portuaire, transport routier et commerce de proximité. Que vous soyez un transporteur du Tonkin, un atelier de maintenance ou une boutique du centre, on greffe l'IA sur votre site ou on le rebâtit de zéro. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Coudekerque-Branche, itérations à distance.",
         whyHere: [
           "Économie gravitant autour du port industriel de Dunkerque et de la sidérurgie du littoral (ArcelorMittal Dunkerque, l'un des plus grands sites sidérurgiques de France à quelques kilomètres) : pour la sous-traitance et la maintenance industrielle, on bâtit des portails clients B2B, des configurateurs de devis et des espaces de suivi d'interventions qui parlent à vos ERP et logiciels de GMAO, avec recherche sémantique sur vos catalogues de pièces.",
           "Zones d'activités du Tonkin, rue Ledru Rollin et centre d'affaires CREANOR qui regroupe une centaine d'entreprises : on greffe l'IA sur l'existant — widget, API, plugin sur WordPress, PrestaShop ou WooCommerce — ou on construit une vitrine e-commerce sur mesure avec UX/UI dédiée, sans refonte coûteuse pour une TPE accolée au pôle Flandre Dunkerque.",
@@ -150,7 +150,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
           {
             step: "Cadrage à Coudekerque-Branche",
             detail:
-              "Atelier sur site (zones du Tonkin, rue Ledru Rollin, centre d'affaires CREANOR ou vos bureaux) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques liés au port. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (zones du Tonkin, rue Ledru Rollin, centre d'affaires CREANOR ou vos bureaux) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques liés au port. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site (zones du Tonkin, rue Ledru Rollin ou centre d'affaires CREANOR), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre verrouillé avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site (zones du Tonkin, rue Ledru Rollin ou centre d'affaires CREANOR), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre verrouillé avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, un périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre commandes ni expéditions portuaires. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, un périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre commandes ni expéditions portuaires. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
     },
   },

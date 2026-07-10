@@ -53,7 +53,7 @@ export const GAP_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Gap, préfecture des Hautes-Alpes et ville la plus haute de France (735 m), Axion-IA conçoit et augmente avec l'IA des sites web, applications et plateformes SaaS : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pour les ateliers de la filière aéronautique du pôle Excell'air et de l'aérocampus Polyaéro à Tallard, les hôteliers-loueurs porte des stations et de Serre-Ponçon, les distributeurs comme l'écosystème Andréty et le tissu de Micropolis. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Gap, itérations à distance.",
+        hero: "À Gap, préfecture des Hautes-Alpes et ville la plus haute de France (735 m), Axion-IA conçoit et augmente avec l'IA des sites web, applications et plateformes SaaS : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pour les ateliers de la filière aéronautique du pôle Excell'air et de l'aérocampus Polyaéro à Tallard, les hôteliers-loueurs porte des stations et de Serre-Ponçon, les distributeurs comme l'écosystème Andréty et le tissu de Micropolis. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Gap, itérations à distance.",
         whyHere: [
           "Filière aéronautique Gap-Tallard : ateliers de maintenance, centres de loisir aérien (CERPS Tallard, >30 000 sauts/an) et entreprises du pôle Excell'air ont besoin de portails de réservation, de planning chantier maintenance et de catalogues techniques en ligne — pas de site générique.",
           "Tourisme 4 saisons : moteurs de réservation directe et yield management pour les hôtels, gîtes et loueurs porte des stations (Orcières, Réallon, Champsaur, Dévoluy) et du lac de Serre-Ponçon, avec communication bilingue FR/IT-EN pour la clientèle transalpine.",
@@ -64,7 +64,7 @@ export const GAP_COPY: VilleCopy = {
           {
             step: "Cadrage à Gap",
             detail:
-              "Atelier sur site — Micropolis, centre-ville préfecture, aérodrome de Tallard ou station : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — Micropolis, centre-ville préfecture, aérodrome de Tallard ou station : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const GAP_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région gapençaise ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région gapençaise ou repris en interne.",
       },
       en: {
-        hero: "In Gap, prefecture of the Hautes-Alpes and the highest city in France (735 m), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. For the aeronautical maintenance workshops of the Excell'air pole and the Polyaéro aérocampus at Tallard, hotel and rental operators at the gateway to the ski resorts and Lake Serre-Ponçon, distributors like the Andréty ecosystem and the businesses of the Micropolis park. Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site Gap kick-off, remote iterations.",
+        hero: "In Gap, prefecture of the Hautes-Alpes and the highest city in France (735 m), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. For the aeronautical maintenance workshops of the Excell'air pole and the Polyaéro aérocampus at Tallard, hotel and rental operators at the gateway to the ski resorts and Lake Serre-Ponçon, distributors like the Andréty ecosystem and the businesses of the Micropolis park. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Gap kick-off, remote iterations.",
         whyHere: [
           "Gap-Tallard aeronautical cluster: maintenance workshops, leisure-aviation centres (CERPS Tallard, 30,000+ jumps/year) and Excell'air-pole companies need booking portals, maintenance work-planning and online technical catalogues — not a generic website.",
           "Four-season tourism: direct-booking engines and yield management for hotels, gîtes and rental operators at the gateway to the resorts (Orcières, Réallon, Champsaur, Dévoluy) and Lake Serre-Ponçon, with bilingual FR/IT-EN communication for cross-Alpine clientele.",
@@ -150,7 +150,7 @@ export const GAP_COPY: VilleCopy = {
           {
             step: "Scoping in Gap",
             detail:
-              "On-site workshop — Micropolis, prefecture town centre, Tallard aerodrome or a resort: goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop — Micropolis, prefecture town centre, Tallard aerodrome or a resort: goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -222,7 +222,7 @@ export const GAP_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm quote on a fixed package (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site, including in peak tourist season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Gap-area provider or taken in-house.",
+          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site, including in peak tourist season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Gap-area provider or taken in-house.",
       },
     },
   },

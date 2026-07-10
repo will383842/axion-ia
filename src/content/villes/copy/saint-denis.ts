@@ -458,7 +458,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
 
 // === SITES WEB AUGMENTÉS ===
 const SITESWEB_FR: VilleServiceCopyLocale = {
-  hero: "Axion-IA conçoit et augmente à Saint-Denis des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Denis, itérations à distance.",
+  hero: "Axion-IA conçoit et augmente à Saint-Denis des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Denis, itérations à distance.",
   whyHere: [
     "Projets web & SaaS dyonisiens : cluster audiovisuel & créatif (studios, sociétés de production — Plaine Saint-Denis), logistique, BTP Grand Paris, ESS, hub Pleyel, grandes directions de Plaine Commune.",
     "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
@@ -469,7 +469,7 @@ const SITESWEB_FR: VilleServiceCopyLocale = {
     {
       step: "Cadrage à Saint-Denis",
       detail:
-        "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+        "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
     },
     {
       step: "Conception UX/UI",
@@ -533,7 +533,7 @@ const SITESWEB_FR: VilleServiceCopyLocale = {
     },
     {
       q: "Le devis est-il ferme et le tarif fixe ?",
-      a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme étendue. Pas de régie, pas de dérive horaire cachée.",
+      a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme étendue. Pas de régie, pas de dérive horaire cachée.",
     },
     {
       q: "Avec quelles technologies travaillez-vous ?",
@@ -541,7 +541,7 @@ const SITESWEB_FR: VilleServiceCopyLocale = {
     },
   ],
   guarantees:
-    "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région parisienne ou repris en interne.",
+    "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région parisienne ou repris en interne.",
 };
 
 // === EXPORT ===

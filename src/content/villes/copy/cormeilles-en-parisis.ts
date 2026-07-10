@@ -126,7 +126,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
           {
             q: "Quels sont vos délais pour un devis et où sont hébergées les données ?",
-            a: "Nous transmettons un devis à partir de 48 h selon la complexité du projet. Tous les sites et plateformes sont développés en code custom, hébergés en Union européenne et conformes RGPD : vos données et celles de vos clients restent souveraines.",
+            a: "Nous transmettons un devis à partir de 24 à 48 h selon la complexité du projet. Tous les sites et plateformes sont développés en code custom, hébergés en Union européenne et conformes RGPD : vos données et celles de vos clients restent souveraines.",
           },
           {
             q: "Intervenez-vous dans les communes autour de Cormeilles-en-Parisis ?",
@@ -134,7 +134,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis transmis à partir de 48 h selon la complexité. Sites et plateformes développés en code custom (pas de no-code opaque), avec UX/UI, design mobile-first et e-commerce multi-CMS. Hébergement en Union européenne et conformité RGPD par défaut. Vous gardez la pleine maîtrise : code source, contenus et hébergement vous appartiennent, transférables à tout intégrateur ou repris en interne, sans verrou Axion-IA. Kick-off sur site à Cormeilles-en-Parisis ; frais de déplacement éventuels calculés au cas par cas selon la zone.",
+          "Devis transmis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en code custom (pas de no-code opaque), avec UX/UI, design mobile-first et e-commerce multi-CMS. Hébergement en Union européenne et conformité RGPD par défaut. Vous gardez la pleine maîtrise : code source, contenus et hébergement vous appartiennent, transférables à tout intégrateur ou repris en interne, sans verrou Axion-IA. Kick-off sur site à Cormeilles-en-Parisis ; frais de déplacement éventuels calculés au cas par cas selon la zone.",
       },
       en: {
         hero: "Axion-IA supports micro-businesses, SMEs and mid-caps in Cormeilles-en-Parisis (Val-d'Oise, CA Val Parisis) on their AI-augmented websites and SaaS platforms. The local fabric is distinctive: the Placoplatre quarry, owned by the Saint-Gobain group, still extracts Cormeilles gypsum — heir to the Lambert plaster works (1822) and accounting on its own for nearly 10% of France's plaster production — while the former Lafarge cement brownfield is being converted into the Seine Parisii district with its marina on the Seine. Between the Carrefour des Champs Guillaume business park (construction and transport), the Bois Rochefort leisure hub and the Avenue Foch shops, we build showcase sites, multi-CMS e-commerce and custom-code business applications, hosted in the European Union and GDPR-compliant, with UX/UI, mobile and embedded AI.",
@@ -212,7 +212,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
           {
             q: "What are your lead times for a quote, and where is data hosted?",
-            a: "We send a quote from 48 hours depending on project complexity. All sites and platforms are built in custom code, hosted in the European Union and GDPR-compliant: your data and your customers' data remain sovereign.",
+            a: "We send a quote from 24 to 48 hours depending on project complexity. All sites and platforms are built in custom code, hosted in the European Union and GDPR-compliant: your data and your customers' data remain sovereign.",
           },
           {
             q: "Do you operate in the communes around Cormeilles-en-Parisis?",
@@ -220,7 +220,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote sent from 48 hours depending on complexity. Sites and platforms built in custom code (no opaque no-code), with UX/UI, mobile-first design and multi-CMS e-commerce. European Union hosting and GDPR compliance by default. You keep full control: source code, content and hosting belong to you, transferable to any integrator or brought in-house, with no Axion-IA lock-in. Kick-off on site in Cormeilles-en-Parisis; any travel costs are calculated case by case depending on the zone.",
+          "Quote sent from 24 to 48 hours depending on complexity. Sites and platforms built in custom code (no opaque no-code), with UX/UI, mobile-first design and multi-CMS e-commerce. European Union hosting and GDPR compliance by default. You keep full control: source code, content and hosting belong to you, transferable to any integrator or brought in-house, with no Axion-IA lock-in. Kick-off on site in Cormeilles-en-Parisis; any travel costs are calculated case by case depending on the zone.",
       },
     },
   },

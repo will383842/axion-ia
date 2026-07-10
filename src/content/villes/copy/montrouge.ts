@@ -65,7 +65,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           {
             step: "Conception UX/UI et architecture",
             detail:
-              "Maquettage UX/UI desktop et mobile-first, architecture IA-native (chatbot RAG, search sémantique, agents) et choix de stack — code custom ou CMS selon le besoin. Devis remis à partir de 48 h selon la complexité, sans euros affichés tant que le périmètre n'est pas figé.",
+              "Maquettage UX/UI desktop et mobile-first, architecture IA-native (chatbot RAG, search sémantique, agents) et choix de stack — code custom ou CMS selon le besoin. Devis remis à partir de 24-48 h selon la complexité, sans euros affichés tant que le périmètre n'est pas figé.",
           },
           {
             step: "Développement et intégration IA",
@@ -124,7 +124,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis de site web ou de plateforme SaaS à Montrouge ?",
-            a: "Un devis est remis à partir de 48 h selon la complexité, après un premier cadrage du périmètre. Pour un site vitrine TPE le chiffrage est rapide ; pour une plateforme SaaS ETI avec intégrations CRM/ERP et agents IA, nous prenons le temps de cadrer les contraintes avant d'engager un chiffre.",
+            a: "Un devis est remis à partir de 24-48 h selon la complexité, après un premier cadrage du périmètre. Pour un site vitrine TPE le chiffrage est rapide ; pour une plateforme SaaS ETI avec intégrations CRM/ERP et agents IA, nous prenons le temps de cadrer les contraintes avant d'engager un chiffre.",
           },
           {
             q: "Le code et les modèles IA restent-ils notre propriété ?",
@@ -132,7 +132,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre fixé à la signature, avec devis à partir de 48 h selon la complexité. UX/UI desktop et mobile, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et briques IA (chatbot RAG, search sémantique, agents) sont tous dans notre champ. Hébergement en UE par défaut, conformité RGPD, DPA sur demande — adapté à un territoire dense en données sensibles (banque Évergreen, éditeurs, titres-services). Le code et les modèles restent votre propriété, sans verrou éditeur : votre plateforme est maintenable en interne ou par tout intégrateur d'Île-de-France après la mise en ligne.",
+          "Engagement contractuel sur le périmètre fixé à la signature, avec devis à partir de 24-48 h selon la complexité. UX/UI desktop et mobile, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et briques IA (chatbot RAG, search sémantique, agents) sont tous dans notre champ. Hébergement en UE par défaut, conformité RGPD, DPA sur demande — adapté à un territoire dense en données sensibles (banque Évergreen, éditeurs, titres-services). Le code et les modèles restent votre propriété, sans verrou éditeur : votre plateforme est maintenable en interne ou par tout intégrateur d'Île-de-France après la mise en ligne.",
       },
       en: {
         hero: "Montrouge packs a rare density of corporate headquarters into 2.07 km²: Crédit Agricole SA's Évergreen Campus (8 ha, ~12,000 staff, buildings Aqua, Terra, Eole, Lumen, Silvae), STMicroelectronics, Edenred France (HQ relocated to rue François Ory in early 2025), Bayard Presse and Chronopost, alongside green-cloud startup Qarnot Computing and a fabric of ~9,434 businesses, 76% of them services. In Montrouge, Axion-IA builds AI-augmented websites and SaaS platforms — from business portals for the Évergreen directorates to e-commerce sites for town-centre retailers — in custom code, EU/GDPR hosting, with no vendor lock-in.",
@@ -151,7 +151,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           {
             step: "UX/UI design and architecture",
             detail:
-              "Desktop and mobile-first UX/UI mockups, AI-native architecture (RAG chatbot, semantic search, agents) and stack choice — custom code or CMS as needed. Quote delivered from 48 h depending on complexity, with no euro figures shown until the scope is locked.",
+              "Desktop and mobile-first UX/UI mockups, AI-native architecture (RAG chatbot, semantic search, agents) and stack choice — custom code or CMS as needed. Quote delivered from 24-48 h depending on complexity, with no euro figures shown until the scope is locked.",
           },
           {
             step: "Development and AI integration",
@@ -210,7 +210,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
           {
             q: "How long for a website or SaaS platform quote in Montrouge?",
-            a: "A quote is delivered from 48 h depending on complexity, after an initial scoping. For a micro-business showcase site, costing is quick; for a mid-cap SaaS platform with CRM/ERP integrations and AI agents, we take the time to frame the constraints before committing to a figure.",
+            a: "A quote is delivered from 24-48 h depending on complexity, after an initial scoping. For a micro-business showcase site, costing is quick; for a mid-cap SaaS platform with CRM/ERP integrations and AI agents, we take the time to frame the constraints before committing to a figure.",
           },
           {
             q: "Do the code and AI models remain our property?",
@@ -218,7 +218,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment on the scope fixed at signature, with a quote from 48 h depending on complexity. Desktop and mobile UX/UI, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and AI components (RAG chatbot, semantic search, agents) are all within our scope. EU hosting by default, GDPR compliance, DPA on request — fit for a territory dense in sensitive data (Évergreen banking, publishers, employee benefits). Code and models remain your property, with no vendor lock-in: your platform is maintainable in-house or by any Île-de-France integrator after go-live.",
+          "Contractual commitment on the scope fixed at signature, with a quote from 24-48 h depending on complexity. Desktop and mobile UX/UI, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and AI components (RAG chatbot, semantic search, agents) are all within our scope. EU hosting by default, GDPR compliance, DPA on request — fit for a territory dense in sensitive data (Évergreen banking, publishers, employee benefits). Code and models remain your property, with no vendor lock-in: your platform is maintainable in-house or by any Île-de-France integrator after go-live.",
       },
     },
   },

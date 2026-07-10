@@ -50,7 +50,7 @@ export const BOUGUENAIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bouguenais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie où la zone aéroportuaire D2A (Airbus et sa vingtaine d'établissements, équipementiers aéronautiques) côtoie la zone industrialo-portuaire de Cheviré-Port à bois et ses quelque quarante entreprises de logistique, vrac et négoce, sans oublier le tissu de TPE du commerce et de l'artisanat du bourg. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bouguenais, à deux pas de l'aéroport Nantes-Atlantique et du Technocampus, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Bouguenais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie où la zone aéroportuaire D2A (Airbus et sa vingtaine d'établissements, équipementiers aéronautiques) côtoie la zone industrialo-portuaire de Cheviré-Port à bois et ses quelque quarante entreprises de logistique, vrac et négoce, sans oublier le tissu de TPE du commerce et de l'artisanat du bourg. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bouguenais, à deux pas de l'aéroport Nantes-Atlantique et du Technocampus, itérations à distance.",
         whyHere: [
           "Sous-traitance aéronautique et composites de la zone D2A (Airbus, fuselages centraux, équipementiers de la vingtaine d'établissements implantés) : on greffe des portails fournisseurs, du suivi de production et de la recherche documentaire technique augmentée à l'IA, branchés sur votre SI existant — ERP, MES ou GED maison.",
           "Logistique fluviale et négoce de la zone portuaire de Cheviré-Port à bois et ses quelque quarante entreprises : nos applications métier orchestrent devis, suivi de flux, entreposage et reporting, avec des agents qui automatisent les tâches répétitives du vrac, du négoce de bois et de la manutention.",
@@ -61,7 +61,7 @@ export const BOUGUENAIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Bouguenais",
             detail:
-              "Atelier sur site — zone D2A, port de Cheviré-Port à bois, Technocampus ou bourg — pour cerner objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — zone D2A, port de Cheviré-Port à bois, Technocampus ou bourg — pour cerner objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const BOUGUENAIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Bouguenais — sur la zone D2A, à Cheviré ou au bourg — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage à Bouguenais — sur la zone D2A, à Cheviré ou au bourg — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour les outils logistiques de Cheviré en activité continue. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire local du bassin nantais ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour les outils logistiques de Cheviré en activité continue. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire local du bassin nantais ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Bouguenais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie où la zone aéroportuaire D2A (Airbus et sa vingtaine d'établissements, équipementiers aéronautiques) côtoie la zone industrialo-portuaire de Cheviré-Port à bois et ses quelque quarante entreprises de logistique, vrac et négoce, sans oublier le tissu de TPE du commerce et de l'artisanat du bourg. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bouguenais, à deux pas de l'aéroport Nantes-Atlantique et du Technocampus, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Bouguenais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie où la zone aéroportuaire D2A (Airbus et sa vingtaine d'établissements, équipementiers aéronautiques) côtoie la zone industrialo-portuaire de Cheviré-Port à bois et ses quelque quarante entreprises de logistique, vrac et négoce, sans oublier le tissu de TPE du commerce et de l'artisanat du bourg. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bouguenais, à deux pas de l'aéroport Nantes-Atlantique et du Technocampus, itérations à distance.",
         whyHere: [
           "Sous-traitance aéronautique et composites de la zone D2A (Airbus, fuselages centraux, équipementiers de la vingtaine d'établissements implantés) : on greffe des portails fournisseurs, du suivi de production et de la recherche documentaire technique augmentée à l'IA, branchés sur votre SI existant — ERP, MES ou GED maison.",
           "Logistique fluviale et négoce de la zone portuaire de Cheviré-Port à bois et ses quelque quarante entreprises : nos applications métier orchestrent devis, suivi de flux, entreposage et reporting, avec des agents qui automatisent les tâches répétitives du vrac, du négoce de bois et de la manutention.",
@@ -147,7 +147,7 @@ export const BOUGUENAIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Bouguenais",
             detail:
-              "Atelier sur site — zone D2A, port de Cheviré-Port à bois, Technocampus ou bourg — pour cerner objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — zone D2A, port de Cheviré-Port à bois, Technocampus ou bourg — pour cerner objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const BOUGUENAIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Bouguenais — sur la zone D2A, à Cheviré ou au bourg — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Après le cadrage à Bouguenais — sur la zone D2A, à Cheviré ou au bourg — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour les outils logistiques de Cheviré en activité continue. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire local du bassin nantais ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour les outils logistiques de Cheviré en activité continue. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire local du bassin nantais ou repris en interne par vos équipes.",
       },
     },
   },

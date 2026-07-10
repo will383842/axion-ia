@@ -53,7 +53,7 @@ export const VERNON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Vernon, dans l'Eure, des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, l'économie se joue entre le site ArianeGroup — premier employeur du bassin, où sont produits les moteurs Vulcain et Prometheus des lanceurs Ariane — son Campus de l'Espace de 70 hectares (Safran, SKF, EDF, INSA, CNAM) et un tourisme international tiré par Giverny et les jardins de Monet, à 5 km. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vernon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Vernon, dans l'Eure, des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, l'économie se joue entre le site ArianeGroup — premier employeur du bassin, où sont produits les moteurs Vulcain et Prometheus des lanceurs Ariane — son Campus de l'Espace de 70 hectares (Safran, SKF, EDF, INSA, CNAM) et un tourisme international tiré par Giverny et les jardins de Monet, à 5 km. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vernon, itérations à distance.",
         whyHere: [
           "Pôle spatial structurant : autour du site ArianeGroup, premier employeur du bassin avec près de 1 000 salariés et trois bancs d'essai cryogéniques, gravitent les sous-traitants et bureaux d'études du Campus de l'Espace (Safran, SKF). Leurs exigences documentaires fortes appellent des portails techniques, des moteurs de recherche sémantique sur normes et plans, et l'automatisation des devis et appels d'offres.",
           "Tourisme international de Giverny : les visiteurs des jardins de Monet, à 5 km, viennent du monde entier et débordent sur l'hôtellerie et la restauration vernonnaises, jusqu'aux abords du Vieux-Moulin et de la collégiale Notre-Dame. Nos chatbots et parcours de réservation sont multilingues par défaut, calibrés pour l'accueil saisonnier, la billetterie et la gestion d'avis.",
@@ -64,7 +64,7 @@ export const VERNON_COPY: VilleCopy = {
           {
             step: "Cadrage à Vernon",
             detail:
-              "Atelier sur site — centre-ville près de la place de Paris, abords du Campus de l'Espace ou axe Giverny : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville près de la place de Paris, abords du Campus de l'Espace ou axe Giverny : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const VERNON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Vernon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée : vous savez à quoi vous engager avant de signer.",
+            a: "Oui. Après le cadrage sur site à Vernon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée : vous savez à quoi vous engager avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique de Giverny. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire de la vallée de la Seine ou de Normandie, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique de Giverny. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire de la vallée de la Seine ou de Normandie, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Vernon, dans l'Eure, des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, l'économie se joue entre le site ArianeGroup — premier employeur du bassin, où sont produits les moteurs Vulcain et Prometheus des lanceurs Ariane — son Campus de l'Espace de 70 hectares (Safran, SKF, EDF, INSA, CNAM) et un tourisme international tiré par Giverny et les jardins de Monet, à 5 km. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vernon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Vernon, dans l'Eure, des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, l'économie se joue entre le site ArianeGroup — premier employeur du bassin, où sont produits les moteurs Vulcain et Prometheus des lanceurs Ariane — son Campus de l'Espace de 70 hectares (Safran, SKF, EDF, INSA, CNAM) et un tourisme international tiré par Giverny et les jardins de Monet, à 5 km. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vernon, itérations à distance.",
         whyHere: [
           "Pôle spatial structurant : autour du site ArianeGroup, premier employeur du bassin avec près de 1 000 salariés et trois bancs d'essai cryogéniques, gravitent les sous-traitants et bureaux d'études du Campus de l'Espace (Safran, SKF). Leurs exigences documentaires fortes appellent des portails techniques, des moteurs de recherche sémantique sur normes et plans, et l'automatisation des devis et appels d'offres.",
           "Tourisme international de Giverny : les visiteurs des jardins de Monet, à 5 km, viennent du monde entier et débordent sur l'hôtellerie et la restauration vernonnaises, jusqu'aux abords du Vieux-Moulin et de la collégiale Notre-Dame. Nos chatbots et parcours de réservation sont multilingues par défaut, calibrés pour l'accueil saisonnier, la billetterie et la gestion d'avis.",
@@ -150,7 +150,7 @@ export const VERNON_COPY: VilleCopy = {
           {
             step: "Cadrage à Vernon",
             detail:
-              "Atelier sur site — centre-ville près de la place de Paris, abords du Campus de l'Espace ou axe Giverny : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville près de la place de Paris, abords du Campus de l'Espace ou axe Giverny : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const VERNON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Vernon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée : vous savez à quoi vous engager avant de signer.",
+            a: "Oui. Après le cadrage sur site à Vernon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée : vous savez à quoi vous engager avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique de Giverny. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire de la vallée de la Seine ou de Normandie, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique de Giverny. Web Vitals, performance mobile et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire de la vallée de la Seine ou de Normandie, ou repris en interne par vos équipes.",
       },
     },
   },

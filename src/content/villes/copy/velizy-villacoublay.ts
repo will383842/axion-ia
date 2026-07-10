@@ -53,7 +53,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Vélizy-Villacoublay des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, boutique e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique de documentation technique, agents et automatisations. Pensé pour le deuxième pôle tertiaire de France après La Défense — le technopôle Inovel Parc et ses quelque 50 000 emplois — où gravitent le siège de Dassault Aviation, Thales, Safran Landing Systems et l'éditeur Dassault Systèmes, aux côtés des sièges de Bouygues Telecom et d'Eiffage, sans oublier le commerce du centre Vélizy 2 et la base aérienne 107. Que vous soyez un sous-traitant aéronautique, un bureau d'études ou un commerce, on adapte l'outil à votre taille. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vélizy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Vélizy-Villacoublay des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, boutique e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique de documentation technique, agents et automatisations. Pensé pour le deuxième pôle tertiaire de France après La Défense — le technopôle Inovel Parc et ses quelque 50 000 emplois — où gravitent le siège de Dassault Aviation, Thales, Safran Landing Systems et l'éditeur Dassault Systèmes, aux côtés des sièges de Bouygues Telecom et d'Eiffage, sans oublier le commerce du centre Vélizy 2 et la base aérienne 107. Que vous soyez un sous-traitant aéronautique, un bureau d'études ou un commerce, on adapte l'outil à votre taille. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vélizy, itérations à distance.",
         whyHere: [
           "Donneurs d'ordre exigeants : autour de Dassault Aviation, de Thales et de Safran Landing Systems gravite un réseau dense de sous-traitants et de bureaux d'études techniques. Terrain idéal pour des portails de demande de devis, des espaces fournisseurs et des parcours documentaires augmentés à l'IA, qui qualifient les pièces, normes et délais et fluidifient les réponses aux appels d'offres aéronautiques.",
           "Documentation technique volumineuse : entre les éditeurs comme Dassault Systèmes et les bureaux d'études d'Inovel Parc, la matière documentaire est partout. Nos moteurs de recherche sémantique et chatbots RAG s'ancrent sur vos référentiels — cahiers des charges, normes EN/AS, fiches procédés, manuels de maintenance — pour répondre vite et juste, en français comme à l'export.",
@@ -64,7 +64,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           {
             step: "Cadrage à Vélizy",
             detail:
-              "Atelier sur site à Inovel Parc, aux abords de Vélizy 2 ou dans vos bureaux d'études du sud des Yvelines : objectifs commerciaux, parcours utilisateurs, audit de la stack existante, des contenus et des flux documentaires. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site à Inovel Parc, aux abords de Vélizy 2 ou dans vos bureaux d'études du sud des Yvelines : objectifs commerciaux, parcours utilisateurs, audit de la stack existante, des contenus et des flux documentaires. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Vélizy, on remet un devis ferme en forfait fixe, pas une régie ouverte. Le délai dépend de la complexité — à partir de 48 h pour un projet simple comme une vitrine ou un formulaire de devis intelligent. Pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à Vélizy, on remet un devis ferme en forfait fixe, pas une régie ouverte. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une vitrine ou un formulaire de devis intelligent. Pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
           {
             q: "Pouvez-vous indexer notre documentation technique pour la recherche ?",
@@ -136,10 +136,10 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne d'appels d'offres. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est documenté et transférable à tout prestataire des Yvelines ou de l'ouest francilien, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne d'appels d'offres. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est documenté et transférable à tout prestataire des Yvelines ou de l'ouest francilien, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Vélizy-Villacoublay des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, boutique e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique de documentation technique, agents et automatisations. Pensé pour le deuxième pôle tertiaire de France après La Défense — le technopôle Inovel Parc et ses quelque 50 000 emplois — où gravitent le siège de Dassault Aviation, Thales, Safran Landing Systems et l'éditeur Dassault Systèmes, aux côtés des sièges de Bouygues Telecom et d'Eiffage, sans oublier le commerce du centre Vélizy 2 et la base aérienne 107. Que vous soyez un sous-traitant aéronautique, un bureau d'études ou un commerce, on adapte l'outil à votre taille. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vélizy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Vélizy-Villacoublay des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, boutique e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique de documentation technique, agents et automatisations. Pensé pour le deuxième pôle tertiaire de France après La Défense — le technopôle Inovel Parc et ses quelque 50 000 emplois — où gravitent le siège de Dassault Aviation, Thales, Safran Landing Systems et l'éditeur Dassault Systèmes, aux côtés des sièges de Bouygues Telecom et d'Eiffage, sans oublier le commerce du centre Vélizy 2 et la base aérienne 107. Que vous soyez un sous-traitant aéronautique, un bureau d'études ou un commerce, on adapte l'outil à votre taille. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vélizy, itérations à distance.",
         whyHere: [
           "Donneurs d'ordre exigeants : autour de Dassault Aviation, de Thales et de Safran Landing Systems gravite un réseau dense de sous-traitants et de bureaux d'études techniques. Terrain idéal pour des portails de demande de devis, des espaces fournisseurs et des parcours documentaires augmentés à l'IA, qui qualifient les pièces, normes et délais et fluidifient les réponses aux appels d'offres aéronautiques.",
           "Documentation technique volumineuse : entre les éditeurs comme Dassault Systèmes et les bureaux d'études d'Inovel Parc, la matière documentaire est partout. Nos moteurs de recherche sémantique et chatbots RAG s'ancrent sur vos référentiels — cahiers des charges, normes EN/AS, fiches procédés, manuels de maintenance — pour répondre vite et juste, en français comme à l'export.",
@@ -150,7 +150,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           {
             step: "Cadrage à Vélizy",
             detail:
-              "Atelier sur site à Inovel Parc, aux abords de Vélizy 2 ou dans vos bureaux d'études du sud des Yvelines : objectifs commerciaux, parcours utilisateurs, audit de la stack existante, des contenus et des flux documentaires. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site à Inovel Parc, aux abords de Vélizy 2 ou dans vos bureaux d'études du sud des Yvelines : objectifs commerciaux, parcours utilisateurs, audit de la stack existante, des contenus et des flux documentaires. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Vélizy, on remet un devis ferme en forfait fixe, pas une régie ouverte. Le délai dépend de la complexité — à partir de 48 h pour un projet simple comme une vitrine ou un formulaire de devis intelligent. Pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à Vélizy, on remet un devis ferme en forfait fixe, pas une régie ouverte. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une vitrine ou un formulaire de devis intelligent. Pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
           {
             q: "Pouvez-vous indexer notre documentation technique pour la recherche ?",
@@ -222,7 +222,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne d'appels d'offres. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est documenté et transférable à tout prestataire des Yvelines ou de l'ouest francilien, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne d'appels d'offres. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est documenté et transférable à tout prestataire des Yvelines ou de l'ouest francilien, ou repris en interne par vos équipes.",
       },
     },
   },

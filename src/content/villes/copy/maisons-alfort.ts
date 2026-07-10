@@ -82,7 +82,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
           {
             step: "Recette, mise en ligne et transfert",
             detail:
-              "Tests d'acceptation, optimisation des Web Vitals et du SEO local, mise en production, puis transfert : vous récupérez le code et la documentation, sans verrou éditeur. Devis émis à partir de 48 h selon la complexité.",
+              "Tests d'acceptation, optimisation des Web Vitals et du SEO local, mise en production, puis transfert : vous récupérez le code et la documentation, sans verrou éditeur. Devis émis à partir de 24–48 h selon la complexité.",
           },
         ],
         pricing: [
@@ -134,7 +134,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Hébergement dans l'Union européenne et conformité RGPD par défaut, hébergement HDS via partenaire certifié pour les données de santé vétérinaire et humaine. Devis émis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Code source et documentation remis à la livraison : aucun verrou éditeur, votre plateforme est maintenable en interne ou par tout intégrateur d'Île-de-France. Web Vitals et SEO/AEO local optimisés pour la visibilité à Maisons-Alfort et dans le Val-de-Marne.",
+          "Hébergement dans l'Union européenne et conformité RGPD par défaut, hébergement HDS via partenaire certifié pour les données de santé vétérinaire et humaine. Devis émis à partir de 24–48 h selon la complexité, périmètre et livrables définis avant signature. Code source et documentation remis à la livraison : aucun verrou éditeur, votre plateforme est maintenable en interne ou par tout intégrateur d'Île-de-France. Web Vitals et SEO/AEO local optimisés pour la visibilité à Maisons-Alfort et dans le Val-de-Marne.",
       },
       en: {
         hero: "Maisons-Alfort (Val-de-Marne, Greater Paris) hosts one of France's most distinctive regulatory-science clusters: the national headquarters of ANSES (14 rue Pierre et Marie Curie), its Laboratory for Animal Health — founded in 1901, the first of its kind in the world, holding 36 reference mandates and running over 30,000 diagnostic analyses a year — and its Laboratory for Food Safety, all anchored to the National Veterinary School of Alfort (EnvA, 1765) and its joint research units with INRAE. Axion-IA designs AI-augmented websites and SaaS platforms on site for this animal-health, food-safety and life-sciences ecosystem, as well as for the veterinary practices, laboratories, professionals and shops that line the city around metro line 8 and the future Vert de Maisons station.",
@@ -168,7 +168,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
           {
             step: "Acceptance, go-live and handover",
             detail:
-              "Acceptance testing, Web Vitals and local SEO optimisation, go-live, then handover: you receive the code and documentation, with no vendor lock-in. Quote issued from 48 hours depending on complexity.",
+              "Acceptance testing, Web Vitals and local SEO optimisation, go-live, then handover: you receive the code and documentation, with no vendor lock-in. Quote issued from 24–48 hours depending on complexity.",
           },
         ],
         pricing: [
@@ -220,7 +220,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "EU hosting and GDPR compliance by default, HDS hosting via a certified partner for veterinary and human health data. Quote issued from 48 hours depending on complexity, with scope and deliverables defined before signature. Source code and documentation handed over at delivery: no vendor lock-in, your platform is maintainable in-house or by any Île-de-France integrator. Web Vitals and local SEO/AEO optimised for visibility in Maisons-Alfort and across Val-de-Marne.",
+          "EU hosting and GDPR compliance by default, HDS hosting via a certified partner for veterinary and human health data. Quote issued from 24–48 hours depending on complexity, with scope and deliverables defined before signature. Source code and documentation handed over at delivery: no vendor lock-in, your platform is maintainable in-house or by any Île-de-France integrator. Web Vitals and local SEO/AEO optimised for visibility in Maisons-Alfort and across Val-de-Marne.",
       },
     },
   },

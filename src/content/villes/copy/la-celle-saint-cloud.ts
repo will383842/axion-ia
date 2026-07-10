@@ -51,7 +51,7 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Celle-Saint-Cloud des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Yvelines (20 460 habitants, revenu médian supérieur à la moyenne départementale), à 12 km de Paris, intégrée à Versailles Grand Parc, où le tissu est fait de TPE et PME du tertiaire de proximité, de l'immobilier résidentiel, des professions libérales et des commerces des quatre centres commerciaux locaux. Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Celle-Saint-Cloud — centre-ville, quartier Élysée ou abords du château de La Celle —, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Celle-Saint-Cloud des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Yvelines (20 460 habitants, revenu médian supérieur à la moyenne départementale), à 12 km de Paris, intégrée à Versailles Grand Parc, où le tissu est fait de TPE et PME du tertiaire de proximité, de l'immobilier résidentiel, des professions libérales et des commerces des quatre centres commerciaux locaux. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Celle-Saint-Cloud — centre-ville, quartier Élysée ou abords du château de La Celle —, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales et de cabinets (juridique, médical, comptable) soumis au secret professionnel, dans une commune au revenu médian disponible de 29 510 € supérieur à la moyenne yvelinoise : on conçoit des portails de prise de rendez-vous, des espaces clients sécurisés et des chatbots RAG dont toute la chaîne reste hébergée en UE, conforme RGPD et AI Act.",
           "Marché immobilier résidentiel structurant autour des quartiers Élysée (1 128 logements, 1963), Beauregard et Bois-Fontaine : on construit des sites d'agences avec recherche sémantique de biens, gestion locative automatisée, relances propriétaires et parcours de contact augmentés à l'IA, branchés sur vos logiciels de transaction existants.",
@@ -62,7 +62,7 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
           {
             step: "Cadrage à La Celle-Saint-Cloud",
             detail:
-              "Atelier sur site (centre-ville, quartier Élysée, abords du château de La Celle ou du Pavillon du Butard) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la conformité RGPD/AI Act. Devis ferme remis à partir de 48 h selon la complexité du projet.",
+              "Atelier sur site (centre-ville, quartier Élysée, abords du château de La Celle ou du Pavillon du Butard) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la conformité RGPD/AI Act. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Celle-Saint-Cloud, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le périmètre et le prix avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à La Celle-Saint-Cloud, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le périmètre et le prix avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un cabinet ou une agence en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire des Yvelines ou de l'ouest parisien, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un cabinet ou une agence en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire des Yvelines ou de l'ouest parisien, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à La Celle-Saint-Cloud des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Yvelines (20 460 habitants, revenu médian supérieur à la moyenne départementale), à 12 km de Paris, intégrée à Versailles Grand Parc, où le tissu est fait de TPE et PME du tertiaire de proximité, de l'immobilier résidentiel, des professions libérales et des commerces des quatre centres commerciaux locaux. Devis ferme à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Celle-Saint-Cloud — centre-ville, quartier Élysée ou abords du château de La Celle —, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Celle-Saint-Cloud des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Yvelines (20 460 habitants, revenu médian supérieur à la moyenne départementale), à 12 km de Paris, intégrée à Versailles Grand Parc, où le tissu est fait de TPE et PME du tertiaire de proximité, de l'immobilier résidentiel, des professions libérales et des commerces des quatre centres commerciaux locaux. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Celle-Saint-Cloud — centre-ville, quartier Élysée ou abords du château de La Celle —, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales et de cabinets (juridique, médical, comptable) soumis au secret professionnel, dans une commune au revenu médian disponible de 29 510 € supérieur à la moyenne yvelinoise : on conçoit des portails de prise de rendez-vous, des espaces clients sécurisés et des chatbots RAG dont toute la chaîne reste hébergée en UE, conforme RGPD et AI Act.",
           "Marché immobilier résidentiel structurant autour des quartiers Élysée (1 128 logements, 1963), Beauregard et Bois-Fontaine : on construit des sites d'agences avec recherche sémantique de biens, gestion locative automatisée, relances propriétaires et parcours de contact augmentés à l'IA, branchés sur vos logiciels de transaction existants.",
@@ -148,7 +148,7 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
           {
             step: "Cadrage à La Celle-Saint-Cloud",
             detail:
-              "Atelier sur site (centre-ville, quartier Élysée, abords du château de La Celle ou du Pavillon du Butard) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la conformité RGPD/AI Act. Devis ferme remis à partir de 48 h selon la complexité du projet.",
+              "Atelier sur site (centre-ville, quartier Élysée, abords du château de La Celle ou du Pavillon du Butard) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la conformité RGPD/AI Act. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Celle-Saint-Cloud, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le périmètre et le prix avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à La Celle-Saint-Cloud, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le périmètre et le prix avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un cabinet ou une agence en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire des Yvelines ou de l'ouest parisien, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un cabinet ou une agence en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire des Yvelines ou de l'ouest parisien, ou reprise en interne par vos équipes.",
       },
     },
   },

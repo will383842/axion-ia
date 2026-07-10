@@ -116,7 +116,7 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
         faq: [
           {
             q: "Concevez-vous des plateformes IA pour les jeunes pousses de l'Incubateur Descartes ?",
-            a: "Oui. Pour les deep-tech issues de l'Incubateur Descartes et des filières IA d'ESIEE Paris ou de l'Université Gustave Eiffel, nous concevons des sites et SaaS IA-native dès l'amorçage : qualification automatique des leads, démos interactives, chatbot RAG sur votre documentation. Le devis est remis à partir de 48 h selon la complexité, et vous gardez la pleine propriété du code.",
+            a: "Oui. Pour les deep-tech issues de l'Incubateur Descartes et des filières IA d'ESIEE Paris ou de l'Université Gustave Eiffel, nous concevons des sites et SaaS IA-native dès l'amorçage : qualification automatique des leads, démos interactives, chatbot RAG sur votre documentation. Le devis est remis à partir de 24-48 h selon la complexité, et vous gardez la pleine propriété du code.",
           },
           {
             q: "Pouvez-vous intégrer de la donnée technique du bâtiment ou de l'ingénierie urbaine ?",
@@ -136,7 +136,7 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Hébergement en Union européenne par défaut, conformité RGPD et AI Act intégrée dès la conception. Aucun verrou éditeur : code, contenus et intégrations IA restent votre propriété, plateforme reprenable par tout prestataire de l'est francilien ou par vos équipes internes. Optimisation Web Vitals et accessibilité incluses. Vos référents internes formés sont autonomes après la mise en production.",
+          "Devis remis à partir de 24-48 h selon la complexité. Hébergement en Union européenne par défaut, conformité RGPD et AI Act intégrée dès la conception. Aucun verrou éditeur : code, contenus et intégrations IA restent votre propriété, plateforme reprenable par tout prestataire de l'est francilien ou par vos équipes internes. Optimisation Web Vitals et accessibilité incluses. Vos référents internes formés sont autonomes après la mise en production.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for the players of the Cité Descartes, in Champs-sur-Marne (77). This 123-hectare technology cluster concentrates around a quarter of France's R&D on the sustainable city, around Université Gustave Eiffel, ESIEE Paris, École des Ponts ParisTech, the CSTB and the Efficacity institute. We build AI-native platforms for deep-tech startups born from research, urban and building engineering consultancies, and the corporate offices located on the campus — RAG chatbot, semantic search, client portal, automatic lead qualification. Custom code, EU GDPR-compliant hosting, zero vendor lock-in.",
@@ -202,7 +202,7 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
         faq: [
           {
             q: "Do you build AI platforms for Incubateur Descartes startups?",
-            a: "Yes. For deep-techs from the Incubateur Descartes and the AI streams of ESIEE Paris or Université Gustave Eiffel, we build AI-native sites and SaaS from seed stage: automatic lead qualification, interactive demos, RAG chatbot on your documentation. The quote is issued from 48 hours depending on complexity, and you keep full ownership of the code.",
+            a: "Yes. For deep-techs from the Incubateur Descartes and the AI streams of ESIEE Paris or Université Gustave Eiffel, we build AI-native sites and SaaS from seed stage: automatic lead qualification, interactive demos, RAG chatbot on your documentation. The quote is issued from 24-48 hours depending on complexity, and you keep full ownership of the code.",
           },
           {
             q: "Can you integrate building or urban-engineering technical data?",
@@ -222,7 +222,7 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote issued from 48 hours depending on complexity. EU hosting by default, GDPR and AI Act compliance built in from the design stage. No vendor lock-in: code, content and AI integrations remain your property, platform handover-ready to any eastern Île-de-France provider or your internal teams. Web Vitals optimisation and accessibility included. Your trained internal leads are autonomous after go-live.",
+          "Quote issued from 24-48 hours depending on complexity. EU hosting by default, GDPR and AI Act compliance built in from the design stage. No vendor lock-in: code, content and AI integrations remain your property, platform handover-ready to any eastern Île-de-France provider or your internal teams. Web Vitals optimisation and accessibility included. Your trained internal leads are autonomous after go-live.",
       },
     },
   },

@@ -51,7 +51,7 @@ export const LANNION_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lannion des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Trégor et son écosystème télécoms et photonique unique en Bretagne, où la technopole Anticipa réunit près de 360 entreprises et 8 000 emplois autour d'Orange Labs (héritier du CNET), de Nokia, d'Ekinops et de Lumibird, à côté du cluster Photonics Bretagne, des filières images et réseaux, agroalimentaire et industries marines. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lannion, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Lannion des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Trégor et son écosystème télécoms et photonique unique en Bretagne, où la technopole Anticipa réunit près de 360 entreprises et 8 000 emplois autour d'Orange Labs (héritier du CNET), de Nokia, d'Ekinops et de Lumibird, à côté du cluster Photonics Bretagne, des filières images et réseaux, agroalimentaire et industries marines. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lannion, itérations à distance.",
         whyHere: [
           "Pôle télécoms et photonique de rang national : autour d'Orange Labs, de Nokia, d'Ekinops (transport optique, coté en Bourse) et de Lumibird (lasers, ~200 salariés), les PME R&D ont besoin de portails techniques, de documentations interactives et d'agents IA branchés sur leurs outils métiers et leurs bases de mesure — c'est exactement ce qu'on développe en code custom (Python, TypeScript, SQL).",
           "Technopole Anticipa et son vivier de près de 360 entreprises sur le Pôle Pégase et le Photonics Park : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on construit une plateforme SaaS IA-native pour des acteurs comme IDIL Fibres Optiques et les jeunes pousses de l'optique, des images et des réseaux.",
@@ -62,7 +62,7 @@ export const LANNION_COPY: VilleCopy = {
           {
             step: "Cadrage à Lannion",
             detail:
-              "Atelier sur site (centre-ville historique, technopole Anticipa, Pôle Pégase ou vos bureaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils R&D ou métiers. Devis ferme à partir de 48 h selon la complexité du projet.",
+              "Atelier sur site (centre-ville historique, technopole Anticipa, Pôle Pégase ou vos bureaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils R&D ou métiers. Devis ferme à partir de 24-48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const LANNION_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Lannion (technopole Anticipa, Pôle Pégase ou vos bureaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage à Lannion (technopole Anticipa, Pôle Pégase ou vos bureaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre et le prix avant de démarrer. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, zéro lock-in. L'ensemble est transférable à tout prestataire de Lannion-Trégor Communauté ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre et le prix avant de démarrer. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, zéro lock-in. L'ensemble est transférable à tout prestataire de Lannion-Trégor Communauté ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lannion des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Trégor et son écosystème télécoms et photonique unique en Bretagne, où la technopole Anticipa réunit près de 360 entreprises et 8 000 emplois autour d'Orange Labs (héritier du CNET), de Nokia, d'Ekinops et de Lumibird, à côté du cluster Photonics Bretagne, des filières images et réseaux, agroalimentaire et industries marines. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lannion, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Lannion des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Trégor et son écosystème télécoms et photonique unique en Bretagne, où la technopole Anticipa réunit près de 360 entreprises et 8 000 emplois autour d'Orange Labs (héritier du CNET), de Nokia, d'Ekinops et de Lumibird, à côté du cluster Photonics Bretagne, des filières images et réseaux, agroalimentaire et industries marines. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lannion, itérations à distance.",
         whyHere: [
           "Pôle télécoms et photonique de rang national : autour d'Orange Labs, de Nokia, d'Ekinops (transport optique, coté en Bourse) et de Lumibird (lasers, ~200 salariés), les PME R&D ont besoin de portails techniques, de documentations interactives et d'agents IA branchés sur leurs outils métiers et leurs bases de mesure — c'est exactement ce qu'on développe en code custom (Python, TypeScript, SQL).",
           "Technopole Anticipa et son vivier de près de 360 entreprises sur le Pôle Pégase et le Photonics Park : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on construit une plateforme SaaS IA-native pour des acteurs comme IDIL Fibres Optiques et les jeunes pousses de l'optique, des images et des réseaux.",
@@ -148,7 +148,7 @@ export const LANNION_COPY: VilleCopy = {
           {
             step: "Cadrage à Lannion",
             detail:
-              "Atelier sur site (centre-ville historique, technopole Anticipa, Pôle Pégase ou vos bureaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils R&D ou métiers. Devis ferme à partir de 48 h selon la complexité du projet.",
+              "Atelier sur site (centre-ville historique, technopole Anticipa, Pôle Pégase ou vos bureaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils R&D ou métiers. Devis ferme à partir de 24-48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const LANNION_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Lannion (technopole Anticipa, Pôle Pégase ou vos bureaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage à Lannion (technopole Anticipa, Pôle Pégase ou vos bureaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre et le prix avant de démarrer. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, zéro lock-in. L'ensemble est transférable à tout prestataire de Lannion-Trégor Communauté ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre et le prix avant de démarrer. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, zéro lock-in. L'ensemble est transférable à tout prestataire de Lannion-Trégor Communauté ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
       },
     },
   },

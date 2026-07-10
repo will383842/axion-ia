@@ -92,7 +92,7 @@ export const DOUAI_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou e-commerce augmenté",
             detail:
-              "Pour les artisans, commerces et TPE de services du Douaisis : site rapide, prise de rendez-vous, devis en ligne, chatbot IA — base CMS multi-éditeur. Devis à partir de 48 h selon la complexité.",
+              "Pour les artisans, commerces et TPE de services du Douaisis : site rapide, prise de rendez-vous, devis en ligne, chatbot IA — base CMS multi-éditeur. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -124,7 +124,7 @@ export const DOUAI_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les TPE et commerces du centre de Douai ?",
-            a: "Oui, c'est une part majeure de notre activité douaisienne : site vitrine rapide, e-commerce sur CMS multi-éditeur, prise de rendez-vous, devis en ligne et chatbot IA. UX/UI mobile-first, hébergement UE. Devis à partir de 48 h selon la complexité.",
+            a: "Oui, c'est une part majeure de notre activité douaisienne : site vitrine rapide, e-commerce sur CMS multi-éditeur, prise de rendez-vous, devis en ligne et chatbot IA. UX/UI mobile-first, hébergement UE. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             q: "Faites-vous le design (UX/UI) et le mobile, ou seulement la partie IA ?",
@@ -136,7 +136,7 @@ export const DOUAI_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre défini au cadrage à Douai. Devis à partir de 48 h selon la complexité, tarifs clairs sans devis opaque. Hébergement en UE par défaut et conformité RGPD, DPO sur demande. Code et plateforme vous appartiennent : zéro lock-in éditeur, transférable à tout intégrateur des Hauts-de-France ou repris par vos équipes après formation et remise de la documentation. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — pas une seule de ces briques en moins.",
+          "Engagement contractuel sur le périmètre défini au cadrage à Douai. Devis à partir de 24-48 h selon la complexité, tarifs clairs sans devis opaque. Hébergement en UE par défaut et conformité RGPD, DPO sur demande. Code et plateforme vous appartiennent : zéro lock-in éditeur, transférable à tout intégrateur des Hauts-de-France ou repris par vos équipes après formation et remise de la documentation. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — pas une seule de ces briques en moins.",
       },
       en: {
         hero: "In Douai, the economy revolves around Renault's electric hub \"Ampere ElectriCity\" — the Lambres-lez-Douai plant (~2,800 staff) building the R5 E-TECH, Mégane E-TECH, Scénic E-TECH Electric and Alpine A290 (156,000 vehicles in 2025), backed by Goodman's 25,000 m² logistics platform at the Ermitage park. Around it gravitate an automotive supplier chain, the ~297 companies of the Douai-Dorignies industrial zone (INEO, Eurofins, Veolia, Logista) on the A1/A21 junctions, the rail-supply chain of the Alstom basin and the micro-businesses of the judicial city. In Douai, Axion-IA designs AI-augmented websites and SaaS platforms for this industry: supplier portals, logistics tracking, technical catalogues and business tools connected to your processes.",
@@ -178,7 +178,7 @@ export const DOUAI_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "AI-augmented brochure or e-commerce site",
             detail:
-              "For Douaisis artisans, shops and service micro-businesses: fast site, booking, online quotes, AI chatbot — multi-CMS base. Quote from 48 h depending on complexity.",
+              "For Douaisis artisans, shops and service micro-businesses: fast site, booking, online quotes, AI chatbot — multi-CMS base. Quote from 24-48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -210,7 +210,7 @@ export const DOUAI_COPY: VilleCopy = {
           },
           {
             q: "Do you work with Douai town-centre micro-businesses and shops?",
-            a: "Yes, it's a major part of our Douai activity: fast brochure site, multi-CMS e-commerce, booking, online quotes and AI chatbot. Mobile-first UX/UI, EU hosting. Quote from 48 h depending on complexity.",
+            a: "Yes, it's a major part of our Douai activity: fast brochure site, multi-CMS e-commerce, booking, online quotes and AI chatbot. Mobile-first UX/UI, EU hosting. Quote from 24-48 h depending on complexity.",
           },
           {
             q: "Do you handle design (UX/UI) and mobile, or only the AI part?",
@@ -222,7 +222,7 @@ export const DOUAI_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment on the scope defined at the Douai framing. Quote from 48 h depending on complexity, clear pricing with no opaque quote game. EU hosting by default and GDPR compliance, DPO on request. The code and platform are yours: zero vendor lock-in, transferable to any Hauts-de-France integrator or taken over by your teams after training and documentation handover. We claim UX/UI, mobile, multi-CMS e-commerce and AI — not one of these bricks missing.",
+          "Contractual commitment on the scope defined at the Douai framing. Quote from 24-48 h depending on complexity, clear pricing with no opaque quote game. EU hosting by default and GDPR compliance, DPO on request. The code and platform are yours: zero vendor lock-in, transferable to any Hauts-de-France integrator or taken over by your teams after training and documentation handover. We claim UX/UI, mobile, multi-CMS e-commerce and AI — not one of these bricks missing.",
       },
     },
   },

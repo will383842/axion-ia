@@ -51,7 +51,7 @@ export const AURILLAC_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Aurillac des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin de préfecture du Cantal (26 214 habitants, plus de 44 % des emplois du département concentrés dans l'agglomération aurillacoise) où l'économie repose sur l'agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), le commerce de centre-ville, la zone d'activité de la Tronquière et un pôle santé structurant autour du Centre Hospitalier Henri-Mondor (~1 800 emplois). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Aurillac, itérations à distance — sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Aurillac des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin de préfecture du Cantal (26 214 habitants, plus de 44 % des emplois du département concentrés dans l'agglomération aurillacoise) où l'économie repose sur l'agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), le commerce de centre-ville, la zone d'activité de la Tronquière et un pôle santé structurant autour du Centre Hospitalier Henri-Mondor (~1 800 emplois). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Aurillac, itérations à distance — sans verrou ni abonnement imposé.",
         whyHere: [
           "Filière agroalimentaire dense — fromagers de Cantal AOP, charcutiers, distilleries et ateliers de transformation laitière du bassin : on construit des boutiques e-commerce sur mesure (WooCommerce, Shopify ou code) pour vendre en direct le terroir cantalien, avec gestion des lots, suivi de l'affinage, traçabilité qualité et expéditions réfrigérées intégrées au parcours d'achat et à la fiche produit.",
           "Commerce de détail de centre-ville et clientèle de passage estivale du Festival international de théâtre de rue d'Aurillac : nos vitrines mobile-first, chatbots RAG multilingues et moteurs de recherche sémantique outillent commerçants, hôtellerie-restauration et offices d'accueil face aux pics d'affluence, en captant aussi la demande hors saison sur smartphone.",
@@ -62,7 +62,7 @@ export const AURILLAC_COPY: VilleCopy = {
           {
             step: "Cadrage à Aurillac",
             detail:
-              "Atelier sur site — centre-ville, zone d'activité de la Tronquière, locaux producteurs d'Ytrac ou d'Arpajon-sur-Cère : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité commerciale. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, zone d'activité de la Tronquière, locaux producteurs d'Ytrac ou d'Arpajon-sur-Cère : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité commerciale. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const AURILLAC_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Aurillac — au centre-ville ou en zone d'activité de la Tronquière —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à Aurillac — au centre-ville ou en zone d'activité de la Tronquière —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant de démarrer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant, même en plein pic estival du Festival d'Aurillac ou pendant une saison de vente fromagère. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire cantalien ou auvergnat, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant, même en plein pic estival du Festival d'Aurillac ou pendant une saison de vente fromagère. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire cantalien ou auvergnat, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Aurillac des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin de préfecture du Cantal (26 214 habitants, plus de 44 % des emplois du département concentrés dans l'agglomération aurillacoise) où l'économie repose sur l'agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), le commerce de centre-ville, la zone d'activité de la Tronquière et un pôle santé structurant autour du Centre Hospitalier Henri-Mondor (~1 800 emplois). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Aurillac, itérations à distance — sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Aurillac des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin de préfecture du Cantal (26 214 habitants, plus de 44 % des emplois du département concentrés dans l'agglomération aurillacoise) où l'économie repose sur l'agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), le commerce de centre-ville, la zone d'activité de la Tronquière et un pôle santé structurant autour du Centre Hospitalier Henri-Mondor (~1 800 emplois). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Aurillac, itérations à distance — sans verrou ni abonnement imposé.",
         whyHere: [
           "Filière agroalimentaire dense — fromagers de Cantal AOP, charcutiers, distilleries et ateliers de transformation laitière du bassin : on construit des boutiques e-commerce sur mesure (WooCommerce, Shopify ou code) pour vendre en direct le terroir cantalien, avec gestion des lots, suivi de l'affinage, traçabilité qualité et expéditions réfrigérées intégrées au parcours d'achat et à la fiche produit.",
           "Commerce de détail de centre-ville et clientèle de passage estivale du Festival international de théâtre de rue d'Aurillac : nos vitrines mobile-first, chatbots RAG multilingues et moteurs de recherche sémantique outillent commerçants, hôtellerie-restauration et offices d'accueil face aux pics d'affluence, en captant aussi la demande hors saison sur smartphone.",
@@ -148,7 +148,7 @@ export const AURILLAC_COPY: VilleCopy = {
           {
             step: "Cadrage à Aurillac",
             detail:
-              "Atelier sur site — centre-ville, zone d'activité de la Tronquière, locaux producteurs d'Ytrac ou d'Arpajon-sur-Cère : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité commerciale. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, zone d'activité de la Tronquière, locaux producteurs d'Ytrac ou d'Arpajon-sur-Cère : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité commerciale. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const AURILLAC_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Aurillac — au centre-ville ou en zone d'activité de la Tronquière —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à Aurillac — au centre-ville ou en zone d'activité de la Tronquière —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant de démarrer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant, même en plein pic estival du Festival d'Aurillac ou pendant une saison de vente fromagère. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire cantalien ou auvergnat, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant, même en plein pic estival du Festival d'Aurillac ou pendant une saison de vente fromagère. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire cantalien ou auvergnat, ou repris en interne par vos équipes.",
       },
     },
   },

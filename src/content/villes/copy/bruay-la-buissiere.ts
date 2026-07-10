@@ -50,7 +50,7 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bruay-la-Buissière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie d'ancien bassin minier UNESCO — héritage de la Compagnie des mines de Bruay (1850-1978) — reconvertie vers la plasturgie, le commerce de détail, le BTP et le tourisme patrimonial, faite d'un tissu dense de TPE et de PME industrielles sur les 21 424 habitants de la commune née de la fusion Bruay-en-Artois–Labuissière. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bruay-la-Buissière, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Bruay-la-Buissière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie d'ancien bassin minier UNESCO — héritage de la Compagnie des mines de Bruay (1850-1978) — reconvertie vers la plasturgie, le commerce de détail, le BTP et le tourisme patrimonial, faite d'un tissu dense de TPE et de PME industrielles sur les 21 424 habitants de la commune née de la fusion Bruay-en-Artois–Labuissière. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bruay-la-Buissière, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Tissu dense d'artisans BTP et de commerces de proximité hérités de la reconversion post-mine, concentrés au cœur de ville et dans les anciennes cités minières classées : on greffe l'IA sur l'existant — devis automatisés, classification des photos de chantier, agent de réponse client — ou on construit une vitrine e-commerce sur WordPress, WooCommerce ou Shopify sans refonte coûteuse, pensée mobile-first pour un comptoir ou un chantier.",
           "PME industrielles en plasturgie, héritage direct de la reconversion charbonnière de la Compagnie des mines de Bruay : portails clients sur mesure, configurateurs produits, recherche sémantique de catalogue plastiques et automatisations branchées sur vos outils métier (ERP, gestion de stock, GPAO), avec un design system mobile-first utilisable depuis l'atelier comme depuis le bureau commercial.",
@@ -61,7 +61,7 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
           {
             step: "Cadrage à Bruay-la-Buissière",
             detail:
-              "Atelier sur site — cœur de ville, zones d'activité de l'agglomération Béthune-Bruay Artois Lys Romane, ateliers de plasturgie ou sites patrimoniaux — pour cerner objectifs, parcours utilisateurs et auditer la stack et les contenus existants. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — cœur de ville, zones d'activité de l'agglomération Béthune-Bruay Artois Lys Romane, ateliers de plasturgie ou sites patrimoniaux — pour cerner objectifs, parcours utilisateurs et auditer la stack et les contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Bruay-la-Buissière, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc avant le moindre développement.",
+            a: "Oui. Après le cadrage sur site à Bruay-la-Buissière, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc avant le moindre développement.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (remis à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit avant développement. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur les sites patrimoniaux UNESCO. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à un prestataire local des Hauts-de-France (Lille, Lens, Arras) ou repris en interne sans rupture.",
+          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit avant développement. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur les sites patrimoniaux UNESCO. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à un prestataire local des Hauts-de-France (Lille, Lens, Arras) ou repris en interne sans rupture.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Bruay-la-Buissière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie d'ancien bassin minier UNESCO — héritage de la Compagnie des mines de Bruay (1850-1978) — reconvertie vers la plasturgie, le commerce de détail, le BTP et le tourisme patrimonial, faite d'un tissu dense de TPE et de PME industrielles sur les 21 424 habitants de la commune née de la fusion Bruay-en-Artois–Labuissière. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bruay-la-Buissière, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Bruay-la-Buissière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie d'ancien bassin minier UNESCO — héritage de la Compagnie des mines de Bruay (1850-1978) — reconvertie vers la plasturgie, le commerce de détail, le BTP et le tourisme patrimonial, faite d'un tissu dense de TPE et de PME industrielles sur les 21 424 habitants de la commune née de la fusion Bruay-en-Artois–Labuissière. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bruay-la-Buissière, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Tissu dense d'artisans BTP et de commerces de proximité hérités de la reconversion post-mine, concentrés au cœur de ville et dans les anciennes cités minières classées : on greffe l'IA sur l'existant — devis automatisés, classification des photos de chantier, agent de réponse client — ou on construit une vitrine e-commerce sur WordPress, WooCommerce ou Shopify sans refonte coûteuse, pensée mobile-first pour un comptoir ou un chantier.",
           "PME industrielles en plasturgie, héritage direct de la reconversion charbonnière de la Compagnie des mines de Bruay : portails clients sur mesure, configurateurs produits, recherche sémantique de catalogue plastiques et automatisations branchées sur vos outils métier (ERP, gestion de stock, GPAO), avec un design system mobile-first utilisable depuis l'atelier comme depuis le bureau commercial.",
@@ -147,7 +147,7 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
           {
             step: "Cadrage à Bruay-la-Buissière",
             detail:
-              "Atelier sur site — cœur de ville, zones d'activité de l'agglomération Béthune-Bruay Artois Lys Romane, ateliers de plasturgie ou sites patrimoniaux — pour cerner objectifs, parcours utilisateurs et auditer la stack et les contenus existants. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — cœur de ville, zones d'activité de l'agglomération Béthune-Bruay Artois Lys Romane, ateliers de plasturgie ou sites patrimoniaux — pour cerner objectifs, parcours utilisateurs et auditer la stack et les contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Bruay-la-Buissière, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc avant le moindre développement.",
+            a: "Oui. Après le cadrage sur site à Bruay-la-Buissière, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc avant le moindre développement.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (remis à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit avant développement. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur les sites patrimoniaux UNESCO. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à un prestataire local des Hauts-de-France (Lille, Lens, Arras) ou repris en interne sans rupture.",
+          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit avant développement. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur les sites patrimoniaux UNESCO. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à un prestataire local des Hauts-de-France (Lille, Lens, Arras) ou repris en interne sans rupture.",
       },
     },
   },

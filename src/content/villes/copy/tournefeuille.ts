@@ -132,11 +132,11 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
           },
           {
             q: "En combien de temps obtenir un devis pour un projet à Tournefeuille ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet. Après un premier échange et le cadrage sur site à Tournefeuille, vous recevez une proposition chiffrée, sans engagement, avec périmètre, technologies retenues et hébergement UE détaillés.",
+            a: "Nous remettons un devis à partir de 24-48 h selon la complexité du projet. Après un premier échange et le cadrage sur site à Tournefeuille, vous recevez une proposition chiffrée, sans engagement, avec périmètre, technologies retenues et hébergement UE détaillés.",
           },
         ],
         guarantees:
-          "Code et contenus vous appartiennent, sans verrou éditeur ni dépendance contractuelle : votre site ou plateforme reste maintenable par vos équipes ou par tout prestataire de l'aire toulousaine. Hébergement en Union européenne conforme RGPD par défaut, DPO sur demande. Devis remis à partir de 48 h selon la complexité, périmètre et technologies explicités avant signature. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et la couche IA de bout en bout — du cabinet libéral de Tournefeuille à l'ETI industrielle de la ZAC de Pahin.",
+          "Code et contenus vous appartiennent, sans verrou éditeur ni dépendance contractuelle : votre site ou plateforme reste maintenable par vos équipes ou par tout prestataire de l'aire toulousaine. Hébergement en Union européenne conforme RGPD par défaut, DPO sur demande. Devis remis à partir de 24-48 h selon la complexité, périmètre et technologies explicités avant signature. Nous couvrons l'UX/UI, le mobile, l'e-commerce multi-CMS et la couche IA de bout en bout — du cabinet libéral de Tournefeuille à l'ETI industrielle de la ZAC de Pahin.",
       },
       en: {
         hero: "In Tournefeuille (31), the third-largest commune in Haute-Garonne, economic activity centres on the ZAC de Pahin — around 33 hectares and close to 121 companies along Boulevard de l'Industrie, from Getinge (life sciences, sterilisation) to Rector Lesage (precast concrete), Rexel France and Seg-Fayat — while a dense population of aerospace executives and engineers feeds the professional practices, design offices and premium retail of western Toulouse. Axion-IA designs AI-augmented websites and SaaS platforms for these players: custom code, UX/UI and mobile, multi-CMS e-commerce, RAG chatbots and conversational agents, EU-based GDPR-compliant hosting, with no vendor lock-in.",
@@ -218,11 +218,11 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote for a project in Tournefeuille?",
-            a: "We provide a quote from 48 h depending on the project's complexity. After a first exchange and the on-site framing in Tournefeuille, you receive a costed proposal, no commitment, detailing scope, chosen technologies and EU hosting.",
+            a: "We provide a quote from 24-48 h depending on the project's complexity. After a first exchange and the on-site framing in Tournefeuille, you receive a costed proposal, no commitment, detailing scope, chosen technologies and EU hosting.",
           },
         ],
         guarantees:
-          "Code and content belong to you, with no vendor lock-in or contractual dependency: your site or platform stays maintainable by your own teams or any provider in the Toulouse area. EU-based GDPR-compliant hosting by default, DPO on request. Quote provided from 48 h depending on complexity, with scope and technologies set out before signature. We cover UX/UI, mobile, multi-CMS e-commerce and the AI layer end to end — from a Tournefeuille professional practice to an industrial mid-cap in the ZAC de Pahin.",
+          "Code and content belong to you, with no vendor lock-in or contractual dependency: your site or platform stays maintainable by your own teams or any provider in the Toulouse area. EU-based GDPR-compliant hosting by default, DPO on request. Quote provided from 24-48 h depending on complexity, with scope and technologies set out before signature. We cover UX/UI, mobile, multi-CMS e-commerce and the AI layer end to end — from a Tournefeuille professional practice to an industrial mid-cap in the ZAC de Pahin.",
       },
     },
   },

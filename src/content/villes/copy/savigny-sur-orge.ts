@@ -132,11 +132,11 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "En combien de temps ai-je un devis ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un premier échange sur vos objectifs, votre métier savignien et votre existant technique (CMS, ERP, CRM). Le périmètre et le calendrier sont fixés avant tout démarrage.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange sur vos objectifs, votre métier savignien et votre existant technique (CMS, ERP, CRM). Le périmètre et le calendrier sont fixés avant tout démarrage.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Sites et plateformes développés en UX/UI mobile-first, e-commerce multi-CMS ou code custom, avec agents IA configurés pour votre métier savignien. Hébergement en Union européenne, conformité RGPD et AI Act, minimisation des données — critique pour les professions de santé et les réseaux de crèches de la commune. Vous restez propriétaire de vos contenus, modèles et accès : aucun verrou éditeur, code et documentation transférables à tout prestataire francilien ou repris en interne.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en UX/UI mobile-first, e-commerce multi-CMS ou code custom, avec agents IA configurés pour votre métier savignien. Hébergement en Union européenne, conformité RGPD et AI Act, minimisation des données — critique pour les professions de santé et les réseaux de crèches de la commune. Vous restez propriétaire de vos contenus, modèles et accès : aucun verrou éditeur, code et documentation transférables à tout prestataire francilien ou repris en interne.",
       },
       en: {
         hero: "Savigny-sur-Orge (Essonne, ~37,973 inhabitants, the 4th-largest town in the Essonne) concentrates its economy between the Les Gâtines business zone on route de Morangis — nearly 190 retail, service and light-industry firms including LPCR Groupe (People&Baby nursery network), FISA France and SRAMAG — the avenue du Garigliano tertiary hub (IT consulting and software) and the local shops around the RER C station in the town centre. Axion-IA builds AI-augmented websites and SaaS platforms for these Savigny micro-businesses and SMEs — storefronts, multi-CMS e-commerce, online booking, online quotes, conversational agents — with mobile-first UX/UI, European Union GDPR-compliant hosting and zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "How fast do I get a quote?",
-            a: "We deliver a quote within 48 hours depending on the complexity of the project, after an initial discussion of your goals, your Savigny business and your existing technical stack (CMS, ERP, CRM). Scope and schedule are fixed before any start.",
+            a: "We deliver a quote within 24 to 48 hours depending on the complexity of the project, after an initial discussion of your goals, your Savigny business and your existing technical stack (CMS, ERP, CRM). Scope and schedule are fixed before any start.",
           },
         ],
         guarantees:
-          "Quote delivered within 48 hours depending on complexity. Sites and platforms built with mobile-first UX/UI, multi-CMS e-commerce or custom code, with AI agents configured for your Savigny business. European Union hosting, GDPR and AI Act compliance, data minimisation — critical for the town's healthcare practitioners and nursery networks. You remain the owner of your content, models and access: no vendor lock-in, code and documentation transferable to any Île-de-France provider or taken back in-house.",
+          "Quote delivered within 24 to 48 hours depending on complexity. Sites and platforms built with mobile-first UX/UI, multi-CMS e-commerce or custom code, with AI agents configured for your Savigny business. European Union hosting, GDPR and AI Act compliance, data minimisation — critical for the town's healthcare practitioners and nursery networks. You remain the owner of your content, models and access: no vendor lock-in, code and documentation transferable to any Île-de-France provider or taken back in-house.",
       },
     },
   },

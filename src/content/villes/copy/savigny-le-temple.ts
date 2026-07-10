@@ -130,11 +130,11 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
           },
           {
             q: "Quels sont vos délais pour un devis à Savigny-le-Temple ?",
-            a: "Un devis est remis à partir de 48 h selon la complexité du projet. Nous nous déplaçons sur site (RER D Savigny-le-Temple-Nandy, A5, Francilienne N104) pour le cadrage.",
+            a: "Un devis est remis à partir de 24-48 h selon la complexité du projet. Nous nous déplaçons sur site (RER D Savigny-le-Temple-Nandy, A5, Francilienne N104) pour le cadrage.",
           },
         ],
         guarantees:
-          "Code custom intégralement transférable : vous conservez le code source, les accès et la documentation, sans lock-in éditeur ni dépendance Axion-IA. Hébergement en UE par défaut et conformité RGPD, avec souveraineté renforcée pour les données logistiques, agroalimentaires et cosmétique-pharma de Sénart. Performances web tenues (vitesse, Web Vitals, accessibilité mobile) et recette d'acceptation sur site à Savigny-le-Temple. Devis à partir de 48 h selon la complexité, sans engagement.",
+          "Code custom intégralement transférable : vous conservez le code source, les accès et la documentation, sans lock-in éditeur ni dépendance Axion-IA. Hébergement en UE par défaut et conformité RGPD, avec souveraineté renforcée pour les données logistiques, agroalimentaires et cosmétique-pharma de Sénart. Performances web tenues (vitesse, Web Vitals, accessibilité mobile) et recette d'acceptation sur site à Savigny-le-Temple. Devis à partir de 24-48 h selon la complexité, sans engagement.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for businesses in Savigny-le-Temple, one of the largest activity hubs of the Sénart new town (Grand Paris Sud). Our ground: the warehouses of the P.A. du Bois des Saints-Pères (ID Logistics France), agri-food manufacturers (the Maîtres Laitiers du Cotentin milk-processing site, Domalait Production), Fareva's cosmetics-pharma sites at 1 rue des Sources, and the retailers of the P.A. de Savigny-le-Temple (~224 companies: Decathlon, Lidl, La Poste, GRDF). We build client portals, line-of-business platforms and AI-native applications in custom code, EU-hosted and GDPR-compliant — no no-code, no vendor lock-in.",
@@ -216,11 +216,11 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
           },
           {
             q: "What are your lead times for a quote in Savigny-le-Temple?",
-            a: "A quote is delivered from 48 hours depending on project complexity. We travel on site (RER D Savigny-le-Temple-Nandy, A5, Francilienne N104) for framing, with no additional travel fees within Île-de-France.",
+            a: "A quote is delivered from 24-48 hours depending on project complexity. We travel on site (RER D Savigny-le-Temple-Nandy, A5, Francilienne N104) for framing, with no additional travel fees within Île-de-France.",
           },
         ],
         guarantees:
-          "Fully transferable custom code: you keep the source code, the access and the documentation, with no vendor lock-in or Axion-IA dependency. EU hosting by default and GDPR compliance, with reinforced sovereignty for Sénart logistics, agri-food and cosmetics-pharma data. Web performance held (speed, Web Vitals, mobile accessibility) and on-site acceptance in Savigny-le-Temple. Quote from 48 hours depending on complexity, no commitment.",
+          "Fully transferable custom code: you keep the source code, the access and the documentation, with no vendor lock-in or Axion-IA dependency. EU hosting by default and GDPR compliance, with reinforced sovereignty for Sénart logistics, agri-food and cosmetics-pharma data. Web performance held (speed, Web Vitals, mobile accessibility) and on-site acceptance in Savigny-le-Temple. Quote from 24-48 hours depending on complexity, no commitment.",
       },
     },
   },

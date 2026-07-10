@@ -53,7 +53,7 @@ export const MONTBELIARD_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Montbéliard des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le pays de Montbéliard, berceau de l'aventure Peugeot dont l'économie reste structurée par l'usine Stellantis de Sochaux et son dense réseau de sous-traitants en mécanique de précision, métallurgie et plasturgie, du parc d'activités Technoland à Audincourt. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montbéliard, itérations à distance, de Sochaux à Brognard.",
+        hero: "Axion-IA conçoit et augmente à Montbéliard des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le pays de Montbéliard, berceau de l'aventure Peugeot dont l'économie reste structurée par l'usine Stellantis de Sochaux et son dense réseau de sous-traitants en mécanique de précision, métallurgie et plasturgie, du parc d'activités Technoland à Audincourt. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montbéliard, itérations à distance, de Sochaux à Brognard.",
         whyHere: [
           "Tissu de sous-traitants automobiles gravitant autour de l'usine Stellantis de Sochaux et concentrés sur le parc d'activités Technoland (plus de 200 entreprises, à 5 km de l'usine) : on construit des catalogues techniques en ligne, des portails de demande de devis et des configurateurs produit qui qualifient les requêtes des donneurs d'ordre, avec un agent IA qui pré-instruit chaque dossier avant l'atelier.",
           "Mécanique de précision, découpe et métallurgie pilotées par des références et des tolérances strictes, aux côtés des filières médicale, énergie et maroquinerie de luxe implantées sur Technoland 2 (Brognard, Allenjoie, Dambenois) : nos moteurs de recherche sémantique retrouvent une pièce, une nomenclature ou une fiche qualité dans des bibliothèques techniques denses, là où un site WordPress vitrine standard cale.",
@@ -64,7 +64,7 @@ export const MONTBELIARD_COPY: VilleCopy = {
           {
             step: "Cadrage à Montbéliard",
             detail:
-              "Atelier sur site dans vos ateliers du pays de Montbéliard — Sochaux, Audincourt, parc Technoland, zones d'activité de l'agglomération : objectifs, parcours utilisateurs, audit de la stack, des contenus techniques et des flux de devis. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans vos ateliers du pays de Montbéliard — Sochaux, Audincourt, parc Technoland, zones d'activité de l'agglomération : objectifs, parcours utilisateurs, audit de la stack, des contenus techniques et des flux de devis. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const MONTBELIARD_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Montbéliard, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à Montbéliard, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
           {
             q: "Peut-on relier le site à notre ERP ou notre GPAO de sous-traitance ?",
@@ -136,10 +136,10 @@ export const MONTBELIARD_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, même en pleine consultation fournisseurs. Web Vitals, accessibilité et qualité mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, et la solution reste transférable à tout prestataire du Nord Franche-Comté ou reprise en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, même en pleine consultation fournisseurs. Web Vitals, accessibilité et qualité mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, et la solution reste transférable à tout prestataire du Nord Franche-Comté ou reprise en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Montbéliard des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le pays de Montbéliard, berceau de l'aventure Peugeot dont l'économie reste structurée par l'usine Stellantis de Sochaux et son dense réseau de sous-traitants en mécanique de précision, métallurgie et plasturgie, du parc d'activités Technoland à Audincourt. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montbéliard, itérations à distance, de Sochaux à Brognard.",
+        hero: "Axion-IA conçoit et augmente à Montbéliard des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le pays de Montbéliard, berceau de l'aventure Peugeot dont l'économie reste structurée par l'usine Stellantis de Sochaux et son dense réseau de sous-traitants en mécanique de précision, métallurgie et plasturgie, du parc d'activités Technoland à Audincourt. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montbéliard, itérations à distance, de Sochaux à Brognard.",
         whyHere: [
           "Tissu de sous-traitants automobiles gravitant autour de l'usine Stellantis de Sochaux et concentrés sur le parc d'activités Technoland (plus de 200 entreprises, à 5 km de l'usine) : on construit des catalogues techniques en ligne, des portails de demande de devis et des configurateurs produit qui qualifient les requêtes des donneurs d'ordre, avec un agent IA qui pré-instruit chaque dossier avant l'atelier.",
           "Mécanique de précision, découpe et métallurgie pilotées par des références et des tolérances strictes, aux côtés des filières médicale, énergie et maroquinerie de luxe implantées sur Technoland 2 (Brognard, Allenjoie, Dambenois) : nos moteurs de recherche sémantique retrouvent une pièce, une nomenclature ou une fiche qualité dans des bibliothèques techniques denses, là où un site WordPress vitrine standard cale.",
@@ -150,7 +150,7 @@ export const MONTBELIARD_COPY: VilleCopy = {
           {
             step: "Cadrage à Montbéliard",
             detail:
-              "Atelier sur site dans vos ateliers du pays de Montbéliard — Sochaux, Audincourt, parc Technoland, zones d'activité de l'agglomération : objectifs, parcours utilisateurs, audit de la stack, des contenus techniques et des flux de devis. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans vos ateliers du pays de Montbéliard — Sochaux, Audincourt, parc Technoland, zones d'activité de l'agglomération : objectifs, parcours utilisateurs, audit de la stack, des contenus techniques et des flux de devis. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const MONTBELIARD_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Montbéliard, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à Montbéliard, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
           {
             q: "Peut-on relier le site à notre ERP ou notre GPAO de sous-traitance ?",
@@ -222,7 +222,7 @@ export const MONTBELIARD_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, même en pleine consultation fournisseurs. Web Vitals, accessibilité et qualité mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, et la solution reste transférable à tout prestataire du Nord Franche-Comté ou reprise en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, même en pleine consultation fournisseurs. Web Vitals, accessibilité et qualité mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, et la solution reste transférable à tout prestataire du Nord Franche-Comté ou reprise en interne.",
       },
     },
   },

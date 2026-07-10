@@ -136,7 +136,7 @@ export const CHARTRES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Vous gardez la propriété pleine du code et des données : hébergement en Union européenne par défaut, conformité RGPD, aucun verrou éditeur ni dépendance durable à Axion-IA. Nous concevons des sites et plateformes performants (chargement rapide, mobile-first) et formons vos équipes à les administrer en autonomie, que vous soyez façonnier de la Cosmetic Valley, site pharma du bassin chartrain, négociant de la Beauce ou commerce du centre patrimonial.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Vous gardez la propriété pleine du code et des données : hébergement en Union européenne par défaut, conformité RGPD, aucun verrou éditeur ni dépendance durable à Axion-IA. Nous concevons des sites et plateformes performants (chargement rapide, mobile-first) et formons vos équipes à les administrer en autonomie, que vous soyez façonnier de la Cosmetic Valley, site pharma du bassin chartrain, négociant de la Beauce ou commerce du centre patrimonial.",
       },
       en: {
         hero: "In Chartres, web and SaaS work doesn't serve a generic market: it serves a dual industrial territory, where the global headquarters of Cosmetic Valley sits on the cathedral site itself and where Polepharma, Europe's leading pharmaceutical cluster, is headquartered on rue de Loigny-la-Bataille. For contract manufacturers and packaging subcontractors orbiting Parfums Christian Dior (its second French site, avenue Nicolas), Guerlain, Puig and Reckitt Benckiser, pharma sites in the wake of Novo Nordisk's €2.1bn investment, Beauce grain trading and the heritage town-centre retailers, Axion-IA builds AI-augmented sites and SaaS platforms — bespoke UX/UI, mobile, multi-CMS e-commerce and business automations — with proprietary code, European Union hosting and GDPR compliance.",
@@ -222,7 +222,7 @@ export const CHARTRES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 48 hours depending on complexity. You keep full ownership of the code and data: European Union hosting by default, GDPR compliance, no vendor lock-in and no lasting dependency on Axion-IA. We build high-performance sites and platforms (fast loading, mobile-first) and train your teams to administer them autonomously, whether you are a Cosmetic Valley contract manufacturer, a pharma site in the Chartres basin, a Beauce trader or a heritage town-centre shop.",
+          "Quote provided from 24 to 48 hours depending on complexity. You keep full ownership of the code and data: European Union hosting by default, GDPR compliance, no vendor lock-in and no lasting dependency on Axion-IA. We build high-performance sites and platforms (fast loading, mobile-first) and train your teams to administer them autonomously, whether you are a Cosmetic Valley contract manufacturer, a pharma site in the Chartres basin, a Beauce trader or a heritage town-centre shop.",
       },
     },
   },

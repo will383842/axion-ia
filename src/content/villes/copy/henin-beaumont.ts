@@ -53,7 +53,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Hénin-Beaumont des sites web, boutiques e-commerce, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, catalogue et suivi de commandes enrichis, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville née de la reconversion du bassin minier, désormais tournée vers la logistique, l'e-commerce et le commerce, autour du parc d'activités de la Peupleraie, des plateformes Parcolog et du grand entrepôt national Boulanger, au cœur de l'agglomération Hénin-Carvin et sur l'axe A1 entre Lille et Paris. Nous adressons aussi bien les commerçants et artisans du centre-ville que les opérateurs e-commerce et logistiques implantés près des sorties A1, avec une priorité aux TPE et PME. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure. Devis à partir de 48 h selon la complexité, hébergement UE et conformité RGPD et AI Act, code et données à vous, sans verrou. Kick-off en présentiel à Hénin-Beaumont, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Hénin-Beaumont des sites web, boutiques e-commerce, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, catalogue et suivi de commandes enrichis, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville née de la reconversion du bassin minier, désormais tournée vers la logistique, l'e-commerce et le commerce, autour du parc d'activités de la Peupleraie, des plateformes Parcolog et du grand entrepôt national Boulanger, au cœur de l'agglomération Hénin-Carvin et sur l'axe A1 entre Lille et Paris. Nous adressons aussi bien les commerçants et artisans du centre-ville que les opérateurs e-commerce et logistiques implantés près des sorties A1, avec une priorité aux TPE et PME. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure. Devis à partir de 24-48 h selon la complexité, hébergement UE et conformité RGPD et AI Act, code et données à vous, sans verrou. Kick-off en présentiel à Hénin-Beaumont, itérations à distance.",
         whyHere: [
           "Terre de logistique et d'entreposage héritée de l'ex-bassin minier, avec les 77 000 m² d'entrepôts Parcolog occupés par des opérateurs comme Geodis ou Brossette : nous greffons sur vos sites et portails des moteurs de suivi de commandes, des tableaux de bord de flux et des agents de relance, branchés sur vos WMS et logiciels de gestion existants.",
           "Pôle e-commerce et grandes zones commerciales de l'agglomération Hénin-Carvin, où des acteurs comme Orium opèrent la logistique de boutiques en ligne : on construit des e-shops sur mesure (WooCommerce, Shopify, PrestaShop, Magento ou code dédié) avec recherche sémantique de catalogue, recommandations intelligentes et tunnel de commande mobile-first optimisé.",
@@ -64,7 +64,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Hénin-Beaumont",
             detail:
-              "Atelier sur site dans vos locaux, sur le parc d'activités de la Peupleraie, dans les plateformes Parcolog ou près du centre-ville : objectifs, parcours utilisateurs, audit de la stack, des contenus, du SI et des outils de gestion logistique. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans vos locaux, sur le parc d'activités de la Peupleraie, dans les plateformes Parcolog ou près du centre-ville : objectifs, parcours utilisateurs, audit de la stack, des contenus, du SI et des outils de gestion logistique. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Hénin-Beaumont, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le périmètre et le prix avant de signer.",
+            a: "Oui. Après le cadrage sur site à Hénin-Beaumont, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le périmètre et le prix avant de signer.",
           },
           {
             q: "Pouvez-vous connecter le site à nos outils logistiques ?",
@@ -136,10 +136,10 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pic de commandes ou de rush logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes à Hénin-Beaumont.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pic de commandes ou de rush logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes à Hénin-Beaumont.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Hénin-Beaumont des sites web, boutiques e-commerce, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, catalogue et suivi de commandes enrichis, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville née de la reconversion du bassin minier, désormais tournée vers la logistique, l'e-commerce et le commerce, autour du parc d'activités de la Peupleraie, des plateformes Parcolog et du grand entrepôt national Boulanger, au cœur de l'agglomération Hénin-Carvin et sur l'axe A1 entre Lille et Paris. Nous adressons aussi bien les commerçants et artisans du centre-ville que les opérateurs e-commerce et logistiques implantés près des sorties A1, avec une priorité aux TPE et PME. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure. Devis à partir de 48 h selon la complexité, hébergement UE et conformité RGPD et AI Act, code et données à vous, sans verrou. Kick-off en présentiel à Hénin-Beaumont, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Hénin-Beaumont des sites web, boutiques e-commerce, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, catalogue et suivi de commandes enrichis, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville née de la reconversion du bassin minier, désormais tournée vers la logistique, l'e-commerce et le commerce, autour du parc d'activités de la Peupleraie, des plateformes Parcolog et du grand entrepôt national Boulanger, au cœur de l'agglomération Hénin-Carvin et sur l'axe A1 entre Lille et Paris. Nous adressons aussi bien les commerçants et artisans du centre-ville que les opérateurs e-commerce et logistiques implantés près des sorties A1, avec une priorité aux TPE et PME. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure. Devis à partir de 24-48 h selon la complexité, hébergement UE et conformité RGPD et AI Act, code et données à vous, sans verrou. Kick-off en présentiel à Hénin-Beaumont, itérations à distance.",
         whyHere: [
           "Terre de logistique et d'entreposage héritée de l'ex-bassin minier, avec les 77 000 m² d'entrepôts Parcolog occupés par des opérateurs comme Geodis ou Brossette : nous greffons sur vos sites et portails des moteurs de suivi de commandes, des tableaux de bord de flux et des agents de relance, branchés sur vos WMS et logiciels de gestion existants.",
           "Pôle e-commerce et grandes zones commerciales de l'agglomération Hénin-Carvin, où des acteurs comme Orium opèrent la logistique de boutiques en ligne : on construit des e-shops sur mesure (WooCommerce, Shopify, PrestaShop, Magento ou code dédié) avec recherche sémantique de catalogue, recommandations intelligentes et tunnel de commande mobile-first optimisé.",
@@ -150,7 +150,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Hénin-Beaumont",
             detail:
-              "Atelier sur site dans vos locaux, sur le parc d'activités de la Peupleraie, dans les plateformes Parcolog ou près du centre-ville : objectifs, parcours utilisateurs, audit de la stack, des contenus, du SI et des outils de gestion logistique. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans vos locaux, sur le parc d'activités de la Peupleraie, dans les plateformes Parcolog ou près du centre-ville : objectifs, parcours utilisateurs, audit de la stack, des contenus, du SI et des outils de gestion logistique. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Hénin-Beaumont, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le périmètre et le prix avant de signer.",
+            a: "Oui. Après le cadrage sur site à Hénin-Beaumont, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le périmètre et le prix avant de signer.",
           },
           {
             q: "Pouvez-vous connecter le site à nos outils logistiques ?",
@@ -222,7 +222,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pic de commandes ou de rush logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes à Hénin-Beaumont.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pic de commandes ou de rush logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes à Hénin-Beaumont.",
       },
     },
   },

@@ -92,7 +92,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine augmenté + IA de captation",
             detail:
-              "Pour les artisans du BTP, garages indépendants, commerces et professions libérales de Viry-Châtillon : site mobile-first, demande de devis intelligente, prise de RDV en ligne et relance automatisée. Devis à partir de 48 h selon la complexité.",
+              "Pour les artisans du BTP, garages indépendants, commerces et professions libérales de Viry-Châtillon : site mobile-first, demande de devis intelligente, prise de RDV en ligne et relance automatisée. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -132,11 +132,11 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et combien de temps pour un devis ?",
-            a: "Hébergement en Union européenne par défaut, conforme RGPD. Pour un site ou une plateforme à Viry-Châtillon, nous remettons un devis à partir de 48 h selon la complexité, après un échange de cadrage qui précise le périmètre, les automatisations IA et les intégrations attendues.",
+            a: "Hébergement en Union européenne par défaut, conforme RGPD. Pour un site ou une plateforme à Viry-Châtillon, nous remettons un devis à partir de 24-48 h selon la complexité, après un échange de cadrage qui précise le périmètre, les automatisations IA et les intégrations attendues.",
           },
         ],
         guarantees:
-          "Engagement clair : périmètre, livrables et calendrier fixés au devis, remis à partir de 48 h selon la complexité. Hébergement en UE par défaut, conformité RGPD, DPO sur demande. Aucun verrou éditeur — code et CMS documentés, transférables à tout intégrateur de l'Essonne ou repris en interne. Votre équipe est formée à l'administration du site et des automatisations IA ; la maintenance reste optionnelle, jamais imposée.",
+          "Engagement clair : périmètre, livrables et calendrier fixés au devis, remis à partir de 24-48 h selon la complexité. Hébergement en UE par défaut, conformité RGPD, DPO sur demande. Aucun verrou éditeur — code et CMS documentés, transférables à tout intégrateur de l'Essonne ou repris en interne. Votre équipe est formée à l'administration du site et des automatisations IA ; la maintenance reste optionnelle, jamais imposée.",
       },
       en: {
         hero: "In Viry-Châtillon, business digital is anything but abstract: it serves the RN7 automotive corridor (avenue du Général de Gaulle) with its car dealerships, garages and vehicle inspection centres, the construction and services micro-businesses, the Seine quayside port logistics, and the subcontracting ecosystem orbiting the Renault Sport / Alpine F1 Team engine site established in the town since 1987. Axion-IA designs AI-augmented websites and SaaS platforms — custom-built, EU-hosted, no vendor lock-in — that turn a quote request or a workshop appointment into a customer actually handled.",
@@ -178,7 +178,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "Augmented brochure site + lead-capture AI",
             detail:
-              "For Viry-Châtillon construction trades, independent garages, retailers and professionals: mobile-first site, smart quote request, online booking and automated follow-up. Quote within 48 h depending on complexity.",
+              "For Viry-Châtillon construction trades, independent garages, retailers and professionals: mobile-first site, smart quote request, online booking and automated follow-up. Quote within 24-48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -218,11 +218,11 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
           },
           {
             q: "Where is data hosted and how long for a quote?",
-            a: "EU hosting by default, GDPR-compliant. For a site or platform in Viry-Châtillon, we deliver a quote within 48 h depending on complexity, after a framing exchange that pins down scope, AI automations and expected integrations.",
+            a: "EU hosting by default, GDPR-compliant. For a site or platform in Viry-Châtillon, we deliver a quote within 24-48 h depending on complexity, after a framing exchange that pins down scope, AI automations and expected integrations.",
           },
         ],
         guarantees:
-          "Clear commitment: scope, deliverables and schedule fixed in the quote, delivered within 48 h depending on complexity. EU hosting by default, GDPR compliance, DPO on request. No vendor lock-in — documented, transferable code and CMS, executable by any Essonne integrator or in-house. Your team is trained to administer the site and AI automations; maintenance stays optional, never imposed. On-site travel costs to Viry-Châtillon are billed separately by zone.",
+          "Clear commitment: scope, deliverables and schedule fixed in the quote, delivered within 24-48 h depending on complexity. EU hosting by default, GDPR compliance, DPO on request. No vendor lock-in — documented, transferable code and CMS, executable by any Essonne integrator or in-house. Your team is trained to administer the site and AI automations; maintenance stays optional, never imposed. On-site travel costs to Viry-Châtillon are billed separately by zone.",
       },
     },
   },

@@ -124,7 +124,7 @@ export const SENS_COPY: VilleCopy = {
           },
           {
             q: "Devez-vous vous déplacer à Sens et sous quel délai obtient-on un devis ?",
-            a: "Oui, le cadrage se fait sur site à Sens (Vauguillettes, Salcy, centre-ville, Gron), Paris-Bercy étant à 55 min en TER direct. Après un premier échange, nous remettons un devis à partir de 48 h selon la complexité du projet.",
+            a: "Oui, le cadrage se fait sur site à Sens (Vauguillettes, Salcy, centre-ville, Gron), Paris-Bercy étant à 55 min en TER direct. Après un premier échange, nous remettons un devis à partir de 24 à 48 h selon la complexité du projet.",
           },
           {
             q: "Le site et l'IA respectent-ils le RGPD ?",
@@ -132,7 +132,7 @@ export const SENS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Hébergement en UE, conformité RGPD, données et code portables : votre site et vos briques IA sont exécutables par tout intégrateur de l'Yonne ou repris en interne, sans verrou éditeur ni dépendance Axion-IA. On revendique l'ensemble du périmètre — UX/UI, mobile, e-commerce multi-CMS et IA — adapté au tissu réel du Sénonais (câble, plasturgie, emballage, logistique multimodale, commerce de centre-ville). Votre équipe garde la maîtrise complète du CMS et des contenus après la mise en ligne.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Hébergement en UE, conformité RGPD, données et code portables : votre site et vos briques IA sont exécutables par tout intégrateur de l'Yonne ou repris en interne, sans verrou éditeur ni dépendance Axion-IA. On revendique l'ensemble du périmètre — UX/UI, mobile, e-commerce multi-CMS et IA — adapté au tissu réel du Sénonais (câble, plasturgie, emballage, logistique multimodale, commerce de centre-ville). Votre équipe garde la maîtrise complète du CMS et des contenus après la mise en ligne.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Sens (89) and the Sénonais area. The local fabric — cable industry (Prysmian Group site in Gron), plastics and packaging (Plast'n Bio, Solodem, Plastikpack, the new Allemandou factory), multimodal logistics (Gron river port on the Yonne, rail siding on the Paris-Lyon line, the Salcy and Vauguillettes zones at the A5/A6/A19 crossroads) — shares one need: B2B portals, technical catalogues and back-offices wired to AI, 55 minutes from Paris-Bercy by direct TER. We build bespoke: showcase sites, multi-CMS e-commerce, business apps, RAG chatbots on your documentation, all hosted in the EU and GDPR-compliant.",
@@ -210,7 +210,7 @@ export const SENS_COPY: VilleCopy = {
           },
           {
             q: "Do you travel to Sens, and how fast do I get a quote?",
-            a: "Yes, framing happens on site in Sens (Vauguillettes, Salcy, town centre, Gron), with Paris-Bercy 55 minutes away by direct TER. After a first exchange, we deliver a quote from 48 hours depending on project complexity.",
+            a: "Yes, framing happens on site in Sens (Vauguillettes, Salcy, town centre, Gron), with Paris-Bercy 55 minutes away by direct TER. After a first exchange, we deliver a quote from 24 to 48 hours depending on project complexity.",
           },
           {
             q: "Are the site and the AI GDPR-compliant?",
@@ -218,7 +218,7 @@ export const SENS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 48 hours depending on complexity. EU hosting, GDPR compliance, portable data and code: your site and AI building blocks are executable by any Yonne integrator or taken in-house, with no vendor lock-in or Axion-IA dependency. We cover the full scope — UX/UI, mobile, multi-CMS e-commerce and AI — tailored to the real Sénonais fabric (cable, plastics, packaging, multimodal logistics, town-centre retail). Your team keeps full control of the CMS and content after go-live.",
+          "Quote delivered from 24 to 48 hours depending on complexity. EU hosting, GDPR compliance, portable data and code: your site and AI building blocks are executable by any Yonne integrator or taken in-house, with no vendor lock-in or Axion-IA dependency. We cover the full scope — UX/UI, mobile, multi-CMS e-commerce and AI — tailored to the real Sénonais fabric (cable, plastics, packaging, multimodal logistics, town-centre retail). Your team keeps full control of the CMS and content after go-live.",
       },
     },
   },

@@ -50,7 +50,7 @@ export const OYONNAX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de TPE et PME familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de TPE et PME familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
         whyHere: [
           "Capitale française de la plasturgie, héritière de la « cité du peigne » : moulistes, sous-traitants injection et ateliers d'usinage de précision ont besoin de portails B2B, de configurateurs de pièces et de catalogues techniques en ligne. On construit ces parcours sur mesure, avec recherche sémantique sur vos fiches matières, références et cahiers des charges, et une UX mobile-first utilisable jusqu'au pied de la presse.",
           "Filière structurée autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme, vivier d'export et de donneurs d'ordre exigeants : on déploie des chatbots RAG multilingues (français, anglais, allemand, italien) et des espaces clients pour fluidifier devis, suivi de commandes et SAV, en reliant l'outil à votre ERP ou GPAO sans rupture.",
@@ -61,7 +61,7 @@ export const OYONNAX_COPY: VilleCopy = {
           {
             step: "Cadrage à Oyonnax",
             detail:
-              "Atelier sur site — centre-ville, zones d'activité d'Arbent et Bellignat, cœur de la Plastics Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et du catalogue technique. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, zones d'activité d'Arbent et Bellignat, cœur de la Plastics Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et du catalogue technique. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const OYONNAX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Oyonnax, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée. Le délai dépend de la complexité du projet — à partir de 48 h pour un périmètre simple comme une brique IA greffée sur un site existant d'atelier ou de commerce.",
+            a: "Oui. Après le cadrage sur site à Oyonnax, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée sur un site existant d'atelier ou de commerce.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper vos prises de commande. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout moment à un prestataire local d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes du Haut-Bugey.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper vos prises de commande. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout moment à un prestataire local d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes du Haut-Bugey.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de TPE et PME familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de TPE et PME familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
         whyHere: [
           "Capitale française de la plasturgie, héritière de la « cité du peigne » : moulistes, sous-traitants injection et ateliers d'usinage de précision ont besoin de portails B2B, de configurateurs de pièces et de catalogues techniques en ligne. On construit ces parcours sur mesure, avec recherche sémantique sur vos fiches matières, références et cahiers des charges, et une UX mobile-first utilisable jusqu'au pied de la presse.",
           "Filière structurée autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme, vivier d'export et de donneurs d'ordre exigeants : on déploie des chatbots RAG multilingues (français, anglais, allemand, italien) et des espaces clients pour fluidifier devis, suivi de commandes et SAV, en reliant l'outil à votre ERP ou GPAO sans rupture.",
@@ -147,7 +147,7 @@ export const OYONNAX_COPY: VilleCopy = {
           {
             step: "Cadrage à Oyonnax",
             detail:
-              "Atelier sur site — centre-ville, zones d'activité d'Arbent et Bellignat, cœur de la Plastics Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et du catalogue technique. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, zones d'activité d'Arbent et Bellignat, cœur de la Plastics Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et du catalogue technique. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const OYONNAX_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Oyonnax, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée. Le délai dépend de la complexité du projet — à partir de 48 h pour un périmètre simple comme une brique IA greffée sur un site existant d'atelier ou de commerce.",
+            a: "Oui. Après le cadrage sur site à Oyonnax, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée sur un site existant d'atelier ou de commerce.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper vos prises de commande. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout moment à un prestataire local d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes du Haut-Bugey.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper vos prises de commande. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout moment à un prestataire local d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes du Haut-Bugey.",
       },
     },
   },

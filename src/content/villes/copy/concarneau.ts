@@ -51,7 +51,7 @@ export const CONCARNEAU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Concarneau — 20 845 habitants, 3e commune du Finistère — des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Finistère sud, où le 7e port de pêche français en tonnage débarqué, les conserveries héritières des trente conserveries de sardines historiques (maison Courtin, 1883), les chantiers navals de l'estuaire du Moros et l'hôtellerie balnéaire de la Ville Close font vivre un tissu dense de TPE et de PME, jusqu'à Trégunc, Melgven et La Forêt-Fouesnant. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Concarneau, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Concarneau — 20 845 habitants, 3e commune du Finistère — des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Finistère sud, où le 7e port de pêche français en tonnage débarqué, les conserveries héritières des trente conserveries de sardines historiques (maison Courtin, 1883), les chantiers navals de l'estuaire du Moros et l'hôtellerie balnéaire de la Ville Close font vivre un tissu dense de TPE et de PME, jusqu'à Trégunc, Melgven et La Forêt-Fouesnant. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Concarneau, itérations à distance.",
         whyHere: [
           "Économie maritime et halieutique : la criée, les mareyeurs et les conserveries du port en eau profonde de l'estuaire du Moros — septième tonnage national — gèrent encore beaucoup de bons de commande à la main, au rythme des arrivages. C'est le terrain idéal pour des portails e-commerce B2B, des catalogues produits de la mer dynamiques et des agents qui automatisent la saisie criée, du débarquement à la facturation du mareyage.",
           "Hôtellerie et tourisme balnéaire saisonniers : Ville Close, plages, port de plaisance et voie verte n°7 Roscoff-Concarneau (160 km, ouverte en 2016) attirent une clientèle estivale internationale. Nos sites de réservation directe, calibrés mobile-first, et nos chatbots RAG multilingues captent cette demande sans commission d'OTA et lissent le suivi des réservations sur toute la saison touristique.",
@@ -62,7 +62,7 @@ export const CONCARNEAU_COPY: VilleCopy = {
           {
             step: "Cadrage à Concarneau",
             detail:
-              "Atelier sur site, au port de pêche, dans la Ville Close, sur les zones d'activité ou aux chantiers du Moros : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site, au port de pêche, dans la Ville Close, sur les zones d'activité ou aux chantiers du Moros : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const CONCARNEAU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Concarneau — au port, à la Ville Close ou aux chantiers du Moros — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit que l'on tient jusqu'à la livraison.",
+            a: "Oui. Après le cadrage sur site à Concarneau — au port, à la Ville Close ou aux chantiers du Moros — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit que l'on tient jusqu'à la livraison.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, un périmètre écrit tenu jusqu'au bout. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic estival ou de campagne de pêche. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire finistérien — de Quimper à Rosporden — ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, un périmètre écrit tenu jusqu'au bout. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic estival ou de campagne de pêche. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire finistérien — de Quimper à Rosporden — ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Concarneau — 20 845 habitants, 3e commune du Finistère — des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Finistère sud, où le 7e port de pêche français en tonnage débarqué, les conserveries héritières des trente conserveries de sardines historiques (maison Courtin, 1883), les chantiers navals de l'estuaire du Moros et l'hôtellerie balnéaire de la Ville Close font vivre un tissu dense de TPE et de PME, jusqu'à Trégunc, Melgven et La Forêt-Fouesnant. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Concarneau, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Concarneau — 20 845 habitants, 3e commune du Finistère — des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Finistère sud, où le 7e port de pêche français en tonnage débarqué, les conserveries héritières des trente conserveries de sardines historiques (maison Courtin, 1883), les chantiers navals de l'estuaire du Moros et l'hôtellerie balnéaire de la Ville Close font vivre un tissu dense de TPE et de PME, jusqu'à Trégunc, Melgven et La Forêt-Fouesnant. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Concarneau, itérations à distance.",
         whyHere: [
           "Économie maritime et halieutique : la criée, les mareyeurs et les conserveries du port en eau profonde de l'estuaire du Moros — septième tonnage national — gèrent encore beaucoup de bons de commande à la main, au rythme des arrivages. C'est le terrain idéal pour des portails e-commerce B2B, des catalogues produits de la mer dynamiques et des agents qui automatisent la saisie criée, du débarquement à la facturation du mareyage.",
           "Hôtellerie et tourisme balnéaire saisonniers : Ville Close, plages, port de plaisance et voie verte n°7 Roscoff-Concarneau (160 km, ouverte en 2016) attirent une clientèle estivale internationale. Nos sites de réservation directe, calibrés mobile-first, et nos chatbots RAG multilingues captent cette demande sans commission d'OTA et lissent le suivi des réservations sur toute la saison touristique.",
@@ -148,7 +148,7 @@ export const CONCARNEAU_COPY: VilleCopy = {
           {
             step: "Cadrage à Concarneau",
             detail:
-              "Atelier sur site, au port de pêche, dans la Ville Close, sur les zones d'activité ou aux chantiers du Moros : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site, au port de pêche, dans la Ville Close, sur les zones d'activité ou aux chantiers du Moros : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const CONCARNEAU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Concarneau — au port, à la Ville Close ou aux chantiers du Moros — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit que l'on tient jusqu'à la livraison.",
+            a: "Oui. Après le cadrage sur site à Concarneau — au port, à la Ville Close ou aux chantiers du Moros — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit que l'on tient jusqu'à la livraison.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, un périmètre écrit tenu jusqu'au bout. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic estival ou de campagne de pêche. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire finistérien — de Quimper à Rosporden — ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, un périmètre écrit tenu jusqu'au bout. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic estival ou de campagne de pêche. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire finistérien — de Quimper à Rosporden — ou repris en interne.",
       },
     },
   },

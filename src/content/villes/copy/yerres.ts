@@ -53,7 +53,7 @@ export const YERRES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Yerres (91) des sites web, boutiques en ligne et plateformes avec l'IA intégrée, pour un tissu de commerces de proximité, de restaurants, de professions libérales et d'acteurs du tourisme culturel. Concrètement : vitrine et e-commerce pour les ~106 détaillants spécialisés et les 55 restaurants de la ville, billetterie et médiation numérique autour de la Propriété Caillebotte et de la Ferme Ornée, prise de rendez-vous intelligente pour les cabinets et les artisans de la Zone Artisanale du Mont Griffon. UX/UI sur mesure, chatbot RAG ancré sur vos contenus, hébergement UE, code et données à vous. Devis à partir de 48 h selon la complexité ; kick-off en présentiel à Yerres, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Yerres (91) des sites web, boutiques en ligne et plateformes avec l'IA intégrée, pour un tissu de commerces de proximité, de restaurants, de professions libérales et d'acteurs du tourisme culturel. Concrètement : vitrine et e-commerce pour les ~106 détaillants spécialisés et les 55 restaurants de la ville, billetterie et médiation numérique autour de la Propriété Caillebotte et de la Ferme Ornée, prise de rendez-vous intelligente pour les cabinets et les artisans de la Zone Artisanale du Mont Griffon. UX/UI sur mesure, chatbot RAG ancré sur vos contenus, hébergement UE, code et données à vous. Devis à partir de 24-48 h selon la complexité ; kick-off en présentiel à Yerres, itérations à distance.",
         whyHere: [
           "Tourisme culturel patrimonial : sites de réservation, billetterie et médiation numérique pour la Maison Caillebotte (Maison des Illustres, atelier de Gustave Caillebotte), la Ferme Ornée, l'Orangerie et le parc de 11 hectares au bord de la rivière Yerres.",
           "Commerce de proximité : vitrines et e-commerce multi-CMS pour les ~106 détaillants spécialisés, 55 restaurants et 86 commerces de bouche et services, en lien avec l'Association Commerciale Yerroise (ACY) et le marché couvert de la Place du Marché.",
@@ -64,7 +64,7 @@ export const YERRES_COPY: VilleCopy = {
           {
             step: "Cadrage à Yerres",
             detail:
-              "Atelier sur site, en boutique, au cabinet ou au centre d'affaires L'Arche du Mont Griffon : objectifs, parcours clients, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, en boutique, au cabinet ou au centre d'affaires L'Arche du Mont Griffon : objectifs, parcours clients, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const YERRES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Yerres, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier ou une billetterie étendue. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage à Yerres, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier ou une billetterie étendue. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant. Web Vitals, mobile et accessibilité contrôlés à la livraison. Code source, bases et contenus livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'Essonne ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant. Web Vitals, mobile et accessibilité contrôlés à la livraison. Code source, bases et contenus livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de l'Essonne ou repris en interne.",
       },
       en: {
-        hero: "In Yerres (Essonne), Axion-IA designs and augments websites, online stores and platforms with built-in AI for a fabric of local retailers, restaurants, professional services and cultural-tourism players. Concretely: storefronts and e-commerce for the town's ~106 specialised retailers and 55 restaurants, ticketing and digital mediation around the Caillebotte Estate and its Ferme Ornée, smart booking for practices and craftspeople in the Mont Griffon trade zone. Bespoke UX/UI, RAG chatbot grounded in your content, EU hosting, code and data yours. Quote from 48 h depending on complexity; on-site Yerres kick-off, remote iterations.",
+        hero: "In Yerres (Essonne), Axion-IA designs and augments websites, online stores and platforms with built-in AI for a fabric of local retailers, restaurants, professional services and cultural-tourism players. Concretely: storefronts and e-commerce for the town's ~106 specialised retailers and 55 restaurants, ticketing and digital mediation around the Caillebotte Estate and its Ferme Ornée, smart booking for practices and craftspeople in the Mont Griffon trade zone. Bespoke UX/UI, RAG chatbot grounded in your content, EU hosting, code and data yours. Quote from 24-48 h depending on complexity; on-site Yerres kick-off, remote iterations.",
         whyHere: [
           "Heritage cultural tourism: booking, ticketing and digital-mediation sites for the Caillebotte House (a labelled Maison des Illustres, home to Gustave Caillebotte's studio), the Ferme Ornée, the Orangery and the 11-hectare park along the Yerres river.",
           "Local retail: storefronts and multi-CMS e-commerce for the ~106 specialised retailers, 55 restaurants and 86 food and service shops, alongside the Yerres trade association (ACY) and the covered market on Place du Marché.",
@@ -150,7 +150,7 @@ export const YERRES_COPY: VilleCopy = {
           {
             step: "Scoping in Yerres",
             detail:
-              "On-site workshop, in your shop, practice or the L'Arche business centre in Mont Griffon: goals, customer journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop, in your shop, practice or the L'Arche business centre in Mont Griffon: goals, customer journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const YERRES_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After scoping in Yerres, we issue a firm fixed-fee quote. The lead time depends on complexity — from 48 h for a simple project, longer for a business platform or extended ticketing. No time-and-materials, no hidden hour drift.",
+            a: "Yes. After scoping in Yerres, we issue a firm fixed-fee quote. The lead time depends on complexity — from 24-48 h for a simple project, longer for a business platform or extended ticketing. No time-and-materials, no hidden hour drift.",
           },
         ],
         guarantees:
-          "Firm fixed-fee quote (from 48 h depending on complexity): no hidden hour drift. Go-live without downtime when augmenting an existing site. Web Vitals, mobile and accessibility checked at delivery. Source code, databases and content delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in Essonne or taken over in-house.",
+          "Firm fixed-fee quote (from 24-48 h depending on complexity): no hidden hour drift. Go-live without downtime when augmenting an existing site. Web Vitals, mobile and accessibility checked at delivery. Source code, databases and content delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in Essonne or taken over in-house.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const VIERZON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les TPE et PME de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
+        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les TPE et PME de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
         whyHere: [
           "Héritage du machinisme agricole et de la mécanique de précision : les PME industrielles et métallurgiques vierzonnaises, dans la lignée de la Société Française de Vierzon et autour d'employeurs comme Parker Hannifin (hydraulique), ont besoin de sites catalogues techniques, de configurateurs de devis et de portails de pièces — on greffe l'IA sur l'existant (configurateur, recherche sémantique de références) sans refonte coûteuse.",
           "Étoile ferroviaire et autoroute A71 : les transporteurs et acteurs logistiques adossés au nœud Vierzon, à 1 h 40 de Paris-Austerlitz et 20 minutes de Bourges, gagnent à un portail client de suivi d'expéditions, de prise de commande en ligne et d'automatisation du reporting, que l'on conçoit en plateforme SaaS sur mesure branchée sur votre SI.",
@@ -64,7 +64,7 @@ export const VIERZON_COPY: VilleCopy = {
           {
             step: "Cadrage à Vierzon",
             detail:
-              "Atelier sur site (centre-ville, Parc Technologique de Sologne, Parc des Forges, atelier ou entrepôt près de la gare et de l'A71) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, Parc Technologique de Sologne, Parc des Forges, atelier ou entrepôt près de la gare et de l'A71) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const VIERZON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Vierzon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage à Vierzon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous équiper une PME mécanique ou un transporteur de Vierzon ?",
@@ -136,10 +136,10 @@ export const VIERZON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de production des ateliers vierzonnais. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est transférable à un prestataire local du Centre-Val de Loire ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de production des ateliers vierzonnais. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est transférable à un prestataire local du Centre-Val de Loire ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les TPE et PME de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
+        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les TPE et PME de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
         whyHere: [
           "Héritage du machinisme agricole et de la mécanique de précision : les PME industrielles et métallurgiques vierzonnaises, dans la lignée de la Société Française de Vierzon et autour d'employeurs comme Parker Hannifin (hydraulique), ont besoin de sites catalogues techniques, de configurateurs de devis et de portails de pièces — on greffe l'IA sur l'existant (configurateur, recherche sémantique de références) sans refonte coûteuse.",
           "Étoile ferroviaire et autoroute A71 : les transporteurs et acteurs logistiques adossés au nœud Vierzon, à 1 h 40 de Paris-Austerlitz et 20 minutes de Bourges, gagnent à un portail client de suivi d'expéditions, de prise de commande en ligne et d'automatisation du reporting, que l'on conçoit en plateforme SaaS sur mesure branchée sur votre SI.",
@@ -150,7 +150,7 @@ export const VIERZON_COPY: VilleCopy = {
           {
             step: "Cadrage à Vierzon",
             detail:
-              "Atelier sur site (centre-ville, Parc Technologique de Sologne, Parc des Forges, atelier ou entrepôt près de la gare et de l'A71) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, Parc Technologique de Sologne, Parc des Forges, atelier ou entrepôt près de la gare et de l'A71) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const VIERZON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Vierzon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage à Vierzon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de signer.",
           },
           {
             q: "Pouvez-vous équiper une PME mécanique ou un transporteur de Vierzon ?",
@@ -222,7 +222,7 @@ export const VIERZON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de production des ateliers vierzonnais. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est transférable à un prestataire local du Centre-Val de Loire ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de production des ateliers vierzonnais. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est transférable à un prestataire local du Centre-Val de Loire ou repris en interne par vos équipes.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Gratien des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle du Val-d'Oise voisine d'Enghien-les-Bains et de son lac, membre de la communauté d'agglomération Plaine Vallée, où le tissu est fait de commerces de centre-ville, de restaurants, d'artisans du bâtiment et de professions libérales installées au plus près des habitants, du Parc des Champeaux aux abords de la gare du Transilien H. On fait tout : design, e-commerce, plateforme SaaS et automatisations, avec ou sans brique IA, sur le CMS de votre choix ou en code sur mesure. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Gratien, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Gratien des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle du Val-d'Oise voisine d'Enghien-les-Bains et de son lac, membre de la communauté d'agglomération Plaine Vallée, où le tissu est fait de commerces de centre-ville, de restaurants, d'artisans du bâtiment et de professions libérales installées au plus près des habitants, du Parc des Champeaux aux abords de la gare du Transilien H. On fait tout : design, e-commerce, plateforme SaaS et automatisations, avec ou sans brique IA, sur le CMS de votre choix ou en code sur mesure. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Gratien, itérations à distance.",
         whyHere: [
           "Commerce de proximité et restauration de centre-ville dominent l'économie gratiennoise, autour de l'avenue Aristide-Briand et des rues marchandes proches du Parc des Champeaux : on construit des vitrines e-commerce et des sites de réservation directe multi-CMS (WordPress, Shopify, PrestaShop), avec gestion d'avis et click-and-collect, pour capter une clientèle résidentielle qui réserve et compare d'abord sur mobile.",
           "Artisanat du bâtiment dense et sans fonction support dédiée dans tout l'est du Val-d'Oise : on greffe l'IA sur l'existant — devis intelligents, relances automatisées, prise de RDV de chantier — via un simple plugin WooCommerce, une API ou un widget, sans imposer de refonte coûteuse à un couvreur, un plombier ou un électricien gratiennois.",
@@ -64,7 +64,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Gratien",
             detail:
-              "Atelier sur site, dans le centre-ville autour de l'avenue Aristide-Briand et des commerces proches de la gare du Transilien H : objectifs, parcours utilisateurs, audit de la stack et des contenus, saisonnalité touristique liée à Enghien. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, dans le centre-ville autour de l'avenue Aristide-Briand et des commerces proches de la gare du Transilien H : objectifs, parcours utilisateurs, audit de la stack et des contenus, saisonnalité touristique liée à Enghien. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place, dans vos locaux du centre-ville ou en visio, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur place, dans vos locaux du centre-ville ou en visio, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
           {
             q: "Pouvez-vous outiller un restaurant ou un hôtel près d'Enghien ?",
@@ -136,10 +136,10 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, à partir de 48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant, y compris en pleine saison touristique près d'Enghien. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local du Val-d'Oise ou repris en interne par vos équipes gratiennoises.",
+          "Devis ferme en forfait fixe, à partir de 24-48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant, y compris en pleine saison touristique près d'Enghien. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local du Val-d'Oise ou repris en interne par vos équipes gratiennoises.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Gratien des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle du Val-d'Oise voisine d'Enghien-les-Bains et de son lac, membre de la communauté d'agglomération Plaine Vallée, où le tissu est fait de commerces de centre-ville, de restaurants, d'artisans du bâtiment et de professions libérales installées au plus près des habitants, du Parc des Champeaux aux abords de la gare du Transilien H. On fait tout : design, e-commerce, plateforme SaaS et automatisations, avec ou sans brique IA, sur le CMS de votre choix ou en code sur mesure. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Gratien, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Gratien des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle du Val-d'Oise voisine d'Enghien-les-Bains et de son lac, membre de la communauté d'agglomération Plaine Vallée, où le tissu est fait de commerces de centre-ville, de restaurants, d'artisans du bâtiment et de professions libérales installées au plus près des habitants, du Parc des Champeaux aux abords de la gare du Transilien H. On fait tout : design, e-commerce, plateforme SaaS et automatisations, avec ou sans brique IA, sur le CMS de votre choix ou en code sur mesure. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Gratien, itérations à distance.",
         whyHere: [
           "Commerce de proximité et restauration de centre-ville dominent l'économie gratiennoise, autour de l'avenue Aristide-Briand et des rues marchandes proches du Parc des Champeaux : on construit des vitrines e-commerce et des sites de réservation directe multi-CMS (WordPress, Shopify, PrestaShop), avec gestion d'avis et click-and-collect, pour capter une clientèle résidentielle qui réserve et compare d'abord sur mobile.",
           "Artisanat du bâtiment dense et sans fonction support dédiée dans tout l'est du Val-d'Oise : on greffe l'IA sur l'existant — devis intelligents, relances automatisées, prise de RDV de chantier — via un simple plugin WooCommerce, une API ou un widget, sans imposer de refonte coûteuse à un couvreur, un plombier ou un électricien gratiennois.",
@@ -150,7 +150,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Gratien",
             detail:
-              "Atelier sur site, dans le centre-ville autour de l'avenue Aristide-Briand et des commerces proches de la gare du Transilien H : objectifs, parcours utilisateurs, audit de la stack et des contenus, saisonnalité touristique liée à Enghien. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, dans le centre-ville autour de l'avenue Aristide-Briand et des commerces proches de la gare du Transilien H : objectifs, parcours utilisateurs, audit de la stack et des contenus, saisonnalité touristique liée à Enghien. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place, dans vos locaux du centre-ville ou en visio, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur place, dans vos locaux du centre-ville ou en visio, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
           {
             q: "Pouvez-vous outiller un restaurant ou un hôtel près d'Enghien ?",
@@ -222,7 +222,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe, à partir de 48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant, y compris en pleine saison touristique près d'Enghien. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local du Val-d'Oise ou repris en interne par vos équipes gratiennoises.",
+          "Devis ferme en forfait fixe, à partir de 24-48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant, y compris en pleine saison touristique près d'Enghien. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local du Val-d'Oise ou repris en interne par vos équipes gratiennoises.",
       },
     },
   },

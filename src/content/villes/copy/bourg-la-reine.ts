@@ -49,7 +49,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales — médecins, avocats, experts-comptables, notaires installés autour de la gare RER B et de l'avenue du Général-Leclerc : nous bâtissons des sites de prise de rendez-vous, des portails patients-clients sécurisés et des chatbots de pré-qualification, conçus pour la confidentialité des données sensibles soumises au secret professionnel.",
           "Commerce de proximité concentré le long de l'avenue du Général-Leclerc et de l'ex-RN20 (D920), à deux pas du nouvel écoquartier de la Faïencerie : vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), click-and-collect et recherche sémantique pour des TPE qui veulent vendre au-delà de leur rue, vers Antony, Sceaux et Cachan.",
@@ -60,7 +60,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Bourg-la-Reine",
             detail:
-              "Atelier sur site — votre cabinet ou commerce de l'avenue du Général-Leclerc, vos bureaux près de la gare RER B ou un espace de coworking type Stop&Work : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — votre cabinet ou commerce de l'avenue du Général-Leclerc, vos bureaux près de la gare RER B ou un espace de coworking type Stop&Work : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales — médecins, avocats, experts-comptables, notaires installés autour de la gare RER B et de l'avenue du Général-Leclerc : nous bâtissons des sites de prise de rendez-vous, des portails patients-clients sécurisés et des chatbots de pré-qualification, conçus pour la confidentialité des données sensibles soumises au secret professionnel.",
           "Commerce de proximité concentré le long de l'avenue du Général-Leclerc et de l'ex-RN20 (D920), à deux pas du nouvel écoquartier de la Faïencerie : vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), click-and-collect et recherche sémantique pour des TPE qui veulent vendre au-delà de leur rue, vers Antony, Sceaux et Cachan.",
@@ -146,7 +146,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Bourg-la-Reine",
             detail:
-              "Atelier sur site — votre cabinet ou commerce de l'avenue du Général-Leclerc, vos bureaux près de la gare RER B ou un espace de coworking type Stop&Work : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — votre cabinet ou commerce de l'avenue du Général-Leclerc, vos bureaux près de la gare RER B ou un espace de coworking type Stop&Work : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -214,11 +214,11 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
       },
     },
   },

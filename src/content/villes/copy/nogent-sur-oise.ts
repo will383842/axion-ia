@@ -53,7 +53,7 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Nogent-sur-Oise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, devis en ligne, chatbot RAG multilingue ancré sur vos fiches techniques, recherche sémantique de pièces et de références, agents et automatisations. Pensé pour le bassin creillois, héritier de la grande métallurgie de Montataire et Creil, où le tissu mêle TPE et PME en mécanique, chaudronnerie, sous-traitance, BTP et logistique — autour du Parc d'Activité Sud (près de 130 entreprises) et du port fluvial relié au Canal Seine-Nord Europe. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Nogent-sur-Oise, itérations à distance, à 35 min de Paris-Gare du Nord par la gare de Creil.",
+        hero: "Axion-IA conçoit et augmente à Nogent-sur-Oise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, devis en ligne, chatbot RAG multilingue ancré sur vos fiches techniques, recherche sémantique de pièces et de références, agents et automatisations. Pensé pour le bassin creillois, héritier de la grande métallurgie de Montataire et Creil, où le tissu mêle TPE et PME en mécanique, chaudronnerie, sous-traitance, BTP et logistique — autour du Parc d'Activité Sud (près de 130 entreprises) et du port fluvial relié au Canal Seine-Nord Europe. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Nogent-sur-Oise, itérations à distance, à 35 min de Paris-Gare du Nord par la gare de Creil.",
         whyHere: [
           "Tissu industriel hérité de la métallurgie creilloise, concentré sur le Parc d'Activité Sud (72,78 ha, près de 130 établissements comme Veolia Recyclage Valorisation Hauts-de-France ou Sical Creil) : les ateliers de mécanique, de chaudronnerie et de sous-traitance travaillent encore beaucoup par e-mail et tableurs — on construit des portails de demande de devis intelligents et des catalogues de pièces avec recherche sémantique pour répondre plus vite aux donneurs d'ordre.",
           "Forte densité de TPE et PME du BTP, de la maintenance et du négoce de matériaux (le P.A. de Saulcy accueille notamment Bricoman) : on greffe l'IA sur l'existant — espace client, suivi de chantier, relances automatiques — sans imposer de refonte lourde, ou on bâtit une vitrine e-commerce multi-CMS pour les acteurs du commerce et de l'artisanat local.",
@@ -64,7 +64,7 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
           {
             step: "Cadrage à Nogent-sur-Oise",
             detail:
-              "Atelier sur site — vos ateliers, vos bureaux, ou directement sur le Parc d'Activité Sud ou le P.A. de Saulcy : objectifs, parcours clients et donneurs d'ordre, audit de la stack, des contenus techniques et des process devis. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — vos ateliers, vos bureaux, ou directement sur le Parc d'Activité Sud ou le P.A. de Saulcy : objectifs, parcours clients et donneurs d'ordre, audit de la stack, des contenus techniques et des process devis. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -132,14 +132,14 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Nogent-sur-Oise — dans vos ateliers ou sur le Parc d'Activité Sud —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
+            a: "Oui. Après le cadrage sur site à Nogent-sur-Oise — dans vos ateliers ou sur le Parc d'Activité Sud —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals, accessibilité et performance mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Le projet reste transférable à tout prestataire local du bassin creillois ou des Hauts-de-France, ou repris en interne par vos équipes, qui montent en autonomie tout au long de la mission.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals, accessibilité et performance mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Le projet reste transférable à tout prestataire local du bassin creillois ou des Hauts-de-France, ou repris en interne par vos équipes, qui montent en autonomie tout au long de la mission.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Nogent-sur-Oise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, devis en ligne, chatbot RAG multilingue ancré sur vos fiches techniques, recherche sémantique de pièces et de références, agents et automatisations. Pensé pour le bassin creillois, héritier de la grande métallurgie de Montataire et Creil, où le tissu mêle TPE et PME en mécanique, chaudronnerie, sous-traitance, BTP et logistique — autour du Parc d'Activité Sud (près de 130 entreprises) et du port fluvial relié au Canal Seine-Nord Europe. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Nogent-sur-Oise, itérations à distance, à 35 min de Paris-Gare du Nord par la gare de Creil.",
+        hero: "Axion-IA conçoit et augmente à Nogent-sur-Oise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, devis en ligne, chatbot RAG multilingue ancré sur vos fiches techniques, recherche sémantique de pièces et de références, agents et automatisations. Pensé pour le bassin creillois, héritier de la grande métallurgie de Montataire et Creil, où le tissu mêle TPE et PME en mécanique, chaudronnerie, sous-traitance, BTP et logistique — autour du Parc d'Activité Sud (près de 130 entreprises) et du port fluvial relié au Canal Seine-Nord Europe. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Nogent-sur-Oise, itérations à distance, à 35 min de Paris-Gare du Nord par la gare de Creil.",
         whyHere: [
           "Tissu industriel hérité de la métallurgie creilloise, concentré sur le Parc d'Activité Sud (72,78 ha, près de 130 établissements comme Veolia Recyclage Valorisation Hauts-de-France ou Sical Creil) : les ateliers de mécanique, de chaudronnerie et de sous-traitance travaillent encore beaucoup par e-mail et tableurs — on construit des portails de demande de devis intelligents et des catalogues de pièces avec recherche sémantique pour répondre plus vite aux donneurs d'ordre.",
           "Forte densité de TPE et PME du BTP, de la maintenance et du négoce de matériaux (le P.A. de Saulcy accueille notamment Bricoman) : on greffe l'IA sur l'existant — espace client, suivi de chantier, relances automatiques — sans imposer de refonte lourde, ou on bâtit une vitrine e-commerce multi-CMS pour les acteurs du commerce et de l'artisanat local.",
@@ -150,7 +150,7 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
           {
             step: "Cadrage à Nogent-sur-Oise",
             detail:
-              "Atelier sur site — vos ateliers, vos bureaux, ou directement sur le Parc d'Activité Sud ou le P.A. de Saulcy : objectifs, parcours clients et donneurs d'ordre, audit de la stack, des contenus techniques et des process devis. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — vos ateliers, vos bureaux, ou directement sur le Parc d'Activité Sud ou le P.A. de Saulcy : objectifs, parcours clients et donneurs d'ordre, audit de la stack, des contenus techniques et des process devis. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -218,11 +218,11 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Nogent-sur-Oise — dans vos ateliers ou sur le Parc d'Activité Sud —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
+            a: "Oui. Après le cadrage sur site à Nogent-sur-Oise — dans vos ateliers ou sur le Parc d'Activité Sud —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals, accessibilité et performance mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Le projet reste transférable à tout prestataire local du bassin creillois ou des Hauts-de-France, ou repris en interne par vos équipes, qui montent en autonomie tout au long de la mission.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals, accessibilité et performance mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Le projet reste transférable à tout prestataire local du bassin creillois ou des Hauts-de-France, ou repris en interne par vos équipes, qui montent en autonomie tout au long de la mission.",
       },
     },
   },

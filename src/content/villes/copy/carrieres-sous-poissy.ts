@@ -51,7 +51,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de TPE du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de TPE du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
         whyHere: [
           "Filière automobile et R&D : autour du centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, gravitent sous-traitants et bureaux d'études. Terrain idéal pour des portails fournisseurs, des plateformes SaaS métier et des agents qui pilotent devis, documentation technique et homologation — branchés sur vos CRM et ERP, avec une recherche sémantique qui retrouve une référence pièce en quelques mots.",
           "Logistique et commerce de gros le long du bord de Seine : nos automatisations et notre recherche sémantique fluidifient suivi de commandes, catalogues produits et relances, avec des interfaces mobile-first pensées pour les caristes et équipes terrain des entrepôts riverains. Un chatbot RAG multilingue répond aux clients sur les délais, les stocks et le transport fluvial sans mobiliser le back-office.",
@@ -62,7 +62,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           {
             step: "Cadrage à Carrières-sous-Poissy",
             detail:
-              "Atelier sur site — quartier des Trois Cèdres, zones d'activité du bord de Seine ou abords du centre technique PSA : objectifs commerciaux, parcours utilisateurs, audit de la stack et des contenus existants. On identifie ce qui se greffe et ce qui se reconstruit. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — quartier des Trois Cèdres, zones d'activité du bord de Seine ou abords du centre technique PSA : objectifs commerciaux, parcours utilisateurs, audit de la stack et des contenus existants. On identifie ce qui se greffe et ce qui se reconstruit. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -130,14 +130,14 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Carrières-sous-Poissy — quartier des Trois Cèdres ou zones d'activité du bord de Seine — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, le périmètre et le prix sont actés avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Carrières-sous-Poissy — quartier des Trois Cèdres ou zones d'activité du bord de Seine — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, le périmètre et le prix sont actés avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix actés avant le premier sprint. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire des Yvelines ou d'Île-de-France, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix actés avant le premier sprint. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire des Yvelines ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de TPE du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de TPE du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
         whyHere: [
           "Filière automobile et R&D : autour du centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, gravitent sous-traitants et bureaux d'études. Terrain idéal pour des portails fournisseurs, des plateformes SaaS métier et des agents qui pilotent devis, documentation technique et homologation — branchés sur vos CRM et ERP, avec une recherche sémantique qui retrouve une référence pièce en quelques mots.",
           "Logistique et commerce de gros le long du bord de Seine : nos automatisations et notre recherche sémantique fluidifient suivi de commandes, catalogues produits et relances, avec des interfaces mobile-first pensées pour les caristes et équipes terrain des entrepôts riverains. Un chatbot RAG multilingue répond aux clients sur les délais, les stocks et le transport fluvial sans mobiliser le back-office.",
@@ -148,7 +148,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           {
             step: "Cadrage à Carrières-sous-Poissy",
             detail:
-              "Atelier sur site — quartier des Trois Cèdres, zones d'activité du bord de Seine ou abords du centre technique PSA : objectifs commerciaux, parcours utilisateurs, audit de la stack et des contenus existants. On identifie ce qui se greffe et ce qui se reconstruit. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — quartier des Trois Cèdres, zones d'activité du bord de Seine ou abords du centre technique PSA : objectifs commerciaux, parcours utilisateurs, audit de la stack et des contenus existants. On identifie ce qui se greffe et ce qui se reconstruit. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -216,11 +216,11 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Carrières-sous-Poissy — quartier des Trois Cèdres ou zones d'activité du bord de Seine — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, le périmètre et le prix sont actés avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Carrières-sous-Poissy — quartier des Trois Cèdres ou zones d'activité du bord de Seine — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, le périmètre et le prix sont actés avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix actés avant le premier sprint. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire des Yvelines ou d'Île-de-France, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix actés avant le premier sprint. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire des Yvelines ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
     },
   },

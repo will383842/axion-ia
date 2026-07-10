@@ -132,11 +132,11 @@ export const VERSAILLES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et intervenez-vous sur place ?",
-            a: "Devis à partir de 48 h selon la complexité du projet. Nous nous déplaçons à Versailles — centre-ville près du Château, zone Satory ou sites proches de Saint-Quentin-en-Yvelines (Versailles est à environ 12 minutes de Paris par le RER C) — et travaillons aussi à distance selon vos besoins.",
+            a: "Devis à partir de 24-48 h selon la complexité du projet. Nous nous déplaçons à Versailles — centre-ville près du Château, zone Satory ou sites proches de Saint-Quentin-en-Yvelines (Versailles est à environ 12 minutes de Paris par le RER C) — et travaillons aussi à distance selon vos besoins.",
           },
         ],
         guarantees:
-          "Tarification transparente, devis à partir de 48 h selon la complexité. Hébergement dans l'Union européenne par défaut, conformité RGPD, DPO sur demande. UX/UI, version mobile, e-commerce multi-CMS et brique IA inclus dans notre périmètre. Aucun verrou éditeur : le code, les contenus et les accès vous appartiennent, votre plateforme reste maintenable en interne ou par tout prestataire des Yvelines. Pour les acteurs de Satory soumis à des contraintes de souveraineté, modèles et infrastructures sont choisis en conséquence dès la conception.",
+          "Tarification transparente, devis à partir de 24-48 h selon la complexité. Hébergement dans l'Union européenne par défaut, conformité RGPD, DPO sur demande. UX/UI, version mobile, e-commerce multi-CMS et brique IA inclus dans notre périmètre. Aucun verrou éditeur : le code, les contenus et les accès vous appartiennent, votre plateforme reste maintenable en interne ou par tout prestataire des Yvelines. Pour les acteurs de Satory soumis à des contraintes de souveraineté, modèles et infrastructures sont choisis en conséquence dès la conception.",
       },
       en: {
         hero: "Versailles combines two economies few cities hold at once: world-class heritage tourism — 8.4 million visitors to the Palace in 2024, nearly 80% international, with luxury hospitality, events and incoming agencies around the estate — and, at Satory-Ouest, a leading defense, automotive and autonomous-vehicle cluster (Nexter/KNDS, Arquus, Citroën Racing, the VEDECOM institute and its mobiLAB headquarters). Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: from high-end multilingual sites for the tourism sector to technical applications under sovereignty constraints for mobility-defense players, and business tools for companies near UVSQ and Saint-Quentin-en-Yvelines.",
@@ -218,11 +218,11 @@ export const VERSAILLES_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and do you come on site?",
-            a: "Quote from 48 hours depending on project complexity. We travel to Versailles — city center near the Palace, the Satory zone or sites near Saint-Quentin-en-Yvelines (Versailles is about 12 minutes from Paris by RER C) — and also work remotely as needed.",
+            a: "Quote from 24-48 hours depending on project complexity. We travel to Versailles — city center near the Palace, the Satory zone or sites near Saint-Quentin-en-Yvelines (Versailles is about 12 minutes from Paris by RER C) — and also work remotely as needed.",
           },
         ],
         guarantees:
-          "Transparent pricing, quote from 48 hours depending on complexity. Hosting in the European Union by default, GDPR compliance, DPO on request. UX/UI, mobile version, multi-CMS e-commerce and AI layer are all within our scope. No vendor lock-in: the code, content and access are yours, your platform stays maintainable in-house or by any Yvelines provider. For Satory players subject to sovereignty constraints, models and infrastructure are chosen accordingly from the design stage.",
+          "Transparent pricing, quote from 24-48 hours depending on complexity. Hosting in the European Union by default, GDPR compliance, DPO on request. UX/UI, mobile version, multi-CMS e-commerce and AI layer are all within our scope. No vendor lock-in: the code, content and access are yours, your platform stays maintainable in-house or by any Yvelines provider. For Satory players subject to sovereignty constraints, models and infrastructure are chosen accordingly from the design stage.",
       },
     },
   },

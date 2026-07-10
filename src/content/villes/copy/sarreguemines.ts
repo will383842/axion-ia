@@ -53,7 +53,7 @@ export const SARREGUEMINES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Sarreguemines des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG bilingue FR/DE ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture mosellane frontalière où l'héritage de la faïence côtoie la plasturgie, la sous-traitance automobile de la zone industrielle Sud et de l'Europôle de Hambach (Ineos Automotive, ex-Smartville) et un commerce transfrontalier nourri par la clientèle d'outre-Rhin, à 20 minutes de Sarrebruck. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sarreguemines, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Sarreguemines des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG bilingue FR/DE ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture mosellane frontalière où l'héritage de la faïence côtoie la plasturgie, la sous-traitance automobile de la zone industrielle Sud et de l'Europôle de Hambach (Ineos Automotive, ex-Smartville) et un commerce transfrontalier nourri par la clientèle d'outre-Rhin, à 20 minutes de Sarrebruck. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sarreguemines, itérations à distance.",
         whyHere: [
           "Position frontalière à 20 min de Sarrebruck, dans le bassin de Moselle-Est : nos sites et chatbots RAG sont bilingues FR/DE par défaut, calibrés pour le commerce transfrontalier, les services et les clients venus d'outre-Rhin. Boutiques, prises de rendez-vous et formulaires basculent d'une langue à l'autre sans friction, sans double maintenance.",
           "Héritage céramique de la faïence devenu plasturgie et sous-traitance automobile : autour de Sauer France, Sarplast, Behr ou Chêne de l'Est, on greffe l'IA sur l'existant — configurateur de devis en ligne, suivi de production, contrôle qualité assisté, portail B2B — sans imposer une refonte coûteuse de votre SI ni un changement de CMS.",
@@ -64,7 +64,7 @@ export const SARREGUEMINES_COPY: VilleCopy = {
           {
             step: "Cadrage à Sarreguemines",
             detail:
-              "Atelier sur site — centre-ville le long de la Sarre, zone industrielle Sud, abords du Casino des Faïenceries ou Europôle de Hambach : objectifs, parcours utilisateurs FR/DE, audit de la stack, des contenus et des flux frontaliers. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville le long de la Sarre, zone industrielle Sud, abords du Casino des Faïenceries ou Europôle de Hambach : objectifs, parcours utilisateurs FR/DE, audit de la stack, des contenus et des flux frontaliers. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -132,14 +132,14 @@ export const SARREGUEMINES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Sarreguemines, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de lock-in : vous savez exactement ce que vous payez et ce que vous récupérez.",
+            a: "Oui. Après le cadrage sur site à Sarreguemines, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de lock-in : vous savez exactement ce que vous payez et ce que vous récupérez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, y compris une boutique active. Web Vitals et accessibilité contrôlés à la livraison, sur les parcours FR comme DE. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est documenté, transférable à tout prestataire local de Moselle-Est ou de la Sarre, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, y compris une boutique active. Web Vitals et accessibilité contrôlés à la livraison, sur les parcours FR comme DE. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est documenté, transférable à tout prestataire local de Moselle-Est ou de la Sarre, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Sarreguemines des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG bilingue FR/DE ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture mosellane frontalière où l'héritage de la faïence côtoie la plasturgie, la sous-traitance automobile de la zone industrielle Sud et de l'Europôle de Hambach (Ineos Automotive, ex-Smartville) et un commerce transfrontalier nourri par la clientèle d'outre-Rhin, à 20 minutes de Sarrebruck. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sarreguemines, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Sarreguemines des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG bilingue FR/DE ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture mosellane frontalière où l'héritage de la faïence côtoie la plasturgie, la sous-traitance automobile de la zone industrielle Sud et de l'Europôle de Hambach (Ineos Automotive, ex-Smartville) et un commerce transfrontalier nourri par la clientèle d'outre-Rhin, à 20 minutes de Sarrebruck. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sarreguemines, itérations à distance.",
         whyHere: [
           "Position frontalière à 20 min de Sarrebruck, dans le bassin de Moselle-Est : nos sites et chatbots RAG sont bilingues FR/DE par défaut, calibrés pour le commerce transfrontalier, les services et les clients venus d'outre-Rhin. Boutiques, prises de rendez-vous et formulaires basculent d'une langue à l'autre sans friction, sans double maintenance.",
           "Héritage céramique de la faïence devenu plasturgie et sous-traitance automobile : autour de Sauer France, Sarplast, Behr ou Chêne de l'Est, on greffe l'IA sur l'existant — configurateur de devis en ligne, suivi de production, contrôle qualité assisté, portail B2B — sans imposer une refonte coûteuse de votre SI ni un changement de CMS.",
@@ -150,7 +150,7 @@ export const SARREGUEMINES_COPY: VilleCopy = {
           {
             step: "Cadrage à Sarreguemines",
             detail:
-              "Atelier sur site — centre-ville le long de la Sarre, zone industrielle Sud, abords du Casino des Faïenceries ou Europôle de Hambach : objectifs, parcours utilisateurs FR/DE, audit de la stack, des contenus et des flux frontaliers. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville le long de la Sarre, zone industrielle Sud, abords du Casino des Faïenceries ou Europôle de Hambach : objectifs, parcours utilisateurs FR/DE, audit de la stack, des contenus et des flux frontaliers. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -218,11 +218,11 @@ export const SARREGUEMINES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Sarreguemines, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de lock-in : vous savez exactement ce que vous payez et ce que vous récupérez.",
+            a: "Oui. Après le cadrage sur site à Sarreguemines, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de lock-in : vous savez exactement ce que vous payez et ce que vous récupérez.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, y compris une boutique active. Web Vitals et accessibilité contrôlés à la livraison, sur les parcours FR comme DE. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est documenté, transférable à tout prestataire local de Moselle-Est ou de la Sarre, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, y compris une boutique active. Web Vitals et accessibilité contrôlés à la livraison, sur les parcours FR comme DE. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est documenté, transférable à tout prestataire local de Moselle-Est ou de la Sarre, ou repris en interne par vos équipes.",
       },
     },
   },

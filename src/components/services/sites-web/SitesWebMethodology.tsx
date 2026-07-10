@@ -33,7 +33,7 @@ export function SitesWebMethodology({ isFr }: SitesWebMethodologyProps): ReactNo
         {
           id: "s2",
           name: "Devis ferme rapide",
-          text: "Périmètre exact, modules choisis, prix fixe, délai garanti. Délai de remise à partir de 48 h selon la complexité du projet. Pas d'ambiguïté avant la signature.",
+          text: "Périmètre exact, modules choisis, prix fixe, délai garanti. Délai de remise à partir de 24-48 h selon la complexité du projet. Pas d'ambiguïté avant la signature.",
         },
         {
           id: "s3",
@@ -60,7 +60,7 @@ export function SitesWebMethodology({ isFr }: SitesWebMethodologyProps): ReactNo
         {
           id: "s2",
           name: "Fast firm quote",
-          text: "Exact scope, chosen modules, fixed price, guaranteed timeline. Turnaround from 48 h depending on project complexity. No ambiguity before signing.",
+          text: "Exact scope, chosen modules, fixed price, guaranteed timeline. Turnaround from 24-48 h depending on project complexity. No ambiguity before signing.",
         },
         {
           id: "s3",

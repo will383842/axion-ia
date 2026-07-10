@@ -123,7 +123,7 @@ export const GAGNY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai démarrez-vous un projet à Gagny ?",
-            a: "Le devis est établi à partir de 48 h selon la complexité. Le cadrage se fait en présentiel à Gagny — accessible par le RER E (gares de Gagny et Le Chénay – Gagny, ~20 min de Paris-Est) — puis le développement s'organise en mode hybride sur site et à distance.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité. Le cadrage se fait en présentiel à Gagny — accessible par le RER E (gares de Gagny et Le Chénay – Gagny, ~20 min de Paris-Est) — puis le développement s'organise en mode hybride sur site et à distance.",
           },
           {
             q: "Mes données et celles de mes clients gabiniens sont-elles protégées ?",
@@ -135,7 +135,7 @@ export const GAGNY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom dont vous restez propriétaire, hébergement Union européenne et conformité RGPD vérifiée (anonymisation, journalisation, contrats de sous-traitance conformes CNIL). Aucun lock-in : votre site ou plateforme SaaS est repris par n'importe quel prestataire ou par vos équipes gabiniennes après livraison. Devis établi à partir de 48 h selon la complexité, tarifs au scope défini en cadrage, sans dérive cachée. Cadrage et recette en présentiel à Gagny ; formation incluse pour que votre équipe administre seule le site et ses fonctions IA.",
+          "Code custom dont vous restez propriétaire, hébergement Union européenne et conformité RGPD vérifiée (anonymisation, journalisation, contrats de sous-traitance conformes CNIL). Aucun lock-in : votre site ou plateforme SaaS est repris par n'importe quel prestataire ou par vos équipes gabiniennes après livraison. Devis établi à partir de 24-48 h selon la complexité, tarifs au scope défini en cadrage, sans dérive cachée. Cadrage et recette en présentiel à Gagny ; formation incluse pour que votre équipe administre seule le site et ses fonctions IA.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for Gagny's micro-businesses, SMEs and project founders (Seine-Saint-Denis, RER E line). On a fabric of around 5,900 establishments dominated by micro-firms — retail, construction trades, local services — we equip the players growing with the city: Village du Chénay merchants, future Cœur de Ville and food-hall tenants, and new services in the Le Parc de Maison Blanche eco-district. Custom code, bespoke UX/UI, mobile-first, multi-CMS e-commerce and embedded AI (RAG chatbot, semantic search, content generation), EU hosting, GDPR-compliant, no vendor lock-in.",
@@ -209,7 +209,7 @@ export const GAGNY_COPY: VilleCopy = {
           },
           {
             q: "How quickly do you start a project in Gagny?",
-            a: "The quote is issued from 48 h depending on complexity. Framing happens in person in Gagny — reachable via RER E (Gagny and Le Chénay – Gagny stations, ~20 min from Paris-Est) — then development runs in a hybrid on-site and remote mode.",
+            a: "The quote is issued from 24-48 h depending on complexity. Framing happens in person in Gagny — reachable via RER E (Gagny and Le Chénay – Gagny stations, ~20 min from Paris-Est) — then development runs in a hybrid on-site and remote mode.",
           },
           {
             q: "Is my data and that of my Gagny customers protected?",
@@ -221,7 +221,7 @@ export const GAGNY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Custom code that you own, European Union hosting and verified GDPR compliance (anonymisation, logging, CNIL-compliant processing contracts). No lock-in: your site or SaaS platform can be taken over by any provider or your Gagny teams after delivery. Quote issued from 48 h depending on complexity, pricing on the scope defined at framing, with no hidden drift. Framing and acceptance in person in Gagny; training included so your team administers the site and its AI features on its own.",
+          "Custom code that you own, European Union hosting and verified GDPR compliance (anonymisation, logging, CNIL-compliant processing contracts). No lock-in: your site or SaaS platform can be taken over by any provider or your Gagny teams after delivery. Quote issued from 24-48 h depending on complexity, pricing on the scope defined at framing, with no hidden drift. Framing and acceptance in person in Gagny; training included so your team administers the site and its AI features on its own.",
       },
     },
   },

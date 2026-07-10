@@ -53,7 +53,7 @@ export const THIAIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Thiais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos catalogues et procédures, recherche sémantique, suivi de commandes et agents d'automatisation. Pensé pour le tissu réel de la commune — logisticiens et transporteurs de la zone SENIA / ZAC Thiais-Orly (Lactalis Logistique, Kiloutou, Dat-Schaub France), distributeurs liés au MIN de Rungis voisin et enseignes du pôle Belle Épine. Devis à partir de 48 h selon la complexité du projet, hébergement UE conforme RGPD, code et données à vous. Kick-off en présentiel à Thiais, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Thiais des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos catalogues et procédures, recherche sémantique, suivi de commandes et agents d'automatisation. Pensé pour le tissu réel de la commune — logisticiens et transporteurs de la zone SENIA / ZAC Thiais-Orly (Lactalis Logistique, Kiloutou, Dat-Schaub France), distributeurs liés au MIN de Rungis voisin et enseignes du pôle Belle Épine. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE conforme RGPD, code et données à vous. Kick-off en présentiel à Thiais, itérations à distance.",
         whyHere: [
           "Logistique & distribution SENIA / ZAC Thiais-Orly : portails de suivi de commandes, EDI et tableaux de bord pour des acteurs comme Lactalis Logistique, Kiloutou ou Dat-Schaub France, à l'heure de la mutation Grand Paris autour de la gare ligne 14 (en service depuis juin 2024).",
           "Distribution alimentaire et froid liés au MIN de Rungis voisin : sites de prise de commande B2B, traçabilité produits frais et recherche sémantique sur de gros catalogues import-export.",
@@ -64,7 +64,7 @@ export const THIAIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Thiais",
             detail:
-              "Atelier sur site dans la zone SENIA, sur Belle Épine ou en visio : objectifs, parcours utilisateurs, audit de la stack et des flux (commandes, stocks, catalogues Rungis). Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site dans la zone SENIA, sur Belle Épine ou en visio : objectifs, parcours utilisateurs, audit de la stack et des flux (commandes, stocks, catalogues Rungis). Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const THIAIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et sous quel délai ?",
-            a: "Oui, devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour un portail logistique étendu branché sur votre WMS ou ERP. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui, devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour un portail logistique étendu branché sur votre WMS ou ERP. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne ou repris en interne.",
       },
       en: {
-        hero: "In Thiais, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your catalogues and procedures, semantic search, order tracking and automation agents. Built for the town's real economy — logistics operators and hauliers of the SENIA / ZAC Thiais-Orly zone (Lactalis Logistique, Kiloutou, Dat-Schaub France), distributors tied to the neighbouring Rungis wholesale market, and retailers of the Belle Épine hub. Quote from 48 h depending on project complexity, EU GDPR-compliant hosting, code and data yours. On-site Thiais kick-off, remote iterations.",
+        hero: "In Thiais, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your catalogues and procedures, semantic search, order tracking and automation agents. Built for the town's real economy — logistics operators and hauliers of the SENIA / ZAC Thiais-Orly zone (Lactalis Logistique, Kiloutou, Dat-Schaub France), distributors tied to the neighbouring Rungis wholesale market, and retailers of the Belle Épine hub. Quote from 24-48 h depending on project complexity, EU GDPR-compliant hosting, code and data yours. On-site Thiais kick-off, remote iterations.",
         whyHere: [
           "SENIA / ZAC Thiais-Orly logistics & distribution: order-tracking portals, EDI and dashboards for operators such as Lactalis Logistique, Kiloutou or Dat-Schaub France, amid the Grand Paris redevelopment around the Line 14 station (in service since June 2024).",
           "Food and cold-chain distribution tied to the neighbouring Rungis wholesale market: B2B order-entry sites, fresh-produce traceability and semantic search over large import-export catalogues.",
@@ -150,7 +150,7 @@ export const THIAIS_COPY: VilleCopy = {
           {
             step: "Scoping in Thiais",
             detail:
-              "On-site workshop in the SENIA zone, at Belle Épine or remote: goals, user journeys, audit of the stack and flows (orders, stock, Rungis catalogues). Firm quote from 48 h depending on complexity.",
+              "On-site workshop in the SENIA zone, at Belle Épine or remote: goals, user journeys, audit of the stack and flows (orders, stock, Rungis catalogues). Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const THIAIS_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and how fast?",
-            a: "Yes, a firm fixed-price quote. Turnaround depends on complexity — from 48 h for a simple project, more for an extensive logistics portal wired to your WMS or ERP. No time-and-materials, no hidden hour drift.",
+            a: "Yes, a firm fixed-price quote. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extensive logistics portal wired to your WMS or ERP. No time-and-materials, no hidden hour drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hour drift. Go-live with no downtime when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR-compliant: full ownership, no imposed subscription, transferable to any Val-de-Marne provider or brought in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hour drift. Go-live with no downtime when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR-compliant: full ownership, no imposed subscription, transferable to any Val-de-Marne provider or brought in-house.",
       },
     },
   },

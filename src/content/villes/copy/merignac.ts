@@ -132,11 +132,11 @@ export const MERIGNAC_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "À partir de 48 h selon la complexité. Après un premier échange sur votre périmètre — site vitrine, e-commerce, portail fournisseurs ou SaaS — nous vous transmettons un devis chiffré. Nos consultants se déplacent à Mérignac et dans toute la métropole bordelaise pour le cadrage.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre périmètre — site vitrine, e-commerce, portail fournisseurs ou SaaS — nous vous transmettons un devis chiffré. Nos consultants se déplacent à Mérignac et dans toute la métropole bordelaise pour le cadrage.",
           },
         ],
         guarantees:
-          "Code sur mesure et propriété intégrale : vous récupérez sources, données et documentation, exécutables par tout intégrateur de la French Tech Bordeaux ou repris en interne, sans verrou Axion-IA. Hébergement en Union européenne et conformité RGPD par défaut, contraintes de souveraineté et de confidentialité appliquées dès la conception pour les acteurs de la filière défense. Performances web maîtrisées (mobile-first, Web Vitals), UX/UI et accessibilité contrôlées à la recette. Devis à partir de 48 h selon la complexité, tarifs transparents, sans engagement de maintenance imposé.",
+          "Code sur mesure et propriété intégrale : vous récupérez sources, données et documentation, exécutables par tout intégrateur de la French Tech Bordeaux ou repris en interne, sans verrou Axion-IA. Hébergement en Union européenne et conformité RGPD par défaut, contraintes de souveraineté et de confidentialité appliquées dès la conception pour les acteurs de la filière défense. Performances web maîtrisées (mobile-first, Web Vitals), UX/UI et accessibilité contrôlées à la recette. Devis à partir de 24 à 48 h selon la complexité, tarifs transparents, sans engagement de maintenance imposé.",
       },
       en: {
         hero: "In Mérignac, the regional capital of aerospace, space and defence, the economy is driven by prime contractors — Dassault Aviation (assembling the Rafale and Falcon jets since 1950), the Thales campus opened in 2016 (Rafale radars), ArianeGroup (Ariane 5 and Ariane 6 launchers), Sabena Technics (aircraft MRO, headquartered on Rue Marcel Issartier) and Roxel (missile propulsion) — together with the cloud of Tier-1/Tier-2 subcontractors around them, plus the retailers and services of the fast-changing Mérignac Soleil district. Axion-IA designs AI-augmented websites and SaaS platforms for these players: supplier portals, technical configurators, RAG chatbots on documentation, client areas — custom code, polished UX/UI and mobile, multi-CMS e-commerce, EU/GDPR hosting, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const MERIGNAC_COPY: VilleCopy = {
           },
           {
             q: "How long until I get a quote?",
-            a: "From 48 hours depending on complexity. After an initial discussion of your scope — showcase site, e-commerce, supplier portal or SaaS — we send you a costed quote. Our consultants travel to Mérignac and across the Bordeaux metropolitan area for framing.",
+            a: "From 24 to 48 hours depending on complexity. After an initial discussion of your scope — showcase site, e-commerce, supplier portal or SaaS — we send you a costed quote. Our consultants travel to Mérignac and across the Bordeaux metropolitan area for framing.",
           },
         ],
         guarantees:
-          "Custom code and full ownership: you get the source, data and documentation, runnable by any French Tech Bordeaux integrator or in-house, with no Axion-IA lock-in. EU hosting and GDPR compliance by default, sovereignty and confidentiality constraints applied from the design stage for defence-sector players. Controlled web performance (mobile-first, Web Vitals), UX/UI and accessibility checked at acceptance. Quote from 48 hours depending on complexity, transparent pricing, no mandatory maintenance commitment.",
+          "Custom code and full ownership: you get the source, data and documentation, runnable by any French Tech Bordeaux integrator or in-house, with no Axion-IA lock-in. EU hosting and GDPR compliance by default, sovereignty and confidentiality constraints applied from the design stage for defence-sector players. Controlled web performance (mobile-first, Web Vitals), UX/UI and accessibility checked at acceptance. Quote from 24 to 48 hours depending on complexity, transparent pricing, no mandatory maintenance commitment.",
       },
     },
   },

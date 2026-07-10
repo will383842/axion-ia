@@ -132,11 +132,11 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
           },
           {
             q: "Sous combien de temps avez-vous un devis pour mon projet de site à L'Haÿ-les-Roses ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet. Après un échange de cadrage, généralement sur site à L'Haÿ-les-Roses ou dans le secteur gare, nous chiffrons précisément le périmètre (site vitrine, e-commerce ou SaaS) et le calendrier.",
+            a: "Nous remettons un devis à partir de 24-48 h selon la complexité du projet. Après un échange de cadrage, généralement sur site à L'Haÿ-les-Roses ou dans le secteur gare, nous chiffrons précisément le périmètre (site vitrine, e-commerce ou SaaS) et le calendrier.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, périmètre et calendrier écrits avant signature. Sites et plateformes hébergés en Europe, conformes RGPD dès la conception — y compris pour les professions de santé du voisinage Gustave Roussy. UX/UI, mobile-first et e-commerce multi-CMS (WordPress/WooCommerce, Shopify ou sur mesure) maîtrisés en interne. Aucun verrou éditeur : code, contenus et accès restent chez vous, repris par tout prestataire francilien ou en interne après livraison.",
+          "Devis remis à partir de 24-48 h selon la complexité, périmètre et calendrier écrits avant signature. Sites et plateformes hébergés en Europe, conformes RGPD dès la conception — y compris pour les professions de santé du voisinage Gustave Roussy. UX/UI, mobile-first et e-commerce multi-CMS (WordPress/WooCommerce, Shopify ou sur mesure) maîtrisés en interne. Aucun verrou éditeur : code, contenus et accès restent chez vous, repris par tout prestataire francilien ou en interne après livraison.",
       },
       en: {
         hero: "Since the L'Haÿ-les-Roses station on metro line 14 opened on 24 June 2024, this residential Val-de-Marne town — world-famous for the Roseraie du Val-de-Marne, the oldest rose garden in the world, created in 1899 by Jules Gravereaux — has shifted into a new connected local economy. Around the station, the Lallier – Gare Trois Communes and Paul Hochart development zones are creating a new commercial town centre (~1,800 sqm of shops and services, a tertiary hub) that draws retailers, building trades and consumer services. Axion-IA builds them AI-augmented websites and SaaS platforms — online booking, instant quoting, customer assistant — with UX/UI, mobile and multi-CMS e-commerce, hosted in Europe and GDPR-compliant.",
@@ -218,11 +218,11 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
           },
           {
             q: "How soon can I get a quote for my site project in L'Haÿ-les-Roses?",
-            a: "We deliver a quote from 48 h depending on the complexity of the project. After a framing exchange, usually on site in L'Haÿ-les-Roses or in the station district, we precisely cost the scope (showcase site, e-commerce or SaaS) and the schedule.",
+            a: "We deliver a quote from 24-48 h depending on the complexity of the project. After a framing exchange, usually on site in L'Haÿ-les-Roses or in the station district, we precisely cost the scope (showcase site, e-commerce or SaaS) and the schedule.",
           },
         ],
         guarantees:
-          "Quote delivered from 48 h depending on complexity, scope and schedule written before signature. Sites and platforms hosted in Europe, GDPR-compliant by design — including for the health professionals near Gustave Roussy. UX/UI, mobile-first and multi-CMS e-commerce (WordPress/WooCommerce, Shopify or custom) mastered in-house. No vendor lock-in: code, content and access stay with you, taken over by any Paris-region provider or in-house after delivery.",
+          "Quote delivered from 24-48 h depending on complexity, scope and schedule written before signature. Sites and platforms hosted in Europe, GDPR-compliant by design — including for the health professionals near Gustave Roussy. UX/UI, mobile-first and multi-CMS e-commerce (WordPress/WooCommerce, Shopify or custom) mastered in-house. No vendor lock-in: code, content and access stay with you, taken over by any Paris-region provider or in-house after delivery.",
       },
     },
   },

@@ -51,7 +51,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Castelnau-le-Lez des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Deuxième commune de la métropole de Montpellier (26 058 habitants en 2023), séparée d'elle par le Lez, la ville mêle un tissu dense de 3 319 établissements — services spécialisés, commerce de proximité avenue de l'Europe, cabinets libéraux — et un pôle numérique structuré autour du secteur Eurêka, du studio Ubisoft Montpellier et d'employeurs comme Logitrade ou Eiffage Construction. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Castelnau-le-Lez, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Castelnau-le-Lez des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Deuxième commune de la métropole de Montpellier (26 058 habitants en 2023), séparée d'elle par le Lez, la ville mêle un tissu dense de 3 319 établissements — services spécialisés, commerce de proximité avenue de l'Europe, cabinets libéraux — et un pôle numérique structuré autour du secteur Eurêka, du studio Ubisoft Montpellier et d'employeurs comme Logitrade ou Eiffage Construction. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Castelnau-le-Lez, itérations à distance.",
         whyHere: [
           "Pôle jeu vidéo et numérique reconnu : la présence du studio Ubisoft Montpellier et des activités tech du secteur Eurêka crée un terreau d'exigence en matière d'interfaces. Nous bâtissons des UX/UI soignées, performantes (Web Vitals tenus) et des plateformes SaaS IA-native à la hauteur de cet écosystème, avec recherche sémantique et agents conversationnels sur vos propres données.",
           "Tissu à dominante services spécialisés et activités administratives (23,6 %) et commerce-hôtellerie-restauration (21,4 %) sur 3 319 établissements recensés fin 2019 : pour les commerces de l'avenue de l'Europe et les artisans, on greffe l'IA sur l'existant (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — sans refonte lourde ni interruption de service.",
@@ -62,7 +62,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Castelnau-le-Lez",
             detail:
-              "Atelier sur site (secteur Eurêka, avenue de l'Europe ou cœur de ville selon votre implantation) : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants, contraintes RGPD. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (secteur Eurêka, avenue de l'Europe ou cœur de ville selon votre implantation) : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants, contraintes RGPD. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
+            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce de l'avenue de l'Europe ou un cabinet du secteur Eurêka déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire de la métropole de Montpellier ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce de l'avenue de l'Europe ou un cabinet du secteur Eurêka déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire de la métropole de Montpellier ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Castelnau-le-Lez des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Deuxième commune de la métropole de Montpellier (26 058 habitants en 2023), séparée d'elle par le Lez, la ville mêle un tissu dense de 3 319 établissements — services spécialisés, commerce de proximité avenue de l'Europe, cabinets libéraux — et un pôle numérique structuré autour du secteur Eurêka, du studio Ubisoft Montpellier et d'employeurs comme Logitrade ou Eiffage Construction. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Castelnau-le-Lez, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Castelnau-le-Lez des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Deuxième commune de la métropole de Montpellier (26 058 habitants en 2023), séparée d'elle par le Lez, la ville mêle un tissu dense de 3 319 établissements — services spécialisés, commerce de proximité avenue de l'Europe, cabinets libéraux — et un pôle numérique structuré autour du secteur Eurêka, du studio Ubisoft Montpellier et d'employeurs comme Logitrade ou Eiffage Construction. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Castelnau-le-Lez, itérations à distance.",
         whyHere: [
           "Pôle jeu vidéo et numérique reconnu : la présence du studio Ubisoft Montpellier et des activités tech du secteur Eurêka crée un terreau d'exigence en matière d'interfaces. Nous bâtissons des UX/UI soignées, performantes (Web Vitals tenus) et des plateformes SaaS IA-native à la hauteur de cet écosystème, avec recherche sémantique et agents conversationnels sur vos propres données.",
           "Tissu à dominante services spécialisés et activités administratives (23,6 %) et commerce-hôtellerie-restauration (21,4 %) sur 3 319 établissements recensés fin 2019 : pour les commerces de l'avenue de l'Europe et les artisans, on greffe l'IA sur l'existant (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — sans refonte lourde ni interruption de service.",
@@ -148,7 +148,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           {
             step: "Cadrage à Castelnau-le-Lez",
             detail:
-              "Atelier sur site (secteur Eurêka, avenue de l'Europe ou cœur de ville selon votre implantation) : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants, contraintes RGPD. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (secteur Eurêka, avenue de l'Europe ou cœur de ville selon votre implantation) : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants, contraintes RGPD. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
+            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce de l'avenue de l'Europe ou un cabinet du secteur Eurêka déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire de la métropole de Montpellier ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce de l'avenue de l'Europe ou un cabinet du secteur Eurêka déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire de la métropole de Montpellier ou repris en interne par vos équipes.",
       },
     },
   },

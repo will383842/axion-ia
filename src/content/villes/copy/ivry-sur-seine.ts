@@ -130,11 +130,11 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis sur un projet de site ou SaaS à Ivry-sur-Seine ?",
-            a: "Nous transmettons un devis à partir de 48 h selon la complexité du projet. Le kick-off se tient sur site à Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine ou centre-ville), facilement accessible par la ligne 7, le RER C et le tramway T9.",
+            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet. Le kick-off se tient sur site à Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine ou centre-ville), facilement accessible par la ligne 7, le RER C et le tramway T9.",
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité. Développement en code custom, sans no-code : UX/UI, mobile-first, e-commerce multi-CMS et fonctions IA (chatbot RAG, recherche sémantique) sur mesure. Hébergement en Union européenne par défaut, conformité RGPD pensée dès la conception (minimisation, traçabilité, accessibilité). Aucun verrou éditeur : code, contenus et accès restent intégralement chez vous, repris en interne ou confiés à tout intégrateur. Respect d'un budget de performance Web Vitals strict pour des pages rapides et bien indexées.",
+          "Devis à partir de 24-48 h selon la complexité. Développement en code custom, sans no-code : UX/UI, mobile-first, e-commerce multi-CMS et fonctions IA (chatbot RAG, recherche sémantique) sur mesure. Hébergement en Union européenne par défaut, conformité RGPD pensée dès la conception (minimisation, traçabilité, accessibilité). Aucun verrou éditeur : code, contenus et accès restent intégralement chez vous, repris en interne ou confiés à tout intégrateur. Respect d'un budget de performance Web Vitals strict pour des pages rapides et bien indexées.",
       },
       en: {
         hero: "In Ivry-sur-Seine (Val-de-Marne, over 4,000 businesses, ~33,000 jobs), Axion-IA builds AI-augmented websites and SaaS platforms for a fast-changing local economy: Fnac Darty's omnichannel head office at Port d'Ivry, the Ivrywood / Studio Kremlin audiovisual village born in the former Stockvis factories, the Ivry Confluences urban project (145 ha, 340,000 sqm of tertiary and productive space developed by Sadev 94), the silver-economy hub of Charles-Foix hospital (AP-HP) and the digital players of the Cap de Seine business park (DocaPoste, Essilor, Softeam). We build in custom code — UX/UI, mobile, multi-CMS e-commerce, RAG chatbot, semantic search — hosted in the EU, GDPR-compliant, with no vendor lock-in.",
@@ -216,11 +216,11 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote for a website or SaaS project in Ivry-sur-Seine?",
-            a: "We send a quote from 48 h depending on project complexity. The kick-off takes place on site in Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine or town centre), easily reached via metro line 7, RER C and tram T9.",
+            a: "We send a quote from 24-48 h depending on project complexity. The kick-off takes place on site in Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine or town centre), easily reached via metro line 7, RER C and tram T9.",
           },
         ],
         guarantees:
-          "Quote from 48 h depending on complexity. Custom-code development, no no-code: bespoke UX/UI, mobile-first, multi-CMS e-commerce and AI features (RAG chatbot, semantic search). EU hosting by default, GDPR compliance built in from design (minimization, traceability, accessibility). No vendor lock-in: code, content and access remain entirely yours, taken over in-house or by any integrator. We respect a strict Web Vitals performance budget for fast, well-indexed pages.",
+          "Quote from 24-48 h depending on complexity. Custom-code development, no no-code: bespoke UX/UI, mobile-first, multi-CMS e-commerce and AI features (RAG chatbot, semantic search). EU hosting by default, GDPR compliance built in from design (minimization, traceability, accessibility). No vendor lock-in: code, content and access remain entirely yours, taken over in-house or by any integrator. We respect a strict Web Vitals performance budget for fast, well-indexed pages.",
       },
     },
   },

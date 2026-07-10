@@ -134,7 +134,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, tarifs au scope sans coût caché. Code et accès vous appartiennent, hébergement en UE et conformité RGPD par défaut (mentions, cookies, traitement des données clients et patients). Aucun verrou no-code : votre site ou plateforme SaaS reste lisible, modifiable et transférable à tout prestataire de l'Est parisien ou repris en interne. On revendique l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — pas de sous-traitance opaque.",
+          "Devis à partir de 24 à 48 h selon la complexité, tarifs au scope sans coût caché. Code et accès vous appartiennent, hébergement en UE et conformité RGPD par défaut (mentions, cookies, traitement des données clients et patients). Aucun verrou no-code : votre site ou plateforme SaaS reste lisible, modifiable et transférable à tout prestataire de l'Est parisien ou repris en interne. On revendique l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — pas de sous-traitance opaque.",
       },
       en: {
         hero: 'Le Perreux-sur-Marne — the "Pearl of eastern Paris" — has no large industrial headquarters but a rare fabric: around 350 retailers organised across four commercial districts (town centre, pont de Mulhouse, pont de Bry, Joncs-Marins/Maltournée), a high density of independent professionals and executives, and strong local healthcare (a private clinic, a municipal health centre, GPs). Axion-IA designs AI-augmented websites and SaaS platforms for these shops, practices and practitioners: high-converting storefronts, online booking, neighbourhood e-commerce, conversational assistants — custom code, EU/GDPR hosting, zero vendor lock-in.',
@@ -220,7 +220,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 48 hours depending on complexity, scope-based pricing with no hidden costs. Code and access belong to you, EU hosting and GDPR compliance by default (notices, cookies, client and patient data handling). No no-code lock-in: your site or SaaS platform stays readable, editable and transferable to any eastern-Paris provider or taken in-house. We own UX/UI, mobile, multi-CMS e-commerce and AI — no opaque subcontracting.",
+          "Quote within 24 to 48 hours depending on complexity, scope-based pricing with no hidden costs. Code and access belong to you, EU hosting and GDPR compliance by default (notices, cookies, client and patient data handling). No no-code lock-in: your site or SaaS platform stays readable, editable and transferable to any eastern-Paris provider or taken in-house. We own UX/UI, mobile, multi-CMS e-commerce and AI — no opaque subcontracting.",
       },
     },
   },

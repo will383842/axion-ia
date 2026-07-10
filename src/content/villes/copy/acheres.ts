@@ -53,7 +53,7 @@ export const ACHERES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Achères (78) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, demande de devis intelligente, suivi d'intervention automatisé, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville cheminote des bords de Seine, structurée autour de l'historique gare de triage SNCF, de la station d'épuration Seine Aval et du futur port multimodal Seine-Métropole Ouest (HAROPA PORT, à cheval sur Achères, Conflans et Andrésy), où le tissu est fait de TPE et PME de la logistique, du BTP, de l'environnement, de la maintenance et de l'artisanat. On fait tout : du site vitrine d'artisan à la plateforme SaaS multimodale, e-commerce inclus. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Achères, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Achères (78) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, demande de devis intelligente, suivi d'intervention automatisé, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville cheminote des bords de Seine, structurée autour de l'historique gare de triage SNCF, de la station d'épuration Seine Aval et du futur port multimodal Seine-Métropole Ouest (HAROPA PORT, à cheval sur Achères, Conflans et Andrésy), où le tissu est fait de TPE et PME de la logistique, du BTP, de l'environnement, de la maintenance et de l'artisanat. On fait tout : du site vitrine d'artisan à la plateforme SaaS multimodale, e-commerce inclus. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Achères, itérations à distance.",
         whyHere: [
           "Écosystème logistique et fluvial en pleine recomposition autour du futur Port Seine-Métropole Ouest (HAROPA PORT) et de l'historique gare de triage : transporteurs, prestataires BTP et PME de maintenance ont besoin de portails de suivi d'intervention, de planning de tournées et de tableaux de bord d'activité — terrain idéal pour des plateformes métier augmentées à l'IA, branchées sur vos flux multimodaux.",
           "Métiers de l'environnement structurés par la station d'épuration Seine Aval, l'une des plus importantes du continent : pour ces PME techniques, on greffe recherche sémantique et agents documentaires sur la masse de procédures, rapports d'exploitation et fiches de maintenance, plus un chatbot RAG qui répond depuis vos référentiels, sans refonte lourde de l'existant.",
@@ -64,7 +64,7 @@ export const ACHERES_COPY: VilleCopy = {
           {
             step: "Cadrage à Achères",
             detail:
-              "Atelier sur site — bureau, atelier, plateforme logistique près de la gare de triage, abords de la station Seine Aval ou des emprises du futur port — pour cerner objectifs, parcours utilisateurs et flux d'intervention. Audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — bureau, atelier, plateforme logistique près de la gare de triage, abords de la station Seine Aval ou des emprises du futur port — pour cerner objectifs, parcours utilisateurs et flux d'intervention. Audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const ACHERES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Achères, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple comme une vitrine d'artisan de la Z.A. des Communes. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Achères, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une vitrine d'artisan de la Z.A. des Communes. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris sur un outil de suivi utilisé au quotidien. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire local des Yvelines ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris sur un outil de suivi utilisé au quotidien. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire local des Yvelines ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Achères (78) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, demande de devis intelligente, suivi d'intervention automatisé, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville cheminote des bords de Seine, structurée autour de l'historique gare de triage SNCF, de la station d'épuration Seine Aval et du futur port multimodal Seine-Métropole Ouest (HAROPA PORT, à cheval sur Achères, Conflans et Andrésy), où le tissu est fait de TPE et PME de la logistique, du BTP, de l'environnement, de la maintenance et de l'artisanat. On fait tout : du site vitrine d'artisan à la plateforme SaaS multimodale, e-commerce inclus. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Achères, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Achères (78) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, demande de devis intelligente, suivi d'intervention automatisé, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville cheminote des bords de Seine, structurée autour de l'historique gare de triage SNCF, de la station d'épuration Seine Aval et du futur port multimodal Seine-Métropole Ouest (HAROPA PORT, à cheval sur Achères, Conflans et Andrésy), où le tissu est fait de TPE et PME de la logistique, du BTP, de l'environnement, de la maintenance et de l'artisanat. On fait tout : du site vitrine d'artisan à la plateforme SaaS multimodale, e-commerce inclus. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Achères, itérations à distance.",
         whyHere: [
           "Écosystème logistique et fluvial en pleine recomposition autour du futur Port Seine-Métropole Ouest (HAROPA PORT) et de l'historique gare de triage : transporteurs, prestataires BTP et PME de maintenance ont besoin de portails de suivi d'intervention, de planning de tournées et de tableaux de bord d'activité — terrain idéal pour des plateformes métier augmentées à l'IA, branchées sur vos flux multimodaux.",
           "Métiers de l'environnement structurés par la station d'épuration Seine Aval, l'une des plus importantes du continent : pour ces PME techniques, on greffe recherche sémantique et agents documentaires sur la masse de procédures, rapports d'exploitation et fiches de maintenance, plus un chatbot RAG qui répond depuis vos référentiels, sans refonte lourde de l'existant.",
@@ -150,7 +150,7 @@ export const ACHERES_COPY: VilleCopy = {
           {
             step: "Cadrage à Achères",
             detail:
-              "Atelier sur site — bureau, atelier, plateforme logistique près de la gare de triage, abords de la station Seine Aval ou des emprises du futur port — pour cerner objectifs, parcours utilisateurs et flux d'intervention. Audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — bureau, atelier, plateforme logistique près de la gare de triage, abords de la station Seine Aval ou des emprises du futur port — pour cerner objectifs, parcours utilisateurs et flux d'intervention. Audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const ACHERES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Achères, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple comme une vitrine d'artisan de la Z.A. des Communes. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site à Achères, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une vitrine d'artisan de la Z.A. des Communes. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris sur un outil de suivi utilisé au quotidien. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire local des Yvelines ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris sur un outil de suivi utilisé au quotidien. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, transférable à tout prestataire local des Yvelines ou repris en interne par vos équipes.",
       },
     },
   },

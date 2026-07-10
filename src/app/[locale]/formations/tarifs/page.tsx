@@ -226,7 +226,7 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
       <CtaBlock
         eyebrow="Un devis ?"
         title="On chiffre votre besoin précisément"
-        description="Devis sous 48 h. Vous pouvez nous écrire, réserver un appel, ou choisir directement au calendrier."
+        description="Devis sous 24-48 h. Vous pouvez nous écrire, réserver un appel, ou choisir directement au calendrier."
         cta={
           <Cta
             href="/appel"

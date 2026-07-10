@@ -91,7 +91,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine IA-ready",
             detail:
-              "Pour commerces du centre historique, professions libérales et indépendants saint-germanois : site rapide mobile-first, formulaires intelligents, chatbot FAQ. Devis à partir de 48 h selon la complexité.",
+              "Pour commerces du centre historique, professions libérales et indépendants saint-germanois : site rapide mobile-first, formulaires intelligents, chatbot FAQ. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -131,11 +131,11 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour obtenir un devis et démarrer à Saint-Germain-en-Laye ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité du projet. Le kick-off se tient sur site — Coteaux du Bel Air, quartier iXcampus ou centre-ville — sans surcoût de déplacement en Île-de-France. Le périmètre et le calendrier sont cadrés dès ce premier atelier pour éviter tout dérapage.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Le kick-off se tient sur site — Coteaux du Bel Air, quartier iXcampus ou centre-ville — sans surcoût de déplacement en Île-de-France. Le périmètre et le calendrier sont cadrés dès ce premier atelier pour éviter tout dérapage.",
           },
         ],
         guarantees:
-          "Hébergement Union européenne conforme RGPD par défaut, DPO sur demande. Code custom, sans lock-in éditeur : le code, les prompts et les intégrations restent intégralement chez vous, repris en interne ou par tout intégrateur francilien. Devis remis à partir de 48 h selon la complexité, kick-off sur site à Saint-Germain-en-Laye. Web Vitals, accessibilité et conformité vérifiés avant mise en ligne — vos équipes restent autonomes après la livraison.",
+          "Hébergement Union européenne conforme RGPD par défaut, DPO sur demande. Code custom, sans lock-in éditeur : le code, les prompts et les intégrations restent intégralement chez vous, repris en interne ou par tout intégrateur francilien. Devis remis à partir de 24-48 h selon la complexité, kick-off sur site à Saint-Germain-en-Laye. Web Vitals, accessibilité et conformité vérifiés avant mise en ligne — vos équipes restent autonomes après la livraison.",
       },
       en: {
         hero: "In Saint-Germain-en-Laye, Axion-IA builds AI-augmented websites and SaaS platforms for an unusual local economy: a global deep-tech headquarters, EXAIL (34 Rue de la Croix de Fer — inertial navigation, photonics, marine, submarine and aerial drones, born from the ECA Group + iXblue merger), a campus district of more than 1,000 students a day bringing together CY Tech (Data & Digital Humanities engineers), Sciences Po Saint-Germain and the International School, the Coteaux du Bel Air business park (172 establishments, ~1,900 jobs) and a heritage tourism hub around the Royal Château and the National Archaeology Museum. RAG chatbot, semantic search, business portals, multi-CMS e-commerce, conversational agents: custom code, careful UX/UI and mobile, EU GDPR-compliant hosting, zero vendor lock-in.",
@@ -177,7 +177,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "AI-ready showcase site",
             detail:
-              "For historic-centre shops, professionals and Saint-Germain freelancers: fast mobile-first site, smart forms, FAQ chatbot. Quote from 48 h depending on complexity.",
+              "For historic-centre shops, professionals and Saint-Germain freelancers: fast mobile-first site, smart forms, FAQ chatbot. Quote from 24-48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -217,11 +217,11 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
           },
           {
             q: "What are the timelines to get a quote and start in Saint-Germain-en-Laye?",
-            a: "The quote is delivered from 48 h depending on project complexity. The kick-off takes place on site — Coteaux du Bel Air, iXcampus district or town centre — with no travel surcharge in Île-de-France. Scope and schedule are framed at this first workshop to avoid any drift.",
+            a: "The quote is delivered from 24-48 h depending on project complexity. The kick-off takes place on site — Coteaux du Bel Air, iXcampus district or town centre — with no travel surcharge in Île-de-France. Scope and schedule are framed at this first workshop to avoid any drift.",
           },
         ],
         guarantees:
-          "EU GDPR-compliant hosting by default, DPO on request. Custom code, no vendor lock-in: the code, prompts and integrations stay entirely with you, taken over in-house or by any Île-de-France integrator. Quote delivered from 48 h depending on complexity, on-site kick-off in Saint-Germain-en-Laye with no travel fees in Île-de-France. Web Vitals, accessibility and compliance verified before go-live — your teams stay autonomous after delivery.",
+          "EU GDPR-compliant hosting by default, DPO on request. Custom code, no vendor lock-in: the code, prompts and integrations stay entirely with you, taken over in-house or by any Île-de-France integrator. Quote delivered from 24-48 h depending on complexity, on-site kick-off in Saint-Germain-en-Laye with no travel fees in Île-de-France. Web Vitals, accessibility and compliance verified before go-live — your teams stay autonomous after delivery.",
       },
     },
   },

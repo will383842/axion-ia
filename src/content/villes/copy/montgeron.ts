@@ -50,7 +50,7 @@ export const MONTGERON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Montgeron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle et tertiaire du Val d'Yerres Val de Seine (24 022 habitants, Essonne), à 19 km au sud-est de Paris, où le tissu mêle commerces de proximité de la RN6, zone industrielle du Bac d'Ablon, centre d'affaires du Réveil Matin, cabinets de santé, professions libérales, agences immobilières et artisans BTP. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montgeron, itérations à distance via le RER D Montgeron-Crosne.",
+        hero: "Axion-IA conçoit et augmente à Montgeron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle et tertiaire du Val d'Yerres Val de Seine (24 022 habitants, Essonne), à 19 km au sud-est de Paris, où le tissu mêle commerces de proximité de la RN6, zone industrielle du Bac d'Ablon, centre d'affaires du Réveil Matin, cabinets de santé, professions libérales, agences immobilières et artisans BTP. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montgeron, itérations à distance via le RER D Montgeron-Crosne.",
         whyHere: [
           "Commerce de proximité dense le long de la RN6 et zone commerciale Maurice Guérin (13,78 ha, hypermarché Auchan en tête de gondole locale) : nous concevons des vitrines et des boutiques e-commerce mobile-first, click-and-collect, fiches produits et recherche sémantique de catalogue, pour capter une clientèle résidentielle qui cherche d'abord sur smartphone avant de pousser la porte du magasin.",
           "Forte présence de cabinets de santé et de professions libérales (juridique, expertise comptable) très sensibles au RGPD, concentrés au centre-ville et autour de la gare : nos prises de rendez-vous en ligne, agents de qualification et assistants documentaires RAG sont hébergeables en UE, conformes AI Act, sans transit de données hors d'Europe ni dépendance à un éditeur tiers.",
@@ -61,7 +61,7 @@ export const MONTGERON_COPY: VilleCopy = {
           {
             step: "Cadrage à Montgeron",
             detail:
-              "Atelier sur site (centre-ville le long de la RN6, abords de la gare RER D Montgeron-Crosne, zones du Bac d'Ablon ou du Réveil Matin) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville le long de la RN6, abords de la gare RER D Montgeron-Crosne, zones du Bac d'Ablon ou du Réveil Matin) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -129,14 +129,14 @@ export const MONTGERON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Montgeron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le prix et le périmètre avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Montgeron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le prix et le périmètre avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, prix et périmètre connus avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant — aucune coupure pour vos clients du centre-ville ni vos patients. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire francilien ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, prix et périmètre connus avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant — aucune coupure pour vos clients du centre-ville ni vos patients. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire francilien ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Montgeron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle et tertiaire du Val d'Yerres Val de Seine (24 022 habitants, Essonne), à 19 km au sud-est de Paris, où le tissu mêle commerces de proximité de la RN6, zone industrielle du Bac d'Ablon, centre d'affaires du Réveil Matin, cabinets de santé, professions libérales, agences immobilières et artisans BTP. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montgeron, itérations à distance via le RER D Montgeron-Crosne.",
+        hero: "Axion-IA conçoit et augmente à Montgeron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle et tertiaire du Val d'Yerres Val de Seine (24 022 habitants, Essonne), à 19 km au sud-est de Paris, où le tissu mêle commerces de proximité de la RN6, zone industrielle du Bac d'Ablon, centre d'affaires du Réveil Matin, cabinets de santé, professions libérales, agences immobilières et artisans BTP. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montgeron, itérations à distance via le RER D Montgeron-Crosne.",
         whyHere: [
           "Commerce de proximité dense le long de la RN6 et zone commerciale Maurice Guérin (13,78 ha, hypermarché Auchan en tête de gondole locale) : nous concevons des vitrines et des boutiques e-commerce mobile-first, click-and-collect, fiches produits et recherche sémantique de catalogue, pour capter une clientèle résidentielle qui cherche d'abord sur smartphone avant de pousser la porte du magasin.",
           "Forte présence de cabinets de santé et de professions libérales (juridique, expertise comptable) très sensibles au RGPD, concentrés au centre-ville et autour de la gare : nos prises de rendez-vous en ligne, agents de qualification et assistants documentaires RAG sont hébergeables en UE, conformes AI Act, sans transit de données hors d'Europe ni dépendance à un éditeur tiers.",
@@ -147,7 +147,7 @@ export const MONTGERON_COPY: VilleCopy = {
           {
             step: "Cadrage à Montgeron",
             detail:
-              "Atelier sur site (centre-ville le long de la RN6, abords de la gare RER D Montgeron-Crosne, zones du Bac d'Ablon ou du Réveil Matin) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville le long de la RN6, abords de la gare RER D Montgeron-Crosne, zones du Bac d'Ablon ou du Réveil Matin) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -215,11 +215,11 @@ export const MONTGERON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Montgeron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le prix et le périmètre avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Montgeron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous connaissez le prix et le périmètre avant le premier sprint.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, prix et périmètre connus avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant — aucune coupure pour vos clients du centre-ville ni vos patients. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire francilien ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, prix et périmètre connus avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant — aucune coupure pour vos clients du centre-ville ni vos patients. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire francilien ou repris en interne.",
       },
     },
   },

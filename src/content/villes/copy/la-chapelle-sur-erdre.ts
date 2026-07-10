@@ -53,7 +53,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Chapelle-sur-Erdre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, prise de rendez-vous en ligne, devis instantané, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle de près de 20 000 habitants au nord de la métropole nantaise, bordée par l'Erdre navigable et reliée au centre de Nantes par le tram-train depuis la halte de la Babinière, où le tissu mêle TPE de services, commerces du centre-bourg, artisans du bâtiment des zones de la Pelousière et de la Bérangerais, et professions libérales. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Chapelle-sur-Erdre, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Chapelle-sur-Erdre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, prise de rendez-vous en ligne, devis instantané, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle de près de 20 000 habitants au nord de la métropole nantaise, bordée par l'Erdre navigable et reliée au centre de Nantes par le tram-train depuis la halte de la Babinière, où le tissu mêle TPE de services, commerces du centre-bourg, artisans du bâtiment des zones de la Pelousière et de la Bérangerais, et professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Chapelle-sur-Erdre, itérations à distance.",
         whyHere: [
           "Commune résidentielle tournée vers les services et les professions libérales, avec un centre-bourg actif et des cabinets installés autour de la Maison de santé : nous construisons des sites vitrines et des portails de prise de rendez-vous en ligne avec devis instantané, agenda synchronisé et assistant client, taillés pour les praticiens, agences et prestataires du nord nantais qui consultent surtout au téléphone.",
           "Artisanat du bâtiment dense sur les zones d'activités de la Pelousière et de la Bérangerais : on greffe sur l'existant un assistant de chiffrage, un suivi de chantier photo et des relances automatiques de devis, sans imposer de refonte ni changer vos logiciels métiers, pour une filière artisanale très représentée dans la commune.",
@@ -64,7 +64,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           {
             step: "Cadrage à La Chapelle-sur-Erdre",
             detail:
-              "Atelier sur site (centre-bourg, bords de l'Erdre ou zones d'activités de la Pelousière et de la Bérangerais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. Devis ferme remis à partir de 48 h selon la complexité du projet.",
+              "Atelier sur site (centre-bourg, bords de l'Erdre ou zones d'activités de la Pelousière et de la Bérangerais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Chapelle-sur-Erdre, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à La Chapelle-sur-Erdre, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
           },
           {
             q: "Pouvez-vous automatiser les devis d'un artisan du bâtiment des zones d'activités ?",
@@ -136,10 +136,10 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, redirections et référencement local préservés. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout le projet est transférable à un prestataire local des Pays de la Loire ou de la métropole nantaise, ou repris en interne, avec documentation et passation.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, redirections et référencement local préservés. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout le projet est transférable à un prestataire local des Pays de la Loire ou de la métropole nantaise, ou repris en interne, avec documentation et passation.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à La Chapelle-sur-Erdre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, prise de rendez-vous en ligne, devis instantané, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle de près de 20 000 habitants au nord de la métropole nantaise, bordée par l'Erdre navigable et reliée au centre de Nantes par le tram-train depuis la halte de la Babinière, où le tissu mêle TPE de services, commerces du centre-bourg, artisans du bâtiment des zones de la Pelousière et de la Bérangerais, et professions libérales. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Chapelle-sur-Erdre, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Chapelle-sur-Erdre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, prise de rendez-vous en ligne, devis instantané, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle de près de 20 000 habitants au nord de la métropole nantaise, bordée par l'Erdre navigable et reliée au centre de Nantes par le tram-train depuis la halte de la Babinière, où le tissu mêle TPE de services, commerces du centre-bourg, artisans du bâtiment des zones de la Pelousière et de la Bérangerais, et professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Chapelle-sur-Erdre, itérations à distance.",
         whyHere: [
           "Commune résidentielle tournée vers les services et les professions libérales, avec un centre-bourg actif et des cabinets installés autour de la Maison de santé : nous construisons des sites vitrines et des portails de prise de rendez-vous en ligne avec devis instantané, agenda synchronisé et assistant client, taillés pour les praticiens, agences et prestataires du nord nantais qui consultent surtout au téléphone.",
           "Artisanat du bâtiment dense sur les zones d'activités de la Pelousière et de la Bérangerais : on greffe sur l'existant un assistant de chiffrage, un suivi de chantier photo et des relances automatiques de devis, sans imposer de refonte ni changer vos logiciels métiers, pour une filière artisanale très représentée dans la commune.",
@@ -150,7 +150,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           {
             step: "Cadrage à La Chapelle-sur-Erdre",
             detail:
-              "Atelier sur site (centre-bourg, bords de l'Erdre ou zones d'activités de la Pelousière et de la Bérangerais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. Devis ferme remis à partir de 48 h selon la complexité du projet.",
+              "Atelier sur site (centre-bourg, bords de l'Erdre ou zones d'activités de la Pelousière et de la Bérangerais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à La Chapelle-sur-Erdre, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+            a: "Oui. Après le cadrage sur site à La Chapelle-sur-Erdre, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
           },
           {
             q: "Pouvez-vous automatiser les devis d'un artisan du bâtiment des zones d'activités ?",
@@ -222,7 +222,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, redirections et référencement local préservés. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout le projet est transférable à un prestataire local des Pays de la Loire ou de la métropole nantaise, ou repris en interne, avec documentation et passation.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, redirections et référencement local préservés. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout le projet est transférable à un prestataire local des Pays de la Loire ou de la métropole nantaise, ou repris en interne, avec documentation et passation.",
       },
     },
   },

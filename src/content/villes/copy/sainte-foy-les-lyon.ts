@@ -51,7 +51,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Sainte-Foy-lès-Lyon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle et tertiaire de l'ouest lyonnais (21 692 habitants, territoire artificialisé à 95 %), siège des Laboratoires Boiron — leader mondial de l'homéopathie depuis 1974, 550 salariés — et dotée d'une offre de santé dense entre l'Hôpital de Sainte-Foy (170 lits) et la Clinique Charcot (106 lits). On greffe l'IA sur vos cabinets, vos sièges et vos commerces du Plateau, ou on construit une plateforme métier complète. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sainte-Foy-lès-Lyon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Sainte-Foy-lès-Lyon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle et tertiaire de l'ouest lyonnais (21 692 habitants, territoire artificialisé à 95 %), siège des Laboratoires Boiron — leader mondial de l'homéopathie depuis 1974, 550 salariés — et dotée d'une offre de santé dense entre l'Hôpital de Sainte-Foy (170 lits) et la Clinique Charcot (106 lits). On greffe l'IA sur vos cabinets, vos sièges et vos commerces du Plateau, ou on construit une plateforme métier complète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sainte-Foy-lès-Lyon, itérations à distance.",
         whyHere: [
           "Pôle santé dense — Hôpital de Sainte-Foy (170 lits : maternité, gériatrie, EHPAD), Clinique Charcot (106 lits : imagerie, radiothérapie, dialyse) et de nombreux cabinets médicaux et professions libérales : on conçoit des portails patients, prises de rendez-vous en ligne et espaces praticiens hébergés en HDS, avec une UX rassurante, accessible et conforme au RGPD santé.",
           "Siège des Laboratoires Boiron (550 salariés, industrie pharmaceutique) et écosystème de sous-traitants et de services aux entreprises : terrain idéal pour des plateformes métier sur mesure, des portails fournisseurs et des automatisations greffées sur vos SI (CRM, ERP), avec la traçabilité et l'auditabilité qu'exige le secteur pharmaceutique, et une recherche sémantique sur vos référentiels.",
@@ -62,7 +62,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           {
             step: "Cadrage à Sainte-Foy-lès-Lyon",
             detail:
-              "Atelier sur site — centre-ville du Plateau, abords de l'Hôpital de Sainte-Foy ou de la Clinique Charcot, ou locaux Boiron : on pose les objectifs, les parcours utilisateurs, l'audit de la stack et des contenus. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville du Plateau, abords de l'Hôpital de Sainte-Foy ou de la Clinique Charcot, ou locaux Boiron : on pose les objectifs, les parcours utilisateurs, l'audit de la stack et des contenus. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -122,7 +122,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Sainte-Foy-lès-Lyon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple comme une vitrine de commerce du Plateau. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Sainte-Foy-lès-Lyon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une vitrine de commerce du Plateau. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint.",
           },
           {
             q: "Pouvez-vous outiller un siège ou un sous-traitant des Laboratoires Boiron ?",
@@ -134,10 +134,10 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour un cabinet médical du Plateau ou un site marchand fidésien. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE, ou HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, le tout transférable à tout prestataire local de l'ouest lyonnais ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour un cabinet médical du Plateau ou un site marchand fidésien. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE, ou HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, le tout transférable à tout prestataire local de l'ouest lyonnais ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Sainte-Foy-lès-Lyon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle et tertiaire de l'ouest lyonnais (21 692 habitants, territoire artificialisé à 95 %), siège des Laboratoires Boiron — leader mondial de l'homéopathie depuis 1974, 550 salariés — et dotée d'une offre de santé dense entre l'Hôpital de Sainte-Foy (170 lits) et la Clinique Charcot (106 lits). On greffe l'IA sur vos cabinets, vos sièges et vos commerces du Plateau, ou on construit une plateforme métier complète. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sainte-Foy-lès-Lyon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Sainte-Foy-lès-Lyon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle et tertiaire de l'ouest lyonnais (21 692 habitants, territoire artificialisé à 95 %), siège des Laboratoires Boiron — leader mondial de l'homéopathie depuis 1974, 550 salariés — et dotée d'une offre de santé dense entre l'Hôpital de Sainte-Foy (170 lits) et la Clinique Charcot (106 lits). On greffe l'IA sur vos cabinets, vos sièges et vos commerces du Plateau, ou on construit une plateforme métier complète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sainte-Foy-lès-Lyon, itérations à distance.",
         whyHere: [
           "Pôle santé dense — Hôpital de Sainte-Foy (170 lits : maternité, gériatrie, EHPAD), Clinique Charcot (106 lits : imagerie, radiothérapie, dialyse) et de nombreux cabinets médicaux et professions libérales : on conçoit des portails patients, prises de rendez-vous en ligne et espaces praticiens hébergés en HDS, avec une UX rassurante, accessible et conforme au RGPD santé.",
           "Siège des Laboratoires Boiron (550 salariés, industrie pharmaceutique) et écosystème de sous-traitants et de services aux entreprises : terrain idéal pour des plateformes métier sur mesure, des portails fournisseurs et des automatisations greffées sur vos SI (CRM, ERP), avec la traçabilité et l'auditabilité qu'exige le secteur pharmaceutique, et une recherche sémantique sur vos référentiels.",
@@ -148,7 +148,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           {
             step: "Cadrage à Sainte-Foy-lès-Lyon",
             detail:
-              "Atelier sur site — centre-ville du Plateau, abords de l'Hôpital de Sainte-Foy ou de la Clinique Charcot, ou locaux Boiron : on pose les objectifs, les parcours utilisateurs, l'audit de la stack et des contenus. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville du Plateau, abords de l'Hôpital de Sainte-Foy ou de la Clinique Charcot, ou locaux Boiron : on pose les objectifs, les parcours utilisateurs, l'audit de la stack et des contenus. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -208,7 +208,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Sainte-Foy-lès-Lyon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple comme une vitrine de commerce du Plateau. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint.",
+            a: "Oui. Après le cadrage sur site à Sainte-Foy-lès-Lyon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une vitrine de commerce du Plateau. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint.",
           },
           {
             q: "Pouvez-vous outiller un siège ou un sous-traitant des Laboratoires Boiron ?",
@@ -220,7 +220,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour un cabinet médical du Plateau ou un site marchand fidésien. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE, ou HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, le tout transférable à tout prestataire local de l'ouest lyonnais ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour un cabinet médical du Plateau ou un site marchand fidésien. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE, ou HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, le tout transférable à tout prestataire local de l'ouest lyonnais ou repris en interne par vos équipes.",
       },
     },
   },

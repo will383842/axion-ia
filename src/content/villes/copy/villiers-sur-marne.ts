@@ -126,7 +126,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis à Villiers-sur-Marne ?",
-            a: "Nous envoyons un devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Nos consultants se déplacent sur site depuis Paris via le RER E (gare Villiers-sur-Marne — Le Plessis-Trévise, ~18-32 min) ou par l'A4.",
+            a: "Nous envoyons un devis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nos consultants se déplacent sur site depuis Paris via le RER E (gare Villiers-sur-Marne — Le Plessis-Trévise, ~18-32 min) ou par l'A4.",
           },
           {
             q: "Où sont hébergées les données et le code reste-t-il chez nous ?",
@@ -134,7 +134,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis envoyé à partir de 48 h selon la complexité, sans forfait caché. Hébergement UE par défaut, conformité RGPD documentée dès la conception, DPO sur demande. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA (chatbot RAG, search sémantique, agents) en code custom. Le site ou le SaaS livré est portable : code, prompts et intégrations restent chez vous, reprenables en interne ou par tout intégrateur d'Île-de-France, sans dépendance Axion-IA ni verrou éditeur.",
+          "Devis envoyé à partir de 24-48 h selon la complexité, sans forfait caché. Hébergement UE par défaut, conformité RGPD documentée dès la conception, DPO sur demande. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA (chatbot RAG, search sémantique, agents) en code custom. Le site ou le SaaS livré est portable : code, prompts et intégrations restent chez vous, reprenables en interne ou par tout intégrateur d'Île-de-France, sans dépendance Axion-IA ni verrou éditeur.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Villiers-sur-Marne (Val-de-Marne, Paris-Est-Marne et Bois territory). The local fabric is distinctive: an Eastern Paris Image and Sound cluster is emerging across the border with Bry-sur-Marne (INA, Studios de Bry, École Georges Méliès, France 2030 backing), the Marne Europe development zone led by EPAMARNE is preparing 80,000 m² of offices and 17,000 m² of retail around the future Villiers–Champigny–Bry station on Line 15 of the Grand Paris Express, while the historic retail zones (IKEA, Bricorama) and Marne-la-Vallée e-commerce logistics shape the economy. We build bespoke sites and SaaS — RAG chatbot, semantic search, agents — in custom code, EU/GDPR hosting, no captive no-code platform.",
@@ -212,7 +212,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote in Villiers-sur-Marne?",
-            a: "We send a quote from 48 h depending on project complexity, after an initial framing exchange. Our consultants travel on site from Paris via RER E (Villiers-sur-Marne — Le Plessis-Trévise station, ~18-32 min) or the A4.",
+            a: "We send a quote from 24-48 h depending on project complexity, after an initial framing exchange. Our consultants travel on site from Paris via RER E (Villiers-sur-Marne — Le Plessis-Trévise station, ~18-32 min) or the A4.",
           },
           {
             q: "Where is the data hosted and does the code stay with us?",
@@ -220,7 +220,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote sent from 48 h depending on complexity, no hidden package. EU hosting by default, GDPR compliance documented from design, DPO on request. We claim UX/UI, mobile, multi-CMS e-commerce and AI (RAG chatbot, semantic search, agents) in custom code. The delivered site or SaaS is portable: code, prompts and integrations stay with you, reusable in-house or by any Île-de-France integrator, with no Axion-IA dependency or vendor lock-in.",
+          "Quote sent from 24-48 h depending on complexity, no hidden package. EU hosting by default, GDPR compliance documented from design, DPO on request. We claim UX/UI, mobile, multi-CMS e-commerce and AI (RAG chatbot, semantic search, agents) in custom code. The delivered site or SaaS is portable: code, prompts and integrations stay with you, reusable in-house or by any Île-de-France integrator, with no Axion-IA dependency or vendor lock-in.",
       },
     },
   },

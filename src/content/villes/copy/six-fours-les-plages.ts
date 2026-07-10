@@ -120,7 +120,7 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour démarrer un projet de site ou de SaaS à Six-Fours ?",
-            a: "Nous établissons un devis à partir de 48 h selon la complexité, après un cadrage de vos parcours réels. La durée de réalisation dépend ensuite du périmètre (vitrine, e-commerce, SaaS métier) et se fixe dans le devis signé.",
+            a: "Nous établissons un devis à partir de 24-48 h selon la complexité, après un cadrage de vos parcours réels. La durée de réalisation dépend ensuite du périmètre (vitrine, e-commerce, SaaS métier) et se fixe dans le devis signé.",
           },
           {
             q: "Le site sera-t-il hébergé en France et conforme RGPD ?",
@@ -132,7 +132,7 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis établi à partir de 48 h selon la complexité, sur scope clair. Code livré et documenté, propriété client : vous pouvez reprendre la maintenance en interne ou la confier à tout prestataire du Pôle de Toulon Ouest, sans verrou Axion-IA. Hébergement en Union européenne par défaut, conformité RGPD dès la conception. Sites pensés pour la réalité saisonnière du littoral six-fournais — montée en charge maîtrisée l'été, sobriété hors saison — et non recyclés d'un modèle générique.",
+          "Devis établi à partir de 24-48 h selon la complexité, sur scope clair. Code livré et documenté, propriété client : vous pouvez reprendre la maintenance en interne ou la confier à tout prestataire du Pôle de Toulon Ouest, sans verrou Axion-IA. Hébergement en Union européenne par défaut, conformité RGPD dès la conception. Sites pensés pour la réalité saisonnière du littoral six-fournais — montée en charge maîtrisée l'été, sobriété hors saison — et non recyclés d'un modèle générique.",
       },
       en: {
         hero: "Six-Fours-les-Plages recorded 747 new business registrations in 2024, hosts a genuine IT cluster at the Parc d'Activités des Playes (Sopra Steria I2S, IT systems and software consulting, NAF 62.02A, 225 avenue de l'Europe) and runs a highly seasonal coastal economy: boat rental and yachting at the marinas of La Coudoulière, Le Brusc and Le Gaou, seafront dining, hospitality, and shuttles to the Embiez islands. Axion-IA builds AI-augmented websites and SaaS platforms here for both worlds — seasonal booking and e-commerce on one side, B2B business applications for Les Playes and La Millonne on the other. Custom code, EU hosting, GDPR-compliant, zero vendor lock-in.",
@@ -206,7 +206,7 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
           },
           {
             q: "What are the lead times to start a website or SaaS project in Six-Fours?",
-            a: "We issue a quote from 48 h depending on complexity, after framing your real journeys. Delivery time then depends on scope (showcase, e-commerce, business SaaS) and is fixed in the signed quote.",
+            a: "We issue a quote from 24-48 h depending on complexity, after framing your real journeys. Delivery time then depends on scope (showcase, e-commerce, business SaaS) and is fixed in the signed quote.",
           },
           {
             q: "Will the site be hosted in France and GDPR-compliant?",
@@ -218,7 +218,7 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote issued from 48 h depending on complexity, on a clear scope. Code delivered and documented, client-owned: you can bring maintenance in-house or entrust it to any Pôle de Toulon Ouest provider, with no Axion-IA lock-in. EU hosting by default, GDPR compliance from design. Sites built for the real seasonality of the Six-Fours coast — controlled summer scaling, off-season sobriety — and not recycled from a generic template.",
+          "Quote issued from 24-48 h depending on complexity, on a clear scope. Code delivered and documented, client-owned: you can bring maintenance in-house or entrust it to any Pôle de Toulon Ouest provider, with no Axion-IA lock-in. EU hosting by default, GDPR compliance from design. Sites built for the real seasonality of the Six-Fours coast — controlled summer scaling, off-season sobriety — and not recycled from a generic template.",
       },
     },
   },

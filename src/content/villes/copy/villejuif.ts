@@ -53,7 +53,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Villejuif (94), Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée pour l'écosystème santé-biotech du Campus Grand Parc et le tissu de PME et TPE des zones d'activité (Épi d'Or, Petites-Bruyères, Pasteur). UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Villejuif, près de l'Institut Gustave Roussy, itérations à distance.",
+        hero: "À Villejuif (94), Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée pour l'écosystème santé-biotech du Campus Grand Parc et le tissu de PME et TPE des zones d'activité (Épi d'Or, Petites-Bruyères, Pasteur). UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Villejuif, près de l'Institut Gustave Roussy, itérations à distance.",
         whyHere: [
           "Projets web & SaaS villejuifois : start-ups et biotechs du Paris-Saclay Cancer Cluster et de The HIVE (Kadans, rue Édouard Vaillant), prestataires gravitant autour de l'Institut Gustave Roussy, PME des zones Épi d'Or et Pasteur, professions libérales médicales et commerces du Campus Grand Parc.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : portails patients, sites de levée de fonds biotech, plateformes de recherche clinique.",
@@ -64,7 +64,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
           {
             step: "Cadrage à Villejuif",
             detail:
-              "Atelier sur site, dans vos locaux du Campus Grand Parc, de The HIVE ou d'une zone d'activité : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site, dans vos locaux du Campus Grand Parc, de The HIVE ou d'une zone d'activité : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const VILLEJUIF_COPY: VilleCopy = {
           },
           {
             q: "Avec quelles technologies travaillez-vous et le devis est-il ferme ?",
-            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. Après le cadrage à Villejuif, on remet un devis ferme en forfait fixe, à partir de 48 h selon la complexité. Pas de régie, pas de dérive horaire cachée.",
+            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. Après le cadrage à Villejuif, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Hébergement UE et conformité RGPD adaptés aux données de santé de l'écosystème Gustave Roussy. Code source, bases et modèles livrés dans votre infrastructure : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Hébergement UE et conformité RGPD adaptés aux données de santé de l'écosystème Gustave Roussy. Code source, bases et modèles livrés dans votre infrastructure : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne ou repris en interne.",
       },
       en: {
-        hero: "In Villejuif (94), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI for the Campus Grand Parc health-biotech ecosystem and the SME and micro-business fabric of the activity zones (Épi d'Or, Petites-Bruyères, Pasteur). Bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site kick-off in Villejuif, near Institut Gustave Roussy, remote iterations.",
+        hero: "In Villejuif (94), Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI for the Campus Grand Parc health-biotech ecosystem and the SME and micro-business fabric of the activity zones (Épi d'Or, Petites-Bruyères, Pasteur). Bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site kick-off in Villejuif, near Institut Gustave Roussy, remote iterations.",
         whyHere: [
           "Villejuif web & SaaS projects: start-ups and biotechs of the Paris-Saclay Cancer Cluster and The HIVE (Kadans, rue Édouard Vaillant), providers around Institut Gustave Roussy, SMEs of the Épi d'Or and Pasteur zones, medical professionals and shops of Campus Grand Parc.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick: patient portals, biotech fundraising sites, clinical research platforms.",
@@ -150,7 +150,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
           {
             step: "Scoping in Villejuif",
             detail:
-              "On-site workshop, at your premises on Campus Grand Parc, in The HIVE or an activity zone: goals, user journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop, at your premises on Campus Grand Parc, in The HIVE or an activity zone: goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -218,11 +218,11 @@ export const VILLEJUIF_COPY: VilleCopy = {
           },
           {
             q: "Which technologies do you work with and is the quote firm?",
-            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. After scoping in Villejuif, we issue a firm fixed-price quote, from 48 h depending on complexity. No time-and-materials, no hidden hourly drift.",
+            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. After scoping in Villejuif, we issue a firm fixed-price quote, from 24-48 h depending on complexity. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Downtime-free go-live when augmenting the existing site. Web Vitals and accessibility checked at delivery. EU hosting and GDPR compliance suited to the health data of the Gustave Roussy ecosystem. Source code, databases and models delivered into your infrastructure: full ownership, no imposed subscription, transferable to any Val-de-Marne provider or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Downtime-free go-live when augmenting the existing site. Web Vitals and accessibility checked at delivery. EU hosting and GDPR compliance suited to the health data of the Gustave Roussy ecosystem. Source code, databases and models delivered into your infrastructure: full ownership, no imposed subscription, transferable to any Val-de-Marne provider or taken in-house.",
       },
     },
   },

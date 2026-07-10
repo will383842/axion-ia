@@ -51,7 +51,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Hazebrouck des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale économique du Houtland flamand, où le tissu mêle commerce de centre-ville autour de l'église Saint-Éloi et de son clocher de 1512, santé portée par le Centre hospitalier, PME services héritières du textile, agriculture flamande et activité des parcs comme le P.A.E. de la Creule. Avec la frontière belge à 15 km et la gare TGV (Paris-Nord en 1h50), la dimension transfrontalière et multilingue est native. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hazebrouck, itérations à distance depuis Lille (40 min via A25).",
+        hero: "Axion-IA conçoit et augmente à Hazebrouck des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale économique du Houtland flamand, où le tissu mêle commerce de centre-ville autour de l'église Saint-Éloi et de son clocher de 1512, santé portée par le Centre hospitalier, PME services héritières du textile, agriculture flamande et activité des parcs comme le P.A.E. de la Creule. Avec la frontière belge à 15 km et la gare TGV (Paris-Nord en 1h50), la dimension transfrontalière et multilingue est native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hazebrouck, itérations à distance depuis Lille (40 min via A25).",
         whyHere: [
           "Nœud ferroviaire majeur du Nord-Pas-de-Calais (gare TGV, Paris-Nord en 1h50) et logistique liée aux parcs d'activité comme le P.A.E. de la Creule et la zone industrielle : pour les acteurs du transport et des services, on construit des portails clients, du suivi de flux en temps réel et des parcours augmentés à l'IA, branchés sur vos ERP et outils métier existants.",
           "Commerce de centre-ville dense autour de l'église Saint-Éloi et de son clocher de 1512 : pour les commerçants et artisans flamands, on conçoit des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, recherche sémantique de catalogue et chatbot d'aide à l'achat multilingue, le tout mobile-first.",
@@ -62,7 +62,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           {
             step: "Cadrage à Hazebrouck",
             detail:
-              "Atelier sur site — centre-ville autour de Saint-Éloi, quartier de la gare, P.A.E. de la Creule ou zone industrielle selon votre implantation : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville autour de Saint-Éloi, quartier de la gare, P.A.E. de la Creule ou zone industrielle selon votre implantation : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -130,14 +130,14 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Hazebrouck — sur le P.A.E. de la Creule, en centre-ville ou près de la gare —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage à Hazebrouck — sur le P.A.E. de la Creule, en centre-ville ou près de la gare —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du centre en pleine saison. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — registre des traitements, droit à l'effacement : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du centre en pleine saison. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — registre des traitements, droit à l'effacement : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Hazebrouck des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale économique du Houtland flamand, où le tissu mêle commerce de centre-ville autour de l'église Saint-Éloi et de son clocher de 1512, santé portée par le Centre hospitalier, PME services héritières du textile, agriculture flamande et activité des parcs comme le P.A.E. de la Creule. Avec la frontière belge à 15 km et la gare TGV (Paris-Nord en 1h50), la dimension transfrontalière et multilingue est native. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hazebrouck, itérations à distance depuis Lille (40 min via A25).",
+        hero: "Axion-IA conçoit et augmente à Hazebrouck des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale économique du Houtland flamand, où le tissu mêle commerce de centre-ville autour de l'église Saint-Éloi et de son clocher de 1512, santé portée par le Centre hospitalier, PME services héritières du textile, agriculture flamande et activité des parcs comme le P.A.E. de la Creule. Avec la frontière belge à 15 km et la gare TGV (Paris-Nord en 1h50), la dimension transfrontalière et multilingue est native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hazebrouck, itérations à distance depuis Lille (40 min via A25).",
         whyHere: [
           "Nœud ferroviaire majeur du Nord-Pas-de-Calais (gare TGV, Paris-Nord en 1h50) et logistique liée aux parcs d'activité comme le P.A.E. de la Creule et la zone industrielle : pour les acteurs du transport et des services, on construit des portails clients, du suivi de flux en temps réel et des parcours augmentés à l'IA, branchés sur vos ERP et outils métier existants.",
           "Commerce de centre-ville dense autour de l'église Saint-Éloi et de son clocher de 1512 : pour les commerçants et artisans flamands, on conçoit des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, recherche sémantique de catalogue et chatbot d'aide à l'achat multilingue, le tout mobile-first.",
@@ -148,7 +148,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           {
             step: "Cadrage à Hazebrouck",
             detail:
-              "Atelier sur site — centre-ville autour de Saint-Éloi, quartier de la gare, P.A.E. de la Creule ou zone industrielle selon votre implantation : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville autour de Saint-Éloi, quartier de la gare, P.A.E. de la Creule ou zone industrielle selon votre implantation : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -216,11 +216,11 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Hazebrouck — sur le P.A.E. de la Creule, en centre-ville ou près de la gare —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage à Hazebrouck — sur le P.A.E. de la Creule, en centre-ville ou près de la gare —, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du centre en pleine saison. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — registre des traitements, droit à l'effacement : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du centre en pleine saison. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — registre des traitements, droit à l'effacement : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
     },
   },

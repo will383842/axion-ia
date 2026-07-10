@@ -129,7 +129,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour obtenir un devis ?",
-            a: "Un devis est établi à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine ou un e-commerce simple, le périmètre se chiffre rapidement ; pour une plateforme SaaS ou un portail B2B, le cadrage est plus détaillé.",
+            a: "Un devis est établi à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine ou un e-commerce simple, le périmètre se chiffre rapidement ; pour une plateforme SaaS ou un portail B2B, le cadrage est plus détaillé.",
           },
           {
             q: "Revendiquez-vous l'UX/UI, le mobile et le multi-CMS, ou seulement l'IA ?",
@@ -137,7 +137,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom documenté, livré et maintenable : vous êtes propriétaire de la plateforme et de tous les accès, sans verrou éditeur ni licence SaaS récurrente imposée. Hébergement en Union européenne par défaut, conformité RGPD (DPA, registre des traitements, pas d'entraînement de modèle externe sur vos données clients viticoles ou commerciales). Maquettes UX/UI validées avant développement, performances Web mesurées à la livraison, formation de votre équipe à Carpentras incluse. Devis établi à partir de 48 h selon la complexité ; maintenance reprenable en interne ou par tout prestataire local.",
+          "Code custom documenté, livré et maintenable : vous êtes propriétaire de la plateforme et de tous les accès, sans verrou éditeur ni licence SaaS récurrente imposée. Hébergement en Union européenne par défaut, conformité RGPD (DPA, registre des traitements, pas d'entraînement de modèle externe sur vos données clients viticoles ou commerciales). Maquettes UX/UI validées avant développement, performances Web mesurées à la livraison, formation de votre équipe à Carpentras incluse. Devis établi à partir de 24-48 h selon la complexité ; maintenance reprenable en interne ou par tout prestataire local.",
       },
       en: {
         hero: "Axion-IA builds AI-augmented websites and SaaS platforms for businesses in Carpentras and the Comtat Venaissin, grounded in their real activity: online sales for AOC Ventoux and Côtes-du-Rhône-Villages wine estates, B2B catalogues for the agrifood players of the Bellecour / Carpensud zone (grocery, fruit and vegetables, plant-based processing), e-commerce stores for berlingot confectioners and the Friday-market traders. Custom code, bespoke UX/UI, mobile-first, multi-CMS e-commerce (Shopify, WooCommerce, headless) and AI building blocks (RAG chatbot, semantic search, product-sheet generation) — EU hosting, GDPR-compliant, zero vendor lock-in. The kick-off happens on site in Carpentras, including at the La Gare Numérique third-place.",
@@ -215,7 +215,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote?",
-            a: "A quote is issued from 48 h depending on project complexity, after an initial framing exchange. For a showcase site or simple e-commerce, scope is costed quickly; for a SaaS platform or B2B portal, framing is more detailed.",
+            a: "A quote is issued from 24-48 h depending on project complexity, after an initial framing exchange. For a showcase site or simple e-commerce, scope is costed quickly; for a SaaS platform or B2B portal, framing is more detailed.",
           },
           {
             q: "Do you claim UX/UI, mobile and multi-CMS, or only AI?",
@@ -223,7 +223,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Documented custom code, delivered and maintainable: you own the platform and all access, with no vendor lock-in and no imposed recurring SaaS licence. EU hosting by default, GDPR compliance (DPA, processing register, no external model training on your wine or commercial customer data). UX/UI mockups validated before development, web performance measured at delivery, training of your team in Carpentras included. Quote issued from 48 h depending on complexity; maintenance can be taken in-house or by any local provider.",
+          "Documented custom code, delivered and maintainable: you own the platform and all access, with no vendor lock-in and no imposed recurring SaaS licence. EU hosting by default, GDPR compliance (DPA, processing register, no external model training on your wine or commercial customer data). UX/UI mockups validated before development, web performance measured at delivery, training of your team in Carpentras included. Quote issued from 24-48 h depending on complexity; maintenance can be taken in-house or by any local provider.",
       },
     },
   },

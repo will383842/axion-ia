@@ -125,7 +125,7 @@ export const HOUILLES_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour obtenir un devis à Houilles ?",
-            a: "Nous fournissons un devis à partir de 48 h selon la complexité du projet, après un premier échange sur votre activité. Pour un site vitrine ou une petite boutique en ligne, le cadrage est rapide ; pour une plateforme SaaS sur mesure ou un espace événementiel, nous calons le périmètre lors d'un rendez-vous sur place.",
+            a: "Nous fournissons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange sur votre activité. Pour un site vitrine ou une petite boutique en ligne, le cadrage est rapide ; pour une plateforme SaaS sur mesure ou un espace événementiel, nous calons le périmètre lors d'un rendez-vous sur place.",
           },
           {
             q: "Mes données et celles de mes clients restent-elles protégées ?",
@@ -133,7 +133,7 @@ export const HOUILLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement Axion-IA : devis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature, sans coût caché. Sites rapides et mobile-first, hébergement Union européenne, conformité RGPD by design. Vous restez pleinement propriétaire de votre site, de votre code et de vos données : aucune dépendance éditeur, aucun verrou Axion-IA — votre plateforme est reprenable en interne ou par tout prestataire de la boucle de Seine. Nous formons votre équipe à la gestion quotidienne pour que vous soyez autonome après la mise en ligne.",
+          "Engagement Axion-IA : devis à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature, sans coût caché. Sites rapides et mobile-first, hébergement Union européenne, conformité RGPD by design. Vous restez pleinement propriétaire de votre site, de votre code et de vos données : aucune dépendance éditeur, aucun verrou Axion-IA — votre plateforme est reprenable en interne ou par tout prestataire de la boucle de Seine. Nous formons votre équipe à la gestion quotidienne pour que vous soyez autonome après la mise en ligne.",
       },
       en: {
         hero: "In Houilles, Axion-IA designs AI-augmented websites and SaaS platforms for a distinctive local economy: here, activity revolves around high-density proximity retail — the covered market on avenue Carnot (160 traders across 5,000 m², one of the largest in the Paris region) and the Braderie de Houilles on the first Sunday of October, France's second largest after Lille. We build e-commerce storefronts, digital loyalty programs and booking platforms for the traders, art craftspeople, liberal professions and service micro-businesses of the Seine loop — custom code, careful UX/UI, mobile-first, EU hosting, GDPR-compliant, zero vendor lock-in.",
@@ -211,7 +211,7 @@ export const HOUILLES_COPY: VilleCopy = {
           },
           {
             q: "How long does it take to get a quote in Houilles?",
-            a: "We provide a quote from 48 hours depending on project complexity, after a first conversation about your activity. For a showcase site or a small online store, scoping is quick; for a custom SaaS platform or an event space, we set the scope during an on-site meeting.",
+            a: "We provide a quote from 24 to 48 hours depending on project complexity, after a first conversation about your activity. For a showcase site or a small online store, scoping is quick; for a custom SaaS platform or an event space, we set the scope during an on-site meeting.",
           },
           {
             q: "Is my data and my customers' data protected?",
@@ -219,7 +219,7 @@ export const HOUILLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Axion-IA commitment: quote from 48 hours depending on complexity, scope and deliverables defined before signature, with no hidden costs. Fast, mobile-first sites, EU hosting, GDPR compliance by design. You remain the full owner of your site, code and data: no vendor lock-in, no Axion-IA lock-in — your platform can be taken over in-house or by any provider in the Seine loop. We train your team on day-to-day management so you are autonomous after go-live.",
+          "Axion-IA commitment: quote from 24 to 48 hours depending on complexity, scope and deliverables defined before signature, with no hidden costs. Fast, mobile-first sites, EU hosting, GDPR compliance by design. You remain the full owner of your site, code and data: no vendor lock-in, no Axion-IA lock-in — your platform can be taken over in-house or by any provider in the Seine loop. We train your team on day-to-day management so you are autonomous after go-live.",
       },
     },
   },

@@ -126,7 +126,7 @@ export const VILLEPINTE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un projet à Villepinte ?",
-            a: "À partir de 48 h selon la complexité. Après un premier échange et un cadrage rapide sur site à Villepinte (Parc-Nord 2, Z.A. Les Merisiers ou abords du Parc des Expositions), nous vous transmettons un périmètre et un devis détaillés.",
+            a: "À partir de 24-48 h selon la complexité. Après un premier échange et un cadrage rapide sur site à Villepinte (Parc-Nord 2, Z.A. Les Merisiers ou abords du Parc des Expositions), nous vous transmettons un périmètre et un devis détaillés.",
           },
           {
             q: "Le site et les données sont-ils conformes RGPD pour un opérateur de salon ou un sous-traitant aéroportuaire ?",
@@ -134,7 +134,7 @@ export const VILLEPINTE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom (TypeScript/Python) dont vous restez propriétaire, hébergement en Union européenne et conformité RGPD/AI Act par défaut, sans no-code ni verrou éditeur. Nous couvrons UX/UI, mobile et e-commerce multi-CMS, avec des fonctionnalités IA ancrées sur vos données réelles. Devis détaillé à partir de 48 h selon la complexité ; après mise en ligne, vos équipes de Villepinte gardent les accès, le code et la documentation — portabilité totale vers tout intégrateur francilien.",
+          "Code custom (TypeScript/Python) dont vous restez propriétaire, hébergement en Union européenne et conformité RGPD/AI Act par défaut, sans no-code ni verrou éditeur. Nous couvrons UX/UI, mobile et e-commerce multi-CMS, avec des fonctionnalités IA ancrées sur vos données réelles. Devis détaillé à partir de 24-48 h selon la complexité ; après mise en ligne, vos équipes de Villepinte gardent les accès, le code et la documentation — portabilité totale vers tout intégrateur francilien.",
       },
       en: {
         hero: "In Villepinte (Seine-Saint-Denis, 93420), Axion-IA designs AI-augmented websites and SaaS platforms for an economic fabric with no equivalent: the Paris-Nord Villepinte Exhibition Park (≈246,000 m², France's largest exhibition venue, run by Viparis), which hosts Maison & Objet, Première Vision, Intermat and Milipol, plus the Paris-Nord 2 business park (≈550 companies, ≈22,000 jobs). For event providers, parcel and logistics firms near Roissy-CDG and B2B wholesalers of north-east Greater Paris, we build with custom code (TypeScript, Python): showcase sites, multi-CMS e-commerce, business portals and AI features (RAG chatbot, semantic search, quote generation). UX/UI, mobile and EU/GDPR hosting included.",
@@ -212,7 +212,7 @@ export const VILLEPINTE_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote for a project in Villepinte?",
-            a: "From 48 h depending on complexity. After an initial exchange and a quick on-site framing in Villepinte (Paris-Nord 2, Z.A. Les Merisiers or near the Exhibition Park), we send you a detailed scope and quote.",
+            a: "From 24-48 h depending on complexity. After an initial exchange and a quick on-site framing in Villepinte (Paris-Nord 2, Z.A. Les Merisiers or near the Exhibition Park), we send you a detailed scope and quote.",
           },
           {
             q: "Are the site and data GDPR-compliant for a trade-show operator or airport subcontractor?",
@@ -220,7 +220,7 @@ export const VILLEPINTE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Custom code (TypeScript/Python) that you own, EU hosting and GDPR/AI Act compliance by default, with no no-code or vendor lock-in. We cover UX/UI, mobile and multi-CMS e-commerce, with AI features grounded in your real data. Detailed quote from 48 h depending on complexity; after go-live, your Villepinte teams keep access, code and documentation — full portability to any Greater Paris integrator.",
+          "Custom code (TypeScript/Python) that you own, EU hosting and GDPR/AI Act compliance by default, with no no-code or vendor lock-in. We cover UX/UI, mobile and multi-CMS e-commerce, with AI features grounded in your real data. Detailed quote from 24-48 h depending on complexity; after go-live, your Villepinte teams keep access, code and documentation — full portability to any Greater Paris integrator.",
       },
     },
   },

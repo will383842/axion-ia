@@ -53,7 +53,7 @@ export const TORCY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une TPE du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une TPE du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
         whyHere: [
           "Pôle tertiaire et informatique de l'est francilien : services aux entreprises, éditeurs et prestataires numériques dominent le tissu local autour des quartiers d'affaires de Marne-la-Vallée — terrain idéal pour des portails clients, des plateformes SaaS métier et des assistants de développement greffés sur votre SI, du CRM jusqu'à l'ERP, sans réécrire l'existant.",
           "Commerce de zone d'activités et chalandise du centre commercial Bay 2, nourries par le RER A et la proximité de Marne-la-Vallée - Chessy : on construit des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recherche sémantique et chatbot pour capter une clientèle franchement mobile-first venue de Noisiel, Lognes et Bussy-Saint-Georges.",
@@ -64,7 +64,7 @@ export const TORCY_COPY: VilleCopy = {
           {
             step: "Cadrage à Torcy",
             detail:
-              "Atelier sur site (centre-ville, zones d'activités proches de l'Arche Guédon, centre commercial Bay 2) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, zones d'activités proches de l'Arche Guédon, centre commercial Bay 2) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const TORCY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Torcy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer, et le périmètre validé est tenu.",
+            a: "Oui. Après le cadrage sur site à Torcy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer, et le périmètre validé est tenu.",
           },
           {
             q: "Pouvez-vous outiller les prestataires informatiques locaux ?",
@@ -136,10 +136,10 @@ export const TORCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, pour ne jamais couper le chiffre d'affaires d'un commerce du secteur Bay 2 ou d'un prestataire en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique, intégralement transférable à tout prestataire de l'est francilien ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, pour ne jamais couper le chiffre d'affaires d'un commerce du secteur Bay 2 ou d'un prestataire en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique, intégralement transférable à tout prestataire de l'est francilien ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une TPE du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une TPE du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
         whyHere: [
           "Pôle tertiaire et informatique de l'est francilien : services aux entreprises, éditeurs et prestataires numériques dominent le tissu local autour des quartiers d'affaires de Marne-la-Vallée — terrain idéal pour des portails clients, des plateformes SaaS métier et des assistants de développement greffés sur votre SI, du CRM jusqu'à l'ERP, sans réécrire l'existant.",
           "Commerce de zone d'activités et chalandise du centre commercial Bay 2, nourries par le RER A et la proximité de Marne-la-Vallée - Chessy : on construit des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recherche sémantique et chatbot pour capter une clientèle franchement mobile-first venue de Noisiel, Lognes et Bussy-Saint-Georges.",
@@ -150,7 +150,7 @@ export const TORCY_COPY: VilleCopy = {
           {
             step: "Cadrage à Torcy",
             detail:
-              "Atelier sur site (centre-ville, zones d'activités proches de l'Arche Guédon, centre commercial Bay 2) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (centre-ville, zones d'activités proches de l'Arche Guédon, centre commercial Bay 2) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const TORCY_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Torcy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer, et le périmètre validé est tenu.",
+            a: "Oui. Après le cadrage sur site à Torcy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer, et le périmètre validé est tenu.",
           },
           {
             q: "Pouvez-vous outiller les prestataires informatiques locaux ?",
@@ -222,7 +222,7 @@ export const TORCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, pour ne jamais couper le chiffre d'affaires d'un commerce du secteur Bay 2 ou d'un prestataire en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique, intégralement transférable à tout prestataire de l'est francilien ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, pour ne jamais couper le chiffre d'affaires d'un commerce du secteur Bay 2 ou d'un prestataire en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique, intégralement transférable à tout prestataire de l'est francilien ou repris en interne par vos équipes.",
       },
     },
   },

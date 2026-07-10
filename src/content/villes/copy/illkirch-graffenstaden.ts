@@ -125,7 +125,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un site ou un SaaS à Illkirch-Graffenstaden ?",
-            a: "Devis à partir de 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre est rapide à chiffrer ; pour une plateforme SaaS IA-native d'ETI biotech ou industrielle, le devis détaille architecture, intégrations LIMS/ERP et couche IA.",
+            a: "Devis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre est rapide à chiffrer ; pour une plateforme SaaS IA-native d'ETI biotech ou industrielle, le devis détaille architecture, intégrations LIMS/ERP et couche IA.",
           },
           {
             q: "Vos sites et plateformes sont-ils conformes au RGPD ?",
@@ -137,7 +137,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, sans montant caché. Code custom propriétaire et documenté : vous êtes propriétaire de la plateforme et des modèles, exécutable par tout intégrateur alsacien ou repris en interne — aucune licence Axion-IA récurrente. Hébergement UE par défaut (OVHcloud, Scaleway) ou on-premise selon vos contraintes biotech/pharma, registre des traitements et DPA fournis, conformité RGPD validée avant mise en ligne. Données cliniques, R&D ou industrielles cloisonnées, jamais réutilisées pour entraîner un modèle tiers. Parcours bilingues FR-DE pour vos marchés transfrontaliers.",
+          "Devis à partir de 24-48 h selon la complexité, sans montant caché. Code custom propriétaire et documenté : vous êtes propriétaire de la plateforme et des modèles, exécutable par tout intégrateur alsacien ou repris en interne — aucune licence Axion-IA récurrente. Hébergement UE par défaut (OVHcloud, Scaleway) ou on-premise selon vos contraintes biotech/pharma, registre des traitements et DPA fournis, conformité RGPD validée avant mise en ligne. Données cliniques, R&D ou industrielles cloisonnées, jamais réutilisées pour entraîner un modèle tiers. Parcours bilingues FR-DE pour vos marchés transfrontaliers.",
       },
       en: {
         hero: "Illkirch-Graffenstaden, the Eurométropole de Strasbourg's third-largest town, is home to the Illkirch Innovation Park (P2I): over 110 hectares, nearly 7,000 people, and a rare density of biotech firms — Transgene (cancer immunotherapy), Biosynex (rapid diagnostic tests), Polyplus-Transfection (nucleic acid delivery), Domain Therapeutics, ABL Europe — backed by the IGBMC institute and the Pôle API campus. Axion-IA builds AI-augmented websites and SaaS platforms here for these life sciences, for precision industry (Flender-Graffenstaden) and for southern Strasbourg SMEs: custom code, EU/GDPR hosting, zero no-code dependency.",
@@ -211,7 +211,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote for a site or SaaS in Illkirch-Graffenstaden?",
-            a: "Quote from 48 hours depending on complexity, after an initial framing call. For a TPE brochure site the scope is quick to price; for an AI-native SaaS platform for a biotech or industrial mid-cap, the quote details architecture, LIMS/ERP integrations and the AI layer.",
+            a: "Quote from 24 to 48 hours depending on complexity, after an initial framing call. For a TPE brochure site the scope is quick to price; for an AI-native SaaS platform for a biotech or industrial mid-cap, the quote details architecture, LIMS/ERP integrations and the AI layer.",
           },
           {
             q: "Are your sites and platforms GDPR-compliant?",
@@ -223,7 +223,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, with no hidden amount. Proprietary, documented custom code: you own the platform and the models, executable by any Alsace integrator or taken in-house — no recurring Axion-IA licence. EU hosting by default (OVHcloud, Scaleway) or on-premise depending on your biotech/pharma constraints, processing register and DPA provided, GDPR compliance validated before launch. Clinical, R&D or industrial data isolated, never reused to train a third-party model. Bilingual FR-DE journeys for your cross-border markets.",
+          "Quote from 24-48 hours depending on complexity, with no hidden amount. Proprietary, documented custom code: you own the platform and the models, executable by any Alsace integrator or taken in-house — no recurring Axion-IA licence. EU hosting by default (OVHcloud, Scaleway) or on-premise depending on your biotech/pharma constraints, processing register and DPA provided, GDPR compliance validated before launch. Clinical, R&D or industrial data isolated, never reused to train a third-party model. Bilingual FR-DE journeys for your cross-border markets.",
       },
     },
   },

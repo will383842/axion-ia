@@ -132,11 +132,11 @@ export const CONFLANS_SAINTE_HONORINE_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour obtenir un devis et où sont hébergées les données ?",
-            a: "Le devis est remis à partir de 48 h selon la complexité du projet, après un échange de cadrage. Toutes nos solutions sont hébergées dans l'Union européenne et conformes au RGPD dès la conception : minimisation des données, traçabilité, et accès/noms de domaine restant à votre nom — aucun verrou éditeur.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet, après un échange de cadrage. Toutes nos solutions sont hébergées dans l'Union européenne et conformes au RGPD dès la conception : minimisation des données, traçabilité, et accès/noms de domaine restant à votre nom — aucun verrou éditeur.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité, après un cadrage sur place à Conflans-Sainte-Honorine ou en visio. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA sous le même toit. Hébergement dans l'Union européenne, conformité RGPD et AI Act intégrées dès la conception. Code, accès et noms de domaine restent à votre nom : aucun verrou éditeur, reprise en interne ou par tout prestataire des Yvelines possible. Performance Web Vitals tenue (chargement rapide, mise en page stable) et SEO local du nord des Yvelines travaillé dès la conception.",
+          "Devis remis à partir de 24 à 48 h selon la complexité, après un cadrage sur place à Conflans-Sainte-Honorine ou en visio. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA sous le même toit. Hébergement dans l'Union européenne, conformité RGPD et AI Act intégrées dès la conception. Code, accès et noms de domaine restent à votre nom : aucun verrou éditeur, reprise en interne ou par tout prestataire des Yvelines possible. Performance Web Vitals tenue (chargement rapide, mise en page stable) et SEO local du nord des Yvelines travaillé dès la conception.",
       },
       en: {
         hero: "Conflans-Sainte-Honorine is more than a commuter town in the northern Yvelines: it is the historic capital of French river transport (batellerie) at the Seine-Oise confluence, and a reshaping business hub around the Urban Valley park in the Boutries district — the former Thalès brownfield redeveloped by Atland, now home to brands such as Aubade, Ratheau, PPG/Seigneurie and Howdens, with a target of 700 to 800 jobs. Add an automotive benchmarking engineering firm like A2MAC1 on Rue de l'Hautil and the upcoming HAROPA multimodal port PSMO dedicated to Grand Paris construction materials. Axion-IA designs AI-augmented websites and SaaS platforms here for these retailers, building-materials traders, construction trades and river-logistics players — custom code, EU hosting, GDPR-compliant, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const CONFLANS_SAINTE_HONORINE_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote and where is data hosted?",
-            a: "The quote is delivered from 48 hours depending on project complexity, after a framing exchange. All our solutions are hosted in the European Union and GDPR-compliant by design: data minimization, traceability, and access/domain names kept in your name — no vendor lock-in.",
+            a: "The quote is delivered from 24 to 48 hours depending on project complexity, after a framing exchange. All our solutions are hosted in the European Union and GDPR-compliant by design: data minimization, traceability, and access/domain names kept in your name — no vendor lock-in.",
           },
         ],
         guarantees:
-          "Quote delivered from 48 hours depending on complexity, after on-site framing in Conflans-Sainte-Honorine or by video. We claim UX/UI, mobile, multi-CMS e-commerce and AI under one roof. Hosting in the European Union, GDPR and AI Act compliance built in from design. Code, access and domain names stay in your name: no vendor lock-in, in-house takeover or by any Yvelines provider possible. Web Vitals performance held (fast load, stable layout) and northern-Yvelines local SEO worked from the design stage.",
+          "Quote delivered from 24 to 48 hours depending on complexity, after on-site framing in Conflans-Sainte-Honorine or by video. We claim UX/UI, mobile, multi-CMS e-commerce and AI under one roof. Hosting in the European Union, GDPR and AI Act compliance built in from design. Code, access and domain names stay in your name: no vendor lock-in, in-house takeover or by any Yvelines provider possible. Web Vitals performance held (fast load, stable layout) and northern-Yvelines local SEO worked from the design stage.",
       },
     },
   },

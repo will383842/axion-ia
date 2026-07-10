@@ -131,11 +131,11 @@ export const GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai pouvez-vous nous envoyer un devis ?",
-            a: "À partir de 48 h selon la complexité, après un premier échange sur votre projet. Notre proximité avec Paris (16 km, RER D direct) facilite un cadrage rapide sur site à Gonesse, dans votre entrepôt du Parc des Tulipes, votre commerce ou vos bureaux.",
+            a: "À partir de 24-48 h selon la complexité, après un premier échange sur votre projet. Notre proximité avec Paris (16 km, RER D direct) facilite un cadrage rapide sur site à Gonesse, dans votre entrepôt du Parc des Tulipes, votre commerce ou vos bureaux.",
           },
         ],
         guarantees:
-          "Sites et plateformes SaaS développés en code custom, propriété du code et des contenus côté client, sans verrou éditeur ni dépendance contractuelle imposée. Hébergement UE conforme RGPD par défaut, registre de traitement fourni. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'intégration IA. Devis transparent à partir de 48 h selon la complexité ; frais de déplacement depuis Paris facturés en sus de façon claire. Vos équipes gonessiennes restent autonomes après la mise en ligne.",
+          "Sites et plateformes SaaS développés en code custom, propriété du code et des contenus côté client, sans verrou éditeur ni dépendance contractuelle imposée. Hébergement UE conforme RGPD par défaut, registre de traitement fourni. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'intégration IA. Devis transparent à partir de 24-48 h selon la complexité ; frais de déplacement depuis Paris facturés en sus de façon claire. Vos équipes gonessiennes restent autonomes après la mise en ligne.",
       },
       en: {
         hero: "Gonesse (95, Val-d'Oise) runs on B2B wholesale, CDG airport logistics and transport: Manutan International's head office sits in the ZAC du Parc des Tulipes, which together with Computacenter France, La Poste and a fabric of carriers concentrates nearly 80 hectares of activity (Tulipes South and North). Here Axion-IA builds AI-augmented websites and SaaS platforms for these B2B distributors, logistics providers, carriers and retailers: order portals, quote configurators, shipment tracking, RAG chatbots on catalogues and customs procedures — custom code, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -217,11 +217,11 @@ export const GONESSE_COPY: VilleCopy = {
           },
           {
             q: "How fast can you send us a quote?",
-            a: "From 48 h depending on complexity, after an initial discussion of your project. Our proximity to Paris (16 km, direct RER D) makes a fast on-site scoping in Gonesse easy — in your Parc des Tulipes warehouse, your shop or your offices.",
+            a: "From 24-48 h depending on complexity, after an initial discussion of your project. Our proximity to Paris (16 km, direct RER D) makes a fast on-site scoping in Gonesse easy — in your Parc des Tulipes warehouse, your shop or your offices.",
           },
         ],
         guarantees:
-          "Sites and SaaS platforms built in custom code, with code and content owned by the client, no vendor lock-in or imposed contractual dependency. EU GDPR-compliant hosting by default, processing register provided. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI integration. Transparent quote from 48 h depending on complexity; travel costs from Paris billed separately and clearly. Your Gonesse teams stay autonomous after go-live.",
+          "Sites and SaaS platforms built in custom code, with code and content owned by the client, no vendor lock-in or imposed contractual dependency. EU GDPR-compliant hosting by default, processing register provided. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI integration. Transparent quote from 24-48 h depending on complexity; travel costs from Paris billed separately and clearly. Your Gonesse teams stay autonomous after go-live.",
       },
     },
   },

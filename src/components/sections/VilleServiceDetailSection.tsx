@@ -102,8 +102,8 @@ const SERVICE_META = {
     labelEn: "AI website & SaaS",
     eyebrowFr: "Agence web & IA",
     eyebrowEn: "Web & AI agency",
-    ctaFr: "Décrire mon projet · devis sous 48 h",
-    ctaEn: "Describe my project · quote in 48 h",
+    ctaFr: "Décrire mon projet · devis sous 24-48 h",
+    ctaEn: "Describe my project · quote in 24-48 h",
   },
 } as const;
 

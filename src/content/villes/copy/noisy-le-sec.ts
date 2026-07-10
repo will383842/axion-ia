@@ -126,7 +126,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis ?",
-            a: "Nous renvoyons un devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Le périmètre, la stack et les intégrations IA sont définis avant tout engagement.",
+            a: "Nous renvoyons un devis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Le périmètre, la stack et les intégrations IA sont définis avant tout engagement.",
           },
           {
             q: "Comment gérez-vous la conformité RGPD et l'hébergement ?",
@@ -134,7 +134,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Hébergement dans l'Union européenne et conformité RGPD par défaut (minimisation, registre, droit à l'effacement). Devis à partir de 48 h selon la complexité, périmètre et stack arrêtés avant signature. Vous restez propriétaire du code, des contenus et des accès, repris en interne ou par tout intégrateur de l'Est parisien — aucune dépendance Axion-IA, aucun verrou éditeur. UX/UI et mobile soignés, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et intégrations IA livrés avec formation de vos équipes et documentation.",
+          "Hébergement dans l'Union européenne et conformité RGPD par défaut (minimisation, registre, droit à l'effacement). Devis à partir de 24-48 h selon la complexité, périmètre et stack arrêtés avant signature. Vous restez propriétaire du code, des contenus et des accès, repris en interne ou par tout intégrateur de l'Est parisien — aucune dépendance Axion-IA, aucun verrou éditeur. UX/UI et mobile soignés, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et intégrations IA livrés avec formation de vos équipes et documentation.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Noisy-le-Sec (93, Est Ensemble), a railway town where the SNCF Paris-Est Technicentre — a workshop of about 15,500 m² open 7 days a week — occupies nearly a fifth of the territory. On a fabric of ~3,508 businesses and ~12,074 employees dominated by logistics and maintenance, construction/BTP, retail and business services, we deliver AI-native platforms: intervention and site-planning portals, multi-CMS e-commerce for town-centre shops, RAG chatbots and semantic search — custom code, polished UX/UI and mobile, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -212,7 +212,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote?",
-            a: "We return a quote from 48 h depending on project complexity, after an initial scoping exchange. Scope, stack and AI integrations are defined before any commitment.",
+            a: "We return a quote from 24-48 h depending on project complexity, after an initial scoping exchange. Scope, stack and AI integrations are defined before any commitment.",
           },
           {
             q: "How do you handle GDPR compliance and hosting?",
@@ -220,7 +220,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Hosting in the European Union and GDPR compliance by default (minimisation, register, right to erasure). Quote from 48 h depending on complexity, scope and stack fixed before signature. You own the code, content and access, taken in-house or by any East-Paris integrator — no Axion-IA dependency, no vendor lock-in. Polished UX/UI and mobile, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and AI integrations delivered with team training and documentation.",
+          "Hosting in the European Union and GDPR compliance by default (minimisation, register, right to erasure). Quote from 24-48 h depending on complexity, scope and stack fixed before signature. You own the code, content and access, taken in-house or by any East-Paris integrator — no Axion-IA dependency, no vendor lock-in. Polished UX/UI and mobile, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and AI integrations delivered with team training and documentation.",
       },
     },
   },

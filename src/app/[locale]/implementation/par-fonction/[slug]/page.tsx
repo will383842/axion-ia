@@ -119,7 +119,7 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
           id: `q-${slug}-delai`,
           question: "Combien de temps pour implémenter l'IA dans cette fonction ?",
           answer:
-            "De 2 semaines (automatisation simple via no-code) à 8 semaines (agent sur mesure intégré dans votre SI). Le premier résultat mesurable est visible dès la 1ère semaine pour les quick-wins. Devis ferme à partir de 48 h selon la complexité du projet.",
+            "De 2 semaines (automatisation simple via no-code) à 8 semaines (agent sur mesure intégré dans votre SI). Le premier résultat mesurable est visible dès la 1ère semaine pour les quick-wins. Devis ferme à partir de 24-48 h selon la complexité du projet.",
         },
         {
           id: `q-${slug}-prerequis`,
@@ -139,7 +139,7 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
           id: `q-${slug}-delay`,
           question: "How long to implement AI in this function?",
           answer:
-            "From 2 weeks (simple no-code automation) to 8 weeks (custom agent integrated into your IT systems). The first measurable result is visible from week 1 for quick-wins. Firm quote from 48 h depending on project complexity.",
+            "From 2 weeks (simple no-code automation) to 8 weeks (custom agent integrated into your IT systems). The first measurable result is visible from week 1 for quick-wins. Firm quote from 24-48 h depending on project complexity.",
         },
         {
           id: `q-${slug}-prerequisites`,

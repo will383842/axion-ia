@@ -92,7 +92,7 @@ export const MARIGNANE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine augmenté IA",
             detail:
-              "Pour les artisans, commerces et petits ateliers de Marignane et de la ZAC des Florides : site vitrine responsive, formulaire de devis intelligent et chatbot de premier contact. Devis à partir de 48 h selon la complexité.",
+              "Pour les artisans, commerces et petits ateliers de Marignane et de la ZAC des Florides : site vitrine responsive, formulaire de devis intelligent et chatbot de premier contact. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -128,7 +128,7 @@ export const MARIGNANE_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour obtenir un devis et où sont hébergées les données ?",
-            a: "Devis à partir de 48 h selon la complexité, après un échange de cadrage. Tous les sites et plateformes que nous livrons sont hébergés dans l'Union européenne et conformes RGPD par défaut. Le code et les accès vous appartiennent intégralement, sans verrou Axion-IA ni dépendance contractuelle imposée.",
+            a: "Devis à partir de 24-48 h selon la complexité, après un échange de cadrage. Tous les sites et plateformes que nous livrons sont hébergés dans l'Union européenne et conformes RGPD par défaut. Le code et les accès vous appartiennent intégralement, sans verrou Axion-IA ni dépendance contractuelle imposée.",
           },
           {
             q: "Intervenez-vous au-delà de Marignane, sur le bassin de l'étang de Berre ?",
@@ -136,7 +136,7 @@ export const MARIGNANE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, périmètre et prix fixés avant développement. Sites et plateformes hébergés dans l'Union européenne, conformes RGPD par défaut, DPO sur demande. Le code source, les accès et la documentation vous appartiennent : votre site ou votre SaaS est repris par n'importe quel prestataire de la filière aéronautique régionale ou maintenu en interne, sans verrou éditeur ni dépendance Axion-IA. UX/UI, responsive mobile, e-commerce multi-CMS et briques IA livrés au même niveau d'exigence.",
+          "Devis à partir de 24-48 h selon la complexité, périmètre et prix fixés avant développement. Sites et plateformes hébergés dans l'Union européenne, conformes RGPD par défaut, DPO sur demande. Le code source, les accès et la documentation vous appartiennent : votre site ou votre SaaS est repris par n'importe quel prestataire de la filière aéronautique régionale ou maintenu en interne, sans verrou éditeur ni dépendance Axion-IA. UX/UI, responsive mobile, e-commerce multi-CMS et briques IA livrés au même niveau d'exigence.",
       },
       en: {
         hero: "Marignane is no ordinary city for anyone building software: it is home to the global headquarters of Airbus Helicopters (~12,500 staff, PACA's largest private employer), a chain of ~250 regional precision-machining subcontractors, the Technoparc des Florides within the Henri Fabre cluster, and Marseille-Provence Airport, whose platform brings together 139 companies and 4,680 direct jobs. Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: supplier portals for aerospace prime contractors, order-tracking spaces for machining workshops, freight-tracking tools for forwarders in the cargo zone. Custom code, EU hosting compliant with GDPR, zero vendor lock-in.",
@@ -178,7 +178,7 @@ export const MARIGNANE_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "AI-augmented showcase site",
             detail:
-              "For craftspeople, shops and small workshops in Marignane and the ZAC des Florides: responsive showcase site, smart quote form and first-contact chatbot. Quote from 48h depending on complexity.",
+              "For craftspeople, shops and small workshops in Marignane and the ZAC des Florides: responsive showcase site, smart quote form and first-contact chatbot. Quote from 24-48h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -214,7 +214,7 @@ export const MARIGNANE_COPY: VilleCopy = {
           },
           {
             q: "How long for a quote and where is the data hosted?",
-            a: "Quote from 48h depending on complexity, after a framing exchange. Every site and platform we deliver is hosted in the European Union and GDPR-compliant by default. The code and access belong entirely to you, with no Axion-IA lock-in or imposed contractual dependency.",
+            a: "Quote from 24-48h depending on complexity, after a framing exchange. Every site and platform we deliver is hosted in the European Union and GDPR-compliant by default. The code and access belong entirely to you, with no Axion-IA lock-in or imposed contractual dependency.",
           },
           {
             q: "Do you work beyond Marignane, across the Étang de Berre basin?",
@@ -222,7 +222,7 @@ export const MARIGNANE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48h depending on complexity, scope and price fixed before development. Sites and platforms hosted in the European Union, GDPR-compliant by default, DPO on request. The source code, access and documentation belong to you: your site or SaaS can be taken over by any provider in the regional aerospace supply chain or maintained in-house, with no vendor lock-in or Axion-IA dependency. UX/UI, mobile responsive, multi-CMS e-commerce and AI building blocks delivered to the same standard of quality.",
+          "Quote from 24-48h depending on complexity, scope and price fixed before development. Sites and platforms hosted in the European Union, GDPR-compliant by default, DPO on request. The source code, access and documentation belong to you: your site or SaaS can be taken over by any provider in the regional aerospace supply chain or maintained in-house, with no vendor lock-in or Axion-IA dependency. UX/UI, mobile responsive, multi-CMS e-commerce and AI building blocks delivered to the same standard of quality.",
       },
     },
   },

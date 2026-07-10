@@ -52,7 +52,7 @@ export const LAVAL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Laval des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Un terrain singulier : Laval est la capitale européenne de la réalité virtuelle (Laval Virtual, Laval Virtual Center, Clarté, ESIEA) greffée sur un socle industriel agroalimentaire et automobile — Lactalis, Séché Environnement, Gruau. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Laval, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Laval des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Un terrain singulier : Laval est la capitale européenne de la réalité virtuelle (Laval Virtual, Laval Virtual Center, Clarté, ESIEA) greffée sur un socle industriel agroalimentaire et automobile — Lactalis, Séché Environnement, Gruau. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Laval, itérations à distance.",
         whyHere: [
           "Projets web & SaaS mayennais : sous-traitants et sites de l'écosystème laitier Lactalis (usine LNUF, ~3 M yaourts/jour), industriels comme Séché Environnement (siège à Changé) ou le carrossier Gruau (siège à Saint-Berthevin, leader européen du véhicule pro), distributeurs comme Gemy Automobiles.",
           "Un atout rare : l'écosystème XR de Laval (Laval Virtual, centre d'expertise Clarté, ESIEA et son unité de recherche VR) — nous savons interfacer un portail web/SaaS avec des briques 3D, configurateurs et expériences immersives, pas seulement du site vitrine.",
@@ -63,7 +63,7 @@ export const LAVAL_COPY: VilleCopy = {
           {
             step: "Cadrage à Laval",
             detail:
-              "Atelier sur site (zones des Touches, Saint-Berthevin, Changé ou centre-ville) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (zones des Touches, Saint-Berthevin, Changé ou centre-ville) : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -131,14 +131,14 @@ export const LAVAL_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Laval, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 48 h pour un projet simple, davantage pour une plateforme métier industrielle étendue. Pas de régie, pas de dérive horaire cachée.",
+            a: "Oui. Après le cadrage à Laval, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier industrielle étendue. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Laval ou de la Mayenne, ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Laval ou de la Mayenne, ou repris en interne.",
       },
       en: {
-        hero: "In Laval, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. A singular setting: Laval is Europe's capital of virtual reality (Laval Virtual, Laval Virtual Center, Clarté, ESIEA) grafted onto an agri-food and automotive industrial base — Lactalis, Séché Environnement, Gruau. Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site Laval kick-off, remote iterations.",
+        hero: "In Laval, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. A singular setting: Laval is Europe's capital of virtual reality (Laval Virtual, Laval Virtual Center, Clarté, ESIEA) grafted onto an agri-food and automotive industrial base — Lactalis, Séché Environnement, Gruau. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Laval kick-off, remote iterations.",
         whyHere: [
           "Mayenne web & SaaS projects: subcontractors and sites of the Lactalis dairy ecosystem (LNUF plant, ~3M yogurts/day), industrial players like Séché Environnement (HQ in Changé) or vehicle-body maker Gruau (HQ in Saint-Berthevin, European leader in professional vehicles), distributors like Gemy Automobiles.",
           "A rare asset: Laval's XR ecosystem (Laval Virtual, Clarté expertise center, ESIEA and its VR research unit) — we can interface a web/SaaS portal with 3D bricks, configurators and immersive experiences, not just a showcase site.",
@@ -149,7 +149,7 @@ export const LAVAL_COPY: VilleCopy = {
           {
             step: "Scoping in Laval",
             detail:
-              "On-site workshop (Les Touches, Saint-Berthevin, Changé zones or the city centre): goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop (Les Touches, Saint-Berthevin, Changé zones or the city centre): goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -217,11 +217,11 @@ export const LAVAL_COPY: VilleCopy = {
           },
           {
             q: "Is the quote firm and the price fixed?",
-            a: "Yes. After the Laval scoping, we issue a firm fixed-price quote. Turnaround depends on complexity — from 48 h for a simple project, longer for an extended industrial business platform. No time-and-materials, no hidden hourly drift.",
+            a: "Yes. After the Laval scoping, we issue a firm fixed-price quote. Turnaround depends on complexity — from 24-48 h for a simple project, longer for an extended industrial business platform. No time-and-materials, no hidden hourly drift.",
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in Laval or the Mayenne, or taken in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any provider in Laval or the Mayenne, or taken in-house.",
       },
     },
   },

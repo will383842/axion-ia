@@ -320,7 +320,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "Nous remettons un devis à partir de 48 h selon la complexité du projet, après un échange de cadrage sur site à Roubaix ou en visio. Le devis détaille le périmètre UX/UI, le choix de CMS ou de stack sur mesure, les briques IA et l'hébergement retenu.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un échange de cadrage sur site à Roubaix ou en visio. Le devis détaille le périmètre UX/UI, le choix de CMS ou de stack sur mesure, les briques IA et l'hébergement retenu.",
           },
           {
             q: "Reste-t-on propriétaire du site et du code à la fin ?",
@@ -328,7 +328,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement Axion-IA à Roubaix : devis remis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Conception UX/UI et mobile-first, e-commerce multi-CMS et briques IA (recherche sémantique, chatbot RAG, agents) développées sur vos données réelles. Hébergement en Union européenne conforme RGPD par défaut, infrastructure cloud souveraine type OVHcloud/SecNumCloud disponible selon votre métier. Code et contenus vous appartiennent, sans dépendance éditeur : la plateforme reste reprenable en interne ou par tout intégrateur de la métropole lilloise.",
+          "Engagement Axion-IA à Roubaix : devis remis à partir de 24 à 48 h selon la complexité, périmètre et livrables définis avant signature. Conception UX/UI et mobile-first, e-commerce multi-CMS et briques IA (recherche sémantique, chatbot RAG, agents) développées sur vos données réelles. Hébergement en Union européenne conforme RGPD par défaut, infrastructure cloud souveraine type OVHcloud/SecNumCloud disponible selon votre métier. Code et contenus vous appartiennent, sans dépendance éditeur : la plateforme reste reprenable en interne ou par tout intégrateur de la métropole lilloise.",
       },
       en: {
         hero: "Roubaix is the historic cradle of French mail-order retail turned e-commerce, RetailTech and sovereign-cloud hub: La Redoute and Damart are headquartered here, OVHcloud was founded here in 1999 and runs its RBX datacenters here, and Blanchemaille by EuraTechnologies — the 100% e-commerce incubator set up in La Redoute's former premises — gathers some fifty connected-commerce startups. In Roubaix, Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: online merchants, Blanchemaille RetailTech, textile players of the Union eco-district and distribution SMEs. UX/UI, mobile, multi-CMS e-commerce and AI building blocks (semantic search, RAG chatbot, agents) — custom code, EU hosting compliant with GDPR, zero vendor lock-in.",
@@ -406,7 +406,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "We deliver a quote from 48 h depending on project complexity, after a framing exchange on site in Roubaix or by video. The quote details the UX/UI scope, the CMS or custom stack choice, the AI building blocks and the chosen hosting.",
+            a: "We deliver a quote from 24 to 48 h depending on project complexity, after a framing exchange on site in Roubaix or by video. The quote details the UX/UI scope, the CMS or custom stack choice, the AI building blocks and the chosen hosting.",
           },
           {
             q: "Do we own the site and the code in the end?",
@@ -414,7 +414,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Axion-IA commitment in Roubaix: quote delivered from 48 h depending on complexity, scope and deliverables defined before signature. UX/UI and mobile-first design, multi-CMS e-commerce and AI building blocks (semantic search, RAG chatbot, agents) developed on your real data. EU hosting GDPR-compliant by default, sovereign cloud infrastructure such as OVHcloud/SecNumCloud available depending on your business. Code and content belong to you, with no vendor lock-in: the platform remains reclaimable in-house or by any integrator of the Lille metropolitan area.",
+          "Axion-IA commitment in Roubaix: quote delivered from 24 to 48 h depending on complexity, scope and deliverables defined before signature. UX/UI and mobile-first design, multi-CMS e-commerce and AI building blocks (semantic search, RAG chatbot, agents) developed on your real data. EU hosting GDPR-compliant by default, sovereign cloud infrastructure such as OVHcloud/SecNumCloud available depending on your business. Code and content belong to you, with no vendor lock-in: the platform remains reclaimable in-house or by any integrator of the Lille metropolitan area.",
       },
     },
   },

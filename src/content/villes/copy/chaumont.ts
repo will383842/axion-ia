@@ -53,7 +53,7 @@ export const CHAUMONT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les TPE du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les TPE du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
         whyHere: [
           "Sous-traitance industrielle structurée autour des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME de mécanique, logistique et services aux entreprises : terrain idéal pour des portails clients, des configurateurs de devis et des automatisations qui relient atelier, GPAO, facturation et suivi de chantier sans aucune ressaisie entre le bureau et la production.",
           "Commerce de centre-ville et artisanat (BTP, métallerie) très denses autour de la basilique Saint-Jean-Baptiste et des Halles : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites mobile-first qui captent la clientèle locale, avec un chatbot RAG ancré sur vos fiches produits, vos stocks et vos horaires d'ouverture.",
@@ -64,7 +64,7 @@ export const CHAUMONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Chaumont",
             detail:
-              "Atelier sur site (centre-ville près des Halles, zones Plein'Est à Croix Coquillon, La Vendue ou Dame Huguenotte) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et du SI existants. On remet un devis ferme à partir de 48 h selon la complexité, sans engagement.",
+              "Atelier sur site (centre-ville près des Halles, zones Plein'Est à Croix Coquillon, La Vendue ou Dame Huguenotte) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et du SI existants. On remet un devis ferme à partir de 24-48 h selon la complexité, sans engagement.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const CHAUMONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Chaumont — centre-ville, Plein'Est, La Vendue ou Dame Huguenotte — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à Chaumont — centre-ville, Plein'Est, La Vendue ou Dame Huguenotte — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire local du Grand Est.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire local du Grand Est.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les TPE du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les TPE du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
         whyHere: [
           "Sous-traitance industrielle structurée autour des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME de mécanique, logistique et services aux entreprises : terrain idéal pour des portails clients, des configurateurs de devis et des automatisations qui relient atelier, GPAO, facturation et suivi de chantier sans aucune ressaisie entre le bureau et la production.",
           "Commerce de centre-ville et artisanat (BTP, métallerie) très denses autour de la basilique Saint-Jean-Baptiste et des Halles : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites mobile-first qui captent la clientèle locale, avec un chatbot RAG ancré sur vos fiches produits, vos stocks et vos horaires d'ouverture.",
@@ -150,7 +150,7 @@ export const CHAUMONT_COPY: VilleCopy = {
           {
             step: "Cadrage à Chaumont",
             detail:
-              "Atelier sur site (centre-ville près des Halles, zones Plein'Est à Croix Coquillon, La Vendue ou Dame Huguenotte) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et du SI existants. On remet un devis ferme à partir de 48 h selon la complexité, sans engagement.",
+              "Atelier sur site (centre-ville près des Halles, zones Plein'Est à Croix Coquillon, La Vendue ou Dame Huguenotte) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et du SI existants. On remet un devis ferme à partir de 24-48 h selon la complexité, sans engagement.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const CHAUMONT_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Chaumont — centre-ville, Plein'Est, La Vendue ou Dame Huguenotte — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+            a: "Oui. Après le cadrage sur site à Chaumont — centre-ville, Plein'Est, La Vendue ou Dame Huguenotte — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire local du Grand Est.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire local du Grand Est.",
       },
     },
   },

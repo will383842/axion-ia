@@ -122,7 +122,7 @@ export const PUTEAUX_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un projet à Puteaux ?",
-            a: "Un devis chiffré est remis à partir de 48 h selon la complexité, après le brief de cadrage. Le périmètre, les livrables et l'intégration à votre stack (CMS, CRM, ERP) sont précisés avant toute signature.",
+            a: "Un devis chiffré est remis à partir de 24-48 h selon la complexité, après le brief de cadrage. Le périmètre, les livrables et l'intégration à votre stack (CMS, CRM, ERP) sont précisés avant toute signature.",
           },
           {
             q: "Vous déplacez-vous dans les tours de La Défense et au centre de Puteaux ?",
@@ -134,7 +134,7 @@ export const PUTEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis chiffré à partir de 48 h selon la complexité. Conception UX/UI, développement web et mobile, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, recommandation, agents) en code custom. Hébergement en France ou en UE par défaut, conformité RGPD et AI Act, données auditables — essentiel pour les prestataires financiers et d'assurance de La Défense. Vous gardez le code, les modèles et la main : aucun lock-in Axion-IA, plateforme reprenable en interne ou par tout intégrateur. Déplacement sur site à Puteaux et dans les communes limitrophes (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine).",
+          "Devis chiffré à partir de 24-48 h selon la complexité. Conception UX/UI, développement web et mobile, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, recommandation, agents) en code custom. Hébergement en France ou en UE par défaut, conformité RGPD et AI Act, données auditables — essentiel pour les prestataires financiers et d'assurance de La Défense. Vous gardez le code, les modèles et la main : aucun lock-in Axion-IA, plateforme reprenable en interne ou par tout intégrateur. Déplacement sur site à Puteaux et dans les communes limitrophes (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine).",
       },
       en: {
         hero: "Puteaux carries a twofold economic reality: ~3,299 head offices and ~103,000 people work there every day around the La Défense towers (Société Générale — Chassagne, Alicante, Granite and the Basalte trading floors —, Tour Eqho, alongside TotalEnergies, Engie, EDF, AXA IM, Allianz), yet 67% of its ~8,293 active establishments employ fewer than 10 staff and 641 retail businesses serve the town. Axion-IA designs on-site AI-augmented websites and SaaS platforms for this Puteaux fabric: financial and insurance services providers next to the towers, digital agencies, e-merchants, firms and shops from the Île de Puteaux to the town centre — custom code, EU/GDPR hosting, zero platform lock-in.",
@@ -208,7 +208,7 @@ export const PUTEAUX_COPY: VilleCopy = {
           },
           {
             q: "How soon do we get a quote for a Puteaux project?",
-            a: "A costed quote is delivered from 48 h depending on complexity, after the framing brief. Scope, deliverables and integration with your stack (CMS, CRM, ERP) are specified before any signature.",
+            a: "A costed quote is delivered from 24-48 h depending on complexity, after the framing brief. Scope, deliverables and integration with your stack (CMS, CRM, ERP) are specified before any signature.",
           },
           {
             q: "Do you travel to the La Défense towers and Puteaux town centre?",
@@ -220,7 +220,7 @@ export const PUTEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Costed quote from 48 h depending on complexity. UX/UI design, web and mobile development, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, recommendation, agents) in custom code. Hosting in France or the EU by default, GDPR and AI Act compliance, auditable data — essential for the financial and insurance providers of La Défense. You keep the code, the models and control: no Axion-IA lock-in, platform recoverable in-house or by any integrator. On-site travel to Puteaux and neighbouring communes (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine).",
+          "Costed quote from 24-48 h depending on complexity. UX/UI design, web and mobile development, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, recommendation, agents) in custom code. Hosting in France or the EU by default, GDPR and AI Act compliance, auditable data — essential for the financial and insurance providers of La Défense. You keep the code, the models and control: no Axion-IA lock-in, platform recoverable in-house or by any integrator. On-site travel to Puteaux and neighbouring communes (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine).",
       },
     },
   },

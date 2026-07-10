@@ -126,7 +126,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai pouvez-vous démarrer à Châtillon ?",
-            a: "Après un premier échange, le devis est remis à partir de 48 h selon la complexité. Williams se déplace ensuite sur site à Châtillon (métro 13, tram T6 ou A86) pour le cadrage, puis nous lançons l'architecture et les maquettes.",
+            a: "Après un premier échange, le devis est remis à partir de 24 à 48 h selon la complexité. Williams se déplace ensuite sur site à Châtillon (métro 13, tram T6 ou A86) pour le cadrage, puis nous lançons l'architecture et les maquettes.",
           },
           {
             q: "Où sont hébergées les données et qui possède le code ?",
@@ -134,7 +134,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Sites et plateformes en code custom Python/Node, hébergés en Union européenne, conformes RGPD et AI Act, avec respect d'un budget de performance Web Vitals strict. Aucune dépendance no-code ni lock-in éditeur : vous êtes propriétaire du code et restez libre de faire évoluer la solution en interne ou avec tout intégrateur. Williams se déplace dans vos locaux à Châtillon et dans le sud des Hauts-de-Seine (Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses) pour le cadrage et le transfert.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Sites et plateformes en code custom Python/Node, hébergés en Union européenne, conformes RGPD et AI Act, avec respect d'un budget de performance Web Vitals strict. Aucune dépendance no-code ni lock-in éditeur : vous êtes propriétaire du code et restez libre de faire évoluer la solution en interne ou avec tout intégrateur. Williams se déplace dans vos locaux à Châtillon et dans le sud des Hauts-de-Seine (Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses) pour le cadrage et le transfert.",
       },
       en: {
         hero: "AI-augmented websites and SaaS platforms in Châtillon (92320): Axion-IA builds high-performance sites and custom business applications for micro-businesses and SMEs across the southern inner suburbs of Paris, anchored in the town's real fabric — subcontractors and software vendors orbiting the Orange Gardens campus (Orange Technocentre, 5G Lab, Data Studio, av. de la République), insurance and assistance providers in the wake of the AXA Assistance headquarters (rue André Gide), and shops and tradespeople around the future Line 15 South Châtillon-Montrouge station. Custom Python/Node code, UX/UI, mobile and multi-CMS e-commerce, EU/GDPR hosting, zero proprietary no-code dependency.",
@@ -212,7 +212,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you start in Châtillon?",
-            a: "After an initial discussion, the quote is delivered from 48 hours depending on complexity. Williams then travels on site to Châtillon (Line 13 metro, T6 tram or A86) for scoping, then we launch the architecture and mockups.",
+            a: "After an initial discussion, the quote is delivered from 24 to 48 hours depending on complexity. Williams then travels on site to Châtillon (Line 13 metro, T6 tram or A86) for scoping, then we launch the architecture and mockups.",
           },
           {
             q: "Where is the data hosted and who owns the code?",
@@ -220,7 +220,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 48 hours depending on complexity. Sites and platforms in custom Python/Node code, hosted in the European Union, GDPR and AI Act compliant, respecting a strict Web Vitals performance budget. No no-code dependency or vendor lock-in: you own the code and remain free to evolve the solution in-house or with any integrator. Williams travels to your premises in Châtillon and across the south of Hauts-de-Seine (Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses) for scoping and handover.",
+          "Quote delivered from 24 to 48 hours depending on complexity. Sites and platforms in custom Python/Node code, hosted in the European Union, GDPR and AI Act compliant, respecting a strict Web Vitals performance budget. No no-code dependency or vendor lock-in: you own the code and remain free to evolve the solution in-house or with any integrator. Williams travels to your premises in Châtillon and across the south of Hauts-de-Seine (Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses) for scoping and handover.",
       },
     },
   },

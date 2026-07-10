@@ -120,7 +120,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les nombreuses TPE et indépendants de Noisy-le-Grand ?",
-            a: "Oui, c'est notre cas d'usage prioritaire. En 2024, 1 159 des 1 655 établissements créés à Noisy-le-Grand étaient des entreprises individuelles (70 %). Pour ces indépendants, professions libérales et commerçants, nous livrons un site vitrine ou e-commerce mobile-first avec assistant IA intégré (prise de RDV, réponse client), sans budget de grande structure. Devis à partir de 48 h selon la complexité.",
+            a: "Oui, c'est notre cas d'usage prioritaire. En 2024, 1 159 des 1 655 établissements créés à Noisy-le-Grand étaient des entreprises individuelles (70 %). Pour ces indépendants, professions libérales et commerçants, nous livrons un site vitrine ou e-commerce mobile-first avec assistant IA intégré (prise de RDV, réponse client), sans budget de grande structure. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             q: "Travaillez-vous avec les agences et éditeurs de la filière information-communication noiséenne ?",
@@ -136,7 +136,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, grille tarifaire publique. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception, ce qui compte pour les back-offices financiers et d'assurance du Mont d'Est. Le code, les données et les accès restent intégralement chez vous : votre site ou votre SaaS est repris par vos équipes ou par tout prestataire de Marne-la-Vallée, sans verrou Axion-IA.",
+          "Devis à partir de 24-48 h selon la complexité, grille tarifaire publique. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception, ce qui compte pour les back-offices financiers et d'assurance du Mont d'Est. Le code, les données et les accès restent intégralement chez vous : votre site ou votre SaaS est repris par vos équipes ou par tout prestataire de Marne-la-Vallée, sans verrou Axion-IA.",
       },
       en: {
         hero: "Noisy-le-Grand AI-augmented websites and SaaS platforms: Axion-IA builds AI-native sites and business applications for the tertiary fabric of the Mont d'Est district and Marne-la-Vallée. This business hub concentrates financial and insurance back-offices (RCI Banque / Mobilize Financial Services on avenue du Pavé Neuf, Groupama Paris Val de Loire), food-industry marketing (Lactalis Nestlé Ultra-Frais) and a France Travail regional directorate, against a fabric that is 70% sole proprietorships — 1,159 individual-business registrations out of 1,655 establishments opened in 2024. For these organisations we build bespoke platforms: RAG conversational agents, B2B client-follow-up automation, online booking and self-service portals, with European Union hosting and GDPR compliance. UX/UI, mobile, multi-CMS e-commerce and AI in a single engagement.",
@@ -206,7 +206,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
           },
           {
             q: "Do you support the many micro-businesses and freelancers in Noisy-le-Grand?",
-            a: "Yes, it is our priority use case. In 2024, 1,159 of the 1,655 establishments created in Noisy-le-Grand were sole proprietorships (70%). For these freelancers, professionals and retailers, we deliver a mobile-first showcase or e-commerce site with an embedded AI assistant (booking, client response), without a large-organisation budget. Quote from 48 h depending on complexity.",
+            a: "Yes, it is our priority use case. In 2024, 1,159 of the 1,655 establishments created in Noisy-le-Grand were sole proprietorships (70%). For these freelancers, professionals and retailers, we deliver a mobile-first showcase or e-commerce site with an embedded AI assistant (booking, client response), without a large-organisation budget. Quote from 24-48 h depending on complexity.",
           },
           {
             q: "Do you work with agencies and publishers in the Noisy-le-Grand information-communication sector?",
@@ -222,7 +222,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 h depending on complexity, public pricing grid. European Union hosting by default and GDPR compliance built in from the design stage, which matters for the Mont d'Est financial and insurance back-offices. Code, data and access stay entirely with you: your site or SaaS is taken over by your teams or any Marne-la-Vallée provider, with no Axion-IA lock-in.",
+          "Quote from 24-48 h depending on complexity, public pricing grid. European Union hosting by default and GDPR compliance built in from the design stage, which matters for the Mont d'Est financial and insurance back-offices. Code, data and access stay entirely with you: your site or SaaS is taken over by your teams or any Marne-la-Vallée provider, with no Axion-IA lock-in.",
       },
     },
   },

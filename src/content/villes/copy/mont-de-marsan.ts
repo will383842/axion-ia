@@ -135,7 +135,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis détaillé à partir de 48 h selon la complexité du projet. Engagement sur le périmètre et le calendrier fixés à la signature. Hébergement des données dans l'Union européenne par défaut et conformité RGPD by design — un point d'attention particulier sur un territoire montois où la sécurité numérique est structurante (ESIOC, CEAM, Centre de ressources en Cybersécurité). Aucun verrou éditeur : votre code, vos modèles IA et vos données restent intégralement chez vous, repris en interne ou par tout prestataire des Landes. Optimisation Web Vitals et SEO local Mont-de-Marsan inclus.",
+          "Devis détaillé à partir de 24 à 48 h selon la complexité du projet. Engagement sur le périmètre et le calendrier fixés à la signature. Hébergement des données dans l'Union européenne par défaut et conformité RGPD by design — un point d'attention particulier sur un territoire montois où la sécurité numérique est structurante (ESIOC, CEAM, Centre de ressources en Cybersécurité). Aucun verrou éditeur : votre code, vos modèles IA et vos données restent intégralement chez vous, repris en interne ou par tout prestataire des Landes. Optimisation Web Vitals et SEO local Mont-de-Marsan inclus.",
       },
       en: {
         hero: 'Mont-de-Marsan is a singular case: capital of the Landes département, it hosts on Air Base 118 "Colonel Rozanoff" the ESIOC (Air and Space Force cyberdefence unit) and the CEAM cyberprotection expert centre, while Mont-de-Marsan Agglo runs a civilian cyber ecosystem (Cybersecurity Resource Centre, the Mars@Hack challenge, the École Supérieure du Numérique des Landes, the UPPA\'s Networks & Telecoms IUT). In parallel, the area is a leading agri-food hub with the Maïsadour cooperative and Delpeyrat (fattened duck, Bayonne ham, smoked salmon). In Mont-de-Marsan, Axion-IA builds AI-augmented websites and SaaS platforms for this mix of digital security, seasonal agri-food, retail and public administration: custom code, EU/GDPR hosting, zero vendor lock-in.',
@@ -221,7 +221,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote from 48 hours depending on project complexity. Commitment to the scope and schedule set at signature. Data hosted in the European Union by default and GDPR compliance by design — a particular focus in a Mont-de-Marsan area where digital security is structuring (ESIOC, CEAM, Cybersecurity Resource Centre). No vendor lock-in: your code, your AI models and your data stay entirely with you, taken over in-house or by any Landes provider. Web Vitals and Mont-de-Marsan local SEO optimization included.",
+          "Detailed quote from 24 to 48 hours depending on project complexity. Commitment to the scope and schedule set at signature. Data hosted in the European Union by default and GDPR compliance by design — a particular focus in a Mont-de-Marsan area where digital security is structuring (ESIOC, CEAM, Cybersecurity Resource Centre). No vendor lock-in: your code, your AI models and your data stay entirely with you, taken over in-house or by any Landes provider. Web Vitals and Mont-de-Marsan local SEO optimization included.",
       },
     },
   },

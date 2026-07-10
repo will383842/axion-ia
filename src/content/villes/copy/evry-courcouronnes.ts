@@ -130,11 +130,11 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour démarrer un projet à Évry-Courcouronnes ?",
-            a: "Nous fournissons un devis à partir de 48 h selon la complexité du projet. Le kick-off se tient ensuite sur site dans vos locaux d'Évry-Courcouronnes ou de l'agglomération Grand Paris Sud, avant les phases de maquettage, développement et mise en ligne dont le calendrier est fixé ensemble au cadrage.",
+            a: "Nous fournissons un devis à partir de 24 à 48 h selon la complexité du projet. Le kick-off se tient ensuite sur site dans vos locaux d'Évry-Courcouronnes ou de l'agglomération Grand Paris Sud, avant les phases de maquettage, développement et mise en ligne dont le calendrier est fixé ensemble au cadrage.",
           },
         ],
         guarantees:
-          "Engagement contractuel sur le périmètre défini au devis, fourni à partir de 48 h selon la complexité. Conformité RGPD et hébergement des données en Union européenne par défaut, DPO sur demande. Nous revendiquons l'ensemble de la chaîne : UX/UI, mobile, e-commerce multi-CMS et intégration IA. Aucun verrou éditeur — votre site ou plateforme, votre code, votre documentation restent intégralement chez vous et reprenables en interne ou par tout intégrateur de l'écosystème Paris-Saclay après la mission.",
+          "Engagement contractuel sur le périmètre défini au devis, fourni à partir de 24 à 48 h selon la complexité. Conformité RGPD et hébergement des données en Union européenne par défaut, DPO sur demande. Nous revendiquons l'ensemble de la chaîne : UX/UI, mobile, e-commerce multi-CMS et intégration IA. Aucun verrou éditeur — votre site ou plateforme, votre code, votre documentation restent intégralement chez vous et reprenables en interne ou par tout intégrateur de l'écosystème Paris-Saclay après la mission.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Évry-Courcouronnes, capital of the Essonne and home to Genopole, France's leading biocluster — over 100,000 m² gathering around a hundred biotechnology companies across three axes: innovative therapies, industrial biotech and digital genomics. We build AI-native platforms for campus startups (Emerit Science, bYoRNA, Echoliv, Fungu'it), laboratories linked to the CNRGH, aerospace players around Arianespace and retailers of the Le Spot hyper-mall (formerly Évry 2). RAG chatbots, semantic search, conversational agents and business portals: custom code, EU hosting with GDPR compliance, zero vendor lock-in.",
@@ -216,11 +216,11 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
           },
           {
             q: "What lead time to start a project in Évry-Courcouronnes?",
-            a: "We provide a quote starting from 48 hours depending on project complexity. The kick-off then takes place on site at your Évry-Courcouronnes offices or in the Grand Paris Sud agglomeration, before the mockup, development and go-live phases whose schedule is set together at framing.",
+            a: "We provide a quote starting from 24 to 48 hours depending on project complexity. The kick-off then takes place on site at your Évry-Courcouronnes offices or in the Grand Paris Sud agglomeration, before the mockup, development and go-live phases whose schedule is set together at framing.",
           },
         ],
         guarantees:
-          "Contractual commitment on the scope defined in the quote, provided starting from 48 hours depending on complexity. GDPR compliance and EU data hosting by default, DPO on request. We claim the full chain: UX/UI, mobile, multi-CMS e-commerce and AI integration. No vendor lock-in — your site or platform, your code, your documentation stay entirely with you and can be taken over in-house or by any Paris-Saclay ecosystem integrator after the mission.",
+          "Contractual commitment on the scope defined in the quote, provided starting from 24 to 48 hours depending on complexity. GDPR compliance and EU data hosting by default, DPO on request. We claim the full chain: UX/UI, mobile, multi-CMS e-commerce and AI integration. No vendor lock-in — your site or platform, your code, your documentation stay entirely with you and can be taken over in-house or by any Paris-Saclay ecosystem integrator after the mission.",
       },
     },
   },

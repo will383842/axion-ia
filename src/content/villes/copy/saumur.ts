@@ -49,7 +49,7 @@ export const SAUMUR_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saumur des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce direct producteur multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Val de Loire angevin et le bassin Loire-Authion, où coexistent les 4 000 ha de vignobles AOC Saumur, Saumur-Champigny et fines bulles, le tourisme patrimoine autour du château UNESCO, des caves troglodytes et de l'École nationale d'équitation (Cadre Noir), et un tissu dense de TPE du commerce, de l'artisanat et de l'agroalimentaire (2e bassin national de champignons de Paris). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saumur, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saumur des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce direct producteur multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Val de Loire angevin et le bassin Loire-Authion, où coexistent les 4 000 ha de vignobles AOC Saumur, Saumur-Champigny et fines bulles, le tourisme patrimoine autour du château UNESCO, des caves troglodytes et de l'École nationale d'équitation (Cadre Noir), et un tissu dense de TPE du commerce, de l'artisanat et de l'agroalimentaire (2e bassin national de champignons de Paris). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saumur, itérations à distance.",
         whyHere: [
           "Filière viticole AOC structurante — 4 000 ha de Saumur, Saumur-Champigny et fines bulles, dont les caves coopératives de Saint-Cyr-en-Bourg et les maisons de Bouvet-Ladubay à Saint-Hilaire-Saint-Florent : nous bâtissons des boutiques de vente directe au domaine (WordPress/WooCommerce, Shopify, PrestaShop), des parcours œnotouristiques et des fiches cuvées multilingues, branchés sur votre traçabilité et vos stocks de bouteilles.",
           "Tourisme patrimoine intense — château de Saumur classé UNESCO, caves troglodytes du coteau, route des châteaux de la Loire et Abbaye de Fontevraud toute proche : nos chatbots et agents conversationnels sont multilingues par défaut (FR/EN/DE/NL), calibrés pour la billetterie, la réservation de visites de caves, l'accueil hôtelier-restauration et la recherche sémantique de circuits sur mobile.",
@@ -60,7 +60,7 @@ export const SAUMUR_COPY: VilleCopy = {
           {
             step: "Cadrage à Saumur",
             detail:
-              "Atelier sur site — chai d'un domaine de Saint-Cyr-en-Bourg, cave troglodyte du coteau, boutique du centre-ville ou bureau près de la gare TER : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — chai d'un domaine de Saint-Cyr-en-Bourg, cave troglodyte du coteau, boutique du centre-ville ou bureau près de la gare TER : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,14 +128,14 @@ export const SAUMUR_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Saumur — au chai, dans la cave troglodyte ou près de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : un budget maîtrisé, accessible aux exploitations familiales viticoles, aux artisans et aux TPE saumuroises.",
+            a: "Oui. Après le cadrage à Saumur — au chai, dans la cave troglodyte ou près de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : un budget maîtrisé, accessible aux exploitations familiales viticoles, aux artisans et aux TPE saumuroises.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, budget maîtrisé pour les exploitations familiales et TPE du Saumurois. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique autour du château UNESCO ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison, parcours mobile recetté. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale de vos données, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la région angevine ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, budget maîtrisé pour les exploitations familiales et TPE du Saumurois. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique autour du château UNESCO ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison, parcours mobile recetté. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale de vos données, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la région angevine ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saumur des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce direct producteur multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Val de Loire angevin et le bassin Loire-Authion, où coexistent les 4 000 ha de vignobles AOC Saumur, Saumur-Champigny et fines bulles, le tourisme patrimoine autour du château UNESCO, des caves troglodytes et de l'École nationale d'équitation (Cadre Noir), et un tissu dense de TPE du commerce, de l'artisanat et de l'agroalimentaire (2e bassin national de champignons de Paris). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saumur, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saumur des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce direct producteur multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Val de Loire angevin et le bassin Loire-Authion, où coexistent les 4 000 ha de vignobles AOC Saumur, Saumur-Champigny et fines bulles, le tourisme patrimoine autour du château UNESCO, des caves troglodytes et de l'École nationale d'équitation (Cadre Noir), et un tissu dense de TPE du commerce, de l'artisanat et de l'agroalimentaire (2e bassin national de champignons de Paris). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saumur, itérations à distance.",
         whyHere: [
           "Filière viticole AOC structurante — 4 000 ha de Saumur, Saumur-Champigny et fines bulles, dont les caves coopératives de Saint-Cyr-en-Bourg et les maisons de Bouvet-Ladubay à Saint-Hilaire-Saint-Florent : nous bâtissons des boutiques de vente directe au domaine (WordPress/WooCommerce, Shopify, PrestaShop), des parcours œnotouristiques et des fiches cuvées multilingues, branchés sur votre traçabilité et vos stocks de bouteilles.",
           "Tourisme patrimoine intense — château de Saumur classé UNESCO, caves troglodytes du coteau, route des châteaux de la Loire et Abbaye de Fontevraud toute proche : nos chatbots et agents conversationnels sont multilingues par défaut (FR/EN/DE/NL), calibrés pour la billetterie, la réservation de visites de caves, l'accueil hôtelier-restauration et la recherche sémantique de circuits sur mobile.",
@@ -146,7 +146,7 @@ export const SAUMUR_COPY: VilleCopy = {
           {
             step: "Cadrage à Saumur",
             detail:
-              "Atelier sur site — chai d'un domaine de Saint-Cyr-en-Bourg, cave troglodyte du coteau, boutique du centre-ville ou bureau près de la gare TER : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — chai d'un domaine de Saint-Cyr-en-Bourg, cave troglodyte du coteau, boutique du centre-ville ou bureau près de la gare TER : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -214,11 +214,11 @@ export const SAUMUR_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Saumur — au chai, dans la cave troglodyte ou près de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : un budget maîtrisé, accessible aux exploitations familiales viticoles, aux artisans et aux TPE saumuroises.",
+            a: "Oui. Après le cadrage à Saumur — au chai, dans la cave troglodyte ou près de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : un budget maîtrisé, accessible aux exploitations familiales viticoles, aux artisans et aux TPE saumuroises.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, budget maîtrisé pour les exploitations familiales et TPE du Saumurois. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique autour du château UNESCO ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison, parcours mobile recetté. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale de vos données, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la région angevine ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, budget maîtrisé pour les exploitations familiales et TPE du Saumurois. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique autour du château UNESCO ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison, parcours mobile recetté. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale de vos données, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la région angevine ou repris en interne.",
       },
     },
   },

@@ -92,7 +92,7 @@ export const CHOLET_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou e-commerce essentiel augmenté IA",
             detail:
-              "Pour artisans, façonniers chaussure/textile, commerces et indépendants du Choletais : site vitrine ou boutique e-commerce mobile-first, fiches produit assistées par IA, chatbot simple. Devis à partir de 48 h selon la complexité.",
+              "Pour artisans, façonniers chaussure/textile, commerces et indépendants du Choletais : site vitrine ou boutique e-commerce mobile-first, fiches produit assistées par IA, chatbot simple. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -124,7 +124,7 @@ export const CHOLET_COPY: VilleCopy = {
           },
           {
             q: "Quels délais et quel devis pour un site ou une plateforme à Cholet ?",
-            a: "Le devis est établi à partir de 48 h selon la complexité du projet (site vitrine, e-commerce omnicanal, portail B2B, plateforme SaaS). Un site vitrine se livre en quelques semaines ; une plateforme e-commerce ou SaaS avec intégration ERP/OMS et briques IA s'étale sur plusieurs semaines à quelques mois, cadrées dans un périmètre signé au démarrage.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité du projet (site vitrine, e-commerce omnicanal, portail B2B, plateforme SaaS). Un site vitrine se livre en quelques semaines ; une plateforme e-commerce ou SaaS avec intégration ERP/OMS et briques IA s'étale sur plusieurs semaines à quelques mois, cadrées dans un périmètre signé au démarrage.",
           },
           {
             q: "Intervenez-vous dans les zones d'activité et communes autour de Cholet ?",
@@ -178,7 +178,7 @@ export const CHOLET_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "Showcase site or essential AI-augmented e-commerce",
             detail:
-              "For Choletais craftspeople, footwear/textile makers, shops and freelancers: mobile-first showcase or e-commerce store, AI-assisted product sheets, simple chatbot. Quote within 48 h depending on complexity.",
+              "For Choletais craftspeople, footwear/textile makers, shops and freelancers: mobile-first showcase or e-commerce store, AI-assisted product sheets, simple chatbot. Quote within 24-48 h depending on complexity.",
           },
           {
             sizeLabel: "SME",
@@ -210,7 +210,7 @@ export const CHOLET_COPY: VilleCopy = {
           },
           {
             q: "What lead times and quote for a site or platform in Cholet?",
-            a: "The quote is issued within 48 h depending on project complexity (showcase site, omnichannel e-commerce, B2B portal, SaaS platform). A showcase site ships in a few weeks; an e-commerce or SaaS platform with ERP/OMS integration and AI bricks spans several weeks to a few months, scoped within a perimeter signed at the start.",
+            a: "The quote is issued within 24-48 h depending on project complexity (showcase site, omnichannel e-commerce, B2B portal, SaaS platform). A showcase site ships in a few weeks; an e-commerce or SaaS platform with ERP/OMS integration and AI bricks spans several weeks to a few months, scoped within a perimeter signed at the start.",
           },
           {
             q: "Do you work in the business zones and communes around Cholet?",

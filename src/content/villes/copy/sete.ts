@@ -121,7 +121,7 @@ export const SETE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis à Sète ?",
-            a: "Devis à partir de 48 h selon la complexité du projet, après un premier brief. Pour les projets simples (site vitrine, e-commerce de vente directe), le chiffrage est rapide ; pour une plateforme métier intégrée à un ERP ou aux flux du port, nous cadrons d'abord le périmètre sur site à Sète avant d'estimer.",
+            a: "Devis à partir de 24-48 h selon la complexité du projet, après un premier brief. Pour les projets simples (site vitrine, e-commerce de vente directe), le chiffrage est rapide ; pour une plateforme métier intégrée à un ERP ou aux flux du port, nous cadrons d'abord le périmètre sur site à Sète avant d'estimer.",
           },
           {
             q: "Faites-vous l'e-commerce, le mobile et l'UX/UI, ou seulement de l'IA ?",
@@ -133,7 +133,7 @@ export const SETE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Hébergement des données en UE par défaut, conformité RGPD et registre des traitements, DPA signé avant démarrage. Devis à partir de 48 h selon la complexité, périmètre et livrables définis avant signature. Nous revendiquons l'UX/UI, le mobile et l'e-commerce multi-CMS autant que l'IA — du tunnel de vente directe d'huîtres de Thau à la plateforme de suivi d'expédition portuaire. Code, CMS et modèles restent intégralement chez vous, transférables à tout intégrateur d'Occitanie : zéro no-code verrouillé, zéro lock-in Axion-IA.",
+          "Hébergement des données en UE par défaut, conformité RGPD et registre des traitements, DPA signé avant démarrage. Devis à partir de 24-48 h selon la complexité, périmètre et livrables définis avant signature. Nous revendiquons l'UX/UI, le mobile et l'e-commerce multi-CMS autant que l'IA — du tunnel de vente directe d'huîtres de Thau à la plateforme de suivi d'expédition portuaire. Code, CMS et modèles restent intégralement chez vous, transférables à tout intégrateur d'Occitanie : zéro no-code verrouillé, zéro lock-in Axion-IA.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Sète, Occitanie's leading port and France's 2nd Mediterranean commercial and fishing port (~5.8 Mt of cargo in 2024, 10 terminals). We build custom code for the maritime and shellfish-farming fabric of the Thau lagoon — freight forwarders and operators of the Sète-Frontignan Sud de France port, Bouzigues oyster and mussel growers (Médithau, Tarbouriech, Le Corsaire de Thau), fish-auction wholesalers, plus agribusiness (Saipol), seaside tourism and the wine sector of Sète Agglopôle Méditerranée. EU/GDPR hosting, multi-CMS e-commerce, UX/UI and mobile included, no no-code, no lock-in.",
@@ -207,7 +207,7 @@ export const SETE_COPY: VilleCopy = {
           },
           {
             q: "What's the lead time for a quote in Sète?",
-            a: "Quote from 48 h depending on project complexity, after a first brief. For simple projects (brochure site, direct-sale e-commerce) costing is fast; for a business platform integrated with an ERP or port flows, we first scope on site in Sète before estimating.",
+            a: "Quote from 24-48 h depending on project complexity, after a first brief. For simple projects (brochure site, direct-sale e-commerce) costing is fast; for a business platform integrated with an ERP or port flows, we first scope on site in Sète before estimating.",
           },
           {
             q: "Do you do e-commerce, mobile and UX/UI, or only AI?",
@@ -219,7 +219,7 @@ export const SETE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Data hosted in the EU by default, GDPR compliance and processing register, DPA signed before kick-off. Quote from 48 h depending on complexity, scope and deliverables defined before signature. We claim UX/UI, mobile and multi-CMS e-commerce as much as AI — from a Thau oyster direct-sale funnel to a port shipment-tracking platform. Code, CMS and models stay entirely with you, transferable to any Occitanie integrator: no locked no-code, no Axion-IA lock-in.",
+          "Data hosted in the EU by default, GDPR compliance and processing register, DPA signed before kick-off. Quote from 24-48 h depending on complexity, scope and deliverables defined before signature. We claim UX/UI, mobile and multi-CMS e-commerce as much as AI — from a Thau oyster direct-sale funnel to a port shipment-tracking platform. Code, CMS and models stay entirely with you, transferable to any Occitanie integrator: no locked no-code, no Axion-IA lock-in.",
       },
     },
   },

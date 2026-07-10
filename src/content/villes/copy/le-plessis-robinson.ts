@@ -132,11 +132,11 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevez-vous un devis ?",
-            a: "À partir de 48 h selon la complexité du projet. Pour un site vitrine de commerce robinsonnais le chiffrage est rapide ; pour une plateforme SaaS destinée à un acteur défense ou pharma de La Boursidière, le cadrage technique préalable peut allonger ce délai.",
+            a: "À partir de 24-48 h selon la complexité du projet. Pour un site vitrine de commerce robinsonnais le chiffrage est rapide ; pour une plateforme SaaS destinée à un acteur défense ou pharma de La Boursidière, le cadrage technique préalable peut allonger ce délai.",
           },
         ],
         guarantees:
-          "Devis remis à partir de 48 h selon la complexité. Hébergement en UE par défaut et conformité RGPD intégrée dès la conception. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et les briques IA (chatbot RAG, search sémantique, devis automatisés). Vous gardez la pleine propriété du code, des contenus et des modèles : aucun lock-in éditeur, aucune dépendance technique imposée.",
+          "Devis remis à partir de 24-48 h selon la complexité. Hébergement en UE par défaut et conformité RGPD intégrée dès la conception. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et les briques IA (chatbot RAG, search sémantique, devis automatisés). Vous gardez la pleine propriété du code, des contenus et des modèles : aucun lock-in éditeur, aucune dépendance technique imposée.",
       },
       en: {
         hero: "In Le Plessis-Robinson (92), the local economy is built around a rare feature for the southern Paris suburbs: the global headquarters of MBDA, the European missile maker with ~6,000 staff on a 70,000 sqm site, next to the La Boursidière business park — 16 HQE-certified buildings, 60,000 sqm of offices and nearly 2,000 jobs across three sectors: defence, automotive (Renault) and medical research (Actavis, ELA Medical, Orion Santé). Around them sit the SMEs of the Technology Park and the shops of the Cœur de Ville rebuilt by architect François Spoerry. Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: B2B portals for defence subcontractors and engineering offices, multi-CMS e-commerce sites for local retailers, business applications for pharma and automotive — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
           },
           {
             q: "How quickly do you provide a quote?",
-            a: "From 48 h depending on project complexity. For a local retailer's brochure site the estimate is quick; for a SaaS platform aimed at a defence or pharma player at La Boursidière, the prior technical framing may extend this timeframe.",
+            a: "From 24-48 h depending on project complexity. For a local retailer's brochure site the estimate is quick; for a SaaS platform aimed at a defence or pharma player at La Boursidière, the prior technical framing may extend this timeframe.",
           },
         ],
         guarantees:
-          "Quote provided from 48 h depending on complexity. EU hosting by default and GDPR compliance built in from design. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, automated quotes). You keep full ownership of code, content and models: no vendor lock-in, no imposed technical dependency. Transparent travel costs, separate from the package, calculated case by case.",
+          "Quote provided from 24-48 h depending on complexity. EU hosting by default and GDPR compliance built in from design. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, automated quotes). You keep full ownership of code, content and models: no vendor lock-in, no imposed technical dependency. Transparent travel costs, separate from the package, calculated case by case.",
       },
     },
   },

@@ -53,7 +53,7 @@ export const BLOIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Blois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Le tissu blésois mêle l'automobile (Phinia Delphi France, Valeo), la cosmétique-parfumerie de la Cosmetic Valley (Sisley/Francos), les services de paiement (R&D Worldline) et le tourisme des Châteaux de la Loire — autant de fronts où un site augmenté change la donne. Devis à partir de 48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Blois, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Blois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Le tissu blésois mêle l'automobile (Phinia Delphi France, Valeo), la cosmétique-parfumerie de la Cosmetic Valley (Sisley/Francos), les services de paiement (R&D Worldline) et le tourisme des Châteaux de la Loire — autant de fronts où un site augmenté change la donne. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Blois, itérations à distance.",
         whyHere: [
           "Projets web & SaaS blésois : configurateurs et portails fournisseurs pour l'aftermarket auto (Phinia Delphi France, Valeo), boutiques cosmétique-parfumerie multilingues pour la filière Cosmetic Valley (Sisley/Francos), interfaces métier pour les services de paiement (R&D Worldline) et sites de réservation pour les hôtels et sites patrimoniaux du Val de Loire.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA. Un atout face au vivier local de profils web formés à l'IUT de Blois (BUT MMI, Licence Pro UX2i).",
@@ -64,7 +64,7 @@ export const BLOIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Blois",
             detail:
-              "Atelier sur site — au siège de l'usine Bd de l'Industrie, dans l'atelier cosmétique, à la pépinière Le Lab ou dans votre boutique du centre : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — au siège de l'usine Bd de l'Industrie, dans l'atelier cosmétique, à la pépinière Le Lab ou dans votre boutique du centre : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -136,10 +136,10 @@ export const BLOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en haute saison touristique du Val de Loire. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin blésois — ou repris par vos équipes en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en haute saison touristique du Val de Loire. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du bassin blésois — ou repris par vos équipes en interne.",
       },
       en: {
-        hero: "In Blois, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. The Blois fabric blends automotive (Phinia Delphi France, Valeo), the cosmetics-perfumery of the Cosmetic Valley (Sisley/Francos), payment services (Worldline R&D) and Loire Valley château tourism — all fronts where an augmented site makes the difference. Quote from 48 h depending on project complexity, EU hosting, code and data yours. On-site Blois kick-off, remote iterations.",
+        hero: "In Blois, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. The Blois fabric blends automotive (Phinia Delphi France, Valeo), the cosmetics-perfumery of the Cosmetic Valley (Sisley/Francos), payment services (Worldline R&D) and Loire Valley château tourism — all fronts where an augmented site makes the difference. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Blois kick-off, remote iterations.",
         whyHere: [
           "Blois web & SaaS projects: configurators and supplier portals for the automotive aftermarket (Phinia Delphi France, Valeo), multilingual cosmetics-perfumery stores for the Cosmetic Valley sector (Sisley/Francos), business interfaces for payment services (Worldline R&D) and booking sites for Loire Valley hotels and heritage venues.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick. An asset alongside the local pool of web profiles trained at IUT de Blois (BUT MMI, UX2i degree).",
@@ -150,7 +150,7 @@ export const BLOIS_COPY: VilleCopy = {
           {
             step: "Scoping in Blois",
             detail:
-              "On-site workshop — at the plant HQ on Boulevard de l'Industrie, in the cosmetics workshop, at the Le Lab incubator or in your town-centre shop: goals, journeys, audit of the existing stack and content. Firm quote from 48 h depending on complexity.",
+              "On-site workshop — at the plant HQ on Boulevard de l'Industrie, in the cosmetics workshop, at the Le Lab incubator or in your town-centre shop: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -222,7 +222,7 @@ export const BLOIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site, including during the Loire Valley tourist high season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Blois-area provider — or taken over by your in-house teams.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site, including during the Loire Valley tourist high season. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Blois-area provider — or taken over by your in-house teams.",
       },
     },
   },

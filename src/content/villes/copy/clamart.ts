@@ -132,11 +132,11 @@ export const CLAMART_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps avant de recevoir un devis et de démarrer ?",
-            a: "Le devis est transmis à partir de 48 h selon la complexité du projet. Le kick-off a ensuite lieu sur site à Clamart — bureaux du parc Noveos, cabinet médical proche d'Antoine-Béclère ou commerce du centre — la ville étant desservie par le tramway T6 et bientôt par la gare Grand Paris Express Ligne 15 à Fort d'Issy-Vanves-Clamart.",
+            a: "Le devis est transmis à partir de 24 à 48 h selon la complexité du projet. Le kick-off a ensuite lieu sur site à Clamart — bureaux du parc Noveos, cabinet médical proche d'Antoine-Béclère ou commerce du centre — la ville étant desservie par le tramway T6 et bientôt par la gare Grand Paris Express Ligne 15 à Fort d'Issy-Vanves-Clamart.",
           },
         ],
         guarantees:
-          "Engagement contractuel : périmètre, livrables et calendrier fixés à la signature ; devis transmis à partir de 48 h selon la complexité. Hébergement des données en Union européenne, conforme RGPD, avec une attention particulière pour les acteurs réglementés de Clamart (défense Noveos, dispositifs médicaux MicroPort CRM / Audioptic, santé Antoine-Béclère). Vous gardez la pleine propriété du code, des contenus et des données, sans verrou éditeur : votre site ou plateforme reste maintenable par vos équipes ou tout intégrateur.",
+          "Engagement contractuel : périmètre, livrables et calendrier fixés à la signature ; devis transmis à partir de 24 à 48 h selon la complexité. Hébergement des données en Union européenne, conforme RGPD, avec une attention particulière pour les acteurs réglementés de Clamart (défense Noveos, dispositifs médicaux MicroPort CRM / Audioptic, santé Antoine-Béclère). Vous gardez la pleine propriété du code, des contenus et des données, sans verrou éditeur : votre site ou plateforme reste maintenable par vos équipes ou tout intégrateur.",
       },
       en: {
         hero: "Clamart (92) is more than a residential suburb in southern Hauts-de-Seine: its economic fabric centres on the Noveos business park (straddling Clamart and Antony), where the employers' club has gathered MBDA, Renault, Coca-Cola Entreprise, Optic 2000 and MicroPort CRM since 2013, alongside Schlumberger, Mondelez and Lafarge. Add a leading healthcare hub with the Antoine-Béclère hospital (AP-HP, 411 beds) and a dense fabric of service micro-businesses and SMEs (~3,500 firms, 95% under 10 staff). In Clamart, Axion-IA designs AI-augmented websites and SaaS platforms — for Noveos defence and industry, medical devices (MicroPort CRM, Audioptic), hospital healthcare, food-processing and southern Paris services.",
@@ -218,11 +218,11 @@ export const CLAMART_COPY: VilleCopy = {
           },
           {
             q: "How soon will I get a quote and start?",
-            a: "The quote is sent from 48 hours depending on project complexity. Kick-off then takes place on site in Clamart — Noveos park offices, a practice near Antoine-Béclère or a town-centre shop — the town being served by the T6 tram and soon by the Grand Paris Express Line 15 station at Fort d'Issy-Vanves-Clamart.",
+            a: "The quote is sent from 24 to 48 hours depending on project complexity. Kick-off then takes place on site in Clamart — Noveos park offices, a practice near Antoine-Béclère or a town-centre shop — the town being served by the T6 tram and soon by the Grand Paris Express Line 15 station at Fort d'Issy-Vanves-Clamart.",
           },
         ],
         guarantees:
-          "Contractual commitment: scope, deliverables and schedule fixed at signature; quote sent from 48 hours depending on complexity. Data hosting in the European Union, GDPR-compliant, with particular care for Clamart's regulated players (Noveos defence, MicroPort CRM / Audioptic medical devices, Antoine-Béclère healthcare). You keep full ownership of code, content and data, with no vendor lock-in: your site or platform remains maintainable by your teams or any integrator.",
+          "Contractual commitment: scope, deliverables and schedule fixed at signature; quote sent from 24 to 48 hours depending on complexity. Data hosting in the European Union, GDPR-compliant, with particular care for Clamart's regulated players (Noveos defence, MicroPort CRM / Audioptic medical devices, Antoine-Béclère healthcare). You keep full ownership of code, content and data, with no vendor lock-in: your site or platform remains maintainable by your teams or any integrator.",
       },
     },
   },

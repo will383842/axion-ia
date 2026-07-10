@@ -52,7 +52,7 @@ export const GRIGNY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des TPE du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
+        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des TPE du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
         whyHere: [
           "Le centre commercial Grigny 2 (deuxième plus grande copropriété de France) et ses enseignes comme le Casino et Le Fournil de Grigny structurent la chalandise locale : pour ces commerces de détail et artisans, on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec click-and-collect, paiement en ligne et zone de chalandise géolocalisée jusqu'à Viry-Châtillon et Ris-Orangis.",
           "La Z.A.E. des Noues de Seine, 41,68 ha au nord entre Seine et RN7, concentre une soixantaine d'entreprises du BTP et des fondations (SEFI-INTRAFOR, Franki Fondation, Jean Lefebvre Île-de-France) : pour ces acteurs de la construction et du transport, nos plateformes SaaS et agents automatisent suivi de chantiers, planning de tournées et portails de réservation, branchés sur vos ERP et TMS existants.",
@@ -63,7 +63,7 @@ export const GRIGNY_COPY: VilleCopy = {
           {
             step: "Cadrage à Grigny",
             detail:
-              "Atelier sur site — centre-ville près de la gare Grigny-Centre, Z.A.E. des Noues de Seine bord de Seine, centre commercial Grigny 2 ou Z.A.C. de la Plaine Basse : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville près de la gare Grigny-Centre, Z.A.E. des Noues de Seine bord de Seine, centre commercial Grigny 2 ou Z.A.C. de la Plaine Basse : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -131,14 +131,14 @@ export const GRIGNY_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Grigny, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Grigny, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en période de forte activité à Grigny 2 ou sur les axes A6 / RN7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de l'Essonne ou d'Île-de-France, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en période de forte activité à Grigny 2 ou sur les axes A6 / RN7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de l'Essonne ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des TPE du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
+        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des TPE du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
         whyHere: [
           "Le centre commercial Grigny 2 (deuxième plus grande copropriété de France) et ses enseignes comme le Casino et Le Fournil de Grigny structurent la chalandise locale : pour ces commerces de détail et artisans, on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec click-and-collect, paiement en ligne et zone de chalandise géolocalisée jusqu'à Viry-Châtillon et Ris-Orangis.",
           "La Z.A.E. des Noues de Seine, 41,68 ha au nord entre Seine et RN7, concentre une soixantaine d'entreprises du BTP et des fondations (SEFI-INTRAFOR, Franki Fondation, Jean Lefebvre Île-de-France) : pour ces acteurs de la construction et du transport, nos plateformes SaaS et agents automatisent suivi de chantiers, planning de tournées et portails de réservation, branchés sur vos ERP et TMS existants.",
@@ -149,7 +149,7 @@ export const GRIGNY_COPY: VilleCopy = {
           {
             step: "Cadrage à Grigny",
             detail:
-              "Atelier sur site — centre-ville près de la gare Grigny-Centre, Z.A.E. des Noues de Seine bord de Seine, centre commercial Grigny 2 ou Z.A.C. de la Plaine Basse : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville près de la gare Grigny-Centre, Z.A.E. des Noues de Seine bord de Seine, centre commercial Grigny 2 ou Z.A.C. de la Plaine Basse : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -217,11 +217,11 @@ export const GRIGNY_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Grigny, on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Grigny, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en période de forte activité à Grigny 2 ou sur les axes A6 / RN7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de l'Essonne ou d'Île-de-France, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en période de forte activité à Grigny 2 ou sur les axes A6 / RN7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de l'Essonne ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
     },
   },

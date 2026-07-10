@@ -49,7 +49,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Brétigny-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Nous travaillons une économie sud-essonnienne en pleine reconversion, où l'ancienne base aérienne 217 (1300 ha) laisse place à la ZAC Clause-Bois Badeau (130 ha, 6500 logements) et à un parc d'activités tourné vers la logistique et l'agriculture urbaine, pendant que le tissu reste porté par les PME tertiaires, les TPE artisanales, les commerces du centre-ville et les professions de santé du bassin. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brétigny, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Brétigny-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Nous travaillons une économie sud-essonnienne en pleine reconversion, où l'ancienne base aérienne 217 (1300 ha) laisse place à la ZAC Clause-Bois Badeau (130 ha, 6500 logements) et à un parc d'activités tourné vers la logistique et l'agriculture urbaine, pendant que le tissu reste porté par les PME tertiaires, les TPE artisanales, les commerces du centre-ville et les professions de santé du bassin. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brétigny, itérations à distance.",
         whyHere: [
           "La ZAC Clause-Bois Badeau, née sur l'emprise de la base aérienne 217, attire de nouvelles PME tertiaires et de services autour des 6500 logements programmés : terrain idéal pour des sites vitrines, portails clients et plateformes métier sur mesure, ou des outils existants augmentés à l'IA (recherche sémantique, espaces clients) sans refonte coûteuse ni interruption d'activité.",
           "Pôle santé sud-Essonne dense — centre hospitalier, cabinets médicaux, professions libérales installées vers le centre-ville et Saint-Michel-sur-Orge : nos chatbots RAG et agents conversationnels gèrent la prise de RDV, l'orientation patient et la transcription de consultations, dans un cadre RGPD-santé strict, secret médical respecté et hébergement UE maîtrisé.",
@@ -60,7 +60,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
           {
             step: "Cadrage à Brétigny",
             detail:
-              "Atelier sur site — centre-ville, ZAC Clause-Bois Badeau ou parc d'activités de l'ex-base 217 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, ZAC Clause-Bois Badeau ou parc d'activités de l'ex-base 217 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,10 +132,10 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — un cabinet ou un commerce du centre ne coupe jamais son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire sud-Essonne ou repris par vos équipes en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — un cabinet ou un commerce du centre ne coupe jamais son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire sud-Essonne ou repris par vos équipes en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Brétigny-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Nous travaillons une économie sud-essonnienne en pleine reconversion, où l'ancienne base aérienne 217 (1300 ha) laisse place à la ZAC Clause-Bois Badeau (130 ha, 6500 logements) et à un parc d'activités tourné vers la logistique et l'agriculture urbaine, pendant que le tissu reste porté par les PME tertiaires, les TPE artisanales, les commerces du centre-ville et les professions de santé du bassin. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brétigny, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Brétigny-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Nous travaillons une économie sud-essonnienne en pleine reconversion, où l'ancienne base aérienne 217 (1300 ha) laisse place à la ZAC Clause-Bois Badeau (130 ha, 6500 logements) et à un parc d'activités tourné vers la logistique et l'agriculture urbaine, pendant que le tissu reste porté par les PME tertiaires, les TPE artisanales, les commerces du centre-ville et les professions de santé du bassin. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brétigny, itérations à distance.",
         whyHere: [
           "La ZAC Clause-Bois Badeau, née sur l'emprise de la base aérienne 217, attire de nouvelles PME tertiaires et de services autour des 6500 logements programmés : terrain idéal pour des sites vitrines, portails clients et plateformes métier sur mesure, ou des outils existants augmentés à l'IA (recherche sémantique, espaces clients) sans refonte coûteuse ni interruption d'activité.",
           "Pôle santé sud-Essonne dense — centre hospitalier, cabinets médicaux, professions libérales installées vers le centre-ville et Saint-Michel-sur-Orge : nos chatbots RAG et agents conversationnels gèrent la prise de RDV, l'orientation patient et la transcription de consultations, dans un cadre RGPD-santé strict, secret médical respecté et hébergement UE maîtrisé.",
@@ -146,7 +146,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
           {
             step: "Cadrage à Brétigny",
             detail:
-              "Atelier sur site — centre-ville, ZAC Clause-Bois Badeau ou parc d'activités de l'ex-base 217 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On repart avec un périmètre clair et un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — centre-ville, ZAC Clause-Bois Badeau ou parc d'activités de l'ex-base 217 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,7 +218,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — un cabinet ou un commerce du centre ne coupe jamais son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire sud-Essonne ou repris par vos équipes en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — un cabinet ou un commerce du centre ne coupe jamais son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire sud-Essonne ou repris par vos équipes en interne.",
       },
     },
   },

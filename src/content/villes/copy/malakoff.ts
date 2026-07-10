@@ -91,7 +91,7 @@ export const MALAKOFF_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Site vitrine ou portail simple IA-augmenté",
             detail:
-              "Pour les indépendants, freelances et microstudios de Malakoff (un monteur, un petit studio audiovisuel, un coworker CASACO) : site rapide, mobile-first, avec une brique IA utile — formulaire intelligent, chatbot FAQ, génération de devis. Devis à partir de 48 h selon la complexité.",
+              "Pour les indépendants, freelances et microstudios de Malakoff (un monteur, un petit studio audiovisuel, un coworker CASACO) : site rapide, mobile-first, avec une brique IA utile — formulaire intelligent, chatbot FAQ, génération de devis. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             sizeLabel: "PME",
@@ -123,7 +123,7 @@ export const MALAKOFF_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis de site ou SaaS à Malakoff ?",
-            a: "Nous fournissons un devis à partir de 48 h selon la complexité du projet. Un site vitrine IA-augmenté pour un indépendant se chiffre vite ; une plateforme SaaS sur mesure avec workflows IA demande un cadrage un peu plus long. Dans tous les cas, le périmètre est défini clairement avant signature.",
+            a: "Nous fournissons un devis à partir de 24-48 h selon la complexité du projet. Un site vitrine IA-augmenté pour un indépendant se chiffre vite ; une plateforme SaaS sur mesure avec workflows IA demande un cadrage un peu plus long. Dans tous les cas, le périmètre est défini clairement avant signature.",
           },
           {
             q: "L'hébergement et les données sont-ils conformes au RGPD ?",
@@ -135,7 +135,7 @@ export const MALAKOFF_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement Axion-IA à Malakoff : code custom dont vous restez propriétaire, hébergement UE conforme RGPD par défaut, zéro verrou éditeur. Le devis est fourni à partir de 48 h selon la complexité, et le périmètre est fixé avant signature — pas de dérive cachée. À la livraison, votre site ou SaaS, ses modèles et sa documentation sont transférables à tout intégrateur francilien ou repris en interne, qu'il s'agisse d'un studio audiovisuel, d'une agence ou d'un tiers-lieu coopératif. Nous revendiquons l'ensemble de la chaîne : UX/UI, mobile, e-commerce multi-CMS et intelligence artificielle.",
+          "Engagement Axion-IA à Malakoff : code custom dont vous restez propriétaire, hébergement UE conforme RGPD par défaut, zéro verrou éditeur. Le devis est fourni à partir de 24-48 h selon la complexité, et le périmètre est fixé avant signature — pas de dérive cachée. À la livraison, votre site ou SaaS, ses modèles et sa documentation sont transférables à tout intégrateur francilien ou repris en interne, qu'il s'agisse d'un studio audiovisuel, d'une agence ou d'un tiers-lieu coopératif. Nous revendiquons l'ensemble de la chaîne : UX/UI, mobile, e-commerce multi-CMS et intelligence artificielle.",
       },
       en: {
         hero: "In Malakoff, Axion-IA designs AI-augmented websites and SaaS platforms for a very specific fabric: a dense audiovisual and post-production microcluster for a town of 30,500 (Malakoff Studio, Time-Line Factory, Black Snow Production, McFly Prod, Teslart, Le Magasin), paired with a cooperative ecosystem of freelancers built around the CASACO third-place and the MALACOOP initiative. On this post-Thomson-CSF ground (the site closed in 1993 and has since become largely tertiary), we build AI-native products — video asset management portals, assisted rough-cut and subtitling tools, client areas for studios, shared platforms for coworkers — in custom code, EU/GDPR hosting, with no vendor lock-in.",
@@ -177,7 +177,7 @@ export const MALAKOFF_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "AI-augmented showcase site or simple portal",
             detail:
-              "For Malakoff freelancers and micro-studios (a single editor, a small audiovisual studio, a CASACO coworker): a fast, mobile-first site with one useful AI block — smart form, FAQ chatbot, quote generation. Quote within 48 h depending on complexity.",
+              "For Malakoff freelancers and micro-studios (a single editor, a small audiovisual studio, a CASACO coworker): a fast, mobile-first site with one useful AI block — smart form, FAQ chatbot, quote generation. Quote within 24-48 h depending on complexity.",
           },
           {
             sizeLabel: "PME",
@@ -209,7 +209,7 @@ export const MALAKOFF_COPY: VilleCopy = {
           },
           {
             q: "How long for a website or SaaS quote in Malakoff?",
-            a: "We provide a quote within 48 h depending on project complexity. An AI-augmented showcase site for a freelancer is quick to price; a bespoke SaaS platform with AI workflows takes slightly longer framing. In all cases, the scope is clearly defined before signature.",
+            a: "We provide a quote within 24-48 h depending on project complexity. An AI-augmented showcase site for a freelancer is quick to price; a bespoke SaaS platform with AI workflows takes slightly longer framing. In all cases, the scope is clearly defined before signature.",
           },
           {
             q: "Are hosting and data GDPR-compliant?",
@@ -221,7 +221,7 @@ export const MALAKOFF_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Axion-IA's commitment in Malakoff: custom code that you own, EU GDPR-compliant hosting by default, zero vendor lock-in. The quote is provided within 48 h depending on complexity, and the scope is set before signature — no hidden drift. On delivery, your site or SaaS, its models and its documentation are transferable to any Île-de-France integrator or taken in-house, whether you're an audiovisual studio, an agency or a cooperative third-place. We claim the full chain: UX/UI, mobile, multi-CMS e-commerce and artificial intelligence.",
+          "Axion-IA's commitment in Malakoff: custom code that you own, EU GDPR-compliant hosting by default, zero vendor lock-in. The quote is provided within 24-48 h depending on complexity, and the scope is set before signature — no hidden drift. On delivery, your site or SaaS, its models and its documentation are transferable to any Île-de-France integrator or taken in-house, whether you're an audiovisual studio, an agency or a cooperative third-place. We claim the full chain: UX/UI, mobile, multi-CMS e-commerce and artificial intelligence.",
       },
     },
   },

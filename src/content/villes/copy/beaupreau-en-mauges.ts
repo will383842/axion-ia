@@ -53,7 +53,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Beaupréau-en-Mauges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, catalogues B2B, e-commerce, chatbot RAG ancré sur vos fiches produits, recherche sémantique, agents et automatisations. Pensé pour une économie mauclésienne née de la chaussure et du textile — la mémoire d'Éram et d'Humeau-Beaupréau, façonniers depuis cinq générations — désormais portée par un agroalimentaire dense et une myriade de TPE et PME familiales d'artisanat, de mécanique et de transformation sur les ZA Anjou Actiparc, la Grande Lande et Èvre et Loire. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Beaupréau, itérations à distance — à 30 min de Cholet et 45 min d'Angers.",
+        hero: "Axion-IA conçoit et augmente à Beaupréau-en-Mauges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, catalogues B2B, e-commerce, chatbot RAG ancré sur vos fiches produits, recherche sémantique, agents et automatisations. Pensé pour une économie mauclésienne née de la chaussure et du textile — la mémoire d'Éram et d'Humeau-Beaupréau, façonniers depuis cinq générations — désormais portée par un agroalimentaire dense et une myriade de TPE et PME familiales d'artisanat, de mécanique et de transformation sur les ZA Anjou Actiparc, la Grande Lande et Èvre et Loire. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Beaupréau, itérations à distance — à 30 min de Cholet et 45 min d'Angers.",
         whyHere: [
           "Héritage chaussure et textile reconverti, encore vivant avec Éram et Humeau-Beaupréau (120 ans, cinq générations de façonniers) : pour les ateliers et sous-traitants cuir-textile des Mauges, on bâtit des catalogues B2B en ligne, des configurateurs de commandes et des moteurs de devis automatisés qui valorisent le savoir-faire sans alourdir l'atelier.",
           "Agroalimentaire dense et tourné vers l'export régional — près de trente unités de transformation recensées dans la commune nouvelle : nos plateformes intègrent traçabilité, fiches produits enrichies et recherche sémantique multilingue, calibrées pour les transformateurs et négociants des Mauges qui vendent au-delà du Choletais.",
@@ -64,7 +64,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
           {
             step: "Cadrage à Beaupréau-en-Mauges",
             detail:
-              "Atelier sur site, en cœur de bourg ou sur les ZA Anjou Actiparc, la Grande Lande ou la ZI Èvre et Loire : objectifs, parcours utilisateurs, audit de la stack, des contenus et des catalogues existants. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site, en cœur de bourg ou sur les ZA Anjou Actiparc, la Grande Lande ou la ZI Èvre et Loire : objectifs, parcours utilisateurs, audit de la stack, des contenus et des catalogues existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Beaupréau, sur site ou sur l'une des ZA, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+            a: "Oui. Après le cadrage à Beaupréau, sur site ou sur l'une des ZA, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (remis à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de commandes. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution transférable à tout prestataire des Pays de la Loire ou reprise en interne par vos équipes à Beaupréau.",
+          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de commandes. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution transférable à tout prestataire des Pays de la Loire ou reprise en interne par vos équipes à Beaupréau.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Beaupréau-en-Mauges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, catalogues B2B, e-commerce, chatbot RAG ancré sur vos fiches produits, recherche sémantique, agents et automatisations. Pensé pour une économie mauclésienne née de la chaussure et du textile — la mémoire d'Éram et d'Humeau-Beaupréau, façonniers depuis cinq générations — désormais portée par un agroalimentaire dense et une myriade de TPE et PME familiales d'artisanat, de mécanique et de transformation sur les ZA Anjou Actiparc, la Grande Lande et Èvre et Loire. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Beaupréau, itérations à distance — à 30 min de Cholet et 45 min d'Angers.",
+        hero: "Axion-IA conçoit et augmente à Beaupréau-en-Mauges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, catalogues B2B, e-commerce, chatbot RAG ancré sur vos fiches produits, recherche sémantique, agents et automatisations. Pensé pour une économie mauclésienne née de la chaussure et du textile — la mémoire d'Éram et d'Humeau-Beaupréau, façonniers depuis cinq générations — désormais portée par un agroalimentaire dense et une myriade de TPE et PME familiales d'artisanat, de mécanique et de transformation sur les ZA Anjou Actiparc, la Grande Lande et Èvre et Loire. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Beaupréau, itérations à distance — à 30 min de Cholet et 45 min d'Angers.",
         whyHere: [
           "Héritage chaussure et textile reconverti, encore vivant avec Éram et Humeau-Beaupréau (120 ans, cinq générations de façonniers) : pour les ateliers et sous-traitants cuir-textile des Mauges, on bâtit des catalogues B2B en ligne, des configurateurs de commandes et des moteurs de devis automatisés qui valorisent le savoir-faire sans alourdir l'atelier.",
           "Agroalimentaire dense et tourné vers l'export régional — près de trente unités de transformation recensées dans la commune nouvelle : nos plateformes intègrent traçabilité, fiches produits enrichies et recherche sémantique multilingue, calibrées pour les transformateurs et négociants des Mauges qui vendent au-delà du Choletais.",
@@ -150,7 +150,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
           {
             step: "Cadrage à Beaupréau-en-Mauges",
             detail:
-              "Atelier sur site, en cœur de bourg ou sur les ZA Anjou Actiparc, la Grande Lande ou la ZI Èvre et Loire : objectifs, parcours utilisateurs, audit de la stack, des contenus et des catalogues existants. Devis ferme remis à partir de 48 h selon la complexité.",
+              "Atelier sur site, en cœur de bourg ou sur les ZA Anjou Actiparc, la Grande Lande ou la ZI Èvre et Loire : objectifs, parcours utilisateurs, audit de la stack, des contenus et des catalogues existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Beaupréau, sur site ou sur l'une des ZA, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+            a: "Oui. Après le cadrage à Beaupréau, sur site ou sur l'une des ZA, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (remis à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de commandes. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution transférable à tout prestataire des Pays de la Loire ou reprise en interne par vos équipes à Beaupréau.",
+          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de commandes. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution transférable à tout prestataire des Pays de la Loire ou reprise en interne par vos équipes à Beaupréau.",
       },
     },
   },

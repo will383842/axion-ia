@@ -53,7 +53,7 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Boulogne-sur-Mer, 1er port de pêche de France et 1re place européenne de transformation des produits de la mer. Notre terrain, c'est la zone de Capécure et ses quelque 150 entreprises — mareyeurs, fileteurs, transformateurs comme Findus ou Demarne Frères, négociants, logisticiens du froid — plus le tourisme côtier autour de Nausicaá. Catalogue marée temps réel adossé à la criée, traçabilité lot-par-lot, portails B2B grossistes/GMS, e-commerce de produits frais réfrigérés et chatbots RAG : code sur mesure, hébergement UE conforme RGPD, zéro lock-in éditeur. Devis à partir de 48 h selon la complexité.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Boulogne-sur-Mer, 1er port de pêche de France et 1re place européenne de transformation des produits de la mer. Notre terrain, c'est la zone de Capécure et ses quelque 150 entreprises — mareyeurs, fileteurs, transformateurs comme Findus ou Demarne Frères, négociants, logisticiens du froid — plus le tourisme côtier autour de Nausicaá. Catalogue marée temps réel adossé à la criée, traçabilité lot-par-lot, portails B2B grossistes/GMS, e-commerce de produits frais réfrigérés et chatbots RAG : code sur mesure, hébergement UE conforme RGPD, zéro lock-in éditeur. Devis à partir de 24-48 h selon la complexité.",
         whyHere: [
           "Capécure est notre cœur de cible : la première place européenne des produits de la mer concentre ~150 entreprises et ~5 000 emplois (54 mareyeurs de gros, 19 transformateurs, 40 négociants) qui ont besoin de catalogues marée dynamiques, de portails de commande B2B et de traçabilité numérique adossés aux arrivages de la criée.",
           "Les transformateurs nommés du bassin — Findus (poisson pané), Continentale Nutrition (sites Marengo 2 et Montebello), Demarne Frères (filetage depuis 1957) — manipulent des volumes, des lots et des contraintes sanitaires qui appellent des interfaces métier robustes plutôt que des sites vitrines génériques.",
@@ -132,14 +132,14 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis et démarrer ?",
-            a: "Le devis est établi à partir de 48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur site à Capécure ou dans vos locaux de la Côte d'Opale, démarrage rapide après validation.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur site à Capécure ou dans vos locaux de la Côte d'Opale, démarrage rapide après validation.",
           },
         ],
         guarantees:
-          "Code sur mesure, hébergement en UE conforme RGPD par défaut, DPO sur demande. Aucun lock-in éditeur : la plateforme, son code et ses données restent intégralement chez vous, reprenables par vos équipes ou tout intégrateur des Hauts-de-France. Nous tenons les seuils de performance web (chargement rapide, mobile-first) et formons vos équipes — mareyage, transformation, e-commerce, accueil touristique — à piloter l'outil en autonomie. Devis public établi à partir de 48 h selon la complexité.",
+          "Code sur mesure, hébergement en UE conforme RGPD par défaut, DPO sur demande. Aucun lock-in éditeur : la plateforme, son code et ses données restent intégralement chez vous, reprenables par vos équipes ou tout intégrateur des Hauts-de-France. Nous tenons les seuils de performance web (chargement rapide, mobile-first) et formons vos équipes — mareyage, transformation, e-commerce, accueil touristique — à piloter l'outil en autonomie. Devis public établi à partir de 24-48 h selon la complexité.",
       },
       en: {
-        hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Boulogne-sur-Mer, France's leading fishing port and Europe's foremost seafood-processing hub. Our ground is the Capécure zone and its roughly 150 companies — fish wholesalers, filleting workshops, processors such as Findus or Demarne Frères, traders, cold-chain logisticians — plus coastal tourism around Nausicaá. Real-time catch catalogues tied to the fish auction, lot-by-lot traceability, B2B wholesaler/retail portals, chilled-fresh e-commerce and RAG chatbots: custom code, EU GDPR-compliant hosting, zero vendor lock-in. Quote from 48 h depending on complexity.",
+        hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Boulogne-sur-Mer, France's leading fishing port and Europe's foremost seafood-processing hub. Our ground is the Capécure zone and its roughly 150 companies — fish wholesalers, filleting workshops, processors such as Findus or Demarne Frères, traders, cold-chain logisticians — plus coastal tourism around Nausicaá. Real-time catch catalogues tied to the fish auction, lot-by-lot traceability, B2B wholesaler/retail portals, chilled-fresh e-commerce and RAG chatbots: custom code, EU GDPR-compliant hosting, zero vendor lock-in. Quote from 24-48 h depending on complexity.",
         whyHere: [
           "Capécure is our core target: Europe's leading seafood marketplace concentrates ~150 companies and ~5,000 jobs (54 wholesale fish merchants, 19 secondary processors, 40 traders) needing dynamic catch catalogues, B2B ordering portals and digital traceability tied to the fish-auction landings.",
           "The basin's named processors — Findus (breaded fish), Continentale Nutrition (Marengo 2 and Montebello sites), Demarne Frères (filleting since 1957) — handle volumes, lots and food-safety constraints that call for robust business interfaces rather than generic showcase sites.",
@@ -218,11 +218,11 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote and start?",
-            a: "The quote is issued from 48 h depending on complexity, after an initial framing exchange. Kick-off happens on site in Capécure or at your Côte d'Opale premises, fast start after sign-off.",
+            a: "The quote is issued from 24-48 h depending on complexity, after an initial framing exchange. Kick-off happens on site in Capécure or at your Côte d'Opale premises, fast start after sign-off.",
           },
         ],
         guarantees:
-          "Custom code, EU GDPR-compliant hosting by default, DPO on request. No vendor lock-in: the platform, its code and its data stay entirely with you, recoverable by your teams or any Hauts-de-France integrator. We hold web performance thresholds (fast loading, mobile-first) and train your teams — wholesaling, processing, e-commerce, tourist reception — to run the tool autonomously. Public quote issued from 48 h depending on complexity.",
+          "Custom code, EU GDPR-compliant hosting by default, DPO on request. No vendor lock-in: the platform, its code and its data stay entirely with you, recoverable by your teams or any Hauts-de-France integrator. We hold web performance thresholds (fast loading, mobile-first) and train your teams — wholesaling, processing, e-commerce, tourist reception — to run the tool autonomously. Public quote issued from 24-48 h depending on complexity.",
       },
     },
   },

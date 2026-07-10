@@ -52,7 +52,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Michel-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville essonnienne de 21 776 habitants où le tissu repose à 40,4 % sur les services, 21,9 % sur le commerce de détail et 9,9 % sur la construction — un terrain de TPE et PME du centre-ville, de l'artisanat du BTP et du transport, le long des 2 km de berges de l'Orge. Population jeune (39,7 % de moins de 30 ans) et écosystème sportif structurant (handball Nationale 1 féminine, basket, tennis). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Michel-sur-Orge, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Michel-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville essonnienne de 21 776 habitants où le tissu repose à 40,4 % sur les services, 21,9 % sur le commerce de détail et 9,9 % sur la construction — un terrain de TPE et PME du centre-ville, de l'artisanat du BTP et du transport, le long des 2 km de berges de l'Orge. Population jeune (39,7 % de moins de 30 ans) et écosystème sportif structurant (handball Nationale 1 féminine, basket, tennis). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Michel-sur-Orge, itérations à distance.",
         whyHere: [
           "Tissu dominé par les services aux entreprises et aux particuliers (40,4 % de l'emploi local, employés et professions intermédiaires en tête à 29,9 % et 27,9 % des actifs) : nous greffons chatbots RAG, prise de rendez-vous en ligne et automatisations de relances sur les sites des cabinets, agences et prestataires de proximité du centre-ville et des abords de la gare RER C, sans refonte lourde de l'existant.",
           "Commerce de détail très présent (21,9 % de l'emploi) dans une commune jeune (39,7 % de moins de 30 ans, revenu médian 34 972 €) : nous construisons des vitrines et boutiques e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pensées mobile-first pour une clientèle locale connectée des quartiers du Bois des Roches et de la Grande Maison, avec paiement, click-and-collect et SEO local.",
@@ -63,7 +63,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Michel-sur-Orge",
             detail:
-              "Atelier sur site (centre-ville, abords de la gare RER C, bords de l'Orge, zone du Bois des Roches) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos outils métier compta/ERP. Devis ferme remis à partir de 48 h selon la complexité, sans engagement de régie.",
+              "Atelier sur site (centre-ville, abords de la gare RER C, bords de l'Orge, zone du Bois des Roches) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos outils métier compta/ERP. Devis ferme remis à partir de 24-48 h selon la complexité, sans engagement de régie.",
           },
           {
             step: "Conception UX/UI",
@@ -131,14 +131,14 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données, code et modèles. Côté budget, après le cadrage à Saint-Michel-sur-Orge on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données, code et modèles. Côté budget, après le cadrage à Saint-Michel-sur-Orge on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale du centre-ville ou un week-end de matchs. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique ni abonnement imposé. Projet transférable à tout prestataire de l'agglomération Cœur d'Essonne ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale du centre-ville ou un week-end de matchs. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique ni abonnement imposé. Projet transférable à tout prestataire de l'agglomération Cœur d'Essonne ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Michel-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville essonnienne de 21 776 habitants où le tissu repose à 40,4 % sur les services, 21,9 % sur le commerce de détail et 9,9 % sur la construction — un terrain de TPE et PME du centre-ville, de l'artisanat du BTP et du transport, le long des 2 km de berges de l'Orge. Population jeune (39,7 % de moins de 30 ans) et écosystème sportif structurant (handball Nationale 1 féminine, basket, tennis). Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Michel-sur-Orge, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Michel-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville essonnienne de 21 776 habitants où le tissu repose à 40,4 % sur les services, 21,9 % sur le commerce de détail et 9,9 % sur la construction — un terrain de TPE et PME du centre-ville, de l'artisanat du BTP et du transport, le long des 2 km de berges de l'Orge. Population jeune (39,7 % de moins de 30 ans) et écosystème sportif structurant (handball Nationale 1 féminine, basket, tennis). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Michel-sur-Orge, itérations à distance.",
         whyHere: [
           "Tissu dominé par les services aux entreprises et aux particuliers (40,4 % de l'emploi local, employés et professions intermédiaires en tête à 29,9 % et 27,9 % des actifs) : nous greffons chatbots RAG, prise de rendez-vous en ligne et automatisations de relances sur les sites des cabinets, agences et prestataires de proximité du centre-ville et des abords de la gare RER C, sans refonte lourde de l'existant.",
           "Commerce de détail très présent (21,9 % de l'emploi) dans une commune jeune (39,7 % de moins de 30 ans, revenu médian 34 972 €) : nous construisons des vitrines et boutiques e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pensées mobile-first pour une clientèle locale connectée des quartiers du Bois des Roches et de la Grande Maison, avec paiement, click-and-collect et SEO local.",
@@ -149,7 +149,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
           {
             step: "Cadrage à Saint-Michel-sur-Orge",
             detail:
-              "Atelier sur site (centre-ville, abords de la gare RER C, bords de l'Orge, zone du Bois des Roches) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos outils métier compta/ERP. Devis ferme remis à partir de 48 h selon la complexité, sans engagement de régie.",
+              "Atelier sur site (centre-ville, abords de la gare RER C, bords de l'Orge, zone du Bois des Roches) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos outils métier compta/ERP. Devis ferme remis à partir de 24-48 h selon la complexité, sans engagement de régie.",
           },
           {
             step: "Conception UX/UI",
@@ -217,11 +217,11 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
-            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données, code et modèles. Côté budget, après le cadrage à Saint-Michel-sur-Orge on remet un devis ferme en forfait fixe — à partir de 48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données, code et modèles. Côté budget, après le cadrage à Saint-Michel-sur-Orge on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale du centre-ville ou un week-end de matchs. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique ni abonnement imposé. Projet transférable à tout prestataire de l'agglomération Cœur d'Essonne ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale du centre-ville ou un week-end de matchs. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique ni abonnement imposé. Projet transférable à tout prestataire de l'agglomération Cœur d'Essonne ou repris en interne par vos équipes.",
       },
     },
   },

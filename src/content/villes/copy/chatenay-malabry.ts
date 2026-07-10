@@ -124,7 +124,7 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sites web / SaaS à Châtenay-Malabry ?",
-            a: "Devis à partir de 48 h selon la complexité du projet. Un site vitrine pour un commerce du centre-ville se chiffre vite ; une plateforme SaaS IA-native avec intégrations CRM/ERP demande un cadrage plus poussé. Dans tous les cas, périmètre et prix sont clairs avant signature.",
+            a: "Devis à partir de 24-48 h selon la complexité du projet. Un site vitrine pour un commerce du centre-ville se chiffre vite ; une plateforme SaaS IA-native avec intégrations CRM/ERP demande un cadrage plus poussé. Dans tous les cas, périmètre et prix sont clairs avant signature.",
           },
           {
             q: "Mes données et celles de mes clients restent-elles en Europe ?",
@@ -132,7 +132,7 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Vous restez propriétaire du code source et de vos données, hébergées en Union européenne avec conformité RGPD dès la conception. Aucun verrou éditeur : votre site ou plateforme — UX/UI, mobile, e-commerce multi-CMS, briques IA — est maintenable par vos équipes ou par tout intégrateur de la Vallée Sud Grand Paris après livraison. Devis à partir de 48 h selon la complexité, périmètre et prix arrêtés avant signature, kick-off sur site à Châtenay-Malabry. Code custom, pas de no-code opaque.",
+          "Vous restez propriétaire du code source et de vos données, hébergées en Union européenne avec conformité RGPD dès la conception. Aucun verrou éditeur : votre site ou plateforme — UX/UI, mobile, e-commerce multi-CMS, briques IA — est maintenable par vos équipes ou par tout intégrateur de la Vallée Sud Grand Paris après livraison. Devis à partir de 24-48 h selon la complexité, périmètre et prix arrêtés avant signature, kick-off sur site à Châtenay-Malabry. Code custom, pas de no-code opaque.",
       },
       en: {
         hero: "Châtenay-Malabry is not just another commuter suburb: since September 2024, Lidl France's head office (nearly 1,000 staff, ~40,000 sqm) has moved into the LaVallée eco-district, built on the former École Centrale Paris campus. Around that anchor, the local fabric stays highly fragmented — about 2,031 businesses, nearly three quarters in retail and services, mostly micro-firms under ten staff (town centre, rue Jean Longuet, Zone Europe, Appert-Justice project). Axion-IA builds AI-augmented websites and SaaS platforms for these structures: custom code, EU/GDPR hosting, UX/UI, mobile, multi-CMS e-commerce and conversational AI, with no vendor lock-in.",
@@ -210,7 +210,7 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
           },
           {
             q: "What is the turnaround for a website / SaaS quote in Châtenay-Malabry?",
-            a: "Quote from 48 hours depending on project complexity. A showcase site for a town-centre shop is priced quickly; an AI-native SaaS platform with CRM/ERP integrations needs deeper framing. Either way, scope and price are clear before signing.",
+            a: "Quote from 24-48 hours depending on project complexity. A showcase site for a town-centre shop is priced quickly; an AI-native SaaS platform with CRM/ERP integrations needs deeper framing. Either way, scope and price are clear before signing.",
           },
           {
             q: "Do my data and my clients' data stay in Europe?",
@@ -218,7 +218,7 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "You own the source code and your data, hosted in the European Union with GDPR compliance by design. No vendor lock-in: your site or platform — UX/UI, mobile, multi-CMS e-commerce, AI building blocks — can be maintained by your own teams or any Vallée Sud Grand Paris integrator after delivery. Quote from 48 hours depending on complexity, scope and price agreed before signing, on-site kick-off in Châtenay-Malabry. Custom code, no opaque no-code.",
+          "You own the source code and your data, hosted in the European Union with GDPR compliance by design. No vendor lock-in: your site or platform — UX/UI, mobile, multi-CMS e-commerce, AI building blocks — can be maintained by your own teams or any Vallée Sud Grand Paris integrator after delivery. Quote from 24-48 hours depending on complexity, scope and price agreed before signing, on-site kick-off in Châtenay-Malabry. Custom code, no opaque no-code.",
       },
     },
   },

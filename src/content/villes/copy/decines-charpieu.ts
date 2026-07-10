@@ -128,7 +128,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "À partir de 48 h selon la complexité. Après un premier échange sur votre projet — vitrine, e-commerce, plateforme événementielle ou portail logistique — nous vous transmettons un cadrage chiffré, sans montant générique affiché à l'avance.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre projet — vitrine, e-commerce, plateforme événementielle ou portail logistique — nous vous transmettons un cadrage chiffré, sans montant générique affiché à l'avance.",
           },
           {
             q: "Où sont hébergées les données de mon site ?",
@@ -136,7 +136,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 48 h selon la complexité, sans montant générique affiché. Code sur mesure, sans verrou éditeur : votre site ou plateforme reste maintenable en interne ou par tout prestataire de l'est lyonnais après notre mission. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception, des vitrines de commerce du Carré de Soie aux plateformes événementielles d'OL Vallée et aux portails des PME de la ZI La Rize. Nous couvrons UX/UI, web mobile, e-commerce multi-CMS et IA, avec une ambition technique calibrée sur la taille réelle de votre structure.",
+          "Devis à partir de 24 à 48 h selon la complexité, sans montant générique affiché. Code sur mesure, sans verrou éditeur : votre site ou plateforme reste maintenable en interne ou par tout prestataire de l'est lyonnais après notre mission. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception, des vitrines de commerce du Carré de Soie aux plateformes événementielles d'OL Vallée et aux portails des PME de la ZI La Rize. Nous couvrons UX/UI, web mobile, e-commerce multi-CMS et IA, avec une ambition technique calibrée sur la taille réelle de votre structure.",
       },
       en: {
         hero: "In Décines-Charpieu, Axion-IA designs AI-augmented websites and SaaS platforms for a business fabric unlike any other in eastern Lyon: on one side the events and live-entertainment ecosystem of OL Vallée — OL Groupe's headquarters on avenue Simone Veil, the Groupama Stadium and the LDLC Arena (80 to 120 events per year, the largest venue outside Paris) — on the other the town's 3,500 companies, including the industrial and logistics SMEs of the ZI La Rize and the Pivolles activity park. We cover UX/UI, mobile web, multi-CMS e-commerce and AI (RAG chatbot, semantic search, qualification agents), with bespoke code and GDPR-compliant European hosting.",
@@ -214,7 +214,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote?",
-            a: "From 48 hours depending on complexity. After an initial discussion about your project — showcase, e-commerce, events platform or logistics portal — we send a costed scope, with no generic amount advertised upfront.",
+            a: "From 24 to 48 hours depending on complexity. After an initial discussion about your project — showcase, e-commerce, events platform or logistics portal — we send a costed scope, with no generic amount advertised upfront.",
           },
           {
             q: "Where is my site's data hosted?",
@@ -222,7 +222,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 48 hours depending on complexity, with no generic amount advertised. Bespoke code, no vendor lock-in: your site or platform remains maintainable in-house or by any eastern-Lyon provider after our engagement. EU hosting by default and GDPR compliance built in from design, from Carré de Soie retail showcases to OL Vallée event platforms and the portals of ZI La Rize SMEs. We cover UX/UI, mobile web, multi-CMS e-commerce and AI, with technical ambition calibrated to the real size of your organisation.",
+          "Quote from 24 to 48 hours depending on complexity, with no generic amount advertised. Bespoke code, no vendor lock-in: your site or platform remains maintainable in-house or by any eastern-Lyon provider after our engagement. EU hosting by default and GDPR compliance built in from design, from Carré de Soie retail showcases to OL Vallée event platforms and the portals of ZI La Rize SMEs. We cover UX/UI, mobile web, multi-CMS e-commerce and AI, with technical ambition calibrated to the real size of your organisation.",
       },
     },
   },

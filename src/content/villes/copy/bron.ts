@@ -79,7 +79,7 @@ export const BRON_COPY: VilleCopy = {
           {
             step: "Recette et mise en production",
             detail:
-              "Tests sur vos vraies données (fiches produits Aushopping, dossiers clients B2B, demandes patients), validation mobile et desktop, déploiement sur hébergement UE conforme RGPD. Devis émis à partir de 48 h selon la complexité.",
+              "Tests sur vos vraies données (fiches produits Aushopping, dossiers clients B2B, demandes patients), validation mobile et desktop, déploiement sur hébergement UE conforme RGPD. Devis émis à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Passation et autonomie",
@@ -132,11 +132,11 @@ export const BRON_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour recevoir un devis et où vous déplacez-vous ?",
-            a: "Devis à partir de 48 h selon la complexité du projet. Nos consultants interviennent sur site à Bron et dans tout l'est de la Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest, Décines — à environ 15 minutes du centre de Lyon par les tramways T2/T5.",
+            a: "Devis à partir de 24-48 h selon la complexité du projet. Nos consultants interviennent sur site à Bron et dans tout l'est de la Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest, Décines — à environ 15 minutes du centre de Lyon par les tramways T2/T5.",
           },
         ],
         guarantees:
-          "Sites et plateformes hébergés en Union européenne, conformes RGPD, avec traitement adapté des données sensibles (santé, données clients retail Porte des Alpes, corpus de recherche). UX/UI et mobile-first systématiques, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Sylius) et brique IA intégrée selon vos besoins. Code, accès et documentation intégralement transférés à la livraison : aucun verrou éditeur, vous restez libre de faire évoluer votre plateforme en interne ou avec tout intégrateur de la Métropole de Lyon. Devis à partir de 48 h selon la complexité.",
+          "Sites et plateformes hébergés en Union européenne, conformes RGPD, avec traitement adapté des données sensibles (santé, données clients retail Porte des Alpes, corpus de recherche). UX/UI et mobile-first systématiques, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Sylius) et brique IA intégrée selon vos besoins. Code, accès et documentation intégralement transférés à la livraison : aucun verrou éditeur, vous restez libre de faire évoluer votre plateforme en interne ou avec tout intégrateur de la Métropole de Lyon. Devis à partir de 24-48 h selon la complexité.",
       },
       en: {
         hero: "In Bron, the second-largest commune of the Lyon Métropole, Axion-IA builds AI-augmented websites and SaaS platforms for a very specific economic fabric: the mass retail of the Aushopping Porte des Alpes centre (more than 6 million visitors a year, brands such as Cultura, Intersport, Sephora, Kiabi, Promod), the ~170 tertiary companies of the Parc du Chêne and the ~85 of the Parc Saint-Exupéry (DHL, Spie Communication, Phonak, Emerson Process, SNEF), the university and research hub of Université Gustave Eiffel and the Lyon 2 Porte des Alpes campus, and the Le Vinatier / Desgenettes / Édouard Herriot healthcare cluster. Custom code, UX/UI, mobile, multi-CMS e-commerce and an AI layer (RAG chatbot, semantic search, agents) — hosted in the European Union, GDPR-compliant, with no vendor lock-in.",
@@ -165,7 +165,7 @@ export const BRON_COPY: VilleCopy = {
           {
             step: "Acceptance and go-live",
             detail:
-              "Testing on your real data (Aushopping product sheets, B2B client files, patient requests), mobile and desktop validation, deployment on EU GDPR-compliant hosting. Quote issued from 48 h depending on complexity.",
+              "Testing on your real data (Aushopping product sheets, B2B client files, patient requests), mobile and desktop validation, deployment on EU GDPR-compliant hosting. Quote issued from 24-48 h depending on complexity.",
           },
           {
             step: "Handover and autonomy",
@@ -218,11 +218,11 @@ export const BRON_COPY: VilleCopy = {
           },
           {
             q: "How long for a quote and where do you travel?",
-            a: "Quote from 48 h depending on project complexity. Our consultants work on site in Bron and across the whole east of the Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest, Décines — about 15 minutes from central Lyon via the T2/T5 tramways.",
+            a: "Quote from 24-48 h depending on project complexity. Our consultants work on site in Bron and across the whole east of the Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest, Décines — about 15 minutes from central Lyon via the T2/T5 tramways.",
           },
         ],
         guarantees:
-          "Sites and platforms hosted in the European Union, GDPR-compliant, with adapted processing of sensitive data (health, Porte des Alpes retail customer data, research corpora). Systematic UX/UI and mobile-first, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop, Sylius) and an integrated AI layer per your needs. Code, access and documentation fully transferred at delivery: no vendor lock-in, you remain free to evolve your platform in-house or with any Lyon Métropole integrator. Quote from 48 h depending on complexity.",
+          "Sites and platforms hosted in the European Union, GDPR-compliant, with adapted processing of sensitive data (health, Porte des Alpes retail customer data, research corpora). Systematic UX/UI and mobile-first, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop, Sylius) and an integrated AI layer per your needs. Code, access and documentation fully transferred at delivery: no vendor lock-in, you remain free to evolve your platform in-house or with any Lyon Métropole integrator. Quote from 24-48 h depending on complexity.",
       },
     },
   },

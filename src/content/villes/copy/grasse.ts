@@ -121,7 +121,7 @@ export const GRASSE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Le devis est établi à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Nous nous déplaçons sur site à Grasse pour qualifier précisément votre périmètre avant chiffrage.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nous nous déplaçons sur site à Grasse pour qualifier précisément votre périmètre avant chiffrage.",
           },
           {
             q: "Mes formules et données R&D restent-elles confidentielles ?",
@@ -207,7 +207,7 @@ export const GRASSE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote?",
-            a: "The quote is issued from 48 h depending on project complexity, after an initial framing exchange. We travel on site in Grasse to scope your project precisely before quoting.",
+            a: "The quote is issued from 24-48 h depending on project complexity, after an initial framing exchange. We travel on site in Grasse to scope your project precisely before quoting.",
           },
           {
             q: "Do my formulas and R&D data stay confidential?",

@@ -53,7 +53,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Dammarie-les-Lys des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des bords de Seine de l'agglomération Melun Val de Seine, où cohabitent artisans et commerces de proximité, zones d'activités, PME du BTP et de la logistique, et sous-traitants du pôle aéronautique de Villaroche (Safran Aircraft Engines) tout proche, vers Réau et Montereau-sur-le-Jard. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Dammarie-les-Lys, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dammarie-les-Lys des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des bords de Seine de l'agglomération Melun Val de Seine, où cohabitent artisans et commerces de proximité, zones d'activités, PME du BTP et de la logistique, et sous-traitants du pôle aéronautique de Villaroche (Safran Aircraft Engines) tout proche, vers Réau et Montereau-sur-le-Jard. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Dammarie-les-Lys, itérations à distance.",
         whyHere: [
           "Sous-traitance aéronautique du pôle de Villaroche (Safran Aircraft Engines, ex-Snecma) à quinze minutes, vers Réau et Montereau-sur-le-Jard : pour ces PME et TPE techniques, on bâtit des portails de gestion documentaire, des espaces clients et des plateformes de suivi qualité où la recherche sémantique retrouve la bonne procédure, le bon plan ou la bonne certification en quelques secondes.",
           "Tissu dense de TPE artisans, commerces et PME du BTP de l'agglo melunaise, des bords de Seine aux zones commerciales de Dammarie : on greffe sur l'existant un devis en ligne, une prise de rendez-vous et un chatbot multilingue qui qualifie la demande avant l'appel, sans imposer de refonte coûteuse au commerçant ou à l'artisan.",
@@ -64,7 +64,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
           {
             step: "Cadrage à Dammarie-les-Lys",
             detail:
-              "Atelier sur site (bords de Seine, zones d'activités et commerciales de l'agglo Melun Val de Seine, ou abords du pôle de Villaroche vers Réau) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (bords de Seine, zones d'activités et commerciales de l'agglo Melun Val de Seine, ou abords du pôle de Villaroche vers Réau) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -124,7 +124,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Dammarie-les-Lys, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale pour la TPE comme pour la PME.",
+            a: "Oui. Après le cadrage à Dammarie-les-Lys, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale pour la TPE comme pour la PME.",
           },
           {
             q: "Pouvez-vous outiller un sous-traitant aéro de Villaroche ?",
@@ -136,10 +136,10 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison du chantier ou de la logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Outil transférable à tout prestataire d'Île-de-France ou de Seine-et-Marne, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison du chantier ou de la logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Outil transférable à tout prestataire d'Île-de-France ou de Seine-et-Marne, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Dammarie-les-Lys des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des bords de Seine de l'agglomération Melun Val de Seine, où cohabitent artisans et commerces de proximité, zones d'activités, PME du BTP et de la logistique, et sous-traitants du pôle aéronautique de Villaroche (Safran Aircraft Engines) tout proche, vers Réau et Montereau-sur-le-Jard. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Dammarie-les-Lys, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dammarie-les-Lys des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des bords de Seine de l'agglomération Melun Val de Seine, où cohabitent artisans et commerces de proximité, zones d'activités, PME du BTP et de la logistique, et sous-traitants du pôle aéronautique de Villaroche (Safran Aircraft Engines) tout proche, vers Réau et Montereau-sur-le-Jard. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Dammarie-les-Lys, itérations à distance.",
         whyHere: [
           "Sous-traitance aéronautique du pôle de Villaroche (Safran Aircraft Engines, ex-Snecma) à quinze minutes, vers Réau et Montereau-sur-le-Jard : pour ces PME et TPE techniques, on bâtit des portails de gestion documentaire, des espaces clients et des plateformes de suivi qualité où la recherche sémantique retrouve la bonne procédure, le bon plan ou la bonne certification en quelques secondes.",
           "Tissu dense de TPE artisans, commerces et PME du BTP de l'agglo melunaise, des bords de Seine aux zones commerciales de Dammarie : on greffe sur l'existant un devis en ligne, une prise de rendez-vous et un chatbot multilingue qui qualifie la demande avant l'appel, sans imposer de refonte coûteuse au commerçant ou à l'artisan.",
@@ -150,7 +150,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
           {
             step: "Cadrage à Dammarie-les-Lys",
             detail:
-              "Atelier sur site (bords de Seine, zones d'activités et commerciales de l'agglo Melun Val de Seine, ou abords du pôle de Villaroche vers Réau) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site (bords de Seine, zones d'activités et commerciales de l'agglo Melun Val de Seine, ou abords du pôle de Villaroche vers Réau) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -210,7 +210,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Dammarie-les-Lys, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale pour la TPE comme pour la PME.",
+            a: "Oui. Après le cadrage à Dammarie-les-Lys, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale pour la TPE comme pour la PME.",
           },
           {
             q: "Pouvez-vous outiller un sous-traitant aéro de Villaroche ?",
@@ -222,7 +222,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison du chantier ou de la logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Outil transférable à tout prestataire d'Île-de-France ou de Seine-et-Marne, ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison du chantier ou de la logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Outil transférable à tout prestataire d'Île-de-France ou de Seine-et-Marne, ou repris en interne par vos équipes.",
       },
     },
   },

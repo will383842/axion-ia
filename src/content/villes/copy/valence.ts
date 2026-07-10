@@ -132,11 +132,11 @@ export const VALENCE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis, et comment garantissez-vous la conformité ?",
-            a: "Devis à partir de 48 h selon la complexité du projet. Tous nos développements sont hébergés en Union européenne, conformes au RGPD et à l'AI Act, avec validation humaine sur les contenus sensibles (données réglementaires, traçabilité agroalimentaire) et aucun verrou éditeur.",
+            a: "Devis à partir de 24-48 h selon la complexité du projet. Tous nos développements sont hébergés en Union européenne, conformes au RGPD et à l'AI Act, avec validation humaine sur les contenus sensibles (données réglementaires, traçabilité agroalimentaire) et aucun verrou éditeur.",
           },
         ],
         guarantees:
-          "Devis transparent à partir de 48 h selon la complexité. Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande. Code, contenus et modèles IA restent intégralement votre propriété et sont repris par vos équipes ou par tout intégrateur de la French Tech Valence-Romans, sans dépendance Axion-IA imposée. Nous couvrons UX/UI, mobile, e-commerce multi-CMS et briques IA sous un seul interlocuteur, avec une exigence de sécurité adaptée aux secteurs industriels et réglementés du bassin valentinois.",
+          "Devis transparent à partir de 24-48 h selon la complexité. Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande. Code, contenus et modèles IA restent intégralement votre propriété et sont repris par vos équipes ou par tout intégrateur de la French Tech Valence-Romans, sans dépendance Axion-IA imposée. Nous couvrons UX/UI, mobile, e-commerce multi-CMS et briques IA sous un seul interlocuteur, avec une exigence de sécurité adaptée aux secteurs industriels et réglementés du bassin valentinois.",
       },
       en: {
         hero: "In Valence (Drôme), Axion-IA builds AI-augmented websites and SaaS platforms for the city's real economic fabric: mechatronics and aerospace manufacturers in the wake of Crouzet, Thales' helicopter avionics hub and SKF Aerospace; food-processing companies (Agrana Fruit, Andros, Brioches Pasquier, Cafés Pivard); and digital and R&D firms at the Rovaltain–Valence TGV ecopark in Alixan. Custom code, UX/UI and mobile included, multi-CMS e-commerce, RAG chatbot and semantic search — hosted in the European Union, GDPR-compliant, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const VALENCE_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote, and how do you ensure compliance?",
-            a: "Quote from 48 h depending on project complexity. All our developments are hosted in the European Union, GDPR- and AI Act-compliant, with human validation on sensitive content (regulatory data, food traceability) and no vendor lock-in.",
+            a: "Quote from 24-48 h depending on project complexity. All our developments are hosted in the European Union, GDPR- and AI Act-compliant, with human validation on sensitive content (regulatory data, food traceability) and no vendor lock-in.",
           },
         ],
         guarantees:
-          "Transparent quote from 48 h depending on complexity. EU hosting by default, GDPR and AI Act compliance, DPO on request. Code, content and AI models remain entirely your property and are taken over by your teams or any French Tech Valence-Romans integrator, with no imposed Axion-IA dependency. We cover UX/UI, mobile, multi-CMS e-commerce and AI building blocks under a single point of contact, with security requirements suited to the industrial and regulated sectors of the Valence area.",
+          "Transparent quote from 24-48 h depending on complexity. EU hosting by default, GDPR and AI Act compliance, DPO on request. Code, content and AI models remain entirely your property and are taken over by your teams or any French Tech Valence-Romans integrator, with no imposed Axion-IA dependency. We cover UX/UI, mobile, multi-CMS e-commerce and AI building blocks under a single point of contact, with security requirements suited to the industrial and regulated sectors of the Valence area.",
       },
     },
   },

@@ -132,7 +132,7 @@ export const MEUDON_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Meudon ?",
-            a: "Nous envoyons un devis à partir de 48 h selon la complexité du projet, après un premier échange de cadrage. Nos consultants se déplacent depuis Paris (Transilien N / ligne L via Meudon-Val-Fleury, environ 15 min) sur tout l'ouest des Hauts-de-Seine.",
+            a: "Nous envoyons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Nos consultants se déplacent depuis Paris (Transilien N / ligne L via Meudon-Val-Fleury, environ 15 min) sur tout l'ouest des Hauts-de-Seine.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const MEUDON_COPY: VilleCopy = {
           },
           {
             q: "How fast do you send a quote in Meudon?",
-            a: "We send a quote from 48 hours depending on project complexity, after an initial framing exchange. Our consultants travel from Paris (Transilien N / line L via Meudon-Val-Fleury, about 15 min) across the western Hauts-de-Seine.",
+            a: "We send a quote from 24 to 48 hours depending on project complexity, after an initial framing exchange. Our consultants travel from Paris (Transilien N / line L via Meudon-Val-Fleury, about 15 min) across the western Hauts-de-Seine.",
           },
         ],
         guarantees:

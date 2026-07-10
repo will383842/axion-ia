@@ -112,7 +112,7 @@ export const ORVAULT_COPY: VilleCopy = {
         faq: [
           {
             q: "Faites-vous des sites e-commerce pour les enseignes de la Z.A. Le Forum à Orvault ?",
-            a: "Oui. La Z.A. Le Forum est un pôle d'équipement de la maison et de distribution (Castorama, Jardiplay, La Parqueterie-Nantes, Motorland). Nous y construisons des boutiques e-commerce multi-CMS avec recherche de catalogue par IA, configurateurs produit, fiches enrichies automatiquement et chatbot conseil — connectés à votre gestion de stock. Devis à partir de 48 h selon la complexité.",
+            a: "Oui. La Z.A. Le Forum est un pôle d'équipement de la maison et de distribution (Castorama, Jardiplay, La Parqueterie-Nantes, Motorland). Nous y construisons des boutiques e-commerce multi-CMS avec recherche de catalogue par IA, configurateurs produit, fiches enrichies automatiquement et chatbot conseil — connectés à votre gestion de stock. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             q: "Pouvez-vous équiper les transporteurs et logisticiens de la Z.A. de Pentecôte ?",
@@ -132,7 +132,7 @@ export const ORVAULT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis transmis à partir de 48 h selon la complexité, à tarif public et transparent — pas de devis opaque. Code et accès vous appartiennent : la plateforme est reprenable en interne ou par tout intégrateur de Nantes Métropole, sans verrou éditeur ni dépendance contractuelle à Axion-IA. Hébergement Union européenne conforme RGPD par défaut, DPO sur demande, contraintes de souveraineté appliquées dès la conception pour les sites industriels et portails logistiques d'Orvault. Vos référents internes sont formés et autonomes à la mise en ligne.",
+          "Devis transmis à partir de 24-48 h selon la complexité, à tarif public et transparent — pas de devis opaque. Code et accès vous appartiennent : la plateforme est reprenable en interne ou par tout intégrateur de Nantes Métropole, sans verrou éditeur ni dépendance contractuelle à Axion-IA. Hébergement Union européenne conforme RGPD par défaut, DPO sur demande, contraintes de souveraineté appliquées dès la conception pour les sites industriels et portails logistiques d'Orvault. Vos référents internes sont formés et autonomes à la mise en ligne.",
       },
       en: {
         hero: "In Orvault (44), Axion-IA builds AI-augmented websites and SaaS platforms for a very specific local fabric: the retail and home-improvement brands of the Le Forum business zone (Castorama, Jardiplay, La Parqueterie-Nantes, Motorland), the carriers and logistics players of the Pentecôte zone (Atlantique Camion), industrial sites and HQs such as Bodet, and the digital SMEs spilling over from the neighbouring Ar Mor tertiary park (Sopra Steria, Conserto, dynaMIPS). E-commerce storefronts across multiple CMS, B2B quote/order portals, RAG chatbots, semantic catalogue search: custom code, EU GDPR-compliant hosting, zero vendor lock-in — your Orvault teams keep control of the stack after the mission.",
@@ -198,7 +198,7 @@ export const ORVAULT_COPY: VilleCopy = {
         faq: [
           {
             q: "Do you build e-commerce sites for the Le Forum retailers in Orvault?",
-            a: "Yes. Le Forum is a home-improvement and distribution hub (Castorama, Jardiplay, La Parqueterie-Nantes, Motorland). We build multi-CMS e-commerce stores with AI catalogue search, product configurators, auto-enriched product sheets and an advisory chatbot — connected to your stock management. Quote provided from 48 h depending on complexity.",
+            a: "Yes. Le Forum is a home-improvement and distribution hub (Castorama, Jardiplay, La Parqueterie-Nantes, Motorland). We build multi-CMS e-commerce stores with AI catalogue search, product configurators, auto-enriched product sheets and an advisory chatbot — connected to your stock management. Quote provided from 24-48 h depending on complexity.",
           },
           {
             q: "Can you equip the carriers and logistics players of the Pentecôte zone?",
@@ -218,7 +218,7 @@ export const ORVAULT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 48 h depending on complexity, at public and transparent pricing — no opaque quote game. You own the code and access: the platform can be taken over in-house or by any Nantes Métropole integrator, with no vendor lock-in or contractual dependency on Axion-IA. European Union GDPR-compliant hosting by default, DPO on request, sovereignty constraints applied from design for Orvault's industrial sites and logistics portals. Your internal leads are trained and autonomous at go-live.",
+          "Quote provided from 24-48 h depending on complexity, at public and transparent pricing — no opaque quote game. You own the code and access: the platform can be taken over in-house or by any Nantes Métropole integrator, with no vendor lock-in or contractual dependency on Axion-IA. European Union GDPR-compliant hosting by default, DPO on request, sovereignty constraints applied from design for Orvault's industrial sites and logistics portals. Your internal leads are trained and autonomous at go-live.",
       },
     },
   },

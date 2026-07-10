@@ -53,7 +53,7 @@ export const ARCUEIL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Arcueil des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails clients, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire dense du sud parisien, intégrée à la Métropole du Grand Paris, où cohabitent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises le long de l'axe Laplace, autour de La Vache Noire et dans le centre d'affaires de la ZAC Les Portes d'Arcueil. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Arcueil via le RER B (Laplace, Arcueil-Cachan), à deux pas de l'aqueduc, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Arcueil des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails clients, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire dense du sud parisien, intégrée à la Métropole du Grand Paris, où cohabitent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises le long de l'axe Laplace, autour de La Vache Noire et dans le centre d'affaires de la ZAC Les Portes d'Arcueil. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Arcueil via le RER B (Laplace, Arcueil-Cachan), à deux pas de l'aqueduc, puis itérations à distance.",
         whyHere: [
           "Pôle d'édition logicielle et de services informatiques aux portes sud de Paris, concentré dans le centre d'affaires de la ZAC Les Portes d'Arcueil et le long de l'axe Laplace : pour ces éditeurs et SSII, on construit des plateformes SaaS IA-native, des portails clients et des espaces produit sur mesure, branchés sur votre stack existante (CRM, ERP, facturation) avec recherche sémantique intégrée.",
           "Densité de sièges sociaux et de grands comptes — le centre d'affaires des Portes d'Arcueil héberge des enseignes comme Orange ou Monoprix Exploitation : sites corporate exigeants, intranets, design systems à votre marque et outils internes augmentés à l'IA, avec des Web Vitals tenus et une accessibilité contrôlée sur desktop comme mobile.",
@@ -64,7 +64,7 @@ export const ARCUEIL_COPY: VilleCopy = {
           {
             step: "Cadrage à Arcueil",
             detail:
-              "Atelier sur site — bureaux de l'axe Laplace, centre d'affaires des Portes d'Arcueil, quartier de La Vache Noire ou vos locaux : objectifs, parcours utilisateurs, audit de la stack et des contenus. On repart avec un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — bureaux de l'axe Laplace, centre d'affaires des Portes d'Arcueil, quartier de La Vache Noire ou vos locaux : objectifs, parcours utilisateurs, audit de la stack et des contenus. On repart avec un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -132,14 +132,14 @@ export const ARCUEIL_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site — axe Laplace, Portes d'Arcueil ou vos locaux — on remet un devis ferme en forfait fixe. Le délai démarre à 48 h pour un projet simple et dépend de la complexité. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site — axe Laplace, Portes d'Arcueil ou vos locaux — on remet un devis ferme en forfait fixe. Le délai démarre à 24-48 h pour un projet simple et dépend de la complexité. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un site ou un SaaS déjà exploité par les clients d'un éditeur arcueillais. Web Vitals et accessibilité contrôlés à la livraison, sur desktop comme sur mobile. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un site ou un SaaS déjà exploité par les clients d'un éditeur arcueillais. Web Vitals et accessibilité contrôlés à la livraison, sur desktop comme sur mobile. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Arcueil des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails clients, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire dense du sud parisien, intégrée à la Métropole du Grand Paris, où cohabitent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises le long de l'axe Laplace, autour de La Vache Noire et dans le centre d'affaires de la ZAC Les Portes d'Arcueil. Devis à partir de 48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Arcueil via le RER B (Laplace, Arcueil-Cachan), à deux pas de l'aqueduc, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Arcueil des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, portails clients, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire dense du sud parisien, intégrée à la Métropole du Grand Paris, où cohabitent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises le long de l'axe Laplace, autour de La Vache Noire et dans le centre d'affaires de la ZAC Les Portes d'Arcueil. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Arcueil via le RER B (Laplace, Arcueil-Cachan), à deux pas de l'aqueduc, puis itérations à distance.",
         whyHere: [
           "Pôle d'édition logicielle et de services informatiques aux portes sud de Paris, concentré dans le centre d'affaires de la ZAC Les Portes d'Arcueil et le long de l'axe Laplace : pour ces éditeurs et SSII, on construit des plateformes SaaS IA-native, des portails clients et des espaces produit sur mesure, branchés sur votre stack existante (CRM, ERP, facturation) avec recherche sémantique intégrée.",
           "Densité de sièges sociaux et de grands comptes — le centre d'affaires des Portes d'Arcueil héberge des enseignes comme Orange ou Monoprix Exploitation : sites corporate exigeants, intranets, design systems à votre marque et outils internes augmentés à l'IA, avec des Web Vitals tenus et une accessibilité contrôlée sur desktop comme mobile.",
@@ -150,7 +150,7 @@ export const ARCUEIL_COPY: VilleCopy = {
           {
             step: "Cadrage à Arcueil",
             detail:
-              "Atelier sur site — bureaux de l'axe Laplace, centre d'affaires des Portes d'Arcueil, quartier de La Vache Noire ou vos locaux : objectifs, parcours utilisateurs, audit de la stack et des contenus. On repart avec un devis ferme à partir de 48 h selon la complexité.",
+              "Atelier sur site — bureaux de l'axe Laplace, centre d'affaires des Portes d'Arcueil, quartier de La Vache Noire ou vos locaux : objectifs, parcours utilisateurs, audit de la stack et des contenus. On repart avec un devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -218,11 +218,11 @@ export const ARCUEIL_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site — axe Laplace, Portes d'Arcueil ou vos locaux — on remet un devis ferme en forfait fixe. Le délai démarre à 48 h pour un projet simple et dépend de la complexité. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+            a: "Oui. Après le cadrage sur site — axe Laplace, Portes d'Arcueil ou vos locaux — on remet un devis ferme en forfait fixe. Le délai démarre à 24-48 h pour un projet simple et dépend de la complexité. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un site ou un SaaS déjà exploité par les clients d'un éditeur arcueillais. Web Vitals et accessibilité contrôlés à la livraison, sur desktop comme sur mobile. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un site ou un SaaS déjà exploité par les clients d'un éditeur arcueillais. Web Vitals et accessibilité contrôlés à la livraison, sur desktop comme sur mobile. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes.",
       },
     },
   },
