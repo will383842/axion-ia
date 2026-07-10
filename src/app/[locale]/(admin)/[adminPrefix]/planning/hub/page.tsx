@@ -131,6 +131,9 @@ export default async function PlanningHubPage({
         <Link href={`/fr/${adminPrefix}/planning/timeline`} className="admin-link">
           Timeline
         </Link>
+        <Link href={`/fr/${adminPrefix}/planning/pipeline`} className="admin-link">
+          Pipeline
+        </Link>
       </nav>
 
       {signaux.length === 0 ? (

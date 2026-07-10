@@ -36,7 +36,9 @@ describe("buildAdminNav SSOT", () => {
     // staffées, conflits, formateurs non conformes en mission, surcharge, relevés
     // en attente, anomalies) et « Timeline ressources » (formateur × jours du
     // mois). Groupe main / sous-groupe agenda, avec les autres vues cockpit. = 131.
-    expect(items.length).toBe(131);
+    // +1 (2026-07-10) : « Pipeline commercial » — entonnoir Devis → Session →
+    // Facture, âge des affaires bloquées et fuites nommées. 5e vue du pilier A. = 132.
+    expect(items.length).toBe(132);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
