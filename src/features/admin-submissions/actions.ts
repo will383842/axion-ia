@@ -76,6 +76,12 @@ const listSubmissionsSchema = z.object({
    * sur le statut réponse (computed depuis replyCount + dernière deliveryStatus).
    */
   replyStatus: z.enum(["all", "unanswered", "answered", "failed"]).default("all"),
+  /**
+   * Corbeille (2026-07-10) — `false` (défaut) masque les messages soft-deleted
+   * (deletedAt non null). `true` = onglet « Corbeille » : n'affiche QUE les
+   * soft-deleted (le filtre archivés est alors ignoré).
+   */
+  deleted: z.coerce.boolean().default(false),
 });
 export type ListSubmissionsInput = z.infer<typeof listSubmissionsSchema>;
 
@@ -95,6 +101,8 @@ export interface SubmissionListItem {
   replyCount: number;
   needsAttention: boolean;
   archivedAt: Date | null;
+  /** Corbeille (2026-07-10) — non null = soft-deleted (dans la corbeille). */
+  deletedAt: Date | null;
   lastRepliedAt: Date | null;
   /** Status delivery de la DERNIÈRE reply (null si aucune). */
   lastReplyStatus: string | null;
@@ -142,10 +150,18 @@ export async function listSubmissionsAction(
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.locale !== "all") where.locale = parsed.locale;
 
-  // Sprint Notif Infra 2026-05-26 / fix P0-2 audit 2026-05-27 — masque les
-  // archivés par défaut. L'admin peut les ré-inclure via toggle.
-  if (!parsed.includeArchived) {
-    where.archivedAt = null;
+  // Corbeille (2026-07-10) — l'onglet « Corbeille » n'affiche QUE les
+  // soft-deleted et ignore le filtre archivés ; sinon on masque toujours les
+  // soft-deleted (deletedAt non null).
+  if (parsed.deleted) {
+    where.deletedAt = { not: null };
+  } else {
+    where.deletedAt = null;
+    // Sprint Notif Infra 2026-05-26 / fix P0-2 audit 2026-05-27 — masque les
+    // archivés par défaut. L'admin peut les ré-inclure via toggle.
+    if (!parsed.includeArchived) {
+      where.archivedAt = null;
+    }
   }
 
   // Sprint Notif Infra 2026-05-26 / fix P1-2 audit 2026-05-27 — filtre
@@ -192,6 +208,7 @@ export async function listSubmissionsAction(
     replyCount: true,
     needsAttention: true,
     archivedAt: true,
+    deletedAt: true,
     lastRepliedAt: true,
     // Form v2 — `details` JSON contient unifiedType (le champ `type` DB n'a que
     // 5 valeurs enum, vs 12 types unifiés).
@@ -228,6 +245,7 @@ export async function listSubmissionsAction(
       replyCount: s.replyCount,
       needsAttention: s.needsAttention,
       archivedAt: s.archivedAt,
+      deletedAt: s.deletedAt,
       lastRepliedAt: s.lastRepliedAt,
       lastReplyStatus: s.replies[0]?.deliveryStatus ?? null,
       unifiedType,

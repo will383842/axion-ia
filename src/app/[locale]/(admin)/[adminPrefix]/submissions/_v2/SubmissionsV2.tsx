@@ -6,9 +6,15 @@ import Link from "next/link";
 import type { SubmissionListItem } from "@/features/admin-submissions/actions";
 import { listSubmissionsAction } from "@/features/admin-submissions/actions";
 import { SubmissionFilters } from "../SubmissionFilters";
-import { AdminPageShell, AdminPageHeader, AdminStatusBadge } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminStatusBadge,
+  AdminFilterTabs,
+} from "@/components/admin/ui";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 import { resolveSubmissionLabel } from "./submission-type-labels";
+import { SubmissionRowActions } from "./SubmissionRowActions";
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouveau",
   in_progress: "En cours",
@@ -68,6 +74,7 @@ export async function SubmissionsV2({
   forcedTypes,
 }: Props): Promise<React.ReactElement> {
   const includeArchived = searchParams["includeArchived"] === "true";
+  const deleted = searchParams["deleted"] === "true";
   const result = await listSubmissionsAction({
     type: searchParams["type"] as never,
     unifiedType: searchParams["unifiedType"],
@@ -80,6 +87,7 @@ export async function SubmissionsV2({
     page: searchParams["page"] ? parseInt(searchParams["page"], 10) : 1,
     pageSize: 25,
     includeArchived,
+    deleted,
   });
 
   const csvUrl = `/api/admin/submissions/export?${new URLSearchParams({
@@ -93,6 +101,24 @@ export async function SubmissionsV2({
   // filtrées (commercial, presse) pointent donc là — sinon /contacts/commercial/[id]
   // ou /contacts/presse/[id] (inexistants) → 404 au clic sur une ligne.
   const detailBase = `/fr/${adminPrefix}/contacts/messages`;
+
+  // Onglets Actifs / Archivés / Corbeille (fix P0-2 : les archivés et les
+  // soft-deleted sont masqués par défaut ; chaque onglet force ses params).
+  const currentTab = deleted
+    ? "trash"
+    : includeArchived && searchParams["status"] === "archived"
+      ? "archived"
+      : "active";
+  const tabOptions = [
+    { value: "active", label: "Actifs", href: base },
+    {
+      value: "archived",
+      label: "Archivés",
+      href: `${base}?includeArchived=true&status=archived`,
+    },
+    { value: "trash", label: "🗑️ Corbeille", href: `${base}?deleted=true` },
+  ];
+
   const rows = result.items.map((s) => {
     const r = replyBadge(s);
     return {
@@ -123,6 +149,14 @@ export async function SubmissionsV2({
           </div>
         </span>,
         s.locale.toUpperCase(),
+        <SubmissionRowActions
+          key="actions"
+          id={s.id}
+          archived={s.archivedAt !== null}
+          needsAttention={s.needsAttention}
+          status={s.status}
+          deleted={s.deletedAt !== null}
+        />,
       ],
     };
   });
@@ -138,6 +172,9 @@ export async function SubmissionsV2({
           </Link>
         }
       />
+      <div className="mb-[var(--space-admin-4)]">
+        <AdminFilterTabs options={tabOptions} current={currentTab} label="Vue" />
+      </div>
       <div className="mb-[var(--space-admin-6)]">
         <SubmissionFilters initial={searchParams} />
       </div>
@@ -147,7 +184,16 @@ export async function SubmissionsV2({
         total={result.total}
         page={result.page}
         totalPages={result.totalPages}
-        columnHeaders={["Date", "Type", "Réponse", "Statut", "Société", "Contact", "Langue"]}
+        columnHeaders={[
+          "Date",
+          "Type",
+          "Réponse",
+          "Statut",
+          "Société",
+          "Contact",
+          "Langue",
+          "Actions",
+        ]}
         rows={rows}
         rowClickable
         paginationBaseHref={base}
@@ -158,6 +204,9 @@ export async function SubmissionsV2({
           search: searchParams["search"],
           dateFrom: searchParams["dateFrom"],
           dateTo: searchParams["dateTo"],
+          // Préserve les onglets Archivés / Corbeille au-delà de la page 1.
+          includeArchived: searchParams["includeArchived"],
+          deleted: searchParams["deleted"],
         }}
       />
     </AdminPageShell>
