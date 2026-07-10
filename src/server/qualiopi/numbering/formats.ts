@@ -22,6 +22,7 @@ export const NUMBERING_PREFIX = {
   client: "AXI-CLI",
   devis: "AXI-DEV",
   offre: "AXI-OFF",
+  audit: "AXI-AUD",
 } as const;
 
 export type NumberingType = keyof typeof NUMBERING_PREFIX;
