@@ -39,6 +39,7 @@ import {
   construireLignesPrestation,
   construireReleve,
   estLigneDue,
+  mapStatutAudit,
   mapStatutCoaching,
   mapStatutSession,
   periodeRecalculable,
@@ -110,7 +111,7 @@ function heuresCreneau(debut: Date, fin: Date | null): number {
 async function lirePrestations(periode: Periode): Promise<PrestationACalculer[]> {
   const { debut, fin } = fenetreUtcElargie(periode);
 
-  const [sessions, coachings] = await Promise.all([
+  const [sessions, coachings, audits] = await Promise.all([
     prisma.trainingSession.findMany({
       where: { dateDebut: { gte: debut, lt: fin } },
       select: {
@@ -133,6 +134,18 @@ async function lirePrestations(periode: Periode): Promise<PrestationACalculer[]>
         interventionSlug: true,
       },
     }),
+    prisma.auditMission.findMany({
+      where: { dateDebut: { gte: debut, lt: fin } },
+      select: {
+        id: true,
+        dateDebut: true,
+        dateFin: true,
+        dureeHeures: true,
+        statut: true,
+        montantHtCents: true,
+        formateurId: true,
+      },
+    }),
   ]);
 
   const prestations: PrestationACalculer[] = [];
@@ -144,6 +157,7 @@ async function lirePrestations(periode: Periode): Promise<PrestationACalculer[]>
       sessionId: s.id,
       coachingSessionId: null,
       bookingId: null,
+      auditMissionId: null,
       date: s.dateDebut,
       statut: mapStatutSession(s.statut),
       // Un slug de formation peut dépasser les 80 caractères d'une règle ciblée :
@@ -171,6 +185,7 @@ async function lirePrestations(periode: Periode): Promise<PrestationACalculer[]>
       sessionId: null,
       coachingSessionId: c.id,
       bookingId: null,
+      auditMissionId: null,
       date: c.dateSeance,
       statut: mapStatutCoaching(c.statut),
       interventionSlug: c.interventionSlug,
@@ -178,6 +193,30 @@ async function lirePrestations(periode: Periode): Promise<PrestationACalculer[]>
       // Le CA d'un coaching vit sur le contrat, pas sur la séance (cf. en-tête).
       caTotalCents: 0,
       affectations: [{ trainerId: c.trainerId }],
+    });
+  }
+
+  for (const a of audits) {
+    if (!appartientALaPeriode(a.dateDebut, periode)) continue;
+    // Un audit sans formateur affecté ne produit aucune ligne (silence voulu,
+    // comme une session non staffée) : `affectations` vide.
+    const affectations = a.formateurId !== null ? [{ trainerId: a.formateurId }] : [];
+    // Durée : `dureeHeures` si saisie, sinon la longueur du créneau début→fin.
+    const heures = a.dureeHeures ?? heuresCreneau(a.dateDebut, a.dateFin);
+    prestations.push({
+      type: "audit",
+      sessionId: null,
+      coachingSessionId: null,
+      bookingId: null,
+      auditMissionId: a.id,
+      date: a.dateDebut,
+      statut: mapStatutAudit(a.statut),
+      // Pas de formation ciblée : le barème résout sur le type "audit" ou global.
+      interventionSlug: null,
+      dureeHeures: heures,
+      // Le CA d'un audit EST son montant : une commission porte dessus.
+      caTotalCents: a.montantHtCents,
+      affectations,
     });
   }
 

@@ -1,7 +1,12 @@
 /** Tests — types.ts (planning unifié) : construction des liens de fiche. */
 
 import { describe, it, expect } from "vitest";
-import { planningDetailHref, PLANNING_STATUT_LABELS, PLANNING_TYPE_LABELS } from "./types";
+import {
+  deduireCommercialStatut,
+  planningDetailHref,
+  PLANNING_STATUT_LABELS,
+  PLANNING_TYPE_LABELS,
+} from "./types";
 
 describe("planningDetailHref", () => {
   it("pointe vers la fiche 360° d'une formation", () => {
@@ -28,7 +33,30 @@ describe("libellés", () => {
     ]);
   });
 
-  it("couvre les deux types de prestation", () => {
-    expect(Object.keys(PLANNING_TYPE_LABELS).sort()).toEqual(["coaching", "formation"]);
+  it("couvre les trois types de prestation", () => {
+    expect(Object.keys(PLANNING_TYPE_LABELS).sort()).toEqual(["audit", "coaching", "formation"]);
+  });
+});
+
+describe("deduireCommercialStatut", () => {
+  it("convention signée = validé, quel que soit le devis", () => {
+    expect(deduireCommercialStatut(null, true)).toBe("valide");
+    expect(deduireCommercialStatut("envoye", true)).toBe("valide");
+  });
+
+  it("devis accepté ou transformé = validé", () => {
+    expect(deduireCommercialStatut("accepte", false)).toBe("valide");
+    expect(deduireCommercialStatut("transforme_convention", false)).toBe("valide");
+  });
+
+  it("devis envoyé sans réponse = en devis", () => {
+    expect(deduireCommercialStatut("envoye", false)).toBe("en_devis");
+  });
+
+  it("brouillon, refus, expiration, ou aucun devis = aucune pastille", () => {
+    expect(deduireCommercialStatut("brouillon", false)).toBeNull();
+    expect(deduireCommercialStatut("refuse", false)).toBeNull();
+    expect(deduireCommercialStatut("expire", false)).toBeNull();
+    expect(deduireCommercialStatut(null, false)).toBeNull();
   });
 });

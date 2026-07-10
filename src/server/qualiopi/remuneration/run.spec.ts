@@ -68,6 +68,7 @@ function prestation(over: Partial<PrestationACalculer> = {}): PrestationACalcule
     sessionId: "s1",
     coachingSessionId: null,
     bookingId: null,
+    auditMissionId: null,
     date: new Date("2026-06-15T09:00:00Z"),
     statut: "realisee",
     interventionSlug: null,
@@ -85,6 +86,7 @@ function ligne(over: Partial<LigneAPersister> = {}): LigneAPersister {
     sessionId: "s1",
     coachingSessionId: null,
     bookingId: null,
+    auditMissionId: null,
     ruleId: "r1",
     model: "taux_journalier",
     nature: "honoraire_du",
@@ -322,7 +324,7 @@ describe("periodeRecalculable", () => {
  * ────────────────────────────────────────────────────────────────────────────── */
 
 describe("referenceUnique", () => {
-  const base = { type: "formation_collective" } as const;
+  const base = { type: "formation_collective", auditMissionId: null } as const;
 
   it("accepte exactement une référence", () => {
     expect(
@@ -533,6 +535,7 @@ describe("construireLignesPrestation — anomalies", () => {
           sessionId: "s1",
           coachingSessionId: null,
           bookingId: null,
+          auditMissionId: null,
         },
       },
     ]);

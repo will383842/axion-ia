@@ -38,7 +38,9 @@ describe("buildAdminNav SSOT", () => {
     // mois). Groupe main / sous-groupe agenda, avec les autres vues cockpit. = 131.
     // +1 (2026-07-10) : « Pipeline commercial » — entonnoir Devis → Session →
     // Facture, âge des affaires bloquées et fuites nommées. 5e vue du pilier A. = 132.
-    expect(items.length).toBe(132);
+    // +1 (2026-07-10) : « Audits IA » — 3ᵉ type de prestation (missions d'audit
+    // affectables + rémunérées), groupe qualiopi / sous-groupe formations. = 133.
+    expect(items.length).toBe(133);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

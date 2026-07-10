@@ -267,6 +267,7 @@ function getNumberingPrefixSegment(type: NumberingType): string {
     client: "CLI",
     devis: "DEV",
     offre: "OFF",
+    audit: "AUD",
   };
   return map[type] ?? "FORM";
 }

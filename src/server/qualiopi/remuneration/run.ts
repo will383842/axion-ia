@@ -109,6 +109,7 @@ export interface PrestationRef {
   sessionId: string | null;
   coachingSessionId: string | null;
   bookingId: string | null;
+  auditMissionId: string | null;
 }
 
 export interface Anomalie {
@@ -124,7 +125,7 @@ export interface Anomalie {
  * une session collective, OU un coaching, OU un booking — jamais zéro, jamais deux.
  */
 export function referenceUnique(ref: PrestationRef): boolean {
-  const refs = [ref.sessionId, ref.coachingSessionId, ref.bookingId];
+  const refs = [ref.sessionId, ref.coachingSessionId, ref.bookingId, ref.auditMissionId];
   return refs.filter((r) => r !== null).length === 1;
 }
 
@@ -194,6 +195,22 @@ export type CoachingSessionStatutValue = "planifiee" | "realisee" | "annulee" | 
  */
 export function mapStatutCoaching(statut: CoachingSessionStatutValue): PrestationStatut {
   return statut;
+}
+
+/** Miroir de l'enum Prisma `AuditMissionStatut` (identique à TrainingSessionStatut). */
+export type AuditMissionStatutValue =
+  | "planifiee"
+  | "en_cours"
+  | "realisee"
+  | "annulee"
+  | "reportee";
+
+/**
+ * Statut d'un audit dans le vocabulaire du moteur. `en_cours` → `planifiee` :
+ * l'audit n'est pas terminé, rien n'est encore dû (comme une session collective).
+ */
+export function mapStatutAudit(statut: AuditMissionStatutValue): PrestationStatut {
+  return statut === "en_cours" ? "planifiee" : statut;
 }
 
 /**
@@ -303,6 +320,7 @@ export interface LigneAPersister {
   sessionId: string | null;
   coachingSessionId: string | null;
   bookingId: string | null;
+  auditMissionId: string | null;
   ruleId: string | null;
   model: CompensationModel;
   nature: FeeLineNature;
@@ -364,6 +382,7 @@ function refDe(p: PrestationACalculer): PrestationRef {
     sessionId: p.sessionId,
     coachingSessionId: p.coachingSessionId,
     bookingId: p.bookingId,
+    auditMissionId: p.auditMissionId,
   };
 }
 
@@ -497,6 +516,7 @@ export function construireLignesPrestation(
       sessionId: prestation.sessionId,
       coachingSessionId: prestation.coachingSessionId,
       bookingId: prestation.bookingId,
+      auditMissionId: prestation.auditMissionId,
       ruleId: regle?.id ?? null,
       model: snapshot.model,
       nature: ligne.nature,

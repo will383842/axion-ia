@@ -840,6 +840,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "formations",
     },
     {
+      href: `${base}/qualiopi/audits`,
+      label: "Audits IA",
+      icon: "🔍",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
+    {
       href: `${base}/qualiopi/stagiaires`,
       label: "Stagiaires",
       icon: "🧑‍🎓",

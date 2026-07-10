@@ -14,7 +14,8 @@ import { prisma } from "@/lib/prisma";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { expandEventDayKeys } from "./expand";
 import { findConflicts, type ConflictTarget } from "./conflicts";
-import type { PlanningEvent, PlanningFilters, PlanningStatut } from "./types";
+import { deduireCommercialStatut } from "./types";
+import type { DevisStatutValue, PlanningEvent, PlanningFilters, PlanningStatut } from "./types";
 
 const MAX_FETCH = 2000;
 
@@ -71,6 +72,10 @@ async function fetchFormations(
         lieuVisioUrl: true,
         formateurPrincipal: { select: { nom: true, prenom: true } },
         client: { select: { raisonSociale: true } },
+        opcoStatut: true,
+        acompteRecu: true,
+        conventionTripartiteSigneeAt: true,
+        devis: { select: { statut: true } },
       },
       orderBy: { dateDebut: "asc" },
       take: MAX_FETCH,
@@ -88,6 +93,12 @@ async function fetchFormations(
       formateurId: r.formateurPrincipalId ?? null,
       clientNom: r.client?.raisonSociale ?? null,
       lieu: formatLieu(r),
+      commercialStatut: deduireCommercialStatut(
+        (r.devis?.statut as DevisStatutValue | undefined) ?? null,
+        r.conventionTripartiteSigneeAt !== null,
+      ),
+      opcoStatut: r.opcoStatut,
+      acompteRecu: r.acompteRecu,
     }));
   } catch {
     return [];
@@ -146,6 +157,10 @@ async function fetchCoachings(
       formateurId: r.trainerId ?? null,
       clientNom: r.beneficiaireEntreprise ?? r.beneficiaireNom ?? null,
       lieu: formatLieu(r),
+      // Un coaching n'a ni devis, ni OPCO, ni acompte rattachés directement.
+      commercialStatut: null,
+      opcoStatut: null,
+      acompteRecu: false,
     }));
   } catch {
     return [];
@@ -166,16 +181,79 @@ function sortWithinDay(arr: PlanningEvent[]): void {
  * par jour) et `getPlanningRange` (qui renvoie la liste à plat). Le scope
  * date/statut/formateur est appliqué en amont dans les requêtes Prisma.
  */
+async function fetchAudits(
+  from: Date,
+  to: Date,
+  filters: PlanningFilters,
+): Promise<PlanningEvent[]> {
+  try {
+    const rows = await prisma.auditMission.findMany({
+      where: {
+        dateDebut: { lte: to },
+        dateFin: { gte: from },
+        ...(filters.statut !== undefined ? { statut: filters.statut as PlanningStatut } : {}),
+        ...(filters.trainerId !== undefined ? { formateurId: filters.trainerId } : {}),
+      },
+      select: {
+        id: true,
+        titre: true,
+        dateDebut: true,
+        dateFin: true,
+        statut: true,
+        formateurId: true,
+        formateur: { select: { nom: true, prenom: true } },
+        client: { select: { raisonSociale: true } },
+        lieuType: true,
+        lieuIntitule: true,
+        lieuAdresse: true,
+        lieuCodePostal: true,
+        lieuVille: true,
+        lieuSalle: true,
+        lieuVisioUrl: true,
+        opcoStatut: true,
+        acompteRecu: true,
+        devis: { select: { statut: true } },
+      },
+      orderBy: { dateDebut: "asc" },
+      take: MAX_FETCH,
+    });
+
+    return rows.map((r) => ({
+      key: `audit:${r.id}`,
+      type: "audit" as const,
+      id: r.id,
+      titre: r.titre,
+      debut: r.dateDebut,
+      fin: r.dateFin,
+      statut: r.statut as PlanningStatut,
+      formateurNom: nomComplet(r.formateur),
+      formateurId: r.formateurId ?? null,
+      clientNom: r.client?.raisonSociale ?? null,
+      lieu: formatLieu(r),
+      // Un audit n'a pas de convention tripartite : seule l'étape devis compte.
+      commercialStatut: deduireCommercialStatut(
+        (r.devis?.statut as DevisStatutValue | undefined) ?? null,
+        false,
+      ),
+      opcoStatut: r.opcoStatut,
+      acompteRecu: r.acompteRecu,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 async function fetchPlanningEvents(
   from: Date,
   to: Date,
   filters: PlanningFilters,
 ): Promise<PlanningEvent[]> {
-  const [formations, coachings] = await Promise.all([
+  const [formations, coachings, audits] = await Promise.all([
     fetchFormations(from, to, filters),
     fetchCoachings(from, to, filters),
+    fetchAudits(from, to, filters),
   ]);
-  const events = [...formations, ...coachings];
+  const events = [...formations, ...coachings, ...audits];
   return filters.type !== undefined ? events.filter((e) => e.type === filters.type) : events;
 }
 

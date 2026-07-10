@@ -22,6 +22,7 @@ export const NUMBERING_PREFIX = {
   client: "AXI-CLI",
   devis: "AXI-DEV",
   offre: "AXI-OFF",
+  audit: "AXI-AUD",
 } as const;
 
 export type NumberingType = keyof typeof NUMBERING_PREFIX;
@@ -61,7 +62,7 @@ export function formatDocumentNumber(
 
 /** Regex de validation d'un numéro de document officiel (tous types). */
 export const DOCUMENT_NUMBER_REGEX =
-  /^AXI-(FORM|SESS|ATT|CERT|FACT|REC|CLI|DEV|OFF)-\d{4}-\d{3,}(?:-R\d{2,})?$/;
+  /^AXI-(FORM|SESS|ATT|CERT|FACT|REC|CLI|DEV|OFF|AUD)-\d{4}-\d{3,}(?:-R\d{2,})?$/;
 
 /** `true` si la chaîne est un numéro de document officiel bien formé. */
 export function isValidDocumentNumber(value: string): boolean {
