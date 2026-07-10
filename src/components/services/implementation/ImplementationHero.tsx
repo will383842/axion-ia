@@ -13,6 +13,7 @@ import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { ImplementationHeroSchema } from "@/components/sections/ImplementationHeroSchema";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
@@ -105,17 +106,17 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
         />
 
         <Container className="relative">
+          {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}
+          <HeroBadge className="mb-10 sm:mb-12">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? "Module 3 · Implémentation IA" : "Module 3 · AI implementation"}
+          </HeroBadge>
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 xl:gap-16">
             <div className="max-w-2xl">
-              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? "Module 3 · Implémentation IA" : "Module 3 · AI implementation"}
-              </p>
-
-              <h1 className="display-editorial text-fg mt-5">
+              <h1 className="display-editorial text-fg">
                 {titleMain}{" "}
                 <span
                   className="text-terracotta mx-2 italic"

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Price } from "@/components/marketing/Price";
 import { cn } from "@/lib/utils";
 
@@ -60,17 +61,19 @@ export function ProductHero({
   heroSchema,
   className,
 }: ProductHeroProps) {
+  // Eyebrow → pastille centrée sur la page, au-dessus du bloc hero accentué.
+  const heroBadge = (
+    <HeroBadge className="mb-10 sm:mb-12">
+      <span
+        aria-hidden="true"
+        className={cn("inline-block h-1.5 w-1.5 rounded-full", ACCENT_DOT[accent])}
+      />
+      {eyebrow}
+    </HeroBadge>
+  );
+
   const heroBlock = (
     <div className={cn("relative max-w-4xl border-l-4 pl-6 sm:pl-10", ACCENT_BORDER[accent])}>
-      <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
-        <span
-          className={cn(
-            "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
-            ACCENT_DOT[accent],
-          )}
-        />
-        {eyebrow}
-      </p>
       <h1
         className="text-fg text-[clamp(2.5rem,6vw,5rem)] leading-[1.04] font-medium tracking-tight"
         style={{ fontFamily: "var(--font-serif)" }}
@@ -110,6 +113,7 @@ export function ProductHero({
       )}
     >
       <Container className="relative">
+        {heroBadge}
         {heroSchema ? (
           // Layout 2-col Sprint Visual Rhythm 2026 — schéma visuel à droite en lg+
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 xl:gap-16">

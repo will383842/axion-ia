@@ -14,6 +14,7 @@ import {
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Cta } from "@/components/marketing/Cta";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -177,19 +178,20 @@ export default async function CaseStudiesListing({ params }: Props) {
           interventions / implementation. */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
+          {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-sage inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr
+              ? "Cas réels · de l'artisan au grand groupe"
+              : "Real cases · from artisans to large groups"}
+          </HeroBadge>
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — eyebrow + titre + description */}
             <div className="max-w-xl">
-              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-sage mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr
-                  ? "Cas réels · de l'artisan au grand groupe"
-                  : "Real cases · from artisans to large groups"}
-              </p>
-              <h1 className="text-fg display-editorial mt-5">
+              <h1 className="text-fg display-editorial">
                 {isFr ? "Ce qu'ils ont " : "What they've "}
                 <span
                   className="text-terracotta mx-2 italic"

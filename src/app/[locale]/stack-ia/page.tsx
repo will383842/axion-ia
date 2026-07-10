@@ -7,6 +7,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -254,17 +255,17 @@ export default async function StackIaPage({ params }: Props) {
         />
 
         <Container className={cn("relative", TIGHT_X)}>
+          {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? "Doctrine · Stack 2026" : "Doctrine · 2026 Stack"}
+          </HeroBadge>
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — eyebrow + titre + description + CTAs */}
             <div className="max-w-xl">
-              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? "Doctrine · Stack 2026" : "Doctrine · 2026 Stack"}
-              </p>
-
               {/* H1 — display-editorial standard (cohérence cross-pages).
                   Italique court « qui tourne » (multi-mots courts, points de
                   wrap naturels) plutôt qu'« opérationnelle » (14 char unique
@@ -273,7 +274,7 @@ export default async function StackIaPage({ params }: Props) {
                   hyphens-auto + lang en safety-net si jamais. */}
               <h1
                 lang={isFr ? "fr" : "en"}
-                className="display-editorial text-fg mt-5 [overflow-wrap:break-word] hyphens-auto"
+                className="display-editorial text-fg [overflow-wrap:break-word] hyphens-auto"
               >
                 {isFr ? "La stack IA d'une entreprise " : "The AI stack of a business "}
                 <span

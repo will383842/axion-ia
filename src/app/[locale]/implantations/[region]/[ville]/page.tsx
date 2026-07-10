@@ -24,6 +24,7 @@ import { ArrowRight, ArrowUpRight, MapPin, Building2 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { cn } from "@/lib/utils";
 import { ServicesGrid } from "@/components/services/ServicesGrid";
 import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
@@ -583,16 +584,17 @@ export default async function VilleHubPage({ params }: Props) {
         className="bg-halo-warm relative overflow-hidden pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24"
       >
         <Container>
+          {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? `Architectes IA · ${ville.nameFr}` : `AI experts · ${ville.nameFr}`}
+          </HeroBadge>
           <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — copy */}
             <div className="max-w-2xl">
-              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? `Architectes IA · ${ville.nameFr}` : `AI experts · ${ville.nameFr}`}
-              </p>
               <h1
                 id="ville-hub-hero"
                 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"

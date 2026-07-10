@@ -31,6 +31,7 @@ import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -185,17 +186,18 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
       {/* ── HÉRO — contenu (gauche) + CARTE INFOS-CLÉS (droite) ──────────── */}
       <section className="bg-halo-warm relative overflow-hidden py-12 md:py-16 lg:py-20">
         <Container className="relative">
+          {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? "Audit IA" : "AI audit"}
+            {` · ${isFr ? info.durationFr : info.durationEn}`}
+          </HeroBadge>
           <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
             <div className="max-w-2xl">
-              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? "Audit IA" : "AI audit"}
-                {` · ${isFr ? info.durationFr : info.durationEn}`}
-              </p>
-              <h1 className="display-editorial text-fg mt-4">
+              <h1 className="display-editorial text-fg">
                 {isFr ? config.titleFr : config.titleEn}{" "}
                 <span
                   className="text-terracotta-deep mx-2 italic"

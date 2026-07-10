@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { Container } from "./Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 
 export type SectionTone = "canvas" | "paper" | "sand" | "halo-warm" | "halo-cool" | "mocha";
 
@@ -255,7 +256,10 @@ export function Section({
             : "mb-16 max-w-3xl",
         )}
       >
-        {eyebrow ? (
+        {/* Eyebrow des sections de contenu (h2/h3) : conserve l'alignement à
+            gauche sans fond. Sur les page hero (h1), l'eyebrow devient une
+            pastille centrée rendue plus bas (heroBadge). */}
+        {eyebrow && !isPageHero ? (
           <p
             className={cn(
               "text-[13px] font-medium tracking-[0.16em] uppercase",
@@ -311,6 +315,23 @@ export function Section({
       </header>
     ) : null;
 
+  // Page hero (h1) : eyebrow rendue en pastille centrée sur la page, au-dessus
+  // du header (single-col comme 2-col media). Aligne tous les hero du site sur
+  // la home (demande Will 2026-07-10).
+  const heroBadge =
+    isPageHero && eyebrow ? (
+      <HeroBadge className="mb-10 sm:mb-12">
+        <span
+          aria-hidden="true"
+          className={cn(
+            "inline-block h-1.5 w-1.5 rounded-full",
+            resolvedTone === "mocha" ? "bg-terracotta-soft" : "bg-terracotta",
+          )}
+        />
+        {eyebrow}
+      </HeroBadge>
+    ) : null;
+
   return (
     <section
       id={id}
@@ -329,6 +350,7 @@ export function Section({
       {isPageHero && !hasHeroMedia ? <PageHeroDecoration /> : null}
 
       <Container className={cn("relative", contentClassName)}>
+        {heroBadge}
         {/* Héro illustré : grille 2 colonnes (titre | photo) dès lg, empilé avant.
             Sinon, header rendu directement (DOM inchangé pour tous les autres heros). */}
         {hasHeroMedia ? (

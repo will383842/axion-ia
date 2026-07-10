@@ -7,6 +7,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -156,16 +157,16 @@ export default async function IndividuelFamilyPage({ params }: Props) {
       {/* HERO */}
       <section className="bg-halo-cool text-fg relative overflow-hidden py-16 sm:py-20 lg:py-24">
         <Container className={cn("relative", TIGHT_X)}>
+          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? "Famille · Coaching individuel" : "Family · Individual coaching"}
+          </HeroBadge>
           <div className="max-w-3xl">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              {isFr ? "Famille · Coaching individuel" : "Family · Individual coaching"}
-            </p>
-
-            <h1 className="display-editorial text-fg mt-5">
+            <h1 className="display-editorial text-fg">
               {isFr ? "Coaching IA 1-to-1 " : "1-on-1 AI coaching "}
               <span
                 className="text-terracotta mx-2 italic"

@@ -11,6 +11,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
@@ -75,15 +76,16 @@ export default async function DemandeDevisPage({ params, searchParams }: Props) 
 
       <section className="bg-halo-warm relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <Container className="relative">
+          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? "Parcours sur-mesure" : "Custom path"}
+          </HeroBadge>
           <div className="max-w-3xl">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              {isFr ? "Parcours sur-mesure" : "Custom path"}
-            </p>
-            <h1 className="display-editorial text-fg mt-5">
+            <h1 className="display-editorial text-fg">
               {t.title}{" "}
               <span
                 className="text-terracotta-deep mx-2 italic"

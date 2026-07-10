@@ -7,6 +7,7 @@ import { ArrowRight, ArrowUpRight, MapPin, Building2, Briefcase } from "lucide-r
 import { routing, type Locale } from "@/i18n/routing";
 import { fmtPopulation } from "@/lib/intl";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -221,18 +222,19 @@ export default async function RegionPage({ params }: Props) {
           <div className="mb-8">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
+          {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr
+              ? `Architectes IA · ${region.prefecture}`
+              : `AI experts · ${region.prefecture}`}
+          </HeroBadge>
           <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — copy */}
             <div className="max-w-2xl">
-              <p className="text-fg-muted mb-6 text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr
-                  ? `Architectes IA · ${region.prefecture}`
-                  : `AI experts · ${region.prefecture}`}
-              </p>
               <h1
                 id="region-hero-heading"
                 className="display-editorial text-fg"

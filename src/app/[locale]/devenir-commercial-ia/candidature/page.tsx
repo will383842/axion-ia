@@ -8,6 +8,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { CommercialApplicationForm } from "@/components/forms/CommercialApplicationForm";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
@@ -63,15 +64,16 @@ export default async function CommercialApplicationPage({ params }: Props) {
 
       <section className="bg-paper py-12 sm:py-16">
         <Container>
+          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
+          <HeroBadge className="mb-8 sm:mb-10">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+            />
+            {isFr ? "Candidature" : "Application"}
+          </HeroBadge>
           <div className="mx-auto max-w-2xl">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              {isFr ? "Candidature" : "Application"}
-            </p>
-            <h1 className="display-editorial text-fg mt-4">
+            <h1 className="display-editorial text-fg">
               {isFr ? "Devenez commercial" : "Become a sales rep"}{" "}
               <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
                 Axion-IA
