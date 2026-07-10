@@ -73,30 +73,9 @@ function versIndispo(r: {
   };
 }
 
-/**
- * Habilitations d'un formateur, lues DEPUIS LA TABLE si elle est peuplée, sinon
- * depuis le tableau legacy `Trainer.formationsHabilitees`.
- *
- * Même doctrine que `resolvePrincipalTrainerId` : la source normalisée prime, le
- * legacy sert de repli tant que le backfill n'a pas tourné en production. Une
- * table vide pour un formateur n'est PAS la preuve qu'il n'a aucune habilitation
- * — c'est peut-être seulement que le backfill n'est pas passé. D'où le repli, et
- * non un `[]` qui lui interdirait d'animer quoi que ce soit.
- */
-export async function listHabilitations(trainerId: string): Promise<string[]> {
-  try {
-    const rows = await prisma.trainerHabilitation.findMany({
-      where: { trainerId },
-      select: { formationId: true },
-    });
-    if (rows.length > 0) return rows.map((r) => r.formationId);
-
-    const legacy = await prisma.trainer.findUnique({
-      where: { id: trainerId },
-      select: { formationsHabilitees: true },
-    });
-    return legacy?.formationsHabilitees ?? [];
-  } catch {
-    return [];
-  }
-}
+// NB : la lecture des habilitations reste volontairement sur le tableau legacy
+// `Trainer.formationsHabilitees` (via `isTrainerHabilite` / `TrainerManageForm`)
+// tant que le backfill `backfill-trainer-habilitations-2026-07-10.ts` n'a pas
+// tourné en production. Le dual-write peuple `trainer_habilitations` pour
+// préparer la bascule ; un lecteur normalisé prématuré serait du code mort. On
+// l'ajoutera au moment de basculer la source de vérité, pas avant.

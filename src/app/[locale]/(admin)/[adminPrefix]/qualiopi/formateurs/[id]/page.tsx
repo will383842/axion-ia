@@ -19,7 +19,12 @@ import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
+import { TrainerCompensationPanel } from "@/components/admin/qualiopi/TrainerCompensationPanel";
 import { listIndisposFormateur } from "@/server/qualiopi/trainers/availability-queries";
+import {
+  listReglesFormateur,
+  listFormationOptions,
+} from "@/server/qualiopi/remuneration/rules-queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 
 export const dynamic = "force-dynamic";
@@ -87,9 +92,11 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   if (!trainer) notFound();
 
   const formations = await listFormationsLite();
-  const [documents, indispos] = await Promise.all([
+  const [documents, indispos, regles, formationOptions] = await Promise.all([
     listTrainerDocumentsFull(trainer.id),
     listIndisposFormateur(trainer.id),
+    listReglesFormateur(trainer.id),
+    listFormationOptions(),
   ]);
   const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
 
@@ -175,6 +182,12 @@ export default async function FicheFormateurPage({ params }: PageProps) {
       <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
 
       <TrainerAvailabilityPanel trainerId={trainer.id} indispos={indispos} />
+
+      <TrainerCompensationPanel
+        trainerId={trainer.id}
+        regles={regles}
+        formations={formationOptions}
+      />
 
       <div className="mb-[var(--space-admin-6)]">
         <TrainerForm
