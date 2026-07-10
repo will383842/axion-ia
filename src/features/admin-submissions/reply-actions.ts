@@ -254,6 +254,49 @@ export async function bulkUnarchiveSubmissionsAction(
 }
 
 // ============================================================
+// soft-delete / restore (Corbeille — 2026-07-10)
+// ============================================================
+//
+// Corbeille récupérable : `deletedAt` non null masque le message de tous les
+// listings sauf l'onglet « Corbeille ». Restauration = deletedAt→null. La
+// suppression DÉFINITIVE reste l'effacement RGPD (`eraseSubmissionAction`,
+// super_admin, dans admin-submissions/actions.ts).
+
+export async function softDeleteSubmissionAction(id: string): Promise<{ ok: boolean }> {
+  try {
+    await requireAdminWriteSession();
+  } catch {
+    return { ok: false };
+  }
+  const parsed = singleIdSchema.safeParse({ id });
+  if (!parsed.success) return { ok: false };
+  await prisma.submission.update({
+    where: { id: parsed.data.id },
+    data: { deletedAt: new Date(), needsAttention: false },
+  });
+  revalidatePath(adminPath("fr", "contacts/messages"));
+  updateTag("admin:contacts-unread");
+  return { ok: true };
+}
+
+export async function restoreSubmissionAction(id: string): Promise<{ ok: boolean }> {
+  try {
+    await requireAdminWriteSession();
+  } catch {
+    return { ok: false };
+  }
+  const parsed = singleIdSchema.safeParse({ id });
+  if (!parsed.success) return { ok: false };
+  await prisma.submission.update({
+    where: { id: parsed.data.id },
+    data: { deletedAt: null },
+  });
+  revalidatePath(adminPath("fr", "contacts/messages"));
+  updateTag("admin:contacts-unread");
+  return { ok: true };
+}
+
+// ============================================================
 // markNeedsAttentionAction
 // ============================================================
 

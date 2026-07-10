@@ -21,6 +21,9 @@ export function SubmissionFilters({ initial }: FiltersProps) {
     // Sprint Notif Infra 2026-05-26 / fix P0-2 + P1-2 audit 2026-05-27.
     replyStatus: initial.replyStatus ?? "all",
     includeArchived: initial.includeArchived ?? "false",
+    // Corbeille (2026-07-10) — passthrough caché : conserve l'onglet Corbeille
+    // (deleted=true) quand on applique un filtre depuis cette vue.
+    deleted: initial.deleted ?? "false",
   });
 
   function handleSubmit(e: React.FormEvent) {
@@ -154,20 +157,10 @@ export function SubmissionFilters({ initial }: FiltersProps) {
           </select>
         </div>
 
-        {/* Sprint Notif Infra 2026-05-26 / fix P0-2 — toggle archivés */}
-        <div className="admin-field flex items-end">
-          <label className="admin-label inline-flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={state.includeArchived === "true"}
-              onChange={(e) =>
-                setState({ ...state, includeArchived: e.target.checked ? "true" : "false" })
-              }
-              className="h-4 w-4 rounded border-[color:var(--color-admin-border-default)]"
-            />
-            Inclure les archivés
-          </label>
-        </div>
+        {/* Toggle archivés retiré 2026-07-10 : remplacé par les onglets
+            Actifs / Archivés / Corbeille de SubmissionsV2. `includeArchived`
+            reste en state comme passthrough caché (préserve l'onglet Archivés
+            quand on applique un filtre). */}
       </div>
       <div className="admin-filters-actions">
         <button type="submit" className="admin-button">

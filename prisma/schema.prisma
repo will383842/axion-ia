@@ -737,6 +737,11 @@ model Submission {
   /// de filtrer rapidement les non-archivés sans toucher au workflow status
   /// existant.
   archivedAt     DateTime?         @map("archived_at")
+  /// Corbeille récupérable (soft-delete). NULL = actif. Un message supprimé
+  /// depuis la console est masqué de TOUS les listings sauf l'onglet
+  /// « Corbeille », d'où il peut être restauré (deletedAt→null) OU supprimé
+  /// définitivement via l'effacement RGPD (eraseSubmissionAction, super_admin).
+  deletedAt      DateTime?         @map("deleted_at")
   // Sprint Notif Infra 2026-05-26 / Chantier 3 — relation inverse Calendly.
   calendlyEvents CalendlyEvent[]
 
@@ -748,6 +753,8 @@ model Submission {
   // Sprint Notif Infra 2026-05-26 — filtres inbox.
   @@index([needsAttention, archivedAt])
   @@index([lastRepliedAt])
+  // Corbeille (2026-07-10) — masque les soft-deleted par défaut + onglet trash.
+  @@index([deletedAt])
   @@map("submissions")
 }
 
