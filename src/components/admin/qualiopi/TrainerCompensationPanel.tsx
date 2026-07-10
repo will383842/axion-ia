@@ -49,7 +49,10 @@ const MODELES: { value: CompensationModel; label: string }[] = [
   { value: "forfait_prestation", label: "Forfait (€/prestation)" },
 ];
 
-const PRESTATION_TYPES: { value: string; label: string }[] = [
+/** `""` = barème global (tous types). Les autres sont les `PrestationType` Prisma. */
+type PrestationTypeChoix = "" | "formation_collective" | "coaching_1to1" | "audit";
+
+const PRESTATION_TYPES: { value: PrestationTypeChoix; label: string }[] = [
   { value: "", label: "Tous types (barème global)" },
   { value: "formation_collective", label: "Formation collective" },
   { value: "coaching_1to1", label: "Coaching 1-to-1" },
@@ -95,7 +98,7 @@ export function TrainerCompensationPanel({
   const [error, setError] = useState<string | null>(null);
 
   const [model, setModel] = useState<CompensationModel>("taux_journalier");
-  const [prestationType, setPrestationType] = useState("");
+  const [prestationType, setPrestationType] = useState<PrestationTypeChoix>("");
   const [interventionSlug, setInterventionSlug] = useState("");
   const [effectiveFrom, setEffectiveFrom] = useState("");
   const [montant, setMontant] = useState(""); // euros (journalier/horaire/forfait)
@@ -110,7 +113,7 @@ export function TrainerCompensationPanel({
       const r = await createCompensationRuleAction({
         trainerId,
         model,
-        prestationType: prestationType === "" ? undefined : (prestationType as never),
+        prestationType: prestationType === "" ? undefined : prestationType,
         interventionSlug: interventionSlug === "" ? undefined : interventionSlug,
         effectiveFrom,
         // Le taux du modèle choisi, les autres restent vides.
@@ -178,7 +181,7 @@ export function TrainerCompensationPanel({
             id="bareme-type"
             className="admin-input"
             value={prestationType}
-            onChange={(e) => setPrestationType(e.target.value)}
+            onChange={(e) => setPrestationType(e.target.value as PrestationTypeChoix)}
           >
             {PRESTATION_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
