@@ -12,6 +12,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const mockTrainingFindMany = vi.fn();
 const mockCoachingFindMany = vi.fn();
+const mockAuditFindMany = vi.fn();
 const mockTrainerFindMany = vi.fn();
 const mockRuleFindMany = vi.fn();
 
@@ -35,6 +36,7 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: { findMany: (...a: unknown[]) => mockTrainingFindMany(...a) },
     coachingSession: { findMany: (...a: unknown[]) => mockCoachingFindMany(...a) },
+    auditMission: { findMany: (...a: unknown[]) => mockAuditFindMany(...a) },
     trainer: { findMany: (...a: unknown[]) => mockTrainerFindMany(...a) },
     trainerCompensationRule: { findMany: (...a: unknown[]) => mockRuleFindMany(...a) },
     $transaction: (...a: unknown[]) => mockTransaction(...(a as [never])),
@@ -93,6 +95,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   mockTrainingFindMany.mockResolvedValue([]);
   mockCoachingFindMany.mockResolvedValue([]);
+  mockAuditFindMany.mockResolvedValue([]);
   mockTrainerFindMany.mockResolvedValue([]);
   mockRuleFindMany.mockResolvedValue([]);
   tx.trainerFeeLine.findMany.mockResolvedValue([]);
@@ -435,5 +438,80 @@ describe("runRemunerationMensuelle — verrou et dryRun", () => {
     // ...mais il compte ce qu'il AURAIT écrit.
     expect(res.lignesEcrites).toBe(1);
     expect(res.relevesEcrits).toBe(1);
+  });
+});
+
+describe("runRemunerationMensuelle — source AUDIT", () => {
+  it("un audit réalisé avec formateur génère une ligne rattachée à l'audit", async () => {
+    mockAuditFindMany.mockResolvedValue([
+      {
+        id: "a1",
+        dateDebut: new Date("2026-06-12T09:00:00Z"),
+        dateFin: new Date("2026-06-12T16:00:00Z"), // 7 h
+        dureeHeures: null,
+        statut: "realisee",
+        montantHtCents: 500_000, // 5 000 € : assiette de la commission
+        formateurId: "t1",
+      },
+    ]);
+    mockTrainerFindMany.mockResolvedValue([trainerRow()]);
+    mockRuleFindMany.mockResolvedValue([
+      ruleRow({ model: "commission_ca_pct", tauxJourneeHtCents: null, commissionPct: decimal(40) }),
+    ]);
+
+    await runRemunerationMensuelle(JUIN);
+
+    const lignes = tx.trainerFeeLine.createMany.mock.calls[0]?.[0]?.data as Record<
+      string,
+      unknown
+    >[];
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]?.prestationType).toBe("audit");
+    expect(lignes[0]?.auditMissionId).toBe("a1");
+    expect(lignes[0]?.sessionId).toBeNull();
+    // 40 % de 5 000 € = 2 000 €.
+    expect(lignes[0]?.montantHtCents).toBe(200_000);
+  });
+
+  it("un audit SANS formateur ne produit aucune ligne (silence, pas anomalie)", async () => {
+    mockAuditFindMany.mockResolvedValue([
+      {
+        id: "a2",
+        dateDebut: new Date("2026-06-12T09:00:00Z"),
+        dateFin: new Date("2026-06-12T16:00:00Z"),
+        dureeHeures: null,
+        statut: "realisee",
+        montantHtCents: 500_000,
+        formateurId: null,
+      },
+    ]);
+    const res = await runRemunerationMensuelle(JUIN, { dryRun: true });
+    expect(res.lignesEcrites).toBe(0);
+    expect(res.anomalies).toEqual([]);
+  });
+
+  it("un audit `en_cours` est traité comme planifié (rien de dû encore)", async () => {
+    mockAuditFindMany.mockResolvedValue([
+      {
+        id: "a3",
+        dateDebut: new Date("2026-06-12T09:00:00Z"),
+        dateFin: new Date("2026-06-12T16:00:00Z"),
+        dureeHeures: null,
+        statut: "en_cours",
+        montantHtCents: 500_000,
+        formateurId: "t1",
+      },
+    ]);
+    mockTrainerFindMany.mockResolvedValue([trainerRow()]);
+    mockRuleFindMany.mockResolvedValue([
+      ruleRow({ model: "commission_ca_pct", tauxJourneeHtCents: null, commissionPct: decimal(40) }),
+    ]);
+    await runRemunerationMensuelle(JUIN);
+    const lignes = tx.trainerFeeLine.createMany.mock.calls[0]?.[0]?.data as Record<
+      string,
+      unknown
+    >[];
+    // Ligne prévisionnelle (pas encore dûe).
+    expect(lignes[0]?.statut).toBe("previsionnel");
   });
 });

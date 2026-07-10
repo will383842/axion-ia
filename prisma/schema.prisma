@@ -716,7 +716,8 @@ model Submission {
   // Sprint X.1 (D44) — parcours B : Submission qualifiée -> Booking via
   // `createBookingFromSubmissionAction`. Relation distincte de `bookings`
   // (qui matche le legacy `submissionId`).
-  bookingsFromSubmission Booking[] @relation("BookingFromSubmission")
+  bookingsFromSubmission Booking[]      @relation("BookingFromSubmission")
+  auditMissions          AuditMission[]
 
   // Sprint Notif Infra 2026-05-26 / Chantier 5 — reply system admin.
   // Permet à Will de répondre directement aux contacts/leads via l'admin
@@ -4992,6 +4993,7 @@ model Client {
   documents           DocumentGenere[]
   enrollmentsFinances Enrollment[]       @relation("EnrollmentClient")
   coachingContracts   CoachingContract[]
+  auditMissions       AuditMission[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5025,7 +5027,8 @@ model Devis {
   createdAt              DateTime    @default(now()) @map("created_at")
   updatedAt              DateTime    @updatedAt @map("updated_at")
 
-  sessions TrainingSession[]
+  sessions      TrainingSession[]
+  auditMissions AuditMission[]
 
   @@index([clientId])
   @@index([statut])
@@ -5235,6 +5238,8 @@ model TrainerFeeLine {
   sessionId         String?        @map("session_id") @db.Uuid
   coachingSessionId String?        @map("coaching_session_id") @db.Uuid
   bookingId         String?        @map("booking_id") @db.Uuid
+  auditMissionId    String?        @map("audit_mission_id") @db.Uuid
+  auditMission      AuditMission?  @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
 
   ruleId String?                  @map("rule_id") @db.Uuid
   rule   TrainerCompensationRule? @relation(fields: [ruleId], references: [id], onDelete: SetNull)
@@ -5272,6 +5277,7 @@ model TrainerFeeLine {
   @@index([sessionId])
   @@index([coachingSessionId])
   @@index([bookingId])
+  @@index([auditMissionId])
   @@index([prestationType, periodeYear, periodeMonth])
   @@map("trainer_fee_lines")
 }
@@ -5578,6 +5584,11 @@ model TrainingSession {
   sessionReporteeId                  String?                  @map("session_reportee_id") @db.Uuid
   sessionReportee                    TrainingSession?         @relation("SessionReportees", fields: [sessionReporteeId], references: [id], onDelete: SetNull)
   sessionRemplacement                TrainingSession[]        @relation("SessionReportees")
+  // ── Acompte (suivi manuel, non lié à Stripe) ──
+  acompteMontantCents                Int?                     @map("acompte_montant_cents")
+  acompteDateVersement               DateTime?                @map("acompte_date_versement") @db.Date
+  acompteRecu                        Boolean                  @default(false) @map("acompte_recu")
+  acompteMoyen                       String?                  @map("acompte_moyen") @db.VarChar(60)
   statut                             TrainingSessionStatut    @default(planifiee)
   createdAt                          DateTime                 @default(now()) @map("created_at")
   updatedAt                          DateTime                 @updatedAt @map("updated_at")
@@ -5659,6 +5670,7 @@ model Trainer {
   statements           TrainerStatement[]
   habilitations        TrainerHabilitation[]
   indisponibilites     TrainerAvailability[]
+  auditMissions        AuditMission[]            @relation("AuditMissionFormateur")
 
   @@index([statut])
   @@index([actif])
@@ -8507,4 +8519,72 @@ model ProspectionStatsSnapshot {
   @@unique([date, scope, scopeId, dimKey])
   @@index([scope, scopeId, date])
   @@map("prospection_stats_snapshot")
+}
+
+/// Statut d'une mission d'audit IA (miroir des autres prestations).
+enum AuditMissionStatut {
+  planifiee
+  en_cours
+  realisee
+  annulee
+  reportee
+}
+
+/// Mission d'audit IA vendue à un client. TROISIEME type de prestation, a cote
+/// des formations collectives (`TrainingSession`) et des coachings 1-to-1
+/// (`CoachingSession`). Sans cette table, un audit ne pouvait etre ni affecte a
+/// un formateur ni remunere (l'ancien rattachement `Booking` a ete retire).
+model AuditMission {
+  id           String      @id @default(uuid()) @db.Uuid
+  numero       String      @unique @db.VarChar(40)
+  titre        String      @db.VarChar(300)
+  /// Origine : la demande d'audit (Submission type=audit). Lien souple.
+  submissionId String?     @map("submission_id") @db.Uuid
+  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+  clientId     String?     @map("client_id") @db.Uuid
+  client       Client?     @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId      String?     @map("devis_id") @db.Uuid
+  devis        Devis?      @relation(fields: [devisId], references: [id], onDelete: SetNull)
+
+  dateDebut   DateTime @map("date_debut")
+  dateFin     DateTime @map("date_fin")
+  dureeHeures Int?     @map("duree_heures")
+
+  lieuType       LieuType? @map("lieu_type")
+  lieuIntitule   String?   @map("lieu_intitule") @db.VarChar(200)
+  lieuAdresse    String?   @map("lieu_adresse") @db.Text
+  lieuCodePostal String?   @map("lieu_code_postal") @db.VarChar(10)
+  lieuVille      String?   @map("lieu_ville") @db.VarChar(120)
+  lieuSalle      String?   @map("lieu_salle") @db.VarChar(120)
+  lieuVisioUrl   String?   @map("lieu_visio_url") @db.Text
+
+  formateurId String?  @map("formateur_id") @db.Uuid
+  formateur   Trainer? @relation("AuditMissionFormateur", fields: [formateurId], references: [id], onDelete: SetNull)
+
+  montantHtCents Int @map("montant_ht_cents")
+
+  financementType           FinancementType? @map("financement_type")
+  opcoStatut                OpcoStatut       @default(non_demande) @map("opco_statut")
+  numeroDossierOpco         String?          @map("numero_dossier_opco") @db.VarChar(60)
+  priseEnChargeMontantCents Int?             @map("prise_en_charge_montant_cents")
+
+  // ── Acompte (suivi manuel, non lié à Stripe) ──
+  acompteMontantCents  Int?      @map("acompte_montant_cents")
+  acompteDateVersement DateTime? @map("acompte_date_versement") @db.Date
+  acompteRecu          Boolean   @default(false) @map("acompte_recu")
+  acompteMoyen         String?   @map("acompte_moyen") @db.VarChar(60)
+
+  statut    AuditMissionStatut @default(planifiee)
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  feeLines TrainerFeeLine[]
+
+  @@index([clientId])
+  @@index([devisId])
+  @@index([formateurId])
+  @@index([statut])
+  @@index([dateDebut])
+  @@index([dateDebut, dateFin])
+  @@map("audit_missions")
 }
