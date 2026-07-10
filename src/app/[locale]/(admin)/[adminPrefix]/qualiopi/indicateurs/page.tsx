@@ -18,6 +18,7 @@ import { BpfDepenseForm } from "@/components/admin/qualiopi/BpfDepenseForm";
 import { RecomputeIndicateursButton } from "@/components/admin/qualiopi/RecomputeIndicateursButton";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
 import { computeBpf } from "@/server/qualiopi/bpf/service";
+import { honorairesSousTraitanceAnnee } from "@/server/qualiopi/remuneration/queries";
 import {
   Gauge,
   CheckCircle2,
@@ -78,9 +79,12 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
   const anneeFinale = anneeValide ? annee : anneeActuelle;
 
   // Lecture côté serveur uniquement
-  const [indicateurs, bpf] = await Promise.all([
+  const [indicateurs, bpf, honorairesST] = await Promise.all([
     getIndicateurs(anneeFinale),
     computeBpf(anneeFinale),
+    // Charge de sous-traitance CALCULÉE depuis les lignes d'honoraires réelles,
+    // pour rapprochement avec la dépense BPF SAISIE (déclarer reste manuel).
+    honorairesSousTraitanceAnnee(anneeFinale),
   ]);
 
   // Sélecteur années (5 ans glissants)
@@ -330,6 +334,28 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
           icon={Handshake}
         />
       </div>
+
+      {/* Rapprochement sous-traitance : CALCULÉ (lignes d'honoraires) vs DÉCLARÉ.
+          Le commissionnement (pilier C) connaît les honoraires réellement dus aux
+          indépendants ; le BPF déclare une dépense saisie à la main. Les afficher
+          côte à côte permet à l'opérateur de repérer un écart avant de déposer le
+          BPF. On ne pré-remplit RIEN : déclarer une charge reste un acte comptable. */}
+      {honorairesST.totalHtCents > 0 && (
+        <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+          <h3 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+            Sous-traitance formateurs — rapprochement {anneeFinale}
+          </h3>
+          <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Honoraires d&apos;indépendants calculés par le commissionnement (relevés validés,
+            facturés ou payés) :{" "}
+            <strong className="text-[color:var(--color-admin-fg)]">
+              {formatEuros(honorairesST.totalHtCents)}
+            </strong>{" "}
+            HT. À rapprocher de votre dépense de sous-traitance déclarée ci-dessous. Ce montant
+            n&apos;est PAS reporté automatiquement — déclarer une charge est un acte comptable.
+          </p>
+        </div>
+      )}
 
       {/* Dépenses BPF */}
       <div className="mb-[var(--space-admin-4)] flex items-center justify-between gap-[var(--space-admin-5)]">
