@@ -3,10 +3,9 @@
 // states. Refactored from a custom div drawer per A11Y-003 / NAV-008
 // (focus trap absent + backdrop click no-op).
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { usePathname } from "@/i18n/navigation";
 import {
   Sheet,
   SheetContent,
@@ -25,16 +24,17 @@ interface MobileNavProps {
 export function MobileNav({ children }: MobileNavProps) {
   const t = useTranslations("common");
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
 
-  // Fermeture automatique du drawer dès qu'on sélectionne un lien : quand la
-  // navigation aboutit, `pathname` change → on referme le Sheet. Corrige le
-  // comportement « le menu reste ouvert après un clic » (Will 2026-07-10).
-  // Les enfants (liens) sont rendus côté serveur : impossible d'y brancher un
-  // onClick depuis ce wrapper client — surveiller le pathname est la voie sûre.
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  // Fermeture automatique du drawer dès qu'on sélectionne un lien : les enfants
+  // (liens) sont rendus côté serveur → impossible d'y brancher un onClick
+  // individuel. On capte le clic par délégation (bubbling) sur le contenu du
+  // Sheet : tout clic issu d'un `<a>` (souris ou clavier via Enter) referme le
+  // drawer. Corrige « le menu reste ouvert après un clic » (Will 2026-07-10).
+  // Handler porté par le composant `SheetContent` (custom) → pas de règle
+  // jsx-a11y sur élément statique, et pas de setState synchrone dans un effet.
+  const closeOnLinkClick = (e: React.MouseEvent<HTMLElement>) => {
+    if ((e.target as HTMLElement).closest("a")) setOpen(false);
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -52,6 +52,7 @@ export function MobileNav({ children }: MobileNavProps) {
           variant Sheet pour piloter la mise en page ici. */}
       <SheetContent
         side="right"
+        onClick={closeOnLinkClick}
         className="from-paper to-sand/40 flex w-full max-w-sm flex-col gap-0 overflow-hidden rounded-l-3xl border-l-0 bg-gradient-to-b p-0 sm:max-w-sm"
       >
         <SheetTitle className="sr-only">{t("openMenu")}</SheetTitle>
