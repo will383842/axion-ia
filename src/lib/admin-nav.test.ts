@@ -22,7 +22,23 @@ describe("buildAdminNav SSOT", () => {
     // (Candidatures aux offres + Messages recrutement). +6 items vs base 117 = 123.
     // +2 (2026-07-09) : « RV téléphonique » (liste unifiée) + « Calendrier RDV »
     // dans le groupe Rendez-vous. = 125.
-    expect(items.length).toBe(125);
+    // +1 (2026-07-09) : « Planning » — calendrier unifié des prestations
+    // (formations collectives + coaching 1-to-1), groupe main / sous-groupe
+    // agenda. Distinct du « Calendrier » booking, vestige masqué. = 126.
+    // +1 (2026-07-09) : « Charge formateurs » — taux d'occupation mensuel par
+    // formateur (cockpit de pilotage). = 127.
+    // +1 (2026-07-09) : « Prévisionnel » — CA planifié/réalisé, encaissements
+    // attendus, reste à facturer, impayés (cockpit de pilotage). = 128.
+    // +1 (2026-07-09) : « Rémunération formateurs » — run mensuel, relevés
+    // d'honoraires et anomalies (pilier C du commissionnement). Groupe qualiopi,
+    // sous-groupe formations, à côté de « Formateurs ». = 129.
+    // +2 (2026-07-09) : « Hub de pilotage » (signaux des 3 piliers : sessions non
+    // staffées, conflits, formateurs non conformes en mission, surcharge, relevés
+    // en attente, anomalies) et « Timeline ressources » (formateur × jours du
+    // mois). Groupe main / sous-groupe agenda, avec les autres vues cockpit. = 131.
+    // +1 (2026-07-10) : « Pipeline commercial » — entonnoir Devis → Session →
+    // Facture, âge des affaires bloquées et fuites nommées. 5e vue du pilier A. = 132.
+    expect(items.length).toBe(132);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

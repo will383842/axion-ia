@@ -11,8 +11,20 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import {
+  getTrainerConformite,
+  listTrainerDocumentsFull,
+} from "@/server/qualiopi/trainers/documents";
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
+import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
+import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
+import { TrainerCompensationPanel } from "@/components/admin/qualiopi/TrainerCompensationPanel";
+import { listIndisposFormateur } from "@/server/qualiopi/trainers/availability-queries";
+import {
+  listReglesFormateur,
+  listFormationOptions,
+} from "@/server/qualiopi/remuneration/rules-queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 
 export const dynamic = "force-dynamic";
@@ -80,7 +92,21 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   if (!trainer) notFound();
 
   const formations = await listFormationsLite();
+  const [documents, indispos, regles, formationOptions] = await Promise.all([
+    listTrainerDocumentsFull(trainer.id),
+    listIndisposFormateur(trainer.id),
+    listReglesFormateur(trainer.id),
+    listFormationOptions(),
+  ]);
   const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
+
+  // Conformité documentaire (URSSAF, NDA, RC pro…). Les manquements « bloquant »
+  // empêchent d'envoyer le formateur chez un client ; les « alerte » signalent
+  // une règle non tranchée (seuil URSSAF) ou une pièce à rafraîchir.
+  const now = new Date();
+  const conformite = await getTrainerConformite(trainer.id, now.getUTCFullYear(), now);
+  const bloquants = conformite?.manquements.filter((m) => m.gravite === "bloquant") ?? [];
+  const alertes = conformite?.manquements.filter((m) => m.gravite === "alerte") ?? [];
 
   return (
     <AdminPageShell width="wide">
@@ -102,6 +128,66 @@ export default async function FicheFormateurPage({ params }: PageProps) {
           <strong>{sessionsCount + interventionsCount}</strong> au total.
         </p>
       </div>
+
+      {conformite !== null && (
+        <div className="admin-card mb-[var(--space-admin-5)] p-[var(--space-admin-4)]">
+          <p className="admin-meta">Conformité documentaire</p>
+
+          {conformite.manquements.length === 0 ? (
+            <p className="text-[length:var(--text-admin-sm)]">
+              ✅ Dossier complet — aucun manquement.
+            </p>
+          ) : (
+            <>
+              <p className="text-[length:var(--text-admin-sm)]">
+                {bloquants.length > 0 ? (
+                  <strong>
+                    ⛔ {bloquants.length} manquement{bloquants.length > 1 ? "s" : ""} bloquant
+                    {bloquants.length > 1 ? "s" : ""} — ce formateur ne devrait pas être affecté.
+                  </strong>
+                ) : (
+                  <strong>✅ Aucun manquement bloquant.</strong>
+                )}
+              </p>
+
+              {bloquants.length > 0 && (
+                <ul className="mt-2 space-y-1 text-[length:var(--text-admin-sm)]">
+                  {bloquants.map((m) => (
+                    <li key={m.code}>⛔ {m.message}</li>
+                  ))}
+                </ul>
+              )}
+
+              {alertes.length > 0 && (
+                <ul className="mt-2 space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  {alertes.map((m) => (
+                    <li key={m.code}>⚠ {m.message}</li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+
+          {trainer.statut === "sous_traitant" && (
+            <p className="admin-meta mt-3">
+              Cumul {conformite.annee} retenu pour le seuil URSSAF :{" "}
+              <strong>{(conformite.montantRetenuCents / 100).toLocaleString("fr-FR")} €</strong>{" "}
+              (approché sur les tarifs figés des affectations).
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
+      <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
+
+      <TrainerAvailabilityPanel trainerId={trainer.id} indispos={indispos} />
+
+      <TrainerCompensationPanel
+        trainerId={trainer.id}
+        regles={regles}
+        formations={formationOptions}
+      />
 
       <div className="mb-[var(--space-admin-6)]">
         <TrainerForm

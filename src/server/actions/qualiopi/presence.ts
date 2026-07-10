@@ -20,6 +20,7 @@ import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import { genererCreneaux } from "@/server/qualiopi/presence/creneaux";
 import { parseReleveConnexion } from "@/server/qualiopi/presence/parse-releve";
 import { matchParticipants } from "@/server/qualiopi/presence/match";
@@ -568,6 +569,7 @@ export async function genererReleveConnexionDocumentAction(input: {
           dateDebut: true,
           dateFin: true,
           coFormateurs: true,
+          formateurPrincipalId: true,
           formationSnapshot: true,
           formation: { select: { titre: true } },
         },
@@ -600,14 +602,11 @@ export async function genererReleveConnexionDocumentAction(input: {
     releveImport.session.dateFin,
   )}`;
 
-  // Formateur principal (1er co-formateur déclaré sur la session).
-  const coFormateurs = Array.isArray(releveImport.session.coFormateurs)
-    ? (releveImport.session.coFormateurs as Array<Record<string, unknown>>)
-    : [];
-  const principalTrainerId =
-    typeof coFormateurs[0]?.["trainerId"] === "string"
-      ? (coFormateurs[0]["trainerId"] as string)
-      : null;
+  // Formateur principal : FK formateurPrincipalId prioritaire, repli Json legacy.
+  const principalTrainerId = resolvePrincipalTrainerId({
+    formateurPrincipalId: releveImport.session.formateurPrincipalId,
+    coFormateurs: releveImport.session.coFormateurs,
+  });
   let nomFormateur = "—";
   if (principalTrainerId !== null) {
     const trainer = await prisma.trainer.findUnique({

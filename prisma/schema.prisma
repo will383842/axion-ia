@@ -5091,10 +5091,276 @@ enum TrainerStatut {
   sous_traitant
 }
 
+/// Pièces justificatives REÇUES d'un formateur (à ne pas confondre avec
+/// `DocumentGenere`, les PDF produits par l'OF). Les pièces requises dépendent
+/// du statut : un salarié fournit un contrat de travail, un indépendant une
+/// attestation de vigilance URSSAF, un NDA, une RC pro…
+enum TrainerDocumentType {
+  // ── Salarié ──
+  contrat_travail
+  dpae
+  // ── Indépendant / sous-traitant ──
+  /// Art. L.8222-1 : à collecter dès 5 000 € HT de contrat, renouvelée tous les
+  /// 6 mois. Sans elle, l'OF est SOLIDAIREMENT responsable des cotisations
+  /// impayées du prestataire.
+  attestation_vigilance_urssaf
+  kbis_avis_sirene
+  nda_sous_traitant
+  attestation_qualiopi
+  assurance_rc_pro
+  contrat_sous_traitance
+  // ── Communs ──
+  cv
+  diplome
+  certification
+  autre
+}
+
+/// Cycle de validation d'une pièce. L'expiration n'est PAS un statut : elle se
+/// déduit de `dateExpiration`, sinon une pièce validée resterait « valide »
+/// après sa péremption.
+enum DocumentValidationStatut {
+  en_attente
+  valide
+  rejete
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COMMISSIONNEMENT DES FORMATEURS (pilier C)
+//
+// Moteur de calcul (pur, testé) : `src/server/qualiopi/remuneration/calcul.ts`.
+// Ces modèles ne font que PERSISTER ce qu'il produit.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Modèle de rémunération d'une prestation.
+enum CompensationModel {
+  taux_journalier
+  taux_horaire
+  commission_ca_pct
+  forfait_prestation
+}
+
+/// Type de prestation rémunérée.
+enum PrestationType {
+  formation_collective
+  coaching_1to1
+  audit
+}
+
+/// Nature COMPTABLE de la ligne. Découle du STATUT du formateur, pas du modèle
+/// de rémunération :
+///   - `analytique`   : salarié — valorisation indicative du coût-formateur. Le
+///     salaire réel est en paie externe. JAMAIS « à payer », jamais au BPF.
+///   - `honoraire_du` : indépendant — honoraires réellement dus, à facturer par
+///     lui, à payer par l'OF, et à porter en charges du BPF.
+/// Snapshotée sur la ligne : changer le statut du formateur ne reclasse pas le passé.
+enum FeeLineNature {
+  analytique
+  honoraire_du
+}
+
+enum FeeLineStatut {
+  /// Prestation pas encore réalisée : montant estimé, non engageant.
+  previsionnel
+  /// Prestation réalisée : montant calculé.
+  calcule
+  /// Figé dans un relevé validé. Ne se recalcule plus (correction = ligne d'ajustement).
+  valide
+  /// Prestation annulée/reportée, ou ligne écartée.
+  annule
+}
+
+enum StatementStatut {
+  brouillon
+  a_valider
+  valide
+  /// Facture d'honoraires reçue du formateur. Gate DUR avant paiement.
+  facture_recue
+  paye
+  annule
+}
+
+/// Régime de TVA des HONORAIRES d'un indépendant. Dépend du régime fiscal DU
+/// FORMATEUR (celui qui facture), PAS de l'OF ni du financeur. `franchise_293b`
+/// et `exonere_formation` donnent tous deux 0 %, mais sur des bases légales
+/// DIFFÉRENTES — ne pas les confondre.
+enum TvaRegimeHonoraires {
+  franchise_293b
+  exonere_formation
+  assujetti_20
+}
+
+/// Une VERSION de barème d'un formateur. On ne mute JAMAIS une règle en vigueur :
+/// on la clôt (`effectiveTo`) et on en crée une nouvelle. `effectiveFrom` inclus,
+/// `effectiveTo` exclu. C'est ce qui garantit l'invariant comptable : changer un
+/// taux en septembre ne recalcule jamais les sessions de juin.
+model TrainerCompensationRule {
+  id                 String            @id @default(uuid()) @db.Uuid
+  trainerId          String            @map("trainer_id") @db.Uuid
+  trainer            Trainer           @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  /// Null = barème global du formateur (tous types de prestation).
+  prestationType     PrestationType?   @map("prestation_type")
+  /// Null = tous les slugs. Sinon cible fine (ex. un coaching précis).
+  interventionSlug   String?           @map("intervention_slug") @db.VarChar(80)
+  model              CompensationModel
+  tauxJourneeHtCents Int?              @map("taux_journee_ht_cents")
+  tauxHoraireHtCents Int?              @map("taux_horaire_ht_cents")
+  /// Pourcentage du CA HT (ex. 40.00). Decimal : jamais de flottant sur de l'argent.
+  commissionPct      Decimal?          @map("commission_pct") @db.Decimal(5, 2)
+  forfaitHtCents     Int?              @map("forfait_ht_cents")
+  effectiveFrom      DateTime          @map("effective_from")
+  /// Null = en vigueur.
+  effectiveTo        DateTime?         @map("effective_to")
+  note               String?           @db.Text
+  createdById        String?           @map("created_by_id") @db.Uuid
+  createdAt          DateTime          @default(now()) @map("created_at")
+
+  feeLines TrainerFeeLine[]
+
+  @@index([trainerId, prestationType, effectiveFrom])
+  @@index([trainerId, interventionSlug])
+  @@index([effectiveTo])
+  @@map("trainer_compensation_rules")
+}
+
+/// Ligne de rémunération d'un formateur pour UNE prestation. Colonne vertébrale
+/// monétaire, commune aux trois types de prestation. Le barème résolu y est
+/// SNAPSHOTÉ : le passé est figé par la copie, pas par une relecture.
+model TrainerFeeLine {
+  id                String         @id @default(uuid()) @db.Uuid
+  trainerId         String         @map("trainer_id") @db.Uuid
+  trainer           Trainer        @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  prestationType    PrestationType @map("prestation_type")
+  /// Rattachement souple : exactement une de ces références est renseignée.
+  sessionId         String?        @map("session_id") @db.Uuid
+  coachingSessionId String?        @map("coaching_session_id") @db.Uuid
+  bookingId         String?        @map("booking_id") @db.Uuid
+
+  ruleId String?                  @map("rule_id") @db.Uuid
+  rule   TrainerCompensationRule? @relation(fields: [ruleId], references: [id], onDelete: SetNull)
+
+  // ── Snapshot du barème résolu (fige le passé) ──
+  model                 CompensationModel
+  nature                FeeLineNature
+  tauxSnapshotCents     Int?              @map("taux_snapshot_cents")
+  commissionPctSnapshot Decimal?          @map("commission_pct_snapshot") @db.Decimal(5, 2)
+
+  // ── Base de calcul figée ──
+  heures      Decimal? @db.Decimal(6, 2)
+  nbJours     Decimal? @map("nb_jours") @db.Decimal(6, 2)
+  caBaseCents Int?     @map("ca_base_cents")
+
+  /// Le DÛ (ou la valorisation analytique si `nature = analytique`).
+  montantHtCents Int           @default(0) @map("montant_ht_cents")
+  statut         FeeLineStatut @default(previsionnel)
+  motif          String?       @db.Text
+
+  /// Période de rattachement (mois de réalisation) — pilote le relevé mensuel.
+  periodeYear  Int @map("periode_year")
+  periodeMonth Int @map("periode_month")
+
+  statementId String?           @map("statement_id") @db.Uuid
+  statement   TrainerStatement? @relation(fields: [statementId], references: [id], onDelete: SetNull)
+
+  calculatedAt DateTime? @map("calculated_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@index([trainerId, periodeYear, periodeMonth])
+  @@index([statut])
+  @@index([statementId])
+  @@index([sessionId])
+  @@index([coachingSessionId])
+  @@index([bookingId])
+  @@index([prestationType, periodeYear, periodeMonth])
+  @@map("trainer_fee_lines")
+}
+
+/// Relevé mensuel d'honoraires d'un INDÉPENDANT (jamais émis pour un salarié).
+/// Garde dure : on ne passe à `paye` qu'après réception d'une facture conforme.
+/// Le relevé est un PRÉ-DÉCOMPTE interne, pas une auto-facture.
+model TrainerStatement {
+  id           String          @id @default(uuid()) @db.Uuid
+  trainerId    String          @map("trainer_id") @db.Uuid
+  trainer      Trainer         @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  periodeYear  Int             @map("periode_year")
+  periodeMonth Int             @map("periode_month")
+  statut       StatementStatut @default(brouillon)
+
+  totalHtCents  Int                 @default(0) @map("total_ht_cents")
+  /// Snapshot du régime TVA du formateur au moment de la validation.
+  tvaRegime     TvaRegimeHonoraires @map("tva_regime")
+  tvaCents      Int                 @default(0) @map("tva_cents")
+  totalTtcCents Int                 @default(0) @map("total_ttc_cents")
+
+  // ── Rapprochement avec la facture d'honoraires REÇUE du formateur ──
+  numeroFacture          String?   @map("numero_facture") @db.VarChar(60)
+  dateFacture            DateTime? @map("date_facture")
+  montantFactureTtcCents Int?      @map("montant_facture_ttc_cents")
+  factureUrl             String?   @map("facture_url") @db.Text
+  echeanceAt             DateTime? @map("echeance_at")
+
+  // ── Paiement ──
+  payeAt            DateTime? @map("paye_at")
+  moyenPaiement     String?   @map("moyen_paiement") @db.VarChar(30)
+  referenceVirement String?   @map("reference_virement") @db.VarChar(80)
+
+  validatedById String?  @map("validated_by_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  feeLines TrainerFeeLine[]
+
+  @@unique([trainerId, periodeYear, periodeMonth], map: "statement_unique_trainer_periode")
+  @@index([statut])
+  @@index([echeanceAt])
+  @@map("trainer_statements")
+}
+
+/// Pièce justificative d'un formateur. Alimente les contrôles de conformité
+/// (Qualiopi off.21/27, obligation de vigilance URSSAF) et les alertes
+/// d'expiration.
+model TrainerDocument {
+  id               String                   @id @default(uuid()) @db.Uuid
+  trainerId        String                   @map("trainer_id") @db.Uuid
+  trainer          Trainer                  @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  type             TrainerDocumentType
+  /// N° de la pièce (n° NDA, n° de police RC pro, code de vérification URSSAF…).
+  numeroPiece      String?                  @map("numero_piece") @db.VarChar(60)
+  fichierUrl       String?                  @map("fichier_url") @db.Text
+  hashSha256       String?                  @map("hash_sha256") @db.VarChar(64)
+  dateEmission     DateTime?                @map("date_emission")
+  /// Null = pièce sans échéance (un diplôme). Sinon pilote les alertes.
+  dateExpiration   DateTime?                @map("date_expiration")
+  statutValidation DocumentValidationStatut @default(en_attente) @map("statut_validation")
+  valideParUserId  String?                  @map("valide_par_user_id") @db.Uuid
+  valideAt         DateTime?                @map("valide_at")
+  rejetMotif       String?                  @map("rejet_motif") @db.Text
+  notes            String?                  @db.Text
+  createdAt        DateTime                 @default(now()) @map("created_at")
+  updatedAt        DateTime                 @updatedAt @map("updated_at")
+
+  @@index([trainerId])
+  @@index([type])
+  @@index([statutValidation])
+  @@index([dateExpiration])
+  @@map("trainer_documents")
+}
+
 enum ModaliteFormation {
   presentiel
   distanciel
   hybride
+}
+
+/// Lieu PHYSIQUE d'une prestation. Complète (sans remplacer) `modalite` : une
+/// session `presentiel` peut se tenir chez le client (`sur_site`) ou dans nos
+/// locaux (`nos_locaux`). Requis pour la convention L.6353-1 et la convocation
+/// (Qualiopi off.9 — information sur les conditions de déroulement).
+enum LieuType {
+  sur_site
+  nos_locaux
+  distanciel
 }
 
 /// Niveau visé des participants — pilote la profondeur/registre du contenu généré.
@@ -5224,6 +5490,7 @@ model Formation {
   fileValidations FileValidation[]
   generationJobs  FormationGenerationJob[]
   documents       DocumentGenere[]
+  habilitations   TrainerHabilitation[]
 
   @@index([offreSiteId])
   @@index([clientId])
@@ -5244,6 +5511,17 @@ model TrainingSession {
   dateFin                            DateTime                 @map("date_fin")
   dureeReelleHeures                  Int?                     @map("duree_reelle_heures")
   modalite                           ModaliteFormation
+  // ── Lieu de déroulement (Qualiopi off.9 + convention L.6353-1). Tout additif :
+  // null = session legacy, les documents retombent sur `modalite` seule. ──────
+  lieuType                           LieuType?                @map("lieu_type")
+  /// Intitulé libre du lieu (ex. « Siège du client », « Salle Fraunces »).
+  lieuIntitule                       String?                  @map("lieu_intitule") @db.VarChar(200)
+  lieuAdresse                        String?                  @map("lieu_adresse") @db.Text
+  lieuCodePostal                     String?                  @map("lieu_code_postal") @db.VarChar(10)
+  lieuVille                          String?                  @map("lieu_ville") @db.VarChar(120)
+  lieuSalle                          String?                  @map("lieu_salle") @db.VarChar(120)
+  /// URL de visioconférence (lieu de déroulement en distanciel).
+  lieuVisioUrl                       String?                  @map("lieu_visio_url") @db.Text
   icalUid                            String?                  @map("ical_uid") @db.VarChar(255)
   clientId                           String?                  @map("client_id") @db.Uuid
   client                             Client?                  @relation(fields: [clientId], references: [id], onDelete: SetNull)
@@ -5309,6 +5587,8 @@ model TrainingSession {
   documents         DocumentGenere[]
   relevesConnexion  ReleveConnexionImport[]
   facturesFormation FactureFormation[]
+  /// Jointure normalisée session ↔ formateur (remplace `coFormateurs` Json).
+  sessionFormateurs SessionFormateur[]
 
   @@index([formationId])
   @@index([clientId])
@@ -5318,6 +5598,15 @@ model TrainingSession {
   @@index([sessionParentId])
   @@index([sessionReporteeId])
   @@index([formateurPrincipalId])
+  // ── Index composites du cockpit (règle : égalité d'abord, plage ensuite). ──
+  /// Requête calendrier : sessions chevauchant une plage (`dateDebut <= to AND
+  /// dateFin >= from`). `dateFin` n'avait AUCUN index.
+  @@index([dateDebut, dateFin])
+  /// Calendrier filtré par statut / financement (prévisionnel).
+  @@index([statut, dateDebut])
+  @@index([financementType, dateDebut])
+  /// Charge d'un formateur sur une période.
+  @@index([formateurPrincipalId, dateDebut])
   @@map("training_sessions")
 }
 
@@ -5351,18 +5640,122 @@ model Trainer {
   bookingsAnimes  Booking[]         @relation("BookingFormateur")
 
   // Espace formateur passwordless + coaching 1-to-1 (2026-06-13).
-  lastFormateurLoginAt DateTime?            @map("last_formateur_login_at")
+  lastFormateurLoginAt DateTime?                 @map("last_formateur_login_at")
   /// Habilitation formateur/accompagnateur AFEST (D.6313-3-1 §2). Date de
   /// l'habilitation tracée. Null = non habilité. L'enforcement (obligatoire ou
   /// non) est piloté par le flag SiteSetting `qualiopi.afest_formateur_habilitation_requise`.
-  afestHabiliteAt      DateTime?            @map("afest_habilite_at")
+  afestHabiliteAt      DateTime?                 @map("afest_habilite_at")
   magicLinks           FormateurMagicLink[]
   coachingSessions     CoachingSession[]
+  /// Affectations normalisées aux sessions (principal + co-animateurs).
+  sessionFormateurs    SessionFormateur[]
+  /// Pièces justificatives reçues (contrat, vigilance URSSAF, NDA, RC pro…).
+  documents            TrainerDocument[]
+  /// Régime de TVA de SES honoraires (indépendant). Renseigné par un humain,
+  /// justificatif à l'appui : la machine calcule, elle ne devine pas le régime.
+  regimeTvaHonoraires  TvaRegimeHonoraires?      @map("regime_tva_honoraires")
+  compensationRules    TrainerCompensationRule[]
+  feeLines             TrainerFeeLine[]
+  statements           TrainerStatement[]
+  habilitations        TrainerHabilitation[]
+  indisponibilites     TrainerAvailability[]
 
   @@index([statut])
   @@index([actif])
   @@index([region])
   @@map("trainers")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SOCLE FORMATEURS (pilier D) — habilitations normalisées + indisponibilités
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Habilitation d'un formateur sur UNE formation. Remplace `Trainer.formationsHabilitees`
+/// (`String[]`), qui n'offrait ni FK, ni index, ni traçabilité : on ne pouvait pas
+/// répondre à « qui peut animer cette formation ? » en SQL, ni savoir QUI a habilité
+/// QUAND. Le tableau reste écrit en dual-write le temps du backfill (zéro perte).
+model TrainerHabilitation {
+  id           String    @id @default(uuid()) @db.Uuid
+  trainerId    String    @map("trainer_id") @db.Uuid
+  trainer      Trainer   @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  formationId  String    @map("formation_id") @db.Uuid
+  formation    Formation @relation(fields: [formationId], references: [id], onDelete: Cascade)
+  /// Qui a prononcé l'habilitation, et quand. Exigence Qualiopi (ind. 21/22).
+  habiliteAt   DateTime  @default(now()) @map("habilite_at")
+  habiliteById String?   @map("habilite_by_id") @db.Uuid
+  note         String?   @db.Text
+
+  @@unique([trainerId, formationId], map: "trainer_habilitation_unique")
+  @@index([formationId])
+  @@map("trainer_habilitations")
+}
+
+/// Nature d'une indisponibilité. Toutes bloquent l'affectation de la même façon ;
+/// le type ne sert qu'à l'affichage et au reporting (combien de jours de congés ?).
+enum TrainerAvailabilityType {
+  conge
+  maladie
+  formation_interne
+  indisponible
+}
+
+/// Fenêtre pendant laquelle un formateur NE PEUT PAS être mobilisé.
+///
+/// Remplace `CapacityWindow`, vestige du module de réservation retiré : celui-ci
+/// comptait des créneaux globaux, jamais la disponibilité d'une personne.
+///
+/// Bornes INCLUSIVES en jours (`date`, pas `timestamp`) : un congé « du 3 au 7 »
+/// couvre le 3 ET le 7. Une demi-journée n'est pas modélisée — un formateur
+/// absent une demi-journée reste affectable, et l'arbitrage est humain.
+model TrainerAvailability {
+  id          String                  @id @default(uuid()) @db.Uuid
+  trainerId   String                  @map("trainer_id") @db.Uuid
+  trainer     Trainer                 @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  type        TrainerAvailabilityType @default(conge)
+  /// Premier jour indisponible (inclus).
+  dateDebut   DateTime                @map("date_debut") @db.Date
+  /// Dernier jour indisponible (INCLUS).
+  dateFin     DateTime                @map("date_fin") @db.Date
+  motif       String?                 @db.Text
+  createdById String?                 @map("created_by_id") @db.Uuid
+  createdAt   DateTime                @default(now()) @map("created_at")
+  updatedAt   DateTime                @updatedAt @map("updated_at")
+
+  @@index([trainerId, dateDebut, dateFin])
+  @@index([dateDebut])
+  @@map("trainer_availabilities")
+}
+
+/// Rôle d'un formateur sur une session de formation collective.
+enum SessionFormateurRole {
+  principal
+  co_formateur
+  assistant
+  tuteur_afest
+}
+
+/// Jointure normalisée session ↔ formateur. Remplace le champ Json
+/// `TrainingSession.coFormateurs` (non indexable, non agrégeable) : socle de la
+/// charge par formateur et du commissionnement. Le formateur `principal` reste
+/// dupliqué dans `TrainingSession.formateurPrincipalId` (cache dénormalisé lu par
+/// la garde d'habilitation) ; un index partiel SQL garantit un seul `principal`
+/// par session. `tarifHtCents` = snapshot du tarif du formateur figé à
+/// l'affectation (la rémunération ne dérive pas si le tarif change ensuite).
+model SessionFormateur {
+  id            String               @id @default(uuid()) @db.Uuid
+  sessionId     String               @map("session_id") @db.Uuid
+  session       TrainingSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  trainerId     String               @map("trainer_id") @db.Uuid
+  trainer       Trainer              @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  role          SessionFormateurRole @default(co_formateur)
+  heuresAnimees Decimal?             @map("heures_animees") @db.Decimal(6, 2)
+  tarifHtCents  Int?                 @map("tarif_ht_cents")
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @updatedAt @map("updated_at")
+
+  @@unique([sessionId, trainerId], map: "session_formateur_unique")
+  @@index([trainerId, sessionId])
+  @@map("session_formateurs")
 }
 
 /// Stagiaire. PII ; détails handicap chiffrés AES-256-GCM (pii-crypto).
@@ -5710,6 +6103,8 @@ model PresenceCreneau {
   @@unique([enrollmentId, date, demiJournee], map: "presence_creneau_unique")
   @@index([enrollmentId])
   @@index([importId])
+  /// Heatmap « demi-journées réalisées » par mois (cockpit). `date` n'avait aucun index.
+  @@index([date, present])
   @@map("presence_creneaux")
 }
 
@@ -5899,6 +6294,9 @@ model FactureFormation {
   @@index([enrollmentId])
   @@index([coachingContractId])
   @@index([statut])
+  /// Prévisionnel d'encaissement et relances impayés (cockpit).
+  @@index([statut, emiseAt])
+  @@index([echeanceAt])
   @@map("factures_formation")
 }
 
@@ -6721,7 +7119,20 @@ model CoachingSession {
   bookingId                String?               @map("booking_id") @db.Uuid
   /// Slug d'intervention (cf. booking-catalog : dirigeant-vision-strategique, coaching-decouverte…).
   interventionSlug         String                @map("intervention_slug") @db.VarChar(80)
+  /// Début de la séance. Historiquement une date sans heure (minuit) → le
+  /// calendrier retombe sur un événement « journée entière » si `dateSeanceFin`
+  /// est null.
   dateSeance               DateTime              @map("date_seance")
+  /// Fin planifiée de la séance (créneau horaire). Null = séance legacy sans heure.
+  dateSeanceFin            DateTime?             @map("date_seance_fin")
+  // ── Lieu de déroulement (miroir TrainingSession). Tout additif. ─────────────
+  lieuType                 LieuType?             @map("lieu_type")
+  lieuIntitule             String?               @map("lieu_intitule") @db.VarChar(200)
+  lieuAdresse              String?               @map("lieu_adresse") @db.Text
+  lieuCodePostal           String?               @map("lieu_code_postal") @db.VarChar(10)
+  lieuVille                String?               @map("lieu_ville") @db.VarChar(120)
+  lieuSalle                String?               @map("lieu_salle") @db.VarChar(120)
+  lieuVisioUrl             String?               @map("lieu_visio_url") @db.Text
   statut                   CoachingSessionStatut @default(planifiee)
   beneficiaireNom          String?               @map("beneficiaire_nom") @db.VarChar(200)
   beneficiaireEmail        String?               @map("beneficiaire_email") @db.Citext
@@ -6795,6 +7206,8 @@ model CoachingSession {
   @@index([interventionSlug])
   @@index([dateSeance])
   @@index([estAfest])
+  /// Charge d'un formateur sur une période (cockpit).
+  @@index([trainerId, dateSeance])
   @@map("coaching_sessions")
 }
 
