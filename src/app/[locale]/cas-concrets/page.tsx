@@ -180,10 +180,7 @@ export default async function CaseStudiesListing({ params }: Props) {
         <Container className="relative">
           {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}
           <HeroBadge className="mb-8 sm:mb-10">
-            <span
-              aria-hidden="true"
-              className="bg-sage inline-block h-1.5 w-1.5 rounded-full"
-            />
+            <span aria-hidden="true" className="bg-sage inline-block h-1.5 w-1.5 rounded-full" />
             {isFr
               ? "Cas réels · de l'artisan au grand groupe"
               : "Real cases · from artisans to large groups"}

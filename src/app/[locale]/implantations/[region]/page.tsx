@@ -228,9 +228,7 @@ export default async function RegionPage({ params }: Props) {
               aria-hidden="true"
               className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
             />
-            {isFr
-              ? `Architectes IA · ${region.prefecture}`
-              : `AI experts · ${region.prefecture}`}
+            {isFr ? `Architectes IA · ${region.prefecture}` : `AI experts · ${region.prefecture}`}
           </HeroBadge>
           <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — copy */}
