@@ -30,6 +30,7 @@ import {
   loadAdjacentArticles,
   loadPeopleAlsoAsk,
 } from "@/server/content-gen/blog/loader";
+import { isRenderableBlogCategorySlug } from "@/server/content-gen/blog/category-loader";
 import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
 import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
 import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
@@ -388,9 +389,13 @@ export default async function BlogArticle({ params }: Props) {
 
   // Breadcrumb : inclut le niveau catégorie quand il est connu (maillage
   // article → hub catégorie, hiérarchie alignée — audit nav 2026-06-24).
+  // Anti-404 (2026-07-11) : ne lier le fil d'Ariane vers le hub catégorie que si
+  // le slug est réellement rendable (cf. getRenderableBlogCategorySlugs). Un article
+  // rattaché à une catégorie seed hors-SSOT (blog-strategie/cas-usage/roi…) garde le
+  // label mais sans lien 404.
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
-    ...(view.categorySlug
+    ...(view.categorySlug && isRenderableBlogCategorySlug(view.categorySlug)
       ? [{ href: `/blog/categorie/${view.categorySlug}`, label: view.category }]
       : []),
     { href: `/blog/${slug}`, label: view.title },

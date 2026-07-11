@@ -4,8 +4,10 @@
 import { prisma } from "@/lib/prisma";
 import type { Locale } from "@/i18n/routing";
 import { BLOG_CATEGORY_SLUGS } from "@/server/content-gen/lib/category-mapper";
+import { getAllBlogCategorySlugs } from "@/content/transversal";
 import {
   resolveArticleRoute,
+  isRoutableArticleSlug,
   type ArticleRouteSegment,
 } from "@/server/content-gen/blog/resolve-article-route";
 
@@ -24,6 +26,27 @@ export interface BlogCategoryArticle {
 
 /** Slugs des 5 catégories de blog content-gen (mappées aux ServiceSector). */
 export const DB_BLOG_CATEGORY_SLUGS: ReadonlyArray<string> = BLOG_CATEGORY_SLUGS;
+
+/**
+ * SOURCE UNIQUE DE VÉRITÉ des slugs de catégorie réellement RENDABLES par la route
+ * /blog/categorie/[slug] : slugs FS legacy + les 5 slugs DB content-gen. C'est
+ * exactement l'ensemble pré-généré par `generateStaticParams` (dynamicParams=false).
+ *
+ * ⚠️ Tout consommateur qui construit un lien `/blog/categorie/<slug>` (hub /blog,
+ * fil d'Ariane de /blog/[slug], etc.) DOIT filtrer sur cet ensemble, sinon un slug
+ * hors-ensemble (ex. catégorie seed `blog-strategie`/`blog-cas-usage`/`blog-roi`
+ * attachée à un article publié) produit un lien 404. Cf. incident 2026-07-11.
+ *
+ * Pur / stub-safe (ADR 0026) : aucune requête DB, dérivé de constantes.
+ */
+export function getRenderableBlogCategorySlugs(): ReadonlySet<string> {
+  return new Set<string>([...getAllBlogCategorySlugs(), ...DB_BLOG_CATEGORY_SLUGS]);
+}
+
+/** Un slug de catégorie de blog a-t-il une page rendable (sinon → 404) ? */
+export function isRenderableBlogCategorySlug(slug: string): boolean {
+  return getRenderableBlogCategorySlugs().has(slug);
+}
 
 /** Label (nameFr/nameEn) d'une catégorie DB, ou null si inconnue. */
 export async function getDbCategoryLabel(slug: string, locale: Locale): Promise<string | null> {
@@ -133,6 +156,10 @@ export async function getDbArticlesByCategorySlug(
   return rows.flatMap((a) => {
     const t = a.translations[0];
     if (!t) return [];
+    // Garde-fou 2026-07-11 : un slug à slash 404 (route à segment unique) → ne pas
+    // le lister ici (sinon la tuile catégorie pointe vers un 404). Cf.
+    // isRoutableArticleSlug. Correctif racine = slug plat en DB.
+    if (!isRoutableArticleSlug(t.slug)) return [];
     return [
       {
         slug: t.slug,

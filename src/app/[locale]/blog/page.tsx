@@ -16,6 +16,7 @@ import { BlogHeroSchema } from "@/components/sections/BlogHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { getBlogHomeFaq } from "@/server/content-gen/lib/category-hub-content";
 import { loadBlogIndexForView } from "@/server/content-gen/blog/loader";
+import { getRenderableBlogCategorySlugs } from "@/server/content-gen/blog/category-loader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib/seo";
 import { BlogSearch } from "@/components/blog/BlogSearch";
@@ -92,10 +93,19 @@ export default async function BlogListing({ params, searchParams }: Props) {
   // articles factory, slugify(nom) pour les FS) afin que les liens pointent vers
   // une page catégorie valide (les slugs DB ≠ slugify(nom)). Skip si pas de
   // catégorie résoluble (évite tout lien 404).
+  //
+  // 2026-07-11 — Anti-404 : la route /blog/categorie/[slug] a `dynamicParams=false`
+  // et ne pré-rend QUE les slugs FS + les 5 slugs DB content-gen (cf.
+  // generateStaticParams). Or des catégories seed (blog-strategie, blog-cas-usage,
+  // blog-roi…) peuvent être attachées à des articles publiés : leur `categorySlug`
+  // apparaissait ici → tuile avec compteur → lien 404. On restreint donc les tuiles
+  // au MÊME ensemble que generateStaticParams (source unique de vérité).
+  const renderableCategorySlugs = getRenderableBlogCategorySlugs();
   const categoriesMap = new Map<string, { label: string; slug: string; count: number }>();
   for (const post of sortedPosts) {
     const slug = post.categorySlug;
     if (!slug) continue;
+    if (!renderableCategorySlugs.has(slug)) continue;
     const existing = categoriesMap.get(slug);
     if (existing) {
       categoriesMap.set(slug, { ...existing, count: existing.count + 1 });

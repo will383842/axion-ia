@@ -18,6 +18,7 @@ import { resolveTier } from "@/content/blog";
 import { findArticleBySlug, listPublishedArticles } from "@/lib/knowledge/readers";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
+import { isRoutableArticleSlug } from "@/server/content-gen/blog/resolve-article-route";
 import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
 
 /** Vue unifiée d'un article — shape consommée par la route /blog/[slug]. */
@@ -300,7 +301,11 @@ export async function loadBlogIndexForView(
     fsPost: null,
   }));
 
-  const merged = [...dbAsView, ...fsKept];
+  // Garde-fou 2026-07-11 : écarte les slugs non routables (à slash, ex.
+  // `glossaire/…`) — ils 404 sur /blog/[slug] (segment unique), donc ni le hub ni
+  // les cartes ne doivent les lister/lier. Cf. isRoutableArticleSlug. Correctif
+  // racine = slug plat en DB.
+  const merged = [...dbAsView, ...fsKept].filter((a) => isRoutableArticleSlug(a.slug));
   return merged.sort((a, b) => (b.publishedAt > a.publishedAt ? 1 : -1));
 }
 

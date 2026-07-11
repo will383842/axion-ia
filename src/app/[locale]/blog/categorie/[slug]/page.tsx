@@ -15,13 +15,13 @@ import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
-  getAllBlogCategorySlugs,
   getBlogPostsByCategory,
   getBlogCategoryLabel,
 } from "@/content/transversal";
 import {
   getDbArticlesByCategorySlug,
   DB_BLOG_CATEGORY_SLUGS,
+  getRenderableBlogCategorySlugs,
 } from "@/server/content-gen/blog/category-loader";
 import { blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
 import { categoryDescription } from "@/server/content-gen/lib/category-descriptions";
@@ -60,7 +60,9 @@ interface CategoryItem {
 }
 
 export async function generateStaticParams() {
-  const slugs = Array.from(new Set([...getAllBlogCategorySlugs(), ...DB_BLOG_CATEGORY_SLUGS]));
+  // Source unique de vérité partagée avec le hub /blog et le fil d'Ariane de
+  // /blog/[slug] (getRenderableBlogCategorySlugs) — évite tout mismatch → 404.
+  const slugs = Array.from(getRenderableBlogCategorySlugs());
   return slugs.flatMap((slug) => STATIC_LOCALES.map((locale) => ({ locale, slug })));
 }
 

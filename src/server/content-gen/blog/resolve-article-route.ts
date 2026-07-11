@@ -26,3 +26,19 @@ export function resolveArticleRoute(article: {
   if ((article.templateVariant ?? "").toLowerCase().includes("guide")) return "guides";
   return "blog";
 }
+
+/**
+ * Un slug d'article est-il ROUTABLE ? Les routes publiques `/blog/[slug]`,
+ * `/actualites/[slug]`, `/guides/[slug]` sont des segments dynamiques UNIQUES :
+ * un slug contenant `/` (ex. `glossaire/formation-ia-maurepas`) produit une URL
+ * à deux segments qui ne matche AUCUNE route → 404 dur (et « indexation refusée »
+ * si l'URL a fui dans le sitemap). Cf. incident GSC 2026-07-11.
+ *
+ * ⚠️ Garde-fou : tout consommateur qui construit une URL d'article ou l'expose
+ * (sitemap, liens hub/catégorie, index blog) DOIT écarter les slugs non routables
+ * — un slug à slash est une donnée malformée, pas une page. Correctif définitif =
+ * slug plat en DB ; ce filtre évite juste de servir un 404 à Google en attendant.
+ */
+export function isRoutableArticleSlug(slug: string | null | undefined): boolean {
+  return typeof slug === "string" && slug.length > 0 && !slug.includes("/");
+}
