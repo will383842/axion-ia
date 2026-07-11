@@ -1,91 +1,129 @@
-# R33 — Disaster Recovery : cold-start « VPS perdu → plateforme remontée »
+# R33 — Disaster Recovery : remettre tout le site en ligne
 
-- **Statut** : v1 (2026-06-03) — ADR 0032
-- **Périmètre** : reconstruction complète après perte totale du VPS Hetzner (incendie DC,
-  compromission compte, corruption irrécupérable). Pour une simple panne région, voir **R31**.
-  Pour un drill de restauration Postgres seul, voir **R22**.
+- **Statut** : v2 (2026-07-11) — ADR 0032. Réécrit pour coller à la réalité déployée
+  (v1 décrivait du PITR/age/bucket immuable jamais mis en place).
+- **Périmètre** : perte de données, corruption, perte totale du VPS, ou compromission.
+  Pour une simple panne région, voir **R31**.
 
-## Objectifs (à valider/mesurer au premier drill complet)
+## TL;DR — quelle voie choisir selon l'incident
 
-| Métrique                          | Cible                                             | Réalité (à mesurer) |
-| --------------------------------- | ------------------------------------------------- | ------------------- |
-| **RPO** Postgres                  | ≤ 1 h (PITR WAL, ADR 0032) — fallback dump ≤ 24 h | —                   |
-| **RPO** fichiers/Docuseal/secrets | ≤ 24 h                                            | —                   |
-| **RTO** plateforme complète       | ≤ X h (à chiffrer)                                | —                   |
+| Scénario                                                    | Voie de recovery                                                        | RTO réaliste                                   |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------- |
+| Base corrompue / données effacées, VPS sain                 | Restaurer le dernier dump PG depuis R2 (§ Voie B, étape 2)              | 15 min – 1 h                                   |
+| VPS mort (incident Hetzner, suppression, corruption disque) | **Restaurer le snapshot Hetzner du VPS entier** (§ Voie A)              | **~15-20 min**                                 |
+| Hetzner ENTIER perdu (compte, région)                       | Reconstruire depuis R2 sur un hôte neuf (§ Voie B)                      | 1 – 3 h                                        |
+| **Piratage / compromission**                                | Rebuild PROPRE + rotation secrets + restore données pré-hack (§ Voie C) | Heures (NE PAS restaurer le snapshot tel quel) |
 
-## ⚠️ Prérequis HORS système (sans eux, restauration impossible)
+## ⚠️ Le seul prérequis vital HORS système
 
-Ces éléments NE sont PAS sur le VPS. Vérifier qu'ils sont accessibles **avant** un incident :
+Sans lui, **aucun backup R2 n'est déchiffrable**. À garder accessible hors du VPS (coffre 1Password + copie papier) :
 
-1. **`BACKUP_ENCRYPTION_PASSPHRASE`** (déchiffre dumps PG/Redis/Docuseal/images) — coffre 1Password + papier.
-2. **`SOPS_AGE_KEY`** (clé privée age, déchiffre l'archive secrets) — coffre 1Password + papier.
-3. **`PGBACKREST_REPO1_CIPHER_PASS`** (déchiffre le repo pgBackRest) — coffre.
-4. Accès **R2** (Cloudflare) : où vivent les backups off-provider.
-5. Accès **GitHub** (code) ou le **miroir Git off-site** (`REMOTE_GIT_OFFSITE`).
-6. Accès **Cloudflare** (DNS) pour basculer le domaine.
+- **`BACKUP_ENCRYPTION_PASSPHRASE`** — chiffre TOUS les backups R2 (Postgres, Docuseal, Plausible, secrets, fichiers) en **AES-256** (`openssl enc -aes-256-cbc -pbkdf2`).
 
-## Procédure (ordre des dépendances)
+Autres accès à avoir sous la main : compte **Cloudflare R2** (où vivent les backups), **GitHub** (code + image GHCR), **Cloudflare DNS**, **Hetzner** (snapshots + nouveau serveur), **Coolify** (ou ses creds API dans `.secrets/api-tokens.env`).
 
-### Étape 0 — Provisionner un nouvel hôte
+> ℹ️ La v1 mentionnait `SOPS_AGE_KEY` / `PGBACKREST_REPO1_CIPHER_PASS` / bucket immuable :
+> **non applicable**. Les secrets sont chiffrés en AES avec `BACKUP_ENCRYPTION_PASSPHRASE`
+> (pas age), le PITR pgBackRest n'a jamais été déployé, et il n'y a pas de bucket Object-Lock.
 
-1. Nouveau VPS (Hetzner ou autre provider). Installer Docker + Docker Compose + `aws-cli`, `age`, `openssl`, `pgbackrest`.
-2. `git clone https://github.com/will383842/axion-ia.git` (ou depuis `REMOTE_GIT_OFFSITE` si GitHub indisponible).
+---
 
-### Étape 1 — Restaurer les secrets (débloque tout le reste)
+## Voie A — Restaurer le snapshot Hetzner (le plus rapide)
 
-3. Récupérer la dernière archive secrets depuis R2 immuable :
-   ```bash
-   aws --endpoint-url "$R2_ENDPOINT" s3 ls s3://axion-ia-backups-immutable/secrets/ | sort | tail -1
-   aws --endpoint-url "$R2_ENDPOINT" s3 cp s3://axion-ia-backups-immutable/secrets/<archive>.tar.age .
-   age -d -i <SOPS_AGE_KEY_FILE> <archive>.tar.age | tar -x
-   ```
-4. Reconstituer `.env.production` à partir de `coolify-envs.json` + `.secrets/` (creds Google, etc.).
-   Re-set ces env vars dans Coolify (ou docker-compose `.env`).
+Le VPS entier (app + Postgres + volumes + config Coolify) est **snapshoté chaque jour** par
+Hetzner (Backups auto activés, fenêtre 10-14 UTC, ~14 images conservées ≈ 2 semaines).
 
-### Étape 2 — Restaurer Postgres
+1. Console Hetzner Cloud → serveur `axionia-web` (id `130002660`) → onglet **Backups**.
+2. Choisir le dernier snapshot **sain** (antérieur à l'incident si corruption/hack — cf. Voie C).
+3. **Rollback** sur le serveur existant, OU créer un nouveau serveur depuis l'image backup.
+4. Au boot : vérifier `docker ps` (tous les conteneurs healthy), puis `curl https://axion-ia.com/api/healthz`.
+5. Si nouvelle IP → mettre à jour l'A record dans Cloudflare DNS.
 
-> ⚠️ **Prérequis extensions** : le dump contient des colonnes `vector` (table `KnowledgeEmbedding`,
-> pgvector) + `citext`/`pg_trgm`/`unaccent`/`uuid-ossp`. Le Postgres cible DOIT avoir **pgvector**
-> installé (image `pgvector/pgvector:pg16`, pas `postgres:16-alpine`), sinon `pg_restore` échoue à
-> créer les tables extension-dépendantes (`relation … does not exist`). Le drill CI mensuel le vérifie.
+RTO typique ~15-20 min. **Perte de données** = tout ce qui s'est passé depuis le dernier
+snapshot (jusqu'à ~24 h). Pour réduire, réappliquer par-dessus le dernier dump PG horaire (Voie B, étape 2).
 
-**Option A — PITR (RPO < 1h, recommandé)** : 5. Configurer pgBackRest (`infra/pgbackrest/pgbackrest.conf` + creds R2 + cipher pass).
+---
+
+## Voie B — Reconstruire depuis R2 (si Hetzner indisponible)
+
+### Prérequis extensions Postgres
+
+Le dump contient des colonnes `vector` (table `KnowledgeEmbedding`, pgvector) + `citext`/`pg_trgm`/
+`unaccent`/`uuid-ossp`. Le Postgres cible **DOIT** avoir **pgvector** (image `pgvector/pgvector:pg16`,
+pas `postgres:16-alpine`), sinon `pg_restore` échoue. Le drill CI mensuel le vérifie.
+
+### Étape 0 — Hôte neuf
+
+1. Nouveau VPS. Installer Docker + Compose. (Les outils `aws-cli`/`openssl` sont fournis par les
+   conteneurs éphémères des scripts backup, pas besoin de les installer sur l'hôte.)
+2. `git clone https://github.com/will383842/axion-ia.git`.
+
+### Étape 1 — Secrets (débloque tout le reste)
 
 ```bash
-pgbackrest --stanza=axionia --type=time --target="<dernier instant sain>" \
-  --target-action=promote --pg1-path=/var/lib/postgresql/data restore
+# Lister + récupérer la dernière archive secrets
+aws --endpoint-url "$R2_ENDPOINT" s3 ls s3://axion-ia-backups/secrets/ | sort | tail -1
+aws --endpoint-url "$R2_ENDPOINT" s3 cp s3://axion-ia-backups/secrets/<archive>.tar.gz.enc .
+# Déchiffrer (AES) + décompresser
+openssl enc -d -aes-256-cbc -pbkdf2 -pass env:BACKUP_ENCRYPTION_PASSPHRASE -in <archive>.tar.gz.enc | tar -xzf -
 ```
 
-**Option B — dump (fallback)** :
+Réinjecter ces variables d'environnement dans Coolify (ou le `.env` de la stack).
+
+### Étape 2 — Postgres (dump)
 
 ```bash
-bash scripts/backup-postgres-r2.sh --restore postgres/daily/<dernier>.dump.gz.enc
-# puis pg_restore --clean --if-exists --no-owner --dbname="$DATABASE_URL" <fichier>
+# Le plus récent = postgres/hourly/ (RPO ~1 h) ; sinon postgres/daily/
+aws --endpoint-url "$R2_ENDPOINT" s3 ls s3://axion-ia-backups/postgres/hourly/ | sort | tail -1
+# Restaurer via le script (télécharge + déchiffre + valide) :
+bash scripts/backup-postgres-r2.sh --restore postgres/hourly/<dernier>.dump.gz.enc
+# puis appliquer réellement :
+pg_restore --clean --if-exists --no-owner --dbname="$DATABASE_URL" <fichier .dump>
 ```
 
-### Étape 3 — Démarrer la stack applicative
+### Étape 3 — Stack applicative
 
-6. ```bash
-   docker compose -f docker/docker-compose.production.yml up -d
-   docker exec <app> pnpm prisma migrate deploy   # ou via entrypoint
-   ```
-   (ou via Coolify : pull image GHCR `ghcr.io/will383842/axion-ia:latest`).
+```bash
+# Via Coolify : pull image GHCR ghcr.io/will383842/axion-ia:latest (Dockerfile.coolify-pull)
+# Les migrations tournent à l'entrypoint (prisma migrate deploy).
+```
 
-### Étape 4 — Restaurer les données annexes
+### Étape 4 — Données annexes (chacune : télécharger → déchiffrer AES → restaurer dans le volume)
 
-7. **Fichiers image-bank** : `aws s3 sync s3://<bucket>/image-bank/live/ /var/data/image-bank/` (ou restaurer une archive).
-8. **Docuseal** : déchiffrer la dernière archive `docuseal/monthly/*.tar.gz.enc` → restaurer SQLite + PDF dans le volume.
-9. **Redis** : (optionnel — queues reconstructibles) restaurer `dump.rdb` si besoin.
-10. **Plausible** : restaurer PG + ClickHouse depuis `plausible/*` (non bloquant).
+- **Fichiers utilisateurs** : `files/daily/*.tar.gz.enc` → détar dans les volumes `cv-storage`,
+  `console-docs` et le bind `/var/data/reviews-media`.
+- **Docuseal** (signatures) : `docuseal/daily/*.tar.gz.enc` → détar dans le volume docuseal.
+- **Plausible** (non bloquant) : `plausible/pg/*` + `plausible/ch/*`.
+- **Redis** : non sauvegardé (files reconstructibles) — rien à restaurer.
 
-### Étape 5 — Bascule DNS + vérifications
+### Étape 5 — DNS + vérifs
 
-11. Cloudflare → pointer `axion-ia.com` vers la nouvelle IP.
-12. Vérifs : `curl https://axion-ia.com/api/healthz` ; `/fr` → 200 ; admin accessible ; sitemap.
-13. Relancer pgBackRest `stanza-create` + premier full sur le nouvel hôte ; vérifier les cron backups.
-14. Logguer le drill dans `_AUDIT/PG-RESTORE-DRILL-LOG.md` (RTO mesuré, composants restaurés).
+1. Cloudflare → pointer `axion-ia.com` vers la nouvelle IP.
+2. `curl https://axion-ia.com/api/healthz` ; `/fr` → 200 ; admin accessible.
+3. Redéposer les wrappers cron `/opt/axion-ia/run-*-backup.sh` + le crontab (cf. `_AUDIT/CRON-VPS-INVENTORY.md`).
+
+---
+
+## Voie C — Piratage / compromission (⚠️ NE PAS restaurer le snapshot tel quel)
+
+Restaurer un snapshot compromis ré-installe la porte dérobée. Procédure :
+
+1. **Isoler** : couper l'accès public (Cloudflare en « Under Attack » / pause DNS), ne PAS détruire
+   le serveur compromis (preuves), snapshoter l'état pour analyse.
+2. **Hôte propre** : nouveau VPS, image système fraîche (PAS un backup Hetzner du serveur hacké).
+3. **Rotation de TOUS les secrets** avant de remonter : `BACKUP_ENCRYPTION_PASSPHRASE`, `AUTH_SECRET`,
+   mots de passe Postgres, clés API (Anthropic/OpenAI/Cloudflare/Hetzner/R2/Docuseal…), `GH_DISPATCH_TOKEN`,
+   `PII_ENCRYPTION_KEY`. Consigner dans `_AUDIT/SECRETS-ROTATION-LOG.md`.
+4. **Restaurer uniquement les DONNÉES** (pas le système) depuis un backup **antérieur à l'intrusion** :
+   suivre Voie B étapes 2-4 en choisissant un dump daté d'avant la compromission.
+5. Rebuild l'image applicative depuis un commit Git vérifié (revue du diff récent).
+6. Remonter le DNS seulement après vérification. RTO = heures, pas minutes — c'est normal et voulu.
+
+---
 
 ## Post-incident
 
-- Rotation des secrets potentiellement exposés (cf. `_AUDIT/SECRETS-ROTATION-LOG.md`).
-- Mettre à jour les cibles RTO/RPO de ce runbook avec les valeurs mesurées.
+- Mesurer et noter le RTO réel dans `_AUDIT/PG-RESTORE-DRILL-LOG.md`.
+- Vérifier que tous les cron backups tournent (`crontab -l` sur le nouvel hôte).
+- **À faire au moins une fois (non encore répété)** : un drill de restauration COMPLET (Voie A ou B
+  de bout en bout) pour valider les RTO ci-dessus. Le drill CI mensuel ne teste que le dump Postgres.
