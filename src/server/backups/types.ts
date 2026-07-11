@@ -25,16 +25,17 @@ export type BackupComponentValue = (typeof BACKUP_COMPONENTS)[number];
  * 2026-07-11) : données reconstructibles / non critiques / couvertes autrement.
  * - postgres_pitr : PITR abandonné, le dump horaire couvre le RPO retenu
  * - redis : files de jobs BullMQ, reconstructibles
- * - files_image_bank : aucun stockage local configuré en prod (rien à sauver)
  * - git_mirror : le code vit déjà sur GitHub
  * Ces composants sont rendus « non suivi — assumé » (tone neutre) au lieu de
  * « critique », et sont EXCLUS des alertes /alerts. Retirer un composant de ce
  * set le remet immédiatement sous surveillance (alerte si non sauvegardé).
+ * NB : `files_image_bank` a été RETIRÉ de ce set le 2026-07-11 — les volumes
+ * fichiers utilisateurs (CV, docs, avis) sont désormais sauvegardés quotidiennement
+ * vers R2 (cron VPS `run-files-backup.sh`), donc suivi comme un composant normal.
  */
 export const ACCEPTED_GAP_COMPONENTS: ReadonlySet<BackupComponentValue> = new Set([
   "postgres_pitr",
   "redis",
-  "files_image_bank",
   "git_mirror",
 ]);
 
@@ -57,7 +58,7 @@ export const RPO_TARGETS_MIN: Record<BackupComponentValue, number> = {
   docuseal: 24 * 60,
   plausible_pg: 24 * 60,
   plausible_clickhouse: 24 * 60,
-  secrets: 31 * 24 * 60, // mensuel
+  secrets: 24 * 60, // quotidien (cron VPS 0 2 * * *)
   git_mirror: 7 * 24 * 60, // hebdo
 };
 
@@ -69,7 +70,7 @@ export const COMPONENT_LABELS_FR: Record<BackupComponentValue, string> = {
   postgres: "PostgreSQL (dump)",
   postgres_pitr: "PostgreSQL (PITR / WAL)",
   redis: "Redis / BullMQ",
-  files_image_bank: "Fichiers banque d'images",
+  files_image_bank: "Fichiers (CV, documents, avis)",
   docuseal: "Docuseal (signatures)",
   plausible_pg: "Plausible (Postgres)",
   plausible_clickhouse: "Plausible (ClickHouse)",
