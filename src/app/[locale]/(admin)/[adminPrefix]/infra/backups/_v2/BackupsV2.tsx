@@ -35,7 +35,7 @@ interface Props {
 }
 
 function toneIcon(tone: BackupOverviewRow["tone"]): string {
-  return tone === "success" ? "✅" : tone === "warning" ? "⚠️" : "🔴";
+  return tone === "success" ? "✅" : tone === "warning" ? "⚠️" : tone === "neutral" ? "➖" : "🔴";
 }
 
 function statusPill(status: BackupHistoryItem["status"]) {
@@ -55,6 +55,8 @@ export function BackupsV2({
   const ok = overview.filter((o) => o.tone === "success").length;
   const warn = overview.filter((o) => o.tone === "warning").length;
   const bad = overview.filter((o) => o.tone === "destructive").length;
+  const tracked = overview.filter((o) => !o.acceptedGap).length;
+  const accepted = overview.length - tracked;
   const totalPages = Math.max(1, Math.ceil(history.total / history.pageSize));
   const baseHref = `/fr/${adminPrefix}/infra/backups`;
 
@@ -106,12 +108,23 @@ export function BackupsV2({
         }
       />
 
-      {/* Bandeau rouge si backup manqué / drill périmé */}
+      {/* Bandeau : rouge « action requise » seulement si un vrai backup manque,
+          sinon ambre « à surveiller » (drills à rafraîchir sur des backups qui existent). */}
       {(banners.missedBackup || banners.staleDrill) && (
         <AdminCard className="admin-infra-card mb-[var(--space-admin-5)]">
           <div className="admin-infra-card-head">
-            <strong>🔴 Attention sauvegardes</strong>
-            <span className="admin-status-pill admin-severity-critical">● Action requise</span>
+            <strong>
+              {banners.missedBackup
+                ? "🔴 Attention sauvegardes"
+                : "⚠️ Tests de restauration à rafraîchir"}
+            </strong>
+            <span
+              className={`admin-status-pill admin-severity-${
+                banners.missedBackup ? "critical" : "warning"
+              }`}
+            >
+              {banners.missedBackup ? "● Action requise" : "● À surveiller"}
+            </span>
           </div>
           <ul className="admin-meta-block">
             {banners.details.map((d) => (
@@ -147,7 +160,11 @@ export function BackupsV2({
           tone={bad > 0 ? "destructive" : "default"}
           icon={XCircle}
         />
-        <AdminStatCard label="Composants suivis" value={overview.length} icon={Database} />
+        <AdminStatCard
+          label={accepted > 0 ? `Composants suivis (+${accepted} assumés)` : "Composants suivis"}
+          value={tracked}
+          icon={Database}
+        />
       </section>
 
       {/* Vue d'ensemble par composant */}
@@ -159,7 +176,9 @@ export function BackupsV2({
               <strong>
                 {toneIcon(o.tone)} {o.label}
               </strong>
-              {o.lastStatus && (
+              {o.acceptedGap ? (
+                <span className="admin-status-pill admin-severity-info">Non suivi (assumé)</span>
+              ) : o.lastStatus ? (
                 <span
                   className={`admin-status-pill admin-severity-${
                     o.tone === "destructive"
@@ -171,20 +190,27 @@ export function BackupsV2({
                 >
                   {STATUS_LABELS_FR[o.lastStatus]}
                 </span>
-              )}
+              ) : null}
             </div>
-            <p className="admin-meta-block">
-              Dernier&nbsp;: {formatDateFr(o.lastAt)}
-              {" · "}
-              {formatBytes(o.sizeBytes)} · {formatDuration(o.durationSec)}
-              <br />
-              Destinations&nbsp;: {o.destinations.join(" + ") || "—"}
-              <br />
-              {ageVsRpoLabel(o.ageVsRpoMin)}
-              <br />
-              Dernier drill&nbsp;: {formatDateFr(o.lastDrillAt)}
-              {o.drillStale && <span className="admin-severity-warning"> · périmé</span>}
-            </p>
+            {o.acceptedGap ? (
+              <p className="admin-meta-block">
+                Sauvegarde volontairement non configurée (donnée reconstructible ou couverte
+                autrement). Exclu des alertes.
+              </p>
+            ) : (
+              <p className="admin-meta-block">
+                Dernier&nbsp;: {formatDateFr(o.lastAt)}
+                {" · "}
+                {formatBytes(o.sizeBytes)} · {formatDuration(o.durationSec)}
+                <br />
+                Destinations&nbsp;: {o.destinations.join(" + ") || "—"}
+                <br />
+                {ageVsRpoLabel(o.ageVsRpoMin)}
+                <br />
+                Dernier drill&nbsp;: {formatDateFr(o.lastDrillAt)}
+                {o.drillStale && <span className="admin-severity-warning"> · périmé</span>}
+              </p>
+            )}
           </div>
         ))}
       </div>

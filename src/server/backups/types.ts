@@ -20,6 +20,24 @@ export const BACKUP_COMPONENTS = [
 ] as const;
 export type BackupComponentValue = (typeof BACKUP_COMPONENTS)[number];
 
+/**
+ * Composants qu'on a consciemment décidé de NE PAS sauvegarder (décision
+ * 2026-07-11) : données reconstructibles / non critiques / couvertes autrement.
+ * - postgres_pitr : PITR abandonné, le dump horaire couvre le RPO retenu
+ * - redis : files de jobs BullMQ, reconstructibles
+ * - files_image_bank : aucun stockage local configuré en prod (rien à sauver)
+ * - git_mirror : le code vit déjà sur GitHub
+ * Ces composants sont rendus « non suivi — assumé » (tone neutre) au lieu de
+ * « critique », et sont EXCLUS des alertes /alerts. Retirer un composant de ce
+ * set le remet immédiatement sous surveillance (alerte si non sauvegardé).
+ */
+export const ACCEPTED_GAP_COMPONENTS: ReadonlySet<BackupComponentValue> = new Set([
+  "postgres_pitr",
+  "redis",
+  "files_image_bank",
+  "git_mirror",
+]);
+
 export const BACKUP_KINDS = ["daily", "weekly", "monthly", "pitr", "manual"] as const;
 export type BackupKindValue = (typeof BACKUP_KINDS)[number];
 
@@ -86,10 +104,12 @@ export interface BackupOverviewRow {
   destinations: string[];
   rpoTargetMin: number;
   ageVsRpoMin: number | null; // null = jamais sauvegardé
-  /** ✅ frais · ⚠️ en retard/avertissement · 🔴 échec ou jamais. */
-  tone: "success" | "warning" | "destructive";
+  /** ✅ frais · ⚠️ en retard/avertissement · 🔴 échec ou jamais · ➖ non suivi (assumé). */
+  tone: "success" | "warning" | "destructive" | "neutral";
   lastDrillAt: Date | null;
   drillStale: boolean; // dernier drill réussi > DRILL_STALE_DAYS (ou jamais)
+  /** Composant volontairement non sauvegardé (cf. ACCEPTED_GAP_COMPONENTS) : neutralise tone + alertes. */
+  acceptedGap: boolean;
 }
 
 export interface BackupHistoryItem {

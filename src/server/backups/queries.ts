@@ -5,6 +5,7 @@
 
 import { prisma } from "@/lib/prisma";
 import {
+  ACCEPTED_GAP_COMPONENTS,
   BACKUP_COMPONENTS,
   COMPONENT_LABELS_FR,
   DRILL_STALE_DAYS,
@@ -57,8 +58,10 @@ export async function getBackupOverview(): Promise<BackupOverviewRow[]> {
       const lastStatus = (lastRun?.status ?? null) as BackupStatusValue | null;
       const ageVsRpoMin = lastRun?.ageVsRpoMin ?? null;
       const lastDrillAt = lastDrill?.startedAt ?? null;
+      const acceptedGap = ACCEPTED_GAP_COMPONENTS.has(component);
       const drillStale =
-        lastDrillAt == null || Date.now() - lastDrillAt.getTime() > DRILL_STALE_DAYS * DAY_MS;
+        !acceptedGap &&
+        (lastDrillAt == null || Date.now() - lastDrillAt.getTime() > DRILL_STALE_DAYS * DAY_MS);
 
       return {
         component: component as BackupComponentValue,
@@ -70,9 +73,10 @@ export async function getBackupOverview(): Promise<BackupOverviewRow[]> {
         destinations: lastRun?.destinations ?? [],
         rpoTargetMin: RPO_TARGETS_MIN[component],
         ageVsRpoMin,
-        tone: toneFor(lastStatus, ageVsRpoMin),
+        tone: acceptedGap ? "neutral" : toneFor(lastStatus, ageVsRpoMin),
         lastDrillAt,
         drillStale,
+        acceptedGap,
       } satisfies BackupOverviewRow;
     }),
   );
@@ -130,8 +134,10 @@ export async function getBackupHistory(opts: {
 
 /** Bandeaux d'alerte calculés depuis la vue d'ensemble. */
 export function computeBanners(overview: ReadonlyArray<BackupOverviewRow>): BackupBanners {
-  const missed = overview.filter((o) => o.tone === "destructive" || (o.ageVsRpoMin ?? 0) > 0);
-  const stale = overview.filter((o) => o.drillStale);
+  const missed = overview.filter(
+    (o) => !o.acceptedGap && (o.tone === "destructive" || (o.ageVsRpoMin ?? 0) > 0),
+  );
+  const stale = overview.filter((o) => !o.acceptedGap && o.drillStale);
   const details: string[] = [];
   for (const o of missed) {
     details.push(
@@ -167,6 +173,7 @@ export async function getBackupAlerts(adminPrefix: string): Promise<BackupAlert[
   const url = `/fr/${adminPrefix}/infra/backups`;
   const alerts: BackupAlert[] = [];
   for (const o of overview) {
+    if (o.acceptedGap) continue; // trou de sauvegarde assumé → aucune alerte
     if (o.lastStatus === "failed" || o.lastStatus == null) {
       alerts.push({
         source: "backups",
