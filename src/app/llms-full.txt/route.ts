@@ -10,7 +10,6 @@ import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
   formatAmount,
-  formatAmountRange,
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
@@ -31,9 +30,10 @@ export function GET() {
     "fr",
     { compact: true },
   );
-  const auditFlashAmount = getTierById(AUDIT_TIERS, "audit-flash").priceFlat!;
-  const auditPmeMax = getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMax!;
-  const auditRange = formatAmountRange(auditFlashAmount, auditPmeMax, "fr");
+  // Audit = prix d'entrée « à partir de » : les niveaux Ciblé/PME/ETI sont
+  // « à partir de 1 900 € · sur devis » depuis 2026-06-03 (plus de borne haute
+  // priceMax → l'ancienne fourchette Flash→PME-max rendait « NaN »).
+  const auditRange = `à partir de ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr").replace(/^dès\s/, "à partir de ");
   // intervention-dirigeants alimente le 1-to-1 (UN_A_UN_TIERS).
   const coachingEntry = formatAmount(

@@ -23,16 +23,17 @@ const interventionEssentielle = getTierById(INTERVENTION_TIERS, "intervention-es
 function pressReleaseLaunchBody(loc: "fr" | "en"): string {
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, loc, { compact: true });
   const flash = formatAmount(auditFlash.priceFlat!, loc, { compact: true });
+  // Ciblé / PME / ETI = « à partir de 1 900 € · sur devis » (Will 2026-06-03,
+  // bornes hautes supprimées) → prix d'entrée uniquement (l'ancien « à ${max} »
+  // rendait « NaN », priceMax étant absent).
   const cibleMin = formatAmount(auditCible.priceMin!, loc, { compact: true });
-  const cibleMax = formatAmount(auditCible.priceMax!, loc, { compact: true });
   const pmeMin = formatAmount(auditPme.priceMin!, loc, { compact: true });
-  const pmeMax = formatAmount(auditPme.priceMax!, loc, { compact: true });
   const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
   if (loc === "fr") {
-    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash ${flash}, Ciblé ${cibleMin} à ${cibleMax}, Stratégique PME ${pmeMin} à ${pmeMax}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
+    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash ${flash}, Ciblé dès ${cibleMin}, Stratégique PME dès ${pmeMin}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
   }
-  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash ${flash}, Targeted ${cibleMin} to ${cibleMax}, Strategic SME ${pmeMin} to ${pmeMax}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
+  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash ${flash}, Targeted from ${cibleMin}, Strategic SME from ${pmeMin}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
 }
 
 export type PressReleaseTag = "launch" | "partnership" | "study" | "product" | "milestone";

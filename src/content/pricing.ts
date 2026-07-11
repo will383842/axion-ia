@@ -883,6 +883,15 @@ export function formatAmount(
   locale: "fr" | "en" = "fr",
   opts: FormatAmountOptions = {},
 ): string {
+  // Filet anti-`NaN` (2026-07-11) : plusieurs tiers sont passés en `onQuote`
+  // ou `priceMin`-only (décision Will 2026-06-03), et du code appelant assume
+  // encore un montant présent via `.priceMin!/.priceMax!`. À l'exécution ce
+  // `!` devient `undefined` → `fmtNumber(undefined)` affichait « NaN € » sur
+  // la FAQ, les pages Audit/Implémentation, la presse et llms-full.txt. On
+  // dégrade proprement en « sur devis » plutôt que de laisser fuir un NaN.
+  if (!Number.isFinite(amount)) {
+    return locale === "fr" ? "sur devis" : "on request";
+  }
   const compact = opts.compact === true;
   if (locale === "fr") {
     return compact ? `${fmtNumber(amount, "fr")} €` : `${fmtNumber(amount, "fr")} € HT`;
@@ -901,6 +910,25 @@ export function formatAmountRange(
   locale: "fr" | "en" = "fr",
   opts: FormatAmountOptions = {},
 ): string {
+  // Filet anti-`NaN` (2026-07-11) : une borne peut être `undefined` (tiers
+  // `priceMin`-only comme audit-cible / audit-strategique-pme, ou `onQuote`
+  // pur comme impl-ia-custom). On dégrade selon les bornes disponibles au lieu
+  // d'émettre « NaN → NaN ». Cf. `formatAmount`.
+  const hasMin = Number.isFinite(min);
+  const hasMax = Number.isFinite(max);
+  if (!hasMin && !hasMax) {
+    return locale === "fr" ? "sur devis" : "on request";
+  }
+  if (hasMin && !hasMax) {
+    return locale === "fr"
+      ? `à partir de ${formatAmount(min, "fr", opts)}`
+      : `from ${formatAmount(min, "en", opts)}`;
+  }
+  if (!hasMin && hasMax) {
+    return locale === "fr"
+      ? `jusqu'à ${formatAmount(max, "fr", opts)}`
+      : `up to ${formatAmount(max, "en", opts)}`;
+  }
   const compact = opts.compact === true;
   if (locale === "fr") {
     return compact
