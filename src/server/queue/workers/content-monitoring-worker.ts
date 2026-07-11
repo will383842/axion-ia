@@ -170,6 +170,16 @@ async function checkSoft404(): Promise<void> {
 }
 
 async function checkIndexationStagnant(): Promise<void> {
+  // ⛔ DÉSACTIVÉ PAR DÉFAUT 2026-07-11 : cette alerte tournait toutes les heures
+  // (cron `15 * * * *`) et re-notifiait Telegram sans anti-répétition pour les
+  // mêmes articles, avec des CTR/impressions PLACEHOLDER codés en dur à 0
+  // (l'intégration Search Console "V1.5" n'a jamais été faite). Résultat : spam
+  // horaire non actionnable ("CTR 0.00 % sur 0 impressions"). Détection conservée.
+  // POUR RÉACTIVER : brancher une vraie source GSC (ctrPct/impressions réels) +
+  // ajouter un cooldown par slug (Redis SETEX, ex. 30 j), PUIS poser l'env var
+  // INDEXATION_STAGNANT_ALERT_ENABLED=true côté Coolify.
+  if (process.env.INDEXATION_STAGNANT_ALERT_ENABLED !== "true") return;
+
   // Heuristique V1 sans field `gscIndexedAt` dédié : un Article tier_1
   // publié ≥ 30 j sans AUCUN row `KeywordTracking` correspondant via articleId
   // est suspect — soit non indexé Google, soit 0 impression.
