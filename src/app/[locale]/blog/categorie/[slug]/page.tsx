@@ -14,10 +14,7 @@ import { CategoryArticlesFilter } from "@/components/blog/CategoryArticlesFilter
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import {
-  getBlogPostsByCategory,
-  getBlogCategoryLabel,
-} from "@/content/transversal";
+import { getBlogPostsByCategory, getBlogCategoryLabel } from "@/content/transversal";
 import {
   getDbArticlesByCategorySlug,
   DB_BLOG_CATEGORY_SLUGS,
