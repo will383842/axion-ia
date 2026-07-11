@@ -114,8 +114,9 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
             />
             {isFr ? "Module 3 · Implémentation IA" : "Module 3 · AI implementation"}
           </HeroBadge>
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 xl:gap-16">
-            <div className="max-w-2xl">
+          {/* Layout centré (Will 2026-07-11) : texte centré, schéma EN DESSOUS. */}
+          <div className="flex flex-col items-center gap-12 lg:gap-14 xl:gap-16">
+            <div className="mx-auto max-w-3xl text-center">
               <h1 className="display-editorial text-fg">
                 {titleMain}{" "}
                 <span
@@ -128,12 +129,12 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
 
               <p
                 data-hero-description
-                className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
+                className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
               >
                 {description}
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-4">
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
                 <Cta href="/contact" size="lg" track="impl-hero-primary">
                   {isFr ? "Décrire mon besoin · réponse 48 h" : "Describe my need · 48 h reply"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -144,7 +145,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none">
+            <div className="relative mx-auto w-full max-w-[36rem]">
               {/* Mobile / tablette < lg : grid compact 2×4 — le SVG 8 satellites
                   serait illisible sous 1024 px. Même contenu, autre densité. */}
               <ul
