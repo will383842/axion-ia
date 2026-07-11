@@ -3,6 +3,7 @@ import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { DB_BLOG_CATEGORY_SLUGS } from "@/server/content-gen/blog/category-loader";
+import { isRoutableArticleSlug } from "@/server/content-gen/blog/resolve-article-route";
 import { getAllSlugs as getAllCaseStudySlugs, getAllIndustrySlugs } from "@/content/case-studies";
 import {
   getAllBlogCategorySlugs,
@@ -665,6 +666,10 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
       .map((r) => {
         const t = r.translations[0];
         if (!t) return null;
+        // Garde-fou 2026-07-11 : un slug à slash (`glossaire/…`) génère une URL
+        // 2-segments qui 404 → ne JAMAIS l'exposer au sitemap (sinon « indexation
+        // refusée » côté GSC). Cf. isRoutableArticleSlug.
+        if (!isRoutableArticleSlug(t.slug)) return null;
         return { slug: t.slug, updatedAt: r.updatedAt, publishedAt: r.publishedAt };
       })
       .filter((r): r is { slug: string; updatedAt: Date; publishedAt: Date | null } => r !== null);
