@@ -12,16 +12,16 @@ la reprise après sinistre. Voir `docs/adr/0032-backup-dr-extension-pitr-immutab
 
 ## Contenu
 
-| Fichier | Rôle | Cron (UTC) |
-| --- | --- | --- |
-| `run-pg-hourly-backup.sh` | Dump Postgres applicatif → R2 `postgres/hourly/` (RPO ~1 h) | `20 * * * *` |
-| `run-r2-backup.sh` | Dump Postgres daily/weekly/monthly → R2 (auto-pull `backup-postgres-r2.sh`) | `0 3` / `0 4 dim` / `0 5 1er` |
-| `run-files-backup.sh` | tar chiffré des volumes fichiers (CV, console-docs, avis) → R2 `files/daily/` | `15 4 * * *` |
-| `run-secrets-backup.sh` | Archive chiffrée des secrets/env → R2 `secrets/` | `0 2 * * *` |
-| `run-docuseal-backup.sh` | Dump Docuseal → R2 `docuseal/daily/` | `45 2 * * *` |
-| `run-plausible-backup.sh` | Dump Plausible PG + ClickHouse → R2 `plausible/pg/daily/` + `plausible/ch/daily/` | `30 3 * * *` |
-| `run-backup-digest.sh` | **Bilan quotidien Telegram unique** : lit R2, vérifie fraîcheur par composant | `30 6 * * *` |
-| `crontab.snapshot.txt` | Snapshot du crontab `root` (référence) | — |
+| Fichier                   | Rôle                                                                              | Cron (UTC)                    |
+| ------------------------- | --------------------------------------------------------------------------------- | ----------------------------- |
+| `run-pg-hourly-backup.sh` | Dump Postgres applicatif → R2 `postgres/hourly/` (RPO ~1 h)                       | `20 * * * *`                  |
+| `run-r2-backup.sh`        | Dump Postgres daily/weekly/monthly → R2 (auto-pull `backup-postgres-r2.sh`)       | `0 3` / `0 4 dim` / `0 5 1er` |
+| `run-files-backup.sh`     | tar chiffré des volumes fichiers (CV, console-docs, avis) → R2 `files/daily/`     | `15 4 * * *`                  |
+| `run-secrets-backup.sh`   | Archive chiffrée des secrets/env → R2 `secrets/`                                  | `0 2 * * *`                   |
+| `run-docuseal-backup.sh`  | Dump Docuseal → R2 `docuseal/daily/`                                              | `45 2 * * *`                  |
+| `run-plausible-backup.sh` | Dump Plausible PG + ClickHouse → R2 `plausible/pg/daily/` + `plausible/ch/daily/` | `30 3 * * *`                  |
+| `run-backup-digest.sh`    | **Bilan quotidien Telegram unique** : lit R2, vérifie fraîcheur par composant     | `30 6 * * *`                  |
+| `crontab.snapshot.txt`    | Snapshot du crontab `root` (référence)                                            | —                             |
 
 ## Notifications Telegram (2026-07-11)
 
