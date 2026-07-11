@@ -4,7 +4,7 @@
 // `axionia/docs/adr/0003-lift-formation-ban.md`) — vocabulaire libre désormais.
 // Sprint 14.10.5 (2026-05-08) : prix IA custom dérivés de pricing.ts (SSOT).
 
-import { IMPLEMENTATION_TIERS, formatAmount, formatAmountRange, getTierById } from "./pricing";
+import { IMPLEMENTATION_TIERS, formatAmountRange, getTierById } from "./pricing";
 import { IMPL_FR_OVERRIDES } from "./implementation-fr-overrides";
 
 const IA_CUSTOM_TIER = getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom");
@@ -95,12 +95,12 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       ...IMPL_FR_OVERRIDES["ia-custom"],
       eyebrow: "Service premium · Module 3",
       title: `IA custom d'entreprise (${IA_CUSTOM_RANGE_FR})`,
-      answer: `Implémentation IA sur mesure pour grands comptes : modèles fine-tuned sur vos données, intégration profonde dans vos systèmes, équipe dédiée. Prestations ${formatAmount(IA_CUSTOM_TIER.priceMin!, "fr", { compact: true })} à ${formatAmount(IA_CUSTOM_TIER.priceMax!, "fr")}, livraison ${IA_CUSTOM_TIER.durationFr}.`,
+      answer: `Implémentation IA sur mesure pour grands comptes : modèles fine-tuned sur vos données, intégration profonde dans vos systèmes, équipe dédiée. Tarif sur devis, livraison ${IA_CUSTOM_TIER.durationFr}.`,
     }),
     en: makeEn({
       eyebrow: "Premium service · Module 3",
       title: `Custom enterprise AI (${IA_CUSTOM_RANGE_EN})`,
-      answer: `Tailor-made AI implementation for large accounts: models fine-tuned on your data, deep integration into your systems, dedicated team. Engagements ${formatAmount(IA_CUSTOM_TIER.priceMin!, "en", { compact: true })} to ${formatAmount(IA_CUSTOM_TIER.priceMax!, "en")}, ${IA_CUSTOM_TIER.durationEn} delivery.`,
+      answer: `Tailor-made AI implementation for large accounts: models fine-tuned on your data, deep integration into your systems, dedicated team. Pricing on request, ${IA_CUSTOM_TIER.durationEn} delivery.`,
     }),
   },
   {

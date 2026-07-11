@@ -7,7 +7,6 @@ import {
   INTERVENTION_TIERS,
   MAINTENANCE_TIERS,
   formatAmount,
-  formatAmountRange,
   formatPrice,
   getEntryLabel,
   getTierById,
@@ -26,29 +25,27 @@ const maintenanceStandard = getTierById(MAINTENANCE_TIERS, "maintenance-standard
 function modulesAnswerFr(): string {
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, "fr", { compact: false });
   const flash = formatAmount(auditFlashTier.priceFlat!, "fr", { compact: true });
-  const cibleRange = formatAmountRange(auditCibleTier.priceMin!, auditCibleTier.priceMax!, "fr", {
-    compact: true,
-  });
-  const pmeRange = formatAmountRange(auditPmeTier.priceMin!, auditPmeTier.priceMax!, "fr", {
-    compact: true,
-  });
+  // Ciblé / PME / ETI sont passés « À partir de 1 900 € · sur devis » (Will
+  // 2026-06-03, suppression des bornes hautes) → prix d'entrée « dès X » et non
+  // une fourchette (l'ancienne fourchette rendait « NaN € », priceMax absent).
+  const cibleFrom = formatAmount(auditCibleTier.priceMin!, "fr", { compact: true });
+  const pmeFrom = formatAmount(auditPmeTier.priceMin!, "fr", { compact: true });
   const etiFrom = formatAmount(auditEtiTier.priceMin!, "fr", { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr", { compact: false });
-  return `Module 1 — Interventions sur site (1 journée à partir de ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, ${interventionsEntry}). Module 2 — Audit IA (4 niveaux : Flash ${flash}, Ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI dès ${etiFrom}). Module 3 — Implémentation IA (mise en production, ${implEntry}).`;
+  return `Module 1 — Interventions sur site (1 journée à partir de ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, ${interventionsEntry}). Module 2 — Audit IA (4 niveaux : Flash ${flash}, Ciblé dès ${cibleFrom}, Stratégique PME dès ${pmeFrom}, Stratégique ETI dès ${etiFrom}). Module 3 — Implémentation IA (mise en production, ${implEntry}).`;
 }
 
 function modulesAnswerEn(): string {
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, "en", { compact: false });
   const flash = formatAmount(auditFlashTier.priceFlat!, "en", { compact: true });
-  const cibleRange = formatAmountRange(auditCibleTier.priceMin!, auditCibleTier.priceMax!, "en", {
-    compact: true,
-  });
-  const pmeRange = formatAmountRange(auditPmeTier.priceMin!, auditPmeTier.priceMax!, "en", {
-    compact: true,
-  });
+  // Targeted / SME / Mid-cap are all « from €1,900 · on request » (Will
+  // 2026-06-03, upper bounds removed) → entry price « from X », not a range
+  // (the former range rendered « NaN », priceMax being absent).
+  const cibleFrom = formatAmount(auditCibleTier.priceMin!, "en", { compact: true });
+  const pmeFrom = formatAmount(auditPmeTier.priceMin!, "en", { compact: true });
   const etiFrom = formatAmount(auditEtiTier.priceMin!, "en", { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "en", { compact: false });
-  return `Module 1 — On-site sessions (1 day from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, ${interventionsEntry}). Module 2 — AI audit (4 tiers: Flash ${flash}, Targeted ${cibleRange}, Strategic SME ${pmeRange}, Strategic Mid-cap from ${etiFrom}). Module 3 — AI implementation (production deployment, ${implEntry}).`;
+  return `Module 1 — On-site sessions (1 day from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, ${interventionsEntry}). Module 2 — AI audit (4 tiers: Flash ${flash}, Targeted from ${cibleFrom}, Strategic SME from ${pmeFrom}, Strategic Mid-cap from ${etiFrom}). Module 3 — AI implementation (production deployment, ${implEntry}).`;
 }
 
 export const ABOUT_TIMELINE = [
