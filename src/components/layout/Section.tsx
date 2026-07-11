@@ -15,10 +15,10 @@ interface SectionProps extends Omit<ComponentPropsWithoutRef<"section">, "title"
   titleTail?: ReactNode;
   description?: ReactNode;
   /**
-   * Optional media (ex. photo hero Unsplash) rendue À DROITE du titre sur les
-   * page heros (`titleAs="h1"`), en grille 2 colonnes dès `lg`. Empilée sous le
-   * titre sur mobile. Quand fournie, remplace la décoration SVG abstraite.
-   * Will 2026-06-24 — « l'image doit être à droite dans le héro, pas dessous ».
+   * Optional media (ex. photo hero Unsplash) rendue SOUS le titre centré sur les
+   * page heros (`titleAs="h1"`). Quand fournie, remplace la décoration SVG
+   * abstraite. Refonte centrée Will 2026-07-11 (remplace l'ancien layout 2
+   * colonnes « image à droite » du 2026-06-24).
    */
   media?: ReactNode;
   className?: string;
@@ -237,8 +237,8 @@ export function Section({
   // Auto-default : h1 = halo-warm (page hero), sinon canvas.
   const resolvedTone: SectionTone = tone ?? (titleAs === "h1" ? "halo-warm" : "canvas");
   const isPageHero = titleAs === "h1";
-  // Héro illustré : grille 2 colonnes (titre à gauche, media à droite). La photo
-  // remplace la décoration SVG abstraite (sinon redondance visuelle).
+  // Héro illustré (refonte centrée Will 2026-07-11) : titre centré, media EN
+  // DESSOUS. La photo remplace la décoration SVG abstraite (sinon redondance).
   const hasHeroMedia = isPageHero && Boolean(media);
   const TitleTag = titleAs;
 
@@ -248,10 +248,11 @@ export function Section({
         className={cn(
           "space-y-5",
           // Hero : marge plus généreuse en bas pour aérer le hero du contenu.
-          // En héro illustré, pas de max-width (la colonne grille la borne).
+          // Héro illustré (refonte centrée Will 2026-07-11) : texte centré, media
+          // rendu EN DESSOUS (plus de grille 2 colonnes).
           isPageHero
             ? hasHeroMedia
-              ? "mb-0"
+              ? "mx-auto mb-0 max-w-3xl text-center"
               : "mb-0 max-w-3xl lg:max-w-2xl xl:max-w-3xl"
             : "mb-16 max-w-3xl",
         )}
@@ -306,6 +307,8 @@ export function Section({
             className={cn(
               "leading-relaxed",
               isPageHero ? "mt-6 max-w-2xl text-lg sm:text-xl" : "max-w-2xl text-lg sm:text-xl",
+              // Héro illustré : description centrée sous le titre (mx-auto).
+              hasHeroMedia && "mx-auto",
               descriptionClasses[resolvedTone],
             )}
           >
@@ -351,12 +354,13 @@ export function Section({
 
       <Container className={cn("relative", contentClassName)}>
         {heroBadge}
-        {/* Héro illustré : grille 2 colonnes (titre | photo) dès lg, empilé avant.
-            Sinon, header rendu directement (DOM inchangé pour tous les autres heros). */}
+        {/* Héro illustré (refonte centrée Will 2026-07-11) : titre centré, média
+            EN DESSOUS. Sinon, header rendu directement (DOM inchangé pour les
+            autres heros). */}
         {hasHeroMedia ? (
-          <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+          <div className="flex flex-col items-center gap-10 lg:gap-14">
             {headerNode}
-            <div className="min-w-0">{media}</div>
+            <div className="mx-auto w-full max-w-2xl">{media}</div>
           </div>
         ) : (
           headerNode
