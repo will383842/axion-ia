@@ -1,0 +1,3 @@
+# Scripts VPS exécutés sous Linux — forcer LF (un CR casserait bash)
+*.sh text eol=lf
+crontab.snapshot.txt text eol=lf
