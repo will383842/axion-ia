@@ -362,10 +362,9 @@ export default async function Home({ params }: HomeProps) {
             <span aria-hidden="true">🇫🇷</span>
             {t("heroEyebrow")}
           </HeroBadge>
-          {/* Layout centré (Will 2026-07-11) : texte centré, photo EN DESSOUS. */}
-          <div className="flex flex-col items-center gap-12 lg:gap-14 xl:gap-16">
-            {/* Bloc texte centré (titre garde sa taille géante) */}
-            <div className="mx-auto max-w-3xl text-center">
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+            {/* Colonne gauche : copy (titre garde sa taille géante) */}
+            <div className="max-w-2xl">
               <h1 id="hero-heading" className="display-editorial text-fg" data-speakable-hero>
                 <em className="italic-editorial text-terracotta not-italic">
                   <span className="italic">{t("heroTitleEm")}</span>
@@ -373,7 +372,7 @@ export default async function Home({ params }: HomeProps) {
                 {t("heroTitlePart2")}
               </h1>
               <p
-                className="text-fg-soft mx-auto mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl"
+                className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl"
                 data-speakable-hero
               >
                 {t("heroDescription")}
@@ -381,7 +380,7 @@ export default async function Home({ params }: HomeProps) {
               {/* Hero CTAs (2026-05-23 Will) : 2 boutons côte à côte
                   — Primary : échanger 30 min sans engagement (/appel, widget Calendly)
                   — Secondary : formulaire de contact (/contact, réponse 24h) */}
-              <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
                   href="/appel"
                   className="bg-terracotta text-paper cta-lift focus-visible:ring-terracotta inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
@@ -394,7 +393,7 @@ export default async function Home({ params }: HomeProps) {
               </div>
               {/* Chips bénéfices (remplacent l'ancienne proof-line) — calées sur
                   le rendu de référence : puces à pastille terracotta. */}
-              <ul className="text-fg-soft mt-8 flex flex-col items-center gap-x-6 gap-y-2.5 text-sm font-medium sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:text-base">
+              <ul className="text-fg-soft mt-8 flex flex-col gap-x-6 gap-y-2.5 text-sm font-medium sm:flex-row sm:flex-wrap sm:items-center sm:text-base">
                 {[t("heroChip1"), t("heroChip2"), t("heroChip3")].map((chip) => (
                   <li key={chip} className="flex items-center gap-2">
                     <span
@@ -407,10 +406,12 @@ export default async function Home({ params }: HomeProps) {
               </ul>
             </div>
 
-            {/* Photo hero SOUS le texte (desktop). `hidden lg:block` préservé :
-                pas d'image hero sur mobile → LCP mobile inchangé (budget Web
-                Vitals home). Ratio 3:2 (1536×1024) → 0 CLS. */}
-            <div className="hidden w-full max-w-3xl lg:block">
+            {/* Colonne droite : photo hero placeholder. Will drop l'image
+                réelle (dashboard / livrable Axion-IA / capture produit) dans
+                `public/illustrations/home-hero-dashboard.avif`. Ratio 3:2 calé
+                sur le fichier source (1536×1024) → 0 CLS + 0 distorsion
+                (Lighthouse image-aspect-ratio). */}
+            <div className="hidden lg:block">
               <Illustration
                 slot="HOME-01-hero"
                 src="/illustrations/home-hero-equipe.avif"
