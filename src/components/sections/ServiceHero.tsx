@@ -116,10 +116,9 @@ export function ServiceHero({
             {eyebrow}
           </HeroBadge>
         ) : null}
-        {/* Layout centré (Will 2026-07-11) : texte centré, visuel EN DESSOUS. */}
-        <div className="flex flex-col items-center gap-12 lg:gap-14 xl:gap-16">
-          {/* Bloc texte centré — h1 + description + CTAs */}
-          <div className="mx-auto max-w-3xl text-center">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 xl:gap-16">
+          {/* Colonne gauche — h1 + description + CTAs */}
+          <div className="max-w-2xl">
             <h1 className="display-editorial text-fg">
               {title}{" "}
               <span
@@ -130,15 +129,15 @@ export function ServiceHero({
               </span>
             </h1>
 
-            <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+            <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
               {description}
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">{ctas}</div>
+            <div className="mt-8 flex flex-wrap items-center gap-4">{ctas}</div>
           </div>
 
-          {/* Visuel sous le texte — customVisual prioritaire, sinon schéma orbital */}
-          <div className="relative mx-auto w-full max-w-[36rem]">
+          {/* Colonne droite — customVisual prioritaire, sinon schéma orbital */}
+          <div className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none">
             {customVisual ? (
               customVisual
             ) : hasSchema ? (

@@ -72,19 +72,8 @@ export function ProductHero({
     </HeroBadge>
   );
 
-  // Layout centré (Will 2026-07-11) : quand un `heroSchema` est fourni, le hero
-  // passe en « texte centré + schéma EN DESSOUS ». Sans schéma, on conserve le
-  // bloc historique aligné à gauche avec sa barre d'accent (border-l-4).
-  const centered = Boolean(heroSchema);
   const heroBlock = (
-    <div
-      className={cn(
-        "relative",
-        centered
-          ? "mx-auto max-w-3xl text-center"
-          : cn("max-w-4xl border-l-4 pl-6 sm:pl-10", ACCENT_BORDER[accent]),
-      )}
-    >
+    <div className={cn("relative max-w-4xl border-l-4 pl-6 sm:pl-10", ACCENT_BORDER[accent])}>
       <h1
         className="text-fg text-[clamp(2.5rem,6vw,5rem)] leading-[1.04] font-medium tracking-tight"
         style={{ fontFamily: "var(--font-serif)" }}
@@ -97,27 +86,15 @@ export function ProductHero({
         ) : null}
         {titleTail}
       </h1>
-      <div
-        className={cn(
-          "text-fg-soft mt-7 max-w-2xl text-lg leading-relaxed sm:text-xl",
-          centered && "mx-auto",
-        )}
-      >
-        {answer}
-      </div>
+      <div className="text-fg-soft mt-7 max-w-2xl text-lg leading-relaxed sm:text-xl">{answer}</div>
       {typeof priceEur === "number" ? (
-        <div className={cn("mt-10", centered && "flex justify-center")}>
+        <div className="mt-10">
           <Price amount={priceEur} suffix={priceSuffix} size="xl" />
         </div>
       ) : null}
-      <div className={cn("mt-10 flex flex-wrap gap-4", centered && "justify-center")}>{cta}</div>
+      <div className="mt-10 flex flex-wrap gap-4">{cta}</div>
       {meta ? (
-        <div
-          className={cn(
-            "text-fg-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs",
-            centered && "justify-center",
-          )}
-        >
+        <div className="text-fg-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
           {meta}
         </div>
       ) : null}
@@ -138,10 +115,10 @@ export function ProductHero({
       <Container className="relative">
         {heroBadge}
         {heroSchema ? (
-          // Layout centré (Will 2026-07-11) — texte centré, schéma visuel EN DESSOUS
-          <div className="flex flex-col items-center gap-12 lg:gap-14 xl:gap-16">
+          // Layout 2-col Sprint Visual Rhythm 2026 — schéma visuel à droite en lg+
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 xl:gap-16">
             {heroBlock}
-            <div className="relative mx-auto w-full max-w-[36rem]">{heroSchema}</div>
+            <div className="relative mx-auto w-full max-w-xl lg:mx-0">{heroSchema}</div>
           </div>
         ) : (
           heroBlock
