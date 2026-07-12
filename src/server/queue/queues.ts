@@ -1204,6 +1204,13 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "0 8 * * *",
         jobId: "formation-crons-convocation-j5-cron",
       },
+      // Hub facturation Phase 3 — marquage retards (statut seul, AUCUN email),
+      // daily 06:30 UTC (avant les alertes 07:00 pour qu'elles voient l'état à jour)
+      {
+        type: "formation-crons.factures-retard",
+        pattern: "30 6 * * *",
+        jobId: "formation-crons-factures-retard-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

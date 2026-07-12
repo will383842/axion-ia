@@ -90,7 +90,10 @@ export default async function FacturationHubPage({
   const { locale, adminPrefix } = await params;
   const userSession = await auth();
   const role = userSession?.user?.role;
-  if (!userSession?.user || (role !== "admin" && role !== "super_admin")) {
+  // Lecture ouverte aussi à editor/reader (rôle « comptable » lecture seule —
+  // C7 du plan). Les ACTIONS restent gardées par requireAdminWrite.
+  const rolesAutorises = ["admin", "super_admin", "editor", "reader"];
+  if (!userSession?.user || !rolesAutorises.includes(role ?? "")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
   const sp = await searchParams;
@@ -115,42 +118,84 @@ export default async function FacturationHubPage({
   };
 
   // Requêtes en parallèle : page courante + total + KPIs transverses (hors filtre).
-  const [factures, total, aggEmis, aggEncaisse, retards] = await Promise.all([
-    prisma.factureFormation.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-      skip: (page - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
-      select: {
-        id: true,
-        numero: true,
-        activite: true,
-        statut: true,
-        destinataireNom: true,
-        refClient: true,
-        montantHtCents: true,
-        montantTtcCents: true,
-        emiseAt: true,
-        echeanceAt: true,
-        avoirDeId: true,
-        client: { select: { estPublic: true } },
-      },
-    }),
-    prisma.factureFormation.count({ where }),
-    prisma.factureFormation.aggregate({
-      where: { statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] } },
-      _sum: { montantTtcCents: true },
-    }),
-    prisma.payment.aggregate({
-      where: { factureFormationId: { not: null }, status: "succeeded" },
-      _sum: { amountCents: true },
-    }),
-    prisma.factureFormation.aggregate({
-      where: { statut: "en_retard" },
-      _sum: { montantTtcCents: true },
-      _count: { _all: true },
-    }),
-  ]);
+  const now = new Date();
+  const [factures, total, aggEmis, aggEncaisse, retards, ouvertes, dossiersEnCours] =
+    await Promise.all([
+      prisma.factureFormation.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        skip: (page - 1) * PAGE_SIZE,
+        take: PAGE_SIZE,
+        select: {
+          id: true,
+          numero: true,
+          activite: true,
+          statut: true,
+          destinataireNom: true,
+          refClient: true,
+          montantHtCents: true,
+          montantTtcCents: true,
+          emiseAt: true,
+          echeanceAt: true,
+          avoirDeId: true,
+          client: { select: { estPublic: true } },
+        },
+      }),
+      prisma.factureFormation.count({ where }),
+      prisma.factureFormation.aggregate({
+        where: { statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] } },
+        _sum: { montantTtcCents: true },
+      }),
+      prisma.payment.aggregate({
+        where: { factureFormationId: { not: null }, status: "succeeded" },
+        _sum: { amountCents: true },
+      }),
+      prisma.factureFormation.aggregate({
+        where: { statut: "en_retard" },
+        _sum: { montantTtcCents: true },
+        _count: { _all: true },
+      }),
+      // Balance âgée : toutes les factures ouvertes (émise/partielle/retard)
+      // avec leur échéance — buckets calculés côté serveur (volume TPE, trivial).
+      prisma.factureFormation.findMany({
+        where: {
+          statut: { in: ["emise", "partiellement_payee", "en_retard"] },
+          avoirDeId: null,
+        },
+        select: { montantTtcCents: true, montantHtCents: true, echeanceAt: true },
+      }),
+      prisma.dossierFinancement.findMany({
+        where: { statut: { not: "clos" } },
+        orderBy: { updatedAt: "desc" },
+        take: 10,
+        select: {
+          id: true,
+          type: true,
+          statut: true,
+          financeurNom: true,
+          numeroDossierExterne: true,
+          montantDemandeCents: true,
+          montantAccordeCents: true,
+          subrogation: true,
+          client: { select: { raisonSociale: true } },
+          payeurs: { select: { id: true } },
+        },
+      }),
+    ]);
+
+  // Buckets d'ancienneté des créances ouvertes (0-30 / 31-60 / 60+ jours).
+  const buckets = { courant: 0, b0_30: 0, b31_60: 0, b60plus: 0 };
+  for (const f of ouvertes) {
+    const montant = f.montantTtcCents ?? f.montantHtCents;
+    if (f.echeanceAt === null || f.echeanceAt >= now) {
+      buckets.courant += montant;
+      continue;
+    }
+    const jours = Math.floor((now.getTime() - f.echeanceAt.getTime()) / 86_400_000);
+    if (jours <= 30) buckets.b0_30 += montant;
+    else if (jours <= 60) buckets.b31_60 += montant;
+    else buckets.b60plus += montant;
+  }
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -161,7 +206,26 @@ export default async function FacturationHubPage({
       label: `En retard (${retards._count._all})`,
       value: fmtEur(retards._sum.montantTtcCents ?? 0),
     },
+    { label: "À échoir", value: fmtEur(buckets.courant) },
+    { label: "Retard 0-30 j", value: fmtEur(buckets.b0_30) },
+    { label: "Retard 31-60 j", value: fmtEur(buckets.b31_60) },
+    { label: "Retard 60 j +", value: fmtEur(buckets.b60plus) },
   ];
+
+  const DOSSIER_STATUT_LABELS: Record<string, string> = {
+    a_monter: "À monter",
+    envoye: "Envoyé",
+    accord_recu: "Accord reçu",
+    refuse: "Refusé",
+    facture: "Facturé",
+    paiement_recu: "Paiement reçu",
+  };
+  const DOSSIER_TYPE_LABELS: Record<string, string> = {
+    opco: "OPCO",
+    france_travail: "France Travail",
+    cpf: "CPF",
+    mixte: "Mixte",
+  };
 
   const rows: AdminListScaffoldRow[] = factures.map((f) => ({
     id: f.id,
@@ -240,6 +304,42 @@ export default async function FacturationHubPage({
                 })),
               ]}
             />
+            {dossiersEnCours.length > 0 ? (
+              <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+                <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+                  Dossiers de financement en cours
+                </p>
+                <ul className="space-y-[var(--space-admin-2)]">
+                  {dossiersEnCours.map((d) => (
+                    <li
+                      key={d.id}
+                      className="flex flex-wrap items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
+                    >
+                      <span className="font-semibold">
+                        {DOSSIER_TYPE_LABELS[d.type] ?? d.type}
+                        {d.subrogation ? " (subrogé)" : ""}
+                      </span>
+                      <span>{d.financeurNom ?? "Financeur à identifier"}</span>
+                      <span className="text-[color:var(--color-admin-fg-muted)]">
+                        {d.client?.raisonSociale ?? "—"}
+                        {d.numeroDossierExterne ? ` · n° ${d.numeroDossierExterne}` : ""}
+                        {` · ${d.payeurs.length} payeur(s)`}
+                      </span>
+                      <span>
+                        {d.montantAccordeCents !== null
+                          ? `accordé ${fmtEur(d.montantAccordeCents)}`
+                          : d.montantDemandeCents !== null
+                            ? `demandé ${fmtEur(d.montantDemandeCents)}`
+                            : ""}
+                      </span>
+                      <span className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
+                        {DOSSIER_STATUT_LABELS[d.statut] ?? d.statut}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </div>
         }
         columnHeaders={[

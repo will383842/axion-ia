@@ -21,6 +21,10 @@ import {
   genererAvoirFacture,
   enregistrerPaiementFacture,
 } from "@/server/qualiopi/financements/facture-libre";
+import {
+  transitionnerDossier,
+  creerDossierDepuisSession,
+} from "@/server/qualiopi/financements/dossier-financement";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 
 const ActiviteSchema = z.enum(["formation", "un_a_un", "audit", "implementation", "site_web"]);
@@ -250,4 +254,200 @@ export async function enregistrerPaiementFactureAction(
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Encaissement impossible." };
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 3 — dossiers de financement + reprise d'historique
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CreerDossierSchema = z.object({
+  /// Depuis une session (reprend les champs OPCO existants)…
+  trainingSessionId: z.string().uuid().optional(),
+  /// …ou dossier libre rattaché à un client.
+  clientId: z.string().uuid().optional(),
+  type: z.enum(["opco", "france_travail", "cpf", "mixte"]).optional(),
+  financeurNom: z.string().max(120).optional(),
+  montantDemandeCents: z.number().int().positive().optional(),
+  subrogation: z.boolean().optional(),
+});
+
+export async function creerDossierFinancementAction(
+  rawInput: unknown,
+): Promise<{ data: { dossierId: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = CreerDossierSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  try {
+    let dossierId: string;
+    if (input.trainingSessionId !== undefined) {
+      const result = await creerDossierDepuisSession(input.trainingSessionId);
+      dossierId = result.id;
+    } else {
+      if (input.clientId === undefined || input.type === undefined) {
+        return { error: "Dossier libre : clientId et type sont requis." };
+      }
+      const client = await prisma.client.findUnique({
+        where: { id: input.clientId },
+        select: { raisonSociale: true },
+      });
+      if (!client) return { error: "Client introuvable." };
+      const dossier = await prisma.dossierFinancement.create({
+        data: {
+          type: input.type,
+          clientId: input.clientId,
+          ...(input.financeurNom !== undefined ? { financeurNom: input.financeurNom } : {}),
+          ...(input.montantDemandeCents !== undefined
+            ? { montantDemandeCents: input.montantDemandeCents }
+            : {}),
+          ...(input.subrogation !== undefined ? { subrogation: input.subrogation } : {}),
+        },
+        select: { id: true },
+      });
+      dossierId = dossier.id;
+    }
+    await logQualiopiActivity({
+      action: "facturation.dossier.creer",
+      targetType: "DossierFinancement",
+      targetId: dossierId,
+      changes: { source: input.trainingSessionId !== undefined ? "session" : "libre" },
+      session,
+    });
+    return { data: { dossierId } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Création du dossier impossible." };
+  }
+}
+
+const TransitionDossierSchema = z.object({
+  dossierId: z.string().uuid(),
+  vers: z.enum(["a_monter", "envoye", "accord_recu", "refuse", "facture", "paiement_recu", "clos"]),
+  montantAccordeCents: z.number().int().positive().optional(),
+  echeanceFinanceurAt: z.coerce.date().optional(),
+});
+
+export async function transitionnerDossierAction(
+  rawInput: unknown,
+): Promise<{ data: { statut: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = TransitionDossierSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  try {
+    const result = await transitionnerDossier({
+      dossierId: input.dossierId,
+      vers: input.vers,
+      ...(input.montantAccordeCents !== undefined
+        ? { montantAccordeCents: input.montantAccordeCents }
+        : {}),
+      ...(input.echeanceFinanceurAt !== undefined
+        ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
+        : {}),
+    });
+    await logQualiopiActivity({
+      action: "facturation.dossier.transition",
+      targetType: "DossierFinancement",
+      targetId: input.dossierId,
+      changes: { vers: input.vers, montantAccordeCents: input.montantAccordeCents ?? null },
+      session,
+    });
+    return { data: { statut: result.statut } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Transition impossible." };
+  }
+}
+
+const ImportHistoriqueSchema = z.object({
+  factures: z
+    .array(
+      z.object({
+        numero: z.string().min(3).max(40),
+        dateEmission: z.coerce.date(),
+        clientNom: z.string().min(1).max(250),
+        montantHtCents: z.number().int(),
+        montantTtcCents: z.number().int().optional(),
+        statut: z.enum(["emise", "payee"]),
+        activite: ActiviteSchema.optional(),
+      }),
+    )
+    .min(1)
+    .max(500),
+});
+
+/**
+ * Reprise d'historique (C9) : importe des factures émises HORS système pour
+ * que dashboards et balance âgée soient exhaustifs dès le jour 1. Les numéros
+ * `AXI-FACT-*`/`AXI-AVO-*` sont REFUSÉS (protection de la séquence légale) ;
+ * les doublons de numéro sont ignorés (idempotent, re-import sans effet).
+ */
+export async function importerFacturesHistoriqueAction(
+  rawInput: unknown,
+): Promise<{ data: { importees: number; ignorees: number } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = ImportHistoriqueSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide (max 500 lignes par import)." };
+
+  const collision = parsed.data.factures.find(
+    (f) => f.numero.startsWith("AXI-FACT-") || f.numero.startsWith("AXI-AVO-"),
+  );
+  if (collision !== undefined) {
+    return {
+      error: `Numéro « ${collision.numero} » refusé : les préfixes AXI-FACT/AXI-AVO sont réservés à la séquence du système.`,
+    };
+  }
+
+  let importees = 0;
+  let ignorees = 0;
+  for (const f of parsed.data.factures) {
+    try {
+      await prisma.factureFormation.create({
+        data: {
+          numero: f.numero,
+          estImportee: true,
+          ...(f.activite !== undefined ? { activite: f.activite } : {}),
+          destinataire: "entreprise",
+          destinataireNom: f.clientNom,
+          montantHtCents: f.montantHtCents,
+          montantTtcCents: f.montantTtcCents ?? f.montantHtCents,
+          montantTvaCents: (f.montantTtcCents ?? f.montantHtCents) - f.montantHtCents,
+          tvaExoneree: (f.montantTtcCents ?? f.montantHtCents) === f.montantHtCents,
+          lignes: [] as never,
+          statut: f.statut,
+          emiseAt: f.dateEmission,
+          ...(f.statut === "payee" ? { paidAt: f.dateEmission } : {}),
+        },
+      });
+      importees++;
+    } catch (err) {
+      const isP2002 =
+        typeof err === "object" &&
+        err !== null &&
+        "code" in err &&
+        (err as { code: string }).code === "P2002";
+      if (isP2002) {
+        ignorees++;
+        continue;
+      }
+      throw err;
+    }
+  }
+
+  await logQualiopiActivity({
+    action: "facturation.historique.importer",
+    targetType: "FactureFormation",
+    changes: { importees, ignorees },
+    session,
+  });
+  return { data: { importees, ignorees } };
 }

@@ -41,6 +41,7 @@ import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { marquerPaiementRecuSiSoldee } from "@/server/qualiopi/financements/dossier-financement";
 import {
   normaliserLignesPourActivite,
   construireLignesAvoir,
@@ -493,10 +494,16 @@ export async function enregistrerPaiementFacture(
     throw new Error("Le montant encaissé doit être strictement positif.");
   }
 
-  return prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     const facture = await tx.factureFormation.findUniqueOrThrow({
       where: { id: input.factureId },
-      select: { id: true, statut: true, montantTtcCents: true, montantHtCents: true },
+      select: {
+        id: true,
+        statut: true,
+        montantTtcCents: true,
+        montantHtCents: true,
+        dossierFinancementId: true,
+      },
     });
     if (facture.statut === "brouillon" || facture.statut === "annulee") {
       throw new Error("Un encaissement ne se saisit que sur une facture émise.");
@@ -544,6 +551,16 @@ export async function enregistrerPaiementFacture(
       paymentId: payment.id,
       statut,
       resteACents: Math.max(0, montantDu - totalEncaisse),
+      dossierFinancementId: facture.dossierFinancementId,
     };
   });
+
+  // Pont dossier de financement (best-effort, hors transaction) : quand la
+  // facture est soldée et rattachée à un dossier `facture`, celui-ci passe à
+  // `paiement_recu` si toutes ses factures sont payées.
+  if (result.statut === "payee" && result.dossierFinancementId !== null) {
+    await marquerPaiementRecuSiSoldee(result.dossierFinancementId);
+  }
+
+  return { paymentId: result.paymentId, statut: result.statut, resteACents: result.resteACents };
 }

@@ -59,7 +59,10 @@ export type FormationCronJobType =
   // T15 AGENT A — moteur d'alertes système (daily 07:00)
   | "formation-crons.alertes"
   // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9)
-  | "formation-crons.convocation-j5";
+  | "formation-crons.convocation-j5"
+  // Hub facturation Phase 3 — marquage des factures en retard (STATUT SEUL,
+  // AUCUN email : les relances sont 100 % manuelles, règle produit).
+  | "formation-crons.factures-retard";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -571,6 +574,31 @@ async function handleConvocationJ5(): Promise<void> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Hub facturation Phase 3 — factures en retard (STATUT SEULEMENT)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Marque `en_retard` les factures CRM émises ou partiellement payées dont
+ * l'échéance est dépassée. AUCUN email : la détection alimente l'écran Hub et
+ * (Phase 4) les relances PROPOSÉES — l'envoi reste un clic admin. Les délais
+ * différenciés entreprise/financeur sont déjà encodés dans `echeanceAt` au
+ * moment de l'émission (delai_paiement_jours vs delai_paiement_financeur_jours).
+ * Idempotent (updateMany conditionné au statut).
+ */
+async function handleFacturesRetard(): Promise<void> {
+  const now = new Date();
+  const { count } = await prisma.factureFormation.updateMany({
+    where: {
+      statut: { in: ["emise", "partiellement_payee"] },
+      echeanceAt: { lt: now },
+      avoirDeId: null,
+    },
+    data: { statut: "en_retard" },
+  });
+  console.log(`[formation-crons] factures-retard: ${count} facture(s) marquée(s) en retard`);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Worker dispatcher (exporté pour test d'intégration)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -583,6 +611,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.suivi-j30": handleSuiviJ30,
   "formation-crons.alertes": handleAlertes,
   "formation-crons.convocation-j5": handleConvocationJ5,
+  "formation-crons.factures-retard": handleFacturesRetard,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

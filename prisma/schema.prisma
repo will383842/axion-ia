@@ -5051,6 +5051,7 @@ model Client {
   coachingContracts   CoachingContract[]
   auditMissions       AuditMission[]
   facturesFormation   FactureFormation[]
+  dossiersFinancement DossierFinancement[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5095,9 +5096,10 @@ model Devis {
   createdAt              DateTime    @default(now()) @map("created_at")
   updatedAt              DateTime    @updatedAt @map("updated_at")
 
-  sessions          TrainingSession[]
-  auditMissions     AuditMission[]
-  facturesFormation FactureFormation[]
+  sessions            TrainingSession[]
+  auditMissions       AuditMission[]
+  facturesFormation   FactureFormation[]
+  dossiersFinancement DossierFinancement[]
 
   @@index([clientId])
   @@index([statut])
@@ -5662,13 +5664,14 @@ model TrainingSession {
   createdAt                          DateTime                 @default(now()) @map("created_at")
   updatedAt                          DateTime                 @updatedAt @map("updated_at")
 
-  enrollments       Enrollment[]
-  transitions       FormationTransition[]
-  documents         DocumentGenere[]
-  relevesConnexion  ReleveConnexionImport[]
-  facturesFormation FactureFormation[]
+  enrollments         Enrollment[]
+  transitions         FormationTransition[]
+  documents           DocumentGenere[]
+  relevesConnexion    ReleveConnexionImport[]
+  facturesFormation   FactureFormation[]
+  dossiersFinancement DossierFinancement[]
   /// Jointure normalisée session ↔ formateur (remplace `coFormateurs` Json).
-  sessionFormateurs SessionFormateur[]
+  sessionFormateurs   SessionFormateur[]
 
   @@index([formationId])
   @@index([clientId])
@@ -6334,6 +6337,107 @@ enum FactureFormationStatut {
   annulee
 }
 
+/// Type de financeur d'un dossier de financement.
+enum DossierFinancementType {
+  opco
+  france_travail
+  cpf
+  mixte
+}
+
+/// Cycle de vie d'un dossier de financement. Transitions MANUELLES (admin),
+/// journalisées dans ActivityLog — aucun email automatique, jamais.
+enum DossierFinancementStatut {
+  a_monter
+  envoye
+  accord_recu
+  refuse
+  facture
+  paiement_recu
+  clos
+}
+
+/// Type de payeur d'une créance dans un dossier (multi-payeurs : un dossier
+/// mixte peut combiner OPCO subrogé + entreprise + France Travail).
+enum DossierPayeurType {
+  entreprise
+  opco_subroge
+  france_travail
+  stagiaire
+}
+
+/// Dossier de financement TRANSVERSAL (Hub facturation, Phase 3). Regroupe le
+/// cycle de vie d'une demande (OPCO/France Travail/CPF/mixte) : demande →
+/// accord/refus → facturation → paiement reçu → clos. Le montant REÇU n'est
+/// jamais dupliqué ici : il se dérive des `Payment` des factures liées
+/// (Payment = SSOT encaissements). Les champs OPCO historiques de
+/// `TrainingSession`/`Enrollment` restent la source des validations Qualiopi ;
+/// ce modèle est la vue de PILOTAGE (qui paie, combien, où en est l'accord).
+model DossierFinancement {
+  id                   String                   @id @default(uuid()) @db.Uuid
+  type                 DossierFinancementType
+  statut               DossierFinancementStatut @default(a_monter)
+  /// Nom du financeur principal (ex. « OPCO Atlas », « France Travail »).
+  financeurNom         String?                  @map("financeur_nom") @db.VarChar(120)
+  /// N° du dossier chez le financeur (référence externe).
+  numeroDossierExterne String?                  @map("numero_dossier_externe") @db.VarChar(80)
+  subrogation          Boolean                  @default(false)
+  montantDemandeCents  Int?                     @map("montant_demande_cents")
+  montantAccordeCents  Int?                     @map("montant_accorde_cents")
+  /// Date de paiement attendue du financeur (les OPCO paient à 30-60 j).
+  echeanceFinanceurAt  DateTime?                @map("echeance_financeur_at")
+  envoyeAt             DateTime?                @map("envoye_at")
+  accordAt             DateTime?                @map("accord_at")
+  refuseAt             DateTime?                @map("refuse_at")
+  paiementRecuAt       DateTime?                @map("paiement_recu_at")
+  closAt               DateTime?                @map("clos_at")
+  notes                String?                  @db.Text
+
+  clientId           String?           @map("client_id") @db.Uuid
+  client             Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  trainingSessionId  String?           @map("training_session_id") @db.Uuid
+  trainingSession    TrainingSession?  @relation(fields: [trainingSessionId], references: [id], onDelete: SetNull)
+  coachingContractId String?           @map("coaching_contract_id") @db.Uuid
+  coachingContract   CoachingContract? @relation(fields: [coachingContractId], references: [id], onDelete: SetNull)
+  auditMissionId     String?           @map("audit_mission_id") @db.Uuid
+  auditMission       AuditMission?     @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
+  devisId            String?           @map("devis_id") @db.Uuid
+  devis              Devis?            @relation(fields: [devisId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  payeurs  DossierPayeur[]
+  factures FactureFormation[]
+
+  @@index([statut])
+  @@index([clientId])
+  @@index([trainingSessionId])
+  @@index([type, statut])
+  @@map("dossiers_financement")
+}
+
+/// Créance d'un payeur dans un dossier (N payeurs par dossier — C8 du plan).
+/// En subrogation : une ligne OPCO (facture à l'OPCO) + une ligne entreprise
+/// (reste à charge). Le suivi d'encaissement passe par la facture liée.
+model DossierPayeur {
+  id                  String            @id @default(uuid()) @db.Uuid
+  dossierId           String            @map("dossier_id") @db.Uuid
+  dossier             DossierFinancement @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  payeurType          DossierPayeurType @map("payeur_type")
+  payeurNom           String            @map("payeur_nom") @db.VarChar(250)
+  montantAttenduCents Int               @map("montant_attendu_cents")
+  /// Facture portant cette créance (null tant que non facturée).
+  factureFormationId  String?           @map("facture_formation_id") @db.Uuid
+  factureFormation    FactureFormation? @relation(fields: [factureFormationId], references: [id], onDelete: SetNull)
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+
+  @@index([dossierId])
+  @@index([factureFormationId])
+  @@map("dossiers_payeurs")
+}
+
 /// Facture de formation (OF). Distincte de `Invoice` (booking générique). TVA
 /// exonérée (261-4-4° CGI). Lignes = ventilation (forfait OU horaire OPCO).
 /// Libellée à l'OPCO si subrogation, sinon à l'entreprise/stagiaire/FT.
@@ -6356,6 +6460,12 @@ model FactureFormation {
   /// Mission d'audit facturée (3e type de prestation, cf. AuditMission).
   auditMissionId                String?                      @map("audit_mission_id") @db.Uuid
   auditMission                  AuditMission?                @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
+  /// Dossier de financement rattaché (pilotage OPCO/FT — Phase 3).
+  dossierFinancementId          String?                      @map("dossier_financement_id") @db.Uuid
+  dossierFinancement            DossierFinancement?          @relation(fields: [dossierFinancementId], references: [id], onDelete: SetNull)
+  /// Facture importée d'un système antérieur (reprise d'historique C9) :
+  /// hors séquence AXI-FACT, incluse aux dashboards/balance âgée.
+  estImportee                   Boolean                      @default(false) @map("est_importee")
   /// Session de formation collective. Nullable depuis le 1-to-1 AFEST (C1) :
   /// une facture peut cibler un `CoachingContract` sans TrainingSession.
   sessionId                     String?                      @map("session_id") @db.Uuid
@@ -6404,7 +6514,8 @@ model FactureFormation {
   createdAt                     DateTime                     @default(now()) @map("created_at")
   updatedAt                     DateTime                     @updatedAt @map("updated_at")
 
-  payments Payment[]
+  payments       Payment[]
+  dossierPayeurs DossierPayeur[]
 
   @@index([sessionId])
   @@index([enrollmentId])
@@ -6412,6 +6523,7 @@ model FactureFormation {
   @@index([clientId])
   @@index([devisId])
   @@index([auditMissionId])
+  @@index([dossierFinancementId])
   @@index([activite])
   @@index([statut])
   /// Prévisionnel d'encaissement et relances impayés (cockpit).
@@ -7489,8 +7601,9 @@ model CoachingContract {
   createdAt                          DateTime                 @default(now()) @map("created_at")
   updatedAt                          DateTime                 @updatedAt @map("updated_at")
 
-  sessions CoachingSession[]
-  factures FactureFormation[]
+  sessions            CoachingSession[]
+  factures            FactureFormation[]
+  dossiersFinancement DossierFinancement[]
 
   @@index([traineeId])
   @@index([clientId])
@@ -8686,8 +8799,9 @@ model AuditMission {
   createdAt DateTime           @default(now()) @map("created_at")
   updatedAt DateTime           @updatedAt @map("updated_at")
 
-  feeLines          TrainerFeeLine[]
-  facturesFormation FactureFormation[]
+  feeLines            TrainerFeeLine[]
+  facturesFormation   FactureFormation[]
+  dossiersFinancement DossierFinancement[]
 
   @@index([clientId])
   @@index([devisId])
