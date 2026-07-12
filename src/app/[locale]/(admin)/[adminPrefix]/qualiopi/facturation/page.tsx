@@ -20,6 +20,11 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isFacturationHubEnabled } from "@/server/qualiopi/config/flag";
 import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
+import {
+  classifierCanalReglementaire,
+  CANAL_LABELS,
+} from "@/server/qualiopi/financements/e-invoicing/canal";
+import { isRegimeTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { AdminFilterTabs } from "@/components/admin/ui";
 import { RelancesATraiter } from "@/components/admin/qualiopi/RelancesATraiter";
 import type { RelanceItem } from "@/components/admin/qualiopi/RelancesATraiter";
@@ -140,7 +145,9 @@ export default async function FacturationHubPage({
           emiseAt: true,
           echeanceAt: true,
           avoirDeId: true,
-          client: { select: { estPublic: true } },
+          regimeTva: true,
+          destinataire: true,
+          client: { select: { estPublic: true, type: true, adressePaysCode: true } },
         },
       }),
       prisma.factureFormation.count({ where }),
@@ -278,6 +285,16 @@ export default async function FacturationHubPage({
       f.refClient ?? "—",
       fmtEur(f.montantTtcCents ?? f.montantHtCents),
       STATUT_LABELS[f.statut],
+      // Canal réglementaire (réforme 2026/2027) : PA / Chorus / e-reporting / hors champ.
+      CANAL_LABELS[
+        classifierCanalReglementaire({
+          activite: f.activite,
+          regimeTva: isRegimeTva(f.regimeTva) ? f.regimeTva : REGIME_TVA_DEFAUT,
+          clientEstPublic: f.client?.estPublic === true,
+          clientPaysCode: f.client?.adressePaysCode ?? null,
+          clientEstParticulier: f.client?.type === "particulier" || f.destinataire === "stagiaire",
+        })
+      ],
       fmtDate(f.emiseAt),
       fmtDate(f.echeanceAt),
     ],
@@ -379,6 +396,7 @@ export default async function FacturationHubPage({
           "Réf. commande",
           "Montant TTC",
           "Statut",
+          "Canal 2026",
           "Émise",
           "Échéance",
         ]}
