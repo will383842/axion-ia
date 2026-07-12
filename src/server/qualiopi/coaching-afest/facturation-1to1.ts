@@ -27,6 +27,7 @@ import {
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
+import { resolveRibFacture } from "@/lib/legal-identity";
 import { validateCoachingFinancement, computeCoachingFacturation } from "./financement-1to1";
 
 export interface GenererFactureCoachingResult {
@@ -91,9 +92,22 @@ export async function genererFactureCoaching(
   // Validé hors du try/catch fail-soft de génération PDF (blocage dur).
   assertOrganismeComplet(identite, "facture");
   const annee = new Date().getFullYear();
+  // Échéance : délai configurable — financeur (OPCO subrogé / France Travail)
+  // vs client direct. RIB depuis legal_overrides (null → bloc omis du PDF).
+  const [delaiClient, delaiFinanceur, rib] = await Promise.all([
+    getQualiopiConfig("delai_paiement_jours"),
+    getQualiopiConfig("delai_paiement_financeur_jours"),
+    resolveRibFacture(),
+  ]);
+  const delaiJours =
+    calc.destinataire === "opco" || calc.destinataire === "france_travail"
+      ? delaiFinanceur
+      : delaiClient;
   const now = new Date();
   const echeance = new Date(now);
-  echeance.setDate(echeance.getDate() + 30);
+  echeance.setDate(
+    echeance.getDate() + (Number.isFinite(delaiJours) && delaiJours > 0 ? delaiJours : 30),
+  );
   const fmt = (d: Date) => d.toLocaleDateString("fr-FR");
 
   // Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC. Snapshot facture.
@@ -127,6 +141,7 @@ export async function genererFactureCoaching(
       ...(calc.destinataire === "opco" && calc.numeroDossier
         ? { subrogationOpco: { nomOpco: destinataireNom, numeroDossier: calc.numeroDossier } }
         : {}),
+      ...(rib !== null ? { rib } : {}),
     };
 
     let docResult: { id: string } | null = null;
@@ -146,10 +161,15 @@ export async function genererFactureCoaching(
       const facture = await prisma.factureFormation.create({
         data: {
           numero,
+          activite: "un_a_un",
           coachingContractId,
+          ...(contrat.clientId != null ? { clientId: contrat.clientId } : {}),
           destinataire: calc.destinataire,
           destinataireNom,
           ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
+          ...(contrat.client?.tvaIntracom != null
+            ? { destinataireTvaIntracom: contrat.client.tvaIntracom }
+            : {}),
           ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
           montantHtCents: calc.totalHtCents,
           tvaExoneree: totaux.totalTvaCents === 0,

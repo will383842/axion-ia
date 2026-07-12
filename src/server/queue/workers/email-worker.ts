@@ -10,10 +10,44 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
 import { sendEmail } from "@/lib/email/client";
+import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
+import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import type { EmailJobData, EmailJobName } from "../types";
+
+/**
+ * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
+ * FAIL-HARD (revue M8) : les templates affirment « le document est joint » —
+ * envoyer sans la PJ serait un mensonge au client. PJ irrécupérable → throw
+ * → retry BullMQ (backoff), puis job `failed` visible (Sentry + logs).
+ */
+async function resolveAttachments(
+  attachments: EmailJobData["attachments"],
+): Promise<SendEmailParams["attachments"]> {
+  if (!attachments || attachments.length === 0) return undefined;
+  if (!isR2Configured()) {
+    throw new Error(
+      "[email-worker] pièces jointes demandées mais R2 non configuré — envoi refusé (le template promet un document joint)",
+    );
+  }
+  const resolved: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
+  for (const att of attachments) {
+    const buffer = await getObjectBufferR2(att.r2Key).catch(() => null);
+    if (buffer === null) {
+      throw new Error(
+        `[email-worker] PJ introuvable sur R2 (${att.r2Key}) — envoi refusé, retry BullMQ`,
+      );
+    }
+    resolved.push({
+      filename: att.filename,
+      content: buffer,
+      contentType: att.contentType ?? "application/pdf",
+    });
+  }
+  return resolved;
+}
 
 export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
   const worker = new Worker<EmailJobData, void, EmailJobName>(
@@ -30,6 +64,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       }
 
       const { subject, html, text } = await renderEmailTemplate(template, locale, payload);
+      const attachments = await resolveAttachments(job.data.attachments);
       // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
       // Marketing emails ET transactionnels qui contiennent un lien
       // unsubscribe DOIVENT exposer les headers `List-Unsubscribe` +
@@ -47,6 +82,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         text,
         marketing: marketing === true,
         ...(unsubscribeToken ? { unsubscribeToken } : {}),
+        ...(attachments ? { attachments } : {}),
       });
     },
     {

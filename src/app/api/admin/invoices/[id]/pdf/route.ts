@@ -17,11 +17,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateInvoicePdfBuffer } from "@/lib/invoice-pdf";
+import { resolveRibFacture } from "@/lib/legal-identity";
 import {
   isR2Configured,
   uploadToR2,
   existsInR2,
   getSignedUrlR2,
+  getObjectBufferR2,
   invoicePdfKey,
 } from "@/lib/r2-storage";
 import type { LegalSnapshot } from "@/lib/legal-snapshot";
@@ -46,6 +48,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       id: true,
       number: true,
       type: true,
+      status: true,
       issuedAt: true,
       dueAt: true,
       basePriceHtCents: true,
@@ -63,6 +66,8 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       payerAddress: true,
       payerEmail: true,
       payerVatNumber: true,
+      payerSiret: true,
+      refClient: true,
       legalSnapshot: true,
       locale: true,
       hashSha256: true,
@@ -79,8 +84,45 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "invoice_not_found" }, { status: 404 });
   }
 
-  const interventionDate = invoice.booking.bookingDate.toISOString().slice(0, 10);
-  const description = `${invoice.booking.interventionType} — ${interventionDate}`;
+  // Immutabilité (D8, Hub facturation) : une facture ÉMISE sert TOUJOURS le
+  // PDF archivé sur R2 — on ne régénère jamais un document fiscal après
+  // émission (le rendu pourrait diverger de l'original : identité légale
+  // mise à jour, template retouché…). Régénération uniquement si l'archive
+  // n'existe pas encore (premier téléchargement) ou statut brouillon.
+  if (invoice.hashSha256 !== null && invoice.status !== "draft") {
+    const archivedKey = isR2Configured() ? invoicePdfKey(invoice.number, invoice.issuedAt) : null;
+    const archived =
+      archivedKey !== null ? await getObjectBufferR2(archivedKey).catch(() => null) : null;
+    if (archived !== null) {
+      return new NextResponse(new Uint8Array(archived), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `attachment; filename="${invoice.number}.pdf"`,
+          "Content-Length": String(archived.byteLength),
+          "Cache-Control": "private, no-store",
+          "X-Invoice-Hash-Sha256": invoice.hashSha256,
+          "X-Invoice-Pdf-Source": "r2-archive",
+        },
+      });
+    }
+    // Archive absente alors qu'un hash existe (revue M5) : REFUS de régénérer —
+    // un re-rendu avec l'identité/RIB du jour différerait du document facturé
+    // et écraserait le hash légal. Restaurer l'archive R2, jamais re-rendre.
+    return NextResponse.json(
+      {
+        error: "archive_missing",
+        message: `Le PDF archivé de la facture ${invoice.number} est introuvable sur R2 — régénération interdite sur une facture émise (le rendu du jour différerait de l'original). Restaurer l'objet R2 depuis les sauvegardes.`,
+      },
+      { status: 410 },
+    );
+  }
+
+  // `booking` nullable depuis le Hub facturation (facture libre sans réservation).
+  const description = invoice.booking
+    ? `${invoice.booking.interventionType} — ${invoice.booking.bookingDate.toISOString().slice(0, 10)}`
+    : `Prestation — ${invoice.issuedAt.toISOString().slice(0, 10)}`;
+  const rib = await resolveRibFacture();
 
   const result = await generateInvoicePdfBuffer({
     number: invoice.number,
@@ -103,6 +145,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     payerAddress: invoice.payerAddress,
     payerEmail: invoice.payerEmail,
     payerVatNumber: invoice.payerVatNumber,
+    payerSiret: invoice.payerSiret,
+    refClient: invoice.refClient,
+    rib,
     legalSnapshot: invoice.legalSnapshot as unknown as LegalSnapshot,
     locale: invoice.locale === "en" ? "en" : "fr",
   });

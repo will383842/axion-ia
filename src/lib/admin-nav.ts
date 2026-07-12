@@ -876,6 +876,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "commercial",
     },
+    // Hub facturation unifié 5 activités (page gatée par FACTURATION_HUB_ENABLED).
+    {
+      href: `${base}/qualiopi/facturation`,
+      label: "Facturation (Hub)",
+      icon: "🧾",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
     {
       href: `${base}/qualiopi/financements`,
       label: "Financements / Facturation",

@@ -348,9 +348,13 @@ async function handleChargeRefunded(charge: Stripe.Charge, _eventId: string): Pr
       throw err;
     }
 
-    // Transition booking → refunded_partial/full (best-effort).
-    const target: BookingStatus = scope === "full" ? "refunded_full" : "refunded_partial";
-    await tryTransition(payment.bookingId, target, `stripe.refund.${r.id}`);
+    // Transition booking → refunded_partial/full (best-effort). `bookingId`
+    // nullable depuis le Hub facturation — un Payment Stripe a toujours un
+    // booking, mais on garde le guard pour le type.
+    if (payment.bookingId !== null) {
+      const target: BookingStatus = scope === "full" ? "refunded_full" : "refunded_partial";
+      await tryTransition(payment.bookingId, target, `stripe.refund.${r.id}`);
+    }
   }
 
   sendTelegram({

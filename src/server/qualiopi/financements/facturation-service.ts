@@ -32,6 +32,7 @@ import {
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
+import { resolveRibFacture } from "@/lib/legal-identity";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -155,10 +156,19 @@ export async function genererFactureFormation(
   // serait créé sans PDF).
   assertOrganismeComplet(identite, "facture");
 
-  // Calcul échéance : 30 jours
+  // Échéance : délai configurable (SiteSetting) — financeur (subrogation OPCO)
+  // vs client direct. RIB depuis legal_overrides (null → bloc omis du PDF).
+  const [delaiClient, delaiFinanceur, rib] = await Promise.all([
+    getQualiopiConfig("delai_paiement_jours"),
+    getQualiopiConfig("delai_paiement_financeur_jours"),
+    resolveRibFacture(),
+  ]);
+  const delaiJours = session.opcoSubrogation ? delaiFinanceur : delaiClient;
   const now = new Date();
   const echeance = new Date(now);
-  echeance.setDate(echeance.getDate() + 30);
+  echeance.setDate(
+    echeance.getDate() + (Number.isFinite(delaiJours) && delaiJours > 0 ? delaiJours : 30),
+  );
 
   const formatDate = (d: Date) => d.toLocaleDateString("fr-FR");
 
@@ -199,6 +209,7 @@ export async function genererFactureFormation(
             },
           }
         : {}),
+      ...(rib !== null ? { rib } : {}),
     };
 
     // Génération PDF (stub-aware internellement).
@@ -222,10 +233,15 @@ export async function genererFactureFormation(
       const facture = await prisma.factureFormation.create({
         data: {
           numero,
+          activite: "formation",
           sessionId: input.sessionId,
+          ...(session.clientId != null ? { clientId: session.clientId } : {}),
           destinataire: destinataireReel,
           destinataireNom,
           ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
+          ...(session.client?.tvaIntracom != null
+            ? { destinataireTvaIntracom: session.client.tvaIntracom }
+            : {}),
           ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
           montantHtCents: totalHtCents,
           tvaExoneree: totaux.totalTvaCents === 0,

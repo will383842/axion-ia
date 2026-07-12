@@ -1,0 +1,803 @@
+/**
+ * Hub facturation — Server Actions des factures LIBRES multi-activités.
+ *
+ * Wrappers Zod + RBAC + audit autour de `financements/facture-libre.ts` :
+ *   - émission d'une facture libre (5 activités, lignes libres, TVA/ligne) ;
+ *   - conversion devis accepté → facture ;
+ *   - avoir (total ou partiel) ;
+ *   - encaissement manuel (virement/chèque/espèces, partiel accepté).
+ *
+ * Le retour d'émission expose `chorusProRequis` : client secteur public →
+ * dépôt Chorus Pro OBLIGATOIRE (obligation en vigueur, hors réforme 2026).
+ */
+
+"use server";
+
+import { z } from "zod";
+import { prisma } from "@/lib/prisma";
+import {
+  requireAdminRead,
+  requireAdminWrite,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
+import {
+  genererFactureLibre,
+  genererAvoirFacture,
+  enregistrerPaiementFacture,
+} from "@/server/qualiopi/financements/facture-libre";
+import {
+  transitionnerDossier,
+  creerDossierDepuisSession,
+} from "@/server/qualiopi/financements/dossier-financement";
+import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
+
+const ActiviteSchema = z.enum(["formation", "un_a_un", "audit", "implementation", "site_web"]);
+
+const LigneSchema = z.object({
+  designation: z.string().min(1).max(500),
+  quantite: z.number().positive(),
+  prixUnitaireHtCents: z.number().int(),
+  tauxTvaPercent: z.number().min(0).max(30).optional(),
+});
+
+const GenererFactureLibreSchema = z.object({
+  clientId: z.string().uuid(),
+  activite: ActiviteSchema,
+  lignes: z.array(LigneSchema).min(1).max(50),
+  refClient: z.string().max(120).optional(),
+  auditMissionId: z.string().uuid().optional(),
+  periodePrestation: z.string().max(200).optional(),
+});
+
+export async function genererFactureLibreAction(
+  rawInput: unknown,
+): Promise<
+  { data: { factureId: string; numero: string; chorusProRequis: boolean } } | { error: string }
+> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = GenererFactureLibreSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  // Garde d'appartenance : la mission d'audit facturée doit être celle du
+  // client facturé (pas de rattachement croisé).
+  if (input.auditMissionId !== undefined) {
+    const mission = await prisma.auditMission.findUnique({
+      where: { id: input.auditMissionId },
+      select: { clientId: true },
+    });
+    if (!mission) return { error: "Mission d'audit introuvable." };
+    if (mission.clientId !== null && mission.clientId !== input.clientId) {
+      return { error: "Cette mission d'audit appartient à un autre client." };
+    }
+  }
+
+  try {
+    const result = await genererFactureLibre({
+      clientId: input.clientId,
+      activite: input.activite,
+      lignes: input.lignes as LigneFacture[],
+      ...(input.refClient !== undefined ? { refClient: input.refClient } : {}),
+      ...(input.auditMissionId !== undefined ? { auditMissionId: input.auditMissionId } : {}),
+      ...(input.periodePrestation !== undefined
+        ? { periodePrestation: input.periodePrestation }
+        : {}),
+    });
+    await logQualiopiActivity({
+      action: "facturation.facture_libre.emettre",
+      targetType: "FactureFormation",
+      targetId: result.factureId,
+      changes: { numero: result.numero, activite: input.activite, clientId: input.clientId },
+      session,
+    });
+    return {
+      data: {
+        factureId: result.factureId,
+        numero: result.numero,
+        chorusProRequis: result.chorusProRequis,
+      },
+    };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Émission impossible." };
+  }
+}
+
+const DepuisDevisSchema = z.object({ devisId: z.string().uuid() });
+
+/**
+ * Convertit un devis ACCEPTÉ en facture libre (lignes + client + activité +
+ * réf. commande repris du devis). Le devis doit porter une activité — c'est
+ * elle qui pilote le régime TVA de la facture.
+ */
+export async function genererFactureDepuisDevisAction(
+  rawInput: unknown,
+): Promise<
+  { data: { factureId: string; numero: string; chorusProRequis: boolean } } | { error: string }
+> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = DepuisDevisSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+
+  const devis = await prisma.devis.findUnique({
+    where: { id: parsed.data.devisId },
+    select: {
+      id: true,
+      numero: true,
+      statut: true,
+      activite: true,
+      refClient: true,
+      clientId: true,
+      lignes: true,
+      facturesFormation: { where: { statut: { not: "annulee" } }, select: { id: true } },
+    },
+  });
+  if (!devis) return { error: "Devis introuvable." };
+  if (devis.statut !== "accepte" && devis.statut !== "transforme_convention") {
+    return { error: "Seul un devis accepté se facture." };
+  }
+  if (devis.activite === null) {
+    return { error: "Renseigner l'activité du devis avant facturation (pilote le régime TVA)." };
+  }
+  if (devis.facturesFormation.length > 0) {
+    return { error: "Ce devis a déjà été facturé (émettre un avoir pour rectifier)." };
+  }
+
+  const lignesParsed = z.array(LigneSchema).safeParse(devis.lignes);
+  if (!lignesParsed.success || lignesParsed.data.length === 0) {
+    return { error: "Lignes du devis illisibles — corriger le devis." };
+  }
+
+  try {
+    const result = await genererFactureLibre({
+      clientId: devis.clientId,
+      activite: devis.activite,
+      lignes: lignesParsed.data as LigneFacture[],
+      devisId: devis.id,
+      ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),
+    });
+    await logQualiopiActivity({
+      action: "facturation.devis.facturer",
+      targetType: "Devis",
+      targetId: devis.id,
+      changes: { devisNumero: devis.numero, factureNumero: result.numero },
+      session,
+    });
+    return {
+      data: {
+        factureId: result.factureId,
+        numero: result.numero,
+        chorusProRequis: result.chorusProRequis,
+      },
+    };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Facturation impossible." };
+  }
+}
+
+const GenererAvoirSchema = z.object({
+  factureId: z.string().uuid(),
+  /** Absent = avoir TOTAL. Sinon montant HT partiel en centimes. */
+  montantPartielHtCents: z.number().int().positive().optional(),
+  motif: z.string().min(5).max(500),
+});
+
+export async function genererAvoirAction(
+  rawInput: unknown,
+): Promise<{ data: { avoirId: string; numero: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = GenererAvoirSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide (motif : 5 caractères minimum)." };
+
+  try {
+    const result = await genererAvoirFacture({
+      factureId: parsed.data.factureId,
+      motif: parsed.data.motif,
+      ...(parsed.data.montantPartielHtCents !== undefined
+        ? { montantPartielHtCents: parsed.data.montantPartielHtCents }
+        : {}),
+    });
+    await logQualiopiActivity({
+      action: "facturation.avoir.emettre",
+      targetType: "FactureFormation",
+      targetId: parsed.data.factureId,
+      changes: {
+        avoirNumero: result.numero,
+        motif: parsed.data.motif,
+        montantPartielHtCents: parsed.data.montantPartielHtCents ?? null,
+      },
+      session,
+    });
+    return { data: { avoirId: result.avoirId, numero: result.numero } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Avoir impossible." };
+  }
+}
+
+const EnregistrerPaiementSchema = z.object({
+  factureId: z.string().uuid(),
+  montantCents: z.number().int().positive(),
+  paidAt: z.coerce.date(),
+  mode: z.enum(["manual_wire", "manual_check", "manual_cash"]),
+  reference: z.string().max(120).optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+export async function enregistrerPaiementFactureAction(
+  rawInput: unknown,
+): Promise<
+  | { data: { paymentId: string; statut: "partiellement_payee" | "payee"; resteACents: number } }
+  | { error: string }
+> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = EnregistrerPaiementSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  try {
+    const result = await enregistrerPaiementFacture({
+      factureId: input.factureId,
+      montantCents: input.montantCents,
+      paidAt: input.paidAt,
+      mode: input.mode,
+      ...(input.reference !== undefined ? { reference: input.reference } : {}),
+      ...(input.notes !== undefined ? { notes: input.notes } : {}),
+      recordedByAdminId: session.userId,
+    });
+    await logQualiopiActivity({
+      action: "facturation.paiement.enregistrer",
+      targetType: "FactureFormation",
+      targetId: input.factureId,
+      changes: {
+        montantCents: input.montantCents,
+        mode: input.mode,
+        statut: result.statut,
+        resteACents: result.resteACents,
+      },
+      session,
+    });
+    return { data: result };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Encaissement impossible." };
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 3 — dossiers de financement + reprise d'historique
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CreerDossierSchema = z.object({
+  /// Depuis une session (reprend les champs OPCO existants)…
+  trainingSessionId: z.string().uuid().optional(),
+  /// …ou dossier libre rattaché à un client.
+  clientId: z.string().uuid().optional(),
+  type: z.enum(["opco", "france_travail", "cpf", "mixte"]).optional(),
+  financeurNom: z.string().max(120).optional(),
+  montantDemandeCents: z.number().int().positive().optional(),
+  subrogation: z.boolean().optional(),
+});
+
+export async function creerDossierFinancementAction(
+  rawInput: unknown,
+): Promise<{ data: { dossierId: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = CreerDossierSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  try {
+    let dossierId: string;
+    if (input.trainingSessionId !== undefined) {
+      const result = await creerDossierDepuisSession(input.trainingSessionId);
+      dossierId = result.id;
+    } else {
+      if (input.clientId === undefined || input.type === undefined) {
+        return { error: "Dossier libre : clientId et type sont requis." };
+      }
+      const client = await prisma.client.findUnique({
+        where: { id: input.clientId },
+        select: { raisonSociale: true },
+      });
+      if (!client) return { error: "Client introuvable." };
+      const dossier = await prisma.dossierFinancement.create({
+        data: {
+          type: input.type,
+          clientId: input.clientId,
+          ...(input.financeurNom !== undefined ? { financeurNom: input.financeurNom } : {}),
+          ...(input.montantDemandeCents !== undefined
+            ? { montantDemandeCents: input.montantDemandeCents }
+            : {}),
+          ...(input.subrogation !== undefined ? { subrogation: input.subrogation } : {}),
+        },
+        select: { id: true },
+      });
+      dossierId = dossier.id;
+    }
+    await logQualiopiActivity({
+      action: "facturation.dossier.creer",
+      targetType: "DossierFinancement",
+      targetId: dossierId,
+      changes: { source: input.trainingSessionId !== undefined ? "session" : "libre" },
+      session,
+    });
+    return { data: { dossierId } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Création du dossier impossible." };
+  }
+}
+
+const TransitionDossierSchema = z.object({
+  dossierId: z.string().uuid(),
+  vers: z.enum(["a_monter", "envoye", "accord_recu", "refuse", "facture", "paiement_recu", "clos"]),
+  montantAccordeCents: z.number().int().positive().optional(),
+  echeanceFinanceurAt: z.coerce.date().optional(),
+});
+
+export async function transitionnerDossierAction(
+  rawInput: unknown,
+): Promise<{ data: { statut: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = TransitionDossierSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  try {
+    const result = await transitionnerDossier({
+      dossierId: input.dossierId,
+      vers: input.vers,
+      ...(input.montantAccordeCents !== undefined
+        ? { montantAccordeCents: input.montantAccordeCents }
+        : {}),
+      ...(input.echeanceFinanceurAt !== undefined
+        ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
+        : {}),
+    });
+    await logQualiopiActivity({
+      action: "facturation.dossier.transition",
+      targetType: "DossierFinancement",
+      targetId: input.dossierId,
+      changes: { vers: input.vers, montantAccordeCents: input.montantAccordeCents ?? null },
+      session,
+    });
+    return { data: { statut: result.statut } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Transition impossible." };
+  }
+}
+
+const ImportHistoriqueSchema = z.object({
+  factures: z
+    .array(
+      z.object({
+        numero: z.string().min(3).max(40),
+        dateEmission: z.coerce.date(),
+        clientNom: z.string().min(1).max(250),
+        montantHtCents: z.number().int(),
+        montantTtcCents: z.number().int().optional(),
+        statut: z.enum(["emise", "payee"]),
+        activite: ActiviteSchema.optional(),
+      }),
+    )
+    .min(1)
+    .max(500),
+});
+
+/**
+ * Reprise d'historique (C9) : importe des factures émises HORS système pour
+ * que dashboards et balance âgée soient exhaustifs dès le jour 1. Les numéros
+ * `AXI-FACT-*`/`AXI-AVO-*` sont REFUSÉS (protection de la séquence légale) ;
+ * les doublons de numéro sont ignorés (idempotent, re-import sans effet).
+ */
+export async function importerFacturesHistoriqueAction(
+  rawInput: unknown,
+): Promise<{ data: { importees: number; ignorees: number } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = ImportHistoriqueSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide (max 500 lignes par import)." };
+
+  const collision = parsed.data.factures.find(
+    (f) => f.numero.startsWith("AXI-FACT-") || f.numero.startsWith("AXI-AVO-"),
+  );
+  if (collision !== undefined) {
+    return {
+      error: `Numéro « ${collision.numero} » refusé : les préfixes AXI-FACT/AXI-AVO sont réservés à la séquence du système.`,
+    };
+  }
+  // Cohérence des montants (le FEC exige Σ débits = Σ crédits) : hors avoirs
+  // (tout négatif), la TVA ne peut pas être négative → TTC ≥ HT.
+  const incoherente = parsed.data.factures.find((f) => {
+    const ttc = f.montantTtcCents ?? f.montantHtCents;
+    return f.montantHtCents >= 0 ? ttc < f.montantHtCents : ttc > f.montantHtCents;
+  });
+  if (incoherente !== undefined) {
+    return {
+      error: `Facture « ${incoherente.numero} » : TTC < HT (TVA négative) — corriger le fichier d'import.`,
+    };
+  }
+
+  let importees = 0;
+  let ignorees = 0;
+  for (const f of parsed.data.factures) {
+    try {
+      await prisma.factureFormation.create({
+        data: {
+          numero: f.numero,
+          estImportee: true,
+          ...(f.activite !== undefined ? { activite: f.activite } : {}),
+          destinataire: "entreprise",
+          destinataireNom: f.clientNom,
+          montantHtCents: f.montantHtCents,
+          montantTtcCents: f.montantTtcCents ?? f.montantHtCents,
+          montantTvaCents: (f.montantTtcCents ?? f.montantHtCents) - f.montantHtCents,
+          tvaExoneree: (f.montantTtcCents ?? f.montantHtCents) === f.montantHtCents,
+          lignes: [] as never,
+          statut: f.statut,
+          emiseAt: f.dateEmission,
+          ...(f.statut === "payee" ? { paidAt: f.dateEmission } : {}),
+        },
+      });
+      importees++;
+    } catch (err) {
+      const isP2002 =
+        typeof err === "object" &&
+        err !== null &&
+        "code" in err &&
+        (err as { code: string }).code === "P2002";
+      if (isP2002) {
+        ignorees++;
+        continue;
+      }
+      throw err;
+    }
+  }
+
+  await logQualiopiActivity({
+    action: "facturation.historique.importer",
+    targetType: "FactureFormation",
+    changes: { importees, ignorees },
+    session,
+  });
+  return { data: { importees, ignorees } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 4 — traitement des relances proposées (envoi = TOUJOURS un clic admin)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const TraiterRelanceSchema = z.object({
+  relanceId: z.string().uuid(),
+  action: z.enum(["ignorer", "reporter"]),
+  /// Report : nombre de jours (défaut 7).
+  reportJours: z.number().int().min(1).max(90).optional(),
+});
+
+export async function traiterRelanceAction(
+  rawInput: unknown,
+): Promise<{ data: { statut: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = TraiterRelanceSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  const statut = input.action === "ignorer" ? "ignoree" : "reportee";
+  const reporteeJusqua =
+    input.action === "reporter"
+      ? new Date(Date.now() + (input.reportJours ?? 7) * 86_400_000)
+      : null;
+
+  // Une relance `reportee` reste traitable (revue M2 : elle revient à l'échéance
+  // du report — re-reporter ou ignorer doit rester possible).
+  const { count } = await prisma.relanceProposee.updateMany({
+    where: { id: input.relanceId, statut: { in: ["a_traiter", "reportee"] } },
+    data: {
+      statut,
+      traiteeAt: new Date(),
+      traiteeParAdminId: session.userId,
+      ...(reporteeJusqua !== null ? { reporteeJusqua } : {}),
+    },
+  });
+  if (count === 0) return { error: "Relance introuvable ou déjà traitée." };
+
+  await logQualiopiActivity({
+    action: `facturation.relance.${input.action}`,
+    targetType: "RelanceProposee",
+    targetId: input.relanceId,
+    changes: { reportJours: input.reportJours ?? null },
+    session,
+  });
+  return { data: { statut } };
+}
+
+const EnvoyerRelanceSchema = z.object({
+  relanceId: z.string().uuid(),
+  to: z.string().email().optional(),
+  messagePersonnalise: z.string().max(4000).optional(),
+});
+
+/**
+ * Envoie la relance d'une facture CRM (email manuel avec PDF joint) puis
+ * marque la proposition `envoyee`. Les relances de factures BOOKING et de
+ * devis booking se traitent depuis leurs écrans dédiés (ignorer/reporter ici).
+ */
+export async function envoyerRelanceAction(
+  rawInput: unknown,
+): Promise<{ data: { to: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = EnvoyerRelanceSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  const relance = await prisma.relanceProposee.findUnique({
+    where: { id: input.relanceId },
+    select: { id: true, statut: true, factureFormationId: true, suggestion: true },
+  });
+  if (!relance) return { error: "Relance introuvable." };
+  if (relance.statut !== "a_traiter" && relance.statut !== "reportee") {
+    return { error: "Relance déjà traitée." };
+  }
+  if (relance.factureFormationId === null) {
+    return {
+      error:
+        "Cette relance concerne un document booking — la traiter depuis son écran dédié (ou l'ignorer ici).",
+    };
+  }
+
+  const { envoyerFactureEmailAction } =
+    await import("@/server/actions/qualiopi/facturation-emails");
+  const envoi = await envoyerFactureEmailAction({
+    factureId: relance.factureFormationId,
+    ...(input.to !== undefined ? { to: input.to } : {}),
+    messagePersonnalise:
+      input.messagePersonnalise ??
+      relance.suggestion ??
+      "Sauf erreur de notre part, cette facture reste en attente de règlement.",
+  });
+  if ("error" in envoi) return { error: envoi.error };
+
+  await prisma.relanceProposee.updateMany({
+    where: { id: relance.id, statut: { in: ["a_traiter", "reportee"] } },
+    data: { statut: "envoyee", traiteeAt: new Date(), traiteeParAdminId: session.userId },
+  });
+  await logQualiopiActivity({
+    action: "facturation.relance.envoyer",
+    targetType: "RelanceProposee",
+    targetId: relance.id,
+    changes: { to: envoi.data.to },
+    session,
+  });
+  return { data: { to: envoi.data.to } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 5 — plans récurrents (brouillons proposés, émission manuelle)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CreerPlanSchema = z.object({
+  clientId: z.string().uuid(),
+  activite: ActiviteSchema,
+  lignes: z.array(LigneSchema).min(1).max(50),
+  refClient: z.string().max(120).optional(),
+  periodiciteMois: z.number().int().min(1).max(12).optional(),
+  premiereGenerationAt: z.coerce.date(),
+  finAt: z.coerce.date().optional(),
+  nbMaxFactures: z.number().int().min(1).max(120).optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+export async function creerPlanRecurrentAction(
+  rawInput: unknown,
+): Promise<{ data: { planId: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = CreerPlanSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  try {
+    const plan = await prisma.planRecurrent.create({
+      data: {
+        clientId: input.clientId,
+        activite: input.activite,
+        lignes: input.lignes as never,
+        ...(input.refClient !== undefined ? { refClient: input.refClient } : {}),
+        periodiciteMois: input.periodiciteMois ?? 1,
+        prochaineGenerationAt: input.premiereGenerationAt,
+        ...(input.finAt !== undefined ? { finAt: input.finAt } : {}),
+        ...(input.nbMaxFactures !== undefined ? { nbMaxFactures: input.nbMaxFactures } : {}),
+        ...(input.notes !== undefined ? { notes: input.notes } : {}),
+      },
+      select: { id: true },
+    });
+    await logQualiopiActivity({
+      action: "facturation.plan_recurrent.creer",
+      targetType: "PlanRecurrent",
+      targetId: plan.id,
+      changes: { clientId: input.clientId, activite: input.activite },
+      session,
+    });
+    return { data: { planId: plan.id } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Création du plan impossible." };
+  }
+}
+
+const ChangerStatutPlanSchema = z.object({
+  planId: z.string().uuid(),
+  statut: z.enum(["actif", "pause", "clos"]),
+});
+
+export async function changerStatutPlanAction(
+  rawInput: unknown,
+): Promise<{ data: { statut: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = ChangerStatutPlanSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+
+  // Un plan clos ne se rouvre pas (historique figé — recréer un plan).
+  const { count } = await prisma.planRecurrent.updateMany({
+    where: { id: parsed.data.planId, statut: { not: "clos" } },
+    data: { statut: parsed.data.statut },
+  });
+  if (count === 0) return { error: "Plan introuvable ou déjà clos (recréer un plan)." };
+
+  await logQualiopiActivity({
+    action: "facturation.plan_recurrent.statut",
+    targetType: "PlanRecurrent",
+    targetId: parsed.data.planId,
+    changes: { statut: parsed.data.statut },
+    session,
+  });
+  return { data: { statut: parsed.data.statut } };
+}
+
+const EmettreBrouillonSchema = z.object({ factureId: z.string().uuid() });
+
+/**
+ * Émet une facture en BROUILLON (récurrente ou libre) : régime TVA re-snapshoté
+ * à l'émission, échéance posée, PDF généré. C'est LE clic qui rend la facture
+ * définitive — jusqu'ici, rien n'était figé ni envoyé.
+ */
+export async function emettreFactureBrouillonAction(
+  rawInput: unknown,
+): Promise<{ data: { numero: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = EmettreBrouillonSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+
+  try {
+    const { emettreFactureBrouillon } =
+      await import("@/server/qualiopi/financements/plan-recurrent");
+    const result = await emettreFactureBrouillon(parsed.data.factureId);
+    await logQualiopiActivity({
+      action: "facturation.brouillon.emettre",
+      targetType: "FactureFormation",
+      targetId: parsed.data.factureId,
+      changes: { numero: result.numero },
+      session,
+    });
+    return { data: { numero: result.numero } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Émission impossible." };
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 7 — export FEC (contrôle fiscal / expert-comptable)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const ExporterFecSchema = z.object({ annee: z.number().int().min(2020).max(2100) });
+
+/**
+ * Exporte le FEC de l'exercice (factures CRM émises + encaissements).
+ * Retourne le contenu texte (TAB-séparé) — le client télécharge en
+ * `AXIONIA_FEC_{annee}.txt`. Lecture seule : accessible dès requireAdminRead
+ * (rôle comptable).
+ */
+export async function exporterFecAction(
+  rawInput: unknown,
+): Promise<{ data: { contenu: string; nbFactures: number } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminRead();
+  const parsed = ExporterFecSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Année invalide." };
+  const annee = parsed.data.annee;
+  const debut = new Date(Date.UTC(annee, 0, 1));
+  const fin = new Date(Date.UTC(annee + 1, 0, 1));
+
+  const [factures, paiements] = await Promise.all([
+    prisma.factureFormation.findMany({
+      where: {
+        statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] },
+        emiseAt: { gte: debut, lt: fin },
+      },
+      orderBy: { emiseAt: "asc" },
+      select: {
+        numero: true,
+        emiseAt: true,
+        destinataireNom: true,
+        montantHtCents: true,
+        montantTvaCents: true,
+        montantTtcCents: true,
+      },
+    }),
+    prisma.payment.findMany({
+      where: {
+        factureFormationId: { not: null },
+        status: "succeeded",
+        paidAt: { gte: debut, lt: fin },
+      },
+      orderBy: { paidAt: "asc" },
+      select: {
+        amountCents: true,
+        paidAt: true,
+        receivedReference: true,
+        factureFormation: { select: { numero: true, destinataireNom: true } },
+      },
+    }),
+  ]);
+
+  const { genererFec } = await import("@/server/qualiopi/financements/fec");
+  const contenu = genererFec(
+    factures.map((f) => ({
+      numero: f.numero,
+      dateEmission: f.emiseAt ?? debut,
+      clientNom: f.destinataireNom,
+      montantHtCents: f.montantHtCents,
+      montantTvaCents: f.montantTvaCents,
+      montantTtcCents: f.montantTtcCents ?? f.montantHtCents,
+    })),
+    paiements
+      .filter((p) => p.factureFormation !== null && p.paidAt !== null)
+      .map((p) => ({
+        factureNumero: p.factureFormation?.numero ?? "",
+        clientNom: p.factureFormation?.destinataireNom ?? "",
+        date: p.paidAt ?? debut,
+        montantCents: p.amountCents,
+        ...(p.receivedReference !== null ? { reference: p.receivedReference } : {}),
+      })),
+  );
+
+  await logQualiopiActivity({
+    action: "facturation.fec.exporter",
+    targetType: "FactureFormation",
+    changes: { annee, nbFactures: factures.length },
+    session,
+  });
+  return { data: { contenu, nbFactures: factures.length } };
+}

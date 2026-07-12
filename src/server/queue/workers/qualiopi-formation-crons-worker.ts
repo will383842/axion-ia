@@ -59,7 +59,13 @@ export type FormationCronJobType =
   // T15 AGENT A — moteur d'alertes système (daily 07:00)
   | "formation-crons.alertes"
   // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9)
-  | "formation-crons.convocation-j5";
+  | "formation-crons.convocation-j5"
+  // Hub facturation Phase 3 — marquage des factures en retard (STATUT SEUL,
+  // AUCUN email : les relances sont 100 % manuelles, règle produit).
+  | "formation-crons.factures-retard"
+  // Hub facturation Phase 5 — génération des BROUILLONS des plans récurrents
+  // (émission + envoi = clics admin, jamais automatiques).
+  | "formation-crons.plans-recurrents";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -571,8 +577,120 @@ async function handleConvocationJ5(): Promise<void> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Hub facturation Phase 3 — factures en retard (STATUT SEULEMENT)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Marque `en_retard` les factures CRM émises ou partiellement payées dont
+ * l'échéance est dépassée. AUCUN email : la détection alimente l'écran Hub et
+ * (Phase 4) les relances PROPOSÉES — l'envoi reste un clic admin. Les délais
+ * différenciés entreprise/financeur sont déjà encodés dans `echeanceAt` au
+ * moment de l'émission (delai_paiement_jours vs delai_paiement_financeur_jours).
+ * Idempotent (updateMany conditionné au statut).
+ */
+async function handleFacturesRetard(): Promise<void> {
+  const now = new Date();
+  // Factures échues encore ouvertes — hors avoirs, brouillons (echeanceAt null)
+  // et reprises d'historique.
+  const candidates = await prisma.factureFormation.findMany({
+    where: {
+      statut: { in: ["emise", "partiellement_payee", "en_retard"] },
+      echeanceAt: { lt: now },
+      avoirDeId: null,
+      estImportee: false,
+    },
+    select: {
+      id: true,
+      numero: true,
+      statut: true,
+      echeanceAt: true,
+      montantTtcCents: true,
+      montantHtCents: true,
+      payments: { where: { status: "succeeded" }, select: { amountCents: true } },
+      avoirs: {
+        where: { statut: { not: "annulee" } },
+        select: { montantTtcCents: true, montantHtCents: true },
+      },
+    },
+  });
+
+  let marquees = 0;
+  let proposees = 0;
+  for (const f of candidates) {
+    if (f.echeanceAt === null) continue;
+    // Reste dû NET (revue M3/M4) : TTC + avoirs (négatifs) − encaissements.
+    // Créance éteinte (avoir total, trop-perçu) → ni retard, ni relance.
+    const encaisse = f.payments.reduce((acc, p) => acc + p.amountCents, 0);
+    const avoirsTtc = f.avoirs.reduce((acc, a) => acc + (a.montantTtcCents ?? a.montantHtCents), 0);
+    const netDuCents = (f.montantTtcCents ?? f.montantHtCents) + avoirsTtc - encaisse;
+    if (netDuCents <= 0) continue;
+
+    if (f.statut !== "en_retard") {
+      await prisma.factureFormation.updateMany({
+        where: { id: f.id, statut: { in: ["emise", "partiellement_payee"] } },
+        data: { statut: "en_retard" },
+      });
+      marquees++;
+    }
+
+    // Une proposition par facture+palier (idempotent) — montant = SOLDE net.
+    const jours = Math.floor((now.getTime() - f.echeanceAt.getTime()) / 86_400_000);
+    const palier = jours >= 30 ? "j30" : jours >= 15 ? "j15" : "j1";
+    const deja = await prisma.relanceProposee.findFirst({
+      where: { factureFormationId: f.id, palier },
+      select: { id: true },
+    });
+    if (deja !== null) continue;
+    await prisma.relanceProposee.create({
+      data: {
+        type: "facture_retard",
+        palier,
+        factureFormationId: f.id,
+        suggestion: `Facture ${f.numero} — solde de ${(netDuCents / 100).toFixed(2)} € TTC échu le ${f.echeanceAt.toLocaleDateString("fr-FR")} — relance ${palier.toUpperCase()}.`,
+      },
+    });
+    proposees++;
+  }
+
+  console.log(
+    `[formation-crons] factures-retard: ${marquees} passée(s) en retard, ${proposees} relance(s) proposée(s) — AUCUN email client (manuel)`,
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Worker dispatcher (exporté pour test d'intégration)
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Daily 05:00 UTC — génère les BROUILLONS des plans récurrents échus.
+ * Telegram interne pour signaler les brouillons à valider — l'émission et
+ * l'envoi restent des clics admin (aucune facture ne part seule).
+ */
+async function handlePlansRecurrents(): Promise<void> {
+  // Import paresseux : évite de charger la chaîne PDF/config au chargement du
+  // worker (et dans son spec d'intégration).
+  const { genererBrouillonsPlansEchus } =
+    await import("@/server/qualiopi/financements/plan-recurrent");
+  const { generes, clos } = await genererBrouillonsPlansEchus(new Date());
+  if (generes > 0) {
+    await sendTelegramFacturation(
+      `🧾 ${generes} brouillon(s) de facture récurrente à valider dans le Hub facturation`,
+    );
+  }
+  console.log(
+    `[formation-crons] plans-recurrents: ${generes} brouillon(s) généré(s), ${clos} plan(s) clos — émission MANUELLE`,
+  );
+}
+
+/** Telegram best-effort (le module telegram est booking-agnostique). */
+async function sendTelegramFacturation(body: string): Promise<void> {
+  try {
+    const { sendTelegram } = await import("@/lib/telegram");
+    await sendTelegram({ tag: "AUTO", body, silent: true });
+  } catch {
+    // Best-effort.
+  }
+}
 
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
@@ -583,6 +701,8 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.suivi-j30": handleSuiviJ30,
   "formation-crons.alertes": handleAlertes,
   "formation-crons.convocation-j5": handleConvocationJ5,
+  "formation-crons.factures-retard": handleFacturesRetard,
+  "formation-crons.plans-recurrents": handlePlansRecurrents,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

@@ -1707,10 +1707,16 @@ model NewsletterSubscriber {
 /// EUR-only V1 ; reverse-charge B2B intra-UE EE (ADR 0015).
 model Payment {
   id                        String          @id @default(uuid()) @db.Uuid
-  bookingId                 String          @map("booking_id") @db.Uuid
-  booking                   Booking         @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  /// Nullable depuis le Hub facturation : un encaissement peut cibler une
+  /// FactureFormation (CRM) sans Booking. Exactement UNE cible parmi
+  /// invoiceId / factureFormationId (contrainte applicative, cf. payments/).
+  bookingId                 String?         @map("booking_id") @db.Uuid
+  booking                   Booking?        @relation(fields: [bookingId], references: [id], onDelete: Restrict)
   invoiceId                 String?         @map("invoice_id") @db.Uuid
   invoice                   Invoice?        @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  /// Facture CRM/formation encaissée (Hub unifié — Payment = SSOT encaissements).
+  factureFormationId        String?         @map("facture_formation_id") @db.Uuid
+  factureFormation          FactureFormation? @relation(fields: [factureFormationId], references: [id], onDelete: SetNull)
   provider                  PaymentProvider
   /// Stripe `event.id` (idempotence webhook) OU référence manuelle. NULL si
   /// paiement manuel sans réf. fournie.
@@ -1740,6 +1746,7 @@ model Payment {
   Refund                    Refund[]
 
   @@index([bookingId, type, status])
+  @@index([factureFormationId])
   @@index([providerEventId])
   @@index([providerPaymentIntentId])
   @@index([status, type, paidAt])
@@ -1792,8 +1799,22 @@ model Invoice {
   payerType             PayerType     @default(client) @map("payer_type")
   payerName             String?       @map("payer_name") @db.VarChar(300)
   payerVatNumber        String?       @map("payer_vat_number") @db.VarChar(40)
+  /// SIRET de l'acheteur (14 chiffres) — clé de routage annuaire e-invoicing
+  /// 2026 (EN 16931 BT-47). Obligatoire à terme pour tout payeur B2B FR.
+  payerSiret            String?       @map("payer_siret") @db.VarChar(14)
+  /// Code pays ISO 3166-1 alpha-2 de l'acheteur (défaut FR ; pilote
+  /// e-invoicing vs e-reporting).
+  payerCountryCode      String?       @map("payer_country_code") @db.VarChar(2)
   payerAddress          String?       @map("payer_address") @db.Text
   payerEmail            String?       @map("payer_email") @db.Citext
+  /// Référence client / n° de bon de commande, reprise sur le PDF (BT-13).
+  refClient             String?       @map("ref_client") @db.VarChar(120)
+  /// Activité facturée (classification Hub — audits/prestations bookées).
+  activite              ActiviteFacturation?
+  /// Lignes structurées { designation, quantite, prixUnitaireHtCents,
+  /// tauxTvaPercent? } figées à l'émission (EN 16931 BG-25). Null pour les
+  /// factures historiques (agrégats base/travel/… en repli).
+  lignes                Json?
   locale                Locale        @default(fr)
   /// Snapshot CGV + mention TVA + statut juridique au moment d'émission
   /// (immuable, exigé Agent 11 P0-4/P0-5).
@@ -1805,8 +1826,9 @@ model Invoice {
   createdAt             DateTime      @default(now()) @map("created_at")
   updatedAt             DateTime      @updatedAt @map("updated_at")
 
-  payments Payment[]
-  refunds  Refund[]
+  payments          Payment[]
+  refunds           Refund[]
+  relancesProposees RelanceProposee[]
 
   @@index([bookingId, type, status])
   @@index([number])
@@ -1986,6 +2008,10 @@ model Quote {
   id                   String            @id @default(uuid()) @db.Uuid
   /// Format `DEVIS-2026-NNNN` séquentiel.
   number               String            @unique @db.VarChar(40)
+  /// Référence client / n° de bon de commande (reprise sur devis + facture).
+  refClient            String?           @map("ref_client") @db.VarChar(120)
+  /// Activité facturée (classification Hub).
+  activite             ActiviteFacturation?
   bookingId            String            @map("booking_id") @db.Uuid
   booking              Booking           @relation("BookingQuotes", fields: [bookingId], references: [id], onDelete: Restrict)
   // Lien inverse vers Booking.quoteId actif (relation distincte).
@@ -2010,6 +2036,8 @@ model Quote {
   docusealSubmissionId String?           @map("docuseal_submission_id") @db.VarChar(120)
   createdAt            DateTime          @default(now()) @map("created_at")
   updatedAt            DateTime          @updatedAt @map("updated_at")
+
+  relancesProposees RelanceProposee[]
 
   @@index([bookingId, status])
   @@index([number])
@@ -4947,6 +4975,17 @@ enum ClientType {
   particulier
 }
 
+/// Activité facturée — transversale aux 5 métiers d'Axion-IA. Pré-remplit le
+/// régime TVA et les mentions du document (formation/un_a_un exonérables
+/// 261-4-4° CGI si attestation ; audit/implementation/site_web = taxables 20 %).
+enum ActiviteFacturation {
+  formation
+  un_a_un
+  audit
+  implementation
+  site_web
+}
+
 /// Statut d'un devis (CRM, distinct de QuoteStatus lié au Booking).
 enum DevisStatut {
   brouillon
@@ -4966,6 +5005,10 @@ model Client {
   type                       ClientType   @default(entreprise)
   raisonSociale              String       @map("raison_sociale") @db.VarChar(250)
   siret                      String?      @db.VarChar(14)
+  /// SIREN (9 chiffres) — clé de routage annuaire facturation électronique 2026.
+  siren                      String?      @db.VarChar(9)
+  /// N° TVA intracommunautaire du client (B2B, EN 16931 BT-48).
+  tvaIntracom                String?      @map("tva_intracom") @db.VarChar(40)
   nafCode                    String?      @map("naf_code") @db.VarChar(6)
   conventionCollective       String?      @map("convention_collective") @db.VarChar(200)
   /// Code IDCC de la branche (précise la convention collective — saisi, NAF non fiable). [T18]
@@ -4973,6 +5016,15 @@ model Client {
   secteur                    String?      @db.VarChar(200)
   taille                     CompanySize?
   adresse                    String?      @db.Text
+  /// Adresse structurée (EN 16931 BG-8) — remplace progressivement `adresse`
+  /// (champ libre conservé en repli d'affichage).
+  adresseRue                 String?      @map("adresse_rue") @db.VarChar(300)
+  adresseCodePostal          String?      @map("adresse_code_postal") @db.VarChar(12)
+  adresseVille               String?      @map("adresse_ville") @db.VarChar(120)
+  adressePaysCode            String?      @map("adresse_pays_code") @db.VarChar(2)
+  /// Entité du secteur public (mairie, université, collectivité…) → factures à
+  /// déposer sur Chorus Pro (obligation en vigueur, distincte de la réforme 2026).
+  estPublic                  Boolean      @default(false) @map("est_public")
   contactNom                 String?      @map("contact_nom") @db.VarChar(200)
   contactEmail               String?      @map("contact_email") @db.Citext
   contactTelephone           String?      @map("contact_telephone") @db.VarChar(40)
@@ -5001,6 +5053,9 @@ model Client {
   enrollmentsFinances Enrollment[]       @relation("EnrollmentClient")
   coachingContracts   CoachingContract[]
   auditMissions       AuditMission[]
+  facturesFormation   FactureFormation[]
+  dossiersFinancement DossierFinancement[]
+  plansRecurrents     PlanRecurrent[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5013,6 +5068,17 @@ model Devis {
   id                     String      @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-DEV-YYYY-NNN.
   numero                 String      @unique @db.VarChar(40)
+  /// Activité facturée (sélecteur du Hub — pré-remplit régime TVA + mentions).
+  activite               ActiviteFacturation?
+  /// Référence client / n° de bon de commande (exigé par ETI, grands comptes, OPCO).
+  refClient              String?     @map("ref_client") @db.VarChar(120)
+  /// Révision : ce devis remplace une version antérieure (v2 → v1). L'ancienne
+  /// version passe `expire` à l'envoi de la nouvelle — jamais d'écrasement.
+  replacesDevisId        String?     @map("replaces_devis_id") @db.Uuid
+  replacesDevis          Devis?      @relation("DevisRevision", fields: [replacesDevisId], references: [id], onDelete: SetNull)
+  revisions              Devis[]     @relation("DevisRevision")
+  /// Soumission DocuSeal « bon pour accord » (signature électronique du devis).
+  docusealSubmissionId   String?     @map("docuseal_submission_id") @db.VarChar(120)
   clientId               String      @map("client_id") @db.Uuid
   client                 Client      @relation(fields: [clientId], references: [id], onDelete: Restrict)
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreTierId? }].
@@ -5034,8 +5100,11 @@ model Devis {
   createdAt              DateTime    @default(now()) @map("created_at")
   updatedAt              DateTime    @updatedAt @map("updated_at")
 
-  sessions      TrainingSession[]
-  auditMissions AuditMission[]
+  sessions            TrainingSession[]
+  auditMissions       AuditMission[]
+  facturesFormation   FactureFormation[]
+  dossiersFinancement DossierFinancement[]
+  relancesProposees   RelanceProposee[]
 
   @@index([clientId])
   @@index([statut])
@@ -5600,13 +5669,14 @@ model TrainingSession {
   createdAt                          DateTime                 @default(now()) @map("created_at")
   updatedAt                          DateTime                 @updatedAt @map("updated_at")
 
-  enrollments       Enrollment[]
-  transitions       FormationTransition[]
-  documents         DocumentGenere[]
-  relevesConnexion  ReleveConnexionImport[]
-  facturesFormation FactureFormation[]
+  enrollments         Enrollment[]
+  transitions         FormationTransition[]
+  documents           DocumentGenere[]
+  relevesConnexion    ReleveConnexionImport[]
+  facturesFormation   FactureFormation[]
+  dossiersFinancement DossierFinancement[]
   /// Jointure normalisée session ↔ formateur (remplace `coFormateurs` Json).
-  sessionFormateurs SessionFormateur[]
+  sessionFormateurs   SessionFormateur[]
 
   @@index([formationId])
   @@index([clientId])
@@ -6007,6 +6077,10 @@ enum DocumentType {
   livret_accueil
   /// Protocole individuel AFEST (décret D.6313-3-1 §3) — coaching 1-to-1.
   protocole_afest
+  /// Devis commercial PDF (Hub facturation — le PDF affiche Devis.numero).
+  devis
+  /// Avoir (facture rectificative, montants négatifs, lié à la facture d'origine).
+  avoir
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
@@ -6259,8 +6333,207 @@ enum FactureFormationDestinataire {
 enum FactureFormationStatut {
   brouillon
   emise
+  /// Encaissement partiel (somme des Payments succeeded < TTC).
+  partiellement_payee
+  /// Échéance dépassée sans encaissement complet (statut posé par cron —
+  /// AUCUN email automatique, relances 100 % manuelles).
+  en_retard
   payee
   annulee
+}
+
+/// Statut d'un plan de facturation récurrente (Phase 5).
+enum PlanRecurrentStatut {
+  actif
+  pause
+  clos
+}
+
+/// Plan de facturation RÉCURRENTE (Phase 5) : maintenance site web mensuelle,
+/// 1-to-1 récurrent (contrats 6/12/24 mois), futur SaaS/hébergement. RÈGLE
+/// PRODUIT : le cron génère des BROUILLONS — l'émission et l'envoi restent des
+/// clics admin (aucune facture ne part seule). Modification = clore + recréer
+/// (historique conservé, jamais d'écrasement d'un plan qui a facturé).
+model PlanRecurrent {
+  id        String              @id @default(uuid()) @db.Uuid
+  clientId  String              @map("client_id") @db.Uuid
+  client    Client              @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  activite  ActiviteFacturation
+  /// Lignes du gabarit : [{ designation, quantite, prixUnitaireHtCents, tauxTvaPercent? }].
+  lignes    Json
+  refClient String?             @map("ref_client") @db.VarChar(120)
+  /// Périodicité en mois (1 = mensuel, 3 = trimestriel…).
+  periodiciteMois Int @default(1) @map("periodicite_mois")
+  /// Prochaine date de génération d'un brouillon (avancée à chaque génération).
+  prochaineGenerationAt DateTime  @map("prochaine_generation_at")
+  /// Bornes optionnelles : date de fin ET/OU nombre maximal de factures.
+  finAt                 DateTime? @map("fin_at")
+  nbMaxFactures         Int?      @map("nb_max_factures")
+  statut                PlanRecurrentStatut @default(actif)
+  notes                 String?             @db.Text
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  factures FactureFormation[]
+
+  @@index([statut, prochaineGenerationAt])
+  @@index([clientId])
+  @@map("plans_recurrents")
+}
+
+/// Type de relance proposée (Phase 4 — relances 100 % MANUELLES).
+enum RelanceProposeeType {
+  facture_retard
+  devis_sans_reponse
+  dossier_financeur
+}
+
+/// Statut de traitement d'une relance proposée.
+enum RelanceProposeeStatut {
+  a_traiter
+  envoyee
+  ignoree
+  reportee
+}
+
+/// Relance PROPOSÉE par les crons de détection (Phase 4). RÈGLE PRODUIT
+/// ABSOLUE : les crons DÉTECTENT et PROPOSENT — l'ENVOI au client est un clic
+/// admin (envoyerRelanceAction), jamais automatique. Une proposition par
+/// cible+palier (idempotence applicative).
+model RelanceProposee {
+  id     String                @id @default(uuid()) @db.Uuid
+  type   RelanceProposeeType
+  /// Palier de détection : "j1" | "j15" | "j30" (factures) | "j3" (devis).
+  palier String                @db.VarChar(10)
+  statut RelanceProposeeStatut @default(a_traiter)
+
+  invoiceId            String?             @map("invoice_id") @db.Uuid
+  invoice              Invoice?            @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  factureFormationId   String?             @map("facture_formation_id") @db.Uuid
+  factureFormation     FactureFormation?   @relation(fields: [factureFormationId], references: [id], onDelete: Cascade)
+  quoteId              String?             @map("quote_id") @db.Uuid
+  quote                Quote?              @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  devisId              String?             @map("devis_id") @db.Uuid
+  devis                Devis?              @relation(fields: [devisId], references: [id], onDelete: Cascade)
+  dossierFinancementId String?             @map("dossier_financement_id") @db.Uuid
+  dossierFinancement   DossierFinancement? @relation(fields: [dossierFinancementId], references: [id], onDelete: Cascade)
+
+  /// Suggestion de message (pré-remplit l'email — éditable avant envoi).
+  suggestion       String?   @db.Text
+  reporteeJusqua   DateTime? @map("reportee_jusqua")
+  traiteeAt        DateTime? @map("traitee_at")
+  traiteeParAdminId String?  @map("traitee_par_admin_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([statut, createdAt])
+  @@index([factureFormationId])
+  @@index([invoiceId])
+  @@index([quoteId])
+  @@map("relances_proposees")
+}
+
+/// Type de financeur d'un dossier de financement.
+enum DossierFinancementType {
+  opco
+  france_travail
+  cpf
+  mixte
+}
+
+/// Cycle de vie d'un dossier de financement. Transitions MANUELLES (admin),
+/// journalisées dans ActivityLog — aucun email automatique, jamais.
+enum DossierFinancementStatut {
+  a_monter
+  envoye
+  accord_recu
+  refuse
+  facture
+  paiement_recu
+  clos
+}
+
+/// Type de payeur d'une créance dans un dossier (multi-payeurs : un dossier
+/// mixte peut combiner OPCO subrogé + entreprise + France Travail).
+enum DossierPayeurType {
+  entreprise
+  opco_subroge
+  france_travail
+  stagiaire
+}
+
+/// Dossier de financement TRANSVERSAL (Hub facturation, Phase 3). Regroupe le
+/// cycle de vie d'une demande (OPCO/France Travail/CPF/mixte) : demande →
+/// accord/refus → facturation → paiement reçu → clos. Le montant REÇU n'est
+/// jamais dupliqué ici : il se dérive des `Payment` des factures liées
+/// (Payment = SSOT encaissements). Les champs OPCO historiques de
+/// `TrainingSession`/`Enrollment` restent la source des validations Qualiopi ;
+/// ce modèle est la vue de PILOTAGE (qui paie, combien, où en est l'accord).
+model DossierFinancement {
+  id                   String                   @id @default(uuid()) @db.Uuid
+  type                 DossierFinancementType
+  statut               DossierFinancementStatut @default(a_monter)
+  /// Nom du financeur principal (ex. « OPCO Atlas », « France Travail »).
+  financeurNom         String?                  @map("financeur_nom") @db.VarChar(120)
+  /// N° du dossier chez le financeur (référence externe).
+  numeroDossierExterne String?                  @map("numero_dossier_externe") @db.VarChar(80)
+  subrogation          Boolean                  @default(false)
+  montantDemandeCents  Int?                     @map("montant_demande_cents")
+  montantAccordeCents  Int?                     @map("montant_accorde_cents")
+  /// Date de paiement attendue du financeur (les OPCO paient à 30-60 j).
+  echeanceFinanceurAt  DateTime?                @map("echeance_financeur_at")
+  envoyeAt             DateTime?                @map("envoye_at")
+  accordAt             DateTime?                @map("accord_at")
+  refuseAt             DateTime?                @map("refuse_at")
+  paiementRecuAt       DateTime?                @map("paiement_recu_at")
+  closAt               DateTime?                @map("clos_at")
+  notes                String?                  @db.Text
+
+  clientId           String?           @map("client_id") @db.Uuid
+  client             Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  trainingSessionId  String?           @map("training_session_id") @db.Uuid
+  trainingSession    TrainingSession?  @relation(fields: [trainingSessionId], references: [id], onDelete: SetNull)
+  coachingContractId String?           @map("coaching_contract_id") @db.Uuid
+  coachingContract   CoachingContract? @relation(fields: [coachingContractId], references: [id], onDelete: SetNull)
+  auditMissionId     String?           @map("audit_mission_id") @db.Uuid
+  auditMission       AuditMission?     @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
+  devisId            String?           @map("devis_id") @db.Uuid
+  devis              Devis?            @relation(fields: [devisId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  payeurs           DossierPayeur[]
+  factures          FactureFormation[]
+  relancesProposees RelanceProposee[]
+
+  @@index([statut])
+  @@index([clientId])
+  @@index([trainingSessionId])
+  @@index([type, statut])
+  @@map("dossiers_financement")
+}
+
+/// Créance d'un payeur dans un dossier (N payeurs par dossier — C8 du plan).
+/// En subrogation : une ligne OPCO (facture à l'OPCO) + une ligne entreprise
+/// (reste à charge). Le suivi d'encaissement passe par la facture liée.
+model DossierPayeur {
+  id                  String            @id @default(uuid()) @db.Uuid
+  dossierId           String            @map("dossier_id") @db.Uuid
+  dossier             DossierFinancement @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  payeurType          DossierPayeurType @map("payeur_type")
+  payeurNom           String            @map("payeur_nom") @db.VarChar(250)
+  montantAttenduCents Int               @map("montant_attendu_cents")
+  /// Facture portant cette créance (null tant que non facturée).
+  factureFormationId  String?           @map("facture_formation_id") @db.Uuid
+  factureFormation    FactureFormation? @relation(fields: [factureFormationId], references: [id], onDelete: SetNull)
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+
+  @@index([dossierId])
+  @@index([factureFormationId])
+  @@map("dossiers_payeurs")
 }
 
 /// Facture de formation (OF). Distincte de `Invoice` (booking générique). TVA
@@ -6269,6 +6542,31 @@ enum FactureFormationStatut {
 model FactureFormation {
   id                            String                       @id @default(uuid()) @db.Uuid
   numero                        String                       @unique @db.VarChar(40)
+  /// Activité facturée. Historiquement formation/un_a_un ; depuis le Hub
+  /// facturation unifié, ce modèle porte AUSSI audit/implementation/site_web
+  /// (facture « libre » liée à un Client, sans session ni contrat).
+  activite                      ActiviteFacturation?
+  /// Référence client / n° de bon de commande, reprise sur le PDF.
+  refClient                     String?                      @map("ref_client") @db.VarChar(120)
+  /// Client CRM facturé (factures libres du Hub ; null pour les factures
+  /// historiques dérivées d'une session — le client y est via la session).
+  clientId                      String?                      @map("client_id") @db.Uuid
+  client                        Client?                      @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  /// Devis d'origine (conversion devis → facture).
+  devisId                       String?                      @map("devis_id") @db.Uuid
+  devis                         Devis?                       @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  /// Mission d'audit facturée (3e type de prestation, cf. AuditMission).
+  auditMissionId                String?                      @map("audit_mission_id") @db.Uuid
+  auditMission                  AuditMission?                @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
+  /// Dossier de financement rattaché (pilotage OPCO/FT — Phase 3).
+  dossierFinancementId          String?                      @map("dossier_financement_id") @db.Uuid
+  dossierFinancement            DossierFinancement?          @relation(fields: [dossierFinancementId], references: [id], onDelete: SetNull)
+  /// Plan récurrent générateur (brouillons mensuels — Phase 5).
+  planRecurrentId               String?                      @map("plan_recurrent_id") @db.Uuid
+  planRecurrent                 PlanRecurrent?               @relation(fields: [planRecurrentId], references: [id], onDelete: SetNull)
+  /// Facture importée d'un système antérieur (reprise d'historique C9) :
+  /// hors séquence AXI-FACT, incluse aux dashboards/balance âgée.
+  estImportee                   Boolean                      @default(false) @map("est_importee")
   /// Session de formation collective. Nullable depuis le 1-to-1 AFEST (C1) :
   /// une facture peut cibler un `CoachingContract` sans TrainingSession.
   sessionId                     String?                      @map("session_id") @db.Uuid
@@ -6283,6 +6581,8 @@ model FactureFormation {
   destinataire                  FactureFormationDestinataire
   destinataireNom               String                       @map("destinataire_nom") @db.VarChar(250)
   destinataireSiret             String?                      @map("destinataire_siret") @db.VarChar(20)
+  /// N° TVA intracommunautaire du destinataire (EN 16931 BT-48).
+  destinataireTvaIntracom       String?                      @map("destinataire_tva_intracom") @db.VarChar(40)
   destinataireAdresse           String?                      @map("destinataire_adresse") @db.Text
   montantHtCents                Int                          @map("montant_ht_cents")
   /// Exonération TVA (dérivé : true si montantTvaCents == 0). Conservé pour
@@ -6302,16 +6602,32 @@ model FactureFormation {
   /// Aide France Travail (AIF/POEI) prise en charge (centimes), si financement FT.
   montantAideFranceTravailCents Int?                         @map("montant_aide_france_travail_cents")
   statut                        FactureFormationStatut       @default(brouillon)
+  /// Avoir : facture d'origine rectifiée (montants de CETTE facture négatifs).
+  avoirDeId                     String?                      @map("avoir_de_id") @db.Uuid
+  avoirDe                       FactureFormation?            @relation("FactureFormationAvoir", fields: [avoirDeId], references: [id], onDelete: Restrict)
+  avoirs                        FactureFormation[]           @relation("FactureFormationAvoir")
   /// DocumentGenere (PDF) associé.
   documentId                    String?                      @map("document_id") @db.Uuid
   emiseAt                       DateTime?                    @map("emise_at")
   echeanceAt                    DateTime?                    @map("echeance_at")
+  /// Date du dernier encaissement soldant la facture (statut payee).
+  paidAt                        DateTime?                    @map("paid_at")
   createdAt                     DateTime                     @default(now()) @map("created_at")
   updatedAt                     DateTime                     @updatedAt @map("updated_at")
+
+  payments          Payment[]
+  dossierPayeurs    DossierPayeur[]
+  relancesProposees RelanceProposee[]
 
   @@index([sessionId])
   @@index([enrollmentId])
   @@index([coachingContractId])
+  @@index([clientId])
+  @@index([devisId])
+  @@index([auditMissionId])
+  @@index([dossierFinancementId])
+  @@index([planRecurrentId])
+  @@index([activite])
   @@index([statut])
   /// Prévisionnel d'encaissement et relances impayés (cockpit).
   @@index([statut, emiseAt])
@@ -7388,8 +7704,9 @@ model CoachingContract {
   createdAt                          DateTime                 @default(now()) @map("created_at")
   updatedAt                          DateTime                 @updatedAt @map("updated_at")
 
-  sessions CoachingSession[]
-  factures FactureFormation[]
+  sessions            CoachingSession[]
+  factures            FactureFormation[]
+  dossiersFinancement DossierFinancement[]
 
   @@index([traineeId])
   @@index([clientId])
@@ -8585,7 +8902,9 @@ model AuditMission {
   createdAt DateTime           @default(now()) @map("created_at")
   updatedAt DateTime           @updatedAt @map("updated_at")
 
-  feeLines TrainerFeeLine[]
+  feeLines            TrainerFeeLine[]
+  facturesFormation   FactureFormation[]
+  dossiersFinancement DossierFinancement[]
 
   @@index([clientId])
   @@index([devisId])

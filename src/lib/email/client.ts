@@ -80,6 +80,16 @@ export interface SendEmailParams {
    * pas → risque classement spam + non-conformité Gmail bulk sender.
    */
   unsubscribeToken?: string;
+  /**
+   * Pièces jointes (facturation unifiée 2026-07 — envoi manuel devis/facture
+   * avec le PDF joint). Passées telles quelles à nodemailer (`attachments`).
+   * Le contenu est un Buffer (PDF téléchargé depuis R2) ou une string.
+   */
+  attachments?: ReadonlyArray<{
+    filename: string;
+    content: Buffer | string;
+    contentType?: string;
+  }>;
 }
 
 export async function sendEmail(params: SendEmailParams): Promise<{ messageId: string }> {
@@ -103,6 +113,16 @@ export async function sendEmail(params: SendEmailParams): Promise<{ messageId: s
     text: params.text ?? stripHtml(params.html),
     replyTo: params.replyTo,
     ...(Object.keys(headers).length > 0 ? { headers } : {}),
+    // Pièces jointes (envoi manuel devis/facture) — copie mutable pour nodemailer.
+    ...(params.attachments && params.attachments.length > 0
+      ? {
+          attachments: params.attachments.map((a) => ({
+            filename: a.filename,
+            content: a.content,
+            ...(a.contentType ? { contentType: a.contentType } : {}),
+          })),
+        }
+      : {}),
   });
   return { messageId: info.messageId };
 }
