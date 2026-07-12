@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Sites web & SaaS augmentés par l'IA · Axion-IA"
       : "AI-augmented websites & SaaS platforms · Axion-IA",
     description: isFr
-      ? "Sites web et SaaS augmentés par l'IA : chatbot RAG ancré sur vos contenus, agents, recherche sémantique, automatisations. Toute stack, hébergement UE, devis sous 24-48 h."
+      ? "Un site, tout le monde en a un. Nous, on le rend intelligent. Chatbot RAG, search sémantique, agents IA — sur votre existant ou conçu de A à Z. Hébergement UE, vos données."
       : "AI-augmented websites and SaaS platforms: RAG chatbot grounded in your content, agents, semantic search, automations. Any stack, EU hosting, quote in 24-48 h.",
     alternates: { fr: "/sites-web-augmentes", en: "/sites-web-augmentes" },
   });
@@ -180,7 +180,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       ? "Sites web & plateformes SaaS augmentés par l'IA · Axion-IA"
       : "AI-augmented websites & SaaS platforms · Axion-IA",
     description: isFr
-      ? "Sites web et SaaS augmentés par l'IA : chatbot RAG ancré sur vos contenus, agents, recherche sémantique, automatisations. Toute stack, hébergement UE, devis sous 24-48 h."
+      ? "Un site, tout le monde en a un. Nous, on le rend intelligent. Chatbot RAG, search sémantique, agents IA — sur votre existant ou conçu de A à Z. Hébergement UE, vos données."
       : "AI-augmented websites and SaaS platforms: RAG chatbot grounded in your content, agents, semantic search, automations. Any stack, EU hosting, quote in 24-48 h.",
     speakable: true,
     ...(buildPrimaryImageOfPage("/sites-web-augmentes")

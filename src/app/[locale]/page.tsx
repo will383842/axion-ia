@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
       path: "/",
       title: titleStr,
       description: isFr
-        ? `Cabinet IA 100 % seniors, zéro intermédiaire. Audits, formations, coaching 1-to-1, implémentations pour TPE/PME. Résultats mesurables, hébergement UE, dès ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
+        ? "Formations IA finançables OPCO, certifié Qualiopi. Audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention entreprise."
         : `Senior-only AI consultancy, zero middlemen. Audits, training, 1-to-1 coaching, implementations for SMBs. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
       alternates: { fr: "/", en: "/" },
     }),

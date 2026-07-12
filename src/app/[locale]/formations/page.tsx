@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
-        ? `Formation IA en entreprise sur site pour TPE, PME, ETI et grandes entreprises : 4 formats one-shot (4 h à 3 j+) ou formules récurrentes mensuelles/bi-mensuelles. Formateur IA dédié, montée en compétence continue, gains de temps instantanés. Dès ${fromPrice}.`
+        ? "Formation IA présentiel ou distanciel, adaptée à votre secteur et votre entreprise — +17 programmes, certifié Qualiopi, finançables OPCO. Vos équipes gagnent du temps dès le lendemain."
         : `Corporate AI training on site for SMEs and large companies: 4 one-shot formats (4 h to 3 d+) or monthly/bi-monthly recurring programmes. Dedicated AI trainer, continuous upskilling, instant time savings. From ${fromPrice}.`,
   });
 }
