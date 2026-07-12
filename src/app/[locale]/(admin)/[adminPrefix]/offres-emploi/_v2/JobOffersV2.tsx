@@ -88,7 +88,10 @@ export function JobOffersV2({
       header: "Candidatures",
       cell: (o) =>
         o.applicationsCount > 0 ? (
-          <Link href={`/fr/${adminPrefix}/candidatures?offerId=${o.id}`} className="admin-link">
+          <Link
+            href={`/fr/${adminPrefix}/contacts/candidatures?offerId=${o.id}`}
+            className="admin-link"
+          >
             {o.applicationsCount}
           </Link>
         ) : (

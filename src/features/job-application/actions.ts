@@ -282,7 +282,7 @@ export async function submitJobApplicationAction(
       subType: offer.titleFr,
     });
 
-    revalidatePath(adminPath("fr", "candidatures"));
+    revalidatePath(adminPath("fr", "contacts/candidatures"));
     return { ok: true, applicationId: app.id };
   } catch (err) {
     Sentry.captureException(err, {

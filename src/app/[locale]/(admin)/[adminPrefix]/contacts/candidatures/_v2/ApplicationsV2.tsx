@@ -123,7 +123,7 @@ export function ApplicationsV2({
             <button type="submit" className="admin-button">
               Appliquer
             </button>
-            <Link href={`/fr/${adminPrefix}/candidatures`} className="admin-button-ghost">
+            <Link href={`/fr/${adminPrefix}/contacts/candidatures`} className="admin-button-ghost">
               Réinitialiser
             </Link>
           </div>
@@ -139,7 +139,7 @@ export function ApplicationsV2({
           getRowId={(a) => a.id}
           caption="Liste des candidatures emploi"
           rowAction={(a) => (
-            <Link href={`/fr/${adminPrefix}/candidatures/${a.id}`} className="admin-link">
+            <Link href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}`} className="admin-link">
               Détail →
             </Link>
           )}

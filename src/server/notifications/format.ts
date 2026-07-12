@@ -130,7 +130,7 @@ function formatBody(event: NotificationEvent): string {
         p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
         formatKV(
           "Voir en console",
-          `${SITE_URL}${adminPath("fr", "candidatures")}/${p.applicationId}`,
+          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
         ),
       ]
         .filter((v): v is string => v !== null)
