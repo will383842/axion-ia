@@ -1707,10 +1707,16 @@ model NewsletterSubscriber {
 /// EUR-only V1 ; reverse-charge B2B intra-UE EE (ADR 0015).
 model Payment {
   id                        String          @id @default(uuid()) @db.Uuid
-  bookingId                 String          @map("booking_id") @db.Uuid
-  booking                   Booking         @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  /// Nullable depuis le Hub facturation : un encaissement peut cibler une
+  /// FactureFormation (CRM) sans Booking. Exactement UNE cible parmi
+  /// invoiceId / factureFormationId (contrainte applicative, cf. payments/).
+  bookingId                 String?         @map("booking_id") @db.Uuid
+  booking                   Booking?        @relation(fields: [bookingId], references: [id], onDelete: Restrict)
   invoiceId                 String?         @map("invoice_id") @db.Uuid
   invoice                   Invoice?        @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  /// Facture CRM/formation encaissée (Hub unifié — Payment = SSOT encaissements).
+  factureFormationId        String?         @map("facture_formation_id") @db.Uuid
+  factureFormation          FactureFormation? @relation(fields: [factureFormationId], references: [id], onDelete: SetNull)
   provider                  PaymentProvider
   /// Stripe `event.id` (idempotence webhook) OU référence manuelle. NULL si
   /// paiement manuel sans réf. fournie.
@@ -1740,6 +1746,7 @@ model Payment {
   Refund                    Refund[]
 
   @@index([bookingId, type, status])
+  @@index([factureFormationId])
   @@index([providerEventId])
   @@index([providerPaymentIntentId])
   @@index([status, type, paidAt])
@@ -1792,8 +1799,22 @@ model Invoice {
   payerType             PayerType     @default(client) @map("payer_type")
   payerName             String?       @map("payer_name") @db.VarChar(300)
   payerVatNumber        String?       @map("payer_vat_number") @db.VarChar(40)
+  /// SIRET de l'acheteur (14 chiffres) — clé de routage annuaire e-invoicing
+  /// 2026 (EN 16931 BT-47). Obligatoire à terme pour tout payeur B2B FR.
+  payerSiret            String?       @map("payer_siret") @db.VarChar(14)
+  /// Code pays ISO 3166-1 alpha-2 de l'acheteur (défaut FR ; pilote
+  /// e-invoicing vs e-reporting).
+  payerCountryCode      String?       @map("payer_country_code") @db.VarChar(2)
   payerAddress          String?       @map("payer_address") @db.Text
   payerEmail            String?       @map("payer_email") @db.Citext
+  /// Référence client / n° de bon de commande, reprise sur le PDF (BT-13).
+  refClient             String?       @map("ref_client") @db.VarChar(120)
+  /// Activité facturée (classification Hub — audits/prestations bookées).
+  activite              ActiviteFacturation?
+  /// Lignes structurées { designation, quantite, prixUnitaireHtCents,
+  /// tauxTvaPercent? } figées à l'émission (EN 16931 BG-25). Null pour les
+  /// factures historiques (agrégats base/travel/… en repli).
+  lignes                Json?
   locale                Locale        @default(fr)
   /// Snapshot CGV + mention TVA + statut juridique au moment d'émission
   /// (immuable, exigé Agent 11 P0-4/P0-5).
@@ -1986,6 +2007,10 @@ model Quote {
   id                   String            @id @default(uuid()) @db.Uuid
   /// Format `DEVIS-2026-NNNN` séquentiel.
   number               String            @unique @db.VarChar(40)
+  /// Référence client / n° de bon de commande (reprise sur devis + facture).
+  refClient            String?           @map("ref_client") @db.VarChar(120)
+  /// Activité facturée (classification Hub).
+  activite             ActiviteFacturation?
   bookingId            String            @map("booking_id") @db.Uuid
   booking              Booking           @relation("BookingQuotes", fields: [bookingId], references: [id], onDelete: Restrict)
   // Lien inverse vers Booking.quoteId actif (relation distincte).
@@ -4947,6 +4972,17 @@ enum ClientType {
   particulier
 }
 
+/// Activité facturée — transversale aux 5 métiers d'Axion-IA. Pré-remplit le
+/// régime TVA et les mentions du document (formation/un_a_un exonérables
+/// 261-4-4° CGI si attestation ; audit/implementation/site_web = taxables 20 %).
+enum ActiviteFacturation {
+  formation
+  un_a_un
+  audit
+  implementation
+  site_web
+}
+
 /// Statut d'un devis (CRM, distinct de QuoteStatus lié au Booking).
 enum DevisStatut {
   brouillon
@@ -4966,6 +5002,10 @@ model Client {
   type                       ClientType   @default(entreprise)
   raisonSociale              String       @map("raison_sociale") @db.VarChar(250)
   siret                      String?      @db.VarChar(14)
+  /// SIREN (9 chiffres) — clé de routage annuaire facturation électronique 2026.
+  siren                      String?      @db.VarChar(9)
+  /// N° TVA intracommunautaire du client (B2B, EN 16931 BT-48).
+  tvaIntracom                String?      @map("tva_intracom") @db.VarChar(40)
   nafCode                    String?      @map("naf_code") @db.VarChar(6)
   conventionCollective       String?      @map("convention_collective") @db.VarChar(200)
   /// Code IDCC de la branche (précise la convention collective — saisi, NAF non fiable). [T18]
@@ -4973,6 +5013,15 @@ model Client {
   secteur                    String?      @db.VarChar(200)
   taille                     CompanySize?
   adresse                    String?      @db.Text
+  /// Adresse structurée (EN 16931 BG-8) — remplace progressivement `adresse`
+  /// (champ libre conservé en repli d'affichage).
+  adresseRue                 String?      @map("adresse_rue") @db.VarChar(300)
+  adresseCodePostal          String?      @map("adresse_code_postal") @db.VarChar(12)
+  adresseVille               String?      @map("adresse_ville") @db.VarChar(120)
+  adressePaysCode            String?      @map("adresse_pays_code") @db.VarChar(2)
+  /// Entité du secteur public (mairie, université, collectivité…) → factures à
+  /// déposer sur Chorus Pro (obligation en vigueur, distincte de la réforme 2026).
+  estPublic                  Boolean      @default(false) @map("est_public")
   contactNom                 String?      @map("contact_nom") @db.VarChar(200)
   contactEmail               String?      @map("contact_email") @db.Citext
   contactTelephone           String?      @map("contact_telephone") @db.VarChar(40)
@@ -5001,6 +5050,7 @@ model Client {
   enrollmentsFinances Enrollment[]       @relation("EnrollmentClient")
   coachingContracts   CoachingContract[]
   auditMissions       AuditMission[]
+  facturesFormation   FactureFormation[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5013,6 +5063,10 @@ model Devis {
   id                     String      @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-DEV-YYYY-NNN.
   numero                 String      @unique @db.VarChar(40)
+  /// Activité facturée (sélecteur du Hub — pré-remplit régime TVA + mentions).
+  activite               ActiviteFacturation?
+  /// Référence client / n° de bon de commande (exigé par ETI, grands comptes, OPCO).
+  refClient              String?     @map("ref_client") @db.VarChar(120)
   clientId               String      @map("client_id") @db.Uuid
   client                 Client      @relation(fields: [clientId], references: [id], onDelete: Restrict)
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreTierId? }].
@@ -5034,8 +5088,9 @@ model Devis {
   createdAt              DateTime    @default(now()) @map("created_at")
   updatedAt              DateTime    @updatedAt @map("updated_at")
 
-  sessions      TrainingSession[]
-  auditMissions AuditMission[]
+  sessions          TrainingSession[]
+  auditMissions     AuditMission[]
+  facturesFormation FactureFormation[]
 
   @@index([clientId])
   @@index([statut])
@@ -6259,6 +6314,11 @@ enum FactureFormationDestinataire {
 enum FactureFormationStatut {
   brouillon
   emise
+  /// Encaissement partiel (somme des Payments succeeded < TTC).
+  partiellement_payee
+  /// Échéance dépassée sans encaissement complet (statut posé par cron —
+  /// AUCUN email automatique, relances 100 % manuelles).
+  en_retard
   payee
   annulee
 }
@@ -6269,6 +6329,22 @@ enum FactureFormationStatut {
 model FactureFormation {
   id                            String                       @id @default(uuid()) @db.Uuid
   numero                        String                       @unique @db.VarChar(40)
+  /// Activité facturée. Historiquement formation/un_a_un ; depuis le Hub
+  /// facturation unifié, ce modèle porte AUSSI audit/implementation/site_web
+  /// (facture « libre » liée à un Client, sans session ni contrat).
+  activite                      ActiviteFacturation?
+  /// Référence client / n° de bon de commande, reprise sur le PDF.
+  refClient                     String?                      @map("ref_client") @db.VarChar(120)
+  /// Client CRM facturé (factures libres du Hub ; null pour les factures
+  /// historiques dérivées d'une session — le client y est via la session).
+  clientId                      String?                      @map("client_id") @db.Uuid
+  client                        Client?                      @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  /// Devis d'origine (conversion devis → facture).
+  devisId                       String?                      @map("devis_id") @db.Uuid
+  devis                         Devis?                       @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  /// Mission d'audit facturée (3e type de prestation, cf. AuditMission).
+  auditMissionId                String?                      @map("audit_mission_id") @db.Uuid
+  auditMission                  AuditMission?                @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
   /// Session de formation collective. Nullable depuis le 1-to-1 AFEST (C1) :
   /// une facture peut cibler un `CoachingContract` sans TrainingSession.
   sessionId                     String?                      @map("session_id") @db.Uuid
@@ -6283,6 +6359,8 @@ model FactureFormation {
   destinataire                  FactureFormationDestinataire
   destinataireNom               String                       @map("destinataire_nom") @db.VarChar(250)
   destinataireSiret             String?                      @map("destinataire_siret") @db.VarChar(20)
+  /// N° TVA intracommunautaire du destinataire (EN 16931 BT-48).
+  destinataireTvaIntracom       String?                      @map("destinataire_tva_intracom") @db.VarChar(40)
   destinataireAdresse           String?                      @map("destinataire_adresse") @db.Text
   montantHtCents                Int                          @map("montant_ht_cents")
   /// Exonération TVA (dérivé : true si montantTvaCents == 0). Conservé pour
@@ -6306,12 +6384,20 @@ model FactureFormation {
   documentId                    String?                      @map("document_id") @db.Uuid
   emiseAt                       DateTime?                    @map("emise_at")
   echeanceAt                    DateTime?                    @map("echeance_at")
+  /// Date du dernier encaissement soldant la facture (statut payee).
+  paidAt                        DateTime?                    @map("paid_at")
   createdAt                     DateTime                     @default(now()) @map("created_at")
   updatedAt                     DateTime                     @updatedAt @map("updated_at")
+
+  payments Payment[]
 
   @@index([sessionId])
   @@index([enrollmentId])
   @@index([coachingContractId])
+  @@index([clientId])
+  @@index([devisId])
+  @@index([auditMissionId])
+  @@index([activite])
   @@index([statut])
   /// Prévisionnel d'encaissement et relances impayés (cockpit).
   @@index([statut, emiseAt])
@@ -8585,7 +8671,8 @@ model AuditMission {
   createdAt DateTime           @default(now()) @map("created_at")
   updatedAt DateTime           @updatedAt @map("updated_at")
 
-  feeLines TrainerFeeLine[]
+  feeLines          TrainerFeeLine[]
+  facturesFormation FactureFormation[]
 
   @@index([clientId])
   @@index([devisId])

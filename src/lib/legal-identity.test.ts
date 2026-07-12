@@ -11,6 +11,7 @@ vi.mock("@/lib/prisma", () => ({
 import {
   LEGAL_IDENTITY_DEFAULTS,
   resolveLegalIdentity,
+  resolveRibFacture,
   buildLegalIdentitySections,
   type LegalIdentity,
 } from "./legal-identity";
@@ -84,6 +85,42 @@ describe("resolveLegalIdentity", () => {
   });
 });
 
+describe("resolveRibFacture", () => {
+  it("IBAN absent → null (le PDF omet le bloc RIB)", async () => {
+    findUnique.mockResolvedValue(null);
+    expect(await resolveRibFacture()).toBeNull();
+  });
+
+  it("IBAN sans BIC → null (bloc incomplet jamais imprimé)", async () => {
+    findUnique.mockResolvedValue({ value: { iban: "FR761234" } });
+    expect(await resolveRibFacture()).toBeNull();
+  });
+
+  it("IBAN + BIC → bloc RIB, titulaire = dénomination par défaut", async () => {
+    findUnique.mockResolvedValue({ value: { iban: "FR761234", bic: "BDFEFRPP" } });
+    const rib = await resolveRibFacture();
+    expect(rib).toEqual({
+      iban: "FR761234",
+      bic: "BDFEFRPP",
+      titulaire: LEGAL_IDENTITY_DEFAULTS.bankAccountHolder,
+    });
+  });
+
+  it("titulaire + banque personnalisés respectés", async () => {
+    findUnique.mockResolvedValue({
+      value: {
+        iban: "FR761234",
+        bic: "BDFEFRPP",
+        bankAccountHolder: "Axion-IA SAS",
+        bankName: "Qonto",
+      },
+    });
+    const rib = await resolveRibFacture();
+    expect(rib?.titulaire).toBe("Axion-IA SAS");
+    expect(rib?.banque).toBe("Qonto");
+  });
+});
+
 describe("buildLegalIdentitySections", () => {
   const FULL: LegalIdentity = {
     legalName: "Axion-IA SAS",
@@ -99,6 +136,14 @@ describe("buildLegalIdentitySections", () => {
     directorName: "Williams Jullin",
     directorTitle: "Président",
     dpoContact: "contact@axion-ia.com",
+    addressStreet: "12 rue de l'IA",
+    addressPostalCode: "38000",
+    addressCity: "Grenoble",
+    addressCountryCode: "FR",
+    iban: "FR7630001007941234567890185",
+    bic: "BDFEFRPPCCT",
+    bankAccountHolder: "Axion-IA SAS",
+    bankName: "Banque Exemple",
   };
 
   it("FR defaults : placeholders gracieux, jamais de section vide", () => {

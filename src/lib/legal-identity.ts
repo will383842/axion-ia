@@ -56,6 +56,38 @@ export interface LegalIdentity {
    * toujours l'obligation de DÉSIGNER un DPO formel — mais doit fournir ce contact.
    */
   dpoContact: string;
+  /**
+   * Adresse du siège STRUCTURÉE (EN 16931 BG-5 — e-invoicing 2026/2027).
+   * `addressSiege` (chaîne libre) reste le repli d'affichage ; ces champs
+   * alimentent le XML Factur-X/CII et les PDF. Null tant que non renseignés.
+   */
+  addressStreet: string | null;
+  addressPostalCode: string | null;
+  addressCity: string | null;
+  /** Code pays ISO 3166-1 alpha-2 du siège (défaut FR). */
+  addressCountryCode: string;
+  /**
+   * Coordonnées bancaires portées sur les factures (mode de règlement
+   * virement — EN 16931 BG-17). Null tant que Will n'a pas renseigné l'IBAN
+   * dans `legal_overrides` ; les PDF omettent alors le bloc RIB.
+   */
+  iban: string | null;
+  bic: string | null;
+  /** Titulaire du compte (défaut = dénomination sociale). */
+  bankAccountHolder: string;
+  /** Nom de la banque (optionnel, affichage). */
+  bankName: string | null;
+}
+
+/**
+ * Bloc RIB prêt pour les templates PDF des DEUX familles de factures
+ * (`FacturePdf` qualiopi + `InvoiceDocument` booking). Null si IBAN absent.
+ */
+export interface RibIdentite {
+  iban: string;
+  bic: string;
+  titulaire: string;
+  banque?: string;
 }
 
 /**
@@ -77,6 +109,14 @@ export const LEGAL_IDENTITY_DEFAULTS: LegalIdentity = {
   directorName: "Williams Jullin",
   directorTitle: "Président",
   dpoContact: "contact@axion-ia.com",
+  addressStreet: null,
+  addressPostalCode: null,
+  addressCity: null,
+  addressCountryCode: "FR",
+  iban: null,
+  bic: null,
+  bankAccountHolder: BRAND.legalName,
+  bankName: null,
 };
 
 /** Normalise une valeur d'override en string non vide, sinon null. */
@@ -128,6 +168,32 @@ export async function resolveLegalIdentity(): Promise<LegalIdentity> {
     directorTitle: pick("directorTitle") ?? LEGAL_IDENTITY_DEFAULTS.directorTitle,
     dpoContact:
       pick("dpoContact", "dpoEmail", "privacyContact") ?? LEGAL_IDENTITY_DEFAULTS.dpoContact,
+    addressStreet: pick("addressStreet"),
+    addressPostalCode: pick("addressPostalCode"),
+    addressCity: pick("addressCity"),
+    addressCountryCode: pick("addressCountryCode") ?? LEGAL_IDENTITY_DEFAULTS.addressCountryCode,
+    iban: pick("iban"),
+    bic: pick("bic"),
+    bankAccountHolder:
+      pick("bankAccountHolder") ?? pick("legalName") ?? LEGAL_IDENTITY_DEFAULTS.bankAccountHolder,
+    bankName: pick("bankName"),
+  };
+}
+
+/**
+ * Résout le bloc RIB des factures depuis `legal_overrides`. Retourne null tant
+ * que l'IBAN n'est pas renseigné (les PDF omettent alors le bloc — cohérent
+ * avec les CGV « IBAN communiqué sur la facture » dès qu'il est saisi).
+ * Stub-aware via `resolveLegalIdentity` (defaults au build).
+ */
+export async function resolveRibFacture(): Promise<RibIdentite | null> {
+  const id = await resolveLegalIdentity();
+  if (!id.iban || !id.bic) return null;
+  return {
+    iban: id.iban,
+    bic: id.bic,
+    titulaire: id.bankAccountHolder,
+    ...(id.bankName ? { banque: id.bankName } : {}),
   };
 }
 

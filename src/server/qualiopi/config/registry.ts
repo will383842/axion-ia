@@ -145,6 +145,20 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description: "Plafond annuel Atlas par entreprise (€ HT).",
   },
 
+  // ── Facturation / encaissements (Hub facturation unifié) ──
+  // Le RIB (IBAN/BIC/titulaire) vit dans `legal_overrides` (SSOT identité,
+  // cf. src/lib/legal-identity.ts) — PAS ici, pour rester partagé avec les
+  // factures booking. Ici : uniquement les délais métier.
+  delai_paiement_jours: {
+    ...num(30),
+    description: "Délai de paiement par défaut des factures clients (jours).",
+  },
+  delai_paiement_financeur_jours: {
+    ...num(45),
+    description:
+      "Délai de paiement des financeurs publics/OPCO (jours) — seuil de retard distinct des entreprises.",
+  },
+
   // ── Seuils réclamations ──
   seuil_reclamation_jours: {
     ...num(15),

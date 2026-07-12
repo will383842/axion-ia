@@ -17,6 +17,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateInvoicePdfBuffer } from "@/lib/invoice-pdf";
+import { resolveRibFacture } from "@/lib/legal-identity";
 import {
   isR2Configured,
   uploadToR2,
@@ -63,6 +64,8 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       payerAddress: true,
       payerEmail: true,
       payerVatNumber: true,
+      payerSiret: true,
+      refClient: true,
       legalSnapshot: true,
       locale: true,
       hashSha256: true,
@@ -79,8 +82,11 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "invoice_not_found" }, { status: 404 });
   }
 
-  const interventionDate = invoice.booking.bookingDate.toISOString().slice(0, 10);
-  const description = `${invoice.booking.interventionType} — ${interventionDate}`;
+  // `booking` nullable depuis le Hub facturation (facture libre sans réservation).
+  const description = invoice.booking
+    ? `${invoice.booking.interventionType} — ${invoice.booking.bookingDate.toISOString().slice(0, 10)}`
+    : `Prestation — ${invoice.issuedAt.toISOString().slice(0, 10)}`;
+  const rib = await resolveRibFacture();
 
   const result = await generateInvoicePdfBuffer({
     number: invoice.number,
@@ -103,6 +109,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     payerAddress: invoice.payerAddress,
     payerEmail: invoice.payerEmail,
     payerVatNumber: invoice.payerVatNumber,
+    payerSiret: invoice.payerSiret,
+    refClient: invoice.refClient,
+    rib,
     legalSnapshot: invoice.legalSnapshot as unknown as LegalSnapshot,
     locale: invoice.locale === "en" ? "en" : "fr",
   });

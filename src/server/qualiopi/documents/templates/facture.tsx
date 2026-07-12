@@ -154,6 +154,8 @@ export interface FactureData {
   identite: OrganismeIdentite;
   client: ClientFacture;
   lignes: LigneFacture[];
+  /** Référence client / n° de bon de commande (exigé ETI/grands comptes/OPCO). */
+  refClient?: string;
   /**
    * Régime de TVA appliqué (assujetti 20 % / exonération 261-4-4° / franchise
    * 293 B). Capturé depuis la config au moment de l'émission (instantané).
@@ -194,6 +196,9 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
         {/* Identifiants de facturation — SIRET/NDA en `required` (jamais masqués) */}
         <DocSection title="Informations de facturation">
           <FieldRow label="N° de facture" value={data.numero} required />
+          {data.refClient !== undefined && data.refClient !== "" && (
+            <FieldRow label="Référence client / commande" value={data.refClient} />
+          )}
           <FieldRow label="Date d'émission" value={data.dateEmission} required />
           <FieldRow
             label="Date de réalisation de la prestation"

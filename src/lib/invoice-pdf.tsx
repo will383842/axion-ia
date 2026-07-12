@@ -132,6 +132,12 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontStyle: "italic",
   },
+  ribBlock: {
+    marginTop: 20,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#e7e5e4",
+  },
   footer: {
     position: "absolute",
     bottom: 24,
@@ -167,6 +173,15 @@ export interface InvoicePdfInput {
   payerAddress: string | null;
   payerEmail: string | null;
   payerVatNumber: string | null;
+  /** SIRET de l'acheteur (routage annuaire e-invoicing — EN 16931 BT-47). */
+  payerSiret: string | null;
+  /** Référence client / n° de bon de commande (BT-13). */
+  refClient: string | null;
+  /**
+   * Coordonnées bancaires du vendeur (règlement par virement). Null tant que
+   * l'IBAN n'est pas renseigné dans `legal_overrides` → bloc omis.
+   */
+  rib: { iban: string; bic: string; titulaire: string; banque?: string } | null;
   legalSnapshot: LegalSnapshot;
   locale: "fr" | "en";
 }
@@ -212,6 +227,11 @@ const I18N = {
     vat: "TVA",
     ht: "Total HT",
     ttc: "Total TTC",
+    siret: "SIRET",
+    refClient: "Référence client / commande",
+    payment: "Règlement par virement bancaire",
+    accountHolder: "Titulaire",
+    bank: "Banque",
     archivedUntil: "Archivage légal jusqu'au",
     footerCgv: "Conditions générales de vente disponibles sur axion-ia.com/cgv",
   },
@@ -239,6 +259,11 @@ const I18N = {
     vat: "VAT",
     ht: "Total ex VAT",
     ttc: "Total incl. VAT",
+    siret: "SIRET",
+    refClient: "Customer reference / PO",
+    payment: "Payment by bank transfer",
+    accountHolder: "Account holder",
+    bank: "Bank",
     archivedUntil: "Legal archival until",
     footerCgv: "Terms & conditions available at axion-ia.com/cgv",
   },
@@ -294,9 +319,19 @@ function InvoiceDocument({ data }: { data: InvoicePdfInput }) {
             <Text style={styles.columnTitle}>{t.customer}</Text>
             {data.payerName && <Text style={styles.columnLine}>{data.payerName}</Text>}
             {data.payerAddress && <Text style={styles.columnLine}>{data.payerAddress}</Text>}
+            {data.payerSiret && (
+              <Text style={styles.columnLine}>
+                {t.siret} : {data.payerSiret}
+              </Text>
+            )}
             {data.payerEmail && <Text style={styles.columnLine}>{data.payerEmail}</Text>}
             {data.payerVatNumber && (
               <Text style={styles.columnLine}>TVA : {data.payerVatNumber}</Text>
+            )}
+            {data.refClient && (
+              <Text style={styles.columnLine}>
+                {t.refClient} : {data.refClient}
+              </Text>
             )}
           </View>
         </View>
@@ -378,6 +413,23 @@ function InvoiceDocument({ data }: { data: InvoicePdfInput }) {
           </View>
           {data.vatMention && <Text style={styles.vatMention}>{data.vatMention}</Text>}
         </View>
+
+        {/* RIB — règlement par virement (omis tant que l'IBAN n'est pas saisi) */}
+        {data.rib && (
+          <View style={styles.ribBlock}>
+            <Text style={styles.columnTitle}>{t.payment}</Text>
+            <Text style={styles.columnLine}>IBAN : {data.rib.iban}</Text>
+            <Text style={styles.columnLine}>BIC : {data.rib.bic}</Text>
+            <Text style={styles.columnLine}>
+              {t.accountHolder} : {data.rib.titulaire}
+            </Text>
+            {data.rib.banque && (
+              <Text style={styles.columnLine}>
+                {t.bank} : {data.rib.banque}
+              </Text>
+            )}
+          </View>
+        )}
 
         {/* Footer */}
         <View style={styles.footer}>

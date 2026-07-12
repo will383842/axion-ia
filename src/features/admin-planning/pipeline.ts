@@ -49,7 +49,13 @@ export type DevisStatutValue =
 
 export type SessionStatutValue = "planifiee" | "en_cours" | "realisee" | "annulee" | "reportee";
 
-export type FactureStatutValue = "brouillon" | "emise" | "payee" | "annulee";
+export type FactureStatutValue =
+  | "brouillon"
+  | "emise"
+  | "partiellement_payee"
+  | "en_retard"
+  | "payee"
+  | "annulee";
 
 export type CodeEtage =
   | "demande"
@@ -165,8 +171,14 @@ const DEMANDES_EN_COURS: readonly SubmissionStatusValue[] = [
 /** Un devis accepté, qu'il ait déjà été transformé en convention ou non. */
 const DEVIS_ACCEPTES: readonly DevisStatutValue[] = ["accepte", "transforme_convention"];
 
-/** Une facture qui prouve que la session est facturée (émise ou déjà payée). */
-const FACTURES_EMISES: readonly FactureStatutValue[] = ["emise", "payee"];
+/** Une facture qui prouve que la session est facturée (émise ou déjà payée,
+ * y compris partiellement payée ou en retard — elle existe et court). */
+const FACTURES_EMISES: readonly FactureStatutValue[] = [
+  "emise",
+  "partiellement_payee",
+  "en_retard",
+  "payee",
+];
 
 /**
  * Construit l'entonnoir.
