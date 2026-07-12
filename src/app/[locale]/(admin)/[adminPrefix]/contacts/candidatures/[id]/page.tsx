@@ -85,7 +85,10 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dt className="font-medium">CV</dt>
           <dd>
             {a.hasCv ? (
-              <Link href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/cv`} className="admin-link">
+              <Link
+                href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/cv`}
+                className="admin-link"
+              >
                 Télécharger {a.cvOriginalName ?? ""}
               </Link>
             ) : (
@@ -95,7 +98,10 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dt className="font-medium">Photo</dt>
           <dd>
             {a.hasPhoto ? (
-              <Link href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/photo`} className="admin-link">
+              <Link
+                href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/photo`}
+                className="admin-link"
+              >
                 Voir {a.photoOriginalName ?? ""}
               </Link>
             ) : (
