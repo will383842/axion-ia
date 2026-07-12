@@ -595,7 +595,44 @@ async function handleFacturesRetard(): Promise<void> {
     },
     data: { statut: "en_retard" },
   });
-  console.log(`[formation-crons] factures-retard: ${count} facture(s) marquée(s) en retard`);
+
+  // Propositions de relance par palier (j1/j15/j30) — une par facture+palier,
+  // idempotent. L'ENVOI reste un clic admin (« Relances à traiter », Hub).
+  const enRetard = await prisma.factureFormation.findMany({
+    where: { statut: "en_retard", avoirDeId: null, estImportee: false },
+    select: {
+      id: true,
+      numero: true,
+      echeanceAt: true,
+      montantTtcCents: true,
+      montantHtCents: true,
+    },
+  });
+  let proposees = 0;
+  for (const f of enRetard) {
+    if (f.echeanceAt === null) continue;
+    const jours = Math.floor((now.getTime() - f.echeanceAt.getTime()) / 86_400_000);
+    const palier = jours >= 30 ? "j30" : jours >= 15 ? "j15" : "j1";
+    const deja = await prisma.relanceProposee.findFirst({
+      where: { factureFormationId: f.id, palier },
+      select: { id: true },
+    });
+    if (deja !== null) continue;
+    const montant = ((f.montantTtcCents ?? f.montantHtCents) / 100).toFixed(2);
+    await prisma.relanceProposee.create({
+      data: {
+        type: "facture_retard",
+        palier,
+        factureFormationId: f.id,
+        suggestion: `Facture ${f.numero} (${montant} € TTC) échue le ${f.echeanceAt.toLocaleDateString("fr-FR")} — relance ${palier.toUpperCase()}.`,
+      },
+    });
+    proposees++;
+  }
+
+  console.log(
+    `[formation-crons] factures-retard: ${count} passée(s) en retard, ${proposees} relance(s) proposée(s) — AUCUN email client (manuel)`,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

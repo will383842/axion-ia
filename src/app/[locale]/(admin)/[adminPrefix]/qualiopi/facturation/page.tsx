@@ -21,6 +21,8 @@ import { prisma } from "@/lib/prisma";
 import { isFacturationHubEnabled } from "@/server/qualiopi/config/flag";
 import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
 import { AdminFilterTabs } from "@/components/admin/ui";
+import { RelancesATraiter } from "@/components/admin/qualiopi/RelancesATraiter";
+import type { RelanceItem } from "@/components/admin/qualiopi/RelancesATraiter";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 import type { AdminListScaffoldRow } from "../../_v2/AdminListScaffold";
 import type {
@@ -119,7 +121,7 @@ export default async function FacturationHubPage({
 
   // Requêtes en parallèle : page courante + total + KPIs transverses (hors filtre).
   const now = new Date();
-  const [factures, total, aggEmis, aggEncaisse, retards, ouvertes, dossiersEnCours] =
+  const [factures, total, aggEmis, aggEncaisse, retards, ouvertes, relances, dossiersEnCours] =
     await Promise.all([
       prisma.factureFormation.findMany({
         where,
@@ -163,6 +165,24 @@ export default async function FacturationHubPage({
           avoirDeId: null,
         },
         select: { montantTtcCents: true, montantHtCents: true, echeanceAt: true },
+      }),
+      prisma.relanceProposee.findMany({
+        where: {
+          statut: "a_traiter",
+          OR: [{ reporteeJusqua: null }, { reporteeJusqua: { lte: now } }],
+        },
+        orderBy: { createdAt: "asc" },
+        take: 20,
+        select: {
+          id: true,
+          type: true,
+          palier: true,
+          suggestion: true,
+          factureFormationId: true,
+          factureFormation: { select: { numero: true } },
+          invoice: { select: { number: true } },
+          quote: { select: { number: true } },
+        },
       }),
       prisma.dossierFinancement.findMany({
         where: { statut: { not: "clos" } },
@@ -226,6 +246,15 @@ export default async function FacturationHubPage({
     cpf: "CPF",
     mixte: "Mixte",
   };
+
+  const relanceItems: RelanceItem[] = relances.map((r) => ({
+    id: r.id,
+    palier: r.palier,
+    suggestion: r.suggestion,
+    libelle:
+      r.factureFormation?.numero ?? r.invoice?.number ?? r.quote?.number ?? "Document inconnu",
+    envoiDirect: r.factureFormationId !== null,
+  }));
 
   const rows: AdminListScaffoldRow[] = factures.map((f) => ({
     id: f.id,
@@ -304,6 +333,7 @@ export default async function FacturationHubPage({
                 })),
               ]}
             />
+            <RelancesATraiter relances={relanceItems} />
             {dossiersEnCours.length > 0 ? (
               <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
                 <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">

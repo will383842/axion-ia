@@ -451,3 +451,113 @@ export async function importerFacturesHistoriqueAction(
   });
   return { data: { importees, ignorees } };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 4 — traitement des relances proposées (envoi = TOUJOURS un clic admin)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const TraiterRelanceSchema = z.object({
+  relanceId: z.string().uuid(),
+  action: z.enum(["ignorer", "reporter"]),
+  /// Report : nombre de jours (défaut 7).
+  reportJours: z.number().int().min(1).max(90).optional(),
+});
+
+export async function traiterRelanceAction(
+  rawInput: unknown,
+): Promise<{ data: { statut: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = TraiterRelanceSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  const statut = input.action === "ignorer" ? "ignoree" : "reportee";
+  const reporteeJusqua =
+    input.action === "reporter"
+      ? new Date(Date.now() + (input.reportJours ?? 7) * 86_400_000)
+      : null;
+
+  const { count } = await prisma.relanceProposee.updateMany({
+    where: { id: input.relanceId, statut: "a_traiter" },
+    data: {
+      statut,
+      traiteeAt: new Date(),
+      traiteeParAdminId: session.userId,
+      ...(reporteeJusqua !== null ? { reporteeJusqua } : {}),
+    },
+  });
+  if (count === 0) return { error: "Relance introuvable ou déjà traitée." };
+
+  await logQualiopiActivity({
+    action: `facturation.relance.${input.action}`,
+    targetType: "RelanceProposee",
+    targetId: input.relanceId,
+    changes: { reportJours: input.reportJours ?? null },
+    session,
+  });
+  return { data: { statut } };
+}
+
+const EnvoyerRelanceSchema = z.object({
+  relanceId: z.string().uuid(),
+  to: z.string().email().optional(),
+  messagePersonnalise: z.string().max(4000).optional(),
+});
+
+/**
+ * Envoie la relance d'une facture CRM (email manuel avec PDF joint) puis
+ * marque la proposition `envoyee`. Les relances de factures BOOKING et de
+ * devis booking se traitent depuis leurs écrans dédiés (ignorer/reporter ici).
+ */
+export async function envoyerRelanceAction(
+  rawInput: unknown,
+): Promise<{ data: { to: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = EnvoyerRelanceSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  const relance = await prisma.relanceProposee.findUnique({
+    where: { id: input.relanceId },
+    select: { id: true, statut: true, factureFormationId: true, suggestion: true },
+  });
+  if (!relance) return { error: "Relance introuvable." };
+  if (relance.statut !== "a_traiter") return { error: "Relance déjà traitée." };
+  if (relance.factureFormationId === null) {
+    return {
+      error:
+        "Cette relance concerne un document booking — la traiter depuis son écran dédié (ou l'ignorer ici).",
+    };
+  }
+
+  const { envoyerFactureEmailAction } =
+    await import("@/server/actions/qualiopi/facturation-emails");
+  const envoi = await envoyerFactureEmailAction({
+    factureId: relance.factureFormationId,
+    ...(input.to !== undefined ? { to: input.to } : {}),
+    messagePersonnalise:
+      input.messagePersonnalise ??
+      relance.suggestion ??
+      "Sauf erreur de notre part, cette facture reste en attente de règlement.",
+  });
+  if ("error" in envoi) return { error: envoi.error };
+
+  await prisma.relanceProposee.updateMany({
+    where: { id: relance.id, statut: "a_traiter" },
+    data: { statut: "envoyee", traiteeAt: new Date(), traiteeParAdminId: session.userId },
+  });
+  await logQualiopiActivity({
+    action: "facturation.relance.envoyer",
+    targetType: "RelanceProposee",
+    targetId: relance.id,
+    changes: { to: envoi.data.to },
+    session,
+  });
+  return { data: { to: envoi.data.to } };
+}

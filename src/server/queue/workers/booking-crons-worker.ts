@@ -72,13 +72,14 @@ async function enqueueClientEmail(
 
 /**
  * Daily 08:00 UTC — scan invoices issued/partially_paid avec dueAt passé.
- *   J+1 → email payment-overdue-j1 + status overdue
- *   J+15 → email payment-overdue-j15 + Telegram RELANCE
- *   J+30 → email payment-overdue-j30 + Telegram IMPAYÉ_CRITIQUE
+ *
+ * ⚠️ Phase 4 Hub facturation (règle produit ABSOLUE) : ce handler N'ENVOIE
+ * PLUS AUCUN email client. Il DÉTECTE (statut overdue) et PROPOSE une relance
+ * (`RelanceProposee`, une par facture+palier, idempotent) + Telegram INTERNE.
+ * L'envoi au client = clic admin dans « Relances à traiter » (Hub).
  */
 async function handlePaymentOverdueScan(): Promise<void> {
   const now = new Date();
-  const j1 = startOfDay(addDays(now, -1));
   const j15 = startOfDay(addDays(now, -15));
   const j30 = startOfDay(addDays(now, -30));
 
@@ -92,63 +93,58 @@ async function handlePaymentOverdueScan(): Promise<void> {
       number: true,
       dueAt: true,
       amountTtcCents: true,
-      payerEmail: true,
-      locale: true,
-      booking: {
-        select: {
-          id: true,
-          interventionType: true,
-        },
-      },
+      status: true,
+      booking: { select: { id: true } },
     },
   });
 
+  let proposees = 0;
   for (const inv of candidates) {
     if (!inv.dueAt) continue;
     const dueDate = startOfDay(inv.dueAt);
-    let template: EmailJobName | null = null;
-    let telegramTag: "AUTO" | "OPTION" | null = null;
+    const palier =
+      dueDate.getTime() <= j30.getTime()
+        ? "j30"
+        : dueDate.getTime() <= j15.getTime()
+          ? "j15"
+          : "j1";
 
-    if (dueDate.getTime() === j30.getTime()) {
-      template = "payment-overdue-j30";
-      telegramTag = "AUTO"; // tag "IMPAYÉ_CRITIQUE" prévu Sprint X.13 dédié tagging
-    } else if (dueDate.getTime() === j15.getTime()) {
-      template = "payment-overdue-j15";
-      telegramTag = "AUTO"; // tag "RELANCE"
-    } else if (dueDate.getTime() === j1.getTime()) {
-      template = "payment-overdue-j1";
-    }
-
-    if (!template) continue;
-
-    await enqueueClientEmail(template, {
-      contactEmail: inv.payerEmail,
-      locale: inv.locale === "en" ? "en" : "fr",
-      data: {
-        invoiceNumber: inv.number,
-        amountTtc: (inv.amountTtcCents / 100).toFixed(2),
-        dueDate: inv.dueAt.toISOString().slice(0, 10),
-        bookingId: inv.booking.id,
-      },
-    });
-
-    // Update status overdue (idempotent)
-    if (template === "payment-overdue-j1") {
+    // Statut overdue (idempotent, détection seule).
+    if (inv.status !== "overdue") {
       await prisma.invoice
         .update({ where: { id: inv.id }, data: { status: "overdue" } })
         .catch(() => {});
     }
 
-    if (telegramTag) {
+    // Une proposition par facture+palier (idempotence applicative).
+    const deja = await prisma.relanceProposee.findFirst({
+      where: { invoiceId: inv.id, palier },
+      select: { id: true },
+    });
+    if (deja !== null) continue;
+
+    await prisma.relanceProposee.create({
+      data: {
+        type: "facture_retard",
+        palier,
+        invoiceId: inv.id,
+        suggestion: `Facture ${inv.number} (${(inv.amountTtcCents / 100).toFixed(2)} € TTC) échue le ${inv.dueAt.toLocaleDateString("fr-FR")} — relance ${palier.toUpperCase()}.`,
+      },
+    });
+    proposees++;
+
+    if (palier !== "j1") {
       await sendTelegram({
-        tag: telegramTag,
-        body: `💸 Relance ${template} sur facture ${inv.number} (booking ${inv.booking.id})`,
+        tag: "AUTO",
+        body: `💸 Relance ${palier} À TRAITER (manuelle) — facture ${inv.number} (booking ${inv.booking.id})`,
         silent: true,
       }).catch(() => {});
     }
   }
 
-  console.log(`[booking-crons] payment-overdue-scan checked ${candidates.length} invoice(s)`);
+  console.log(
+    `[booking-crons] payment-overdue-scan: ${candidates.length} facture(s) échue(s), ${proposees} relance(s) proposée(s) — AUCUN email client (manuel)`,
+  );
 }
 
 /**
@@ -390,20 +386,28 @@ async function handleQuotePendingReminder(): Promise<void> {
     },
   });
 
+  // ⚠️ Phase 4 Hub facturation : plus d'email automatique — proposition de
+  // relance idempotente (une par devis, palier j3), envoi = clic admin.
+  let proposees = 0;
   for (const q of quotes) {
-    const sub = q.booking.fromSubmission ?? q.booking.submission;
-    await enqueueClientEmail("quote-reminder", {
-      contactEmail: sub?.contactEmail,
-      locale: q.booking.locale === "en" ? "en" : "fr",
+    const deja = await prisma.relanceProposee.findFirst({
+      where: { quoteId: q.id, palier: "j3" },
+      select: { id: true },
+    });
+    if (deja !== null) continue;
+    await prisma.relanceProposee.create({
       data: {
-        contactName: sub?.contactName ?? "Client",
-        quoteNumber: q.number,
-        validUntil: q.validUntil.toISOString().slice(0, 10),
-        bookingId: q.bookingId,
+        type: "devis_sans_reponse",
+        palier: "j3",
+        quoteId: q.id,
+        suggestion: `Devis ${q.number} envoyé sans réponse depuis 3 jours (valable jusqu'au ${q.validUntil.toLocaleDateString("fr-FR")}) — relance de courtoisie.`,
       },
     });
+    proposees++;
   }
-  console.log(`[booking-crons] quote-pending-reminder sent for ${quotes.length} quote(s)`);
+  console.log(
+    `[booking-crons] quote-pending-reminder: ${quotes.length} devis sans réponse, ${proposees} relance(s) proposée(s) — AUCUN email client (manuel)`,
+  );
 }
 
 /**

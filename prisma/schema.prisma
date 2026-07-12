@@ -1826,8 +1826,9 @@ model Invoice {
   createdAt             DateTime      @default(now()) @map("created_at")
   updatedAt             DateTime      @updatedAt @map("updated_at")
 
-  payments Payment[]
-  refunds  Refund[]
+  payments          Payment[]
+  refunds           Refund[]
+  relancesProposees RelanceProposee[]
 
   @@index([bookingId, type, status])
   @@index([number])
@@ -2035,6 +2036,8 @@ model Quote {
   docusealSubmissionId String?           @map("docuseal_submission_id") @db.VarChar(120)
   createdAt            DateTime          @default(now()) @map("created_at")
   updatedAt            DateTime          @updatedAt @map("updated_at")
+
+  relancesProposees RelanceProposee[]
 
   @@index([bookingId, status])
   @@index([number])
@@ -5100,6 +5103,7 @@ model Devis {
   auditMissions       AuditMission[]
   facturesFormation   FactureFormation[]
   dossiersFinancement DossierFinancement[]
+  relancesProposees   RelanceProposee[]
 
   @@index([clientId])
   @@index([statut])
@@ -6337,6 +6341,59 @@ enum FactureFormationStatut {
   annulee
 }
 
+/// Type de relance proposée (Phase 4 — relances 100 % MANUELLES).
+enum RelanceProposeeType {
+  facture_retard
+  devis_sans_reponse
+  dossier_financeur
+}
+
+/// Statut de traitement d'une relance proposée.
+enum RelanceProposeeStatut {
+  a_traiter
+  envoyee
+  ignoree
+  reportee
+}
+
+/// Relance PROPOSÉE par les crons de détection (Phase 4). RÈGLE PRODUIT
+/// ABSOLUE : les crons DÉTECTENT et PROPOSENT — l'ENVOI au client est un clic
+/// admin (envoyerRelanceAction), jamais automatique. Une proposition par
+/// cible+palier (idempotence applicative).
+model RelanceProposee {
+  id     String                @id @default(uuid()) @db.Uuid
+  type   RelanceProposeeType
+  /// Palier de détection : "j1" | "j15" | "j30" (factures) | "j3" (devis).
+  palier String                @db.VarChar(10)
+  statut RelanceProposeeStatut @default(a_traiter)
+
+  invoiceId            String?             @map("invoice_id") @db.Uuid
+  invoice              Invoice?            @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  factureFormationId   String?             @map("facture_formation_id") @db.Uuid
+  factureFormation     FactureFormation?   @relation(fields: [factureFormationId], references: [id], onDelete: Cascade)
+  quoteId              String?             @map("quote_id") @db.Uuid
+  quote                Quote?              @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  devisId              String?             @map("devis_id") @db.Uuid
+  devis                Devis?              @relation(fields: [devisId], references: [id], onDelete: Cascade)
+  dossierFinancementId String?             @map("dossier_financement_id") @db.Uuid
+  dossierFinancement   DossierFinancement? @relation(fields: [dossierFinancementId], references: [id], onDelete: Cascade)
+
+  /// Suggestion de message (pré-remplit l'email — éditable avant envoi).
+  suggestion       String?   @db.Text
+  reporteeJusqua   DateTime? @map("reportee_jusqua")
+  traiteeAt        DateTime? @map("traitee_at")
+  traiteeParAdminId String?  @map("traitee_par_admin_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([statut, createdAt])
+  @@index([factureFormationId])
+  @@index([invoiceId])
+  @@index([quoteId])
+  @@map("relances_proposees")
+}
+
 /// Type de financeur d'un dossier de financement.
 enum DossierFinancementType {
   opco
@@ -6407,8 +6464,9 @@ model DossierFinancement {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  payeurs  DossierPayeur[]
-  factures FactureFormation[]
+  payeurs           DossierPayeur[]
+  factures          FactureFormation[]
+  relancesProposees RelanceProposee[]
 
   @@index([statut])
   @@index([clientId])
@@ -6514,8 +6572,9 @@ model FactureFormation {
   createdAt                     DateTime                     @default(now()) @map("created_at")
   updatedAt                     DateTime                     @updatedAt @map("updated_at")
 
-  payments       Payment[]
-  dossierPayeurs DossierPayeur[]
+  payments          Payment[]
+  dossierPayeurs    DossierPayeur[]
+  relancesProposees RelanceProposee[]
 
   @@index([sessionId])
   @@index([enrollmentId])
