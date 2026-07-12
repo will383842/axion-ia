@@ -59,12 +59,10 @@ const BANNED_PHRASES: ReadonlyArray<SeedBannedPhrase> = [
     reason: "Phrase interdite doctrine § 21 (utiliser durée explicite)",
     severity: "block",
   },
-  // ===== WARN — Naming concurrent / agence =====
-  {
-    pattern: "agence",
-    reason: "Naming brand — utiliser 'cabinet IA opérationnel' (sauf comparatifs)",
-    severity: "warn",
-  },
+  // ===== WARN — Naming concurrent =====
+  // « agence » retiré du corpus 2026-07-12 (décision Will) : le terme est
+  // désormais autorisé en copy/meta (positionnement SEO « agence IA »).
+  // Cf. RETIRED_PATTERNS ci-dessous pour la désactivation de la ligne en base.
   {
     pattern: "studio",
     reason: "Naming brand — utiliser 'cabinet IA opérationnel'",
@@ -163,7 +161,24 @@ const BANNED_PHRASES: ReadonlyArray<SeedBannedPhrase> = [
   { pattern: "révéler tout le potentiel", reason: "Cliché marketing", severity: "warn" },
 ];
 
+/**
+ * Patterns retirés du corpus (décision produit). Le seed les désactive en base
+ * (`isActive: false`) au lieu de les supprimer, pour garder l'historique
+ * visible dans l'admin `/content-gen/settings/banned-phrases`.
+ *
+ * ⚠️ Le seed ne tourne pas automatiquement au deploy : en prod, désactiver la
+ * ligne via l'admin OU relancer `pnpm content-gen:seed` dans le container.
+ */
+const RETIRED_PATTERNS: ReadonlyArray<string> = [
+  // 2026-07-12 (Will) — « agence » autorisé (SEO « agence IA », fin du naming exclusif).
+  "agence",
+];
+
 export async function seedBannedPhrases(prisma: PrismaClient): Promise<number> {
+  await prisma.bannedPhrase.updateMany({
+    where: { pattern: { in: [...RETIRED_PATTERNS] } },
+    data: { isActive: false },
+  });
   let count = 0;
   for (const phrase of BANNED_PHRASES) {
     await prisma.bannedPhrase.upsert({

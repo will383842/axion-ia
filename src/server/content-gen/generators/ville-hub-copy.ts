@@ -212,7 +212,6 @@ function buildKbContext(eco: VilleEconomicData | undefined): {
 const BANNED_PHRASES = [
   "lorem ipsum",
   "axion ia", // toujours "Axion-IA" avec tiret
-  "agence de formation", // doctrine : "cabinet IA opérationnel"
   "TODO",
   "[à compléter]",
   "à compléter",
@@ -465,7 +464,7 @@ Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + 5 services)
 - ≤ 5 % données INSEE (mention contextuelle, pas exhaustive)
 - Anti-doorway HCU 2024 : angle UNIQUE par ville (utiliser ≥ 2 noms propres du KB dans chaque champ texte long)
-- Positionnement : "cabinet IA opérationnel" (jamais "agence de formation")
+- Positionnement : "cabinet IA opérationnel" ("agence" / "organisme de formation" autorisés — décision 2026-07-12)
 - Naming canonique : "intervention" (le mot "formation" est OK en descriptif)
 - Tarifs PUBLICS — INTERDIT de dire "contactez-nous pour un devis", "selon la complexité", "selon vos besoins". Si tu ne connais pas un prix exact, dis "tarifs publics consultables".
 - FR uniquement
