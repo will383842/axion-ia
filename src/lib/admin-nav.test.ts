@@ -42,7 +42,9 @@ describe("buildAdminNav SSOT", () => {
     // Facture, âge des affaires bloquées et fuites nommées. 5e vue du pilier A. = 132.
     // +1 (2026-07-10) : « Audits IA » — 3ᵉ type de prestation (missions d'audit
     // affectables + rémunérées), groupe qualiopi / sous-groupe formations. = 133.
-    expect(items.length).toBe(133);
+    // +1 (2026-07-12) : « Facturation (Hub) » — pilotage unifié des 5 activités
+    // (page gatée FACTURATION_HUB_ENABLED), groupe qualiopi / commercial. = 134.
+    expect(items.length).toBe(134);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
