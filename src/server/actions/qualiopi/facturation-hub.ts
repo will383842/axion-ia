@@ -561,3 +561,124 @@ export async function envoyerRelanceAction(
   });
   return { data: { to: envoi.data.to } };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 5 — plans récurrents (brouillons proposés, émission manuelle)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CreerPlanSchema = z.object({
+  clientId: z.string().uuid(),
+  activite: ActiviteSchema,
+  lignes: z.array(LigneSchema).min(1).max(50),
+  refClient: z.string().max(120).optional(),
+  periodiciteMois: z.number().int().min(1).max(12).optional(),
+  premiereGenerationAt: z.coerce.date(),
+  finAt: z.coerce.date().optional(),
+  nbMaxFactures: z.number().int().min(1).max(120).optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+export async function creerPlanRecurrentAction(
+  rawInput: unknown,
+): Promise<{ data: { planId: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = CreerPlanSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const input = parsed.data;
+
+  try {
+    const plan = await prisma.planRecurrent.create({
+      data: {
+        clientId: input.clientId,
+        activite: input.activite,
+        lignes: input.lignes as never,
+        ...(input.refClient !== undefined ? { refClient: input.refClient } : {}),
+        periodiciteMois: input.periodiciteMois ?? 1,
+        prochaineGenerationAt: input.premiereGenerationAt,
+        ...(input.finAt !== undefined ? { finAt: input.finAt } : {}),
+        ...(input.nbMaxFactures !== undefined ? { nbMaxFactures: input.nbMaxFactures } : {}),
+        ...(input.notes !== undefined ? { notes: input.notes } : {}),
+      },
+      select: { id: true },
+    });
+    await logQualiopiActivity({
+      action: "facturation.plan_recurrent.creer",
+      targetType: "PlanRecurrent",
+      targetId: plan.id,
+      changes: { clientId: input.clientId, activite: input.activite },
+      session,
+    });
+    return { data: { planId: plan.id } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Création du plan impossible." };
+  }
+}
+
+const ChangerStatutPlanSchema = z.object({
+  planId: z.string().uuid(),
+  statut: z.enum(["actif", "pause", "clos"]),
+});
+
+export async function changerStatutPlanAction(
+  rawInput: unknown,
+): Promise<{ data: { statut: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = ChangerStatutPlanSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+
+  // Un plan clos ne se rouvre pas (historique figé — recréer un plan).
+  const { count } = await prisma.planRecurrent.updateMany({
+    where: { id: parsed.data.planId, statut: { not: "clos" } },
+    data: { statut: parsed.data.statut },
+  });
+  if (count === 0) return { error: "Plan introuvable ou déjà clos (recréer un plan)." };
+
+  await logQualiopiActivity({
+    action: "facturation.plan_recurrent.statut",
+    targetType: "PlanRecurrent",
+    targetId: parsed.data.planId,
+    changes: { statut: parsed.data.statut },
+    session,
+  });
+  return { data: { statut: parsed.data.statut } };
+}
+
+const EmettreBrouillonSchema = z.object({ factureId: z.string().uuid() });
+
+/**
+ * Émet une facture en BROUILLON (récurrente ou libre) : régime TVA re-snapshoté
+ * à l'émission, échéance posée, PDF généré. C'est LE clic qui rend la facture
+ * définitive — jusqu'ici, rien n'était figé ni envoyé.
+ */
+export async function emettreFactureBrouillonAction(
+  rawInput: unknown,
+): Promise<{ data: { numero: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminWrite();
+  const parsed = EmettreBrouillonSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide." };
+
+  try {
+    const { emettreFactureBrouillon } =
+      await import("@/server/qualiopi/financements/plan-recurrent");
+    const result = await emettreFactureBrouillon(parsed.data.factureId);
+    await logQualiopiActivity({
+      action: "facturation.brouillon.emettre",
+      targetType: "FactureFormation",
+      targetId: parsed.data.factureId,
+      changes: { numero: result.numero },
+      session,
+    });
+    return { data: { numero: result.numero } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Émission impossible." };
+  }
+}

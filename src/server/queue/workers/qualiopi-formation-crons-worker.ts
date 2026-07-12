@@ -62,7 +62,10 @@ export type FormationCronJobType =
   | "formation-crons.convocation-j5"
   // Hub facturation Phase 3 — marquage des factures en retard (STATUT SEUL,
   // AUCUN email : les relances sont 100 % manuelles, règle produit).
-  | "formation-crons.factures-retard";
+  | "formation-crons.factures-retard"
+  // Hub facturation Phase 5 — génération des BROUILLONS des plans récurrents
+  // (émission + envoi = clics admin, jamais automatiques).
+  | "formation-crons.plans-recurrents";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -639,6 +642,37 @@ async function handleFacturesRetard(): Promise<void> {
 // Worker dispatcher (exporté pour test d'intégration)
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Daily 05:00 UTC — génère les BROUILLONS des plans récurrents échus.
+ * Telegram interne pour signaler les brouillons à valider — l'émission et
+ * l'envoi restent des clics admin (aucune facture ne part seule).
+ */
+async function handlePlansRecurrents(): Promise<void> {
+  // Import paresseux : évite de charger la chaîne PDF/config au chargement du
+  // worker (et dans son spec d'intégration).
+  const { genererBrouillonsPlansEchus } =
+    await import("@/server/qualiopi/financements/plan-recurrent");
+  const { generes, clos } = await genererBrouillonsPlansEchus(new Date());
+  if (generes > 0) {
+    await sendTelegramFacturation(
+      `🧾 ${generes} brouillon(s) de facture récurrente à valider dans le Hub facturation`,
+    );
+  }
+  console.log(
+    `[formation-crons] plans-recurrents: ${generes} brouillon(s) généré(s), ${clos} plan(s) clos — émission MANUELLE`,
+  );
+}
+
+/** Telegram best-effort (le module telegram est booking-agnostique). */
+async function sendTelegramFacturation(body: string): Promise<void> {
+  try {
+    const { sendTelegram } = await import("@/lib/telegram");
+    await sendTelegram({ tag: "AUTO", body, silent: true });
+  } catch {
+    // Best-effort.
+  }
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
@@ -649,6 +683,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.alertes": handleAlertes,
   "formation-crons.convocation-j5": handleConvocationJ5,
   "formation-crons.factures-retard": handleFacturesRetard,
+  "formation-crons.plans-recurrents": handlePlansRecurrents,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

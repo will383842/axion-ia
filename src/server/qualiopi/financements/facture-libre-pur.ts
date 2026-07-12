@@ -71,6 +71,23 @@ export function construireLignesAvoir(
   ];
 }
 
+/**
+ * Avance une date de N mois en conservant le jour (clampé à la fin du mois
+ * cible : 31 janv. + 1 mois → 28/29 févr., jamais de dérive vers mars).
+ * Utilisé par les plans récurrents (Phase 5).
+ */
+export function calculerProchaineGeneration(depuis: Date, periodiciteMois: number): Date {
+  const d = new Date(depuis);
+  const jour = d.getUTCDate();
+  d.setUTCDate(1);
+  d.setUTCMonth(d.getUTCMonth() + periodiciteMois);
+  const dernierJourDuMois = new Date(
+    Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0),
+  ).getUTCDate();
+  d.setUTCDate(Math.min(jour, dernierJourDuMois));
+  return d;
+}
+
 /** Statut d'encaissement d'une facture d'après le total encaissé (centimes). */
 export function calculerStatutEncaissement(
   montantDuCents: number,

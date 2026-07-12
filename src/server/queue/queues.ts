@@ -1211,6 +1211,13 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "30 6 * * *",
         jobId: "formation-crons-factures-retard-cron",
       },
+      // Hub facturation Phase 5 — brouillons des plans récurrents (émission
+      // manuelle), daily 05:00 UTC
+      {
+        type: "formation-crons.plans-recurrents",
+        pattern: "0 5 * * *",
+        jobId: "formation-crons-plans-recurrents-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

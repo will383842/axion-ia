@@ -5055,6 +5055,7 @@ model Client {
   auditMissions       AuditMission[]
   facturesFormation   FactureFormation[]
   dossiersFinancement DossierFinancement[]
+  plansRecurrents     PlanRecurrent[]
 
   @@index([statut])
   @@index([nafCode])
@@ -6341,6 +6342,45 @@ enum FactureFormationStatut {
   annulee
 }
 
+/// Statut d'un plan de facturation récurrente (Phase 5).
+enum PlanRecurrentStatut {
+  actif
+  pause
+  clos
+}
+
+/// Plan de facturation RÉCURRENTE (Phase 5) : maintenance site web mensuelle,
+/// 1-to-1 récurrent (contrats 6/12/24 mois), futur SaaS/hébergement. RÈGLE
+/// PRODUIT : le cron génère des BROUILLONS — l'émission et l'envoi restent des
+/// clics admin (aucune facture ne part seule). Modification = clore + recréer
+/// (historique conservé, jamais d'écrasement d'un plan qui a facturé).
+model PlanRecurrent {
+  id        String              @id @default(uuid()) @db.Uuid
+  clientId  String              @map("client_id") @db.Uuid
+  client    Client              @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  activite  ActiviteFacturation
+  /// Lignes du gabarit : [{ designation, quantite, prixUnitaireHtCents, tauxTvaPercent? }].
+  lignes    Json
+  refClient String?             @map("ref_client") @db.VarChar(120)
+  /// Périodicité en mois (1 = mensuel, 3 = trimestriel…).
+  periodiciteMois Int @default(1) @map("periodicite_mois")
+  /// Prochaine date de génération d'un brouillon (avancée à chaque génération).
+  prochaineGenerationAt DateTime  @map("prochaine_generation_at")
+  /// Bornes optionnelles : date de fin ET/OU nombre maximal de factures.
+  finAt                 DateTime? @map("fin_at")
+  nbMaxFactures         Int?      @map("nb_max_factures")
+  statut                PlanRecurrentStatut @default(actif)
+  notes                 String?             @db.Text
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  factures FactureFormation[]
+
+  @@index([statut, prochaineGenerationAt])
+  @@index([clientId])
+  @@map("plans_recurrents")
+}
+
 /// Type de relance proposée (Phase 4 — relances 100 % MANUELLES).
 enum RelanceProposeeType {
   facture_retard
@@ -6521,6 +6561,9 @@ model FactureFormation {
   /// Dossier de financement rattaché (pilotage OPCO/FT — Phase 3).
   dossierFinancementId          String?                      @map("dossier_financement_id") @db.Uuid
   dossierFinancement            DossierFinancement?          @relation(fields: [dossierFinancementId], references: [id], onDelete: SetNull)
+  /// Plan récurrent générateur (brouillons mensuels — Phase 5).
+  planRecurrentId               String?                      @map("plan_recurrent_id") @db.Uuid
+  planRecurrent                 PlanRecurrent?               @relation(fields: [planRecurrentId], references: [id], onDelete: SetNull)
   /// Facture importée d'un système antérieur (reprise d'historique C9) :
   /// hors séquence AXI-FACT, incluse aux dashboards/balance âgée.
   estImportee                   Boolean                      @default(false) @map("est_importee")
@@ -6583,6 +6626,7 @@ model FactureFormation {
   @@index([devisId])
   @@index([auditMissionId])
   @@index([dossierFinancementId])
+  @@index([planRecurrentId])
   @@index([activite])
   @@index([statut])
   /// Prévisionnel d'encaissement et relances impayés (cockpit).
