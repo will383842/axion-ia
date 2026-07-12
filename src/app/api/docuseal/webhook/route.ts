@@ -181,6 +181,16 @@ async function dispatchDevisEvent(
   if (isCompleted && (devis.statut === "accepte" || devis.statut === "transforme_convention"))
     return;
   if (!isCompleted && devis.statut === "refuse") return;
+  // Revue M7 : un devis EXPIRÉ (remplacé par une révision, ou périmé) ne se
+  // signe plus — le client a peut-être signé la VIEILLE soumission d'une
+  // version remplacée. On ignore + Telegram interne pour arbitrage humain.
+  if (devis.statut === "expire") {
+    sendTelegram({
+      tag: "AUTO",
+      body: `⚠️ Signature DocuSeal reçue sur le devis EXPIRÉ ${devis.numero} — ignorée (révision probable). Vérifier avec le client quelle version fait foi.`,
+    }).catch(() => {});
+    return;
+  }
 
   if (isCompleted) {
     await prisma.devis.update({

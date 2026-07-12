@@ -62,6 +62,19 @@ export async function genererFactureLibreAction(
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
 
+  // Garde d'appartenance : la mission d'audit facturée doit être celle du
+  // client facturé (pas de rattachement croisé).
+  if (input.auditMissionId !== undefined) {
+    const mission = await prisma.auditMission.findUnique({
+      where: { id: input.auditMissionId },
+      select: { clientId: true },
+    });
+    if (!mission) return { error: "Mission d'audit introuvable." };
+    if (mission.clientId !== null && mission.clientId !== input.clientId) {
+      return { error: "Cette mission d'audit appartient à un autre client." };
+    }
+  }
+
   try {
     const result = await genererFactureLibre({
       clientId: input.clientId,
@@ -410,6 +423,17 @@ export async function importerFacturesHistoriqueAction(
       error: `Numéro « ${collision.numero} » refusé : les préfixes AXI-FACT/AXI-AVO sont réservés à la séquence du système.`,
     };
   }
+  // Cohérence des montants (le FEC exige Σ débits = Σ crédits) : hors avoirs
+  // (tout négatif), la TVA ne peut pas être négative → TTC ≥ HT.
+  const incoherente = parsed.data.factures.find((f) => {
+    const ttc = f.montantTtcCents ?? f.montantHtCents;
+    return f.montantHtCents >= 0 ? ttc < f.montantHtCents : ttc > f.montantHtCents;
+  });
+  if (incoherente !== undefined) {
+    return {
+      error: `Facture « ${incoherente.numero} » : TTC < HT (TVA négative) — corriger le fichier d'import.`,
+    };
+  }
 
   let importees = 0;
   let ignorees = 0;
@@ -484,8 +508,10 @@ export async function traiterRelanceAction(
       ? new Date(Date.now() + (input.reportJours ?? 7) * 86_400_000)
       : null;
 
+  // Une relance `reportee` reste traitable (revue M2 : elle revient à l'échéance
+  // du report — re-reporter ou ignorer doit rester possible).
   const { count } = await prisma.relanceProposee.updateMany({
-    where: { id: input.relanceId, statut: "a_traiter" },
+    where: { id: input.relanceId, statut: { in: ["a_traiter", "reportee"] } },
     data: {
       statut,
       traiteeAt: new Date(),
@@ -532,7 +558,9 @@ export async function envoyerRelanceAction(
     select: { id: true, statut: true, factureFormationId: true, suggestion: true },
   });
   if (!relance) return { error: "Relance introuvable." };
-  if (relance.statut !== "a_traiter") return { error: "Relance déjà traitée." };
+  if (relance.statut !== "a_traiter" && relance.statut !== "reportee") {
+    return { error: "Relance déjà traitée." };
+  }
   if (relance.factureFormationId === null) {
     return {
       error:
@@ -553,7 +581,7 @@ export async function envoyerRelanceAction(
   if ("error" in envoi) return { error: envoi.error };
 
   await prisma.relanceProposee.updateMany({
-    where: { id: relance.id, statut: "a_traiter" },
+    where: { id: relance.id, statut: { in: ["a_traiter", "reportee"] } },
     data: { statut: "envoyee", traiteeAt: new Date(), traiteeParAdminId: session.userId },
   });
   await logQualiopiActivity({

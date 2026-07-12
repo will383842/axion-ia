@@ -19,23 +19,26 @@ import type { EmailJobData, EmailJobName } from "../types";
 
 /**
  * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
- * Fail-soft : une PJ introuvable/R2 indisponible n'empêche pas l'envoi (le
- * client peut toujours être relancé), mais est loguée pour visibilité.
+ * FAIL-HARD (revue M8) : les templates affirment « le document est joint » —
+ * envoyer sans la PJ serait un mensonge au client. PJ irrécupérable → throw
+ * → retry BullMQ (backoff), puis job `failed` visible (Sentry + logs).
  */
 async function resolveAttachments(
   attachments: EmailJobData["attachments"],
 ): Promise<SendEmailParams["attachments"]> {
   if (!attachments || attachments.length === 0) return undefined;
   if (!isR2Configured()) {
-    console.error("[email-worker] attachments demandées mais R2 non configuré — envoi sans PJ");
-    return undefined;
+    throw new Error(
+      "[email-worker] pièces jointes demandées mais R2 non configuré — envoi refusé (le template promet un document joint)",
+    );
   }
   const resolved: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
   for (const att of attachments) {
     const buffer = await getObjectBufferR2(att.r2Key).catch(() => null);
     if (buffer === null) {
-      console.error(`[email-worker] PJ introuvable sur R2 (${att.r2Key}) — envoi sans cette PJ`);
-      continue;
+      throw new Error(
+        `[email-worker] PJ introuvable sur R2 (${att.r2Key}) — envoi refusé, retry BullMQ`,
+      );
     }
     resolved.push({
       filename: att.filename,
@@ -43,7 +46,7 @@ async function resolveAttachments(
       contentType: att.contentType ?? "application/pdf",
     });
   }
-  return resolved.length > 0 ? resolved : undefined;
+  return resolved;
 }
 
 export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {

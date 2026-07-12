@@ -1,4 +1,4 @@
-﻿-- Facturation unifiée — Phase 4 : relances PROPOSÉES (migration ADDITIVE).
+-- Facturation unifiée — Phase 4 : relances PROPOSÉES (migration ADDITIVE).
 -- Les crons détectent et proposent ; l'envoi client = clic admin, JAMAIS auto.
 
 -- CreateEnum

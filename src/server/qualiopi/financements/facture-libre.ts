@@ -171,49 +171,12 @@ export async function genererFactureLibre(
   const annee = now.getFullYear();
 
   let factureCreee: { id: string; numero: string } | null = null;
-  let documentId: string | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     const count = await prisma.factureFormation.count({
       where: { numero: { startsWith: `AXI-FACT-${annee}-` } },
     });
     const numero = formatDocumentNumber("facture", annee, count + 1);
-
-    const factureData: FactureData = {
-      numero,
-      dateEmission: formatDate(now),
-      dateEcheance: formatDate(echeance),
-      ...(input.periodePrestation !== undefined
-        ? { periodePrestation: input.periodePrestation }
-        : {}),
-      ...(input.refClient !== undefined ? { refClient: input.refClient } : {}),
-      identite,
-      regimeTva,
-      tauxTvaStandardPercent: tauxStandard,
-      client: {
-        raisonSociale: client.raisonSociale,
-        ...(client.siret !== null ? { siret: client.siret } : {}),
-        ...(client.tvaIntracom !== null ? { numeroTvaIntracom: client.tvaIntracom } : {}),
-        ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
-        ...(client.contactEmail !== null ? { email: client.contactEmail } : {}),
-      },
-      lignes,
-      ...(rib !== null ? { rib } : {}),
-    };
-
-    let docResult: { id: string } | null = null;
-    try {
-      docResult = await generateDocument({
-        type: "facture",
-        identite,
-        buildElement: (docNumero) =>
-          React.createElement(FacturePdf, { data: { ...factureData, numero: docNumero } }),
-        refs: { clientId: client.id },
-      });
-    } catch {
-      // Fail-soft : la facture est créée sans PDF si le renderer échoue.
-    }
-    documentId = docResult?.id ?? null;
 
     try {
       const facture = await prisma.factureFormation.create({
@@ -238,7 +201,6 @@ export async function genererFactureLibre(
           statut: "emise",
           emiseAt: now,
           echeanceAt: echeance,
-          ...(documentId !== null ? { documentId } : {}),
         },
         select: { id: true, numero: true },
       });
@@ -259,6 +221,48 @@ export async function genererFactureLibre(
     throw new Error(
       `[genererFactureLibre] Impossible d'allouer un numéro unique après ${MAX_ATTEMPTS} tentatives.`,
     );
+  }
+
+  // PDF APRÈS le create réussi (revue adversariale C2) : élément PRÉ-CONSTRUIT
+  // portant le numéro DB de la facture — le numéro du registre DocumentGenere
+  // reste interne (jamais affiché). Fail-soft : facture émise sans PDF si le
+  // renderer échoue, et aucun DocumentGenere orphelin en cas de retry P2002.
+  const factureData: FactureData = {
+    numero: factureCreee.numero,
+    dateEmission: formatDate(now),
+    dateEcheance: formatDate(echeance),
+    ...(input.periodePrestation !== undefined
+      ? { periodePrestation: input.periodePrestation }
+      : {}),
+    ...(input.refClient !== undefined ? { refClient: input.refClient } : {}),
+    identite,
+    regimeTva,
+    tauxTvaStandardPercent: tauxStandard,
+    client: {
+      raisonSociale: client.raisonSociale,
+      ...(client.siret !== null ? { siret: client.siret } : {}),
+      ...(client.tvaIntracom !== null ? { numeroTvaIntracom: client.tvaIntracom } : {}),
+      ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
+      ...(client.contactEmail !== null ? { email: client.contactEmail } : {}),
+    },
+    lignes,
+    ...(rib !== null ? { rib } : {}),
+  };
+  let documentId: string | null = null;
+  try {
+    const docResult = await generateDocument({
+      type: "facture",
+      identite,
+      element: React.createElement(FacturePdf, { data: factureData }),
+      refs: { clientId: client.id },
+    });
+    documentId = docResult.id;
+    await prisma.factureFormation.update({
+      where: { id: factureCreee.id },
+      data: { documentId },
+    });
+  } catch {
+    // Fail-soft : la facture reste émise sans PDF si le renderer échoue.
   }
 
   return {
@@ -331,16 +335,26 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
   const lignesOrigine = (origine.lignes ?? []) as unknown as LigneFacture[];
 
   // Négation intégrale seulement si aucun avoir antérieur (sinon on
-  // dépasserait le restant) ; partiel ↔ ligne unique. Pour un partiel sur
-  // facture mono-taux, on reprend le taux de la 1re ligne (rectification
-  // homogène) ; multi-taux → l'admin passe par plusieurs avoirs partiels.
+  // dépasserait le restant) ; partiel ↔ ligne unique AU TAUX DE LA FACTURE.
+  // Garde M6 (revue adversariale) : un partiel sur facture MULTI-taux est
+  // refusé — le taux de la rectification serait ambigu (TVA due au Trésor
+  // sans contrepartie). L'admin passe par un avoir total, ou par des lignes
+  // explicites après avis comptable.
   const negationIntegrale = input.montantPartielHtCents === undefined && dejaAvoirHtCents === 0;
-  const tauxPremiereLigne = lignesOrigine[0]?.tauxTvaPercent;
+  const tauxEffectifs = new Set(
+    lignesOrigine.map((l) => l.tauxTvaPercent ?? (regimeTva === "assujetti" ? tauxStandard : 0)),
+  );
+  if (!negationIntegrale && tauxEffectifs.size > 1) {
+    throw new Error(
+      "Avoir partiel impossible sur une facture multi-taux — émettre un avoir total (le taux de la rectification serait ambigu).",
+    );
+  }
+  const tauxUniforme = [...tauxEffectifs][0] ?? 0;
   const lignesAvoir = construireLignesAvoir(
     lignesOrigine,
     negationIntegrale ? undefined : demandeHtCents,
     input.motif,
-    ...(tauxPremiereLigne !== undefined ? [tauxPremiereLigne] : []),
+    tauxUniforme,
   );
   const totaux = computeTotauxFacture(lignesAvoir, regimeTva, tauxStandard);
 
@@ -352,50 +366,12 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
   const formatDate = (d: Date) => d.toLocaleDateString("fr-FR");
 
   let avoirCree: { id: string; numero: string } | null = null;
-  let documentId: string | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     const count = await prisma.factureFormation.count({
       where: { numero: { startsWith: `AXI-AVO-${annee}-` } },
     });
     const numero = formatDocumentNumber("avoir", annee, count + 1);
-
-    const factureData: FactureData = {
-      numero,
-      dateEmission: formatDate(now),
-      dateEcheance: formatDate(now),
-      identite,
-      regimeTva,
-      tauxTvaStandardPercent: tauxStandard,
-      client: {
-        raisonSociale: origine.destinataireNom,
-        ...(origine.destinataireSiret !== null ? { siret: origine.destinataireSiret } : {}),
-        ...(origine.destinataireTvaIntracom !== null
-          ? { numeroTvaIntracom: origine.destinataireTvaIntracom }
-          : {}),
-        ...(origine.destinataireAdresse !== null ? { adresse: origine.destinataireAdresse } : {}),
-      },
-      lignes: lignesAvoir,
-      ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
-      ...(rib !== null ? { rib } : {}),
-      estAvoir: true,
-      avoirSurNumero: origine.numero,
-      motifAvoir: input.motif,
-    };
-
-    let docResult: { id: string } | null = null;
-    try {
-      docResult = await generateDocument({
-        type: "avoir",
-        identite,
-        buildElement: (docNumero) =>
-          React.createElement(FacturePdf, { data: { ...factureData, numero: docNumero } }),
-        ...(origine.clientId !== null ? { refs: { clientId: origine.clientId } } : {}),
-      });
-    } catch {
-      // Fail-soft : avoir créé sans PDF si le renderer échoue.
-    }
-    documentId = docResult?.id ?? null;
 
     try {
       const avoir = await prisma.factureFormation.create({
@@ -424,7 +400,6 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
           lignes: lignesAvoir as never,
           statut: "emise",
           emiseAt: now,
-          ...(documentId !== null ? { documentId } : {}),
         },
         select: { id: true, numero: true },
       });
@@ -445,6 +420,46 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
     throw new Error(
       `[genererAvoirFacture] Impossible d'allouer un numéro unique après ${MAX_ATTEMPTS} tentatives.`,
     );
+  }
+
+  // PDF APRÈS le create réussi (revue C2) : numéro DB, jamais celui du registre.
+  const factureData: FactureData = {
+    numero: avoirCree.numero,
+    dateEmission: formatDate(now),
+    dateEcheance: formatDate(now),
+    identite,
+    regimeTva,
+    tauxTvaStandardPercent: tauxStandard,
+    client: {
+      raisonSociale: origine.destinataireNom,
+      ...(origine.destinataireSiret !== null ? { siret: origine.destinataireSiret } : {}),
+      ...(origine.destinataireTvaIntracom !== null
+        ? { numeroTvaIntracom: origine.destinataireTvaIntracom }
+        : {}),
+      ...(origine.destinataireAdresse !== null ? { adresse: origine.destinataireAdresse } : {}),
+    },
+    lignes: lignesAvoir,
+    ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
+    ...(rib !== null ? { rib } : {}),
+    estAvoir: true,
+    avoirSurNumero: origine.numero,
+    motifAvoir: input.motif,
+  };
+  let documentId: string | null = null;
+  try {
+    const docResult = await generateDocument({
+      type: "avoir",
+      identite,
+      element: React.createElement(FacturePdf, { data: factureData }),
+      ...(origine.clientId !== null ? { refs: { clientId: origine.clientId } } : {}),
+    });
+    documentId = docResult.id;
+    await prisma.factureFormation.update({
+      where: { id: avoirCree.id },
+      data: { documentId },
+    });
+  } catch {
+    // Fail-soft : l'avoir reste émis sans PDF si le renderer échoue.
   }
 
   return { avoirId: avoirCree.id, numero: avoirCree.numero, documentId };
@@ -503,11 +518,25 @@ export async function enregistrerPaiementFacture(
         montantTtcCents: true,
         montantHtCents: true,
         dossierFinancementId: true,
+        avoirDeId: true,
       },
     });
     if (facture.statut === "brouillon" || facture.statut === "annulee") {
       throw new Error("Un encaissement ne se saisit que sur une facture émise.");
     }
+    if (facture.avoirDeId !== null) {
+      throw new Error(
+        "Un encaissement ne se saisit pas sur un avoir (le remboursement se gère à part).",
+      );
+    }
+
+    // Montant dû NET : TTC de la facture MOINS les avoirs émis dessus (revue
+    // M3/M4 — une créance éteinte par avoir ne doit plus rien attendre).
+    const avoirs = await tx.factureFormation.aggregate({
+      where: { avoirDeId: facture.id, statut: { not: "annulee" } },
+      _sum: { montantTtcCents: true },
+    });
+    const avoirsTtcCents = avoirs._sum.montantTtcCents ?? 0; // négatif ou 0
 
     const payment = await tx.payment.create({
       data: {
@@ -531,8 +560,8 @@ export async function enregistrerPaiementFacture(
       _sum: { amountCents: true },
     });
     const totalEncaisse = agg._sum.amountCents ?? 0;
-    // Montant dû = TTC (repli HT pour les anciennes factures sans TTC).
-    const montantDu = facture.montantTtcCents ?? facture.montantHtCents;
+    // Montant dû = TTC net des avoirs (repli HT pour les anciennes factures).
+    const montantDu = (facture.montantTtcCents ?? facture.montantHtCents) + avoirsTtcCents;
     const statut = calculerStatutEncaissement(montantDu, totalEncaisse);
     if (statut === "emise") {
       // Défensif : impossible ici (montant > 0 vient d'être encaissé).

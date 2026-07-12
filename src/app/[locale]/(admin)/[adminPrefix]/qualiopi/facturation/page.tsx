@@ -126,7 +126,7 @@ export default async function FacturationHubPage({
 
   // Requêtes en parallèle : page courante + total + KPIs transverses (hors filtre).
   const now = new Date();
-  const [factures, total, aggEmis, aggEncaisse, retards, ouvertes, relances, dossiersEnCours] =
+  const [factures, total, aggEmis, aggEncaisse, ouvertes, relances, dossiersEnCours] =
     await Promise.all([
       prisma.factureFormation.findMany({
         where,
@@ -159,24 +159,31 @@ export default async function FacturationHubPage({
         where: { factureFormationId: { not: null }, status: "succeeded" },
         _sum: { amountCents: true },
       }),
-      prisma.factureFormation.aggregate({
-        where: { statut: "en_retard" },
-        _sum: { montantTtcCents: true },
-        _count: { _all: true },
-      }),
-      // Balance âgée : toutes les factures ouvertes (émise/partielle/retard)
-      // avec leur échéance — buckets calculés côté serveur (volume TPE, trivial).
+      // Balance âgée + retards : factures ouvertes avec paiements et avoirs —
+      // tout est compté en RESTE DÛ NET (revue M3/M4 : une créance éteinte par
+      // avoir ou trop-perçu ne pèse plus rien). Volume TPE, calcul serveur.
       prisma.factureFormation.findMany({
         where: {
           statut: { in: ["emise", "partiellement_payee", "en_retard"] },
           avoirDeId: null,
         },
-        select: { montantTtcCents: true, montantHtCents: true, echeanceAt: true },
+        select: {
+          statut: true,
+          montantTtcCents: true,
+          montantHtCents: true,
+          echeanceAt: true,
+          payments: { where: { status: "succeeded" }, select: { amountCents: true } },
+          avoirs: {
+            where: { statut: { not: "annulee" } },
+            select: { montantTtcCents: true, montantHtCents: true },
+          },
+        },
       }),
       prisma.relanceProposee.findMany({
+        // À traiter = jamais traitées + reportées dont l'échéance de report est
+        // passée (revue M2 : une relance reportée doit REVENIR, jamais disparaître).
         where: {
-          statut: "a_traiter",
-          OR: [{ reporteeJusqua: null }, { reporteeJusqua: { lte: now } }],
+          OR: [{ statut: "a_traiter" }, { statut: "reportee", reporteeJusqua: { lte: now } }],
         },
         orderBy: { createdAt: "asc" },
         take: 20,
@@ -210,10 +217,20 @@ export default async function FacturationHubPage({
       }),
     ]);
 
-  // Buckets d'ancienneté des créances ouvertes (0-30 / 31-60 / 60+ jours).
+  // Buckets d'ancienneté des créances ouvertes (0-30 / 31-60 / 60+ jours),
+  // en RESTE DÛ NET (TTC + avoirs négatifs − encaissements).
   const buckets = { courant: 0, b0_30: 0, b31_60: 0, b60plus: 0 };
+  let retardCount = 0;
+  let retardCents = 0;
   for (const f of ouvertes) {
-    const montant = f.montantTtcCents ?? f.montantHtCents;
+    const encaisse = f.payments.reduce((acc, p) => acc + p.amountCents, 0);
+    const avoirsTtc = f.avoirs.reduce((acc, a) => acc + (a.montantTtcCents ?? a.montantHtCents), 0);
+    const montant = (f.montantTtcCents ?? f.montantHtCents) + avoirsTtc - encaisse;
+    if (montant <= 0) continue;
+    if (f.statut === "en_retard") {
+      retardCount++;
+      retardCents += montant;
+    }
     if (f.echeanceAt === null || f.echeanceAt >= now) {
       buckets.courant += montant;
       continue;
@@ -230,8 +247,8 @@ export default async function FacturationHubPage({
     { label: "Émis (TTC)", value: fmtEur(aggEmis._sum.montantTtcCents ?? 0) },
     { label: "Encaissé", value: fmtEur(aggEncaisse._sum.amountCents ?? 0) },
     {
-      label: `En retard (${retards._count._all})`,
-      value: fmtEur(retards._sum.montantTtcCents ?? 0),
+      label: `En retard (${retardCount})`,
+      value: fmtEur(retardCents),
     },
     { label: "À échoir", value: fmtEur(buckets.courant) },
     { label: "Retard 0-30 j", value: fmtEur(buckets.b0_30) },

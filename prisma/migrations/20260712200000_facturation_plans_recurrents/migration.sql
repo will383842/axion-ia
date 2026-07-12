@@ -1,4 +1,4 @@
-﻿-- Facturation unifiée — Phase 5 : plans récurrents (migration ADDITIVE).
+-- Facturation unifiée — Phase 5 : plans récurrents (migration ADDITIVE).
 -- Le cron génère des BROUILLONS ; émission + envoi = clics admin.
 
 -- CreateEnum

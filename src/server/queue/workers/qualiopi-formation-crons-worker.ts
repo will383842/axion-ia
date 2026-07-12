@@ -590,30 +590,50 @@ async function handleConvocationJ5(): Promise<void> {
  */
 async function handleFacturesRetard(): Promise<void> {
   const now = new Date();
-  const { count } = await prisma.factureFormation.updateMany({
+  // Factures échues encore ouvertes — hors avoirs, brouillons (echeanceAt null)
+  // et reprises d'historique.
+  const candidates = await prisma.factureFormation.findMany({
     where: {
-      statut: { in: ["emise", "partiellement_payee"] },
+      statut: { in: ["emise", "partiellement_payee", "en_retard"] },
       echeanceAt: { lt: now },
       avoirDeId: null,
+      estImportee: false,
     },
-    data: { statut: "en_retard" },
-  });
-
-  // Propositions de relance par palier (j1/j15/j30) — une par facture+palier,
-  // idempotent. L'ENVOI reste un clic admin (« Relances à traiter », Hub).
-  const enRetard = await prisma.factureFormation.findMany({
-    where: { statut: "en_retard", avoirDeId: null, estImportee: false },
     select: {
       id: true,
       numero: true,
+      statut: true,
       echeanceAt: true,
       montantTtcCents: true,
       montantHtCents: true,
+      payments: { where: { status: "succeeded" }, select: { amountCents: true } },
+      avoirs: {
+        where: { statut: { not: "annulee" } },
+        select: { montantTtcCents: true, montantHtCents: true },
+      },
     },
   });
+
+  let marquees = 0;
   let proposees = 0;
-  for (const f of enRetard) {
+  for (const f of candidates) {
     if (f.echeanceAt === null) continue;
+    // Reste dû NET (revue M3/M4) : TTC + avoirs (négatifs) − encaissements.
+    // Créance éteinte (avoir total, trop-perçu) → ni retard, ni relance.
+    const encaisse = f.payments.reduce((acc, p) => acc + p.amountCents, 0);
+    const avoirsTtc = f.avoirs.reduce((acc, a) => acc + (a.montantTtcCents ?? a.montantHtCents), 0);
+    const netDuCents = (f.montantTtcCents ?? f.montantHtCents) + avoirsTtc - encaisse;
+    if (netDuCents <= 0) continue;
+
+    if (f.statut !== "en_retard") {
+      await prisma.factureFormation.updateMany({
+        where: { id: f.id, statut: { in: ["emise", "partiellement_payee"] } },
+        data: { statut: "en_retard" },
+      });
+      marquees++;
+    }
+
+    // Une proposition par facture+palier (idempotent) — montant = SOLDE net.
     const jours = Math.floor((now.getTime() - f.echeanceAt.getTime()) / 86_400_000);
     const palier = jours >= 30 ? "j30" : jours >= 15 ? "j15" : "j1";
     const deja = await prisma.relanceProposee.findFirst({
@@ -621,20 +641,19 @@ async function handleFacturesRetard(): Promise<void> {
       select: { id: true },
     });
     if (deja !== null) continue;
-    const montant = ((f.montantTtcCents ?? f.montantHtCents) / 100).toFixed(2);
     await prisma.relanceProposee.create({
       data: {
         type: "facture_retard",
         palier,
         factureFormationId: f.id,
-        suggestion: `Facture ${f.numero} (${montant} € TTC) échue le ${f.echeanceAt.toLocaleDateString("fr-FR")} — relance ${palier.toUpperCase()}.`,
+        suggestion: `Facture ${f.numero} — solde de ${(netDuCents / 100).toFixed(2)} € TTC échu le ${f.echeanceAt.toLocaleDateString("fr-FR")} — relance ${palier.toUpperCase()}.`,
       },
     });
     proposees++;
   }
 
   console.log(
-    `[formation-crons] factures-retard: ${count} passée(s) en retard, ${proposees} relance(s) proposée(s) — AUCUN email client (manuel)`,
+    `[formation-crons] factures-retard: ${marquees} passée(s) en retard, ${proposees} relance(s) proposée(s) — AUCUN email client (manuel)`,
   );
 }
 

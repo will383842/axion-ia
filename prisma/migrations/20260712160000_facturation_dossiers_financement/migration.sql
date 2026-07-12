@@ -1,4 +1,4 @@
-﻿-- Facturation unifiée — Phase 3 : dossiers de financement multi-payeurs
+-- Facturation unifiée — Phase 3 : dossiers de financement multi-payeurs
 -- (migration ADDITIVE). Cycle a_monter → envoye → accord_recu|refuse → facture
 -- → paiement_recu → clos. Montant reçu dérivé des Payment (jamais dupliqué).
 -- Cf. _PLANS/PLAN-FACTURATION-UNIFIEE-2026-07-12.md.

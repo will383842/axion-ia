@@ -61,6 +61,9 @@ const fecDate = (d: Date): string =>
 /** Montant FEC : valeur absolue, décimale à la virgule (norme DGFiP). */
 const fecMontant = (cents: number): string => (Math.abs(cents) / 100).toFixed(2).replace(".", ",");
 
+/** Texte FEC : neutralise les séparateurs (TAB/CRLF/pipe) qui décaleraient les colonnes. */
+const fecTexte = (s: string): string => s.replace(/[\t\r\n|]/g, " ").trim();
+
 interface Ligne {
   journal: "VT" | "BQ";
   num: string;
@@ -83,9 +86,9 @@ function versLigneFec(l: Ligne): string {
     CompteLib: l.compteLib,
     CompAuxNum: "",
     CompAuxLib: "",
-    PieceRef: l.piece,
+    PieceRef: fecTexte(l.piece),
     PieceDate: fecDate(l.date),
-    EcritureLib: l.lib,
+    EcritureLib: fecTexte(l.lib),
     Debit: l.debitCents > 0 ? fecMontant(l.debitCents) : "0,00",
     Credit: l.creditCents > 0 ? fecMontant(l.creditCents) : "0,00",
     EcritureLet: "",

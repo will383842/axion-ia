@@ -12,6 +12,7 @@
 
 import { prisma } from "@/lib/prisma";
 import React from "react";
+import { randomUUID } from "node:crypto";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
@@ -82,71 +83,61 @@ export async function genererBrouillonsPlansEchus(
         continue;
       }
 
-      const lignes = normaliserLignesPourActivite(
-        (plan.lignes ?? []) as unknown as LigneFacture[],
+      // Lignes stockées BRUTES (revue M1) : la normalisation TVA par activité
+      // se rejoue à l'ÉMISSION avec le régime alors en vigueur — les montants
+      // du brouillon sont indicatifs (recalculés à l'émission).
+      const lignesBrutes = (plan.lignes ?? []) as unknown as LigneFacture[];
+      if (lignesBrutes.length === 0) continue;
+      const lignesIndicatives = normaliserLignesPourActivite(
+        lignesBrutes,
         plan.activite,
         regimeTva,
         tauxStandard,
       );
-      if (lignes.length === 0) continue;
-      const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
-      const annee = now.getFullYear();
+      const totaux = computeTotauxFacture(lignesIndicatives, regimeTva, tauxStandard);
 
-      for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-        const count = await prisma.factureFormation.count({
-          where: { numero: { startsWith: `AXI-FACT-${annee}-` } },
+      // Numéro PROVISOIRE (revue C3) : un brouillon ne consomme JAMAIS de
+      // numéro légal AXI-FACT — la séquence chronologique est allouée au clic
+      // d'émission (emettreFactureBrouillon).
+      const numero = `BROUILLON-${randomUUID().replace(/-/g, "").slice(0, 24)}`;
+      await prisma.$transaction(async (tx) => {
+        await tx.factureFormation.create({
+          data: {
+            numero,
+            activite: plan.activite,
+            clientId: plan.clientId,
+            planRecurrentId: plan.id,
+            ...(plan.refClient !== null ? { refClient: plan.refClient } : {}),
+            destinataire: "entreprise",
+            destinataireNom: plan.client.raisonSociale,
+            ...(plan.client.siret !== null ? { destinataireSiret: plan.client.siret } : {}),
+            ...(plan.client.tvaIntracom !== null
+              ? { destinataireTvaIntracom: plan.client.tvaIntracom }
+              : {}),
+            montantHtCents: totaux.totalHtCents,
+            tvaExoneree: totaux.totalTvaCents === 0,
+            regimeTva,
+            montantTvaCents: totaux.totalTvaCents,
+            montantTtcCents: totaux.totalTtcCents,
+            lignes: lignesBrutes as never,
+            statut: "brouillon",
+          },
         });
-        const numero = formatDocumentNumber("facture", annee, count + 1);
-        try {
-          await prisma.$transaction(async (tx) => {
-            await tx.factureFormation.create({
-              data: {
-                numero,
-                activite: plan.activite,
-                clientId: plan.clientId,
-                planRecurrentId: plan.id,
-                ...(plan.refClient !== null ? { refClient: plan.refClient } : {}),
-                destinataire: "entreprise",
-                destinataireNom: plan.client.raisonSociale,
-                ...(plan.client.siret !== null ? { destinataireSiret: plan.client.siret } : {}),
-                ...(plan.client.tvaIntracom !== null
-                  ? { destinataireTvaIntracom: plan.client.tvaIntracom }
-                  : {}),
-                montantHtCents: totaux.totalHtCents,
-                tvaExoneree: totaux.totalTvaCents === 0,
-                regimeTva,
-                montantTvaCents: totaux.totalTvaCents,
-                montantTtcCents: totaux.totalTtcCents,
-                lignes: lignes as never,
-                statut: "brouillon",
-              },
-            });
-            // Avance depuis la date PLANIFIÉE (verrou optimiste anti-double-génération).
-            const { count: updated } = await tx.planRecurrent.updateMany({
-              where: { id: plan.id, prochaineGenerationAt: plan.prochaineGenerationAt },
-              data: {
-                prochaineGenerationAt: calculerProchaineGeneration(
-                  plan.prochaineGenerationAt,
-                  plan.periodiciteMois,
-                ),
-              },
-            });
-            if (updated === 0) {
-              throw new Error("plan déjà avancé par une exécution concurrente");
-            }
-          });
-          generes++;
-          break;
-        } catch (err: unknown) {
-          const isP2002 =
-            typeof err === "object" &&
-            err !== null &&
-            "code" in err &&
-            (err as { code: string }).code === "P2002";
-          if (isP2002 && attempt < MAX_ATTEMPTS) continue;
-          throw err;
+        // Avance depuis la date PLANIFIÉE (verrou optimiste anti-double-génération).
+        const { count: updated } = await tx.planRecurrent.updateMany({
+          where: { id: plan.id, prochaineGenerationAt: plan.prochaineGenerationAt },
+          data: {
+            prochaineGenerationAt: calculerProchaineGeneration(
+              plan.prochaineGenerationAt,
+              plan.periodiciteMois,
+            ),
+          },
+        });
+        if (updated === 0) {
+          throw new Error("plan déjà avancé par une exécution concurrente");
         }
-      }
+      });
+      generes++;
     } catch (err) {
       // Fail-soft par plan : un plan cassé ne bloque pas les autres.
       console.error(
@@ -186,10 +177,23 @@ export async function emettreFactureBrouillon(
   const identite = await getOrganismeIdentite();
   assertOrganismeComplet(identite, "facture");
 
+  // Régime de TVA COURANT + RE-normalisation des lignes par activité (revue
+  // M1) : les lignes du brouillon sont stockées BRUTES ; c'est ICI, à
+  // l'émission, que la règle « exonération 261 = formation/1-to-1 seulement »
+  // s'applique avec le régime en vigueur au moment de l'émission.
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
   const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
-  const lignes = (facture.lignes ?? []) as unknown as LigneFacture[];
+  const lignesBrutes = (facture.lignes ?? []) as unknown as LigneFacture[];
+  if (facture.activite === null && regimeTva === "exoneration_261") {
+    throw new Error(
+      "Activité manquante sur cette facture : impossible d'appliquer le régime d'exonération (l'activité pilote la TVA).",
+    );
+  }
+  const lignes =
+    facture.activite !== null
+      ? normaliserLignesPourActivite(lignesBrutes, facture.activite, regimeTva, tauxStandard)
+      : lignesBrutes;
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
   const [delaiClient, rib] = await Promise.all([
@@ -203,8 +207,56 @@ export async function emettreFactureBrouillon(
   );
   const fmt = (d: Date) => d.toLocaleDateString("fr-FR");
 
+  // Allocation du numéro légal AXI-FACT à l'ÉMISSION (revue C3) — le brouillon
+  // portait un numéro provisoire BROUILLON-*. Le updateMany conditionné au
+  // statut `brouillon` sert de verrou anti-double-émission concurrente.
+  const annee = now.getFullYear();
+  let numeroFinal: string | null = null;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const count = await prisma.factureFormation.count({
+      where: { numero: { startsWith: `AXI-FACT-${annee}-` } },
+    });
+    const numero = formatDocumentNumber("facture", annee, count + 1);
+    try {
+      const { count: updated } = await prisma.factureFormation.updateMany({
+        where: { id: facture.id, statut: "brouillon" },
+        data: {
+          numero,
+          statut: "emise",
+          emiseAt: now,
+          echeanceAt: echeance,
+          regimeTva,
+          montantHtCents: totaux.totalHtCents,
+          montantTvaCents: totaux.totalTvaCents,
+          montantTtcCents: totaux.totalTtcCents,
+          tvaExoneree: totaux.totalTvaCents === 0,
+          lignes: lignes as never,
+        },
+      });
+      if (updated === 0) {
+        throw new Error("Cette facture a déjà été émise (émission concurrente).");
+      }
+      numeroFinal = numero;
+      break;
+    } catch (err: unknown) {
+      const isP2002 =
+        typeof err === "object" &&
+        err !== null &&
+        "code" in err &&
+        (err as { code: string }).code === "P2002";
+      if (isP2002 && attempt < MAX_ATTEMPTS) continue;
+      throw err;
+    }
+  }
+  if (numeroFinal === null) {
+    throw new Error(
+      `[emettreFactureBrouillon] Impossible d'allouer un numéro unique après ${MAX_ATTEMPTS} tentatives.`,
+    );
+  }
+
+  // PDF APRÈS l'émission (revue C2) : élément pré-construit au numéro DB final.
   const factureData: FactureData = {
-    numero: facture.numero,
+    numero: numeroFinal,
     dateEmission: fmt(now),
     dateEcheance: fmt(echeance),
     ...(facture.refClient !== null ? { refClient: facture.refClient } : {}),
@@ -232,29 +284,17 @@ export async function emettreFactureBrouillon(
     const doc = await generateDocument({
       type: "facture",
       identite,
-      buildElement: (docNumero) =>
-        React.createElement(FacturePdf, { data: { ...factureData, numero: docNumero } }),
+      element: React.createElement(FacturePdf, { data: factureData }),
       ...(facture.clientId !== null ? { refs: { clientId: facture.clientId } } : {}),
     });
     documentId = doc.id;
+    await prisma.factureFormation.update({
+      where: { id: facture.id },
+      data: { documentId },
+    });
   } catch {
     // Fail-soft : émission valide même si le renderer échoue.
   }
 
-  await prisma.factureFormation.update({
-    where: { id: facture.id },
-    data: {
-      statut: "emise",
-      emiseAt: now,
-      echeanceAt: echeance,
-      regimeTva,
-      montantHtCents: totaux.totalHtCents,
-      montantTvaCents: totaux.totalTvaCents,
-      montantTtcCents: totaux.totalTtcCents,
-      tvaExoneree: totaux.totalTvaCents === 0,
-      ...(documentId !== null ? { documentId } : {}),
-    },
-  });
-
-  return { numero: facture.numero, documentId };
+  return { numero: numeroFinal, documentId };
 }

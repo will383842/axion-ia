@@ -89,9 +89,10 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   // émission (le rendu pourrait diverger de l'original : identité légale
   // mise à jour, template retouché…). Régénération uniquement si l'archive
   // n'existe pas encore (premier téléchargement) ou statut brouillon.
-  if (invoice.hashSha256 !== null && invoice.status !== "draft" && isR2Configured()) {
-    const archivedKey = invoicePdfKey(invoice.number, invoice.issuedAt);
-    const archived = await getObjectBufferR2(archivedKey).catch(() => null);
+  if (invoice.hashSha256 !== null && invoice.status !== "draft") {
+    const archivedKey = isR2Configured() ? invoicePdfKey(invoice.number, invoice.issuedAt) : null;
+    const archived =
+      archivedKey !== null ? await getObjectBufferR2(archivedKey).catch(() => null) : null;
     if (archived !== null) {
       return new NextResponse(new Uint8Array(archived), {
         status: 200,
@@ -105,6 +106,16 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
         },
       });
     }
+    // Archive absente alors qu'un hash existe (revue M5) : REFUS de régénérer —
+    // un re-rendu avec l'identité/RIB du jour différerait du document facturé
+    // et écraserait le hash légal. Restaurer l'archive R2, jamais re-rendre.
+    return NextResponse.json(
+      {
+        error: "archive_missing",
+        message: `Le PDF archivé de la facture ${invoice.number} est introuvable sur R2 — régénération interdite sur une facture émise (le rendu du jour différerait de l'original). Restaurer l'objet R2 depuis les sauvegardes.`,
+      },
+      { status: 410 },
+    );
   }
 
   // `booking` nullable depuis le Hub facturation (facture libre sans réservation).
