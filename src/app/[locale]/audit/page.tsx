@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: titleStr,
       description:
         loc === "fr"
-          ? "Audit IA en entreprise partout en France : on cartographie où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé."
+          ? "Audit IA : cartographie complète de votre entreprise, identification des priorités et rapport chiffré sous 7 jours. Premiers gains visibles en quelques jours. Partout en France."
           : "Enterprise AI audit across France: we map where AI saves you time and money, and you leave with a costed, prioritised action plan.",
     }),
     title: { absolute: titleStr },

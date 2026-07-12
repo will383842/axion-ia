@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Custom AI implementation & AI agents · Axion-IA",
     description:
       loc === "fr"
-        ? "Implémentation IA sur-mesure pour TPE, PME et ETI : agents IA, chatbots, automatisations, intégrations CRM/ERP. Du vrai code, à vous, sans abonnement."
+        ? "Architectes IA : nous concevons, déployons et automatisons sur-mesure pour votre entreprise — chatbots, agents IA et bien plus. Accompagnement de A à Z, sans jargon. Résultats concrets."
         : "Custom AI implementation for every company: AI agents, chatbots, automations, CRM/ERP integrations. Real code, yours, no subscription.",
   });
 }

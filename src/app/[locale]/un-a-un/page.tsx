@@ -82,7 +82,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "1-to-1 individual AI coaching · executive or team member",
     description:
       loc === "fr"
-        ? `Une journée en tête-à-tête avec un expert IA : coaching dirigeant ou collaborateur. Rapport chiffré sous 7 jours. Partout en France. Dès ${entry}.`
+        ? "Coaching IA 1-to-1 — une journée 100% centrée sur vous : gain de temps, baisse de pression et hausse de productivité. Rapport personnalisé sous 7 jours."
         : `A one-on-one day with an AI expert: executive or team-member coaching. Quantified report within 7 days. Anywhere in France. From ${entry}.`,
     alternates: { fr: "/un-a-un", en: "/one-to-one" },
   });

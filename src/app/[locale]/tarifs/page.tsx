@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Tarifs IA · Audits, Formations, Implémentations · Axion-IA"
       : "AI pricing · Audits, Training, Implementations · Axion-IA",
     description: isFr
-      ? `Tous nos tarifs IA en transparence : Audits dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, Formations dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")}, Implémentations dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}, 1-to-1 dès ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr")}, Plateforme web/SaaS sur devis.`
+      ? "Combien coûte l'IA pour votre entreprise ? Formations, audits, coaching 1-to-1, implémentation et sites IA — tous nos tarifs transparents au même endroit, sans engagement."
       : `All our AI pricing, transparent: Audits from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} ex. VAT, Trainings from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Implementations from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, 1-to-1 from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, Web platform/SaaS on quote.`,
     alternates: { fr: "/tarifs", en: "/pricing" },
   });
@@ -127,7 +127,7 @@ export default async function PricingPage({ params }: Props) {
     ? "Tarifs IA · Audits, Formations, Implémentations · Axion-IA"
     : "AI pricing · Audits, Training, Implementations · Axion-IA";
   const metaDescription = isFr
-    ? `Tous nos tarifs IA en transparence : Audits dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, Formations dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")}, Implémentations dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}, 1-to-1 dès ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr")}, Plateforme web/SaaS sur devis.`
+    ? "Combien coûte l'IA pour votre entreprise ? Formations, audits, coaching 1-to-1, implémentation et sites IA — tous nos tarifs transparents au même endroit, sans engagement."
     : `All our AI pricing, transparent: Audits from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} ex. VAT, Trainings from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Implementations from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, 1-to-1 from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, Web platform/SaaS on quote.`;
 
   const heroEyebrow = isFr ? "Tarifs · transparence totale" : "Pricing · full transparency";
