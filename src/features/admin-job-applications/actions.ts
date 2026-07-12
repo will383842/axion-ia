@@ -1,4 +1,4 @@
-// Server Actions admin /candidatures — candidatures aux offres d'emploi.
+// Server Actions admin /contacts/candidatures — candidatures aux offres d'emploi.
 // PII déchiffrées à la lecture (RBAC). Download CV via route dédiée (cv/route.ts).
 // Suppression = purge CV disque + delete (droit à l'effacement).
 
@@ -247,7 +247,7 @@ export async function updateApplicationStatusAction(
       ipAddress: await getClientIp(),
     },
   });
-  revalidatePath(adminPath("fr", "candidatures"));
+  revalidatePath(adminPath("fr", "contacts/candidatures"));
   return { ok: true };
 }
 
@@ -283,6 +283,6 @@ export async function deleteApplicationAction(
       ipAddress: await getClientIp(),
     },
   });
-  revalidatePath(adminPath("fr", "candidatures"));
+  revalidatePath(adminPath("fr", "contacts/candidatures"));
   return { ok: true };
 }

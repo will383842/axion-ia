@@ -26,7 +26,6 @@ export type AdminNavGroup =
   | "main"
   | "contacts"
   | "rendez-vous"
-  | "recrutement"
   | "content"
   | "content_gen"
   | "qualiopi"
@@ -126,7 +125,6 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
   contacts: "Contacts",
   "rendez-vous": "Rendez-vous",
-  recrutement: "Recrutement",
   content: "Contenu",
   content_gen: "Génération de contenu",
   qualiopi: "Formation / Qualiopi",
@@ -252,7 +250,6 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "contacts",
   "rendez-vous",
-  "recrutement",
   "content",
   "content_gen",
   "qualiopi",
@@ -400,9 +397,10 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "facturation",
       parent: `${base}`,
     },
-    // ── Contacts — MESSAGES ÉCRITS (groupe indépendant, refonte UX 2026-07-09).
-    //    Catégories métier. Les appels (Calendly) et le recrutement (candidatures)
-    //    ont leurs PROPRES groupes ci-dessous — distinction message/appel/candidature.
+    // ── Contacts — TOUT ce qui entre par formulaire (refonte UX 2026-07-09 ;
+    //    fusion Recrutement → Contacts 2026-07-12, décision Will : messages
+    //    écrits + candidatures rassemblés dans un seul groupe « Contacts »).
+    //    Seuls les appels (Calendly) gardent leur groupe « Rendez-vous ».
     {
       href: `${base}/contacts/messages`,
       label: "Tous les messages",
@@ -433,6 +431,22 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "📈",
       group: "contacts",
     },
+    // Recrutement — fusionné dans Contacts (2026-07-12). Candidatures aux offres
+    // publiées (JobApplication : CV/photo, workflow RH, route déplacée sous
+    // /contacts/candidatures) + messages du formulaire « devenir commercial »
+    // (Submission unifiedType=recrutement).
+    {
+      href: `${base}/contacts/candidatures`,
+      label: "Candidatures aux offres",
+      icon: "📨",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Messages recrutement",
+      icon: "🧑‍💼",
+      group: "contacts",
+    },
     // ── Rendez-vous — APPELS (Calendly ≠ messages écrits) ───────────────────
     {
       href: `${base}/contacts/rendez-vous`,
@@ -451,19 +465,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Appels Calendly",
       icon: "📅",
       group: "rendez-vous",
-    },
-    // ── Recrutement — candidatures regroupées (offres publiées + spontanées) ──
-    {
-      href: `${base}/candidatures`,
-      label: "Candidatures aux offres",
-      icon: "📨",
-      group: "recrutement",
-    },
-    {
-      href: `${base}/contacts/commercial`,
-      label: "Messages recrutement",
-      icon: "🧑‍💼",
-      group: "recrutement",
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },

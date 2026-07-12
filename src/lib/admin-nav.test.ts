@@ -20,6 +20,8 @@ describe("buildAdminNav SSOT", () => {
     // des onglets internes — Contacts (messages écrits : Tous, Clients, Presse,
     // Partenariats, Investisseurs), Rendez-vous (Appels Calendly), Recrutement
     // (Candidatures aux offres + Messages recrutement). +6 items vs base 117 = 123.
+    // 2026-07-12 : groupe Recrutement FUSIONNÉ dans Contacts (décision Will) —
+    // mêmes 2 items, déplacés de groupe, ±0.
     // +2 (2026-07-09) : « RV téléphonique » (liste unifiée) + « Calendrier RDV »
     // dans le groupe Rendez-vous. = 125.
     // +1 (2026-07-09) : « Planning » — calendrier unifié des prestations
@@ -131,6 +133,19 @@ describe("buildAdminNav SSOT", () => {
     const items = buildAdminNav("p");
     expect(items.some((it) => (it.group as string) === "prospection")).toBe(false);
     expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("prospection");
+  });
+
+  // Fusion 2026-07-12 (décision Will) : le groupe « Recrutement » est fusionné
+  // dans « Contacts » — tout ce qui entre par formulaire vit au même endroit.
+  // Les candidatures aux offres sont déplacées sous /contacts/candidatures.
+  it("le recrutement est fusionné dans le groupe contacts", () => {
+    const items = buildAdminNav("p");
+    expect(items.some((it) => (it.group as string) === "recrutement")).toBe(false);
+    expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("recrutement");
+    const candidatures = items.find((it) => it.label === "Candidatures aux offres");
+    expect(candidatures?.group).toBe("contacts");
+    expect(candidatures?.href).toBe("/fr/p/contacts/candidatures");
+    expect(items.find((it) => it.label === "Messages recrutement")?.group).toBe("contacts");
   });
 });
 

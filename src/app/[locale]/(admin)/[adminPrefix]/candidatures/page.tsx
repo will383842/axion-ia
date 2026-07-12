@@ -1,9 +1,8 @@
-// Listing admin des candidatures emploi. Filtre offre / statut / à traiter.
+// Legacy redirect — les candidatures vivent sous Contacts depuis 2026-07-12
+// (fusion Recrutement → Contacts, décision Will). Préserve les query params
+// (offerId/status/attention/page) pour les bookmarks et liens Telegram déjà émis.
 
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-import { listApplicationsAction } from "@/features/admin-job-applications/actions";
-import { ApplicationsV2 } from "./_v2/ApplicationsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -12,27 +11,14 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function ApplicationsListPage({ params, searchParams }: PageProps) {
+export default async function LegacyApplicationsRedirect({
+  params,
+  searchParams,
+}: PageProps): Promise<never> {
   const { adminPrefix } = await params;
   const sp = await searchParams;
-  const session = await auth();
-  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
-
-  const result = await listApplicationsAction({
-    offerId: sp.offerId,
-    status: sp.status as never,
-    onlyAttention: sp.attention === "1",
-    page: sp.page ? parseInt(sp.page, 10) : 1,
-  });
-
-  return (
-    <ApplicationsV2
-      adminPrefix={adminPrefix}
-      searchParams={sp}
-      items={result.items}
-      total={result.total}
-      page={result.page}
-      totalPages={result.totalPages}
-    />
-  );
+  const qs = new URLSearchParams(
+    Object.entries(sp).filter((e): e is [string, string] => e[1] != null),
+  ).toString();
+  redirect(`/fr/${adminPrefix}/contacts/candidatures${qs ? `?${qs}` : ""}`);
 }
