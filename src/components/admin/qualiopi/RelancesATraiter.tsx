@@ -1,4 +1,5 @@
 "use client";
+// use-client: boutons d'action Envoyer/Ignorer/Reporter (useTransition + router.refresh)
 
 /**
  * Hub facturation — liste des relances PROPOSÉES à traiter (Phase 4).
