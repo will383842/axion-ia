@@ -15,7 +15,11 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminRead,
+  requireAdminWrite,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   genererFactureLibre,
   genererAvoirFacture,
@@ -681,4 +685,91 @@ export async function emettreFactureBrouillonAction(
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Émission impossible." };
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 7 — export FEC (contrôle fiscal / expert-comptable)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const ExporterFecSchema = z.object({ annee: z.number().int().min(2020).max(2100) });
+
+/**
+ * Exporte le FEC de l'exercice (factures CRM émises + encaissements).
+ * Retourne le contenu texte (TAB-séparé) — le client télécharge en
+ * `AXIONIA_FEC_{annee}.txt`. Lecture seule : accessible dès requireAdminRead
+ * (rôle comptable).
+ */
+export async function exporterFecAction(
+  rawInput: unknown,
+): Promise<{ data: { contenu: string; nbFactures: number } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireAdminRead();
+  const parsed = ExporterFecSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Année invalide." };
+  const annee = parsed.data.annee;
+  const debut = new Date(Date.UTC(annee, 0, 1));
+  const fin = new Date(Date.UTC(annee + 1, 0, 1));
+
+  const [factures, paiements] = await Promise.all([
+    prisma.factureFormation.findMany({
+      where: {
+        statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] },
+        emiseAt: { gte: debut, lt: fin },
+      },
+      orderBy: { emiseAt: "asc" },
+      select: {
+        numero: true,
+        emiseAt: true,
+        destinataireNom: true,
+        montantHtCents: true,
+        montantTvaCents: true,
+        montantTtcCents: true,
+      },
+    }),
+    prisma.payment.findMany({
+      where: {
+        factureFormationId: { not: null },
+        status: "succeeded",
+        paidAt: { gte: debut, lt: fin },
+      },
+      orderBy: { paidAt: "asc" },
+      select: {
+        amountCents: true,
+        paidAt: true,
+        receivedReference: true,
+        factureFormation: { select: { numero: true, destinataireNom: true } },
+      },
+    }),
+  ]);
+
+  const { genererFec } = await import("@/server/qualiopi/financements/fec");
+  const contenu = genererFec(
+    factures.map((f) => ({
+      numero: f.numero,
+      dateEmission: f.emiseAt ?? debut,
+      clientNom: f.destinataireNom,
+      montantHtCents: f.montantHtCents,
+      montantTvaCents: f.montantTvaCents,
+      montantTtcCents: f.montantTtcCents ?? f.montantHtCents,
+    })),
+    paiements
+      .filter((p) => p.factureFormation !== null && p.paidAt !== null)
+      .map((p) => ({
+        factureNumero: p.factureFormation?.numero ?? "",
+        clientNom: p.factureFormation?.destinataireNom ?? "",
+        date: p.paidAt ?? debut,
+        montantCents: p.amountCents,
+        ...(p.receivedReference !== null ? { reference: p.receivedReference } : {}),
+      })),
+  );
+
+  await logQualiopiActivity({
+    action: "facturation.fec.exporter",
+    targetType: "FactureFormation",
+    changes: { annee, nbFactures: factures.length },
+    session,
+  });
+  return { data: { contenu, nbFactures: factures.length } };
 }
