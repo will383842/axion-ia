@@ -85,7 +85,10 @@ export type EmailJobName =
   // Espace formateur — lien de connexion passwordless (magic-link)
   | "formateur-magic-link"
   // Espace ressources — lien de connexion passwordless (commercial/formateur)
-  | "ressources-magic-link";
+  | "ressources-magic-link"
+  // Hub facturation — envois MANUELS (admin) de devis/facture avec PDF joint
+  | "devis-envoi"
+  | "facture-envoi";
 
 export interface EmailJobData {
   template: EmailJobName;
@@ -96,6 +99,12 @@ export interface EmailJobData {
   payload: Record<string, unknown>;
   /** Marketing vs transactionnel (CLAUDE.md §11 — distingue noreply@ vs news@). */
   marketing?: boolean;
+  /**
+   * Pièces jointes (Hub facturation — envoi manuel devis/facture). JAMAIS de
+   * binaire dans Redis : uniquement la clé R2 ; le worker télécharge puis
+   * attache (fail-soft : envoi sans PJ si R2 indisponible).
+   */
+  attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
 }
 
 // ============================================================

@@ -607,7 +607,13 @@ export async function enqueueEmail(
   to: string,
   locale: "fr" | "en",
   payload: Record<string, unknown>,
-  options?: { delayMs?: number; marketing?: boolean; jobId?: string },
+  options?: {
+    delayMs?: number;
+    marketing?: boolean;
+    jobId?: string;
+    /** PJ (clé R2, jamais de binaire dans Redis) — Hub facturation. */
+    attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
+  },
 ): Promise<{ enqueued: boolean }> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
@@ -617,9 +623,16 @@ export async function enqueueEmail(
     // (ex. reply admin) peuvent marquer un échec explicite au lieu d'un faux succès.
     return { enqueued: false };
   }
-  const data: EmailJobData = options?.marketing
-    ? { template, to, locale, payload, marketing: true }
-    : { template, to, locale, payload };
+  const data: EmailJobData = {
+    template,
+    to,
+    locale,
+    payload,
+    ...(options?.marketing ? { marketing: true } : {}),
+    ...(options?.attachments && options.attachments.length > 0
+      ? { attachments: options.attachments }
+      : {}),
+  };
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
   if (options?.jobId) addOptions["jobId"] = options.jobId;

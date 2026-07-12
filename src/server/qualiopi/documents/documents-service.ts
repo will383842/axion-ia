@@ -39,6 +39,8 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
   attestation_partielle: "attestation",
   certificat_realisation: "certificat",
   facture: "facture",
+  devis: "devis",
+  avoir: "avoir",
   kit_opco: "formation",
   kit_cpf: "formation",
   kit_france_travail: "formation",
@@ -268,6 +270,7 @@ function getNumberingPrefixSegment(type: NumberingType): string {
     devis: "DEV",
     offre: "OFF",
     audit: "AUD",
+    avoir: "AVO",
   };
   return map[type] ?? "FORM";
 }

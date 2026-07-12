@@ -10,10 +10,41 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
 import { sendEmail } from "@/lib/email/client";
+import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
+import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import type { EmailJobData, EmailJobName } from "../types";
+
+/**
+ * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
+ * Fail-soft : une PJ introuvable/R2 indisponible n'empêche pas l'envoi (le
+ * client peut toujours être relancé), mais est loguée pour visibilité.
+ */
+async function resolveAttachments(
+  attachments: EmailJobData["attachments"],
+): Promise<SendEmailParams["attachments"]> {
+  if (!attachments || attachments.length === 0) return undefined;
+  if (!isR2Configured()) {
+    console.error("[email-worker] attachments demandées mais R2 non configuré — envoi sans PJ");
+    return undefined;
+  }
+  const resolved: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
+  for (const att of attachments) {
+    const buffer = await getObjectBufferR2(att.r2Key).catch(() => null);
+    if (buffer === null) {
+      console.error(`[email-worker] PJ introuvable sur R2 (${att.r2Key}) — envoi sans cette PJ`);
+      continue;
+    }
+    resolved.push({
+      filename: att.filename,
+      content: buffer,
+      contentType: att.contentType ?? "application/pdf",
+    });
+  }
+  return resolved.length > 0 ? resolved : undefined;
+}
 
 export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
   const worker = new Worker<EmailJobData, void, EmailJobName>(
@@ -30,6 +61,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       }
 
       const { subject, html, text } = await renderEmailTemplate(template, locale, payload);
+      const attachments = await resolveAttachments(job.data.attachments);
       // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
       // Marketing emails ET transactionnels qui contiennent un lien
       // unsubscribe DOIVENT exposer les headers `List-Unsubscribe` +
@@ -47,6 +79,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         text,
         marketing: marketing === true,
         ...(unsubscribeToken ? { unsubscribeToken } : {}),
+        ...(attachments ? { attachments } : {}),
       });
     },
     {

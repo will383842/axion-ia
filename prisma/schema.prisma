@@ -5067,6 +5067,13 @@ model Devis {
   activite               ActiviteFacturation?
   /// Référence client / n° de bon de commande (exigé par ETI, grands comptes, OPCO).
   refClient              String?     @map("ref_client") @db.VarChar(120)
+  /// Révision : ce devis remplace une version antérieure (v2 → v1). L'ancienne
+  /// version passe `expire` à l'envoi de la nouvelle — jamais d'écrasement.
+  replacesDevisId        String?     @map("replaces_devis_id") @db.Uuid
+  replacesDevis          Devis?      @relation("DevisRevision", fields: [replacesDevisId], references: [id], onDelete: SetNull)
+  revisions              Devis[]     @relation("DevisRevision")
+  /// Soumission DocuSeal « bon pour accord » (signature électronique du devis).
+  docusealSubmissionId   String?     @map("docuseal_submission_id") @db.VarChar(120)
   clientId               String      @map("client_id") @db.Uuid
   client                 Client      @relation(fields: [clientId], references: [id], onDelete: Restrict)
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreTierId? }].
@@ -6062,6 +6069,10 @@ enum DocumentType {
   livret_accueil
   /// Protocole individuel AFEST (décret D.6313-3-1 §3) — coaching 1-to-1.
   protocole_afest
+  /// Devis commercial PDF (Hub facturation — le PDF affiche Devis.numero).
+  devis
+  /// Avoir (facture rectificative, montants négatifs, lié à la facture d'origine).
+  avoir
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
@@ -6380,6 +6391,10 @@ model FactureFormation {
   /// Aide France Travail (AIF/POEI) prise en charge (centimes), si financement FT.
   montantAideFranceTravailCents Int?                         @map("montant_aide_france_travail_cents")
   statut                        FactureFormationStatut       @default(brouillon)
+  /// Avoir : facture d'origine rectifiée (montants de CETTE facture négatifs).
+  avoirDeId                     String?                      @map("avoir_de_id") @db.Uuid
+  avoirDe                       FactureFormation?            @relation("FactureFormationAvoir", fields: [avoirDeId], references: [id], onDelete: Restrict)
+  avoirs                        FactureFormation[]           @relation("FactureFormationAvoir")
   /// DocumentGenere (PDF) associé.
   documentId                    String?                      @map("document_id") @db.Uuid
   emiseAt                       DateTime?                    @map("emise_at")

@@ -28,3 +28,14 @@
 export function isQualiopiPublicDisclosureEnabled(): boolean {
   return process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true";
 }
+
+/**
+ * Hub facturation unifié (5 activités) — rollout progressif, même convention
+ * raw `process.env` (hors schéma t3-env). `FACTURATION_HUB_ENABLED=true` côté
+ * Coolify (run scope) + restart pour activer l'écran. Défaut sécurisé : false
+ * (la page renvoie notFound(), l'entrée de nav reste visible en admin car
+ * inoffensive — c'est la PAGE qui gate).
+ */
+export function isFacturationHubEnabled(): boolean {
+  return process.env.FACTURATION_HUB_ENABLED === "true";
+}

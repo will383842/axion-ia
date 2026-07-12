@@ -1,17 +1,20 @@
 /**
- * Qualiopi — Facture de prestation de formation professionnelle.
+ * Qualiopi — Devis de prestation (CRM).
  *
- * Conformité mentions obligatoires :
- *   - Identité + adresse du siège du vendeur (en-tête + pied via QualiopiPage).
- *   - SIRET / NDA / Qualiopi (en-tête + bloc facturation, `required`).
- *   - Date d'émission, date d'échéance, date de réalisation de la prestation
- *     (art. 242 nonies A CGI).
- *   - TVA : exonération art. 261-4-4° CGI (formation professionnelle continue).
- *   - Pénalités de retard (art. L.441-10), indemnité forfaitaire 40 €
- *     (art. D.441-5), absence d'escompte (art. L.441-9) — C. commerce, B2B.
+ * Miroir commercial de la facture (facture.tsx) :
+ *   - Identité + adresse du siège de l'émetteur (en-tête + pied via QualiopiPage).
+ *   - SIRET / NDA / Qualiopi (bloc émetteur, `required`).
+ *   - N° de devis, date d'émission, date de validité, référence client.
+ *   - Lignes avec taux de TVA par ligne (devis mixtes formation 0 % + conseil 20 %).
+ *   - Totaux HT / TVA (ventilation par taux) / TTC via computeTotauxFacture.
+ *   - Estimation OPCO / reste à charge (indicative, non contractuelle).
+ *   - Mention TVA dérivée du régime (exonération 261-4-4° / franchise 293 B).
+ *   - Bloc signature « Bon pour accord » (nom/fonction, date, signature).
+ *   - Mention « Devis gratuit, valable jusqu'au {dateValidite} ».
  *
- * Montants en centimes d'euro (prixUnitaireHtCents, totalHtCents) pour éviter
- * les erreurs d'arrondi flottant.
+ * Montants en centimes d'euro (prixUnitaireHtCents) pour éviter les erreurs
+ * d'arrondi flottant. Le numéro affiché est celui du Devis CRM (pré-construit
+ * par l'appelant — PAS le numéro du registre DocumentGenere).
  *
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
@@ -27,7 +30,7 @@ import {
   formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
+import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import {
   computeTotauxFacture,
   mentionTva,
@@ -41,7 +44,7 @@ import {
 } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
-// Styles spécifiques (totaux + RIB)
+// Styles spécifiques (totaux + signature « Bon pour accord »)
 // ============================================================
 
 const styles = StyleSheet.create({
@@ -90,17 +93,37 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "right",
   },
-  ribTitle: {
-    fontSize: T.sm,
-    fontWeight: "bold",
-    color: brandColor("fg-soft"),
-    marginBottom: S.sm,
-  },
   legalLine: {
     fontSize: T.xs,
     color: brandColor("fg"),
     lineHeight: T.lineNormal,
     marginBottom: S.xs,
+  },
+  // Bloc « Bon pour accord » — signature manuscrite du client.
+  accordBox: {
+    marginTop: S.xxl,
+    borderWidth: 1,
+    borderColor: brandColor("border-strong"),
+    borderRadius: S.radius,
+    backgroundColor: brandColor("bg"),
+    padding: S.lg,
+  },
+  accordTitle: {
+    fontSize: T.md,
+    fontWeight: "bold",
+    color: brandColor("mocha"),
+    marginBottom: S.xs,
+  },
+  accordHint: {
+    fontSize: T.xs,
+    fontStyle: "italic",
+    color: brandColor("fg-muted"),
+    marginBottom: S.lg,
+  },
+  accordLine: {
+    fontSize: T.base,
+    color: brandColor("fg"),
+    marginBottom: S.xl,
   },
 });
 
@@ -108,54 +131,23 @@ const styles = StyleSheet.create({
 // Types de données
 // ============================================================
 
-export interface LigneFacture {
-  designation: string;
-  quantite: number;
-  prixUnitaireHtCents: number;
-  /**
-   * Taux de TVA de la ligne (%). Override pour les factures MIXTES (ex. ligne
-   * de conseil/audit à 20 % sur une facture sinon exonérée). Sinon, le taux est
-   * dérivé du régime de TVA de la facture.
-   */
-  tauxTvaPercent?: number;
-}
-
-export interface ClientFacture {
+export interface ClientDevis {
   raisonSociale: string;
   siret?: string;
   adresse?: string;
   email?: string;
-  /** N° TVA intracommunautaire du client (B2B intra-UE). Optionnel. */
-  numeroTvaIntracom?: string;
 }
 
-export interface SubrogationOpco {
-  nomOpco: string;
-  numeroDossier: string;
-}
-
-export interface RibFacture {
-  iban: string;
-  bic: string;
-  titulaire: string;
-  banque?: string;
-}
-
-export interface FactureData {
+export interface DevisData {
   numero: string;
   dateEmission: string;
-  dateEcheance: string;
-  /**
-   * Date (ou période) de réalisation de la prestation — obligatoire si
-   * différente de la date d'émission (art. 242 nonies A CGI). Ex.
-   * « du 01/06/2026 au 02/06/2026 ». Optionnel (défaut : date d'émission).
-   */
-  periodePrestation?: string;
-  identite: OrganismeIdentite;
-  client: ClientFacture;
-  lignes: LigneFacture[];
+  /** Date limite de validité du devis (formatée fr-FR). */
+  dateValidite: string;
   /** Référence client / n° de bon de commande (exigé ETI/grands comptes/OPCO). */
   refClient?: string;
+  identite: OrganismeIdentite;
+  client: ClientDevis;
+  lignes: LigneFacture[];
   /**
    * Régime de TVA appliqué (assujetti 20 % / exonération 261-4-4° / franchise
    * 293 B). Capturé depuis la config au moment de l'émission (instantané).
@@ -163,22 +155,22 @@ export interface FactureData {
   regimeTva: RegimeTva;
   /** Taux standard appliqué en régime assujetti (%). Défaut 20. */
   tauxTvaStandardPercent?: number;
-  subrogationOpco?: SubrogationOpco;
-  rib?: RibFacture;
+  /** Libellé de l'activité facturée (SSOT ACTIVITE_LABELS). */
+  activiteLabel?: string;
+  /** Libellé du financement suggéré (OPCO, CPF, France Travail…). */
+  financementSuggere?: string;
+  /** Prise en charge financeur estimée (centimes) — indicative. */
+  montantOpcoEstimeCents?: number;
+  /** Reste à charge client estimé (centimes) — indicatif. */
+  resteAChargeCents?: number;
   estCopie?: boolean;
-  /** Avoir (facture rectificative, montants négatifs) — change le titre du document. */
-  estAvoir?: boolean;
-  /** Numéro de la facture d'origine rectifiée (obligatoire sur un avoir). */
-  avoirSurNumero?: string;
-  /** Motif de la rectification (affiché sur l'avoir). */
-  motifAvoir?: string;
 }
 
 // ============================================================
 // Composant principal
 // ============================================================
 
-export function FacturePdf({ data }: { data: FactureData }): React.ReactElement {
+export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
   const { identite } = data;
 
   const tauxStandard = data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD;
@@ -190,37 +182,34 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
         ? tauxStandard
         : 0;
   const mentionRegimeTva = mentionTva(data.regimeTva);
+  const afficheEstimation =
+    data.montantOpcoEstimeCents !== undefined || data.resteAChargeCents !== undefined;
 
   return (
     <Document>
       <QualiopiPage
-        docTitle={data.estAvoir === true ? "Avoir" : "Facture"}
+        docTitle="Devis"
         docNumber={`N° ${data.numero}`}
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
-        {/* Identifiants de facturation — SIRET/NDA en `required` (jamais masqués) */}
-        <DocSection title="Informations de facturation">
-          <FieldRow
-            label={data.estAvoir === true ? "N° d'avoir" : "N° de facture"}
-            value={data.numero}
-            required
-          />
-          {data.estAvoir === true && data.avoirSurNumero !== undefined && (
-            <FieldRow label="Avoir sur facture" value={data.avoirSurNumero} required />
-          )}
-          {data.estAvoir === true && data.motifAvoir !== undefined && (
-            <FieldRow label="Motif de la rectification" value={data.motifAvoir} />
-          )}
+        {/* Informations du devis */}
+        <DocSection title="Informations du devis">
+          <FieldRow label="N° de devis" value={data.numero} required />
+          <FieldRow label="Date d'émission" value={data.dateEmission} required />
+          <FieldRow label="Valable jusqu'au" value={data.dateValidite} required />
           {data.refClient !== undefined && data.refClient !== "" && (
             <FieldRow label="Référence client / commande" value={data.refClient} />
           )}
-          <FieldRow label="Date d'émission" value={data.dateEmission} required />
-          <FieldRow
-            label="Date de réalisation de la prestation"
-            value={data.periodePrestation ?? data.dateEmission}
-          />
-          <FieldRow label="Date d'échéance" value={data.dateEcheance} required />
+          {data.activiteLabel !== undefined && data.activiteLabel !== "" && (
+            <FieldRow label="Activité" value={data.activiteLabel} />
+          )}
+        </DocSection>
+
+        {/* Émetteur — SIRET/NDA en `required` (jamais masqués) */}
+        <DocSection title="Émetteur">
+          <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
+          <FieldRow label="Adresse du siège" value={identite.adresseSiege} required />
           <FieldRow label="SIRET de l'organisme" value={identite.siret} required />
           <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
           {identite.qualiopi ? (
@@ -233,9 +222,6 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
           <FieldRow label="Raison sociale" value={data.client.raisonSociale} required />
           {data.client.siret ? <FieldRow label="SIRET" value={data.client.siret} /> : null}
           {data.client.adresse ? <FieldRow label="Adresse" value={data.client.adresse} /> : null}
-          {data.client.numeroTvaIntracom ? (
-            <FieldRow label="N° TVA intracommunautaire" value={data.client.numeroTvaIntracom} />
-          ) : null}
           {data.client.email ? <FieldRow label="Email" value={data.client.email} /> : null}
         </DocSection>
 
@@ -281,42 +267,45 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
           </View>
         </View>
 
-        {/* Subrogation OPCO */}
-        {data.subrogationOpco ? (
-          <LegalCallout variant="info" title="Subrogation de paiement OPCO">
-            {`Facture libellée à l'OPCO ${data.subrogationOpco.nomOpco} dans le cadre de la subrogation de paiement — N° dossier : ${data.subrogationOpco.numeroDossier}.`}
+        {/* Estimation de financement (indicative — jamais contractuelle) */}
+        {afficheEstimation ? (
+          <LegalCallout variant="info" title="Estimation de financement">
+            {[
+              data.financementSuggere !== undefined && data.financementSuggere !== ""
+                ? `Financement suggéré : ${data.financementSuggere}. `
+                : "",
+              data.montantOpcoEstimeCents !== undefined
+                ? `Prise en charge estimée : ${formatEurosFromCents(data.montantOpcoEstimeCents)}. `
+                : "",
+              data.resteAChargeCents !== undefined
+                ? `Reste à charge estimé : ${formatEurosFromCents(data.resteAChargeCents)}. `
+                : "",
+              "Estimation indicative, non contractuelle — sous réserve de l'accord de prise en charge du financeur.",
+            ].join("")}
           </LegalCallout>
         ) : null}
 
-        {/* RIB */}
-        {data.rib ? (
-          <View
-            style={{
-              marginTop: S.lg,
-              padding: S.lg,
-              borderWidth: 1,
-              borderColor: brandColor("border-strong"),
-              borderRadius: S.radius,
-            }}
-          >
-            <Text style={styles.ribTitle}>Coordonnées bancaires</Text>
-            <FieldRow label="Titulaire" value={data.rib.titulaire} />
-            {data.rib.banque ? <FieldRow label="Banque" value={data.rib.banque} /> : null}
-            <FieldRow label="IBAN" value={data.rib.iban} />
-            <FieldRow label="BIC" value={data.rib.bic} />
-          </View>
-        ) : null}
-
-        {/* Conditions de règlement + mentions légales obligatoires */}
-        <LegalCallout variant="legal" title="Conditions de règlement et mentions légales">
+        {/* Mention TVA (régime) + validité du devis */}
+        <LegalCallout variant="legal" title="Conditions du devis">
           {/* Mention de TVA selon le régime (exonération 261-4-4° ou franchise
               293 B). En régime assujetti : pas de mention d'exonération, la TVA
               figure dans les totaux. */}
           {mentionRegimeTva ? <Text style={styles.legalLine}>{mentionRegimeTva}</Text> : null}
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureIndemniteRecouvrement}</Text>
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>
+          <Text style={styles.legalLine}>
+            {`Devis gratuit, valable jusqu'au ${data.dateValidite}. Au-delà de cette date, les conditions (tarifs, disponibilités) sont susceptibles d'être révisées.`}
+          </Text>
         </LegalCallout>
+
+        {/* Signature client — « Bon pour accord » */}
+        <View style={styles.accordBox} wrap={false}>
+          <Text style={styles.accordTitle}>Bon pour accord</Text>
+          <Text style={styles.accordHint}>
+            Signature du client précédée de la mention manuscrite « Bon pour accord ».
+          </Text>
+          <Text style={styles.accordLine}>Nom et fonction du signataire :</Text>
+          <Text style={styles.accordLine}>Date :</Text>
+          <Text style={styles.accordLine}>Signature :</Text>
+        </View>
       </QualiopiPage>
     </Document>
   );

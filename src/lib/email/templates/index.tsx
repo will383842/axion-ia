@@ -115,6 +115,8 @@ import {
 } from "./booking-completed-thanks";
 import { QuoteReminderEmail, quoteReminderSubject } from "./quote-reminder";
 import { QuoteExpiredEmail, quoteExpiredSubject } from "./quote-expired";
+import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
+import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -315,6 +317,9 @@ const TEMPLATES: TemplateMap = {
   },
   "quote-reminder": { subject: quoteReminderSubject, component: QuoteReminderEmail },
   "quote-expired": { subject: quoteExpiredSubject, component: QuoteExpiredEmail },
+  // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
+  "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
+  "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
 };
 
 /** Tous les noms de templates email enregistrés (pour tests de couverture). */

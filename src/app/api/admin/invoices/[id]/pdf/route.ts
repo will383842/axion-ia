@@ -23,6 +23,7 @@ import {
   uploadToR2,
   existsInR2,
   getSignedUrlR2,
+  getObjectBufferR2,
   invoicePdfKey,
 } from "@/lib/r2-storage";
 import type { LegalSnapshot } from "@/lib/legal-snapshot";
@@ -47,6 +48,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       id: true,
       number: true,
       type: true,
+      status: true,
       issuedAt: true,
       dueAt: true,
       basePriceHtCents: true,
@@ -80,6 +82,29 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
   if (!invoice) {
     return NextResponse.json({ error: "invoice_not_found" }, { status: 404 });
+  }
+
+  // Immutabilité (D8, Hub facturation) : une facture ÉMISE sert TOUJOURS le
+  // PDF archivé sur R2 — on ne régénère jamais un document fiscal après
+  // émission (le rendu pourrait diverger de l'original : identité légale
+  // mise à jour, template retouché…). Régénération uniquement si l'archive
+  // n'existe pas encore (premier téléchargement) ou statut brouillon.
+  if (invoice.hashSha256 !== null && invoice.status !== "draft" && isR2Configured()) {
+    const archivedKey = invoicePdfKey(invoice.number, invoice.issuedAt);
+    const archived = await getObjectBufferR2(archivedKey).catch(() => null);
+    if (archived !== null) {
+      return new NextResponse(new Uint8Array(archived), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `attachment; filename="${invoice.number}.pdf"`,
+          "Content-Length": String(archived.byteLength),
+          "Cache-Control": "private, no-store",
+          "X-Invoice-Hash-Sha256": invoice.hashSha256,
+          "X-Invoice-Pdf-Source": "r2-archive",
+        },
+      });
+    }
   }
 
   // `booking` nullable depuis le Hub facturation (facture libre sans réservation).

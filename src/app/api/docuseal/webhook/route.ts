@@ -104,6 +104,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (kind === "quote" && (isCompleted || isDeclined)) {
       await dispatchQuoteEvent(event, isCompleted);
+    } else if (kind === "devis" && (isCompleted || isDeclined)) {
+      await dispatchDevisEvent(event, isCompleted);
     } else if (isCompleted) {
       sendTelegram({
         tag: "OPTION CONFIRMÉE",
@@ -144,6 +146,62 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 // ============================================================
 // Dispatchers internes
 // ============================================================
+
+/**
+ * Dispatch un event DocuSeal lié à un Devis CRM Qualiopi (« bon pour accord »).
+ *
+ * - `form.completed` / `submission.completed` : Devis → accepte + acceptedAt.
+ * - `form.declined` : Devis → refuse + declinedAt.
+ *
+ * Idempotence applicative : un replay sur un devis déjà dans l'état cible (ou
+ * déjà transformé en convention) est un no-op. Best-effort : aucune state
+ * machine, aucun email — le CRM devis est piloté côté admin.
+ */
+async function dispatchDevisEvent(
+  event: DocusealWebhookPayload,
+  isCompleted: boolean,
+): Promise<void> {
+  const devisId = event.metadata["devisId"];
+  if (!devisId) {
+    throw new Error(
+      `[docuseal-webhook] missing devisId in metadata for submission ${event.submissionId}`,
+    );
+  }
+
+  const devis = await prisma.devis.findUnique({
+    where: { id: devisId },
+    select: { id: true, numero: true, statut: true },
+  });
+  if (!devis) {
+    throw new Error(`[docuseal-webhook] devis ${devisId} not found`);
+  }
+
+  // Idempotence : replay sur un devis déjà dans l'état cible → no-op. Un devis
+  // déjà transformé en convention n'est jamais rétrogradé.
+  if (isCompleted && (devis.statut === "accepte" || devis.statut === "transforme_convention"))
+    return;
+  if (!isCompleted && devis.statut === "refuse") return;
+
+  if (isCompleted) {
+    await prisma.devis.update({
+      where: { id: devis.id },
+      data: { statut: "accepte", acceptedAt: new Date() },
+    });
+    sendTelegram({
+      tag: "OPTION CONFIRMÉE",
+      body: `📑 Devis ${devis.numero} signé (bon pour accord) via DocuSeal`,
+    }).catch(() => {});
+  } else {
+    await prisma.devis.update({
+      where: { id: devis.id },
+      data: { statut: "refuse", declinedAt: new Date() },
+    });
+    sendTelegram({
+      tag: "OPTION REFUSÉE",
+      body: `📑 Devis ${devis.numero} refusé via DocuSeal`,
+    }).catch(() => {});
+  }
+}
 
 /**
  * Dispatch un event DocuSeal lié à un Quote (X.7 final).

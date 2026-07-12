@@ -88,6 +88,8 @@ const DOC_LABELS: Record<DocumentType, string> = {
   attestation_partielle: "Attestation partielle",
   certificat_realisation: "Certificat de réalisation (R.6313-3)",
   facture: "Facture",
+  devis: "Devis",
+  avoir: "Avoir",
   kit_opco: "Kit OPCO",
   kit_cpf: "Kit CPF / EDOF",
   kit_france_travail: "Kit France Travail",
