@@ -192,6 +192,42 @@ describe("getHeuresParFormateur", () => {
     expect(t.coutFormateurCents).toBe(40_000);
     expect(t.nbSessions).toBe(2);
   });
+
+  it("ACCUMULE le coût sur plusieurs sessions du même formateur (exclut la période obsolète)", async () => {
+    // t1 anime s1 (2026:3, 40 000) et s2 (2026:6, 30 000) → coût cumulé 70 000.
+    // Une ligne obsolète s1/2026:1 (report) est exclue par le matching de rattachement.
+    mp.trainerFeeLine.groupBy.mockImplementation((arg: { by?: string[] }) => {
+      if (arg.by?.[0] === "trainerId") {
+        return Promise.resolve([
+          {
+            trainerId: "t1",
+            sessionId: "s1",
+            periodeYear: 2026,
+            periodeMonth: 3,
+            _sum: { montantHtCents: 40_000 },
+          },
+          {
+            trainerId: "t1",
+            sessionId: "s2",
+            periodeYear: 2026,
+            periodeMonth: 6,
+            _sum: { montantHtCents: 30_000 },
+          },
+          {
+            trainerId: "t1",
+            sessionId: "s1",
+            periodeYear: 2026,
+            periodeMonth: 1,
+            _sum: { montantHtCents: 99_999 },
+          },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+    const rows = await getHeuresParFormateur({ annee: 2026 });
+    const t = rows.find((r) => r.trainerId === "t1")!;
+    expect(t.coutFormateurCents).toBe(70_000);
+  });
 });
 
 describe("getConsolidationMensuelle", () => {
