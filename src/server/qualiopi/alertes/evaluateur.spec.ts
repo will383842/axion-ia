@@ -256,6 +256,48 @@ describe("evaluerAlertes — emargement_manquant", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Tests règle session_sans_formateur
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — session_sans_formateur", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("crée une alerte importante par session à J-7 sans formateur principal", async () => {
+    mp.trainingSession.findMany.mockImplementation(
+      ({ where }: { where?: { formateurPrincipalId?: unknown } }) => {
+        if (where && "formateurPrincipalId" in where && where.formateurPrincipalId === null) {
+          return Promise.resolve([
+            {
+              id: "ses-042",
+              numero: "SES-2026-042",
+              titreSession: "IA Express — Entreprise Exemple",
+              dateDebut: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_sans_formateur");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("ses-042");
+    expect(a?.message).toContain("SES-2026-042");
+  });
+
+  it("aucune alerte quand toutes les sessions proches ont un formateur", async () => {
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_sans_formateur")).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Tests règle qualiopi_expiration
 // ─────────────────────────────────────────────────────────────────────────────
 

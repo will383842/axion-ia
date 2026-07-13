@@ -14,6 +14,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -76,6 +77,18 @@ export async function enrollTraineeAction(input: {
     const code = (err as { code?: string })?.code;
     if (code === "P2002") return { error: "Ce stagiaire est déjà inscrit à cette session" };
     return { error: "Erreur lors de l'inscription" };
+  }
+
+  // Les 3 questionnaires naissent AVEC l'inscription (idempotent) : le
+  // positionnement (ind. 8) est disponible dans le portail sans attendre un
+  // clic admin, et les relances J+1/J+30 ne pointent jamais vers un portail
+  // vide. Fail-soft : les crons J+1/J+30 re-garantissent chaud/froid.
+  for (const type of ["positionnement", "satisfaction_chaud", "satisfaction_froid"] as const) {
+    try {
+      await creerQuestionnaire({ enrollmentId: created.id, type });
+    } catch {
+      // fail-soft par questionnaire
+    }
   }
 
   await logQualiopiActivity({

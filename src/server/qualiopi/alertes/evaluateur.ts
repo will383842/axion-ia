@@ -122,6 +122,27 @@ async function regleEmargementManquant(now: Date): Promise<AlerteCandidate[]> {
   }));
 }
 
+/** R03bis — Session sans formateur : démarre sous 7 jours, aucun formateur principal assigné. */
+async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> {
+  const horizon = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      dateDebut: { lte: horizon },
+      formateurPrincipalId: null,
+    },
+    select: { id: true, numero: true, titreSession: true, dateDebut: true },
+  });
+  return sessions.map((s) => ({
+    code: "session_sans_formateur",
+    niveau: "important" as AlerteNiveau,
+    titre: "Session à J-7 sans formateur principal",
+    message: `La session ${s.numero} « ${s.titreSession} » démarre le ${s.dateDebut.toLocaleDateString("fr-FR")} sans formateur principal assigné (habilitation requise avant animation).`,
+    cibleType: "TrainingSession",
+    cibleId: s.id,
+  }));
+}
+
 /** R04 — Satisfaction manquante : session realisee > 7 jours + questionnaire non rempli. */
 async function regleSatisfactionManquante(now: Date): Promise<AlerteCandidate[]> {
   const threshold = daysAgo(7, now);
@@ -619,6 +640,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "responsable_qualite", fn: regleResponsableQualite },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
+  { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },
   { nom: "attestation_non_envoyee", fn: regleAttestationNonEnvoyee },

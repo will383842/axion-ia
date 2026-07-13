@@ -18,6 +18,7 @@ const CODES_ATTENDUS: string[] = [
   "referent_handicap_absent",
   "responsable_qualite_absent",
   "emargement_manquant",
+  "session_sans_formateur",
   "satisfaction_manquante",
   "evaluation_acquis_manquante",
   "attestation_non_envoyee",

@@ -50,6 +50,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
+  // ── Formateur ──────────────────────────────────────────────────────────────
+  session_sans_formateur: {
+    niveau: "important",
+    titre: "Session à J-7 sans formateur principal",
+    resolutionAuto: true,
+  },
+
   // ── Satisfaction ──────────────────────────────────────────────────────────
   satisfaction_manquante: {
     niveau: "important",
