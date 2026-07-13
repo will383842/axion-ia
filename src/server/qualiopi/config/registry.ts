@@ -144,6 +144,13 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...num(8000),
     description: "Plafond annuel Atlas par entreprise (€ HT).",
   },
+  // Référentiel OPCO versionné (Lot 5) — durée de validité d'un relevé de barème
+  // au-delà de laquelle l'alerte `bareme_opco_perime` est levée (relevé à
+  // rafraîchir sur le portail OPCO). Les barèmes changent ~annuellement.
+  bareme_opco_validite_mois: {
+    ...num(12),
+    description: "Validité d'un relevé de barème OPCO (mois) avant alerte de péremption.",
+  },
 
   // ── Facturation / encaissements (Hub facturation unifié) ──
   // Le RIB (IBAN/BIC/titulaire) vit dans `legal_overrides` (SSOT identité,

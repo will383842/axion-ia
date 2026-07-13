@@ -138,6 +138,11 @@ export async function createDevisAction(
     v.dureeHeures !== undefined &&
     v.modaliteOpco !== undefined
   ) {
+    // OPCO du client (Lot 5) : oriente la résolution du barème central versionné.
+    // Fail-soft : null → estimation Atlas par défaut (comportement historique).
+    const client = await prisma.client
+      .findUnique({ where: { id: v.clientId }, select: { opcoIdentifie: true } })
+      .catch(() => null);
     const coverage = await estimateOpcoCoverage({
       nbParticipants: v.nbParticipants,
       dureeHeures: v.dureeHeures,
@@ -146,6 +151,7 @@ export async function createDevisAction(
       ...(v.opcoEnveloppeRestanteCents !== undefined
         ? { enveloppeRestanteCents: v.opcoEnveloppeRestanteCents }
         : {}),
+      ...(client?.opcoIdentifie ? { opco: client.opcoIdentifie } : {}),
     });
     montantOpcoEstimeCents = coverage.montantPriseEnChargeCents;
     resteAChargeCents = coverage.resteAChargeCents;

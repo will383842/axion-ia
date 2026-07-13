@@ -30,12 +30,18 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn(),
 }));
 
+// Référentiel OPCO versionné (Lot 5) — mock de la lecture (estBaremePerime reste réel).
+vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
+  listBaremesEnVigueur: vi.fn(),
+}));
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Imports
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { evaluerAlertes } from "./evaluateur";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -57,9 +63,11 @@ const mp = prisma as unknown as {
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
+const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
 
 /** Configure tous les mocks prisma pour retourner des résultats vides (aucune alerte). */
 function setupEmptyMocks() {
+  mockListBaremes.mockResolvedValue([]); // aucun barème OPCO → pas d'alerte de péremption
   mp.reclamation.findMany.mockResolvedValue([]);
   mp.enrollment.findMany.mockResolvedValue([]);
   mp.trainingSession.findMany.mockResolvedValue([]);
@@ -649,5 +657,39 @@ describe("evaluerAlertes — revue_trimestrielle_a_faire", () => {
     const alertes = await evaluerAlertes();
     expect(alertes.find((x) => x.code === "revue_trimestrielle_a_faire")).toBeUndefined();
     expect(mp.revueDirection.findFirst).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests bareme_opco_perime (Lot 5)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — bareme_opco_perime", () => {
+  beforeEach(() => setupEmptyMocks());
+
+  it("lève une alerte par barème en vigueur au relevé périmé (> 12 mois)", async () => {
+    const vieux = new Date();
+    vieux.setFullYear(vieux.getFullYear() - 2);
+    mockListBaremes.mockResolvedValue([
+      { id: "b1", opco: "atlas", releveLe: vieux },
+      { id: "b2", opco: "akto", releveLe: new Date() }, // récent → pas d'alerte
+    ]);
+    const alertes = await evaluerAlertes();
+    const perimes = alertes.filter((a) => a.code === "bareme_opco_perime");
+    expect(perimes).toHaveLength(1);
+    expect(perimes[0]?.cibleId).toBe("b1");
+    expect(perimes[0]?.cibleType).toBe("BaremeOpco");
+  });
+
+  it("traite un relevé absent comme périmé", async () => {
+    mockListBaremes.mockResolvedValue([{ id: "b3", opco: "afdas", releveLe: null }]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((a) => a.code === "bareme_opco_perime")).toHaveLength(1);
+  });
+
+  it("aucune alerte si tous les relevés sont récents", async () => {
+    mockListBaremes.mockResolvedValue([{ id: "b2", opco: "akto", releveLe: new Date() }]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((a) => a.code === "bareme_opco_perime")).toHaveLength(0);
   });
 });

@@ -15,7 +15,7 @@ Machine : 8 Go — vitest `--maxWorkers=2`, typecheck heap 6G, PAS de build loca
   - Tests : 167/167 verts (notifications, alertes, satisfaction). Typecheck OK.
 - [x] **Lot 2** — Conformité documentaire (moyens pédagogiques, PDF registres, CV formateur,
       fiche adaptation, ind.29). Commit `128cfb94`. CGV + fiche EDOF EXCLUS (STOP & ASK Will).
-- [x] **Lot 3** — Pont Calendly/Submission → CRM (2026-07-13, NON COMMITÉ — en working tree)
+- [x] **Lot 3** — Pont Calendly/Submission → CRM (2026-07-13, COMMITÉ `7fd2563b`)
   - Service `src/server/qualiopi/crm/entrees.ts` : fusion N derniers CalendlyEvent + Submission
     (hors corbeille), tri date desc, PII Submission déchiffrée (`decryptPii`) AVANT match,
     annotation `clientExistant` par email lowercase vs `Client.contactEmail` (citext,
@@ -30,10 +30,25 @@ Machine : 8 Go — vitest `--maxWorkers=2`, typecheck heap 6G, PAS de build loca
     contre la liste clients, pré-sélection dans `DevisForm.defaultClientId`).
   - Tests : 18 specs neufs verts ; suite qualiopi entière 142 fichiers / 2214 verts ;
     typecheck OK ; prettier + eslint OK.
-- [ ] **Lot 4** — Pilotage (filtres période/type, exports, incidents, revue trimestrielle,
-      gouvernance_roles, synthèse questionnaires → revue de direction).
-- [ ] **Lot 5** — Barèmes OPCO versionnés (structure vide, valeurs saisies par Will).
-- [ ] **Lot 6** — SessionFormateur + commissions (cf. mémoire cockpit-pilotage-formateurs-plan).
+- [x] **Lot 4** — Pilotage (filtres période/type, exports, incidents, revue trimestrielle,
+      gouvernance_roles, synthèse questionnaires → revue de direction). Commits `3c56340c` + docs
+      `84c3e0e4`. ⚠️ À RE-VÉRIFIER end-to-end à la vérif finale (committé sur rapport agent vert,
+      sans re-run complet). Working tree PROPRE au moment de la pause.
+- [x] **Lot 5** — Barèmes OPCO centralisés + versionnés (2026-07-13). Modèle `BaremeOpco` + enum
+      `Opco` (11 OPCO, migration additive `20260713000004`, structure VIDE — valeurs saisies par
+      Will). Résolveur versionné (`bareme-opco.ts` : version en vigueur à date, snapshot dossiers
+      engagés conservé) + service append-only (`creerVersionBaremeOpco` clôt la précédente).
+      Référentiel pur (`opco-referentiel.ts`). Wiring `estimateOpcoCoverage` opco-aware avec
+      fallback Atlas CHAMP PAR CHAMP (zéro régression table vide). Alerte `bareme_opco_perime`
+      (config `bareme_opco_validite_mois` défaut 12). Page admin `/qualiopi/baremes-opco`
+      (relevé + en vigueur + historique + suppression), nav item (count 137→138). Tests : 89 verts
+      ciblés (referentiel 13, resolver 10, service 3, devis-opco +5, evaluateur +3, nav 138) ;
+      typecheck OK ; prettier OK. NOTE facturation : le barème dossier reste source de vérité ; la
+      facture ne consulte PAS encore le référentiel (choix prudent, wiring devis/estimation seul).
+- [ ] **Lot 6** — Dashboard MARGE (cockpit financier). Socle commission DÉJÀ mergé (cockpit #287+ :
+      SessionFormateur, TrainerCompensationRule/FeeLine/Statement, run mensuel). Reste = couche
+      agrégation MARGE (CA − coût formateur) : heures/formateur, coût & marge par session/formation,
+      consolidation mensuelle. PAS de migration. Note : ind.18 = coordination (pas coût).
 - [ ] Vérification finale end-to-end + revue adversariale + PR.
 
 ## Décisions prises

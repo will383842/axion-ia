@@ -900,6 +900,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "commercial",
     },
+    // Référentiel OPCO centralisé et versionné (Lot 5) — plafonds de prise en charge.
+    {
+      href: `${base}/qualiopi/baremes-opco`,
+      label: "Barèmes OPCO",
+      icon: "📐",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
     // ▸ CONFORMITÉ & AUDIT (preuves Qualiopi)
     {
       href: `${base}/qualiopi/conformite`,

@@ -8,6 +8,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import {
+  resolveBaremeOpco,
+  tarifHoraireBaremeCents,
+} from "@/server/qualiopi/financements/bareme-opco";
 import type { Devis } from "@/server/qualiopi/crm/types";
 
 export interface ListDevisOpts {
@@ -47,8 +51,16 @@ export interface OpcoCoverageInput {
   modalite: "intra" | "inter_presentiel" | "inter_distanciel";
   /** Montant HT de la prestation en CENTIMES. */
   montantHtCents: number;
-  /** Enveloppe restante (centimes). Défaut : plafond annuel Atlas. */
+  /** Enveloppe restante (centimes). Défaut : plafond annuel du barème résolu. */
   enveloppeRestanteCents?: number;
+  /**
+   * OPCO du client (Lot 5). Si un barème central versionné est en vigueur pour
+   * cet OPCO, ses plafonds priment (champ par champ) sur les valeurs Atlas par
+   * défaut. Absent ou barème introuvable → comportement Atlas inchangé.
+   */
+  opco?: string;
+  /** Date de résolution du barème versionné (défaut : maintenant). */
+  asOf?: Date;
 }
 
 export interface OpcoCoverageResult {
@@ -79,16 +91,28 @@ export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<Op
     getQualiopiConfig("opco_atlas_plafond_annuel"),
   ]);
 
-  // Tarifs stockés en €/h → convertir en centimes/h
-  const tarifHoraireCents: number =
+  // Tarifs Atlas par défaut (stockés en €/h → centimes/h).
+  const atlasHoraireCents: number =
     input.modalite === "intra"
       ? Math.round(tarifIntra * 100)
       : input.modalite === "inter_presentiel"
         ? Math.round(tarifInterPres * 100)
         : Math.round(tarifInterDist * 100);
+  const atlasAnnuelCents = Math.round(plafondAnnuel * 100);
 
-  // Plafond annuel en centimes
-  const plafondAnnuelCents = Math.round(plafondAnnuel * 100);
+  // Barème central versionné (Lot 5) : prime CHAMP PAR CHAMP s'il est renseigné.
+  // Fallback Atlas conservé si l'OPCO est absent, inconnu, sans barème en vigueur
+  // ou si le plafond concerné n'est pas encore relevé (structure vide).
+  let tarifHoraireCents = atlasHoraireCents;
+  let plafondAnnuelCents = atlasAnnuelCents;
+  if (input.opco) {
+    const bareme = await resolveBaremeOpco(input.opco, input.asOf ?? new Date());
+    if (bareme) {
+      const baremeHoraire = tarifHoraireBaremeCents(bareme, input.modalite);
+      if (baremeHoraire != null) tarifHoraireCents = baremeHoraire;
+      if (bareme.plafondAnnuelCents != null) plafondAnnuelCents = bareme.plafondAnnuelCents;
+    }
+  }
 
   // Enveloppe effective (défaut = plafond annuel)
   const enveloppe =

@@ -164,6 +164,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Convention tripartite manquante (subrogation OPCO)",
     resolutionAuto: true,
   },
+  // Référentiel OPCO versionné (Lot 5) : le barème en vigueur d'un OPCO a un
+  // relevé portail périmé (> config `bareme_opco_validite_mois`, défaut 12 mois).
+  bareme_opco_perime: {
+    niveau: "important",
+    titre: "Barème OPCO à rafraîchir (relevé > 12 mois)",
+    resolutionAuto: true,
+  },
   // [T17.1 — S7] Convention de formation (L.6353-1) non établie avant démarrage (off.9).
   convention_formation_manquante: {
     niveau: "critique",

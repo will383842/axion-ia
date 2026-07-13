@@ -50,7 +50,9 @@ describe("buildAdminNav SSOT", () => {
     // groupe qualiopi (snapshot non réconcilié au merge). = 136.
     // +1 (2026-07-13, Lot 4) : « Incidents » — registre des incidents (pilotage),
     // groupe qualiopi / sous-groupe registres. = 137.
-    expect(items.length).toBe(137);
+    // +1 (2026-07-13, Lot 5) : « Barèmes OPCO » — référentiel OPCO centralisé et
+    // versionné, groupe qualiopi / sous-groupe commercial. = 138.
+    expect(items.length).toBe(138);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

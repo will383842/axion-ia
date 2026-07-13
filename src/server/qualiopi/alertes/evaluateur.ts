@@ -9,6 +9,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
+import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -671,6 +673,28 @@ async function regleRevueTrimestrielle(now: Date): Promise<AlerteCandidate[]> {
   ];
 }
 
+/** R21 — Barème OPCO en vigueur dont le relevé portail est périmé (> N mois). */
+async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
+  const configVal = await getQualiopiConfig("bareme_opco_validite_mois").catch(() => 12);
+  const mois = typeof configVal === "number" && configVal > 0 ? configVal : 12;
+
+  const baremes = await listBaremesEnVigueur(now);
+  return baremes
+    .filter((b) => estBaremePerime(b.releveLe, mois, now))
+    .map((b) => ({
+      code: "bareme_opco_perime",
+      niveau: "important" as AlerteNiveau,
+      titre: "Barème OPCO à rafraîchir (relevé > 12 mois)",
+      message: `Le barème ${opcoLabel(b.opco)} ${
+        b.releveLe
+          ? `a été relevé le ${b.releveLe.toLocaleDateString("fr-FR")} (> ${mois} mois)`
+          : "n'a pas de date de relevé"
+      }. Vérifiez le portail OPCO et créez une nouvelle version si les plafonds ont changé.`,
+      cibleType: "BaremeOpco",
+      cibleId: b.id,
+    }));
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Catalogue des règles
 // ─────────────────────────────────────────────────────────────────────────────
@@ -698,6 +722,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "factures_impayees", fn: regleFacturesImpayees },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
+  { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
