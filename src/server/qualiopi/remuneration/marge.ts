@@ -50,7 +50,11 @@ export interface MargeSession {
   tauxMargePct: number | null;
   /** Heures animées cumulées (tous formateurs de la session). */
   heuresAnimees: number;
-  /** true si ≥1 ligne de rémunération existe (coût réellement calculé). */
+  /**
+   * true si ≥1 ligne de rémunération existe pour la période courante de la session
+   * (le coût provient du run — prévisionnel OU réel). false = aucune ligne → coût 0
+   * affiché, marge surévaluée à signaler.
+   */
   coutCalcule: boolean;
 }
 
@@ -119,6 +123,21 @@ function moisParis(date: Date): number {
   return Number.isFinite(n) ? n : 1;
 }
 
+/** Année en heure de Paris (cohérent avec le mois pour le rattachement). */
+function parisAnnee(date: Date): number {
+  const s = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+  }).format(date);
+  const n = parseInt(s, 10);
+  return Number.isFinite(n) ? n : date.getUTCFullYear();
+}
+
+/** Période de rattachement (année:mois Paris) d'une session — clé de matching des lignes. */
+function ratKey(date: Date): string {
+  return `${parisAnnee(date)}:${moisParis(date)}`;
+}
+
 /**
  * Collecte les sessions réalisées d'une plage + leur coût formateur et heures.
  * Brique commune à getMargeParSession / getMargeParFormation / consolidation.
@@ -143,8 +162,12 @@ async function collecteSessionsMarge(plage: { gte: Date; lt: Date }): Promise<Ma
   const ids = sessions.map((s) => s.id);
 
   const [coutRows, heuresRows] = await Promise.all([
+    // Groupe par (session, période) : une ligne de rémunération est rattachée au
+    // mois Paris de la dateDebut AU MOMENT du run. On la matche ensuite à la
+    // période COURANTE de la session pour écarter les lignes DEVENUES obsolètes
+    // après un report vers un autre mois (sinon double-comptage du coût).
     prisma.trainerFeeLine.groupBy({
-      by: ["sessionId"],
+      by: ["sessionId", "periodeYear", "periodeMonth"],
       where: { sessionId: { in: ids } },
       _sum: { montantHtCents: true },
       _count: { _all: true },
@@ -159,7 +182,10 @@ async function collecteSessionsMarge(plage: { gte: Date; lt: Date }): Promise<Ma
   const coutMap = new Map<string, { cents: number; count: number }>();
   for (const r of coutRows) {
     if (r.sessionId) {
-      coutMap.set(r.sessionId, { cents: r._sum.montantHtCents ?? 0, count: r._count._all });
+      coutMap.set(`${r.sessionId}:${r.periodeYear}:${r.periodeMonth}`, {
+        cents: r._sum.montantHtCents ?? 0,
+        count: r._count._all,
+      });
     }
   }
   const heuresMap = new Map<string, number>();
@@ -168,7 +194,7 @@ async function collecteSessionsMarge(plage: { gte: Date; lt: Date }): Promise<Ma
   }
 
   return sessions.map((s) => {
-    const cout = coutMap.get(s.id);
+    const cout = coutMap.get(`${s.id}:${ratKey(s.dateDebut)}`);
     const coutFormateurCents = cout?.cents ?? 0;
     const margeCents = s.montantHtCents - coutFormateurCents;
     return {
@@ -242,10 +268,11 @@ export async function getHeuresParFormateur(options: MargeOptions): Promise<Heur
   // Sessions réalisées de la période (bornage commun heures ↔ coût).
   const sessions = await prisma.trainingSession.findMany({
     where: { statut: "realisee", dateDebut: plage },
-    select: { id: true },
+    select: { id: true, dateDebut: true },
   });
   if (sessions.length === 0) return [];
   const ids = sessions.map((s) => s.id);
+  const rattachement = new Map(sessions.map((s) => [s.id, ratKey(s.dateDebut)]));
 
   const [heuresRows, coutRows] = await Promise.all([
     prisma.sessionFormateur.groupBy({
@@ -254,15 +281,21 @@ export async function getHeuresParFormateur(options: MargeOptions): Promise<Heur
       _sum: { heuresAnimees: true },
       _count: { _all: true },
     }),
+    // Idem collecteSessionsMarge : rattacher chaque coût à la période courante de
+    // la session pour ne pas sommer des lignes obsolètes (session reportée).
     prisma.trainerFeeLine.groupBy({
-      by: ["trainerId"],
+      by: ["trainerId", "sessionId", "periodeYear", "periodeMonth"],
       where: { sessionId: { in: ids } },
       _sum: { montantHtCents: true },
     }),
   ]);
 
   const coutMap = new Map<string, number>();
-  for (const r of coutRows) coutMap.set(r.trainerId, r._sum.montantHtCents ?? 0);
+  for (const r of coutRows) {
+    if (r.sessionId && rattachement.get(r.sessionId) === `${r.periodeYear}:${r.periodeMonth}`) {
+      coutMap.set(r.trainerId, (coutMap.get(r.trainerId) ?? 0) + (r._sum.montantHtCents ?? 0));
+    }
+  }
 
   const trainerIds = heuresRows.map((r) => r.trainerId);
   const trainers = await prisma.trainer.findMany({
@@ -320,9 +353,14 @@ function csvEsc(s: string): string {
   return `"${s.replace(/"/g, '""')}"`;
 }
 
-/** €, 2 décimales (centimes → chaîne). */
+/** €, 2 décimales, séparateur décimal VIRGULE (Excel fr-FR + séparateur « ; »). */
 function euros(cents: number): string {
-  return (cents / 100).toFixed(2);
+  return (cents / 100).toFixed(2).replace(".", ",");
+}
+
+/** Nombre → chaîne à séparateur décimal virgule (cohérence CSV fr-FR). */
+function nombreFr(n: number): string {
+  return String(n).replace(".", ",");
 }
 
 /**
@@ -359,7 +397,7 @@ export function margeSessionsToCsv(
       euros(r.coutFormateurCents),
       euros(r.margeCents),
       r.tauxMargePct != null ? String(r.tauxMargePct) : "—",
-      String(r.heuresAnimees),
+      nombreFr(r.heuresAnimees),
       r.coutCalcule ? "oui" : "non",
     ]
       .map(csvEsc)

@@ -684,7 +684,7 @@ async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
     .map((b) => ({
       code: "bareme_opco_perime",
       niveau: "important" as AlerteNiveau,
-      titre: "Barème OPCO à rafraîchir (relevé > 12 mois)",
+      titre: "Barème OPCO à rafraîchir (relevé trop ancien)",
       message: `Le barème ${opcoLabel(b.opco)} ${
         b.releveLe
           ? `a été relevé le ${b.releveLe.toLocaleDateString("fr-FR")} (> ${mois} mois)`

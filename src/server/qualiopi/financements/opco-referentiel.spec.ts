@@ -82,4 +82,12 @@ describe("estBaremePerime", () => {
     expect(estBaremePerime(new Date("2026-01-01T00:00:00.000Z"), 6, now)).toBe(true);
     expect(estBaremePerime(new Date("2026-03-01T00:00:00.000Z"), 6, now)).toBe(false);
   });
+
+  it("gère la fin de mois sans débordement (31 mars − 1 mois = 28 févr, pas 3 mars)", () => {
+    const finMars = new Date("2026-03-31T12:00:00.000Z");
+    // Seuil = 28 févr 2026 ; un relevé du 10 mars est donc DANS la validité (non périmé).
+    expect(estBaremePerime(new Date("2026-03-10T12:00:00.000Z"), 1, finMars)).toBe(false);
+    // Un relevé du 20 févr (avant le 28 févr) est périmé.
+    expect(estBaremePerime(new Date("2026-02-20T12:00:00.000Z"), 1, finMars)).toBe(true);
+  });
 });

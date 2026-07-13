@@ -12,11 +12,14 @@ type MockFn = ReturnType<typeof vi.fn>;
 
 const txUpdateMany = vi.fn();
 const txCreate = vi.fn();
+const txFindFirst = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     $transaction: vi.fn(async (cb: (tx: unknown) => unknown) =>
-      cb({ baremeOpco: { updateMany: txUpdateMany, create: txCreate } }),
+      cb({
+        baremeOpco: { updateMany: txUpdateMany, create: txCreate, findFirst: txFindFirst },
+      }),
     ),
     baremeOpco: { delete: vi.fn() },
   },
@@ -33,6 +36,7 @@ describe("creerVersionBaremeOpco", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     txCreate.mockResolvedValue({ id: "new-id" });
+    txFindFirst.mockResolvedValue(null); // par défaut : pas de successeur → version courante
   });
 
   it("ferme les versions ouvertes antérieures puis crée la nouvelle", async () => {
@@ -62,6 +66,37 @@ describe("creerVersionBaremeOpco", () => {
           perimetre: null,
         }),
       }),
+    );
+  });
+
+  it("borne une saisie RÉTROACTIVE par son successeur (pas de 2e ligne ouverte)", async () => {
+    // Un barème plus récent (successeur) existe déjà → la version intercalée est
+    // fermée à la date du successeur, elle ne naît PAS ouverte.
+    const dateSuccesseur = new Date("2026-06-01T00:00:00.000Z");
+    txFindFirst.mockResolvedValue({ dateEffet: dateSuccesseur });
+
+    await creerVersionBaremeOpco({
+      opco: "atlas",
+      dateEffet: new Date("2026-01-01T00:00:00.000Z"),
+    });
+
+    expect(txFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { opco: "atlas", dateEffet: { gt: new Date("2026-01-01T00:00:00.000Z") } },
+        orderBy: { dateEffet: "asc" },
+        select: { dateEffet: true },
+      }),
+    );
+    expect(txCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ effectiveTo: dateSuccesseur }) }),
+    );
+  });
+
+  it("crée une version courante (effectiveTo null) sans successeur", async () => {
+    txFindFirst.mockResolvedValue(null);
+    await creerVersionBaremeOpco({ opco: "akto", dateEffet: DATE_EFFET });
+    expect(txCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ effectiveTo: null }) }),
     );
   });
 

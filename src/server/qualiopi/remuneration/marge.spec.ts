@@ -63,11 +63,27 @@ function setupMocks() {
   mp.trainingSession.findMany.mockResolvedValue(SESSIONS);
   mp.trainerFeeLine.groupBy.mockImplementation((arg: { by?: string[] }) => {
     if (arg.by?.[0] === "trainerId") {
-      return Promise.resolve([{ trainerId: "t1", _sum: { montantHtCents: 40_000 } }]);
+      // getHeuresParFormateur : par (trainer, session, période). s1 rattaché à 2026:3.
+      return Promise.resolve([
+        {
+          trainerId: "t1",
+          sessionId: "s1",
+          periodeYear: 2026,
+          periodeMonth: 3,
+          _sum: { montantHtCents: 40_000 },
+        },
+      ]);
     }
-    // par sessionId : seule s1 a des lignes (s2 → coût non calculé)
+    // collecteSessionsMarge : par (session, période). Seule s1 (rattachée 2026:3)
+    // a des lignes ; s2 → coût non calculé.
     return Promise.resolve([
-      { sessionId: "s1", _sum: { montantHtCents: 40_000 }, _count: { _all: 2 } },
+      {
+        sessionId: "s1",
+        periodeYear: 2026,
+        periodeMonth: 3,
+        _sum: { montantHtCents: 40_000 },
+        _count: { _all: 2 },
+      },
     ]);
   });
   mp.sessionFormateur.groupBy.mockImplementation((arg: { by?: string[] }) => {
@@ -113,6 +129,34 @@ describe("getMargeParSession", () => {
     expect(s2.tauxMargePct).toBe(100);
     expect(s2.heuresAnimees).toBe(14);
     expect(s2.coutCalcule).toBe(false);
+  });
+
+  it("ignore une ligne de rémunération OBSOLÈTE (période ≠ rattachement courant)", async () => {
+    // s1 est rattachée à 2026:3 ; une ligne résiduelle sur 2026:1 (report depuis
+    // janvier) ne doit PAS être comptée → coût s1 reste 40 000, pas 90 000.
+    mp.trainerFeeLine.groupBy.mockImplementation((arg: { by?: string[] }) => {
+      if (arg.by?.[0] === "trainerId") return Promise.resolve([]);
+      return Promise.resolve([
+        {
+          sessionId: "s1",
+          periodeYear: 2026,
+          periodeMonth: 3,
+          _sum: { montantHtCents: 40_000 },
+          _count: { _all: 2 },
+        },
+        {
+          sessionId: "s1",
+          periodeYear: 2026,
+          periodeMonth: 1,
+          _sum: { montantHtCents: 50_000 },
+          _count: { _all: 1 },
+        },
+      ]);
+    });
+    const rows = await getMargeParSession({ annee: 2026 });
+    const s1 = rows.find((r) => r.sessionId === "s1")!;
+    expect(s1.coutFormateurCents).toBe(40_000);
+    expect(s1.margeCents).toBe(60_000);
   });
 
   it("stub-aware → []", async () => {

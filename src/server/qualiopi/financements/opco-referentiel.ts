@@ -66,6 +66,13 @@ export function estBaremePerime(
 ): boolean {
   if (releveLe == null) return true;
   const seuil = new Date(now);
+  // Soustraction de mois avec CLAMP du jour au dernier jour du mois cible : évite
+  // le débordement JS (`31 mars` − 1 mois → `31 février` → `3 mars`), qui fausserait
+  // le seuil de quelques jours en fin de mois.
+  const jour = seuil.getDate();
+  seuil.setDate(1);
   seuil.setMonth(seuil.getMonth() - moisValidite);
+  const dernierJour = new Date(seuil.getFullYear(), seuil.getMonth() + 1, 0).getDate();
+  seuil.setDate(Math.min(jour, dernierJour));
   return releveLe.getTime() < seuil.getTime();
 }

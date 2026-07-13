@@ -26,21 +26,29 @@ import type { Opco } from "../../../../prisma/generated/client";
 
 type ActionResult<T> = { data: T } | { error: string };
 
-// Plafond en centimes : entier ≥ 0, borné à 100 000 € (10 000 000 cents) pour
-// couper les saisies aberrantes. `null` = plafond non relevé (structure vide).
-const centsOptional = z.number().int().min(0).max(10_000_000).nullable().optional();
+// Tarif horaire en centimes : cap généreux 100 000 €/h (10 000 000 cents) contre
+// les saisies aberrantes. `null` = non relevé (structure vide).
+const centsHoraire = z.number().int().min(0).max(10_000_000).nullable().optional();
+// Plafonds formation / annuel : enveloppes potentiellement élevées (grandes
+// entreprises, dispositifs pluriannuels) → cap large 1 000 000 € (100 000 000 cents).
+const centsPlafond = z.number().int().min(0).max(100_000_000).nullable().optional();
+// Date optionnelle tolérant la chaîne vide d'un champ formulaire effacé ("" → absent).
+const dateOptionnelle = z.preprocess(
+  (v) => (v === "" ? undefined : v),
+  z.coerce.date().nullable().optional(),
+);
 
 const creerVersionSchema = z.object({
   opco: z.enum(OPCO_IDS),
   dateEffet: z.coerce.date(),
   perimetre: z.string().max(200).nullable().optional(),
-  intraHoraireCents: centsOptional,
-  interPresentielCents: centsOptional,
-  interDistancielCents: centsOptional,
-  plafondFormationCents: centsOptional,
-  plafondAnnuelCents: centsOptional,
+  intraHoraireCents: centsHoraire,
+  interPresentielCents: centsHoraire,
+  interDistancielCents: centsHoraire,
+  plafondFormationCents: centsPlafond,
+  plafondAnnuelCents: centsPlafond,
   sourceUrl: z.string().url().max(2000).nullable().optional(),
-  releveLe: z.coerce.date().nullable().optional(),
+  releveLe: dateOptionnelle,
   note: z.string().max(5000).nullable().optional(),
 });
 
