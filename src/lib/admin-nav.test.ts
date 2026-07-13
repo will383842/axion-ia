@@ -54,7 +54,9 @@ describe("buildAdminNav SSOT", () => {
     // versionné, groupe qualiopi / sous-groupe commercial. = 138.
     // +1 (2026-07-13, Lot 6.3) : « Cockpit financier » — marge par session/formation,
     // heures & coût par formateur, groupe qualiopi / sous-groupe formations. = 139.
-    expect(items.length).toBe(139);
+    // +2 (2026-07-13) : « Facture directe » (facturation/new) + « Plans récurrents »
+    // (facturation/plans), écrans du Hub facturation, groupe qualiopi / commercial. = 141.
+    expect(items.length).toBe(141);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

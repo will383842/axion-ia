@@ -28,6 +28,9 @@ import { isRegimeTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { AdminFilterTabs } from "@/components/admin/ui";
 import { RelancesATraiter } from "@/components/admin/qualiopi/RelancesATraiter";
 import type { RelanceItem } from "@/components/admin/qualiopi/RelancesATraiter";
+import { DossiersFinancementPanel } from "@/components/admin/qualiopi/DossiersFinancementPanel";
+import type { DossierItem } from "@/components/admin/qualiopi/DossiersFinancementPanel";
+import { listClients } from "@/server/qualiopi/crm/clients";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 import type { AdminListScaffoldRow } from "../../_v2/AdminListScaffold";
 import type {
@@ -103,6 +106,8 @@ export default async function FacturationHubPage({
   if (!userSession?.user || !rolesAutorises.includes(role ?? "")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
+  // Écriture réservée admin/super_admin (les actions du Hub throw pour editor/reader).
+  const peutEcrire = role === "admin" || role === "super_admin";
   const sp = await searchParams;
 
   const statutParam = typeof sp["statut"] === "string" ? sp["statut"] : undefined;
@@ -115,7 +120,9 @@ export default async function FacturationHubPage({
     ...(isActivite(activiteParam) ? { activite: activiteParam } : {}),
   };
 
-  const base = `/${adminPrefix}/qualiopi/facturation`;
+  // Préfixe locale inclus : résolution directe des liens (detailHref, toolbar,
+  // pagination) sans passer par le redirect 301 de proxy.ts.
+  const base = `/${locale}/${adminPrefix}/qualiopi/facturation`;
   const hrefWith = (patch: Record<string, string | undefined>): string => {
     const params2 = new URLSearchParams();
     const merged = { statut: statutParam, activite: activiteParam, ...patch };
@@ -126,7 +133,7 @@ export default async function FacturationHubPage({
 
   // Requêtes en parallèle : page courante + total + KPIs transverses (hors filtre).
   const now = new Date();
-  const [factures, total, aggEmis, aggEncaisse, ouvertes, relances, dossiersEnCours] =
+  const [factures, total, aggEmis, aggEncaisse, ouvertes, relances, dossiersEnCours, clients] =
     await Promise.all([
       prisma.factureFormation.findMany({
         where,
@@ -215,6 +222,7 @@ export default async function FacturationHubPage({
           payeurs: { select: { id: true } },
         },
       }),
+      listClients(),
     ]);
 
   // Buckets d'ancienneté des créances ouvertes (0-30 / 31-60 / 60+ jours),
@@ -256,20 +264,23 @@ export default async function FacturationHubPage({
     { label: "Retard 60 j +", value: fmtEur(buckets.b60plus) },
   ];
 
-  const DOSSIER_STATUT_LABELS: Record<string, string> = {
-    a_monter: "À monter",
-    envoye: "Envoyé",
-    accord_recu: "Accord reçu",
-    refuse: "Refusé",
-    facture: "Facturé",
-    paiement_recu: "Paiement reçu",
-  };
-  const DOSSIER_TYPE_LABELS: Record<string, string> = {
-    opco: "OPCO",
-    france_travail: "France Travail",
-    cpf: "CPF",
-    mixte: "Mixte",
-  };
+  const dossierItems: DossierItem[] = dossiersEnCours.map((d) => ({
+    id: d.id,
+    type: d.type,
+    statut: d.statut,
+    financeurNom: d.financeurNom,
+    clientRaisonSociale: d.client?.raisonSociale ?? null,
+    numeroDossierExterne: d.numeroDossierExterne,
+    montantDemandeCents: d.montantDemandeCents,
+    montantAccordeCents: d.montantAccordeCents,
+    subrogation: d.subrogation,
+    nbPayeurs: d.payeurs.length,
+  }));
+  const clientOptions = clients.map((c) => ({
+    id: c.id,
+    numero: c.numero,
+    raisonSociale: c.raisonSociale,
+  }));
 
   const relanceItems: RelanceItem[] = relances.map((r) => ({
     id: r.id,
@@ -282,6 +293,7 @@ export default async function FacturationHubPage({
 
   const rows: AdminListScaffoldRow[] = factures.map((f) => ({
     id: f.id,
+    detailHref: `${base}/${f.id}`,
     cells: [
       <span key="num" className="font-mono text-[length:var(--text-admin-xs)]">
         {f.numero}
@@ -339,8 +351,24 @@ export default async function FacturationHubPage({
                   <p className="text-[length:var(--text-admin-lg)] font-semibold">{k.value}</p>
                 </div>
               ))}
-              <Link href={`/${adminPrefix}/qualiopi/devis/new`} className="admin-button">
-                + Nouveau devis
+              {peutEcrire && (
+                <>
+                  <Link
+                    href={`/${locale}/${adminPrefix}/qualiopi/devis/new`}
+                    className="admin-button"
+                  >
+                    + Nouveau devis
+                  </Link>
+                  <Link href={`${base}/new`} className="admin-button">
+                    + Facture directe
+                  </Link>
+                </>
+              )}
+              <Link href={`${base}/plans`} className="admin-button">
+                Plans récurrents
+              </Link>
+              <Link href={`${base}/comptabilite`} className="admin-button">
+                FEC / Import
               </Link>
             </div>
             <AdminFilterTabs
@@ -367,43 +395,12 @@ export default async function FacturationHubPage({
                 })),
               ]}
             />
-            <RelancesATraiter relances={relanceItems} />
-            {dossiersEnCours.length > 0 ? (
-              <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
-                <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                  Dossiers de financement en cours
-                </p>
-                <ul className="space-y-[var(--space-admin-2)]">
-                  {dossiersEnCours.map((d) => (
-                    <li
-                      key={d.id}
-                      className="flex flex-wrap items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
-                    >
-                      <span className="font-semibold">
-                        {DOSSIER_TYPE_LABELS[d.type] ?? d.type}
-                        {d.subrogation ? " (subrogé)" : ""}
-                      </span>
-                      <span>{d.financeurNom ?? "Financeur à identifier"}</span>
-                      <span className="text-[color:var(--color-admin-fg-muted)]">
-                        {d.client?.raisonSociale ?? "—"}
-                        {d.numeroDossierExterne ? ` · n° ${d.numeroDossierExterne}` : ""}
-                        {` · ${d.payeurs.length} payeur(s)`}
-                      </span>
-                      <span>
-                        {d.montantAccordeCents !== null
-                          ? `accordé ${fmtEur(d.montantAccordeCents)}`
-                          : d.montantDemandeCents !== null
-                            ? `demandé ${fmtEur(d.montantDemandeCents)}`
-                            : ""}
-                      </span>
-                      <span className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
-                        {DOSSIER_STATUT_LABELS[d.statut] ?? d.statut}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+            <RelancesATraiter relances={relanceItems} canWrite={peutEcrire} />
+            <DossiersFinancementPanel
+              dossiers={dossierItems}
+              clients={clientOptions}
+              canWrite={peutEcrire}
+            />
           </div>
         }
         columnHeaders={[

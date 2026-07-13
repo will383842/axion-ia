@@ -26,7 +26,19 @@ export interface RelanceItem {
   envoiDirect: boolean;
 }
 
-export function RelancesATraiter({ relances }: { relances: ReadonlyArray<RelanceItem> }) {
+export function RelancesATraiter({
+  relances,
+  canWrite = true,
+}: {
+  relances: ReadonlyArray<RelanceItem>;
+  /**
+   * Le rôle courant peut-il écrire (admin/super_admin) ? Sinon les boutons
+   * d'action sont masqués — les server actions (requireAdminWrite) rejetteraient
+   * de toute façon, on évite l'échec silencieux côté reader. Défaut true pour
+   * rétro-compatibilité des appelants existants.
+   */
+  canWrite?: boolean;
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [erreur, setErreur] = useState<string | null>(null);
@@ -71,7 +83,7 @@ export function RelancesATraiter({ relances }: { relances: ReadonlyArray<Relance
               {r.palier}
             </span>
             <span className="flex-1">{r.suggestion ?? r.libelle}</span>
-            {r.envoiDirect ? (
+            {canWrite && r.envoiDirect ? (
               <button
                 type="button"
                 className="admin-button"
@@ -81,22 +93,26 @@ export function RelancesATraiter({ relances }: { relances: ReadonlyArray<Relance
                 Envoyer la relance
               </button>
             ) : null}
-            <button
-              type="button"
-              className="admin-button"
-              disabled={isPending}
-              onClick={() => traiter(r.id, "reporter")}
-            >
-              Reporter 7 j
-            </button>
-            <button
-              type="button"
-              className="admin-button"
-              disabled={isPending}
-              onClick={() => traiter(r.id, "ignorer")}
-            >
-              Ignorer
-            </button>
+            {canWrite && (
+              <>
+                <button
+                  type="button"
+                  className="admin-button"
+                  disabled={isPending}
+                  onClick={() => traiter(r.id, "reporter")}
+                >
+                  Reporter 7 j
+                </button>
+                <button
+                  type="button"
+                  className="admin-button"
+                  disabled={isPending}
+                  onClick={() => traiter(r.id, "ignorer")}
+                >
+                  Ignorer
+                </button>
+              </>
+            )}
           </li>
         ))}
       </ul>
