@@ -15,19 +15,12 @@
 - ✅ **Lot 1** committé `5eca12f2` — questionnaires auto + alerte session sans formateur.
 - ✅ **Lot 2** committé `128cfb94` — moyens pédagogiques, PDF registres, CV formateur, fiche adaptation, ind.29.
 - ✅ **Lot 3** committé `7fd2563b` — pont appel/contact → CRM (entrées récentes + conversion 1 clic).
-- 🔄 **Lot 4 EN COURS — DANS LE WORKING TREE, NON COMMITÉ** (pilotage réel). Un agent background
-  (`ad8c0a53d7ec3157a`) le terminait au moment de la pause. Fichiers déjà présents :
-  - Migration `prisma/migrations/20260713000003_incidents/` (modèle Incident).
-  - Créés : `src/app/[locale]/(admin)/[adminPrefix]/qualiopi/incidents/`, `IncidentForm.tsx`,
-    `IncidentRowActions.tsx`, `ReporterEnRevueButton.tsx`, `CsvExportButton.tsx`,
-    `src/server/actions/qualiopi/incidents.ts`, `src/server/qualiopi/registres/incidents-service.ts`,
-    `src/server/qualiopi/satisfaction/synthese-service.ts`.
-  - Modifiés : `pilotage-service.ts`, page pilotage, page indicateurs, `exports-pdf.ts`,
-    `revue-direction.ts` + service, `catalogue.ts`, `evaluateur.ts`, `registry.ts`,
-    `registres-pdf.ts`, `admin-nav.ts` + test.
-  - **À FAIRE au redémarrage** : vérifier si l'agent a fini (git status), relire le diff,
-    GATE (vitest `src/server/qualiopi src/server/actions/qualiopi --maxWorkers=2` + typecheck 6G
-    + `prisma validate` + BOM check migration 000003), prettier --write, PUIS committer Lot 4.
+- ✅ **Lot 4** COMMITÉ (pilotage réel) — filtres période/type, exports CSV/PDF, registre
+  Incidents (migration 000003), revue trimestrielle, synthèse satisfaction → revue de direction.
+  Agent a rapporté 2266 tests verts + typecheck + prisma validate + BOM check OK.
+  ⚠️ À RE-VÉRIFIER à la vérif finale (le commit a été fait sur le rapport vert de l'agent,
+  sans re-run complet de ma part — pause utilisateur). Note : `admin-nav.test.ts` snapshot
+  réconcilié 134→137 (dette Lots 2/3).
 - ⏳ **Lot 5** — Barèmes OPCO versionnés (structure vide, valeurs saisies par Will). Lancer en Opus.
 - ⏳ **Lot 6** — SessionFormateur + commissions (cf. mémoire `cockpit-pilotage-formateurs-plan`). Opus.
 - ⏳ **Vérif finale** — verify:all, revue adversariale multi-agents du diff complet, croisement
