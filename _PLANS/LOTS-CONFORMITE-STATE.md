@@ -45,10 +45,17 @@ Machine : 8 Go — vitest `--maxWorkers=2`, typecheck heap 6G, PAS de build loca
       ciblés (referentiel 13, resolver 10, service 3, devis-opco +5, evaluateur +3, nav 138) ;
       typecheck OK ; prettier OK. NOTE facturation : le barème dossier reste source de vérité ; la
       facture ne consulte PAS encore le référentiel (choix prudent, wiring devis/estimation seul).
-- [ ] **Lot 6** — Dashboard MARGE (cockpit financier). Socle commission DÉJÀ mergé (cockpit #287+ :
-      SessionFormateur, TrainerCompensationRule/FeeLine/Statement, run mensuel). Reste = couche
-      agrégation MARGE (CA − coût formateur) : heures/formateur, coût & marge par session/formation,
-      consolidation mensuelle. PAS de migration. Note : ind.18 = coordination (pas coût).
+- [x] **Lot 6.3** — Cockpit financier (dashboard MARGE) (2026-07-13). Socle commission DÉJÀ mergé
+      (cockpit #287+ : SessionFormateur, TrainerCompensationRule/FeeLine/Statement, run mensuel) →
+      Lot 6.1/6.2 acquis. Ajouté : `remuneration/marge.ts` (agrégation pure sur TrainerFeeLine +
+      CA session, sessions RÉALISÉES) — marge par session/formation, heures & coût par formateur,
+      consolidation mensuelle (bucket Paris), `coutCalcule` (drapeau run mensuel non exécuté).
+      Page admin `/qualiopi/cockpit-financier` (KPIs + 4 tableaux + filtres période GET + CSV),
+      action `genererMargeCsvAction`, nav item (count 138→139). Refactor : helpers de période
+      extraits dans `conformite/periode.ts` (module PUR, réexporté par pilotage-service) — évite de
+      traîner le graphe next-auth dans les tests. AUCUNE migration. Tests : marge 7 verts, pilotage
+      19 intacts, nav 139 ; typecheck OK ; prettier OK. Note : ind.18 = coordination (pas coût) —
+      non modifié (le forcer serait faux).
 - [ ] Vérification finale end-to-end + revue adversariale + PR.
 
 ## Décisions prises

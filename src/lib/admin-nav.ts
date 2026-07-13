@@ -840,6 +840,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "formations",
     },
+    // Cockpit financier (Lot 6.3) — marge par session/formation, heures & coût par
+    // formateur, consolidation mensuelle (lecture au-dessus des lignes de rémunération).
+    {
+      href: `${base}/qualiopi/cockpit-financier`,
+      label: "Cockpit financier",
+      icon: "📈",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
     {
       href: `${base}/qualiopi/audits`,
       label: "Audits IA",

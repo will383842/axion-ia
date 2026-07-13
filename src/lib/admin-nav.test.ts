@@ -52,7 +52,9 @@ describe("buildAdminNav SSOT", () => {
     // groupe qualiopi / sous-groupe registres. = 137.
     // +1 (2026-07-13, Lot 5) : « Barèmes OPCO » — référentiel OPCO centralisé et
     // versionné, groupe qualiopi / sous-groupe commercial. = 138.
-    expect(items.length).toBe(138);
+    // +1 (2026-07-13, Lot 6.3) : « Cockpit financier » — marge par session/formation,
+    // heures & coût par formateur, groupe qualiopi / sous-groupe formations. = 139.
+    expect(items.length).toBe(139);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
