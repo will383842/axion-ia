@@ -65,6 +65,9 @@ export async function envoyerDevisEmailAction(
       numero: devis.numero,
       montantLabel: `${eur(devis.montantTotalHtCents)} HT`,
       dateValiditeLabel: dateFr(devis.dateValidite),
+      ...(devis.docusealEmbedUrl !== null && devis.docusealEmbedUrl !== ""
+        ? { signatureUrl: devis.docusealEmbedUrl }
+        : {}),
       ...(input.messagePersonnalise !== undefined
         ? { messagePersonnalise: input.messagePersonnalise }
         : {}),

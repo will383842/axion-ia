@@ -1,9 +1,12 @@
 // Email — envoi MANUEL d'un devis par l'admin (Hub facturation), PDF joint.
 //
-// Déclenché exclusivement par un clic admin (envoyerDevisEmailAction) — JAMAIS
-// par un cron. Le PDF du devis est attaché par le worker (clé R2 dans
-// EmailJobData.attachments). Le message personnalisé de l'admin (multi-lignes)
-// est affiché tel quel. Ton : courtois, zéro pression.
+// Déclenché exclusivement par un clic admin — JAMAIS par un cron : soit à
+// l'envoi initial (sendDevisAction, bouton « Envoyer au client »), soit au
+// renvoi manuel (envoyerDevisEmailAction). Le PDF du devis est attaché par le
+// worker (clé R2 dans EmailJobData.attachments). Si `signatureUrl` est fourni
+// (embed_src DocuSeal du client), un CTA « Signer en ligne » est ajouté. Le
+// message personnalisé de l'admin (multi-lignes) est affiché tel quel. Ton :
+// courtois, zéro pression.
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
@@ -19,6 +22,12 @@ interface Payload {
   dateValiditeLabel?: string;
   /** Message libre de l'admin (multi-lignes, affiché tel quel). Optionnel. */
   messagePersonnalise?: string;
+  /**
+   * Lien de signature en ligne (embed_src DocuSeal du client). Si présent,
+   * un CTA « Signer le devis en ligne » est affiché. Optionnel — sans DocuSeal
+   * configuré, le devis reste signable par retour du PDF « bon pour accord ».
+   */
+  signatureUrl?: string;
 }
 
 function field(p: Partial<Payload>, key: keyof Payload, fallback: string): string {
@@ -34,6 +43,8 @@ const COPY = {
       `Veuillez trouver ci-joint votre devis ${num}${montant ? ` d'un montant de ${montant}` : ""}, au format PDF.`,
     validity: (d: string) => (d ? `Il est valable jusqu'au ${d}.` : ""),
     attachment: "Le document est joint à cet email au format PDF.",
+    sign: "Vous pouvez signer votre « bon pour accord » en ligne, en un clic, via le bouton ci-dessous.",
+    signCta: "Signer le devis en ligne",
     questions:
       "Pour toute question sur le contenu, le périmètre ou les modalités, répondez simplement à cet email : nous sommes à votre écoute.",
     close: "Bien cordialement,\nL'équipe Axion-IA",
@@ -45,6 +56,8 @@ const COPY = {
       `Please find attached your quote ${num}${montant ? ` for ${montant}` : ""}, in PDF format.`,
     validity: (d: string) => (d ? `It is valid until ${d}.` : ""),
     attachment: "The document is attached to this email in PDF format.",
+    sign: "You can sign your approval online, in one click, using the button below.",
+    signCta: "Sign the quote online",
     questions:
       "For any question about the content, scope or terms, simply reply to this email: we are here for you.",
     close: "Best regards,\nThe Axion-IA team",
@@ -66,9 +79,15 @@ export function DevisEnvoiEmail({
   const p = payload as Partial<Payload>;
   const t = COPY[locale];
   const message = field(p, "messagePersonnalise", "");
+  const signatureUrl = field(p, "signatureUrl", "");
 
   return (
-    <EmailLayout locale={locale} title={t.title} preview={devisEnvoiSubject(locale, payload)}>
+    <EmailLayout
+      locale={locale}
+      title={t.title}
+      preview={devisEnvoiSubject(locale, payload)}
+      {...(signatureUrl !== "" ? { cta: { label: t.signCta, href: signatureUrl } } : {})}
+    >
       <Text style={emailStyles.paragraphStyle}>{t.intro(field(p, "clientNom", ""))}</Text>
       {message !== "" &&
         message.split("\n").map((line, i) => (
@@ -81,6 +100,7 @@ export function DevisEnvoiEmail({
         {t.validity(field(p, "dateValiditeLabel", ""))}
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.attachment}</Text>
+      {signatureUrl !== "" && <Text style={emailStyles.paragraphStyle}>{t.sign}</Text>}
       <Text style={emailStyles.paragraphStyle}>{t.questions}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.close.split("\n").map((line, i) => (

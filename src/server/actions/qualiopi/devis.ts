@@ -39,8 +39,12 @@ import {
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { isDocusealConfigured, createContractSubmission } from "@/lib/docuseal";
+import { enqueueEmail } from "@/server/queue/queues";
 
 type ActionResult<T> = { data: T } | { error: string };
+
+const eurHt = (cents: number): string =>
+  new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
@@ -219,7 +223,9 @@ function adresseClientDevis(client: {
  *   3. Révision : si `replacesDevisId` non null, l'ancienne version passe
  *      `expire` dans la MÊME transaction que le passage à `envoye`.
  */
-export async function sendDevisAction(id: string): Promise<ActionResult<{ id: string }>> {
+export async function sendDevisAction(
+  id: string,
+): Promise<ActionResult<{ id: string; emailEnvoye: boolean; note?: string }>> {
   // Stub-aware (build GH Actions) : aucune mutation au SSG.
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible pendant le build" };
@@ -259,8 +265,16 @@ export async function sendDevisAction(id: string): Promise<ActionResult<{ id: st
     },
   });
   if (!devis) return { error: "Devis introuvable" };
-  if (devis.statut === "transforme_convention")
-    return { error: "Devis déjà transformé en convention" };
+  // Garde de statut serveur : seul un BROUILLON s'envoie. Empêche un re-clic
+  // depuis une UI périmée / 2e onglet de recréer une soumission DocuSeal (qui
+  // écraserait docusealEmbedUrl et orphelinerait l'ancien lien) et de renvoyer
+  // un 2e email au client. Le renvoi d'un devis déjà émis passe par
+  // envoyerDevisEmailAction (email seul, pas de nouvelle soumission).
+  if (devis.statut !== "brouillon") {
+    return {
+      error: `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
+    };
+  }
 
   // ── 1. Génération du PDF (fail-soft : un rendu raté ne bloque pas l'envoi) ──
   let fichierPdfUrl: string | null = null;
@@ -327,7 +341,10 @@ export async function sendDevisAction(id: string): Promise<ActionResult<{ id: st
   }
 
   // ── 2. Signature électronique « bon pour accord » (best-effort) ──
+  // On capture `embedUrl` (embed_src du 1er signataire = lien de signature du
+  // CLIENT) pour le glisser dans l'email d'envoi (CTA « Signer en ligne »).
   let docusealSubmissionId: string | null = null;
+  let docusealEmbedUrl: string | null = null;
   const docusealTemplateId =
     process.env["DOCUSEAL_DEVIS_TEMPLATE_ID"] || process.env["DOCUSEAL_QUOTE_TEMPLATE_ID"];
   const contactEmail = devis.client.contactEmail;
@@ -344,10 +361,11 @@ export async function sendDevisAction(id: string): Promise<ActionResult<{ id: st
           { name: "amount_ht", default_value: (devis.montantTotalHtCents / 100).toFixed(2) },
           { name: "valid_until", default_value: devis.dateValidite.toISOString().slice(0, 10) },
         ],
-        sendEmail: false, // l'envoi email reste piloté côté admin
+        sendEmail: false, // l'email est envoyé par NOUS (template Axion-IA + PJ PDF)
         metadata: { devisId: devis.id, kind: "devis" },
       });
       docusealSubmissionId = result.submissionId;
+      docusealEmbedUrl = result.embedUrl || null;
     } catch (err) {
       console.warn("[sendDevisAction] soumission DocuSeal échouée (best-effort)", err);
     }
@@ -362,6 +380,7 @@ export async function sendDevisAction(id: string): Promise<ActionResult<{ id: st
         sentAt: new Date(),
         ...(fichierPdfUrl !== null ? { fichierPdfUrl } : {}),
         ...(docusealSubmissionId !== null ? { docusealSubmissionId } : {}),
+        ...(docusealEmbedUrl !== null ? { docusealEmbedUrl } : {}),
       },
     }),
     prisma.client.update({
@@ -379,6 +398,39 @@ export async function sendDevisAction(id: string): Promise<ActionResult<{ id: st
       : []),
   ]);
 
+  // ── 4. Email au client (PDF joint + lien de signature) ──
+  // Déclenché par le clic admin « Envoyer » — MANUEL, jamais un cron : conforme
+  // à la règle « aucun email automatique ». On n'envoie que si l'on a un
+  // destinataire ET le PDF (raison d'être de l'email = le document joint) ;
+  // sinon on marque quand même « envoyé » et on remonte une note à l'admin.
+  let emailEnvoye = false;
+  let note: string | undefined;
+  if (contactEmail && fichierPdfUrl !== null) {
+    const { enqueued } = await enqueueEmail(
+      "devis-envoi",
+      contactEmail,
+      "fr",
+      {
+        clientNom: devis.client.raisonSociale,
+        numero: devis.numero,
+        montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
+        dateValiditeLabel: devis.dateValidite.toLocaleDateString("fr-FR"),
+        ...(docusealEmbedUrl !== null ? { signatureUrl: docusealEmbedUrl } : {}),
+      },
+      {
+        attachments: [{ filename: `${devis.numero}.pdf`, r2Key: fichierPdfUrl }],
+      },
+    );
+    emailEnvoye = enqueued;
+    if (!enqueued)
+      note =
+        "File d'attente email indisponible : le devis est marqué envoyé, mais l'email n'a pas pu être expédié — réessayer plus tard.";
+  } else if (!contactEmail) {
+    note = "Aucun email de contact client : le devis est marqué envoyé, mais rien n'a été expédié.";
+  } else {
+    note = "PDF indisponible : le devis est marqué envoyé, mais l'email n'a pas pu être expédié.";
+  }
+
   await logQualiopiActivity({
     action: "qualiopi.devis.send",
     targetType: "Devis",
@@ -387,12 +439,13 @@ export async function sendDevisAction(id: string): Promise<ActionResult<{ id: st
       statut: "envoye",
       pdfGenere: fichierPdfUrl !== null,
       docusealSubmissionId,
+      emailEnvoye,
       devisExpire: devis.replacesDevisId,
     },
     session,
   });
 
-  return { data: { id: idParsed.data } };
+  return { data: { id: idParsed.data, emailEnvoye, ...(note !== undefined ? { note } : {}) } };
 }
 
 /**
