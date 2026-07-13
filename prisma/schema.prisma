@@ -5680,6 +5680,8 @@ model TrainingSession {
   dossiersFinancement DossierFinancement[]
   /// Jointure normalisée session ↔ formateur (remplace `coFormateurs` Json).
   sessionFormateurs   SessionFormateur[]
+  /// Incidents rattachés à la session (registre des incidents — LOT 4).
+  incidents           Incident[]
 
   @@index([formationId])
   @@index([clientId])
@@ -6784,6 +6786,55 @@ model MoyenPedagogique {
   @@index([categorie])
   @@index([actif])
   @@map("moyens_pedagogiques")
+}
+
+/// Type d'un incident (registre des incidents — LOT 4, alimente M7/M9 pilotage).
+enum IncidentType {
+  pedagogique
+  administratif
+  technique
+  autre
+}
+
+/// Gravité d'un incident.
+enum IncidentGravite {
+  mineur
+  majeur
+  critique
+}
+
+/// Statut de traitement d'un incident.
+enum IncidentStatut {
+  ouvert
+  en_cours
+  resolu
+}
+
+/// Registre des incidents (LOT 4 — pilotage réel). Remplace les proxys M7
+/// (sessions annulées/reportées) et M9 (réclamations seules) : les incidents
+/// déclarés + leurs actions correctives deviennent la source première des
+/// métriques de pilotage. `sessionId` optionnel (incident hors session possible).
+model Incident {
+  id               String           @id @default(uuid()) @db.Uuid
+  type             IncidentType
+  gravite          IncidentGravite
+  titre            String           @db.VarChar(300)
+  description      String           @default("") @db.Text
+  sessionId        String?          @map("session_id") @db.Uuid
+  session          TrainingSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  dateIncident     DateTime         @map("date_incident")
+  /// Action corrective décidée/réalisée (preuve d'amélioration continue — M9).
+  actionCorrective String           @default("") @map("action_corrective") @db.Text
+  statut           IncidentStatut   @default(ouvert)
+  resoluAt         DateTime?        @map("resolu_at")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  @@index([statut])
+  @@index([type])
+  @@index([dateIncident])
+  @@index([sessionId])
+  @@map("incidents")
 }
 
 /// Revue de direction annuelle (off.32 — GATÉE ind.32). Snapshot indicateurs +

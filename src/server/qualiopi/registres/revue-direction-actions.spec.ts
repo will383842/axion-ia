@@ -16,6 +16,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@/server/qualiopi/registres/revue-direction-service", () => ({
   creerRevue: vi.fn(),
   updateRevue: vi.fn(),
+  reporterConstatRevue: vi.fn(),
 }));
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
@@ -27,11 +28,16 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 // Imports
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { creerRevue, updateRevue } from "@/server/qualiopi/registres/revue-direction-service";
+import {
+  creerRevue,
+  updateRevue,
+  reporterConstatRevue,
+} from "@/server/qualiopi/registres/revue-direction-service";
 import { logQualiopiActivity, requireAdminWrite } from "@/server/actions/qualiopi/_guards";
 import {
   creerRevueDirectionAction,
   updateRevueDirectionAction,
+  reporterEnRevueDirectionAction,
 } from "@/server/actions/qualiopi/revue-direction";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -42,6 +48,7 @@ const mockRequireAdminWrite = requireAdminWrite as ReturnType<typeof vi.fn>;
 const mockLogActivity = logQualiopiActivity as ReturnType<typeof vi.fn>;
 const mockCreerRevue = creerRevue as ReturnType<typeof vi.fn>;
 const mockUpdateRevue = updateRevue as ReturnType<typeof vi.fn>;
+const mockReporterConstat = reporterConstatRevue as ReturnType<typeof vi.fn>;
 
 const REVUE_UUID = "550e8400-e29b-41d4-a716-446655440050";
 const DATE_REVUE = new Date("2026-06-15T14:00:00.000Z");
@@ -176,5 +183,61 @@ describe("updateRevueDirectionAction", () => {
 
     const logCall = mockLogActivity.mock.calls[0]?.[0] as { action: string };
     expect(logCall.action).toBe("qualiopi.revue_direction.update");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// reporterEnRevueDirectionAction (LOT 4)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("reporterEnRevueDirectionAction", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid" });
+    mockLogActivity.mockResolvedValue(undefined);
+    mockReporterConstat.mockResolvedValue({
+      id: REVUE_UUID,
+      annee: new Date().getFullYear(),
+      creee: false,
+    });
+  });
+
+  it("reporte le constat sur l'année courante et retourne { data }", async () => {
+    const result = await reporterEnRevueDirectionAction({
+      texte: "Prévoir une pause supplémentaire l'après-midi.",
+      source: "Verbatim satisfaction — session AXI-SES-2026-007",
+    });
+
+    expect("data" in result).toBe(true);
+    if (!("data" in result)) return;
+    expect(result.data.id).toBe(REVUE_UUID);
+    expect(mockReporterConstat).toHaveBeenCalledOnce();
+    const [annee, constat] = mockReporterConstat.mock.calls[0] as [
+      number,
+      { texte: string; source: string },
+    ];
+    expect(annee).toBe(new Date().getFullYear());
+    expect(constat.texte).toContain("pause supplémentaire");
+    expect(constat.source).toContain("AXI-SES-2026-007");
+  });
+
+  it("trace l'action dans l'audit log", async () => {
+    await reporterEnRevueDirectionAction({ texte: "Constat", source: "Synthèse satisfaction" });
+
+    expect(mockLogActivity).toHaveBeenCalledOnce();
+    const arg = mockLogActivity.mock.calls[0]?.[0] as { action: string };
+    expect(arg.action).toBe("qualiopi.revue_direction.reporter_constat");
+  });
+
+  it("rejette un texte vide (Zod)", async () => {
+    const result = await reporterEnRevueDirectionAction({ texte: "", source: "Synthèse" });
+    expect(result).toEqual({ error: "Données invalides" });
+    expect(mockReporterConstat).not.toHaveBeenCalled();
+  });
+
+  it("retourne { error } si le service lève", async () => {
+    mockReporterConstat.mockRejectedValue(new Error("DB down"));
+    const result = await reporterEnRevueDirectionAction({ texte: "Constat", source: "Synthèse" });
+    expect(result).toEqual({ error: "Erreur lors du report en revue de direction" });
   });
 });

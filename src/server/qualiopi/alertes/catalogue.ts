@@ -198,6 +198,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Demande de suppression RGPD non traitée depuis 30 jours",
     resolutionAuto: false,
   },
+
+  // ── Pilotage — cadence trimestrielle (LOT 4) ──────────────────────────────
+  // Non bloquante (décision B4) : gatée par la clé de config
+  // `revue_trimestrielle_activee` (défaut true).
+  revue_trimestrielle_a_faire: {
+    niveau: "info",
+    titre: "Revue trimestrielle à réaliser",
+    resolutionAuto: true,
+  },
 } as const;
 
 /**

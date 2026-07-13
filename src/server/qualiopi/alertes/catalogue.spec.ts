@@ -43,6 +43,7 @@ const CODES_ATTENDUS: string[] = [
   "facture_impayee_j60",
   "job_ia_echoue",
   "suppression_rgpd_j30",
+  "revue_trimestrielle_a_faire",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];
@@ -52,7 +53,7 @@ const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("ALERTE_CATALOGUE", () => {
-  it("contient exactement les 27 codes attendus", () => {
+  it("contient exactement les codes attendus", () => {
     const codesPresents = Object.keys(ALERTE_CATALOGUE).sort();
     const codesAttendus = [...CODES_ATTENDUS].sort();
     expect(codesPresents).toEqual(codesAttendus);

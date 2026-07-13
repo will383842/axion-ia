@@ -41,7 +41,13 @@ vi.mock("@/server/qualiopi/indicateurs/service", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
-import { creerRevue, updateRevue, getRevue, listRevues } from "./revue-direction-service";
+import {
+  creerRevue,
+  updateRevue,
+  getRevue,
+  listRevues,
+  reporterConstatRevue,
+} from "./revue-direction-service";
 
 const mockPrisma = prisma as unknown as {
   revueDirection: {
@@ -260,6 +266,82 @@ describe("listRevues", () => {
       const result = await listRevues();
       expect(result).toEqual([]);
       expect(mockPrisma.revueDirection.findMany).not.toHaveBeenCalled();
+    } finally {
+      process.env["DATABASE_URL"] = original;
+    }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// reporterConstatRevue (LOT 4)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("reporterConstatRevue", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockGetIndicateurs.mockResolvedValue(INDICATEURS_FIXTURE);
+  });
+
+  it("ajoute le constat au planActions d'une revue existante (creee=false)", async () => {
+    mockPrisma.revueDirection.findUnique.mockResolvedValue({
+      id: "revue-2026",
+      annee: 2026,
+      planActions: [{ action: "Action existante" }],
+    });
+    mockPrisma.revueDirection.update.mockResolvedValue({ id: "revue-2026" });
+
+    const result = await reporterConstatRevue(2026, {
+      texte: "Prévoir une pause supplémentaire l'après-midi.",
+      source: "Verbatim satisfaction — session AXI-SES-2026-007",
+    });
+
+    expect(result).toEqual({ id: "revue-2026", annee: 2026, creee: false });
+    expect(mockPrisma.revueDirection.create).not.toHaveBeenCalled();
+    const arg = mockPrisma.revueDirection.update.mock.calls[0]?.[0] as {
+      where: { id: string };
+      data: { planActions: Array<Record<string, unknown>> };
+    };
+    expect(arg.where.id).toBe("revue-2026");
+    expect(arg.data.planActions).toHaveLength(2);
+    expect(arg.data.planActions[1]).toMatchObject({
+      action: "Prévoir une pause supplémentaire l'après-midi.",
+      source: "Verbatim satisfaction — session AXI-SES-2026-007",
+    });
+    expect(typeof arg.data.planActions[1]?.["ajouteAt"]).toBe("string");
+  });
+
+  it("crée la revue en brouillon (avec snapshot indicateurs) si absente (creee=true)", async () => {
+    mockPrisma.revueDirection.findUnique.mockResolvedValue(null);
+    mockPrisma.revueDirection.create.mockResolvedValue({
+      id: "revue-new",
+      annee: 2026,
+      planActions: [],
+    });
+    mockPrisma.revueDirection.update.mockResolvedValue({ id: "revue-new" });
+
+    const result = await reporterConstatRevue(2026, { texte: "Constat", source: "Synthèse" });
+
+    expect(result).toEqual({ id: "revue-new", annee: 2026, creee: true });
+    // creerRevue appelé → snapshot indicateurs + statut brouillon
+    expect(mockGetIndicateurs).toHaveBeenCalledWith(2026);
+    const createArg = mockPrisma.revueDirection.create.mock.calls[0]?.[0] as {
+      data: { statut: string };
+    };
+    expect(createArg.data.statut).toBe("brouillon");
+    // Puis le constat est ajouté
+    const updateArg = mockPrisma.revueDirection.update.mock.calls[0]?.[0] as {
+      data: { planActions: unknown[] };
+    };
+    expect(updateArg.data.planActions).toHaveLength(1);
+  });
+
+  it("lève en mode stub.invalid", async () => {
+    const original = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    try {
+      await expect(reporterConstatRevue(2026, { texte: "x", source: "y" })).rejects.toThrow(
+        /stub\.invalid/,
+      );
     } finally {
       process.env["DATABASE_URL"] = original;
     }

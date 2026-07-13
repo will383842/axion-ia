@@ -629,6 +629,48 @@ async function regleConventionFormation(now: Date): Promise<AlerteCandidate[]> {
   }));
 }
 
+/** R18 (LOT 4) — Revue trimestrielle à réaliser (info, non bloquante — décision B4).
+ *
+ *  Gatée par la clé de config `revue_trimestrielle_activee` (défaut true).
+ *  Le modèle RevueDirection n'a NI champ période NI titre/notes (une seule
+ *  revue par année, `annee @unique`) → convention SANS migration : la cadence
+ *  trimestrielle est considérée couverte si une revue de direction a été TENUE
+ *  OU MISE À JOUR (dateRevue) depuis le début du trimestre précédent. En
+ *  pratique : l'admin rouvre la revue de l'année chaque trimestre, met à jour
+ *  `dateRevue` + décisions/plan d'actions, et l'alerte se résout (resolutionAuto).
+ */
+async function regleRevueTrimestrielle(now: Date): Promise<AlerteCandidate[]> {
+  const activee = await getQualiopiConfig("revue_trimestrielle_activee").catch(() => false);
+  if (activee !== true) return [];
+
+  // Début du trimestre PRÉCÉDENT (heure locale serveur — granularité au jour,
+  // suffisante pour une cadence trimestrielle).
+  const trimestreCourant = Math.floor(now.getMonth() / 3); // 0..3
+  let anneePrec = now.getFullYear();
+  let trimestrePrec = trimestreCourant - 1;
+  if (trimestrePrec < 0) {
+    trimestrePrec = 3;
+    anneePrec -= 1;
+  }
+  const debutTrimestrePrec = new Date(anneePrec, trimestrePrec * 3, 1);
+
+  const revueRecente = await prisma.revueDirection.findFirst({
+    where: { dateRevue: { gte: debutTrimestrePrec } },
+    select: { id: true },
+  });
+  if (revueRecente !== null) return [];
+
+  const labelTrimestrePrec = `T${trimestrePrec + 1} ${anneePrec}`;
+  return [
+    {
+      code: "revue_trimestrielle_a_faire",
+      niveau: "info",
+      titre: "Revue trimestrielle à réaliser",
+      message: `Aucune revue de direction tenue ou mise à jour depuis le trimestre ${labelTrimestrePrec}. Cadence trimestrielle non bloquante : mettez à jour la revue de l'année (date, décisions, plan d'actions) pour couvrir le trimestre.`,
+    },
+  ];
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Catalogue des règles
 // ─────────────────────────────────────────────────────────────────────────────
@@ -655,6 +697,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "convention_formation", fn: regleConventionFormation },
   { nom: "factures_impayees", fn: regleFacturesImpayees },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
+  { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -1,10 +1,12 @@
 /**
  * Qualiopi — Service revue de direction annuelle (off.32, indicateur 32).
  *
- * creerRevue  : crée la revue de direction d'une année avec snapshot indicateurs.
- * updateRevue : met à jour une revue existante (participants, décisions, etc.).
- * getRevue    : lecture unitaire par année.
- * listRevues  : liste toutes les revues.
+ * creerRevue          : crée la revue de direction d'une année avec snapshot indicateurs.
+ * updateRevue         : met à jour une revue existante (participants, décisions, etc.).
+ * getRevue            : lecture unitaire par année.
+ * listRevues          : liste toutes les revues.
+ * reporterConstatRevue: ajoute un constat au plan d'actions de la revue de
+ *                       l'année (créée en brouillon si absente) — LOT 4.
  *
  * `creerRevue` importe `getIndicateurs` de @/server/qualiopi/indicateurs/service
  * pour construire le snapshot JSON (indicateurs de l'année).
@@ -114,4 +116,52 @@ export async function listRevues(): Promise<RevueDirection[]> {
   return prisma.revueDirection.findMany({
     orderBy: { annee: "desc" },
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// reporterConstatRevue (LOT 4 — synthèse questionnaires → revue de direction)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface ReporterConstatInput {
+  /** Constat/verbatim reporté (texte de l'action à instruire). */
+  texte: string;
+  /** Origine du constat (ex. "Verbatim satisfaction — session F2026-012"). */
+  source: string;
+}
+
+/**
+ * Ajoute un constat au `planActions` de la revue de direction de l'année.
+ * Si aucune revue n'existe pour l'année, elle est créée en BROUILLON (avec
+ * snapshot indicateurs, via creerRevue). L'entrée ajoutée suit le format
+ * `{ action, source, ajouteAt }` — le champ `action` est celui résumé par les
+ * exports PDF du registre revue de direction.
+ */
+export async function reporterConstatRevue(
+  annee: number,
+  input: ReporterConstatInput,
+): Promise<{ id: string; annee: number; creee: boolean }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    throw new Error("revue-direction-service: mutations interdites en mode stub.invalid");
+  }
+
+  let revue = await prisma.revueDirection.findUnique({ where: { annee } });
+  let creee = false;
+  if (revue === null) {
+    revue = await creerRevue(annee, { dateRevue: new Date(), statut: "brouillon" });
+    creee = true;
+  }
+
+  const planActions = Array.isArray(revue.planActions) ? [...(revue.planActions as unknown[])] : [];
+  planActions.push({
+    action: input.texte,
+    source: input.source,
+    ajouteAt: new Date().toISOString(),
+  });
+
+  await prisma.revueDirection.update({
+    where: { id: revue.id },
+    data: { planActions: planActions as never },
+  });
+
+  return { id: revue.id, annee: revue.annee, creee };
 }

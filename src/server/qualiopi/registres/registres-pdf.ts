@@ -1,7 +1,7 @@
 /**
  * Qualiopi — Exports PDF des registres (docs A3/A7/A8/A17/A18 — LOT 2).
  *
- * 5 exports d'ÉTAT à la volée (PAS des documents officiels : pas de
+ * 6 exports d'ÉTAT à la volée (PAS des documents officiels : pas de
  * DocumentGenere, pas de numérotation, pas de rétention) rendus via le
  * template générique `templates/registre.tsx` :
  *   - reclamations   : registre des réclamations (ind. 31)
@@ -9,6 +9,7 @@
  *   - revue_direction: revues de direction / plan d'amélioration (ind. 32)
  *   - partenariats   : registre des partenariats (ind. 26)
  *   - sous_traitants : registre des sous-traitants (ind. 27)
+ *   - incidents      : registre des incidents + actions correctives (LOT 4)
  *
  * `renderRegistrePdfBuffer(type)` : sélectionne les données réelles (Prisma),
  * construit les lignes et rend le PDF (Buffer + filename). Consommé par la
@@ -34,6 +35,7 @@ export const REGISTRE_TYPES = [
   "revue_direction",
   "partenariats",
   "sous_traitants",
+  "incidents",
 ] as const;
 
 export type RegistreType = (typeof REGISTRE_TYPES)[number];
@@ -85,6 +87,25 @@ const RECLAMATION_STATUT_LABELS: Record<string, string> = {
   en_cours: "En cours",
   resolue: "Résolue",
   cloturee: "Clôturée",
+};
+
+const INCIDENT_TYPE_LABELS: Record<string, string> = {
+  pedagogique: "Pédagogique",
+  administratif: "Administratif",
+  technique: "Technique",
+  autre: "Autre",
+};
+
+const INCIDENT_GRAVITE_LABELS: Record<string, string> = {
+  mineur: "Mineur",
+  majeur: "Majeur",
+  critique: "Critique",
+};
+
+const INCIDENT_STATUT_LABELS: Record<string, string> = {
+  ouvert: "Ouvert",
+  en_cours: "En cours",
+  resolu: "Résolu",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -261,12 +282,56 @@ async function buildSousTraitants(): Promise<Omit<RegistreData, "dateEdition">> 
   };
 }
 
+async function buildIncidents(): Promise<Omit<RegistreData, "dateEdition">> {
+  const rows = await prisma.incident.findMany({
+    select: {
+      dateIncident: true,
+      type: true,
+      gravite: true,
+      titre: true,
+      statut: true,
+      actionCorrective: true,
+      resoluAt: true,
+      session: { select: { numero: true } },
+    },
+    orderBy: { dateIncident: "desc" },
+    take: EXPORT_TAKE,
+  });
+  return {
+    titre: "Registre des incidents",
+    sousTitre:
+      "Incidents pédagogiques, administratifs et techniques + actions correctives (amélioration continue — indicateurs 31/32).",
+    colonnes: [
+      "Date",
+      "Type",
+      "Gravité",
+      "Titre",
+      "Session",
+      "Statut",
+      "Action corrective",
+      "Résolu le",
+    ],
+    lignes: rows.map((i) => [
+      formatDateFr(i.dateIncident),
+      INCIDENT_TYPE_LABELS[i.type] ?? i.type,
+      INCIDENT_GRAVITE_LABELS[i.gravite] ?? i.gravite,
+      i.titre,
+      i.session?.numero ?? "",
+      INCIDENT_STATUT_LABELS[i.statut] ?? i.statut,
+      i.actionCorrective,
+      formatDateFr(i.resoluAt),
+    ]),
+    mentionBasDePage: MENTION_EXPORT,
+  };
+}
+
 const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEdition">>> = {
   reclamations: buildReclamations,
   veille: buildVeille,
   revue_direction: buildRevueDirection,
   partenariats: buildPartenariats,
   sous_traitants: buildSousTraitants,
+  incidents: buildIncidents,
 };
 
 const FILENAMES: Record<RegistreType, string> = {
@@ -275,6 +340,7 @@ const FILENAMES: Record<RegistreType, string> = {
   revue_direction: "revues-direction-plan-amelioration",
   partenariats: "registre-partenariats",
   sous_traitants: "registre-sous-traitants",
+  incidents: "registre-incidents",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

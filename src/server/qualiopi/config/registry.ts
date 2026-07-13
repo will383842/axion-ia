@@ -227,6 +227,25 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description:
       "Indicateur 29 (insertion professionnelle) applicable — false pour un OF d'actions de formation non certifiantes ; à confirmer avec le certificateur.",
   },
+
+  // ── Cadences de pilotage (LOT 4) ───────────────────────────────────────────
+  // Revue trimestrielle NON bloquante (décision B4) : quand activée, une alerte
+  // info `revue_trimestrielle_a_faire` est levée si aucune revue de direction
+  // n'a été tenue/mise à jour depuis le début du trimestre précédent.
+  revue_trimestrielle_activee: {
+    ...bool(true),
+    description:
+      "Active l'alerte de cadence trimestrielle de la revue de direction (info, non bloquante).",
+  },
+
+  // ── Gouvernance qualité (LOT 4) ───────────────────────────────────────────
+  // Texte libre affiché en configuration : qui porte quel rôle qualité, avec
+  // quelle mission et quelle cadence de revue. Défaut VIDE (renseigné par Will).
+  gouvernance_roles: {
+    ...str(),
+    description:
+      "Rôles qualité : référent handicap, responsable qualité, référent pédagogique — mission et cadence de revue par rôle.",
+  },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 
 export type QualiopiConfigKey = keyof typeof QUALIOPI_CONFIG_REGISTRY;

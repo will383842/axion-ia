@@ -21,7 +21,7 @@ vi.mock("@/lib/prisma", () => ({
     trainer: { findMany: vi.fn() },
     factureFormation: { findMany: vi.fn() },
     veille: { findFirst: vi.fn() },
-    revueDirection: { findUnique: vi.fn() },
+    revueDirection: { findUnique: vi.fn(), findFirst: vi.fn() },
     rgpdDemande: { findMany: vi.fn() },
   },
 }));
@@ -49,7 +49,10 @@ const mp = prisma as unknown as {
   trainer: { findMany: ReturnType<typeof vi.fn> };
   factureFormation: { findMany: ReturnType<typeof vi.fn> };
   veille: { findFirst: ReturnType<typeof vi.fn> };
-  revueDirection: { findUnique: ReturnType<typeof vi.fn> };
+  revueDirection: {
+    findUnique: ReturnType<typeof vi.fn>;
+    findFirst: ReturnType<typeof vi.fn>;
+  };
   rgpdDemande: { findMany: ReturnType<typeof vi.fn> };
 };
 
@@ -64,6 +67,7 @@ function setupEmptyMocks() {
   mp.factureFormation.findMany.mockResolvedValue([]);
   mp.veille.findFirst.mockResolvedValue({ dateVeille: new Date() }); // veille récente
   mp.revueDirection.findUnique.mockResolvedValue({ statut: "valide" }); // BPF déposé
+  mp.revueDirection.findFirst.mockResolvedValue({ id: "revue-001" }); // revue récente (cadence OK)
   mp.rgpdDemande.findMany.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
@@ -587,5 +591,63 @@ describe("evaluerAlertes — suppression_rgpd_j30", () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "suppression_rgpd_j30");
     expect(a).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests revue trimestrielle (LOT 4)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — revue_trimestrielle_a_faire", () => {
+  /** Config par défaut + flag revue_trimestrielle_activee contrôlable. */
+  function setupConfigAvecCadence(activee: boolean) {
+    const now = new Date();
+    const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "responsable_qualite_nom") return Promise.resolve("Williams Jullin");
+      if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
+      if (key === "bpf_annee_deposee") return Promise.resolve(now.getFullYear());
+      if (key === "revue_trimestrielle_activee") return Promise.resolve(activee);
+      return Promise.resolve("");
+    });
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("crée une alerte info si activée et aucune revue depuis le trimestre précédent", async () => {
+    setupConfigAvecCadence(true);
+    mp.revueDirection.findFirst.mockResolvedValue(null);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "revue_trimestrielle_a_faire");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("info");
+    expect(a?.message).toContain("revue de direction");
+  });
+
+  it("ne crée PAS d'alerte si une revue couvre le trimestre précédent (dateRevue récente)", async () => {
+    setupConfigAvecCadence(true);
+    mp.revueDirection.findFirst.mockResolvedValue({ id: "revue-001" });
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "revue_trimestrielle_a_faire")).toBeUndefined();
+    // La requête filtre bien sur dateRevue >= début du trimestre précédent
+    const arg = mp.revueDirection.findFirst.mock.calls[0]?.[0] as {
+      where: { dateRevue: { gte: Date } };
+    };
+    expect(arg.where.dateRevue.gte).toBeInstanceOf(Date);
+  });
+
+  it("ne crée PAS d'alerte si la cadence est désactivée (config false)", async () => {
+    setupConfigAvecCadence(false);
+    mp.revueDirection.findFirst.mockResolvedValue(null);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "revue_trimestrielle_a_faire")).toBeUndefined();
+    expect(mp.revueDirection.findFirst).not.toHaveBeenCalled();
   });
 });

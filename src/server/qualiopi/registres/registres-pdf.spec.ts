@@ -20,6 +20,7 @@ vi.mock("@/lib/prisma", () => ({
     revueDirection: { findMany: vi.fn() },
     partenariat: { findMany: vi.fn() },
     sousTraitant: { findMany: vi.fn() },
+    incident: { findMany: vi.fn() },
   },
 }));
 
@@ -46,6 +47,7 @@ const mockPrisma = prisma as unknown as {
   revueDirection: { findMany: ReturnType<typeof vi.fn> };
   partenariat: { findMany: ReturnType<typeof vi.fn> };
   sousTraitant: { findMany: ReturnType<typeof vi.fn> };
+  incident: { findMany: ReturnType<typeof vi.fn> };
 };
 
 beforeAll(() => {
@@ -59,6 +61,7 @@ function setupEmpty() {
   mockPrisma.revueDirection.findMany.mockResolvedValue([]);
   mockPrisma.partenariat.findMany.mockResolvedValue([]);
   mockPrisma.sousTraitant.findMany.mockResolvedValue([]);
+  mockPrisma.incident.findMany.mockResolvedValue([]);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -68,13 +71,14 @@ function setupEmpty() {
 describe("renderRegistrePdfBuffer", () => {
   beforeEach(setupEmpty);
 
-  it("expose les 5 types de registres attendus", () => {
+  it("expose les 6 types de registres attendus", () => {
     expect([...REGISTRE_TYPES]).toEqual([
       "reclamations",
       "veille",
       "revue_direction",
       "partenariats",
       "sous_traitants",
+      "incidents",
     ]);
   });
 
@@ -135,6 +139,25 @@ describe("renderRegistrePdfBuffer", () => {
     expect(s.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
     expect(p.filename).toMatch(/^registre-partenariats-/);
     expect(s.filename).toMatch(/^registre-sous-traitants-/);
+  }, 30_000);
+
+  it("incidents : sélectionne les données réelles (session liée) et rend un PDF", async () => {
+    mockPrisma.incident.findMany.mockResolvedValue([
+      {
+        dateIncident: new Date("2026-03-12T00:00:00.000Z"),
+        type: "technique",
+        gravite: "majeur",
+        titre: "Coupure visio 40 min",
+        statut: "resolu",
+        actionCorrective: "Connexion 4G de secours pour les sessions distancielles",
+        resoluAt: new Date("2026-03-13T00:00:00.000Z"),
+        session: { numero: "AXI-SES-2026-004" },
+      },
+    ]);
+    const result = await renderRegistrePdfBuffer("incidents");
+    expect(result.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
+    expect(result.filename).toMatch(/^registre-incidents-\d{4}-\d{2}-\d{2}\.pdf$/);
+    expect(mockPrisma.incident.findMany).toHaveBeenCalledTimes(1);
   }, 30_000);
 
   it("lève en mode stub.invalid (aucun appel Prisma)", async () => {
