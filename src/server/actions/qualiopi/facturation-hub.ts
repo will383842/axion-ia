@@ -29,6 +29,7 @@ import {
   transitionnerDossier,
   creerDossierDepuisSession,
 } from "@/server/qualiopi/financements/dossier-financement";
+import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 
 const ActiviteSchema = z.enum(["formation", "un_a_un", "audit", "implementation", "site_web"]);
@@ -105,12 +106,21 @@ export async function genererFactureLibreAction(
   }
 }
 
-const DepuisDevisSchema = z.object({ devisId: z.string().uuid() });
+const DepuisDevisSchema = z.object({
+  devisId: z.string().uuid(),
+  /**
+   * Facture d'ACOMPTE de X % (document séparé, obligatoire fiscalement quand
+   * un acompte est demandé à la commande). Absent = solde/totalité : lignes du
+   * devis MOINS les acomptes déjà facturés (déduits au taux facturé).
+   */
+  acomptePercent: z.number().int().min(1).max(90).optional(),
+});
 
 /**
- * Convertit un devis ACCEPTÉ en facture libre (lignes + client + activité +
- * réf. commande repris du devis). Le devis doit porter une activité — c'est
- * elle qui pilote le régime TVA de la facture.
+ * Facture un devis ACCEPTÉ : acompte de X %, ou solde/totalité (les acomptes
+ * déjà facturés sont déduits). Le devis doit porter une activité — c'est elle
+ * qui pilote le régime TVA. La décision des lignes est un planificateur PUR
+ * (`planifierFacturationDevis`, testé isolément).
  */
 export async function genererFactureDepuisDevisAction(
   rawInput: unknown,
@@ -134,7 +144,10 @@ export async function genererFactureDepuisDevisAction(
       refClient: true,
       clientId: true,
       lignes: true,
-      facturesFormation: { where: { statut: { not: "annulee" } }, select: { id: true } },
+      facturesFormation: {
+        where: { statut: { not: "annulee" }, avoirDeId: null },
+        select: { numero: true, montantHtCents: true, montantTvaCents: true },
+      },
     },
   });
   if (!devis) return { error: "Devis introuvable." };
@@ -144,28 +157,47 @@ export async function genererFactureDepuisDevisAction(
   if (devis.activite === null) {
     return { error: "Renseigner l'activité du devis avant facturation (pilote le régime TVA)." };
   }
-  if (devis.facturesFormation.length > 0) {
-    return { error: "Ce devis a déjà été facturé (émettre un avoir pour rectifier)." };
-  }
 
   const lignesParsed = z.array(LigneSchema).safeParse(devis.lignes);
   if (!lignesParsed.success || lignesParsed.data.length === 0) {
     return { error: "Lignes du devis illisibles — corriger le devis." };
   }
 
+  // Taux effectivement facturé sur chaque facture liée (le régime a pu évoluer).
+  const facturesLiees = devis.facturesFormation.map((f) => ({
+    numero: f.numero,
+    montantHtCents: f.montantHtCents,
+    tauxEffectifPercent:
+      f.montantHtCents > 0 ? Math.round((f.montantTvaCents / f.montantHtCents) * 100) : 0,
+  }));
+
+  const plan = planifierFacturationDevis({
+    lignesDevis: lignesParsed.data as LigneFacture[],
+    facturesLiees,
+    devisNumero: devis.numero,
+    ...(parsed.data.acomptePercent !== undefined
+      ? { acomptePercent: parsed.data.acomptePercent }
+      : {}),
+  });
+  if (!plan.ok) return { error: plan.erreur };
+
   try {
     const result = await genererFactureLibre({
       clientId: devis.clientId,
       activite: devis.activite,
-      lignes: lignesParsed.data as LigneFacture[],
+      lignes: plan.lignes,
       devisId: devis.id,
       ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),
     });
     await logQualiopiActivity({
-      action: "facturation.devis.facturer",
+      action: plan.estAcompte ? "facturation.devis.facturer_acompte" : "facturation.devis.facturer",
       targetType: "Devis",
       targetId: devis.id,
-      changes: { devisNumero: devis.numero, factureNumero: result.numero },
+      changes: {
+        devisNumero: devis.numero,
+        factureNumero: result.numero,
+        acomptePercent: parsed.data.acomptePercent ?? null,
+      },
       session,
     });
     return {

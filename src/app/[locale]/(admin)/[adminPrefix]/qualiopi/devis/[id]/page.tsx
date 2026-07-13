@@ -17,8 +17,10 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
+import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
 import { getClient } from "@/server/qualiopi/crm/clients";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -103,6 +105,15 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   if (!devis) notFound();
 
   const client = await getClient(devis.clientId);
+
+  // Factures déjà émises sur ce devis (hors avoirs/annulées) — alimente le
+  // bloc « Facturer ce devis » (acompte / solde avec déduction).
+  const facturesLiees = await prisma.factureFormation.findMany({
+    where: { devisId: devis.id, statut: { not: "annulee" }, avoirDeId: null },
+    select: { numero: true, montantHtCents: true },
+    orderBy: { createdAt: "asc" },
+  });
+  const dejaFactureHtCents = facturesLiees.reduce((acc, f) => acc + f.montantHtCents, 0);
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   const lignes = parseLignes(devis.lignes);
@@ -313,10 +324,32 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       </section>
 
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
-      <section>
+      <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Actions</h2>
         <DevisLifecycleButtons devisId={devis.id} statut={devis.statut} />
       </section>
+
+      {/* ── Facturation (acompte / solde) — devis accepté uniquement ─────── */}
+      {(devis.statut === "accepte" || devis.statut === "transforme_convention") && (
+        <section>
+          <h2 className={sectionHeadCls}>Facturer ce devis</h2>
+          {facturesLiees.length > 0 && (
+            <ul className="mb-[var(--space-admin-3)] space-y-1 text-[length:var(--text-admin-sm)]">
+              {facturesLiees.map((f) => (
+                <li key={f.numero}>
+                  {f.numero} — <span className="tabular-nums">{formatEur(f.montantHtCents)}</span>{" "}
+                  HT
+                </li>
+              ))}
+            </ul>
+          )}
+          <FacturerDevisButtons
+            devisId={devis.id}
+            dejaFactureHtCents={dejaFactureHtCents}
+            totalDevisHtCents={devis.montantTotalHtCents}
+          />
+        </section>
+      )}
     </AdminPageShell>
   );
 }

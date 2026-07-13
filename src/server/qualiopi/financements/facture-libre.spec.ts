@@ -10,6 +10,7 @@ import {
   normaliserLignesPourActivite,
   construireLignesAvoir,
   calculerStatutEncaissement,
+  planifierFacturationDevis,
   ACTIVITES_EXONERABLES,
 } from "./facture-libre-pur";
 import { computeTotauxFacture } from "@/server/qualiopi/legal/tva";
@@ -120,5 +121,129 @@ describe("calculerStatutEncaissement", () => {
   });
   it("trop-perçu → payee (le remboursement se gère par avoir/refund, pas par statut)", () => {
     expect(calculerStatutEncaissement(100_000, 120_000)).toBe("payee");
+  });
+});
+
+describe("planifierFacturationDevis — acompte / solde / totalité", () => {
+  // Devis site web : 10 000 € HT, taux implicites (normalisés en aval par activité).
+  const DEVIS_LIGNES: LigneFacture[] = [
+    { designation: "Site web augmenté", quantite: 1, prixUnitaireHtCents: 800_000 },
+    { designation: "Intégration RAG", quantite: 1, prixUnitaireHtCents: 200_000 },
+  ];
+
+  it("acompte 30 % → ligne unique de 3 000 € HT, sans taux explicite (normalisation aval)", () => {
+    const plan = planifierFacturationDevis({
+      lignesDevis: DEVIS_LIGNES,
+      facturesLiees: [],
+      devisNumero: "AXI-DEV-2026-010",
+      acomptePercent: 30,
+    });
+    expect(plan.ok).toBe(true);
+    if (!plan.ok) return;
+    expect(plan.estAcompte).toBe(true);
+    expect(plan.lignes).toHaveLength(1);
+    expect(plan.lignes[0]?.prixUnitaireHtCents).toBe(300_000);
+    expect(plan.lignes[0]?.designation).toContain("AXI-DEV-2026-010");
+    expect(plan.lignes[0]?.tauxTvaPercent).toBeUndefined();
+  });
+
+  it("acompte sur devis à taux explicite uniforme → le taux est repris", () => {
+    const plan = planifierFacturationDevis({
+      lignesDevis: DEVIS_LIGNES.map((l) => ({ ...l, tauxTvaPercent: 20 })),
+      facturesLiees: [],
+      devisNumero: "AXI-DEV-2026-011",
+      acomptePercent: 40,
+    });
+    expect(plan.ok).toBe(true);
+    if (!plan.ok) return;
+    expect(plan.lignes[0]?.tauxTvaPercent).toBe(20);
+    expect(plan.lignes[0]?.prixUnitaireHtCents).toBe(400_000);
+  });
+
+  it("acompte REFUSÉ sur devis multi-taux (taux ambigu)", () => {
+    const plan = planifierFacturationDevis({
+      lignesDevis: [
+        { designation: "Formation", quantite: 1, prixUnitaireHtCents: 100_000 },
+        { designation: "Conseil", quantite: 1, prixUnitaireHtCents: 50_000, tauxTvaPercent: 20 },
+      ],
+      facturesLiees: [],
+      devisNumero: "AXI-DEV-2026-012",
+      acomptePercent: 30,
+    });
+    expect(plan.ok).toBe(false);
+    if (plan.ok) return;
+    expect(plan.erreur).toContain("multi-taux");
+  });
+
+  it("acompte dépassant le restant à facturer → refusé", () => {
+    const plan = planifierFacturationDevis({
+      lignesDevis: DEVIS_LIGNES,
+      facturesLiees: [
+        { numero: "AXI-FACT-2026-050", montantHtCents: 800_000, tauxEffectifPercent: 20 },
+      ],
+      devisNumero: "AXI-DEV-2026-013",
+      acomptePercent: 30,
+    });
+    expect(plan.ok).toBe(false);
+  });
+
+  it("totalité (aucun acompte préalable) → lignes du devis telles quelles", () => {
+    const plan = planifierFacturationDevis({
+      lignesDevis: DEVIS_LIGNES,
+      facturesLiees: [],
+      devisNumero: "AXI-DEV-2026-014",
+    });
+    expect(plan.ok).toBe(true);
+    if (!plan.ok) return;
+    expect(plan.estAcompte).toBe(false);
+    expect(plan.lignes).toEqual(DEVIS_LIGNES);
+  });
+
+  it("solde après acompte → lignes du devis + déduction négative au taux FACTURÉ ; total = restant", () => {
+    const plan = planifierFacturationDevis({
+      lignesDevis: DEVIS_LIGNES.map((l) => ({ ...l, tauxTvaPercent: 20 })),
+      facturesLiees: [
+        { numero: "AXI-FACT-2026-051", montantHtCents: 300_000, tauxEffectifPercent: 20 },
+      ],
+      devisNumero: "AXI-DEV-2026-015",
+    });
+    expect(plan.ok).toBe(true);
+    if (!plan.ok) return;
+    expect(plan.lignes).toHaveLength(3);
+    const deduction = plan.lignes[2];
+    expect(deduction?.prixUnitaireHtCents).toBe(-300_000);
+    expect(deduction?.tauxTvaPercent).toBe(20);
+    expect(deduction?.designation).toContain("AXI-FACT-2026-051");
+    // Bout en bout : la facture de solde porte 7 000 € HT / 8 400 € TTC.
+    const totaux = computeTotauxFacture(plan.lignes, "assujetti", 20);
+    expect(totaux.totalHtCents).toBe(700_000);
+    expect(totaux.totalTtcCents).toBe(840_000);
+  });
+
+  it("devis entièrement facturé → solde refusé (passer par un avoir)", () => {
+    const plan = planifierFacturationDevis({
+      lignesDevis: DEVIS_LIGNES,
+      facturesLiees: [
+        { numero: "AXI-FACT-2026-052", montantHtCents: 1_000_000, tauxEffectifPercent: 20 },
+      ],
+      devisNumero: "AXI-DEV-2026-016",
+    });
+    expect(plan.ok).toBe(false);
+    if (plan.ok) return;
+    expect(plan.erreur).toContain("entièrement facturé");
+  });
+
+  it("deux acomptes successifs possibles tant que Σ < total", () => {
+    const plan = planifierFacturationDevis({
+      lignesDevis: DEVIS_LIGNES,
+      facturesLiees: [
+        { numero: "AXI-FACT-2026-053", montantHtCents: 300_000, tauxEffectifPercent: 0 },
+      ],
+      devisNumero: "AXI-DEV-2026-017",
+      acomptePercent: 30,
+    });
+    expect(plan.ok).toBe(true);
+    if (!plan.ok) return;
+    expect(plan.lignes[0]?.prixUnitaireHtCents).toBe(300_000);
   });
 });
