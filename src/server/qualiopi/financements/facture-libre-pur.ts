@@ -97,3 +97,103 @@ export function calculerStatutEncaissement(
   if (totalEncaisseCents >= montantDuCents) return "payee";
   return "partiellement_payee";
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Facturation d'un devis : acompte / solde / totalité (planificateur PUR)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Résumé d'une facture déjà émise sur un devis (pour le calcul du solde). */
+export interface FactureLieeResume {
+  numero: string;
+  montantHtCents: number;
+  /** Taux de TVA effectivement FACTURÉ (dérivé de montantTva/montantHt). */
+  tauxEffectifPercent: number;
+}
+
+export type PlanFacturationDevis =
+  | { ok: true; lignes: LigneFacture[]; estAcompte: boolean }
+  | { ok: false; erreur: string };
+
+/**
+ * Décide des LIGNES de la prochaine facture d'un devis (règle fiscale : la
+ * facture d'acompte est un document séparé émis à la commande ; la facture de
+ * solde reprend les lignes du devis et DÉDUIT les acomptes déjà facturés, au
+ * taux auquel ils ont été facturés).
+ *
+ * - `acomptePercent` fourni → facture d'ACOMPTE (ligne unique). Refusée sur un
+ *   devis multi-taux (taux ambigu — même garde que les avoirs partiels M6) ou
+ *   si elle dépasserait le restant à facturer.
+ * - Sans `acomptePercent` → SOLDE : lignes du devis + une ligne négative par
+ *   acompte facturé. Refusé si le devis est déjà entièrement facturé.
+ *
+ * Les taux explicites du devis sont conservés ; une ligne sans taux reste sans
+ * taux (la normalisation par activité s'applique en aval, à l'émission).
+ */
+export function planifierFacturationDevis(input: {
+  lignesDevis: LigneFacture[];
+  facturesLiees: FactureLieeResume[];
+  devisNumero: string;
+  acomptePercent?: number;
+}): PlanFacturationDevis {
+  const totalDevisHtCents = input.lignesDevis.reduce(
+    (acc, l) => acc + Math.round(l.quantite * l.prixUnitaireHtCents),
+    0,
+  );
+  if (totalDevisHtCents <= 0) {
+    return { ok: false, erreur: "Devis sans montant facturable." };
+  }
+  const dejaFactureHtCents = input.facturesLiees.reduce((acc, f) => acc + f.montantHtCents, 0);
+  const restantHtCents = totalDevisHtCents - dejaFactureHtCents;
+
+  // Taux explicites du devis : uniformité requise pour un acompte.
+  const tauxExplicites = new Set(input.lignesDevis.map((l) => l.tauxTvaPercent));
+  const tauxUniforme = tauxExplicites.size === 1 ? [...tauxExplicites][0] : undefined;
+
+  if (input.acomptePercent !== undefined) {
+    if (tauxExplicites.size > 1) {
+      return {
+        ok: false,
+        erreur:
+          "Acompte impossible sur un devis multi-taux (le taux de l'acompte serait ambigu) — facturer la totalité, ou scinder le devis.",
+      };
+    }
+    const montantAcompteHtCents = Math.round((totalDevisHtCents * input.acomptePercent) / 100);
+    if (montantAcompteHtCents <= 0) {
+      return { ok: false, erreur: "Montant d'acompte nul." };
+    }
+    if (montantAcompteHtCents > restantHtCents) {
+      return {
+        ok: false,
+        erreur: `Acompte de ${input.acomptePercent} % (${(montantAcompteHtCents / 100).toFixed(2)} € HT) supérieur au restant à facturer (${(restantHtCents / 100).toFixed(2)} € HT).`,
+      };
+    }
+    return {
+      ok: true,
+      estAcompte: true,
+      lignes: [
+        {
+          designation: `Acompte de ${input.acomptePercent} % — devis ${input.devisNumero}`,
+          quantite: 1,
+          prixUnitaireHtCents: montantAcompteHtCents,
+          ...(tauxUniforme !== undefined ? { tauxTvaPercent: tauxUniforme } : {}),
+        },
+      ],
+    };
+  }
+
+  // Solde / totalité.
+  if (restantHtCents <= 0) {
+    return {
+      ok: false,
+      erreur: "Devis déjà entièrement facturé (émettre un avoir pour rectifier).",
+    };
+  }
+  const deductions: LigneFacture[] = input.facturesLiees.map((f) => ({
+    designation: `Acompte déjà facturé — facture ${f.numero}`,
+    quantite: 1,
+    prixUnitaireHtCents: -f.montantHtCents,
+    // Déduit au taux FACTURÉ à l'époque (le régime a pu changer entre-temps).
+    tauxTvaPercent: f.tauxEffectifPercent,
+  }));
+  return { ok: true, estAcompte: false, lignes: [...input.lignesDevis, ...deductions] };
+}
