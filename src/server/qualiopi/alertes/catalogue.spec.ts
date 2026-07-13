@@ -39,6 +39,7 @@ const CODES_ATTENDUS: string[] = [
   "opco_formation_demarree_sans_accord",
   "convention_tripartite_manquante",
   "convention_formation_manquante",
+  "bareme_opco_perime",
   "facture_impayee_j30",
   "facture_impayee_j60",
   "job_ia_echoue",
