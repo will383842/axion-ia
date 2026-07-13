@@ -56,7 +56,14 @@ Machine : 8 Go — vitest `--maxWorkers=2`, typecheck heap 6G, PAS de build loca
       traîner le graphe next-auth dans les tests. AUCUNE migration. Tests : marge 7 verts, pilotage
       19 intacts, nav 139 ; typecheck OK ; prettier OK. Note : ind.18 = coordination (pas coût) —
       non modifié (le forcer serait faux).
-- [ ] Vérification finale end-to-end + revue adversariale + PR.
+- [x] **Vérification finale end-to-end + revue adversariale + PR** (2026-07-13). Revue adversariale
+      multi-agents (2 agents Opus, Lots 5 & 6) → 6 défauts corrigés (commit `fix … revue adversariale`) :
+      versionnement rétroactif borné par successeur, cap plafonds 1 M€, `estBaremePerime` clamp fin
+      de mois, titre alerte config-driven, date optionnelle "" tolérée, MARGE rattachée à la période
+      courante (anti double-comptage sur session reportée), CSV décimales virgule. Branche rebasée
+      sur `origin/main` (9 commits, disjoint, sans conflit) et POUSSÉE ; pre-push OK (typecheck +
+      i18n + zod + **suite complète verte** + audit). PR ouverte (feature branch → NE déploie PAS ;
+      merge = décision Will après CI verte).
 
 ## Décisions prises
 
