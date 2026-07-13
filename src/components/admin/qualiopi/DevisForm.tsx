@@ -38,6 +38,8 @@ export interface DevisFormProps {
   offres: OffreOption[];
   /** Chemin base admin pour la redirection : /fr/admin-xxx/qualiopi/devis */
   basePath: string;
+  /** Client pré-sélectionné (searchParam `clientId` — lien depuis /qualiopi/entrees). */
+  defaultClientId?: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -98,12 +100,17 @@ function totalHtCents(lignes: Ligne[]): number {
 // Composant
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function DevisForm({ clients, offres, basePath }: DevisFormProps): React.ReactElement {
+export function DevisForm({
+  clients,
+  offres,
+  basePath,
+  defaultClientId,
+}: DevisFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const [clientId, setClientId] = useState<string>("");
+  const [clientId, setClientId] = useState<string>(defaultClientId ?? "");
   const [lignes, setLignes] = useState<Ligne[]>([emptyLigne()]);
   const [financementSuggere, setFinancementSuggere] = useState<FinancementSuggere>("");
   const [nbParticipants, setNbParticipants] = useState<string>("");

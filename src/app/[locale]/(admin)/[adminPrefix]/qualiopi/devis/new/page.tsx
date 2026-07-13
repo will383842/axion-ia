@@ -24,10 +24,13 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  /** `clientId` : pré-sélection du client (lien « Créer un devis » depuis /qualiopi/entrees). */
+  searchParams: Promise<{ clientId?: string }>;
 }
 
-export default async function QualiopiDevisNewPage({ params }: PageProps) {
+export default async function QualiopiDevisNewPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
+  const sp = await searchParams;
   const session = await auth();
   const role = session?.user?.role;
   if (!session?.user || (role !== "admin" && role !== "super_admin")) {
@@ -52,6 +55,12 @@ export default async function QualiopiDevisNewPage({ params }: PageProps) {
     prixLabelFr: o.prixLabelFr,
   }));
 
+  // Pré-sélection sûre : le clientId du searchParam n'est retenu que s'il
+  // correspond à un client CRM réel (sinon ignoré silencieusement).
+  const defaultClientId = clientOptions.some((c) => c.id === sp.clientId)
+    ? (sp.clientId as string)
+    : undefined;
+
   const basePath = `/${locale}/${adminPrefix}/qualiopi/devis`;
 
   return (
@@ -70,7 +79,12 @@ export default async function QualiopiDevisNewPage({ params }: PageProps) {
         description="Créez un devis commercial formation. Le numéro est alloué automatiquement (AXI-DEV-AAAA-NNN). TVA exonérée 261-4-4° CGI."
       />
 
-      <DevisForm clients={clientOptions} offres={offreOptions} basePath={basePath} />
+      <DevisForm
+        clients={clientOptions}
+        offres={offreOptions}
+        basePath={basePath}
+        {...(defaultClientId !== undefined ? { defaultClientId } : {})}
+      />
     </AdminPageShell>
   );
 }

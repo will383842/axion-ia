@@ -13,9 +13,23 @@ Machine : 8 Go — vitest `--maxWorkers=2`, typecheck heap 6G, PAS de build loca
   - Alerte `session_sans_formateur` (important, resolutionAuto) : sessions planifiee/en_cours
     démarrant sous 7 j sans `formateurPrincipalId`. Catalogue + règle + specs.
   - Tests : 167/167 verts (notifications, alertes, satisfaction). Typecheck OK.
-- [ ] **Lot 2** — Conformité documentaire (moyens pédagogiques, PDF registres, CV formateur,
-      fiche adaptation, ind.29 non_applicable). CGV + fiche EDOF EXCLUS (STOP & ASK Will).
-- [ ] **Lot 3** — Pont Calendly/Submission → CRM.
+- [x] **Lot 2** — Conformité documentaire (moyens pédagogiques, PDF registres, CV formateur,
+      fiche adaptation, ind.29). Commit `128cfb94`. CGV + fiche EDOF EXCLUS (STOP & ASK Will).
+- [x] **Lot 3** — Pont Calendly/Submission → CRM (2026-07-13, NON COMMITÉ — en working tree)
+  - Service `src/server/qualiopi/crm/entrees.ts` : fusion N derniers CalendlyEvent + Submission
+    (hors corbeille), tri date desc, PII Submission déchiffrée (`decryptPii`) AVANT match,
+    annotation `clientExistant` par email lowercase vs `Client.contactEmail` (citext,
+    `mode: "insensitive"`). Stub-aware → [] / null. AUCUNE migration (statut « converti » dérivé).
+  - Action `convertirEntreeEnClientAction` (`src/server/actions/qualiopi/entrees.ts`) :
+    dédup email → `dejaExistant: true` sans doublon ; sinon délègue à `createClientAction`
+    (numérotation AXI-CLI + OPCO/NAF réutilisées) avec `source` appel_calendly|formulaire_contact.
+    Audit `qualiopi.crm.convertir_entree` dans les deux cas.
+  - Page admin `/qualiopi/entrees` (nav « Entrées récentes » 📥 avant Clients, pôle commercial) :
+    tableau unifié + `ConvertirEntreeForm` (pré-rempli, repliable) + badge Client AXI-CLI-NNN +
+    lien « Créer un devis » → `/qualiopi/devis/new?clientId=…` (searchParam ajouté, validé
+    contre la liste clients, pré-sélection dans `DevisForm.defaultClientId`).
+  - Tests : 18 specs neufs verts ; suite qualiopi entière 142 fichiers / 2214 verts ;
+    typecheck OK ; prettier + eslint OK.
 - [ ] **Lot 4** — Pilotage (filtres période/type, exports, incidents, revue trimestrielle,
       gouvernance_roles, synthèse questionnaires → revue de direction).
 - [ ] **Lot 5** — Barèmes OPCO versionnés (structure vide, valeurs saisies par Will).

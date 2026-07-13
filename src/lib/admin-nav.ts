@@ -862,6 +862,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "commercial",
     },
+    // Lot 3 (pont appel/contact → CRM) : appels Calendly + messages contact
+    // fusionnés, conversion 1 clic en client CRM puis devis pré-rempli.
+    {
+      href: `${base}/qualiopi/entrees`,
+      label: "Entrées récentes",
+      icon: "📥",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
     {
       href: `${base}/qualiopi/clients`,
       label: "Clients (CRM)",
