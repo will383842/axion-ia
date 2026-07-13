@@ -1,11 +1,11 @@
 /**
  * Qualiopi — Server Actions Génération Documentaire (T19 Cluster D).
  *
- * 14 actions — une par type de document réglementaire :
+ * 15 actions — une par type de document réglementaire :
  *   convention, convention_tripartite, convocation, emargement,
  *   positionnement, grille_evaluation, satisfaction, certificat_realisation,
  *   kit_opco, kit_cpf, kit_france_travail, lettre_mission,
- *   reglement_interieur, livret_accueil.
+ *   reglement_interieur, livret_accueil, inventaire_moyens (A14).
  *
  * Pattern : genererFactureFormationAction (financements.ts).
  * Chacune :
@@ -52,7 +52,9 @@ import { KitFranceTravailPdf } from "@/server/qualiopi/documents/templates/kit-f
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
 import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
+import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
+import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -1472,6 +1474,63 @@ export async function genererLivretAccueilAction(input: {
     targetType: "TrainingSession",
     targetId: sessionId,
     changes: { documentId: doc.id, numero: doc.numero },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 15. Inventaire des moyens pédagogiques (A14 — off.17/18/19)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Génère l'inventaire des moyens pédagogiques et techniques (doc A14).
+ * Document officiel numéroté (AXI-FORM) — snapshot de la table
+ * `moyens_pedagogiques` à date (actifs ET retirés, statut affiché : la
+ * traçabilité des moyens retirés est une valeur d'audit).
+ */
+export async function genererInventaireMoyensAction(): Promise<
+  ActionResult<{ documentId: string; numero: string }>
+> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const moyens = await listMoyens({ take: 1000 });
+  if (moyens.length === 0) {
+    return { error: "Aucun moyen pédagogique enregistré — inventaire vide non générable" };
+  }
+
+  const identite = await getOrganismeIdentite();
+  const dateEdition = formatDateFr(new Date());
+
+  const doc = await generateDocument({
+    type: "inventaire_moyens",
+    buildElement: (numero) =>
+      React.createElement(InventaireMoyensPdf, {
+        data: {
+          numero,
+          dateEdition,
+          moyens: moyens.map((m) => ({
+            categorie: m.categorie,
+            libelle: m.libelle,
+            description: m.description,
+            localisation: m.localisation,
+            actif: m.actif,
+            dateVerification: m.dateVerification
+              ? m.dateVerification.toLocaleDateString("fr-FR")
+              : "",
+          })),
+        },
+        identite,
+      }),
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.inventaire_moyens.genere",
+    targetType: "DocumentGenere",
+    targetId: doc.id,
+    changes: { documentId: doc.id, numero: doc.numero, nbMoyens: moyens.length },
     session: adminSession,
   });
 

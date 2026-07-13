@@ -220,6 +220,13 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description:
       "Plancher absolu d'heures réalisées pour une attestation 1-to-1 complète (0 = pas de plancher, seuls les % d'assiduité s'appliquent).",
   },
+
+  // ── Périmètre indicateurs conformité ──────────────────────────────────────
+  off29_applicable: {
+    ...bool(false),
+    description:
+      "Indicateur 29 (insertion professionnelle) applicable — false pour un OF d'actions de formation non certifiantes ; à confirmer avec le certificateur.",
+  },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 
 export type QualiopiConfigKey = keyof typeof QUALIOPI_CONFIG_REGISTRY;

@@ -26,6 +26,8 @@ import {
   listFormationOptions,
 } from "@/server/qualiopi/remuneration/rules-queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
+import { genererCvFormateurAction } from "@/server/actions/qualiopi/exports-pdf";
+import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -110,7 +112,17 @@ export default async function FicheFormateurPage({ params }: PageProps) {
 
   return (
     <AdminPageShell width="wide">
-      <AdminPageHeader title={`${trainer.prenom} ${trainer.nom}`} description={trainer.email} />
+      <AdminPageHeader
+        title={`${trainer.prenom} ${trainer.nom}`}
+        description={trainer.email}
+        actions={
+          <PdfExportButton
+            label="Fiche formateur CV (PDF)"
+            input={{ trainerId: trainer.id }}
+            action={genererCvFormateurAction}
+          />
+        }
+      />
 
       <div className="mb-[var(--space-admin-5)]">
         <Link href={base} className="text-[color:var(--color-admin-accent)] underline">

@@ -6084,6 +6084,8 @@ enum DocumentType {
   devis
   /// Avoir (facture rectificative, montants négatifs, lié à la facture d'origine).
   avoir
+  /// Inventaire des moyens pédagogiques et techniques (off.17/18/19 — doc A14).
+  inventaire_moyens
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
@@ -6755,6 +6757,33 @@ model SousTraitant {
 
   @@index([actif])
   @@map("sous_traitants_of")
+}
+
+/// Catégorie d'un moyen pédagogique (inventaire off.17/18/19 — doc A14).
+enum MoyenCategorie {
+  salle
+  materiel
+  plateforme
+  humain
+}
+
+/// Inventaire des moyens pédagogiques et techniques (off.17/18/19 — doc A14).
+/// `dateVerification` = dernière vérification d'adéquation/disponibilité par
+/// l'OF (preuve d'entretien des moyens — un moyen jamais vérifié ne prouve rien).
+model MoyenPedagogique {
+  id               String         @id @default(uuid()) @db.Uuid
+  categorie        MoyenCategorie
+  libelle          String         @db.VarChar(300)
+  description      String         @default("") @db.Text
+  localisation     String         @default("") @db.VarChar(250)
+  actif            Boolean        @default(true)
+  dateVerification DateTime?      @map("date_verification")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@index([categorie])
+  @@index([actif])
+  @@map("moyens_pedagogiques")
 }
 
 /// Revue de direction annuelle (off.32 — GATÉE ind.32). Snapshot indicateurs +

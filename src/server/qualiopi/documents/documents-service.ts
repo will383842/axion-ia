@@ -48,6 +48,8 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
   reglement_interieur: "formation",
   livret_accueil: "formation",
   protocole_afest: "formation",
+  // Inventaire des moyens pédagogiques (A14) — groupe AXI-FORM.
+  inventaire_moyens: "formation",
 };
 
 export interface GenerateDocumentInput {

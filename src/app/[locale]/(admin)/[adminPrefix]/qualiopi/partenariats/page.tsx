@@ -19,6 +19,8 @@ import {
 } from "@/server/actions/qualiopi/partenariats";
 import { PartenariatForm } from "@/components/admin/qualiopi/PartenariatForm";
 import { PartenariatRowActions } from "@/components/admin/qualiopi/PartenariatRowActions";
+import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
+import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { Hash, CheckCircle2, Handshake } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -54,6 +56,13 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
       <AdminPageHeader
         title="Partenariats"
         description="Réseau de partenaires Qualiopi (off.25 — indicateur 25), dont partenaires réseau handicap. Traçabilité des conventions de partenariat actives."
+        actions={
+          <PdfExportButton
+            label="Exporter le registre (PDF)"
+            input={{ type: "partenariats" as const }}
+            action={genererRegistrePdfAction}
+          />
+        }
       />
 
       {/* KPIs */}

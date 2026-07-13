@@ -19,8 +19,10 @@ import {
   updateVeilleAction,
   supprimerVeilleAction,
 } from "@/server/actions/qualiopi/veille";
+import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
 import { VeilleForm } from "@/components/admin/qualiopi/VeilleForm";
 import { VeilleRowActions } from "@/components/admin/qualiopi/VeilleRowActions";
+import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -62,6 +64,13 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
       <AdminPageHeader
         title="Veille"
         description="Registre de veille réglementaire, métiers et pédagogique (off.23/24/25 — indicateurs 23-25). Chaque entrée doit préciser l'action décidée (preuve d'exploitation)."
+        actions={
+          <PdfExportButton
+            label="Exporter le journal (PDF)"
+            input={{ type: "veille" as const }}
+            action={genererRegistrePdfAction}
+          />
+        }
       />
 
       {/* KPIs */}

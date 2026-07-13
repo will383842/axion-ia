@@ -42,7 +42,9 @@ import {
   genererKitFranceTravailAction,
 } from "@/server/actions/qualiopi/documents";
 import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations";
+import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-pdf";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
+import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -97,6 +99,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   reglement_interieur: "Règlement intérieur (L.6352-3)",
   livret_accueil: "Livret d'accueil stagiaire",
   protocole_afest: "Protocole individuel AFEST (D.6313-3-1)",
+  inventaire_moyens: "Inventaire des moyens pédagogiques",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -428,6 +431,13 @@ export function DocumentsSection({
                   action={genererContratFormationAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
+                />
+                {/* Export d'état (pas un document officiel numéroté) : fiche
+                    d'adaptation individuelle (A16/A9), téléchargée en PDF. */}
+                <PdfExportButton
+                  label="Fiche d'adaptation individuelle (PDF)"
+                  input={{ enrollmentId: selectedEnrollmentId }}
+                  action={genererFicheAdaptationAction}
                 />
               </div>
             )}

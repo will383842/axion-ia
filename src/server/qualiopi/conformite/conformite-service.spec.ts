@@ -30,6 +30,7 @@ vi.mock("@/lib/prisma", () => ({
     revueDirection: { count: vi.fn() },
     supportFormation: { count: vi.fn() },
     coachingSession: { findMany: vi.fn() },
+    moyenPedagogique: { groupBy: vi.fn() },
   },
 }));
 
@@ -57,6 +58,7 @@ type MockPrisma = {
   revueDirection: { count: ReturnType<typeof vi.fn> };
   supportFormation: { count: ReturnType<typeof vi.fn> };
   coachingSession: { findMany: ReturnType<typeof vi.fn> };
+  moyenPedagogique: { groupBy: ReturnType<typeof vi.fn> };
 };
 
 const mockP = prisma as unknown as MockPrisma;
@@ -84,8 +86,25 @@ function setupEmpty() {
   mockP.revueDirection.count.mockResolvedValue(0);
   mockP.supportFormation.count.mockResolvedValue(0);
   mockP.coachingSession.findMany.mockResolvedValue([]);
-  // Par défaut : référent handicap + responsable qualité vides
+  mockP.moyenPedagogique.groupBy.mockResolvedValue([]);
+  // Par défaut : référent handicap + responsable qualité vides.
+  // NB : off29_applicable lit aussi ce mock — "" n'est pas `true` strict →
+  // off.29 reste non applicable par défaut.
   mockGetConfig.mockResolvedValue("");
+}
+
+/** Mock groupBy moyens pédagogiques : 1er appel = actifs, 2e = actifs vérifiés. */
+function setupMoyens(
+  actifs: Array<{ categorie: string; count: number }>,
+  verifies: Array<{ categorie: string; count: number }>,
+) {
+  mockP.moyenPedagogique.groupBy
+    .mockResolvedValueOnce(
+      actifs.map((a) => ({ categorie: a.categorie, _count: { _all: a.count } })),
+    )
+    .mockResolvedValueOnce(
+      verifies.map((v) => ({ categorie: v.categorie, _count: { _all: v.count } })),
+    );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -468,5 +487,90 @@ describe("evaluerConformite", () => {
     const ind28 = result.indicateurs.find((i) => i.numero === 28);
     expect(ind28?.statut).toBe("non_applicable");
     expect(ind28?.preuves).toHaveLength(0);
+  });
+
+  // ── off.17/18 : inventaire des moyens pédagogiques (LOT 2) ────────────────
+
+  it("off.17 a_completer si formateurs actifs MAIS aucun moyen technique vérifié", async () => {
+    mockP.trainer.count.mockResolvedValue(2);
+    // 1 salle active mais jamais vérifiée
+    setupMoyens([{ categorie: "salle", count: 1 }], []);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 17)?.statut).toBe("a_completer");
+  });
+
+  it("off.17 couvert si formateur actif + ≥1 moyen technique actif vérifié", async () => {
+    mockP.trainer.count.mockResolvedValue(1);
+    setupMoyens([{ categorie: "salle", count: 1 }], [{ categorie: "salle", count: 1 }]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 17)?.statut).toBe("couvert");
+  });
+
+  it("off.17 a_completer si seul un moyen HUMAIN est vérifié (pas technique)", async () => {
+    mockP.trainer.count.mockResolvedValue(1);
+    setupMoyens([{ categorie: "humain", count: 2 }], [{ categorie: "humain", count: 2 }]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 17)?.statut).toBe("a_completer");
+  });
+
+  it("off.18 couvert si chaque catégorie utilisée a ≥1 moyen vérifié", async () => {
+    mockP.trainer.count.mockResolvedValue(1);
+    setupMoyens(
+      [
+        { categorie: "salle", count: 2 },
+        { categorie: "plateforme", count: 1 },
+      ],
+      [
+        { categorie: "salle", count: 1 },
+        { categorie: "plateforme", count: 1 },
+      ],
+    );
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 18)?.statut).toBe("couvert");
+  });
+
+  it("off.18 a_completer si une catégorie utilisée n'a aucun moyen vérifié", async () => {
+    mockP.trainer.count.mockResolvedValue(1);
+    setupMoyens(
+      [
+        { categorie: "salle", count: 1 },
+        { categorie: "materiel", count: 1 },
+      ],
+      [{ categorie: "salle", count: 1 }], // materiel jamais vérifié
+    );
+    const result = await evaluerConformite();
+    const ind18 = result.indicateurs.find((i) => i.numero === 18);
+    expect(ind18?.statut).toBe("a_completer");
+    expect(ind18?.preuves.join(" ")).toContain("materiel");
+  });
+
+  it("off.18 a_completer si inventaire vide (aucun moyen actif)", async () => {
+    mockP.trainer.count.mockResolvedValue(3);
+    setupMoyens([], []);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 18)?.statut).toBe("a_completer");
+  });
+
+  // ── off.29 : applicabilité pilotée par config off29_applicable (LOT 2) ────
+
+  it("off.29 non_applicable par défaut (off29_applicable=false)", async () => {
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 29)?.statut).toBe("non_applicable");
+  });
+
+  it("off.29 applicable + a_completer si off29_applicable=true (à renseigner manuellement)", async () => {
+    mockGetConfig.mockImplementation((key: string) =>
+      Promise.resolve(key === "off29_applicable" ? true : ""),
+    );
+    const result = await evaluerConformite();
+    const ind29 = result.indicateurs.find((i) => i.numero === 29);
+    expect(ind29?.statut).toBe("a_completer");
+    expect(ind29?.preuves.join(" ")).toMatch(/manuellement/i);
+  });
+
+  it("off.29 : une valeur config non booléenne n'active PAS l'indicateur (strict === true)", async () => {
+    mockGetConfig.mockResolvedValue("oui");
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 29)?.statut).toBe("non_applicable");
   });
 });

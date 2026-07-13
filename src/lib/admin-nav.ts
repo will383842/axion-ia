@@ -957,6 +957,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "registres",
     },
     {
+      href: `${base}/qualiopi/moyens`,
+      label: "Moyens pédagogiques",
+      icon: "🧰",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
       href: `${base}/qualiopi/revue-direction`,
       label: "Revue de direction",
       icon: "📋",

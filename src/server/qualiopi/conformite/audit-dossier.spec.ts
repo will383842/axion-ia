@@ -37,10 +37,24 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn().mockResolvedValue(""),
 }));
 
+// LOT 2 : les exports d'état des registres sont rendus à la volée dans le ZIP —
+// mockés ici (le rendu react-pdf réel est testé dans registres-pdf.spec).
+vi.mock("@/server/qualiopi/registres/registres-pdf", () => ({
+  REGISTRE_TYPES: [
+    "reclamations",
+    "veille",
+    "revue_direction",
+    "partenariats",
+    "sous_traitants",
+  ] as const,
+  renderRegistrePdfBuffer: vi.fn(),
+}));
+
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
 import { getObjectBufferR2 } from "@/lib/r2-storage";
+import { renderRegistrePdfBuffer } from "@/server/qualiopi/registres/registres-pdf";
 import { genererManifesteAudit, genererDossierAuditZip } from "./audit-dossier";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
 import JSZip from "jszip";
@@ -54,6 +68,7 @@ const mockPrisma = prisma as unknown as {
 const mockEvaluerConformite = evaluerConformite as ReturnType<typeof vi.fn>;
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 const mockGetObjectBufferR2 = getObjectBufferR2 as ReturnType<typeof vi.fn>;
+const mockRenderRegistrePdfBuffer = renderRegistrePdfBuffer as ReturnType<typeof vi.fn>;
 
 // Résultat de conformité simulé avec 32 indicateurs
 function makeConformiteResult(
@@ -281,6 +296,12 @@ describe("genererDossierAuditZip", () => {
     mockPrisma.trainer.findMany.mockResolvedValue([]);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
+    mockRenderRegistrePdfBuffer.mockImplementation((type: string) =>
+      Promise.resolve({
+        buffer: Buffer.from(`%PDF-1.4 registre ${type}`),
+        filename: `${type}.pdf`,
+      }),
+    );
   });
 
   it("retourne { base64, filename } avec filename horodaté", async () => {
@@ -377,11 +398,46 @@ describe("genererDossierAuditZip", () => {
       const zip = await JSZip.loadAsync(result.base64, { base64: true });
       expect(zip.files["manifeste.json"]).toBeDefined();
       expect(zip.files["manifeste.md"]).toBeDefined();
-      // Pas d'appel Prisma ni R2 en mode stub
+      // Pas d'appel Prisma ni R2 en mode stub — ni de rendu de registres
       expect(mockPrisma.documentGenere.findMany).not.toHaveBeenCalled();
       expect(mockGetObjectBufferR2).not.toHaveBeenCalled();
+      expect(mockRenderRegistrePdfBuffer).not.toHaveBeenCalled();
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+
+  // ── Exports d'état des registres (LOT 2 — A3/A7/A8/A17/A18) ───────────────
+
+  it("le ZIP contient les 5 exports d'état des registres sous registres/", async () => {
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    for (const type of [
+      "reclamations",
+      "veille",
+      "revue_direction",
+      "partenariats",
+      "sous_traitants",
+    ]) {
+      expect(zip.files[`registres/${type}.pdf`], `registres/${type}.pdf`).toBeDefined();
+    }
+    expect(mockRenderRegistrePdfBuffer).toHaveBeenCalledTimes(5);
+  });
+
+  it("un registre en erreur est omis (fail-soft) et consigné dans index.txt", async () => {
+    mockRenderRegistrePdfBuffer.mockImplementation((type: string) =>
+      type === "veille"
+        ? Promise.reject(new Error("rendu impossible"))
+        : Promise.resolve({
+            buffer: Buffer.from(`%PDF-1.4 registre ${type}`),
+            filename: `${type}.pdf`,
+          }),
+    );
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    expect(zip.files["registres/veille.pdf"]).toBeUndefined();
+    expect(zip.files["registres/reclamations.pdf"]).toBeDefined();
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).toContain("[OMIS] registres/veille");
   });
 });
