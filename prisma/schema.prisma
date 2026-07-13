@@ -5079,6 +5079,9 @@ model Devis {
   revisions              Devis[]     @relation("DevisRevision")
   /// Soumission DocuSeal « bon pour accord » (signature électronique du devis).
   docusealSubmissionId   String?     @map("docuseal_submission_id") @db.VarChar(120)
+  /// URL de signature DocuSeal du client (embed_src du 1er signataire) —
+  /// envoyée au client dans l'email pour qu'il signe en ligne.
+  docusealEmbedUrl       String?     @map("docuseal_embed_url") @db.Text
   clientId               String      @map("client_id") @db.Uuid
   client                 Client      @relation(fields: [clientId], references: [id], onDelete: Restrict)
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreTierId? }].

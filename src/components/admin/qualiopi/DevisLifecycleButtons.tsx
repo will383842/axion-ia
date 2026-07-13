@@ -52,24 +52,40 @@ export function DevisLifecycleButtons({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  // Avertissement : action réussie côté statut, mais l'email n'est PAS parti
+  // (pas d'email de contact, PDF absent, file d'attente indisponible). À NE PAS
+  // afficher en vert « succès » — sinon l'admin croit le devis reçu par le client.
+  const [warningMsg, setWarningMsg] = useState<string | null>(null);
 
-  function handleSend() {
+  function resetMessages() {
     setError(null);
     setSuccessMsg(null);
+    setWarningMsg(null);
+  }
+
+  function handleSend() {
+    resetMessages();
     startTransition(async () => {
       const result = await sendDevisAction(devisId);
       if ("error" in result) {
         setError(result.error);
       } else {
-        setSuccessMsg("Devis marqué comme envoyé.");
+        if (result.data.emailEnvoye) {
+          setSuccessMsg("Devis envoyé au client par email (PDF joint + lien de signature).");
+        } else {
+          // Statut passé à « envoyé », mais le client n'a rien reçu → avertissement.
+          setWarningMsg(
+            result.data.note ??
+              "Devis marqué comme envoyé, mais aucun email n'a été expédié au client.",
+          );
+        }
         router.refresh();
       }
     });
   }
 
   function handleAccept() {
-    setError(null);
-    setSuccessMsg(null);
+    resetMessages();
     startTransition(async () => {
       const result = await acceptDevisAction(devisId);
       if ("error" in result) {
@@ -82,8 +98,7 @@ export function DevisLifecycleButtons({
   }
 
   function handleDecline() {
-    setError(null);
-    setSuccessMsg(null);
+    resetMessages();
     startTransition(async () => {
       const result = await declineDevisAction(devisId);
       if ("error" in result) {
@@ -96,8 +111,7 @@ export function DevisLifecycleButtons({
   }
 
   function handleTransform() {
-    setError(null);
-    setSuccessMsg(null);
+    resetMessages();
     startTransition(async () => {
       const result = await transformDevisToConventionAction(devisId);
       if ("error" in result) {
@@ -183,6 +197,14 @@ export function DevisLifecycleButtons({
           className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
           {successMsg}
+        </p>
+      )}
+      {warningMsg && (
+        <p
+          role="alert"
+          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
+        >
+          {warningMsg}
         </p>
       )}
     </div>
