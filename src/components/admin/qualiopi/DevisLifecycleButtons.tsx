@@ -22,6 +22,7 @@ import {
   declineDevisAction,
   transformDevisToConventionAction,
 } from "@/server/actions/qualiopi/devis";
+import { envoyerDevisEmailAction } from "@/server/actions/qualiopi/facturation-emails";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -79,6 +80,19 @@ export function DevisLifecycleButtons({
               "Devis marqué comme envoyé, mais aucun email n'a été expédié au client.",
           );
         }
+        router.refresh();
+      }
+    });
+  }
+
+  function handleResend() {
+    resetMessages();
+    startTransition(async () => {
+      const result = await envoyerDevisEmailAction({ devisId });
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setSuccessMsg(`Devis renvoyé par email à ${result.data.to}.`);
         router.refresh();
       }
     });
@@ -168,6 +182,18 @@ export function DevisLifecycleButtons({
               {isPending ? "…" : "Marquer refusé"}
             </button>
           </>
+        )}
+
+        {(statut === "envoye" || statut === "accepte") && (
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={isPending}
+            className="admin-button"
+            aria-label="Renvoyer le devis au client par email (PDF joint)"
+          >
+            {isPending ? "…" : "Renvoyer par email"}
+          </button>
         )}
 
         {statut === "accepte" && (

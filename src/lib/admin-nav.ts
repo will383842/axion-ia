@@ -903,6 +903,20 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "commercial",
     },
     {
+      href: `${base}/qualiopi/facturation/new`,
+      label: "Facture directe",
+      icon: "➕",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
+    {
+      href: `${base}/qualiopi/facturation/plans`,
+      label: "Plans récurrents",
+      icon: "🔁",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
+    {
       href: `${base}/qualiopi/financements`,
       label: "Financements / Facturation",
       icon: "💳",
