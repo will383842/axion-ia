@@ -195,6 +195,8 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
   const bpfDepose = typeof bpfAnneeDeposee === "number" && bpfAnneeDeposee >= annee - 1;
   const veilleRecente =
     derniereVeille !== null &&
+    // Date.now() est OK ici : Server Component re-render à chaque requête HTTP.
+    // eslint-disable-next-line react-hooks/purity
     derniereVeille.dateVeille.getTime() >= Date.now() - 45 * 24 * 60 * 60 * 1000;
 
   const exportInput = {

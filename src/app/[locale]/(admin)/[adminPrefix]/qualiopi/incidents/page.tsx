@@ -69,6 +69,8 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
     // Sessions récentes proposées pour rattacher un incident (12 mois glissants).
     prisma.trainingSession.findMany({
       where: {
+        // Date.now() est OK ici : Server Component re-render à chaque requête HTTP.
+        // eslint-disable-next-line react-hooks/purity
         dateDebut: { gte: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000) },
       },
       select: { id: true, numero: true, titreSession: true },
