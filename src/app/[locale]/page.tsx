@@ -366,6 +366,7 @@ export default async function Home({ params }: HomeProps) {
             {/* Colonne gauche : copy (titre garde sa taille géante) */}
             <div className="max-w-2xl">
               <h1 id="hero-heading" className="display-editorial text-fg" data-speakable-hero>
+                {t("heroTitlePart1")}{" "}
                 <em className="italic-editorial text-terracotta not-italic">
                   <span className="italic">{t("heroTitleEm")}</span>
                 </em>
@@ -1219,7 +1220,7 @@ export default async function Home({ params }: HomeProps) {
             pause au survol, désactivé en prefers-reduced-motion). Server-only,
             zéro JS. (Will 2026-06-10 : « images trop grosses → comme la section
             Réalisations de /audit ».) */}
-        <div className="group relative mt-12">
+        <div className="group relative mt-12 overflow-hidden">
           {/* Fondus latéraux pour une entrée/sortie propre */}
           <div
             aria-hidden="true"
