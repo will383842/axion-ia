@@ -20,6 +20,8 @@ import {
 } from "@/server/actions/qualiopi/revue-direction";
 import { RevueDirectionForm } from "@/components/admin/qualiopi/RevueDirectionForm";
 import { RevueDirectionRowActions } from "@/components/admin/qualiopi/RevueDirectionRowActions";
+import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
+import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -62,6 +64,13 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
       <AdminPageHeader
         title="Revue de direction"
         description="Revue de direction annuelle (off.32 — indicateur 32, NC majeure). Snapshot indicateurs de l'année + décisions + plan d'actions. Une revue par année civile."
+        actions={
+          <PdfExportButton
+            label="Exporter les revues (PDF)"
+            input={{ type: "revue_direction" as const }}
+            action={genererRegistrePdfAction}
+          />
+        }
       />
 
       {/* KPIs */}

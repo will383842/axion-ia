@@ -23,6 +23,8 @@ import {
   ReclamationForm,
   ReclamationReponseForm,
 } from "@/components/admin/qualiopi/ReclamationForm";
+import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
+import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -73,6 +75,13 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
       <AdminPageHeader
         title="Réclamations"
         description="Registre des réclamations (off.31 — indicateur 31). Alerte si sans réponse > J+15. Toute réclamation doit être enregistrée et traitée."
+        actions={
+          <PdfExportButton
+            label="Exporter le registre (PDF)"
+            input={{ type: "reclamations" as const }}
+            action={genererRegistrePdfAction}
+          />
+        }
       />
 
       {/* KPIs */}

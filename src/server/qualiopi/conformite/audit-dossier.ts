@@ -15,6 +15,7 @@ import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
+import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { getObjectBufferR2 } from "@/lib/r2-storage";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
@@ -96,10 +97,10 @@ const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   15: [],
   16: ["certificat_realisation", "attestation"],
 
-  // C4 — Moyens
-  17: ["lettre_mission"],
-  18: ["convention_tripartite"],
-  19: ["kit_opco", "kit_cpf", "kit_france_travail"],
+  // C4 — Moyens (inventaire_moyens = doc A14, LOT 2)
+  17: ["lettre_mission", "inventaire_moyens"],
+  18: ["convention_tripartite", "inventaire_moyens"],
+  19: ["kit_opco", "kit_cpf", "kit_france_travail", "inventaire_moyens"],
   20: [],
 
   // C5 — Qualification
@@ -288,6 +289,9 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
  *   - `preuves/<type>/<numero>.pdf` — PDF de chaque DocumentGenere ayant une
  *     clé R2 reconstructible. Les PDFs manquants (R2 absent ou 404) sont omis
  *     et consignés dans `index.txt` (fail-soft).
+ *   - `registres/<nom>.pdf` — exports d'état des 5 registres (réclamations,
+ *     veille, revue de direction, partenariats, sous-traitants) rendus à la
+ *     volée depuis les données réelles (LOT 2 — fail-soft).
  *
  * Stub-aware : retourne un ZIP minimal (manifeste seulement) si la magic
  * string "stub.invalid" est détectée dans DATABASE_URL.
@@ -342,6 +346,24 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
       nbInclus++;
     } else {
       indexLines.push(`[OMIS] ${r2Key} — non disponible (R2 absent ou clé introuvable)`);
+      nbOmis++;
+    }
+  }
+
+  // ── Exports d'état des registres (LOT 2 — A3/A7/A8/A17/A18) ─────────────
+  //   Rendus à la volée depuis les données réelles (pas des DocumentGenere).
+  //   Fail-soft : un registre en erreur est consigné et n'invalide pas le ZIP.
+  indexLines.push("");
+  for (const type of REGISTRE_TYPES) {
+    try {
+      const { buffer, filename } = await renderRegistrePdfBuffer(type);
+      zip.file(`registres/${filename}`, buffer);
+      indexLines.push(`[OK]  registres/${filename}  (${buffer.byteLength} octets)`);
+      nbInclus++;
+    } catch (err) {
+      indexLines.push(
+        `[OMIS] registres/${type} — erreur de rendu (${err instanceof Error ? err.message : String(err)})`,
+      );
       nbOmis++;
     }
   }

@@ -1,8 +1,11 @@
 /**
- * Admin — Qualiopi · Indicateurs KPIs + BPF (T10).
+ * Admin — Qualiopi · Indicateurs KPIs + BPF (T10) + synthèse satisfaction (LOT 4).
  *
- * Server Component : lit `getIndicateurs(annee)` et `computeBpf(annee)` côté serveur.
+ * Server Component : lit `getIndicateurs(annee)`, `computeBpf(annee)` et
+ * `getSyntheseQuestionnaires({ annee })` côté serveur.
  * Sélecteur année via searchParam `?annee=<AAAA>`.
+ * Section « Synthèse satisfaction » : notes par formation + verbatims récents
+ * avec report 1 clic vers la revue de direction (plan d'actions).
  * Force-dynamic + noindex.
  */
 
@@ -19,6 +22,9 @@ import { RecomputeIndicateursButton } from "@/components/admin/qualiopi/Recomput
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
 import { computeBpf } from "@/server/qualiopi/bpf/service";
 import { honorairesSousTraitanceAnnee } from "@/server/qualiopi/remuneration/queries";
+import { getSyntheseQuestionnaires } from "@/server/qualiopi/satisfaction/synthese-service";
+import { reporterEnRevueDirectionAction } from "@/server/actions/qualiopi/revue-direction";
+import { ReporterEnRevueButton } from "@/components/admin/qualiopi/ReporterEnRevueButton";
 import {
   Gauge,
   CheckCircle2,
@@ -79,12 +85,14 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
   const anneeFinale = anneeValide ? annee : anneeActuelle;
 
   // Lecture côté serveur uniquement
-  const [indicateurs, bpf, honorairesST] = await Promise.all([
+  const [indicateurs, bpf, honorairesST, synthese] = await Promise.all([
     getIndicateurs(anneeFinale),
     computeBpf(anneeFinale),
     // Charge de sous-traitance CALCULÉE depuis les lignes d'honoraires réelles,
     // pour rapprochement avec la dépense BPF SAISIE (déclarer reste manuel).
     honorairesSousTraitanceAnnee(anneeFinale),
+    // Synthèse satisfaction (LOT 4) : notes par formation + verbatims.
+    getSyntheseQuestionnaires({ annee: anneeFinale }),
   ]);
 
   // Sélecteur années (5 ans glissants)
@@ -372,6 +380,121 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
         )}
       </div>
       <BpfDepenseForm annee={anneeFinale} depenses={bpf.depenses.items} />
+
+      {/* ── Section : Synthèse satisfaction (LOT 4) ────────────────────── */}
+      <h2 className={`${sectionTitleCls} mt-[var(--space-admin-8)]`}>
+        Synthèse satisfaction — {anneeFinale}
+      </h2>
+      <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        Questionnaires de satisfaction répondus (à chaud + à froid) sur les sessions de l&apos;année
+        : {synthese.global.nbReponses} réponse(s)
+        {synthese.global.noteMoyenne !== null
+          ? ` · note moyenne globale ${synthese.global.noteMoyenne}/5`
+          : ""}
+        {synthese.global.moyennesBlocs.length > 0
+          ? ` · blocs : ${synthese.global.moyennesBlocs.map((b) => `${b.libelle} ${b.moyenne}/5`).join(" · ")}`
+          : ""}
+        . Reportez un verbatim dans le plan d&apos;actions de la revue de direction en un clic.
+      </p>
+
+      {synthese.parFormation.length === 0 ? (
+        <p className="mb-[var(--space-admin-8)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
+          Aucun questionnaire répondu sur les sessions de {anneeFinale}.
+        </p>
+      ) : (
+        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+          <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
+            <thead className="border-b border-[color:var(--color-admin-border)]">
+              <tr>
+                <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+                  Formation
+                </th>
+                <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+                  Réponses
+                </th>
+                <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+                  Note moyenne
+                </th>
+                <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+                  Moyennes par bloc
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {synthese.parFormation.map((f) => (
+                <tr
+                  key={f.formationId}
+                  className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
+                >
+                  <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top font-medium text-[color:var(--color-admin-fg)]">
+                    {f.formationTitre}
+                  </td>
+                  <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top text-[color:var(--color-admin-fg)]">
+                    {f.nbReponses}
+                  </td>
+                  <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top">
+                    {f.noteMoyenne !== null ? (
+                      <span
+                        className={
+                          f.noteMoyenne >= 4
+                            ? "font-semibold text-[color:var(--color-admin-success)]"
+                            : f.noteMoyenne >= 3
+                              ? "font-semibold text-[color:var(--color-admin-warning)]"
+                              : "font-semibold text-[color:var(--color-admin-error)]"
+                        }
+                      >
+                        {f.noteMoyenne}/5
+                      </span>
+                    ) : (
+                      <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+                    )}
+                  </td>
+                  <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                    {f.moyennesBlocs.length > 0
+                      ? f.moyennesBlocs.map((b) => `${b.bloc} ${b.moyenne}/5 (${b.nb})`).join(" · ")
+                      : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Verbatims récents */}
+      <h3 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+        Verbatims récents
+      </h3>
+      {synthese.verbatims.length === 0 ? (
+        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
+          Aucun verbatim (réponse en texte libre) sur les questionnaires de {anneeFinale}.
+        </p>
+      ) : (
+        <ul className="flex flex-col gap-[var(--space-admin-4)]">
+          {synthese.verbatims.slice(0, 20).map((v, idx) => (
+            <li
+              key={idx}
+              className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
+            >
+              <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+                « {v.texte} »
+              </p>
+              <div className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
+                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {v.formationTitre} · session {v.sessionNumero}
+                  {v.date ? ` · ${v.date.toLocaleDateString("fr-FR")}` : ""} · question «{" "}
+                  {v.questionCle} »
+                </span>
+                <ReporterEnRevueButton
+                  texte={v.texte}
+                  source={`Verbatim satisfaction — ${v.formationTitre} · session ${v.sessionNumero}`}
+                  action={reporterEnRevueDirectionAction}
+                />
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </AdminPageShell>
   );
 }

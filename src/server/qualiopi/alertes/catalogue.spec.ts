@@ -18,6 +18,7 @@ const CODES_ATTENDUS: string[] = [
   "referent_handicap_absent",
   "responsable_qualite_absent",
   "emargement_manquant",
+  "session_sans_formateur",
   "satisfaction_manquante",
   "evaluation_acquis_manquante",
   "attestation_non_envoyee",
@@ -38,10 +39,12 @@ const CODES_ATTENDUS: string[] = [
   "opco_formation_demarree_sans_accord",
   "convention_tripartite_manquante",
   "convention_formation_manquante",
+  "bareme_opco_perime",
   "facture_impayee_j30",
   "facture_impayee_j60",
   "job_ia_echoue",
   "suppression_rgpd_j30",
+  "revue_trimestrielle_a_faire",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];
@@ -51,7 +54,7 @@ const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("ALERTE_CATALOGUE", () => {
-  it("contient exactement les 27 codes attendus", () => {
+  it("contient exactement les codes attendus", () => {
     const codesPresents = Object.keys(ALERTE_CATALOGUE).sort();
     const codesAttendus = [...CODES_ATTENDUS].sort();
     expect(codesPresents).toEqual(codesAttendus);

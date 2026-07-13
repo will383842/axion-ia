@@ -144,6 +144,13 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...num(8000),
     description: "Plafond annuel Atlas par entreprise (€ HT).",
   },
+  // Référentiel OPCO versionné (Lot 5) — durée de validité d'un relevé de barème
+  // au-delà de laquelle l'alerte `bareme_opco_perime` est levée (relevé à
+  // rafraîchir sur le portail OPCO). Les barèmes changent ~annuellement.
+  bareme_opco_validite_mois: {
+    ...num(12),
+    description: "Validité d'un relevé de barème OPCO (mois) avant alerte de péremption.",
+  },
 
   // ── Facturation / encaissements (Hub facturation unifié) ──
   // Le RIB (IBAN/BIC/titulaire) vit dans `legal_overrides` (SSOT identité,
@@ -219,6 +226,32 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...num(0),
     description:
       "Plancher absolu d'heures réalisées pour une attestation 1-to-1 complète (0 = pas de plancher, seuls les % d'assiduité s'appliquent).",
+  },
+
+  // ── Périmètre indicateurs conformité ──────────────────────────────────────
+  off29_applicable: {
+    ...bool(false),
+    description:
+      "Indicateur 29 (insertion professionnelle) applicable — false pour un OF d'actions de formation non certifiantes ; à confirmer avec le certificateur.",
+  },
+
+  // ── Cadences de pilotage (LOT 4) ───────────────────────────────────────────
+  // Revue trimestrielle NON bloquante (décision B4) : quand activée, une alerte
+  // info `revue_trimestrielle_a_faire` est levée si aucune revue de direction
+  // n'a été tenue/mise à jour depuis le début du trimestre précédent.
+  revue_trimestrielle_activee: {
+    ...bool(true),
+    description:
+      "Active l'alerte de cadence trimestrielle de la revue de direction (info, non bloquante).",
+  },
+
+  // ── Gouvernance qualité (LOT 4) ───────────────────────────────────────────
+  // Texte libre affiché en configuration : qui porte quel rôle qualité, avec
+  // quelle mission et quelle cadence de revue. Défaut VIDE (renseigné par Will).
+  gouvernance_roles: {
+    ...str(),
+    description:
+      "Rôles qualité : référent handicap, responsable qualité, référent pédagogique — mission et cadence de revue par rôle.",
   },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 

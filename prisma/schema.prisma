@@ -5680,6 +5680,8 @@ model TrainingSession {
   dossiersFinancement DossierFinancement[]
   /// Jointure normalisée session ↔ formateur (remplace `coFormateurs` Json).
   sessionFormateurs   SessionFormateur[]
+  /// Incidents rattachés à la session (registre des incidents — LOT 4).
+  incidents           Incident[]
 
   @@index([formationId])
   @@index([clientId])
@@ -6084,6 +6086,8 @@ enum DocumentType {
   devis
   /// Avoir (facture rectificative, montants négatifs, lié à la facture d'origine).
   avoir
+  /// Inventaire des moyens pédagogiques et techniques (off.17/18/19 — doc A14).
+  inventaire_moyens
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
@@ -6757,6 +6761,82 @@ model SousTraitant {
   @@map("sous_traitants_of")
 }
 
+/// Catégorie d'un moyen pédagogique (inventaire off.17/18/19 — doc A14).
+enum MoyenCategorie {
+  salle
+  materiel
+  plateforme
+  humain
+}
+
+/// Inventaire des moyens pédagogiques et techniques (off.17/18/19 — doc A14).
+/// `dateVerification` = dernière vérification d'adéquation/disponibilité par
+/// l'OF (preuve d'entretien des moyens — un moyen jamais vérifié ne prouve rien).
+model MoyenPedagogique {
+  id               String         @id @default(uuid()) @db.Uuid
+  categorie        MoyenCategorie
+  libelle          String         @db.VarChar(300)
+  description      String         @default("") @db.Text
+  localisation     String         @default("") @db.VarChar(250)
+  actif            Boolean        @default(true)
+  dateVerification DateTime?      @map("date_verification")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@index([categorie])
+  @@index([actif])
+  @@map("moyens_pedagogiques")
+}
+
+/// Type d'un incident (registre des incidents — LOT 4, alimente M7/M9 pilotage).
+enum IncidentType {
+  pedagogique
+  administratif
+  technique
+  autre
+}
+
+/// Gravité d'un incident.
+enum IncidentGravite {
+  mineur
+  majeur
+  critique
+}
+
+/// Statut de traitement d'un incident.
+enum IncidentStatut {
+  ouvert
+  en_cours
+  resolu
+}
+
+/// Registre des incidents (LOT 4 — pilotage réel). Remplace les proxys M7
+/// (sessions annulées/reportées) et M9 (réclamations seules) : les incidents
+/// déclarés + leurs actions correctives deviennent la source première des
+/// métriques de pilotage. `sessionId` optionnel (incident hors session possible).
+model Incident {
+  id               String           @id @default(uuid()) @db.Uuid
+  type             IncidentType
+  gravite          IncidentGravite
+  titre            String           @db.VarChar(300)
+  description      String           @default("") @db.Text
+  sessionId        String?          @map("session_id") @db.Uuid
+  session          TrainingSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  dateIncident     DateTime         @map("date_incident")
+  /// Action corrective décidée/réalisée (preuve d'amélioration continue — M9).
+  actionCorrective String           @default("") @map("action_corrective") @db.Text
+  statut           IncidentStatut   @default(ouvert)
+  resoluAt         DateTime?        @map("resolu_at")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  @@index([statut])
+  @@index([type])
+  @@index([dateIncident])
+  @@index([sessionId])
+  @@map("incidents")
+}
+
 /// Revue de direction annuelle (off.32 — GATÉE ind.32). Snapshot indicateurs +
 /// décisions + plan d'actions. Trimestrielle non bloquante (cf. décision B4).
 model RevueDirection {
@@ -7184,11 +7264,14 @@ model BpfDepense {
 
 // ============================================================
 // QUALIOPI — T18 : Certification RS/RNCP + prise en charge OPCO PAR DOSSIER.
-// Les barèmes OPCO varient par branche (IDCC) × taille × dispositif → impossible
-// de pré-remplir un barème générique fiable. Donc le barème est saisi PAR DOSSIER
-// (sur la session), relevé sur le portail OPCO de la branche du client au moment
-// du montage, avec source + date (traçabilité auditeur). Pas de référentiel.
-// Champs prise-en-charge portés par TrainingSession + Client.idcc (cf. schema).
+// Les barèmes OPCO varient par branche (IDCC) × taille × dispositif → le barème
+// reste saisi PAR DOSSIER (sur la session), relevé sur le portail OPCO de la
+// branche du client au moment du montage, avec source + date (traçabilité
+// auditeur). LE BARÈME DOSSIER RESTE LA SOURCE DE VÉRITÉ.
+// Lot 5 (2026-07-13) ajoute EN COMPLÉMENT un référentiel central VERSIONNÉ
+// (model BaremeOpco) : source de PRÉ-REMPLISSAGE / d'estimation quand aucune
+// valeur dossier n'est saisie (fallback conservé). Champs prise-en-charge
+// portés par TrainingSession + Client.idcc (cf. schema).
 // ============================================================
 
 /// Unité du montant de prise en charge OPCO relevé sur le portail de la branche.
@@ -7197,6 +7280,65 @@ enum PriseEnChargeUnite {
   euro_jour
   euro_formation
   euro_an_salarie
+}
+
+/// OPCO (opérateur de compétences) agréé — les 11 OPCO au 2026. Les 5 premiers
+/// identifiants (atlas, akto, opco2i, constructys, opcommerce) reprennent VERBATIM
+/// ceux déjà émis par `inferOpcoFromNaf` (src/server/qualiopi/crm/naf-opco.ts) :
+/// ne PAS les renommer sous peine de casser l'inférence NAF → OPCO.
+enum Opco {
+  atlas
+  opco_ep
+  akto
+  opco2i
+  mobilites
+  afdas
+  uniformation
+  ocapiat
+  constructys
+  opcommerce
+  opco_sante
+}
+
+/// Barème OPCO centralisé et VERSIONNÉ (Lot 5). Complète — sans le remplacer — le
+/// barème saisi par dossier sur TrainingSession : sert de source de PRÉ-REMPLISSAGE
+/// et d'estimation devis quand aucune valeur dossier n'est saisie. Le barème dossier
+/// reste la source de vérité (override auditeur ; aucun recalcul rétroactif).
+///
+/// Versionnement (les barèmes CHANGENT) : chaque relevé = une NOUVELLE ligne portant
+/// une `dateEffet`. Une modification NE MODIFIE JAMAIS une ligne existante — elle en
+/// crée une nouvelle et ferme la précédente (`effectiveTo`). L'historique est conservé
+/// intégralement. Les dossiers déjà engagés gardent le barème snapshoté sur la session
+/// (pas de relecture) ; seuls les nouveaux dossiers résolvent la version en vigueur à
+/// leur date. `releveLe` = date du relevé portail (pilote l'alerte « barème > 12 mois »).
+/// VALEURS saisies par un humain (relevés portails OPCO) — jamais inventées ; structure
+/// livrée VIDE (tous les plafonds nullable).
+model BaremeOpco {
+  id                    String    @id @default(uuid()) @db.Uuid
+  opco                  Opco
+  /// Libellé optionnel du périmètre (branche/IDCC, taille, dispositif) couvert —
+  /// texte libre car les barèmes varient par branche × taille × dispositif.
+  perimetre             String?   @db.VarChar(200)
+  /// Plafonds en CENTIMES (nullable : structure vide tant que non relevé).
+  intraHoraireCents     Int?      @map("intra_horaire_cents")
+  interPresentielCents  Int?      @map("inter_presentiel_cents")
+  interDistancielCents  Int?      @map("inter_distanciel_cents")
+  plafondFormationCents Int?      @map("plafond_formation_cents")
+  plafondAnnuelCents    Int?      @map("plafond_annuel_cents")
+  /// Traçabilité auditeur : URL du portail OPCO + date du relevé.
+  sourceUrl             String?   @map("source_url") @db.Text
+  releveLe              DateTime? @map("releve_le")
+  /// Versionnement : date d'effet + fermeture (`effectiveTo` null = en vigueur).
+  dateEffet             DateTime  @map("date_effet")
+  effectiveTo           DateTime? @map("effective_to")
+  note                  String?   @db.Text
+  createdById           String?   @map("created_by_id") @db.Uuid
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@index([opco, dateEffet])
+  @@index([effectiveTo])
+  @@map("baremes_opco")
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

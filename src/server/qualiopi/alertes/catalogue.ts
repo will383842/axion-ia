@@ -50,6 +50,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
+  // ── Formateur ──────────────────────────────────────────────────────────────
+  session_sans_formateur: {
+    niveau: "important",
+    titre: "Session à J-7 sans formateur principal",
+    resolutionAuto: true,
+  },
+
   // ── Satisfaction ──────────────────────────────────────────────────────────
   satisfaction_manquante: {
     niveau: "important",
@@ -157,6 +164,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Convention tripartite manquante (subrogation OPCO)",
     resolutionAuto: true,
   },
+  // Référentiel OPCO versionné (Lot 5) : le barème en vigueur d'un OPCO a un
+  // relevé portail périmé (> config `bareme_opco_validite_mois`, défaut 12 mois).
+  bareme_opco_perime: {
+    niveau: "important",
+    titre: "Barème OPCO à rafraîchir (relevé trop ancien)",
+    resolutionAuto: true,
+  },
   // [T17.1 — S7] Convention de formation (L.6353-1) non établie avant démarrage (off.9).
   convention_formation_manquante: {
     niveau: "critique",
@@ -190,6 +204,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "info",
     titre: "Demande de suppression RGPD non traitée depuis 30 jours",
     resolutionAuto: false,
+  },
+
+  // ── Pilotage — cadence trimestrielle (LOT 4) ──────────────────────────────
+  // Non bloquante (décision B4) : gatée par la clé de config
+  // `revue_trimestrielle_activee` (défaut true).
+  revue_trimestrielle_a_faire: {
+    niveau: "info",
+    titre: "Revue trimestrielle à réaliser",
+    resolutionAuto: true,
   },
 } as const;
 

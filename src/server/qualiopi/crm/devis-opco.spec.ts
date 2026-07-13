@@ -17,9 +17,30 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn(),
 }));
 
+// Résolveur du barème central versionné (Lot 5) — mocké pour piloter le fallback.
+// tarifHoraireBaremeCents garde la vraie logique de sélection par modalité.
+vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
+  resolveBaremeOpco: vi.fn(),
+  tarifHoraireBaremeCents: (
+    b: {
+      intraHoraireCents: number | null;
+      interPresentielCents: number | null;
+      interDistancielCents: number | null;
+    },
+    m: "intra" | "inter_presentiel" | "inter_distanciel",
+  ): number | null =>
+    m === "intra"
+      ? b.intraHoraireCents
+      : m === "inter_distanciel"
+        ? b.interDistancielCents
+        : b.interPresentielCents,
+}));
+
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { resolveBaremeOpco } from "@/server/qualiopi/financements/bareme-opco";
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
+const mockResolve = resolveBaremeOpco as ReturnType<typeof vi.fn>;
 
 /** Plafonds de test alignés avec les défauts du registre. */
 const DEFAULTS = {
@@ -30,6 +51,8 @@ const DEFAULTS = {
 } as const;
 
 beforeEach(() => {
+  mockResolve.mockReset();
+  mockResolve.mockResolvedValue(null); // par défaut : pas de barème central → Atlas.
   mockGetConfig.mockImplementation((key: string) => {
     const map: Record<string, number> = {
       opco_atlas_intra_horaire: DEFAULTS.opco_atlas_intra_horaire,
@@ -154,5 +177,90 @@ describe("estimateOpcoCoverage", () => {
     });
     expect(result.montantPriseEnChargeCents).toBe(0);
     expect(result.resteAChargeCents).toBe(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Barème central versionné (Lot 5) — prime sur Atlas, fallback conservé.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function baremeCentral(over: Record<string, unknown> = {}) {
+  return {
+    id: "b1",
+    opco: "afdas",
+    intraHoraireCents: 5000, // 50 €/h
+    interPresentielCents: 3000,
+    interDistancielCents: 2000,
+    plafondFormationCents: null,
+    plafondAnnuelCents: null,
+    ...over,
+  };
+}
+
+describe("estimateOpcoCoverage — barème central (Lot 5)", () => {
+  it("sans opco : ne consulte JAMAIS le référentiel (comportement Atlas)", async () => {
+    await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 20_000,
+    });
+    expect(mockResolve).not.toHaveBeenCalled();
+  });
+
+  it("opco sans barème en vigueur → fallback Atlas (40 €/h intra)", async () => {
+    mockResolve.mockResolvedValue(null);
+    // 1 × 7h × 40 = 280 € = 28 000 ¢ ; montant 40 000 → PEC 28 000
+    const r = await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "afdas",
+    });
+    expect(mockResolve).toHaveBeenCalledWith("afdas", expect.any(Date));
+    expect(r.montantPriseEnChargeCents).toBe(28_000);
+  });
+
+  it("barème central : le tarif horaire prime sur Atlas (50 €/h)", async () => {
+    mockResolve.mockResolvedValue(baremeCentral());
+    // 1 × 7h × 50 = 350 € = 35 000 ¢ ; montant 40 000 → PEC 35 000
+    const r = await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "afdas",
+    });
+    expect(r.montantPriseEnChargeCents).toBe(35_000);
+    expect(r.resteAChargeCents).toBe(5_000);
+  });
+
+  it("barème central avec plafond horaire absent → fallback Atlas champ par champ", async () => {
+    mockResolve.mockResolvedValue(baremeCentral({ intraHoraireCents: null }));
+    // intra null → Atlas 40 €/h : 1 × 7h × 40 = 28 000 ¢
+    const r = await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "afdas",
+    });
+    expect(r.montantPriseEnChargeCents).toBe(28_000);
+  });
+
+  it("barème central : plafond annuel prime sur Atlas (cap enveloppe par défaut)", async () => {
+    mockResolve.mockResolvedValue(baremeCentral({ plafondAnnuelCents: 300_000 }));
+    // 10 × 21h × 50 = 10 500 € = 1 050 000 ¢ théorique
+    // enveloppe = plafond annuel barème 300 000 ¢ ; montant 900 000 → PEC min = 300 000
+    const r = await estimateOpcoCoverage({
+      nbParticipants: 10,
+      dureeHeures: 21,
+      modalite: "intra",
+      montantHtCents: 900_000,
+      opco: "afdas",
+    });
+    expect(r.montantPriseEnChargeCents).toBe(300_000);
+    expect(r.resteAChargeCents).toBe(600_000);
   });
 });

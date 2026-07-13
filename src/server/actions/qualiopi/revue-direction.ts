@@ -1,8 +1,11 @@
 /**
- * Qualiopi — Server Actions Revue de direction (T12).
+ * Qualiopi — Server Actions Revue de direction (T12 + LOT 4).
  *
- * creerRevueDirectionAction  : crée la revue annuelle avec snapshot indicateurs.
- * updateRevueDirectionAction : met à jour une revue existante.
+ * creerRevueDirectionAction     : crée la revue annuelle avec snapshot indicateurs.
+ * updateRevueDirectionAction    : met à jour une revue existante.
+ * reporterEnRevueDirectionAction: reporte un constat/verbatim dans le plan
+ *                                 d'actions de la revue de l'année courante
+ *                                 (créée en brouillon si absente) — LOT 4.
  *
  * off.32 — indicateur 32 (NC majeure). Snapshot indicateurs capturé à la création.
  */
@@ -11,7 +14,11 @@
 
 import { z } from "zod";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { creerRevue, updateRevue } from "@/server/qualiopi/registres/revue-direction-service";
+import {
+  creerRevue,
+  updateRevue,
+  reporterConstatRevue,
+} from "@/server/qualiopi/registres/revue-direction-service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -118,4 +125,47 @@ export async function updateRevueDirectionAction(input: {
   });
 
   return { data: { id } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// reporterEnRevueDirectionAction (LOT 4)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const reporterEnRevueDirectionSchema = z.object({
+  texte: z.string().min(1).max(4000),
+  source: z.string().min(1).max(300),
+});
+
+/**
+ * Reporte un constat (verbatim satisfaction, écart, décision à instruire) dans
+ * le plan d'actions de la revue de direction de l'ANNÉE COURANTE. La revue est
+ * créée en brouillon (avec snapshot indicateurs) si elle n'existe pas encore.
+ */
+export async function reporterEnRevueDirectionAction(input: {
+  texte: string;
+  source: string;
+}): Promise<ActionResult<{ id: string; annee: number; creee: boolean }>> {
+  const session = await requireAdminWrite();
+  const parsed = reporterEnRevueDirectionSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const v = parsed.data;
+
+  const annee = new Date().getFullYear();
+
+  let resultat: { id: string; annee: number; creee: boolean };
+  try {
+    resultat = await reporterConstatRevue(annee, { texte: v.texte, source: v.source });
+  } catch {
+    return { error: "Erreur lors du report en revue de direction" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.revue_direction.reporter_constat",
+    targetType: "RevueDirection",
+    targetId: resultat.id,
+    changes: { annee, source: v.source, texte: v.texte.slice(0, 500), creee: resultat.creee },
+    session,
+  });
+
+  return { data: resultat };
 }

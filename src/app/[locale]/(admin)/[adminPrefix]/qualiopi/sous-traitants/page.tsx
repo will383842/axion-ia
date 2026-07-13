@@ -22,6 +22,8 @@ import {
   SousTraitantForm,
   SousTraitantVerifButton,
 } from "@/components/admin/qualiopi/SousTraitantForm";
+import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
+import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -56,6 +58,13 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
       <AdminPageHeader
         title="Sous-traitants"
         description="Registre des sous-traitants OF (off.27 — indicateur 27). Prestataires auxquels l'OF délègue tout ou partie d'une formation. Vérification NDA data.gouv.fr obligatoire."
+        actions={
+          <PdfExportButton
+            label="Exporter le registre (PDF)"
+            input={{ type: "sous_traitants" as const }}
+            action={genererRegistrePdfAction}
+          />
+        }
       />
 
       {/* KPIs */}

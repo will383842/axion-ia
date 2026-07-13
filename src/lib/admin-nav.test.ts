@@ -44,7 +44,17 @@ describe("buildAdminNav SSOT", () => {
     // affectables + rémunérées), groupe qualiopi / sous-groupe formations. = 133.
     // +1 (2026-07-12) : « Facturation (Hub) » — pilotage unifié des 5 activités
     // (page gatée FACTURATION_HUB_ENABLED), groupe qualiopi / commercial. = 134.
-    expect(items.length).toBe(134);
+    // +1 (2026-07-13, Lot 2) : « Moyens pédagogiques » — inventaire off.17/18/19,
+    // groupe qualiopi / registres (snapshot non réconcilié au merge). = 135.
+    // +1 (2026-07-13, Lot 3) : « Entrées récentes » — pont appel/contact → CRM,
+    // groupe qualiopi (snapshot non réconcilié au merge). = 136.
+    // +1 (2026-07-13, Lot 4) : « Incidents » — registre des incidents (pilotage),
+    // groupe qualiopi / sous-groupe registres. = 137.
+    // +1 (2026-07-13, Lot 5) : « Barèmes OPCO » — référentiel OPCO centralisé et
+    // versionné, groupe qualiopi / sous-groupe commercial. = 138.
+    // +1 (2026-07-13, Lot 6.3) : « Cockpit financier » — marge par session/formation,
+    // heures & coût par formateur, groupe qualiopi / sous-groupe formations. = 139.
+    expect(items.length).toBe(139);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

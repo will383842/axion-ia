@@ -5,6 +5,13 @@
  *   en déduisant la couverture depuis la présence de données en base.
  *   Score = couverts / applicables (JAMAIS /22).
  *
+ * LOT 2 (2026-07-13) :
+ *   - off.17/18 dépendent AUSSI de l'inventaire des moyens pédagogiques
+ *     (MoyenPedagogique actif + dateVerification non null) — plus seulement
+ *     du proxy nbTrainers > 0.
+ *   - off.29 gaté par la config `off29_applicable` (défaut false → non
+ *     applicable ; true → applicable, à renseigner manuellement).
+ *
  * Stub-aware : si DATABASE_URL contient "stub.invalid", retourne un résultat
  * vide (safe au build SSG).
  */
@@ -90,6 +97,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     coachingAfestResult,
     nbFormationsAvecStructure,
     nbFormationsAvecContenu,
+    moyensActifsParCategorie,
+    moyensVerifiesParCategorie,
+    off29Applicable,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -190,6 +200,23 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         statutGeneration: { in: ["contenu_genere", "contenu_valide", "assemble", "publie"] },
       },
     }),
+    // off.17/18 : inventaire des moyens pédagogiques (LOT 2 — doc A14).
+    //   Moyens ACTIFS par catégorie (les catégories « utilisées » de l'OF).
+    prisma.moyenPedagogique.groupBy({
+      by: ["categorie"],
+      where: { actif: true },
+      _count: { _all: true },
+    }),
+    //   Moyens actifs VÉRIFIÉS (dateVerification non null) par catégorie — un
+    //   moyen jamais vérifié ne prouve pas l'adéquation à l'audit.
+    prisma.moyenPedagogique.groupBy({
+      by: ["categorie"],
+      where: { actif: true, dateVerification: { not: null } },
+      _count: { _all: true },
+    }),
+    // off.29 : applicabilité pilotée par config (défaut false — OF d'actions de
+    //   formation non certifiantes ; à confirmer avec le certificateur).
+    getQualiopiConfig("off29_applicable").catch(() => false),
   ]);
 
   // ── Données AFEST 1-to-1 (coaching) — automatisation de off.28 UNIQUEMENT ────
@@ -235,6 +262,33 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ]),
   );
   const applicablesNums = indicateursApplicables(typesActionEffectifs);
+  // off.29 (insertion professionnelle) : indicateur « app » (apprentissage) —
+  //   non applicable par défaut chez Axion-IA. La config `off29_applicable`
+  //   (défaut false) permet de le réactiver si le certificateur le demande ;
+  //   il redevient alors applicable et reste à renseigner manuellement.
+  if (off29Applicable === true && !applicablesNums.includes(29)) {
+    applicablesNums.push(29);
+    applicablesNums.sort((a, b) => a - b);
+  }
+
+  // ── Inventaire des moyens pédagogiques (off.17/18 — LOT 2) ─────────────────
+  //   off.17 : ≥1 moyen TECHNIQUE (salle/matériel/plateforme) actif ET vérifié.
+  //   off.18 : chaque catégorie UTILISÉE (≥1 moyen actif) a ≥1 moyen vérifié.
+  const CATEGORIES_TECHNIQUES = new Set(["salle", "materiel", "plateforme"]);
+  const verifiesParCategorie = new Map<string, number>(
+    moyensVerifiesParCategorie.map((g) => [g.categorie as string, g._count._all]),
+  );
+  const categoriesUtilisees = moyensActifsParCategorie
+    .filter((g) => g._count._all > 0)
+    .map((g) => g.categorie as string);
+  const nbMoyensTechniquesVerifies = moyensVerifiesParCategorie
+    .filter((g) => CATEGORIES_TECHNIQUES.has(g.categorie as string))
+    .reduce((acc, g) => acc + g._count._all, 0);
+  const categoriesSansVerification = categoriesUtilisees.filter(
+    (c) => (verifiesParCategorie.get(c) ?? 0) === 0,
+  );
+  const moyensParCategorieCouverts =
+    categoriesUtilisees.length > 0 && categoriesSansVerification.length === 0;
   // off.28 (AFEST) : applicable si l'OF déclare alternance_afest OU s'il existe un
   //   parcours AFEST 1-to-1. a_completer avec preuve explicite si applicable sans
   //   parcours conforme. off.13/14/15 (APP/apprentissage) : hors périmètre Axion-IA
@@ -379,8 +433,34 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
 
   // Critère 4
-  set(17, [`${nbTrainers} formateur(s) actif(s)`], nbTrainers > 0);
-  set(18, [`${nbTrainers} formateur(s) coordonnés`], nbTrainers > 0);
+  // off.17 : moyens humains ET techniques — exige des formateurs actifs ET au
+  //          moins 1 moyen TECHNIQUE (salle/matériel/plateforme) actif vérifié
+  //          dans l'inventaire (LOT 2 — un proxy « formateurs seuls » ne prouve
+  //          pas les moyens techniques).
+  set(
+    17,
+    [
+      `${nbTrainers} formateur(s) actif(s)`,
+      `${nbMoyensTechniquesVerifies} moyen(s) technique(s) actif(s) vérifié(s) (salle/matériel/plateforme)`,
+    ],
+    nbTrainers > 0 && nbMoyensTechniquesVerifies > 0,
+  );
+  // off.18 : coordination des moyens — exige des formateurs actifs ET, pour
+  //          chaque catégorie de moyens UTILISÉE (≥1 moyen actif), au moins 1
+  //          moyen vérifié (dateVerification non null).
+  set(
+    18,
+    [
+      `${nbTrainers} formateur(s) coordonnés`,
+      categoriesUtilisees.length > 0
+        ? `${categoriesUtilisees.length} catégorie(s) de moyens utilisée(s) (${categoriesUtilisees.join(", ")})`
+        : "Aucun moyen pédagogique actif dans l'inventaire",
+      categoriesSansVerification.length > 0
+        ? `Catégorie(s) sans moyen vérifié : ${categoriesSansVerification.join(", ")}`
+        : "Chaque catégorie utilisée a au moins 1 moyen vérifié",
+    ],
+    nbTrainers > 0 && moyensParCategorieCouverts,
+  );
   // off.19 : ressources pédagogiques mises à disposition — supports de formation
   //          réels (SupportFormation), pas n'importe quel document généré.
   set(19, [`${nbSupports} support(s) pédagogique(s) produit(s)`], nbSupports > 0);
@@ -447,9 +527,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         : [],
     coachingAfestConforme > 0,
   );
-  // off.29 : insertion / débouchés — donnée de suivi post-formation NON déductible
-  //          d'un artefact logiciel (l'existence d'une session ne prouve pas l'insertion).
-  //          a_completer avec preuve explicite (à renseigner manuellement).
+  // off.29 : insertion / débouchés — NON APPLICABLE par défaut (indicateur
+  //          apprentissage/CFA, config `off29_applicable` = false). Si le
+  //          certificateur le juge applicable (config = true), la donnée de
+  //          suivi post-formation n'est PAS déductible d'un artefact logiciel
+  //          → a_completer avec preuve explicite (à renseigner manuellement).
   set(
     29,
     [

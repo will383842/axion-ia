@@ -21,7 +21,7 @@ vi.mock("@/lib/prisma", () => ({
     trainer: { findMany: vi.fn() },
     factureFormation: { findMany: vi.fn() },
     veille: { findFirst: vi.fn() },
-    revueDirection: { findUnique: vi.fn() },
+    revueDirection: { findUnique: vi.fn(), findFirst: vi.fn() },
     rgpdDemande: { findMany: vi.fn() },
   },
 }));
@@ -30,12 +30,18 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn(),
 }));
 
+// Référentiel OPCO versionné (Lot 5) — mock de la lecture (estBaremePerime reste réel).
+vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
+  listBaremesEnVigueur: vi.fn(),
+}));
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Imports
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { evaluerAlertes } from "./evaluateur";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,14 +55,19 @@ const mp = prisma as unknown as {
   trainer: { findMany: ReturnType<typeof vi.fn> };
   factureFormation: { findMany: ReturnType<typeof vi.fn> };
   veille: { findFirst: ReturnType<typeof vi.fn> };
-  revueDirection: { findUnique: ReturnType<typeof vi.fn> };
+  revueDirection: {
+    findUnique: ReturnType<typeof vi.fn>;
+    findFirst: ReturnType<typeof vi.fn>;
+  };
   rgpdDemande: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
+const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
 
 /** Configure tous les mocks prisma pour retourner des résultats vides (aucune alerte). */
 function setupEmptyMocks() {
+  mockListBaremes.mockResolvedValue([]); // aucun barème OPCO → pas d'alerte de péremption
   mp.reclamation.findMany.mockResolvedValue([]);
   mp.enrollment.findMany.mockResolvedValue([]);
   mp.trainingSession.findMany.mockResolvedValue([]);
@@ -64,6 +75,7 @@ function setupEmptyMocks() {
   mp.factureFormation.findMany.mockResolvedValue([]);
   mp.veille.findFirst.mockResolvedValue({ dateVeille: new Date() }); // veille récente
   mp.revueDirection.findUnique.mockResolvedValue({ statut: "valide" }); // BPF déposé
+  mp.revueDirection.findFirst.mockResolvedValue({ id: "revue-001" }); // revue récente (cadence OK)
   mp.rgpdDemande.findMany.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
@@ -252,6 +264,48 @@ describe("evaluerAlertes — emargement_manquant", () => {
       expect(emarg[0]?.niveau).toBe("critique");
       expect(emarg[0]?.cibleType).toBe("Enrollment");
     }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle session_sans_formateur
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — session_sans_formateur", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("crée une alerte importante par session à J-7 sans formateur principal", async () => {
+    mp.trainingSession.findMany.mockImplementation(
+      ({ where }: { where?: { formateurPrincipalId?: unknown } }) => {
+        if (where && "formateurPrincipalId" in where && where.formateurPrincipalId === null) {
+          return Promise.resolve([
+            {
+              id: "ses-042",
+              numero: "SES-2026-042",
+              titreSession: "IA Express — Entreprise Exemple",
+              dateDebut: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_sans_formateur");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("ses-042");
+    expect(a?.message).toContain("SES-2026-042");
+  });
+
+  it("aucune alerte quand toutes les sessions proches ont un formateur", async () => {
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_sans_formateur")).toBeUndefined();
   });
 });
 
@@ -545,5 +599,97 @@ describe("evaluerAlertes — suppression_rgpd_j30", () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "suppression_rgpd_j30");
     expect(a).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests revue trimestrielle (LOT 4)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — revue_trimestrielle_a_faire", () => {
+  /** Config par défaut + flag revue_trimestrielle_activee contrôlable. */
+  function setupConfigAvecCadence(activee: boolean) {
+    const now = new Date();
+    const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "responsable_qualite_nom") return Promise.resolve("Williams Jullin");
+      if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
+      if (key === "bpf_annee_deposee") return Promise.resolve(now.getFullYear());
+      if (key === "revue_trimestrielle_activee") return Promise.resolve(activee);
+      return Promise.resolve("");
+    });
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("crée une alerte info si activée et aucune revue depuis le trimestre précédent", async () => {
+    setupConfigAvecCadence(true);
+    mp.revueDirection.findFirst.mockResolvedValue(null);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "revue_trimestrielle_a_faire");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("info");
+    expect(a?.message).toContain("revue de direction");
+  });
+
+  it("ne crée PAS d'alerte si une revue couvre le trimestre précédent (dateRevue récente)", async () => {
+    setupConfigAvecCadence(true);
+    mp.revueDirection.findFirst.mockResolvedValue({ id: "revue-001" });
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "revue_trimestrielle_a_faire")).toBeUndefined();
+    // La requête filtre bien sur dateRevue >= début du trimestre précédent
+    const arg = mp.revueDirection.findFirst.mock.calls[0]?.[0] as {
+      where: { dateRevue: { gte: Date } };
+    };
+    expect(arg.where.dateRevue.gte).toBeInstanceOf(Date);
+  });
+
+  it("ne crée PAS d'alerte si la cadence est désactivée (config false)", async () => {
+    setupConfigAvecCadence(false);
+    mp.revueDirection.findFirst.mockResolvedValue(null);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "revue_trimestrielle_a_faire")).toBeUndefined();
+    expect(mp.revueDirection.findFirst).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests bareme_opco_perime (Lot 5)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — bareme_opco_perime", () => {
+  beforeEach(() => setupEmptyMocks());
+
+  it("lève une alerte par barème en vigueur au relevé périmé (> 12 mois)", async () => {
+    const vieux = new Date();
+    vieux.setFullYear(vieux.getFullYear() - 2);
+    mockListBaremes.mockResolvedValue([
+      { id: "b1", opco: "atlas", releveLe: vieux },
+      { id: "b2", opco: "akto", releveLe: new Date() }, // récent → pas d'alerte
+    ]);
+    const alertes = await evaluerAlertes();
+    const perimes = alertes.filter((a) => a.code === "bareme_opco_perime");
+    expect(perimes).toHaveLength(1);
+    expect(perimes[0]?.cibleId).toBe("b1");
+    expect(perimes[0]?.cibleType).toBe("BaremeOpco");
+  });
+
+  it("traite un relevé absent comme périmé", async () => {
+    mockListBaremes.mockResolvedValue([{ id: "b3", opco: "afdas", releveLe: null }]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((a) => a.code === "bareme_opco_perime")).toHaveLength(1);
+  });
+
+  it("aucune alerte si tous les relevés sont récents", async () => {
+    mockListBaremes.mockResolvedValue([{ id: "b2", opco: "akto", releveLe: new Date() }]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((a) => a.code === "bareme_opco_perime")).toHaveLength(0);
   });
 });

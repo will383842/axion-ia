@@ -840,6 +840,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "formations",
     },
+    // Cockpit financier (Lot 6.3) — marge par session/formation, heures & coût par
+    // formateur, consolidation mensuelle (lecture au-dessus des lignes de rémunération).
+    {
+      href: `${base}/qualiopi/cockpit-financier`,
+      label: "Cockpit financier",
+      icon: "📈",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
     {
       href: `${base}/qualiopi/audits`,
       label: "Audits IA",
@@ -859,6 +868,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/qualiopi/offres`,
       label: "Offres",
       icon: "🏷️",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
+    // Lot 3 (pont appel/contact → CRM) : appels Calendly + messages contact
+    // fusionnés, conversion 1 clic en client CRM puis devis pré-rempli.
+    {
+      href: `${base}/qualiopi/entrees`,
+      label: "Entrées récentes",
+      icon: "📥",
       group: "qualiopi",
       subGroup: "commercial",
     },
@@ -888,6 +906,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/qualiopi/financements`,
       label: "Financements / Facturation",
       icon: "💳",
+      group: "qualiopi",
+      subGroup: "commercial",
+    },
+    // Référentiel OPCO centralisé et versionné (Lot 5) — plafonds de prise en charge.
+    {
+      href: `${base}/qualiopi/baremes-opco`,
+      label: "Barèmes OPCO",
+      icon: "📐",
       group: "qualiopi",
       subGroup: "commercial",
     },
@@ -953,6 +979,20 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/qualiopi/sous-traitants`,
       label: "Sous-traitants",
       icon: "🏭",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
+      href: `${base}/qualiopi/moyens`,
+      label: "Moyens pédagogiques",
+      icon: "🧰",
+      group: "qualiopi",
+      subGroup: "registres",
+    },
+    {
+      href: `${base}/qualiopi/incidents`,
+      label: "Incidents",
+      icon: "🚨",
       group: "qualiopi",
       subGroup: "registres",
     },

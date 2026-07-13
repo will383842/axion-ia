@@ -21,6 +21,7 @@
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
+import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { AttestationResultat } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -220,6 +221,11 @@ export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<void>
 
   if (!enrollment) return;
 
+  // Garantit le questionnaire AVANT l'email (idempotent) : sans lui, le stagiaire
+  // arriverait sur un portail vide. Échec → throw : le cron fail-soft par
+  // enrollment loggera et re-tentera au scan suivant (pas d'email orphelin).
+  await creerQuestionnaire({ enrollmentId, type: "satisfaction_chaud" });
+
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   // Le stagiaire arrive authentifié dans mon-espace où le questionnaire est listé.
@@ -268,6 +274,9 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
   });
 
   if (!enrollment) return;
+
+  // Même garantie que J+1 : le questionnaire à froid doit exister avant l'email.
+  await creerQuestionnaire({ enrollmentId, type: "satisfaction_froid" });
 
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";

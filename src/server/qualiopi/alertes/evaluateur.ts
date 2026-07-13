@@ -9,6 +9,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
+import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -119,6 +121,27 @@ async function regleEmargementManquant(now: Date): Promise<AlerteCandidate[]> {
     message: `L'émargement de ${e.trainee.prenom} ${e.trainee.nom} est manquant pour la session ${e.session.numero} (réalisée il y a >48h).`,
     cibleType: "Enrollment",
     cibleId: e.id,
+  }));
+}
+
+/** R03bis — Session sans formateur : démarre sous 7 jours, aucun formateur principal assigné. */
+async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> {
+  const horizon = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      dateDebut: { lte: horizon },
+      formateurPrincipalId: null,
+    },
+    select: { id: true, numero: true, titreSession: true, dateDebut: true },
+  });
+  return sessions.map((s) => ({
+    code: "session_sans_formateur",
+    niveau: "important" as AlerteNiveau,
+    titre: "Session à J-7 sans formateur principal",
+    message: `La session ${s.numero} « ${s.titreSession} » démarre le ${s.dateDebut.toLocaleDateString("fr-FR")} sans formateur principal assigné (habilitation requise avant animation).`,
+    cibleType: "TrainingSession",
+    cibleId: s.id,
   }));
 }
 
@@ -608,6 +631,70 @@ async function regleConventionFormation(now: Date): Promise<AlerteCandidate[]> {
   }));
 }
 
+/** R18 (LOT 4) — Revue trimestrielle à réaliser (info, non bloquante — décision B4).
+ *
+ *  Gatée par la clé de config `revue_trimestrielle_activee` (défaut true).
+ *  Le modèle RevueDirection n'a NI champ période NI titre/notes (une seule
+ *  revue par année, `annee @unique`) → convention SANS migration : la cadence
+ *  trimestrielle est considérée couverte si une revue de direction a été TENUE
+ *  OU MISE À JOUR (dateRevue) depuis le début du trimestre précédent. En
+ *  pratique : l'admin rouvre la revue de l'année chaque trimestre, met à jour
+ *  `dateRevue` + décisions/plan d'actions, et l'alerte se résout (resolutionAuto).
+ */
+async function regleRevueTrimestrielle(now: Date): Promise<AlerteCandidate[]> {
+  const activee = await getQualiopiConfig("revue_trimestrielle_activee").catch(() => false);
+  if (activee !== true) return [];
+
+  // Début du trimestre PRÉCÉDENT (heure locale serveur — granularité au jour,
+  // suffisante pour une cadence trimestrielle).
+  const trimestreCourant = Math.floor(now.getMonth() / 3); // 0..3
+  let anneePrec = now.getFullYear();
+  let trimestrePrec = trimestreCourant - 1;
+  if (trimestrePrec < 0) {
+    trimestrePrec = 3;
+    anneePrec -= 1;
+  }
+  const debutTrimestrePrec = new Date(anneePrec, trimestrePrec * 3, 1);
+
+  const revueRecente = await prisma.revueDirection.findFirst({
+    where: { dateRevue: { gte: debutTrimestrePrec } },
+    select: { id: true },
+  });
+  if (revueRecente !== null) return [];
+
+  const labelTrimestrePrec = `T${trimestrePrec + 1} ${anneePrec}`;
+  return [
+    {
+      code: "revue_trimestrielle_a_faire",
+      niveau: "info",
+      titre: "Revue trimestrielle à réaliser",
+      message: `Aucune revue de direction tenue ou mise à jour depuis le trimestre ${labelTrimestrePrec}. Cadence trimestrielle non bloquante : mettez à jour la revue de l'année (date, décisions, plan d'actions) pour couvrir le trimestre.`,
+    },
+  ];
+}
+
+/** R21 — Barème OPCO en vigueur dont le relevé portail est périmé (> N mois). */
+async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
+  const configVal = await getQualiopiConfig("bareme_opco_validite_mois").catch(() => 12);
+  const mois = typeof configVal === "number" && configVal > 0 ? configVal : 12;
+
+  const baremes = await listBaremesEnVigueur(now);
+  return baremes
+    .filter((b) => estBaremePerime(b.releveLe, mois, now))
+    .map((b) => ({
+      code: "bareme_opco_perime",
+      niveau: "important" as AlerteNiveau,
+      titre: "Barème OPCO à rafraîchir (relevé trop ancien)",
+      message: `Le barème ${opcoLabel(b.opco)} ${
+        b.releveLe
+          ? `a été relevé le ${b.releveLe.toLocaleDateString("fr-FR")} (> ${mois} mois)`
+          : "n'a pas de date de relevé"
+      }. Vérifiez le portail OPCO et créez une nouvelle version si les plafonds ont changé.`,
+      cibleType: "BaremeOpco",
+      cibleId: b.id,
+    }));
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Catalogue des règles
 // ─────────────────────────────────────────────────────────────────────────────
@@ -619,6 +706,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "responsable_qualite", fn: regleResponsableQualite },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
+  { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },
   { nom: "attestation_non_envoyee", fn: regleAttestationNonEnvoyee },
@@ -633,6 +721,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "convention_formation", fn: regleConventionFormation },
   { nom: "factures_impayees", fn: regleFacturesImpayees },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
+  { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
+  { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -43,6 +43,10 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: vi.fn(),
 }));
 
+vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
+  creerQuestionnaire: vi.fn().mockResolvedValue({ id: "quest-uuid-1", token: "c".repeat(48) }),
+}));
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Imports après mocks
 // ─────────────────────────────────────────────────────────────────────────────
@@ -50,6 +54,7 @@ vi.mock("@/server/queue/queues", () => ({
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
+import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import {
   envoyerConvocation,
   envoyerRappelJ7,
@@ -70,6 +75,7 @@ const mockPrisma = prisma as unknown as {
 };
 const mockEnqueueEmail = enqueueEmail as ReturnType<typeof vi.fn>;
 const mockCreerAcces = creerAcces as ReturnType<typeof vi.fn>;
+const mockCreerQuestionnaire = creerQuestionnaire as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Fixtures
@@ -243,6 +249,27 @@ describe("envoyerSatisfactionJ1", () => {
     await envoyerSatisfactionJ1(ENROLLMENT_ID);
     expect(mockEnqueueEmail).not.toHaveBeenCalled();
   });
+
+  it("garantit le questionnaire satisfaction_chaud AVANT l'email (jamais de portail vide)", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    await envoyerSatisfactionJ1(ENROLLMENT_ID);
+    expect(mockCreerQuestionnaire).toHaveBeenCalledWith({
+      enrollmentId: ENROLLMENT_ID,
+      type: "satisfaction_chaud",
+    });
+    expect(mockEnqueueEmail).toHaveBeenCalledOnce();
+    // Le questionnaire est créé avant l'enqueue (ordre des invocations).
+    const ordreQuestionnaire = mockCreerQuestionnaire.mock.invocationCallOrder[0] ?? Infinity;
+    const ordreEmail = mockEnqueueEmail.mock.invocationCallOrder[0] ?? 0;
+    expect(ordreQuestionnaire).toBeLessThan(ordreEmail);
+  });
+
+  it("n'envoie PAS l'email si la création du questionnaire échoue", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    mockCreerQuestionnaire.mockRejectedValueOnce(new Error("DB down"));
+    await expect(envoyerSatisfactionJ1(ENROLLMENT_ID)).rejects.toThrow("DB down");
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -270,6 +297,23 @@ describe("envoyerSuiviJ30", () => {
     const lienPortail = (call[3] as Record<string, unknown>)["lienPortail"] as string;
     expect(lienPortail).toContain("/portail/acces/");
     expect(lienPortail).not.toContain("/espace-stagiaire");
+  });
+
+  it("garantit le questionnaire satisfaction_froid AVANT l'email", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    await envoyerSuiviJ30(ENROLLMENT_ID);
+    expect(mockCreerQuestionnaire).toHaveBeenCalledWith({
+      enrollmentId: ENROLLMENT_ID,
+      type: "satisfaction_froid",
+    });
+    expect(mockEnqueueEmail).toHaveBeenCalledOnce();
+  });
+
+  it("n'envoie PAS l'email si la création du questionnaire échoue", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    mockCreerQuestionnaire.mockRejectedValueOnce(new Error("DB down"));
+    await expect(envoyerSuiviJ30(ENROLLMENT_ID)).rejects.toThrow("DB down");
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
   });
 });
 
