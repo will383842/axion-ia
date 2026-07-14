@@ -329,7 +329,7 @@ export const PRESS_MEDIA_COVERAGE: ReadonlyArray<MediaCoverageItem> = [] as cons
 export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
   {
     id: "will",
-    linkedinUrl: "https://www.linkedin.com/company/axion-ia",
+    linkedinUrl: "https://www.linkedin.com/in/williamsjullin/",
     languages: ["fr", "en"],
     knowsAbout: [
       "Operational artificial intelligence",
