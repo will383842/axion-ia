@@ -79,7 +79,7 @@ export function NewPressReleaseForm({
               required
               autoFocus
               placeholder="Axion-IA lance…"
-              defaultValue={v?.title}
+              defaultValue={v?.title ?? ""}
             />
             <AdminFormField
               label="Résumé (dek)"
@@ -87,7 +87,7 @@ export function NewPressReleaseForm({
               type="text"
               hint="Phrase d'accroche affichée sous le titre (optionnel)."
               placeholder="Résumé en une phrase"
-              defaultValue={v?.dek}
+              defaultValue={v?.dek ?? ""}
             />
             <div className="admin-form-field flex flex-col gap-[var(--space-admin-2)]">
               <label
@@ -132,7 +132,7 @@ export function NewPressReleaseForm({
               type="select"
               required
               options={tagOptions}
-              defaultValue={v?.tag}
+              defaultValue={v?.tag ?? ""}
             />
           </AdminFormSection>
 
@@ -161,7 +161,7 @@ export function NewPressReleaseForm({
               type="text"
               placeholder="ex. 75, 2A, 974"
               hint="Code département en texte libre (optionnel) — 8 caractères maximum."
-              defaultValue={v?.departement}
+              defaultValue={v?.departement ?? ""}
             />
             <AdminFormField
               label="Secteur d'activité"
