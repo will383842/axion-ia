@@ -16,10 +16,8 @@ import { PressImageBank } from "@/components/sections/PressImageBank";
 import { PressReleases } from "@/components/sections/PressReleases";
 import { MediaCoverage } from "@/components/sections/MediaCoverage";
 import { PressContact } from "@/components/sections/PressContact";
-import { PressActivitiesStrip } from "@/components/sections/PressActivitiesStrip";
 import { PressWhatsReallyHappening } from "@/components/sections/PressWhatsReallyHappening";
 import { PressSpokesperson } from "@/components/sections/PressSpokesperson";
-import { type ServiceId } from "@/content/services";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { PRESS_PITCH, PRESS_FACTS, PRESS_FAQ, PRESS_SPOKESPERSONS } from "@/content/press";
 // Salle de presse 2026-06-22 — communiqués + kit média lus depuis la DB
@@ -158,15 +156,6 @@ export default async function PressePage({ params, searchParams }: Props) {
     question: f[loc].question,
     answer: f[loc].answer,
   }));
-
-  // Strip « 5 activités » — blurbs i18n mappés par id de service (SSOT services.ts).
-  const activityBlurbs: Record<ServiceId, string> = {
-    formations: t("activitiesBlurbFormations"),
-    unAUn: t("activitiesBlurbUnAUn"),
-    audit: t("activitiesBlurbAudit"),
-    implementation: t("activitiesBlurbImplementation"),
-    sitesWeb: t("activitiesBlurbSitesWeb"),
-  };
 
   // Section « Que se passe-t-il vraiment » — 3 points d'entrée (ancres internes).
   const whatsReallyLinks = [
@@ -344,19 +333,52 @@ export default async function PressePage({ params, searchParams }: Props) {
         </div>
       </Section>
 
-      {/* 5 ACTIVITÉS — strip compact (SSOT services.ts), liens hubs canoniques */}
+      {/* COMMUNIQUÉS — remontés juste sous le héros : c'est LA raison d'être de
+          la salle de presse (un journaliste veut l'actualité tout de suite, pas
+          après 8 sections). Réorg newsroom 2026-07-14 (Will). */}
       <Section
-        id="activites"
-        eyebrow={t("activitiesEyebrow")}
-        title={t("activitiesTitle")}
-        titleEm={t("activitiesTitleEm")}
-        titleTail={t("activitiesTitleTail")}
-        description={t("activitiesDescription")}
+        id="communiques"
+        tone="canvas"
+        eyebrow={t("releasesEyebrow")}
+        title={t("releasesTitle")}
+        titleEm={t("releasesTitleEm")}
+        titleTail={t("releasesTitleTail")}
+        description={t("releasesDescription")}
       >
-        <PressActivitiesStrip
-          isFr={isFr}
-          blurbs={activityBlurbs}
-          discoverLabel={t("activitiesDiscover")}
+        <PressReleases
+          releases={releases}
+          locale={loc}
+          labels={{
+            tagLaunch: t("tagLaunch"),
+            tagPartnership: t("tagPartnership"),
+            tagStudy: t("tagStudy"),
+            tagProduct: t("tagProduct"),
+            tagMilestone: t("tagMilestone"),
+            read: t("releasesRead"),
+            empty: t("releasesEmpty"),
+            downloadPdf: isFr ? "Télécharger le PDF" : "Download PDF",
+            filterTitle: t("filterTitle"),
+            filterRegion: t("filterRegion"),
+            filterSector: t("filterSector"),
+            filterAudience: t("filterAudience"),
+            filterAllRegions: t("filterAllRegions"),
+            filterAllSectors: t("filterAllSectors"),
+            filterAllAudiences: t("filterAllAudiences"),
+            filterApply: t("filterApply"),
+            filterReset: t("filterReset"),
+          }}
+          filterOptions={{
+            regions: regionOptions,
+            sectors: sectorOptions,
+            audiences: audienceOptions,
+          }}
+          active={{
+            region: activeRegion,
+            sector: activeSector,
+            audience: activeAudience,
+          }}
+          hasActiveFilter={hasActiveFilter}
+          formAction={`/${loc}${pressPath}#communiques`}
         />
       </Section>
 
@@ -533,126 +555,6 @@ export default async function PressePage({ params, searchParams }: Props) {
         />
       </Section>
 
-      {/* BANQUE D'IMAGES — promo galerie CC BY 4.0 (axionia-image-bank skill v1.0).
-         Lien interne sitewide vers /galerie depuis l'espace presse : boost autorité
-         topique galerie + maillage Googlebot. */}
-      <Section
-        id="banque-images"
-        tone="canvas"
-        eyebrow={t("imageBankEyebrow")}
-        title={t("imageBankTitle")}
-        titleEm={t("imageBankTitleEm")}
-        titleTail={t("imageBankTitleTail")}
-        description={t("imageBankDescription")}
-      >
-        {pressGalleryImages.length > 0 ? (
-          <div className="flex flex-col gap-10">
-            <PressImageCarousel images={pressGalleryImages} locale={loc} />
-            <div className="border-border-strong bg-paper flex flex-col items-start gap-4 rounded-xl border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-              <p className="text-fg-soft max-w-xl text-sm leading-relaxed">
-                {t("imageBankLicenseNote")}
-              </p>
-              <Link
-                href="/galerie"
-                className="border-terracotta bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border px-5 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                {t("imageBankCta")}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            </div>
-          </div>
-        ) : (
-          <PressImageBank
-            labels={{
-              primaryCta: t("imageBankCta"),
-              licenseNote: t("imageBankLicenseNote"),
-              categories: [
-                {
-                  id: "ia-operationnelle",
-                  iconKind: "image",
-                  title: t("imageBankCat1Title"),
-                  description: t("imageBankCat1Description"),
-                  previewUrl:
-                    "/images/axion-ia-graphique-ia-imperatif-performance-fosse-concurrentiel-dataviz.webp",
-                  previewAlt: isFr
-                    ? "Graphique IA — impératif de performance et fossé concurrentiel 2024"
-                    : "AI chart — performance imperative and competitive gap 2024",
-                },
-                {
-                  id: "equipe",
-                  iconKind: "camera",
-                  title: t("imageBankCat2Title"),
-                  description: t("imageBankCat2Description"),
-                  previewUrl:
-                    "/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp",
-                  previewAlt: isFr
-                    ? "Équipe Axion-IA — cabinet IA opérationnel France"
-                    : "Axion-IA team — operational AI consultancy France",
-                },
-                {
-                  id: "cas-concrets",
-                  iconKind: "scanline",
-                  title: t("imageBankCat3Title"),
-                  description: t("imageBankCat3Description"),
-                  previewUrl:
-                    "/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp",
-                  previewAlt: isFr
-                    ? "Comparatif actions humaines vs automatisation IA — 7 étapes"
-                    : "Comparison human actions vs AI automation — 7 steps",
-                },
-              ],
-            }}
-          />
-        )}
-      </Section>
-
-      {/* COMMUNIQUÉS — releases cards */}
-      <Section
-        id="communiques"
-        tone="canvas"
-        eyebrow={t("releasesEyebrow")}
-        title={t("releasesTitle")}
-        titleEm={t("releasesTitleEm")}
-        titleTail={t("releasesTitleTail")}
-        description={t("releasesDescription")}
-      >
-        <PressReleases
-          releases={releases}
-          locale={loc}
-          labels={{
-            tagLaunch: t("tagLaunch"),
-            tagPartnership: t("tagPartnership"),
-            tagStudy: t("tagStudy"),
-            tagProduct: t("tagProduct"),
-            tagMilestone: t("tagMilestone"),
-            read: t("releasesRead"),
-            empty: t("releasesEmpty"),
-            downloadPdf: isFr ? "Télécharger le PDF" : "Download PDF",
-            filterTitle: t("filterTitle"),
-            filterRegion: t("filterRegion"),
-            filterSector: t("filterSector"),
-            filterAudience: t("filterAudience"),
-            filterAllRegions: t("filterAllRegions"),
-            filterAllSectors: t("filterAllSectors"),
-            filterAllAudiences: t("filterAllAudiences"),
-            filterApply: t("filterApply"),
-            filterReset: t("filterReset"),
-          }}
-          filterOptions={{
-            regions: regionOptions,
-            sectors: sectorOptions,
-            audiences: audienceOptions,
-          }}
-          active={{
-            region: activeRegion,
-            sector: activeSector,
-            audience: activeAudience,
-          }}
-          hasActiveFilter={hasActiveFilter}
-          formAction={`/${loc}${pressPath}#communiques`}
-        />
-      </Section>
-
       {/* COUVERTURE MÉDIAS — section ENTIÈREMENT masquée tant qu'aucune retombée
           n'est publiée depuis la console admin (décision Will 2026-06-23 :
           pas de bloc « à venir » vide). Gérée dans Admin → Salle de presse →
@@ -741,6 +643,80 @@ export default async function PressePage({ params, searchParams }: Props) {
         emitJsonLd={false}
         tone="canvas"
       />
+
+      {/* BANQUE D'IMAGES — déplacée en bas de page (réorg newsroom 2026-07-14) :
+         c'est du maillage SEO vers /galerie, pas de l'information presse — donc
+         après l'actualité, le porte-parole, le kit et le contact.
+         Promo galerie CC BY 4.0 (axionia-image-bank skill v1.0). */}
+      <Section
+        id="banque-images"
+        tone="canvas"
+        eyebrow={t("imageBankEyebrow")}
+        title={t("imageBankTitle")}
+        titleEm={t("imageBankTitleEm")}
+        titleTail={t("imageBankTitleTail")}
+        description={t("imageBankDescription")}
+      >
+        {pressGalleryImages.length > 0 ? (
+          <div className="flex flex-col gap-10">
+            <PressImageCarousel images={pressGalleryImages} locale={loc} />
+            <div className="border-border-strong bg-paper flex flex-col items-start gap-4 rounded-xl border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+              <p className="text-fg-soft max-w-xl text-sm leading-relaxed">
+                {t("imageBankLicenseNote")}
+              </p>
+              <Link
+                href="/galerie"
+                className="border-terracotta bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border px-5 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                {t("imageBankCta")}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <PressImageBank
+            labels={{
+              primaryCta: t("imageBankCta"),
+              licenseNote: t("imageBankLicenseNote"),
+              categories: [
+                {
+                  id: "ia-operationnelle",
+                  iconKind: "image",
+                  title: t("imageBankCat1Title"),
+                  description: t("imageBankCat1Description"),
+                  previewUrl:
+                    "/images/axion-ia-graphique-ia-imperatif-performance-fosse-concurrentiel-dataviz.webp",
+                  previewAlt: isFr
+                    ? "Graphique IA — impératif de performance et fossé concurrentiel 2024"
+                    : "AI chart — performance imperative and competitive gap 2024",
+                },
+                {
+                  id: "equipe",
+                  iconKind: "camera",
+                  title: t("imageBankCat2Title"),
+                  description: t("imageBankCat2Description"),
+                  previewUrl:
+                    "/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp",
+                  previewAlt: isFr
+                    ? "Équipe Axion-IA — cabinet IA opérationnel France"
+                    : "Axion-IA team — operational AI consultancy France",
+                },
+                {
+                  id: "cas-concrets",
+                  iconKind: "scanline",
+                  title: t("imageBankCat3Title"),
+                  description: t("imageBankCat3Description"),
+                  previewUrl:
+                    "/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp",
+                  previewAlt: isFr
+                    ? "Comparatif actions humaines vs automatisation IA — 7 étapes"
+                    : "Comparison human actions vs AI automation — 7 steps",
+                },
+              ],
+            }}
+          />
+        )}
+      </Section>
 
       {/* JSON-LD payloads — émis une seule fois, en bas de page */}
       <JsonLd data={pressJsonLd} />
