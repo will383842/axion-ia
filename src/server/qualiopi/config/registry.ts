@@ -75,7 +75,7 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     schema: z.enum(["assujetti", "exoneration_261", "franchise_293b"]),
     default: REGIME_TVA_DEFAUT,
     description:
-      "Régime de TVA des factures : assujetti (20 %) / exoneration_261 (formation pro, attestation DREETS) / franchise_293b.",
+      "Régime de TVA des NOUVELLES factures. Par défaut « assujetti » (TVA 20 %) — le seul sûr tant que l'attestation d'exonération n'est pas obtenue. Ne passez à « exonéré formation (261-4-4°) » QU'APRÈS accord de votre comptable (attestation DREETS, formulaire 3511-SD). Attention : Qualiopi ne donne PAS l'exonération. Les factures déjà émises gardent leur régime.",
   },
   taux_tva_standard_percent: {
     ...num(20),

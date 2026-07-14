@@ -17,6 +17,10 @@ export interface ConfigField {
   isNumber: boolean;
   /** Valeurs autorisées (clé énumérée) → rendu en <select> au lieu d'un input. */
   options?: string[];
+  /** Libellé lisible affiché à la place de la clé technique (ex. « Régime de TVA »). */
+  label?: string;
+  /** Libellés lisibles des options (ex. exoneration_261 → « Exonéré formation »). */
+  optionLabels?: Record<string, string>;
 }
 
 export interface QualiopiConfigFormProps {
@@ -76,7 +80,7 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
         {fields.map((f) => (
           <div key={f.key} className="flex flex-col gap-[var(--space-admin-1)]">
             <label className={labelCls} htmlFor={`cfg-${f.key}`}>
-              {f.key}
+              {f.label ?? f.key}
             </label>
             <span className={descCls}>{f.description}</span>
             {f.options ? (
@@ -89,7 +93,7 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
               >
                 {f.options.map((opt) => (
                   <option key={opt} value={opt}>
-                    {opt}
+                    {f.optionLabels?.[opt] ?? opt}
                   </option>
                 ))}
               </select>
