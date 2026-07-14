@@ -48,6 +48,7 @@ import {
   getAllPublishedPressReleaseSlugs,
   getPublishedPressReleases,
 } from "@/server/press/queries";
+import { formatPressReleaseBody } from "@/server/press/format-body";
 import { fmtDate } from "@/lib/intl";
 
 interface Props {
@@ -172,29 +173,13 @@ export default async function PressReleaseDetailPage({ params }: Props) {
   const pageUrl = `${SITE_URL}/${loc}${isFr ? "/presse" : "/press"}/${slug}`;
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(copy.title)}`;
 
-  // Body splittable en paragraphes (la fixture press.ts utilise des phrases
-  // longues sans double-saut de ligne — on chunke par phrase pour rythmer la
-  // lecture sans diviser arbitrairement). Fallback : 1 seul paragraphe si
-  // pas de séparateur naturel détecté.
-  const paragraphs = copy.body
-    .split(/\n{2,}/)
-    .flatMap((block) =>
-      block.length < 600
-        ? [block]
-        : block.split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÊÎÔŒÇ])/).reduce<string[]>((acc, sentence) => {
-            const last = acc[acc.length - 1];
-            if (!last || last.length + sentence.length > 600) {
-              acc.push(sentence);
-            } else {
-              acc[acc.length - 1] = `${last} ${sentence}`;
-            }
-            return acc;
-          }, []),
-    )
-    .map((p) => p.trim())
-    .filter((p) => p.length > 0);
+  // Texte nettoyé du communiqué (letterhead letter-spacé retiré, paragraphes
+  // reconstruits). Communiqué PDF → sert uniquement à l'`articleBody` JSON-LD
+  // (SEO en coulisse). Communiqué LEGACY sans PDF → sert de contenu affiché.
+  const paragraphs = formatPressReleaseBody(copy.body);
+  const cleanBody = paragraphs.join("\n\n");
 
-  const wordCount = countWords(copy.body);
+  const wordCount = countWords(cleanBody);
   // Communiqué PDF = jamais "thin" (le contenu est dans le PDF, pas le body).
   const isThin = !release.pdfUrl && wordCount < MIN_BODY_WORDS;
 
@@ -209,7 +194,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
     "@id": `${pageUrl}#newsarticle`,
     headline: copy.title,
     description: copy.dek,
-    articleBody: copy.body,
+    articleBody: cleanBody || copy.dek,
     datePublished: release.publishedAt,
     dateModified: release.publishedAt,
     inLanguage: loc,
@@ -317,42 +302,47 @@ export default async function PressReleaseDetailPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* CORPS — texte (extrait du PDF à l'upload OU fixture legacy) rendu en
-          paragraphes pour le SEO/AEO/Speakable, + PDF original téléchargeable.
-          Fallback iframe uniquement si AUCUN texte n'a pu être extrait (PDF
-          scanné) — évite une landing mince ET un iframe 80vh lourd (Web Vitals). */}
-      {paragraphs.length > 0 ? (
+      {/* CORPS — communiqué PDF : viewer embarqué (fidèle au design du document,
+          2026-07-14). Un PDF designé multi-colonnes ne se linéarise pas en texte
+          propre (letterhead letter-spacé, encadrés, colonnes) → on affiche le
+          document tel quel + téléchargement. Le texte extrait nettoyé reste dans
+          l'`articleBody` JSON-LD pour le SEO/AEO (en coulisse).
+          Communiqué LEGACY sans PDF (fixtures) → fallback texte en paragraphes.
+          Hauteur fixe (aspect-[1/1.414] ≈ A4) → zéro CLS. */}
+      {release.pdfUrl ? (
+        <Section>
+          <Container className="max-w-4xl space-y-5">
+            <object
+              data={`${release.pdfUrl}#view=FitH&toolbar=1`}
+              type="application/pdf"
+              aria-label={isFr ? `Communiqué — ${copy.title}` : `Press release — ${copy.title}`}
+              className="border-border bg-sand h-[85vh] max-h-[1180px] min-h-[560px] w-full rounded-xl border"
+            >
+              {/* Fallback : mobiles / navigateurs sans lecteur PDF intégré. */}
+              <div className="flex flex-col items-center gap-4 p-10 text-center">
+                <p className="text-fg-soft text-base leading-relaxed">
+                  {isFr
+                    ? "Votre navigateur ne peut pas afficher le communiqué ici — ouvrez-le ou téléchargez-le ci-dessous."
+                    : "Your browser can’t display the release inline — open or download it below."}
+                </p>
+              </div>
+            </object>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild size="lg" shape="pill">
+                <a href={release.pdfUrl} target="_blank" rel="noopener">
+                  <Download className="h-4 w-4" aria-hidden="true" />
+                  {isFr ? "Télécharger le PDF" : "Download PDF"}
+                </a>
+              </Button>
+            </div>
+          </Container>
+        </Section>
+      ) : paragraphs.length > 0 ? (
         <Section>
           <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
             {paragraphs.map((p, idx) => (
               <p key={`p-${idx}`}>{p}</p>
             ))}
-            {release.pdfUrl ? (
-              <div className="flex flex-wrap gap-3 pt-2">
-                <Button asChild size="lg" shape="pill">
-                  <a href={release.pdfUrl} target="_blank" rel="noopener">
-                    <Download className="h-4 w-4" aria-hidden="true" />
-                    {isFr ? "Télécharger le PDF original" : "Download the original PDF"}
-                  </a>
-                </Button>
-              </div>
-            ) : null}
-          </Container>
-        </Section>
-      ) : release.pdfUrl ? (
-        <Section>
-          <Container className="max-w-4xl space-y-4">
-            <iframe
-              src={release.pdfUrl}
-              className="border-border h-[80vh] w-full rounded-xl border"
-              title={isFr ? `Communiqué — ${copy.title}` : `Press release — ${copy.title}`}
-            />
-            <Button asChild size="lg" shape="pill">
-              <a href={release.pdfUrl} target="_blank" rel="noopener">
-                <Download className="h-4 w-4" aria-hidden="true" />
-                {isFr ? "Télécharger le PDF" : "Download PDF"}
-              </a>
-            </Button>
           </Container>
         </Section>
       ) : null}
