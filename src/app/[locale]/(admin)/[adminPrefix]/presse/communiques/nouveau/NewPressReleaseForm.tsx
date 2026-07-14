@@ -1,5 +1,7 @@
 "use client";
-
+// use-client: useActionState (React 19) — état de formulaire côté navigateur,
+// préserve les champs saisis après une erreur de validation.
+//
 // Formulaire de création d'un communiqué — client component avec useActionState
 // (React 19) pour PRÉSERVER les champs saisis en cas d'erreur de validation.
 //
