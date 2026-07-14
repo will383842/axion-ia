@@ -92,14 +92,14 @@ function DownloadCard({
       {showImagePreview && item.fileUrl ? (
         // Aperçu visuel de l'asset uploadé (logo / photo) — `object-contain` pour
         // ne jamais rogner un logo ; fond ivoire pour révéler les PNG transparents.
-        <div className="border-border bg-canvas relative mb-5 aspect-[3/2] overflow-hidden rounded-lg border">
+        <div className="border-border bg-canvas relative mb-4 h-20 overflow-hidden rounded-lg border sm:h-24">
           <Image
             src={item.fileUrl}
             alt={item.title}
             fill
             unoptimized
-            sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
-            className="object-contain p-4"
+            sizes="(min-width: 1024px) 220px, (min-width: 640px) 50vw, 100vw"
+            className="object-contain p-3"
           />
         </div>
       ) : (
