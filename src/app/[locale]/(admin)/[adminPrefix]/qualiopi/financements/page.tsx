@@ -81,6 +81,10 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
       destinataire: true,
       destinataireNom: true,
       montantHtCents: true,
+      // [P1] régime TVA snapshot + montant TVA réel — pour afficher la mention
+      //   CONFORME au régime de la facture (et non un « Exonérée » codé en dur).
+      regimeTva: true,
+      montantTvaCents: true,
       statut: true,
       emiseAt: true,
       subrogation: true,
@@ -335,10 +339,17 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                       </span>
                     </td>
 
-                    {/* TVA */}
+                    {/* TVA — [P1] mention dérivée du régime snapshot de la facture */}
                     <td className={cellCls}>
                       <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        Exonérée (261-4-4° CGI)
+                        {f.regimeTva === "exoneration_261"
+                          ? "Exonérée (261-4-4° CGI)"
+                          : f.regimeTva === "franchise_293b"
+                            ? "Franchise en base (293 B)"
+                            : `${(f.montantTvaCents / 100).toLocaleString("fr-FR", {
+                                style: "currency",
+                                currency: "EUR",
+                              })} (TVA)`}
                       </span>
                     </td>
 

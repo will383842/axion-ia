@@ -234,6 +234,15 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description:
       "Indicateur 29 (insertion professionnelle) applicable — false pour un OF d'actions de formation non certifiantes ; à confirmer avec le certificateur.",
   },
+  // Attestation explicite (posée délibérément par Will) que la procédure de traitement
+  // des réclamations est PUBLIÉE / portée à la connaissance du public. Condition de
+  // couverture de l'indicateur 31 (le seul nom du responsable qualité — qui a un défaut
+  // de configuration — ne prouve pas un process opérationnel diffusé). Défaut false.
+  procedure_reclamations_publiee: {
+    ...bool(false),
+    description:
+      "Procédure de traitement des réclamations publiée / communiquée au public (condition de couverture off.31).",
+  },
 
   // ── Cadences de pilotage (LOT 4) ───────────────────────────────────────────
   // Revue trimestrielle NON bloquante (décision B4) : quand activée, une alerte

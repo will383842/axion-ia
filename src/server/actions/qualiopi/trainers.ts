@@ -434,3 +434,88 @@ export async function assignTrainerToSessionAction(
 
   return { data: { sessionId, avertissements } };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Actions de développement des compétences (indicateur 22)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const DEV_ACTION_TYPES = [
+  "entretien_professionnel",
+  "formation_suivie",
+  "veille",
+  "autre",
+] as const;
+
+const addTrainerDevelopmentActionSchema = z.object({
+  trainerId: z.string().uuid(),
+  type: z.enum(DEV_ACTION_TYPES),
+  dateAction: z.coerce.date(),
+  description: z.string().trim().max(2000).optional(),
+});
+
+/**
+ * Enregistre une action de développement des compétences d'un formateur
+ * (entretien professionnel / formation suivie / veille) — trace DATÉE distincte
+ * du CV (indicateur 22). Sans ce write-path, off.22 serait incouvrable.
+ */
+export async function addTrainerDevelopmentActionAction(input: {
+  trainerId: string;
+  type: (typeof DEV_ACTION_TYPES)[number];
+  dateAction: Date;
+  description?: string;
+}): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = addTrainerDevelopmentActionSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const v = parsed.data;
+
+  const created = await prisma.trainerDevelopmentAction.create({
+    data: {
+      trainerId: v.trainerId,
+      type: v.type,
+      dateAction: v.dateAction,
+      description: v.description ?? "",
+    },
+    select: { id: true },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainer.development_action.create",
+    targetType: "Trainer",
+    targetId: v.trainerId,
+    changes: { type: v.type, dateAction: v.dateAction.toISOString() },
+    session,
+  });
+
+  return { data: { id: created.id } };
+}
+
+const deleteTrainerDevelopmentActionSchema = z.object({ id: z.string().uuid() });
+
+/** Supprime une action de développement des compétences. */
+export async function deleteTrainerDevelopmentActionAction(input: {
+  id: string;
+}): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = deleteTrainerDevelopmentActionSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { id } = parsed.data;
+
+  const found = await prisma.trainerDevelopmentAction.findUnique({
+    where: { id },
+    select: { trainerId: true },
+  });
+  if (!found) return { error: "Action introuvable" };
+
+  await prisma.trainerDevelopmentAction.delete({ where: { id } });
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainer.development_action.delete",
+    targetType: "Trainer",
+    targetId: found.trainerId,
+    changes: { deletedId: id },
+    session,
+  });
+
+  return { data: { id } };
+}

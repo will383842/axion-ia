@@ -44,6 +44,13 @@ const setEnrollmentStatutSchema = z.object({
   statut: z.enum(ENROLLMENT_STATUTS),
 });
 
+const setEnrollmentAdaptationsSchema = z.object({
+  id: z.string().uuid(),
+  // Adaptations réellement réalisées pour ce bénéficiaire (individualisation,
+  // rythme, supports, situation de handicap). Vide → efface le champ (null).
+  adaptationsRealisees: z.string().trim().max(5000),
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Actions
 // ─────────────────────────────────────────────────────────────────────────────
@@ -159,6 +166,39 @@ export async function setEnrollmentStatutAction(input: {
     targetType: "Enrollment",
     targetId: id,
     changes: { statut },
+    session,
+  });
+
+  return { data: { id } };
+}
+
+/**
+ * Renseigne les adaptations RÉELLEMENT réalisées pour une inscription
+ * (indicateur 10 : adaptation de la prestation / accompagnement individualisé,
+ * situations de handicap). Sans ce write-path, le champ restait toujours null et
+ * off.10 était structurellement incouvrable (cf. audit 2026-07-14). Une chaîne
+ * vide efface le champ (null).
+ */
+export async function setEnrollmentAdaptationsAction(input: {
+  id: string;
+  adaptationsRealisees: string;
+}): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = setEnrollmentAdaptationsSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { id, adaptationsRealisees } = parsed.data;
+  const value = adaptationsRealisees.length > 0 ? adaptationsRealisees : null;
+
+  await prisma.enrollment.update({
+    where: { id },
+    data: { adaptationsRealisees: value },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.enrollment.adaptations",
+    targetType: "Enrollment",
+    targetId: id,
+    changes: { adaptationsRenseignees: value !== null },
     session,
   });
 

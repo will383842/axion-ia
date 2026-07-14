@@ -50,6 +50,8 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
+import { IndicateursResultatsPublic } from "@/components/qualiopi/IndicateursResultatsPublic";
+import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
   formatMentionMarqueQualiopi,
@@ -109,6 +111,10 @@ export default async function CertificationQualiopiPage({ params }: Props) {
   const gridImages = pageImages.filter((i) => i.slot === "grid");
   const portraitImage = pageImages.find((i) => i.slot === "portrait");
   const villes = getVillesIndexableNow().slice(0, 60);
+
+  // Indicateur RNQ 2 : diffusion publique des indicateurs de résultats.
+  //   Stub-aware (build) → « en cours de constitution » ; repeuplé à l'ISR.
+  const indicateursResultats = await getIndicateurs(new Date().getFullYear());
 
   // Attribution photographe Unsplash (CGU §6) pour les photos de la section agrément.
   const UNSPLASH_CREDITS: Record<string, { name: string; url: string }> = {
@@ -671,6 +677,22 @@ export default async function CertificationQualiopiPage({ params }: Props) {
             </li>
           ))}
         </ul>
+      </Section>
+
+      {/* ── INDICATEURS DE RÉSULTATS (RNQ ind. 2) ────────────────────────── */}
+      <Section
+        id="indicateurs-resultats"
+        tone="canvas"
+        eyebrow={isFr ? "Transparence des résultats" : "Results transparency"}
+        title={isFr ? "Nos indicateurs de" : "Our results"}
+        titleEm={isFr ? "résultats" : "indicators"}
+        description={
+          isFr
+            ? "Conformément au Référentiel National Qualité (indicateur 2), nous publions nos indicateurs de résultats, avec leur méthode de calcul. Les valeurs non encore représentatives sont signalées « en cours de constitution »."
+            : "In line with the National Quality Framework (indicator 2), we publish our results indicators and their calculation method. Values that are not yet representative are marked as “being compiled.”"
+        }
+      >
+        <IndicateursResultatsPublic result={indicateursResultats} isFr={isFr} />
       </Section>
 
       {/* ── ENGAGEMENT FONDATEUR ─────────────────────────────────────────── */}

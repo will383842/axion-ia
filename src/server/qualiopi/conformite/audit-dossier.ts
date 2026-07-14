@@ -16,7 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
-import { getObjectBufferR2 } from "@/lib/r2-storage";
+import { getObjectBufferR2, isR2Configured } from "@/lib/r2-storage";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -328,14 +328,28 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   zip.file("manifeste.md", manifeste.markdown);
 
   const indexLines: string[] = [`Dossier d'audit Qualiopi — ${horodatage}`, ""];
+
+  // [P1] Alerte NON silencieuse : si R2 n'est pas configuré, AUCUN PDF de preuve
+  //   ne sera restituable — le dossier serait livré vide sans avertissement.
+  const r2Ok = isR2Configured();
+  const avertissements: string[] = [];
+  if (!r2Ok) {
+    avertissements.push(
+      "⚠️ STOCKAGE R2 NON CONFIGURÉ — aucun PDF de preuve n'est restituable. Le dossier ne contient que le manifeste et les registres. Configurez R2 avant l'audit.",
+    );
+  }
+
   indexLines.push(`Manifeste : ${allDocuments.length} document(s) en base.`);
   indexLines.push("");
 
   let nbInclus = 0;
   let nbOmis = 0;
+  let nbDocsInclus = 0;
 
   for (const doc of allDocuments) {
-    const year = doc.createdAt.getUTCFullYear();
+    // [P1] clé alignée sur l'écriture (documents-service.ts utilise l'année LOCALE
+    //   au moment de la génération) — évite d'omettre des PDF à la bascule d'année.
+    const year = doc.createdAt.getFullYear();
     const r2Key = `documents/${year}/${doc.type}/${doc.numero}.pdf`;
     const buffer = await getObjectBufferR2(r2Key);
 
@@ -344,10 +358,19 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
       zip.file(`preuves/${doc.type}/${doc.numero}.pdf`, buffer);
       indexLines.push(`[OK]  preuves/${doc.type}/${doc.numero}.pdf  (${buffer.byteLength} octets)`);
       nbInclus++;
+      nbDocsInclus++;
     } else {
       indexLines.push(`[OMIS] ${r2Key} — non disponible (R2 absent ou clé introuvable)`);
       nbOmis++;
     }
+  }
+
+  // [P1] Alerte NON silencieuse : des documents existent en base mais AUCUN PDF
+  //   de preuve n'a pu être joint → le dossier stagiaire est vide (R2 / clés).
+  if (allDocuments.length > 0 && nbDocsInclus === 0) {
+    avertissements.push(
+      `⚠️ ${allDocuments.length} document(s) en base mais AUCUN PDF de preuve joint — vérifiez le stockage R2 (les preuves stagiaires convention→attestation sont absentes du dossier).`,
+    );
   }
 
   // ── Exports d'état des registres (LOT 2 — A3/A7/A8/A17/A18) ─────────────
@@ -371,6 +394,14 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   indexLines.push("");
   indexLines.push(`Résumé : ${nbInclus} PDF inclus, ${nbOmis} omis.`);
   zip.file("index.txt", indexLines.join("\n") + "\n");
+
+  // [P1] Les avertissements sont écrits à la fois EN TÊTE de l'index et dans un
+  //   fichier dédié bien visible, pour que les trous ne passent pas inaperçus.
+  if (avertissements.length > 0) {
+    const banniere = ["AVERTISSEMENTS — dossier d'audit incomplet", "", ...avertissements, ""];
+    zip.file("AVERTISSEMENTS.txt", banniere.join("\n") + "\n");
+    zip.file("index.txt", [...banniere, "", ...indexLines].join("\n") + "\n");
+  }
 
   const base64 = await zip.generateAsync({ type: "base64", compression: "DEFLATE" });
   return { base64, filename };

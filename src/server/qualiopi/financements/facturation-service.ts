@@ -17,6 +17,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
 import { computeVentilationDossier, computeForfait } from "./opco-calcul";
+import { opcoLabel } from "./opco-referentiel";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
@@ -136,10 +137,22 @@ export async function genererFactureFormation(
   let destinataireSiret: string | undefined;
   let destinataireAdresse: string | undefined;
 
-  if (destinataireReel === "opco" && session.client) {
-    const opcoId = session.client.opcoIdentifie ?? "OPCO";
-    destinataireNom = opcoId;
+  // [P1] Facturer le BON tiers selon le destinataire réel — ne plus retomber sur
+  //   la raison sociale de l'entreprise cliente pour l'OPCO / France Travail / le
+  //   stagiaire. SIRET/adresse de l'OPCO = donnée d'un référentiel OPCO (à saisir),
+  //   jamais inventés ici.
+  if (destinataireReel === "opco") {
+    const opcoId = session.client?.opcoIdentifie ?? null;
+    // Nom LISIBLE de l'OPCO (« Atlas » plutôt que le slug « atlas »).
+    destinataireNom = opcoId ? opcoLabel(opcoId) : "OPCO (à préciser)";
+  } else if (destinataireReel === "france_travail") {
+    destinataireNom = "France Travail";
+  } else if (destinataireReel === "stagiaire") {
+    // Reste à charge facturé au bénéficiaire individuel — l'identité précise dépend
+    //   de l'inscription ; placeholder explicite plutôt que l'entreprise cliente.
+    destinataireNom = "Bénéficiaire (reste à charge)";
   } else if (session.client) {
+    // entreprise
     destinataireNom = session.client.raisonSociale ?? "Client";
     destinataireSiret = session.client.siret ?? undefined;
     destinataireAdresse = session.client.adresse ?? undefined;

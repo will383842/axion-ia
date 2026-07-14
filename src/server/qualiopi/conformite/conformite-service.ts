@@ -67,6 +67,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     return buildEmptyConformite();
   }
 
+  // Seuils de fraîcheur (calculés au runtime — hors contexte workflow, `new Date()` OK).
+  //   veille exploitée = récente < 12 mois ; CV formateur à jour < 24 mois (aligné M11/R11).
+  const maintenant = new Date();
+  const seuil12Mois = new Date(maintenant);
+  seuil12Mois.setMonth(seuil12Mois.getMonth() - 12);
+  const seuil24Mois = new Date(maintenant);
+  seuil24Mois.setMonth(seuil24Mois.getMonth() - 24);
+
   // ── Collecte des données nécessaires en parallèle ──────────────────────────
   const [
     nbFormations,
@@ -100,6 +108,21 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     moyensActifsParCategorie,
     moyensVerifiesParCategorie,
     off29Applicable,
+    // ── P1 (durcissement anti-proxy — audit 2026-07-14) ──────────────────────
+    appreciationSources,
+    nbEnrollmentsEmarges,
+    nbPositionnementsBesoin,
+    nbFormationsResultatsPublies,
+    nbSousTraitantsConformes,
+    nbTrainersAvecCVRecent,
+    nbSupportsGeneres,
+    nbPartenariatsHandicap,
+    nbVeilleLegaleExploitee,
+    nbVeilleMetiersExploitee,
+    nbVeillePedagogiqueExploitee,
+    referentHandicapEmail,
+    procedureReclamationsPubliee,
+    nbDevActionsRecentes,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -183,7 +206,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       where: { estAfest: true, statut: "realisee" },
       select: {
         cartographie: { select: { taches: true } },
-        evaluations: { select: { id: true } },
+        // [P1] « évaluation des acquis » AFEST = évaluation FINALE (≠ simple
+        //   positionnement d'entrée). On ne retient que les évaluations type=finale.
+        evaluations: { where: { type: "finale" }, select: { id: true } },
         comptesRendus: { select: { misesEnSituation: true, phasesReflexives: true } },
       },
       take: COACHING_AFEST_SCAN_LIMIT,
@@ -217,6 +242,61 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // off.29 : applicabilité pilotée par config (défaut false — OF d'actions de
     //   formation non certifiantes ; à confirmer avec le certificateur).
     getQualiopiConfig("off29_applicable").catch(() => false),
+    // ── P1 (durcissement anti-proxy — audit 2026-07-14) ──────────────────────
+    // off.30 : diversité RÉELLE des sources d'appréciation (multi-parties = ≥2 sources).
+    prisma.appreciation.groupBy({ by: ["source"] }),
+    // off.12 : émargements RÉELLEMENT signés (Enrollment.emargementSigneAt), ≠ simple PDF.
+    prisma.enrollment.count({ where: { emargementSigneAt: { not: null } } }),
+    // off.4 : analyse du besoin = questionnaire de positionnement RÉPONDU (≠ grille d'acquis off.8).
+    prisma.questionnaire.count({ where: { type: "positionnement", reponduAt: { not: null } } }),
+    // off.2 : indicateurs de résultats RÉELLEMENT publiés (diffusion), pas seulement mesurés.
+    prisma.formation.count({ where: { indicateursPubliesAt: { not: null } } }),
+    // off.27 : sous-traitants CONFORMES (vigilance) = NDA + vérif data.gouv + contrat signé.
+    prisma.sousTraitant.count({
+      where: {
+        actif: true,
+        nda: { not: null },
+        verifieDataGouvAt: { not: null },
+        contratSigneAt: { not: null },
+      },
+    }),
+    // off.21 : CV téléversé ET À JOUR (< 24 mois) — un CV daté, pas une simple URL non datée.
+    prisma.trainer.count({
+      where: { actif: true, cvUrl: { not: null }, cvUploadedAt: { gte: seuil24Mois } },
+    }),
+    // off.19 : supports RÉELLEMENT produits (statut=genere ET pdfKey non null), pas un brouillon.
+    prisma.supportFormation.count({ where: { statut: "genere", pdfKey: { not: null } } }),
+    // off.26 : partenariats du réseau HANDICAP spécifiquement (≠ partenariat commercial).
+    prisma.partenariat.count({ where: { type: "reseau_handicap" } }),
+    // off.23/24/25 : veille EXPLOITÉE (actionDecidee non vide) et RÉCENTE (< 12 mois).
+    prisma.veille.count({
+      where: {
+        type: "legale",
+        dateVeille: { gte: seuil12Mois },
+        AND: [{ actionDecidee: { not: null } }, { actionDecidee: { not: "" } }],
+      },
+    }),
+    prisma.veille.count({
+      where: {
+        type: "metiers",
+        dateVeille: { gte: seuil12Mois },
+        AND: [{ actionDecidee: { not: null } }, { actionDecidee: { not: "" } }],
+      },
+    }),
+    prisma.veille.count({
+      where: {
+        type: "pedagogique",
+        dateVeille: { gte: seuil12Mois },
+        AND: [{ actionDecidee: { not: null } }, { actionDecidee: { not: "" } }],
+      },
+    }),
+    // off.26 : email du référent handicap — le NOM seul (défaut config) ne prouve pas la désignation.
+    getQualiopiConfig("referent_handicap_email").catch(() => ""),
+    // off.31 : procédure de réclamation PUBLIÉE (attestation explicite ≠ nom responsable par défaut).
+    getQualiopiConfig("procedure_reclamations_publiee").catch(() => false),
+    // off.22 : actions de développement des compétences formateur RÉCENTES (< 24 mois) —
+    //   entretien pro / formation suivie / veille. Preuve distincte du CV (off.21).
+    prisma.trainerDevelopmentAction.count({ where: { dateAction: { gte: seuil24Mois } } }),
   ]);
 
   // ── Données AFEST 1-to-1 (coaching) — automatisation de off.28 UNIQUEMENT ────
@@ -295,6 +375,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   //   → non_applicable via applicablesNums (jamais déduits du coaching).
   const appAfestApplicable = typesActionEffectifs.includes("alternance_afest");
 
+  // ── Dérivés P1 (durcissement anti-proxy) ───────────────────────────────────
+  //   off.30 : nombre de sources d'appréciation DISTINCTES (multi-parties si ≥ 2).
+  const nbAppreciationSourcesDistinctes = appreciationSources.length;
+  //   off.26 : email référent handicap réellement renseigné (le nom a un défaut config).
+  const referentHandicapEmailRenseigne = referentHandicapEmail.trim().length > 0;
+  //   off.31 : procédure de réclamation attestée publiée (flag config explicite).
+  const procedureReclamationsOk = procedureReclamationsPubliee === true;
+  //   off.7 : formations certifiantes dont les blocs de compétences sont RÉELLEMENT renseignés.
+  const nbFormationsCertifiantesAvecBlocs = formationsCertifiantesResult.filter((r) => {
+    const blocs = r.blocsCompetences;
+    return Array.isArray(blocs) && blocs.length > 0;
+  }).length;
+
   // ── Table de preuves par indicateur ────────────────────────────────────────
   // Chaque entrée : { preuves[], couvert }
   type IndicateurData = { preuves: string[]; couvert: boolean };
@@ -321,15 +414,20 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   }
   set(1, off1Preuves, nbFormations > 0 && ndaNumero.trim().length > 0);
 
-  // off.2 : résultats publiés — exige des résultats MESURÉS (évaluations finales =
-  //         taux de réussite) sur des sessions réalisées, pas la seule existence d'une session.
+  // off.2 : résultats publiés — l'exigence RNQ est la DIFFUSION des indicateurs de
+  //         résultats. Couvert seulement si ≥1 formation a des résultats RÉELLEMENT
+  //         publiés (indicateursPubliesAt non null), pas la seule mesure interne.
+  //         [P1] dissocié du proxy « 1 session + 1 éval finale ».
   set(
     2,
     [
-      `${nbSessionsRealisees} session(s) réalisée(s)`,
+      `${nbFormationsResultatsPublies} formation(s) avec indicateurs de résultats publiés`,
       `${nbEvaluationsFinales} évaluation(s) finale(s) (taux de réussite mesurable)`,
+      nbFormationsResultatsPublies === 0
+        ? "Aucun indicateur de résultat publié — off.2 exige la diffusion (canal public à alimenter)"
+        : "Indicateurs de résultats diffusés",
     ],
-    nbSessionsRealisees > 0 && nbEvaluationsFinales > 0,
+    nbFormationsResultatsPublies > 0,
   );
 
   // off.3 : taux d'obtention certifications — couvert si ≥1 formation certifiante
@@ -344,10 +442,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
 
   // Critère 2
+  // off.4 : ANALYSE DU BESOIN — [P1] mesurée par le questionnaire de positionnement
+  //         RÉPONDU (attentes/besoins/contexte), et non plus par la grille d'acquis
+  //         (qui est off.8). Dissociation off.4 ≠ off.8.
   set(
     4,
-    [`${nbFormations} formation(s)`, `${nbEvaluationsInitiales} positionnement(s) initial`],
-    nbFormations > 0 && nbEvaluationsInitiales > 0,
+    [
+      `${nbFormations} formation(s)`,
+      `${nbPositionnementsBesoin} analyse(s) du besoin (questionnaire de positionnement répondu)`,
+    ],
+    nbFormations > 0 && nbPositionnementsBesoin > 0,
   );
   // off.5 : objectifs définis — durci sur les formations réellement structurées
   //         (sorties de « intention »), pas la seule existence d'une fiche.
@@ -365,17 +469,18 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     [`${nbFormationsAvecContenu} formation(s) avec contenu et modalités réellement produits`],
     nbFormationsAvecContenu > 0,
   );
-  // off.7 : adéquation contenus / exigences certification — couvert si ≥1 formation
-  //         certifiante avec code RS/RNCP ET blocs de compétences définis
+  // off.7 : adéquation contenus / exigences certification — [P1] exige désormais que
+  //         les BLOCS DE COMPÉTENCES soient réellement renseignés (non vides), et pas
+  //         seulement un code RS/RNCP. On ne prétend plus « blocs renseignés » sans les vérifier.
   set(
     7,
     [
-      `${nbFormationsCertifiantes} formation(s) certifiante(s) avec code RS/RNCP`,
-      nbFormationsCertifiantes > 0
-        ? "Blocs de compétences renseignés (adéquation certification vérifiable)"
-        : "Aucune formation certifiante avec code RS/RNCP",
+      `${nbFormationsCertifiantesAvecBlocs} formation(s) certifiante(s) avec code RS/RNCP ET blocs de compétences renseignés`,
+      nbFormationsCertifiantesAvecBlocs > 0
+        ? "Adéquation aux blocs de compétences du référentiel vérifiable"
+        : `Aucune formation certifiante avec blocs renseignés (${nbFormationsCertifiantes} avec code RS/RNCP seul)`,
     ],
-    nbFormationsCertifiantes > 0,
+    nbFormationsCertifiantesAvecBlocs > 0,
   );
   set(
     8,
@@ -400,15 +505,17 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbEnrollmentsAdaptations > 0,
   );
   set(11, [`${nbEvaluationsFinales} évaluation(s) finale(s)`], nbEvaluationsFinales > 0);
-  // off.12 : suivi de l'assiduité — émargements / relevés de connexion réels,
-  //          pas n'importe quel document généré.
+  // off.12 : suivi de l'assiduité — [P1] rattaché au sous-système de présence RÉEL
+  //          (Enrollment.emargementSigneAt : émargement présentiel signé / relevé
+  //          distanciel rapproché), et non plus au seul comptage de PDF générés.
   set(
     12,
     [
       `${nbSessionsRealisees} session(s) réalisée(s)`,
-      `${nbDocsPresence} preuve(s) de présence (émargements, relevés de connexion)`,
+      `${nbEnrollmentsEmarges} inscription(s) avec émargement réellement signé (présentiel/distanciel)`,
+      `${nbDocsPresence} preuve(s) documentaire(s) de présence générée(s)`,
     ],
-    nbSessionsRealisees > 0 && nbDocsPresence > 0,
+    nbSessionsRealisees > 0 && nbEnrollmentsEmarges > 0,
   );
   // off.13/14/15 = indicateurs APPRENTISSAGE/CFA (« Coordination des intervenants
   //   apprentissage », « Exercice de la citoyenneté de l'apprenti », « droits et
@@ -461,9 +568,18 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     nbTrainers > 0 && moyensParCategorieCouverts,
   );
-  // off.19 : ressources pédagogiques mises à disposition — supports de formation
-  //          réels (SupportFormation), pas n'importe quel document généré.
-  set(19, [`${nbSupports} support(s) pédagogique(s) produit(s)`], nbSupports > 0);
+  // off.19 : ressources pédagogiques mises à disposition — [P1] supports RÉELLEMENT
+  //          finalisés (statut=genere ET pdfKey non null), pas un brouillon IA jamais rendu.
+  set(
+    19,
+    [
+      `${nbSupportsGeneres} support(s) pédagogique(s) finalisé(s) (généré + PDF disponible)`,
+      nbSupportsGeneres === 0 && nbSupports > 0
+        ? `${nbSupports} support(s) au total (aucun finalisé)`
+        : `${nbSupports} support(s) au total`,
+    ],
+    nbSupportsGeneres > 0,
+  );
   set(
     20,
     [`${nbTraineesHandicap} stagiaire(s) en situation de handicap suivi(s)`],
@@ -471,48 +587,85 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
 
   // Critère 5
-  // off.21 : couvert SEULEMENT si ≥1 formateur actif avec cvUrl non null (CV réel uploadé)
+  // off.21 : [P1] couvert seulement si ≥1 formateur actif avec CV téléversé ET À JOUR
+  //          (cvUploadedAt < 24 mois — aligné sur le pilotage M11 / l'alerte R11). Un CV
+  //          non daté ou périmé ne prouve pas la mobilisation actuelle de la compétence.
   set(
     21,
     [
-      `${nbTrainersAvecCV} formateur(s) actif(s) avec CV téléversé`,
-      `${nbTrainers} formateur(s) actif(s) au total`,
+      `${nbTrainersAvecCVRecent} formateur(s) actif(s) avec CV téléversé et à jour (< 24 mois)`,
+      `${nbTrainersAvecCV} formateur(s) avec CV téléversé (toutes dates) / ${nbTrainers} actif(s)`,
     ],
-    nbTrainersAvecCV > 0,
+    nbTrainersAvecCVRecent > 0,
   );
-  // off.22 : entretien/développement des compétences des formateurs — exige des
-  //          formateurs dont la qualification est tracée (CV téléversé), pas la
-  //          seule présence d'un formateur actif.
+  // off.22 : [P1] entretien/développement des compétences DANS LE TEMPS — exige une
+  //          trace DATÉE et RÉCENTE (< 24 mois) d'action de développement (entretien
+  //          professionnel, formation suivie, veille), source DISTINCTE du CV (off.21).
+  //          La seule présence d'un CV ne prouve pas le maintien de la compétence.
   set(
     22,
     [
+      `${nbDevActionsRecentes} action(s) de développement des compétences tracée(s) (< 24 mois : entretien pro / formation / veille)`,
       `${nbTrainersAvecCV} formateur(s) avec CV/qualification tracée`,
-      `${nbTrainers} formateur(s) actif(s) au total`,
     ],
-    nbTrainersAvecCV > 0,
+    nbDevActionsRecentes > 0,
   );
 
   // Critère 6
-  set(23, [`${nbVeilleLegale} entrée(s) de veille légale/réglementaire`], nbVeilleLegale > 0);
-  set(24, [`${nbVeilleMetiers} entrée(s) de veille emplois/métiers`], nbVeilleMetiers > 0);
+  // off.23/24/25 : [P1] la veille doit être EXPLOITÉE (décision/action tracée) et RÉCENTE
+  //   (< 12 mois). Une entrée ancienne ou sans `actionDecidee` ne prouve pas une veille
+  //   active exploitée (exigence du Guide de lecture). `updatedAt` n'est pas une preuve.
+  set(
+    23,
+    [
+      `${nbVeilleLegaleExploitee} entrée(s) de veille légale/réglementaire exploitée(s) (< 12 mois, avec décision) sur ${nbVeilleLegale} au total`,
+    ],
+    nbVeilleLegaleExploitee > 0,
+  );
+  set(
+    24,
+    [
+      `${nbVeilleMetiersExploitee} entrée(s) de veille emplois/métiers exploitée(s) (< 12 mois, avec décision) sur ${nbVeilleMetiers} au total`,
+    ],
+    nbVeilleMetiersExploitee > 0,
+  );
   set(
     25,
-    [`${nbVeillePedagogique} entrée(s) de veille pédagogique/technologique`],
-    nbVeillePedagogique > 0,
+    [
+      `${nbVeillePedagogiqueExploitee} entrée(s) de veille pédagogique/technologique exploitée(s) (< 12 mois, avec décision) sur ${nbVeillePedagogique} au total`,
+    ],
+    nbVeillePedagogiqueExploitee > 0,
   );
-  // off.26 : couvert si partenariats existent ET référent handicap nommé (config non vide)
+  // off.26 : [P1] couvert seulement si un partenaire du RÉSEAU HANDICAP est référencé
+  //   (type=reseau_handicap, ≠ partenariat commercial quelconque) ET si le référent
+  //   handicap est réellement désigné — attesté par un EMAIL renseigné (le nom seul a
+  //   un défaut de configuration « Williams Jullin » qui ne prouve pas la désignation).
   set(
     26,
     [
-      `${nbPartenariats} partenariat(s) (dont réseau handicap)`,
+      `${nbPartenariatsHandicap} partenariat(s) réseau handicap (Agefiph/Cap emploi/RHF) sur ${nbPartenariats} au total`,
       `${nbTraineesHandicap} stagiaire(s) handicap suivi(s)`,
-      referentHandicapNom
-        ? `Référent handicap : ${referentHandicapNom}`
-        : "Référent handicap : non renseigné",
+      referentHandicapEmailRenseigne
+        ? `Référent handicap : ${referentHandicapNom} (${referentHandicapEmail})`
+        : "Référent handicap : email non renseigné (désignation à formaliser)",
     ],
-    nbPartenariats > 0 && referentHandicapNom.trim().length > 0,
+    nbPartenariatsHandicap > 0 && referentHandicapEmailRenseigne,
   );
-  set(27, [`${nbSousTraitants} sous-traitant(s) référencé(s)`], nbSousTraitants > 0);
+  // off.27 : [P1] la couverture exige la VIGILANCE réelle par sous-traitant actif —
+  //   NDA renseigné + vérification data.gouv datée + contrat signé. Une ligne coquille
+  //   (sans NDA/vérif/contrat) ne prouve pas les dispositions de sous-traitance.
+  //   NB : si l'OF ne sous-traite pas, off.27 reste applicable et exige une PROCÉDURE
+  //   documentée (voie non couverte par ce flag — action Will hors-code).
+  set(
+    27,
+    [
+      `${nbSousTraitantsConformes} sous-traitant(s) conforme(s) : NDA + vérif data.gouv + contrat signé`,
+      nbSousTraitants > 0
+        ? `${nbSousTraitants} sous-traitant(s) référencé(s) au total`
+        : "Aucun sous-traitant référencé — off.27 exige alors une procédure « dispositions sous-traitance »",
+    ],
+    nbSousTraitantsConformes > 0,
+  );
   // off.28 (AFEST) : AUTOMATISÉ — parcours AFEST 1-to-1 conforme = analyse de
   //   l'activité + alternance mises en situation ↔ phases réflexives + évaluation
   //   des acquis (L.6313-1-2 / D.6313-3-1). a_completer si applicable sans preuve.
@@ -541,20 +694,35 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
 
   // Critère 7
-  // off.30 : couvert si ≥1 appréciation multi-parties (stagiaire/entreprise/financeur/formateur)
-  set(30, [`${nbAppreciations} appréciation(s) multi-parties (off.30)`], nbAppreciations > 0);
+  // off.30 : [P1] « multi-parties » réellement vérifié — exige des appréciations d'au
+  //   moins 2 SOURCES DISTINCTES (stagiaire/entreprise/financeur/formateur). Une seule
+  //   appréciation stagiaire ne couvre plus l'indicateur.
+  set(
+    30,
+    [
+      `${nbAppreciations} appréciation(s) recueillie(s)`,
+      `${nbAppreciationSourcesDistinctes} source(s) distincte(s) parmi stagiaire/entreprise/financeur/formateur (≥ 2 requis)`,
+    ],
+    nbAppreciationSourcesDistinctes >= 2,
+  );
   // off.31 : traitement des réclamations — le RNQ exige un PROCESS opérationnel
-  //          (avec un responsable identifié), pas l'existence de réclamations.
-  //          Un OF sans aucune réclamation reste couvert si le process a un propriétaire.
+  //   DIFFUSÉ, avec un responsable identifié. [P1] la couverture n'est plus déduite du
+  //   seul nom du responsable (qui a un défaut de configuration auto-seedé) : elle exige
+  //   l'ATTESTATION explicite que la procédure de réclamation est publiée
+  //   (SiteSetting `procedure_reclamations_publiee` = true, posé délibérément par Will)
+  //   ET un responsable qualité renseigné. Fin de l'auto-pass.
   set(
     31,
     [
+      procedureReclamationsOk
+        ? "Procédure de traitement des réclamations publiée (attestée en configuration)"
+        : "Procédure de réclamations : non attestée publiée (requis pour couverture off.31)",
       responsableQualiteNom.trim().length > 0
         ? `Process réclamations piloté par : ${responsableQualiteNom}`
         : "Responsable qualité (propriétaire du process réclamations) : non renseigné",
       `${nbReclamations} réclamation(s) enregistrée(s) et traitée(s)`,
     ],
-    responsableQualiteNom.trim().length > 0 || nbReclamations > 0,
+    procedureReclamationsOk && responsableQualiteNom.trim().length > 0,
   );
   set(
     32,
