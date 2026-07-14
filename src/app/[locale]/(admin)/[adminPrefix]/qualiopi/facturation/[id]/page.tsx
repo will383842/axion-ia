@@ -118,6 +118,7 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
       regimeTva: true,
       lignes: true,
       avoirDeId: true,
+      documentId: true,
       emiseAt: true,
       echeanceAt: true,
       paidAt: true,
@@ -149,6 +150,7 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
           statut: true,
           montantTtcCents: true,
           montantHtCents: true,
+          documentId: true,
           createdAt: true,
         },
       },
@@ -206,6 +208,22 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
         title={`Facture ${facture.numero}${estAvoir ? " (avoir)" : ""}`}
         description={`${facture.destinataireNom} · ${STATUT_LABELS[facture.statut] ?? facture.statut}`}
       />
+
+      {/* ── Téléchargement du PDF (route qualiopi/documents re-signe R2) ──── */}
+      {/* Gaté peutEcrire : la route /api/qualiopi/documents n'autorise que
+          admin/super_admin — on n'affiche pas un lien qui renverrait 403. */}
+      {peutEcrire && facture.documentId !== null && (
+        <div className="mb-[var(--space-admin-6)]">
+          <a
+            href={`/api/qualiopi/documents/${facture.documentId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="admin-button"
+          >
+            Télécharger le PDF
+          </a>
+        </div>
+      )}
 
       {/* ── Fiche de statut ─────────────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
@@ -369,6 +387,16 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
                 <span className="text-[color:var(--color-admin-fg-muted)]">
                   {STATUT_LABELS[a.statut] ?? a.statut} · {fmtDate(a.createdAt)}
                 </span>
+                {peutEcrire && a.documentId !== null && (
+                  <a
+                    href={`/api/qualiopi/documents/${a.documentId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] hover:underline"
+                  >
+                    PDF
+                  </a>
+                )}
               </li>
             ))}
           </ul>

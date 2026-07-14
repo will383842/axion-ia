@@ -917,9 +917,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "commercial",
     },
     {
+      // Renommé (2026-07-14) : la facturation est pilotée par « Facturation (Hub) ».
+      // Cet écran conserve sa valeur propre = alertes de financement au niveau
+      // session (OPCO sans accord, CPF sans vérif EDOF) + export compta CSV legacy.
       href: `${base}/qualiopi/financements`,
-      label: "Financements / Facturation",
-      icon: "💳",
+      label: "Alertes financement (sessions)",
+      icon: "🚨",
       group: "qualiopi",
       subGroup: "commercial",
     },
