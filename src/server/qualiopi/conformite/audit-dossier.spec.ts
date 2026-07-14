@@ -27,6 +27,7 @@ vi.mock("@/lib/prisma", () => ({
 
 vi.mock("@/lib/r2-storage", () => ({
   getObjectBufferR2: vi.fn(),
+  isR2Configured: vi.fn(() => true),
 }));
 
 vi.mock("./conformite-service", () => ({
@@ -53,7 +54,7 @@ vi.mock("@/server/qualiopi/registres/registres-pdf", () => ({
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
-import { getObjectBufferR2 } from "@/lib/r2-storage";
+import { getObjectBufferR2, isR2Configured } from "@/lib/r2-storage";
 import { renderRegistrePdfBuffer } from "@/server/qualiopi/registres/registres-pdf";
 import { genererManifesteAudit, genererDossierAuditZip } from "./audit-dossier";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
@@ -68,6 +69,7 @@ const mockPrisma = prisma as unknown as {
 const mockEvaluerConformite = evaluerConformite as ReturnType<typeof vi.fn>;
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 const mockGetObjectBufferR2 = getObjectBufferR2 as ReturnType<typeof vi.fn>;
+const mockIsR2Configured = isR2Configured as ReturnType<typeof vi.fn>;
 const mockRenderRegistrePdfBuffer = renderRegistrePdfBuffer as ReturnType<typeof vi.fn>;
 
 // Résultat de conformité simulé avec 32 indicateurs
@@ -333,6 +335,43 @@ describe("genererDossierAuditZip", () => {
     const zip = await JSZip.loadAsync(result.base64, { base64: true });
     const md = await zip.files["manifeste.md"]!.async("string");
     expect(md).toMatch(/# Manifeste d'audit Qualiopi/);
+  });
+
+  it("[P1] R2 non configuré → AVERTISSEMENTS.txt visible (dossier non silencieux)", async () => {
+    mockIsR2Configured.mockReturnValue(false);
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    expect(zip.files["AVERTISSEMENTS.txt"]).toBeDefined();
+    const txt = await zip.files["AVERTISSEMENTS.txt"]!.async("string");
+    expect(txt).toMatch(/R2 NON CONFIGUR/i);
+    // L'index reprend aussi la bannière en tête.
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).toMatch(/AVERTISSEMENTS/);
+  });
+
+  it("[P1] documents en base mais aucun PDF joint → avertissement explicite", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockGetObjectBufferR2.mockResolvedValue(null); // toutes les clés introuvables
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      {
+        id: "d1",
+        type: "convention",
+        numero: "AXI-CONV-2026-0001",
+        createdAt: new Date("2026-03-01"),
+      },
+    ]);
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    expect(zip.files["AVERTISSEMENTS.txt"]).toBeDefined();
+    const txt = await zip.files["AVERTISSEMENTS.txt"]!.async("string");
+    expect(txt).toMatch(/AUCUN PDF de preuve joint/i);
+  });
+
+  it("[P1] R2 configuré + aucun document → pas d'AVERTISSEMENTS.txt", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    expect(zip.files["AVERTISSEMENTS.txt"]).toBeUndefined();
   });
 
   it("un PDF disponible dans R2 est inclus sous preuves/<type>/<numero>.pdf", async () => {

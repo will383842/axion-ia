@@ -252,6 +252,51 @@ describe("genererFactureFormation", () => {
     expect(createArg.data["numeroDossierOpco"]).toBe("ATLAS-2026-001234");
   });
 
+  it("[P1] destinataire opco : nom LISIBLE de l'OPCO (« Atlas », pas le slug « atlas »)", async () => {
+    mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue(
+      makeSession({
+        opcoSubrogation: true,
+        numeroDossierOpco: "ATLAS-2026-001234",
+        client: { raisonSociale: "ACME SAS", siret: "98765432100001", opcoIdentifie: "atlas" },
+      }),
+    );
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+    const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(createArg.data["destinataireNom"]).toBe("Atlas");
+  });
+
+  it("[P1] destinataire france_travail : facturé à « France Travail » (pas l'entreprise cliente)", async () => {
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "france_travail",
+      ventilation: "forfait",
+    });
+    const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(createArg.data["destinataireNom"]).toBe("France Travail");
+    expect(createArg.data["destinataireNom"]).not.toBe("ACME SAS");
+  });
+
+  it("[P1] destinataire stagiaire : facturé au bénéficiaire (pas l'entreprise cliente)", async () => {
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "stagiaire",
+      ventilation: "forfait",
+    });
+    const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(createArg.data["destinataireNom"]).not.toBe("ACME SAS");
+    expect(String(createArg.data["destinataireNom"])).toMatch(/b[ée]n[ée]ficiaire/i);
+  });
+
   // ── Régime de TVA (par défaut assujetti — Qualiopi n'exonère PAS) ──────────
 
   it("la facture est en régime assujetti par défaut (TVA 20 %, tvaExoneree=false)", async () => {

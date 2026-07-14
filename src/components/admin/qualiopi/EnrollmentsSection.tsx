@@ -45,6 +45,8 @@ export interface EnrollmentSerialized {
   statut: EnrollmentStatut;
   /** Null tant que non renseigné. */
   tauxPresencePct: number | null;
+  /** Adaptations réellement réalisées pour ce bénéficiaire (ind. 10) — null si non renseigné. */
+  adaptationsRealisees: string | null;
   /** Accès portail actif (non révoqué, non expiré) le plus récent — null si aucun. */
   portailAcces: PortailAccesSerialized | null;
 }
@@ -70,6 +72,11 @@ export interface EnrollmentsSectionProps {
   setStatutAction: (input: {
     id: string;
     statut: EnrollmentStatut;
+  }) => Promise<ActionResult<{ id: string }>>;
+  /** Renseigne les adaptations réellement réalisées (ind. 10). */
+  setAdaptationsAction: (input: {
+    id: string;
+    adaptationsRealisees: string;
   }) => Promise<ActionResult<{ id: string }>>;
   genererPortailAction: (input: {
     traineeId: string;
@@ -109,6 +116,7 @@ function statutColor(s: EnrollmentStatut): string {
 interface EnrollmentRowProps {
   enrollment: EnrollmentSerialized;
   setStatutAction: EnrollmentsSectionProps["setStatutAction"];
+  setAdaptationsAction: EnrollmentsSectionProps["setAdaptationsAction"];
   genererPortailAction: EnrollmentsSectionProps["genererPortailAction"];
   revoquerPortailAction: EnrollmentsSectionProps["revoquerPortailAction"];
   onMutated: () => void;
@@ -117,14 +125,19 @@ interface EnrollmentRowProps {
 function EnrollmentRow({
   enrollment,
   setStatutAction,
+  setAdaptationsAction,
   genererPortailAction,
   revoquerPortailAction,
   onMutated,
 }: EnrollmentRowProps): React.ReactElement {
   const [isPendingStatut, startStatut] = useTransition();
   const [isPendingRevoke, startRevoke] = useTransition();
+  const [isPendingAdapt, startAdapt] = useTransition();
   const [statutError, setStatutError] = useState<string | null>(null);
   const [revokeError, setRevokeError] = useState<string | null>(null);
+  const [adaptError, setAdaptError] = useState<string | null>(null);
+  const [adaptSaved, setAdaptSaved] = useState(false);
+  const [adaptText, setAdaptText] = useState<string>(enrollment.adaptationsRealisees ?? "");
 
   const inputCls =
     "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-1 focus:ring-[color:var(--color-admin-accent)]";
@@ -153,6 +166,25 @@ function EnrollmentRow({
       }
     });
   }
+
+  function handleSaveAdaptations() {
+    setAdaptError(null);
+    setAdaptSaved(false);
+    startAdapt(async () => {
+      const res = await setAdaptationsAction({
+        id: enrollment.id,
+        adaptationsRealisees: adaptText.trim(),
+      });
+      if ("error" in res) {
+        setAdaptError(res.error);
+      } else {
+        setAdaptSaved(true);
+        onMutated();
+      }
+    });
+  }
+
+  const adaptDirty = adaptText.trim() !== (enrollment.adaptationsRealisees ?? "");
 
   const tdCls =
     "px-[var(--space-admin-3)] py-[var(--space-admin-3)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
@@ -206,6 +238,46 @@ function EnrollmentRow({
           <span className="font-medium">{enrollment.tauxPresencePct}&nbsp;%</span>
         ) : (
           <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+        )}
+      </td>
+
+      {/* Adaptations réalisées (ind. 10) */}
+      <td className={tdCls}>
+        <textarea
+          value={adaptText}
+          onChange={(e) => {
+            setAdaptText(e.target.value);
+            setAdaptSaved(false);
+          }}
+          disabled={isPendingAdapt}
+          rows={2}
+          maxLength={5000}
+          placeholder="Adaptations réalisées (rythme, supports, handicap…)"
+          aria-label={`Adaptations réalisées pour ${enrollment.trainee.prenom} ${enrollment.trainee.nom}`}
+          className={`${inputCls} min-w-[14rem] resize-y`}
+        />
+        <div className="mt-1 flex items-center gap-[var(--space-admin-2)]">
+          <button
+            type="button"
+            onClick={handleSaveAdaptations}
+            disabled={isPendingAdapt || !adaptDirty}
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-50"
+          >
+            {isPendingAdapt ? "Enregistrement…" : "Enregistrer"}
+          </button>
+          {adaptSaved && !adaptDirty && (
+            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]">
+              Enregistré
+            </span>
+          )}
+        </div>
+        {adaptError && (
+          <p
+            role="alert"
+            className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
+          >
+            {adaptError}
+          </p>
         )}
       </td>
 
@@ -375,6 +447,7 @@ export function EnrollmentsSection({
   availableTrainees,
   enrollAction,
   setStatutAction,
+  setAdaptationsAction,
   genererPortailAction,
   revoquerPortailAction,
 }: EnrollmentsSectionProps): React.ReactElement {
@@ -404,6 +477,7 @@ export function EnrollmentsSection({
                 <th className={thCls}>Stagiaire</th>
                 <th className={thCls}>Statut</th>
                 <th className={thCls}>Présence</th>
+                <th className={thCls}>Adaptations (ind. 10)</th>
                 <th className={thCls}>Accès portail</th>
               </tr>
             </thead>
@@ -413,6 +487,7 @@ export function EnrollmentsSection({
                   key={enrollment.id}
                   enrollment={enrollment}
                   setStatutAction={setStatutAction}
+                  setAdaptationsAction={setAdaptationsAction}
                   genererPortailAction={genererPortailAction}
                   revoquerPortailAction={revoquerPortailAction}
                   onMutated={refresh}

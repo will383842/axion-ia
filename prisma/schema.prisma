@@ -5753,11 +5753,38 @@ model Trainer {
   habilitations        TrainerHabilitation[]
   indisponibilites     TrainerAvailability[]
   auditMissions        AuditMission[]            @relation("AuditMissionFormateur")
+  developmentActions   TrainerDevelopmentAction[]
 
   @@index([statut])
   @@index([actif])
   @@index([region])
   @@map("trainers")
+}
+
+/// Type d'action de développement des compétences d'un intervenant (ind. 22).
+enum TrainerDevelopmentActionType {
+  entretien_professionnel
+  formation_suivie
+  veille
+  autre
+}
+
+/// Action d'entretien / développement des compétences d'un formateur dans le
+/// temps (indicateur RNQ 22 : « Entretien et développement des compétences des
+/// intervenants »). Trace DATÉE d'un entretien professionnel, d'une formation
+/// suivie ou d'une veille — preuve distincte du seul CV (ind. 21).
+model TrainerDevelopmentAction {
+  id          String                       @id @default(uuid()) @db.Uuid
+  trainerId   String                       @map("trainer_id") @db.Uuid
+  trainer     Trainer                      @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  type        TrainerDevelopmentActionType
+  dateAction  DateTime                     @map("date_action")
+  description String                       @default("") @db.Text
+  createdAt   DateTime                     @default(now()) @map("created_at")
+
+  @@index([trainerId])
+  @@index([dateAction])
+  @@map("trainer_development_actions")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

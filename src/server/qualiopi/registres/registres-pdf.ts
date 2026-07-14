@@ -203,7 +203,9 @@ async function buildRevueDirection(): Promise<Omit<RegistreData, "dateEdition">>
     lignes: rows.map((r) => [
       String(r.annee),
       formatDateFr(r.dateRevue),
-      r.statut,
+      // [P1] seule une revue « validée » couvre l'indicateur 32 : on marque
+      //   explicitement les brouillons/archivées pour ne pas induire l'auditeur en erreur.
+      r.statut === "validee" ? "Validée" : `${r.statut} (⚠ non validée — ne couvre pas l'ind. 32)`,
       resumeJsonListe(r.participants),
       resumeJsonListe(r.decisions),
       resumeJsonListe(r.planActions),

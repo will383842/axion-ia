@@ -29,6 +29,7 @@ import { QuestionnairesSection } from "@/components/admin/qualiopi/Questionnaire
 import {
   enrollTraineeAction,
   setEnrollmentStatutAction,
+  setEnrollmentAdaptationsAction,
 } from "@/server/actions/qualiopi/enrollments";
 import {
   genererPortailAccesAction,
@@ -178,6 +179,7 @@ export default async function SessionHubPage({ params }: PageProps) {
         id: true,
         statut: true,
         tauxPresencePct: true,
+        adaptationsRealisees: true,
         // Financement par participant (R-INTER)
         financementType: true,
         clientId: true,
@@ -221,6 +223,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       id: e.id,
       statut: e.statut,
       tauxPresencePct: e.tauxPresencePct,
+      adaptationsRealisees: e.adaptationsRealisees,
       trainee: {
         id: e.trainee.id,
         nom: e.trainee.nom,
@@ -510,6 +513,7 @@ export default async function SessionHubPage({ params }: PageProps) {
           availableTrainees={traineesRaw}
           enrollAction={enrollTraineeAction}
           setStatutAction={setEnrollmentStatutAction}
+          setAdaptationsAction={setEnrollmentAdaptationsAction}
           genererPortailAction={genererPortailAccesAction}
           revoquerPortailAction={revoquerPortailAccesAction}
         />

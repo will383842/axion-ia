@@ -18,12 +18,14 @@ vi.mock("@/lib/prisma", () => ({
     formation: { count: vi.fn(), findMany: vi.fn() },
     trainingSession: { count: vi.fn() },
     evaluationAcquis: { count: vi.fn() },
-    appreciation: { count: vi.fn() },
+    appreciation: { count: vi.fn(), groupBy: vi.fn() },
+    questionnaire: { count: vi.fn() },
     reclamation: { count: vi.fn() },
     veille: { count: vi.fn() },
     partenariat: { count: vi.fn() },
     sousTraitant: { count: vi.fn() },
     trainer: { count: vi.fn() },
+    trainerDevelopmentAction: { count: vi.fn() },
     trainee: { count: vi.fn() },
     enrollment: { count: vi.fn() },
     documentGenere: { count: vi.fn() },
@@ -46,12 +48,14 @@ type MockPrisma = {
   formation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   trainingSession: { count: ReturnType<typeof vi.fn> };
   evaluationAcquis: { count: ReturnType<typeof vi.fn> };
-  appreciation: { count: ReturnType<typeof vi.fn> };
+  appreciation: { count: ReturnType<typeof vi.fn>; groupBy: ReturnType<typeof vi.fn> };
+  questionnaire: { count: ReturnType<typeof vi.fn> };
   reclamation: { count: ReturnType<typeof vi.fn> };
   veille: { count: ReturnType<typeof vi.fn> };
   partenariat: { count: ReturnType<typeof vi.fn> };
   sousTraitant: { count: ReturnType<typeof vi.fn> };
   trainer: { count: ReturnType<typeof vi.fn> };
+  trainerDevelopmentAction: { count: ReturnType<typeof vi.fn> };
   trainee: { count: ReturnType<typeof vi.fn> };
   enrollment: { count: ReturnType<typeof vi.fn> };
   documentGenere: { count: ReturnType<typeof vi.fn> };
@@ -75,11 +79,14 @@ function setupEmpty() {
   mockP.trainingSession.count.mockResolvedValue(0);
   mockP.evaluationAcquis.count.mockResolvedValue(0);
   mockP.appreciation.count.mockResolvedValue(0);
+  mockP.appreciation.groupBy.mockResolvedValue([]);
+  mockP.questionnaire.count.mockResolvedValue(0);
   mockP.reclamation.count.mockResolvedValue(0);
   mockP.veille.count.mockResolvedValue(0);
   mockP.partenariat.count.mockResolvedValue(0);
   mockP.sousTraitant.count.mockResolvedValue(0);
   mockP.trainer.count.mockResolvedValue(0);
+  mockP.trainerDevelopmentAction.count.mockResolvedValue(0);
   mockP.trainee.count.mockResolvedValue(0);
   mockP.enrollment.count.mockResolvedValue(0);
   mockP.documentGenere.count.mockResolvedValue(0);
@@ -183,26 +190,48 @@ describe("evaluerConformite", () => {
     expect(result.indicateurs.find((i) => i.numero === 6)?.statut).toBe("couvert");
   });
 
-  it("off.31 couvert si au moins 1 réclamation existe", async () => {
-    mockP.reclamation.count.mockResolvedValue(2);
+  it("off.31 [P1] couvert si procédure de réclamation publiée ATTESTÉE ET responsable qualité désigné", async () => {
+    // La couverture n'est plus déduite du seul nom du responsable (défaut config) :
+    // elle exige l'attestation explicite `procedure_reclamations_publiee = true`.
+    mockGetConfig.mockImplementation((key: string) =>
+      Promise.resolve(
+        key === "procedure_reclamations_publiee"
+          ? true
+          : key === "responsable_qualite_nom"
+            ? "Williams Jullin"
+            : "",
+      ),
+    );
     const result = await evaluerConformite();
     const ind31 = result.indicateurs.find((i) => i.numero === 31);
     expect(ind31?.statut).toBe("couvert");
   });
 
-  it("off.31 a_completer si 0 réclamation ET responsable qualité non renseigné", async () => {
+  it("off.31 [P1] a_completer par défaut (procédure non attestée publiée)", async () => {
     const result = await evaluerConformite();
     const ind31 = result.indicateurs.find((i) => i.numero === 31);
     expect(ind31?.statut).toBe("a_completer");
   });
 
-  it("off.31 couvert si responsable qualité désigné même sans réclamation (process opérationnel)", async () => {
-    // 0 réclamation mais un responsable qualité (propriétaire du process) est nommé.
-    mockP.reclamation.count.mockResolvedValue(0);
-    mockGetConfig.mockResolvedValue("Williams Jullin");
+  it("off.31 [P1] a_completer si responsable désigné MAIS procédure non attestée (fin de l'auto-pass)", async () => {
+    // Le seul nom du responsable (même non vide) ne suffit plus : sans procédure
+    // attestée publiée, off.31 reste a_completer. Même avec des réclamations enregistrées.
+    mockP.reclamation.count.mockResolvedValue(5);
+    mockGetConfig.mockImplementation((key: string) =>
+      Promise.resolve(key === "responsable_qualite_nom" ? "Williams Jullin" : ""),
+    );
     const result = await evaluerConformite();
     const ind31 = result.indicateurs.find((i) => i.numero === 31);
-    expect(ind31?.statut).toBe("couvert");
+    expect(ind31?.statut).toBe("a_completer");
+  });
+
+  it("off.31 [P1] a_completer si procédure attestée MAIS responsable non renseigné", async () => {
+    mockGetConfig.mockImplementation((key: string) =>
+      Promise.resolve(key === "procedure_reclamations_publiee" ? true : ""),
+    );
+    const result = await evaluerConformite();
+    const ind31 = result.indicateurs.find((i) => i.numero === 31);
+    expect(ind31?.statut).toBe("a_completer");
   });
 
   it("off.11 couvert si au moins 1 évaluation finale existe", async () => {
@@ -263,15 +292,28 @@ describe("evaluerConformite", () => {
 
   // ── off.30 : appréciation multi-parties (T17 — CLUSTER 2) ─────────────────
 
-  it("off.30 couvert si ≥1 appréciation (appreciation.count > 0)", async () => {
-    mockP.appreciation.count.mockResolvedValue(3);
+  it("off.30 [P1] couvert si ≥2 sources d'appréciation DISTINCTES (multi-parties réel)", async () => {
+    mockP.appreciation.count.mockResolvedValue(5);
+    mockP.appreciation.groupBy.mockResolvedValue([
+      { source: "stagiaire" },
+      { source: "entreprise" },
+    ]);
     const result = await evaluerConformite();
     const ind30 = result.indicateurs.find((i) => i.numero === 30);
     expect(ind30?.statut).toBe("couvert");
   });
 
+  it("off.30 [P1] a_completer si une seule source d'appréciation (pas multi-parties)", async () => {
+    mockP.appreciation.count.mockResolvedValue(3);
+    mockP.appreciation.groupBy.mockResolvedValue([{ source: "stagiaire" }]);
+    const result = await evaluerConformite();
+    const ind30 = result.indicateurs.find((i) => i.numero === 30);
+    expect(ind30?.statut).toBe("a_completer");
+  });
+
   it("off.30 a_completer si 0 appréciation", async () => {
     mockP.appreciation.count.mockResolvedValue(0);
+    mockP.appreciation.groupBy.mockResolvedValue([]);
     const result = await evaluerConformite();
     const ind30 = result.indicateurs.find((i) => i.numero === 30);
     expect(ind30?.statut).toBe("a_completer");
@@ -279,6 +321,10 @@ describe("evaluerConformite", () => {
 
   it("off.30 preuve mentionne 'appréciation' (pas 'questionnaire')", async () => {
     mockP.appreciation.count.mockResolvedValue(2);
+    mockP.appreciation.groupBy.mockResolvedValue([
+      { source: "stagiaire" },
+      { source: "formateur" },
+    ]);
     const result = await evaluerConformite();
     const ind30 = result.indicateurs.find((i) => i.numero === 30);
     expect(ind30?.preuves.join(" ")).toMatch(/appr[eé]ciation/i);
@@ -363,16 +409,24 @@ describe("evaluerConformite", () => {
 
   // ── off.21 : formateurs avec CV réel (T17 — CLUSTER 2) ───────────────────
 
-  it("off.21 couvert si ≥1 formateur actif avec cvUrl non null", async () => {
-    // trainer.count : 1er appel = total actif, 2e appel = actif+cvUrl non null
-    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1);
+  it("off.21 [P1] couvert si ≥1 formateur actif avec CV téléversé ET à jour (< 24 mois)", async () => {
+    // trainer.count : 1=actif, 2=actif+cvUrl, 3=actif+cvUrl+cvUploadedAt<24 mois (récent)
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("couvert");
   });
 
+  it("off.21 [P1] a_completer si CV présent mais PÉRIMÉ (aucun < 24 mois)", async () => {
+    // 2 CV téléversés mais aucun daté de moins de 24 mois → 3e appel = 0.
+    mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(2).mockResolvedValueOnce(0);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+  });
+
   it("off.21 a_completer si formateurs actifs mais 0 avec cvUrl", async () => {
-    mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(0);
+    mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(0).mockResolvedValueOnce(0);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");
@@ -572,5 +626,72 @@ describe("evaluerConformite", () => {
     mockGetConfig.mockResolvedValue("oui");
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 29)?.statut).toBe("non_applicable");
+  });
+
+  // ── P1 (durcissement anti-proxy — audit 2026-07-14) ──────────────────────
+
+  it("off.2 [P1] a_completer si évaluations finales mesurées MAIS aucun résultat publié", async () => {
+    // Sessions réalisées + évaluations finales, mais indicateursPubliesAt jamais posé.
+    mockP.trainingSession.count.mockResolvedValue(3);
+    mockP.evaluationAcquis.count.mockResolvedValue(4);
+    mockP.formation.count.mockImplementation(
+      (args?: { where?: { indicateursPubliesAt?: unknown } }) =>
+        Promise.resolve(args?.where?.indicateursPubliesAt !== undefined ? 0 : 5),
+    );
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 2)?.statut).toBe("a_completer");
+  });
+
+  it("off.2 [P1] couvert si ≥1 formation a des indicateurs de résultats publiés", async () => {
+    mockP.formation.count.mockResolvedValue(2); // total ET publiés = 2
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 2)?.statut).toBe("couvert");
+  });
+
+  it("off.4 [P1] mesuré par le questionnaire de positionnement (≠ grille d'acquis off.8)", async () => {
+    mockP.formation.count.mockResolvedValue(2);
+    // Grille d'acquis présente (off.8) mais AUCUN questionnaire de positionnement répondu.
+    mockP.evaluationAcquis.count.mockResolvedValue(3);
+    mockP.questionnaire.count.mockResolvedValue(0);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 4)?.statut).toBe("a_completer");
+    // off.8 (acquis), lui, est couvert par la grille.
+    expect(result.indicateurs.find((i) => i.numero === 8)?.statut).toBe("couvert");
+  });
+
+  it("off.4 [P1] couvert si formations + ≥1 questionnaire de positionnement répondu", async () => {
+    mockP.formation.count.mockResolvedValue(2);
+    mockP.questionnaire.count.mockResolvedValue(1);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 4)?.statut).toBe("couvert");
+  });
+
+  it("off.27 [P1] a_completer si sous-traitant référencé mais NON conforme (NDA/data.gouv/contrat manquants)", async () => {
+    // total > 0 mais aucun conforme (le 2e appel avec where renvoie 0).
+    mockP.sousTraitant.count.mockImplementation((args?: { where?: unknown }) =>
+      Promise.resolve(args?.where ? 0 : 3),
+    );
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("a_completer");
+  });
+
+  it("off.27 [P1] couvert si ≥1 sous-traitant conforme (NDA + vérif data.gouv + contrat signé)", async () => {
+    mockP.sousTraitant.count.mockResolvedValue(1); // total ET conformes = 1
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("couvert");
+  });
+
+  it("off.22 [P1] a_completer si CV présents mais AUCUNE action de développement récente", async () => {
+    // Des formateurs avec CV (off.21) mais aucune trace de développement (off.22 distinct).
+    mockP.trainer.count.mockResolvedValue(2);
+    mockP.trainerDevelopmentAction.count.mockResolvedValue(0);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 22)?.statut).toBe("a_completer");
+  });
+
+  it("off.22 [P1] couvert si ≥1 action de développement récente (< 24 mois)", async () => {
+    mockP.trainerDevelopmentAction.count.mockResolvedValue(3);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 22)?.statut).toBe("couvert");
   });
 });

@@ -20,6 +20,14 @@ import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
 import { TrainerCompensationPanel } from "@/components/admin/qualiopi/TrainerCompensationPanel";
+import {
+  TrainerDevelopmentPanel,
+  type TrainerDevelopmentActionType,
+} from "@/components/admin/qualiopi/TrainerDevelopmentPanel";
+import {
+  addTrainerDevelopmentActionAction,
+  deleteTrainerDevelopmentActionAction,
+} from "@/server/actions/qualiopi/trainers";
 import { listIndisposFormateur } from "@/server/qualiopi/trainers/availability-queries";
 import {
   listReglesFormateur,
@@ -101,6 +109,20 @@ export default async function FicheFormateurPage({ params }: PageProps) {
     listFormationOptions(),
   ]);
   const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
+
+  // Actions de développement des compétences (ind. 22).
+  const devActionsRaw = await prisma.trainerDevelopmentAction.findMany({
+    where: { trainerId: trainer.id },
+    orderBy: { dateAction: "desc" },
+    take: 50,
+    select: { id: true, type: true, dateAction: true, description: true },
+  });
+  const devActions = devActionsRaw.map((a) => ({
+    id: a.id,
+    type: a.type as TrainerDevelopmentActionType,
+    dateAction: a.dateAction.toISOString(),
+    description: a.description,
+  }));
 
   // Conformité documentaire (URSSAF, NDA, RC pro…). Les manquements « bloquant »
   // empêchent d'envoyer le formateur chez un client ; les « alerte » signalent
@@ -200,6 +222,19 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         regles={regles}
         formations={formationOptions}
       />
+
+      {/* Développement des compétences dans le temps (indicateur 22) */}
+      <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
+        <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+          Développement des compétences (ind. 22)
+        </h2>
+        <TrainerDevelopmentPanel
+          trainerId={trainer.id}
+          actions={devActions}
+          addAction={addTrainerDevelopmentActionAction}
+          deleteAction={deleteTrainerDevelopmentActionAction}
+        />
+      </div>
 
       <div className="mb-[var(--space-admin-6)]">
         <TrainerForm
