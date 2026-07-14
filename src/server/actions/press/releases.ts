@@ -59,12 +59,21 @@ const audienceSchema = z.enum(["GENERAL", "FOUNDER"]);
 // côté UI ; on accepte aussi "" → null pour « non spécifié »). audience a un
 // défaut GENERAL au niveau DB.
 const metaSchema = z.object({
-  title: z.string().min(3).max(255),
-  dek: z.string().max(320).optional(),
+  title: z
+    .string()
+    .min(3, "Le titre doit faire au moins 3 caractères.")
+    .max(255, "Le titre ne peut pas dépasser 255 caractères."),
+  dek: z.string().max(320, "Le résumé ne peut pas dépasser 320 caractères.").optional(),
   tag: tagSchema,
   status: statusSchema.optional(),
   region: z.string().max(64).optional(),
-  departement: z.string().max(8).optional(),
+  departement: z
+    .string()
+    .max(
+      8,
+      "Code département : 8 caractères maximum (ex. 75, 2A, 974). Saisissez le code, pas le nom.",
+    )
+    .optional(),
   sector: z.string().max(64).optional(),
   audience: audienceSchema.optional(),
 });

@@ -92,6 +92,21 @@ function formatDate(iso: string, locale: "fr" | "en"): string {
 const selectClass =
   "border-border bg-paper text-fg focus-visible:ring-terracotta min-h-[44px] w-full rounded-lg border px-3 text-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
 
+// Visuel de carte par catégorie (2026-07-14) — remplace l'image-texte OG
+// (`/api/og?title=…`, qui affichait juste le titre sur fond de marque, « trop
+// texte » selon Will) par de vraies photos de la banque d'images interne. Une
+// image curée par tag ; décoratif (alt="" car le titre est dans le <h3>), donc
+// pas de champ image par communiqué requis (zéro migration).
+const TAG_IMAGE: Record<PressReleaseTag, string> = {
+  launch: "/images/axion-ia-intervention-ia-france-toutes-regions-photo-banniere.webp",
+  partnership:
+    "/images/axion-ia-equipe-1to1-tous-profils-manager-rh-marketing-ops-photo-banniere.webp",
+  study: "/images/axion-ia-graphique-adoption-ia-72-pourcent-2024-mckinsey-dataviz.webp",
+  product:
+    "/images/axion-ia-automatisation-ia-benefices-concrets-mesurables-durables-banniere.webp",
+  milestone: "/images/axion-ia-audit-ia-levier-croissance-mesurable-cartographie-roi-banniere.webp",
+};
+
 // Press release cards — éditorial v3, structure card + tag pill terracotta-soft.
 // Filtre facetté « ciblage média » (2026-06-24) : Server Component pur, pas de
 // client JS. Le <form method="GET"> recharge la page avec les query params ;
@@ -191,9 +206,9 @@ export function PressReleases({
               key={release.slug}
               className="border-border bg-paper hover:border-terracotta-soft flex flex-col overflow-hidden rounded-xl border transition hover:shadow-[var(--shadow-subtle)]"
             >
-              {/* Visuel — image OG brandée (texte du titre sur fond marque), unique
-                  par communiqué. `unoptimized` : route dynamique, pas d'optimisation
-                  next/image (et build stub safe). Décoratif → alt vide (titre en h3). */}
+              {/* Visuel — vraie photo de la banque d'images interne, choisie par
+                  catégorie (TAG_IMAGE). Optimisée par next/image (WebP/AVIF).
+                  Décoratif → alt vide (le titre est dans le <h3>). */}
               <Link
                 href={`/presse/${release.slug}` as never}
                 aria-hidden="true"
@@ -201,10 +216,9 @@ export function PressReleases({
                 className="bg-sand relative block aspect-[1200/630] overflow-hidden"
               >
                 <Image
-                  src={`/api/og?title=${encodeURIComponent(release.title)}`}
+                  src={TAG_IMAGE[release.tag]}
                   alt=""
                   fill
-                  unoptimized
                   loading="lazy"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   className="object-cover transition-transform duration-300 hover:scale-[1.02]"
