@@ -22,7 +22,7 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Qualiopi — Financements / Facturation | Axion-IA Admin",
+  title: "Qualiopi — Alertes financement (sessions) | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -150,8 +150,8 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Financements / Facturation"
-        description="Suivi des financements OPCO, CPF et France Travail. Factures de formation exonérées de TVA (art. 261-4-4° CGI)."
+        title="Alertes financement (sessions)"
+        description="Suivi des financements OPCO, CPF et France Travail au niveau session (alertes de risque). La facturation est désormais pilotée depuis « Facturation (Hub) »."
       />
 
       {/* Stats */}
