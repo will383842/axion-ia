@@ -144,45 +144,102 @@ const BIEN_DEMARRER_4H: FormationV2 = {
     {
       titreFr: "Module 1 — Démystifier l'IA générative et faire ses premiers pas",
       steps: [
-        { titre: "L'IA générative expliquée simplement : ce qu'elle sait bien faire, où elle se trompe" },
-        { titre: "Démonstration en direct : premier échange avec ChatGPT, Claude et Gemini, commenté pas à pas" },
-        { titre: "Panorama des IA du marché (ChatGPT, Claude, Gemini, Copilot) et où on les retrouve déjà" },
-        { titre: "Les erreurs à ne pas faire : hallucinations, excès de confiance, fuite de données" },
-        { titre: "Ce qu'on peut — et ne doit jamais — confier à une IA (données clients, RH, secrets d'affaires)" },
+        {
+          titre:
+            "L'IA générative expliquée simplement : ce qu'elle sait bien faire, où elle se trompe",
+        },
+        {
+          titre:
+            "Démonstration en direct : premier échange avec ChatGPT, Claude et Gemini, commenté pas à pas",
+        },
+        {
+          titre:
+            "Panorama des IA du marché (ChatGPT, Claude, Gemini, Copilot) et où on les retrouve déjà",
+        },
+        {
+          titre:
+            "Les erreurs à ne pas faire : hallucinations, excès de confiance, fuite de données",
+        },
+        {
+          titre:
+            "Ce qu'on peut — et ne doit jamais — confier à une IA (données clients, RH, secrets d'affaires)",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Charte IA entreprise + guide des bonnes pratiques et de sécurité, en langage simple" },
+        {
+          temps: "Livrable",
+          titre:
+            "Charte IA entreprise + guide des bonnes pratiques et de sécurité, en langage simple",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Bien s'exprimer face à l'IA : la méthode AXION",
       steps: [
         { titre: "La méthode AXION en 5 leviers : Acteur, conteXte, Intention, Output, Normes" },
-        { titre: "Passer d'une demande vague à un prompt clair : démonstration progressive sur cas réels" },
-        { titre: "Astuces sans complexité : donner un exemple, demander à l'IA d'expliquer son raisonnement, de se relire" },
-        { titre: "Exercice collectif : chacun formule un prompt AXION sur un cas de son métier, affiné en groupe" },
+        {
+          titre:
+            "Passer d'une demande vague à un prompt clair : démonstration progressive sur cas réels",
+        },
+        {
+          titre:
+            "Astuces sans complexité : donner un exemple, demander à l'IA d'expliquer son raisonnement, de se relire",
+        },
+        {
+          titre:
+            "Exercice collectif : chacun formule un prompt AXION sur un cas de son métier, affiné en groupe",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Bibliothèque de plus de 500 prompts AXION classés par métier + fiche mémo de la méthode" },
+        {
+          temps: "Livrable",
+          titre:
+            "Bibliothèque de plus de 500 prompts AXION classés par métier + fiche mémo de la méthode",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Créer son premier assistant IA personnalisé",
       steps: [
-        { titre: "Un assistant IA, c'est quoi : des instructions en français + des documents de référence, aucun code" },
+        {
+          titre:
+            "Un assistant IA, c'est quoi : des instructions en français + des documents de référence, aucun code",
+        },
         { titre: "Découverte guidée de Claude Projects, des Gemini Gems et des Custom GPTs" },
-        { titre: "Rédiger des instructions pour spécialiser un assistant sur une tâche récurrente" },
-        { titre: "Exercice guidé : chacun crée son assistant sur Claude Projects à partir d'un cas de son métier" },
+        {
+          titre: "Rédiger des instructions pour spécialiser un assistant sur une tâche récurrente",
+        },
+        {
+          titre:
+            "Exercice guidé : chacun crée son assistant sur Claude Projects à partir d'un cas de son métier",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Plus de 20 kits assistants IA clés-en-main (versions ChatGPT, Claude et Gemini) classés par métier" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA clés-en-main (versions ChatGPT, Claude et Gemini) classés par métier",
+        },
       ],
     },
     {
       titreFr: "Module 4 — Identifier ses cas d'usage et prendre son envol",
       steps: [
-        { titre: "Une méthode simple pour repérer, dans son quotidien, les tâches que l'IA peut déjà alléger" },
-        { titre: "Les cas d'usage les plus faciles à démarrer par métier : commercial, RH, marketing, support, finance" },
-        { titre: "Chacun repart avec sa feuille de route : 3 à 5 actions concrètes à tester la semaine suivante" },
+        {
+          titre:
+            "Une méthode simple pour repérer, dans son quotidien, les tâches que l'IA peut déjà alléger",
+        },
+        {
+          titre:
+            "Les cas d'usage les plus faciles à démarrer par métier : commercial, RH, marketing, support, finance",
+        },
+        {
+          titre:
+            "Chacun repart avec sa feuille de route : 3 à 5 actions concrètes à tester la semaine suivante",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Guide des meilleurs cas d'usage IA pour débutants + prompt « auditeur IA » + trame de roadmap" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide des meilleurs cas d'usage IA pour débutants + prompt « auditeur IA » + trame de roadmap",
+        },
       ],
     },
   ],
@@ -206,122 +263,203 @@ const BIEN_DEMARRER_4H: FormationV2 = {
 };
 
 const BIEN_DEMARRER_JOURNEE_7H: FormationV2 = {
-  id: 'bien-demarrer-avec-l-ia-journee-7h',
-  slugFr: 'bien-demarrer-avec-l-ia-journee-7h',
-  slugEn: 'getting-started-with-ai-full-day-7h',
+  id: "bien-demarrer-avec-l-ia-journee-7h",
+  slugFr: "bien-demarrer-avec-l-ia-journee-7h",
+  slugEn: "getting-started-with-ai-full-day-7h",
   numero: 2,
-  gamme: 'ia-standard',
-  duree: '1j',
+  gamme: "ia-standard",
+  duree: "1j",
   surDevis: true,
-  titreFr: 'Bien démarrer avec l\'IA — journée complète',
-  accrocheFr: 'L\'IA sans le stress — ChatGPT, Claude & Gemini, de la découverte à la mise en pratique, en une journée',
-  h1Fr: 'Formation IA pour bien démarrer en entreprise (journée complète, 7 heures)',
-  metaTitleFr: 'Formation IA débutant en entreprise — 1 jour | Axion-IA',
+  titreFr: "Bien démarrer avec l'IA — journée complète",
+  accrocheFr:
+    "L'IA sans le stress — ChatGPT, Claude & Gemini, de la découverte à la mise en pratique, en une journée",
+  h1Fr: "Formation IA pour bien démarrer en entreprise (journée complète, 7 heures)",
+  metaTitleFr: "Formation IA débutant en entreprise — 1 jour | Axion-IA",
   metaDescriptionFr:
-    'Formation IA d\'initiation sur une journée, sans prérequis : démystifier l\'IA, rédiger un prompt efficace avec la méthode AXION, créer son assistant IA.',
+    "Formation IA d'initiation sur une journée, sans prérequis : démystifier l'IA, rédiger un prompt efficace avec la méthode AXION, créer son assistant IA.",
   termesSemantiquesFr: [
-    'formation IA débutant',
-    'initiation intelligence artificielle',
-    'méthode AXION',
-    'assistant IA personnalisé',
-    'ChatGPT Claude Gemini',
-    'prompt efficace',
-    'cas d\'usage IA par métier',
-    'feuille de route IA',
+    "formation IA débutant",
+    "initiation intelligence artificielle",
+    "méthode AXION",
+    "assistant IA personnalisé",
+    "ChatGPT Claude Gemini",
+    "prompt efficace",
+    "cas d'usage IA par métier",
+    "feuille de route IA",
   ],
   publicViseFr:
-    'Formation d\'initiation destinée aux débutants complets ainsi qu\'aux collaborateurs qui utilisent déjà l\'IA générative de façon occasionnelle, sans méthode ni cadre structuré. Son objectif premier est de démystifier l\'IA avant d\'en faire un outil du quotidien : lever les blocages et les idées reçues, pour que chacun ose s\'en servir sans crainte.',
+    "Formation d'initiation destinée aux débutants complets ainsi qu'aux collaborateurs qui utilisent déjà l'IA générative de façon occasionnelle, sans méthode ni cadre structuré. Son objectif premier est de démystifier l'IA avant d'en faire un outil du quotidien : lever les blocages et les idées reçues, pour que chacun ose s'en servir sans crainte.",
   prerequisFr:
-    'Aucun prérequis technique ni expérience de l\'IA. La formation est essentiellement démonstrative. Pour les exercices pratiques des modules 2 et 3, chaque participant doit disposer d\'un ordinateur et d\'un compte Claude gratuit (création en quelques clics, sans carte bancaire) ; des comptes Gemini et ChatGPT gratuits sont un plus mais ne sont pas indispensables.',
+    "Aucun prérequis technique ni expérience de l'IA. La formation est essentiellement démonstrative. Pour les exercices pratiques des modules 2 et 3, chaque participant doit disposer d'un ordinateur et d'un compte Claude gratuit (création en quelques clics, sans carte bancaire) ; des comptes Gemini et ChatGPT gratuits sont un plus mais ne sont pas indispensables.",
   objectifsFr: [
-    'Démystifier l\'IA générative : comprendre simplement ce qu\'elle sait bien faire et où elle se trompe, sans jargon technique',
-    'Se sentir légitime et en confiance face à l\'IA, sans craindre de « mal faire » ou de passer pour un débutant',
-    'Rédiger et tester un prompt efficace grâce à la méthode AXION, sur son propre cas d\'usage',
-    'Savoir ce que permettent ChatGPT, Claude et Gemini au quotidien, et quand utiliser chacun',
-    'Créer son propre assistant IA personnalisé sur Claude, et savoir le décliner sur un second outil',
-    'Identifier des cas d\'usage concrets pour son métier et repartir avec une feuille de route à 3 mois',
+    "Démystifier l'IA générative : comprendre simplement ce qu'elle sait bien faire et où elle se trompe, sans jargon technique",
+    "Se sentir légitime et en confiance face à l'IA, sans craindre de « mal faire » ou de passer pour un débutant",
+    "Rédiger et tester un prompt efficace grâce à la méthode AXION, sur son propre cas d'usage",
+    "Savoir ce que permettent ChatGPT, Claude et Gemini au quotidien, et quand utiliser chacun",
+    "Créer son propre assistant IA personnalisé sur Claude, et savoir le décliner sur un second outil",
+    "Identifier des cas d'usage concrets pour son métier et repartir avec une feuille de route à 3 mois",
   ],
   beneficeDirigeantFr:
-    'En une journée, toute l\'équipe passe de la découverte à la pratique : chacun démystifie l\'IA, crée son propre assistant et repart avec une feuille de route à 3 mois — sans prérequis ni personnalisation en amont.',
+    "En une journée, toute l'équipe passe de la découverte à la pratique : chacun démystifie l'IA, crée son propre assistant et repart avec une feuille de route à 3 mois — sans prérequis ni personnalisation en amont.",
   equationTempsFr:
-    '1 journée d\'initiation → chacun ose enfin utiliser l\'IA, crée son premier assistant pendant la session et repart avec 3 à 5 actions concrètes à tester dès la semaine suivante.',
+    "1 journée d'initiation → chacun ose enfin utiliser l'IA, crée son premier assistant pendant la session et repart avec 3 à 5 actions concrètes à tester dès la semaine suivante.",
   programme: [
     {
-      titreFr: 'Module 1 — Démystifier l\'IA générative et faire ses premiers pas',
+      titreFr: "Module 1 — Démystifier l'IA générative et faire ses premiers pas",
       steps: [
-        { titre: 'L\'IA générative expliquée simplement, sans jargon technique : ce qu\'elle sait bien faire et où elle se trompe' },
-        { titre: 'Démonstration en direct : un premier échange avec ChatGPT, Claude et Gemini, commenté pas à pas par le formateur' },
-        { titre: 'Panorama des IA génératives du marché (ChatGPT, Claude, Gemini, Copilot) : ce qui les distingue et où on les retrouve déjà (Microsoft 365, Google Workspace…)' },
-        { titre: 'Pourquoi cette formation s\'appuie sur ChatGPT, Claude et Gemini : les trois outils les plus utilisés en entreprise aujourd\'hui' },
-        { titre: 'Les erreurs à ne pas faire (hallucinations, excès de confiance, fuite de données), expliquées avec des exemples concrets' },
-        { titre: 'Ce qu\'on peut — et ne doit jamais — soumettre à un assistant IA (données clients, données RH, secrets d\'affaires), et pourquoi (RGPD, AI Act)' },
-        { titre: 'QCM de validation des acquis' },
-        { temps: 'Livrable', titre: 'Charte IA entreprise + guide des bonnes pratiques et de sécurité, en langage simple' },
+        {
+          titre:
+            "L'IA générative expliquée simplement, sans jargon technique : ce qu'elle sait bien faire et où elle se trompe",
+        },
+        {
+          titre:
+            "Démonstration en direct : un premier échange avec ChatGPT, Claude et Gemini, commenté pas à pas par le formateur",
+        },
+        {
+          titre:
+            "Panorama des IA génératives du marché (ChatGPT, Claude, Gemini, Copilot) : ce qui les distingue et où on les retrouve déjà (Microsoft 365, Google Workspace…)",
+        },
+        {
+          titre:
+            "Pourquoi cette formation s'appuie sur ChatGPT, Claude et Gemini : les trois outils les plus utilisés en entreprise aujourd'hui",
+        },
+        {
+          titre:
+            "Les erreurs à ne pas faire (hallucinations, excès de confiance, fuite de données), expliquées avec des exemples concrets",
+        },
+        {
+          titre:
+            "Ce qu'on peut — et ne doit jamais — soumettre à un assistant IA (données clients, données RH, secrets d'affaires), et pourquoi (RGPD, AI Act)",
+        },
+        { titre: "QCM de validation des acquis" },
+        {
+          temps: "Livrable",
+          titre:
+            "Charte IA entreprise + guide des bonnes pratiques et de sécurité, en langage simple",
+        },
       ],
     },
     {
-      titreFr: 'Module 2 — Bien s\'exprimer face à l\'IA : la méthode AXION',
+      titreFr: "Module 2 — Bien s'exprimer face à l'IA : la méthode AXION",
       steps: [
-        { titre: 'La méthode AXION en 5 mots simples : Acteur, conteXte, Intention, Output, Normes' },
-        { titre: 'Passer d\'une demande vague à un prompt clair : démonstration progressive à partir de cas proposés par les participants' },
-        { titre: 'Quelques astuces pour aller plus loin sans complexité : donner un exemple à l\'IA, lui demander d\'expliquer son raisonnement, lui demander de se relire' },
-        { titre: 'Démonstration comparative : un même prompt AXION exécuté en direct sur ChatGPT, Claude et Gemini, pour observer les différences' },
-        { titre: 'Exercice oral collectif : chacun formule à voix haute un prompt AXION sur un cas réel de son métier, le groupe l\'affine ensemble' },
-        { titre: 'Exercice pratique individuel : chacun rédige et teste son propre prompt AXION sur Claude, sur un cas réel de son quotidien professionnel' },
-        { titre: 'QCM de validation des acquis' },
-        { temps: 'Livrable', titre: 'Bibliothèque de plus de 500 prompts AXION classés par métier, compatibles ChatGPT, Claude et Gemini + fiche mémo de la méthode' },
+        {
+          titre: "La méthode AXION en 5 mots simples : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Passer d'une demande vague à un prompt clair : démonstration progressive à partir de cas proposés par les participants",
+        },
+        {
+          titre:
+            "Quelques astuces pour aller plus loin sans complexité : donner un exemple à l'IA, lui demander d'expliquer son raisonnement, lui demander de se relire",
+        },
+        {
+          titre:
+            "Démonstration comparative : un même prompt AXION exécuté en direct sur ChatGPT, Claude et Gemini, pour observer les différences",
+        },
+        {
+          titre:
+            "Exercice oral collectif : chacun formule à voix haute un prompt AXION sur un cas réel de son métier, le groupe l'affine ensemble",
+        },
+        {
+          titre:
+            "Exercice pratique individuel : chacun rédige et teste son propre prompt AXION sur Claude, sur un cas réel de son quotidien professionnel",
+        },
+        { titre: "QCM de validation des acquis" },
+        {
+          temps: "Livrable",
+          titre:
+            "Bibliothèque de plus de 500 prompts AXION classés par métier, compatibles ChatGPT, Claude et Gemini + fiche mémo de la méthode",
+        },
       ],
     },
     {
-      titreFr: 'Module 3 — Créer son premier assistant IA personnalisé',
+      titreFr: "Module 3 — Créer son premier assistant IA personnalisé",
       steps: [
-        { titre: 'Un assistant IA, c\'est quoi concrètement ? Des instructions en français + des documents de référence, aucun code requis' },
-        { titre: 'Découverte guidée de Claude Projects, des Gemini Gems et des Custom GPTs (ChatGPT), trois « versions » du même principe' },
-        { titre: 'Comment rédiger des instructions pour spécialiser un assistant sur une tâche récurrente' },
-        { titre: 'Exercice pratique guidé : chacun crée son propre assistant sur Claude Projects à partir d\'un cas d\'usage de son métier — le formateur guide tout le groupe simultanément, étape par étape' },
-        { titre: 'Réplication guidée : transposer en quelques minutes le même assistant sur Gemini ou ChatGPT, au choix, pour vérifier la portabilité de la méthode' },
-        { titre: 'QCM de validation des acquis' },
-        { temps: 'Livrable', titre: 'Plus de 20 kits assistants IA clés-en-main, prêts à copier-coller (versions ChatGPT, Claude et Gemini) classés par métier' },
+        {
+          titre:
+            "Un assistant IA, c'est quoi concrètement ? Des instructions en français + des documents de référence, aucun code requis",
+        },
+        {
+          titre:
+            "Découverte guidée de Claude Projects, des Gemini Gems et des Custom GPTs (ChatGPT), trois « versions » du même principe",
+        },
+        {
+          titre:
+            "Comment rédiger des instructions pour spécialiser un assistant sur une tâche récurrente",
+        },
+        {
+          titre:
+            "Exercice pratique guidé : chacun crée son propre assistant sur Claude Projects à partir d'un cas d'usage de son métier — le formateur guide tout le groupe simultanément, étape par étape",
+        },
+        {
+          titre:
+            "Réplication guidée : transposer en quelques minutes le même assistant sur Gemini ou ChatGPT, au choix, pour vérifier la portabilité de la méthode",
+        },
+        { titre: "QCM de validation des acquis" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA clés-en-main, prêts à copier-coller (versions ChatGPT, Claude et Gemini) classés par métier",
+        },
       ],
     },
     {
-      titreFr: 'Module 4 — Explorer les cas d\'usage par métier',
+      titreFr: "Module 4 — Explorer les cas d'usage par métier",
       steps: [
-        { titre: 'Panorama des cas d\'usage les plus faciles à démarrer par fonction : commercial, RH, marketing, support client, finance' },
-        { titre: 'Travail collectif en petits groupes : identifier 3 tâches automatisables dans son propre service' },
-        { titre: 'Restitution et enrichissement collectif, commenté par le formateur' },
-        { titre: 'Les cas d\'usage à éviter ou à sécuriser davantage, selon la sensibilité des données concernées' },
-        { titre: 'QCM de validation des acquis' },
-        { temps: 'Livrable', titre: 'Guide des cas d\'usage IA par métier, pour débutants' },
+        {
+          titre:
+            "Panorama des cas d'usage les plus faciles à démarrer par fonction : commercial, RH, marketing, support client, finance",
+        },
+        {
+          titre:
+            "Travail collectif en petits groupes : identifier 3 tâches automatisables dans son propre service",
+        },
+        { titre: "Restitution et enrichissement collectif, commenté par le formateur" },
+        {
+          titre:
+            "Les cas d'usage à éviter ou à sécuriser davantage, selon la sensibilité des données concernées",
+        },
+        { titre: "QCM de validation des acquis" },
+        { temps: "Livrable", titre: "Guide des cas d'usage IA par métier, pour débutants" },
       ],
     },
     {
-      titreFr: 'Module 5 — Construire sa feuille de route et conclure',
+      titreFr: "Module 5 — Construire sa feuille de route et conclure",
       steps: [
-        { titre: 'Une méthode simple pour prioriser ses premiers cas d\'usage' },
-        { titre: 'Chacun construit sa propre feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante' },
-        { titre: 'Étude de cas commentée : le formateur illustre la méthode sur un dernier exemple proposé par le groupe' },
-        { titre: 'Bilan de la journée et temps de questions ouvertes' },
-        { titre: 'QCM de validation des acquis' },
-        { temps: 'Livrable', titre: 'Trame de feuille de route personnalisable + prompt « auditeur IA »' },
+        { titre: "Une méthode simple pour prioriser ses premiers cas d'usage" },
+        {
+          titre:
+            "Chacun construit sa propre feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante",
+        },
+        {
+          titre:
+            "Étude de cas commentée : le formateur illustre la méthode sur un dernier exemple proposé par le groupe",
+        },
+        { titre: "Bilan de la journée et temps de questions ouvertes" },
+        { titre: "QCM de validation des acquis" },
+        {
+          temps: "Livrable",
+          titre: "Trame de feuille de route personnalisable + prompt « auditeur IA »",
+        },
       ],
     },
   ],
   faqs: [
     {
-      question: 'Faut-il déjà connaître l\'IA pour suivre cette journée ?',
+      question: "Faut-il déjà connaître l'IA pour suivre cette journée ?",
       reponse:
-        'Non, aucun prérequis. La formation est pensée pour des débutants complets comme pour ceux qui utilisent déjà l\'IA de façon occasionnelle. Chaque notion est expliquée avant d\'être illustrée, sans jargon technique, et le rythme reste progressif toute la journée.',
+        "Non, aucun prérequis. La formation est pensée pour des débutants complets comme pour ceux qui utilisent déjà l'IA de façon occasionnelle. Chaque notion est expliquée avant d'être illustrée, sans jargon technique, et le rythme reste progressif toute la journée.",
     },
     {
-      question: 'Quelle différence avec le format court de 4 heures ?',
+      question: "Quelle différence avec le format court de 4 heures ?",
       reponse:
-        'La journée complète (7 h) laisse le temps de pratiquer réellement : chacun rédige et teste ses propres prompts AXION, crée son assistant IA pendant la session, explore les cas d\'usage de son métier en petits groupes et repart avec une feuille de route à 3 mois. Le format 4 h reste, lui, essentiellement démonstratif.',
+        "La journée complète (7 h) laisse le temps de pratiquer réellement : chacun rédige et teste ses propres prompts AXION, crée son assistant IA pendant la session, explore les cas d'usage de son métier en petits groupes et repart avec une feuille de route à 3 mois. Le format 4 h reste, lui, essentiellement démonstratif.",
     },
     {
-      question: 'La formation peut-elle se faire à distance ?',
+      question: "La formation peut-elle se faire à distance ?",
       reponse:
-        'Oui, au choix : dans vos locaux ou entièrement à distance via Microsoft Teams, avec exactement le même contenu et le même niveau d\'interactivité. Les démonstrations se font en partage d\'écran et les exercices pratiques fonctionnent à l\'identique, chacun sur son propre poste.',
+        "Oui, au choix : dans vos locaux ou entièrement à distance via Microsoft Teams, avec exactement le même contenu et le même niveau d'interactivité. Les démonstrations se font en partage d'écran et les exercices pratiques fonctionnent à l'identique, chacun sur son propre poste.",
     },
   ],
 };
@@ -371,37 +509,86 @@ const PROMPTS_AVANCES_ASSISTANTS_4H: FormationV2 = {
     {
       titreFr: "Module 1 — Maîtriser le prompt-engineering avancé",
       steps: [
-        { titre: "Rappel express de la méthode AXION et de ses 5 leviers : Acteur, conteXte, Intention, Output, Normes" },
-        { titre: "Techniques avancées expliquées simplement : raisonnement étape par étape, exemples calibrants, auto-amélioration itérative" },
-        { titre: "Créer son master prompt : un prompt qui génère lui-même des prompts experts, adaptés à chaque situation" },
-        { titre: "Visual prompt : générer des visuels professionnels et photoréalistes avec les bonnes techniques de description" },
-        { titre: "Fiabiliser ses réponses et réduire les hallucinations grâce à la recherche augmentée" },
-        { titre: "Exercices pratiques sur ChatGPT, Claude et Gemini, sur des cas réels apportés par les participants" },
-        { titre: "Challenge en petits groupes : résoudre un cas d'usage complet en autonomie, restitution devant le groupe" },
+        {
+          titre:
+            "Rappel express de la méthode AXION et de ses 5 leviers : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Techniques avancées expliquées simplement : raisonnement étape par étape, exemples calibrants, auto-amélioration itérative",
+        },
+        {
+          titre:
+            "Créer son master prompt : un prompt qui génère lui-même des prompts experts, adaptés à chaque situation",
+        },
+        {
+          titre:
+            "Visual prompt : générer des visuels professionnels et photoréalistes avec les bonnes techniques de description",
+        },
+        {
+          titre:
+            "Fiabiliser ses réponses et réduire les hallucinations grâce à la recherche augmentée",
+        },
+        {
+          titre:
+            "Exercices pratiques sur ChatGPT, Claude et Gemini, sur des cas réels apportés par les participants",
+        },
+        {
+          titre:
+            "Challenge en petits groupes : résoudre un cas d'usage complet en autonomie, restitution devant le groupe",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Bibliothèque de plus de 500 prompts avancés classés par métier + générateur de prompts + guide du visual prompt" },
+        {
+          temps: "Livrable",
+          titre:
+            "Bibliothèque de plus de 500 prompts avancés classés par métier + générateur de prompts + guide du visual prompt",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Créer et déployer ses assistants IA personnalisés",
       steps: [
-        { titre: "Architecture d'un assistant IA : instructions + base de connaissances (rappel et approfondissement)" },
-        { titre: "Rédiger des instructions avancées pour spécialiser un assistant sur des cas complexes" },
-        { titre: "Atelier pratique guidé : créer un assistant avec base de connaissances sur Claude Projects, le formateur guide tout le groupe simultanément" },
+        {
+          titre:
+            "Architecture d'un assistant IA : instructions + base de connaissances (rappel et approfondissement)",
+        },
+        {
+          titre:
+            "Rédiger des instructions avancées pour spécialiser un assistant sur des cas complexes",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : créer un assistant avec base de connaissances sur Claude Projects, le formateur guide tout le groupe simultanément",
+        },
         { titre: "Partager un assistant avec son équipe et le faire évoluer dans le temps" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Plus de 20 kits assistants IA clés-en-main classés par métier" },
+        {
+          temps: "Livrable",
+          titre: "Plus de 20 kits assistants IA clés-en-main classés par métier",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Déléguer ses tâches avec Claude Cowork",
       steps: [
-        { titre: "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète" },
-        { titre: "Cas d'usage à fort potentiel pour gagner du temps au quotidien : tri de fichiers, synthèse de documents, rapports récurrents" },
-        { titre: "Démonstration commentée « le lundi matin après les vacances » : Cowork range un dossier en désordre et résume une pile de documents en une note claire" },
+        {
+          titre:
+            "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète",
+        },
+        {
+          titre:
+            "Cas d'usage à fort potentiel pour gagner du temps au quotidien : tri de fichiers, synthèse de documents, rapports récurrents",
+        },
+        {
+          titre:
+            "Démonstration commentée « le lundi matin après les vacances » : Cowork range un dossier en désordre et résume une pile de documents en une note claire",
+        },
         { titre: "Construire sa feuille de route pour la suite" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide Claude Cowork + trame de feuille de route personnalisable" },
+        {
+          temps: "Livrable",
+          titre: "Guide Claude Cowork + trame de feuille de route personnalisable",
+        },
       ],
     },
   ],
@@ -425,115 +612,177 @@ const PROMPTS_AVANCES_ASSISTANTS_4H: FormationV2 = {
 };
 
 const GAGNER_DU_TEMPS_7H: FormationV2 = {
-  id: 'gagner-du-temps-au-quotidien-avec-l-ia-7h',
-  slugFr: 'gagner-du-temps-au-quotidien-avec-l-ia-7h',
-  slugEn: 'save-time-daily-with-ai-7h',
+  id: "gagner-du-temps-au-quotidien-avec-l-ia-7h",
+  slugFr: "gagner-du-temps-au-quotidien-avec-l-ia-7h",
+  slugEn: "save-time-daily-with-ai-7h",
   numero: 4,
-  gamme: 'ia-standard',
-  duree: '1j',
+  gamme: "ia-standard",
+  duree: "1j",
   surDevis: true,
-  titreFr: 'Gagner du temps au quotidien avec l\'IA',
-  accrocheFr: 'L\'IA sans le stress — passer d\'un usage basique à un usage avancé avec ChatGPT, Claude & Gemini, en une journée',
-  h1Fr: 'Formation IA pour gagner du temps au quotidien (1 jour)',
-  metaTitleFr: 'Formation IA productivité en entreprise — 1 jour | Axion-IA',
+  titreFr: "Gagner du temps au quotidien avec l'IA",
+  accrocheFr:
+    "L'IA sans le stress — passer d'un usage basique à un usage avancé avec ChatGPT, Claude & Gemini, en une journée",
+  h1Fr: "Formation IA pour gagner du temps au quotidien (1 jour)",
+  metaTitleFr: "Formation IA productivité en entreprise — 1 jour | Axion-IA",
   metaDescriptionFr:
-    'Formation IA d\'une journée pour passer d\'un usage basique à avancé : prompts experts avec la méthode AXION, assistants IA avec base de connaissances, agent.',
+    "Formation IA d'une journée pour passer d'un usage basique à avancé : prompts experts avec la méthode AXION, assistants IA avec base de connaissances, agent.",
   termesSemantiquesFr: [
-    'formation IA productivité',
-    'prompts avancés',
-    'méthode AXION',
-    'assistant IA base de connaissances',
-    'agent IA Claude Cowork',
-    'gagner du temps IA entreprise',
-    'ChatGPT Claude Gemini',
+    "formation IA productivité",
+    "prompts avancés",
+    "méthode AXION",
+    "assistant IA base de connaissances",
+    "agent IA Claude Cowork",
+    "gagner du temps IA entreprise",
+    "ChatGPT Claude Gemini",
   ],
   publicViseFr:
-    'Collaborateurs ayant déjà une première pratique de l\'IA générative — ayant suivi notre formation débutant, ou utilisant déjà occasionnellement ChatGPT, Claude ou Gemini — et souhaitant passer d\'un usage basique à un usage avancé pour gagner du temps sur leurs tâches quotidiennes.',
+    "Collaborateurs ayant déjà une première pratique de l'IA générative — ayant suivi notre formation débutant, ou utilisant déjà occasionnellement ChatGPT, Claude ou Gemini — et souhaitant passer d'un usage basique à un usage avancé pour gagner du temps sur leurs tâches quotidiennes.",
   prerequisFr:
-    'Une première utilisation de l\'IA générative est nécessaire (ChatGPT, Claude ou Gemini) : cette formation ne s\'adresse pas à des débutants complets. Disposer d\'un ordinateur et d\'un compte Claude gratuit pour les exercices pratiques.',
+    "Une première utilisation de l'IA générative est nécessaire (ChatGPT, Claude ou Gemini) : cette formation ne s'adresse pas à des débutants complets. Disposer d'un ordinateur et d'un compte Claude gratuit pour les exercices pratiques.",
   objectifsFr: [
-    'Mobiliser des techniques de prompt avancées, au-delà des bases, pour obtenir des résultats plus précis et plus fiables',
-    'Créer un assistant IA avancé, avec base de connaissances, sur plusieurs outils',
-    'Comprendre comment déléguer une tâche complexe à un agent IA (Claude Cowork) pour aller au-delà du prompt ponctuel',
-    'Repérer ses tâches à plus fort potentiel de gain de temps et les prioriser',
-    'Repartir avec une feuille de route de déploiement IA orientée productivité',
+    "Mobiliser des techniques de prompt avancées, au-delà des bases, pour obtenir des résultats plus précis et plus fiables",
+    "Créer un assistant IA avancé, avec base de connaissances, sur plusieurs outils",
+    "Comprendre comment déléguer une tâche complexe à un agent IA (Claude Cowork) pour aller au-delà du prompt ponctuel",
+    "Repérer ses tâches à plus fort potentiel de gain de temps et les prioriser",
+    "Repartir avec une feuille de route de déploiement IA orientée productivité",
   ],
   beneficeDirigeantFr:
-    'En une journée, l\'équipe passe d\'un usage basique à un usage avancé de l\'IA et repart avec une feuille de route de productivité — prompts experts, assistants avec base de connaissances et délégation à un agent, sans personnalisation en amont.',
+    "En une journée, l'équipe passe d'un usage basique à un usage avancé de l'IA et repart avec une feuille de route de productivité — prompts experts, assistants avec base de connaissances et délégation à un agent, sans personnalisation en amont.",
   equationTempsFr:
-    '1 jour (7 h) → chacun industrialise ses usages IA (prompts avancés, assistants, agent Cowork) et repart avec 3 cas d\'usage à fort potentiel priorisés et une roadmap à tester dès la semaine suivante.',
+    "1 jour (7 h) → chacun industrialise ses usages IA (prompts avancés, assistants, agent Cowork) et repart avec 3 cas d'usage à fort potentiel priorisés et une roadmap à tester dès la semaine suivante.",
   programme: [
     {
-      titreFr: 'Module 1 — Aller au-delà des bases',
+      titreFr: "Module 1 — Aller au-delà des bases",
       steps: [
-        { titre: 'Rappel express : principes de fonctionnement de l\'IA générative, ce qu\'elle fait bien, où elle se trompe encore' },
-        { titre: 'Pourquoi la plupart des entreprises restent bloquées à un usage basique de l\'IA, et comment en sortir' },
-        { titre: 'Sécuriser ses usages avancés : RGPD, IA Act, ce qu\'on ne doit jamais soumettre à une IA' },
-        { titre: 'Panorama des usages avancés accessibles dès aujourd\'hui : génération d\'images, présentations, recherche augmentée' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Charte IA entreprise + guide des bonnes pratiques et de sécurité' },
+        {
+          titre:
+            "Rappel express : principes de fonctionnement de l'IA générative, ce qu'elle fait bien, où elle se trompe encore",
+        },
+        {
+          titre:
+            "Pourquoi la plupart des entreprises restent bloquées à un usage basique de l'IA, et comment en sortir",
+        },
+        {
+          titre:
+            "Sécuriser ses usages avancés : RGPD, IA Act, ce qu'on ne doit jamais soumettre à une IA",
+        },
+        {
+          titre:
+            "Panorama des usages avancés accessibles dès aujourd'hui : génération d'images, présentations, recherche augmentée",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre: "Charte IA entreprise + guide des bonnes pratiques et de sécurité",
+        },
       ],
     },
     {
-      titreFr: 'Module 2 — Prompts avancés : aller plus loin avec la méthode AXION',
+      titreFr: "Module 2 — Prompts avancés : aller plus loin avec la méthode AXION",
       steps: [
-        { titre: 'Rappel express de la méthode AXION : Acteur, conteXte, Intention, Output, Normes' },
-        { titre: 'Techniques avancées expliquées simplement : raisonnement étape par étape, exemples calibrants, auto-amélioration itérative, recherche augmentée' },
-        { titre: 'Exercices pratiques sur ChatGPT, Claude et Gemini, sur des cas réels apportés par les participants' },
-        { titre: 'Challenge en petits groupes : résoudre un cas d\'usage complet en autonomie, restitution devant le groupe' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Bibliothèque de plus de 500 prompts avancés classés par métier + générateur de prompts' },
+        {
+          titre: "Rappel express de la méthode AXION : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Techniques avancées expliquées simplement : raisonnement étape par étape, exemples calibrants, auto-amélioration itérative, recherche augmentée",
+        },
+        {
+          titre:
+            "Exercices pratiques sur ChatGPT, Claude et Gemini, sur des cas réels apportés par les participants",
+        },
+        {
+          titre:
+            "Challenge en petits groupes : résoudre un cas d'usage complet en autonomie, restitution devant le groupe",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Bibliothèque de plus de 500 prompts avancés classés par métier + générateur de prompts",
+        },
       ],
     },
     {
-      titreFr: 'Module 3 — Créer des assistants IA avancés et déléguer ses tâches',
+      titreFr: "Module 3 — Créer des assistants IA avancés et déléguer ses tâches",
       steps: [
-        { titre: 'Architecture d\'un assistant IA avancé : instructions + base de connaissances (rappel et approfondissement)' },
-        { titre: 'Exercice pratique guidé : créer un assistant avec base de connaissances sur Claude Projects, le formateur guidant tout le groupe simultanément' },
-        { titre: 'Quand un prompt ne suffit plus : découverte de Claude Cowork, l\'agent capable d\'exécuter des tâches complètes en autonomie (lecture de fichiers, connexion à Gmail, Drive, Slack via connecteurs)' },
-        { titre: 'Démonstration commentée « le lundi matin après les vacances » : Cowork range en direct un dossier « Téléchargements » en désordre, puis résume une pile de documents en une note claire' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Plus de 20 kits assistants IA clés-en-main classés par métier + jeu de fichiers de démonstration Cowork prêt à l\'emploi' },
+        {
+          titre:
+            "Architecture d'un assistant IA avancé : instructions + base de connaissances (rappel et approfondissement)",
+        },
+        {
+          titre:
+            "Exercice pratique guidé : créer un assistant avec base de connaissances sur Claude Projects, le formateur guidant tout le groupe simultanément",
+        },
+        {
+          titre:
+            "Quand un prompt ne suffit plus : découverte de Claude Cowork, l'agent capable d'exécuter des tâches complètes en autonomie (lecture de fichiers, connexion à Gmail, Drive, Slack via connecteurs)",
+        },
+        {
+          titre:
+            "Démonstration commentée « le lundi matin après les vacances » : Cowork range en direct un dossier « Téléchargements » en désordre, puis résume une pile de documents en une note claire",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA clés-en-main classés par métier + jeu de fichiers de démonstration Cowork prêt à l'emploi",
+        },
       ],
     },
     {
-      titreFr: 'Module 4 — Identifier ses cas d\'usage à plus fort potentiel',
+      titreFr: "Module 4 — Identifier ses cas d'usage à plus fort potentiel",
       steps: [
-        { titre: 'Méthodologie pour repérer les tâches à plus fort potentiel de gain de temps' },
-        { titre: 'Les meilleurs cas d\'usage par métier, orientés productivité : commercial, RH, marketing, support client, finance' },
-        { titre: 'Travail collectif en petits groupes : chaque groupe identifie et priorise 3 cas d\'usage à fort potentiel dans son propre service' },
-        { titre: 'Restitution et enrichissement collectif, commenté par le formateur' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Guide des meilleurs cas d\'usage IA orientés productivité, classés par métier' },
+        { titre: "Méthodologie pour repérer les tâches à plus fort potentiel de gain de temps" },
+        {
+          titre:
+            "Les meilleurs cas d'usage par métier, orientés productivité : commercial, RH, marketing, support client, finance",
+        },
+        {
+          titre:
+            "Travail collectif en petits groupes : chaque groupe identifie et priorise 3 cas d'usage à fort potentiel dans son propre service",
+        },
+        { titre: "Restitution et enrichissement collectif, commenté par le formateur" },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre: "Guide des meilleurs cas d'usage IA orientés productivité, classés par métier",
+        },
       ],
     },
     {
-      titreFr: 'Module 5 — Construire sa feuille de route et conclure',
+      titreFr: "Module 5 — Construire sa feuille de route et conclure",
       steps: [
-        { titre: 'Une méthode simple pour prioriser et séquencer son déploiement IA' },
-        { titre: 'Chacun construit sa propre feuille de route : actions concrètes à tester dès la semaine suivante' },
-        { titre: 'Étude de cas commentée : le formateur illustre la méthode sur un dernier exemple proposé par le groupe' },
-        { titre: 'Bilan de la journée et temps de questions ouvertes' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Prompt « auditeur IA » + trame de roadmap personnalisable' },
+        { titre: "Une méthode simple pour prioriser et séquencer son déploiement IA" },
+        {
+          titre:
+            "Chacun construit sa propre feuille de route : actions concrètes à tester dès la semaine suivante",
+        },
+        {
+          titre:
+            "Étude de cas commentée : le formateur illustre la méthode sur un dernier exemple proposé par le groupe",
+        },
+        { titre: "Bilan de la journée et temps de questions ouvertes" },
+        { titre: "QCM de validation des acquis en fin de module" },
+        { temps: "Livrable", titre: "Prompt « auditeur IA » + trame de roadmap personnalisable" },
       ],
     },
   ],
   faqs: [
     {
-      question: 'Faut-il déjà savoir utiliser l\'IA pour suivre cette journée ?',
+      question: "Faut-il déjà savoir utiliser l'IA pour suivre cette journée ?",
       reponse:
-        'Oui. Cette formation ne s\'adresse pas aux débutants complets : une première pratique de ChatGPT, Claude ou Gemini est nécessaire. Elle fait passer d\'un usage basique à un usage avancé et orienté productivité.',
+        "Oui. Cette formation ne s'adresse pas aux débutants complets : une première pratique de ChatGPT, Claude ou Gemini est nécessaire. Elle fait passer d'un usage basique à un usage avancé et orienté productivité.",
     },
     {
-      question: 'Présentiel ou distanciel ?',
+      question: "Présentiel ou distanciel ?",
       reponse:
-        'Au choix : dans vos locaux, ou entièrement à distance via Microsoft Teams, avec exactement le même contenu et le même niveau d\'interactivité. Les exercices se font sur le poste de chaque participant dans les deux cas.',
+        "Au choix : dans vos locaux, ou entièrement à distance via Microsoft Teams, avec exactement le même contenu et le même niveau d'interactivité. Les exercices se font sur le poste de chaque participant dans les deux cas.",
     },
     {
-      question: 'Faut-il un compte Claude payant pour la démonstration Cowork ?',
+      question: "Faut-il un compte Claude payant pour la démonstration Cowork ?",
       reponse:
-        'Non. Un compte Claude gratuit suffit pour vos exercices. La démonstration de Claude Cowork (module 3) est réalisée par le formateur depuis son propre compte, Cowork nécessitant un plan payant : vous n\'avez rien à souscrire.',
+        "Non. Un compte Claude gratuit suffit pour vos exercices. La démonstration de Claude Cowork (module 3) est réalisée par le formateur depuis son propre compte, Cowork nécessitant un plan payant : vous n'avez rien à souscrire.",
     },
   ],
 };
@@ -547,7 +796,8 @@ const CLAUDE_PRISE_EN_MAIN_7H: FormationV2 = {
   duree: "1j",
   surDevis: true,
   titreFr: "Claude — Prise en main complète",
-  accrocheFr: "L\'IA sans le stress — faire de Claude un véritable outil de travail personnalisé, en une journée",
+  accrocheFr:
+    "L\'IA sans le stress — faire de Claude un véritable outil de travail personnalisé, en une journée",
   h1Fr: "Formation Claude en entreprise : prise en main complète (1 jour)",
   metaTitleFr: "Formation Claude en entreprise — 1 jour | Axion-IA",
   metaDescriptionFr:
@@ -580,24 +830,55 @@ const CLAUDE_PRISE_EN_MAIN_7H: FormationV2 = {
     {
       titreFr: "Module 1 — Maîtriser le prompt et les Artifacts dans Claude",
       steps: [
-        { titre: "Les spécificités de Claude : forces, limites, cas d\'usage où il fait la différence" },
-        { titre: "La méthode AXION appliquée à Claude (Acteur, conteXte, Intention, Output, Normes) et les techniques avancées de prompt" },
-        { titre: "Exploiter les Artifacts pour produire des documents structurés et des visualisations" },
-        { titre: "Exercices pratiques : rédaction, analyse, synthèse et création de contenus sur des cas réels" },
+        {
+          titre:
+            "Les spécificités de Claude : forces, limites, cas d\'usage où il fait la différence",
+        },
+        {
+          titre:
+            "La méthode AXION appliquée à Claude (Acteur, conteXte, Intention, Output, Normes) et les techniques avancées de prompt",
+        },
+        {
+          titre:
+            "Exploiter les Artifacts pour produire des documents structurés et des visualisations",
+        },
+        {
+          titre:
+            "Exercices pratiques : rédaction, analyse, synthèse et création de contenus sur des cas réels",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide du prompt Claude + bibliothèque de plus de 500 prompts AXION classés par métier" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt Claude + bibliothèque de plus de 500 prompts AXION classés par métier",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Paramétrer, sécuriser et personnaliser Claude",
       steps: [
-        { titre: "Créer et sécuriser son compte : paramètres de confidentialité, données et entraînement" },
+        {
+          titre:
+            "Créer et sécuriser son compte : paramètres de confidentialité, données et entraînement",
+        },
         { titre: "Paramétrer la mémoire, les préférences et les styles de réponse personnalisés" },
-        { titre: "Choisir le bon modèle Claude selon le cas d\'usage : rapidité, profondeur de raisonnement, coût" },
-        { titre: "Maîtriser les fonctionnalités clés : recherche web, analyse de documents, création de fichiers" },
-        { titre: "Atelier pratique guidé : chaque participant paramètre entièrement son compte Claude pour son métier" },
+        {
+          titre:
+            "Choisir le bon modèle Claude selon le cas d\'usage : rapidité, profondeur de raisonnement, coût",
+        },
+        {
+          titre:
+            "Maîtriser les fonctionnalités clés : recherche web, analyse de documents, création de fichiers",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant paramètre entièrement son compte Claude pour son métier",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide complet de paramétrage Claude en entreprise + charte IA interne" },
+        {
+          temps: "Livrable",
+          titre: "Guide complet de paramétrage Claude en entreprise + charte IA interne",
+        },
       ],
     },
     {
@@ -605,23 +886,46 @@ const CLAUDE_PRISE_EN_MAIN_7H: FormationV2 = {
       steps: [
         { titre: "Projects et Skills Claude : à quoi ça sert, quand utiliser l\'un ou l\'autre" },
         { titre: "Anatomie d\'une Skill performante : structure, instructions, exemples" },
-        { titre: "Atelier pratique guidé : chaque participant crée une Skill complète sur un cas récurrent de son métier" },
-        { titre: "Comprendre et activer les connecteurs pour relier Claude à ses outils métiers (Google Drive, Gmail, Calendar…)" },
-        { titre: "Atelier pratique : construire un projet Claude complet, avec Skills et connecteurs activés" },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée une Skill complète sur un cas récurrent de son métier",
+        },
+        {
+          titre:
+            "Comprendre et activer les connecteurs pour relier Claude à ses outils métiers (Google Drive, Gmail, Calendar…)",
+        },
+        {
+          titre:
+            "Atelier pratique : construire un projet Claude complet, avec Skills et connecteurs activés",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Pack de plus de 50 Skills Claude prêtes à l\'emploi + guide des connecteurs + la Skill créée par chaque participant" },
+        {
+          temps: "Livrable",
+          titre:
+            "Pack de plus de 50 Skills Claude prêtes à l\'emploi + guide des connecteurs + la Skill créée par chaque participant",
+        },
       ],
     },
     {
       titreFr: "Module 4 — Produire ses supports professionnels avec Claude",
       steps: [
         { titre: "Générer des documents, visuels et présentations directement avec Claude" },
-        { titre: "Appliquer sa charte graphique et garder une cohérence visuelle d\'un support à l\'autre" },
-        { titre: "Exercice pratique : chaque participant produit un support complet sur un cas réel de son métier" },
+        {
+          titre:
+            "Appliquer sa charte graphique et garder une cohérence visuelle d\'un support à l\'autre",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant produit un support complet sur un cas réel de son métier",
+        },
         { titre: "Décliner et finaliser ses supports pour une mise en production" },
         { titre: "Construire sa feuille de route Claude pour la suite, et bilan de la journée" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Tutoriel et pack de prompts dédiés à la création de supports + trame de feuille de route" },
+        {
+          temps: "Livrable",
+          titre:
+            "Tutoriel et pack de prompts dédiés à la création de supports + trame de feuille de route",
+        },
       ],
     },
   ],
@@ -688,24 +992,56 @@ const CLAUDE_MAITRISE_AVANCEE_2J: FormationV2 = {
     {
       titreFr: "Jour 1 · Module 1 — Maîtriser le prompt et les Artifacts dans Claude",
       steps: [
-        { titre: "Les spécificités de Claude : forces, limites, cas d'usage où il fait la différence" },
-        { titre: "La méthode AXION appliquée à Claude (Acteur, conteXte, Intention, Output, Normes) et les techniques avancées de prompt" },
-        { titre: "Exploiter les Artifacts pour produire des documents structurés et des visualisations" },
-        { titre: "Exercices pratiques : rédaction, analyse, synthèse et création de contenus sur des cas réels" },
+        {
+          titre:
+            "Les spécificités de Claude : forces, limites, cas d'usage où il fait la différence",
+        },
+        {
+          titre:
+            "La méthode AXION appliquée à Claude (Acteur, conteXte, Intention, Output, Normes) et les techniques avancées de prompt",
+        },
+        {
+          titre:
+            "Exploiter les Artifacts pour produire des documents structurés et des visualisations",
+        },
+        {
+          titre:
+            "Exercices pratiques : rédaction, analyse, synthèse et création de contenus sur des cas réels",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide du prompt Claude + bibliothèque de plus de 500 prompts AXION classés par métier" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt Claude + bibliothèque de plus de 500 prompts AXION classés par métier",
+        },
       ],
     },
     {
       titreFr: "Jour 1 · Module 2 — Paramétrer, sécuriser et personnaliser Claude",
       steps: [
-        { titre: "Créer et sécuriser son compte : paramètres de confidentialité, données et entraînement" },
+        {
+          titre:
+            "Créer et sécuriser son compte : paramètres de confidentialité, données et entraînement",
+        },
         { titre: "Paramétrer la mémoire, les préférences et les styles de réponse personnalisés" },
-        { titre: "Choisir le bon modèle Claude selon le cas d'usage : rapidité, profondeur de raisonnement, coût" },
-        { titre: "Sécuriser ses usages à l'échelle de l'équipe : RGPD, IA Act, gouvernance des données sensibles" },
-        { titre: "Atelier pratique guidé : chaque participant paramètre entièrement son compte Claude pour son métier" },
+        {
+          titre:
+            "Choisir le bon modèle Claude selon le cas d'usage : rapidité, profondeur de raisonnement, coût",
+        },
+        {
+          titre:
+            "Sécuriser ses usages à l'échelle de l'équipe : RGPD, IA Act, gouvernance des données sensibles",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant paramètre entièrement son compte Claude pour son métier",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide complet de paramétrage Claude + charte IA entreprise + guide de gouvernance" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide complet de paramétrage Claude + charte IA entreprise + guide de gouvernance",
+        },
       ],
     },
     {
@@ -713,58 +1049,125 @@ const CLAUDE_MAITRISE_AVANCEE_2J: FormationV2 = {
       steps: [
         { titre: "Projects et Skills Claude : à quoi ça sert, quand utiliser l'un ou l'autre" },
         { titre: "Anatomie d'une Skill performante : structure, instructions, exemples" },
-        { titre: "Atelier pratique guidé : chaque participant crée une Skill complète sur un cas récurrent de son métier" },
-        { titre: "Comprendre et activer les connecteurs pour relier Claude à ses outils métiers (Google Drive, Gmail, Calendar…)" },
-        { titre: "Atelier pratique approfondi : construire un projet Claude complet, avec Skills et connecteurs activés" },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée une Skill complète sur un cas récurrent de son métier",
+        },
+        {
+          titre:
+            "Comprendre et activer les connecteurs pour relier Claude à ses outils métiers (Google Drive, Gmail, Calendar…)",
+        },
+        {
+          titre:
+            "Atelier pratique approfondi : construire un projet Claude complet, avec Skills et connecteurs activés",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Pack de plus de 50 Skills Claude prêtes à l'emploi + guide des connecteurs + la Skill créée par chaque participant" },
+        {
+          temps: "Livrable",
+          titre:
+            "Pack de plus de 50 Skills Claude prêtes à l'emploi + guide des connecteurs + la Skill créée par chaque participant",
+        },
       ],
     },
     {
       titreFr: "Jour 1 · Module 4 — Produire ses supports professionnels avec Claude",
       steps: [
         { titre: "Générer des documents, visuels et présentations directement avec Claude" },
-        { titre: "Appliquer sa charte graphique et garder une cohérence visuelle d'un support à l'autre" },
-        { titre: "Exercice pratique : chaque participant produit un support complet sur un cas réel de son métier" },
+        {
+          titre:
+            "Appliquer sa charte graphique et garder une cohérence visuelle d'un support à l'autre",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant produit un support complet sur un cas réel de son métier",
+        },
         { titre: "Décliner et finaliser ses supports pour une mise en production" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Tutoriel et pack de prompts dédiés à la création de supports" },
+        {
+          temps: "Livrable",
+          titre: "Tutoriel et pack de prompts dédiés à la création de supports",
+        },
       ],
     },
     {
       titreFr: "Jour 2 · Module 5 — Prototyper rapidement avec Claude",
       steps: [
-        { titre: "Reprise du jour 1 : consolidation des acquis, retour sur les Skills et projets construits, questions ouvertes" },
+        {
+          titre:
+            "Reprise du jour 1 : consolidation des acquis, retour sur les Skills et projets construits, questions ouvertes",
+        },
         { titre: "Du brief au livrable : la méthode pour cadrer un besoin avant de le construire" },
-        { titre: "Prototyper un outil métier avec Claude : formulaire, tableau de bord, calculateur, outil de suivi" },
-        { titre: "Atelier pratique approfondi : chaque participant (ou binôme) construit un outil réel pour son équipe, du brief au livrable fonctionnel" },
-        { titre: "Itérer et améliorer son prototype à partir des retours du formateur et du groupe" },
+        {
+          titre:
+            "Prototyper un outil métier avec Claude : formulaire, tableau de bord, calculateur, outil de suivi",
+        },
+        {
+          titre:
+            "Atelier pratique approfondi : chaque participant (ou binôme) construit un outil réel pour son équipe, du brief au livrable fonctionnel",
+        },
+        {
+          titre: "Itérer et améliorer son prototype à partir des retours du formateur et du groupe",
+        },
         { titre: "Les limites à connaître : quand passer la main à un développeur" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide de prototypage avec Claude + bibliothèque d'exemples + le prototype fonctionnel construit par chaque participant" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide de prototypage avec Claude + bibliothèque d'exemples + le prototype fonctionnel construit par chaque participant",
+        },
       ],
     },
     {
       titreFr: "Jour 2 · Module 6 — Déléguer ses tâches complexes avec Claude Cowork",
       steps: [
-        { titre: "Aller plus loin que l'assistant : confier une tâche complète à un agent autonome" },
-        { titre: "Cas d'usage à fort potentiel par métier : tri et organisation de fichiers, synthèse de documents, rapports récurrents, veille" },
-        { titre: "Atelier pratique approfondi : chaque participant configure et lance au moins deux tâches Cowork réelles sur son propre travail" },
-        { titre: "Automatiser une tâche récurrente : programmer une tâche planifiée avec Cowork (ex. digest hebdomadaire)" },
+        {
+          titre: "Aller plus loin que l'assistant : confier une tâche complète à un agent autonome",
+        },
+        {
+          titre:
+            "Cas d'usage à fort potentiel par métier : tri et organisation de fichiers, synthèse de documents, rapports récurrents, veille",
+        },
+        {
+          titre:
+            "Atelier pratique approfondi : chaque participant configure et lance au moins deux tâches Cowork réelles sur son propre travail",
+        },
+        {
+          titre:
+            "Automatiser une tâche récurrente : programmer une tâche planifiée avec Cowork (ex. digest hebdomadaire)",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide Claude Cowork + bibliothèque de tâches types + les tâches configurées par chaque participant" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide Claude Cowork + bibliothèque de tâches types + les tâches configurées par chaque participant",
+        },
       ],
     },
     {
       titreFr: "Jour 2 · Module 7 — Construire son plan de déploiement et conclure",
       steps: [
-        { titre: "Consolider son environnement Claude : ce que l'équipe a construit en 2 jours (Skills, projets connectés, supports, prototype, tâches Cowork)" },
-        { titre: "Méthode pour prioriser et séquencer le déploiement à l'échelle de toute l'équipe" },
-        { titre: "Chacun construit sa feuille de route de déploiement à 3 mois, avec jalons concrets" },
-        { titre: "Partage collectif : chaque participant présente en 2 minutes ce qu'il a construit pendant ces 2 jours" },
+        {
+          titre:
+            "Consolider son environnement Claude : ce que l'équipe a construit en 2 jours (Skills, projets connectés, supports, prototype, tâches Cowork)",
+        },
+        {
+          titre: "Méthode pour prioriser et séquencer le déploiement à l'échelle de toute l'équipe",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route de déploiement à 3 mois, avec jalons concrets",
+        },
+        {
+          titre:
+            "Partage collectif : chaque participant présente en 2 minutes ce qu'il a construit pendant ces 2 jours",
+        },
         { titre: "Bilan des 2 jours et temps de questions ouvertes" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Trame de feuille de route de déploiement + synthèse personnalisée de l'ensemble des livrables construits pendant la formation" },
+        {
+          temps: "Livrable",
+          titre:
+            "Trame de feuille de route de déploiement + synthèse personnalisée de l'ensemble des livrables construits pendant la formation",
+        },
       ],
     },
   ],
@@ -832,10 +1235,19 @@ const CLAUDE_CODE_PROJET_3J: FormationV2 = {
     {
       titreFr: "Module 1 — Ce qu\'est un agent de code, et ce qu\'il change",
       steps: [
-        { titre: "La différence entre un chat, un assistant et un agent : pourquoi Claude Code n\'est pas un ChatGPT qui écrit du code" },
-        { titre: "Ce qu\'il fait concrètement à votre place : il lit, il écrit des fichiers, il exécute des commandes, il corrige ses erreurs" },
+        {
+          titre:
+            "La différence entre un chat, un assistant et un agent : pourquoi Claude Code n\'est pas un ChatGPT qui écrit du code",
+        },
+        {
+          titre:
+            "Ce qu\'il fait concrètement à votre place : il lit, il écrit des fichiers, il exécute des commandes, il corrige ses erreurs",
+        },
         { titre: "Ce que ça ouvre pour quelqu\'un qui ne code pas — et ce que ça n\'ouvre pas" },
-        { titre: "Le vocabulaire minimum, expliqué simplement : projet, fichier de code, version, dépôt, hébergement, mise en ligne" },
+        {
+          titre:
+            "Le vocabulaire minimum, expliqué simplement : projet, fichier de code, version, dépôt, hébergement, mise en ligne",
+        },
         { titre: "Le parcours des 3 jours : de l\'idée au projet publié, étape par étape" },
         { titre: "QCM de validation des acquis" },
         { temps: "Livrable", titre: "Lexique illustré des notions essentielles, sans jargon" },
@@ -844,48 +1256,114 @@ const CLAUDE_CODE_PROJET_3J: FormationV2 = {
     {
       titreFr: "Module 2 — Installer et prendre en main",
       steps: [
-        { titre: "Les surfaces disponibles : application de bureau, web, terminal, extensions pour éditeurs — laquelle pour qui" },
-        { titre: "Pourquoi les profils non techniques commencent par l\'application de bureau, et non par le terminal" },
-        { titre: "Atelier : chaque participant installe Claude Code, se connecte et lance sa première session" },
-        { titre: "Permissions : ce que l\'agent demande, ce qu\'on autorise, ce qu\'on refuse — et pourquoi ça compte" },
-        { titre: "Premiers échanges : se faire expliquer un fichier, demander une modification simple, annuler" },
+        {
+          titre:
+            "Les surfaces disponibles : application de bureau, web, terminal, extensions pour éditeurs — laquelle pour qui",
+        },
+        {
+          titre:
+            "Pourquoi les profils non techniques commencent par l\'application de bureau, et non par le terminal",
+        },
+        {
+          titre:
+            "Atelier : chaque participant installe Claude Code, se connecte et lance sa première session",
+        },
+        {
+          titre:
+            "Permissions : ce que l\'agent demande, ce qu\'on autorise, ce qu\'on refuse — et pourquoi ça compte",
+        },
+        {
+          titre:
+            "Premiers échanges : se faire expliquer un fichier, demander une modification simple, annuler",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Guide d\'installation pas à pas + checklist de configuration" },
+        {
+          temps: "Livrable",
+          titre: "Guide d\'installation pas à pas + checklist de configuration",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Du besoin au premier écran qui fonctionne",
       steps: [
-        { titre: "Cadrer le projet fil rouge : ce que l\'outil doit faire, pour qui, avec quelles données" },
-        { titre: "Écrire un brief que l\'agent comprend : la méthode AXION appliquée à un projet (Acteur, conteXte, Intention, Output, Normes)" },
-        { titre: "Le mode plan : faire décrire à l\'agent ce qu\'il va faire, avant qu\'il ne le fasse — le réflexe qui évite les mauvaises surprises" },
-        { titre: "Atelier : chaque participant obtient une première version de l\'outil, qui tourne sur son poste" },
-        { titre: "Ce qu\'il faut accepter : la première version est imparfaite, c\'est normal et c\'est le principe" },
+        {
+          titre:
+            "Cadrer le projet fil rouge : ce que l\'outil doit faire, pour qui, avec quelles données",
+        },
+        {
+          titre:
+            "Écrire un brief que l\'agent comprend : la méthode AXION appliquée à un projet (Acteur, conteXte, Intention, Output, Normes)",
+        },
+        {
+          titre:
+            "Le mode plan : faire décrire à l\'agent ce qu\'il va faire, avant qu\'il ne le fasse — le réflexe qui évite les mauvaises surprises",
+        },
+        {
+          titre:
+            "Atelier : chaque participant obtient une première version de l\'outil, qui tourne sur son poste",
+        },
+        {
+          titre:
+            "Ce qu\'il faut accepter : la première version est imparfaite, c\'est normal et c\'est le principe",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Trame de brief projet + le premier écran fonctionnel de chaque participant" },
+        {
+          temps: "Livrable",
+          titre: "Trame de brief projet + le premier écran fonctionnel de chaque participant",
+        },
       ],
     },
     {
       titreFr: "Module 4 — Ajouter les fonctionnalités, une par une",
       steps: [
         { titre: "Reprise du jour 1 : questions ouvertes, retour sur les premières versions" },
-        { titre: "La méthode : une demande = une fonctionnalité, on vérifie, on garde, on passe à la suivante" },
-        { titre: "Atelier : formulaire de saisie, liste des demandes, suivi de l\'avancement, tableau de bord" },
-        { titre: "Savoir dire non à l\'agent : reconnaître une réponse qui part de travers et la rattraper" },
-        { titre: "Sauvegarder son travail sur GitHub : enregistrer les versions au fil de l\'eau et revenir en arrière quand c\'est nécessaire" },
+        {
+          titre:
+            "La méthode : une demande = une fonctionnalité, on vérifie, on garde, on passe à la suivante",
+        },
+        {
+          titre:
+            "Atelier : formulaire de saisie, liste des demandes, suivi de l\'avancement, tableau de bord",
+        },
+        {
+          titre:
+            "Savoir dire non à l\'agent : reconnaître une réponse qui part de travers et la rattraper",
+        },
+        {
+          titre:
+            "Sauvegarder son travail sur GitHub : enregistrer les versions au fil de l\'eau et revenir en arrière quand c\'est nécessaire",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Guide des bons réflexes de construction + l\'outil enrichi de chaque participant" },
+        {
+          temps: "Livrable",
+          titre: "Guide des bons réflexes de construction + l\'outil enrichi de chaque participant",
+        },
       ],
     },
     {
       titreFr: "Module 5 — Donner ses règles à l\'agent avec CLAUDE.md",
       steps: [
-        { titre: "Ce que l\'agent lit au démarrage de chaque session, et pourquoi c\'est déterminant" },
-        { titre: "Écrire ses règles en français : à quoi ressemble le projet, ce qu\'on veut, ce qu\'on ne veut pas" },
-        { titre: "La mémoire automatique : ce que l\'agent retient de lui-même d\'une session à l\'autre" },
-        { titre: "Atelier : chaque participant rédige le CLAUDE.md du projet et constate la différence sur la demande suivante" },
+        {
+          titre:
+            "Ce que l\'agent lit au démarrage de chaque session, et pourquoi c\'est déterminant",
+        },
+        {
+          titre:
+            "Écrire ses règles en français : à quoi ressemble le projet, ce qu\'on veut, ce qu\'on ne veut pas",
+        },
+        {
+          titre:
+            "La mémoire automatique : ce que l\'agent retient de lui-même d\'une session à l\'autre",
+        },
+        {
+          titre:
+            "Atelier : chaque participant rédige le CLAUDE.md du projet et constate la différence sur la demande suivante",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Modèle de CLAUDE.md commenté + le fichier rédigé par chaque participant" },
+        {
+          temps: "Livrable",
+          titre: "Modèle de CLAUDE.md commenté + le fichier rédigé par chaque participant",
+        },
       ],
     },
     {
@@ -893,7 +1371,10 @@ const CLAUDE_CODE_PROJET_3J: FormationV2 = {
       steps: [
         { titre: "Comment savoir si ça marche vraiment quand on ne sait pas lire le code" },
         { titre: "Faire écrire les tests à l\'agent, et les faire tourner" },
-        { titre: "Quand ça casse : décrire le problème, faire chercher la cause, valider le correctif" },
+        {
+          titre:
+            "Quand ça casse : décrire le problème, faire chercher la cause, valider le correctif",
+        },
         { titre: "Atelier : chacun casse volontairement son projet, puis le répare avec l\'agent" },
         { titre: "QCM de validation des acquis" },
         { temps: "Livrable", titre: "Guide de dépannage pour non-codeurs" },
@@ -906,32 +1387,68 @@ const CLAUDE_CODE_PROJET_3J: FormationV2 = {
         { titre: "Les skills : empaqueter une consigne qui revient pour la rejouer d\'un mot" },
         { titre: "Les cas qui en valent la peine, et ceux où ça ne sert à rien" },
         { titre: "Atelier : chaque participant crée un skill utile pour son projet" },
-        { titre: "Aperçu de ce qui existe au-delà : connecter l\'agent à d\'autres outils, faire travailler plusieurs agents — pour savoir que ça existe, sans entrer dedans" },
+        {
+          titre:
+            "Aperçu de ce qui existe au-delà : connecter l\'agent à d\'autres outils, faire travailler plusieurs agents — pour savoir que ça existe, sans entrer dedans",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Pack de skills prêts à l\'emploi + le skill créé par chaque participant" },
+        {
+          temps: "Livrable",
+          titre: "Pack de skills prêts à l\'emploi + le skill créé par chaque participant",
+        },
       ],
     },
     {
       titreFr: "Module 8 — Publier son projet en ligne",
       steps: [
-        { titre: "Ce que signifie « mettre en ligne », expliqué simplement : hébergement, adresse, mise à jour" },
-        { titre: "Atelier : chaque participant publie son outil et obtient une adresse qui fonctionne" },
+        {
+          titre:
+            "Ce que signifie « mettre en ligne », expliqué simplement : hébergement, adresse, mise à jour",
+        },
+        {
+          titre:
+            "Atelier : chaque participant publie son outil et obtient une adresse qui fonctionne",
+        },
         { titre: "Mettre à jour la version en ligne après une modification" },
-        { titre: "Les questions à se poser avant de laisser d\'autres personnes l\'utiliser : données personnelles, accès, sauvegardes" },
+        {
+          titre:
+            "Les questions à se poser avant de laisser d\'autres personnes l\'utiliser : données personnelles, accès, sauvegardes",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Guide de mise en ligne + le projet publié de chaque participant" },
+        {
+          temps: "Livrable",
+          titre: "Guide de mise en ligne + le projet publié de chaque participant",
+        },
       ],
     },
     {
       titreFr: "Module 9 — Faire vivre son projet, et connaître ses limites",
       steps: [
-        { titre: "Reprendre un projet des semaines plus tard : ce qu\'il faut avoir écrit pour s\'y retrouver" },
-        { titre: "Sécurité et données : ce qu\'on ne confie jamais à un outil qu\'on a bâti soi-même en 3 jours" },
-        { titre: "Où s\'arrête le raisonnable : les signes qui indiquent qu\'il faut passer la main à un développeur" },
-        { titre: "Chacun construit sa feuille de route : le prochain outil à créer, et par quoi commencer" },
-        { titre: "Partage collectif : chaque participant présente ce qu\'il a construit, et bilan des 3 jours" },
+        {
+          titre:
+            "Reprendre un projet des semaines plus tard : ce qu\'il faut avoir écrit pour s\'y retrouver",
+        },
+        {
+          titre:
+            "Sécurité et données : ce qu\'on ne confie jamais à un outil qu\'on a bâti soi-même en 3 jours",
+        },
+        {
+          titre:
+            "Où s\'arrête le raisonnable : les signes qui indiquent qu\'il faut passer la main à un développeur",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route : le prochain outil à créer, et par quoi commencer",
+        },
+        {
+          titre:
+            "Partage collectif : chaque participant présente ce qu\'il a construit, et bilan des 3 jours",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Guide « faire vivre son projet » + trame de feuille de route personnalisable" },
+        {
+          temps: "Livrable",
+          titre: "Guide « faire vivre son projet » + trame de feuille de route personnalisable",
+        },
       ],
     },
   ],
@@ -965,7 +1482,8 @@ const IA_ACT_CONFORMITE_7H: FormationV2 = {
   prerequisFr:
     "Aucun prérequis technique ni juridique. Une première utilisation de ChatGPT, Claude ou Gemini est un plus mais n'est pas indispensable. Pour l'exercice pratique du module 3, disposer d'un ordinateur et d'un compte Claude gratuit (création en quelques clics, sans carte bancaire).",
   titreFr: "IA Act — Conformité & sécurité de vos usages",
-  accrocheFr: "L'IA sans le stress — cartographiez vos usages, sécurisez vos données et repartez avec votre feuille de route de mise en conformité IA Act, en une journée",
+  accrocheFr:
+    "L'IA sans le stress — cartographiez vos usages, sécurisez vos données et repartez avec votre feuille de route de mise en conformité IA Act, en une journée",
   h1Fr: "Formation IA Act : conformité et sécurité des usages IA en entreprise (1 jour)",
   metaTitleFr: "Formation IA Act : conformité & sécurité — 1 jour | Axion-IA",
   metaDescriptionFr:
@@ -997,35 +1515,80 @@ const IA_ACT_CONFORMITE_7H: FormationV2 = {
     {
       titreFr: "Module 1 — Maîtriser l'IA générative et sécuriser ses usages",
       steps: [
-        { titre: "Fonctionnement des IA génératives expliqué simplement : principes probabilistes, notion de token, capacités et limites réelles" },
-        { titre: "Panorama des IA génératives du marché : ChatGPT, Claude, Gemini, Copilot — ce qui les distingue" },
-        { titre: "Les risques majeurs de l'IA en entreprise : hallucinations, biais, fuite de données, dépendance excessive" },
-        { titre: "Sécuriser ses usages : RGPD, entraînement des modèles, ce qu'on ne doit jamais soumettre à une IA (données clients, données RH, secrets d'affaires)" },
+        {
+          titre:
+            "Fonctionnement des IA génératives expliqué simplement : principes probabilistes, notion de token, capacités et limites réelles",
+        },
+        {
+          titre:
+            "Panorama des IA génératives du marché : ChatGPT, Claude, Gemini, Copilot — ce qui les distingue",
+        },
+        {
+          titre:
+            "Les risques majeurs de l'IA en entreprise : hallucinations, biais, fuite de données, dépendance excessive",
+        },
+        {
+          titre:
+            "Sécuriser ses usages : RGPD, entraînement des modèles, ce qu'on ne doit jamais soumettre à une IA (données clients, données RH, secrets d'affaires)",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Charte IA entreprise + guide des bonnes pratiques et de sécurité" },
+        {
+          temps: "Livrable",
+          titre: "Charte IA entreprise + guide des bonnes pratiques et de sécurité",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Comprendre l'IA Act et ses obligations",
       steps: [
-        { titre: "L'IA Act : calendrier d'application, niveaux de risque, acteurs concernés (fournisseur, déployeur, distributeur)" },
-        { titre: "Le « Digital Omnibus » (adopté le 29 juin 2026) : les obligations liées aux systèmes à haut risque (Annexe III) sont reportées au 2 décembre 2027" },
-        { titre: "Ce qui ne bouge pas : l'obligation de littératie IA (article 4, en vigueur depuis février 2025) et les obligations de transparence (article 50) restent pleinement applicables, avec activation des pouvoirs de sanction des autorités nationales dès le 2 août 2026" },
-        { titre: "Cartographier ses usages IA internes et les classer selon les 4 niveaux de risque de l'IA Act" },
+        {
+          titre:
+            "L'IA Act : calendrier d'application, niveaux de risque, acteurs concernés (fournisseur, déployeur, distributeur)",
+        },
+        {
+          titre:
+            "Le « Digital Omnibus » (adopté le 29 juin 2026) : les obligations liées aux systèmes à haut risque (Annexe III) sont reportées au 2 décembre 2027",
+        },
+        {
+          titre:
+            "Ce qui ne bouge pas : l'obligation de littératie IA (article 4, en vigueur depuis février 2025) et les obligations de transparence (article 50) restent pleinement applicables, avec activation des pouvoirs de sanction des autorités nationales dès le 2 août 2026",
+        },
+        {
+          titre:
+            "Cartographier ses usages IA internes et les classer selon les 4 niveaux de risque de l'IA Act",
+        },
         { titre: "Construire sa feuille de route de mise en conformité" },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Outil de diagnostic de conformité IA Act Axion-IA (grille d'auto-évaluation)" },
+        {
+          temps: "Livrable",
+          titre: "Outil de diagnostic de conformité IA Act Axion-IA (grille d'auto-évaluation)",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Bien utiliser l'IA au quotidien : la méthode AXION",
       steps: [
-        { titre: "La méthode AXION en 5 mots simples : Acteur, conteXte, Intention, Output, Normes" },
-        { titre: "Démonstration comparative : un même prompt AXION exécuté en direct sur ChatGPT, Claude et Gemini" },
-        { titre: "Exercice oral collectif : chacun formule à voix haute un prompt AXION sur un cas réel de son métier, le groupe l'affine ensemble" },
-        { titre: "Exercice pratique guidé : chaque participant crée son propre assistant sur Claude Projects — le formateur guide tout le groupe simultanément, étape par étape" },
+        {
+          titre: "La méthode AXION en 5 mots simples : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Démonstration comparative : un même prompt AXION exécuté en direct sur ChatGPT, Claude et Gemini",
+        },
+        {
+          titre:
+            "Exercice oral collectif : chacun formule à voix haute un prompt AXION sur un cas réel de son métier, le groupe l'affine ensemble",
+        },
+        {
+          titre:
+            "Exercice pratique guidé : chaque participant crée son propre assistant sur Claude Projects — le formateur guide tout le groupe simultanément, étape par étape",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Bibliothèque de plus de 500 prompts AXION classés par métier + kits assistants IA (ChatGPT, Claude et Gemini)" },
+        {
+          temps: "Livrable",
+          titre:
+            "Bibliothèque de plus de 500 prompts AXION classés par métier + kits assistants IA (ChatGPT, Claude et Gemini)",
+        },
       ],
     },
     {
@@ -1033,10 +1596,16 @@ const IA_ACT_CONFORMITE_7H: FormationV2 = {
       steps: [
         { titre: "Les cas d'usage à privilégier ou à éviter selon le niveau de risque IA Act" },
         { titre: "Désigner un référent IA en interne : rôle et responsabilités" },
-        { titre: "Étude de cas commentée : le formateur illustre la méthode sur des exemples concrets proposés par le groupe" },
+        {
+          titre:
+            "Étude de cas commentée : le formateur illustre la méthode sur des exemples concrets proposés par le groupe",
+        },
         { titre: "Construire sa feuille de route de conformité et de déploiement IA à 6 mois" },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Guide des cas d'usage sécurisés + trame de feuille de route de conformité IA Act" },
+        {
+          temps: "Livrable",
+          titre: "Guide des cas d'usage sécurisés + trame de feuille de route de conformité IA Act",
+        },
       ],
     },
   ],
@@ -1047,7 +1616,8 @@ const IA_ACT_CONFORMITE_7H: FormationV2 = {
         "Non. Aucun prérequis technique ni juridique n'est nécessaire. Chaque notion — obligations de l'IA Act, niveaux de risque, règles de sécurité — est expliquée sans jargon avant d'être illustrée sur des cas concrets et transversaux.",
     },
     {
-      question: "Quelle est l'échéance du 2 août 2026 et cette formation aide-t-elle à s'y préparer ?",
+      question:
+        "Quelle est l'échéance du 2 août 2026 et cette formation aide-t-elle à s'y préparer ?",
       reponse:
         "À partir du 2 août 2026, les autorités nationales activent leurs pouvoirs de sanction sur les obligations déjà en vigueur, notamment la littératie IA (article 4) et la transparence (article 50). La formation clarifie ce qui reste dû malgré le report des systèmes à haut risque, et vous fait repartir avec une feuille de route de mise en conformité.",
     },
@@ -1103,58 +1673,136 @@ const REFERENT_IA_GOUVERNANCE_7H: FormationV2 = {
     {
       titreFr: "Module 1 — Le rôle de référent IA",
       steps: [
-        { titre: "Pourquoi désigner un référent IA : non pas une obligation légale, mais une nécessité pratique dès que l'IA se diffuse dans l'entreprise" },
-        { titre: "Le périmètre du rôle : ce qu'il porte, ce qu'il ne porte pas, ce qu'il ne peut pas décider seul" },
-        { titre: "Articulation avec les autres fonctions : DPO, informatique, RH, direction — qui décide quoi" },
-        { titre: "Le temps réellement nécessaire pour tenir ce rôle, et comment l'inscrire dans une fiche de poste" },
-        { titre: "Atelier : rédiger la fiche de rôle du référent IA de l'entreprise et répartir les responsabilités" },
+        {
+          titre:
+            "Pourquoi désigner un référent IA : non pas une obligation légale, mais une nécessité pratique dès que l'IA se diffuse dans l'entreprise",
+        },
+        {
+          titre:
+            "Le périmètre du rôle : ce qu'il porte, ce qu'il ne porte pas, ce qu'il ne peut pas décider seul",
+        },
+        {
+          titre:
+            "Articulation avec les autres fonctions : DPO, informatique, RH, direction — qui décide quoi",
+        },
+        {
+          titre:
+            "Le temps réellement nécessaire pour tenir ce rôle, et comment l'inscrire dans une fiche de poste",
+        },
+        {
+          titre:
+            "Atelier : rédiger la fiche de rôle du référent IA de l'entreprise et répartir les responsabilités",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Fiche de rôle référent IA + matrice de répartition des responsabilités" },
+        {
+          temps: "Livrable",
+          titre: "Fiche de rôle référent IA + matrice de répartition des responsabilités",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Cartographier les usages IA de l'entreprise",
       steps: [
-        { titre: "Passer d'une cartographie d'initiation à un inventaire exhaustif et tenu à jour : méthode de recensement, service par service" },
-        { titre: "Le « shadow AI » : les usages non déclarés, pourquoi ils existent et comment les faire remonter sans sanctionner" },
-        { titre: "Les cas limites de classification : quand un usage bascule d'un niveau de risque à un autre, et qui tranche" },
-        { titre: "Repérer les usages à haut risque, notamment en RH (recrutement, évaluation, gestion des salariés)" },
-        { titre: "Atelier : démarrer la cartographie réelle des usages IA de l'entreprise à partir de la trame fournie" },
+        {
+          titre:
+            "Passer d'une cartographie d'initiation à un inventaire exhaustif et tenu à jour : méthode de recensement, service par service",
+        },
+        {
+          titre:
+            "Le « shadow AI » : les usages non déclarés, pourquoi ils existent et comment les faire remonter sans sanctionner",
+        },
+        {
+          titre:
+            "Les cas limites de classification : quand un usage bascule d'un niveau de risque à un autre, et qui tranche",
+        },
+        {
+          titre:
+            "Repérer les usages à haut risque, notamment en RH (recrutement, évaluation, gestion des salariés)",
+        },
+        {
+          titre:
+            "Atelier : démarrer la cartographie réelle des usages IA de l'entreprise à partir de la trame fournie",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Modèle de cartographie des usages + grille de classification par niveau de risque" },
+        {
+          temps: "Livrable",
+          titre:
+            "Modèle de cartographie des usages + grille de classification par niveau de risque",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Construire le cadre interne",
       steps: [
-        { titre: "Rédiger et faire vivre la charte IA : ce qu'elle doit contenir, comment la faire accepter" },
-        { titre: "Définir la liste des outils autorisés, et les critères pour évaluer un nouvel outil" },
+        {
+          titre:
+            "Rédiger et faire vivre la charte IA : ce qu'elle doit contenir, comment la faire accepter",
+        },
+        {
+          titre:
+            "Définir la liste des outils autorisés, et les critères pour évaluer un nouvel outil",
+        },
         { titre: "Mettre en place une procédure simple de validation d'un nouvel usage" },
-        { titre: "Données : ce qui ne doit jamais sortir de l'entreprise, articulation avec le RGPD et le DPO" },
-        { titre: "Atelier : adapter la charte IA type et la procédure de validation au contexte de l'entreprise" },
+        {
+          titre:
+            "Données : ce qui ne doit jamais sortir de l'entreprise, articulation avec le RGPD et le DPO",
+        },
+        {
+          titre:
+            "Atelier : adapter la charte IA type et la procédure de validation au contexte de l'entreprise",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Charte IA + procédure de validation d'un nouvel usage + grille d'évaluation d'un outil" },
+        {
+          temps: "Livrable",
+          titre:
+            "Charte IA + procédure de validation d'un nouvel usage + grille d'évaluation d'un outil",
+        },
       ],
     },
     {
       titreFr: "Module 4 — Piloter la conformité dans la durée",
       steps: [
-        { titre: "Transformer le calendrier de l'IA Act en échéances internes : qui fait quoi, pour quand, dans l'entreprise" },
-        { titre: "Répondre à l'obligation de littératie IA et savoir le prouver : quelles actions, quelles traces" },
-        { titre: "Documentation : ce qu'il faut conserver, sous quelle forme, et pendant combien de temps" },
-        { titre: "Organiser sa veille réglementaire : où s'informer, à quel rythme, quoi surveiller" },
+        {
+          titre:
+            "Transformer le calendrier de l'IA Act en échéances internes : qui fait quoi, pour quand, dans l'entreprise",
+        },
+        {
+          titre:
+            "Répondre à l'obligation de littératie IA et savoir le prouver : quelles actions, quelles traces",
+        },
+        {
+          titre:
+            "Documentation : ce qu'il faut conserver, sous quelle forme, et pendant combien de temps",
+        },
+        {
+          titre:
+            "Organiser sa veille réglementaire : où s'informer, à quel rythme, quoi surveiller",
+        },
         { titre: "Atelier : construire le dossier de preuves de conformité de l'entreprise" },
-        { titre: "Point d'actualité : le « Digital Omnibus » (adopté le 29 juin 2026) reporte au 2 décembre 2027 les obligations liées aux systèmes à haut risque ; la littératie IA et les obligations de transparence restent applicables (information à recontrôler avant chaque session)" },
+        {
+          titre:
+            "Point d'actualité : le « Digital Omnibus » (adopté le 29 juin 2026) reporte au 2 décembre 2027 les obligations liées aux systèmes à haut risque ; la littératie IA et les obligations de transparence restent applicables (information à recontrôler avant chaque session)",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Plan de conformité + trame de dossier de preuves + sources de veille recommandées" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plan de conformité + trame de dossier de preuves + sources de veille recommandées",
+        },
       ],
     },
     {
       titreFr: "Module 5 — Animer l'IA en interne et construire son plan d'action",
       steps: [
         { titre: "Faire circuler les bonnes pratiques : formats simples qui fonctionnent en PME" },
-        { titre: "Traiter les deux extrêmes : ceux qui refusent l'IA, et ceux qui l'utilisent sans aucune limite" },
-        { titre: "Répondre aux questions du quotidien : construire sa « foire aux questions » interne" },
+        {
+          titre:
+            "Traiter les deux extrêmes : ceux qui refusent l'IA, et ceux qui l'utilisent sans aucune limite",
+        },
+        {
+          titre:
+            "Répondre aux questions du quotidien : construire sa « foire aux questions » interne",
+        },
         { titre: "Mesurer les usages et les gains, et en rendre compte à la direction" },
         { titre: "Chacun construit son plan d'action à 6 mois, avec jalons concrets" },
         { titre: "Bilan de la journée et temps de questions ouvertes" },
@@ -1191,7 +1839,8 @@ const IA_RH_7H: FormationV2 = {
   duree: "1j",
   surDevis: true,
   titreFr: "IA RH — Recrutement & gestion des talents",
-  accrocheFr: "L'IA au service des ressources humaines, en toute conformité — sourcing, annonces, onboarding et talents, en une journée",
+  accrocheFr:
+    "L'IA au service des ressources humaines, en toute conformité — sourcing, annonces, onboarding et talents, en une journée",
   h1Fr: "Formation IA pour les ressources humaines et le recrutement (1 jour)",
   metaTitleFr: "Formation IA pour les RH et le recrutement — 1 jour | Axion-IA",
   metaDescriptionFr:
@@ -1227,64 +1876,155 @@ const IA_RH_7H: FormationV2 = {
     {
       titreFr: "Module 1 — L'IA générative appliquée aux ressources humaines",
       steps: [
-        { titre: "Fonctionnement de l'IA générative expliqué simplement, et ce qu'elle change concrètement pour les RH" },
-        { titre: "Panorama des outils : ChatGPT, Claude, Gemini — ce qui les distingue et lequel choisir selon la tâche RH" },
-        { titre: "La méthode AXION appliquée aux cas RH : Acteur, conteXte, Intention, Output, Normes" },
-        { titre: "Les risques spécifiques aux RH : hallucinations, biais de sélection, confidentialité des données candidats et salariés" },
-        { titre: "Exercices pratiques sur ChatGPT, Claude et Gemini, à partir de cas RH réels apportés par les participants" },
+        {
+          titre:
+            "Fonctionnement de l'IA générative expliqué simplement, et ce qu'elle change concrètement pour les RH",
+        },
+        {
+          titre:
+            "Panorama des outils : ChatGPT, Claude, Gemini — ce qui les distingue et lequel choisir selon la tâche RH",
+        },
+        {
+          titre:
+            "La méthode AXION appliquée aux cas RH : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Les risques spécifiques aux RH : hallucinations, biais de sélection, confidentialité des données candidats et salariés",
+        },
+        {
+          titre:
+            "Exercices pratiques sur ChatGPT, Claude et Gemini, à partir de cas RH réels apportés par les participants",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide du prompt AXION pour les RH + bibliothèque de 50 prompts RH prêts à l'emploi" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt AXION pour les RH + bibliothèque de 50 prompts RH prêts à l'emploi",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Le cadre légal de l'IA en ressources humaines",
       steps: [
-        { titre: "Pourquoi les RH sont la fonction la plus encadrée : recrutement, évaluation et gestion des salariés relèvent des systèmes à haut risque de l'IA Act (annexe III)" },
-        { titre: "Ce que cela implique concrètement : information des candidats, supervision humaine, traçabilité des décisions" },
-        { titre: "Le principe du « human in the loop » : ce que l'IA peut proposer, ce que seul un humain peut décider" },
-        { titre: "RGPD et données candidats : durée de conservation, information, données à ne jamais soumettre à une IA" },
-        { titre: "Prévenir la discrimination : comment un tri assisté par IA peut reproduire des biais, et comment s'en prémunir" },
-        { titre: "Atelier collectif : cartographier ses usages RH actuels et repérer ceux qui relèvent du haut risque" },
+        {
+          titre:
+            "Pourquoi les RH sont la fonction la plus encadrée : recrutement, évaluation et gestion des salariés relèvent des systèmes à haut risque de l'IA Act (annexe III)",
+        },
+        {
+          titre:
+            "Ce que cela implique concrètement : information des candidats, supervision humaine, traçabilité des décisions",
+        },
+        {
+          titre:
+            "Le principe du « human in the loop » : ce que l'IA peut proposer, ce que seul un humain peut décider",
+        },
+        {
+          titre:
+            "RGPD et données candidats : durée de conservation, information, données à ne jamais soumettre à une IA",
+        },
+        {
+          titre:
+            "Prévenir la discrimination : comment un tri assisté par IA peut reproduire des biais, et comment s'en prémunir",
+        },
+        {
+          titre:
+            "Atelier collectif : cartographier ses usages RH actuels et repérer ceux qui relèvent du haut risque",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Grille de conformité des usages IA en RH + mémo « human in the loop »" },
+        {
+          temps: "Livrable",
+          titre: "Grille de conformité des usages IA en RH + mémo « human in the loop »",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Créer ses assistants IA RH",
       steps: [
-        { titre: "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis" },
-        { titre: "Rédiger des instructions pour spécialiser un assistant sur une tâche RH récurrente" },
-        { titre: "Atelier pratique guidé : chaque participant crée son assistant « offre d'emploi » sur Claude Projects, calibré sur la trame et le ton de son entreprise — le formateur guide tout le groupe simultanément" },
-        { titre: "Créer un assistant d'onboarding : répondre aux questions récurrentes des nouveaux arrivants à partir du livret d'accueil" },
+        {
+          titre:
+            "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis",
+        },
+        {
+          titre:
+            "Rédiger des instructions pour spécialiser un assistant sur une tâche RH récurrente",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée son assistant « offre d'emploi » sur Claude Projects, calibré sur la trame et le ton de son entreprise — le formateur guide tout le groupe simultanément",
+        },
+        {
+          titre:
+            "Créer un assistant d'onboarding : répondre aux questions récurrentes des nouveaux arrivants à partir du livret d'accueil",
+        },
         { titre: "Partager un assistant avec son équipe RH et le faire évoluer dans le temps" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Plus de 20 assistants IA RH prêts à l'emploi + guide de paramétrage + l'assistant créé par chaque participant" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 assistants IA RH prêts à l'emploi + guide de paramétrage + l'assistant créé par chaque participant",
+        },
       ],
     },
     {
       titreFr: "Module 4 — Les autres cas d'usage IA pour les RH",
       steps: [
-        { titre: "Après les annonces et l'onboarding traités en atelier au module 3, panorama des autres usages à fort potentiel" },
+        {
+          titre:
+            "Après les annonces et l'onboarding traités en atelier au module 3, panorama des autres usages à fort potentiel",
+        },
         { titre: "Sourcing : rechercher et qualifier des profils grâce à la recherche augmentée" },
-        { titre: "Candidatures : construire une grille de présélection objective et des trames d'entretien" },
-        { titre: "Formation : construire des plans de développement des compétences individualisés" },
-        { titre: "Administratif : synthèses de réunion, comptes-rendus d'entretien, courriers types" },
-        { titre: "Marque employeur : publications LinkedIn authentiques et cohérentes avec la culture de l'entreprise" },
-        { titre: "Travail collectif en petits groupes : identifier et prioriser 3 cas d'usage à fort potentiel dans son service" },
+        {
+          titre:
+            "Candidatures : construire une grille de présélection objective et des trames d'entretien",
+        },
+        {
+          titre: "Formation : construire des plans de développement des compétences individualisés",
+        },
+        {
+          titre:
+            "Administratif : synthèses de réunion, comptes-rendus d'entretien, courriers types",
+        },
+        {
+          titre:
+            "Marque employeur : publications LinkedIn authentiques et cohérentes avec la culture de l'entreprise",
+        },
+        {
+          titre:
+            "Travail collectif en petits groupes : identifier et prioriser 3 cas d'usage à fort potentiel dans son service",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide de référence des cas d'usage IA pour les RH + assistant marque employeur" },
+        {
+          temps: "Livrable",
+          titre: "Guide de référence des cas d'usage IA pour les RH + assistant marque employeur",
+        },
       ],
     },
     {
       titreFr: "Module 5 — Déléguer ses tâches RH et construire sa feuille de route",
       steps: [
-        { titre: "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète" },
-        { titre: "Cas d'usage RH à fort potentiel : synthèse d'un lot de candidatures, tri de documents, rapports récurrents" },
-        { titre: "Démonstration commentée : le formateur délègue à Claude Cowork la synthèse d'un lot de documents RH et la production d'une note de restitution" },
-        { titre: "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante" },
+        {
+          titre:
+            "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète",
+        },
+        {
+          titre:
+            "Cas d'usage RH à fort potentiel : synthèse d'un lot de candidatures, tri de documents, rapports récurrents",
+        },
+        {
+          titre:
+            "Démonstration commentée : le formateur délègue à Claude Cowork la synthèse d'un lot de documents RH et la production d'une note de restitution",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante",
+        },
         { titre: "Bilan de la journée et temps de questions ouvertes" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide Claude Cowork pour les RH + trame de feuille de route personnalisable" },
+        {
+          temps: "Livrable",
+          titre: "Guide Claude Cowork pour les RH + trame de feuille de route personnalisable",
+        },
       ],
     },
   ],
@@ -1351,38 +2091,83 @@ const IA_ASSISTANAT_7H: FormationV2 = {
     {
       titreFr: "Module 1 — L'IA générative appliquée à l'assistanat",
       steps: [
-        { titre: "Fonctionnement de l'IA générative expliqué simplement, et ce qu'elle change concrètement pour un poste d'assistanat" },
+        {
+          titre:
+            "Fonctionnement de l'IA générative expliqué simplement, et ce qu'elle change concrètement pour un poste d'assistanat",
+        },
         { titre: "Panorama des outils : ChatGPT, Claude, Gemini — lequel ouvrir selon la tâche" },
-        { titre: "La méthode AXION appliquée à vos cas : Acteur, conteXte, Intention, Output, Normes" },
-        { titre: "Confidentialité : ce qui ne doit jamais être soumis à une IA, et comment travailler malgré tout sur un document sensible" },
-        { titre: "Point de vigilance du métier : l'assistanat voit tout (comptes-rendus de comité de direction, dossiers de rémunération, données RH) — les réflexes concrets pour continuer à travailler sur des documents sensibles sans les exposer" },
-        { titre: "Exercices pratiques sur ChatGPT, Claude et Gemini, à partir de cas réels apportés par les participants" },
+        {
+          titre:
+            "La méthode AXION appliquée à vos cas : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Confidentialité : ce qui ne doit jamais être soumis à une IA, et comment travailler malgré tout sur un document sensible",
+        },
+        {
+          titre:
+            "Point de vigilance du métier : l'assistanat voit tout (comptes-rendus de comité de direction, dossiers de rémunération, données RH) — les réflexes concrets pour continuer à travailler sur des documents sensibles sans les exposer",
+        },
+        {
+          titre:
+            "Exercices pratiques sur ChatGPT, Claude et Gemini, à partir de cas réels apportés par les participants",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide du prompt AXION pour l'assistanat + bibliothèque de 50 prompts + mémo confidentialité" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt AXION pour l'assistanat + bibliothèque de 50 prompts + mémo confidentialité",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Reprendre la main sur sa boîte mail et ses écrits",
       steps: [
-        { titre: "Trier, prioriser, préparer ses réponses : ce que l'IA peut faire, et ce qu'elle ne doit pas décider à votre place" },
+        {
+          titre:
+            "Trier, prioriser, préparer ses réponses : ce que l'IA peut faire, et ce qu'elle ne doit pas décider à votre place",
+        },
         { titre: "Rédiger vite et juste : courriers, notes internes, relances" },
-        { titre: "Le mail délicat : formuler un refus, une relance ferme, une réponse à une réclamation — en gardant le ton de la maison" },
+        {
+          titre:
+            "Le mail délicat : formuler un refus, une relance ferme, une réponse à une réclamation — en gardant le ton de la maison",
+        },
         { titre: "Reformuler, raccourcir, adapter au destinataire, traduire" },
-        { titre: "Exercice pratique : chaque participant traite un mail réel de son quotidien, du plus pénible à écrire" },
+        {
+          titre:
+            "Exercice pratique : chaque participant traite un mail réel de son quotidien, du plus pénible à écrire",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Bibliothèque de trames de courriers et de mails, classées par situation" },
+        {
+          temps: "Livrable",
+          titre: "Bibliothèque de trames de courriers et de mails, classées par situation",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Réunions, comptes-rendus et suivi",
       steps: [
-        { titre: "Préparer une réunion : ordre du jour, dossier préparatoire, points de vigilance" },
-        { titre: "Exploiter les transcriptions de réunion de vos outils habituels pour produire un compte-rendu" },
-        { titre: "Du verbatim au compte-rendu utile : structurer, trier, ne garder que ce qui compte" },
+        {
+          titre: "Préparer une réunion : ordre du jour, dossier préparatoire, points de vigilance",
+        },
+        {
+          titre:
+            "Exploiter les transcriptions de réunion de vos outils habituels pour produire un compte-rendu",
+        },
+        {
+          titre:
+            "Du verbatim au compte-rendu utile : structurer, trier, ne garder que ce qui compte",
+        },
         { titre: "Le relevé de décisions et le suivi des actions : qui fait quoi, pour quand" },
-        { titre: "Exercice pratique : chaque participant produit un compte-rendu complet à partir d'une transcription" },
+        {
+          titre:
+            "Exercice pratique : chaque participant produit un compte-rendu complet à partir d'une transcription",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Trames de compte-rendu, de relevé de décisions et de suivi d'actions" },
+        {
+          temps: "Livrable",
+          titre: "Trames de compte-rendu, de relevé de décisions et de suivi d'actions",
+        },
       ],
     },
     {
@@ -1391,23 +2176,55 @@ const IA_ASSISTANAT_7H: FormationV2 = {
         { titre: "Mettre en forme et harmoniser : structurer un document, homogénéiser une série" },
         { titre: "Synthétiser un dossier volumineux pour quelqu'un qui n'a que cinq minutes" },
         { titre: "Produire une présentation à partir de notes éparses" },
-        { titre: "Organiser : faire construire un rétroplanning d'événement, une checklist de déplacement, un dossier de voyage — l'IA prépare, vous décidez et vous réservez" },
-        { titre: "Courriers types, modèles, réponses récurrentes : construire une fois, réutiliser toujours" },
-        { titre: "Exercice pratique : chaque participant transforme un dossier réel en note de synthèse d'une page" },
+        {
+          titre:
+            "Organiser : faire construire un rétroplanning d'événement, une checklist de déplacement, un dossier de voyage — l'IA prépare, vous décidez et vous réservez",
+        },
+        {
+          titre:
+            "Courriers types, modèles, réponses récurrentes : construire une fois, réutiliser toujours",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant transforme un dossier réel en note de synthèse d'une page",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide de production de documents + modèles réutilisables + trames de rétroplanning et de checklist" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide de production de documents + modèles réutilisables + trames de rétroplanning et de checklist",
+        },
       ],
     },
     {
       titreFr: "Module 5 — Créer son assistant IA et déléguer ses tâches",
       steps: [
-        { titre: "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis" },
-        { titre: "Atelier pratique guidé : chaque participant crée son assistant sur une tâche récurrente de son poste — le formateur guide tout le groupe simultanément" },
-        { titre: "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète" },
-        { titre: "Démonstration commentée : le formateur délègue à Claude Cowork le tri d'un lot de documents et la production d'une note de restitution" },
-        { titre: "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante, et bilan de la journée" },
+        {
+          titre:
+            "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée son assistant sur une tâche récurrente de son poste — le formateur guide tout le groupe simultanément",
+        },
+        {
+          titre:
+            "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète",
+        },
+        {
+          titre:
+            "Démonstration commentée : le formateur délègue à Claude Cowork le tri d'un lot de documents et la production d'une note de restitution",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante, et bilan de la journée",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Plus de 20 kits assistants IA pour l'assistanat + guide Claude Cowork + trame de feuille de route" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA pour l'assistanat + guide Claude Cowork + trame de feuille de route",
+        },
       ],
     },
   ],
@@ -1431,123 +2248,206 @@ const IA_ASSISTANAT_7H: FormationV2 = {
 };
 
 const IA_MARKETING_7H: FormationV2 = {
-  id: 'ia-marketing-contenus-seo-image-de-marque-7h',
-  slugFr: 'ia-marketing-contenus-seo-image-de-marque-7h',
-  slugEn: 'ai-marketing-content-seo-7h',
+  id: "ia-marketing-contenus-seo-image-de-marque-7h",
+  slugFr: "ia-marketing-contenus-seo-image-de-marque-7h",
+  slugEn: "ai-marketing-content-seo-7h",
   numero: 12,
-  gamme: 'ia-standard',
-  duree: '1j',
+  gamme: "ia-standard",
+  duree: "1j",
   surDevis: true,
-  titreFr: 'IA Marketing — Contenus, SEO & image de marque',
-  accrocheFr: 'L\'IA sans le stress — produire plus vite sans sacrifier votre image de marque, en 1 journée',
-  h1Fr: 'Formation IA marketing : contenus, SEO et image de marque (1 jour)',
-  metaTitleFr: 'Formation IA marketing, contenus & SEO — 1 jour | Axion-IA',
+  titreFr: "IA Marketing — Contenus, SEO & image de marque",
+  accrocheFr:
+    "L'IA sans le stress — produire plus vite sans sacrifier votre image de marque, en 1 journée",
+  h1Fr: "Formation IA marketing : contenus, SEO et image de marque (1 jour)",
+  metaTitleFr: "Formation IA marketing, contenus & SEO — 1 jour | Axion-IA",
   metaDescriptionFr:
-    'Formation IA marketing, 1 jour : prompts avec la méthode AXION, assistant calibré sur votre marque, contenus sans « style IA », SEO et visuels. Présentiel ou.',
+    "Formation IA marketing, 1 jour : prompts avec la méthode AXION, assistant calibré sur votre marque, contenus sans « style IA », SEO et visuels. Présentiel ou.",
   termesSemantiquesFr: [
-    'formation IA marketing',
-    'IA rédaction contenus',
-    'méthode AXION marketing',
-    'assistant IA ton de marque',
-    'contenu sans style IA',
-    'SEO intelligence artificielle',
-    'visuels IA image de marque',
+    "formation IA marketing",
+    "IA rédaction contenus",
+    "méthode AXION marketing",
+    "assistant IA ton de marque",
+    "contenu sans style IA",
+    "SEO intelligence artificielle",
+    "visuels IA image de marque",
   ],
   publicViseFr:
-    'Professionnels du marketing et de la communication : responsables et chargés de marketing, community managers, rédacteurs, chargés de communication, dirigeants de PME assurant la fonction marketing. Formation dispensée en intra-entreprise, en groupe unique par société, sur des cas marketing transversaux (post LinkedIn, article de blog, newsletter, visuel de campagne) valables dans tout secteur.',
+    "Professionnels du marketing et de la communication : responsables et chargés de marketing, community managers, rédacteurs, chargés de communication, dirigeants de PME assurant la fonction marketing. Formation dispensée en intra-entreprise, en groupe unique par société, sur des cas marketing transversaux (post LinkedIn, article de blog, newsletter, visuel de campagne) valables dans tout secteur.",
   prerequisFr:
-    'Aucun prérequis technique. Une première utilisation de l\'IA générative est un plus, mais n\'est pas indispensable. Prévoir un ordinateur et un compte Claude gratuit (création en quelques clics, sans carte bancaire) pour les exercices pratiques.',
+    "Aucun prérequis technique. Une première utilisation de l'IA générative est un plus, mais n'est pas indispensable. Prévoir un ordinateur et un compte Claude gratuit (création en quelques clics, sans carte bancaire) pour les exercices pratiques.",
   objectifsFr: [
-    'Rédiger des prompts marketing efficaces grâce à la méthode AXION',
-    'Créer un assistant IA calibré sur le ton et l\'identité de sa marque',
-    'Reconnaître et éliminer le « style IA » de ses contenus, pour préserver l\'image de marque',
-    'Produire des contenus web et SEO fiables, et vérifier ses sources grâce à la recherche augmentée',
-    'Générer des visuels cohérents avec son identité graphique',
-    'Publier ses contenus IA en conformité : obligation de transparence de l\'IA Act et droits sur les visuels générés',
-    'Identifier quand déléguer une tâche marketing complète à un agent IA, et construire sa feuille de route',
+    "Rédiger des prompts marketing efficaces grâce à la méthode AXION",
+    "Créer un assistant IA calibré sur le ton et l'identité de sa marque",
+    "Reconnaître et éliminer le « style IA » de ses contenus, pour préserver l'image de marque",
+    "Produire des contenus web et SEO fiables, et vérifier ses sources grâce à la recherche augmentée",
+    "Générer des visuels cohérents avec son identité graphique",
+    "Publier ses contenus IA en conformité : obligation de transparence de l'IA Act et droits sur les visuels générés",
+    "Identifier quand déléguer une tâche marketing complète à un agent IA, et construire sa feuille de route",
   ],
   beneficeDirigeantFr:
-    'Votre équipe marketing produit plus vite — posts, articles, newsletters, visuels — sans que les contenus « sentent l\'IA » ni s\'éloignent de votre image de marque, avec un assistant calibré sur votre voix créé pendant la session.',
+    "Votre équipe marketing produit plus vite — posts, articles, newsletters, visuels — sans que les contenus « sentent l'IA » ni s'éloignent de votre image de marque, avec un assistant calibré sur votre voix créé pendant la session.",
   equationTempsFr:
-    '1 journée → chaque participant repart avec son assistant « ton de marque », les techniques anti « style IA », des méthodes SEO et visuels, et une feuille de route de 3 à 5 actions à tester dès la semaine suivante.',
+    "1 journée → chaque participant repart avec son assistant « ton de marque », les techniques anti « style IA », des méthodes SEO et visuels, et une feuille de route de 3 à 5 actions à tester dès la semaine suivante.",
   programme: [
     {
-      titreFr: 'Module 1 — Les prompts marketing avancés avec la méthode AXION',
+      titreFr: "Module 1 — Les prompts marketing avancés avec la méthode AXION",
       steps: [
-        { titre: 'La méthode AXION appliquée au marketing : Acteur, conteXte, Intention, Output, Normes' },
-        { titre: 'Techniques avancées : master prompt, raisonnement étape par étape, exemples calibrants, auto-amélioration itérative' },
-        { titre: 'Piloter le ton et le niveau de créativité de l\'IA : ce qui se règle par le prompt, et ce qui se règle par les styles personnalisés' },
-        { titre: 'Panorama des outils : ChatGPT, Claude, Gemini — lequel choisir selon la tâche marketing' },
-        { titre: 'Exercices pratiques sur les trois outils, à partir de cas réels apportés par les participants' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Guide du prompt AXION pour le marketing + bibliothèque de plus de 200 prompts marketing' },
+        {
+          titre:
+            "La méthode AXION appliquée au marketing : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Techniques avancées : master prompt, raisonnement étape par étape, exemples calibrants, auto-amélioration itérative",
+        },
+        {
+          titre:
+            "Piloter le ton et le niveau de créativité de l'IA : ce qui se règle par le prompt, et ce qui se règle par les styles personnalisés",
+        },
+        {
+          titre:
+            "Panorama des outils : ChatGPT, Claude, Gemini — lequel choisir selon la tâche marketing",
+        },
+        {
+          titre:
+            "Exercices pratiques sur les trois outils, à partir de cas réels apportés par les participants",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt AXION pour le marketing + bibliothèque de plus de 200 prompts marketing",
+        },
       ],
     },
     {
-      titreFr: 'Module 2 — Créer son assistant IA calibré sur sa marque',
+      titreFr: "Module 2 — Créer son assistant IA calibré sur sa marque",
       steps: [
-        { titre: 'Architecture d\'un assistant IA : instructions en français + base de connaissances, aucun code requis' },
-        { titre: 'Traduire une identité de marque en instructions : ton, vocabulaire, interdits, exemples de référence' },
-        { titre: 'Atelier pratique guidé : chaque participant crée son assistant « ton de marque » sur Claude Projects, nourri de ses propres contenus de référence — le formateur guide tout le groupe simultanément' },
-        { titre: 'Partager un assistant avec son équipe et le faire évoluer dans le temps' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Plus de 20 kits assistants IA marketing prêts à l\'emploi + l\'assistant créé par chaque participant' },
+        {
+          titre:
+            "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis",
+        },
+        {
+          titre:
+            "Traduire une identité de marque en instructions : ton, vocabulaire, interdits, exemples de référence",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée son assistant « ton de marque » sur Claude Projects, nourri de ses propres contenus de référence — le formateur guide tout le groupe simultanément",
+        },
+        { titre: "Partager un assistant avec son équipe et le faire évoluer dans le temps" },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA marketing prêts à l'emploi + l'assistant créé par chaque participant",
+        },
       ],
     },
     {
-      titreFr: 'Module 3 — Produire des contenus authentiques, sans « style IA »',
+      titreFr: "Module 3 — Produire des contenus authentiques, sans « style IA »",
       steps: [
-        { titre: 'Pourquoi l\'IA produit un style reconnaissable, et en quoi il nuit concrètement à l\'image de marque' },
-        { titre: 'Les techniques pour l\'éliminer : contraintes explicites, interdits lexicaux, exemples calibrants, travail du rythme' },
-        { titre: 'LinkedIn : produire des publications qui ne « sentent pas l\'IA » et restent fidèles à sa voix' },
-        { titre: 'Transparence : depuis le 2 août 2026, l\'IA Act (article 50) impose d\'informer le public lorsqu\'un contenu est généré ou manipulé par IA — ce que cela change concrètement pour vos publications' },
-        { titre: 'Atelier pratique : réécrire un contenu générique produit par IA en contenu authentique de marque' },
-        { titre: 'Démonstration : un assistant « relecteur » chargé de repérer les tics de langage de l\'IA avant publication' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Guide anti « style IA » + checklist de relecture + assistant relecteur prêt à l\'emploi' },
+        {
+          titre:
+            "Pourquoi l'IA produit un style reconnaissable, et en quoi il nuit concrètement à l'image de marque",
+        },
+        {
+          titre:
+            "Les techniques pour l'éliminer : contraintes explicites, interdits lexicaux, exemples calibrants, travail du rythme",
+        },
+        {
+          titre:
+            "LinkedIn : produire des publications qui ne « sentent pas l'IA » et restent fidèles à sa voix",
+        },
+        {
+          titre:
+            "Transparence : depuis le 2 août 2026, l'IA Act (article 50) impose d'informer le public lorsqu'un contenu est généré ou manipulé par IA — ce que cela change concrètement pour vos publications",
+        },
+        {
+          titre:
+            "Atelier pratique : réécrire un contenu générique produit par IA en contenu authentique de marque",
+        },
+        {
+          titre:
+            "Démonstration : un assistant « relecteur » chargé de repérer les tics de langage de l'IA avant publication",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide anti « style IA » + checklist de relecture + assistant relecteur prêt à l'emploi",
+        },
       ],
     },
     {
-      titreFr: 'Module 4 — Contenus web, SEO et visuels de marque',
+      titreFr: "Module 4 — Contenus web, SEO et visuels de marque",
       steps: [
-        { titre: 'SEO : produire des articles et contenus web structurés et optimisés pour le référencement' },
-        { titre: 'Fiabiliser ses contenus et vérifier ses sources grâce à la recherche augmentée' },
-        { titre: 'Générer des visuels avec ChatGPT et Gemini : ce qui fonctionne, ce qui ne fonctionne pas encore' },
-        { titre: 'Décliner une série de visuels cohérents avec son identité graphique' },
-        { titre: 'Droits et usages des visuels générés par IA : ce que l\'on peut publier, ce qui reste risqué' },
-        { titre: 'Challenge en petits groupes : produire une mini-campagne complète (article, post, visuel) et la présenter au groupe' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Bibliothèque de prompts SEO + guide des prompts visuels' },
+        {
+          titre:
+            "SEO : produire des articles et contenus web structurés et optimisés pour le référencement",
+        },
+        { titre: "Fiabiliser ses contenus et vérifier ses sources grâce à la recherche augmentée" },
+        {
+          titre:
+            "Générer des visuels avec ChatGPT et Gemini : ce qui fonctionne, ce qui ne fonctionne pas encore",
+        },
+        { titre: "Décliner une série de visuels cohérents avec son identité graphique" },
+        {
+          titre:
+            "Droits et usages des visuels générés par IA : ce que l'on peut publier, ce qui reste risqué",
+        },
+        {
+          titre:
+            "Challenge en petits groupes : produire une mini-campagne complète (article, post, visuel) et la présenter au groupe",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        { temps: "Livrable", titre: "Bibliothèque de prompts SEO + guide des prompts visuels" },
       ],
     },
     {
-      titreFr: 'Module 5 — Déléguer ses tâches marketing et construire sa feuille de route',
+      titreFr: "Module 5 — Déléguer ses tâches marketing et construire sa feuille de route",
       steps: [
-        { titre: 'Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu\'il faut déléguer une tâche complète' },
-        { titre: 'Cas d\'usage marketing à fort potentiel : veille concurrentielle, déclinaison d\'un contenu en plusieurs formats, rapports récurrents' },
-        { titre: 'Démonstration commentée : le formateur délègue à Claude Cowork la déclinaison d\'un contenu en plusieurs formats (article, post, newsletter)' },
-        { titre: 'Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante' },
-        { titre: 'Bilan de la journée et temps de questions ouvertes' },
-        { titre: 'QCM de validation des acquis en fin de module' },
-        { temps: 'Livrable', titre: 'Guide Claude Cowork pour le marketing + trame de feuille de route personnalisable' },
+        {
+          titre:
+            "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète",
+        },
+        {
+          titre:
+            "Cas d'usage marketing à fort potentiel : veille concurrentielle, déclinaison d'un contenu en plusieurs formats, rapports récurrents",
+        },
+        {
+          titre:
+            "Démonstration commentée : le formateur délègue à Claude Cowork la déclinaison d'un contenu en plusieurs formats (article, post, newsletter)",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante",
+        },
+        { titre: "Bilan de la journée et temps de questions ouvertes" },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide Claude Cowork pour le marketing + trame de feuille de route personnalisable",
+        },
       ],
     },
   ],
   faqs: [
     {
-      question: 'Comment éviter que nos contenus « sentent l\'IA » ?',
+      question: "Comment éviter que nos contenus « sentent l'IA » ?",
       reponse:
-        'C\'est le cœur du module 3 : on identifie pourquoi l\'IA produit un style reconnaissable, puis on applique des techniques concrètes (contraintes explicites, interdits lexicaux, exemples calibrants, travail du rythme) et un assistant « relecteur » pour repérer les tics de langage avant publication.',
+        "C'est le cœur du module 3 : on identifie pourquoi l'IA produit un style reconnaissable, puis on applique des techniques concrètes (contraintes explicites, interdits lexicaux, exemples calibrants, travail du rythme) et un assistant « relecteur » pour repérer les tics de langage avant publication.",
     },
     {
-      question: 'Présentiel ou distanciel ?',
+      question: "Présentiel ou distanciel ?",
       reponse:
-        'Au choix : dans vos locaux, ou entièrement à distance via Microsoft Teams, avec exactement le même contenu et le même niveau d\'interactivité. À distance, les démonstrations se font en partage d\'écran et les exercices fonctionnent à l\'identique, chacun sur son propre poste.',
+        "Au choix : dans vos locaux, ou entièrement à distance via Microsoft Teams, avec exactement le même contenu et le même niveau d'interactivité. À distance, les démonstrations se font en partage d'écran et les exercices fonctionnent à l'identique, chacun sur son propre poste.",
     },
     {
-      question: 'Faut-il un compte payant pour participer ?',
+      question: "Faut-il un compte payant pour participer ?",
       reponse:
-        'Non pour les exercices : un compte Claude gratuit suffit pour créer votre assistant et vous entraîner. Seule la démonstration Claude Cowork du module 5 est réalisée par le formateur depuis son propre compte, Cowork nécessitant un plan payant.',
+        "Non pour les exercices : un compte Claude gratuit suffit pour créer votre assistant et vous entraîner. Seule la démonstration Claude Cowork du module 5 est réalisée par le formateur depuis son propre compte, Cowork nécessitant un plan payant.",
     },
   ],
 };
@@ -1597,62 +2497,141 @@ const IA_VENTE_7H: FormationV2 = {
     {
       titreFr: "Module 1 — L\'IA générative appliquée à la vente",
       steps: [
-        { titre: "Le fonctionnement de l\'IA générative expliqué simplement, et ce qu\'elle change concrètement pour un commercial" },
-        { titre: "Panorama des outils : ChatGPT, Claude, Gemini — lequel choisir selon la tâche commerciale" },
-        { titre: "La méthode AXION appliquée à la vente : Acteur, conteXte, Intention, Output, Normes" },
-        { titre: "Les risques du métier : hallucinations sur les chiffres et les références, excès de confiance dans une réponse plausible" },
-        { titre: "RGPD et prospection : pourquoi soumettre un fichier de prospects à une IA n\'est pas anodin, et ce qu\'on ne doit jamais y mettre" },
-        { titre: "Exercices pratiques sur les trois outils, à partir de cas réels apportés par les participants" },
+        {
+          titre:
+            "Le fonctionnement de l\'IA générative expliqué simplement, et ce qu\'elle change concrètement pour un commercial",
+        },
+        {
+          titre:
+            "Panorama des outils : ChatGPT, Claude, Gemini — lequel choisir selon la tâche commerciale",
+        },
+        {
+          titre:
+            "La méthode AXION appliquée à la vente : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Les risques du métier : hallucinations sur les chiffres et les références, excès de confiance dans une réponse plausible",
+        },
+        {
+          titre:
+            "RGPD et prospection : pourquoi soumettre un fichier de prospects à une IA n\'est pas anodin, et ce qu\'on ne doit jamais y mettre",
+        },
+        {
+          titre:
+            "Exercices pratiques sur les trois outils, à partir de cas réels apportés par les participants",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide du prompt AXION pour la vente + bibliothèque de plus de 50 prompts commerciaux" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt AXION pour la vente + bibliothèque de plus de 50 prompts commerciaux",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Trouver et qualifier ses prospects",
       steps: [
         { titre: "Définir sa cible et son persona avant de lancer la moindre recherche" },
-        { titre: "La recherche augmentée : identifier des prospects et vérifier les informations trouvées" },
+        {
+          titre:
+            "La recherche augmentée : identifier des prospects et vérifier les informations trouvées",
+        },
         { titre: "Structurer une recherche approfondie et en tirer une liste exploitable" },
-        { titre: "Qualifier un prospect : signaux d\'achat, actualités de l\'entreprise, identification des interlocuteurs clés" },
-        { titre: "Exercice pratique : chaque participant construit une liste de prospects qualifiés sur sa propre cible" },
+        {
+          titre:
+            "Qualifier un prospect : signaux d\'achat, actualités de l\'entreprise, identification des interlocuteurs clés",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant construit une liste de prospects qualifiés sur sa propre cible",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide de la recherche augmentée pour la prospection + prompts de sourcing et de qualification" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide de la recherche augmentée pour la prospection + prompts de sourcing et de qualification",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Préparer, mener et suivre ses rendez-vous",
       steps: [
-        { titre: "Préparer un rendez-vous en quelques minutes : synthèse de l\'entreprise, enjeux, interlocuteur" },
-        { titre: "Construire un argumentaire adapté au profil, au secteur et au moment du cycle de vente" },
+        {
+          titre:
+            "Préparer un rendez-vous en quelques minutes : synthèse de l\'entreprise, enjeux, interlocuteur",
+        },
+        {
+          titre:
+            "Construire un argumentaire adapté au profil, au secteur et au moment du cycle de vente",
+        },
         { titre: "Anticiper les objections et préparer ses réponses" },
         { titre: "Rédiger ses comptes-rendus et ses relances personnalisées en quelques minutes" },
-        { titre: "Exercice pratique : chaque participant prépare un rendez-vous réel de bout en bout" },
+        {
+          titre:
+            "Exercice pratique : chaque participant prépare un rendez-vous réel de bout en bout",
+        },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Trames de préparation de rendez-vous, d\'argumentaire, de compte-rendu et de relance" },
+        {
+          temps: "Livrable",
+          titre:
+            "Trames de préparation de rendez-vous, d\'argumentaire, de compte-rendu et de relance",
+        },
       ],
     },
     {
       titreFr: "Module 4 — Créer ses assistants IA commerciaux",
       steps: [
-        { titre: "Architecture d\'un assistant IA : instructions en français + base de connaissances, aucun code requis" },
-        { titre: "Atelier pratique guidé : chaque participant crée son assistant « prospection », calibré sur son offre et sa cible — le formateur guide tout le groupe simultanément" },
-        { titre: "Démonstration : industrialiser les relances vues au module 3 dans un assistant dédié, qui les rédige à partir du contexte du compte" },
-        { titre: "Démonstration : relier Claude à ses outils commerciaux (agenda, messagerie, documents) grâce aux connecteurs, pour le suivi et les relances" },
+        {
+          titre:
+            "Architecture d\'un assistant IA : instructions en français + base de connaissances, aucun code requis",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée son assistant « prospection », calibré sur son offre et sa cible — le formateur guide tout le groupe simultanément",
+        },
+        {
+          titre:
+            "Démonstration : industrialiser les relances vues au module 3 dans un assistant dédié, qui les rédige à partir du contexte du compte",
+        },
+        {
+          titre:
+            "Démonstration : relier Claude à ses outils commerciaux (agenda, messagerie, documents) grâce aux connecteurs, pour le suivi et les relances",
+        },
         { titre: "Partager ses assistants avec toute l\'équipe commerciale et les faire évoluer" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Plus de 20 kits assistants IA commerciaux + guide des connecteurs + l\'assistant prospection créé par chaque participant" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA commerciaux + guide des connecteurs + l\'assistant prospection créé par chaque participant",
+        },
       ],
     },
     {
       titreFr: "Module 5 — Déléguer ses tâches commerciales et construire sa feuille de route",
       steps: [
-        { titre: "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu\'il faut déléguer une tâche complète" },
-        { titre: "Cas d\'usage commerciaux à fort potentiel : veille sur un portefeuille de comptes, synthèse d\'un lot de comptes-rendus, rapports d\'activité récurrents" },
-        { titre: "Démonstration commentée : le formateur délègue à Claude Cowork une veille sur un portefeuille de comptes et la production d\'une note de synthèse" },
-        { titre: "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante" },
+        {
+          titre:
+            "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu\'il faut déléguer une tâche complète",
+        },
+        {
+          titre:
+            "Cas d\'usage commerciaux à fort potentiel : veille sur un portefeuille de comptes, synthèse d\'un lot de comptes-rendus, rapports d\'activité récurrents",
+        },
+        {
+          titre:
+            "Démonstration commentée : le formateur délègue à Claude Cowork une veille sur un portefeuille de comptes et la production d\'une note de synthèse",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante",
+        },
         { titre: "Bilan de la journée et temps de questions ouvertes" },
         { titre: "QCM de validation des acquis en fin de module" },
-        { temps: "Livrable", titre: "Guide Claude Cowork pour la vente + trame de feuille de route personnalisable" },
+        {
+          temps: "Livrable",
+          titre: "Guide Claude Cowork pour la vente + trame de feuille de route personnalisable",
+        },
       ],
     },
   ],
@@ -1720,38 +2699,87 @@ const IA_FINANCE_7H: FormationV2 = {
     {
       titreFr: "Module 1 — L'IA générative appliquée à la finance",
       steps: [
-        { titre: "Fonctionnement de l'IA générative expliqué simplement, et ce qu'elle change concrètement pour un poste financier" },
+        {
+          titre:
+            "Fonctionnement de l'IA générative expliqué simplement, et ce qu'elle change concrètement pour un poste financier",
+        },
         { titre: "Panorama des outils : ChatGPT, Claude, Gemini — lequel ouvrir selon la tâche" },
-        { titre: "La méthode AXION appliquée à vos cas : Acteur, conteXte, Intention, Output, Normes" },
-        { titre: "Le partage des rôles : les chiffres restent dans votre tableur, l'IA prend tout ce qu'il y a autour — la rédaction, la structure, l'explication, la synthèse" },
-        { titre: "Confidentialité : ce qui ne doit jamais sortir de l'entreprise, et comment travailler malgré tout sur un document financier" },
-        { titre: "Exercices pratiques sur ChatGPT, Claude et Gemini, à partir de cas réels apportés par les participants" },
-        { titre: "La règle du métier : l'IA ne calcule pas de façon fiable et ne remplace ni votre tableur ni votre logiciel comptable ; elle excelle sur tout ce qui entoure les chiffres" },
+        {
+          titre:
+            "La méthode AXION appliquée à vos cas : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Le partage des rôles : les chiffres restent dans votre tableur, l'IA prend tout ce qu'il y a autour — la rédaction, la structure, l'explication, la synthèse",
+        },
+        {
+          titre:
+            "Confidentialité : ce qui ne doit jamais sortir de l'entreprise, et comment travailler malgré tout sur un document financier",
+        },
+        {
+          titre:
+            "Exercices pratiques sur ChatGPT, Claude et Gemini, à partir de cas réels apportés par les participants",
+        },
+        {
+          titre:
+            "La règle du métier : l'IA ne calcule pas de façon fiable et ne remplace ni votre tableur ni votre logiciel comptable ; elle excelle sur tout ce qui entoure les chiffres",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Guide du prompt AXION pour la finance + bibliothèque de 50 prompts + mémo du partage des rôles" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt AXION pour la finance + bibliothèque de 50 prompts + mémo du partage des rôles",
+        },
       ],
     },
     {
       titreFr: "Module 2 — Reporting et commentaires de gestion",
       steps: [
-        { titre: "Le plus gros gain du métier : vous avez les chiffres, l'IA rédige l'analyse autour" },
-        { titre: "Expliquer un écart, une variance, une tendance : donner le contexte et obtenir un commentaire exploitable" },
+        {
+          titre:
+            "Le plus gros gain du métier : vous avez les chiffres, l'IA rédige l'analyse autour",
+        },
+        {
+          titre:
+            "Expliquer un écart, une variance, une tendance : donner le contexte et obtenir un commentaire exploitable",
+        },
         { titre: "Adapter le niveau de lecture : comité de direction, opérationnel, actionnaire" },
-        { titre: "Structurer un tableau de bord : quels indicateurs, quel ordre, quelle mise en récit" },
+        {
+          titre:
+            "Structurer un tableau de bord : quels indicateurs, quel ordre, quelle mise en récit",
+        },
         { titre: "Garder la main : relire, corriger, valider — le commentaire reste le vôtre" },
-        { titre: "Exercice pratique : chaque participant rédige le commentaire de son dernier reporting" },
+        {
+          titre:
+            "Exercice pratique : chaque participant rédige le commentaire de son dernier reporting",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Trames de commentaires de gestion et d'analyses d'écarts, par niveau de lecture" },
+        {
+          temps: "Livrable",
+          titre: "Trames de commentaires de gestion et d'analyses d'écarts, par niveau de lecture",
+        },
       ],
     },
     {
       titreFr: "Module 3 — Interroger et synthétiser ses documents",
       steps: [
-        { titre: "Poser des questions à un document long plutôt que de le lire en entier : rapport, contrat, bail, convention" },
+        {
+          titre:
+            "Poser des questions à un document long plutôt que de le lire en entier : rapport, contrat, bail, convention",
+        },
         { titre: "Produire une note de synthèse pour quelqu'un qui n'a que cinq minutes" },
-        { titre: "Comparer plusieurs documents : versions successives, offres concurrentes, clauses" },
-        { titre: "Se tenir à jour : dégrossir une veille réglementaire ou fiscale, puis vérifier auprès des sources officielles" },
-        { titre: "Exercice pratique : chaque participant fait analyser un document réel et en tire une note d'une page" },
+        {
+          titre:
+            "Comparer plusieurs documents : versions successives, offres concurrentes, clauses",
+        },
+        {
+          titre:
+            "Se tenir à jour : dégrossir une veille réglementaire ou fiscale, puis vérifier auprès des sources officielles",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant fait analyser un document réel et en tire une note d'une page",
+        },
         { titre: "QCM de validation des acquis" },
         { temps: "Livrable", titre: "Guide d'analyse documentaire + trames de notes de synthèse" },
       ],
@@ -1759,25 +2787,57 @@ const IA_FINANCE_7H: FormationV2 = {
     {
       titreFr: "Module 4 — Écrits récurrents et organisation du service",
       steps: [
-        { titre: "Relances clients : trouver le ton juste selon l'ancienneté de la créance et la relation commerciale" },
-        { titre: "Formaliser une procédure ou un mode opératoire à partir de ce que vous faites déjà sans l'avoir écrit" },
+        {
+          titre:
+            "Relances clients : trouver le ton juste selon l'ancienneté de la créance et la relation commerciale",
+        },
+        {
+          titre:
+            "Formaliser une procédure ou un mode opératoire à partir de ce que vous faites déjà sans l'avoir écrit",
+        },
         { titre: "Comptes-rendus de réunion budgétaire et notes internes" },
         { titre: "Préparer un support de présentation : budget, clôture, prévisionnel" },
-        { titre: "Exercice pratique : chaque participant produit une trame réutilisable sur un écrit qui lui revient tous les mois" },
+        {
+          titre:
+            "Exercice pratique : chaque participant produit une trame réutilisable sur un écrit qui lui revient tous les mois",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Bibliothèque de trames : relances, procédures, comptes-rendus, supports de présentation" },
+        {
+          temps: "Livrable",
+          titre:
+            "Bibliothèque de trames : relances, procédures, comptes-rendus, supports de présentation",
+        },
       ],
     },
     {
       titreFr: "Module 5 — Créer son assistant IA et déléguer ses tâches",
       steps: [
-        { titre: "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis" },
-        { titre: "Atelier pratique guidé : chaque participant crée son assistant « commentaire de gestion », calibré sur le format de son entreprise, le formateur guidant tout le groupe simultanément" },
-        { titre: "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète" },
-        { titre: "Démonstration commentée : le formateur délègue à Claude Cowork la synthèse d'un lot de documents et la production d'une note de restitution" },
-        { titre: "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante, et bilan de la journée" },
+        {
+          titre:
+            "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée son assistant « commentaire de gestion », calibré sur le format de son entreprise, le formateur guidant tout le groupe simultanément",
+        },
+        {
+          titre:
+            "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète",
+        },
+        {
+          titre:
+            "Démonstration commentée : le formateur délègue à Claude Cowork la synthèse d'un lot de documents et la production d'une note de restitution",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante, et bilan de la journée",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Plus de 20 kits assistants IA pour la finance + guide Claude Cowork + trame de feuille de route" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA pour la finance + guide Claude Cowork + trame de feuille de route",
+        },
       ],
     },
   ],
@@ -1845,57 +2905,128 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     {
       titreFr: "Séquence 1 — Ouverture et socle commun",
       steps: [
-        { titre: "Ouverture par la direction : pourquoi cette journée, ce qui est attendu, ce qui sera fait des décisions prises" },
-        { titre: "Le fonctionnement de l'IA générative expliqué simplement : ce qu'elle sait faire, où elle se trompe" },
-        { titre: "Panorama des outils (ChatGPT, Claude, Gemini, Copilot) et où on les retrouve déjà" },
-        { titre: "Les risques à connaître : hallucinations, biais, excès de confiance, fuite de données" },
+        {
+          titre:
+            "Ouverture par la direction : pourquoi cette journée, ce qui est attendu, ce qui sera fait des décisions prises",
+        },
+        {
+          titre:
+            "Le fonctionnement de l'IA générative expliqué simplement : ce qu'elle sait faire, où elle se trompe",
+        },
+        {
+          titre:
+            "Panorama des outils (ChatGPT, Claude, Gemini, Copilot) et où on les retrouve déjà",
+        },
+        {
+          titre:
+            "Les risques à connaître : hallucinations, biais, excès de confiance, fuite de données",
+        },
         { titre: "Le cadre : RGPD, IA Act, et ce que l'entreprise doit à ses collaborateurs" },
-        { titre: "Ce qu'on ne soumet jamais à une IA — la règle que tout le monde repart en connaissant" },
+        {
+          titre:
+            "Ce qu'on ne soumet jamais à une IA — la règle que tout le monde repart en connaissant",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Charte IA entreprise + guide des bonnes pratiques et de sécurité, en langage simple" },
+        {
+          temps: "Livrable",
+          titre:
+            "Charte IA entreprise + guide des bonnes pratiques et de sécurité, en langage simple",
+        },
       ],
     },
     {
       titreFr: "Séquence 2 — Où en est notre entreprise, vraiment ?",
       steps: [
-        { titre: "Sondage en direct et anonyme : qui utilise quoi, pour quelles tâches, à quelle fréquence" },
-        { titre: "Le résultat affiché devant tout le monde : ce que la direction découvre presque toujours" },
-        { titre: "Travail par table : chaque service cartographie ses usages, déclarés et non déclarés" },
-        { titre: "Restitution en plénière : la photographie réelle de l'entreprise, construite par elle-même" },
+        {
+          titre:
+            "Sondage en direct et anonyme : qui utilise quoi, pour quelles tâches, à quelle fréquence",
+        },
+        {
+          titre:
+            "Le résultat affiché devant tout le monde : ce que la direction découvre presque toujours",
+        },
+        {
+          titre:
+            "Travail par table : chaque service cartographie ses usages, déclarés et non déclarés",
+        },
+        {
+          titre:
+            "Restitution en plénière : la photographie réelle de l'entreprise, construite par elle-même",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Cartographie des usages IA de l'entreprise, produite par les participants" },
+        {
+          temps: "Livrable",
+          titre: "Cartographie des usages IA de l'entreprise, produite par les participants",
+        },
       ],
     },
     {
       titreFr: "Séquence 3 — Se donner une méthode commune",
       steps: [
         { titre: "La méthode AXION en 5 leviers : Acteur, conteXte, Intention, Output, Normes" },
-        { titre: "Démonstration en direct : transformer une demande vague en résultat exploitable, sur un cas de la salle" },
-        { titre: "Exercice par table : chaque groupe construit un prompt AXION sur un cas de son service" },
-        { titre: "Démonstration : créer un assistant IA en quelques minutes, à partir d'un besoin de la salle" },
+        {
+          titre:
+            "Démonstration en direct : transformer une demande vague en résultat exploitable, sur un cas de la salle",
+        },
+        {
+          titre:
+            "Exercice par table : chaque groupe construit un prompt AXION sur un cas de son service",
+        },
+        {
+          titre:
+            "Démonstration : créer un assistant IA en quelques minutes, à partir d'un besoin de la salle",
+        },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Bibliothèque de plus de 500 prompts AXION par métier + fiche mémo + kits assistants" },
+        {
+          temps: "Livrable",
+          titre:
+            "Bibliothèque de plus de 500 prompts AXION par métier + fiche mémo + kits assistants",
+        },
       ],
     },
     {
       titreFr: "Séquence 4 — Le concours d'astuces",
       steps: [
-        { titre: "Chaque table présente sa meilleure trouvaille : un usage, une astuce, un gain de temps réel" },
-        { titre: "Le formateur reprend chaque proposition, l'améliore et la généralise aux autres services" },
+        {
+          titre:
+            "Chaque table présente sa meilleure trouvaille : un usage, une astuce, un gain de temps réel",
+        },
+        {
+          titre:
+            "Le formateur reprend chaque proposition, l'améliore et la généralise aux autres services",
+        },
         { titre: "Sélection collective des astuces à diffuser dans toute l'entreprise" },
         { titre: "QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Recueil des astuces de l'entreprise, compilé à partir des présentations" },
+        {
+          temps: "Livrable",
+          titre: "Recueil des astuces de l'entreprise, compilé à partir des présentations",
+        },
       ],
     },
     {
       titreFr: "Séquence 5 — Nos règles et nos engagements",
       steps: [
-        { titre: "Les cas d'usage prioritaires qui ressortent de la journée, hiérarchisés collectivement" },
-        { titre: "Les règles communes : ce qu'on s'autorise, ce qu'on s'interdit, qui tranche en cas de doute" },
-        { titre: "Qui porte le sujet ensuite : le rôle du référent IA et les engagements de la direction" },
-        { titre: "Chaque service repart avec trois engagements concrets, écrits et annoncés devant les autres" },
+        {
+          titre:
+            "Les cas d'usage prioritaires qui ressortent de la journée, hiérarchisés collectivement",
+        },
+        {
+          titre:
+            "Les règles communes : ce qu'on s'autorise, ce qu'on s'interdit, qui tranche en cas de doute",
+        },
+        {
+          titre:
+            "Qui porte le sujet ensuite : le rôle du référent IA et les engagements de la direction",
+        },
+        {
+          titre:
+            "Chaque service repart avec trois engagements concrets, écrits et annoncés devant les autres",
+        },
         { titre: "Bilan de la journée et questions ouvertes + QCM de validation des acquis" },
-        { temps: "Livrable", titre: "Feuille de route collective + engagements par service, formalisés le jour même" },
+        {
+          temps: "Livrable",
+          titre: "Feuille de route collective + engagements par service, formalisés le jour même",
+        },
       ],
     },
   ],
@@ -1935,7 +3066,6 @@ export const FORMATIONS_V2: ReadonlyArray<FormationV2> = [
   IA_FINANCE_7H,
   SEMINAIRE_IA_ENTREPRISE,
 ];
-
 
 /** Formations « classiques » (exclut les séminaires) pour l'affichage catalogue. */
 export function getFormationsV2(): ReadonlyArray<FormationV2> {

@@ -109,11 +109,26 @@ export function HeaderFormationsMenu({
           <ul className="xs:grid-cols-2 grid grid-cols-1 gap-1.5">
             {(
               [
-                ["/formations/ia-rh-recrutement-talents-7h", isFr ? "RH & recrutement" : "HR & recruitment"],
-                ["/formations/ia-vente-prospection-developpement-commercial-7h", isFr ? "Vente & prospection" : "Sales & prospecting"],
-                ["/formations/ia-marketing-contenus-seo-image-de-marque-7h", isFr ? "Marketing & SEO" : "Marketing & SEO"],
-                ["/formations/ia-finance-reporting-analyses-pilotage-7h", isFr ? "Finance & pilotage" : "Finance & reporting"],
-                ["/formations/ia-assistanat-mails-comptes-rendus-documents-7h", isFr ? "Assistanat & bureau" : "Office support"],
+                [
+                  "/formations/ia-rh-recrutement-talents-7h",
+                  isFr ? "RH & recrutement" : "HR & recruitment",
+                ],
+                [
+                  "/formations/ia-vente-prospection-developpement-commercial-7h",
+                  isFr ? "Vente & prospection" : "Sales & prospecting",
+                ],
+                [
+                  "/formations/ia-marketing-contenus-seo-image-de-marque-7h",
+                  isFr ? "Marketing & SEO" : "Marketing & SEO",
+                ],
+                [
+                  "/formations/ia-finance-reporting-analyses-pilotage-7h",
+                  isFr ? "Finance & pilotage" : "Finance & reporting",
+                ],
+                [
+                  "/formations/ia-assistanat-mails-comptes-rendus-documents-7h",
+                  isFr ? "Assistanat & bureau" : "Office support",
+                ],
               ] as ReadonlyArray<readonly [string, string]>
             ).map(([href, label]) => (
               <li key={href}>
@@ -138,7 +153,9 @@ export function HeaderFormationsMenu({
               {isFr ? "Séminaire — toute l'entreprise" : "Seminar — whole company"}
             </span>
             <span className="text-fg-muted block text-[12px]">
-              {isFr ? "1 journée · présentiel · jusqu'à 50 personnes" : "1 day · on-site · up to 50 people"}
+              {isFr
+                ? "1 journée · présentiel · jusqu'à 50 personnes"
+                : "1 day · on-site · up to 50 people"}
             </span>
           </Link>
 
