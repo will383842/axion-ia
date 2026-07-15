@@ -106,43 +106,43 @@ describe("premierVerbe", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("buildFormationImportData", () => {
-  const iaExpress = FORMATIONS_V2.find((f) => f.slugFr === "ia-express");
+  const pilote = FORMATIONS_V2.find((f) => f.slugFr === "bien-demarrer-avec-l-ia-4h");
 
   it("le catalogue contient bien la formation pilote", () => {
-    expect(iaExpress).toBeDefined();
+    expect(pilote).toBeDefined();
   });
 
   it("mappe titre, slug, durée et offre", () => {
-    const data = buildFormationImportData(iaExpress!, "offre-x");
-    expect(data.titre).toBe(iaExpress!.titreFr);
-    expect(data.slug).toBe("ia-express");
+    const data = buildFormationImportData(pilote!, "offre-x");
+    expect(data.titre).toBe(pilote!.titreFr);
+    expect(data.slug).toBe("bien-demarrer-avec-l-ia-4h");
     expect(data.offreSiteId).toBe("offre-x");
     expect(data.dureeHeures).toBe(4); // 4h → 4
     expect(data.modalite).toBe("presentiel");
   });
 
   it("mappe chaque objectif (verbe + description)", () => {
-    const data = buildFormationImportData(iaExpress!, "offre-x");
-    expect(data.objectifsPedagogiques).toHaveLength(iaExpress!.objectifsFr.length);
+    const data = buildFormationImportData(pilote!, "offre-x");
+    expect(data.objectifsPedagogiques).toHaveLength(pilote!.objectifsFr.length);
     expect(data.objectifsPedagogiques[0]).toEqual({
       id: "obj-1",
-      verbe: "Produire",
-      description: iaExpress!.objectifsFr[0],
+      verbe: "Démystifier",
+      description: pilote!.objectifsFr[0],
     });
   });
 
   it("mappe le programme en modules + séquences (temps préservé)", () => {
-    const data = buildFormationImportData(iaExpress!, "offre-x");
-    expect(data.programmeDetaille).toHaveLength(iaExpress!.programme.length);
+    const data = buildFormationImportData(pilote!, "offre-x");
+    expect(data.programmeDetaille).toHaveLength(pilote!.programme.length);
     const mod0 = data.programmeDetaille[0]!;
     expect(mod0.moduleId).toBe("mod-1");
-    expect(mod0.titre).toBe(iaExpress!.programme[0]!.titreFr);
-    expect(mod0.sequences[0]!.titre).toBe(iaExpress!.programme[0]!.steps[0]!.titre);
-    expect(mod0.sequences[0]!.temps).toBe(iaExpress!.programme[0]!.steps[0]!.temps);
+    expect(mod0.titre).toBe(pilote!.programme[0]!.titreFr);
+    expect(mod0.sequences[0]!.titre).toBe(pilote!.programme[0]!.steps[0]!.titre);
+    expect(mod0.sequences[0]!.temps).toBe(pilote!.programme[0]!.steps[0]!.temps);
   });
 
   it("sort en état session-ready", () => {
-    const data = buildFormationImportData(iaExpress!, "offre-x");
+    const data = buildFormationImportData(pilote!, "offre-x");
     expect(data.statutGeneration).toBe("publie");
     expect(data.statut).toBe("actif");
     expect(data.aiGenerated).toBe(false);
@@ -150,11 +150,11 @@ describe("buildFormationImportData", () => {
   });
 
   it("ne pose validatedBy/At que si un admin déclenche", () => {
-    const sansAdmin = buildFormationImportData(iaExpress!, "offre-x", { now: FIXED_NOW });
+    const sansAdmin = buildFormationImportData(pilote!, "offre-x", { now: FIXED_NOW });
     expect(sansAdmin.validatedBy).toBeNull();
     expect(sansAdmin.validatedAt).toBeNull();
 
-    const avecAdmin = buildFormationImportData(iaExpress!, "offre-x", {
+    const avecAdmin = buildFormationImportData(pilote!, "offre-x", {
       adminUserId: "admin-1",
       now: FIXED_NOW,
     });

@@ -56,15 +56,17 @@ describe("deriveProgrammeSchedule — conversion durées → heures", () => {
     expect(sched[0]?.items.map((i) => i.time)).toEqual(["Jour 1", "Fin J1"]);
   });
 
-  it("une formation 1 jour atteint l'après-midi (≈ 17 h)", () => {
+  it("la dérivation gère les programmes par module (offre AXION) sans erreur", () => {
+    // Les programmes AXION sont structurés par MODULE (pas de minutage horaire
+    // dans les documents sources) : la dérivation doit rester robuste — une
+    // section par section source, items préservés, aucune exception.
     const oneDay = FORMATIONS_V2.find((f) => f.duree === "1j");
     expect(oneDay).toBeDefined();
     const sched = deriveProgrammeSchedule(oneDay!.programme);
-    const afternoon = sched.find((s) => s.label.toLowerCase().startsWith("après-midi"));
-    expect(afternoon?.items[0]?.time).toBe("14 h 00");
-    // La dernière entrée d'après-midi tombe l'après-midi (h ≥ 14, jamais une durée).
-    const last = afternoon?.items.at(-1)?.time ?? "";
-    expect(last).toMatch(/^1[4-9] h \d{2}$/);
+    expect(sched.length).toBe(oneDay!.programme.length);
+    for (const [i, section] of sched.entries()) {
+      expect(section.items.length).toBe(oneDay!.programme[i]!.steps.length);
+    }
   });
 
   it("aucune formation du catalogue ne laisse fuiter une durée brute (« 15' ») dans la timeline", () => {

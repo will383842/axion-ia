@@ -44,7 +44,9 @@ const GAMME_STYLE: Record<SlimGamme, { label: string; pill: string; bar: string 
 };
 
 const DUREE_ORDER: readonly SlimDuree[] = ["4h", "1j", "2j", "3j"];
-const GAMME_ORDER: readonly SlimGamme[] = ["ia-standard", "agents-automatisations", "claude"];
+// Gamme « agents-automatisations » retirée de l'affichage (offre AXION : aucune
+// formation dans cette gamme). Type conservé pour compat ; ordre = gammes utilisées.
+const GAMME_ORDER: readonly SlimGamme[] = ["ia-standard", "claude"];
 
 function FilterChip({
   active,

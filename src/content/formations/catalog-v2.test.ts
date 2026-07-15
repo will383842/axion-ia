@@ -49,17 +49,17 @@ describe("catalogue V2 — cohérence interne", () => {
     }
   });
 
-  it("« À LA UNE » réservé à IA & Conformité", () => {
+  it("« À LA UNE » — aucune formation mise en avant par défaut (offre AXION)", () => {
     const featured = FORMATIONS_V2.filter((f) => f.featured);
-    expect(featured.map((f) => f.id)).toEqual(["ia-conformite"]);
+    expect(featured.map((f) => f.id)).toEqual([]);
   });
 });
 
-describe("catalogue V2 — prix dérivés de la matrice (0 hardcode)", () => {
-  it("chaque formation a un prix d'entrée résoluble (gamme × durée)", () => {
+describe("catalogue V2 — prix « Sur devis » (0 hardcode)", () => {
+  it("chaque formation est « Sur devis » (aucun prix matrice affiché)", () => {
     for (const f of FORMATIONS_V2) {
-      const entry = getFormationV2EntryPrice(f);
-      expect(entry, `${f.id} (${f.gamme}/${f.duree})`).toBeGreaterThan(0);
+      expect(f.surDevis, `${f.id}`).toBe(true);
+      expect(getFormationV2EntryPrice(f), `${f.id} doit être Sur devis`).toBeUndefined();
     }
   });
 
@@ -84,43 +84,41 @@ describe("catalogue V2 — prix dérivés de la matrice (0 hardcode)", () => {
 
 describe("catalogue V2 — lookup", () => {
   it("getFormationV2 par id / slugFr / slugEn", () => {
-    expect(getFormationV2("ia-express")?.numero).toBe(1);
-    expect(getFormationV2("ai-express")?.id).toBe("ia-express");
+    expect(getFormationV2("bien-demarrer-avec-l-ia-4h")?.numero).toBe(1);
+    expect(getFormationV2("getting-started-with-ai-4h")?.id).toBe("bien-demarrer-avec-l-ia-4h");
     expect(getFormationV2("inconnu")).toBeUndefined();
   });
 
   it("filtres gamme / durée", () => {
-    expect(getFormationsV2ByDuree("4h").length).toBe(4);
+    expect(getFormationsV2ByDuree("4h").length).toBe(2);
     expect(getFormationsV2ByGamme("ia-standard").length).toBeGreaterThanOrEqual(4);
   });
 });
 
-describe("catalogue V2 — couverture complète (17 formations)", () => {
-  it("17 formations, numéros 1-17 présents", () => {
-    expect(FORMATIONS_V2.length).toBe(17);
+describe("catalogue V2 — couverture complète (14 formations AXION)", () => {
+  it("14 formations, numéros 1-14 présents", () => {
+    expect(FORMATIONS_V2.length).toBe(14);
     const nums = FORMATIONS_V2.map((f) => f.numero).sort((a, b) => a - b);
-    expect(nums).toEqual(Array.from({ length: 17 }, (_, i) => i + 1));
+    expect(nums).toEqual(Array.from({ length: 14 }, (_, i) => i + 1));
   });
 
-  it("distribution par gamme : IA 12 · Agents 2 · Claude 3", () => {
-    expect(getFormationsV2ByGamme("ia-standard").length).toBe(12);
-    expect(getFormationsV2ByGamme("agents-automatisations").length).toBe(2);
+  it("distribution par gamme : IA 11 · Agents 0 · Claude 3", () => {
+    expect(getFormationsV2ByGamme("ia-standard").length).toBe(11);
+    expect(getFormationsV2ByGamme("agents-automatisations").length).toBe(0);
     expect(getFormationsV2ByGamme("claude").length).toBe(3);
   });
 
-  it("distribution par durée : 4h 4 · 1j 6 · 2j 4 · 3j 3", () => {
-    expect(getFormationsV2ByDuree("4h").length).toBe(4);
-    expect(getFormationsV2ByDuree("1j").length).toBe(6);
-    expect(getFormationsV2ByDuree("2j").length).toBe(4);
-    expect(getFormationsV2ByDuree("3j").length).toBe(3);
+  it("distribution par durée : 4h 2 · 1j 10 · 2j 1 · 3j 1", () => {
+    expect(getFormationsV2ByDuree("4h").length).toBe(2);
+    expect(getFormationsV2ByDuree("1j").length).toBe(10);
+    expect(getFormationsV2ByDuree("2j").length).toBe(1);
+    expect(getFormationsV2ByDuree("3j").length).toBe(1);
   });
 
-  it("les gammes Agents/Claude apparaissent dans leur durée ET leur gamme (2 axes)", () => {
+  it("la gamme Claude s'étale sur 1j / 2j / 3j", () => {
     const claude2j = getFormationsV2ByDuree("2j").filter((f) => f.gamme === "claude");
-    expect(claude2j.map((f) => f.id)).toContain("claude-createur");
-    const agents3j = getFormationsV2ByDuree("3j").filter(
-      (f) => f.gamme === "agents-automatisations",
-    );
-    expect(agents3j.map((f) => f.id)).toContain("agents-automatisations-avance");
+    expect(claude2j.map((f) => f.id)).toContain("claude-maitrise-avancee-et-autonomie-2j");
+    const claude3j = getFormationsV2ByDuree("3j").filter((f) => f.gamme === "claude");
+    expect(claude3j.map((f) => f.id)).toContain("claude-code-creer-un-projet-3j");
   });
 });
