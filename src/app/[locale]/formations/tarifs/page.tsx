@@ -47,11 +47,6 @@ const GAMME_BLOCKS: ReadonlyArray<{ gamme: FormationGamme; label: string; note: 
     note: "Toutes les formations IA générales, par durée (effectif 2-15 ou 16-30).",
   },
   {
-    gamme: "agents-automatisations",
-    label: "Agents & Automatisations",
-    note: "Groupes limités à 12 pour l'accompagnement individuel (code source, zéro abonnement).",
-  },
-  {
     gamme: "claude",
     label: "Gamme Claude",
     note: "Formateur certifié écosystème Claude (+20 %). Découverte 2-15/16-30 ; Créateur et Architecte 2-12.",

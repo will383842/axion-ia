@@ -301,25 +301,33 @@ export default async function FormationsEntreprise({ params }: Props) {
 
   // Métiers → formation la plus pertinente (maillage interne vers les fiches).
   const metiers: ReadonlyArray<{ href: string; label: string }> = [
-    { href: "/formations/ia-express", label: isFr ? "Tous les collaborateurs" : "All employees" },
-    { href: "/formations/ia-commercial", label: isFr ? "Commerciaux & ADV" : "Sales & order desk" },
     {
-      href: "/formations/ia-au-bureau",
-      label: isFr ? "Fonctions support & bureau" : "Support & office",
-    },
-    { href: "/formations/ia-sur-le-terrain", label: isFr ? "Équipes terrain" : "Field teams" },
-    {
-      href: "/formations/ia-transformation-equipe",
-      label: isFr ? "Dirigeants & managers" : "Executives & managers",
+      href: "/formations/bien-demarrer-avec-l-ia-4h",
+      label: isFr ? "Tous les collaborateurs" : "All employees",
     },
     {
-      href: "/formations/ia-conformite",
-      label: isFr ? "Conformité & juridique" : "Compliance & legal",
+      href: "/formations/ia-vente-prospection-developpement-commercial-7h",
+      label: isFr ? "Commerciaux & ADV" : "Sales & order desk",
     },
-    { href: "/formations/ia-securite", label: isFr ? "Sécurité des données" : "Data security" },
     {
-      href: "/formations/agents-automatisations",
-      label: isFr ? "Ops & automatisations" : "Ops & automation",
+      href: "/formations/ia-assistanat-mails-comptes-rendus-documents-7h",
+      label: isFr ? "Assistanat & bureau" : "Support & office",
+    },
+    {
+      href: "/formations/ia-rh-recrutement-talents-7h",
+      label: isFr ? "RH & recrutement" : "HR & recruitment",
+    },
+    {
+      href: "/formations/ia-marketing-contenus-seo-image-de-marque-7h",
+      label: isFr ? "Marketing & communication" : "Marketing & communication",
+    },
+    {
+      href: "/formations/ia-finance-reporting-analyses-pilotage-7h",
+      label: isFr ? "Finance & gestion" : "Finance & controlling",
+    },
+    {
+      href: "/formations/ia-act-conformite-et-securite-7h",
+      label: isFr ? "Conformité & sécurité" : "Compliance & security",
     },
   ];
 

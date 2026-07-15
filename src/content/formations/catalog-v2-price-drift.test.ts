@@ -52,9 +52,10 @@ describe("Garde anti-dérive — prix prose catalog-v2 ⊆ FORMATION_PRICE_MATRI
       }
     });
 
-    // Robustesse : si le regex casse un jour (0 prix scanné), le test ne doit
-    // PAS passer silencieusement. ~19 prix € en prose aujourd'hui.
-    expect(scanned, "le scanner de prix ne détecte plus rien (regex cassé ?)").toBeGreaterThan(12);
+    // Offre AXION = 100 % « Sur devis » : AUCUN montant en euros ne doit
+    // apparaître en prose (prix décidés plus tard, hors catalogue). Ce garde
+    // empêche toute réintroduction accidentelle d'un prix en dur.
+    expect(scanned, "offre « Sur devis » : aucun prix € ne doit figurer dans le catalogue").toBe(0);
 
     expect(
       offenders,

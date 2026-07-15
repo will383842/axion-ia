@@ -240,6 +240,33 @@ const nextConfig: NextConfig = {
         destination: "/en/book-a-call",
         permanent: true,
       },
+      // Refonte offre AXION (2026-07) — les 17 anciennes formations sont
+      // remplacées par la nouvelle offre (nouveaux slugs). 301 des anciennes
+      // URLs vers la formation la plus proche, ou vers le hub /formations.
+      ...[
+        ["ia-express", "bien-demarrer-avec-l-ia-4h"],
+        ["art-du-prompt", "prompts-avances-et-assistants-ia-4h"],
+        ["ia-securite", "ia-act-conformite-et-securite-7h"],
+        ["ia-conformite", "ia-act-conformite-et-securite-7h"],
+        ["ia-fondamentaux", "bien-demarrer-avec-l-ia-journee-7h"],
+        ["ia-commercial", "ia-vente-prospection-developpement-commercial-7h"],
+        ["ia-au-bureau", "ia-assistanat-mails-comptes-rendus-documents-7h"],
+        ["ia-integration-metier", "gagner-du-temps-au-quotidien-avec-l-ia-7h"],
+        ["ia-commercial-avance", "ia-vente-prospection-developpement-commercial-7h"],
+        ["claude-decouverte", "claude-prise-en-main-complete-7h"],
+        ["claude-createur", "claude-prise-en-main-complete-7h"],
+        ["claude-architecte", "claude-maitrise-avancee-et-autonomie-2j"],
+        // Sans équivalent direct → hub /formations
+        ["ia-sur-le-terrain", ""],
+        ["automatisations-decouverte", ""],
+        ["ia-transformation-equipe", "seminaire-ia-toute-l-entreprise-1j"],
+        ["agents-automatisations", ""],
+        ["agents-automatisations-avance", ""],
+      ].map(([from, to]) => ({
+        source: `/fr/formations/${from}`,
+        destination: to ? `/fr/formations/${to}` : "/fr/formations",
+        permanent: true,
+      })),
       // FAQ — slugs legacy faibles → slugs keyword-rich (perfection FAQ 2026-05-31).
       // 301 pour préserver toute URL déjà connue de Google. Cf. FAQ_GLOBAL ids.
       {
