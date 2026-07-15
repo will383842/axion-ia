@@ -95,22 +95,22 @@ describe("catalogue V2 — lookup", () => {
   });
 });
 
-describe("catalogue V2 — couverture complète (14 formations AXION)", () => {
-  it("14 formations, numéros 1-14 présents", () => {
-    expect(FORMATIONS_V2.length).toBe(14);
+describe("catalogue V2 — couverture complète (14 formations + 1 séminaire)", () => {
+  it("15 entrées (14 formations + 1 séminaire), numéros 1-15 présents", () => {
+    expect(FORMATIONS_V2.length).toBe(15);
     const nums = FORMATIONS_V2.map((f) => f.numero).sort((a, b) => a - b);
-    expect(nums).toEqual(Array.from({ length: 14 }, (_, i) => i + 1));
+    expect(nums).toEqual(Array.from({ length: 15 }, (_, i) => i + 1));
   });
 
-  it("distribution par gamme : IA 11 · Agents 0 · Claude 3", () => {
-    expect(getFormationsV2ByGamme("ia-standard").length).toBe(11);
+  it("distribution par gamme : IA 12 · Agents 0 · Claude 3", () => {
+    expect(getFormationsV2ByGamme("ia-standard").length).toBe(12);
     expect(getFormationsV2ByGamme("agents-automatisations").length).toBe(0);
     expect(getFormationsV2ByGamme("claude").length).toBe(3);
   });
 
-  it("distribution par durée : 4h 2 · 1j 10 · 2j 1 · 3j 1", () => {
+  it("distribution par durée : 4h 2 · 1j 11 · 2j 1 · 3j 1", () => {
     expect(getFormationsV2ByDuree("4h").length).toBe(2);
-    expect(getFormationsV2ByDuree("1j").length).toBe(10);
+    expect(getFormationsV2ByDuree("1j").length).toBe(11);
     expect(getFormationsV2ByDuree("2j").length).toBe(1);
     expect(getFormationsV2ByDuree("3j").length).toBe(1);
   });

@@ -55,6 +55,8 @@ export interface FormationV2 {
   duree: FormationDuree;
   /** Formation sans prix affiché (« Sur devis ») — court-circuite la matrice. */
   surDevis?: boolean;
+  /** Séminaire (rubrique dédiée, présentiel, jusqu'à 50 pers). */
+  seminaire?: boolean;
   /** « À LA UNE » (IA & Conformité). */
   featured?: boolean;
   /** Pré-requis explicite (sinon aucun). */
@@ -1798,6 +1800,124 @@ const IA_FINANCE_7H: FormationV2 = {
   ],
 };
 
+const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
+  id: "seminaire-ia-toute-l-entreprise-1j",
+  slugFr: "seminaire-ia-toute-l-entreprise-1j",
+  slugEn: "ai-seminar-whole-company-1d",
+  numero: 15,
+  gamme: "ia-standard",
+  duree: "1j",
+  surDevis: true,
+  seminaire: true,
+  titreFr: "Séminaire IA — Mettre toute l'entreprise au diapason",
+  accrocheFr:
+    "Une journée en présentiel pour cadrer les usages de l'IA et fédérer toutes vos équipes — jusqu'à 50 participants",
+  h1Fr: "Séminaire IA en entreprise — fédérer toutes vos équipes en une journée",
+  metaTitleFr: "Séminaire IA en entreprise — toute l'équipe | Axion-IA",
+  metaDescriptionFr:
+    "Séminaire IA d'une journée en présentiel, jusqu'à 50 personnes : cadrer les usages, partager la méthode AXION et fédérer toutes vos équipes.",
+  termesSemantiquesFr: [
+    "séminaire IA entreprise",
+    "journée IA toute l'entreprise",
+    "fédérer les équipes IA",
+    "méthode AXION",
+    "cartographie des usages IA",
+    "feuille de route IA collective",
+  ],
+  publicViseFr:
+    "L'entreprise entière ou un site complet, réunis le même jour : tous services, tous métiers, tous niveaux de maîtrise de l'IA. C'est précisément ce mélange qui fait la valeur de la journée — ceux qui n'ont jamais essayé et ceux qui utilisent déjà l'IA au quotidien. Jusqu'à 50 participants, en tables de 6 à 8.",
+  prerequisFr:
+    "Aucun prérequis technique ni expérience de l'IA. Aucun compte à créer, aucun logiciel à installer : le séminaire est conçu pour qu'on y participe sans préparation. Chaque participant utilise son téléphone personnel pour le sondage et les QCM (évaluation individuelle et nominative) ; un ordinateur ou un téléphone par table suffit pour les temps collectifs.",
+  objectifsFr: [
+    "Comprendre le fonctionnement, les apports et les risques de l'IA générative, et disposer d'un socle commun de vocabulaire",
+    "Identifier les règles de sécurité et de confidentialité applicables à leurs usages, et le cadre légal qui s'impose à l'entreprise",
+    "Structurer une demande à l'IA grâce à la méthode AXION, partagée par tous",
+    "Situer les usages de l'IA déjà présents dans l'entreprise, service par service",
+    "Repérer les cas d'usage à fort potentiel dans leur propre périmètre",
+    "S'accorder sur des règles communes et des engagements concrets pour la suite",
+  ],
+  beneficeDirigeantFr:
+    "En une journée, toute l'entreprise partage un socle commun, rend visibles les usages IA déjà présents, et repart avec des règles et des engagements concrets par service — un vrai point de départ pour votre politique IA.",
+  equationTempsFr:
+    "1 journée réunissant toute l'entreprise → un socle commun, une cartographie réelle des usages, et une feuille de route collective formalisée le jour même.",
+  modalites: ["presentiel"],
+  programme: [
+    {
+      titreFr: "Séquence 1 — Ouverture et socle commun",
+      steps: [
+        { titre: "Ouverture par la direction : pourquoi cette journée, ce qui est attendu, ce qui sera fait des décisions prises" },
+        { titre: "Le fonctionnement de l'IA générative expliqué simplement : ce qu'elle sait faire, où elle se trompe" },
+        { titre: "Panorama des outils (ChatGPT, Claude, Gemini, Copilot) et où on les retrouve déjà" },
+        { titre: "Les risques à connaître : hallucinations, biais, excès de confiance, fuite de données" },
+        { titre: "Le cadre : RGPD, IA Act, et ce que l'entreprise doit à ses collaborateurs" },
+        { titre: "Ce qu'on ne soumet jamais à une IA — la règle que tout le monde repart en connaissant" },
+        { titre: "QCM de validation des acquis" },
+        { temps: "Livrable", titre: "Charte IA entreprise + guide des bonnes pratiques et de sécurité, en langage simple" },
+      ],
+    },
+    {
+      titreFr: "Séquence 2 — Où en est notre entreprise, vraiment ?",
+      steps: [
+        { titre: "Sondage en direct et anonyme : qui utilise quoi, pour quelles tâches, à quelle fréquence" },
+        { titre: "Le résultat affiché devant tout le monde : ce que la direction découvre presque toujours" },
+        { titre: "Travail par table : chaque service cartographie ses usages, déclarés et non déclarés" },
+        { titre: "Restitution en plénière : la photographie réelle de l'entreprise, construite par elle-même" },
+        { titre: "QCM de validation des acquis" },
+        { temps: "Livrable", titre: "Cartographie des usages IA de l'entreprise, produite par les participants" },
+      ],
+    },
+    {
+      titreFr: "Séquence 3 — Se donner une méthode commune",
+      steps: [
+        { titre: "La méthode AXION en 5 leviers : Acteur, conteXte, Intention, Output, Normes" },
+        { titre: "Démonstration en direct : transformer une demande vague en résultat exploitable, sur un cas de la salle" },
+        { titre: "Exercice par table : chaque groupe construit un prompt AXION sur un cas de son service" },
+        { titre: "Démonstration : créer un assistant IA en quelques minutes, à partir d'un besoin de la salle" },
+        { titre: "QCM de validation des acquis" },
+        { temps: "Livrable", titre: "Bibliothèque de plus de 500 prompts AXION par métier + fiche mémo + kits assistants" },
+      ],
+    },
+    {
+      titreFr: "Séquence 4 — Le concours d'astuces",
+      steps: [
+        { titre: "Chaque table présente sa meilleure trouvaille : un usage, une astuce, un gain de temps réel" },
+        { titre: "Le formateur reprend chaque proposition, l'améliore et la généralise aux autres services" },
+        { titre: "Sélection collective des astuces à diffuser dans toute l'entreprise" },
+        { titre: "QCM de validation des acquis" },
+        { temps: "Livrable", titre: "Recueil des astuces de l'entreprise, compilé à partir des présentations" },
+      ],
+    },
+    {
+      titreFr: "Séquence 5 — Nos règles et nos engagements",
+      steps: [
+        { titre: "Les cas d'usage prioritaires qui ressortent de la journée, hiérarchisés collectivement" },
+        { titre: "Les règles communes : ce qu'on s'autorise, ce qu'on s'interdit, qui tranche en cas de doute" },
+        { titre: "Qui porte le sujet ensuite : le rôle du référent IA et les engagements de la direction" },
+        { titre: "Chaque service repart avec trois engagements concrets, écrits et annoncés devant les autres" },
+        { titre: "Bilan de la journée et questions ouvertes + QCM de validation des acquis" },
+        { temps: "Livrable", titre: "Feuille de route collective + engagements par service, formalisés le jour même" },
+      ],
+    },
+  ],
+  faqs: [
+    {
+      question: "Est-ce une formation ou une conférence ?",
+      reponse:
+        "Ni l'un ni l'autre. Ce n'est pas une formation déguisée (à 50 personnes, pas d'accompagnement individuel écran par écran — ce sont nos formations en groupe de 15 qui font ça), et ce n'est pas une conférence (plus de la moitié de la journée est du travail collectif par table). Le séminaire pose un socle commun et prépare les formations, il ne les remplace pas.",
+    },
+    {
+      question: "Pourquoi le présentiel uniquement ?",
+      reponse:
+        "Un séminaire dont l'objet est de fédérer les équipes n'a pas de sens à distance : le travail par table, les restitutions, les échanges entre services ne survivent pas à 50 personnes en salles virtuelles. Si le présentiel n'est pas possible, nos formations en groupe de 15 se dispensent aussi bien à distance.",
+    },
+    {
+      question: "Combien de participants et quelle organisation de salle ?",
+      reponse:
+        "Jusqu'à 50 participants, en tables de 6 à 8 personnes, de préférence en mélangeant les services. Il faut un vidéoprojecteur ou grand écran, une sonorisation adaptée, un paperboard par table et une connexion internet couvrant la salle (pour le sondage et les QCM depuis les téléphones).",
+    },
+  ],
+};
+
 export const FORMATIONS_V2: ReadonlyArray<FormationV2> = [
   BIEN_DEMARRER_4H,
   BIEN_DEMARRER_JOURNEE_7H,
@@ -1813,8 +1933,19 @@ export const FORMATIONS_V2: ReadonlyArray<FormationV2> = [
   IA_MARKETING_7H,
   IA_VENTE_7H,
   IA_FINANCE_7H,
+  SEMINAIRE_IA_ENTREPRISE,
 ];
 
+
+/** Formations « classiques » (exclut les séminaires) pour l'affichage catalogue. */
+export function getFormationsV2(): ReadonlyArray<FormationV2> {
+  return FORMATIONS_V2.filter((f) => !f.seminaire);
+}
+
+/** Séminaires (rubrique dédiée). */
+export function getSeminairesV2(): ReadonlyArray<FormationV2> {
+  return FORMATIONS_V2.filter((f) => f.seminaire);
+}
 
 /** Formation par id/slug (FR ou EN). */
 export function getFormationV2(idOrSlug: string): FormationV2 | undefined {

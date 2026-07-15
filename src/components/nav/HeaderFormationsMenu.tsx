@@ -102,6 +102,46 @@ export function HeaderFormationsMenu({
             ))}
           </ul>
 
+          {/* Raccourcis par métier */}
+          <p className="text-fg-muted mt-4 mb-2 px-1 text-[11px] font-semibold tracking-[0.16em] uppercase">
+            {isFr ? "Par métier" : "By role"}
+          </p>
+          <ul className="xs:grid-cols-2 grid grid-cols-1 gap-1.5">
+            {(
+              [
+                ["/formations/ia-rh-recrutement-talents-7h", isFr ? "RH & recrutement" : "HR & recruitment"],
+                ["/formations/ia-vente-prospection-developpement-commercial-7h", isFr ? "Vente & prospection" : "Sales & prospecting"],
+                ["/formations/ia-marketing-contenus-seo-image-de-marque-7h", isFr ? "Marketing & SEO" : "Marketing & SEO"],
+                ["/formations/ia-finance-reporting-analyses-pilotage-7h", isFr ? "Finance & pilotage" : "Finance & reporting"],
+                ["/formations/ia-assistanat-mails-comptes-rendus-documents-7h", isFr ? "Assistanat & bureau" : "Office support"],
+              ] as ReadonlyArray<readonly [string, string]>
+            ).map(([href, label]) => (
+              <li key={href}>
+                <Link
+                  href={href as never}
+                  onClick={close}
+                  className="hover:bg-sand focus-visible:ring-terracotta text-fg block rounded-lg px-3 py-2 text-sm font-semibold tracking-tight transition focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Séminaire — rubrique dédiée */}
+          <Link
+            href={"/formations/seminaire-ia-toute-l-entreprise-1j" as never}
+            onClick={close}
+            className="hover:bg-sand focus-visible:ring-terracotta mt-1.5 block rounded-lg px-3 py-2 transition focus-visible:ring-2 focus-visible:outline-none"
+          >
+            <span className="text-fg block text-sm font-semibold tracking-tight">
+              {isFr ? "Séminaire — toute l'entreprise" : "Seminar — whole company"}
+            </span>
+            <span className="text-fg-muted block text-[12px]">
+              {isFr ? "1 journée · présentiel · jusqu'à 50 personnes" : "1 day · on-site · up to 50 people"}
+            </span>
+          </Link>
+
           {/* Pied — liens utilitaires */}
           <div className="border-border mt-3 flex items-center justify-between border-t pt-3">
             <Link

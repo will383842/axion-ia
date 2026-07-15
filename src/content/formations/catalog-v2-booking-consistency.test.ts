@@ -6,7 +6,7 @@
 // rendre réservables sur `/reserver`. Cette page a été supprimée et la nouvelle
 // offre AXION est 100 % « Sur devis » : les formations passent par devis /
 // contact, PAS par le calendrier. On verrouille donc le NOUVEL invariant :
-//   1. le catalogue compte 14 formations AXION ;
+//   1. le catalogue compte 15 entrées (14 formations + 1 séminaire) ;
 //   2. chaque formation est « Sur devis » (aucun prix matrice, aucune tranche) ;
 //   3. aucune formation n'est réservable via le calendrier (devis-only).
 // (Le retrait complet du moteur de booking legacy est un chantier séparé.)
@@ -16,8 +16,8 @@ import { FORMATIONS_V2, getFormationV2Brackets } from "./catalog-v2";
 import { findBookableBySlug } from "@/content/booking-catalog";
 
 describe("catalog-v2 — offre AXION « Sur devis », découplée du calendrier", () => {
-  it("le catalogue compte 14 formations AXION", () => {
-    expect(FORMATIONS_V2).toHaveLength(14);
+  it("le catalogue compte 15 entrées (14 formations + 1 séminaire)", () => {
+    expect(FORMATIONS_V2).toHaveLength(15);
   });
 
   it("chaque formation est « Sur devis » (aucun prix matrice, aucune tranche)", () => {

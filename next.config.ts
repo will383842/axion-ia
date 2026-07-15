@@ -259,7 +259,7 @@ const nextConfig: NextConfig = {
         // Sans équivalent direct → hub /formations
         ["ia-sur-le-terrain", ""],
         ["automatisations-decouverte", ""],
-        ["ia-transformation-equipe", ""],
+        ["ia-transformation-equipe", "seminaire-ia-toute-l-entreprise-1j"],
         ["agents-automatisations", ""],
         ["agents-automatisations-avance", ""],
       ].map(([from, to]) => ({

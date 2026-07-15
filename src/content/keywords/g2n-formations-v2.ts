@@ -236,4 +236,19 @@ export const KEYWORDS_FORMATIONS_V2: KeywordSeed[] = [
       metaDescription: "Formation IA construite avec vous : theme, public et cas pratiques definis ensemble, en presentiel ou distanciel. Sur devis.",
     },
   },
+  {
+    keyword: "séminaire ia toute l'entreprise",
+    intent: "transactionnel",
+    module: M,
+    cible: "pme",
+    priorite: 2,
+    niveau: 1,
+    formationFormat: "ponctuel",
+    urlCible: "/fr/formations/seminaire-ia-toute-l-entreprise-1j",
+    injection: {
+      h1: "Séminaire IA en entreprise — fédérer toutes vos équipes en une journée",
+      metaTitle: "Séminaire IA en entreprise — toute l'équipe | Axion-IA",
+      metaDescription: "Séminaire IA d'une journée en présentiel, jusqu'à 50 personnes : cadrer les usages, partager la méthode AXION, fédérer les équipes et repartir avec des engagements concrets.",
+    },
+  },
 ];
