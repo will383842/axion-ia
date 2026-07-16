@@ -53,6 +53,12 @@ export const FILE_TO_SLOT: Readonly<Record<string, string>> = {
   "05": "ressources",
   "06": "programme",
   "07": "scenario_pedagogique",
+  // Livrables participants (offre AXION 2026-07) — actifs partagés.
+  "11": "memo_methode",
+  "12": "charte_ia",
+  "13": "bibliotheque_prompts",
+  "14": "kits_assistants",
+  "15": "guide_cas_usage",
 };
 
 /** Slot diaporama (depuis 00_Presentation : .pptx source + slides .pdf). FORMATION seule. */
