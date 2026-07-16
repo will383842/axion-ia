@@ -16,14 +16,14 @@ import {
 
 describe("intervention-documents-catalog — dérivation booking-catalog", () => {
   it("dérive les prestations par famille (cross-check booking-catalog)", () => {
-    expect(getInterventionsByFamille("formation").length).toBe(17);
+    expect(getInterventionsByFamille("formation").length).toBe(15);
     expect(getInterventionsByFamille("un_a_un").length).toBe(5);
     expect(getInterventionsByFamille("audit").length).toBe(4);
-    expect(getAllInterventions().length).toBe(26);
+    expect(getAllInterventions().length).toBe(24);
   });
 
   it("résout une prestation par slug → bonne famille", () => {
-    expect(getInterventionBySlug("ia-express")?.famille).toBe("formation");
+    expect(getInterventionBySlug("bien-demarrer-avec-l-ia-4h")?.famille).toBe("formation");
     expect(getInterventionBySlug("un-a-un-recurrent")?.famille).toBe("un_a_un");
     expect(getInterventionBySlug("audit-flash-onsite")?.famille).toBe("audit");
     expect(getInterventionBySlug("slug-inexistant")).toBeUndefined();
@@ -37,20 +37,20 @@ describe("intervention-documents-catalog — dérivation booking-catalog", () =>
 });
 
 describe("intervention-documents-catalog — sous-groupes d'affichage", () => {
-  it("formations : 4 groupes par durée couvrant les 17, ordre 4 h → 1 j → 2 j → 3 j", () => {
+  it("formations : groupes par durée couvrant les 15 (offre AXION), ordre 4 h → 1 j → 2 j → 3 j", () => {
     const groups = getInterventionsSousGroupes("formation");
     expect(groups).not.toBeNull();
     const total = groups!.reduce((n, g) => n + g.interventions.length, 0);
-    expect(total).toBe(17);
+    expect(total).toBe(15);
     expect(groups!.every((g) => g.interventions.length > 0)).toBe(true);
     expect(groups!.map((g) => g.titre)).toEqual(["4 heures", "1 jour", "2 jours", "3 jours"]);
     const slugs = groups!.flatMap((g) => g.interventions.map((i) => i.slug));
-    expect(new Set(slugs).size).toBe(17);
+    expect(new Set(slugs).size).toBe(15);
   });
 
-  it("formations : IA Express rangé dans « 4 heures »", () => {
+  it("formations : Bien démarrer (4 h) rangé dans « 4 heures »", () => {
     const g4h = getInterventionsSousGroupes("formation")!.find((g) => g.key === "4h");
-    expect(g4h?.interventions.some((i) => i.slug === "ia-express")).toBe(true);
+    expect(g4h?.interventions.some((i) => i.slug === "bien-demarrer-avec-l-ia-4h")).toBe(true);
   });
 
   it("1-to-1 : groupé par public (Dirigeant / Collaborateur / Suivi régulier), couvre les 5", () => {

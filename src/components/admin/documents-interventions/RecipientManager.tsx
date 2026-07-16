@@ -130,7 +130,7 @@ export function RecipientManager({ recipients }: { recipients: Recipient[] }): R
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             className="border-border mt-1 block w-40 rounded border px-2 py-1 text-xs"
-            placeholder="ia-express"
+            placeholder="bien-demarrer-avec-l-ia-4h"
           />
         </label>
         <button

@@ -27,10 +27,10 @@
 
 import {
   BOOKING_CATALOG,
-  FORMATION_DUREE_BY_SLUG,
   type BookingCategoryId,
   type FormationDuree,
 } from "@/content/booking-catalog";
+import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 
 // ============================================================================
 // Types
@@ -542,25 +542,36 @@ export interface InterventionRef {
   duree?: FormationDuree;
 }
 
-/** Liste des prestations d'une famille, dérivée du booking-catalog (SSOT). */
+/**
+ * Liste des prestations d'une famille.
+ *
+ * Refonte offre AXION (2026-07) : la famille FORMATION dérive du catalogue
+ * formations V2 (`catalog-v2.ts`, SSOT public — 14 formations + 1 séminaire).
+ * Le booking-catalog (legacy, découplé des formations) ne liste que l'ancienne
+ * offre ; il reste la source des familles 1-to-1 et audit, toujours d'actualité.
+ */
 export function getInterventionsByFamille(
   famille: InterventionFamille,
 ): ReadonlyArray<InterventionRef> {
+  if (famille === "formation") {
+    return FORMATIONS_V2.map((f) => ({
+      slug: f.slugFr,
+      labelFr: f.titreFr,
+      // Contenu 100 % FR (EN désactivé 301→FR) : le label EN reprend le FR.
+      labelEn: f.titreFr,
+      famille,
+      duree: f.duree,
+    }));
+  }
   const bookingId = FAMILLE_TO_BOOKING[famille];
   const cat = BOOKING_CATALOG.find((c) => c.id === bookingId);
   if (!cat) return [];
-  return cat.formats.map((f) => {
-    // La durée n'existe que pour les formations ; on n'ajoute la clé que si elle
-    // est résolue (exactOptionalPropertyTypes : pas de clé à `undefined`).
-    const duree = famille === "formation" ? FORMATION_DUREE_BY_SLUG[f.slug] : undefined;
-    return {
-      slug: f.slug,
-      labelFr: f.labelFr,
-      labelEn: f.labelEn,
-      famille,
-      ...(duree ? { duree } : {}),
-    };
-  });
+  return cat.formats.map((f) => ({
+    slug: f.slug,
+    labelFr: f.labelFr,
+    labelEn: f.labelEn,
+    famille,
+  }));
 }
 
 // ============================================================================
