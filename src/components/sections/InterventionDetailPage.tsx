@@ -26,6 +26,8 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
 import { InterventionBenefitsGrid } from "@/components/sections/intervention-parts/InterventionBenefitsGrid";
+import { InterventionCasUsageGrid } from "@/components/sections/intervention-parts/InterventionCasUsageGrid";
+import { getUnAUnCasUsage } from "@/content/interventions/un-a-un-cas-usage";
 import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
 import {
   INTERVENTION_DETAIL_CONFIGS,
@@ -60,6 +62,7 @@ const CALENDAR_SUPPORTED_FORMAT_SLUGS: ReadonlySet<string> = new Set([
 export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
   const isFr = locale === "fr";
   const config = INTERVENTION_DETAIL_CONFIGS[slug];
+  const casUsage = getUnAUnCasUsage(slug);
   const family = getFamily(config.familySlug);
   const priceFr = config.priceFlatEur ? formatAmount(config.priceFlatEur, "fr") : "Sur devis";
   const priceEn = config.priceFlatEur ? formatAmount(config.priceFlatEur, "en") : "On request";
@@ -266,6 +269,24 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
       >
         <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
       </Section>
+
+      {/* CAS D'USAGE ILLUSTRÉS — parité visuelle avec les fiches formation. */}
+      {casUsage.length > 0 ? (
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Objectifs & cas d'usage" : "Objectives & use cases"}
+          title={isFr ? "Ce que vous saurez faire —" : "What you will be able to do —"}
+          titleEm={isFr ? "cas d'usage concret" : "concrete use case"}
+          description={
+            isFr
+              ? "Des compétences directement applicables sur vos vrais dossiers, travaillées ensemble."
+              : "Skills directly applicable to your real files, worked on together."
+          }
+          contentClassName={TIGHT_X}
+        >
+          <InterventionCasUsageGrid items={casUsage} isFr={isFr} />
+        </Section>
+      ) : null}
 
       {/* BANDEAU CONTACT — orientation (parité pages-intention). */}
       <ContactBand
