@@ -677,6 +677,7 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
               ? { readabilityScore: cgJob.readabilityScore }
               : {}),
             ...(cgJob.plagiarismScore !== null ? { plagiarismScore: cgJob.plagiarismScore } : {}),
+            ...(cgJob.editorialScore !== null ? { editorialScore: cgJob.editorialScore } : {}),
             generatedByJobId: cgJob.id,
             ...(cgJob.campaignId ? { campaignId: cgJob.campaignId } : {}),
             ...(resolvedCategoryId ? { categoryId: resolvedCategoryId } : {}),
@@ -719,6 +720,7 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
               ? { readabilityScore: cgJob.readabilityScore }
               : {}),
             ...(cgJob.plagiarismScore !== null ? { plagiarismScore: cgJob.plagiarismScore } : {}),
+            ...(cgJob.editorialScore !== null ? { editorialScore: cgJob.editorialScore } : {}),
             // P4 (2026-06-21) — `promotedAt` N'EST PLUS posé au publish (cf. bloc tier
             // ci-dessus) : la naissance tier-1 est conservée mais l'article devient
             // éligible à la démotion par performance (lifecycle CTR). Reste null →

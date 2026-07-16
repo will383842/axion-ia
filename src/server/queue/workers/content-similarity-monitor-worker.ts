@@ -16,10 +16,8 @@
 import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
-import {
-  readContentGenConfig,
-  writeContentGenConfig,
-} from "@/server/actions/content-gen/_settings";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { persistContentGenConfig } from "@/server/content-gen/config-store";
 
 const QUEUE_NAME = "content-similarity-monitor";
 
@@ -130,7 +128,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   pairs.sort((p1, p2) => p2.jaccard - p1.jaccard);
   const top100 = pairs.slice(0, 100);
 
-  await writeContentGenConfig(
+  await persistContentGenConfig(
     "similarity_pairs",
     top100,
     "similarity-monitor-worker",

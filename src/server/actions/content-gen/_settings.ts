@@ -14,7 +14,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { writeAuditLog } from "@/server/content-gen/audit-log";
+import { persistContentGenConfig } from "@/server/content-gen/config-store";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 
 /**
@@ -54,39 +54,12 @@ export async function writeContentGenConfig(
   const session = await requireAdminWriteRateLimited(`writeContentGenConfig:${key}`);
 
   // City Domination 2026-05-18 P1-9 (audit A10) — SOC2 audit trail diff.
-  // On lit la valeur EXISTANTE avant l'upsert pour capturer le delta. Read
-  // d'abord puis upsert n'est pas atomique vs. lecture concurrente, mais
-  // l'audit trail tolère la course (rare en pratique côté admin UI human-paced).
-  const existing = await prisma.contentGenConfig.findUnique({
-    where: { key },
-    select: { value: true },
-  });
-  const oldValue = existing?.value ?? null;
-
-  await prisma.contentGenConfig.upsert({
-    where: { key },
-    create: {
-      key,
-      value: value as never,
-      description: description ?? null,
-      updatedBy,
-    },
-    update: {
-      value: value as never,
-      ...(description !== undefined ? { description } : {}),
-      updatedBy,
-    },
-  });
-
-  // Append audit log best-effort (échec n'invalide pas l'upsert ci-dessus).
-  await writeAuditLog({
-    action: "writeContentGenConfig",
-    settingKey: key,
-    oldValue,
-    newValue: value,
-    actorUserId: session.userId,
-    actorEmail: session.email,
-    ...(description !== undefined ? { description } : {}),
+  // L'upsert + l'audit trail vivent dans `config-store` (module serveur nu) : les
+  // workers BullMQ écrivent via ce même chemin sans passer par le guard admin
+  // ci-dessus, qui throw hors requête HTTP (cf. en-tête de config-store.ts).
+  await persistContentGenConfig(key, value, updatedBy, description, {
+    userId: session.userId,
+    email: session.email,
   });
 }
 

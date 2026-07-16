@@ -24,10 +24,8 @@ import crypto from "node:crypto";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
-import {
-  readContentGenConfig,
-  writeContentGenConfig,
-} from "@/server/actions/content-gen/_settings";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { persistContentGenConfig } from "@/server/content-gen/config-store";
 import { parseFeed, type FeedItem } from "@/server/queue/lib/feed-parser";
 import type { ContentGenJobPayload } from "./content-gen-worker";
 
@@ -412,7 +410,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   // Cap "seen" cache à MAX_SEEN entries (LRU FIFO trim)
   const allSeen = Array.from(seenHashes);
   const capped = allSeen.length > MAX_SEEN ? allSeen.slice(-MAX_SEEN) : allSeen;
-  await writeContentGenConfig(SEEN_KEY, capped, "rss-fetch-worker", "RSS items seen cache");
+  await persistContentGenConfig(SEEN_KEY, capped, "rss-fetch-worker", "RSS items seen cache");
 
   console.log(
     `[rss-fetch-worker] ${totalEnqueued} items new from ${sources.length} sources (${newSeen.length} hashes added)`,

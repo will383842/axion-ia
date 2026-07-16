@@ -81,7 +81,12 @@ vi.mock("@/server/queue/lib/feed-parser", () => ({
 
 vi.mock("@/server/actions/content-gen/_settings", () => ({
   readContentGenConfig: readConfigMock,
-  writeContentGenConfig: writeConfigMock,
+}));
+
+// L'écriture passe par `config-store` (module nu) et non par la Server Action
+// `_settings`, dont le guard admin throw hors requête HTTP (bug `headers` 2026-07-16).
+vi.mock("@/server/content-gen/config-store", () => ({
+  persistContentGenConfig: writeConfigMock,
 }));
 
 vi.mock("@/server/queue/lib/sentry-worker", () => ({
