@@ -1,10 +1,11 @@
 /**
- * Qualiopi — Seed des 17 offres du CATALOGUE V2 (back-office).
+ * Qualiopi — Seed des offres du CATALOGUE V2 (back-office). Offre AXION
+ * (refonte 2026-07) : 15 offres (14 formations + 1 séminaire).
  *
  * Dérivé du SSOT `src/content/formations/catalog-v2.ts`. Le PRIX n'est PAS stocké :
  * `tierId` est null, le prix dérive de `FORMATION_PRICE_MATRIX` (pricing.ts) via
  * `gamme` + `dureeCode` (cf. pricing-resolver). Idempotent (par slug) et non
- * destructif. Codes AXI-OFF-012 → 028 (après les 11 offres legacy).
+ * destructif. Codes AXI-OFF-101 → 115 (hors collision avec les codes legacy).
  *
  * ⚠️ Requiert la migration `20260611140000_formations_v2_gamme` (champs gamme,
  * dureeCode, tier_id nullable, enum collectif_3jours).
@@ -33,9 +34,11 @@ const DUREE_HEURES: Record<FormationDuree, [number, number]> = {
 const MODALITES_V2 = ["presentiel", "distanciel"];
 
 function offreCodeV2(index: number): string {
-  // Code STABLE dérivé du numéro catalogue (1-17 → AXI-OFF-012…028), après les
-  // 11 offres legacy (001-011). Indépendant de l'ordre d'itération (anti-collision).
-  return `AXI-OFF-${String(index + 11).padStart(3, "0")}`;
+  // Code STABLE dérivé du numéro catalogue. Offre AXION (refonte 2026-07) :
+  // série 101+ (numéro 1-15 → AXI-OFF-101…115) pour NE PAS entrer en collision
+  // avec les codes déjà occupés en base — offres legacy (001-011) + ancien
+  // catalogue V2 (012-028), toujours présentes après la refonte.
+  return `AXI-OFF-${String(index + 100).padStart(3, "0")}`;
 }
 
 /** Seed idempotent (par slug) des 17 offres catalogue V2. */
