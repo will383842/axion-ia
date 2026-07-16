@@ -25,6 +25,8 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
 import { InterventionBenefitsGrid } from "@/components/sections/intervention-parts/InterventionBenefitsGrid";
+import { InterventionCasUsageGrid } from "@/components/sections/intervention-parts/InterventionCasUsageGrid";
+import { getUnAUnCasUsage } from "@/content/interventions/un-a-un-cas-usage";
 import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
 import {
   getFamily,
@@ -221,6 +223,7 @@ const TIGHT_X = "lg:px-6 xl:px-10";
 export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
   const isFr = locale === "fr";
   const config = COACHING_CONFIGS[slug];
+  const casUsage = getUnAUnCasUsage(slug);
   const entry: InterventionFormatEntry | undefined = INTERVENTION_FORMATS.find(
     (e) => e.slug === slug,
   );
@@ -382,6 +385,24 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
       >
         <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
       </Section>
+
+      {/* CAS D'USAGE ILLUSTRÉS — parité visuelle avec les fiches formation. */}
+      {casUsage.length > 0 ? (
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Objectifs & cas d'usage" : "Objectives & use cases"}
+          title={isFr ? "Ce que vous saurez faire —" : "What you will be able to do —"}
+          titleEm={isFr ? "cas d'usage concret" : "concrete use case"}
+          description={
+            isFr
+              ? "Des compétences directement applicables sur vos vrais dossiers, travaillées ensemble."
+              : "Skills directly applicable to your real files, worked on together."
+          }
+          contentClassName={TIGHT_X}
+        >
+          <InterventionCasUsageGrid items={casUsage} isFr={isFr} />
+        </Section>
+      ) : null}
 
       {/* BANDEAU CONTACT — orientation (parité pages-intention). */}
       <ContactBand
