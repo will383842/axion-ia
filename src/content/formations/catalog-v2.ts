@@ -128,6 +128,40 @@ const BIEN_DEMARRER_4H: FormationV2 = {
     "Débutants complets et collaborateurs qui utilisent déjà l'IA générative de façon occasionnelle, sans méthode ni cadre. L'objectif premier est de démystifier l'IA avant d'en faire un outil du quotidien : lever les blocages et les idées reçues pour que chacun ose s'en servir sans crainte.",
   prerequisFr:
     "Aucun prérequis technique ni expérience de l'IA. Formation essentiellement démonstrative ; seul l'exercice du module 3 demande un ordinateur et un compte Claude gratuit (création en quelques clics, sans carte bancaire).",
+  casUsageFr: [
+    {
+      texteFr: "Rédiger un premier prompt AXION efficace sur un cas réel de son métier",
+      imageSrc: "/illustrations/formations/fiches/bien-demarrer-avec-l-ia-4h/cas-1.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Créer son premier assistant IA personnalisé, pas à pas",
+      imageSrc: "/illustrations/formations/fiches/bien-demarrer-avec-l-ia-4h/cas-2.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Repérer les réponses douteuses de l'IA avant de les réutiliser",
+      imageSrc: "/illustrations/formations/fiches/bien-demarrer-avec-l-ia-4h/cas-3.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Repartir avec 3 à 5 cas d'usage applicables dès le lendemain",
+      imageSrc: "/illustrations/formations/fiches/bien-demarrer-avec-l-ia-4h/cas-4.webp",
+      imageCredit: {
+        name: "Kelly Sikkema",
+        url: "https://unsplash.com/@kellysikkema?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Démystifier l'IA générative : comprendre simplement ce qu'elle sait bien faire et où elle se trompe, sans jargon",
     "Se sentir légitime et en confiance face à l'IA, sans craindre de « mal faire »",
@@ -291,6 +325,40 @@ const BIEN_DEMARRER_JOURNEE_7H: FormationV2 = {
     "Formation d'initiation destinée aux débutants complets ainsi qu'aux collaborateurs qui utilisent déjà l'IA générative de façon occasionnelle, sans méthode ni cadre structuré. Son objectif premier est de démystifier l'IA avant d'en faire un outil du quotidien : lever les blocages et les idées reçues, pour que chacun ose s'en servir sans crainte.",
   prerequisFr:
     "Aucun prérequis technique ni expérience de l'IA. La formation est essentiellement démonstrative. Pour les exercices pratiques des modules 2 et 3, chaque participant doit disposer d'un ordinateur et d'un compte Claude gratuit (création en quelques clics, sans carte bancaire) ; des comptes Gemini et ChatGPT gratuits sont un plus mais ne sont pas indispensables.",
+  casUsageFr: [
+    {
+      texteFr: "Rédiger et tester ses prompts AXION sur ses propres cas métier",
+      imageSrc: "/illustrations/formations/fiches/bien-demarrer-avec-l-ia-journee-7h/cas-1.webp",
+      imageCredit: {
+        name: "maks_d",
+        url: "https://unsplash.com/@maks_d?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Créer son assistant IA et le répliquer sur un second outil",
+      imageSrc: "/illustrations/formations/fiches/bien-demarrer-avec-l-ia-journee-7h/cas-2.webp",
+      imageCredit: {
+        name: "Jakub Żerdzicki",
+        url: "https://unsplash.com/@jakubzerdzicki?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Savoir ce qu'on confie à l'IA et ce qu'on protège (RGPD, IA Act)",
+      imageSrc: "/illustrations/formations/fiches/bien-demarrer-avec-l-ia-journee-7h/cas-3.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Construire sa feuille de route IA personnelle à 3 mois",
+      imageSrc: "/illustrations/formations/fiches/bien-demarrer-avec-l-ia-journee-7h/cas-4.webp",
+      imageCredit: {
+        name: "Hugo Rocha",
+        url: "https://unsplash.com/@hugorrocha?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Démystifier l'IA générative : comprendre simplement ce qu'elle sait bien faire et où elle se trompe, sans jargon technique",
     "Se sentir légitime et en confiance face à l'IA, sans craindre de « mal faire » ou de passer pour un débutant",
@@ -492,6 +560,40 @@ const PROMPTS_AVANCES_ASSISTANTS_4H: FormationV2 = {
     "Collaborateurs ayant déjà une pratique de l'IA générative — ayant suivi une formation Axion-IA, ou utilisant déjà régulièrement ChatGPT, Claude ou Gemini — et souhaitant structurer leur pratique du prompt et créer leurs premiers assistants IA, dans un format court.",
   prerequisFr:
     "Une première utilisation de l'IA générative est nécessaire : cette formation ne s'adresse pas à des débutants complets. Disposer d'un ordinateur et d'un compte Claude gratuit pour les exercices pratiques.",
+  casUsageFr: [
+    {
+      texteFr: "Structurer des prompts avancés exploitables du premier coup",
+      imageSrc: "/illustrations/formations/fiches/prompts-avances-et-assistants-ia-4h/cas-1.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Créer des assistants spécialisés nourris de ses documents de référence",
+      imageSrc: "/illustrations/formations/fiches/prompts-avances-et-assistants-ia-4h/cas-2.webp",
+      imageCredit: {
+        name: "Domenico Loia",
+        url: "https://unsplash.com/@domenicoloia?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Décomposer une tâche complexe en étapes que l'IA enchaîne",
+      imageSrc: "/illustrations/formations/fiches/prompts-avances-et-assistants-ia-4h/cas-3.webp",
+      imageCredit: {
+        name: "ThisisEngineering",
+        url: "https://unsplash.com/@thisisengineering?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Industrialiser ses tâches récurrentes avec des assistants réutilisables",
+      imageSrc: "/illustrations/formations/fiches/prompts-avances-et-assistants-ia-4h/cas-4.webp",
+      imageCredit: {
+        name: "João Victor da Silva Ribeiro",
+        url: "https://unsplash.com/@rjoaovictorbhmg?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Structurer n'importe quel prompt grâce à la méthode AXION et à des techniques avancées",
     "Créer un master prompt capable de générer des prompts experts adaptés à chaque situation",
@@ -639,6 +741,44 @@ const GAGNER_DU_TEMPS_7H: FormationV2 = {
     "Collaborateurs ayant déjà une première pratique de l'IA générative — ayant suivi notre formation débutant, ou utilisant déjà occasionnellement ChatGPT, Claude ou Gemini — et souhaitant passer d'un usage basique à un usage avancé pour gagner du temps sur leurs tâches quotidiennes.",
   prerequisFr:
     "Une première utilisation de l'IA générative est nécessaire (ChatGPT, Claude ou Gemini) : cette formation ne s'adresse pas à des débutants complets. Disposer d'un ordinateur et d'un compte Claude gratuit pour les exercices pratiques.",
+  casUsageFr: [
+    {
+      texteFr: "Traiter sa boîte mail deux fois plus vite : tri, réponses, relances",
+      imageSrc:
+        "/illustrations/formations/fiches/gagner-du-temps-au-quotidien-avec-l-ia-7h/cas-1.webp",
+      imageCredit: {
+        name: "Hayley Kim Studios",
+        url: "https://unsplash.com/@hayleykimstudios?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Produire un compte-rendu structuré à partir de notes brutes",
+      imageSrc:
+        "/illustrations/formations/fiches/gagner-du-temps-au-quotidien-avec-l-ia-7h/cas-2.webp",
+      imageCredit: {
+        name: "JESHOOTS.COM",
+        url: "https://unsplash.com/@jeshoots?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Synthétiser un document long en points clés et actions",
+      imageSrc:
+        "/illustrations/formations/fiches/gagner-du-temps-au-quotidien-avec-l-ia-7h/cas-3.webp",
+      imageCredit: {
+        name: "Wesley Tingey",
+        url: "https://unsplash.com/@wesleyphotography?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Confier une tâche récurrente à un agent qui travaille pour vous",
+      imageSrc:
+        "/illustrations/formations/fiches/gagner-du-temps-au-quotidien-avec-l-ia-7h/cas-4.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Mobiliser des techniques de prompt avancées, au-delà des bases, pour obtenir des résultats plus précis et plus fiables",
     "Créer un assistant IA avancé, avec base de connaissances, sur plusieurs outils",
@@ -814,6 +954,40 @@ const CLAUDE_PRISE_EN_MAIN_7H: FormationV2 = {
     "Collaborateurs disposant d\'une pratique de l\'IA générative et souhaitant se spécialiser sur Claude : le paramétrer, le connecter à leurs outils métiers et le personnaliser sur leurs cas d\'usage.",
   prerequisFr:
     "Une pratique régulière de l\'IA générative est nécessaire — cette formation ne s\'adresse pas à des débutants complets. Disposer d\'un ordinateur et d\'un compte Claude Pro (ou supérieur) : les fonctionnalités travaillées (connecteurs, Skills) ne sont pas disponibles en version gratuite.",
+  casUsageFr: [
+    {
+      texteFr: "Maîtriser Claude au quotidien : rédaction, analyse, relecture",
+      imageSrc: "/illustrations/formations/fiches/claude-prise-en-main-complete-7h/cas-1.webp",
+      imageCredit: {
+        name: "AllGo - An App For Plus Size People",
+        url: "https://unsplash.com/@canweallgo?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Produire documents et visuels directement avec les Artifacts",
+      imageSrc: "/illustrations/formations/fiches/claude-prise-en-main-complete-7h/cas-2.webp",
+      imageCredit: {
+        name: "Theme Photos",
+        url: "https://unsplash.com/@themephotos?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Organiser son travail en projets avec ses documents de référence",
+      imageSrc: "/illustrations/formations/fiches/claude-prise-en-main-complete-7h/cas-3.webp",
+      imageCredit: {
+        name: "Corinne Kutz",
+        url: "https://unsplash.com/@corinnekutz?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Connecter Claude à son environnement de travail",
+      imageSrc: "/illustrations/formations/fiches/claude-prise-en-main-complete-7h/cas-4.webp",
+      imageCredit: {
+        name: "GoodNotes 5",
+        url: "https://unsplash.com/@goodnotes?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Identifier les spécificités de Claude, ses forces et ses limites, et choisir le bon modèle selon la tâche",
     "Paramétrer et sécuriser son compte Claude : confidentialité, mémoire, styles de réponse",
@@ -976,6 +1150,44 @@ const CLAUDE_MAITRISE_AVANCEE_2J: FormationV2 = {
     "Équipes ayant déjà suivi une formation Axion-IA (débutant ou productivité), ou disposant d'une pratique confirmée de l'IA générative, et souhaitant déployer un environnement Claude complet et opérationnel pour leur métier. Cette formation ne s'adresse pas à des débutants complets.",
   prerequisFr:
     "Avoir suivi une formation Axion-IA de niveau débutant ou productivité, ou disposer d'une pratique confirmée de l'IA générative. Chaque participant doit disposer d'un ordinateur et d'un compte Claude Pro (ou supérieur) : les fonctionnalités avancées travaillées pendant ces 2 jours (connecteurs, Cowork) nécessitent un plan payant.",
+  casUsageFr: [
+    {
+      texteFr: "Déployer plusieurs assistants spécialisés pour son équipe",
+      imageSrc:
+        "/illustrations/formations/fiches/claude-maitrise-avancee-et-autonomie-2j/cas-1.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Créer des Skills réutilisables pour standardiser les productions",
+      imageSrc:
+        "/illustrations/formations/fiches/claude-maitrise-avancee-et-autonomie-2j/cas-2.webp",
+      imageCredit: {
+        name: "Creatopy",
+        url: "https://unsplash.com/@creatopy?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Construire un prototype fonctionnel sans écrire de code",
+      imageSrc:
+        "/illustrations/formations/fiches/claude-maitrise-avancee-et-autonomie-2j/cas-3.webp",
+      imageCredit: {
+        name: "AllGo - An App For Plus Size People",
+        url: "https://unsplash.com/@canweallgo?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Automatiser des tâches multi-étapes de bout en bout",
+      imageSrc:
+        "/illustrations/formations/fiches/claude-maitrise-avancee-et-autonomie-2j/cas-4.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Maîtriser les fonctionnalités avancées de Claude : Projects, Skills et connecteurs",
     "Créer et déployer plusieurs assistants IA opérationnels, connectés à ses outils métiers",
@@ -1217,6 +1429,40 @@ const CLAUDE_CODE_PROJET_3J: FormationV2 = {
     "Toute personne qui a besoin d\'un outil et ne sait pas coder : chargé de projet, responsable métier, indépendant, dirigeant de petite structure, assistant, chargé d\'études. Cette formation s\'adresse aux profils non techniques — elle n\'est pas conçue pour des développeurs confirmés, qui y trouveraient un rythme trop lent. Elle est dispensée en intra-entreprise, en groupe unique par société, autour d\'un projet fil rouge universel : un outil interne de suivi de demandes, construit du premier au dernier jour.",
   prerequisFr:
     "Aucune compétence en programmation ni connaissance préalable de l\'IA. Il faut simplement être à l\'aise avec un ordinateur : installer un logiciel, organiser des fichiers, naviguer sur le web. Chaque participant dispose de son ordinateur de travail avec les droits d\'installation. Trois comptes doivent être opérationnels avant le premier jour : un abonnement Claude payant (Pro ou Max), Claude Code n\'existant pas en version gratuite ; un compte GitHub gratuit pour conserver le projet ; un compte d\'hébergement web gratuit pour le publier le troisième jour. La liste des hébergeurs compatibles est transmise en amont, et un accompagnement à la création des comptes est prévu si besoin.",
+  casUsageFr: [
+    {
+      texteFr: "Concevoir un outil interne sur mesure, sans écrire de code",
+      imageSrc: "/illustrations/formations/fiches/claude-code-creer-un-projet-3j/cas-1.webp",
+      imageCredit: {
+        name: "Hal Gatewood",
+        url: "https://unsplash.com/@halacious?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Construire écran par écran, en dialoguant en français",
+      imageSrc: "/illustrations/formations/fiches/claude-code-creer-un-projet-3j/cas-2.webp",
+      imageCredit: {
+        name: "AllGo - An App For Plus Size People",
+        url: "https://unsplash.com/@canweallgo?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Tester et faire corriger son application comme un chef de projet",
+      imageSrc: "/illustrations/formations/fiches/claude-code-creer-un-projet-3j/cas-3.webp",
+      imageCredit: {
+        name: "Štefan Štefančík",
+        url: "https://unsplash.com/@cikstefan?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Publier un outil que toute l'équipe utilise",
+      imageSrc: "/illustrations/formations/fiches/claude-code-creer-un-projet-3j/cas-4.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Comprendre ce qu\'est un agent de code et ce qu\'il peut faire à sa place, sans jargon technique",
     "Installer Claude Code et choisir la surface adaptée à son niveau (application de bureau, web, terminal)",
@@ -1500,6 +1746,40 @@ const IA_ACT_CONFORMITE_7H: FormationV2 = {
   ],
   publicViseFr:
     "Dirigeants, managers, référents IA et toute personne impliquée dans le déploiement, la supervision ou la conformité de l'IA en entreprise. Formation également adaptée aux collaborateurs utilisateurs souhaitant comprendre le cadre légal de leurs pratiques IA au quotidien.",
+  casUsageFr: [
+    {
+      texteFr: "Cartographier ses usages IA par niveau de risque",
+      imageSrc: "/illustrations/formations/fiches/ia-act-conformite-et-securite-7h/cas-1.webp",
+      imageCredit: {
+        name: "Redd Francisco",
+        url: "https://unsplash.com/@reddfrancisco?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Mettre sa charte IA et ses procédures en conformité",
+      imageSrc: "/illustrations/formations/fiches/ia-act-conformite-et-securite-7h/cas-2.webp",
+      imageCredit: {
+        name: "Md Ishak Rahman",
+        url: "https://unsplash.com/@mdishakrahman?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Sécuriser les données confiées aux outils d'IA",
+      imageSrc: "/illustrations/formations/fiches/ia-act-conformite-et-securite-7h/cas-3.webp",
+      imageCredit: {
+        name: "Sasun Bughdaryan",
+        url: "https://unsplash.com/@sasun1990?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Bâtir une feuille de route conformité sans freiner l'innovation",
+      imageSrc: "/illustrations/formations/fiches/ia-act-conformite-et-securite-7h/cas-4.webp",
+      imageCredit: {
+        name: "Headway",
+        url: "https://unsplash.com/@headwayio?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Comprendre le calendrier et les obligations de l'IA Act applicables à son entreprise, notamment l'échéance du 2 août 2026",
     "Identifier les risques et les bonnes pratiques de sécurité liés à l'usage de l'IA générative (RGPD, fuite de données, hallucinations)",
@@ -1657,6 +1937,40 @@ const REFERENT_IA_GOUVERNANCE_7H: FormationV2 = {
     "Le noyau gouvernance IA de l'entreprise : la personne désignée comme référent IA, accompagnée le cas échéant du DPO, du responsable informatique, d'un représentant RH et d'un membre de la direction. En pratique, un groupe de 2 à 6 personnes suffit — il ne s'agit pas de former toute une équipe, mais celles et ceux qui portent le sujet.",
   prerequisFr:
     "Avoir suivi la formation Axion-IA « IA Act — Conformité & sécurité de vos usages », ou disposer d'une connaissance équivalente du cadre réglementaire : cette formation ne réexplique pas l'IA Act, elle apprend à le faire vivre au quotidien. Aucun prérequis technique. Disposer d'un ordinateur pour les ateliers documentaires ; aucun compte IA n'est nécessaire.",
+  casUsageFr: [
+    {
+      texteFr: "Cartographier les usages IA réels, service par service",
+      imageSrc: "/illustrations/formations/fiches/referent-ia-piloter-gouvernance-ia-7h/cas-1.webp",
+      imageCredit: {
+        name: "1981 Digital",
+        url: "https://unsplash.com/@1981digital?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Construire une charte et des procédures qui tiennent dans la durée",
+      imageSrc: "/illustrations/formations/fiches/referent-ia-piloter-gouvernance-ia-7h/cas-2.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Constituer le dossier de preuves attendu en cas de contrôle",
+      imageSrc: "/illustrations/formations/fiches/referent-ia-piloter-gouvernance-ia-7h/cas-3.webp",
+      imageCredit: {
+        name: "Zulfugar Karimov",
+        url: "https://unsplash.com/@zulfugarkarimov?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Animer la démarche IA en interne et faire vivre les règles",
+      imageSrc: "/illustrations/formations/fiches/referent-ia-piloter-gouvernance-ia-7h/cas-4.webp",
+      imageCredit: {
+        name: "Mapbox",
+        url: "https://unsplash.com/@mapbox?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Définir le périmètre du rôle de référent IA et son articulation avec le DPO, l'informatique, les RH et la direction",
     "Cartographier les usages IA de l'entreprise, y compris ceux qui échappent au contrôle, et les classer par niveau de risque",
@@ -1859,6 +2173,40 @@ const IA_RH_7H: FormationV2 = {
     "Professionnels des ressources humaines et du recrutement : responsables RH, chargés de recrutement, gestionnaires de carrière, responsables formation, ainsi que les dirigeants de PME qui assurent eux-mêmes la fonction RH.",
   prerequisFr:
     "Aucun prérequis technique. Une première utilisation de l'IA générative est un plus, mais n'est pas indispensable. Pour l'exercice pratique du module 3, chaque participant doit disposer d'un ordinateur et d'un compte Claude gratuit (création en quelques clics, sans carte bancaire).",
+  casUsageFr: [
+    {
+      texteFr: "Rédiger des annonces attractives et conformes au cadre légal",
+      imageSrc: "/illustrations/formations/fiches/ia-rh-recrutement-talents-7h/cas-1.webp",
+      imageCredit: {
+        name: "Markus Winkler",
+        url: "https://unsplash.com/@markuswinkler?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Présélectionner objectivement avec des grilles de critères",
+      imageSrc: "/illustrations/formations/fiches/ia-rh-recrutement-talents-7h/cas-2.webp",
+      imageCredit: {
+        name: "Resume Genius",
+        url: "https://unsplash.com/@resumegenius?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Préparer entretiens et onboarding avec méthode",
+      imageSrc: "/illustrations/formations/fiches/ia-rh-recrutement-talents-7h/cas-3.webp",
+      imageCredit: {
+        name: "Mina Rad",
+        url: "https://unsplash.com/@miinrad?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Protéger les données personnelles des candidats et salariés",
+      imageSrc: "/illustrations/formations/fiches/ia-rh-recrutement-talents-7h/cas-4.webp",
+      imageCredit: {
+        name: "Viktor Talashuk",
+        url: "https://unsplash.com/@viktortalashuk?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Rédiger des prompts RH efficaces grâce à la méthode AXION",
     "Identifier les risques propres aux usages RH : biais de sélection, hallucinations, confidentialité des données candidats",
@@ -2075,6 +2423,44 @@ const IA_ASSISTANAT_7H: FormationV2 = {
     "Assistants de direction, secrétaires, office managers, assistants administratifs, gestionnaires administratifs, chargés d'accueil — toute personne dont le quotidien est fait de mails, de réunions, de comptes-rendus, de courriers et de documents à produire pour les autres.",
   prerequisFr:
     "Aucun prérequis technique. Une première utilisation de l'IA générative est un plus, mais n'est pas indispensable. Disposer d'un ordinateur et d'un compte Claude gratuit (création en quelques clics, sans carte bancaire) pour l'exercice pratique du module 5.",
+  casUsageFr: [
+    {
+      texteFr: "Reprendre la main sur la boîte mail : tri, réponses, relances",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-assistanat-mails-comptes-rendus-documents-7h/cas-1.webp",
+      imageCredit: {
+        name: "LinkedIn Sales Solutions",
+        url: "https://unsplash.com/@linkedinsalesnavigator?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Produire des comptes-rendus impeccables à partir de notes",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-assistanat-mails-comptes-rendus-documents-7h/cas-2.webp",
+      imageCredit: {
+        name: "The Climate Reality Project",
+        url: "https://unsplash.com/@climatereality?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Mettre en forme courriers et documents en un temps record",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-assistanat-mails-comptes-rendus-documents-7h/cas-3.webp",
+      imageCredit: {
+        name: "Gorilla ROI Data Connector",
+        url: "https://unsplash.com/@gorillaroi?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Créer son assistant IA pour chaque tâche récurrente",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-assistanat-mails-comptes-rendus-documents-7h/cas-4.webp",
+      imageCredit: {
+        name: "Mimi Thian",
+        url: "https://unsplash.com/@mimithian?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Rédiger des prompts efficaces grâce à la méthode AXION, appliquée aux tâches de l'assistanat",
     "Identifier les informations qu'il ne faut jamais soumettre à une IA — un enjeu majeur pour un poste qui accède aux données les plus sensibles de l'entreprise",
@@ -2275,6 +2661,44 @@ const IA_MARKETING_7H: FormationV2 = {
     "Professionnels du marketing et de la communication : responsables et chargés de marketing, community managers, rédacteurs, chargés de communication, dirigeants de PME assurant la fonction marketing. Formation dispensée en intra-entreprise, en groupe unique par société, sur des cas marketing transversaux (post LinkedIn, article de blog, newsletter, visuel de campagne) valables dans tout secteur.",
   prerequisFr:
     "Aucun prérequis technique. Une première utilisation de l'IA générative est un plus, mais n'est pas indispensable. Prévoir un ordinateur et un compte Claude gratuit (création en quelques clics, sans carte bancaire) pour les exercices pratiques.",
+  casUsageFr: [
+    {
+      texteFr: "Produire des contenus fidèles à la marque, sans « style IA »",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-marketing-contenus-seo-image-de-marque-7h/cas-1.webp",
+      imageCredit: {
+        name: "Denise Jans",
+        url: "https://unsplash.com/@dmjdenise?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Décliner un contenu en plusieurs formats : post, newsletter, article",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-marketing-contenus-seo-image-de-marque-7h/cas-2.webp",
+      imageCredit: {
+        name: "Austin Distel",
+        url: "https://unsplash.com/@austindistel?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Optimiser ses pages et articles pour le référencement",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-marketing-contenus-seo-image-de-marque-7h/cas-3.webp",
+      imageCredit: {
+        name: "Stephen Dawson",
+        url: "https://unsplash.com/@dawson2406?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Générer des visuels cohérents avec sa charte graphique",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-marketing-contenus-seo-image-de-marque-7h/cas-4.webp",
+      imageCredit: {
+        name: "Brands&People",
+        url: "https://unsplash.com/@brandsandpeople?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Rédiger des prompts marketing efficaces grâce à la méthode AXION",
     "Créer un assistant IA calibré sur le ton et l'identité de sa marque",
@@ -2480,6 +2904,44 @@ const IA_VENTE_7H: FormationV2 = {
     "Commerciaux, business developers, chargés d\'affaires, responsables commerciaux et dirigeants de PME assurant le développement commercial. La formation est spécialisée sur la fonction commerciale mais entièrement standardisée : les démonstrations et exercices s\'appuient sur des cas commerciaux transversaux (recherche de prospects, préparation de rendez-vous, relance, compte-rendu) valables dans tout secteur d\'activité.",
   prerequisFr:
     "Aucun prérequis technique. Une première utilisation de l\'IA générative est un plus, mais n\'est pas indispensable. Prévoir un ordinateur et un compte Claude gratuit (création en quelques clics, sans carte bancaire) pour les exercices pratiques.",
+  casUsageFr: [
+    {
+      texteFr: "Prospecter plus vite : ciblage, messages, séquences de relance",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-vente-prospection-developpement-commercial-7h/cas-1.webp",
+      imageCredit: {
+        name: "Sable Flow",
+        url: "https://unsplash.com/@sableflow?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Préparer chaque rendez-vous avec une fiche prospect complète",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-vente-prospection-developpement-commercial-7h/cas-2.webp",
+      imageCredit: {
+        name: "Romain Dancre",
+        url: "https://unsplash.com/@romaindancre?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Rédiger des propositions et mails commerciaux qui convertissent",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-vente-prospection-developpement-commercial-7h/cas-3.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Créer ses assistants commerciaux : relances, comptes-rendus de RDV",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-vente-prospection-developpement-commercial-7h/cas-4.webp",
+      imageCredit: {
+        name: "Marcel Petzold",
+        url: "https://unsplash.com/@mpsc2021?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Rédiger des prompts commerciaux efficaces grâce à la méthode AXION",
     "Identifier les données commerciales qu\'il ne faut jamais soumettre à une IA, et respecter le RGPD en prospection",
@@ -2683,6 +3145,44 @@ const IA_FINANCE_7H: FormationV2 = {
     "Directeurs administratifs et financiers, contrôleurs de gestion, comptables, responsables administratifs et financiers, gestionnaires et dirigeants de PME assurant le suivi financier — toute personne dont le quotidien mêle production de chiffres et production d'écrits autour de ces chiffres.",
   prerequisFr:
     "Aucun prérequis technique. Une première utilisation de l'IA générative est un plus, mais n'est pas indispensable. Prévoir un ordinateur et un compte Claude gratuit (création en quelques clics, sans carte bancaire) pour l'exercice pratique du module 5.",
+  casUsageFr: [
+    {
+      texteFr: "Produire ses commentaires de gestion en une fraction du temps",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-finance-reporting-analyses-pilotage-7h/cas-1.webp",
+      imageCredit: {
+        name: "Jakub Żerdzicki",
+        url: "https://unsplash.com/@jakubzerdzicki?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Analyser écarts et tendances à partir de ses exports",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-finance-reporting-analyses-pilotage-7h/cas-2.webp",
+      imageCredit: {
+        name: "Mika Baumeister",
+        url: "https://unsplash.com/@kommumikation?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Rédiger synthèses et reportings prêts à diffuser",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-finance-reporting-analyses-pilotage-7h/cas-3.webp",
+      imageCredit: {
+        name: "Vitaly Gariev",
+        url: "https://unsplash.com/@silverkblack?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Fiabiliser ses contrôles avec des garde-fous anti-erreur",
+      imageSrc:
+        "/illustrations/formations/fiches/ia-finance-reporting-analyses-pilotage-7h/cas-4.webp",
+      imageCredit: {
+        name: "Windows",
+        url: "https://unsplash.com/@windows?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Rédiger des prompts efficaces grâce à la méthode AXION, appliquée aux cas de la finance et du contrôle de gestion",
     "Savoir précisément ce qu'on confie à l'IA et ce qui reste dans le tableur — la règle qui évite l'erreur la plus coûteuse du métier",
@@ -2888,6 +3388,40 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     "L'entreprise entière ou un site complet, réunis le même jour : tous services, tous métiers, tous niveaux de maîtrise de l'IA. C'est précisément ce mélange qui fait la valeur de la journée — ceux qui n'ont jamais essayé et ceux qui utilisent déjà l'IA au quotidien. Jusqu'à 50 participants, en tables de 6 à 8.",
   prerequisFr:
     "Aucun prérequis technique ni expérience de l'IA. Aucun compte à créer, aucun logiciel à installer : le séminaire est conçu pour qu'on y participe sans préparation. Chaque participant utilise son téléphone personnel pour le sondage et les QCM (évaluation individuelle et nominative) ; un ordinateur ou un téléphone par table suffit pour les temps collectifs.",
+  casUsageFr: [
+    {
+      texteFr: "Donner un socle commun IA à tous les services, en une journée",
+      imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-1.webp",
+      imageCredit: {
+        name: "Product School",
+        url: "https://unsplash.com/@productschool?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Faire émerger les usages IA déjà présents dans l'entreprise",
+      imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-2.webp",
+      imageCredit: {
+        name: "FORTYTWO",
+        url: "https://unsplash.com/@byfortytwo?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Partager une méthode commune pour bien s'exprimer face à l'IA",
+      imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-3.webp",
+      imageCredit: {
+        name: "Alexandre Pellaes",
+        url: "https://unsplash.com/@apellaes?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+    {
+      texteFr: "Repartir avec des règles communes et des engagements par service",
+      imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-4.webp",
+      imageCredit: {
+        name: "krakenimages",
+        url: "https://unsplash.com/@krakenimages?utm_source=axion-ia&utm_medium=referral",
+      },
+    },
+  ],
   objectifsFr: [
     "Comprendre le fonctionnement, les apports et les risques de l'IA générative, et disposer d'un socle commun de vocabulaire",
     "Identifier les règles de sécurité et de confidentialité applicables à leurs usages, et le cadre légal qui s'impose à l'entreprise",
