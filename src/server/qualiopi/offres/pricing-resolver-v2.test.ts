@@ -12,6 +12,7 @@ import {
   resolveOffrePrice,
   resolveOffrePriceLabel,
   resolveOffrePriceLabelV2,
+  verifyOffreCoherence,
 } from "@/server/qualiopi/offres/pricing-resolver";
 
 describe("resolver V2 — prix catalogue dérivé de la matrice", () => {
@@ -54,5 +55,32 @@ describe("resolver V2 — prix catalogue dérivé de la matrice", () => {
 
   it("gamme/durée inconnus = Sur devis", () => {
     expect(resolveOffrePriceLabelV2("inexistant", "9j", "fr")).toBe("Sur devis");
+  });
+
+  it("tarifType sur_devis PRIME sur la matrice (offre AXION)", () => {
+    for (const f of FORMATIONS_V2) {
+      const label = resolveOffrePrice(
+        { tierId: null, gamme: f.gamme, dureeCode: f.duree, tarifType: "sur_devis" },
+        "fr",
+      );
+      expect(label, f.id).toBe("Sur devis");
+    }
+    expect(
+      resolveOffrePrice(
+        { tierId: null, gamme: "ia-standard", dureeCode: "1j", tarifType: "sur_devis" },
+        "en",
+      ),
+    ).toBe("On quote");
+  });
+
+  it("verifyOffreCoherence : sur_devis = cohérent sans exigence matrice", () => {
+    expect(
+      verifyOffreCoherence({
+        tierId: null,
+        tarifType: "sur_devis",
+        gamme: "ia-standard",
+        dureeCode: "1j",
+      }).ok,
+    ).toBe(true);
   });
 });

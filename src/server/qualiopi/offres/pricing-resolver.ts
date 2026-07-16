@@ -66,9 +66,21 @@ export function resolveOffrePriceLabelV2(
  * l'autre type (admin, fiche).
  */
 export function resolveOffrePrice(
-  offre: { tierId: string | null; gamme: string | null; dureeCode: string | null },
+  offre: {
+    tierId: string | null;
+    gamme: string | null;
+    dureeCode: string | null;
+    /** Si « sur_devis », prime sur toute dérivation (offre AXION 2026-07). */
+    tarifType?: OffreTarifType | null;
+  },
   locale: "fr" | "en" = "fr",
 ): string {
+  // Offre déclarée « sur devis » : aucun prix dérivé (ni matrice ni tier) — le
+  // tarifType stocké est la source de vérité (offre AXION : prix par personne
+  // câblés ultérieurement, jamais les anciens prix matrice).
+  if (offre.tarifType === "sur_devis") {
+    return locale === "fr" ? "Sur devis" : "On quote";
+  }
   if (offre.gamme && offre.dureeCode) {
     return resolveOffrePriceLabelV2(offre.gamme, offre.dureeCode, locale);
   }
@@ -97,6 +109,9 @@ export function verifyOffreCoherence(input: {
   ok: boolean;
   ecarts: string[];
 } {
+  // Offre « sur devis » : cohérente par définition (aucun prix à résoudre —
+  // c'est le mode de l'offre AXION tant que les prix par personne ne sont pas câblés).
+  if (input.tarifType === "sur_devis") return { ok: true, ecarts: [] };
   // Offres catalogue V2 : cohérence = la paire gamme+dureeCode résout un prix dans
   // FORMATION_PRICE_MATRIX (sinon l'offre afficherait silencieusement « Sur devis »).
   if (input.gamme && input.dureeCode) {

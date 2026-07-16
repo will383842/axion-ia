@@ -69,7 +69,7 @@ export async function seedOffresV2(prisma: PrismaClient): Promise<void> {
         dureeHeuresMin: hMin,
         dureeHeuresMax: hMax,
         modalites: MODALITES_V2,
-        tarifType: "a_partir_de" as OffreTarifType,
+        tarifType: "sur_devis" as OffreTarifType, // offre AXION : prix par personne câblés plus tard
         promessePrincipaleFr: f.accrocheFr,
         nbModulesMin: 2,
         nbModulesMax: 6,
@@ -98,6 +98,7 @@ export async function reconcileOffresV2(prisma: PrismaClient): Promise<void> {
     // Recalcule TOUS les champs dérivés (un changement de durée doit aussi
     // resynchroniser format/heures, pas seulement gamme/dureeCode).
     const drift =
+      existing.tarifType !== "sur_devis" ||
       existing.gamme !== f.gamme ||
       existing.dureeCode !== f.duree ||
       existing.formatPedagogique !== format ||
@@ -111,6 +112,7 @@ export async function reconcileOffresV2(prisma: PrismaClient): Promise<void> {
     await prisma.offreSite.update({
       where: { slug: f.slugFr },
       data: {
+        tarifType: "sur_devis" as OffreTarifType,
         gamme: f.gamme,
         dureeCode: f.duree,
         formatPedagogique: format,
