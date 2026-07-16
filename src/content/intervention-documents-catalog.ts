@@ -160,6 +160,49 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
     formats: ["docx", "lien"],
     ordre: 5,
   },
+  // Livrables participants (offre AXION 2026-07) — annoncés dans les programmes
+  // des 15 formations ; actifs PARTAGÉS (mêmes fichiers rattachés à chaque
+  // formation concernée). Même visibilité que le livret (choix Will 2026-06-13).
+  {
+    key: "memo_methode",
+    titre: "Mémo méthode AXION",
+    categorie: "stagiaires",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 11,
+  },
+  {
+    key: "charte_ia",
+    titre: "Charte IA & guide de sécurité",
+    categorie: "stagiaires",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 12,
+  },
+  {
+    key: "bibliotheque_prompts",
+    titre: "Bibliothèque de prompts AXION",
+    categorie: "stagiaires",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 13,
+  },
+  {
+    key: "kits_assistants",
+    titre: "Kits assistants IA clés-en-main",
+    categorie: "stagiaires",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 14,
+  },
+  {
+    key: "guide_cas_usage",
+    titre: "Guide des cas d'usage & feuille de route",
+    categorie: "stagiaires",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 15,
+  },
   // 02 — Formateur (confidentiel)
   {
     key: "diaporama",
