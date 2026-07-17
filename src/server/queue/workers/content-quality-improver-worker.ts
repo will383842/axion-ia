@@ -25,6 +25,11 @@ import {
   type JudgeResult,
   type JudgeThresholds,
 } from "@/server/content-gen/reviewer/llm-judge";
+// Fix 2026-07-17 — routage du verdict (module pur, testable sans mock).
+import {
+  resolveJudgeOutcome,
+  type AutoPublishPolicies,
+} from "@/server/content-gen/quality/judge-outcome";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 // P1-3 — Sentry capture pour observabilité prod (audit S+4-C).
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -39,6 +44,15 @@ function getContentGenQueue(): Queue | null {
   if (!redisUrl) return null;
   contentGenQueue = new Queue("content-gen", { connection: { url: redisUrl } });
   return contentGenQueue;
+}
+
+let publishQueue: Queue | null = null;
+function getPublishQueue(): Queue | null {
+  if (publishQueue) return publishQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return null;
+  publishQueue = new Queue("content-publish", { connection: { url: redisUrl } });
+  return publishQueue;
 }
 
 /** Formate les issues du LLM-judge en feedback lisible pour le re-prompt. */
@@ -258,23 +272,31 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const editorialScoreInt = judge ? Math.round(judge.globalScore * 10) : null; // /100
   const verdict = judge?.verdict ?? "improve";
   const reachedCap = dbJob.qualityImprovementAttempts + 1 >= effectiveMaxAttempts;
-  const shouldRegenerate = verdict === "improve" && !reachedCap && judge !== null;
 
   // P0-7 fix 2026-05-21 — Distinguer REJECT (P0 violation) de cap-reached.
   // Un verdict "reject" du LLM-judge = issues P0 critiques détectées (SIREN hardcodé,
   // violation AI Act, contenu dangereux). Nécessite escalade immédiate vs simple cap.
   const isHardReject = verdict === "reject";
 
+  const policies = await readContentGenConfig<AutoPublishPolicies>("policies", {});
+  const isRss = dbJob.contentType === "blog_from_rss";
+
   // V2 re-prompt loop : si verdict=improve ET cap non atteint → persiste le
   // feedback judge dans outputJsonRaw + re-enqueue content-gen pour re-générer
   // avec le feedback ciblé.
   // P0-7 — REJECT P0 → quarantined_critical (violations AI Act, SIREN hardcodé…).
+  // Fix 2026-07-17 — verdict `publish` → `approved` (cf. resolveJudgeOutcome).
   // Cap atteint sans P0 → needs_review (revue éditoriale standard).
-  const nextStatus = isHardReject
-    ? "quarantined_critical"
-    : shouldRegenerate
-      ? "quality_improving"
-      : "needs_review";
+  const nextStatus = resolveJudgeOutcome({
+    verdict,
+    judgeRan: judge !== null,
+    reachedCap,
+    doctrineCheckPassed: dbJob.doctrineCheckPassed,
+    isRss,
+    policies,
+  });
+  const shouldRegenerate = nextStatus === "quality_improving";
+  const shouldAutoPublish = nextStatus === "approved";
 
   // Persiste le feedback judge dans outputJsonRaw.judgeIssues pour que le
   // content-gen-worker puisse l'injecter dans le prompt de re-génération.
@@ -354,6 +376,76 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       await prisma.contentGenJob.update({
         where: { id: contentGenJobId },
         data: { status: "needs_review" },
+      });
+    }
+  }
+
+  if (shouldAutoPublish) {
+    // Fix 2026-07-17 — le verdict `publish` déclenche la publication, au lieu de
+    // dormir en `needs_review`. Chemin identique à celui du content-gen-worker
+    // (§ « if (nextStatus === "approved") ») : ligne ReviewQueue approuvée puis
+    // enqueue content-publish. Le job sort de la boucle SANS être passé par le
+    // `nextStatus === "approved"` du gen-worker (celui-ci `return` avant la
+    // création de la ReviewQueue quand il route vers `quality_improving`), donc
+    // c'est bien ici qu'il faut la créer — d'où l'upsert (idempotent, `jobId` est
+    // @unique) qui couvre aussi le cas d'une ligne laissée par une passe antérieure.
+    const publishQ = getPublishQueue();
+    if (publishQ) {
+      const score = dbJob.qualityScore ?? 0;
+      const autoPromoteTier1MinScore = policies.factoryAutoPromoteTier1MinScore ?? 50;
+      const finalTier = (dbJob.outputJsonRaw as Record<string, unknown> | null)?.[
+        "finalIndexationTier"
+      ];
+      // Même formule que le gen-worker : le score DÉTERMINISTE (pas l'editorialScore
+      // du juge) décide de la promotion tier-1, et un contenu déclassé tier_3 par un
+      // garde-fou (soft-404…) n'est jamais promu. Un article validé par le juge mais
+      // sous le seuil publie donc en tier_2_noindex_follow — publié, hors index.
+      const shouldPromoteTier1 =
+        score >= autoPromoteTier1MinScore && finalTier !== "tier_3_noindex_nofollow";
+
+      const review = await prisma.reviewQueue.upsert({
+        where: { jobId: contentGenJobId },
+        create: {
+          jobId: contentGenJobId,
+          status: "approved",
+          reviewedAt: new Date(),
+          reviewNotes: `[auto-pub juge] verdict=publish — éditorial ${judge?.globalScore.toFixed(1) ?? "?"}/10, qualité ${score}/100`,
+        },
+        update: {
+          status: "approved",
+          reviewedAt: new Date(),
+          reviewNotes: `[auto-pub juge] verdict=publish — éditorial ${judge?.globalScore.toFixed(1) ?? "?"}/10, qualité ${score}/100`,
+        },
+        select: { id: true },
+      });
+
+      await publishQ.add(
+        "publish",
+        { reviewQueueId: review.id, promoteToTier1: shouldPromoteTier1 },
+        { jobId: `publish-${review.id}` },
+      );
+      await logStep(
+        contentGenJobId,
+        "publish",
+        `Auto-publication sur verdict juge=publish → ${shouldPromoteTier1 ? "tier_1_indexable" : "tier_2_noindex_follow"}`,
+        {
+          editorial_score: editorialScoreInt,
+          quality_score: score,
+          promote_tier1: shouldPromoteTier1,
+          auto_promote_min_score: autoPromoteTier1MinScore,
+        },
+      );
+    } else {
+      // Redis absent — fail-soft : needs_review, Will publiera manuellement.
+      await prisma.contentGenJob.update({
+        where: { id: contentGenJobId },
+        data: { status: "needs_review" },
+      });
+      await logGeneration({
+        jobId: contentGenJobId,
+        level: "warn",
+        step: "quality_loop_pass",
+        message: "Verdict publish mais Redis absent — bascule needs_review (publication manuelle).",
       });
     }
   }
