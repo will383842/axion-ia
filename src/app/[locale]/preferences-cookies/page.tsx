@@ -7,6 +7,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { CookieConsentControl } from "@/components/analytics/CookieConsentControl";
 import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
@@ -69,9 +70,15 @@ export default async function CookiePreferencesPage({ params }: Props) {
           </p>
           <p>
             {isFr
-              ? "Si vous activez explicitement notre analytics auto-hébergé Plausible (Sprint 23), aucune donnée personnelle n'est collectée et aucun cookie n'est utilisé — anonymisation IP côté serveur."
-              : "If you explicitly enable our self-hosted Plausible analytics (Sprint 23), no personal data is collected and no cookies are used — server-side IP anonymisation."}
+              ? "Notre analytics auto-hébergé Plausible est toujours actif : aucune donnée personnelle n'est collectée et aucun cookie n'est utilisé — anonymisation IP côté serveur. Il ne requiert donc pas votre consentement."
+              : "Our self-hosted Plausible analytics is always active: no personal data is collected and no cookies are used — server-side IP anonymisation. It therefore requires no consent."}
           </p>
+          <p>
+            {isFr
+              ? "Le seul outil soumis à votre consentement est Microsoft Clarity (heatmaps et session replay anonymisé, transfert UE → US encadré par des clauses contractuelles types). Il dépose les cookies _clck et _clsk et n'est chargé qu'après votre accord explicite. Vous pouvez revenir sur ce choix ci-dessous, à tout moment."
+              : "The only tool subject to your consent is Microsoft Clarity (anonymised heatmaps and session replay, EU → US transfer under standard contractual clauses). It sets the _clck and _clsk cookies and only loads after your explicit agreement. You can change that choice below, at any time."}
+          </p>
+          <CookieConsentControl />
           <p>
             {isFr
               ? "Pour exercer vos droits RGPD ou demander un journal complet des cookies déposés, écrivez à"
