@@ -125,7 +125,7 @@ const BIEN_DEMARRER_4H: FormationV2 = {
   titreFr: "Bien démarrer avec l'IA",
   accrocheFr: "L'IA sans le stress — ChatGPT, Claude & Gemini pour bien démarrer, en 4 heures",
   h1Fr: "Formation IA pour bien démarrer en entreprise (4 heures)",
-  metaTitleFr: "Formation IA débutant en entreprise — 4h | Axion-IA",
+  metaTitleFr: "Formation IA débutant en entreprise — 4h",
   metaDescriptionFr:
     "Formation IA d'initiation, 4 h, sans prérequis : démystifier l'IA, maîtriser un prompt efficace avec la méthode AXION, créer son premier assistant.",
   termesSemantiquesFr: [
@@ -320,7 +320,7 @@ const BIEN_DEMARRER_JOURNEE_7H: FormationV2 = {
   accrocheFr:
     "L'IA sans le stress — ChatGPT, Claude & Gemini, de la découverte à la mise en pratique, en une journée",
   h1Fr: "Formation IA pour bien démarrer en entreprise (journée complète, 7 heures)",
-  metaTitleFr: "Formation IA débutant en entreprise — 1 jour | Axion-IA",
+  metaTitleFr: "Formation IA débutant en entreprise — 1 jour",
   metaDescriptionFr:
     "Formation IA d'initiation sur une journée, sans prérequis : démystifier l'IA, rédiger un prompt efficace avec la méthode AXION, créer son assistant IA.",
   termesSemantiquesFr: [
@@ -555,7 +555,7 @@ const PROMPTS_AVANCES_ASSISTANTS_4H: FormationV2 = {
   titreFr: "Prompts avancés & assistants IA",
   accrocheFr: "L'IA sans le stress — prompts avancés et assistants IA en une demi-journée",
   h1Fr: "Formation prompts avancés & assistants IA en entreprise (4 heures)",
-  metaTitleFr: "Formation prompts avancés & assistants IA — 4h | Axion-IA",
+  metaTitleFr: "Formation prompts avancés & assistants IA — 4h",
   metaDescriptionFr:
     "Formation IA de 4 h pour structurer sa pratique du prompt avec la méthode AXION, créer un master prompt et déployer ses assistants IA. Présentiel ou distanciel.",
   termesSemantiquesFr: [
@@ -737,7 +737,7 @@ const GAGNER_DU_TEMPS_7H: FormationV2 = {
   accrocheFr:
     "L'IA sans le stress — passer d'un usage basique à un usage avancé avec ChatGPT, Claude & Gemini, en une journée",
   h1Fr: "Formation IA pour gagner du temps au quotidien (1 jour)",
-  metaTitleFr: "Formation IA productivité en entreprise — 1 jour | Axion-IA",
+  metaTitleFr: "Formation IA productivité en entreprise — 1 jour",
   metaDescriptionFr:
     "Formation IA d'une journée pour passer d'un usage basique à avancé : prompts experts avec la méthode AXION, assistants IA avec base de connaissances, agent.",
   termesSemantiquesFr: [
@@ -951,7 +951,7 @@ const CLAUDE_PRISE_EN_MAIN_7H: FormationV2 = {
   accrocheFr:
     "L\'IA sans le stress — faire de Claude un véritable outil de travail personnalisé, en une journée",
   h1Fr: "Formation Claude en entreprise : prise en main complète (1 jour)",
-  metaTitleFr: "Formation Claude en entreprise — 1 jour | Axion-IA",
+  metaTitleFr: "Formation Claude en entreprise — 1 jour",
   metaDescriptionFr:
     "Formation Claude d'une journée pour utilisateurs réguliers : prompt avancé, Artifacts, paramétrage, création de Skills et connecteurs. Présentiel ou distanciel.",
   termesSemantiquesFr: [
@@ -1146,7 +1146,7 @@ const CLAUDE_MAITRISE_AVANCEE_2J: FormationV2 = {
   accrocheFr:
     "L'IA sans le stress — 2 jours pour déployer un environnement Claude opérationnel, sans dépendre d'outils tiers",
   h1Fr: "Formation Claude avancée : maîtrise et autonomie en entreprise (2 jours)",
-  metaTitleFr: "Formation Claude avancée & autonomie — 2j | Axion-IA",
+  metaTitleFr: "Formation Claude avancée & autonomie — 2j",
   metaDescriptionFr:
     "Formation Claude avancée, 2 jours : Projects, Skills, connecteurs et Cowork. Déployez plusieurs assistants, un prototype et des tâches automatisées.",
   termesSemantiquesFr: [
@@ -1431,7 +1431,7 @@ const CLAUDE_CODE_PROJET_3J: FormationV2 = {
   accrocheFr:
     "L\'IA sans le stress — 3 jours pour concevoir, construire et publier un vrai projet, même sans savoir coder",
   h1Fr: "Formation Claude Code : créer un projet de bout en bout, sans coder (3 jours)",
-  metaTitleFr: "Formation Claude Code sans coder — 3 jours | Axion-IA",
+  metaTitleFr: "Formation Claude Code sans coder — 3 jours",
   metaDescriptionFr:
     "Formation Claude Code, 3 jours, pour profils non techniques : concevoir, construire et publier un vrai projet de bout en bout sans écrire de code. Présentiel.",
   termesSemantiquesFr: [
@@ -1748,7 +1748,7 @@ const IA_ACT_CONFORMITE_7H: FormationV2 = {
   accrocheFr:
     "L'IA sans le stress — cartographiez vos usages, sécurisez vos données et repartez avec votre feuille de route de mise en conformité IA Act, en une journée",
   h1Fr: "Formation IA Act : conformité et sécurité des usages IA en entreprise (1 jour)",
-  metaTitleFr: "Formation IA Act : conformité & sécurité — 1 jour | Axion-IA",
+  metaTitleFr: "Formation IA Act : conformité & sécurité — 1 jour",
   metaDescriptionFr:
     "Formation IA Act d'1 jour : comprendre le calendrier et les obligations, cartographier vos usages par niveau de risque et sécuriser vos données sensibles.",
   termesSemantiquesFr: [
@@ -1944,7 +1944,7 @@ const REFERENT_IA_GOUVERNANCE_7H: FormationV2 = {
   accrocheFr:
     "L'IA sans le stress — outiller la personne qui porte le sujet IA dans votre entreprise, en une journée",
   h1Fr: "Formation Référent IA : piloter la gouvernance de l'IA en entreprise (1 jour)",
-  metaTitleFr: "Formation Référent IA — gouvernance de l'IA, 1 jour | Axion-IA",
+  metaTitleFr: "Formation Référent IA — gouvernance de l'IA, 1 jour",
   metaDescriptionFr:
     "Formation référent IA (1 jour) : cartographier les usages, construire charte et procédures, piloter la conformité et animer l'IA en interne. En petit groupe.",
   termesSemantiquesFr: [
@@ -2179,7 +2179,7 @@ const IA_RH_7H: FormationV2 = {
   accrocheFr:
     "L'IA au service des ressources humaines, en toute conformité — sourcing, annonces, onboarding et talents, en une journée",
   h1Fr: "Formation IA pour les ressources humaines et le recrutement (1 jour)",
-  metaTitleFr: "Formation IA pour les RH et le recrutement — 1 jour | Axion-IA",
+  metaTitleFr: "Formation IA pour les RH et le recrutement — 1 jour",
   metaDescriptionFr:
     "Formation IA RH, 1 jour : maîtriser le prompt RH avec la méthode AXION, respecter le cadre légal, créer un assistant RH et outiller sourcing et annonces.",
   termesSemantiquesFr: [
@@ -2430,7 +2430,7 @@ const IA_ASSISTANAT_7H: FormationV2 = {
   accrocheFr:
     "L'IA sans le stress — reprendre la main sur un quotidien saturé de mails, de réunions et de documents, en 1 jour",
   h1Fr: "Formation IA pour l'assistanat en entreprise (1 jour)",
-  metaTitleFr: "Formation IA assistanat — mails & CR, 1j | Axion-IA",
+  metaTitleFr: "Formation IA assistanat — mails & CR, 1j",
   metaDescriptionFr:
     "Formation IA d'1 jour pour assistants et office managers : reprendre la main sur sa boîte mail, produire comptes-rendus et documents plus vite. Sans jargon.",
   termesSemantiquesFr: [
@@ -2668,7 +2668,7 @@ const IA_MARKETING_7H: FormationV2 = {
   accrocheFr:
     "L'IA sans le stress — produire plus vite sans sacrifier votre image de marque, en 1 journée",
   h1Fr: "Formation IA marketing : contenus, SEO et image de marque (1 jour)",
-  metaTitleFr: "Formation IA marketing, contenus & SEO — 1 jour | Axion-IA",
+  metaTitleFr: "Formation IA marketing, contenus & SEO — 1 jour",
   metaDescriptionFr:
     "Formation IA marketing, 1 jour : prompts avec la méthode AXION, assistant calibré sur votre marque, contenus sans « style IA », SEO et visuels de marque.",
   termesSemantiquesFr: [
@@ -2911,7 +2911,7 @@ const IA_VENTE_7H: FormationV2 = {
   accrocheFr:
     "L\'IA sans le stress — passer moins de temps à chercher, plus de temps à vendre, en 1 journée",
   h1Fr: "Formation IA pour la vente et la prospection commerciale (1 jour)",
-  metaTitleFr: "Formation IA vente & prospection — 1 jour | Axion-IA",
+  metaTitleFr: "Formation IA vente & prospection — 1 jour",
   metaDescriptionFr:
     "Formation IA pour commerciaux, 1 jour : prospecter, préparer ses rendez-vous et relancer avec la méthode AXION, créer ses assistants IA commerciaux.",
   termesSemantiquesFr: [
@@ -3151,7 +3151,7 @@ const IA_FINANCE_7H: FormationV2 = {
   accrocheFr:
     "L'IA sans le stress — reprenez du temps sur tout ce qui entoure les chiffres : commentaires de gestion, analyses d'écarts, synthèses et écrits récurrents, en 1 jour",
   h1Fr: "Formation IA pour la finance et le contrôle de gestion (1 jour)",
-  metaTitleFr: "Formation IA Finance & contrôle de gestion — 1j | Axion-IA",
+  metaTitleFr: "Formation IA Finance & contrôle de gestion — 1j",
   metaDescriptionFr:
     "Formation IA finance, 1 jour : produire commentaires de gestion, analyses d'écarts et synthèses en une fraction du temps avec la méthode AXION. Sur devis.",
   termesSemantiquesFr: [
@@ -3404,7 +3404,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   accrocheFr:
     "Une journée en présentiel pour cadrer les usages de l'IA et fédérer toutes vos équipes — jusqu'à 50 participants",
   h1Fr: "Séminaire IA en entreprise — fédérer toutes vos équipes en une journée",
-  metaTitleFr: "Séminaire IA en entreprise — toute l'équipe | Axion-IA",
+  metaTitleFr: "Séminaire IA en entreprise — toute l'équipe",
   metaDescriptionFr:
     "Séminaire IA d'une journée en présentiel, jusqu'à 50 personnes : cadrer les usages, partager la méthode AXION et fédérer toutes vos équipes.",
   termesSemantiquesFr: [

@@ -54,6 +54,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
 // ISR 24h — aligné sur les pages services canoniques (/audit, /interventions,
 // /implementation). Sans ce flag, la home reste sur le comportement par défaut
@@ -79,7 +80,10 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
       path: "/",
       title: titleStr,
       description: isFr
-        ? "Formations IA finançables OPCO, certifié Qualiopi. Audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention entreprise."
+        ? // Claim Qualiopi/OPCO gaté Phase B (fuyait en SERP, flag purgé 2026-07-14).
+          isQualiopiPublicDisclosureEnabled()
+          ? "Formations IA finançables OPCO, certifié Qualiopi. Audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention entreprise."
+          : "Formations IA en entreprise, audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention, partout en France."
         : `Senior-only AI consultancy, zero middlemen. Audits, training, 1-to-1 coaching, implementations for SMBs. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
       alternates: { fr: "/", en: "/" },
     }),

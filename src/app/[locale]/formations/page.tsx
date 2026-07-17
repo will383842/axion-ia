@@ -48,6 +48,7 @@ import { ServiceHero } from "@/components/sections/ServiceHero";
 // brand SVG inline + animations CSS subtiles. Remplace HeroMatrix (trop dense)
 // et l'orbital générique (pas assez travaillé).
 import { HeroOrbital } from "@/components/sections/HeroOrbital";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -67,6 +68,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const fromPrice = formatAmount(getFormationCatalogPriceRange().minEur, loc);
+  // Claim Qualiopi/OPCO gaté Phase B — il fuyait en SERP alors que tout le reste
+  // de la page est gaté (purge du flag 2026-07-14). ISR 1h le réinjecte au flip.
+  const qualiopiSerp = isQualiopiPublicDisclosureEnabled()
+    ? "certifié Qualiopi, finançables OPCO"
+    : "15 programmes éprouvés";
   return buildProductMetadata({
     locale,
     path: "/formations",
@@ -79,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
-        ? "Formation IA présentiel ou distanciel, adaptée à votre secteur et votre entreprise — +17 programmes, certifié Qualiopi, finançables OPCO. Vos équipes gagnent du temps dès le lendemain."
+        ? `Formation IA présentiel ou distanciel, adaptée à votre secteur et votre entreprise — ${qualiopiSerp}. Vos équipes gagnent du temps dès le lendemain.`
         : `Corporate AI training on site for SMEs and large companies: 4 one-shot formats (4 h to 3 d+) or monthly/bi-monthly recurring programmes. Dedicated AI trainer, continuous upskilling, instant time savings. From ${fromPrice}.`,
   });
 }
