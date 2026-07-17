@@ -192,7 +192,7 @@ export default async function PricingPage({ params }: Props) {
     },
   ];
 
-  // Module formations — 100 % SUR DEVIS depuis la refonte AXION (#327/#339) :
+  // Module formations — 100 % SUR DEVIS depuis la refonte AXION (PR 327 et 339) :
   // les 15 fiches sont `surDevis`, cette page ne doit plus afficher les anciens
   // tiers chiffrés (décision Will 2026-07-17). Même patron que la plateforme.
   const formationsSection = {
