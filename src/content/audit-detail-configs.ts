@@ -33,13 +33,16 @@ import {
 // migration des ids → casse tôt). `getTierById` de pricing.ts cible
 // `PricingTier`, pas `PricingSubTier` (descriptionFr/En requis), d'où ce helper
 // local dédié aux AUDIT_*_SUB_TIERS.
-const subTierPrice = (tiers: ReadonlyArray<PricingSubTier>, id: string): number => {
+const subTierOf = (tiers: ReadonlyArray<PricingSubTier>, id: string): PricingSubTier => {
   const tier = tiers.find((t) => t.id === id);
   if (!tier) {
     throw new Error(`[audit-detail-configs] sous-tier introuvable : "${id}"`);
   }
-  return tier.priceFlat;
+  return tier;
 };
+
+const subTierPrice = (tiers: ReadonlyArray<PricingSubTier>, id: string): number =>
+  subTierOf(tiers, id).priceFlat;
 
 // Raccourcis prix dérivés de la SSOT pricing.ts (priceFlat des sous-tiers).
 // Toute modification de tarif se fait dans pricing.ts — ces constantes suivent.
@@ -55,7 +58,10 @@ const PRICE_PME_50_250 = subTierPrice(
   AUDIT_STRATEGIQUE_PME_SUB_TIERS,
   "audit-strategique-pme-50-250",
 );
-const PRICE_ETI_BASE = subTierPrice(AUDIT_STRATEGIQUE_ETI_SUB_TIERS, "audit-strategique-eti-base");
+// L'ETI est un plancher (`isFromPrice`), pas un prix ferme — d'où le sous-tier
+// complet et non juste son montant : la carte lit le flag depuis la SSOT.
+const ETI_BASE = subTierOf(AUDIT_STRATEGIQUE_ETI_SUB_TIERS, "audit-strategique-eti-base");
+const PRICE_ETI_BASE = ETI_BASE.priceFlat;
 
 export interface AuditBenefit {
   icon: LucideIcon;
@@ -633,8 +639,11 @@ const ETI_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Mid-cap · 1-2 BU · 1-2 sites",
     rangeFr: "3-4 services majeurs",
     rangeEn: "3-4 major services",
-    priceLabelFr: formatAmount(PRICE_ETI_BASE, "fr"),
-    priceLabelEn: formatAmount(PRICE_ETI_BASE, "en", { compact: true }),
+    priceLabelFr: formatAmount(PRICE_ETI_BASE, "fr", { from: ETI_BASE.isFromPrice === true }),
+    priceLabelEn: formatAmount(PRICE_ETI_BASE, "en", {
+      compact: true,
+      from: ETI_BASE.isFromPrice === true,
+    }),
     bodyFr:
       "Audit stratégique pour ETI 1-2 BU. 9 semaines, 20-30 interviews, plan 60-80 pages, restitution COMEX + board, 30 j d'accompagnement post-audit inclus.",
     bodyEn:

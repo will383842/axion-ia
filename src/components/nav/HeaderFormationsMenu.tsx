@@ -168,8 +168,13 @@ export function HeaderFormationsMenu({
             >
               {isFr ? "Comment ça se passe" : "How it works"}
             </Link>
+            {/* Will 2026-07-17 — pointait sur /formations/tarifs (matrices
+                formations only) ; « Voir les tarifs » doit mener au récap
+                multi-modules /tarifs, cible de l'onglet Tarifs du header. Le
+                lien entrant vers /formations/tarifs est repris par le hub
+                /formations (sous les cards durée) pour ne pas l'orpheliner. */}
             <Link
-              href={"/formations/tarifs" as never}
+              href={"/tarifs" as never}
               onClick={close}
               className="text-fg-soft hover:text-terracotta px-1 text-[13px] font-medium transition"
             >

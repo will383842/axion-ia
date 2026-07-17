@@ -31,8 +31,16 @@ export interface PricingSubTier {
   rangeFr: string;
   /** Détail EN. */
   rangeEn: string;
-  /** Prix fixe HT en EUR. */
+  /** Prix HT en EUR. Plancher (« à partir de ») si `isFromPrice` est true. */
   priceFlat: number;
+  /**
+   * Si `true`, `priceFlat` est un **plancher** et non un prix ferme : l'UI doit
+   * afficher « À partir de X € HT » (cf. `formatAmount(..., { from: true })`).
+   * Le champ reste `priceFlat` — `PricingSubTier` n'a volontairement pas de
+   * `priceMin` : le montant reste un scalaire unique, seule sa présentation
+   * change. Défaut : `false` (prix ferme).
+   */
+  isFromPrice?: boolean;
   /** Mis en avant dans l'UI (« ★ Recommandé »). */
   isFeatured?: boolean;
 }
@@ -163,9 +171,15 @@ export const AUDIT_STRATEGIQUE_ETI_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "1-2 BU · 1-2 sites",
     rangeFr: "3-4 services",
     rangeEn: "3-4 services",
-    // Will 2026-06-03 — l'ETI n'est plus un prix plancher fixe : « à partir de
-    // 1 900 € · sur devis » (le chiffrage réel se fait au cas par cas).
+    // Will 2026-06-03 — l'ETI n'est plus un prix ferme : « à partir de 1 900 € ·
+    // sur devis » (le chiffrage réel se fait au cas par cas).
+    // Will 2026-07-17 — `isFromPrice` ajouté : jusqu'ici l'intention ci-dessus
+    // n'était pas implémentée et la carte détail rendait « 1 900 € HT » en prix
+    // FERME, sous le tier ETI dont l'en-tête annonçait « À partir de 1 900 € ».
+    // Le montant est inchangé (le test D-ETI-PRIX 🔒 le verrouille) : seule la
+    // présentation devient un plancher, conforme à la décision du 2026-06-03.
     priceFlat: 1900,
+    isFromPrice: true,
     isFeatured: true,
   },
 ];
@@ -870,11 +884,22 @@ export interface FormatAmountOptions {
    * Défaut : `false` (canonical, affiche « HT »).
    */
   compact?: boolean;
+  /**
+   * Si `true`, préfixe « À partir de » / « Starting at » — le montant est un
+   * plancher, pas un prix ferme. Formulation alignée sur `formatPrice()` (la
+   * branche `priceMin`) pour un rendu identique entre en-tête de tier et carte
+   * de sous-tier. Opt-in par call-site : plusieurs copies écrivent déjà « À
+   * partir de » à la main autour de `formatAmount()` (ex `promiseFr` ETI) et ne
+   * doivent PAS recevoir un second préfixe. Sans effet sur le repli « sur
+   * devis » du filet anti-NaN ci-dessous. Défaut : `false`.
+   */
+  from?: boolean;
 }
 
 /**
  * Formate un montant brut en € HT — « 490 € HT » (FR) / « €490 (excl. VAT) » (EN).
  * Avec `{ compact: true }` : « 490 € » / « €490 ».
+ * Avec `{ from: true }` : « À partir de 490 € HT » / « Starting at €490 (excl. VAT) ».
  * Utile quand le montant n'est pas un PricingTier (homepage messages, copy
  * SEO, etc.).
  */
@@ -893,10 +918,16 @@ export function formatAmount(
     return locale === "fr" ? "sur devis" : "on request";
   }
   const compact = opts.compact === true;
-  if (locale === "fr") {
-    return compact ? `${fmtNumber(amount, "fr")} €` : `${fmtNumber(amount, "fr")} € HT`;
-  }
-  return compact ? `€${fmtNumber(amount, "en")}` : `€${fmtNumber(amount, "en")} (excl. VAT)`;
+  const base =
+    locale === "fr"
+      ? compact
+        ? `${fmtNumber(amount, "fr")} €`
+        : `${fmtNumber(amount, "fr")} € HT`
+      : compact
+        ? `€${fmtNumber(amount, "en")}`
+        : `€${fmtNumber(amount, "en")} (excl. VAT)`;
+  if (opts.from !== true) return base;
+  return locale === "fr" ? `À partir de ${base}` : `Starting at ${base}`;
 }
 
 /**
