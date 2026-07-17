@@ -22,6 +22,7 @@ import type { AuditTier } from "./audit-taxonomy";
 import type { InterventionSlug } from "@/lib/intervention-type";
 import {
   formatAmount,
+  formatSubTierPrice,
   AUDIT_FLASH_SUB_TIERS,
   AUDIT_CIBLE_SUB_TIERS,
   AUDIT_STRATEGIQUE_PME_SUB_TIERS,
@@ -41,30 +42,28 @@ const subTierOf = (tiers: ReadonlyArray<PricingSubTier>, id: string): PricingSub
   return tier;
 };
 
-const subTierPrice = (tiers: ReadonlyArray<PricingSubTier>, id: string): number =>
-  subTierOf(tiers, id).priceFlat;
-
-// Raccourcis prix dérivés de la SSOT pricing.ts (priceFlat des sous-tiers).
+// Sous-tiers complets (et non juste leur montant) : les cartes doivent lire
+// `isFromPrice` en SSOT. Will 2026-07-17 — « de partout à partir de » : AUCUN
+// prix d'audit ne s'affiche en ferme, d'où `formatSubTierPrice` partout.
 // Toute modification de tarif se fait dans pricing.ts — ces constantes suivent.
-// Le TPE est un plancher (`isFromPrice`) depuis Will 2026-07-17 — d'où le
-// sous-tier complet et non juste son montant : la carte lit le flag en SSOT.
-const FLASH_ONSITE_SUB = subTierOf(AUDIT_FLASH_SUB_TIERS, "audit-flash-onsite");
-const PRICE_FLASH_ONSITE = FLASH_ONSITE_SUB.priceFlat;
-const PRICE_CIBLE_SOLO = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-solo");
-const PRICE_CIBLE_STANDARD = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-standard");
-const PRICE_CIBLE_AVANCE = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-avance");
-const PRICE_PME_20_50 = subTierPrice(
-  AUDIT_STRATEGIQUE_PME_SUB_TIERS,
-  "audit-strategique-pme-20-50",
-);
-const PRICE_PME_50_250 = subTierPrice(
-  AUDIT_STRATEGIQUE_PME_SUB_TIERS,
-  "audit-strategique-pme-50-250",
-);
+const SUB_FLASH_ONSITE = subTierOf(AUDIT_FLASH_SUB_TIERS, "audit-flash-onsite");
+const SUB_CIBLE_SOLO = subTierOf(AUDIT_CIBLE_SUB_TIERS, "audit-cible-solo");
+const SUB_CIBLE_STANDARD = subTierOf(AUDIT_CIBLE_SUB_TIERS, "audit-cible-standard");
+const SUB_CIBLE_AVANCE = subTierOf(AUDIT_CIBLE_SUB_TIERS, "audit-cible-avance");
+const SUB_PME_20_50 = subTierOf(AUDIT_STRATEGIQUE_PME_SUB_TIERS, "audit-strategique-pme-20-50");
+const SUB_PME_50_250 = subTierOf(AUDIT_STRATEGIQUE_PME_SUB_TIERS, "audit-strategique-pme-50-250");
+
+// Montants bruts — pour la prose (FAQ, promesses) qui écrit déjà « dès X ».
+const PRICE_FLASH_ONSITE = SUB_FLASH_ONSITE.priceFlat;
+const PRICE_CIBLE_SOLO = SUB_CIBLE_SOLO.priceFlat;
+const PRICE_CIBLE_STANDARD = SUB_CIBLE_STANDARD.priceFlat;
+const PRICE_CIBLE_AVANCE = SUB_CIBLE_AVANCE.priceFlat;
+const PRICE_PME_20_50 = SUB_PME_20_50.priceFlat;
+const PRICE_PME_50_250 = SUB_PME_50_250.priceFlat;
 // L'ETI est un plancher (`isFromPrice`), pas un prix ferme — d'où le sous-tier
 // complet et non juste son montant : la carte lit le flag depuis la SSOT.
-const ETI_BASE = subTierOf(AUDIT_STRATEGIQUE_ETI_SUB_TIERS, "audit-strategique-eti-base");
-const PRICE_ETI_BASE = ETI_BASE.priceFlat;
+const SUB_ETI_BASE = subTierOf(AUDIT_STRATEGIQUE_ETI_SUB_TIERS, "audit-strategique-eti-base");
+const PRICE_ETI_BASE = SUB_ETI_BASE.priceFlat;
 
 export interface AuditBenefit {
   icon: LucideIcon;
@@ -275,13 +274,8 @@ const FLASH_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "On-site audit · 1 day",
     rangeFr: "Toute l'entreprise · sur site",
     rangeEn: "Whole company · on site",
-    priceLabelFr: formatAmount(PRICE_FLASH_ONSITE, "fr", {
-      from: FLASH_ONSITE_SUB.isFromPrice === true,
-    }),
-    priceLabelEn: formatAmount(PRICE_FLASH_ONSITE, "en", {
-      compact: true,
-      from: FLASH_ONSITE_SUB.isFromPrice === true,
-    }),
+    priceLabelFr: formatSubTierPrice(SUB_FLASH_ONSITE, "fr"),
+    priceLabelEn: formatSubTierPrice(SUB_FLASH_ONSITE, "en", { compact: true }),
     bodyFr:
       "1 journée complète dans vos locaux (9 h-17 h). Vous voyez l'IA opérer sur vos vrais cas avec votre équipe. Réservation directe sur le calendrier.",
     bodyEn:
@@ -386,8 +380,8 @@ const CIBLE_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Targeted Solo",
     rangeFr: "À distance · périmètre simple",
     rangeEn: "Remote · simple scope",
-    priceLabelFr: formatAmount(PRICE_CIBLE_SOLO, "fr"),
-    priceLabelEn: formatAmount(PRICE_CIBLE_SOLO, "en", { compact: true }),
+    priceLabelFr: formatSubTierPrice(SUB_CIBLE_SOLO, "fr"),
+    priceLabelEn: formatSubTierPrice(SUB_CIBLE_SOLO, "en", { compact: true }),
     bodyFr:
       "1 sous-fonction d'un département (ex. : 1 typologie de mails du support). 100 % à distance, 2 semaines, rapport 10-15 pages.",
     bodyEn:
@@ -401,8 +395,8 @@ const CIBLE_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Targeted Standard",
     rangeFr: "Mix site + visio",
     rangeEn: "Mix on-site + remote",
-    priceLabelFr: formatAmount(PRICE_CIBLE_STANDARD, "fr"),
-    priceLabelEn: formatAmount(PRICE_CIBLE_STANDARD, "en", { compact: true }),
+    priceLabelFr: formatSubTierPrice(SUB_CIBLE_STANDARD, "fr"),
+    priceLabelEn: formatSubTierPrice(SUB_CIBLE_STANDARD, "en", { compact: true }),
     bodyFr:
       "1 département complet (marketing, RH, ops, finance, juridique, support). Mix site (2-3 jours) + visio. 3 semaines, rapport 20-25 pages.",
     bodyEn:
@@ -417,8 +411,8 @@ const CIBLE_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Targeted Advanced",
     rangeFr: "Service complexe, multi-acteurs",
     rangeEn: "Complex, multi-stakeholder",
-    priceLabelFr: formatAmount(PRICE_CIBLE_AVANCE, "fr"),
-    priceLabelEn: formatAmount(PRICE_CIBLE_AVANCE, "en", { compact: true }),
+    priceLabelFr: formatSubTierPrice(SUB_CIBLE_AVANCE, "fr"),
+    priceLabelEn: formatSubTierPrice(SUB_CIBLE_AVANCE, "en", { compact: true }),
     bodyFr:
       "Département avec intégrations techniques (CRM, ERP, outils legacy) ou multi-équipes. 4 semaines, rapport 30-40 pages, intégrations cartographiées.",
     bodyEn:
@@ -523,8 +517,8 @@ const PME_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "SME 20-50 staff",
     rangeFr: "2 services majeurs",
     rangeEn: "2 major services",
-    priceLabelFr: formatAmount(PRICE_PME_20_50, "fr"),
-    priceLabelEn: formatAmount(PRICE_PME_20_50, "en", { compact: true }),
+    priceLabelFr: formatSubTierPrice(SUB_PME_20_50, "fr"),
+    priceLabelEn: formatSubTierPrice(SUB_PME_20_50, "en", { compact: true }),
     bodyFr:
       "PME en croissance, 1er audit IA d'envergure. 2 services majeurs cartographiés, 8 interviews, plan 25-30 pages, 5 semaines.",
     bodyEn:
@@ -538,8 +532,8 @@ const PME_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "SME 50-250 staff",
     rangeFr: "3-4 services majeurs",
     rangeEn: "3-4 major services",
-    priceLabelFr: formatAmount(PRICE_PME_50_250, "fr"),
-    priceLabelEn: formatAmount(PRICE_PME_50_250, "en", { compact: true }),
+    priceLabelFr: formatSubTierPrice(SUB_PME_50_250, "fr"),
+    priceLabelEn: formatSubTierPrice(SUB_PME_50_250, "en", { compact: true }),
     bodyFr:
       "PME structurée multi-services, ambition IA forte. 3-4 services, 15 interviews, plan 40-60 pages, 6 semaines, restitution COMEX dédiée.",
     bodyEn:
@@ -647,11 +641,8 @@ const ETI_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Mid-cap · 1-2 BU · 1-2 sites",
     rangeFr: "3-4 services majeurs",
     rangeEn: "3-4 major services",
-    priceLabelFr: formatAmount(PRICE_ETI_BASE, "fr", { from: ETI_BASE.isFromPrice === true }),
-    priceLabelEn: formatAmount(PRICE_ETI_BASE, "en", {
-      compact: true,
-      from: ETI_BASE.isFromPrice === true,
-    }),
+    priceLabelFr: formatSubTierPrice(SUB_ETI_BASE, "fr"),
+    priceLabelEn: formatSubTierPrice(SUB_ETI_BASE, "en", { compact: true }),
     bodyFr:
       "Audit stratégique pour ETI 1-2 BU. 9 semaines, 20-30 interviews, plan 60-80 pages, restitution COMEX + board, 30 j d'accompagnement post-audit inclus.",
     bodyEn:

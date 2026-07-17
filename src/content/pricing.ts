@@ -143,7 +143,11 @@ export const AUDIT_CIBLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Targeted Solo",
     rangeFr: "À distance · périmètre simple",
     rangeEn: "Remote · simple scope",
+    // Will 2026-07-17 — « de partout à partir de » : aucun prix d'audit ne
+    // s'affiche en ferme, le chiffrage se fait au cas par cas selon le
+    // périmètre réel. Montant inchangé, seule la présentation change.
     priceFlat: 1900,
+    isFromPrice: true,
   },
   {
     id: "audit-cible-standard",
@@ -151,7 +155,11 @@ export const AUDIT_CIBLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Targeted Standard",
     rangeFr: "Mix site + visio",
     rangeEn: "Mix on-site + remote",
+    // Will 2026-07-17 — « de partout à partir de » : aucun prix d'audit ne
+    // s'affiche en ferme, le chiffrage se fait au cas par cas selon le
+    // périmètre réel. Montant inchangé, seule la présentation change.
     priceFlat: 2900,
+    isFromPrice: true,
     isFeatured: true,
   },
   {
@@ -160,7 +168,11 @@ export const AUDIT_CIBLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Targeted Advanced",
     rangeFr: "Service complexe, multi-acteurs",
     rangeEn: "Complex, multi-stakeholder",
+    // Will 2026-07-17 — « de partout à partir de » : aucun prix d'audit ne
+    // s'affiche en ferme, le chiffrage se fait au cas par cas selon le
+    // périmètre réel. Montant inchangé, seule la présentation change.
     priceFlat: 3900,
+    isFromPrice: true,
   },
 ];
 
@@ -172,7 +184,11 @@ export const AUDIT_STRATEGIQUE_PME_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "SMB 20-50 staff",
     rangeFr: "2 services majeurs",
     rangeEn: "2 major services",
+    // Will 2026-07-17 — « de partout à partir de » : aucun prix d'audit ne
+    // s'affiche en ferme, le chiffrage se fait au cas par cas selon le
+    // périmètre réel. Montant inchangé, seule la présentation change.
     priceFlat: 4900,
+    isFromPrice: true,
   },
   {
     id: "audit-strategique-pme-50-250",
@@ -180,7 +196,11 @@ export const AUDIT_STRATEGIQUE_PME_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "SMB 50-250 staff",
     rangeFr: "3-4 services majeurs",
     rangeEn: "3-4 major services",
+    // Will 2026-07-17 — « de partout à partir de » : aucun prix d'audit ne
+    // s'affiche en ferme, le chiffrage se fait au cas par cas selon le
+    // périmètre réel. Montant inchangé, seule la présentation change.
     priceFlat: 9900,
+    isFromPrice: true,
     isFeatured: true,
   },
 ];
@@ -986,6 +1006,25 @@ export function formatTierPrice(
   // helpers doivent rester d'accord.
   const isFrom = tier.isFromPrice === true || (tier.priceFlat == null && tier.priceMin != null);
   return formatAmount(amount, locale, { ...opts, from: isFrom });
+}
+
+/**
+ * Formate le prix d'un SOUS-tier en respectant son `isFromPrice`.
+ *
+ * Pendant de `formatTierPrice()` pour les cartes de sous-tiers. À utiliser
+ * partout où l'on affichait `formatAmount(sub.priceFlat, …)` : sans ça, la
+ * carte ignore le flag et rend un prix FERME sous un en-tête « à partir de »
+ * (le bug corrigé pour l'ETI en #337, puis pour Ciblé/PME ici).
+ *
+ * ⚠️ NE PAS utiliser pour un usage transactionnel (booking, cents débités) :
+ * là, c'est le NOMBRE `priceFlat` qu'il faut, ferme.
+ */
+export function formatSubTierPrice(
+  sub: PricingSubTier,
+  locale: "fr" | "en" = "fr",
+  opts: FormatAmountOptions = {},
+): string {
+  return formatAmount(sub.priceFlat, locale, { ...opts, from: sub.isFromPrice === true });
 }
 
 /**
