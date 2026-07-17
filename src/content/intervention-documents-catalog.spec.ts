@@ -89,11 +89,11 @@ describe("intervention-documents-catalog — ponts famille ↔ booking", () => {
 });
 
 describe("intervention-documents-catalog — slots FORMATION (kit IA Express)", () => {
-  it("18 slots, répartis sur les 4 catégories", () => {
+  it("21 slots, répartis sur les 4 catégories", () => {
     const slots = getSlotsByFamille("formation");
-    expect(slots.length).toBe(18);
+    expect(slots.length).toBe(21);
     const byCat = (c: string) => slots.filter((s) => s.categorie === c).length;
-    expect(byCat("stagiaires")).toBe(8);
+    expect(byCat("stagiaires")).toBe(11);
     expect(byCat("formateur")).toBe(4);
     expect(byCat("cadre")).toBe(2);
     expect(byCat("evaluation")).toBe(4);

@@ -121,6 +121,17 @@ const AXION_NAME_TO_SLOT: ReadonlyArray<{ re: RegExp; slot: string }> = [
   { re: /Exercices_et_corriges/i, slot: "corriges" },
   { re: /Animation_travaux_collectifs/i, slot: "cahier_exercices" },
   { re: /Livret_stagiaire|Carnet_participant/i, slot: "livret_apprenant" },
+  // Livrables participants partagés (AxionIA_Livrables_partages, 2026-07-17).
+  // `prompts_marketing` AVANT `prompts` : la bibliothèque marketing (formation
+  // 12) et la bibliothèque générale partagent le préfixe.
+  { re: /Bibliotheque_prompts_marketing/i, slot: "bibliotheque_prompts" },
+  { re: /Bibliotheque_prompts/i, slot: "bibliotheque_prompts" },
+  { re: /Charte_IA/i, slot: "charte_ia" },
+  { re: /Kits_assistants/i, slot: "kits_assistants" },
+  { re: /Guide_cas_usage/i, slot: "guide_cas_usage" },
+  { re: /Pack_Skills/i, slot: "pack_skills" },
+  { re: /Guide_des_connecteurs/i, slot: "guide_connecteurs" },
+  { re: /Diagnostic_conformite_AI_Act/i, slot: "diagnostic_ai_act" },
 ];
 
 /**

@@ -203,6 +203,33 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
     formats: ["docx"],
     ordre: 15,
   },
+  // Livrables spécialisés (promis par certaines formations seulement — les
+  // slots restent vides ailleurs) : pack de Skills (05/06), guide des
+  // connecteurs (05/13), diagnostic AI Act (08). Produits le 2026-07-17.
+  {
+    key: "pack_skills",
+    titre: "Pack de Skills Claude (50+)",
+    categorie: "stagiaires",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 16,
+  },
+  {
+    key: "guide_connecteurs",
+    titre: "Guide des connecteurs",
+    categorie: "stagiaires",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 17,
+  },
+  {
+    key: "diagnostic_ai_act",
+    titre: "Diagnostic de conformité AI Act (grille d'auto-évaluation)",
+    categorie: "stagiaires",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 18,
+  },
   // 02 — Formateur (confidentiel)
   {
     key: "diaporama",
