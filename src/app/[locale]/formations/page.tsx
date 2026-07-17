@@ -611,9 +611,11 @@ export default async function FormationsHub({ params }: Props) {
             href="/formations/tarifs"
             className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
           >
+            {/* `essentielleEntry` est un formatAmount() NON-compact : il porte
+                déjà « € HT » / « (excl. VAT) ». Ne pas resuffixer. */}
             {isFr
-              ? `Voir la grille tarifaire des formations — dès ${essentielleEntry} HT`
-              : `See the training price grid — from ${essentielleEntry} ex. VAT`}
+              ? `Voir la grille tarifaire des formations — dès ${essentielleEntry}`
+              : `See the training price grid — from ${essentielleEntry}`}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </p>
@@ -1160,7 +1162,7 @@ export default async function FormationsHub({ params }: Props) {
                       // Will 2026-07-17 — disait « la grille complète figure plus
                       // haut sur cette page » : faux, le hub ne porte aucune
                       // grille (elle vit sur /formations/tarifs).
-                      answer: `Une formation IA en entreprise sur site démarre à ${essentielleEntry} HT. Le tarif dépend ensuite de la durée (de ${dureeShortFirst} à ${dureeShortLast}), de la gamme (${gammesList}) et du nombre de participants — la grille complète est détaillée sur la page tarifs des formations. Le devis précis se cale sur votre contexte après un premier échange.`,
+                      answer: `Une formation IA en entreprise sur site démarre à ${essentielleEntry}. Le tarif dépend ensuite de la durée (de ${dureeShortFirst} à ${dureeShortLast}), de la gamme (${gammesList}) et du nombre de participants — la grille complète est détaillée sur la page tarifs des formations. Le devis précis se cale sur votre contexte après un premier échange.`,
                     },
                     {
                       id: "effectif",
@@ -1219,7 +1221,7 @@ export default async function FormationsHub({ params }: Props) {
                       // same value as the hero "From …" (2026-07-06 price-FAQ audit).
                       id: "prix-formation-ia",
                       question: "How much does corporate AI training cost?",
-                      answer: `On-site corporate AI training starts at ${essentielleEntry} ex. VAT. The rate then depends on the format (${nbDureeFormats} durations from ${dureeShortFirst} to ${dureeShortLast}), the track (${gammesList}) and the number of participants — the full grid is detailed on the training pricing page. The precise quote is tailored to your context after a first call.`,
+                      answer: `On-site corporate AI training starts at ${essentielleEntry}. The rate then depends on the format (${nbDureeFormats} durations from ${dureeShortFirst} to ${dureeShortLast}), the track (${gammesList}) and the number of participants — the full grid is detailed on the training pricing page. The precise quote is tailored to your context after a first call.`,
                     },
                     {
                       id: "headcount",
