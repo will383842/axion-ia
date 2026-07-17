@@ -15,10 +15,16 @@
  */
 
 import type { InterventionFamille } from "@/content/intervention-documents-catalog";
+import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 
 // ============================ FORMATION ======================================
 
-/** Dossier de formation (dans le ZIP) → slug d'intervention (booking-catalog). */
+/**
+ * ⚠️ LEGACY — kits produits avant la refonte AXION (PR #327, 2026-07-15).
+ * Ces slugs n'existent PLUS dans le catalogue V2 : conservés uniquement pour
+ * réimporter un ancien ZIP. Les kits AXION 2026 passent par
+ * `resolveAxionSlug` (numéro de dossier → `numero` du catalogue V2).
+ */
 export const FOLDER_TO_SLUG: Readonly<Record<string, string>> = {
   Formation_IA_Express: "ia-express",
   Art_du_Prompt: "art-du-prompt",
@@ -65,6 +71,70 @@ export const FILE_TO_SLOT: Readonly<Record<string, string>> = {
 export const DIAPORAMA_SLOT_KEY = "diaporama";
 
 export const SKIP_PREFIXES: ReadonlySet<string> = new Set(["08", "09", "10"]);
+
+// ==================== KIT AXION 2026 (arborescence par TYPE) =================
+//
+// Le catalogue AXION livré le 2026-07-17 n'utilise PAS les préfixes NN_ par slot
+// (`FILE_TO_SLOT`) : un dossier par prestation, numéroté 01→15, et des fichiers
+// nommés par TYPE. Exemple :
+//
+//   01_Formation_Bien_demarrer_avec_lIA_4h/
+//     00_Programme/01_Bien_demarrer_avec_lIA_4h.docx   → programme
+//     00_Programme/Methode_AXION.docx                  → ressources
+//     01_Support_de_presentation/*.pptx                → diaporama
+//     02_Documents_formateur/Guide_formateur_01.docx   → guide_animation
+//     02_Documents_formateur/Conducteur_de_session_01.docx → scenario_pedagogique
+//     02_Documents_formateur/Exercices_et_corriges_01.docx → corriges
+//     02_Documents_formateur/Grille_evaluation_01.docx     → (ignoré : Formation Engine)
+//     03_Documents_stagiaire/Livret_stagiaire_01_*.docx    → livret_apprenant
+//     03_Documents_stagiaire/Memo_AXION.docx               → memo_methode
+//
+// Le lien dossier→formation passe par le NUMÉRO (`numero` du catalogue V2), pas
+// par une table de noms : un dossier renommé continue de résoudre.
+
+/** Sous-dossiers du kit AXION — leur présence signe l'arborescence 2026. */
+const AXION_SUBFOLDERS: ReadonlySet<string> = new Set([
+  "00_Programme",
+  "00_Cadre",
+  "01_Support_de_presentation",
+  "01_Support_de_la_journee",
+  "02_Documents_formateur",
+  "03_Documents_stagiaire",
+  "03_Documents_participant",
+]);
+
+/**
+ * Nom de fichier (kit AXION) → clé de slot. Ordonné : le premier motif qui
+ * matche gagne. `Exercices_et_corriges` contient les CORRIGÉS → slot formateur,
+ * jamais un slot exposable au stagiaire.
+ */
+const AXION_NAME_TO_SLOT: ReadonlyArray<{ re: RegExp; slot: string }> = [
+  // Non ancré : les fichiers sont tantôt nus (`Methode_AXION.docx`), tantôt
+  // préfixés marque (`Axion-IA_Memo_AXION.docx`). « Methode » avant « Memo ».
+  { re: /Methode_AXION\./i, slot: "ressources" },
+  { re: /Memo_AXION\./i, slot: "memo_methode" },
+  { re: /Guide_formateur/i, slot: "guide_animation" },
+  { re: /Conducteur_de_session/i, slot: "scenario_pedagogique" },
+  { re: /Exercices_et_corriges/i, slot: "corriges" },
+  { re: /Animation_travaux_collectifs/i, slot: "cahier_exercices" },
+  { re: /Livret_stagiaire|Carnet_participant/i, slot: "livret_apprenant" },
+];
+
+/**
+ * Documents du kit AXION volontairement NON importés : le Formation Engine les
+ * génère (le catalogue les marque `qualiopiDocType` / `generatedOnly`, et
+ * `kit-import.ts` les refuserait de toute façon). Listés ici pour que le
+ * classifieur les ignore en silence plutôt que de les signaler « non reconnus ».
+ */
+const AXION_SKIP_NAMES: ReadonlyArray<RegExp> = [/Grille_evaluation/i];
+
+/** Numéro de dossier AXION (« 07_Formation_… » → 7) → slug du catalogue V2. */
+export function resolveAxionSlug(folder: string): string | null {
+  const m = folder.match(/^(\d{2})_/);
+  if (!m) return null;
+  const numero = Number.parseInt(m[1]!, 10);
+  return FORMATIONS_V2.find((f) => f.numero === numero)?.slugFr ?? null;
+}
 
 // ============================ 1-TO-1 (un_a_un) ===============================
 
@@ -147,6 +217,19 @@ export function knownTopFolders(famille: InterventionFamille): ReadonlySet<strin
   return new Set();
 }
 
+/**
+ * Vrai si le dossier est reconnu. À préférer à `knownTopFolders` : les dossiers
+ * du kit AXION sont résolus dynamiquement (par numéro), donc ils ne peuvent pas
+ * figurer dans un Set figé — sans ça, un kit AXION correctement importé serait
+ * quand même signalé « non reconnu ».
+ */
+export function isKnownTopFolder(folder: string, famille: InterventionFamille): boolean {
+  if (famille === "formation") {
+    return folder in FOLDER_TO_SLUG || resolveAxionSlug(folder) !== null;
+  }
+  return knownTopFolders(famille).has(folder);
+}
+
 export interface ClassifiedEntry {
   /** Slug(s) d'intervention destinataires (≥ 1 ; plusieurs pour les variantes 1j/2j en 1-to-1). */
   slugs: ReadonlyArray<string>;
@@ -177,6 +260,12 @@ export function classifyEntry(
   const filename = parts[parts.length - 1]!;
   const lower = filename.toLowerCase();
   const ext = (lower.split(".").pop() ?? "").toLowerCase();
+
+  // Kit AXION 2026 (arborescence par TYPE) — reconnu au sous-dossier.
+  if (famille === "formation" && AXION_SUBFOLDERS.has(sub)) {
+    return classifyAxionEntry(folder, sub, filename, ext);
+  }
+
   const slugs = resolveSlugs(folder, famille);
   if (slugs.length === 0) return null;
 
@@ -199,6 +288,44 @@ export function classifyEntry(
   if (sub === "Documents_DOCX" && ext === "docx")
     return { slugs, folder, slot, kind: "source", ext };
   if (sub === "Documents_PDF" && ext === "pdf") return { slugs, folder, slot, kind: "pdf", ext };
+  return null;
+}
+
+/**
+ * Classe une entrée du kit AXION 2026. Le programme contractuel vit dans
+ * `00_Programme` sous un nom numéroté (`01_Bien_demarrer….docx`) — d'où la règle
+ * de repli : dans ce dossier, tout .docx non identifié par nom EST le programme.
+ */
+function classifyAxionEntry(
+  folder: string,
+  sub: string,
+  filename: string,
+  ext: string,
+): ClassifiedEntry | null {
+  const slug = resolveAxionSlug(folder);
+  if (!slug) return null;
+  const slugs = [slug];
+
+  if (AXION_SKIP_NAMES.some((re) => re.test(filename))) return null;
+
+  // Support projeté : .pptx = source éditable, .pdf = version projetable.
+  if (sub === "01_Support_de_presentation" || sub === "01_Support_de_la_journee") {
+    if (ext === "pptx") return { slugs, folder, slot: DIAPORAMA_SLOT_KEY, kind: "source", ext };
+    if (ext === "pdf") return { slugs, folder, slot: DIAPORAMA_SLOT_KEY, kind: "pdf", ext };
+    return null;
+  }
+
+  if (ext !== "docx" && ext !== "pdf") return null;
+  const kind = ext === "pdf" ? "pdf" : "source";
+
+  const named = AXION_NAME_TO_SLOT.find((r) => r.re.test(filename));
+  if (named) return { slugs, folder, slot: named.slot, kind, ext };
+
+  // Repli : le programme contractuel (« NN_Titre.docx » dans 00_Programme/00_Cadre).
+  if ((sub === "00_Programme" || sub === "00_Cadre") && /^\d{2}_/.test(filename)) {
+    return { slugs, folder, slot: "programme", kind, ext };
+  }
+
   return null;
 }
 
