@@ -135,27 +135,14 @@ export default async function PricingPage({ params }: Props) {
   const heroTitle = isFr ? "Nos tarifs IA en" : "Our AI pricing in";
   const heroTitleEm = isFr ? "clair" : "plain sight";
   const heroDesc = isFr
-    ? "Audits, Formations, Implémentations, 1-to-1 et Plateforme web — tous nos prix publics HT, sans étoile, sans surprise."
-    : "Audits, Trainings, Implementations, 1-to-1 and Web platform — all our public prices excl. VAT, no asterisk, no surprise.";
+    ? "Audits, Implémentations et 1-to-1 à prix publics HT, sans étoile ni surprise — et des formations sur devis, tarifées par groupe, avec un devis clair sous 24-48 h."
+    : "Audits, Implementations and 1-to-1 at public prices excl. VAT, no asterisk, no surprise — and trainings on quote, priced per group, with a clear quote within 24-48 h.";
 
   // — Séparation nette collectif vs 1-to-1 (parité /fr/formations vs /fr/un-a-un).
   // `INTERVENTION_TIERS` mélange les formats collectifs ET le coaching 1-to-1
   // individuel (Dirigeant, Collaborateur, Vision IA, variantes 2 j). Sur /tarifs
   // on ne garde QUE le collectif dans la section Formations ; tout le 1-to-1 est
   // porté par la section dédiée ci-dessous. Évite la duplication des cartes.
-  const COLLECTIVE_FORMATION_IDS: ReadonlySet<string> = new Set([
-    "intervention-4h",
-    "intervention-essentielle",
-    "intervention-temps",
-    "intervention-approfondie",
-    "intervention-conference",
-    "intervention-claude",
-    "intervention-sur-demande",
-  ]);
-  const collectiveFormationTiers = INTERVENTION_TIERS.filter((tier) =>
-    COLLECTIVE_FORMATION_IDS.has(tier.id),
-  );
-
   // Section 1-to-1 : Collaborateur & Dirigeant × 1 jour + coaching régulier.
   // Les formats 2 jours ont été RETIRÉS de la vente (décision Will 2026-07-17) :
   // les kits d'intervention 16/17 (catalogue AXION) ne couvrent qu'une journée —
@@ -170,19 +157,6 @@ export default async function PricingPage({ params }: Props) {
   // Ordre voulu par Will (2026-06-23) : Formations et interventions → 1-to-1 →
   // Audit → Intégration d'agents IA sur-mesure → Plateforme web & SaaS.
   const sections: ReadonlyArray<PricingSectionDef> = [
-    {
-      id: "formations",
-      href: "/interventions",
-      eyebrow: isFr ? "Montée en compétence" : "Upskilling",
-      // Titre local (override de nav.formations) : englobe formations
-      // collectives + interventions en entreprise.
-      title: isFr ? "Formations et interventions" : "Trainings & interventions",
-      description: isFr
-        ? "Formats 4 h, 1, 2 ou 3+ jours. Démos live sur vos vrais documents, vos vrais cas."
-        : "Formats 4 h, 1, 2 or 3+ days. Live demos on your real documents, your real cases.",
-      tiers: collectiveFormationTiers,
-      ctaLabel: isFr ? "Voir tous les formats" : "See all formats",
-    },
     {
       id: "un-a-un",
       href: "/un-a-un",
@@ -218,6 +192,24 @@ export default async function PricingPage({ params }: Props) {
     },
   ];
 
+  // Module formations — 100 % SUR DEVIS depuis la refonte AXION (PR 327 et 339) :
+  // les 15 fiches sont `surDevis`, cette page ne doit plus afficher les anciens
+  // tiers chiffrés (décision Will 2026-07-17). Même patron que la plateforme.
+  const formationsSection = {
+    id: "formations",
+    href: "/formations",
+    eyebrow: isFr ? "Montée en compétence" : "Upskilling",
+    title: isFr ? "Formations IA en entreprise" : "Corporate AI trainings",
+    description: isFr
+      ? "15 formations, de 4 h à 3 jours, générales et métier — intra-entreprise, dans vos locaux ou à distance, jusqu\u2019à 15 participants (séminaire : 50)."
+      : "15 trainings, 4 h to 3 days, general and role-specific — in-house, on site or remote, up to 15 participants (seminar: 50).",
+    quoteLabel: isFr ? "Sur devis · tarifé par groupe" : "On quote · priced per group",
+    detail: isFr
+      ? "Le tarif se construit sur trois facteurs — la durée, la gamme et la taille du groupe — jamais par personne. Devis détaillé sous 24-48 h après un premier échange, validé avant toute inscription."
+      : "Pricing is built on three factors — duration, track and group size — never per person. Detailed quote within 24-48 h after a first call, validated before any enrolment.",
+    ctaLabel: isFr ? "Voir les 15 formations" : "See the 15 trainings",
+  };
+
   // Module plateforme web/SaaS — sur devis pur (pas de tiers pricing.ts).
   // Géré séparément avec une card unique descriptive.
   const platformSection = {
@@ -245,13 +237,13 @@ export default async function PricingPage({ params }: Props) {
   // Tier d'entrée de gamme formation — source unique du prix ET du libellé de
   // durée injectés dans la FAQ (jamais figés dans la prose) : si le tier change
   // de prix ou de durée, la réponse suit (audit FAQ prix dynamique 2026-07-06).
-  const formationEntryTier = getTierById(INTERVENTION_TIERS, "intervention-4h");
   const faqItems = isFr
     ? [
         {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Une formation IA en entreprise démarre à ${formatAmount(formationEntryTier.priceFlat!, "fr")} HT pour un format court (${formationEntryTier.durationFr}). Le prix varie ensuite selon la durée, le nombre de participants et le format retenu ; la grille détaillée par format figure ci-dessus. Le devis précis se construit après un échange sur votre contexte.`,
+          answer:
+            "Toutes nos formations sont sur devis, tarifé par groupe — jamais par personne. Le devis dépend de la durée (4 h à 3 jours), de la gamme et de la taille du groupe (jusqu\u2019à 15 participants). Il est établi sous 24-48 h après un premier échange, et validé avant toute inscription.",
         },
         {
           id: "tarifs-publics",
@@ -282,7 +274,8 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
-          answer: `Corporate AI training starts at ${formatAmount(formationEntryTier.priceFlat!, "en")} ex. VAT for a short on-site format (${formationEntryTier.durationEn}). The price then varies with duration, number of participants and the chosen format; the detailed grid per format is above. The precise quote is built after a call about your context.`,
+          answer:
+            "All our trainings are on quote, priced per group — never per person. The quote depends on duration (4 h to 3 days), track and group size (up to 15 participants). It is issued within 24-48 h after a first call, and validated before any enrolment.",
         },
         {
           id: "tarifs-publics",
@@ -321,7 +314,7 @@ export default async function PricingPage({ params }: Props) {
     locale: loc,
     path: "/tarifs",
     name: isFr ? "Catalogue tarifaire Axion-IA" : "Axion-IA pricing catalogue",
-    items: [...sections, platformSection].map((s, i) => ({
+    items: [formationsSection, ...sections, platformSection].map((s, i) => ({
       url: `${SITE_URL}/${loc}${s.href}`,
       name: s.title,
       description: s.description,
@@ -361,7 +354,7 @@ export default async function PricingPage({ params }: Props) {
             aria-label={isFr ? "Aller à un module" : "Jump to module"}
             className="flex flex-wrap gap-2"
           >
-            {[...sections, platformSection].map((s) => (
+            {[formationsSection, ...sections, platformSection].map((s) => (
               <a
                 key={s.id}
                 href={`#${s.id}`}
@@ -375,8 +368,8 @@ export default async function PricingPage({ params }: Props) {
         schemaCenterLabel={isFr ? "Tarifs publics" : "Public pricing"}
         schemaAriaLabel={
           isFr
-            ? `Schéma : tarifs publics au centre, entourés des 8 prestations chiffrées Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formation 4 h ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr", { compact: true })}, Formation 1 jour ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, Formation 2 jours ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "fr", { compact: true })}, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
-            : `Diagram: public pricing at the center, surrounded by 8 priced Axion-IA services (on-site audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, 4 h training ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, Deep dive ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "en", { compact: true })}, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
+            ? `Schéma : tarifs publics au centre, entourés des prestations Axion-IA (formations sur devis) Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formations sur devis, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
+            : `Diagram: public pricing at the center, surrounded by Axion-IA services (trainings on quote) (on-site audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, trainings on quote, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
         }
         schemaNodes={[
           {
@@ -392,28 +385,9 @@ export default async function PricingPage({ params }: Props) {
             accent: "primary",
           },
           {
-            label: "Formation 4 h",
-            benefit: formatAmount(
-              getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!,
-              "fr",
-            ),
+            label: "Formations",
+            benefit: isFr ? "Sur devis" : "On quote",
             accent: "sage",
-          },
-          {
-            label: isFr ? "Formation 1 jour" : "One-day training",
-            benefit: formatAmount(
-              getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-              "fr",
-            ),
-            accent: "mocha",
-          },
-          {
-            label: isFr ? "Formation 2 jours" : "Two-day training",
-            benefit: formatAmount(
-              getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!,
-              "fr",
-            ),
-            accent: "terracotta",
           },
           {
             label: "1-to-1",
@@ -433,7 +407,36 @@ export default async function PricingPage({ params }: Props) {
         ]}
       />
 
-      {/* 4 SECTIONS pricing.ts (Formations → 1-to-1 → Audits → Implémentations) */}
+      {/* SECTION FORMATIONS — sur devis pur (cohérence fiches AXION), card unique */}
+      <Section
+        id={formationsSection.id}
+        eyebrow={formationsSection.eyebrow}
+        title={formationsSection.title}
+        description={formationsSection.description}
+        tone="canvas"
+      >
+        <Container>
+          <article className="border-border-strong/40 bg-paper rounded-2xl border p-8 sm:p-10">
+            <p className="text-terracotta-deep text-3xl leading-none font-bold">
+              {formationsSection.quoteLabel}
+            </p>
+            <p className="text-fg-soft mt-4 max-w-2xl text-sm leading-relaxed">
+              {formationsSection.detail}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Cta href={formationsSection.href} variant="primary" shape="pill" size="md">
+                {formationsSection.ctaLabel}
+                <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
+              </Cta>
+              <Cta href="/appel" variant="secondary" shape="pill" size="md">
+                {isFr ? "Demander un devis" : "Request a quote"}
+              </Cta>
+            </div>
+          </article>
+        </Container>
+      </Section>
+
+      {/* 3 SECTIONS pricing.ts (1-to-1 → Audits → Implémentations) */}
       {sections.map((s) => (
         <Section
           key={s.id}

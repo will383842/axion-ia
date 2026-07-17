@@ -37,11 +37,9 @@ import {
   IMPLEMENTATION_TIERS,
   UN_A_UN_TIERS,
   CODAGE_TIERS,
-  formatAmount,
   formatPrice,
   getEntryPriceEur,
   getEntryTier,
-  getFormationCatalogPriceRange,
 } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildVilleServiceJsonLdGraph } from "@/lib/seo/ville-service-jsonld";
@@ -302,10 +300,14 @@ export async function renderVilleServicePage({
   // dérive son prix d'entrée de la matrice formation (FORMATION_PRICE_MATRIX), PAS
   // d'INTERVENTION_TIERS (legacy). Les 3 autres verticales gardent leurs tiers.
   const isFormationService = service === "interventions";
-  const formationEntryEur = getFormationCatalogPriceRange().minEur;
-  const entryPriceEur = isFormationService ? formationEntryEur : getEntryPriceEur(meta.tiers);
+  // Formations V2 : 100 % SUR DEVIS (décision Will 2026-07-17) — aucun montant
+  // affiché ni déclaré en JSON-LD pour cette verticale ; les 3 autres gardent
+  // leurs tiers chiffrés.
+  const entryPriceEur = isFormationService ? undefined : getEntryPriceEur(meta.tiers);
   const formattedEntryPrice = isFormationService
-    ? formatAmount(formationEntryEur, isFr ? "fr" : "en", { compact: true })
+    ? isFr
+      ? "sur devis"
+      : "on quote"
     : formatPrice(getEntryTier(meta.tiers), isFr ? "fr" : "en");
   // sites-web = prestation sur devis/projet (pas de réservation agenda ni
   // d'acompte) → CTA alignés sur le header : « Réserver un appel » (/appel) +

@@ -10,7 +10,6 @@ import { HeaderResourcesMenu } from "./HeaderResourcesMenu";
 import { HeaderFormationsMenu } from "./HeaderFormationsMenu";
 import { FORMATION_DUREES_META } from "@/content/formations/catalog-v2-meta";
 import { FORMATIONS_V2, getFormationsV2ByDuree } from "@/content/formations/catalog-v2";
-import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 
 // Server Component. Header v5 2026-05-28 (Will) — layout 2026 dual-CTA :
 //   [Logo · Cabinet IA pour entreprises]   nav 6 items     [Nous écrire ghost] [Réserver un appel primary]
@@ -78,10 +77,6 @@ export async function Header() {
     hours: m.heuresFr,
     count: getFormationsV2ByDuree(m.id).length,
   }));
-  const formationsEntryPrice = formatAmount(
-    getFormationCatalogPriceRange().minEur,
-    isFr ? "fr" : "en",
-  );
   const formationsTotal = FORMATIONS_V2.length;
 
   const taglineB2B = isFr ? "Cabinet IA pour entreprises" : "AI consultancy for companies";
@@ -178,7 +173,6 @@ export async function Header() {
                 key={item.href}
                 isFr={isFr}
                 allHref="/formations/entreprise"
-                entryPrice={formationsEntryPrice}
                 totalCount={formationsTotal}
                 durations={formationsDurations}
               />

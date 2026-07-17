@@ -16,15 +16,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { SUR_MESURE } from "@/content/formations/catalog-v2-meta";
-import {
-  type FormationBracket,
-  type FormationDuree,
-  type FormationGamme,
-  formatAmount,
-  formatFormationPrice,
-  getFormationBrackets,
-  getFormationCatalogPriceRange,
-} from "@/content/pricing";
+import { type FormationDuree, type FormationGamme } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { QualiopiFinancingFaq } from "@/components/qualiopi/QualiopiFinancingFaq";
@@ -44,12 +36,12 @@ const GAMME_BLOCKS: ReadonlyArray<{ gamme: FormationGamme; label: string; note: 
   {
     gamme: "ia-standard",
     label: "Gamme IA",
-    note: "Toutes les formations IA générales, par durée (effectif 2-15 ou 16-30).",
+    note: "Toutes les formations IA générales et métier : ChatGPT, Claude et Gemini, méthode AXION.",
   },
   {
     gamme: "claude",
     label: "Gamme Claude",
-    note: "Formateur certifié écosystème Claude (+20 %). Découverte 2-15/16-30 ; Créateur et Architecte 2-12.",
+    note: "Les formations construites sur Claude (prise en main, maîtrise avancée, Claude Code) — formateur spécialiste de l'écosystème.",
   },
 ];
 
@@ -60,7 +52,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const { minEur, maxEur } = getFormationCatalogPriceRange();
   // Suffixe Qualiopi/finançable — GATED Phase B (claim illégal avant agrément).
   // Le flag est lu au runtime ; l'ISR (revalidate) régénère la meta en Phase B.
   const qualiopiSuffix = isQualiopiPublicDisclosureEnabled()
@@ -70,7 +61,7 @@ export async function generateMetadata({
     locale,
     path: "/formations/tarifs",
     title: "Tarifs des formations IA en entreprise",
-    description: `Tarifs HT par groupe (pas par personne) des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} (4 h) à ${formatAmount(maxEur, "fr")} (3 jours), dans vos locaux, sur vos cas réels.${qualiopiSuffix}`,
+    description: `Formations IA intra-entreprise sur devis : un tarif par groupe (jamais par personne), construit sur la durée (4 h à 3 jours), la gamme et la taille du groupe. Devis sous 24-48 h.${qualiopiSuffix}`,
   });
 }
 
@@ -97,10 +88,10 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
           <div className="max-w-3xl">
             <h1 className="display-editorial text-fg">Tarifs des formations</h1>
             <p className="text-fg-soft mt-5 max-w-2xl text-lg leading-relaxed sm:text-xl">
-              Tarifs HT <strong className="text-fg">par groupe</strong> (pas par personne), en
-              intra-entreprise dans vos locaux. Exemple : une journée pour 10 salariés revient à
-              moins cher qu&apos;une formation catalogue en salle extérieure, sans déplacer vos
-              équipes.
+              Toutes nos formations sont <strong className="text-fg">sur devis</strong>, tarifées{" "}
+              <strong className="text-fg">par groupe</strong> (jamais par personne), en
+              intra-entreprise dans vos locaux ou à distance. Le devis est établi sous 24-48 h après
+              un premier échange, et validé avant toute inscription.
             </p>
             {/* Réassurance Qualiopi (Phase B) — formations finançables OPCO /
                 France Travail. Pastille texte seul, rend null hors Phase B. */}
@@ -109,62 +100,69 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
         </Container>
       </section>
 
-      {/* MATRICE — un bloc par gamme */}
-      {GAMME_BLOCKS.map((block, idx) => (
-        <Section
-          key={block.gamme}
-          tone={idx % 2 === 0 ? "canvas" : "paper"}
-          eyebrow="Grille tarifaire"
-          title={block.label}
-          description={block.note}
-        >
-          <Container>
-            <div className="border-border overflow-hidden rounded-2xl border">
-              <table className="w-full text-left text-[15px]">
-                <thead className="bg-sand text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
-                  <tr>
-                    <th className="px-4 py-3">Durée</th>
-                    <th className="px-4 py-3">2 à 15 pers.</th>
-                    <th className="px-4 py-3">16 à 30 pers.</th>
-                    <th className="px-4 py-3">2 à 12 pers.</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-border divide-y">
-                  {DUREE_ROWS.map((row) => {
-                    const brackets = getFormationBrackets(block.gamme, row.duree);
-                    if (brackets.length === 0) return null;
-                    const cell = (b: FormationBracket) =>
-                      brackets.includes(b)
-                        ? formatFormationPrice(block.gamme, row.duree, b, "fr")
-                        : "—";
-                    return (
-                      <tr key={row.duree} className="bg-paper">
-                        <td className="text-fg px-4 py-3 font-semibold">{row.label}</td>
-                        <td className="text-fg-soft px-4 py-3 tabular-nums">{cell("2-15")}</td>
-                        <td className="text-fg-soft px-4 py-3 tabular-nums">{cell("16-30")}</td>
-                        <td className="text-fg-soft px-4 py-3 tabular-nums">{cell("2-12")}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+      {/* COMMENT SE CONSTRUIT VOTRE DEVIS — remplace l'ancienne grille chiffrée :
+          le catalogue est 100 % sur devis (cohérence avec les fiches). */}
+      <Section
+        tone="canvas"
+        eyebrow="Sur devis"
+        title="Comment se construit"
+        titleEm="votre devis"
+        description="Trois facteurs, aucun montant caché par personne : le tarif est global pour votre groupe."
+      >
+        <Container>
+          <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-3">
+            {[
+              {
+                t: "La durée",
+                d: DUREE_ROWS.map((r) => r.label).join(" · "),
+              },
+              {
+                t: "La gamme",
+                d: GAMME_BLOCKS.map((b) => b.label).join(" · "),
+              },
+              {
+                t: "La taille du groupe",
+                d: "Jusqu'à 15 participants (10 pour Claude Code, 50 pour le séminaire) — un seul groupe, vos équipes uniquement.",
+              },
+            ].map((f) => (
+              <div key={f.t} className="border-border bg-paper rounded-2xl border p-6">
+                <p className="text-fg text-lg font-semibold">{f.t}</p>
+                <p className="text-fg-soft mt-2 text-[15px] leading-relaxed">{f.d}</p>
+              </div>
+            ))}
+          </div>
+          <div className="border-terracotta/40 bg-paper mx-auto mt-8 max-w-4xl rounded-2xl border border-dashed p-6 text-center">
+            <p className="text-fg text-lg font-semibold">
+              Demandez votre devis — réponse sous 24-48 h
+            </p>
+            <p className="text-fg-soft mt-2 text-[15px]">
+              Un appel de 15 minutes ou un message suffit : nous revenons avec un devis détaillé,
+              personnalisé et sans engagement.
+            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              <Cta href="/appel" size="lg">
+                Réserver un appel
+              </Cta>
+              <Cta href="/contact" variant="outline" size="lg">
+                Nous écrire
+              </Cta>
             </div>
-          </Container>
-        </Section>
-      ))}
+          </div>
+        </Container>
+      </Section>
 
       {/* CE QUI EST TOUJOURS INCLUS */}
       <Section tone="sand" eyebrow="Ce qui est inclus" title="Toujours" titleEm="inclus">
         <Container>
           <ul className="text-fg-soft mx-auto grid max-w-3xl gap-3 text-[15px] sm:grid-cols-2">
             {[
-              "Cadrage en amont par appel — programme adapté à votre métier",
+              "Programme standardisé et éprouvé — applicable à votre secteur sans préparation",
               "Pratique sur vos vraies tâches et documents (anonymisés)",
               "Beaucoup de mise en pratique, pas de théorie passive",
               "Supports et fiches pratiques remis à chaque participant",
               "Attestation de fin de formation",
               "Aucune préparation requise de votre côté",
-              "Programme adapté à votre secteur d'activité",
+              "Cas d'usage transversaux, valables dans tout secteur d'activité",
               "Sur mesure possible (toute durée, toute gamme) — sur devis",
             ].map((line, i) => (
               <li key={i} className="flex items-start gap-2.5">

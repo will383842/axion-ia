@@ -24,7 +24,6 @@ import {
   FORMATION_GAMMES_META,
   formationDureeIso,
 } from "@/content/formations/catalog-v2-meta";
-import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -67,7 +66,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
-  const fromPrice = formatAmount(getFormationCatalogPriceRange().minEur, loc);
   // Claim Qualiopi/OPCO gaté Phase B — il fuyait en SERP alors que tout le reste
   // de la page est gaté (purge du flag 2026-07-14). ISR 1h le réinjecte au flip.
   const qualiopiSerp = isQualiopiPublicDisclosureEnabled()
@@ -86,7 +84,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       loc === "fr"
         ? `Formation IA présentiel ou distanciel, adaptée à votre secteur et votre entreprise — ${qualiopiSerp}. Vos équipes gagnent du temps dès le lendemain.`
-        : `Corporate AI training on site for SMEs and large companies: 4 one-shot formats (4 h to 3 d+) or monthly/bi-monthly recurring programmes. Dedicated AI trainer, continuous upskilling, instant time savings. From ${fromPrice}.`,
+        : `Corporate AI training on site for SMEs and large companies: 4 one-shot formats (4 h to 3 d+) or monthly/bi-monthly recurring programmes. Dedicated AI trainer, continuous upskilling, instant time savings. On quote, priced per group.`,
   });
 }
 
@@ -108,8 +106,6 @@ export default async function FormationsHub({ params }: Props) {
       label: isFr ? "Formations IA" : "AI trainings",
     },
   ];
-
-  const essentielleEntry = formatAmount(getFormationCatalogPriceRange().minEur, loc);
 
   // Libellés dérivés du SSOT catalogue (jamais figés dans la prose FAQ) : si un
   // format de durée ou une gamme est ajouté/renommé, la réponse « prix » suit
@@ -224,10 +220,9 @@ export default async function FormationsHub({ params }: Props) {
       ? "Formations IA équipe · 4 durées · Axion-IA"
       : "Team AI trainings · 4 durations · Axion-IA",
     description: isFr
-      ? `Formations IA opérationnelles pour vos équipes sur site, 4 paliers durée de 4 h à 3 j+, dès ${essentielleEntry}.`
-      : `Operational AI trainings for your teams on site, 4 duration tiers from 4 h to 3 d+, from ${essentielleEntry}.`,
+      ? "Formations IA opérationnelles pour vos équipes sur site, 4 paliers durée de 4 h à 3 j+, sur devis (tarifé par groupe)."
+      : "Operational AI trainings for your teams on site, 4 duration tiers from 4 h to 3 d+, on quote (priced per group).",
     serviceType: "AI training",
-    priceEur: getFormationCatalogPriceRange().minEur,
     areasServed: buildServiceAreasServed(loc),
   });
 
@@ -241,8 +236,8 @@ export default async function FormationsHub({ params }: Props) {
       ? "Formations IA en entreprise — 4 durées, sur site"
       : "Corporate AI trainings — 4 durations, on site",
     description: isFr
-      ? `Hub des formations IA opérationnelles Axion-IA pour vos équipes sur site : 4 paliers durée de 4 h à 3 j+, formule mensuelle récurrente, dès ${essentielleEntry}.`
-      : `Hub of Axion-IA operational AI trainings for your teams on site: 4 duration tiers from 4 h to 3 d+, recurring monthly programme, from ${essentielleEntry}.`,
+      ? "Hub des formations IA opérationnelles Axion-IA pour vos équipes sur site : 4 paliers durée de 4 h à 3 j+, formule mensuelle récurrente, sur devis."
+      : "Hub of Axion-IA operational AI trainings for your teams on site: 4 duration tiers from 4 h to 3 d+, recurring monthly programme, on quote.",
     speakable: true,
     ...(buildPrimaryImageOfPage("/formations")
       ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/formations") } }
@@ -620,8 +615,8 @@ export default async function FormationsHub({ params }: Props) {
             {/* `essentielleEntry` est un formatAmount() NON-compact : il porte
                 déjà « € HT » / « (excl. VAT) ». Ne pas resuffixer. */}
             {isFr
-              ? `Voir la grille tarifaire des formations — dès ${essentielleEntry}`
-              : `See the training price grid — from ${essentielleEntry}`}
+              ? "Formations sur devis — comprendre notre tarification"
+              : "Trainings on quote — how our pricing works"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </p>
@@ -1168,7 +1163,7 @@ export default async function FormationsHub({ params }: Props) {
                       // Will 2026-07-17 — disait « la grille complète figure plus
                       // haut sur cette page » : faux, le hub ne porte aucune
                       // grille (elle vit sur /formations/tarifs).
-                      answer: `Une formation IA en entreprise sur site démarre à ${essentielleEntry}. Le tarif dépend ensuite de la durée (de ${dureeShortFirst} à ${dureeShortLast}), de la gamme (${gammesList}) et du nombre de participants — la grille complète est détaillée sur la page tarifs des formations. Le devis précis se cale sur votre contexte après un premier échange.`,
+                      answer: `Toutes nos formations sont sur devis, tarifé par groupe — jamais par personne. Le devis dépend de la durée (de ${dureeShortFirst} à ${dureeShortLast}), de la gamme (${gammesList}) et de la taille du groupe. Il est établi sous 24-48 h après un premier échange, et validé avant toute inscription.`,
                     },
                     {
                       id: "effectif",
@@ -1227,7 +1222,7 @@ export default async function FormationsHub({ params }: Props) {
                       // same value as the hero "From …" (2026-07-06 price-FAQ audit).
                       id: "prix-formation-ia",
                       question: "How much does corporate AI training cost?",
-                      answer: `On-site corporate AI training starts at ${essentielleEntry}. The rate then depends on the format (${nbDureeFormats} durations from ${dureeShortFirst} to ${dureeShortLast}), the track (${gammesList}) and the number of participants — the full grid is detailed on the training pricing page. The precise quote is tailored to your context after a first call.`,
+                      answer: `All our trainings are on quote, priced per group — never per person. The quote depends on the format (${nbDureeFormats} durations from ${dureeShortFirst} to ${dureeShortLast}), the track (${gammesList}) and the group size. It is issued within 24-48 h after a first call, and validated before any enrolment.`,
                     },
                     {
                       id: "headcount",

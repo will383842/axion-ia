@@ -57,7 +57,7 @@ import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
 import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
-import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
+import { formatAmount } from "@/content/pricing";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
   buildProductMetadata,
@@ -88,7 +88,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const isFr = loc === "fr";
   // formatAmount renvoie déjà « … € HT » — ne jamais ré-ajouter « HT ».
-  const entryPrice = formatAmount(getFormationCatalogPriceRange().minEur, loc);
   // Compteur dérivé du SSOT : ajouter/retirer une formation dans FORMATIONS_V2
   // met à jour tous les libellés (titre, meta, JSON-LD, chips…) automatiquement.
   const total = FORMATIONS_V2.length;
@@ -102,8 +101,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Formations IA en entreprise — nos ${total} formations sur mesure | Axion-IA`
     : `Corporate AI training — our ${total} tailored trainings | Axion-IA`;
   const description = isFr
-    ? `Le catalogue complet des formations IA en entreprise Axion-IA : ${total} formations opérationnelles sur site, de 4 h à 3 jours, tous secteurs, partout en France.${finBit} Dès ${entryPrice}.`
-    : `The full catalogue of Axion-IA corporate AI trainings: ${total} operational on-site trainings, from 4 h to 3 days, every sector, across France.${finBit} From ${entryPrice}.`;
+    ? `Le catalogue complet des formations IA en entreprise Axion-IA : ${total} formations opérationnelles sur site, de 4 h à 3 jours, tous secteurs, partout en France.${finBit} Sur devis, tarifé par groupe.`
+    : `The full catalogue of Axion-IA corporate AI trainings: ${total} operational on-site trainings, from 4 h to 3 days, every sector, across France.${finBit} On quote, priced per group.`;
   return {
     ...buildProductMetadata({ locale, path: PATH, title, description }),
     title: { absolute: title },
@@ -118,9 +117,6 @@ export default async function FormationsEntreprise({ params }: Props) {
   const isFr = loc === "fr";
   const ofPublic = isQualiopiPublicDisclosureEnabled();
 
-  const minEur = getFormationCatalogPriceRange().minEur;
-  const entryPrice = formatAmount(minEur, loc); // libellé « à partir de … » (matrice SSOT)
-  const entryPriceCompact = formatAmount(minEur, loc, { compact: true }); // même montant, format compact
   // Compteur dérivé du SSOT (auto-maj si on ajoute/retire une formation).
   const total = FORMATIONS_V2.length;
   const images = getPageImages(PATH);
@@ -139,8 +135,8 @@ export default async function FormationsEntreprise({ params }: Props) {
     path: PATH,
     name: isFr ? "Toutes nos formations IA en entreprise" : "All our corporate AI trainings",
     description: isFr
-      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site ou à distance partout en France, de 4 h à 3 jours, dès ${entryPrice}.`
-      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site or remote across France, from 4 h to 3 days, from ${entryPrice}.`,
+      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site ou à distance partout en France, de 4 h à 3 jours, sur devis (tarifé par groupe, jamais par personne).`
+      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site or remote across France, from 4 h to 3 days, on quote (priced per group, never per person).`,
     speakable: true,
     ...(primaryImage ? { extra: { primaryImageOfPage: primaryImage } } : {}),
   });
@@ -178,10 +174,9 @@ export default async function FormationsEntreprise({ params }: Props) {
       ? "Formations IA en entreprise · sur site · Axion-IA"
       : "Corporate AI training · on site · Axion-IA",
     description: isFr
-      ? `${total} formations IA opérationnelles pour vos équipes, animées dans vos locaux partout en France, dès ${entryPrice}.`
-      : `${total} operational AI trainings for your teams, delivered on site across France, from ${entryPrice}.`,
+      ? `${total} formations IA opérationnelles pour vos équipes, animées dans vos locaux partout en France, sur devis (tarifé par groupe, jamais par personne).`
+      : `${total} operational AI trainings for your teams, delivered on site across France, on quote (priced per group, never per person).`,
     serviceType: "AI training",
-    priceEur: minEur,
     areasServed: buildServiceAreasServed(loc),
   });
 
@@ -366,7 +361,10 @@ export default async function FormationsEntreprise({ params }: Props) {
     { value: String(total), label: isFr ? "formations au catalogue" : "trainings in catalogue" },
     { value: isFr ? "Tous" : "All", label: isFr ? "secteurs couverts" : "sectors covered" },
     { value: "30 min à 2 h", label: isFr ? "gagnées par jour" : "saved per day" },
-    { value: entryPriceCompact, label: isFr ? "à partir de, HT" : "starting from, excl. VAT" },
+    {
+      value: isFr ? "Sur devis" : "On quote",
+      label: isFr ? "tarifé par groupe" : "priced per group",
+    },
   ];
 
   const villes = getVillesIndexableNow().slice(0, 60);
@@ -395,8 +393,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Qu'est-ce qu'une formation IA en entreprise ?"
         : "What is a corporate AI training?",
       answer: isFr
-        ? `Une formation IA en entreprise est une session courte (de 4 heures à 3 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Gemini et les assistants IA) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, dès ${entryPrice}.`
-        : `A corporate AI training is a short session (4 hours to 3 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Gemini and AI assistants) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, from ${entryPrice}.`,
+        ? `Une formation IA en entreprise est une session courte (de 4 heures à 3 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Gemini et les assistants IA) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, sur devis (tarifé par groupe, jamais par personne).`
+        : `A corporate AI training is a short session (4 hours to 3 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Gemini and AI assistants) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, on quote (priced per group, never per person).`,
     },
     {
       id: "combien-coute",
@@ -404,8 +402,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Combien coûte une formation IA en entreprise ?"
         : "How much does a corporate AI training cost?",
       answer: isFr
-        ? `Nos formations intra-entreprise démarrent à ${entryPrice} pour un groupe (et non par personne), selon la durée (4 h à 3 jours) et le format. Le tarif est forfaitaire par session : plus le groupe est nombreux, plus le coût par participant baisse.`
-        : `Our in-company trainings start at ${entryPrice} for a group (not per person), depending on duration (4 h to 3 days) and format. The price is per session: the larger the group, the lower the cost per participant.`,
+        ? "Toutes nos formations sont sur devis, tarifé par groupe et non par personne — selon la durée (4 h à 3 jours), la gamme et la taille du groupe. Le tarif est forfaitaire par session : plus le groupe est nombreux, plus le coût par participant baisse. Devis sous 24-48 h."
+        : "All our trainings are on quote, priced per group and not per person — depending on duration (4 h to 3 days), track and group size. The price is per session: the larger the group, the lower the cost per participant. Quote within 24-48 h.",
     },
     ...(ofPublic
       ? [

@@ -31,8 +31,6 @@ interface HeaderFormationsMenuProps {
   isFr: boolean;
   /** Pathname de la landing catalogue phare. */
   allHref: string;
-  /** Prix d'entrée du catalogue déjà formaté (ex « 1 200 € »). */
-  entryPrice: string;
   /** Nombre total de formations au catalogue. */
   totalCount: number;
   durations: ReadonlyArray<FormationsDurationItem>;
@@ -41,7 +39,6 @@ interface HeaderFormationsMenuProps {
 export function HeaderFormationsMenu({
   isFr,
   allHref,
-  entryPrice,
   totalCount,
   durations,
 }: HeaderFormationsMenuProps): ReactNode {
@@ -68,8 +65,8 @@ export function HeaderFormationsMenu({
               </span>
               <span className="text-fg-soft mt-0.5 block text-[13px]">
                 {isFr
-                  ? `Le catalogue complet · ${totalCount} formations · dès ${entryPrice}`
-                  : `Full catalogue · ${totalCount} trainings · from ${entryPrice}`}
+                  ? `Le catalogue complet · ${totalCount} formations · sur devis`
+                  : `Full catalogue · ${totalCount} trainings · on quote`}
               </span>
             </span>
             <ArrowRight
