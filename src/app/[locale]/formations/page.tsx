@@ -598,6 +598,26 @@ export default async function FormationsHub({ params }: Props) {
           })}
         </div>
 
+        {/* Lien grille tarifaire — Will 2026-07-17. Le hub annonce « dès X € »
+            (hero + FAQ prix) sans porter la matrice gamme × durée × effectif :
+            elle vit sur /formations/tarifs. Ce lien est aussi le seul lien HTML
+            entrant de cette page depuis que « Voir les tarifs » du méga-menu
+            pointe sur le récap multi-modules /tarifs — sans lui, elle est
+            orpheline (sitemap/llms.txt seuls). Posé sous les 4 cards durée, là
+            où la question « combien ça coûte ? » se pose.
+            href littéral typé (routing.ts) — pas de cast `as never`. */}
+        <p className="mt-8 text-center">
+          <Link
+            href="/formations/tarifs"
+            className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+          >
+            {isFr
+              ? `Voir la grille tarifaire des formations — dès ${essentielleEntry} HT`
+              : `See the training price grid — from ${essentielleEntry} ex. VAT`}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        </p>
+
         {/* PHOTOS FORMATION — 4 photos illustratives sous les cards palier
             durée. Sprint 2026-05-28 (Will) — déplacé sous les cards pour
             laisser les cards en premier (call-to-action visible direct),
@@ -1137,7 +1157,10 @@ export default async function FormationsHub({ params }: Props) {
                       // rester cohérent sur la page (audit FAQ prix 2026-07-06).
                       id: "prix-formation-ia",
                       question: "Combien coûte une formation IA en entreprise ?",
-                      answer: `Une formation IA en entreprise sur site démarre à ${essentielleEntry} HT. Le tarif dépend ensuite de la durée (de ${dureeShortFirst} à ${dureeShortLast}), de la gamme (${gammesList}) et du nombre de participants — la grille complète figure plus haut sur cette page. Le devis précis se cale sur votre contexte après un premier échange.`,
+                      // Will 2026-07-17 — disait « la grille complète figure plus
+                      // haut sur cette page » : faux, le hub ne porte aucune
+                      // grille (elle vit sur /formations/tarifs).
+                      answer: `Une formation IA en entreprise sur site démarre à ${essentielleEntry} HT. Le tarif dépend ensuite de la durée (de ${dureeShortFirst} à ${dureeShortLast}), de la gamme (${gammesList}) et du nombre de participants — la grille complète est détaillée sur la page tarifs des formations. Le devis précis se cale sur votre contexte après un premier échange.`,
                     },
                     {
                       id: "effectif",
@@ -1196,7 +1219,7 @@ export default async function FormationsHub({ params }: Props) {
                       // same value as the hero "From …" (2026-07-06 price-FAQ audit).
                       id: "prix-formation-ia",
                       question: "How much does corporate AI training cost?",
-                      answer: `On-site corporate AI training starts at ${essentielleEntry} ex. VAT. The rate then depends on the format (${nbDureeFormats} durations from ${dureeShortFirst} to ${dureeShortLast}), the track (${gammesList}) and the number of participants — the full grid is above on this page. The precise quote is tailored to your context after a first call.`,
+                      answer: `On-site corporate AI training starts at ${essentielleEntry} ex. VAT. The rate then depends on the format (${nbDureeFormats} durations from ${dureeShortFirst} to ${dureeShortLast}), the track (${gammesList}) and the number of participants — the full grid is detailed on the training pricing page. The precise quote is tailored to your context after a first call.`,
                     },
                     {
                       id: "headcount",
