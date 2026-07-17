@@ -17,7 +17,6 @@ import {
   IMPLEMENTATION_TIERS,
   formatAmount,
   getEntryPriceEur,
-  getFormationCatalogPriceRange,
 } from "@/content/pricing";
 
 interface PricingGridVilleProps {
@@ -27,10 +26,8 @@ interface PricingGridVilleProps {
 }
 
 export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVilleProps) {
-  // Prix d'entrée du catalogue Formations V2 (remplace l'offre /interventions).
-  const interventionEntryPrice = formatAmount(getFormationCatalogPriceRange().minEur, loc, {
-    compact: true,
-  });
+  // Formations V2 : 100 % sur devis (aucun montant affiché — cohérence fiches).
+  const surDevisLabel = loc === "fr" ? "Sur devis" : "On quote";
   const implEntryPrice = formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, loc, {
     compact: true,
   });
@@ -49,8 +46,8 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
       nameFr: "Formation IA",
       subFr: "Présentiel · À partir d'une demi-journée",
       categoryFr: "Formation",
-      includesFr: "Ateliers métier · Sur site · Groupes 1–30 pers.",
-      price: interventionEntryPrice,
+      includesFr: "Ateliers métier · Sur site · Jusqu'à 15 pers. (séminaire : 50)",
+      price: surDevisLabel,
       href: "/formations" as const,
     },
     {
