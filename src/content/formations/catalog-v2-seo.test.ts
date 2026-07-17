@@ -10,6 +10,22 @@
 import { describe, it, expect } from "vitest";
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 
+// Fourchette SERP anti-troncature — miroir des seuils canoniques de
+// `meta-length.ts` (zone génération de contenu, côté serveur). Valeurs
+// recopiées, PAS importées : le check d'isolation de Gate A interdit toute
+// dépendance de src/content vers cette zone (même en commentaire, son nom
+// déclenche le marqueur — d'où la périphrase).
+const META_DESCRIPTION_LENGTH = { min: 140, max: 160 } as const;
+
+/**
+ * Mots vides francophones : une description qui se termine par l'un d'eux suivi
+ * d'un point a été coupée en plein milieu d'une phrase. Le plafond seul (160) ne
+ * l'attrape pas — 7 descriptions tronquées sont ainsi passées au vert et ont été
+ * servies en SERP (« …et production de. », « …Présentiel ou. »).
+ */
+const MOT_SUSPENDU =
+  /\b(la|le|les|l'|de|du|des|d'|et|ou|avec|sur|en|un|une|à|au|aux|pour|votre|vos|dans|par|sans|leur|ses|son|ce|cette)\.\s*$/i;
+
 describe("catalogue V2 — SEO par formation", () => {
   it("metaTitleFr ≤ 65 caractères pour chaque formation", () => {
     for (const f of FORMATIONS_V2) {
@@ -20,8 +36,28 @@ describe("catalogue V2 — SEO par formation", () => {
   it("metaDescriptionFr ≤ 160 caractères pour chaque formation", () => {
     for (const f of FORMATIONS_V2) {
       expect(f.metaDescriptionFr.length, `${f.id}: "${f.metaDescriptionFr}"`).toBeLessThanOrEqual(
-        160,
+        META_DESCRIPTION_LENGTH.max,
       );
+    }
+  });
+
+  // Plancher : sans lui, rien n'empêche une description de 40 caractères (et le
+  // plafond seul encourage à couper au lieu de rédiger). Cf. meta-length.ts.
+  it("metaDescriptionFr ≥ 140 caractères pour chaque formation", () => {
+    for (const f of FORMATIONS_V2) {
+      expect(
+        f.metaDescriptionFr.length,
+        `${f.id}: "${f.metaDescriptionFr}"`,
+      ).toBeGreaterThanOrEqual(META_DESCRIPTION_LENGTH.min);
+    }
+  });
+
+  it("metaDescriptionFr ne se termine jamais sur un mot suspendu (troncature)", () => {
+    for (const f of FORMATIONS_V2) {
+      expect(
+        MOT_SUSPENDU.test(f.metaDescriptionFr),
+        `${f.id}: description coupée en plein mot → "${f.metaDescriptionFr}"`,
+      ).toBe(false);
     }
   });
 

@@ -21,7 +21,7 @@ import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { uploadToR2, getObjectBufferR2 } from "@/lib/r2-storage";
 import { getSlot, type InterventionFamille } from "@/content/intervention-documents-catalog";
-import { classifyEntry, buildKitR2Key, knownTopFolders } from "./kit-mapping";
+import { classifyEntry, buildKitR2Key, isKnownTopFolder } from "./kit-mapping";
 
 const MIME: Record<string, string> = {
   docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -87,7 +87,6 @@ export async function importKitFromZip(
   //    crée/alimente un bundle par slug destinataire (même contenu réutilisé).
   const bundles = new Map<string, SlotBundle>();
   const seenFolders = new Set<string>();
-  const knownFolders = knownTopFolders(famille);
 
   for (const rawPath of allPaths) {
     const entry = zip.files[rawPath];
@@ -114,7 +113,7 @@ export async function importKitFromZip(
   }
 
   for (const f of seenFolders) {
-    if (!knownFolders.has(f)) summary.unmappedFolders.push(f);
+    if (!isKnownTopFolder(f, famille)) summary.unmappedFolders.push(f);
   }
 
   // 2. Traite chaque bundle (idempotent), avec garde de taille cumulée.

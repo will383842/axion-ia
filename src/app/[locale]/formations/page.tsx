@@ -48,6 +48,7 @@ import { ServiceHero } from "@/components/sections/ServiceHero";
 // brand SVG inline + animations CSS subtiles. Remplace HeroMatrix (trop dense)
 // et l'orbital générique (pas assez travaillé).
 import { HeroOrbital } from "@/components/sections/HeroOrbital";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -67,6 +68,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const fromPrice = formatAmount(getFormationCatalogPriceRange().minEur, loc);
+  // Claim Qualiopi/OPCO gaté Phase B — il fuyait en SERP alors que tout le reste
+  // de la page est gaté (purge du flag 2026-07-14). ISR 1h le réinjecte au flip.
+  const qualiopiSerp = isQualiopiPublicDisclosureEnabled()
+    ? "certifié Qualiopi, finançables OPCO"
+    : "15 programmes éprouvés";
   return buildProductMetadata({
     locale,
     path: "/formations",
@@ -79,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
-        ? "Formation IA présentiel ou distanciel, adaptée à votre secteur et votre entreprise — +17 programmes, certifié Qualiopi, finançables OPCO. Vos équipes gagnent du temps dès le lendemain."
+        ? `Formation IA présentiel ou distanciel, adaptée à votre secteur et votre entreprise — ${qualiopiSerp}. Vos équipes gagnent du temps dès le lendemain.`
         : `Corporate AI training on site for SMEs and large companies: 4 one-shot formats (4 h to 3 d+) or monthly/bi-monthly recurring programmes. Dedicated AI trainer, continuous upskilling, instant time savings. From ${fromPrice}.`,
   });
 }
@@ -256,14 +262,14 @@ export default async function FormationsHub({ params }: Props) {
         ? `Formation IA opérationnelle ${d.labelFr}`
         : `Operational AI training — ${d.labelEn}`,
       description: isFr
-        ? `Formation IA opérationnelle sur ${d.labelFr.toLowerCase()} pour TPE, PME, ETI et grandes entreprises. Format Axion-IA sur site, ChatGPT, Claude, Mistral, agents IA et automatisations métier. De 2 à 30+ personnes.`
-        : `Operational AI training over ${d.labelEn.toLowerCase()} for SMEs, mid-caps and large enterprises. Axion-IA on-site format, ChatGPT, Claude, Mistral, AI agents and business automations. From 2 to 30+ people.`,
+        ? `Formation IA opérationnelle sur ${d.labelFr.toLowerCase()} pour TPE, PME, ETI et grandes entreprises. Format Axion-IA sur site, ChatGPT, Claude et Gemini, création d'assistants IA. Groupe intra-entreprise.`
+        : `Operational AI training over ${d.labelEn.toLowerCase()} for SMEs, mid-caps and large enterprises. Axion-IA on-site format, ChatGPT, Claude and Gemini, building AI assistants. In-house group.`,
       courseMode: ["Onsite"],
       ...(d.iso8601Duration ? { duration: d.iso8601Duration } : {}),
       audienceType: isFr
         ? "Décideurs, managers, équipes opérationnelles TPE PME ETI grandes entreprises (B2B)"
         : "Decision-makers, managers, operational teams SME mid-cap large enterprise (B2B)",
-      about: "IA opérationnelle (ChatGPT, Claude, Mistral, Copilot, agents IA, automatisations)",
+      about: "IA opérationnelle (ChatGPT, Claude, Gemini, assistants IA, méthode AXION)",
     }),
   );
 
@@ -330,8 +336,8 @@ export default async function FormationsHub({ params }: Props) {
         titleEm={isFr ? "pour un gain de temps immédiat" : "for immediate time savings"}
         description={
           isFr
-            ? "Un formateur IA expert vient sur votre site. Vos équipes montent en compétence sur leurs vrais outils (ChatGPT, Claude, Mistral), apprennent à concevoir des agents IA et automatisations métier — et gagnent des heures dès la 1ʳᵉ session."
-            : "An expert AI trainer comes on site. Your teams upskill on their real tools (ChatGPT, Claude, Mistral), learn to build AI agents and business automations — and save hours from the very first session."
+            ? "Un formateur IA expert vient sur votre site. Vos équipes montent en compétence sur les trois assistants les plus utilisés en entreprise (ChatGPT, Claude, Gemini), apprennent à concevoir leurs assistants IA — et gagnent des heures dès la 1ʳᵉ session."
+            : "An expert AI trainer comes on site. Your teams upskill on the three most widely used business assistants (ChatGPT, Claude, Gemini), learn to build their own AI assistants — and save hours from the very first session."
         }
         ctas={
           // Sprint cohérence CTA 2026-05-28 (Will) — alignés Header (Primary
@@ -364,8 +370,8 @@ export default async function FormationsHub({ params }: Props) {
             centerLabel={isFr ? "Votre équipe" : "Your team"}
             ariaLabel={
               isFr
-                ? "Schéma : votre équipe au centre, entourée des 8 outils IA enseignés en formation (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen)."
-                : "Diagram: your team at the center, surrounded by 8 AI tools taught in training (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen)."
+                ? "Schéma : votre équipe au centre, entourée du paysage IA que nous couvrons (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen)."
+                : "Diagram: your team at the center, surrounded by the AI landscape we cover (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen)."
             }
             nodes={[
               {
@@ -842,8 +848,8 @@ export default async function FormationsHub({ params }: Props) {
                       d: "Programme calibré pour TPE (2-8 pers.), PME (9-50 pers.), ETI (50-250 pers.) ou grandes entreprises (déploiement multi-sites).",
                     },
                     {
-                      t: "Automatisations métier",
-                      d: "ChatGPT, Claude, Microsoft Copilot, Gemini, agents IA et automatisations métier sur mesure — on travaille uniquement sur vos vrais outils, vos vrais documents, vos vrais workflows.",
+                      t: "Assistants IA",
+                      d: "ChatGPT, Claude et Gemini, et la création de vos propres assistants IA — chacun repart avec l'assistant qu'il a construit sur un cas d'usage de son métier.",
                     },
                     {
                       t: "ROI mesuré",
@@ -1180,7 +1186,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "outils",
                       question: "Quels outils IA utilisés en formation ?",
                       answer:
-                        "Ceux que votre équipe utilise déjà ou qui correspondent à vos métiers : ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity pour le texte et la recherche ; Midjourney pour la création visuelle ; Sora et HeyGen pour la vidéo et les avatars. On peut aussi former à la conception d'agents IA (assistants conversationnels, agents autonomes) et aux automatisations métier. Pas de techno imposée.",
+                        "Les formations s'appuient sur les trois assistants les plus utilisés en entreprise : ChatGPT, Claude et Gemini — vous apprenez à choisir le bon selon le besoin, et à créer vos propres assistants IA. Le reste du paysage (Microsoft Copilot, Mistral, Perplexity, Midjourney, Sora, HeyGen) est situé en panorama, pour que vous sachiez à quoi sert quoi, sans le pratiquer en séance.",
                     },
                     {
                       id: "couverture-paris",
@@ -1200,7 +1206,7 @@ export default async function FormationsHub({ params }: Props) {
                       question:
                         "En quoi vos formations diffèrent d'un organisme de formation classique ?",
                       answer:
-                        "Chaque format intègre une dimension pédagogique sur vos vrais documents et vos vrais cas métier (vs scénarios théoriques d'organisme classique). Vos collaborateurs apprennent à maîtriser ChatGPT, Claude, Mistral, les agents IA et les automatisations en travaillant directement sur leurs tâches récurrentes. Méthode de prompting installée durablement.",
+                        "Un programme standardisé et transversal, mais jamais théorique : la méthode AXION est démontrée en direct, puis chacun l'applique à ses propres tâches récurrentes pendant les exercices. Vos collaborateurs apprennent à maîtriser ChatGPT, Claude et Gemini et à créer leurs assistants. Méthode de prompting installée durablement.",
                     },
                     {
                       id: "couverture-international",
@@ -1287,8 +1293,8 @@ export default async function FormationsHub({ params }: Props) {
         titleEm={isFr ? "vos équipes à l'IA" : "your teams in AI"}
         description={
           isFr
-            ? "Un formateur IA expert intervient sur votre site. Vos équipes apprennent sur leurs vrais outils métier et gagnent des heures dès la 1ʳᵉ intervention."
-            : "An expert AI trainer comes on site. Your teams learn on their real business tools and save hours from the very first session."
+            ? "Un formateur IA expert intervient sur votre site. Vos équipes appliquent la méthode à leurs tâches réelles et gagnent des heures dès la 1ʳᵉ intervention."
+            : "An expert AI trainer comes on site. Your teams apply the method to their real tasks and save hours from the very first session."
         }
         cta={
           // Sprint cohérence CTA 2026-05-28 (Will) — aligné Header primary :

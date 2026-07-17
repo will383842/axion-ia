@@ -69,7 +69,7 @@ export async function generateMetadata({
   return buildProductMetadata({
     locale,
     path: "/formations/tarifs",
-    title: "Tarifs des formations IA en entreprise | Axion-IA",
+    title: "Tarifs des formations IA en entreprise",
     description: `Tarifs HT par groupe (pas par personne) des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} (4 h) à ${formatAmount(maxEur, "fr")} (3 jours), dans vos locaux, sur vos cas réels.${qualiopiSuffix}`,
   });
 }

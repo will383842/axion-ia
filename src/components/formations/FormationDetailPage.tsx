@@ -50,13 +50,16 @@ import {
   getGammeMeta,
 } from "@/content/formations/catalog-v2-meta";
 import {
+  FORMATION_EFFECTIF_DEFAUT,
   formatDureeFr,
   formatModalitesFr,
   getFormationCasUsage,
   getFormationCourseModes,
+  getFormationEffectif,
   getFormationImage,
   getFormationMateriel,
   getFormationModalites,
+  getFormationOutils,
 } from "@/content/formations/catalog-v2-facts";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
@@ -91,6 +94,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const priceValue = typeof entryPrice === "number" ? formatAmount(entryPrice, "fr") : "Sur devis";
   const modalitesLabel = formatModalitesFr(getFormationModalites(f));
   const materiel = getFormationMateriel(f);
+  const effectif = getFormationEffectif(f);
   const prerequis = f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.";
   const image = getFormationImage(f);
   const casUsage = getFormationCasUsage(f);
@@ -102,11 +106,11 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const genericFaqs: ReadonlyArray<{ question: string; reponse: string }> = [
     {
       question: `À qui s'adresse la formation « ${f.titreFr} » ?`,
-      reponse: `${f.publicViseFr} Le programme est cadré avec vous et adapté au niveau de chacun.`,
+      reponse: f.publicViseFr,
     },
     {
       question: "Quelle est la durée et le format de la formation ?",
-      reponse: `${formatDureeFr(f)}. ${modalitesLabel}. Le groupe est intra-entreprise : uniquement vos équipes.`,
+      reponse: `${formatDureeFr(f)}. ${modalitesLabel}. Le groupe est intra-entreprise : uniquement vos équipes, ${effectif.toLowerCase()}.`,
     },
     {
       question: "Faut-il des prérequis ou du matériel particulier ?",
@@ -114,13 +118,12 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
     },
     {
       question: "Quels outils d'IA vais-je apprendre à utiliser ?",
-      reponse:
-        "Vous travaillez sur les principaux assistants IA (ChatGPT, Claude, Copilot, Mistral) appliqués à vos tâches réelles. L'objectif est de savoir choisir le bon outil selon le besoin, sur vos propres cas d'usage.",
+      reponse: getFormationOutils(f),
     },
     {
       question: "La formation est-elle adaptée à notre métier ?",
       reponse:
-        "Oui. Le programme est cadré en amont par un appel, puis les ateliers se font sur vos vrais dossiers et vos cas d'usage. Les exemples sont directement issus de votre activité.",
+        "Oui. Le programme est standardisé et transversal : les cas d'usage travaillés (mails, comptes-rendus, notes, présentations…) valent dans tout secteur, sans personnalisation préalable. Vous appliquez ensuite la méthode à vos propres situations pendant les exercices.",
     },
     {
       question: "Que se passe-t-il après la formation ?",
@@ -149,10 +152,14 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const his = brackets
     .map((b) => Number.parseInt(b.split("-")[1] ?? "", 10))
     .filter((n) => Number.isFinite(n));
-  const groupSizeLabel =
-    his.length > 0
+  // L'effectif annoncé au programme PRIME sur les tranches tarifaires : celles-ci
+  // vont jusqu'à 30 pers. et sont vides en « sur devis », alors que le programme
+  // engage contractuellement une jauge (15 · 10 · 2 à 6 · 50).
+  const groupSizeLabel = f.effectifFr
+    ? `${f.effectifFr} · intra-entreprise`
+    : his.length > 0
       ? `${Math.min(...los)} à ${Math.max(...his)} participants · intra-entreprise`
-      : "Intra-entreprise, sur site";
+      : `${FORMATION_EFFECTIF_DEFAUT} · intra-entreprise`;
 
   // ── CARTE INFOS-CLÉS (héro) — tout depuis le SSOT ───────────────────────────
   const factRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
@@ -166,7 +173,11 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const modalitesRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
     { icon: MapPin, label: "Format", value: modalitesLabel },
     { icon: Clock, label: "Durée", value: formatDureeFr(f) },
-    { icon: Users, label: "Groupe", value: "Intra-entreprise — vos équipes uniquement" },
+    {
+      icon: Users,
+      label: "Groupe",
+      value: `Intra-entreprise — vos équipes uniquement, ${effectif.toLowerCase()}`,
+    },
     { icon: GraduationCap, label: "Intervenant", value: "Un formateur IA expert Axion-IA" },
     { icon: Target, label: "Public visé", value: f.publicViseFr },
     { icon: CheckCircle2, label: "Prérequis", value: prerequis },
@@ -174,7 +185,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   ];
 
   const heroChips = [
-    "Sur vos vrais outils",
+    "Cas d’usage transversaux",
     "Intra-entreprise",
     "Opérationnel·le dès le lendemain",
   ];
@@ -214,7 +225,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       duration: formationDureeIso(f.duree),
       audienceType:
         "Équipes, dirigeants et collaborateurs opérationnels (TPE, PME, ETI, grandes entreprises)",
-      about: "IA opérationnelle (ChatGPT, Claude, Mistral, Copilot, agents IA, automatisations)",
+      about: "IA opérationnelle (ChatGPT, Claude, Gemini, assistants IA, agents, automatisations)",
       ...(typeof entryPrice === "number" ? { priceEurHt: entryPrice } : {}),
     }),
     image: courseImages,
@@ -370,7 +381,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           eyebrow="Objectifs & cas d'usage"
           title="Ce que chacun saura faire —"
           titleEm="cas d'usage concret"
-          description="Des compétences directement applicables sur vos vrais dossiers, travaillées en atelier."
+          description="Des compétences directement applicables à votre quotidien, travaillées en atelier."
         >
           <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl gap-4 lg:grid-cols-3">
             {casUsage.map((c) => (

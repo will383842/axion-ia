@@ -334,10 +334,10 @@ export default async function FormationsEntreprise({ params }: Props) {
   const features: ReadonlyArray<{ icon: typeof Target; title: string; body: string }> = [
     {
       icon: Target,
-      title: isFr ? "Sur mesure, par métier" : "Tailored, by role",
+      title: isFr ? "Une formation par métier" : "One training per role",
       body: isFr
-        ? "Adaptées à vos outils, vos vrais dossiers et votre secteur — pas des exemples abstraits."
-        : "Tailored to your tools, real files and sector — not abstract examples.",
+        ? "RH, vente, marketing, finance, assistanat : des cas d'usage propres à chaque métier, jamais abstraits."
+        : "HR, sales, marketing, finance, office support: use cases specific to each role, never abstract.",
     },
     {
       icon: MapPin,
@@ -350,8 +350,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       icon: Users,
       title: isFr ? "Formateurs IA experts" : "Expert AI trainers",
       body: isFr
-        ? "Des formateurs opérationnels, à jour des derniers outils (ChatGPT, Claude, Mistral…)."
-        : "Operational trainers, up to date with the latest tools (ChatGPT, Claude, Mistral…).",
+        ? "Des formateurs opérationnels, à jour des derniers outils (ChatGPT, Claude, Gemini…)."
+        : "Operational trainers, up to date with the latest tools (ChatGPT, Claude, Gemini…).",
     },
     {
       icon: TrendingUp,
@@ -395,8 +395,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Qu'est-ce qu'une formation IA en entreprise ?"
         : "What is a corporate AI training?",
       answer: isFr
-        ? `Une formation IA en entreprise est une session courte (de 4 heures à 3 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Mistral, agents et automatisations) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, dès ${entryPrice}.`
-        : `A corporate AI training is a short session (4 hours to 3 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Mistral, agents and automations) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, from ${entryPrice}.`,
+        ? `Une formation IA en entreprise est une session courte (de 4 heures à 3 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Gemini et les assistants IA) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, dès ${entryPrice}.`
+        : `A corporate AI training is a short session (4 hours to 3 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Gemini and AI assistants) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, from ${entryPrice}.`,
     },
     {
       id: "combien-coute",
@@ -465,8 +465,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       id: "outils",
       question: isFr ? "Quels outils IA sont abordés ?" : "Which AI tools are covered?",
       answer: isFr
-        ? "ChatGPT, Claude, Mistral, Copilot et les agents / automatisations métier, selon vos usages. Nous formons sur les outils que vous utilisez déjà (ou choisissons ensemble les plus adaptés)."
-        : "ChatGPT, Claude, Mistral, Copilot and business agents / automations, depending on your usage. We train on the tools you already use (or pick the most relevant ones together).",
+        ? "Vous pratiquez ChatGPT, Claude et Gemini — les trois assistants les plus utilisés en entreprise — et vous créez vos propres assistants IA. Le reste du paysage (Copilot, Mistral, Perplexity…) est situé en panorama, sans être pratiqué en séance."
+        : "You practise ChatGPT, Claude and Gemini — the three most widely used business assistants — and build your own AI assistants. The rest of the landscape (Copilot, Mistral, Perplexity…) is mapped out, not practised in session.",
     },
     {
       id: "partout-france",
