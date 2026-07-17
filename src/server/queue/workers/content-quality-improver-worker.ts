@@ -14,12 +14,11 @@
 
 import { Queue, Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
-import {
-  readContentGenConfig,
-  writeContentGenConfig,
-} from "@/server/actions/content-gen/_settings";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { persistContentGenConfig } from "@/server/content-gen/config-store";
 import { logGeneration, logStep } from "@/server/content-gen/shared/generation-log";
-// B.8 P1.5 P0-3 — LLM-as-judge (Claude Sonnet reviewer multi-dim).
+// B.8 P1.5 P0-3 — LLM-as-judge (reviewer multi-dim, gpt-4o depuis la décision
+// Will 2026-07-09 « 100% OpenAI » — cf. llm-judge.ts).
 import {
   reviewArticle,
   JUDGE_THRESHOLDS,
@@ -95,7 +94,7 @@ async function getQualityLoopMonthSpent(): Promise<number> {
   });
   // Reset mensuel automatique si on change de mois
   if (stored.month !== month) {
-    await writeContentGenConfig(
+    await persistContentGenConfig(
       QUALITY_LOOP_SPENT_KEY,
       { usd: 0, month },
       "system",
@@ -190,7 +189,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   }
 
   // B.8 P0-3 P1.5 — LLM-as-judge review (V2).
-  // Lit l'output du job, appelle reviewArticle() Claude Sonnet, persiste le
+  // Lit l'output du job, appelle reviewArticle() (gpt-4o), persiste le
   // editorialScore + verdict. Selon verdict :
   //  - publish : status=needs_review (review queue humain final)
   //  - improve : increment attempts, re-queue jusqu'a maxAttemptsAuto

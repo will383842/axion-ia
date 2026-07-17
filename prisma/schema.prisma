@@ -3491,6 +3491,9 @@ model ContentGenJob {
   /// Sprint A-suite P6 — Item 4. Score fact-check (0-100) posé par le fact-check
   /// worker. Null = fact-check pas encore run. Gate publication dans publish-worker.
   factCheckScore      Int?     @map("fact_check_score")
+  /// Score du juge LLM (0-100) posé par le quality-improver. Null = juge pas encore
+  /// passé (ou indisponible). Recopié sur Article.editorialScore à la publication.
+  editorialScore      Int?     @map("editorial_score")
 
   // Boucle qualité v1.7 (§ 27)
   qualityImprovementAttempts Int @default(0)
