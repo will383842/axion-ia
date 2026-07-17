@@ -348,3 +348,59 @@ describe("kit-mapping — kit AXION 2026 (arborescence par type)", () => {
     expect(isKnownTopFolder("Dossier_Inconnu", "formation")).toBe(false);
   });
 });
+
+describe("kit-mapping — livrables partagés (kit AXION)", () => {
+  const F = "04_Formation_Gagner_du_temps_au_quotidien_7h/03_Documents_stagiaire";
+  it("classe les 4 livrables universels vers leurs slots", () => {
+    const cases: ReadonlyArray<[string, string]> = [
+      [`${F}/Axion-IA_Charte_IA_et_guide_securite.docx`, "charte_ia"],
+      [`${F}/Axion-IA_Bibliotheque_prompts_AXION.docx`, "bibliotheque_prompts"],
+      [`${F}/Axion-IA_Kits_assistants_IA.docx`, "kits_assistants"],
+      [`${F}/Axion-IA_Guide_cas_usage_et_roadmap.docx`, "guide_cas_usage"],
+    ];
+    for (const [path, slot] of cases) {
+      expect(classifyEntry(path), path).toMatchObject({
+        slugs: ["gagner-du-temps-au-quotidien-avec-l-ia-7h"],
+        slot,
+      });
+    }
+  });
+
+  it("la bibliothèque MARKETING (formation 12) prime sur la générale", () => {
+    expect(
+      classifyEntry(
+        "12_Formation_IA_Marketing_Contenus_SEO_7h/03_Documents_stagiaire/Axion-IA_Bibliotheque_prompts_marketing.docx",
+      ),
+    ).toMatchObject({
+      slugs: ["ia-marketing-contenus-seo-image-de-marque-7h"],
+      slot: "bibliotheque_prompts",
+    });
+  });
+
+  it("classe les livrables spécialisés (Skills 05, connecteurs 13, diagnostic 08)", () => {
+    expect(
+      classifyEntry(
+        "05_Formation_Claude_Prise_en_main_complete_7h/03_Documents_stagiaire/Axion-IA_Pack_Skills_Claude.docx",
+      ),
+    ).toMatchObject({ slot: "pack_skills" });
+    expect(
+      classifyEntry(
+        "13_Formation_IA_Vente_Prospection_7h/03_Documents_stagiaire/Axion-IA_Guide_des_connecteurs.docx",
+      ),
+    ).toMatchObject({ slot: "guide_connecteurs" });
+    expect(
+      classifyEntry(
+        "08_Formation_IA_Act_Conformite_et_securite_7h/03_Documents_stagiaire/Axion-IA_Diagnostic_conformite_AI_Act.docx",
+      ),
+    ).toMatchObject({ slot: "diagnostic_ai_act" });
+  });
+
+  it("les 3 nouveaux slots existent au catalogue et acceptent le docx", () => {
+    for (const key of ["pack_skills", "guide_connecteurs", "diagnostic_ai_act"]) {
+      const def = getSlot("formation", key);
+      expect(def, key).toBeTruthy();
+      expect(def!.formats).toContain("docx");
+      expect(def!.generatedOnly ?? false).toBe(false);
+    }
+  });
+});
