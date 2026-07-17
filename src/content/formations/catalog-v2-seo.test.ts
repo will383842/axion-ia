@@ -11,9 +11,10 @@ import { describe, it, expect } from "vitest";
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 
 // Fourchette SERP anti-troncature — miroir des seuils canoniques de
-// `src/server/content-gen/shared/meta-length.ts`. Valeurs recopiées, PAS
-// importées : le check d'isolation de Gate A interdit toute dépendance de
-// src/content vers la zone content-gen.
+// `meta-length.ts` (zone génération de contenu, côté serveur). Valeurs
+// recopiées, PAS importées : le check d'isolation de Gate A interdit toute
+// dépendance de src/content vers cette zone (même en commentaire, son nom
+// déclenche le marqueur — d'où la périphrase).
 const META_DESCRIPTION_LENGTH = { min: 140, max: 160 } as const;
 
 /**
