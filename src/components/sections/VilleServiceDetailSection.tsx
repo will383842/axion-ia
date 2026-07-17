@@ -24,6 +24,7 @@ import {
   formatAmount,
   getEntryTier,
   getTierById,
+  formatTierPrice,
 } from "@/content/pricing";
 
 export interface VilleServiceDetailSectionProps {
@@ -44,7 +45,10 @@ export interface VilleServiceDetailSectionProps {
 }
 
 // Sprint 14.10.5 — CTAs prix dérivés du SSOT pricing.ts (zéro hardcode).
-const auditFlashAmount = getTierById(AUDIT_TIERS, "audit-flash").priceFlat!;
+// Will 2026-07-17 — le tier audit-flash est `isFromPrice` : on passe par
+// `formatTierPrice` (et non `formatAmount(amount)`) pour rendre « À partir
+// de 1 190 € » comme partout ailleurs sur les audits.
+const auditFlashTier = getTierById(AUDIT_TIERS, "audit-flash");
 const interventionEssentielleAmount = getTierById(
   INTERVENTION_TIERS,
   "intervention-essentielle",
@@ -59,8 +63,8 @@ const SERVICE_META = {
     labelEn: "AI audit",
     eyebrowFr: "Audit IA opérationnel",
     eyebrowEn: "Operational AI audit",
-    ctaFr: `Demander un audit Flash · ${formatAmount(auditFlashAmount, "fr", { compact: true })}`,
-    ctaEn: `Request a Flash audit · ${formatAmount(auditFlashAmount, "en", { compact: true })}`,
+    ctaFr: `Demander un audit Flash · ${formatTierPrice(auditFlashTier, "fr", { compact: true })}`,
+    ctaEn: `Request a Flash audit · ${formatTierPrice(auditFlashTier, "en", { compact: true })}`,
   },
   interventions: {
     accent: "terracotta" as const,
