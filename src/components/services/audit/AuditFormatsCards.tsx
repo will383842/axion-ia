@@ -20,7 +20,7 @@ import { ArrowRight, Zap, Building2, type LucideIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/layout/Section";
-import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { AUDIT_TIERS, formatTierPrice, getTierById } from "@/content/pricing";
 
 interface AuditFormatsCardsProps {
   readonly isFr: boolean;
@@ -40,7 +40,8 @@ export function AuditFormatsCards({ isFr: _isFr }: AuditFormatsCardsProps) {
   void _isFr; // EN = miroir FR (toggle conservé pour parité d'API avec autres composants).
 
   const flashTier = getTierById(AUDIT_TIERS, "audit-flash");
-  const onsitePrice = formatAmount(flashTier.priceFlat!, "fr", { compact: true });
+  // formatTierPrice → « À partir de 1 190 € » (isFromPrice, Will 2026-07-17).
+  const onsitePrice = formatTierPrice(flashTier, "fr", { compact: true });
 
   const cards: ReadonlyArray<FormatCard> = [
     {
@@ -50,7 +51,8 @@ export function AuditFormatsCards({ isFr: _isFr }: AuditFormatsCardsProps) {
       title: "Audit sur place",
       tagline:
         "On audite toute votre entreprise en une journée complète sur site, pour révéler tout ce que l'IA peut y changer. Recommandations chiffrées à la clé.",
-      meta: `1 journée complète · sur place · ${onsitePrice}`,
+      // Prix en tête, comme la carte « Sur devis · selon l'ampleur ».
+      meta: `${onsitePrice} · 1 journée complète · sur place`,
       cta: "Découvrir l'audit sur place",
     },
     {

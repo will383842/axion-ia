@@ -20,7 +20,7 @@ import { ArrowRight, Phone, Mail } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Link } from "@/i18n/navigation";
-import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { AUDIT_TIERS, formatAmount, formatTierPrice, getTierById } from "@/content/pricing";
 
 interface AudienceCard {
   readonly segment: string;
@@ -38,7 +38,15 @@ interface AudienceCard {
 }
 
 // Prix d'entrée audit sur place (TPE) — SSOT pricing.ts (audit-flash).
-const FLASH_PRICE = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", {
+// `formatTierPrice` (et non `formatAmount(priceFlat!)`) pour respecter le
+// `isFromPrice` du tier : Will 2026-07-17, les audits s'annoncent toujours en
+// « à partir de ». Sans ça, le TPE restait le seul niveau en prix ferme.
+const FLASH_PRICE = formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr", {
+  compact: true,
+});
+// Variante EN — `FLASH_PRICE` porte désormais le préfixe « À partir de » (FR) :
+// le réutiliser tel quel dans `metaEn` injecterait du français dans la carte EN.
+const FLASH_PRICE_EN = formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "en", {
   compact: true,
 });
 
@@ -69,8 +77,9 @@ const CARDS: ReadonlyArray<AudienceCard> = [
       "Vous portez l'entreprise au quotidien. On identifie 3 à 5 automatisations qui vous libèrent du temps dès la première semaine — devis, relances, administratif.",
     bodyEn:
       "You carry the business day to day. We pinpoint 3 to 5 automations that free up your time from week one — quotes, follow-ups, admin.",
-    metaFr: `1 journée sur place · ${FLASH_PRICE}`,
-    metaEn: `1 full day on site · ${FLASH_PRICE}`,
+    // Prix en tête, comme les cartes PME/ETI (« À partir de X · sur devis »).
+    metaFr: `${FLASH_PRICE} · 1 journée sur place`,
+    metaEn: `${FLASH_PRICE_EN} · 1 full day on site`,
     detailHref: "/audit/tpe-1-jour",
   },
   {

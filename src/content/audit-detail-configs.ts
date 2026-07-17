@@ -46,7 +46,10 @@ const subTierPrice = (tiers: ReadonlyArray<PricingSubTier>, id: string): number 
 
 // Raccourcis prix dérivés de la SSOT pricing.ts (priceFlat des sous-tiers).
 // Toute modification de tarif se fait dans pricing.ts — ces constantes suivent.
-const PRICE_FLASH_ONSITE = subTierPrice(AUDIT_FLASH_SUB_TIERS, "audit-flash-onsite");
+// Le TPE est un plancher (`isFromPrice`) depuis Will 2026-07-17 — d'où le
+// sous-tier complet et non juste son montant : la carte lit le flag en SSOT.
+const FLASH_ONSITE_SUB = subTierOf(AUDIT_FLASH_SUB_TIERS, "audit-flash-onsite");
+const PRICE_FLASH_ONSITE = FLASH_ONSITE_SUB.priceFlat;
 const PRICE_CIBLE_SOLO = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-solo");
 const PRICE_CIBLE_STANDARD = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-standard");
 const PRICE_CIBLE_AVANCE = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-avance");
@@ -272,8 +275,13 @@ const FLASH_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "On-site audit · 1 day",
     rangeFr: "Toute l'entreprise · sur site",
     rangeEn: "Whole company · on site",
-    priceLabelFr: formatAmount(PRICE_FLASH_ONSITE, "fr"),
-    priceLabelEn: formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true }),
+    priceLabelFr: formatAmount(PRICE_FLASH_ONSITE, "fr", {
+      from: FLASH_ONSITE_SUB.isFromPrice === true,
+    }),
+    priceLabelEn: formatAmount(PRICE_FLASH_ONSITE, "en", {
+      compact: true,
+      from: FLASH_ONSITE_SUB.isFromPrice === true,
+    }),
     bodyFr:
       "1 journée complète dans vos locaux (9 h-17 h). Vous voyez l'IA opérer sur vos vrais cas avec votre équipe. Réservation directe sur le calendrier.",
     bodyEn:

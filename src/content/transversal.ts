@@ -32,7 +32,7 @@ function modulesAnswerFr(): string {
   const pmeFrom = formatAmount(auditPmeTier.priceMin!, "fr", { compact: true });
   const etiFrom = formatAmount(auditEtiTier.priceMin!, "fr", { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr", { compact: false });
-  return `Module 1 — Interventions sur site (1 journée à partir de ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, ${interventionsEntry}). Module 2 — Audit IA (4 niveaux : Flash ${flash}, Ciblé dès ${cibleFrom}, Stratégique PME dès ${pmeFrom}, Stratégique ETI dès ${etiFrom}). Module 3 — Implémentation IA (mise en production, ${implEntry}).`;
+  return `Module 1 — Interventions sur site (1 journée à partir de ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, ${interventionsEntry}). Module 2 — Audit IA (4 niveaux : Flash dès ${flash}, Ciblé dès ${cibleFrom}, Stratégique PME dès ${pmeFrom}, Stratégique ETI dès ${etiFrom}). Module 3 — Implémentation IA (mise en production, ${implEntry}).`;
 }
 
 function modulesAnswerEn(): string {
@@ -45,7 +45,7 @@ function modulesAnswerEn(): string {
   const pmeFrom = formatAmount(auditPmeTier.priceMin!, "en", { compact: true });
   const etiFrom = formatAmount(auditEtiTier.priceMin!, "en", { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "en", { compact: false });
-  return `Module 1 — On-site sessions (1 day from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, ${interventionsEntry}). Module 2 — AI audit (4 tiers: Flash ${flash}, Targeted from ${cibleFrom}, Strategic SME from ${pmeFrom}, Strategic Mid-cap from ${etiFrom}). Module 3 — AI implementation (production deployment, ${implEntry}).`;
+  return `Module 1 — On-site sessions (1 day from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, ${interventionsEntry}). Module 2 — AI audit (4 tiers: Flash from ${flash}, Targeted from ${cibleFrom}, Strategic SME from ${pmeFrom}, Strategic Mid-cap from ${etiFrom}). Module 3 — AI implementation (production deployment, ${implEntry}).`;
 }
 
 export const ABOUT_TIMELINE = [

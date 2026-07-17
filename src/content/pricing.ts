@@ -55,6 +55,22 @@ export interface PricingTier {
   /** Prix fixe (en € HT) si la prestation a un tarif unique. */
   priceFlat?: number;
   /**
+   * Si `true`, `priceFlat` est un **plancher** et non un prix ferme : l'UI
+   * affiche « À partir de X € HT ». Miroir d'`isFromPrice` sur `PricingSubTier`.
+   *
+   * Décision Will 2026-07-17 : les audits s'annoncent TOUJOURS en « à partir
+   * de » (TPE dès 1 190 €, PME/ETI/grandes entreprises dès 1 900 €) — le
+   * chiffrage réel se fait au cas par cas.
+   *
+   * Opt-in par tier, volontairement : `priceFlat` reste un prix FERME pour les
+   * interventions, le 1-to-1 et la maintenance (« 290 € HT/mois » ne doit pas
+   * devenir « À partir de 290 € HT/mois »). Lu par `formatPrice()` et par
+   * `formatTierPrice()` — jamais par les usages transactionnels (booking,
+   * JSON-LD `lowPrice`), qui ont besoin du montant ferme réellement débité.
+   * Défaut : `false`.
+   */
+  isFromPrice?: boolean;
+  /**
    * Variante sur site quand un tier offre un split distance/présentiel
    * (legacy : split distance/site, désormais inutilisé côté audit). Si présent,
    * `priceFlat` reste le prix d'entrée (à distance).
@@ -108,7 +124,13 @@ export const AUDIT_FLASH_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "On-site audit · 1 day",
     rangeFr: "Toute l'entreprise · sur site",
     rangeEn: "Whole company · on site",
+    // Will 2026-07-17 — « toujours à partir de » : la carte marketing s'aligne
+    // sur l'en-tête du tier (« À partir de 1 190 € »). Le montant est inchangé
+    // et reste FERME côté transaction : `booking-catalog.ts` / `intervention-
+    // type.ts` lisent `priceFlat` en tant que NOMBRE (cents débités au slot) et
+    // n'ont pas connaissance de ce flag d'affichage.
     priceFlat: 1190,
+    isFromPrice: true,
     isFeatured: true,
   },
 ];
@@ -191,7 +213,12 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
     labelEn: "On-site audit",
     // Will 2026-05-31 — présentiel uniquement, 1 journée complète sur site.
     // Suppression du 490 € distanciel ; 1190 € HT devient le prix de référence.
+    // Will 2026-07-17 — seul niveau d'audit encore annoncé en prix FERME alors
+    // que Ciblé/PME/ETI sont tous en « À partir de 1 900 € ». Décision : les
+    // audits s'annoncent TOUJOURS en « à partir de » — TPE dès 1 190 €.
+    // Montant inchangé, seule la présentation devient un plancher.
     priceFlat: 1190,
+    isFromPrice: true,
     subTiers: AUDIT_FLASH_SUB_TIERS,
     descriptionFr: "Audit complet de l'entreprise en une journée sur place.",
     descriptionEn: "Complete on-site company audit in one day.",
@@ -931,6 +958,37 @@ export function formatAmount(
 }
 
 /**
+ * Formate le prix d'entrée d'un tier en respectant son `isFromPrice`.
+ *
+ * À utiliser partout où l'on affiche `formatAmount(tier.priceFlat!, …)` en dur :
+ * ces call-sites court-circuitent `formatPrice()` et ne verraient donc jamais le
+ * flag (bug 2026-07-17 — le TPE restait « 1 190 € » ferme sur /audit, /tarifs,
+ * les cards format et les pages ville, alors que les 3 autres niveaux d'audit
+ * annonçaient « À partir de … »).
+ *
+ * Retombe sur `priceMin` si le tier n'a pas de `priceFlat`, et sur « Sur devis »
+ * si aucun montant n'est défini — jamais de `NaN` (cf. filet dans `formatAmount`).
+ *
+ * ⚠️ NE PAS utiliser pour un usage transactionnel (booking, JSON-LD `lowPrice`,
+ * cents débités) : là, c'est le NOMBRE `priceFlat` qu'il faut, ferme.
+ */
+export function formatTierPrice(
+  tier: PricingTier,
+  locale: "fr" | "en" = "fr",
+  opts: FormatAmountOptions = {},
+): string {
+  const amount = tier.priceFlat ?? tier.priceMin;
+  if (amount == null) return locale === "fr" ? "Sur devis" : "On request";
+  // Un tier sans `priceFlat` mais avec `priceMin` est un plancher par nature
+  // (c'est la sémantique de `formatPrice`) : le préfixer aussi, sinon
+  // `formatTierPrice(audit-cible)` rendrait « 1 900 € » FERME là où
+  // `formatPrice(audit-cible)` rend « À partir de 1 900 € HT ». Les deux
+  // helpers doivent rester d'accord.
+  const isFrom = tier.isFromPrice === true || (tier.priceFlat == null && tier.priceMin != null);
+  return formatAmount(amount, locale, { ...opts, from: isFrom });
+}
+
+/**
  * Formate un range « min → max » (en € HT). Utilisé pour les audit `priceFrom`.
  * `1900, 3900, "fr"` → « 1 900 € → 3 900 € HT ».
  * Avec `{ compact: true }` : « 1 900 € → 3 900 € ».
@@ -1052,7 +1110,11 @@ export function formatPrice(tier: PricingTier, locale: "fr" | "en" = "fr"): stri
     return locale === "fr" ? "Sur devis" : "On quote";
   }
   if (typeof tier.priceFlat === "number") {
-    return `${fmt(tier.priceFlat)}${currency}${recurrence}`;
+    // `isFromPrice` — plancher et non prix ferme (audits, Will 2026-07-17).
+    // Même formulation que la branche `priceMin` plus bas.
+    const from =
+      tier.isFromPrice === true ? (locale === "fr" ? "À partir de " : "Starting at ") : "";
+    return `${from}${fmt(tier.priceFlat)}${currency}${recurrence}`;
   }
   if (typeof tier.priceMin === "number" && typeof tier.priceMax === "number") {
     return `${fmt(tier.priceMin)} - ${fmt(tier.priceMax)}${currency}${recurrence}`;

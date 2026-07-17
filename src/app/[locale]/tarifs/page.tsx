@@ -30,6 +30,7 @@ import {
   getTierById,
   getEntryPriceEur,
   type PricingTier,
+  formatTierPrice,
 } from "@/content/pricing";
 
 // Sprint Header refonte 2026-05-24 (Will). Page récap tarifs multi-modules.
@@ -384,7 +385,9 @@ export default async function PricingPage({ params }: Props) {
         schemaNodes={[
           {
             label: "Sur place",
-            benefit: formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr"),
+            // formatTierPrice → respecte `isFromPrice` (audits toujours en
+            // « à partir de », Will 2026-07-17).
+            benefit: formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr"),
             accent: "terracotta",
           },
           {

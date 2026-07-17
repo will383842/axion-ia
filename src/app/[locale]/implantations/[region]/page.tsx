@@ -355,8 +355,8 @@ export default async function RegionPage({ params }: Props) {
                 href: "/audit" as const,
                 label: isFr ? "Audit IA" : "AI audit",
                 detail: isFr
-                  ? `4 niveaux · Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} → Stratégique ETI dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "fr", { compact: true })}`
-                  : `4 tiers · Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} → Mid-cap strategic from ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "en", { compact: true })}`,
+                  ? `4 niveaux · Flash dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} → Stratégique ETI dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "fr", { compact: true })}`
+                  : `4 tiers · Flash from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} → Mid-cap strategic from ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "en", { compact: true })}`,
               },
               {
                 serviceId: "implementation",

@@ -37,9 +37,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/audit/tpe-1-jour",
+    // Will 2026-07-17 — les audits s'annoncent toujours en « à partir de ». Ici
+    // « dès » et non le « À partir de » de `formatTierPrice` : le title SERP
+    // tient en ~60 car. et « À partir de » le pousserait à 72 (tronqué par
+    // Google). Même sens, montant toujours issu du SSOT.
     title: isFr
-      ? `Audit IA sur place · ${formatAmount(FLASH_ONSITE, "fr", { compact: true })} · 1 journée complète · Axion-IA`
-      : `On-site AI audit · ${formatAmount(FLASH_ONSITE, "en", { compact: true })} · 1 full day · Axion-IA`,
+      ? `Audit IA sur place · dès ${formatAmount(FLASH_ONSITE, "fr", { compact: true })} · 1 journée · Axion-IA`
+      : `On-site AI audit · from ${formatAmount(FLASH_ONSITE, "en", { compact: true })} · 1 full day · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
     alternates: { fr: "/audit/tpe-1-jour", en: "/audit/tpe-1-jour" },
   });
