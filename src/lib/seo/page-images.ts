@@ -1279,7 +1279,7 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Williams — Fondateur Axion-IA, partenaire 1-to-1 des dirigeants TPE et PME",
         nameEn: "Williams — Axion-IA founder, 1-on-1 partner for small business and SME executives",
         altFr:
-          "Portrait de Williams, fondateur d'Axion-IA. Accompagne personnellement les dirigeants TPE et PME en 1-to-1 sur les 2 formats (vision IA stratégique, maîtrise Claude). Confidentialité totale.",
+          "Portrait de Williams, fondateur d'Axion-IA. Accompagne personnellement les dirigeants TPE et PME en 1-to-1 — journée Vision IA stratégique, en tête-à-tête. Confidentialité totale.",
         altEn:
           "Portrait of Williams, Axion-IA founder. Personally supports small business and SME executives in 1-on-1 on the 2 formats (strategic AI vision, Claude mastery). Total confidentiality.",
         width: 800,
