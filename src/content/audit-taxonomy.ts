@@ -15,7 +15,7 @@
 // du hub uniquement.
 
 import type { Locale } from "@/i18n/routing";
-import { AUDIT_TIERS, formatAmount, getTierById } from "./pricing";
+import { AUDIT_TIERS, formatTierPrice, getTierById } from "./pricing";
 
 // ============================================================================
 // Types
@@ -60,8 +60,8 @@ export const AUDIT_TIERS_META: ReadonlyArray<AuditTierMeta> = [
     pathEn: "/audit/tpe-1-jour",
     labelFr: "Audit sur place",
     labelEn: "On-site audit",
-    taglineFr: `Audit complet de l'entreprise pour TPE, artisan ou commerçant — une journée complète sur place (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} · réservation calendrier).`,
-    taglineEn: `Complete company audit for a small business, artisan or retailer — one full day on site (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} · calendar booking).`,
+    taglineFr: `Audit complet de l'entreprise pour TPE, artisan ou commerçant — une journée complète sur place (${formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr", { compact: true })} · réservation calendrier).`,
+    taglineEn: `Complete company audit for a small business, artisan or retailer — one full day on site (${formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "en", { compact: true })} · calendar booking).`,
     audienceSizes: ["tpe"],
     accent: "terracotta",
     hasCalendarSlot: true,
