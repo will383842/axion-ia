@@ -20,6 +20,8 @@ import type {
   ServiceSector,
 } from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
+// Fix 2026-07-17 — anti-zombie : politique de ré-enfilage (module pur, testable).
+import { resolveReenqueueAction } from "@/server/content-gen/queue/reenqueue-policy";
 import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
@@ -84,8 +86,23 @@ function getContentGenQueue(): Queue | null {
 
 /**
  * Re-enqueue un ContentGenJob dans BullMQ avec son payload original.
- * Idempotent : BullMQ jobId `gen-${id}` empêche les doublons (si le worker
- * traite déjà ce job, la 2nde add() no-op).
+ *
+ * ⚠️ Le jobId `gen-${id}` n'est PAS une garantie d'idempotence gratuite — c'était
+ * l'erreur du commentaire d'origine. BullMQ ignore silencieusement un `add` dont
+ * le jobId existe déjà, et les jobs terminés RESTENT dans Redis
+ * (`removeOnFail: { age: 30j, count: 5000 }`). Relancer un job `failed` sans
+ * supprimer sa clé produisait donc un **zombie** : `queued` en DB, absent de
+ * Redis, jamais traité — la cause racine des « 84 articles queued absents de
+ * Redis » (2026-06-27). En prod le 2026-07-17, le set `failed` de `content-gen`
+ * comptait 1046 jobs : la collision était systématique.
+ *
+ * On supprime donc explicitement le job périmé avant le `add` (motif déjà utilisé
+ * par `cancelJob`), tout en gardant la clé stable — la changer casserait les 4
+ * sites qui retrouvent le job par `gen-${id}` (`cancelJob`, `coverage.ts` ×2,
+ * `content-gen-deadline-checker.ts`).
+ *
+ * L'idempotence RÉELLE est conservée : un job encore en vol n'est pas touché
+ * (cf. `resolveReenqueueAction`).
  */
 async function enqueueGenJob(jobId: string): Promise<void> {
   const queue = getContentGenQueue();
@@ -112,6 +129,19 @@ async function enqueueGenJob(jobId: string): Promise<void> {
     );
     return;
   }
+  // Purge de la clé BullMQ périmée — sans ça, le `add` ci-dessous est un no-op
+  // silencieux et le job devient zombie (cf. docblock + reenqueue-policy.ts).
+  const bullJobId = `gen-${dbJob.id}`;
+  const existing = await queue.getJob(bullJobId);
+  const action = resolveReenqueueAction(existing ? await existing.getState() : null);
+  if (action === "skip-in-flight") {
+    console.warn(`[jobs.retry] job ${jobId} déjà en vol dans BullMQ — re-enqueue ignoré`);
+    return;
+  }
+  if (action === "remove-then-enqueue" && existing) {
+    await existing.remove();
+  }
+
   await queue.add(
     "generate",
     {
@@ -120,7 +150,7 @@ async function enqueueGenJob(jobId: string): Promise<void> {
       targetSearchIntent: dbJob.targetSearchIntent,
       inputPayload: dbJob.inputPayload as Record<string, unknown>,
     },
-    { jobId: `gen-${dbJob.id}` },
+    { jobId: bullJobId },
   );
 }
 
@@ -340,17 +370,39 @@ export async function retryAllFailed(): Promise<number> {
     });
     // P0-7 fix : re-enqueue chaque job en BullMQ. updateMany seul laissait les
     // jobs zombies (DB queued sans worker pick).
+    //
+    // Fix 2026-07-17 — isolation par job : l'`updateMany` ci-dessus a DÉJÀ passé
+    // les N jobs à `queued`. Une exception au job k laissait donc les jobs k+1..N
+    // zombies (queued en DB, jamais enfilés). On isole chaque enqueue et on
+    // retourne le nombre RÉELLEMENT enfilé — l'ancien `return failed.length`
+    // annonçait 500 relances même quand aucune n'avait abouti.
+    let enqueued = 0;
+    const notEnqueued: string[] = [];
     for (const f of failed) {
-      await enqueueGenJob(f.id);
+      try {
+        await enqueueGenJob(f.id);
+        enqueued++;
+      } catch (e) {
+        notEnqueued.push(f.id);
+        Sentry.captureException(e, {
+          tags: { area: "content-gen", action: "retryAllFailed.enqueue" },
+          extra: { contentGenJobId: f.id },
+        });
+      }
+    }
+    if (notEnqueued.length > 0) {
+      console.warn(
+        `[jobs.retryAllFailed] ${notEnqueued.length}/${failed.length} jobs non ré-enfilés (restent queued en DB) : ${notEnqueued.join(", ")}`,
+      );
     }
     revalidatePath(adminBase());
     await logActivity({
       session,
       action: "content-gen.job.retry-bulk",
       targetType: "ContentGenJob",
-      changes: { count: failed.length },
+      changes: { count: enqueued, selected: failed.length, notEnqueued: notEnqueued.length },
     });
-    return failed.length;
+    return enqueued;
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "content-gen", action: "retryAllFailed" } });
     throw e;
