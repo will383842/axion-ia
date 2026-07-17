@@ -84,6 +84,18 @@ export interface FormationV2 {
   modalites?: ReadonlyArray<ModalitePedagogique>;
   /** Matériel requis. Défaut = « un ordinateur avec connexion internet ». */
   materielFr?: string;
+  /**
+   * Effectif du groupe — engagement CONTRACTUEL repris du programme source.
+   * Défaut = « Jusqu'à 15 participants ». Surcharge obligatoire si le programme
+   * annonce autre chose (Claude Code : 10 · Référent IA : 2 à 6 · séminaire : 50).
+   */
+  effectifFr?: string;
+  /**
+   * Outils réellement pratiqués (phrase complète, rendue en FAQ). Défaut dérivé
+   * de la gamme. Surcharge si la formation n'enseigne pas les outils de sa gamme
+   * (ex. Référent IA : aucun outil, les ateliers sont documentaires).
+   */
+  outilsFr?: string;
   // ---- Contenu enrichi (optionnel — fallback template si absent) ----
   /** Cas d'usage concrets (avec petite image optionnelle). Fallback = objectifs. */
   casUsageFr?: ReadonlyArray<FormationCasUsage>;
@@ -941,7 +953,7 @@ const CLAUDE_PRISE_EN_MAIN_7H: FormationV2 = {
   h1Fr: "Formation Claude en entreprise : prise en main complète (1 jour)",
   metaTitleFr: "Formation Claude en entreprise — 1 jour | Axion-IA",
   metaDescriptionFr:
-    "Formation Claude d'une journée pour utilisateurs réguliers : prompt avancé, Artifacts, paramétrage, création de Skills, connecteurs et production de.",
+    "Formation Claude d'une journée pour utilisateurs réguliers : prompt avancé, Artifacts, paramétrage, création de Skills et connecteurs. Présentiel ou distanciel.",
   termesSemantiquesFr: [
     "formation Claude entreprise",
     "Claude Artifacts",
@@ -1410,6 +1422,11 @@ const CLAUDE_CODE_PROJET_3J: FormationV2 = {
   gamme: "claude",
   duree: "3j",
   surDevis: true,
+  // Programme : « Groupe volontairement limité à 10 participants : chacun
+  // construit son propre projet » → jauge plus basse que le défaut, assumée.
+  effectifFr: "Jusqu’à 10 participants",
+  outilsFr:
+    "Vous pratiquez Claude Code (Anthropic) pendant les trois jours, pour construire votre propre projet de bout en bout — sans écrire de code.",
   titreFr: "Claude Code — créer un projet de bout en bout",
   accrocheFr:
     "L\'IA sans le stress — 3 jours pour concevoir, construire et publier un vrai projet, même sans savoir coder",
@@ -1733,7 +1750,7 @@ const IA_ACT_CONFORMITE_7H: FormationV2 = {
   h1Fr: "Formation IA Act : conformité et sécurité des usages IA en entreprise (1 jour)",
   metaTitleFr: "Formation IA Act : conformité & sécurité — 1 jour | Axion-IA",
   metaDescriptionFr:
-    "Formation IA Act d'1 jour : comprendre le calendrier et les obligations, cartographier vos usages par niveau de risque, sécuriser vos données et bâtir votre.",
+    "Formation IA Act d'1 jour : comprendre le calendrier et les obligations, cartographier vos usages par niveau de risque et sécuriser vos données sensibles.",
   termesSemantiquesFr: [
     "formation IA Act",
     "conformité IA entreprise",
@@ -1917,13 +1934,19 @@ const REFERENT_IA_GOUVERNANCE_7H: FormationV2 = {
   gamme: "ia-standard",
   duree: "1j",
   surDevis: true,
+  // Programme : « Groupe : 2 à 6 participants » (noyau gouvernance).
+  effectifFr: "2 à 6 participants",
+  // Ateliers documentaires : le conducteur précise « Pas de démonstration d'outil
+  // dans cette formation » et « n'exige aucun compte IA ».
+  outilsFr:
+    "Aucun compte ni outil IA n’est requis : les ateliers portent sur vos documents de gouvernance (politique d’usage, registre, procédures), à partir de trames fournies.",
   titreFr: "Référent IA — Piloter la gouvernance de l'IA",
   accrocheFr:
     "L'IA sans le stress — outiller la personne qui porte le sujet IA dans votre entreprise, en une journée",
   h1Fr: "Formation Référent IA : piloter la gouvernance de l'IA en entreprise (1 jour)",
   metaTitleFr: "Formation Référent IA — gouvernance de l'IA, 1 jour | Axion-IA",
   metaDescriptionFr:
-    "Formation référent IA (1 jour) : cartographier les usages, construire charte et procédures, piloter la conformité et animer l'IA en interne. Présentiel ou.",
+    "Formation référent IA (1 jour) : cartographier les usages, construire charte et procédures, piloter la conformité et animer l'IA en interne. En petit groupe.",
   termesSemantiquesFr: [
     "formation référent IA",
     "gouvernance de l'IA en entreprise",
@@ -2158,7 +2181,7 @@ const IA_RH_7H: FormationV2 = {
   h1Fr: "Formation IA pour les ressources humaines et le recrutement (1 jour)",
   metaTitleFr: "Formation IA pour les RH et le recrutement — 1 jour | Axion-IA",
   metaDescriptionFr:
-    "Formation IA RH, 1 jour : maîtriser le prompt RH avec la méthode AXION, respecter le cadre légal, créer un assistant RH et outiller sourcing, annonces et.",
+    "Formation IA RH, 1 jour : maîtriser le prompt RH avec la méthode AXION, respecter le cadre légal, créer un assistant RH et outiller sourcing et annonces.",
   termesSemantiquesFr: [
     "formation IA RH",
     "IA recrutement",
@@ -2409,7 +2432,7 @@ const IA_ASSISTANAT_7H: FormationV2 = {
   h1Fr: "Formation IA pour l'assistanat en entreprise (1 jour)",
   metaTitleFr: "Formation IA assistanat — mails & CR, 1j | Axion-IA",
   metaDescriptionFr:
-    "Formation IA d'1 jour pour assistants et office managers : reprendre la main sur sa boîte mail, produire ses comptes-rendus et documents plus vite avec la.",
+    "Formation IA d'1 jour pour assistants et office managers : reprendre la main sur sa boîte mail, produire comptes-rendus et documents plus vite. Sans jargon.",
   termesSemantiquesFr: [
     "formation IA assistanat",
     "IA assistant de direction",
@@ -2647,7 +2670,7 @@ const IA_MARKETING_7H: FormationV2 = {
   h1Fr: "Formation IA marketing : contenus, SEO et image de marque (1 jour)",
   metaTitleFr: "Formation IA marketing, contenus & SEO — 1 jour | Axion-IA",
   metaDescriptionFr:
-    "Formation IA marketing, 1 jour : prompts avec la méthode AXION, assistant calibré sur votre marque, contenus sans « style IA », SEO et visuels. Présentiel ou.",
+    "Formation IA marketing, 1 jour : prompts avec la méthode AXION, assistant calibré sur votre marque, contenus sans « style IA », SEO et visuels de marque.",
   termesSemantiquesFr: [
     "formation IA marketing",
     "IA rédaction contenus",
@@ -3130,7 +3153,7 @@ const IA_FINANCE_7H: FormationV2 = {
   h1Fr: "Formation IA pour la finance et le contrôle de gestion (1 jour)",
   metaTitleFr: "Formation IA Finance & contrôle de gestion — 1j | Axion-IA",
   metaDescriptionFr:
-    "Formation IA finance, 1 jour : produire commentaires de gestion, analyses d'écarts et synthèses en une fraction du temps avec la méthode AXION. Présentiel ou.",
+    "Formation IA finance, 1 jour : produire commentaires de gestion, analyses d'écarts et synthèses en une fraction du temps avec la méthode AXION. Sur devis.",
   termesSemantiquesFr: [
     "formation IA finance",
     "IA contrôle de gestion",
@@ -3368,6 +3391,14 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   gamme: "ia-standard",
   duree: "1j",
   surDevis: true,
+  // Programme : « Jusqu'à 50 participants, en tables de 6 à 8 ».
+  effectifFr: "Jusqu’à 50 participants, en tables de 6 à 8",
+  // Le séminaire ne demande AUCUN matériel individuel : le formateur démontre,
+  // et seul le téléphone personnel sert au sondage et aux QCM.
+  materielFr:
+    "Aucun matériel à prévoir : les démonstrations sont pilotées par le formateur. Chaque participant utilise son téléphone personnel pour le sondage en direct et les QCM",
+  outilsFr:
+    "Le séminaire est démonstratif : le formateur pilote ChatGPT, Claude et Gemini en direct. Les participants ne créent aucun compte — ils travaillent par table, sur leurs propres cas d’usage.",
   seminaire: true,
   titreFr: "Séminaire IA — Mettre toute l'entreprise au diapason",
   accrocheFr:

@@ -74,6 +74,34 @@ export function getFormationMateriel(f: FormationV2): string {
   return f.materielFr ?? FORMATION_MATERIEL_DEFAUT;
 }
 
+// ── Effectif du groupe ──────────────────────────────────────────────────────
+// Engagement contractuel : les programmes source l'annoncent en en-tête, dans
+// les modalités pédagogiques ET dans les délais d'accès. Il doit donc être
+// publié. Ne PAS le dériver des tranches de prix (`FormationBracket`) : celles-ci
+// sont un axe tarifaire (jusqu'à 30 pers.) et sont vides pour les « sur devis ».
+export const FORMATION_EFFECTIF_DEFAUT = "Jusqu’à 15 participants";
+
+export function getFormationEffectif(f: FormationV2): string {
+  return f.effectifFr ?? FORMATION_EFFECTIF_DEFAUT;
+}
+
+// ── Outils pratiqués ────────────────────────────────────────────────────────
+// Dérivé de la gamme, car une formation Claude n'enseigne PAS les mêmes outils
+// qu'une formation IA généraliste. Surchargeable quand la formation ne pratique
+// aucun outil (Référent IA) ou un outil spécifique (Claude Code).
+export const FORMATION_OUTILS_DEFAUT: Record<FormationGamme, string> = {
+  "ia-standard":
+    "Vous pratiquez les trois assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — pour savoir lequel choisir selon le besoin. Les démonstrations s’appuient sur des cas transversaux, applicables à tout secteur.",
+  claude:
+    "La formation est intégralement construite sur Claude (Anthropic) : aucun outil tiers n’est requis.",
+  "agents-automatisations":
+    "Vous pratiquez Claude et ses agents pour automatiser vos tâches récurrentes, sans écrire de code.",
+};
+
+export function getFormationOutils(f: FormationV2): string {
+  return f.outilsFr ?? FORMATION_OUTILS_DEFAUT[f.gamme];
+}
+
 // ── Image (fallback par gamme + override par formation) ─────────────────────
 export const FORMATION_GAMME_IMAGE: Record<FormationGamme, { src: string; altFr: string }> = {
   "ia-standard": {
