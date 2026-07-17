@@ -358,7 +358,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
                       id: "format",
                       question: "Comment se passe un coaching individuel ?",
                       answer:
-                        "Un parcours construit avec vous : on audite votre poste, on prend en main les bons outils sur vos vrais cas, et vous repartez avec des méthodes applicables tout de suite et un plan d'action priorisé.",
+                        "Un parcours construit avec vous : on passe votre poste en revue, on prend en main les bons outils sur vos vrais cas, et vous repartez avec des méthodes applicables tout de suite et un plan d'action priorisé.",
                     },
                     {
                       id: "donnees",

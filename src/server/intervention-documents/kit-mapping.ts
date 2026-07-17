@@ -5,8 +5,8 @@
  * Module PUR (aucune I/O). Famille-aware :
  *   - `formation` : 1 dossier/formation × Documents_DOCX + Documents_PDF + 00_Presentation
  *     → 1 slug d'intervention (FOLDER_TO_SLUG, sinon slugify).
- *   - `un_a_un`   : dossiers `Dirigeant/` et `Collaborateur/` × Documents_DOCX (+ PDF)
- *     → PLUSIEURS slugs (la même trame couvre les formats 1 jour ET 2 jours).
+ *   - `un_a_un`   : kits AXION 16/17 (arborescence par TYPE : 00_Cadre,
+ *     01_Support_de_la_journee, 02_Guide_*, 03_Livrable_client) → 1 slug 1 jour.
  *
  * ⚠️ Ce module ne définit QUE la correspondance fichier→clé de slot. Le titre,
  * la catégorie et la VISIBILITÉ sont la propriété du catalogue SSOT
@@ -99,8 +99,11 @@ const AXION_SUBFOLDERS: ReadonlySet<string> = new Set([
   "01_Support_de_presentation",
   "01_Support_de_la_journee",
   "02_Documents_formateur",
+  "02_Guide_intervenant",
+  "02_Guide_coach",
   "03_Documents_stagiaire",
   "03_Documents_participant",
+  "03_Livrable_client",
 ]);
 
 /**
@@ -139,40 +142,36 @@ export function resolveAxionSlug(folder: string): string | null {
 // ============================ 1-TO-1 (un_a_un) ===============================
 
 /**
- * Dossier 1-to-1 (public) → slugs d'intervention destinataires.
- * La MÊME trame couvre les formats 1 jour ET 2 jours → un dossier alimente les
- * deux prestations du public. Le slot `attestation_emargement` (préfixe 15) est
- * généré par le Formation Engine : absent de la table ci-dessous, donc ignoré.
+ * Dossier 1-to-1 (kit AXION 2026) → slug d'intervention destinataire.
+ * L'offre active ne couvre qu'UNE journée par formule (kits 16/17) : les
+ * variantes 2 jours ont été retirées de la vente (2026-07-17) et ne reçoivent
+ * plus de documents. L'ancien kit AFEST (`Dirigeant|Collaborateur/Documents_DOCX/
+ * NN_*.docx`, doctrine abandonnée) n'est PLUS importable : ses slots n'existent
+ * plus au catalogue.
  */
 export const UN_A_UN_FOLDER_TO_SLUGS: Readonly<Record<string, ReadonlyArray<string>>> = {
-  Dirigeant: ["dirigeant-vision-strategique", "dirigeant-vision-strategique-2j"],
-  Collaborateur: ["coaching-decouverte", "coaching-optimisation-2j"],
+  "16_Coaching_Vision_IA_Strategique_dirigeant": ["dirigeant-vision-strategique"],
+  "17_Coaching_Decouverte_collaborateur": ["coaching-decouverte"],
 };
 
+/** Numéro de dossier 1-to-1 AXION (16/17) → slug. Tolérant au renommage du reste. */
+export function resolveUnAUnSlug(folder: string): string | null {
+  const m = folder.match(/^(\d{2})_/);
+  if (m?.[1] === "16") return "dirigeant-vision-strategique";
+  if (m?.[1] === "17") return "coaching-decouverte";
+  return UN_A_UN_FOLDER_TO_SLUGS[folder]?.[0] ?? null;
+}
+
 /**
- * Préfixe de fichier numéroté (NN_) → CLÉ de slot du catalogue (UN_A_UN).
- *
- * ⚠️ EXCLUS volontairement (générés/agrégés par le Formation Engine, JAMAIS
- * dupliqués ici — cf. catalogue `qualiopiDocType` + schéma Prisma) :
- *   03 positionnement_individuel · 13 evaluation_progression · 14 satisfaction_1to1
- *   15 attestation_emargement (generatedOnly).
- * Même règle que les formations (dont l'import exclut test/éval/satisfaction/attestation).
- * Les `.docx` correspondants restent dans le kit comme MODÈLES de référence
- * (uploadables à la main), mais ne sont pas importés en masse.
+ * Nom de fichier (kit 1-to-1 AXION) → clé de slot. Même logique par TYPE que les
+ * formations : le premier motif qui matche gagne.
  */
-export const UN_A_UN_FILE_TO_SLOT: Readonly<Record<string, string>> = {
-  "01": "cadrage_objectifs",
-  "02": "analyse_activite",
-  "04": "guide_coach",
-  "05": "parcours_seances",
-  "06": "fiches_exercices",
-  "07": "ressources_perso",
-  "08": "plan_optimisation",
-  "09": "cr_seance",
-  "10": "phase_reflexive",
-  "11": "corriges_1to1",
-  "12": "journal_progression",
-};
+const UN_A_UN_NAME_TO_SLOT: ReadonlyArray<{ re: RegExp; slot: string }> = [
+  { re: /Methode_AXION\./i, slot: "ressources" },
+  { re: /Memo_AXION\./i, slot: "memo_methode" },
+  { re: /Guide_(intervenant|coach)/i, slot: "guide_intervenant" },
+  { re: /Modele_/i, slot: "livrable_client" },
+];
 
 // ============================ Helpers ========================================
 
@@ -198,7 +197,8 @@ export function resolveSlugs(folder: string, famille: InterventionFamille): Read
     return s ? [s] : [];
   }
   if (famille === "un_a_un") {
-    return UN_A_UN_FOLDER_TO_SLUGS[folder] ?? [];
+    const s = resolveUnAUnSlug(folder);
+    return s ? [s] : [];
   }
   return []; // `audit` : pas (encore) d'import de kit.
 }
@@ -206,8 +206,7 @@ export function resolveSlugs(folder: string, famille: InterventionFamille): Read
 /** Table préfixe→slot selon la famille. */
 function fileToSlotMap(famille: InterventionFamille): Readonly<Record<string, string>> {
   if (famille === "formation") return FILE_TO_SLOT;
-  if (famille === "un_a_un") return UN_A_UN_FILE_TO_SLOT;
-  return {};
+  return {}; // un_a_un : kit AXION par TYPE uniquement (l'AFEST NN_ est abandonne)
 }
 
 /** Dossiers de premier niveau reconnus pour une famille (sert au signalement « non reconnus »). */
@@ -226,6 +225,9 @@ export function knownTopFolders(famille: InterventionFamille): ReadonlySet<strin
 export function isKnownTopFolder(folder: string, famille: InterventionFamille): boolean {
   if (famille === "formation") {
     return folder in FOLDER_TO_SLUG || resolveAxionSlug(folder) !== null;
+  }
+  if (famille === "un_a_un") {
+    return resolveUnAUnSlug(folder) !== null;
   }
   return knownTopFolders(famille).has(folder);
 }
@@ -262,8 +264,8 @@ export function classifyEntry(
   const ext = (lower.split(".").pop() ?? "").toLowerCase();
 
   // Kit AXION 2026 (arborescence par TYPE) — reconnu au sous-dossier.
-  if (famille === "formation" && AXION_SUBFOLDERS.has(sub)) {
-    return classifyAxionEntry(folder, sub, filename, ext);
+  if (AXION_SUBFOLDERS.has(sub) && (famille === "formation" || famille === "un_a_un")) {
+    return classifyAxionEntry(folder, sub, filename, ext, famille);
   }
 
   const slugs = resolveSlugs(folder, famille);
@@ -301,24 +303,28 @@ function classifyAxionEntry(
   sub: string,
   filename: string,
   ext: string,
+  famille: "formation" | "un_a_un",
 ): ClassifiedEntry | null {
-  const slug = resolveAxionSlug(folder);
+  const slug = famille === "formation" ? resolveAxionSlug(folder) : resolveUnAUnSlug(folder);
   if (!slug) return null;
   const slugs = [slug];
 
   if (AXION_SKIP_NAMES.some((re) => re.test(filename))) return null;
 
   // Support projeté : .pptx = source éditable, .pdf = version projetable.
+  // Formation → slot `diaporama` ; 1-to-1 → slot `support_journee`.
   if (sub === "01_Support_de_presentation" || sub === "01_Support_de_la_journee") {
-    if (ext === "pptx") return { slugs, folder, slot: DIAPORAMA_SLOT_KEY, kind: "source", ext };
-    if (ext === "pdf") return { slugs, folder, slot: DIAPORAMA_SLOT_KEY, kind: "pdf", ext };
+    const slot = famille === "formation" ? DIAPORAMA_SLOT_KEY : "support_journee";
+    if (ext === "pptx") return { slugs, folder, slot, kind: "source", ext };
+    if (ext === "pdf") return { slugs, folder, slot, kind: "pdf", ext };
     return null;
   }
 
   if (ext !== "docx" && ext !== "pdf") return null;
   const kind = ext === "pdf" ? "pdf" : "source";
 
-  const named = AXION_NAME_TO_SLOT.find((r) => r.re.test(filename));
+  const nameMap = famille === "formation" ? AXION_NAME_TO_SLOT : UN_A_UN_NAME_TO_SLOT;
+  const named = nameMap.find((r) => r.re.test(filename));
   if (named) return { slugs, folder, slot: named.slot, kind, ext };
 
   // Repli : le programme contractuel (« NN_Titre.docx » dans 00_Programme/00_Cadre).

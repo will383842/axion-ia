@@ -145,7 +145,7 @@ const DIRIGEANT_VISION_SCHEDULE: ReadonlyArray<DetailScheduleItem> = [
   },
   {
     time: "14 h 00",
-    titleFr: "Atelier 2 — 5 à 10 leviers stratégiques chiffrés",
+    titleFr: "Atelier 2 — 5 à 10 leviers stratégiques hiérarchisés",
     titleEn: "Workshop 2 — 5 to 10 quantified strategic levers",
     descriptionFr:
       "Nouvelles offres, optimisations majeures, services additionnels — potentiel quantifié.",
@@ -216,7 +216,7 @@ export const INTERVENTION_DETAIL_CONFIGS: Record<InterventionDetailSlug, Interve
         "A 1-on-1 day to open the executive's eyes to what AI changes IN THEIR SECTOR. Strategic opportunity panorama, what competitors actually do, how to think your company differently, which strategic levers to activate. Not an audit — a strategic shift.",
       chipsFr: [
         "Panorama sectoriel ciblé",
-        "5-10 leviers chiffrés",
+        "5-10 leviers hiérarchisés",
         "Note de cadrage sous 7 jours",
       ],
       chipsEn: ["Targeted sector panorama", "5-10 quantified levers", "Framing note within 7 days"],

@@ -299,148 +299,67 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
 ] as const;
 
 /**
- * 1-TO-1 (coaching individuel) — cadré en AFEST (Action de Formation En Situation
- * de Travail), Qualiopi/OPCO-finançable (décision Will 2026-06-13). La méthode :
- * cartographier le fonctionnement actuel (= analyse de l'activité AFEST), mises en
- * situation, phases réflexives, plan d'optimisation. Documents Qualiopi générés par
- * le Formation Engine (positionnement, émargement, attestation) comme les formations.
- * ⚠️ Financement effectif conditionné au périmètre de l'agrément (à confirmer au
- * certificateur).
+ * 1-TO-1 (accompagnement individuel) — interventions de CONSEIL, hors Qualiopi
+ * (kits AXION 16/17, 2026-07-17). Les kits sont formels et redondants : « ce
+ * n'est PAS une action de formation — pas de QCM, pas d'attestation, non
+ * finançable OPCO ». L'ancienne doctrine AFEST (2026-06-13, kit
+ * `docs/kits/1-to-1-afest/`) est ABANDONNÉE : ses 15 slots (positionnement,
+ * phase réflexive, attestation Formation Engine…) contredisaient frontalement
+ * les documents remis au client. Slots calqués sur le contenu réel des kits :
+ * cadre, support pptx de la journée, guide intervenant, modèles de livrables.
  */
 const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
-  // Cadre & objectifs
   {
-    key: "cadrage_objectifs",
-    titre: "Cadrage / convention AFEST & contrat d'objectifs",
+    key: "programme",
+    titre: "Programme de l'intervention (cadre remis au client)",
     categorie: "cadre",
-    visibilite: "stagiaire",
+    visibilite: "commercial",
     formats: ["docx"],
     ordre: 1,
+    note: "Le document contractuel du kit (00_Cadre) : déroulé, principes, livrable, délai de remise.",
   },
   {
-    key: "analyse_activite",
-    titre: "Grille de cartographie / analyse de l'activité (AFEST)",
-    categorie: "cadre",
+    key: "support_journee",
+    titre: "Support de la journée (projection)",
+    categorie: "formateur",
     visibilite: "formateur",
-    formats: ["docx"],
+    formats: ["pptx", "pdf"],
     ordre: 2,
-    note: "Cœur AFEST : cartographie du fonctionnement actuel (tâches, temps, irritants) en ouverture de journée.",
+    note: "Fil visuel du tête-à-tête (24-25 slides), avec les notes intervenant. Source .pptx + PDF projetable.",
   },
   {
-    key: "positionnement_individuel",
-    titre: "Test de positionnement individuel",
-    categorie: "cadre",
+    key: "guide_intervenant",
+    titre: "Guide de l'intervenant / du coach (conduite de la journée)",
+    categorie: "formateur",
     visibilite: "formateur",
     formats: ["docx"],
     ordre: 3,
-    qualiopiDocType: "positionnement",
-    note: "Modèle. Les instances par bénéficiaire sont générées par le Formation Engine.",
+    note: "Préparation en amont (échange 30 min, recherche métier/secteur), déroulé phase par phase, débrief 45 min, point à 30 jours (collaborateur).",
   },
   {
-    key: "guide_coach",
-    titre: "Trame de journée & guide du coach (déroulé AFEST, posture)",
-    categorie: "cadre",
+    key: "livrable_client",
+    titre: "Modèle du livrable client (note de cadrage · cahier de prompts + plan d'action)",
+    categorie: "stagiaires",
     visibilite: "formateur",
     formats: ["docx"],
     ordre: 4,
+    note: "Gabarit du livrable remis sous 7 jours. La version personnalisée part au client par email — le hub ne stocke que le modèle.",
   },
-  // Documents bénéficiaire
   {
-    key: "parcours_seances",
-    titre: "Parcours / plan de séances",
+    key: "memo_methode",
+    titre: "Mémo méthode AXION",
     categorie: "stagiaires",
-    visibilite: "stagiaire",
+    visibilite: "formateur",
     formats: ["docx"],
     ordre: 5,
   },
   {
-    key: "fiches_exercices",
-    titre: "Fiches & exercices individualisés",
+    key: "ressources",
+    titre: "Ressources (fiche méthode, liens utiles)",
     categorie: "stagiaires",
-    visibilite: "stagiaire",
-    formats: ["docx"],
-    ordre: 6,
-  },
-  {
-    key: "ressources_perso",
-    titre: "Ressources & prompts personnalisés",
-    categorie: "stagiaires",
-    visibilite: "stagiaire",
+    visibilite: "formateur",
     formats: ["docx", "lien"],
-    ordre: 7,
-  },
-  {
-    key: "plan_optimisation",
-    titre: "Plan d'optimisation personnalisé (livrable)",
-    categorie: "stagiaires",
-    visibilite: "stagiaire",
-    formats: ["docx"],
-    ordre: 8,
-    note: "Livrable de fin : ce qu'on peut automatiser/optimiser + gains de temps et d'argent estimés.",
-  },
-  // Documents coach (confidentiel)
-  {
-    key: "cr_seance",
-    titre: "Trame de compte-rendu de séance",
-    categorie: "formateur",
-    visibilite: "formateur",
-    formats: ["docx"],
-    ordre: 9,
-  },
-  {
-    key: "phase_reflexive",
-    titre: "Trame de phase réflexive (AFEST)",
-    categorie: "formateur",
-    visibilite: "formateur",
-    formats: ["docx"],
-    ordre: 10,
-    note: "Obligatoire AFEST : alterner mise en situation de travail et débrief réflexif.",
-  },
-  {
-    key: "corriges_1to1",
-    titre: "Corrigés / réponses types",
-    categorie: "formateur",
-    visibilite: "formateur",
-    formats: ["docx"],
-    ordre: 11,
-  },
-  // Suivi & évaluation
-  {
-    key: "journal_progression",
-    titre: "Journal de progression / plan inter-séances",
-    categorie: "evaluation",
-    visibilite: "stagiaire",
-    formats: ["docx"],
-    ordre: 12,
-  },
-  {
-    key: "evaluation_progression",
-    titre: "Évaluation des acquis / progression",
-    categorie: "evaluation",
-    visibilite: "formateur",
-    formats: ["docx"],
-    ordre: 13,
-    qualiopiDocType: "grille_evaluation",
-  },
-  {
-    key: "satisfaction_1to1",
-    titre: "Questionnaire de satisfaction (chaud + froid)",
-    categorie: "evaluation",
-    visibilite: "interne",
-    formats: ["docx"],
-    ordre: 14,
-    qualiopiDocType: "satisfaction",
-  },
-  {
-    key: "attestation_emargement",
-    titre: "Attestation de réalisation + émargement",
-    categorie: "evaluation",
-    visibilite: "interne",
-    formats: ["pdf"],
-    ordre: 15,
-    qualiopiDocType: "attestation",
-    generatedOnly: true,
-    note: "Généré par le Formation Engine (vraies données, QR, rétention 5 ans). Lien seul, pas d'upload.",
+    ordre: 6,
   },
 ];
 
@@ -593,6 +512,13 @@ export interface InterventionRef {
  * Le booking-catalog (legacy, découplé des formations) ne liste que l'ancienne
  * offre ; il reste la source des familles 1-to-1 et audit, toujours d'actualité.
  */
+
+/** Prestations 1-to-1 de l'offre active (kits AXION 16/17 + coaching régulier). */
+const UN_A_UN_SLUGS_ACTIFS: ReadonlySet<string> = new Set([
+  "dirigeant-vision-strategique",
+  "coaching-decouverte",
+  "un-a-un-recurrent",
+]);
 export function getInterventionsByFamille(
   famille: InterventionFamille,
 ): ReadonlyArray<InterventionRef> {
@@ -609,7 +535,14 @@ export function getInterventionsByFamille(
   const bookingId = FAMILLE_TO_BOOKING[famille];
   const cat = BOOKING_CATALOG.find((c) => c.id === bookingId);
   if (!cat) return [];
-  return cat.formats.map((f) => ({
+  // 1-to-1 : seules les prestations de l'offre ACTIVE portent des documents.
+  // Les variantes 2 jours ont été retirées de la vente (2026-07-17) : les kits
+  // AXION 16/17 ne couvrent qu'une journée — pas de kit, pas d'entrée au hub.
+  const formats =
+    famille === "un_a_un"
+      ? cat.formats.filter((f) => UN_A_UN_SLUGS_ACTIFS.has(f.slug))
+      : cat.formats;
+  return formats.map((f) => ({
     slug: f.slug,
     labelFr: f.labelFr,
     labelEn: f.labelEn,

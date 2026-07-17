@@ -156,17 +156,13 @@ export default async function PricingPage({ params }: Props) {
     COLLECTIVE_FORMATION_IDS.has(tier.id),
   );
 
-  // Section 1-to-1 : grille « Public · Durée » alignée sur /fr/un-a-un —
-  // Collaborateur & Dirigeant × 1 j / 2 j + coaching régulier
-  // (`UN_A_UN_RECURRING_TIER`, 790 €/session, jusqu'ici jamais affiché sur
-  // /tarifs). « Vision IA stratégique » (1 j, 1 390 €) reste un produit de marque
-  // distinct avec sa landing/SEO ; on ne le duplique pas ici (parité /un-a-un qui
-  // le fond dans « Dirigeant · 1 jour »). Labels SSOT depuis pricing.ts (renommés).
+  // Section 1-to-1 : Collaborateur & Dirigeant × 1 jour + coaching régulier.
+  // Les formats 2 jours ont été RETIRÉS de la vente (décision Will 2026-07-17) :
+  // les kits d'intervention 16/17 (catalogue AXION) ne couvrent qu'une journée —
+  // aucun déroulé n'existe pour un jour 2. Ne pas les réafficher sans kits.
   const unAUnDisplayTiers: ReadonlyArray<PricingTier> = [
     getTierById(INTERVENTION_TIERS, "intervention-membre-equipe"),
-    getTierById(INTERVENTION_TIERS, "intervention-membre-equipe-2j"),
     getTierById(INTERVENTION_TIERS, "intervention-dirigeants"),
-    getTierById(INTERVENTION_TIERS, "intervention-dirigeant-vision-2j"),
     UN_A_UN_RECURRING_TIER,
   ];
 

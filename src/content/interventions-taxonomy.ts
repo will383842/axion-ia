@@ -165,9 +165,9 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
     labelFr: "Dirigeants",
     labelEn: "Executives",
     taglineFr:
-      "Journée(s) 1-to-1 avec le dirigeant — structurer l'entreprise, implémenter l'IA et chiffrer précisément les gains. Pour un seul dirigeant, pas un comité.",
+      "Une journée 1-to-1 avec le dirigeant — prendre de la hauteur, hiérarchiser les leviers IA de votre secteur et repartir avec des priorités claires. Pour un seul dirigeant, pas un comité.",
     taglineEn:
-      "1-on-1 day(s) with the executive — structure the company, implement AI and quantify precise gains. For one executive, not a committee.",
+      "A 1-on-1 day with the executive — take the high view, rank the AI levers of your sector and leave with clear priorities. For one executive, not a committee.",
     // Sprint 14.10.7 (Will 2026-05-12) — `/interventions/dirigeants` est
     // désormais un HUB FAMILLE listant les 3 formats Dirigeants. Chaque format
     // a sa page détail dédiée (cf. pathFr des entries `dirigeants`,

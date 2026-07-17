@@ -41,7 +41,6 @@ import {
   buildServiceJsonLd,
   buildItemListJsonLd,
   buildHowToJsonLd,
-  buildCourseJsonLd,
   buildCollectionPageJsonLd,
   buildPageImageGraphJsonLd,
   buildPrimaryImageOfPage,
@@ -190,8 +189,8 @@ export default async function UnAUnHubPage({ params }: Props) {
     path,
     name: isFr ? "Coaching IA individuel 1-to-1" : "1-to-1 individual AI coaching",
     description: isFr
-      ? `Accompagnement IA en tête-à-tête : 1 personne, 1 expert Axion-IA, 1 journée. Deux formules — dirigeant ou collaborateur. On met votre organisation à plat et on pense stratégie ; sous 7 jours, un rapport complet détaille toutes les automatisations concrètes et réelles à mettre en place, avec chiffrage des gains (temps, argent). Partout en France métropolitaine. Dès ${entryPrice}.`
-      : `One-on-one AI coaching: 1 person, 1 Axion-IA expert, 1 day. Two formats — executive or team member. We install concrete time savings on the day, followed by a complete report within 7 days. Across metropolitan France. From ${entryPrice}.`,
+      ? `Accompagnement IA en tête-à-tête : 1 personne, 1 expert Axion-IA, 1 journée préparée en amont sur votre métier. Deux formules — dirigeant ou collaborateur. Sous 7 jours, votre livrable personnalisé : note de cadrage stratégique, ou cahier de prompts et plan d'action. Partout en France métropolitaine. Dès ${entryPrice}.`
+      : `One-on-one AI coaching: 1 person, 1 Axion-IA expert, 1 day prepared in advance for your role. Two formats — executive or team member. Within 7 days, your personalised deliverable: strategic framing note, or prompt playbook and action plan. Across metropolitan France. From ${entryPrice}.`,
     serviceType: isFr ? "Coaching IA individuel" : "Individual AI coaching",
     priceEur: Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE),
     areasServed: buildServiceAreasServed(loc),
@@ -204,29 +203,24 @@ export default async function UnAUnHubPage({ params }: Props) {
     path,
     name: isFr ? "Coaching IA individuel 1-to-1" : "1-to-1 individual AI coaching",
     description: isFr
-      ? "Hub du coaching IA individuel Axion-IA : deux formules (dirigeant ou collaborateur clé), 1 journée en tête-à-tête, rapport complet sous 7 jours, partout en France métropolitaine."
-      : "Hub of Axion-IA individual AI coaching: two formats (executive or key team member), 1 one-on-one day, complete report within 7 days, across metropolitan France.",
+      ? "Hub du coaching IA individuel Axion-IA : deux formules (dirigeant ou collaborateur clé), 1 journée en tête-à-tête, livrable personnalisé sous 7 jours, partout en France métropolitaine."
+      : "Hub of Axion-IA individual AI coaching: two formats (executive or key team member), 1 one-on-one day, personalised deliverable within 7 days, across metropolitan France.",
     speakable: true,
     extra: { primaryImageOfPage: buildPrimaryImageOfPage("/un-a-un") },
   });
 
+  // Service, PAS Course : les kits 16/17 sont formels — « ce n'est pas une action
+  // de formation » (conseil, non finançable). Déclarer un Course aux moteurs/LLM
+  // contredirait le document contractuel remis au client.
   const courseJsonLdArray = COACHING_TYPES.map((c) =>
-    buildCourseJsonLd({
+    buildServiceJsonLd({
       locale: loc,
       path: isFr ? c.hrefFr : c.hrefEn,
       name: isFr ? c.labelFr : c.labelEn,
       description: isFr ? c.taglineFr : c.taglineEn,
-      courseMode: ["Onsite"],
-      duration: c.iso8601Duration,
-      audienceType:
-        c.id === "dirigeant"
-          ? isFr
-            ? "Dirigeant·e d'entreprise (TPE, PME, ETI, grande entreprise)"
-            : "Company executive (SME, mid-cap, large enterprise)"
-          : isFr
-            ? "Collaborateur clé — n'importe quel poste (secrétariat, comptabilité, achats, RH…)"
-            : "Key team member — any role (admin, accounting, purchasing, HR…)",
-      about: "IA opérationnelle (ChatGPT, Mistral, Copilot, agents IA, automatisations)",
+      serviceType: isFr
+        ? "Accompagnement individuel IA (intervention de conseil)"
+        : "Individual AI coaching (consulting engagement)",
     }),
   );
 
@@ -255,14 +249,14 @@ export default async function UnAUnHubPage({ params }: Props) {
       {
         name: isFr ? "Journée en tête-à-tête" : "One-on-one day",
         text: isFr
-          ? "Cadrage rapide par téléphone, puis votre coach passe la journée avec vous : on met votre organisation à plat, on pense stratégie et on met en place des process concrets que vous utilisez dès le premier jour."
-          : "A quick scoping call, then your coach spends the day with you: we map out your organisation, think strategy and set up concrete processes you use from day one.",
+          ? "Échange préalable de 30 minutes, puis votre coach passe la journée avec vous : journée stratégique pour un dirigeant (panorama IA de votre secteur, leviers hiérarchisés), journée de pratique sur vos vrais dossiers pour un collaborateur."
+          : "A 30-minute preliminary call, then your coach spends the day with you: a strategy day for an executive (AI landscape of your sector, prioritised levers), a hands-on day on your real files for a team member.",
       },
       {
-        name: isFr ? "Rapport complet sous 7 jours" : "Complete report within 7 days",
+        name: isFr ? "Livrable sous 7 jours" : "Deliverable within 7 days",
         text: isFr
-          ? "Sous 7 jours, vous recevez un rapport complet et détaillé : toutes les automatisations concrètes et réelles à mettre en place, priorisées, avec le chiffrage des gains attendus (temps gagné, argent économisé)."
-          : "Within 7 days, you receive a complete, detailed report: all the concrete, real automations to put in place, prioritised, with the expected gains quantified (time saved, money saved).",
+          ? "Sous 7 jours, vous recevez votre livrable personnalisé : la note de cadrage stratégique (dirigeant) ou votre cahier de prompts et plan d'action (collaborateur), avec un point de suivi à 30 jours pour le coaching collaborateur."
+          : "Within 7 days, you receive your personalised deliverable: the strategic framing note (executive) or your prompt playbook and action plan (team member), with a 30-day follow-up for the team-member coaching.",
       },
     ],
   });
@@ -295,8 +289,8 @@ export default async function UnAUnHubPage({ params }: Props) {
         titleEm={isFr ? "votre façon de travailler" : "the way you work"}
         description={
           isFr
-            ? "Une journée complète en tête-à-tête — dirigeant ou collaborateur clé : on met tout votre travail à plat pour automatiser, avec des agents IA, tout ce qui peut l'être."
-            : "A full day one-on-one — executive or key team member: we map your entire work to automate, with AI agents, everything that can be."
+            ? "Une journée complète en tête-à-tête — dirigeant ou collaborateur clé : on met votre travail à plat, on identifie ce que l'IA peut alléger, et vous repartez avec un cap clair."
+            : "A full day one-on-one — executive or key team member: we map out your work, identify what AI can take off your plate, and you leave with a clear course."
         }
         ctas={
           <>
@@ -721,8 +715,8 @@ export default async function UnAUnHubPage({ params }: Props) {
               </p>
               <p className="text-fg-soft mt-5 text-lg leading-relaxed">
                 {isFr
-                  ? "Une journée entière à mettre vos journées de travail à plat : on analyse tout, on pense stratégie et automatisation des tâches — penser autrement pour de vrais résultats concrets. Dès le premier jour, on met en place des process concrets, utilisables tout de suite, qui vous font gagner du temps immédiatement. Puis, sous 7 jours, un rapport complet détaille toutes les automatisations à mettre en place, avec le chiffrage des gains (temps, argent). Un seul cap : du temps gagné, de l'argent économisé, des revenus complémentaires par l'automatisation."
-                  : "A full day mapping out your working days: we analyse everything, think strategy and task automation — thinking differently for real, concrete results. From day one, we set up concrete processes, usable right away, that save you time immediately. Then, within 7 days, a complete report details all the automations to put in place, with the gains quantified (time, money). One single goal: time saved, money saved, additional revenue through automation."}
+                  ? "Une journée entière consacrée à votre situation. Côté dirigeant : on prend de la hauteur — panorama IA de votre secteur préparé en amont, 5 à 10 leviers hiérarchisés, scénarios à 3 ans. Côté collaborateur : on pratique sur vos vrais dossiers, et vous repartez avec 3 à 5 méthodes maîtrisées, utilisables dès le lendemain. Puis, sous 7 jours, votre livrable personnalisé : note de cadrage stratégique, ou cahier de prompts et plan d'action. Un seul cap : du temps gagné et des décisions plus claires."
+                  : "A full day dedicated to your situation. Executive side: we take the high view — an AI landscape of your sector prepared in advance, 5 to 10 prioritised levers, 3-year scenarios. Team-member side: hands-on practice on your real files, and you leave with 3 to 5 mastered methods, usable the next day. Then, within 7 days, your personalised deliverable: strategic framing note, or prompt playbook and action plan. One single goal: time saved and clearer decisions."}
               </p>
             </div>
 
@@ -866,15 +860,15 @@ export default async function UnAUnHubPage({ params }: Props) {
                 id: "step-3-tete-a-tete",
                 title: isFr ? "Journée en tête-à-tête" : "One-on-one day",
                 description: isFr
-                  ? "Votre coach passe la journée avec vous : on met votre organisation à plat et on met en place des process concrets, utilisables dès le premier jour."
-                  : "Your coach spends the day with you: we map out your organisation and set up concrete processes, usable from day one.",
+                  ? "Votre coach passe la journée avec vous : stratégie et leviers hiérarchisés pour un dirigeant, pratique sur vos vrais dossiers pour un collaborateur."
+                  : "Your coach spends the day with you: strategy and prioritised levers for an executive, hands-on practice on your real files for a team member.",
               },
               {
                 id: "step-4-rapport",
-                title: isFr ? "Rapport chiffré sous 7 jours" : "Quantified report within 7 days",
+                title: isFr ? "Livrable sous 7 jours" : "Deliverable within 7 days",
                 description: isFr
-                  ? "Toutes les automatisations concrètes à mettre en place, priorisées, avec le chiffrage des gains (temps, argent)."
-                  : "All the concrete automations to put in place, prioritised, with the gains quantified (time, money).",
+                  ? "Note de cadrage stratégique (dirigeant) ou cahier de prompts et plan d'action (collaborateur), remis sous 7 jours."
+                  : "Strategic framing note (executive) or prompt playbook and action plan (team member), delivered within 7 days.",
               },
             ]}
           />
@@ -918,13 +912,13 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "benefice-jour",
                       question: "Qu'est-ce que je repars avec à la fin de la journée ?",
                       answer:
-                        "Une vraie valeur dès le premier jour. On met votre organisation à plat et on met en place des process concrets, utilisables tout de suite, qui vous font gagner du temps immédiatement. Puis, sous 7 jours, un rapport chiffré liste les automatisations à mettre en place et les gains attendus (temps, argent).",
+                        "Côté collaborateur : 3 à 5 méthodes pratiquées sur vos vrais dossiers pendant la journée, utilisables dès le lendemain. Côté dirigeant : une vision claire — le panorama IA de votre secteur et 5 à 10 leviers hiérarchisés. Puis, sous 7 jours, votre livrable personnalisé : note de cadrage stratégique, ou cahier de prompts et plan d'action.",
                     },
                     {
                       id: "rapport",
                       question: "Recevez-vous un compte-rendu après la journée ?",
                       answer:
-                        "Oui, et c'est LE livrable clé. Sous 7 jours, vous recevez un rapport complet et détaillé : toutes les automatisations concrètes et réelles à mettre en place, priorisées, avec le chiffrage des gains attendus (temps gagné, argent économisé).",
+                        "Oui, et c'est LE livrable clé, remis sous 7 jours. Pour un dirigeant : la note de cadrage stratégique — panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence. Pour un collaborateur : votre cahier de prompts personnel et un plan d'action, suivis d'un point à 30 jours.",
                     },
                     {
                       id: "duree",
@@ -936,7 +930,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "outils",
                       question: "Quels outils IA utilisez-vous en coaching ?",
                       answer:
-                        "Ceux qui correspondent à votre poste : ChatGPT, Mistral, Microsoft Copilot, Perplexity pour le texte et la recherche ; Midjourney pour le visuel ; les automatisations (Make, Zapier) et les agents IA pour les tâches récurrentes. On travaille uniquement sur vos vrais outils, vos vrais documents, vos vrais workflows.",
+                        "Les trois assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — appliqués à votre poste, et la création de vos propres assistants IA. Le coaching étant individuel, on travaille sur vos vrais dossiers et vos vrais outils, dans le respect strict de la confidentialité (rien n'est conservé).",
                     },
                     {
                       id: "couverture",
@@ -986,7 +980,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "tools",
                       question: "Which AI tools do you use in coaching?",
                       answer:
-                        "Those that fit your role: ChatGPT, Mistral, Microsoft Copilot, Perplexity for text and research; Midjourney for visuals; automations (Make, Zapier) and AI agents for recurring tasks. We work only on your real tools, real documents, real workflows.",
+                        "The three most widely used business assistants — ChatGPT, Claude and Gemini — applied to your role, plus building your own AI assistants. As the coaching is individual, we work on your real files and real tools, under strict confidentiality (nothing is kept).",
                     },
                     {
                       id: "coverage",

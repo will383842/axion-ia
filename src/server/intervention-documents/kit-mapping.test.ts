@@ -6,7 +6,6 @@ import {
   slugifyFolder,
   buildKitR2Key,
   FILE_TO_SLOT,
-  UN_A_UN_FILE_TO_SLOT,
   UN_A_UN_FOLDER_TO_SLUGS,
   DIAPORAMA_SLOT_KEY,
   resolveAxionSlug,
@@ -91,61 +90,83 @@ describe("kit-mapping — formation", () => {
   });
 });
 
-describe("kit-mapping — 1-to-1 (un_a_un)", () => {
-  it("classe un document Dirigeant → les deux slugs dirigeant (1j + 2j)", () => {
-    const c = classifyEntry(
-      "Dirigeant/Documents_DOCX/04_Guide_Coach_Deroule_AFEST.docx",
-      "un_a_un",
-    );
-    expect(c).toMatchObject({
-      slugs: ["dirigeant-vision-strategique", "dirigeant-vision-strategique-2j"],
-      slot: "guide_coach",
-      kind: "source",
-      ext: "docx",
-    });
+describe("kit-mapping — 1-to-1 (un_a_un, kits AXION 16/17)", () => {
+  // Chemins RÉELS du catalogue AXION livré le 2026-07-17.
+  it("classe le kit 16 (dirigeant) vers les bons slots", () => {
+    const f = "16_Coaching_Vision_IA_Strategique_dirigeant";
+    const slug = "dirigeant-vision-strategique";
+    const cases: ReadonlyArray<[string, string, "source" | "pdf"]> = [
+      [`${f}/00_Cadre/01_Vision_IA_Strategique_dirigeant_1j.docx`, "programme", "source"],
+      [`${f}/00_Cadre/Methode_AXION.docx`, "ressources", "source"],
+      [
+        `${f}/01_Support_de_la_journee/Axion-IA_Support_Vision_IA_Strategique.pptx`,
+        "support_journee",
+        "source",
+      ],
+      [
+        `${f}/02_Guide_intervenant/Axion-IA_Guide_intervenant_Vision_IA_Strategique.docx`,
+        "guide_intervenant",
+        "source",
+      ],
+      [
+        `${f}/03_Livrable_client/Axion-IA_Modele_Note_de_cadrage_strategique.docx`,
+        "livrable_client",
+        "source",
+      ],
+    ];
+    for (const [path, slot, kind] of cases) {
+      expect(classifyEntry(path, "un_a_un"), path).toMatchObject({ slugs: [slug], slot, kind });
+    }
   });
 
-  it("classe un document Collaborateur → les deux slugs collaborateur (1j + 2j)", () => {
-    const c = classifyEntry(
-      "Collaborateur/Documents_DOCX/01_Cadrage_Convention_AFEST.docx",
-      "un_a_un",
-    );
-    expect(c).toMatchObject({
-      slugs: ["coaching-decouverte", "coaching-optimisation-2j"],
-      slot: "cadrage_objectifs",
-      kind: "source",
-    });
+  it("classe le kit 17 (collaborateur) vers les bons slots", () => {
+    const f = "17_Coaching_Decouverte_collaborateur";
+    const slug = "coaching-decouverte";
+    const cases: ReadonlyArray<[string, string]> = [
+      [`${f}/00_Cadre/02_Coaching_Decouverte_collaborateur_1j.docx`, "programme"],
+      [
+        `${f}/01_Support_de_la_journee/Axion-IA_Support_Coaching_Decouverte.pptx`,
+        "support_journee",
+      ],
+      [`${f}/02_Guide_coach/Axion-IA_Guide_coach_Decouverte.docx`, "guide_intervenant"],
+      [`${f}/03_Livrable_client/Axion-IA_Memo_AXION.docx`, "memo_methode"],
+      [
+        `${f}/03_Livrable_client/Axion-IA_Modele_Cahier_de_prompts_et_plan_action.docx`,
+        "livrable_client",
+      ],
+    ];
+    for (const [path, slot] of cases) {
+      expect(classifyEntry(path, "un_a_un"), path).toMatchObject({ slugs: [slug], slot });
+    }
   });
 
-  it("résout les dossiers public → slugs", () => {
-    expect(resolveSlugs("Dirigeant", "un_a_un")).toEqual([
+  it("le support .pptx du 1-to-1 a un slot qui accepte le pptx", () => {
+    const slot = getSlot("un_a_un", "support_journee");
+    expect(slot).toBeTruthy();
+    expect(slot!.formats).toContain("pptx");
+  });
+
+  it("résout les dossiers 16/17 par NUMÉRO (1 slug 1 jour, jamais les 2j retirés)", () => {
+    expect(resolveSlugs("16_Coaching_Vision_IA_Strategique_dirigeant", "un_a_un")).toEqual([
       "dirigeant-vision-strategique",
-      "dirigeant-vision-strategique-2j",
     ]);
-    expect(resolveSlugs("Collaborateur", "un_a_un")).toEqual([
+    expect(resolveSlugs("17_Coaching_Decouverte_collaborateur", "un_a_un")).toEqual([
       "coaching-decouverte",
-      "coaching-optimisation-2j",
     ]);
+    // Tolérance au renommage : seul le numéro compte.
+    expect(resolveSlugs("16_Peu_importe", "un_a_un")).toEqual(["dirigeant-vision-strategique"]);
     expect(resolveSlugs("Formation_IA_Express", "formation")).toEqual(["ia-express"]);
     expect(resolveSlugs("Quoi", "audit")).toEqual([]);
   });
 
-  it("mappe les préfixes pédagogiques un_a_un et EXCLUT les docs Qualiopi-générés", () => {
-    expect(UN_A_UN_FILE_TO_SLOT["01"]).toBe("cadrage_objectifs");
-    expect(UN_A_UN_FILE_TO_SLOT["08"]).toBe("plan_optimisation");
-    expect(UN_A_UN_FILE_TO_SLOT["12"]).toBe("journal_progression");
-    // Exclus : positionnement (03) / évaluation (13) / satisfaction (14) — générés
-    // par le Formation Engine, jamais importés en masse (comme les formations).
-    expect(UN_A_UN_FILE_TO_SLOT["03"]).toBeUndefined();
-    expect(UN_A_UN_FILE_TO_SLOT["13"]).toBeUndefined();
-    expect(UN_A_UN_FILE_TO_SLOT["14"]).toBeUndefined();
-    expect(Object.keys(UN_A_UN_FILE_TO_SLOT).length).toBe(11);
-    // Ces fichiers du kit ne sont donc PAS classés (ignorés par l'import).
+  it("l'ancien kit AFEST (Dirigeant/Documents_DOCX/NN_) n'est PLUS importable", () => {
+    // Doctrine abandonnée (kits 16/17 = conseil, « aucune attestation ») : ses
+    // slots n'existent plus au catalogue, l'import doit ignorer ces fichiers.
     expect(
-      classifyEntry("Dirigeant/Documents_DOCX/03_Test_Positionnement_Individuel.docx", "un_a_un"),
+      classifyEntry("Dirigeant/Documents_DOCX/04_Guide_Coach_Deroule_AFEST.docx", "un_a_un"),
     ).toBeNull();
     expect(
-      classifyEntry("Collaborateur/Documents_DOCX/14_Questionnaire_Satisfaction.docx", "un_a_un"),
+      classifyEntry("Collaborateur/Documents_DOCX/01_Cadrage_Convention_AFEST.docx", "un_a_un"),
     ).toBeNull();
   });
 
@@ -167,26 +188,34 @@ describe("kit-mapping — 1-to-1 (un_a_un)", () => {
     expect(classifyEntry("Dirigeant/00_Presentation/Slides.pptx", "un_a_un")).toBeNull();
   });
 
-  // Verrou de cohérence SSOT pour la famille 1-to-1 : chaque slot importé existe,
-  // n'est ni generatedOnly NI Qualiopi-généré (positionnement/éval/satisfaction/attestation).
+  // Verrou de cohérence SSOT : les slots ciblés par les kits 16/17 existent tous
+  // au catalogue un_a_un, aucun n'est généré par le Formation Engine, et aucun
+  // n'est marqué Qualiopi (les kits sont du CONSEIL — « aucune attestation »).
   it("chaque slot importé existe au catalogue un_a_un et n'est PAS Qualiopi-généré", () => {
-    for (const slotKey of Object.values(UN_A_UN_FILE_TO_SLOT)) {
+    const slots = [
+      "programme",
+      "support_journee",
+      "guide_intervenant",
+      "livrable_client",
+      "memo_methode",
+      "ressources",
+    ];
+    for (const slotKey of slots) {
       const def = getSlot("un_a_un", slotKey);
       expect(def, `slot ${slotKey} absent du catalogue un_a_un`).toBeDefined();
       expect(def?.generatedOnly ?? false, `slot ${slotKey} est generatedOnly`).toBe(false);
       expect(
         def?.qualiopiDocType,
-        `slot ${slotKey} est Qualiopi-généré → ne doit pas être importé`,
+        `slot ${slotKey} est Qualiopi-généré → interdit pour du conseil`,
       ).toBeUndefined();
     }
   });
 
   // Verrou anti-fantôme : un slug de destination erroné rangerait les documents
-  // sur une prestation inexistante (invisible en console). On vérifie que CHAQUE
-  // slug ciblé est une vraie intervention de la famille un_a_un.
+  // sur une prestation inexistante (invisible en console).
   it("les slugs destinataires sont de vraies interventions de la famille un_a_un", () => {
     const slugs = Object.values(UN_A_UN_FOLDER_TO_SLUGS).flatMap((s) => [...s]);
-    expect(slugs.length).toBe(4);
+    expect(slugs).toEqual(["dirigeant-vision-strategique", "coaching-decouverte"]);
     for (const slug of slugs) {
       const intervention = getInterventionBySlug(slug);
       expect(intervention, `slug ${slug} introuvable au catalogue`).toBeDefined();
@@ -194,21 +223,12 @@ describe("kit-mapping — 1-to-1 (un_a_un)", () => {
     }
   });
 
-  // Couverture exhaustive : les 11 documents pédagogiques de CHAQUE public se
-  // classent vers le bon slot et les deux prestations (1j + 2j) du public.
-  it("les 11 documents pédagogiques d'un public se classent vers le bon slot + les 2 slugs", () => {
-    const dirSlugs = [...UN_A_UN_FOLDER_TO_SLUGS["Dirigeant"]!];
-    const colSlugs = [...UN_A_UN_FOLDER_TO_SLUGS["Collaborateur"]!];
-    expect(Object.keys(UN_A_UN_FILE_TO_SLOT).length).toBe(11);
-    for (const [prefix, slot] of Object.entries(UN_A_UN_FILE_TO_SLOT)) {
-      const dir = classifyEntry(`Dirigeant/Documents_DOCX/${prefix}_X.docx`, "un_a_un");
-      expect(dir, `Dirigeant ${prefix} non classé`).not.toBeNull();
-      expect(dir?.slot, `Dirigeant ${prefix} mauvais slot`).toBe(slot);
-      expect([...(dir?.slugs ?? [])]).toEqual(dirSlugs);
-      const col = classifyEntry(`Collaborateur/Documents_DOCX/${prefix}_X.docx`, "un_a_un");
-      expect(col?.slot, `Collaborateur ${prefix} mauvais slot`).toBe(slot);
-      expect([...(col?.slugs ?? [])]).toEqual(colSlugs);
-    }
+  // Les 2 jours ont été RETIRÉS de la vente (2026-07-17, aucun kit) : le hub ne
+  // doit plus les lister — sinon des slots vides et une promesse sans documents.
+  it("le hub un_a_un ne liste plus les variantes 2 jours retirées", () => {
+    expect(getInterventionBySlug("dirigeant-vision-strategique-2j")).toBeUndefined();
+    expect(getInterventionBySlug("coaching-optimisation-2j")).toBeUndefined();
+    expect(getInterventionBySlug("un-a-un-recurrent")).toBeDefined();
   });
 });
 
