@@ -257,6 +257,43 @@ describe("loadBlogIndexForView", () => {
     expect(list[0]?.title).toBe("DB version");
   });
 
+  it("orders same-day articles newest-first (fix 2026-07-17)", async () => {
+    // Régression : `view.publishedAt` est tronqué au jour (isoDate) → les
+    // articles d'un même jour étaient à égalité, et l'ancien comparateur
+    // (jamais 0) laissait V8 INVERSER le groupe → le plus ancien du jour
+    // s'affichait en tête du hub toute la journée (Trappes 08h01 devant
+    // Neuilly-Plaisance 21h46 en prod). Le tri utilise désormais le
+    // timestamp complet côté DB.
+    const mkRow = (slug: string, iso: string) => ({
+      id: `uuid-${slug}`,
+      slug,
+      title: slug,
+      excerpt: "",
+      publishedAt: new Date(iso),
+      readingTime: 5,
+      author: { slug: "manon", name: "Manon" },
+      category: null,
+      indexationTier: "tier_1_indexable" as const,
+      featuredImage: null,
+      featuredImageAlt: null,
+    });
+    // listPublishedArticles renvoie déjà DESC (Prisma orderBy publishedAt desc).
+    mockListPublishedArticles.mockResolvedValue([
+      mkRow("soir-21h46", "2026-07-17T19:46:33Z"),
+      mkRow("midi-14h46", "2026-07-17T12:46:28Z"),
+      mkRow("matin-08h01", "2026-07-17T06:01:30Z"),
+    ]);
+
+    const list = await loadBlogIndexForView("fr");
+
+    expect(list.map((a) => a.slug)).toEqual([
+      "soir-21h46",
+      "midi-14h46",
+      "matin-08h01",
+      "fixture-fs-post", // FS plus ancien (2026-04-01) → dernier
+    ]);
+  });
+
   it("returns FS-only when DB is empty", async () => {
     mockListPublishedArticles.mockResolvedValue([]);
 

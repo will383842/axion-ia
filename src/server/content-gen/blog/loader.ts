@@ -306,7 +306,26 @@ export async function loadBlogIndexForView(
   // les cartes ne doivent les lister/lier. Cf. isRoutableArticleSlug. Correctif
   // racine = slug plat en DB.
   const merged = [...dbAsView, ...fsKept].filter((a) => isRoutableArticleSlug(a.slug));
-  return merged.sort((a, b) => (b.publishedAt > a.publishedAt ? 1 : -1));
+
+  // Tri (fix 2026-07-17) — deux pièges se combinaient et affichaient le plus
+  // ANCIEN article du jour en tête du hub toute la journée :
+  //  (1) `view.publishedAt` est tronqué au JOUR par isoDate → tous les articles
+  //      d'un même jour étaient à égalité de clé ;
+  //  (2) l'ancien comparateur `(b > a ? 1 : -1)` ne renvoyait jamais 0 → pour
+  //      des clés égales, l'insertion binaire de V8 place chaque élément AVANT
+  //      ses égaux, ce qui INVERSE le groupe (constaté live : Trappes 08h01 en
+  //      tête, Neuilly-Plaisance 21h46 en 19e position).
+  // On trie donc sur le timestamp COMPLET côté DB (l'affichage garde la date
+  // jour), avec un comparateur qui sait dire « égaux ».
+  const fullTs = new Map<string, string>(
+    dbList.map((a) => [a.slug, a.publishedAt ? a.publishedAt.toISOString() : "2026-06-08"]),
+  );
+  const sortKeyOf = (v: BlogArticleView): string => fullTs.get(v.slug) ?? v.publishedAt;
+  return merged.sort((a, b) => {
+    const ka = sortKeyOf(a);
+    const kb = sortKeyOf(b);
+    return kb > ka ? 1 : ka > kb ? -1 : 0;
+  });
 }
 
 /** Estimation lecture (200 mots/min, retour string « N min »). */
