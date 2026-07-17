@@ -17,9 +17,11 @@ import {
 describe("intervention-documents-catalog — dérivation booking-catalog", () => {
   it("dérive les prestations par famille (cross-check booking-catalog)", () => {
     expect(getInterventionsByFamille("formation").length).toBe(15);
-    expect(getInterventionsByFamille("un_a_un").length).toBe(5);
+    // 1-to-1 : offre active seule (kits AXION 16/17 + coaching regulier) —
+    // les variantes 2 jours ont ete retirees de la vente (2026-07-17).
+    expect(getInterventionsByFamille("un_a_un").length).toBe(3);
     expect(getInterventionsByFamille("audit").length).toBe(4);
-    expect(getAllInterventions().length).toBe(24);
+    expect(getAllInterventions().length).toBe(22);
   });
 
   it("résout une prestation par slug → bonne famille", () => {
@@ -53,16 +55,16 @@ describe("intervention-documents-catalog — sous-groupes d'affichage", () => {
     expect(g4h?.interventions.some((i) => i.slug === "bien-demarrer-avec-l-ia-4h")).toBe(true);
   });
 
-  it("1-to-1 : groupé par public (Dirigeant / Collaborateur / Suivi régulier), couvre les 5", () => {
+  it("1-to-1 : groupé par public (Dirigeant / Collaborateur / Suivi régulier), couvre les 3", () => {
     const groups = getInterventionsSousGroupes("un_a_un");
     expect(groups).not.toBeNull();
     expect(groups!.map((g) => g.titre)).toEqual(["Dirigeant", "Collaborateur", "Suivi régulier"]);
     const byKey = (k: string) => groups!.find((g) => g.key === k)?.interventions.length ?? 0;
-    expect(byKey("dirigeant")).toBe(2);
-    expect(byKey("collaborateur")).toBe(2);
+    expect(byKey("dirigeant")).toBe(1);
+    expect(byKey("collaborateur")).toBe(1);
     expect(byKey("recurrent")).toBe(1);
     const total = groups!.reduce((n, g) => n + g.interventions.length, 0);
-    expect(total).toBe(5);
+    expect(total).toBe(3);
   });
 
   it("audit : pas de sous-groupe (liste à plat → null)", () => {
@@ -151,27 +153,38 @@ describe("intervention-documents-catalog — slots AUDIT", () => {
   });
 });
 
-describe("intervention-documents-catalog — slots 1-to-1 (AFEST/Qualiopi)", () => {
-  it("15 slots répartis sur 4 rayons, clés uniques", () => {
+describe("intervention-documents-catalog — slots 1-to-1 (conseil, kits AXION 16/17)", () => {
+  it("6 slots alignés sur le contenu réel des kits, clés uniques", () => {
     const slots = getSlotsByFamille("un_a_un");
-    expect(slots.length).toBe(15);
-    expect(new Set(slots.map((s) => s.key)).size).toBe(15);
-    expect(getSlotsByCategorie("un_a_un").length).toBe(4);
+    expect(slots.length).toBe(6);
+    expect(new Set(slots.map((s) => s.key)).size).toBe(6);
+    expect(slots.map((s) => s.key)).toEqual([
+      "programme",
+      "support_journee",
+      "guide_intervenant",
+      "livrable_client",
+      "memo_methode",
+      "ressources",
+    ]);
   });
 
-  it("AFEST : analyse d'activité (cartographie) + phase réflexive + plan d'optimisation présents", () => {
-    expect(getSlot("un_a_un", "analyse_activite")).toBeDefined();
-    expect(getSlot("un_a_un", "phase_reflexive")).toBeDefined();
-    expect(getSlot("un_a_un", "plan_optimisation")?.visibilite).toBe("stagiaire");
+  it("le support de la journée accepte le .pptx (document central du tête-à-tête)", () => {
+    const support = getSlot("un_a_un", "support_journee");
+    expect(support?.formats).toContain("pptx");
+    expect(support?.formats).toContain("pdf");
   });
 
-  it("Qualiopi : positionnement/évaluation/satisfaction taggés + attestation-émargement générée", () => {
-    expect(getSlot("un_a_un", "positionnement_individuel")?.qualiopiDocType).toBe("positionnement");
-    expect(getSlot("un_a_un", "evaluation_progression")?.qualiopiDocType).toBe("grille_evaluation");
-    expect(getSlot("un_a_un", "satisfaction_1to1")?.qualiopiDocType).toBe("satisfaction");
-    const att = getSlot("un_a_un", "attestation_emargement");
-    expect(att?.generatedOnly).toBe(true);
-    expect(att?.qualiopiDocType).toBe("attestation");
+  // Les kits 16/17 sont du CONSEIL : « pas de QCM, pas d'attestation, non
+  // finançable OPCO ». AUCUN slot ne doit porter de doc Qualiopi ni etre généré
+  // par le Formation Engine — l'ancienne doctrine AFEST est abandonnée.
+  it("aucun slot Qualiopi ni generatedOnly (conseil, pas une formation)", () => {
+    for (const slot of getSlotsByFamille("un_a_un")) {
+      expect(slot.qualiopiDocType, `slot ${slot.key} porte un qualiopiDocType`).toBeUndefined();
+      expect(slot.generatedOnly ?? false, `slot ${slot.key} est generatedOnly`).toBe(false);
+    }
+    expect(getSlot("un_a_un", "attestation_emargement")).toBeUndefined();
+    expect(getSlot("un_a_un", "positionnement_individuel")).toBeUndefined();
+    expect(getSlot("un_a_un", "phase_reflexive")).toBeUndefined();
   });
 
   it("rayons 1-to-1 affichés avec le vocabulaire coaching", () => {

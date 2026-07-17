@@ -56,8 +56,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Executive sessions · strategic 1-on-1 · Axion-IA",
     description:
       loc === "fr"
-        ? "2 formats 1-to-1 dédiés aux dirigeants : vision IA stratégique et intervention Claude. Pour un seul dirigeant, pas un comité. Sur devis."
-        : "2 1-on-1 formats dedicated to executives: strategic AI vision and Claude intervention. For one executive, not a committee. On request.",
+        ? "Une journée 1-to-1 dédiée au dirigeant : Vision IA stratégique — panorama de votre secteur, leviers hiérarchisés, note de cadrage sous 7 jours. Pour un seul dirigeant, pas un comité."
+        : "A 1-on-1 day dedicated to the executive: strategic AI vision — sector landscape, prioritised levers, framing note within 7 days. For one executive, not a committee.",
     alternates: { fr: "/interventions/dirigeants", en: "/interventions/executives" },
   });
 }
@@ -94,7 +94,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
   });
 
   // ItemList JSON-LD — AEO/GEO 2026 : permet aux LLMs d'énumérer la liste
-  // des 2 formats Dirigeants quand quelqu'un demande « formations IA pour
+  // du format Dirigeants quand quelqu'un demande « formations IA pour
   // dirigeant Axion-IA ». Audit 2026-05-12 P2.
   const itemListJsonLd = buildItemListJsonLd({
     locale: loc,
@@ -130,7 +130,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
       : {}),
   });
 
-  // 2 mini-blocs « pour qui » — alignés sur les 2 formats Dirigeants.
+  // 2 mini-blocs « pour qui » — deux angles du MÊME format (Vision IA stratégique).
   const audiences = [
     {
       icon: Compass,
@@ -143,12 +143,12 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
     },
     {
       icon: Sparkles,
-      titleFr: "Dirigeant qui veut maîtriser Claude",
-      titleEn: "Executive who wants to master Claude",
+      titleFr: "Dirigeant qui doit trancher",
+      titleEn: "Executive who has to decide",
       bodyFr:
-        "Vous voulez utiliser l'IA la plus avancée pour vos dossiers stratégiques confidentiels. La journée Claude vous donne la maîtrise complète : Chat, Projects, Code CLI.",
+        "Trop de promesses, pas assez de repères. La journée hiérarchise 5 à 10 leviers concrets pour votre entreprise — impact, difficulté, urgence — et vous repartez avec des priorités claires, consignées dans la note de cadrage.",
       bodyEn:
-        "You want to use the most advanced AI for your confidential strategic files. The Claude day gives you full mastery: Chat, Projects, Code CLI.",
+        "Too many promises, not enough bearings. The day ranks 5 to 10 concrete levers for your company — impact, difficulty, urgency — and you leave with clear priorities, set out in the framing note.",
     },
   ];
 
@@ -176,7 +176,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                 className="text-terracotta-deep mx-2 italic"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                {isFr ? "rentable dès la semaine" : "profitable from day one"}
+                {isFr ? "pour y voir clair sur l'IA" : "to see AI clearly"}
               </span>
             </h1>
 
@@ -217,15 +217,15 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* SECTION CŒUR : liste des 2 formats Dirigeants */}
+      {/* SECTION CŒUR : le format Dirigeants (Vision IA stratégique) */}
       <Section
-        eyebrow={isFr ? "2 formats disponibles" : "2 available formats"}
-        title={isFr ? "Journées" : "Days"}
+        eyebrow={isFr ? "Le format dirigeant" : "The executive format"}
+        title={isFr ? "Journée" : "Day"}
         titleEm={isFr ? "1-to-1 dirigeant" : "1-on-1 executive"}
         description={
           isFr
-            ? "Cliquez sur un format pour voir le détail, le programme heure par heure et démarrer la conversation."
-            : "Click a format to see the detail, the hour-by-hour programme, and start the conversation."
+            ? "Cliquez pour voir le détail, le déroulé de la journée et démarrer la conversation."
+            : "Click to see the detail, the flow of the day, and start the conversation."
         }
         contentClassName={TIGHT_X}
       >
@@ -308,15 +308,15 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                     },
                     {
                       id: "choisir",
-                      question: "Comment choisir entre les 2 formats dirigeant ?",
+                      question: "Dirigeant ou collaborateur : quelle formule choisir ?",
                       answer:
-                        "Vision stratégique pour repérer les opportunités IA de votre marché, Claude pour maîtriser l'IA la plus avancée sur vos dossiers. Un appel de cadrage permet de trancher.",
+                        "La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un échange préalable de 30 minutes permet de trancher.",
                     },
                     {
                       id: "repars",
                       question: "Qu'est-ce que je repars avec ?",
                       answer:
-                        "Des usages concrets activés dès la journée, puis un rapport sous quelques jours qui priorise les prochaines étapes et leurs gains attendus.",
+                        "Une vision claire dès le soir même, puis, sous 7 jours, la note de cadrage stratégique : le panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence.",
                     },
                   ]
                 : [

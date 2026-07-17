@@ -35,8 +35,10 @@ const CAS_USAGE: Record<UnAUnCasUsageSlug, ReadonlyArray<UnAUnCasUsage>> = {
       },
     },
     {
-      texteFr: "Identifier 5 à 10 leviers stratégiques chiffrés sur votre business model",
-      texteEn: "Identify 5 to 10 quantified strategic levers on your business model",
+      texteFr:
+        "Identifier 5 à 10 leviers stratégiques sur votre business model, hiérarchisés par impact et urgence",
+      texteEn:
+        "Identify 5 to 10 strategic levers on your business model, ranked by impact and urgency",
       imageSrc: "/illustrations/interventions/un-a-un/dirigeant-vision-strategique/cas-2.webp",
       imageCredit: {
         name: "Amy Hirschi",
@@ -64,8 +66,9 @@ const CAS_USAGE: Record<UnAUnCasUsageSlug, ReadonlyArray<UnAUnCasUsage>> = {
   ],
   "coaching-decouverte": [
     {
-      texteFr: "Auditer votre poste : vos tâches, vos irritants, votre vraie journée de travail",
-      texteEn: "Audit your role: your tasks, your friction points, your real working day",
+      texteFr:
+        "Passer votre poste en revue : vos tâches, vos irritants, votre vraie journée de travail",
+      texteEn: "Review your role: your tasks, your friction points, your real working day",
       imageSrc: "/illustrations/interventions/un-a-un/coaching-decouverte/cas-1.webp",
       imageCredit: {
         name: "Andrew Neel",

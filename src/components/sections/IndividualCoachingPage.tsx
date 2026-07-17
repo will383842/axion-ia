@@ -100,8 +100,10 @@ const COACHING_CONFIGS: Record<IndividualCoachingSlug, CoachingConfig> = {
     benefits: [
       {
         icon: Compass,
-        titleFr: "Audit complet de votre poste",
-        titleEn: "Full audit of your workstation",
+        // « Audit » est réservé à la prestation payante distincte (/audit) — le
+        // kit 16 le dit : « Ce n'est pas un audit complet ». Ici : état des lieux.
+        titleFr: "État des lieux complet de votre poste",
+        titleEn: "A complete review of your workstation",
         bodyFr:
           "On regarde ensemble vos vrais chronophages : boîte mail, reporting, recherches, comptes-rendus, contenus. On identifie où l'IA va vous faire gagner du temps maintenant et ce qui nécessitera un accompagnement plus long.",
         bodyEn:
@@ -444,9 +446,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={
-          isFr ? "Cadrage 20 minutes avant de réserver" : "20-minute framing call before booking"
-        }
+        title={isFr ? "Échange préalable de 30 minutes" : "30-minute preliminary call"}
         description={
           isFr
             ? "On vous appelle, on comprend votre contexte et votre poste, on chiffre. Devis sous 48 h ouvrées. Aucun engagement avant signature."
