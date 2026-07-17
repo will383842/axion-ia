@@ -71,7 +71,9 @@ export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyM
         }`}
       >
         <div
-          className="bg-paper/90 border-border supports-[backdrop-filter]:bg-paper/75 pointer-events-auto border-t px-4 pt-3 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.18)] backdrop-blur"
+          className={`bg-paper/90 border-border supports-[backdrop-filter]:bg-paper/75 border-t px-4 pt-3 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.18)] backdrop-blur ${
+            visible ? "pointer-events-auto" : "pointer-events-none"
+          }`}
           style={{
             paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)",
           }}
@@ -79,6 +81,7 @@ export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyM
           <Link
             href={href as never}
             {...(track ? { "data-cta": track } : {})}
+            {...(visible ? {} : { tabIndex: -1 })}
             className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {label}
@@ -87,17 +90,24 @@ export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyM
         </div>
       </div>
 
-      {/* Desktop — pastille flottante en bas à droite */}
+      {/* Desktop — pastille flottante en bas à droite.
+          ⚠️ `pointer-events-auto` sur le Link doit rester conditionné à
+          `visible` : en CSS un enfant en `auto` REACTIVE le hit-testing malgré
+          un parent en `none`. Le mettre en dur laissait une pastille invisible
+          (`opacity-0`) cliquable en permanence en bas à droite. */}
       <div
         aria-hidden={!visible}
         className={`pointer-events-none fixed right-6 bottom-6 z-40 hidden transition-all duration-300 ease-out motion-reduce:transition-none lg:block ${
-          visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
+          visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
         }`}
       >
         <Link
           href={href as never}
           {...(track ? { "data-cta": `${track}-desktop` } : {})}
-          className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary pointer-events-auto inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          {...(visible ? {} : { tabIndex: -1 })}
+          className={`bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
+            visible ? "pointer-events-auto" : "pointer-events-none"
+          }`}
         >
           {label}
           <ArrowRight aria-hidden="true" className="h-4 w-4" />
