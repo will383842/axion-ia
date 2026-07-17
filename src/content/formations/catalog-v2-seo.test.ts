@@ -9,7 +9,12 @@
 
 import { describe, it, expect } from "vitest";
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
-import { META_LENGTH } from "@/server/content-gen/shared/meta-length";
+
+// Fourchette SERP anti-troncature — miroir des seuils canoniques de
+// `src/server/content-gen/shared/meta-length.ts`. Valeurs recopiées, PAS
+// importées : le check d'isolation de Gate A interdit toute dépendance de
+// src/content vers la zone content-gen.
+const META_DESCRIPTION_LENGTH = { min: 140, max: 160 } as const;
 
 /**
  * Mots vides francophones : une description qui se termine par l'un d'eux suivi
@@ -30,7 +35,7 @@ describe("catalogue V2 — SEO par formation", () => {
   it("metaDescriptionFr ≤ 160 caractères pour chaque formation", () => {
     for (const f of FORMATIONS_V2) {
       expect(f.metaDescriptionFr.length, `${f.id}: "${f.metaDescriptionFr}"`).toBeLessThanOrEqual(
-        META_LENGTH.metaDescription.max,
+        META_DESCRIPTION_LENGTH.max,
       );
     }
   });
@@ -42,7 +47,7 @@ describe("catalogue V2 — SEO par formation", () => {
       expect(
         f.metaDescriptionFr.length,
         `${f.id}: "${f.metaDescriptionFr}"`,
-      ).toBeGreaterThanOrEqual(META_LENGTH.metaDescription.min);
+      ).toBeGreaterThanOrEqual(META_DESCRIPTION_LENGTH.min);
     }
   });
 
