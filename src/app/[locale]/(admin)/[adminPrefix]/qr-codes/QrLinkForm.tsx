@@ -26,7 +26,7 @@ export function QrLinkForm({ action, submitLabel, defaults }: QrLinkFormProps) {
         name="label"
         label="Libellé (usage interne)"
         required
-        defaultValue={defaults?.label}
+        defaultValue={defaults?.label ?? ""}
         placeholder="Interview — Entreprise X"
         hint="Pour vous y retrouver dans la liste. N'apparaît nulle part publiquement."
       />
@@ -36,7 +36,7 @@ export function QrLinkForm({ action, submitLabel, defaults }: QrLinkFormProps) {
         name="slug"
         label="Slug — l'URL imprimée sur le QR : /qr/…"
         required
-        defaultValue={defaults?.slug}
+        defaultValue={defaults?.slug ?? ""}
         placeholder="interview-entreprise-x"
         hint="Minuscules, chiffres et tirets. ⚠️ Ne le changez plus une fois le catalogue imprimé (le QR pointe dessus)."
       />
@@ -46,7 +46,7 @@ export function QrLinkForm({ action, submitLabel, defaults }: QrLinkFormProps) {
         name="destinationUrl"
         label="Destination — modifiable à tout moment"
         required
-        defaultValue={defaults?.destinationUrl}
+        defaultValue={defaults?.destinationUrl ?? ""}
         placeholder="https://axion-ia.com/fr/entreprise/x  (ou lien vidéo)"
         hint="Vers où le QR redirige. Mettez une page « à venir » maintenant, puis le lien vidéo une fois le tournage fait — sans réimprimer."
       />
@@ -58,7 +58,10 @@ export function QrLinkForm({ action, submitLabel, defaults }: QrLinkFormProps) {
           defaultChecked={defaults?.active ?? true}
           className="h-4 w-4"
         />
-        Actif <span className="text-[color:var(--color-admin-fg-muted)]">(si désactivé, le QR renvoie une 404)</span>
+        Actif{" "}
+        <span className="text-[color:var(--color-admin-fg-muted)]">
+          (si désactivé, le QR renvoie une 404)
+        </span>
       </label>
 
       <div className="flex gap-3">

@@ -27,11 +27,12 @@ export async function GET(
   }
 
   const target = `${SITE_URL}/qr/${slug}`;
+  // Couleurs par défaut de la lib (noir pur sur blanc) = optimal scan/impression,
+  // et évite tout hex codé en dur (gate anti-hex du repo).
   const svg = await QRCode.toString(target, {
     type: "svg",
     margin: 1,
     errorCorrectionLevel: "M",
-    color: { dark: "#1a1815", light: "#ffffff" },
   });
 
   return new Response(svg, {
