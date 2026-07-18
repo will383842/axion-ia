@@ -16,7 +16,7 @@
  * Appréciations (stagiaire + entreprise + financeur + formateur) →
  * SiteSetting référent handicap → 1 BpfDepense.
  *
- * Indicateurs couverts : 1/2, 5, 8, 11⭐, 12, 17, 19, 21, 22, 23, 24, 25, 26, 27, 30, 31, 32.
+ * Indicateurs couverts : 1/2, 5, 8, 10, 11⭐, 12, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 30, 31, 32.
  * T18 — Certification RS/RNCP + prise en charge OPCO par dossier.
  *
  * Usage : `pnpm qualiopi:seed-demo`
@@ -48,6 +48,7 @@ export interface DemoData {
   revueDirection: RevueDirectionDemo;
   appreciations: [AppreciationDemo, AppreciationDemo, AppreciationDemo, AppreciationDemo];
   siteSettings: SiteSettingDemo[];
+  moyens: MoyenPedagogiqueDemo[];
   bpfDepense: BpfDepenseDemo;
 }
 
@@ -184,6 +185,8 @@ export interface EnrollmentDemo {
   statut: "presente";
   tauxPresencePct: number;
   attestationResultat: "complete";
+  /** off.10 : accompagnement/adaptation réalisé au fil de la formation (texte libre, non null → indicateur couvert). */
+  adaptationsRealisees?: string;
 }
 
 export interface PresenceDemo {
@@ -317,6 +320,16 @@ export interface SiteSettingDemo {
   value: string;
   description: string;
   category: "qualiopi";
+}
+
+export interface MoyenPedagogiqueDemo {
+  categorie: "salle" | "materiel" | "plateforme";
+  libelle: string;
+  description: string;
+  localisation: string;
+  actif: boolean;
+  /** off.17/18 : dernière vérification d'adéquation/disponibilité (non null → moyen vérifié). */
+  dateVerification: Date;
 }
 
 export interface BpfDepenseDemo {
@@ -585,6 +598,11 @@ export function buildDemoData(): DemoData {
       statut: "presente",
       tauxPresencePct: 100,
       attestationResultat: "complete",
+      // off.10 — adaptation de la prestation aux besoins du stagiaire (accompagnement).
+      adaptationsRealisees:
+        "[DEMO] Supports remis en amont et rythme adapté au niveau débutant ; " +
+        "exercices du module 3 recentrés sur les cas d'usage RH/marketing du stagiaire ; " +
+        "temps supplémentaire accordé sur l'atelier prompting.",
     },
     {
       statut: "presente",
@@ -1024,6 +1042,38 @@ export function buildDemoData(): DemoData {
     },
   ];
 
+  // --- Inventaire des moyens pédagogiques (off.17/18) --------------------------
+  // Une catégorie technique par ligne (salle / matériel / plateforme), toutes
+  // ACTIVES et VÉRIFIÉES (dateVerification non null) pour que chaque catégorie
+  // utilisée porte au moins un moyen vérifié.
+  const MOYEN_VERIF_DATE = new Date("2026-02-20T09:00:00.000Z");
+  const moyens: MoyenPedagogiqueDemo[] = [
+    {
+      categorie: "salle",
+      libelle: "[DEMO] Salle de formation équipée — Centre d'affaires Lyon Part-Dieu",
+      description: "Salle 25 m², vidéoprojecteur Full-HD, paperboard, mobilier modulable.",
+      localisation: "Lyon Part-Dieu (69)",
+      actif: true,
+      dateVerification: MOYEN_VERIF_DATE,
+    },
+    {
+      categorie: "materiel",
+      libelle: "[DEMO] Parc de postes stagiaires (PC/Mac) + Wi-Fi haut-débit",
+      description: "8 postes portables, connexion fibre dédiée, casques audio.",
+      localisation: "Lyon Part-Dieu (69)",
+      actif: true,
+      dateVerification: MOYEN_VERIF_DATE,
+    },
+    {
+      categorie: "plateforme",
+      libelle: "[DEMO] Accès plateformes IA (Claude, ChatGPT) via navigateur",
+      description: "Comptes de démonstration provisionnés pour la durée de la session.",
+      localisation: "SaaS",
+      actif: true,
+      dateVerification: MOYEN_VERIF_DATE,
+    },
+  ];
+
   // --- Dépense BPF (T17 · CLUSTER 5) ------------------------------------------
   const bpfDepense: BpfDepenseDemo = {
     annee: 2026,
@@ -1052,6 +1102,7 @@ export function buildDemoData(): DemoData {
     revueDirection,
     appreciations,
     siteSettings,
+    moyens,
     bpfDepense,
   };
 }
@@ -1291,7 +1342,10 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     const e = data.enrollments[i as 0 | 1]!;
     const enrollment = await prisma.enrollment.upsert({
       where: { sessionId_traineeId: { sessionId: session.id, traineeId: trainee.id } },
-      update: {},
+      // off.10 : (re)poser l'adaptation même sur un enrollment démo déjà créé.
+      update: {
+        ...(e.adaptationsRealisees ? { adaptationsRealisees: e.adaptationsRealisees } : {}),
+      },
       create: {
         sessionId: session.id,
         traineeId: trainee.id,
@@ -1299,6 +1353,7 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
         tauxPresencePct: e.tauxPresencePct,
         attestationResultat: e.attestationResultat,
         emargementSigneAt: new Date("2026-03-10T17:05:00.000Z"),
+        ...(e.adaptationsRealisees ? { adaptationsRealisees: e.adaptationsRealisees } : {}),
       },
     });
     enrollmentIds[i as 0 | 1] = enrollment.id;
@@ -1563,6 +1618,32 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     });
   }
 
+  // 18b. Inventaire des moyens pédagogiques (off.17/18) — MoyenPedagogique n'a
+  //      pas de contrainte unique → findFirst(categorie+libelle) puis create.
+  for (const m of data.moyens) {
+    const existingMoyen = await prisma.moyenPedagogique.findFirst({
+      where: { categorie: m.categorie, libelle: m.libelle },
+    });
+    if (!existingMoyen) {
+      await prisma.moyenPedagogique.create({
+        data: {
+          categorie: m.categorie,
+          libelle: m.libelle,
+          description: m.description,
+          localisation: m.localisation,
+          actif: m.actif,
+          dateVerification: m.dateVerification,
+        },
+      });
+    } else if (existingMoyen.dateVerification == null) {
+      // Idempotent : garantir un moyen vérifié même si créé auparavant sans date.
+      await prisma.moyenPedagogique.update({
+        where: { id: existingMoyen.id },
+        data: { dateVerification: m.dateVerification },
+      });
+    }
+  }
+
   // 19. Dépense BPF (T17 · CLUSTER 5) — idempotent par libellé + annee
   const existingDepense = await prisma.bpfDepense.findFirst({
     where: {
@@ -1588,7 +1669,7 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
       `Session=${DEMO.SESSION} (Barème dossier=${data.session.priseEnChargeMontantCents / 100}€/${data.session.priseEnChargeUnite}) | ` +
       `Stagiaires=2 | Attestation=${DEMO.ATTESTATION} | ` +
       `Facture=${DEMO.FACTURE} | Réclamation=${DEMO.RECLAMATION} | ` +
-      `Trainer=${DEMO.TRAINER_EMAIL} | SiteSettings=3 | BpfDepense=1 | Appréciations=4`,
+      `Trainer=${DEMO.TRAINER_EMAIL} | SiteSettings=3 | Moyens=${data.moyens.length} | BpfDepense=1 | Appréciations=4`,
   );
 }
 

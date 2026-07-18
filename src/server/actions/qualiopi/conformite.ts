@@ -87,9 +87,21 @@ export async function exporterManifesteAuditAction(): Promise<ActionResult<Manif
  *   - `index.txt` récapitulant les inclusions / omissions
  *
  * Fail-soft : les PDFs R2 manquants sont omis sans faire échouer l'action.
+ *
+ * L'appelant reçoit un statut d'incomplétude explicite ({ incomplet,
+ * nbPreuvesAttendues, nbPreuvesJointes, avertissements }) afin d'AVERTIR
+ * clairement l'utilisateur lorsque des preuves manquent — un dossier remis à
+ * l'auditeur peut sinon ne contenir aucune preuve stagiaire à son insu.
  */
 export async function exporterDossierZipAction(): Promise<
-  ActionResult<{ base64: string; filename: string }>
+  ActionResult<{
+    base64: string;
+    filename: string;
+    incomplet: boolean;
+    nbPreuvesAttendues: number;
+    nbPreuvesJointes: number;
+    avertissements: string[];
+  }>
 > {
   const session = await requireAdminWrite();
 
@@ -99,7 +111,12 @@ export async function exporterDossierZipAction(): Promise<
     action: "qualiopi.dossier_audit.export_zip",
     targetType: "DossierAuditZip",
     targetId: null,
-    changes: { filename: dossier.filename },
+    changes: {
+      filename: dossier.filename,
+      incomplet: dossier.incomplet,
+      nbPreuvesAttendues: dossier.nbPreuvesAttendues,
+      nbPreuvesJointes: dossier.nbPreuvesJointes,
+    },
     session,
   });
 
@@ -107,6 +124,10 @@ export async function exporterDossierZipAction(): Promise<
     data: {
       base64: dossier.base64,
       filename: dossier.filename,
+      incomplet: dossier.incomplet,
+      nbPreuvesAttendues: dossier.nbPreuvesAttendues,
+      nbPreuvesJointes: dossier.nbPreuvesJointes,
+      avertissements: dossier.avertissements,
     },
   };
 }

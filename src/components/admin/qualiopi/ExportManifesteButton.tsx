@@ -80,7 +80,8 @@ export function ExportManifesteButton(): React.ReactElement {
         return;
       }
 
-      const { base64, filename } = result.data;
+      const { base64, filename, incomplet, nbPreuvesAttendues, nbPreuvesJointes, avertissements } =
+        result.data;
       const bytes = base64ToUint8Array(base64);
       // On passe l'ArrayBuffer explicitement casté — Blob accepte ArrayBuffer en runtime,
       // mais le typage lib.dom strict requiert le cast.
@@ -88,6 +89,18 @@ export function ExportManifesteButton(): React.ReactElement {
         new Blob([bytes.buffer as ArrayBuffer], { type: "application/zip" }),
         `${filename}.zip`,
       );
+
+      // [C3] Dossier incomplet : ALERTER explicitement. Un ZIP remis à l'auditeur
+      //   peut ne contenir aucune preuve stagiaire (R2 absent / clés introuvables).
+      if (incomplet) {
+        const details =
+          avertissements.length > 0 ? `\n\n- ${avertissements.join("\n- ")}` : "";
+        window.alert(
+          `⚠️ Dossier d'audit INCOMPLET — ${nbPreuvesJointes}/${nbPreuvesAttendues} preuve(s) jointe(s).` +
+            ` Vérifiez le fichier AVERTISSEMENTS.txt dans le ZIP avant de le remettre à l'auditeur.` +
+            details,
+        );
+      }
     });
   }
 

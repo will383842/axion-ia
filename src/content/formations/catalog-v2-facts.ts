@@ -164,3 +164,35 @@ export function getFormationScenePhotos(
 export function getFormationCasUsage(f: FormationV2): ReadonlyArray<FormationCasUsage> {
   return f.casUsageFr ?? f.objectifsFr.map((o) => ({ texteFr: o }));
 }
+
+// ── Mentions réglementaires indicateur 1 (délai d'accès, méthodes, évaluation,
+//    accessibilité) — obligations Code du travail / RNQ génériques, NON gatées
+//    Qualiopi (aucun claim de certification). Défauts centralisés, surchargeables
+//    par formation. Alignés sur la branche DB legacy de formations/[slug]/page.tsx.
+export const FORMATION_DELAI_ACCES_DEFAUT =
+  "Nous consulter — sous 11 jours ouvrés minimum à compter de la confirmation d'inscription et de la réception du règlement ou de la prise en charge par le financeur.";
+
+export function getFormationDelaiAcces(f: FormationV2): string {
+  return f.delaiAccesFr ?? FORMATION_DELAI_ACCES_DEFAUT;
+}
+
+export const FORMATION_METHODES_DEFAUT =
+  "La formation alterne apports méthodologiques, démonstrations commentées et ateliers pratiques : chaque notion est illustrée sur des cas réels, puis mise en application par les participants sur leurs propres situations professionnelles. Les acquis sont consolidés par des exercices individuels et collectifs et des livrables réutilisables.";
+
+export function getFormationMethodes(f: FormationV2): string {
+  return f.methodesFr ?? FORMATION_METHODES_DEFAUT;
+}
+
+export const FORMATION_EVALUATION_DEFAUT =
+  "L'acquisition des compétences est évaluée tout au long de la formation par des exercices pratiques et une évaluation formative continue. Un quiz de positionnement est réalisé en amont et une évaluation à chaud est conduite à l'issue de la formation. Une attestation de fin de formation est délivrée à l'issue du parcours. Délivrée conformément aux articles L.6353-1 et D.6353-1 du Code du travail.";
+
+export function getFormationEvaluation(f: FormationV2): string {
+  return f.modalitesEvaluationFr ?? FORMATION_EVALUATION_DEFAUT;
+}
+
+export const FORMATION_ACCESSIBILITE_DEFAUT =
+  "Axion-IA s'engage à rendre ses formations accessibles aux personnes en situation de handicap. Un référent handicap est désigné au sein de l'organisme, conformément à l'article L.6352-3 du Code du travail, pour étudier toute demande d'adaptation pédagogique ou technique. Pour toute demande d'adaptation, contactez-nous avant l'inscription afin d'étudier ensemble les aménagements possibles.";
+
+export function getFormationAccessibilite(f: FormationV2): string {
+  return f.accessibiliteHandicapFr ?? FORMATION_ACCESSIBILITE_DEFAUT;
+}

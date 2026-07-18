@@ -21,7 +21,8 @@ import { renderPdfToBuffer, storeAndSignPdf } from "@/server/qualiopi/documents/
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import type { NumberingType } from "@/server/qualiopi/numbering/formats";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
-import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
+import { assertOrganismeComplet, exigeIdentiteComplete } from "@/server/qualiopi/documents/conformite";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 /** Mappage DocumentType → NumberingType (NUMBERING_PREFIX). */
@@ -50,6 +51,8 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
   protocole_afest: "formation",
   // Inventaire des moyens pédagogiques (A14) — groupe AXI-FORM.
   inventaire_moyens: "formation",
+  // Contrat de sous-traitance (ind. 27) — groupe AXI-FORM.
+  contrat_sous_traitance: "formation",
 };
 
 export interface GenerateDocumentInput {
@@ -128,8 +131,13 @@ export async function generateDocument(
 
   // Garde-fou conformité (runtime only) : refuse un document à valeur
   // juridique/fiscale si l'identité de l'OF est incomplète (SIRET/NDA/adresse/
-  // Qualiopi vides) plutôt que de masquer la ligne en silence.
-  if (input.identite) {
+  // Qualiopi vides) plutôt que de masquer la ligne en silence. Systématique
+  // pour ces types : si l'appelant ne fournit pas `identite`, on la relit depuis
+  // la config (le `??` évite la lecture DB quand elle est déjà passée).
+  if (exigeIdentiteComplete(input.type)) {
+    const identite = input.identite ?? (await getOrganismeIdentite());
+    assertOrganismeComplet(identite, input.type);
+  } else if (input.identite) {
     assertOrganismeComplet(input.identite, input.type);
   }
 

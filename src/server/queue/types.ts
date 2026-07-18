@@ -100,6 +100,9 @@ export interface EmailJobData {
   payload: Record<string, unknown>;
   /** Marketing vs transactionnel (CLAUDE.md §11 — distingue noreply@ vs news@). */
   marketing?: boolean;
+  /** Entité liée (traçabilité EmailLog) — ex. AlerteSysteme/alerteId. */
+  entityType?: string;
+  entityId?: string;
   /**
    * Pièces jointes (Hub facturation — envoi manuel devis/facture). JAMAIS de
    * binaire dans Redis : uniquement la clé R2 ; le worker télécharge puis

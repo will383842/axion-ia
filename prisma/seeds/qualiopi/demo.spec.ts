@@ -95,6 +95,35 @@ describe("buildDemoData() — pureté et complétude du cycle démo Qualiopi", (
     expect(data.formation.ressourcesPedagogiques.length).toBeGreaterThanOrEqual(3);
   });
 
+  // ── Indicateur 10 — Adaptation de la prestation (accompagnement) ─────────
+
+  it("indicateur 10 : au moins un enrollment porte adaptationsRealisees (texte non vide)", () => {
+    const avecAdaptation = data.enrollments.filter(
+      (e) => typeof e.adaptationsRealisees === "string" && e.adaptationsRealisees.trim().length > 0,
+    );
+    expect(avecAdaptation.length).toBeGreaterThanOrEqual(1);
+    expect(avecAdaptation[0]!.adaptationsRealisees).toContain("[DEMO]");
+  });
+
+  // ── Indicateurs 17/18 — Inventaire des moyens pédagogiques ───────────────
+
+  it("indicateurs 17/18 : inventaire moyens (salle + matériel + plateforme) actifs et vérifiés", () => {
+    const categories = data.moyens.map((m) => m.categorie);
+    expect(categories).toContain("salle");
+    expect(categories).toContain("materiel");
+    expect(categories).toContain("plateforme");
+    for (const m of data.moyens) {
+      expect(m.actif).toBe(true);
+      expect(m.dateVerification).toBeInstanceOf(Date);
+      expect(m.libelle).toBeTruthy();
+    }
+    // off.18 : chaque catégorie utilisée a au moins un moyen vérifié.
+    const categoriesVerifiees = new Set(
+      data.moyens.filter((m) => m.actif && m.dateVerification != null).map((m) => m.categorie),
+    );
+    expect(new Set(categories)).toEqual(categoriesVerifiees);
+  });
+
   // ── Indicateur 19 — Satisfaction ─────────────────────────────────────────
 
   it("indicateur 31 : chaque stagiaire a un questionnaire satisfaction_chaud rempli avec note ≥ 4", () => {

@@ -100,6 +100,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   livret_accueil: "Livret d'accueil stagiaire",
   protocole_afest: "Protocole individuel AFEST (D.6313-3-1)",
   inventaire_moyens: "Inventaire des moyens pédagogiques",
+  contrat_sous_traitance: "Contrat de sous-traitance (indicateur 27)",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

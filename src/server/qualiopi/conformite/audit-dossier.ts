@@ -28,6 +28,26 @@ export interface DossierAuditZipResult {
   readonly base64: string;
   /** Nom de fichier suggéré pour le téléchargement (sans extension). */
   readonly filename: string;
+  /**
+   * `true` si le dossier livré est incomplet : au moins un avertissement a été
+   * émis (R2 non configuré, mode stub) OU toutes les preuves attendues n'ont pas
+   * pu être jointes. L'appelant DOIT alerter l'utilisateur dans ce cas — un ZIP
+   * incomplet remis à un auditeur peut ne contenir aucune preuve stagiaire.
+   */
+  readonly incomplet: boolean;
+  /**
+   * Nombre de PDF de preuve attendus (= documents présents en base dont le PDF
+   * devrait être joint depuis R2). 0 s'il n'y a aucun document en base.
+   */
+  readonly nbPreuvesAttendues: number;
+  /** Nombre de PDF de preuve effectivement joints au ZIP depuis R2. */
+  readonly nbPreuvesJointes: number;
+  /**
+   * Avertissements lisibles décrivant chaque cause d'incomplétude (miroir du
+   * fichier `AVERTISSEMENTS.txt` inclus dans le ZIP). Vide si le dossier est
+   * complet.
+   */
+  readonly avertissements: string[];
 }
 
 export interface PreuveDocument {
@@ -309,7 +329,16 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
     zip.file("manifeste.md", manifeste.markdown);
     zip.file("index.txt", "Mode build (stub) — données indisponibles. Aucun PDF inclus.\n");
     const base64 = await zip.generateAsync({ type: "base64", compression: "DEFLATE" });
-    return { base64, filename };
+    return {
+      base64,
+      filename,
+      incomplet: true,
+      nbPreuvesAttendues: 0,
+      nbPreuvesJointes: 0,
+      avertissements: [
+        "Mode build (stub) — données indisponibles, aucun PDF de preuve inclus.",
+      ],
+    };
   }
 
   // ── Génération normale ──────────────────────────────────────────────────
@@ -404,7 +433,24 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   }
 
   const base64 = await zip.generateAsync({ type: "base64", compression: "DEFLATE" });
-  return { base64, filename };
+
+  // [C3] Incomplétude VISIBLE dans le type de retour : le ZIP se génère toujours
+  //   (fail-soft), mais l'appelant sait combien de preuves manquent et pourquoi.
+  //   nbPreuvesAttendues = documents en base ; nbPreuvesJointes = PDF R2 réellement
+  //   inclus. Incomplet dès qu'un avertissement existe (R2 absent) OU qu'une
+  //   preuve attendue manque.
+  const nbPreuvesAttendues = allDocuments.length;
+  const nbPreuvesJointes = nbDocsInclus;
+  const incomplet = avertissements.length > 0 || nbPreuvesJointes < nbPreuvesAttendues;
+
+  return {
+    base64,
+    filename,
+    incomplet,
+    nbPreuvesAttendues,
+    nbPreuvesJointes,
+    avertissements,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

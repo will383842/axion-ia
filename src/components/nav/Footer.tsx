@@ -78,6 +78,8 @@ export async function Footer() {
     { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
     { href: "/conditions-generales", label: isFr ? "CGV" : "Terms" },
     { href: "/politique-confidentialite", label: isFr ? "Confidentialité" : "Privacy" },
+    { href: "/reclamations", label: isFr ? "Réclamations" : "Complaints" },
+    { href: "/reglement-interieur", label: isFr ? "Règlement intérieur" : "Internal regulations" },
     { href: "/accessibilite", label: isFr ? "Accessibilité" : "Accessibility" },
     { href: "/cookies", label: "Cookies" },
     { href: "/sous-processeurs", label: isFr ? "Sous-traitants" : "Subprocessors" },

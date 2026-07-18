@@ -20,6 +20,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { AttestationResultat } from "../../../../prisma/generated/client";
@@ -99,6 +100,13 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
           dateDebut: true,
           dateFin: true,
           modalite: true,
+          lieuType: true,
+          lieuIntitule: true,
+          lieuAdresse: true,
+          lieuCodePostal: true,
+          lieuVille: true,
+          lieuSalle: true,
+          lieuVisioUrl: true,
         },
       },
     },
@@ -119,7 +127,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
       titreFormation: session.titreSession,
       dateDebut: fmtDate(session.dateDebut),
       dateFin: fmtDate(session.dateFin),
-      lieu: "Voir convocation",
+      lieu: formatLieu(session) ?? "Voir convocation",
       modalite: session.modalite,
       numeroSession: session.numero,
       lienPortail,
@@ -148,6 +156,13 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
       dateDebut: true,
       dateFin: true,
       modalite: true,
+      lieuType: true,
+      lieuIntitule: true,
+      lieuAdresse: true,
+      lieuCodePostal: true,
+      lieuVille: true,
+      lieuSalle: true,
+      lieuVisioUrl: true,
       enrollments: {
         where: { statut: { in: ["planifiee", "presente"] } },
         select: {
@@ -176,7 +191,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
           titreFormation: session.titreSession,
           dateDebut: fmtDate(session.dateDebut),
           dateFin: fmtDate(session.dateFin),
-          lieu: "Voir convocation",
+          lieu: formatLieu(session) ?? "Voir convocation",
           modalite: session.modalite,
           numeroSession: session.numero,
           lienPortail,
@@ -367,6 +382,15 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
 export async function notifierAlerteInterne(alerteId: string): Promise<void> {
   if (isStub()) return;
 
+  // Claim atomique : pose notifiedAt AVANT l'enqueue. Un second appel (ou une
+  // instance concurrente en HA) voit count=0 → skip (anti-spam, verrou persistant
+  // qui survit à la purge Redis contrairement au jobId BullMQ).
+  const claim = await prisma.alerteSysteme.updateMany({
+    where: { id: alerteId, notifiedAt: null, resolue: false },
+    data: { notifiedAt: new Date() },
+  });
+  if (claim.count === 0) return;
+
   const alerte = await prisma.alerteSysteme.findUnique({
     where: { id: alerteId },
     select: {
@@ -399,7 +423,29 @@ export async function notifierAlerteInterne(alerteId: string): Promise<void> {
   if (alerte.cibleType != null) payload["cibleType"] = alerte.cibleType;
   if (alerte.cibleId != null) payload["cibleId"] = alerte.cibleId;
 
-  await enqueueEmail("qualiopi-alerte-interne", destinataire, "fr", payload, {
-    jobId: `qualiopi-alerte-interne-${alerteId}`,
-  });
+  let enqueued = false;
+  try {
+    ({ enqueued } = await enqueueEmail("qualiopi-alerte-interne", destinataire, "fr", payload, {
+      jobId: `qualiopi-alerte-interne-${alerteId}`,
+      entityType: "AlerteSysteme",
+      entityId: alerteId,
+    }));
+  } catch (err) {
+    // Redis existe mais add() throw (coupure transitoire) : libère le verrou pour
+    // re-tenter au prochain cron, puis propage (sinon "notifiée" sans email parti).
+    await prisma.alerteSysteme.update({
+      where: { id: alerteId },
+      data: { notifiedAt: null },
+    });
+    throw err;
+  }
+
+  // Fail-soft : pas de connexion Redis → on libère le verrou pour re-tenter au
+  // prochain cron (sinon "notifiée" sans email réellement parti).
+  if (!enqueued) {
+    await prisma.alerteSysteme.update({
+      where: { id: alerteId },
+      data: { notifiedAt: null },
+    });
+  }
 }

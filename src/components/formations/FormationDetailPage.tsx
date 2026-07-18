@@ -53,11 +53,15 @@ import {
   FORMATION_EFFECTIF_DEFAUT,
   formatDureeFr,
   formatModalitesFr,
+  getFormationAccessibilite,
   getFormationCasUsage,
   getFormationCourseModes,
+  getFormationDelaiAcces,
   getFormationEffectif,
+  getFormationEvaluation,
   getFormationImage,
   getFormationMateriel,
+  getFormationMethodes,
   getFormationModalites,
   getFormationOutils,
 } from "@/content/formations/catalog-v2-facts";
@@ -98,6 +102,13 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const prerequis = f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.";
   const image = getFormationImage(f);
   const casUsage = getFormationCasUsage(f);
+  // Mentions indicateur 1 (délai d'accès, méthodes, évaluation, accessibilité) —
+  // obligations Code du travail génériques, NON gatées Qualiopi (aucun claim de
+  // certification). Défauts centralisés dans catalog-v2-facts, surchargeables.
+  const delaiAcces = getFormationDelaiAcces(f);
+  const methodes = getFormationMethodes(f);
+  const evaluation = getFormationEvaluation(f);
+  const accessibilite = getFormationAccessibilite(f);
   // « reste à charge » = mention financement (OPCO), pas un tarif produit.
   const financeMention = "Finançable OPCO — jusqu’à 0 € de reste à charge selon votre situation."; // price-exempt
 
@@ -188,6 +199,14 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
     "Cas d’usage transversaux",
     "Intra-entreprise",
     "Opérationnel·le dès le lendemain",
+  ];
+
+  // Mentions réglementaires indicateur 1 — 4 blocs neutres (Code du travail).
+  const indicateurRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
+    { icon: Clock, label: "Délai d'accès", value: delaiAcces },
+    { icon: GraduationCap, label: "Méthodes pédagogiques", value: methodes },
+    { icon: CheckCircle2, label: "Modalités d'évaluation", value: evaluation },
+    { icon: Users, label: "Accessibilité & handicap", value: accessibilite },
   ];
 
   // ── JSON-LD ─────────────────────────────────────────────────────────────────
@@ -521,6 +540,31 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                 {row.label}
               </dt>
               <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {/* ── INFORMATIONS RÉGLEMENTAIRES (indicateur 1 — Code du travail) ──── */}
+      <Section
+        eyebrow="Informations réglementaires"
+        title="Délais, méthodes,"
+        titleEm="évaluation & accessibilité"
+        description="Les informations essentielles avant l'inscription, conformément au Code du travail."
+      >
+        <dl className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2">
+          {indicateurRows.map((row) => (
+            <div
+              key={row.label}
+              className="border-border bg-bg shadow-card flex flex-col gap-3 rounded-2xl border p-6"
+            >
+              <span className="bg-terracotta text-mocha-fg shadow-cta-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                <row.icon aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <dt className="text-terracotta-deep text-[11.5px] font-bold tracking-[0.1em] uppercase">
+                {row.label}
+              </dt>
+              <dd className="text-fg-soft text-sm leading-relaxed">{row.value}</dd>
             </div>
           ))}
         </dl>

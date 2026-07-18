@@ -15,7 +15,54 @@ import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
+import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
+
+/**
+ * Journalise durablement un envoi dans EmailLog (traçabilité audit). FAIL-SOFT :
+ * une erreur d'écriture ne doit JAMAIS transformer un envoi réussi en échec/retry
+ * (log console seulement, pas de rethrow). Une ligne par tentative.
+ */
+async function logEmail(entry: {
+  template: EmailJobName;
+  recipient: string;
+  locale: EmailJobData["locale"];
+  marketing: boolean;
+  attempts: number;
+  status: EmailLogStatus;
+  entityType?: string;
+  entityId?: string;
+  jobId?: string;
+  providerMessageId?: string;
+  error?: string;
+  sentAt?: Date;
+  failedAt?: Date;
+}): Promise<void> {
+  try {
+    await prisma.emailLog.create({
+      data: {
+        template: entry.template,
+        recipient: entry.recipient,
+        locale: entry.locale,
+        marketing: entry.marketing,
+        attempts: entry.attempts,
+        status: entry.status,
+        ...(entry.entityType ? { entityType: entry.entityType } : {}),
+        ...(entry.entityId ? { entityId: entry.entityId } : {}),
+        ...(entry.jobId ? { jobId: entry.jobId } : {}),
+        ...(entry.providerMessageId ? { providerMessageId: entry.providerMessageId } : {}),
+        ...(entry.error ? { error: entry.error } : {}),
+        ...(entry.sentAt ? { sentAt: entry.sentAt } : {}),
+        ...(entry.failedAt ? { failedAt: entry.failedAt } : {}),
+      },
+    });
+  } catch (e) {
+    console.error(
+      `[email-worker] EmailLog write failed (${entry.template} → ${entry.recipient}):`,
+      e instanceof Error ? e.message : String(e),
+    );
+  }
+}
 
 /**
  * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
@@ -53,37 +100,74 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
   const worker = new Worker<EmailJobData, void, EmailJobName>(
     "emails",
     async (job) => {
-      const { template, to, locale, payload, marketing } = job.data;
+      const { template, to, locale, payload, marketing, entityType, entityId } = job.data;
 
       // Sprint Notif Infra 2026-05-26 / Chantier 5 — branche dédiée
       // submission-reply : on synchronise SubmissionReply.deliveryStatus
-      // + Submission.firstRepliedAt/lastRepliedAt après envoi MTA.
+      // + Submission.firstRepliedAt/lastRepliedAt après envoi MTA. Suivi propre
+      // via SubmissionReply → pas de double journalisation dans EmailLog.
       if (template === "submission-reply") {
         await handleSubmissionReply(payload);
         return;
       }
 
-      const { subject, html, text } = await renderEmailTemplate(template, locale, payload);
-      const attachments = await resolveAttachments(job.data.attachments);
-      // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
-      // Marketing emails ET transactionnels qui contiennent un lien
-      // unsubscribe DOIVENT exposer les headers `List-Unsubscribe` +
-      // `List-Unsubscribe-Post` pour Gmail/Yahoo/Apple/Outlook 2024+.
-      const unsubscribeToken =
-        payload && typeof payload === "object" && "unsubscribeToken" in payload
-          ? typeof (payload as { unsubscribeToken?: unknown }).unsubscribeToken === "string"
-            ? (payload as { unsubscribeToken: string }).unsubscribeToken
-            : undefined
-          : undefined;
-      await sendEmail({
-        to,
-        subject,
-        html,
-        text,
-        marketing: marketing === true,
-        ...(unsubscribeToken ? { unsubscribeToken } : {}),
-        ...(attachments ? { attachments } : {}),
-      });
+      const jobId = job.id;
+      const attempts = job.attemptsMade + 1;
+
+      try {
+        const { subject, html, text } = await renderEmailTemplate(template, locale, payload);
+        const attachments = await resolveAttachments(job.data.attachments);
+        // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
+        // Marketing emails ET transactionnels qui contiennent un lien
+        // unsubscribe DOIVENT exposer les headers `List-Unsubscribe` +
+        // `List-Unsubscribe-Post` pour Gmail/Yahoo/Apple/Outlook 2024+.
+        const unsubscribeToken =
+          payload && typeof payload === "object" && "unsubscribeToken" in payload
+            ? typeof (payload as { unsubscribeToken?: unknown }).unsubscribeToken === "string"
+              ? (payload as { unsubscribeToken: string }).unsubscribeToken
+              : undefined
+            : undefined;
+        const result = await sendEmail({
+          to,
+          subject,
+          html,
+          text,
+          marketing: marketing === true,
+          ...(unsubscribeToken ? { unsubscribeToken } : {}),
+          ...(attachments ? { attachments } : {}),
+        });
+        // Journalisation fail-soft : ne jamais rethrow après un envoi réussi
+        // (sinon retry BullMQ → email renvoyé).
+        await logEmail({
+          template,
+          recipient: to,
+          locale,
+          marketing: marketing === true,
+          attempts,
+          status: EmailLogStatus.sent,
+          providerMessageId: result.messageId,
+          sentAt: new Date(),
+          ...(entityType ? { entityType } : {}),
+          ...(entityId ? { entityId } : {}),
+          ...(jobId ? { jobId } : {}),
+        });
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        await logEmail({
+          template,
+          recipient: to,
+          locale,
+          marketing: marketing === true,
+          attempts,
+          status: EmailLogStatus.failed,
+          error: msg.slice(0, 2000),
+          failedAt: new Date(),
+          ...(entityType ? { entityType } : {}),
+          ...(entityId ? { entityId } : {}),
+          ...(jobId ? { jobId } : {}),
+        });
+        throw err; // rethrow : conserve le retry BullMQ + capture Sentry existante
+      }
     },
     {
       connection: getBullConnectionOrThrow(),

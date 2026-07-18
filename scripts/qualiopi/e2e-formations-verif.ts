@@ -16,6 +16,7 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
+import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { genererFactureFormation } from "@/server/qualiopi/financements/facturation-service";
@@ -550,7 +551,7 @@ async function main() {
   const conv = await renderPdfToBuffer(
     React.createElement(ConventionPdf, {
       data: {
-        numero: "AXI-CONV-PREVIEW",
+        numero: formatDocumentNumber("formation", new Date().getFullYear(), 1),
         client: {
           raisonSociale: client.raisonSociale,
           siret: client.siret!,

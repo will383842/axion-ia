@@ -41,6 +41,7 @@ import {
   envoyerRappelJ7,
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
+  notifierAlerteInterne,
 } from "@/server/qualiopi/notifications/notifications-service";
 import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
 
@@ -501,7 +502,31 @@ async function handleSuiviJ30(): Promise<void> {
 async function handleAlertes(): Promise<void> {
   try {
     const { crees, resolues } = await synchroniserAlertes();
-    console.log(`[formation-crons] alertes: ${crees} créées, ${resolues} résolues automatiquement`);
+
+    // Notifie l'équipe interne des alertes CRITIQUES non encore notifiées.
+    // Seuil = critique UNIQUEMENT (anti-spam) ; l'idempotence réelle vit dans
+    // notifierAlerteInterne (claim notifiedAt) — un doublon reste impossible même
+    // si findMany voit une alerte déjà en cours de notification.
+    const aNotifier = await prisma.alerteSysteme.findMany({
+      where: { niveau: "critique", resolue: false, notifiedAt: null },
+      select: { id: true },
+    });
+    let notifiees = 0;
+    for (const a of aNotifier) {
+      try {
+        await notifierAlerteInterne(a.id);
+        notifiees++;
+      } catch (err) {
+        console.error(
+          `[formation-crons] alertes: erreur notif ${a.id}:`,
+          err instanceof Error ? err.message : String(err),
+        );
+      }
+    }
+
+    console.log(
+      `[formation-crons] alertes: ${crees} créées, ${resolues} résolues, ${notifiees} notifiée(s)`,
+    );
   } catch (err) {
     console.error(
       "[formation-crons] alertes: erreur synchronisation:",

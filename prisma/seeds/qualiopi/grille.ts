@@ -8,7 +8,9 @@
 import type { PrismaClient, Prisma } from "../../generated/client";
 import { DEFAULT_GRILLE_CRITERES } from "../../../src/server/qualiopi/engine/grille-schema";
 
-export async function seedGrilleQualite(prisma: PrismaClient): Promise<void> {
+export async function seedGrilleQualite(
+  prisma: Prisma.TransactionClient | PrismaClient,
+): Promise<void> {
   const CLE = "grille_qualite_v1";
 
   const existing = await prisma.grilleQualiteConfig.findUnique({

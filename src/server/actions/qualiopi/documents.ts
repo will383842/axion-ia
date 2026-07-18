@@ -53,8 +53,10 @@ import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-m
 import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
 import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
 import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
+import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
+import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -1531,6 +1533,79 @@ export async function genererInventaireMoyensAction(): Promise<
     targetType: "DocumentGenere",
     targetId: doc.id,
     changes: { documentId: doc.id, numero: doc.numero, nbMoyens: moyens.length },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 16. Contrat de sous-traitance (indicateur 27 — L.6316-3)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const sousTraitantIdSchema = z.object({ sousTraitantId: z.string().uuid() });
+
+/**
+ * Génère le contrat de sous-traitance écrit d'un sous-traitant du registre
+ * (indicateur 27). Précise les missions confiées (depuis `objetPrestation`) et
+ * porte la clause de vérification de la conformité RNQ (la date de vérification
+ * data.gouv.fr est reportée depuis le registre). Document officiel numéroté
+ * (AXI-FORM).
+ *
+ * La rémunération en honoraires n'est pas stockée au registre : une modalité par
+ * défaut (facturation par mission) est portée au contrat, à affiner par l'OF.
+ */
+export async function genererContratSousTraitanceAction(input: {
+  sousTraitantId: string;
+}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const parsed = sousTraitantIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sousTraitantId } = parsed.data;
+
+  const sousTraitant = await getSousTraitant(sousTraitantId);
+  if (!sousTraitant) return { error: "Sous-traitant introuvable" };
+
+  const identite = await getOrganismeIdentite();
+
+  // Missions : `objetPrestation` peut contenir plusieurs lignes (une par mission).
+  const missions = sousTraitant.objetPrestation
+    .split("\n")
+    .map((m) => m.trim())
+    .filter((m) => m.length > 0);
+
+  const doc = await generateDocument({
+    type: "contrat_sous_traitance",
+    identite,
+    buildElement: (numero) =>
+      React.createElement(ContratSousTraitancePdf, {
+        data: {
+          numero,
+          sousTraitant: {
+            nom: sousTraitant.nom,
+            ...(sousTraitant.siret !== null ? { siret: sousTraitant.siret } : {}),
+            ...(sousTraitant.nda !== null ? { nda: sousTraitant.nda } : {}),
+          },
+          missions,
+          dateDebut: formatDateFr(sousTraitant.contratSigneAt ?? new Date()),
+          remuneration:
+            "Honoraires précisés par mission (devis / bon de commande), facturés après réalisation.",
+          conformiteVerifieeAt: sousTraitant.verifieDataGouvAt
+            ? formatDateFr(new Date(sousTraitant.verifieDataGouvAt))
+            : "",
+          dateContrat: formatDateFr(new Date()),
+        },
+        identite,
+      }),
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.contrat_sous_traitance.genere",
+    targetType: "SousTraitant",
+    targetId: sousTraitantId,
+    changes: { documentId: doc.id, numero: doc.numero },
     session: adminSession,
   });
 

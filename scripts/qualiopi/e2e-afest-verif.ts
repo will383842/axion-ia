@@ -32,6 +32,7 @@ import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-servi
 import { genererManifesteAudit } from "@/server/qualiopi/conformite/audit-dossier";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { ProtocoleAfestPdf } from "@/server/qualiopi/documents/templates/protocole-afest";
 
 const OUT_DIR =
@@ -296,7 +297,7 @@ async function main() {
   const { buffer } = await renderPdfToBuffer(
     React.createElement(ProtocoleAfestPdf, {
       data: {
-        numero: "AXI-FORM-2026-PREVIEW",
+        numero: formatDocumentNumber("formation", 2026, 1),
         dateEmission: "01/03/2026",
         identite,
         intitule: "Collaborateur · Optimisation du poste",

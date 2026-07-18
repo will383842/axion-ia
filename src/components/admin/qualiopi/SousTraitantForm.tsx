@@ -15,6 +15,7 @@ import type {
   creerSousTraitantAction,
   verifierSousTraitantOfAction,
 } from "@/server/actions/qualiopi/sous-traitants";
+import type { genererContratSousTraitanceAction } from "@/server/actions/qualiopi/documents";
 
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-admin-accent)]";
@@ -239,6 +240,63 @@ export function SousTraitantVerifButton({
         className="admin-button-secondary"
       >
         {isPending ? "Vérification…" : "Marquer vérifié data.gouv.fr"}
+      </button>
+      {error && (
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]">
+          {error}
+        </span>
+      )}
+      {successMsg && (
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]">
+          {successMsg}
+        </span>
+      )}
+    </span>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Bouton génération contrat de sous-traitance (indicateur 27 — L.6316-3)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface SousTraitantContratButtonProps {
+  sousTraitantId: string;
+  genererAction: typeof genererContratSousTraitanceAction;
+}
+
+export function SousTraitantContratButton({
+  sousTraitantId,
+  genererAction,
+}: SousTraitantContratButtonProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  function handleGenerer() {
+    setError(null);
+    setSuccessMsg(null);
+
+    startTransition(async () => {
+      const result = await genererAction({ sousTraitantId });
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setSuccessMsg(`Contrat n° ${result.data.numero} généré.`);
+        router.refresh();
+      }
+    });
+  }
+
+  return (
+    <span className="inline-flex flex-col gap-1">
+      <button
+        type="button"
+        onClick={handleGenerer}
+        disabled={isPending}
+        className="admin-button-secondary"
+      >
+        {isPending ? "Génération…" : "Générer le contrat de sous-traitance"}
       </button>
       {error && (
         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]">

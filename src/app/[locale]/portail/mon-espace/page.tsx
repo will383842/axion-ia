@@ -21,6 +21,7 @@
  */
 
 import type { Metadata } from "next";
+import { Link } from "@/i18n/navigation";
 import { getPortailToken } from "@/server/qualiopi/portail/cookie";
 import { verifierToken, getEspaceStagiaire } from "@/server/qualiopi/portail/portail-service";
 import {
@@ -174,6 +175,14 @@ export default async function PortailMonEspacePage({ params }: PageProps) {
               ))}
             </ul>
           )}
+          <p className="mt-3 text-sm">
+            <Link
+              href="/reglement-interieur"
+              className="text-blue-600 underline hover:no-underline"
+            >
+              Consulter le règlement intérieur
+            </Link>
+          </p>
         </Section>
 
         {/* Questionnaires de satisfaction */}

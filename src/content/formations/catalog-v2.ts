@@ -96,6 +96,14 @@ export interface FormationV2 {
    * (ex. Référent IA : aucun outil, les ateliers sont documentaires).
    */
   outilsFr?: string;
+  /** Délai d'accès (indicateur 1). Défaut centralisé dans catalog-v2-facts.ts. */
+  delaiAccesFr?: string;
+  /** Méthodes pédagogiques et techniques d'encadrement (indicateur 1). Défaut centralisé. */
+  methodesFr?: string;
+  /** Modalités d'évaluation (indicateur 1). Défaut centralisé. */
+  modalitesEvaluationFr?: string;
+  /** Accessibilité aux personnes en situation de handicap (indicateur 1). Défaut centralisé. */
+  accessibiliteHandicapFr?: string;
   // ---- Contenu enrichi (optionnel — fallback template si absent) ----
   /** Cas d'usage concrets (avec petite image optionnelle). Fallback = objectifs. */
   casUsageFr?: ReadonlyArray<FormationCasUsage>;

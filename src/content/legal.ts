@@ -13,7 +13,9 @@ export type LegalSlug =
   | "politique-confidentialite"
   | "cookies"
   | "rgpd"
-  | "politique-deplacement";
+  | "politique-deplacement"
+  | "reclamations"
+  | "reglement-interieur";
 
 interface LegalContent {
   slug: LegalSlug;
@@ -144,11 +146,15 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Conditions",
       titleEm: "générales",
       intro:
-        "Conditions générales de vente et d'utilisation (CGV/CGU) régissant les services d'Axion-IA SAS : formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Prestations réservées aux clients professionnels (B2B). La version applicable est celle en vigueur à la date de dernière mise à jour indiquée ci-dessous.",
+        "Conditions générales de vente et d'utilisation (CGV/CGU) régissant les services d'Axion-IA SAS : formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Prestations réservées aux clients professionnels (B2B). Elles intègrent les dispositions propres aux actions de formation professionnelle (articles L.6313-1 et suivants du Code du travail). La version applicable est celle en vigueur à la date de dernière mise à jour indiquée ci-dessous.",
       sections: [
         {
           title: "Objet et champ d'application",
           body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent exclusivement à des clients professionnels (B2B) agissant dans le cadre de leur activité ; elles ne constituent pas une vente à des consommateurs.",
+        },
+        {
+          title: "Dispositions propres à la formation professionnelle",
+          body: "Lorsque les prestations d'Axion-IA prennent la forme d'actions de formation, elles relèvent des articles L.6313-1 et suivants du Code du travail. Les formations dispensées à des personnes morales font l'objet d'une convention de formation conforme aux articles L.6353-1 et L.6353-2 du Code du travail. Les formations souscrites par un particulier à titre individuel font l'objet d'un contrat de formation conforme aux articles L.6353-3 à L.6353-7 du Code du travail, incluant le délai de rétractation de dix jours prévu à l'article L.6353-5. À l'issue de la formation, une attestation de fin de formation est délivrée conformément aux articles L.6353-1 et D.6353-1 du Code du travail. Les modalités de dépôt et de traitement des réclamations relatives aux formations sont décrites dans la procédure de réclamation publiée sur /reclamations, et les règles applicables aux stagiaires figurent dans le règlement intérieur publié sur /reglement-interieur.",
         },
         {
           title: "Définitions",
@@ -246,18 +252,22 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       metaSeo: {
         title: "Conditions générales · Axion-IA",
         description:
-          "CGV/CGU B2B d'Axion-IA SAS : commande, prix, paiement et pénalités L441-10, propriété intellectuelle, responsabilité, RGPD, IA Act, force majeure. Droit français.",
+          "CGV/CGU B2B d'Axion-IA SAS : commande, prix, paiement et pénalités L441-10, propriété intellectuelle, responsabilité, RGPD, IA Act, formation professionnelle (L.6313-1). Droit français.",
       },
     },
     en: {
       title: "Terms &",
       titleEm: "conditions",
       intro:
-        "Terms of sale and use (T&Cs) governing the services of Axion-IA SAS: on-site AI trainings and sessions, AI audits, AI implementations, one-to-one individual coaching, and design of AI-augmented websites and SaaS platforms. Services reserved for professional (B2B) clients. The applicable version is the one in force on the last-updated date shown below.",
+        "Terms of sale and use (T&Cs) governing the services of Axion-IA SAS: on-site AI trainings and sessions, AI audits, AI implementations, one-to-one individual coaching, and design of AI-augmented websites and SaaS platforms. Services reserved for professional (B2B) clients. They include the provisions specific to professional training actions (articles L.6313-1 et seq. of the French Labour Code). The applicable version is the one in force on the last-updated date shown below.",
       sections: [
         {
           title: "Purpose and scope",
           body: "These terms govern the sale and provision of all Axion-IA services: on-site AI trainings and sessions (group and individual), AI audits, AI implementations, one-to-one individual coaching, and design of AI-augmented websites and SaaS platforms. They apply to any order, to the exclusion of any other document. The services are intended exclusively for professional (B2B) clients acting within their business activity; they do not constitute a sale to consumers.",
+        },
+        {
+          title: "Provisions specific to professional training",
+          body: "Where Axion-IA's services take the form of training actions, they fall under articles L.6313-1 et seq. of the French Labour Code. Training delivered to legal entities is covered by a training agreement compliant with articles L.6353-1 and L.6353-2 of the Labour Code. Training taken out by an individual in a personal capacity is covered by a training contract compliant with articles L.6353-3 to L.6353-7 of the Labour Code, including the ten-day withdrawal period provided for in article L.6353-5. On completion of the training, a certificate of completion is issued in accordance with articles L.6353-1 and D.6353-1 of the Labour Code. The procedures for filing and handling complaints relating to training are described in the complaints procedure published at /reclamations, and the rules applicable to trainees are set out in the internal regulations published at /reglement-interieur.",
         },
         {
           title: "Definitions",
@@ -355,7 +365,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       metaSeo: {
         title: "Terms & conditions · Axion-IA",
         description:
-          "Axion-IA SAS B2B T&Cs: order, pricing, payment and L441-10 penalties, intellectual property, liability, GDPR, AI Act, force majeure. French law applies.",
+          "Axion-IA SAS B2B T&Cs: order, pricing, payment and L441-10 penalties, intellectual property, liability, GDPR, AI Act, professional training (L.6313-1). French law applies.",
       },
     },
   },
@@ -668,6 +678,188 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         title: "Travel policy · Axion-IA",
         description:
           "Axion-IA travel conditions and arrangements for on-site sessions. France/BE/LU/CH coverage area.",
+      },
+    },
+  },
+  {
+    slug: "reclamations",
+    pathFr: "/reclamations",
+    pathEn: "/reclamations",
+    fr: {
+      title: "Procédure de",
+      titleEm: "réclamation",
+      intro:
+        "Procédure de traitement des réclamations relatives aux prestations de formation d'Axion-IA : qui peut réclamer, comment déposer une réclamation, délais de réponse, traitement et voies de recours.",
+      sections: [
+        {
+          title: "Objet et champ d'application",
+          body: "La présente procédure décrit les modalités de dépôt et de traitement des réclamations relatives aux prestations de formation d'Axion-IA. Peut formuler une réclamation toute personne concernée par une action de formation : le stagiaire, l'entreprise cliente qui commande la formation, ainsi que le financeur (OPCO, France Travail ou tout autre organisme prenant en charge le coût). Une réclamation s'entend de toute expression écrite d'insatisfaction relative à l'organisation, au contenu, au déroulement, aux moyens pédagogiques ou aux conditions administratives d'une formation.",
+        },
+        {
+          title: "Comment déposer une réclamation",
+          body: "Toute réclamation est formulée par écrit, afin d'en garantir la traçabilité. Elle peut être adressée par email à contact@axion-ia.com ou par courrier au siège de l'organisme. Pour permettre un traitement efficace, la réclamation précise l'identité du réclamant, la formation concernée (intitulé et dates), une description factuelle de la situation et, le cas échéant, les attentes du réclamant.",
+        },
+        {
+          title: "Délais de traitement",
+          body: "Axion-IA accuse réception de la réclamation dans un délai de 5 jours ouvrés à compter de sa réception. Une réponse circonstanciée est apportée dans un délai maximum de 15 jours ouvrés à compter de la réception de la réclamation. Lorsque l'analyse nécessite un délai supplémentaire, le réclamant en est informé, avec l'indication d'un nouveau délai prévisionnel.",
+        },
+        {
+          title: "Traitement et actions correctives",
+          body: "Chaque réclamation est enregistrée puis instruite par le référent pédagogique. L'instruction consiste à analyser les faits, à recueillir si nécessaire le point de vue du formateur et des parties concernées, et à déterminer les suites appropriées. Lorsqu'un dysfonctionnement est avéré, une ou plusieurs actions correctives sont définies et mises en œuvre afin d'éviter son renouvellement.",
+        },
+        {
+          title: "Suivi et amélioration continue",
+          body: "Les réclamations et les actions correctives associées sont consignées dans un registre interne. Elles font l'objet d'un suivi et d'une analyse périodique qui alimentent la démarche d'amélioration continue de la qualité des prestations.",
+        },
+        {
+          title: "Voies de recours",
+          body: "Si la réponse apportée ne satisfait pas le réclamant, celui-ci peut demander un réexamen de sa situation. Lorsque la formation fait l'objet d'un financement, le financeur (OPCO, France Travail ou autre) peut également être informé. Les litiges qui ne trouveraient pas de solution amiable relèvent des dispositions prévues par les conditions générales.",
+        },
+      ],
+      metaSeo: {
+        title: "Procédure de réclamation · Axion-IA",
+        description:
+          "Procédure de réclamation des formations Axion-IA : dépôt par écrit, accusé de réception sous 5 jours ouvrés, réponse circonstanciée sous 15 jours ouvrés, actions correctives et voies de recours.",
+      },
+    },
+    en: {
+      title: "Complaints",
+      titleEm: "procedure",
+      intro:
+        "Procedure for handling complaints relating to Axion-IA's training services: who may complain, how to file a complaint, response times, handling and remedies.",
+      sections: [
+        {
+          title: "Purpose and scope",
+          body: "This procedure describes how complaints relating to Axion-IA's training services are filed and handled. A complaint may be filed by anyone concerned by a training action: the trainee, the client company ordering the training, and the funder (OPCO, France Travail or any other body covering the cost). A complaint means any written expression of dissatisfaction relating to the organisation, content, delivery, teaching resources or administrative conditions of a training action.",
+        },
+        {
+          title: "How to file a complaint",
+          body: "Any complaint is submitted in writing, to ensure traceability. It may be sent by email to contact@axion-ia.com or by post to the organisation's registered office. For efficient handling, the complaint states the complainant's identity, the training concerned (title and dates), a factual description of the situation and, where applicable, the complainant's expectations.",
+        },
+        {
+          title: "Handling times",
+          body: "Axion-IA acknowledges receipt of the complaint within 5 working days of receiving it. A reasoned response is provided within a maximum of 15 working days from receipt of the complaint. Where the analysis requires additional time, the complainant is informed, with an indication of a new expected timeframe.",
+        },
+        {
+          title: "Handling and corrective actions",
+          body: "Each complaint is recorded and then examined by the teaching coordinator. The examination consists of analysing the facts, gathering where necessary the views of the trainer and the parties concerned, and determining the appropriate follow-up. Where a shortcoming is established, one or more corrective actions are defined and implemented to prevent it from recurring.",
+        },
+        {
+          title: "Monitoring and continuous improvement",
+          body: "Complaints and the associated corrective actions are recorded in an internal register. They are monitored and periodically analysed, feeding the continuous improvement of the quality of services.",
+        },
+        {
+          title: "Remedies",
+          body: "If the response provided does not satisfy the complainant, they may request a review of their situation. Where the training is funded, the funder (OPCO, France Travail or other) may also be informed. Disputes that cannot be resolved amicably are subject to the provisions set out in the general terms and conditions.",
+        },
+      ],
+      metaSeo: {
+        title: "Complaints procedure · Axion-IA",
+        description:
+          "Axion-IA training complaints procedure: written submission, acknowledgement within 5 working days, reasoned response within 15 working days, corrective actions and remedies.",
+      },
+    },
+  },
+  {
+    slug: "reglement-interieur",
+    pathFr: "/reglement-interieur",
+    pathEn: "/reglement-interieur",
+    fr: {
+      title: "Règlement",
+      titleEm: "intérieur",
+      intro:
+        "Règlement intérieur applicable aux stagiaires des formations Axion-IA. Établi conformément aux articles L.6352-3 et suivants du Code du travail.",
+      sections: [
+        {
+          title: "Article 1 — Accès et identification",
+          body: "Tout stagiaire doit se présenter en début de formation avec une pièce d'identité valide. Pour les formations en distanciel, le stagiaire accède à la session via son compte personnel et s'assure que son identité est vérifiable par le formateur. L'accès à la salle de formation, ou à l'espace numérique, est interdit à toute personne ne figurant pas sur la liste des stagiaires inscrits.",
+        },
+        {
+          title: "Article 2 — Assiduité et ponctualité",
+          body: "Le stagiaire s'engage à être présent et ponctuel à toutes les sessions de formation. Toute absence ou tout retard doit être signalé le plus tôt possible à l'organisme de formation. En formation distancielle, la caméra doit rester activée pendant les séquences synchrones, sauf autorisation explicite du formateur ; une absence de caméra non justifiée peut entraîner la non-validation de la présence pour la demi-journée concernée. La feuille d'émargement est signée à chaque demi-journée ; en distanciel, le relevé de connexion fait office de justificatif de présence.",
+        },
+        {
+          title: "Article 3 — Discipline et comportement",
+          body: "Sont notamment interdits : tout comportement irrespectueux envers le formateur ou les autres stagiaires ; l'enregistrement audio ou vidéo des sessions sans accord écrit préalable de l'organisme ; l'usage de téléphones portables ou d'appareils personnels à des fins non pédagogiques pendant les séquences synchrones ; la consommation d'alcool ou de substances illicites. Tout manquement grave aux règles de discipline peut entraîner l'exclusion définitive du stagiaire, sans remboursement des frais de formation déjà engagés.",
+        },
+        {
+          title: "Article 4 — Propriété intellectuelle",
+          body: "Les supports de formation (présentations, documents, exercices, outils numériques) remis ou présentés pendant la formation sont la propriété exclusive de l'organisme de formation et/ou de ses formateurs. Ils sont mis à la disposition du stagiaire à titre personnel et strictement non cessible. Toute reproduction, diffusion, revente ou exploitation commerciale des supports sans autorisation écrite est interdite et susceptible d'engager la responsabilité civile et pénale du stagiaire.",
+        },
+        {
+          title: "Article 5 — Confidentialité",
+          body: "Le stagiaire s'engage à traiter comme confidentiels tous les éléments relatifs aux autres stagiaires, aux formateurs, aux méthodes pédagogiques et aux contenus de formation auxquels il a accès dans le cadre du programme.",
+        },
+        {
+          title: "Article 6 — Sécurité",
+          body: "En présentiel, le stagiaire respecte les consignes de sécurité affichées dans les locaux (sorties de secours, points de rassemblement) et informe immédiatement le formateur ou le responsable des locaux en cas d'accident. En distanciel, le stagiaire est responsable de la sécurité de son environnement de travail (connexion sécurisée, confidentialité de son écran en espace partagé).",
+        },
+        {
+          title: "Article 7 — Évaluation et attestation de formation",
+          body: "Des évaluations des acquis sont réalisées en cours et en fin de formation. La participation active à ces évaluations conditionne la délivrance de l'attestation de fin de formation. L'attestation est remise au stagiaire ayant suivi l'intégralité du programme ou, en cas d'absence partielle justifiée, au prorata des heures effectivement réalisées.",
+        },
+        {
+          title: "Article 8 — Réclamations",
+          body: "Toute réclamation relative au déroulement de la formation est formulée par écrit (courrier ou email) auprès du référent pédagogique de l'organisme. L'organisme accuse réception de la réclamation dans un délai de 5 jours ouvrés et y répond de manière circonstanciée dans un délai maximum de 15 jours ouvrés à compter de sa réception. Les modalités détaillées de dépôt, de traitement et de recours figurent dans la procédure de réclamation publiée sur /reclamations.",
+        },
+        {
+          title: "Article 9 — Protection des données personnelles (RGPD)",
+          body: "Conformément au Règlement (UE) 2016/679 (RGPD) et à la loi Informatique et Libertés, les données personnelles du stagiaire (nom, prénom, coordonnées, données de connexion, évaluations) sont collectées aux fins de gestion administrative et pédagogique de la formation. Elles sont conservées pendant cinq (5) ans à compter de la fin de la formation, conformément aux obligations légales de l'organisme de formation. Le stagiaire dispose des droits d'accès, de rectification, d'effacement, de limitation et de portabilité de ses données, ainsi que du droit de s'opposer à leur traitement ; ces droits s'exercent auprès de l'organisme de formation à l'adresse contact@axion-ia.com.",
+        },
+      ],
+      metaSeo: {
+        title: "Règlement intérieur des stagiaires · Axion-IA",
+        description:
+          "Règlement intérieur des stagiaires Axion-IA (art. L.6352-3 du Code du travail) : accès, assiduité, discipline, propriété intellectuelle, confidentialité, sécurité, évaluation, réclamations, RGPD.",
+      },
+    },
+    en: {
+      title: "Internal",
+      titleEm: "regulations",
+      intro:
+        "Internal regulations applicable to trainees of Axion-IA's training courses. Established in accordance with articles L.6352-3 et seq. of the French Labour Code.",
+      sections: [
+        {
+          title: "Article 1 — Access and identification",
+          body: "Every trainee must attend the start of the training with valid identification. For distance learning, the trainee accesses the session via their personal account and ensures that their identity can be verified by the trainer. Access to the training room, or to the online space, is prohibited to anyone not on the list of registered trainees.",
+        },
+        {
+          title: "Article 2 — Attendance and punctuality",
+          body: "The trainee undertakes to be present and punctual at all training sessions. Any absence or lateness must be reported to the training organisation as soon as possible. In distance learning, the camera must remain on during synchronous sessions, unless the trainer explicitly authorises otherwise; an unjustified absence of camera may lead to the half-day's attendance not being validated. The attendance sheet is signed for each half-day; for distance learning, the connection log serves as proof of attendance.",
+        },
+        {
+          title: "Article 3 — Discipline and conduct",
+          body: "The following are notably prohibited: any disrespectful behaviour towards the trainer or other trainees; audio or video recording of sessions without the organisation's prior written consent; the use of mobile phones or personal devices for non-educational purposes during synchronous sessions; the consumption of alcohol or illicit substances. Any serious breach of the discipline rules may result in the trainee's permanent exclusion, without refund of training fees already incurred.",
+        },
+        {
+          title: "Article 4 — Intellectual property",
+          body: "The training materials (presentations, documents, exercises, digital tools) provided or shown during the training are the exclusive property of the training organisation and/or its trainers. They are made available to the trainee on a personal and strictly non-transferable basis. Any reproduction, distribution, resale or commercial exploitation of the materials without written authorisation is prohibited and may engage the trainee's civil and criminal liability.",
+        },
+        {
+          title: "Article 5 — Confidentiality",
+          body: "The trainee undertakes to treat as confidential all information relating to other trainees, trainers, teaching methods and training content to which they have access as part of the programme.",
+        },
+        {
+          title: "Article 6 — Safety",
+          body: "In person, the trainee complies with the safety instructions posted on the premises (emergency exits, assembly points) and immediately informs the trainer or the person in charge of the premises in the event of an accident. In distance learning, the trainee is responsible for the security of their working environment (secure connection, screen confidentiality in a shared space).",
+        },
+        {
+          title: "Article 7 — Assessment and certificate of completion",
+          body: "Assessments of learning are carried out during and at the end of the training. Active participation in these assessments is a condition for issuing the certificate of completion. The certificate is issued to the trainee who has completed the full programme or, in the event of a justified partial absence, in proportion to the hours actually completed.",
+        },
+        {
+          title: "Article 8 — Complaints",
+          body: "Any complaint relating to the delivery of the training is submitted in writing (post or email) to the organisation's teaching coordinator. The organisation acknowledges receipt of the complaint within 5 working days and provides a reasoned response within a maximum of 15 working days from receipt. The detailed procedures for filing, handling and remedies are set out in the complaints procedure published at /reclamations.",
+        },
+        {
+          title: "Article 9 — Personal data protection (GDPR)",
+          body: "In accordance with Regulation (EU) 2016/679 (GDPR) and the French Data Protection Act, the trainee's personal data (surname, first name, contact details, connection data, assessments) are collected for the administrative and educational management of the training. They are kept for five (5) years from the end of the training, in accordance with the training organisation's legal obligations. The trainee has the rights of access, rectification, erasure, restriction and portability of their data, as well as the right to object to their processing; these rights are exercised with the training organisation at contact@axion-ia.com.",
+        },
+      ],
+      metaSeo: {
+        title: "Internal regulations for trainees · Axion-IA",
+        description:
+          "Axion-IA trainee internal regulations (art. L.6352-3 of the French Labour Code): access, attendance, discipline, intellectual property, confidentiality, safety, assessment, complaints, GDPR.",
       },
     },
   },

@@ -26,6 +26,9 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(),
       count: vi.fn(),
     },
+    alerteSysteme: {
+      findMany: vi.fn(),
+    },
     $transaction: vi.fn(),
   },
 }));
@@ -35,6 +38,7 @@ vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
   envoyerRappelJ7: vi.fn(),
   envoyerSatisfactionJ1: vi.fn(),
   envoyerSuiviJ30: vi.fn(),
+  notifierAlerteInterne: vi.fn(),
 }));
 
 vi.mock("@/server/qualiopi/evaluations/attestation-service", () => ({
@@ -62,17 +66,24 @@ vi.mock("@/server/qualiopi/formations/transition-helper", () => ({
 }));
 
 import { prisma } from "@/lib/prisma";
-import { envoyerConvocation } from "@/server/qualiopi/notifications/notifications-service";
+import {
+  envoyerConvocation,
+  notifierAlerteInterne,
+} from "@/server/qualiopi/notifications/notifications-service";
+import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { decideSessionTransitions } from "@/server/qualiopi/formations/crons";
 import { formationCronsHandler } from "./qualiopi-formation-crons-worker";
 
 const mockPrisma = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
+  alerteSysteme: { findMany: ReturnType<typeof vi.fn> };
   $transaction: ReturnType<typeof vi.fn>;
 };
 
 const mockEnvoyerConvocation = envoyerConvocation as ReturnType<typeof vi.fn>;
+const mockNotifierAlerteInterne = notifierAlerteInterne as ReturnType<typeof vi.fn>;
+const mockSynchroniserAlertes = synchroniserAlertes as ReturnType<typeof vi.fn>;
 const mockDecide = decideSessionTransitions as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -284,5 +295,72 @@ describe("handleClotureAuto — garde émargement (audit E2E 2026-06)", () => {
     });
 
     expect(mockPrisma.$transaction).toHaveBeenCalledOnce();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests handleAlertes — notification interne des alertes critiques
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("handleAlertes (via formationCronsHandler)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+    mockSynchroniserAlertes.mockResolvedValue({ crees: 0, resolues: 0 });
+  });
+
+  it("notifie chaque alerte critique non-résolue et non-notifiée", async () => {
+    mockPrisma.alerteSysteme.findMany.mockResolvedValue([{ id: "alerte-1" }, { id: "alerte-2" }]);
+    mockNotifierAlerteInterne.mockResolvedValue(undefined);
+
+    await formationCronsHandler({
+      type: "formation-crons.alertes",
+      tick: "2026-06-06T07:00:00Z",
+    });
+
+    // Filtre = critique + non-résolue + non-notifiée (anti-spam).
+    const findArgs = mockPrisma.alerteSysteme.findMany.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+    };
+    expect(findArgs.where).toMatchObject({
+      niveau: "critique",
+      resolue: false,
+      notifiedAt: null,
+    });
+    expect(mockNotifierAlerteInterne).toHaveBeenCalledTimes(2);
+    expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-1");
+    expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-2");
+  });
+
+  it("ne notifie rien si aucune alerte critique en attente", async () => {
+    mockPrisma.alerteSysteme.findMany.mockResolvedValue([]);
+
+    await formationCronsHandler({
+      type: "formation-crons.alertes",
+      tick: "2026-06-06T07:00:00Z",
+    });
+
+    expect(mockNotifierAlerteInterne).not.toHaveBeenCalled();
+  });
+
+  it("continue en cas d'erreur sur une notification (fail-soft)", async () => {
+    mockPrisma.alerteSysteme.findMany.mockResolvedValue([
+      { id: "alerte-ok-1" },
+      { id: "alerte-ko" },
+      { id: "alerte-ok-2" },
+    ]);
+    mockNotifierAlerteInterne
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error("Email service down"))
+      .mockResolvedValueOnce(undefined);
+
+    await expect(
+      formationCronsHandler({
+        type: "formation-crons.alertes",
+        tick: "2026-06-06T07:00:00Z",
+      }),
+    ).resolves.toBeUndefined();
+
+    expect(mockNotifierAlerteInterne).toHaveBeenCalledTimes(3);
   });
 });
