@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
+import { QR_CATEGORY_VALUES } from "./categories";
 
 async function requireAdminWrite() {
   const session = await auth();
@@ -34,6 +35,7 @@ const upsertSchema = z.object({
     .regex(/^[a-z0-9-]+$/, "Slug : minuscules, chiffres et tirets uniquement."),
   destinationUrl: z.string().trim().url("URL de destination invalide.").max(2000),
   label: z.string().trim().min(2).max(200),
+  category: z.enum(QR_CATEGORY_VALUES).default("general"),
   active: z.coerce.boolean().default(true),
 });
 
@@ -44,10 +46,14 @@ export async function createQrLinkAction(formData: FormData): Promise<void> {
     slug: formData.get("slug"),
     destinationUrl: formData.get("destinationUrl"),
     label: formData.get("label"),
+    category: formData.get("category"),
     active: formData.get("active") === "on" || formData.get("active") === "true",
   });
 
-  const exists = await prisma.qrLink.findUnique({ where: { slug: input.slug }, select: { id: true } });
+  const exists = await prisma.qrLink.findUnique({
+    where: { slug: input.slug },
+    select: { id: true },
+  });
   if (exists) throw new Error(`Le slug « ${input.slug} » est déjà utilisé.`);
 
   await prisma.qrLink.create({ data: input });
@@ -63,6 +69,7 @@ export async function updateQrLinkAction(formData: FormData): Promise<void> {
     slug: formData.get("slug"),
     destinationUrl: formData.get("destinationUrl"),
     label: formData.get("label"),
+    category: formData.get("category"),
     active: formData.get("active") === "on" || formData.get("active") === "true",
   });
 

@@ -3,21 +3,37 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo";
-import { AdminPageShell, AdminPageHeader, AdminTable, AdminEmptyState } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui/AdminTable";
+import {
+  QR_CATEGORIES,
+  qrCategoryLabel,
+  QR_CATEGORY_VALUES,
+} from "@/features/admin-qr-codes/categories";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
+  searchParams: Promise<{ category?: string }>;
 }
 
-export default async function QrCodesListPage({ params }: PageProps) {
+export default async function QrCodesListPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
+  const { category } = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const rows = await prisma.qrLink.findMany({ orderBy: { createdAt: "desc" } });
+  const activeCategory = QR_CATEGORY_VALUES.includes(category as never) ? category : undefined;
+  const rows = await prisma.qrLink.findMany({
+    ...(activeCategory ? { where: { category: activeCategory } } : {}),
+    orderBy: { createdAt: "desc" },
+  });
   type Row = (typeof rows)[number];
   const base = `/${locale}/${adminPrefix}/qr-codes`;
 
@@ -35,6 +51,16 @@ export default async function QrCodesListPage({ params }: PageProps) {
             {SITE_URL.replace(/^https?:\/\//, "")}/qr/{r.slug}
           </div>
         </div>
+      ),
+    },
+    {
+      key: "category",
+      header: "Catégorie",
+      hiddenBelow: "md",
+      cell: (r) => (
+        <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          {qrCategoryLabel(r.category)}
+        </span>
       ),
     },
     {
@@ -79,6 +105,36 @@ export default async function QrCodesListPage({ params }: PageProps) {
           </a>
         }
       />
+
+      <nav
+        aria-label="Filtrer par catégorie"
+        className="mb-[var(--space-admin-6)] flex flex-wrap gap-2"
+      >
+        <a
+          href={base}
+          className={`rounded-full border px-3 py-1 text-[length:var(--text-admin-sm)] font-medium ${
+            !activeCategory
+              ? "border-transparent bg-[color:var(--color-admin-info)] text-white"
+              : "border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]"
+          }`}
+        >
+          Tous
+        </a>
+        {QR_CATEGORIES.map((c) => (
+          <a
+            key={c.value}
+            href={`${base}?category=${c.value}`}
+            className={`rounded-full border px-3 py-1 text-[length:var(--text-admin-sm)] font-medium ${
+              activeCategory === c.value
+                ? "border-transparent bg-[color:var(--color-admin-info)] text-white"
+                : "border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]"
+            }`}
+          >
+            {c.label}
+          </a>
+        ))}
+      </nav>
+
       {rows.length === 0 ? (
         <AdminEmptyState
           icon="🔳"

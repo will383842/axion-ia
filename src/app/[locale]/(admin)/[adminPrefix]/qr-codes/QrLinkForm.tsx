@@ -2,6 +2,7 @@
 // Server component : <form action={serverAction}> + primitives admin.
 
 import { AdminFormField, AdminSubmitButton } from "@/components/admin/ui";
+import { QR_CATEGORIES } from "@/features/admin-qr-codes/categories";
 
 interface QrLinkFormProps {
   action: (formData: FormData) => void | Promise<void>;
@@ -11,6 +12,7 @@ interface QrLinkFormProps {
     slug?: string;
     destinationUrl?: string;
     label?: string;
+    category?: string;
     active?: boolean;
   };
 }
@@ -29,6 +31,15 @@ export function QrLinkForm({ action, submitLabel, defaults }: QrLinkFormProps) {
         defaultValue={defaults?.label ?? ""}
         placeholder="Interview — Entreprise X"
         hint="Pour vous y retrouver dans la liste. N'apparaît nulle part publiquement."
+      />
+
+      <AdminFormField
+        type="select"
+        name="category"
+        label="Catégorie (sous-onglet)"
+        defaultValue={defaults?.category ?? "general"}
+        options={QR_CATEGORIES.map((c) => ({ value: c.value, label: c.label }))}
+        hint="Pour retrouver ce QR dans le bon groupe (ex. « Catalogue formations »)."
       />
 
       <AdminFormField

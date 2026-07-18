@@ -28,7 +28,9 @@ export default async function EditQrCodePage({ params }: PageProps) {
   const base = `/${locale}/${adminPrefix}/qr-codes`;
   const publicUrl = `${SITE_URL}/qr/${link.slug}`;
   const lastScan = link.lastScanAt
-    ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short" }).format(link.lastScanAt)
+    ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short" }).format(
+        link.lastScanAt,
+      )
     : "jamais";
 
   return (
@@ -52,6 +54,7 @@ export default async function EditQrCodePage({ params }: PageProps) {
             slug: link.slug,
             destinationUrl: link.destinationUrl,
             label: link.label,
+            category: link.category,
             active: link.active,
           }}
         />
@@ -65,7 +68,11 @@ export default async function EditQrCodePage({ params }: PageProps) {
             height={200}
             className="rounded-md border border-[color:var(--color-admin-border)] bg-white p-2"
           />
-          <a href={`/qr/${link.slug}/svg`} download={`qr-${link.slug}.svg`} className="admin-button">
+          <a
+            href={`/qr/${link.slug}/svg`}
+            download={`qr-${link.slug}.svg`}
+            className="admin-button"
+          >
             Télécharger le SVG
           </a>
 

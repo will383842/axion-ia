@@ -9099,6 +9099,8 @@ model QrLink {
   slug           String    @unique @db.VarChar(120)
   destinationUrl String    @map("destination_url") @db.Text
   label          String    @db.VarChar(200)
+  /// Regroupement pour l'admin (sous-onglets) : "catalogue-formations", "avis-catalogue", "general", …
+  category       String    @default("general") @db.VarChar(80)
   active         Boolean   @default(true)
   scanCount      Int       @default(0) @map("scan_count")
   lastScanAt     DateTime? @map("last_scan_at")
@@ -9106,5 +9108,6 @@ model QrLink {
   updatedAt      DateTime  @updatedAt @map("updated_at")
 
   @@index([active])
+  @@index([category])
   @@map("qr_links")
 }
