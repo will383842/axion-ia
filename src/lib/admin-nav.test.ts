@@ -56,7 +56,9 @@ describe("buildAdminNav SSOT", () => {
     // heures & coût par formateur, groupe qualiopi / sous-groupe formations. = 139.
     // +2 (2026-07-13) : « Facture directe » (facturation/new) + « Plans récurrents »
     // (facturation/plans), écrans du Hub facturation, groupe qualiopi / commercial. = 141.
-    expect(items.length).toBe(141);
+    // +1 (2026-07-18) : « QR codes & liens » — QR dynamiques pilotables
+    // (/qr/<slug> → redirection éditable + scans), groupe ops. = 142.
+    expect(items.length).toBe(142);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

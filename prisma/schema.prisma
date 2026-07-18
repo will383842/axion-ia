@@ -9089,3 +9089,25 @@ model AuditMission {
   @@index([dateDebut, dateFin])
   @@map("audit_missions")
 }
+
+/// QR codes dynamiques (onglet admin "QR codes & liens").
+/// Chaque QR imprimé encode https://axion-ia.com/qr/<slug> et redirige (302)
+/// vers `destinationUrl`, modifiable à tout moment SANS réimprimer.
+/// `scanCount`/`lastScanAt` = pilotage (nb de scans). Décision Will 2026-07-18.
+model QrLink {
+  id             String    @id @default(uuid()) @db.Uuid
+  slug           String    @unique @db.VarChar(120)
+  destinationUrl String    @map("destination_url") @db.Text
+  label          String    @db.VarChar(200)
+  /// Regroupement pour l'admin (sous-onglets) : "catalogue-formations", "avis-catalogue", "general", …
+  category       String    @default("general") @db.VarChar(80)
+  active         Boolean   @default(true)
+  scanCount      Int       @default(0) @map("scan_count")
+  lastScanAt     DateTime? @map("last_scan_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([active])
+  @@index([category])
+  @@map("qr_links")
+}
