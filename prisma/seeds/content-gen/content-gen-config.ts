@@ -36,17 +36,17 @@ const SEEDS: ReadonlyArray<ConfigSeed> = [
     description:
       "Réglages batches & workers (master prompt §12.5 — v7 phase 4 : per-campaign dailyArticles)",
   },
-  // §12.5 — Policies (skip-existing, RSS auto-publish, plagiat, retention)
+  // §12.5 — Policies (RSS auto-publish, plagiat, retention)
+  // `skipVilleIfCopyExists` retiré (2026-07-18) : jamais lu par aucun worker.
   {
     key: "policies",
     value: {
-      skipVilleIfCopyExists: true,
       rssAutoPublishMinScore: 75,
       plagiarismJaccardInternal: 0.3,
       plagiarismJaccardRss: 0.1,
       tier3RetentionDays: 90,
     },
-    description: "Policies content-gen (skip ville, plagiat, retention)",
+    description: "Policies content-gen (plagiat, retention)",
   },
   // §27 — Boucle qualité
   {

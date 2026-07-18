@@ -6,7 +6,6 @@ import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/u
 import { updatePolicies } from "@/server/actions/content-gen/policies";
 
 interface PoliciesConfig {
-  skipVilleIfCopyExists: boolean;
   rssAutoPublishMinScore: number;
   plagiarismJaccardInternal: number;
   plagiarismJaccardRss: number;
@@ -26,7 +25,6 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
   async function save(formData: FormData) {
     "use server";
     await updatePolicies({
-      skipVilleIfCopyExists: formData.get("skipVilleIfCopyExists") === "on",
       rssAutoPublishMinScore: Number(formData.get("rssAutoPublishMinScore") ?? 0),
       plagiarismJaccardInternal: Number(formData.get("plagiarismJaccardInternal") ?? 0),
       plagiarismJaccardRss: Number(formData.get("plagiarismJaccardRss") ?? 0),
@@ -48,17 +46,6 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
 
       <AdminCard>
         <form action={save}>
-          <div className="admin-field">
-            <label className="admin-label">
-              <input
-                type="checkbox"
-                name="skipVilleIfCopyExists"
-                defaultChecked={cfg.skipVilleIfCopyExists}
-              />{" "}
-              Skip ville si copy existe déjà (économise tokens)
-            </label>
-          </div>
-
           <div className="admin-field">
             <label className="admin-label">
               <input
