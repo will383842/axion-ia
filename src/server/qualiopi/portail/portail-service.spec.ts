@@ -19,8 +19,13 @@ vi.mock("@/lib/prisma", () => ({
     },
     trainee: {
       findUnique: vi.fn(),
+      findFirst: vi.fn(),
     },
   },
+}));
+
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: vi.fn().mockResolvedValue({ enqueued: true }),
 }));
 
 vi.mock("@/lib/pii-crypto", () => ({
@@ -34,7 +39,14 @@ vi.mock("@/lib/r2-storage", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getSignedUrlR2 } from "@/lib/r2-storage";
-import { creerAcces, verifierToken, revoquerAcces, getEspaceStagiaire } from "./portail-service";
+import { enqueueEmail } from "@/server/queue/queues";
+import {
+  creerAcces,
+  verifierToken,
+  revoquerAcces,
+  getEspaceStagiaire,
+  demanderAccesParEmail,
+} from "./portail-service";
 
 const mockPrisma = prisma as unknown as {
   portailAcces: {
@@ -396,5 +408,55 @@ describe("getEspaceStagiaire", () => {
     const espace = await getEspaceStagiaire("trainee-s1e");
 
     expect(espace.attestations[0]!.pdfUrl).toBeNull();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// demanderAccesParEmail (self-service)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("demanderAccesParEmail", () => {
+  const traineeFindFirst = () =>
+    (prisma as unknown as { trainee: { findFirst: ReturnType<typeof vi.fn> } }).trainee.findFirst;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("silencieux (aucun envoi) si aucun stagiaire ne correspond — anti-énumération", async () => {
+    traineeFindFirst().mockResolvedValue(null);
+
+    await demanderAccesParEmail("inconnu@exemple.fr");
+
+    expect(mockPrisma.portailAcces.create).not.toHaveBeenCalled();
+    expect(enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("crée un accès et envoie le lien si un stagiaire correspond", async () => {
+    traineeFindFirst().mockResolvedValue({ id: "trainee-42", prenom: "Jean", nom: "Dupont" });
+    mockPrisma.portailAcces.create.mockResolvedValue({
+      id: "acc-1",
+      token: "t".repeat(64),
+      expiresAt: new Date(),
+    });
+
+    await demanderAccesParEmail("  Jean.Dupont@Exemple.FR  ");
+
+    // email normalisé (trim + lowercase) pour la recherche
+    expect(traineeFindFirst()).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ email: "jean.dupont@exemple.fr" }),
+      }),
+    );
+    expect(mockPrisma.portailAcces.create).toHaveBeenCalledTimes(1);
+    expect(enqueueEmail).toHaveBeenCalledWith(
+      "qualiopi-portail-acces",
+      "jean.dupont@exemple.fr",
+      "fr",
+      expect.objectContaining({
+        stagiairePrenomNom: "Jean Dupont",
+        lienPortail: expect.stringContaining("/portail/acces/"),
+      }),
+    );
   });
 });

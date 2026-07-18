@@ -20,6 +20,7 @@ import { randomBytes, timingSafeEqual } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { isR2Configured, getSignedUrlR2 } from "@/lib/r2-storage";
+import { enqueueEmail } from "@/server/queue/queues";
 import type {
   EnrollmentStatut,
   DocumentType,
@@ -125,6 +126,42 @@ export async function creerAcces(traineeId: string, joursValidite = 90): Promise
   });
 
   return { id: acces.id, token: acces.token, expiresAt: acces.expiresAt };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// demanderAccesParEmail (self-service — re-demande d'un lien d'accès)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Re-demande self-service d'un lien d'accès portail par email (token expiré/perdu).
+ *
+ * - Anti-énumération : SILENCIEUX si aucun stagiaire ne correspond (l'appelant
+ *   retourne toujours le même message générique).
+ * - Si un stagiaire correspond : crée un nouvel accès (90 j) et lui envoie le
+ *   lien par email (`qualiopi-portail-acces`).
+ * - Le rate-limiting est fait EN AMONT dans l'action (par IP), pas ici.
+ *
+ * Stub-aware : ne fait rien si DATABASE_URL contient "stub.invalid".
+ */
+export async function demanderAccesParEmail(email: string): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  const normalized = email.trim().toLowerCase();
+  if (!normalized) return;
+
+  const trainee = await prisma.trainee.findFirst({
+    where: { email: normalized, deletedAt: null },
+    select: { id: true, prenom: true, nom: true },
+  });
+  if (!trainee) return; // silencieux — anti-énumération
+
+  const { token } = await creerAcces(trainee.id);
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const lienPortail = `${baseUrl}/fr/portail/acces/${token}`;
+
+  await enqueueEmail("qualiopi-portail-acces", normalized, "fr", {
+    stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`.trim(),
+    lienPortail,
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

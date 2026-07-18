@@ -66,6 +66,7 @@ import {
   qualiopiSatisfactionJ1Subject,
 } from "./qualiopi-satisfaction-j1";
 import { QualiopiSuiviJ30Email, qualiopiSuiviJ30Subject } from "./qualiopi-suivi-j30";
+import { QualiopiPortailAccesEmail, qualiopiPortailAccesSubject } from "./qualiopi-portail-acces";
 import {
   QualiopiAttestationDisponibleEmail,
   qualiopiAttestationDisponibleSubject,
@@ -258,6 +259,10 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-attestation-disponible": {
     subject: qualiopiAttestationDisponibleSubject,
     component: QualiopiAttestationDisponibleEmail,
+  },
+  "qualiopi-portail-acces": {
+    subject: qualiopiPortailAccesSubject,
+    component: QualiopiPortailAccesEmail,
   },
   "qualiopi-alerte-interne": {
     subject: qualiopiAlerteInterneSubject,
