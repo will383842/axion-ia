@@ -29,7 +29,10 @@ import {
   creerAcces,
   verifierToken,
   revoquerAcces,
+  demanderAccesParEmail,
 } from "@/server/qualiopi/portail/portail-service";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { headers } from "next/headers";
 import {
   setPortailCookie,
   getPortailToken,
@@ -47,6 +50,10 @@ type ActionResult<T> = { data: T } | { error: string };
 
 const accederPortailSchema = z.object({
   token: z.string().length(64),
+});
+
+const demanderAccesSchema = z.object({
+  email: z.string().trim().email().max(254),
 });
 
 const genererPortailAccesSchema = z.object({
@@ -105,6 +112,45 @@ export async function accederPortailAction(input: {
 
   await setPortailCookie(parsed.data.token);
   return { data: { ok: true } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PORTAIL — demanderAccesPortailAction (self-service, public, sans cookie)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Re-demande self-service d'un lien d'accès à l'espace stagiaire par email.
+ *
+ * - PUBLIC (aucun cookie/admin requis).
+ * - Anti-énumération : retourne TOUJOURS le même résultat, que l'email existe
+ *   ou non (l'envoi éventuel se fait côté service, silencieusement).
+ * - Rate-limité par IP (5 demandes / 15 min) pour éviter l'email-bombing.
+ */
+export async function demanderAccesPortailAction(input: {
+  email: string;
+}): Promise<ActionResult<{ ok: true }>> {
+  const generic: ActionResult<{ ok: true }> = { data: { ok: true } };
+  const parsed = demanderAccesSchema.safeParse(input);
+  if (!parsed.success) return generic;
+
+  try {
+    const hdrs = await headers();
+    const ip =
+      hdrs.get("cf-connecting-ip") ??
+      hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      "unknown";
+    const rl = await checkRateLimit(`portail:reacces:${ip}`, { limit: 5, windowSec: 900 });
+    if (!rl.allowed) return generic; // silencieux
+  } catch {
+    // fail-open : un rate-limit indisponible ne doit pas bloquer la demande
+  }
+
+  try {
+    await demanderAccesParEmail(parsed.data.email);
+  } catch {
+    // fail-soft : ne jamais révéler d'erreur interne au public
+  }
+  return generic;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
