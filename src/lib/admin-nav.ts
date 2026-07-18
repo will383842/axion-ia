@@ -1239,6 +1239,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/infra`, label: "Infra & outils", icon: "🔧", group: "ops" },
     { href: `${base}/infra/backups`, label: "Sauvegardes & DR", icon: "💾", group: "ops" },
     { href: `${base}/alerts`, label: "Alertes ops", icon: "🚨", group: "ops" },
+    { href: `${base}/qr-codes`, label: "QR codes & liens", icon: "🔳", group: "ops" },
     // ── système ──────────────────────────────────────────────────────────
     { href: `${base}/users`, label: "Utilisateurs", icon: "👥", group: "system" },
     { href: `${base}/activity-logs`, label: "Journaux d'activité", icon: "📜", group: "system" },
