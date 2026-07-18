@@ -17,7 +17,7 @@ Une formation appartient à 1 GAMME + 1 DURÉE. Les formations des gammes Agents
 ### Gammes (thèmes)
 - `ia-standard` — gamme IA générale (brackets 2-15 / 16-30)
 - `agents-automatisations` — code source, groupes ≤ 12
-- `claude` — formateur certifié, +20 %, Découverte 2-15/16-30, Créateur/Architecte ≤ 12
+- `claude` — formateur expert, +20 %, Découverte 2-15/16-30, Créateur/Architecte ≤ 12
 - `sur-mesure` — sur devis (par durée + global 100 %)
 
 ### Durées : 4h / 1j / 2j / 3j (+ sur-mesure variable)

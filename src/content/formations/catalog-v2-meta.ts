@@ -126,7 +126,7 @@ export const FORMATION_GAMMES_META: ReadonlyArray<GammeMeta> = [
     slug: "claude",
     labelFr: "Gamme Claude",
     taglineFr:
-      "Formateur certifié de l'écosystème Claude (+20 %) : trois niveaux progressifs, chacun repart avec son outil construit, pas avec des notes.",
+      "Formateur expert de l'écosystème Claude (+20 %) : trois niveaux progressifs, chacun repart avec son outil construit, pas avec des notes.",
     accent: "claude",
     thematique: true,
   },
