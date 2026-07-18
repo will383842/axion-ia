@@ -5,7 +5,7 @@ import { KEYWORDS_FORMATIONS_V2 } from "./g2n-formations-v2";
 
 const URLS = Array.from(new Set(KEYWORDS_FORMATIONS_V2.map((s) => s.urlCible)));
 
-describe("g2n-formations-v2 — seeds SEO des 17 formations + sur-mesure", () => {
+describe("g2n-formations-v2 — seeds SEO des formations + sur-mesure", () => {
   it("toutes les urlCible commencent par /fr/formations/", () => {
     for (const s of KEYWORDS_FORMATIONS_V2) {
       expect(s.urlCible.startsWith("/fr/formations/")).toBe(true);
@@ -19,7 +19,7 @@ describe("g2n-formations-v2 — seeds SEO des 17 formations + sur-mesure", () =>
     }
   });
 
-  it("couvre les 17 formations + la page sur-mesure (18 URLs cibles)", () => {
+  it("couvre chaque formation du catalogue + la page sur-mesure", () => {
     expect(URLS).toContain("/fr/formations/sur-mesure");
     expect(URLS.length).toBe(FORMATIONS_V2.length + 1);
   });

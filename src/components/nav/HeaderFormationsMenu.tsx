@@ -126,6 +126,14 @@ export function HeaderFormationsMenu({
                   "/formations/ia-assistanat-mails-comptes-rendus-documents-7h",
                   isFr ? "Assistanat & bureau" : "Office support",
                 ],
+                [
+                  "/formations/ia-supply-chain-achats-stocks-7h",
+                  isFr ? "Supply chain & achats" : "Supply chain & procurement",
+                ],
+                [
+                  "/formations/conduite-du-changement-ia-7h",
+                  isFr ? "Conduite du changement" : "Change management",
+                ],
               ] as ReadonlyArray<readonly [string, string]>
             ).map(([href, label]) => (
               <li key={href}>
