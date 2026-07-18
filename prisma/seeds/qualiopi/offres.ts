@@ -9,7 +9,12 @@
  * Codes AXI-OFF-NNN (séquence non datée, cf. spec PART5).
  */
 
-import type { PrismaClient, OffreFormatPedagogique, OffreTarifType } from "../../generated/client";
+import type {
+  PrismaClient,
+  Prisma,
+  OffreFormatPedagogique,
+  OffreTarifType,
+} from "../../generated/client";
 import { getSkeletonByTier } from "../../../src/content/formations";
 
 interface OffreSeed {
@@ -188,7 +193,9 @@ function offreCode(index: number): string {
 }
 
 /** Seed idempotent : crée les offres manquantes (par tierId), préserve l'existant. */
-export async function seedOffresSite(prisma: PrismaClient): Promise<void> {
+export async function seedOffresSite(
+  prisma: Prisma.TransactionClient | PrismaClient,
+): Promise<void> {
   let created = 0;
   let kept = 0;
   let index = 0;

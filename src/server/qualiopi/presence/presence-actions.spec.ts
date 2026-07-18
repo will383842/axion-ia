@@ -33,7 +33,7 @@ vi.mock("@/lib/prisma", () => ({
       update: vi.fn(),
     },
     enrollment: {
-      update: vi.fn(),
+      updateMany: vi.fn(),
     },
     releveConnexionImport: {
       create: vi.fn(),
@@ -93,7 +93,7 @@ import {
 const mockPrisma = prisma as unknown as {
   trainingSession: { findUnique: ReturnType<typeof vi.fn> };
   presenceCreneau: { findUnique: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
-  enrollment: { update: ReturnType<typeof vi.fn> };
+  enrollment: { updateMany: ReturnType<typeof vi.fn> };
   releveConnexionImport: { create: ReturnType<typeof vi.fn> };
 };
 
@@ -270,7 +270,7 @@ describe("saveEmargementAction", () => {
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({ id: "c1", dureePrevueMinutes: 210 });
     mockUpsertCreneau.mockResolvedValue("upserted-id");
     mockRecompute.mockResolvedValue(85);
-    mockPrisma.enrollment.update.mockResolvedValue({});
+    mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 1 });
   });
 
   it("retourne { data: { updated: N } } pour des entrées valides", async () => {
@@ -317,17 +317,40 @@ describe("saveEmargementAction", () => {
     expect(mockRecompute).toHaveBeenCalledTimes(2);
   });
 
-  it("set emargementSigneAt sur chaque enrollment touché", async () => {
+  it("pose emargementSigneAt write-once (updateMany conditionné sur null)", async () => {
     await saveEmargementAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",
       entries: [validEntry],
     });
 
-    expect(mockPrisma.enrollment.update).toHaveBeenCalledWith(
+    // 1re signature : le where cible uniquement les enrollments non encore signés.
+    expect(mockPrisma.enrollment.updateMany).toHaveBeenCalledWith(
       expect.objectContaining({
+        where: expect.objectContaining({
+          id: validEntry.enrollmentId,
+          emargementSigneAt: null,
+        }),
         data: expect.objectContaining({ emargementSigneAt: expect.any(Date) }),
       }),
     );
+  });
+
+  it("n'écrase pas la date sur ré-enregistrement (déjà signé → count:0)", async () => {
+    // Simule un enrollment déjà signé : le where exclut la ligne → 0 mise à jour.
+    mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 0 });
+
+    const result = await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [validEntry],
+    });
+
+    // La sauvegarde réussit (présence corrigible) mais la garde null empêche
+    // toute réécriture de la date de première signature.
+    expect("data" in result).toBe(true);
+    const call = mockCall<{ where: { emargementSigneAt: unknown } }>(
+      mockPrisma.enrollment.updateMany,
+    );
+    expect(call.where.emargementSigneAt).toBeNull();
   });
 
   it("retourne { error } si la session n'existe pas", async () => {

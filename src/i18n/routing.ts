@@ -388,6 +388,11 @@ export const routing = defineRouting({
       fr: "/politique-deplacement",
       en: "/travel-policy",
     },
+    // Qualiopi — surfaces publiques (procédure réclamations + règlement intérieur
+    // stagiaires). Routes ajoutées après 2026-05-16 → doctrine fr==en (EN 301→FR
+    // par le proxy) pour éviter le bug next-intl 307 self-loop des mappings fr≠en.
+    "/reclamations": { fr: "/reclamations", en: "/reclamations" },
+    "/reglement-interieur": { fr: "/reglement-interieur", en: "/reglement-interieur" },
   },
 });
 

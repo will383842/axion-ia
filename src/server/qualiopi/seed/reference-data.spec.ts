@@ -1,8 +1,10 @@
 /**
  * Tests — seed du référentiel Qualiopi (offres + config + grilles).
  *
- * Couvre : verrou acquis (seed exécuté), verrou détenu par une autre instance
- * (skip propre), mode build stub.invalid (no-op), et calcul du statut.
+ * Couvre : verrou XACT acquis (seed exécuté dans la transaction), verrou détenu
+ * par une autre instance (skip propre, ran=false), atomicité (une erreur de
+ * sous-seed rejette la transaction), auto-réparation grille hors verrou, mode
+ * build stub.invalid (no-op), et calcul du statut.
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -33,8 +35,11 @@ function makePrisma(opts: MockOpts = {}) {
     configCount = 7,
     grilleActiveCle = "grille_qualite_v2",
   } = opts;
-  return {
+  const prisma = {
     $queryRaw: vi.fn(async () => [{ locked }]),
+    // La transaction interactive invoque le callback avec le client transactionnel
+    // (ici le mock lui-même, `tx` === `prisma`) et propage tout rejet du callback.
+    $transaction: vi.fn(async (fn: (tx: unknown) => Promise<unknown>) => fn(prisma)),
     siteSetting: {
       findUnique: vi.fn(async () => null),
       update: vi.fn(async () => ({})),
@@ -49,6 +54,7 @@ function makePrisma(opts: MockOpts = {}) {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
+  return prisma;
 }
 
 const ORIGINAL_DB_URL = process.env["DATABASE_URL"];
@@ -65,7 +71,7 @@ afterEach(() => {
 });
 
 describe("seedQualiopiReferenceData", () => {
-  it("exécute les 3 seeds quand le verrou est acquis et retourne ran=true + statut", async () => {
+  it("exécute les 3 seeds dans la transaction quand le verrou est acquis et retourne ran=true + statut", async () => {
     const prisma = makePrisma({
       locked: true,
       offresCount: 11,
@@ -75,9 +81,19 @@ describe("seedQualiopiReferenceData", () => {
     expect(report.ran).toBe(true);
     expect(report.offresCount).toBe(11);
     expect(report.grilleActiveCle).toBe("grille_qualite_v2");
+    expect(prisma.$transaction).toHaveBeenCalledOnce();
     expect(seedOffresSite).toHaveBeenCalledOnce();
     expect(seedGrilleQualite).toHaveBeenCalledOnce();
+    // grille déjà active → pas d'auto-réparation, seedGrilleV2 appelé une seule fois (dans la tx)
     expect(seedGrilleV2).toHaveBeenCalledOnce();
+  });
+
+  it("acquiert un verrou XACT dans une transaction (un seul queryRaw, pas d'unlock manuel)", async () => {
+    const prisma = makePrisma({ locked: true });
+    await seedQualiopiReferenceData(prisma);
+    // Seul le lock (pg_try_advisory_xact_lock) passe par $queryRaw ; l'unlock est
+    // automatique au COMMIT (plus d'appel pg_advisory_unlock).
+    expect(prisma.$queryRaw).toHaveBeenCalledTimes(1);
   });
 
   it("ne seed PAS et retourne ran=false si le verrou est détenu par une autre instance", async () => {
@@ -89,20 +105,30 @@ describe("seedQualiopiReferenceData", () => {
     expect(seedGrilleV2).not.toHaveBeenCalled();
   });
 
-  it("est un no-op (ran=false, aucun queryRaw) en mode build stub.invalid", async () => {
+  it("rejette (rollback) si un sous-seed échoue dans la transaction", async () => {
+    const prisma = makePrisma({ locked: true });
+    seedOffresSite.mockRejectedValueOnce(new Error("boom offres"));
+    await expect(seedQualiopiReferenceData(prisma)).rejects.toThrow("boom offres");
+    // Les seeds postérieurs n'ont pas tourné (la tx a rejeté sur l'offre).
+    expect(seedGrilleQualite).not.toHaveBeenCalled();
+  });
+
+  it("auto-répare la grille hors verrou si elle est absente après la transaction", async () => {
+    const prisma = makePrisma({ locked: true, grilleActiveCle: null });
+    const report = await seedQualiopiReferenceData(prisma);
+    expect(report.ran).toBe(true);
+    // seedGrilleV2 appelé 2× : une fois dans la tx, une fois en réparation hors verrou.
+    expect(seedGrilleV2).toHaveBeenCalledTimes(2);
+  });
+
+  it("est un no-op (ran=false, aucune transaction) en mode build stub.invalid", async () => {
     process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
     const prisma = makePrisma();
     const report = await seedQualiopiReferenceData(prisma);
     expect(report.ran).toBe(false);
+    expect(prisma.$transaction).not.toHaveBeenCalled();
     expect(prisma.$queryRaw).not.toHaveBeenCalled();
     expect(seedOffresSite).not.toHaveBeenCalled();
-  });
-
-  it("libère le verrou (unlock) après seed", async () => {
-    const prisma = makePrisma({ locked: true });
-    await seedQualiopiReferenceData(prisma);
-    // 1 appel lock + 1 appel unlock
-    expect(prisma.$queryRaw).toHaveBeenCalledTimes(2);
   });
 });
 

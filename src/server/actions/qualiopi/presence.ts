@@ -279,12 +279,15 @@ export async function saveEmargementAction(input: {
     updated++;
   }
 
-  // Recompute taux + set emargementSigneAt pour chaque enrollment touché.
+  // Recompute taux + pose emargementSigneAt pour chaque enrollment touché.
+  // Verrou write-once : le `where` sur emargementSigneAt:null fait que seul le
+  // PREMIER émargement horodate la signature ; les ré-enregistrements suivants
+  // (correction de présence) n'affectent 0 ligne → preuve horodatée immuable.
   const now = new Date();
   for (const enrollmentId of enrollmentIds) {
     await recomputeTauxPresence(enrollmentId);
-    await prisma.enrollment.update({
-      where: { id: enrollmentId },
+    await prisma.enrollment.updateMany({
+      where: { id: enrollmentId, emargementSigneAt: null },
       data: { emargementSigneAt: now },
     });
   }

@@ -46,7 +46,7 @@ function isStub(): boolean {
 }
 
 /** Seed idempotent de la config qualiopi (préserve les valeurs existantes). */
-async function seedQualiopiConfig(client: PrismaClient): Promise<void> {
+async function seedQualiopiConfig(client: Prisma.TransactionClient | PrismaClient): Promise<void> {
   const keys = Object.keys(QUALIOPI_CONFIG_REGISTRY) as (keyof typeof QUALIOPI_CONFIG_REGISTRY)[];
   for (const key of keys) {
     const entry = QUALIOPI_CONFIG_REGISTRY[key];
@@ -96,11 +96,15 @@ export async function getQualiopiReferenceDataStatus(
 /**
  * Seed complet du référentiel qualiopi, protégé par un verrou Postgres.
  *
- * Acquiert `pg_try_advisory_lock` : si une autre instance seed déjà, on n'attend
- * pas et on retourne `{ ran: false }` (l'autre instance s'en charge). Sinon on
- * exécute config + offres + grille v1 + grille v2 (tous idempotents), puis on
- * libère le verrou. Ne throw jamais pour cause de verrou ; relaie les erreurs de
- * seed réelles à l'appelant.
+ * Le verrou et les écritures vivent dans UNE transaction, via
+ * `pg_try_advisory_xact_lock` : (a) le lock et les upserts sont épinglés sur la
+ * même connexion (la tx épingle une connexion), (b) le lock est relâché
+ * AUTOMATIQUEMENT au COMMIT/ROLLBACK (plus de verrou de session coincé si
+ * l'unlock partait sur une autre connexion du pool), (c) config + offres +
+ * grilles sont atomiques (fini l'état « config présente / grille absente »). Si
+ * une autre instance seed déjà, `try_lock` échoue → on n'attend pas et on
+ * retourne `ran: false`. Ne throw jamais pour cause de verrou ; relaie les
+ * erreurs de seed réelles à l'appelant.
  */
 export async function seedQualiopiReferenceData(
   client: PrismaClient,
@@ -116,28 +120,45 @@ export async function seedQualiopiReferenceData(
     };
   }
 
-  // ⚠️ Postgres n'expose `pg_try_advisory_lock` qu'en deux signatures :
+  // ⚠️ Postgres n'expose `pg_try_advisory_xact_lock` qu'en deux signatures :
   // `(bigint)` ou `(int4, int4)`. Prisma binde les nombres JS en `bigint`, donc
   // la forme deux-arguments DOIT caster explicitement en `int4`, sinon Postgres
-  // throw `42883 function pg_try_advisory_lock(bigint, bigint) does not exist`.
-  const [lock] = await client.$queryRaw<{ locked: boolean }[]>`
-    SELECT pg_try_advisory_lock(${ADVISORY_LOCK_KEY[0]}::int4, ${ADVISORY_LOCK_KEY[1]}::int4) AS locked
-  `;
-  if (!lock?.locked) {
-    const status = await getQualiopiReferenceDataStatus(client);
-    return { ran: false, ...status };
-  }
+  // throw `42883 function pg_try_advisory_xact_lock(bigint, bigint) does not exist`.
+  //
+  // Timeout/maxWait explicites : le défaut Prisma des transactions interactives
+  // (~5 s) est insuffisant pour seedOffresSite + les grilles → la tx échouerait
+  // et rollback tout. On laisse une marge large (verrou bref, une fois par boot).
+  const ran = await client.$transaction(
+    async (tx) => {
+      const [lock] = await tx.$queryRaw<{ locked: boolean }[]>`
+        SELECT pg_try_advisory_xact_lock(${ADVISORY_LOCK_KEY[0]}::int4, ${ADVISORY_LOCK_KEY[1]}::int4) AS locked
+      `;
+      if (!lock?.locked) return false; // une autre instance seed déjà
+      await seedQualiopiConfig(tx);
+      await seedOffresSite(tx);
+      await seedGrilleQualite(tx);
+      await seedGrilleV2(tx);
+      return true;
+    },
+    { timeout: 60_000, maxWait: 15_000 },
+  );
 
-  try {
-    await seedQualiopiConfig(client);
-    await seedOffresSite(client);
-    await seedGrilleQualite(client);
-    await seedGrilleV2(client);
-    const status = await getQualiopiReferenceDataStatus(client);
-    return { ran: true, ...status };
-  } finally {
-    await client.$queryRaw`
-      SELECT pg_advisory_unlock(${ADVISORY_LOCK_KEY[0]}::int4, ${ADVISORY_LOCK_KEY[1]}::int4)
-    `;
+  // Auto-réparation de l'existant : si un ancien verrou de session resté coincé
+  // (bug historique `pg_advisory_lock` + unlock sur une autre connexion) a
+  // empêché les boots précédents de seeder la grille, on la repose hors verrou.
+  // Idempotent (findUnique sur cleUnique) ; best-effort pour ne pas casser le
+  // rapport si deux instances réparent en même temps.
+  let status = await getQualiopiReferenceDataStatus(client);
+  if (status.grilleActiveCle == null) {
+    try {
+      await seedGrilleV2(client);
+      status = await getQualiopiReferenceDataStatus(client);
+    } catch (err) {
+      console.warn(
+        "[qualiopi:seed] auto-réparation grille échouée (best-effort) :",
+        err instanceof Error ? err.message : String(err),
+      );
+    }
   }
+  return { ran, ...status };
 }

@@ -23,6 +23,8 @@ vi.mock("@/lib/prisma", () => ({
     },
     alerteSysteme: {
       findUnique: vi.fn(),
+      updateMany: vi.fn(),
+      update: vi.fn(),
     },
     portailAcces: {
       findFirst: vi.fn(),
@@ -40,7 +42,7 @@ vi.mock("@/server/qualiopi/portail/portail-service", () => ({
 }));
 
 vi.mock("@/server/queue/queues", () => ({
-  enqueueEmail: vi.fn(),
+  enqueueEmail: vi.fn().mockResolvedValue({ enqueued: true }),
 }));
 
 vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
@@ -70,7 +72,11 @@ const mockPrisma = prisma as unknown as {
     findUnique: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
   };
-  alerteSysteme: { findUnique: ReturnType<typeof vi.fn> };
+  alerteSysteme: {
+    findUnique: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+  };
   portailAcces: { findFirst: ReturnType<typeof vi.fn> };
 };
 const mockEnqueueEmail = enqueueEmail as ReturnType<typeof vi.fn>;
@@ -177,6 +183,29 @@ describe("envoyerConvocation", () => {
     await envoyerConvocation(ENROLLMENT_ID);
     expect(mockEnqueueEmail).not.toHaveBeenCalled();
   });
+
+  it("formate le lieu réel quand la session a un lieu renseigné", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      ...fakeEnrollmentBase,
+      session: {
+        ...fakeEnrollmentBase.session,
+        lieuType: "nos_locaux",
+        lieuVille: "Grenoble",
+      },
+    });
+    await envoyerConvocation(ENROLLMENT_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    const lieu = (call[3] as Record<string, unknown>)["lieu"] as string;
+    expect(lieu).toContain("Nos locaux");
+    expect(lieu).toContain("Grenoble");
+  });
+
+  it("retombe sur « Voir convocation » quand aucun lieu n'est renseigné", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    await envoyerConvocation(ENROLLMENT_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    expect((call[3] as Record<string, unknown>)["lieu"]).toBe("Voir convocation");
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -220,6 +249,19 @@ describe("envoyerRappelJ7", () => {
     const options = call[4] as { jobId?: string };
     // dateKey = YYYYMMDD extrait de dateDebut 2026-09-01
     expect(options.jobId).toMatch(/^qualiopi-rappel-j7-enr-uuid-1-20260901$/);
+  });
+
+  it("formate le lieu réel dans le rappel quand renseigné", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue({
+      ...fakeSessionWithEnrollments,
+      lieuType: "distanciel",
+      lieuVisioUrl: "https://meet.google.com/abc-defg-hij",
+    });
+    await envoyerRappelJ7(SESSION_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    const lieu = (call[3] as Record<string, unknown>)["lieu"] as string;
+    expect(lieu).toContain("Distanciel");
+    expect(lieu).toContain("meet.google.com");
   });
 });
 
@@ -376,7 +418,12 @@ describe("envoyerAttestationDisponible", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("notifierAlerteInterne", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // Par défaut : claim atomique réussi (count=1) + enqueue OK.
+    mockPrisma.alerteSysteme.updateMany.mockResolvedValue({ count: 1 });
+    mockEnqueueEmail.mockResolvedValue({ enqueued: true });
+  });
 
   it("enqueue qualiopi-alerte-interne vers destinataire interne", async () => {
     mockPrisma.alerteSysteme.findUnique.mockResolvedValue(fakeAlerte);
@@ -391,9 +438,69 @@ describe("notifierAlerteInterne", () => {
     expect((call[4] as { jobId?: string }).jobId).toBe(`qualiopi-alerte-interne-${ALERTE_ID}`);
   });
 
+  it("pose le claim atomique (notifiedAt) AVANT d'enqueuer, gardé sur non-notifiée", async () => {
+    mockPrisma.alerteSysteme.findUnique.mockResolvedValue(fakeAlerte);
+    await notifierAlerteInterne(ALERTE_ID);
+    expect(mockPrisma.alerteSysteme.updateMany).toHaveBeenCalledOnce();
+    const claimArgs = mockPrisma.alerteSysteme.updateMany.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      data: Record<string, unknown>;
+    };
+    expect(claimArgs.where).toMatchObject({ id: ALERTE_ID, notifiedAt: null, resolue: false });
+    expect(claimArgs.data["notifiedAt"]).toBeInstanceOf(Date);
+    // Le claim précède l'enqueue (ordre des invocations).
+    const ordreClaim = mockPrisma.alerteSysteme.updateMany.mock.invocationCallOrder[0] ?? Infinity;
+    const ordreEmail = mockEnqueueEmail.mock.invocationCallOrder[0] ?? 0;
+    expect(ordreClaim).toBeLessThan(ordreEmail);
+  });
+
+  it("skip (pas d'email) si le claim retourne count=0 — alerte déjà notifiée", async () => {
+    mockPrisma.alerteSysteme.updateMany.mockResolvedValue({ count: 0 });
+    await notifierAlerteInterne(ALERTE_ID);
+    // Court-circuit : ni lecture de l'alerte ni enqueue.
+    expect(mockPrisma.alerteSysteme.findUnique).not.toHaveBeenCalled();
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("libère le verrou (notifiedAt=null) si l'enqueue échoue (enqueued=false)", async () => {
+    mockPrisma.alerteSysteme.findUnique.mockResolvedValue(fakeAlerte);
+    mockEnqueueEmail.mockResolvedValue({ enqueued: false });
+    await notifierAlerteInterne(ALERTE_ID);
+    expect(mockEnqueueEmail).toHaveBeenCalledOnce();
+    // Fail-soft : pas de "notifiée sans email" → reset pour re-tenter au prochain cron.
+    expect(mockPrisma.alerteSysteme.update).toHaveBeenCalledOnce();
+    const resetArgs = mockPrisma.alerteSysteme.update.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      data: Record<string, unknown>;
+    };
+    expect(resetArgs.where).toMatchObject({ id: ALERTE_ID });
+    expect(resetArgs.data).toMatchObject({ notifiedAt: null });
+  });
+
+  it("ne libère PAS le verrou quand l'enqueue réussit (enqueued=true)", async () => {
+    mockPrisma.alerteSysteme.findUnique.mockResolvedValue(fakeAlerte);
+    await notifierAlerteInterne(ALERTE_ID);
+    expect(mockPrisma.alerteSysteme.update).not.toHaveBeenCalled();
+  });
+
   it("early-exit si alerte introuvable", async () => {
     mockPrisma.alerteSysteme.findUnique.mockResolvedValue(null);
     await notifierAlerteInterne(ALERTE_ID);
     expect(mockEnqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("libère le verrou ET propage si l'enqueue THROW (Redis transitoire)", async () => {
+    mockPrisma.alerteSysteme.findUnique.mockResolvedValue(fakeAlerte);
+    mockEnqueueEmail.mockRejectedValue(new Error("Redis connection lost"));
+    // L'exception remonte (handleAlertes la catch/log), mais le verrou est libéré
+    // pour re-tenter au prochain cron (sinon "notifiée" sans email parti).
+    await expect(notifierAlerteInterne(ALERTE_ID)).rejects.toThrow("Redis connection lost");
+    expect(mockPrisma.alerteSysteme.update).toHaveBeenCalledOnce();
+    const resetArgs = mockPrisma.alerteSysteme.update.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      data: Record<string, unknown>;
+    };
+    expect(resetArgs.where).toMatchObject({ id: ALERTE_ID });
+    expect(resetArgs.data).toMatchObject({ notifiedAt: null });
   });
 });

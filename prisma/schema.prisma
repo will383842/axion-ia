@@ -815,6 +815,53 @@ enum SubmissionReplyStatus {
 }
 
 // ============================================================
+// 1c. email_logs (Qualiopi T17 — traçabilité des envois d'emails)
+// ============================================================
+//
+// Journal durable des envois via la queue `emails` (email-worker). La preuve
+// d'envoi ne vivait qu'en Redis (BullMQ, purgé) → inauditable. Une ligne par
+// tentative (chaque retry `failed` laisse sa trace). Migration ADDITIVE.
+
+enum EmailLogStatus {
+  pending
+  sent
+  failed
+
+  @@map("email_log_status")
+}
+
+model EmailLog {
+  id String @id @default(uuid()) @db.Uuid
+  /// Nom du template = EmailJobName (ex. "qualiopi-convocation", "qualiopi-alerte-interne").
+  template String @db.VarChar(60)
+  /// Destinataire (snapshot plaintext, tel qu'enfilé dans le job BullMQ).
+  recipient String @db.Citext
+  locale Locale @default(fr)
+  marketing Boolean @default(false)
+  /// Entité liée (générique) : ex. "AlerteSysteme"/alerteId, "Enrollment"/enrollmentId.
+  entityType String? @map("entity_type") @db.VarChar(80)
+  entityId String? @map("entity_id") @db.VarChar(64)
+  status EmailLogStatus @default(pending)
+  /// jobId BullMQ (idempotence tracing — non unique car réutilisé sur idempotent jobIds).
+  jobId String? @map("job_id") @db.VarChar(200)
+  /// Message-ID SMTP retourné par nodemailer en cas de succès.
+  providerMessageId String? @map("provider_message_id") @db.VarChar(500)
+  attempts Int @default(0)
+  error String? @db.Text
+  sentAt DateTime? @map("sent_at")
+  failedAt DateTime? @map("failed_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([template])
+  @@index([status])
+  @@index([entityType, entityId])
+  @@index([recipient])
+  @@index([createdAt])
+  @@map("email_logs")
+}
+
+// ============================================================
 // 2. bookings
 // ============================================================
 
@@ -6118,6 +6165,10 @@ enum DocumentType {
   avoir
   /// Inventaire des moyens pédagogiques et techniques (off.17/18/19 — doc A14).
   inventaire_moyens
+  /// Contrat de sous-traitance écrit avec un intervenant/prestataire (ind. 27) :
+  /// missions confiées + clause de vérification de la conformité RNQ du
+  /// sous-traitant. Lié au registre `SousTraitant`.
+  contrat_sous_traitance
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
@@ -7260,6 +7311,9 @@ model AlerteSysteme {
   lu        Boolean      @default(false)
   resolue   Boolean      @default(false)
   resolueAt DateTime?    @map("resolue_at")
+  /// Verrou d'idempotence persistant : timestamp d'enqueue de l'alerte interne.
+  /// NULL = jamais notifiée. Survit à la purge Redis (contrairement au jobId).
+  notifiedAt DateTime?   @map("notified_at")
   metadata  Json         @default("{}")
   createdAt DateTime     @default(now()) @map("created_at")
   updatedAt DateTime     @updatedAt @map("updated_at")
@@ -7268,6 +7322,7 @@ model AlerteSysteme {
   @@index([resolue])
   @@index([niveau])
   @@index([cibleType, cibleId])
+  @@index([niveau, resolue, notifiedAt])
   @@map("alertes_systeme")
 }
 

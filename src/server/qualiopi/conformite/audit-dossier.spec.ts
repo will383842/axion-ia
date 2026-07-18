@@ -374,6 +374,82 @@ describe("genererDossierAuditZip", () => {
     expect(zip.files["AVERTISSEMENTS.txt"]).toBeUndefined();
   });
 
+  // ── [C3] Statut d'incomplétude exposé dans le type de retour ──────────────
+
+  it("[C3] R2 configuré + aucun document → complet (incomplet=false, 0/0)", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+    const result = await genererDossierAuditZip();
+    expect(result.incomplet).toBe(false);
+    expect(result.nbPreuvesAttendues).toBe(0);
+    expect(result.nbPreuvesJointes).toBe(0);
+    expect(result.avertissements).toEqual([]);
+  });
+
+  it("[C3] R2 non configuré → incomplet=true + avertissement R2", async () => {
+    mockIsR2Configured.mockReturnValue(false);
+    const result = await genererDossierAuditZip();
+    expect(result.incomplet).toBe(true);
+    expect(result.avertissements.join(" ")).toMatch(/R2 NON CONFIGUR/i);
+  });
+
+  it("[C3] documents en base mais aucun PDF joint → incomplet=true, jointes < attendues", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      { id: "d1", type: "convention", numero: "AXI-CONV-2026-0001", createdAt: new Date("2026-03-01") },
+      { id: "d2", type: "attestation", numero: "AXI-ATT-2026-0002", createdAt: new Date("2026-03-02") },
+    ]);
+    const result = await genererDossierAuditZip();
+    expect(result.incomplet).toBe(true);
+    expect(result.nbPreuvesAttendues).toBe(2);
+    expect(result.nbPreuvesJointes).toBe(0);
+    expect(result.avertissements.join(" ")).toMatch(/AUCUN PDF de preuve joint/i);
+  });
+
+  it("[C3] toutes les preuves jointes → incomplet=false, jointes = attendues", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockGetObjectBufferR2.mockResolvedValue(Buffer.from("%PDF-1.4 ok"));
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      { id: "d1", type: "convention", numero: "AXI-CONV-2026-0001", createdAt: new Date("2026-03-01") },
+    ]);
+    const result = await genererDossierAuditZip();
+    expect(result.incomplet).toBe(false);
+    expect(result.nbPreuvesAttendues).toBe(1);
+    expect(result.nbPreuvesJointes).toBe(1);
+    expect(result.avertissements).toEqual([]);
+  });
+
+  it("[C3] preuves partiellement jointes → incomplet=true, jointes < attendues", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    // 1er doc trouvé dans R2, 2e absent
+    mockGetObjectBufferR2
+      .mockResolvedValueOnce(Buffer.from("%PDF-1.4 ok"))
+      .mockResolvedValueOnce(null);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      { id: "d1", type: "convention", numero: "AXI-CONV-2026-0001", createdAt: new Date("2026-03-01") },
+      { id: "d2", type: "attestation", numero: "AXI-ATT-2026-0002", createdAt: new Date("2026-03-02") },
+    ]);
+    const result = await genererDossierAuditZip();
+    expect(result.incomplet).toBe(true);
+    expect(result.nbPreuvesAttendues).toBe(2);
+    expect(result.nbPreuvesJointes).toBe(1);
+  });
+
+  it("[C3] mode stub.invalid → incomplet=true avec avertissement", async () => {
+    const original = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    try {
+      const result = await genererDossierAuditZip();
+      expect(result.incomplet).toBe(true);
+      expect(result.nbPreuvesAttendues).toBe(0);
+      expect(result.nbPreuvesJointes).toBe(0);
+      expect(result.avertissements.length).toBeGreaterThan(0);
+    } finally {
+      process.env["DATABASE_URL"] = original;
+    }
+  });
+
   it("un PDF disponible dans R2 est inclus sous preuves/<type>/<numero>.pdf", async () => {
     const fakePdf = Buffer.from("%PDF-1.4 fake content");
     mockGetObjectBufferR2.mockResolvedValue(fakePdf);

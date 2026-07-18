@@ -21,8 +21,10 @@ import {
 import {
   SousTraitantForm,
   SousTraitantVerifButton,
+  SousTraitantContratButton,
 } from "@/components/admin/qualiopi/SousTraitantForm";
 import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
+import { genererContratSousTraitanceAction } from "@/server/actions/qualiopi/documents";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 
 export const dynamic = "force-dynamic";
@@ -173,10 +175,16 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {s.actif && (
-                      <SousTraitantVerifButton
-                        sousTraitantId={s.id}
-                        verifierAction={verifierSousTraitantOfAction}
-                      />
+                      <div className="flex flex-col gap-[var(--space-admin-2)]">
+                        <SousTraitantVerifButton
+                          sousTraitantId={s.id}
+                          verifierAction={verifierSousTraitantOfAction}
+                        />
+                        <SousTraitantContratButton
+                          sousTraitantId={s.id}
+                          genererAction={genererContratSousTraitanceAction}
+                        />
+                      </div>
                     )}
                   </td>
                 </tr>

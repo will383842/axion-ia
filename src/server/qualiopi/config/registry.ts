@@ -19,9 +19,37 @@ export interface ConfigEntry<T> {
   readonly description: string;
 }
 
+// Les clés `num`/`bool` ont pu, au fil des versions du registre, stocker des
+// valeurs mal typées (bool `false` ou chaîne `""` sur une clé passée en number),
+// et les formulaires HTML postent toujours des chaînes. On normalise donc à la
+// LECTURE comme à l'ÉCRITURE via `z.preprocess` : une valeur exploitable est
+// convertie, sinon le préprocesseur renvoie `undefined` → le schéma sous-jacent
+// échoue → getQualiopiConfig retombe sur le défaut du registre. On n'utilise PAS
+// `z.coerce.number()` : il mapperait `false`/`""` sur `0` et masquerait le défaut.
+const numSchema = z.preprocess(
+  (v) =>
+    typeof v === "number" && Number.isFinite(v)
+      ? v
+      : typeof v === "string" && v.trim() !== ""
+        ? ((n) => (Number.isFinite(n) ? n : undefined))(Number(v.trim().replace(",", ".")))
+        : undefined,
+  z.number(),
+);
+const boolSchema = z.preprocess(
+  (v) =>
+    typeof v === "boolean"
+      ? v
+      : v === "true" || v === 1 || v === "1"
+        ? true
+        : v === "false" || v === 0 || v === "0"
+          ? false
+          : undefined,
+  z.boolean(),
+);
+
 const str = (def = "") => ({ schema: z.string(), default: def });
-const num = (def: number) => ({ schema: z.number(), default: def });
-const bool = (def: boolean) => ({ schema: z.boolean(), default: def });
+const num = (def: number) => ({ schema: numSchema, default: def });
+const bool = (def: boolean) => ({ schema: boolSchema, default: def });
 
 export const QUALIOPI_CONFIG_REGISTRY = {
   // ── Identité organisme (placeholders légaux — à renseigner par Will) ──

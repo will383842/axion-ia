@@ -611,6 +611,9 @@ export async function enqueueEmail(
     delayMs?: number;
     marketing?: boolean;
     jobId?: string;
+    /** Entité liée (traçabilité EmailLog) — ex. AlerteSysteme/alerteId. */
+    entityType?: string;
+    entityId?: string;
     /** PJ (clé R2, jamais de binaire dans Redis) — Hub facturation. */
     attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
   },
@@ -629,6 +632,8 @@ export async function enqueueEmail(
     locale,
     payload,
     ...(options?.marketing ? { marketing: true } : {}),
+    ...(options?.entityType ? { entityType: options.entityType } : {}),
+    ...(options?.entityId ? { entityId: options.entityId } : {}),
     ...(options?.attachments && options.attachments.length > 0
       ? { attachments: options.attachments }
       : {}),
