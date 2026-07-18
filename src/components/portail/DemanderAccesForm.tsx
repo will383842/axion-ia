@@ -1,4 +1,5 @@
 "use client";
+// use-client: formulaire de re-demande d'accès avec état local (input email + submit async).
 
 /**
  * Formulaire self-service de re-demande d'un lien d'accès à l'espace stagiaire.
