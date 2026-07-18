@@ -250,9 +250,9 @@ describe("kit-mapping — kit AXION 2026 (arborescence par type)", () => {
     );
   });
 
-  it("résout les 15 dossiers du catalogue réel vers un slug EXISTANT", () => {
-    // Le lien est le numéro : chaque dossier 01→15 doit tomber sur une formation.
-    for (let n = 1; n <= 15; n++) {
+  it("résout les 18 dossiers du catalogue réel vers un slug EXISTANT", () => {
+    // Le lien est le numéro : chaque dossier 01→18 doit tomber sur une formation.
+    for (let n = 1; n <= 18; n++) {
       const folder = `${String(n).padStart(2, "0")}_Formation_Peu_importe_le_nom`;
       const slug = resolveAxionSlug(folder);
       expect(slug, `dossier ${folder}`).toBeTruthy();
@@ -261,7 +261,9 @@ describe("kit-mapping — kit AXION 2026 (arborescence par type)", () => {
   });
 
   it("ne résout pas un dossier hors catalogue", () => {
-    expect(resolveAxionSlug("16_Coaching_Vision_IA_Strategique_dirigeant")).toBeNull();
+    // 99 = numéro hors plage catalogue (les numéros 16/17/18 sont désormais des
+    // formations : Supply chain, Conduite du changement, Déployer l'IA).
+    expect(resolveAxionSlug("99_Formation_Inexistante")).toBeNull();
     expect(resolveAxionSlug("Formation_IA_Express")).toBeNull();
   });
 

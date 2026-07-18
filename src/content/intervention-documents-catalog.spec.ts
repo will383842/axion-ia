@@ -16,12 +16,12 @@ import {
 
 describe("intervention-documents-catalog — dérivation booking-catalog", () => {
   it("dérive les prestations par famille (cross-check booking-catalog)", () => {
-    expect(getInterventionsByFamille("formation").length).toBe(15);
+    expect(getInterventionsByFamille("formation").length).toBe(18);
     // 1-to-1 : offre active seule (kits AXION 16/17 + coaching regulier) —
     // les variantes 2 jours ont ete retirees de la vente (2026-07-17).
     expect(getInterventionsByFamille("un_a_un").length).toBe(3);
     expect(getInterventionsByFamille("audit").length).toBe(4);
-    expect(getAllInterventions().length).toBe(22);
+    expect(getAllInterventions().length).toBe(25);
   });
 
   it("résout une prestation par slug → bonne famille", () => {
@@ -39,15 +39,15 @@ describe("intervention-documents-catalog — dérivation booking-catalog", () =>
 });
 
 describe("intervention-documents-catalog — sous-groupes d'affichage", () => {
-  it("formations : groupes par durée couvrant les 15 (offre AXION), ordre 4 h → 1 j → 2 j → 3 j", () => {
+  it("formations : groupes par durée couvrant les 18 (offre AXION), ordre 4 h → 1 j → 2 j → 3 j", () => {
     const groups = getInterventionsSousGroupes("formation");
     expect(groups).not.toBeNull();
     const total = groups!.reduce((n, g) => n + g.interventions.length, 0);
-    expect(total).toBe(15);
+    expect(total).toBe(18);
     expect(groups!.every((g) => g.interventions.length > 0)).toBe(true);
     expect(groups!.map((g) => g.titre)).toEqual(["4 heures", "1 jour", "2 jours", "3 jours"]);
     const slugs = groups!.flatMap((g) => g.interventions.map((i) => i.slug));
-    expect(new Set(slugs).size).toBe(15);
+    expect(new Set(slugs).size).toBe(18);
   });
 
   it("formations : Bien démarrer (4 h) rangé dans « 4 heures »", () => {
