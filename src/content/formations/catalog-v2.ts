@@ -3383,6 +3383,698 @@ const IA_FINANCE_7H: FormationV2 = {
   ],
 };
 
+const IA_SUPPLY_CHAIN_7H: FormationV2 = {
+  id: "ia-supply-chain-achats-stocks-7h",
+  slugFr: "ia-supply-chain-achats-stocks-7h",
+  slugEn: "ai-supply-chain-procurement-inventory-7h",
+  numero: 16,
+  gamme: "ia-standard",
+  duree: "1j",
+  surDevis: true,
+  titreFr: "IA & Supply chain — achats, appros & stocks",
+  accrocheFr:
+    "L'IA au service de la chaîne d'approvisionnement, des achats et des stocks — reprendre du temps sur tout ce qui entoure vos flux, en une journée",
+  h1Fr: "Formation IA pour la supply chain, les achats et la gestion des stocks (1 jour)",
+  metaTitleFr: "Formation IA supply chain, achats et stocks — 1 jour",
+  metaDescriptionFr:
+    "Formation IA supply chain, achats et stocks (1 jour) : méthode AXION, reporting logistique, analyse de contrats fournisseurs et écrits récurrents du service.",
+  termesSemantiquesFr: [
+    "formation IA supply chain",
+    "IA achats",
+    "IA logistique",
+    "méthode AXION",
+    "assistant IA achats",
+    "gestion des stocks",
+    "reporting logistique",
+  ],
+  publicViseFr:
+    "Responsables supply chain, responsables achats, approvisionneurs, acheteurs, responsables logistique et entrepôt, gestionnaires de stocks, planificateurs, gestionnaires ADV et dirigeants de PME qui pilotent les flux — toute personne dont le quotidien mêle pilotage de flux et production d'écrits autour de ces flux : courriers fournisseurs, analyses de performance, réclamations, procédures, comptes-rendus.",
+  prerequisFr:
+    "Aucun prérequis technique. Une première utilisation de l'IA générative est un plus, mais n'est pas indispensable. Pour l'atelier pratique du module 5, chaque participant doit disposer d'un ordinateur et d'un compte Claude gratuit (création en quelques clics, sans carte bancaire).",
+  objectifsFr: [
+    "Rédiger des prompts efficaces grâce à la méthode AXION, appliquée aux cas de la supply chain, des achats et de la logistique",
+    "Savoir précisément ce qu'on confie à l'IA et ce qui reste dans l'ERP, le WMS et le tableur — la règle qui évite l'erreur la plus coûteuse du métier",
+    "Produire ses analyses de performance logistique et ses revues fournisseurs en une fraction du temps habituel",
+    "Interroger et synthétiser un document long : contrat fournisseur, cahier des charges, conditions générales d'achat, dossier transporteur",
+    "Accélérer ses écrits récurrents : relances fournisseurs, réclamations, procédures, comptes-rendus, consignes",
+    "Créer un assistant IA pour ses tâches récurrentes et identifier quand déléguer une tâche complète",
+  ],
+  beneficeDirigeantFr:
+    "En une journée, votre équipe supply chain reprend du temps sur tout ce qui entoure les flux — courriers, analyses, procédures — sans jamais confier à l'IA un calcul de stock ou de prévision, qui reste dans vos systèmes.",
+  equationTempsFr:
+    "1 jour de formation → une équipe qui outille ses écrits et ses analyses à fort volume, garde ses flux dans ses systèmes et repart avec 3 à 5 actions concrètes à tester dès la semaine suivante.",
+  programme: [
+    {
+      titreFr: "Module 1 — L'IA générative appliquée à la supply chain",
+      steps: [
+        {
+          titre:
+            "Fonctionnement de l'IA générative expliqué simplement, et ce qu'elle change concrètement pour un poste supply chain",
+        },
+        {
+          titre: "Panorama des outils : ChatGPT, Claude, Gemini — lequel ouvrir selon la tâche",
+        },
+        {
+          titre:
+            "La méthode AXION appliquée à vos cas : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Le partage des rôles : les données restent dans vos systèmes (ERP, WMS, tableur), l'IA prend tout ce qu'il y a autour — rédaction, analyse, synthèse, procédure",
+        },
+        {
+          titre:
+            "Confidentialité : tarifs négociés, contrats et données fournisseurs ne sortent jamais de l'entreprise — et comment travailler malgré tout",
+        },
+        {
+          titre:
+            "La règle du métier : l'IA ne calcule ni un stock, ni une prévision, ni un besoin — elle est excellente sur tout ce qui entoure les flux",
+        },
+        {
+          titre:
+            "Exercices pratiques sur ChatGPT, Claude et Gemini, à partir de cas réels apportés par les participants",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt AXION pour la supply chain + bibliothèque de 50 prompts + mémo du partage des rôles",
+        },
+      ],
+    },
+    {
+      titreFr: "Module 2 — Reporting logistique et analyses de performance",
+      steps: [
+        {
+          titre:
+            "Le plus gros gain du métier : vous avez les indicateurs (taux de service, rotations, ruptures, OTIF), l'IA rédige l'analyse autour",
+        },
+        {
+          titre:
+            "Expliquer un écart de performance : donner le contexte et la cause connue, et obtenir une analyse exploitable",
+        },
+        {
+          titre:
+            "Adapter le niveau de lecture : ce qu'on écrit pour la direction, pour l'équipe terrain, pour un client ou un fournisseur",
+        },
+        {
+          titre:
+            "Structurer un tableau de bord logistique : quels indicateurs, quel ordre, quelle mise en récit",
+        },
+        {
+          titre: "Garder la main : relire, corriger, valider — l'analyse reste la vôtre",
+        },
+        {
+          titre: "Exercice pratique : chaque participant rédige l'analyse de son dernier reporting",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Trames d'analyses de performance et de revues fournisseurs, par niveau de lecture",
+        },
+      ],
+    },
+    {
+      titreFr: "Module 3 — Interroger contrats et documents supply",
+      steps: [
+        {
+          titre:
+            "Poser des questions à un document long plutôt que de le lire en entier : contrat fournisseur, cahier des charges, CGA, dossier transporteur",
+        },
+        { titre: "Produire une note de synthèse pour quelqu'un qui n'a que cinq minutes" },
+        {
+          titre: "Comparer plusieurs documents : offres fournisseurs, versions de contrat, clauses",
+        },
+        {
+          titre:
+            "Se tenir à jour : dégrossir une veille transport, douane ou réglementaire, puis vérifier aux sources officielles",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant fait analyser un document réel et en tire une note d'une page",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre: "Guide d'analyse documentaire supply + trames de notes de synthèse",
+        },
+      ],
+    },
+    {
+      titreFr: "Module 4 — Écrits récurrents du service supply",
+      steps: [
+        {
+          titre:
+            "Relances fournisseurs et réclamations transporteurs : trouver le ton juste selon la situation et la relation",
+        },
+        {
+          titre:
+            "Formaliser une procédure logistique (réception, inventaire, litige) à partir de ce que vous faites déjà sans l'avoir écrit",
+        },
+        {
+          titre:
+            "Comptes-rendus de revue S&OP, revues fournisseurs, consignes d'équipe et notes de service",
+        },
+        {
+          titre:
+            "Préparer un support de présentation : revue de performance, plan d'action, comité",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant produit une trame réutilisable sur un écrit hebdomadaire",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Bibliothèque de trames : relances, réclamations, procédures, comptes-rendus, supports",
+        },
+      ],
+    },
+    {
+      titreFr: "Module 5 — Créer son assistant IA et déléguer ses tâches",
+      steps: [
+        {
+          titre:
+            "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée son assistant « courriers fournisseurs », calibré sur le ton et les formats de son entreprise — le formateur guide tout le groupe simultanément",
+        },
+        {
+          titre:
+            "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète",
+        },
+        {
+          titre:
+            "Démonstration commentée : le formateur délègue à Claude Cowork l'analyse d'un lot de documents fournisseurs et la production d'une note de restitution",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route : 3 à 5 actions concrètes à tester dès la semaine suivante, et bilan de la journée",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA pour la supply chain + guide Claude Cowork + trame de feuille de route",
+        },
+      ],
+    },
+  ],
+  faqs: [
+    {
+      question: "L'IA va-t-elle calculer mes stocks ou mes prévisions à ma place ?",
+      reponse:
+        "Non, et ce n'est pas ce qu'on lui demande. L'IA ne remplace ni votre ERP, ni votre WMS, ni votre tableur : les chiffres restent dans vos systèmes. Elle est excellente sur tout ce qui entoure les flux — courriers, analyses, synthèses, procédures — là où part une énorme partie de votre temps.",
+    },
+    {
+      question: "Comment garantir la confidentialité des données fournisseurs ?",
+      reponse:
+        "C'est un point traité dès le premier module : tarifs négociés, contrats et données fournisseurs nominatives ne sont jamais soumis à l'IA. On travaille sur des données factices ou anonymisées, et chaque chiffre produit est vérifié par un humain avant diffusion.",
+    },
+    {
+      question: "Faut-il des connaissances techniques pour suivre cette formation ?",
+      reponse:
+        "Aucune. La formation s'adresse aux professionnels de la supply chain, des achats et de la logistique sans prérequis technique. Chaque notion est expliquée sans jargon avant d'être illustrée sur des cas concrets du métier.",
+    },
+  ],
+};
+
+const CONDUITE_DU_CHANGEMENT_IA_7H: FormationV2 = {
+  id: "conduite-du-changement-ia-7h",
+  slugFr: "conduite-du-changement-ia-7h",
+  slugEn: "ai-change-management-7h",
+  numero: 17,
+  gamme: "ia-standard",
+  duree: "1j",
+  surDevis: true,
+  titreFr: "Conduite du changement — faire adopter l'IA",
+  accrocheFr:
+    "On n'impose pas un outil, on embarque une équipe — diagnostiquer les résistances, bâtir un plan d'adoption et communiquer sereinement, en une journée",
+  h1Fr: "Formation à la conduite du changement pour faire adopter l'IA par vos équipes (1 jour)",
+  metaTitleFr: "Formation conduite du changement IA — 1 jour",
+  metaDescriptionFr:
+    "Formation conduite du changement (1 jour) : faire adopter l'IA par vos équipes, diagnostiquer les résistances et bâtir un plan d'adoption sans stress.",
+  termesSemantiquesFr: [
+    "conduite du changement IA",
+    "adoption de l'IA",
+    "gestion du changement",
+    "méthode AXION",
+    "résistance au changement",
+    "plan d'adoption IA",
+    "charte d'usage IA",
+  ],
+  publicViseFr:
+    "Dirigeants, managers de tous niveaux, directeurs et collaborateurs des ressources humaines, chefs de projet transformation — toute personne qui doit faire adopter l'IA par une équipe : annoncer, écouter, cadrer, former, ancrer. La formation prend le rôle tel qu'il est : entre des gains réels et des craintes réelles, le manager fait le pont.",
+  prerequisFr:
+    "Aucun prérequis technique. Une première utilisation de l'IA générative est un plus, mais n'est pas indispensable — la formation fait pratiquer les participants tout au long de la journée. Pour l'atelier pratique du module 5, chaque participant doit disposer d'un ordinateur et d'un compte Claude gratuit (création en quelques clics, sans carte bancaire).",
+  objectifsFr: [
+    "Rédiger des prompts efficaces grâce à la méthode AXION, appliquée aux écrits du manager : annonces, entretiens, synthèses",
+    "Savoir ce qu'on confie à l'IA et ce qui reste humain — l'IA prépare, le manager décide : la règle qui rassure les équipes",
+    "Diagnostiquer les résistances de son équipe : les peurs, les trois profils de réaction, l'usage caché",
+    "Construire un plan d'adoption : quick wins choisis avec l'équipe, ambassadeurs cadrés, charte d'usage d'une page",
+    "Communiquer sans stresser : l'annonce honnête, les réponses aux objections, les rituels qui ancrent",
+    "Créer un assistant IA « communication du changement » et identifier quand déléguer une tâche complète",
+  ],
+  beneficeDirigeantFr:
+    "En une journée, vos managers savent faire adopter l'IA au lieu de l'imposer : ils diagnostiquent les résistances, bâtissent un plan d'adoption réaliste et repartent avec leur annonce et leur charte d'usage prêtes à déployer.",
+  equationTempsFr:
+    "1 jour de formation → des managers qui embarquent leurs équipes au lieu de subir la résistance, avec une carte d'équipe, un plan d'adoption et une annonce prêts à l'emploi dès la semaine suivante.",
+  programme: [
+    {
+      titreFr: "Module 1 — L'IA générative, côté manager",
+      steps: [
+        {
+          titre:
+            "Fonctionnement de l'IA générative expliqué simplement, et ce qu'elle change pour une équipe : les gains réels, les craintes réelles",
+        },
+        { titre: "Panorama des outils : ChatGPT, Claude, Gemini — lequel ouvrir selon la tâche" },
+        {
+          titre:
+            "La méthode AXION appliquée aux cas du manager : Acteur, conteXte, Intention, Output, Normes",
+        },
+        {
+          titre:
+            "Le partage des rôles : l'IA prépare (entretiens, annonces, synthèses, scénarios), les décisions restent aux humains, et l'IA n'évalue personne",
+        },
+        {
+          titre:
+            "Confidentialité : les données d'équipe ne vont jamais dans l'IA — anonymiser, toujours",
+        },
+        {
+          titre:
+            "Exercices pratiques sur ChatGPT, Claude et Gemini, à partir de cas réels anonymisés apportés par les participants",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt AXION pour managers + bibliothèque de 50 prompts + mémo du partage des rôles",
+        },
+      ],
+    },
+    {
+      titreFr: "Module 2 — Diagnostiquer : peurs, résistances, usages cachés",
+      steps: [
+        { titre: "Pourquoi la résistance est normale, rationnelle — et riche d'information" },
+        {
+          titre:
+            "La carte des réactions : les moteurs, les prudents, les inquiets — et ce que chaque profil appelle",
+        },
+        {
+          titre:
+            "Les peurs une à une : le remplacement, le déclassement, la surveillance — avec les réponses de fond",
+        },
+        {
+          titre:
+            "L'usage caché (shadow IA) : pourquoi il existe déjà, ses risques, et pourquoi le cadre vaut mieux que l'interdiction",
+        },
+        {
+          titre:
+            "Écouter avant d'agir : entretiens, ateliers, sondage anonyme — et la restitution qui crée la confiance",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant établit la carte anonymisée de son équipe et son plan d'écoute",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Grille de diagnostic d'équipe + trames d'entretien d'écoute + sondage anonyme prêt à l'emploi",
+        },
+      ],
+    },
+    {
+      titreFr: "Module 3 — Construire le plan d'adoption",
+      steps: [
+        { titre: "Les trois piliers d'un plan : le sens, les premiers pas, le cadre" },
+        {
+          titre:
+            "Les quick wins : visibles en deux semaines, choisis avec l'équipe, racontés par leurs auteurs",
+        },
+        {
+          titre:
+            "Les ambassadeurs : identifier les moteurs, leur donner un rôle, un temps dédié et une reconnaissance",
+        },
+        { titre: "La formation qui marche : par métier, dans la durée, avec un point d'appui" },
+        {
+          titre:
+            "Le cadre d'usage : la charte d'une page — usages permis, interdits, référent, droit à l'essai",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant construit la première version de son plan d'adoption",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre: "Trame de plan d'adoption + modèle de charte IA d'équipe",
+        },
+      ],
+    },
+    {
+      titreFr: "Module 4 — Communiquer et embarquer",
+      steps: [
+        {
+          titre:
+            "L'annonce qui ne stresse pas : honnête, concrète, ouverte — sans promesse intenable",
+        },
+        { titre: "Répondre aux objections : entendre d'abord, répondre vrai, revenir vers" },
+        {
+          titre:
+            "Les rituels qui ancrent : le point IA en réunion d'équipe, le partage de cas, le droit à l'essai",
+        },
+        {
+          titre:
+            "Embarquer les managers intermédiaires : premiers concernés, premiers relais, à équiper avant leurs équipes",
+        },
+        {
+          titre:
+            "Mesurer l'adoption : l'usage, le ressenti, les gains — sans surveillance individuelle",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant rédige son annonce et prépare deux réponses aux objections",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Kit de communication complet : trame d'annonce, FAQ équipe, réponses aux objections",
+        },
+      ],
+    },
+    {
+      titreFr: "Module 5 — Ancrer dans la durée et déléguer",
+      steps: [
+        {
+          titre:
+            "Architecture d'un assistant IA : instructions en français + base de connaissances, aucun code requis",
+        },
+        {
+          titre:
+            "Atelier pratique guidé : chaque participant crée son assistant « communication du changement », calibré sur son ton et son contexte — le formateur guide tout le groupe simultanément",
+        },
+        {
+          titre:
+            "Savoir reconnaître quand un prompt ponctuel ne suffit plus et qu'il faut déléguer une tâche complète",
+        },
+        {
+          titre:
+            "Démonstration commentée : le formateur délègue à Claude Cowork la synthèse d'un sondage d'équipe factice et la préparation d'un plan de restitution",
+        },
+        {
+          titre:
+            "Chacun construit sa feuille de route : 3 à 5 actions concrètes pour les deux semaines suivantes, et bilan de la journée",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Plus de 20 kits assistants IA pour managers + guide Claude Cowork + trame de feuille de route",
+        },
+      ],
+    },
+  ],
+  faqs: [
+    {
+      question: "Faut-il déjà maîtriser l'IA pour suivre cette formation ?",
+      reponse:
+        "Non. La formation fait pratiquer l'IA aux managers sur leurs propres écrits tout au long de la journée : un manager ne peut pas accompagner ce qu'il n'a jamais pratiqué. Aucun prérequis technique n'est demandé.",
+    },
+    {
+      question: "L'IA va-t-elle servir à évaluer ou surveiller les collaborateurs ?",
+      reponse:
+        "Non, et c'est une règle posée dès le premier module : l'IA prépare, le manager décide. Aucune décision RH, aucune évaluation n'est déléguée à un outil, et l'adoption se mesure sans surveillance individuelle. C'est justement ce qui rassure les équipes.",
+    },
+    {
+      question: "Que repartent construire concrètement les participants ?",
+      reponse:
+        "Chacun repart avec la carte anonymisée de son équipe, la première version de son plan d'adoption, son annonce et ses réponses aux objections, sa charte d'usage d'une page et son assistant « communication du changement » créé pendant la session.",
+    },
+  ],
+};
+
+const DEPLOYER_IA_ENTREPRISE_2J: FormationV2 = {
+  id: "deployer-l-ia-en-entreprise-2j",
+  slugFr: "deployer-l-ia-en-entreprise-2j",
+  slugEn: "deploy-ai-in-your-company-2d",
+  numero: 18,
+  gamme: "ia-standard",
+  duree: "2j",
+  surDevis: true,
+  titreFr: "Déployer l'IA en entreprise — stratégie & plan d'action",
+  accrocheFr:
+    "Du cap à l'exécution : cadrer, planifier, embarquer — 2 jours pour repartir avec un dossier de déploiement IA complet, construit sur votre contexte",
+  h1Fr: "Formation pour déployer l'IA en entreprise : stratégie et plan d'action (2 jours)",
+  metaTitleFr: "Formation déployer l'IA en entreprise — 2 jours",
+  metaDescriptionFr:
+    "Formation déployer l'IA en entreprise (2 jours) : stratégie, cas d'usage priorisés, gouvernance AI Act, plan de déploiement et pilotage pour dirigeants de PME.",
+  termesSemantiquesFr: [
+    "déployer l'IA en entreprise",
+    "stratégie IA",
+    "plan de déploiement IA",
+    "gouvernance IA",
+    "AI Act PME",
+    "cas d'usage IA",
+    "feuille de route IA",
+  ],
+  publicViseFr:
+    "Dirigeants, directeurs généraux, directeurs de business unit, directeurs administratifs et financiers, DRH, DSI, responsables transformation ou innovation — toute personne en position de décider et de piloter le déploiement de l'IA dans son organisation. Formation particulièrement adaptée aux PME et ETI.",
+  prerequisFr:
+    "Aucun prérequis technique. Une première utilisation de l'IA générative est un plus, mais n'est pas indispensable — la formation fait pratiquer les participants dès le premier module. Chaque participant doit disposer d'un ordinateur et d'un compte Claude gratuit (création en quelques clics, sans carte bancaire) : tous les ateliers s'y font.",
+  objectifsFr: [
+    "Comprendre ce que l'IA générative fait — et ne fait pas — en la pratiquant sur ses propres écrits de direction",
+    "Construire un portefeuille de cas d'usage priorisé avec la matrice valeur × facilité, et le traduire en fiches projet",
+    "Poser un cadre de gouvernance conforme et proportionné : charte d'une page, registre des usages, référent IA — en cohérence avec l'AI Act et le RGPD",
+    "Formuler la vision et le business case : une note de cadrage aux chiffres prudents, prête à présenter en comité",
+    "Construire un plan de déploiement en trois vagues : quick wins, rituels, chantiers — daté, chiffré, avec pilotes et critères vérifiables",
+    "Embarquer les équipes : annonce honnête, réponses aux objections, formation par métier, ambassadeurs",
+    "Piloter dans la durée : indicateurs d'adoption et de gains, revue mensuelle, feuille de route à 90 jours",
+  ],
+  beneficeDirigeantFr:
+    "En 2 jours, vos décideurs repartent avec un dossier de déploiement IA complet — portefeuille de cas d'usage, charte de gouvernance, note de cadrage, plan en vagues et feuille de route à 90 jours — construit sur le contexte réel de l'entreprise.",
+  equationTempsFr:
+    "2 jours investis → un dossier de déploiement prêt à présenter en comité et une feuille de route à 90 jours, au lieu de mois d'hésitation sur où et comment commencer avec l'IA.",
+  programme: [
+    {
+      titreFr: "Jour 1 · Module 1 — Comprendre l'IA pour décider",
+      steps: [
+        {
+          titre:
+            "L'IA générative : le vrai du faux — ce qu'elle fait remarquablement, ce qu'elle ne fait pas",
+        },
+        { titre: "Où l'IA fait la différence en PME : fonctions support, commercial, pilotage" },
+        { titre: "Les trois vigilances : vérifier, protéger, décider soi-même" },
+        {
+          titre:
+            "La méthode AXION appliquée aux écrits de direction : préparation de décision, synthèse, rédaction",
+        },
+        {
+          titre:
+            "Exercice pratique : chaque participant produit deux livrables sur ses cas réels de dirigeant",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du prompt AXION pour dirigeants + panorama des usages IA par fonction + 50 prompts",
+        },
+      ],
+    },
+    {
+      titreFr: "Jour 1 · Module 2 — Identifier et prioriser vos cas d'usage",
+      steps: [
+        {
+          titre:
+            "Où chercher : les tâches répétitives, les goulots, les irritants — fonction par fonction",
+        },
+        {
+          titre: "Les critères d'un bon cas d'usage : fréquent, sans données sensibles, mesurable",
+        },
+        {
+          titre:
+            "La matrice valeur × facilité : quick wins d'abord, chantiers planifiés — trois cas, pas quinze",
+        },
+        {
+          titre:
+            "Chiffrer le gain honnêtement : des ordres de grandeur prudents, pas des promesses",
+        },
+        {
+          titre:
+            "Atelier guidé : chaque participant construit son portefeuille de cas d'usage priorisé et la fiche projet de son premier quick win",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Trame de cartographie des tâches par fonction + matrice valeur × facilité + modèle de fiche projet IA",
+        },
+      ],
+    },
+    {
+      titreFr: "Jour 1 · Module 3 — Gouvernance, conformité et charte IA",
+      steps: [
+        {
+          titre:
+            "AI Act et RGPD : ce qui concerne vraiment une PME — transparence, minimisation, formation",
+        },
+        {
+          titre:
+            "La gouvernance simple qui marche : un référent IA, un registre des usages, une charte d'une page",
+        },
+        {
+          titre:
+            "La charte : usages permis, interdits, référent, droit à l'essai — testée en trente secondes",
+        },
+        {
+          titre:
+            "Atelier : chaque participant génère et adapte la première version de sa charte IA",
+        },
+        {
+          titre:
+            "Atelier : chaque participant construit son dispositif — référent, registre, revue mensuelle",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre: "Modèle de charte IA + trame de registre des usages + guide du référent IA",
+        },
+      ],
+    },
+    {
+      titreFr: "Jour 1 · Module 4 — La vision et le business case",
+      steps: [
+        {
+          titre:
+            "La vision qui tient en une phrase : le cap, l'ambition réaliste, le refus qui crédibilise",
+        },
+        {
+          titre:
+            "Le calcul honnête : tous les coûts, des gains prudents, les risques — de faire et de ne rien faire",
+        },
+        {
+          titre:
+            "Exercice : chaque participant construit sa note de cadrage — deux pages, prête à présenter",
+        },
+        {
+          titre:
+            "Vendre le projet en interne : décliner, assumer les incertitudes, faire vivre la note",
+        },
+        { titre: "Exercice express : le pitch de la note en 90 secondes" },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre: "Trame de note de cadrage IA + modèle de business case",
+        },
+      ],
+    },
+    {
+      titreFr: "Jour 2 · Module 5 — Le plan de déploiement, en vagues",
+      steps: [
+        {
+          titre:
+            "Le plan en cinq blocs : vagues, pilotes, moyens, calendrier, critères vérifiables",
+        },
+        {
+          titre:
+            "Les trois vagues types : quick wins (deux semaines), rituels, chantiers — une vague installée avant la suivante",
+        },
+        {
+          titre:
+            "Grand atelier en trois temps : le squelette du plan, la vague 1 détaillée semaine par semaine, puis le plan complet — chiffré et blindé contre les objections",
+        },
+        {
+          titre: "Le tour des plans : chaque participant présente sa vague 1, le groupe challenge",
+        },
+        { titre: "La ligne honnête : ce qu'on déploie seul, ce qui mérite un accompagnement" },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Guide du déploiement en vagues + bibliothèque de plans types + le plan construit par chaque participant",
+        },
+      ],
+    },
+    {
+      titreFr: "Jour 2 · Module 6 — Embarquer : communication, formation, résistances",
+      steps: [
+        {
+          titre:
+            "Pourquoi les déploiements échouent : l'annonce ratée, les résistances ignorées, la formation générique",
+        },
+        {
+          titre:
+            "Les quatre leviers d'adhésion : l'annonce honnête, les quick wins choisis, les ambassadeurs, les rituels",
+        },
+        {
+          titre:
+            "Les garde-fous non négociables : jamais d'IA pour évaluer les personnes, décisions humaines, transparence",
+        },
+        {
+          titre:
+            "Ateliers : chaque participant rédige son annonce et sa FAQ, prépare les réponses aux objections qu'il redoute, et construit son dispositif de formation par métier",
+        },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Kit de communication (annonce, FAQ, objections) + guide de la formation par métier",
+        },
+      ],
+    },
+    {
+      titreFr: "Jour 2 · Module 7 — Piloter : mesurer, ajuster, durer",
+      steps: [
+        {
+          titre:
+            "Le tableau de bord du dirigeant : adoption, gains, climat, conformité — quatre lignes, pas quarante",
+        },
+        {
+          titre:
+            "La revue mensuelle : trente minutes qui font vivre le portefeuille, le registre et le plan",
+        },
+        {
+          titre:
+            "Atelier : chaque participant construit sa feuille de route à 90 jours — jalons datés, signes de réussite vérifiables",
+        },
+        {
+          titre:
+            "Partage collectif chronométré : une chose construite, un premier jalon — devant le groupe",
+        },
+        { titre: "Bilan des deux jours et temps de questions ouvertes" },
+        { titre: "QCM de validation des acquis en fin de module" },
+        {
+          temps: "Livrable",
+          titre:
+            "Trame de feuille de route 90 jours + synthèse personnalisée de l'ensemble des livrables construits",
+        },
+      ],
+    },
+  ],
+  faqs: [
+    {
+      question: "En quoi cette formation diffère-t-elle d'une formation IA classique ?",
+      reponse:
+        "Elle ne vise pas la prise en main d'un outil mais le déploiement à l'échelle de l'organisation. On ne pilote pas ce qu'on n'a jamais pratiqué : les deux journées font pratiquer l'IA aux décideurs eux-mêmes, et chaque module produit une pièce du dossier de déploiement.",
+    },
+    {
+      question: "Que repartent construire concrètement les participants ?",
+      reponse:
+        "Un dossier de déploiement complet et construit sur leur contexte : portefeuille de cas d'usage priorisé, charte de gouvernance, note de cadrage et business case, plan en vagues chiffré, kit d'embarquement et feuille de route à 90 jours.",
+    },
+    {
+      question: "Les contenus AI Act et RGPD constituent-ils un conseil juridique ?",
+      reponse:
+        "Non. Les contenus réglementaires (AI Act, RGPD) sont présentés à titre d'information opérationnelle pour cadrer une gouvernance proportionnée en PME, et ne constituent pas un conseil juridique.",
+    },
+  ],
+};
+
 const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   id: "seminaire-ia-toute-l-entreprise-1j",
   slugFr: "seminaire-ia-toute-l-entreprise-1j",
@@ -3629,6 +4321,9 @@ export const FORMATIONS_V2: ReadonlyArray<FormationV2> = [
   IA_MARKETING_7H,
   IA_VENTE_7H,
   IA_FINANCE_7H,
+  IA_SUPPLY_CHAIN_7H,
+  CONDUITE_DU_CHANGEMENT_IA_7H,
+  DEPLOYER_IA_ENTREPRISE_2J,
   SEMINAIRE_IA_ENTREPRISE,
 ];
 

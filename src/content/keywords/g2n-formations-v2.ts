@@ -236,6 +236,54 @@ export const KEYWORDS_FORMATIONS_V2: KeywordSeed[] = [
     },
   },
   {
+    keyword: "formation ia supply chain achats stocks",
+    intent: "transactionnel",
+    module: M,
+    cible: "pme",
+    priorite: 2,
+    niveau: 1,
+    formationFormat: "ponctuel",
+    urlCible: "/fr/formations/ia-supply-chain-achats-stocks-7h",
+    injection: {
+      h1: "Formation IA pour la supply chain, les achats et la gestion des stocks (1 jour)",
+      metaTitle: "Formation IA supply chain, achats & stocks — 1j | Axion-IA",
+      metaDescription:
+        "Formation IA supply chain, achats et stocks (1 jour) : méthode AXION, reporting logistique, analyse de contrats fournisseurs et écrits récurrents du service.",
+    },
+  },
+  {
+    keyword: "formation conduite du changement ia",
+    intent: "transactionnel",
+    module: M,
+    cible: "pme",
+    priorite: 2,
+    niveau: 1,
+    formationFormat: "ponctuel",
+    urlCible: "/fr/formations/conduite-du-changement-ia-7h",
+    injection: {
+      h1: "Formation à la conduite du changement pour faire adopter l'IA par vos équipes (1 jour)",
+      metaTitle: "Formation conduite du changement IA — 1j | Axion-IA",
+      metaDescription:
+        "Formation conduite du changement (1 jour) : faire adopter l'IA par vos équipes, diagnostiquer les résistances et bâtir un plan d'adoption sans stress.",
+    },
+  },
+  {
+    keyword: "formation déployer l'ia en entreprise",
+    intent: "transactionnel",
+    module: M,
+    cible: "pme",
+    priorite: 2,
+    niveau: 1,
+    formationFormat: "ponctuel",
+    urlCible: "/fr/formations/deployer-l-ia-en-entreprise-2j",
+    injection: {
+      h1: "Formation pour déployer l'IA en entreprise : stratégie et plan d'action (2 jours)",
+      metaTitle: "Formation déployer l'IA en entreprise — 2j | Axion-IA",
+      metaDescription:
+        "Formation déployer l'IA en entreprise (2 jours) : stratégie, cas d'usage priorisés, gouvernance AI Act, plan de déploiement et pilotage pour dirigeants de PME.",
+    },
+  },
+  {
     keyword: "formation ia sur mesure entreprise",
     intent: "transactionnel",
     module: M,
