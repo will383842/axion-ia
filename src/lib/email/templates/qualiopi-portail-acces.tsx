@@ -36,12 +36,12 @@ export function QualiopiPortailAccesEmail({
     >
       <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       <Text style={emailStyles.paragraphStyle}>
-        Vous avez demandé un nouveau lien d'accès à votre espace stagiaire, où vous retrouvez vos{" "}
-        <strong>attestations</strong> et vos <strong>questionnaires</strong>.
+        Vous avez demandé un nouveau lien d&apos;accès à votre espace stagiaire, où vous retrouvez
+        vos <strong>attestations</strong> et vos <strong>questionnaires</strong>.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Ce lien est personnel et valable 90 jours. Si vous n'êtes pas à l'origine de cette demande,
-        vous pouvez ignorer cet email.
+        Ce lien est personnel et valable 90 jours. Si vous n&apos;êtes pas à l&apos;origine de cette
+        demande, vous pouvez ignorer cet email.
       </Text>
     </EmailLayout>
   );

@@ -9,6 +9,7 @@
  */
 
 import type { Metadata } from "next";
+import { Link } from "@/i18n/navigation";
 
 export const metadata: Metadata = {
   title: "Lien invalide",
@@ -26,12 +27,12 @@ export default function AccesInvalidePage() {
             ci-dessous, ou contactez l&apos;organisme de formation.
           </p>
         </div>
-        <a
-          href="/fr/portail/demander-acces"
+        <Link
+          href={"/portail/demander-acces" as never}
           className="inline-block rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-gray-800"
         >
           Recevoir un nouveau lien d&apos;accès
-        </a>
+        </Link>
       </div>
     </div>
   );
