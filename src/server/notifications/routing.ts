@@ -128,6 +128,40 @@ export function telegramGroupFor(category: NotificationCategory): TelegramGroup 
   return "system";
 }
 
+// ── Canal WhatsApp (CallMeBot) — leads humains uniquement (2026-07-19) ───────
+// Décision Will : WhatsApp double le canal Telegram, mais SEULEMENT pour les
+// formulaires « une vraie personne qui attend une réponse » (contact, devis/audit,
+// réservation/RDV, candidature). Les alertes système/ops/newsletter/avis restent
+// Telegram-only pour ne pas polluer le WhatsApp perso.
+//
+// ⚠️ Le canal reste no-op tant que WHATSAPP_CALLMEBOT_APIKEY + WHATSAPP_NOTIFY_PHONE
+// ne sont pas définis (cf. `channels/whatsapp.ts`) — cette liste ne fait qu'AUTORISER
+// le doublon, elle ne déclenche rien seule.
+//
+// Pour ajouter une catégorie sur WhatsApp (ex. presse / investisseur) : ajoute
+// simplement sa clé ici. Pour la retirer : enlève la ligne. Rien d'autre à toucher.
+const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<NotificationCategory>([
+  // Contact & demandes commerciales (devis / audit / intervention / implémentation)
+  "CONTACT_FORM_SUBMITTED",
+  "AUDIT_REQUEST_SUBMITTED",
+  "INTERVENTION_REQUEST_SUBMITTED",
+  "IMPLEMENTATION_REQUEST_SUBMITTED",
+  "QUOTE_REQUEST_RECEIVED",
+  "CUSTOMER_SUPPORT_REQUEST",
+  // Candidatures
+  "JOB_APPLICATION_RECEIVED",
+  "RECRUITMENT_RECEIVED",
+  // Réservations / RDV (création d'intention)
+  "BOOKING_CREATED",
+  "OPTION_POSTED",
+  "CALENDLY_INVITEE_CREATED",
+]);
+
+/** Vrai si la catégorie doit AUSSI notifier WhatsApp (leads humains). */
+export function shouldNotifyWhatsApp(category: NotificationCategory): boolean {
+  return WHATSAPP_LEAD_CATEGORIES.has(category);
+}
+
 /**
  * Résout le chat_id Telegram d'un groupe depuis l'env. Fallback rétro-compatible
  * sur `TELEGRAM_CHAT_ID` (comportement legacy 1-groupe) si le groupe n'a pas de
