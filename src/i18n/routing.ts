@@ -31,10 +31,11 @@ export const routing = defineRouting({
     // fr==en : EN redirigé 301→FR (proxy), fr==en évite le bug next-intl 307.
     "/formations/entreprise": { fr: "/formations/entreprise", en: "/formations/entreprise" },
     "/formations/tarifs": { fr: "/formations/tarifs", en: "/formations/tarifs" },
-    "/formations/duree/[duree]": {
-      fr: "/formations/duree/[duree]",
-      en: "/formations/duree/[duree]",
-    },
+    // Refonte 2026-07-19 (Will) — l'axe durée (`/formations/duree/[duree]`) est
+    // SUPPRIMÉ (301 → hub via next.config). Les 2 listings par catégorie le
+    // remplacent. Segments statiques déclarés AVANT `/formations/[slug]`.
+    "/formations/metiers": { fr: "/formations/metiers", en: "/formations/metiers" },
+    "/formations/secteurs": { fr: "/formations/secteurs", en: "/formations/secteurs" },
     "/formations/[slug]": { fr: "/formations/[slug]", en: "/formations/[slug]" },
 
     // Module 1 — Interventions entreprise (1-to-1 conservé ; collectif → /formations)

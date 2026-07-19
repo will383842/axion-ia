@@ -397,8 +397,18 @@ describe("genererDossierAuditZip", () => {
     mockIsR2Configured.mockReturnValue(true);
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockPrisma.documentGenere.findMany.mockResolvedValue([
-      { id: "d1", type: "convention", numero: "AXI-CONV-2026-0001", createdAt: new Date("2026-03-01") },
-      { id: "d2", type: "attestation", numero: "AXI-ATT-2026-0002", createdAt: new Date("2026-03-02") },
+      {
+        id: "d1",
+        type: "convention",
+        numero: "AXI-CONV-2026-0001",
+        createdAt: new Date("2026-03-01"),
+      },
+      {
+        id: "d2",
+        type: "attestation",
+        numero: "AXI-ATT-2026-0002",
+        createdAt: new Date("2026-03-02"),
+      },
     ]);
     const result = await genererDossierAuditZip();
     expect(result.incomplet).toBe(true);
@@ -411,7 +421,12 @@ describe("genererDossierAuditZip", () => {
     mockIsR2Configured.mockReturnValue(true);
     mockGetObjectBufferR2.mockResolvedValue(Buffer.from("%PDF-1.4 ok"));
     mockPrisma.documentGenere.findMany.mockResolvedValue([
-      { id: "d1", type: "convention", numero: "AXI-CONV-2026-0001", createdAt: new Date("2026-03-01") },
+      {
+        id: "d1",
+        type: "convention",
+        numero: "AXI-CONV-2026-0001",
+        createdAt: new Date("2026-03-01"),
+      },
     ]);
     const result = await genererDossierAuditZip();
     expect(result.incomplet).toBe(false);
@@ -427,8 +442,18 @@ describe("genererDossierAuditZip", () => {
       .mockResolvedValueOnce(Buffer.from("%PDF-1.4 ok"))
       .mockResolvedValueOnce(null);
     mockPrisma.documentGenere.findMany.mockResolvedValue([
-      { id: "d1", type: "convention", numero: "AXI-CONV-2026-0001", createdAt: new Date("2026-03-01") },
-      { id: "d2", type: "attestation", numero: "AXI-ATT-2026-0002", createdAt: new Date("2026-03-02") },
+      {
+        id: "d1",
+        type: "convention",
+        numero: "AXI-CONV-2026-0001",
+        createdAt: new Date("2026-03-01"),
+      },
+      {
+        id: "d2",
+        type: "attestation",
+        numero: "AXI-ATT-2026-0002",
+        createdAt: new Date("2026-03-02"),
+      },
     ]);
     const result = await genererDossierAuditZip();
     expect(result.incomplet).toBe(true);

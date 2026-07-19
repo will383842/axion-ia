@@ -57,7 +57,8 @@ import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
 import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
-import { formatAmount } from "@/content/pricing";
+import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
+import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
   buildProductMetadata,
@@ -101,8 +102,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Formations IA en entreprise — nos ${total} formations sur mesure | Axion-IA`
     : `Corporate AI training — our ${total} tailored trainings | Axion-IA`;
   const description = isFr
-    ? `Le catalogue complet des formations IA en entreprise Axion-IA : ${total} formations opérationnelles sur site, de 4 h à 3 jours, tous secteurs, partout en France.${finBit} Sur devis, tarifé par groupe.`
-    : `The full catalogue of Axion-IA corporate AI trainings: ${total} operational on-site trainings, from 4 h to 3 days, every sector, across France.${finBit} On quote, priced per group.`;
+    ? `Le catalogue complet des formations IA en entreprise Axion-IA : ${total} formations opérationnelles — offres générales, par métier, par secteur d'activité — partout en France.${finBit} Prix publics par groupe (2 à 15 pers.).`
+    : `The full catalogue of Axion-IA corporate AI trainings: ${total} operational trainings — general, role-specific, industry-specific — across France.${finBit} Public prices per group (2-15 people).`;
   return {
     ...buildProductMetadata({ locale, path: PATH, title, description }),
     title: { absolute: title },
@@ -135,8 +136,8 @@ export default async function FormationsEntreprise({ params }: Props) {
     path: PATH,
     name: isFr ? "Toutes nos formations IA en entreprise" : "All our corporate AI trainings",
     description: isFr
-      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site ou à distance partout en France, de 4 h à 3 jours, sur devis (tarifé par groupe, jamais par personne).`
-      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site or remote across France, from 4 h to 3 days, on quote (priced per group, never per person).`,
+      ? `Catalogue complet des ${total} formations IA en entreprise Axion-IA, sur site ou à distance partout en France — offres générales, par métier, par secteur, prix publics par groupe (jamais par personne).`
+      : `Full catalogue of the ${total} Axion-IA corporate AI trainings, on site or remote across France — general, role and industry offers, public prices per group (never per person).`,
     speakable: true,
     ...(primaryImage ? { extra: { primaryImageOfPage: primaryImage } } : {}),
   });
@@ -174,8 +175,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       ? "Formations IA en entreprise · sur site · Axion-IA"
       : "Corporate AI training · on site · Axion-IA",
     description: isFr
-      ? `${total} formations IA opérationnelles pour vos équipes, animées dans vos locaux partout en France, sur devis (tarifé par groupe, jamais par personne).`
-      : `${total} operational AI trainings for your teams, delivered on site across France, on quote (priced per group, never per person).`,
+      ? `${total} formations IA opérationnelles pour vos équipes, animées dans vos locaux partout en France — prix publics par groupe (2 à 15 participants), jamais par personne.`
+      : `${total} operational AI trainings for your teams, delivered on site across France — public prices per group (2-15 people), never per person.`,
     serviceType: "AI training",
     areasServed: buildServiceAreasServed(loc),
   });
@@ -206,11 +207,15 @@ export default async function FormationsEntreprise({ params }: Props) {
     { icon: Wallet, label: isFr ? "Finançable OPCO" : "OPCO-fundable", on: ofPublic },
   ];
 
-  const dureeChips: ReadonlyArray<{ href: string; label: string }> = [
-    { href: "/formations/duree/4-heures", label: isFr ? "4 heures" : "4 hours" },
-    { href: "/formations/duree/1-jour", label: isFr ? "1 jour" : "1 day" },
-    { href: "/formations/duree/2-jours", label: isFr ? "2 jours" : "2 days" },
-    { href: "/formations/duree/3-jours", label: isFr ? "3 jours et +" : "3 days and +" },
+  // Liens crawlables vers les listings par catégorie (refonte 2026-07-19 — les
+  // listings durée /formations/duree/* sont supprimés, 301 → hub).
+  const categorieChips: ReadonlyArray<{ href: string; label: string }> = [
+    { href: "/formations/metiers", label: isFr ? "Par métier" : "By role" },
+    {
+      href: "/formations/secteurs",
+      label: isFr ? "Par secteur d'activité" : "By industry",
+    },
+    { href: "/formations/tarifs", label: isFr ? "Tous les tarifs" : "All prices" },
   ];
 
   // « Comment réserver » — 7 étapes COMPACTES (icône + titre + 1 ligne). Les
@@ -294,35 +299,36 @@ export default async function FormationsEntreprise({ params }: Props) {
     steps: reserveSteps.map((s) => ({ name: s.title, text: s.body })),
   });
 
-  // Métiers → formation la plus pertinente (maillage interne vers les fiches).
-  const metiers: ReadonlyArray<{ href: string; label: string }> = [
+  // Métiers → formation la plus pertinente (maillage interne vers les fiches,
+  // dérivé du catalogue refonte 2026-07-19 — slugs actuels uniquement).
+  const metiersLinks: ReadonlyArray<{ href: string; label: string }> = [
     {
-      href: "/formations/bien-demarrer-avec-l-ia-4h",
+      href: "/formations/ia-pour-bien-commencer",
       label: isFr ? "Tous les collaborateurs" : "All employees",
     },
     {
-      href: "/formations/ia-vente-prospection-developpement-commercial-7h",
+      href: "/formations/ia-pour-les-commerciaux",
       label: isFr ? "Commerciaux & ADV" : "Sales & order desk",
     },
     {
-      href: "/formations/ia-assistanat-mails-comptes-rendus-documents-7h",
-      label: isFr ? "Assistanat & bureau" : "Support & office",
+      href: "/formations/ia-pour-la-relation-client",
+      label: isFr ? "Support & relation client" : "Support & customer service",
     },
     {
-      href: "/formations/ia-rh-recrutement-talents-7h",
+      href: "/formations/ia-pour-les-rh",
       label: isFr ? "RH & recrutement" : "HR & recruitment",
     },
     {
-      href: "/formations/ia-marketing-contenus-seo-image-de-marque-7h",
+      href: "/formations/ia-pour-le-marketing",
       label: isFr ? "Marketing & communication" : "Marketing & communication",
     },
     {
-      href: "/formations/ia-finance-reporting-analyses-pilotage-7h",
+      href: "/formations/ia-pour-la-finance",
       label: isFr ? "Finance & gestion" : "Finance & controlling",
     },
     {
-      href: "/formations/ia-act-conformite-et-securite-7h",
-      label: isFr ? "Conformité & sécurité" : "Compliance & security",
+      href: "/formations/ia-pour-le-juridique",
+      label: isFr ? "Juridique" : "Legal",
     },
   ];
 
@@ -362,25 +368,30 @@ export default async function FormationsEntreprise({ params }: Props) {
     { value: isFr ? "Tous" : "All", label: isFr ? "secteurs couverts" : "sectors covered" },
     { value: "30 min à 2 h", label: isFr ? "gagnées par jour" : "saved per day" },
     {
-      value: isFr ? "Sur devis" : "On quote",
-      label: isFr ? "tarifé par groupe" : "priced per group",
+      value: isFr ? "Prix publics" : "Public prices",
+      label: isFr ? "par groupe de 2 à 15" : "per group of 2-15",
     },
   ];
 
   const villes = getVillesIndexableNow().slice(0, 60);
 
   // Données slim du catalogue passées au filtre client (prix déjà formaté côté
-  // serveur → catalog-v2 reste hors bundle client).
+  // serveur → catalog-v2 reste hors bundle client). Refonte 2026-07-19 : filtre
+  // par CATÉGORIE (générales / métiers / secteurs / séminaire), durée en badge.
   const slimFormations: readonly SlimFormation[] = FORMATIONS_V2.map((f) => {
     const p = getFormationV2EntryPrice(f);
+    const facts = FORMATION_DUREE_FACTS[f.duree];
+    const dureeBase = f.duree === "4h" ? facts.heuresLabelFr : facts.joursLabelFr;
     return {
       slugFr: f.slugFr,
       titreFr: f.titreFr,
       accrocheFr: f.accrocheFr,
-      gamme: f.gamme,
-      duree: f.duree,
+      categorie: f.seminaire ? ("seminaire" as const) : (f.categorie ?? ("generale" as const)),
+      ...(f.axeLabelFr ? { axeLabel: f.axeLabelFr } : {}),
+      dureeLabel: f.scindable ? `${dureeBase} · scindable 2×1j` : dureeBase,
       featured: f.featured ?? false,
       priceLabel: p !== undefined ? formatAmount(p, loc) : isFr ? "Sur devis" : "On quote",
+      fixedPrice: p !== undefined,
     };
   });
 
@@ -393,8 +404,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Qu'est-ce qu'une formation IA en entreprise ?"
         : "What is a corporate AI training?",
       answer: isFr
-        ? `Une formation IA en entreprise est une session courte (de 4 heures à 3 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Gemini et les assistants IA) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, sur devis (tarifé par groupe, jamais par personne).`
-        : `A corporate AI training is a short session (4 hours to 3 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Gemini and AI assistants) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, on quote (priced per group, never per person).`,
+        ? `Une formation IA en entreprise est une session courte (de 4 heures à 2 jours) qui apprend à vos équipes à utiliser l'intelligence artificielle (ChatGPT, Claude, Gemini) sur leurs tâches réelles. Chez Axion-IA, elle a lieu dans vos locaux ou à distance${ofPublic ? ", est certifiée Qualiopi et finançable OPCO" : ""}, à prix public par groupe (2 à 15 participants, jamais par personne).`
+        : `A corporate AI training is a short session (4 hours to 2 days) that teaches your teams to use artificial intelligence (ChatGPT, Claude, Gemini) on their real tasks. At Axion-IA it takes place on site or remotely${ofPublic ? ", is Qualiopi-certified and OPCO-fundable" : ""}, at a public price per group (2-15 people, never per person).`,
     },
     {
       id: "combien-coute",
@@ -402,8 +413,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Combien coûte une formation IA en entreprise ?"
         : "How much does a corporate AI training cost?",
       answer: isFr
-        ? "Toutes nos formations sont sur devis, tarifé par groupe et non par personne — selon la durée (4 h à 3 jours), la gamme et la taille du groupe. Le tarif est forfaitaire par session : plus le groupe est nombreux, plus le coût par participant baisse. Devis sous 24-48 h."
-        : "All our trainings are on quote, priced per group and not per person — depending on duration (4 h to 3 days), track and group size. The price is per session: the larger the group, the lower the cost per participant. Quote within 24-48 h.",
+        ? `Nos prix sont publics et forfaitaires par groupe (2 à 15 participants), jamais par personne : de ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} (offre générale 4 h) à ${formatAmount(getFormationCatalogPriceRange().maxEur, "fr")} (formation sectorielle 2 jours). Plus le groupe est nombreux, plus le coût par participant baisse. La grille complète est sur la page tarifs ; le séminaire (jusqu'à 50 personnes) est sur devis.`
+        : "Our prices are public and set per group (2-15 participants), never per person. The larger the group, the lower the cost per participant. The full grid is on the pricing page; the company seminar (up to 50 people) is on quote.",
     },
     ...(ofPublic
       ? [
@@ -606,16 +617,16 @@ export default async function FormationsEntreprise({ params }: Props) {
         titleEm={isFr ? "en entreprise" : "for companies"}
         description={
           isFr
-            ? `${ofPublic ? "Organisme certifié Qualiopi. " : ""}Filtrez par durée ou par thème. La durée est indiquée sur chaque carte — cliquez pour voir le programme, le public visé et le tarif.`
-            : `${ofPublic ? "Qualiopi-certified provider. " : ""}Filter by duration or theme. The duration is on each card — click to see the programme, target audience and price.`
+            ? `${ofPublic ? "Organisme certifié Qualiopi. " : ""}Filtrez par catégorie : offres générales, par métier, par secteur d'activité. La durée et le prix sont sur chaque carte — cliquez pour voir le programme et le public visé.`
+            : `${ofPublic ? "Qualiopi-certified provider. " : ""}Filter by category: general offers, by role, by industry. Duration and price are on each card — click to see the programme and target audience.`
         }
       >
         <FormationsCatalogueFilterable items={slimFormations} isFr={isFr} />
 
-        {/* Liens durée crawlables (SEO / maillage vers les listings) */}
+        {/* Liens catégorie crawlables (SEO / maillage vers les listings) */}
         <p className="text-fg-muted mt-8 text-[13px]">
-          {isFr ? "Parcourir par durée : " : "Browse by duration: "}
-          {dureeChips.map((d, i) => (
+          {isFr ? "Parcourir : " : "Browse: "}
+          {categorieChips.map((d, i) => (
             <span key={d.href}>
               {i > 0 ? " · " : ""}
               <Link
@@ -863,7 +874,7 @@ export default async function FormationsEntreprise({ params }: Props) {
             {isFr ? "Par métier" : "By role"}
           </p>
           <ul role="list" className="flex flex-wrap gap-2">
-            {metiers.map((m) => (
+            {metiersLinks.map((m) => (
               <li key={m.href}>
                 <Link
                   href={m.href as never}

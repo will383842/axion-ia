@@ -1,7 +1,10 @@
-// Hub /formations — catalogue formations IA intra-entreprise (17 formations,
-// 4 paliers durée). Remplace l'ancien hub /interventions/collectives ; design
-// strictement identique, alimenté par le catalogue V2 (catalog-v2). Mono-axe
-// durée : la gamme (IA / Agents / Claude) reste un badge, pas un axe de nav.
+// Hub /formations — catalogue formations IA intra-entreprise (refonte
+// 2026-07-19, décision Will) : FIN de la présentation par durée. Le hub
+// présente les 3 OFFRES GÉNÉRALES (IA pour bien commencer — 2 formats —,
+// IA pour les équipes, IA pour l'automatisation) + 2 CTA vers les listings
+// « par métier » (9) et « par secteur d'activité » (8). Le séminaire est
+// présenté À PART, la formule mensuelle/bi-mensuelle est conservée. Prix
+// PUBLICS par groupe, dérivés de la matrice pricing.ts (jamais en dur).
 import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
@@ -10,7 +13,6 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ChevronDown, Users, Sparkles } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
-import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
@@ -18,12 +20,14 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { getFormationsV2ByDuree } from "@/content/formations/catalog-v2";
 import {
-  FORMATION_DUREES_META,
-  FORMATION_GAMMES_META,
-  formationDureeIso,
-} from "@/content/formations/catalog-v2-meta";
+  getFormationsV2ByCategorie,
+  getFormationV2EntryPrice,
+  getSeminairesV2,
+} from "@/content/formations/catalog-v2";
+import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
+import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
+import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -70,7 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // de la page est gaté (purge du flag 2026-07-14). ISR 1h le réinjecte au flip.
   const qualiopiSerp = isQualiopiPublicDisclosureEnabled()
     ? "certifié Qualiopi, finançables OPCO"
-    : "15 programmes éprouvés";
+    : "générales, par métier ou par secteur d'activité";
   return buildProductMetadata({
     locale,
     path: "/formations",
@@ -83,8 +87,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
-        ? `Formation IA présentiel ou distanciel, adaptée à votre secteur et votre entreprise — ${qualiopiSerp}. Vos équipes gagnent du temps dès le lendemain.`
-        : `Corporate AI training on site for SMEs and large companies: 4 one-shot formats (4 h to 3 d+) or monthly/bi-monthly recurring programmes. Dedicated AI trainer, continuous upskilling, instant time savings. On quote, priced per group.`,
+        ? `Formations IA présentiel ou distanciel, ${qualiopiSerp} — dès ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} par groupe (2 à 15 pers.). Vos équipes gagnent du temps dès le lendemain.`
+        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (2-15 people). Instant time savings for your teams.`,
   });
 }
 
@@ -107,39 +111,30 @@ export default async function FormationsHub({ params }: Props) {
     },
   ];
 
-  // Libellés dérivés du SSOT catalogue (jamais figés dans la prose FAQ) : si un
-  // format de durée ou une gamme est ajouté/renommé, la réponse « prix » suit
-  // automatiquement (audit FAQ prix dynamique 2026-07-06).
-  const dureeShortFirst = FORMATION_DUREES_META[0]?.shortFr ?? "4 h";
-  const dureeShortLast = FORMATION_DUREES_META[FORMATION_DUREES_META.length - 1]?.shortFr ?? "3 j";
-  const nbDureeFormats = FORMATION_DUREES_META.length;
-  // « Gamme IA / Agents & Automatisations / Gamme Claude » → on retire le préfixe
-  // « Gamme » pour une liste propre et réutilisable en FR comme en EN.
-  const gammesList = FORMATION_GAMMES_META.map((g) => g.labelFr.replace(/^Gamme\s+/i, "")).join(
-    ", ",
-  );
+  // Données dérivées du SSOT catalogue (refonte 2026-07-19) — jamais de prix ni
+  // de compte en dur : tout suit automatiquement si le catalogue bouge.
+  const generales = getFormationsV2ByCategorie("generale");
+  const bienCommencerFormats = generales.filter((f) => f.id.startsWith("ia-pour-bien-commencer"));
+  const equipes = generales.find((f) => f.id === "ia-pour-les-equipes");
+  const automatisation = generales.find((f) => f.id === "ia-pour-l-automatisation");
+  const metiers = getFormationsV2ByCategorie("metier");
+  const secteurs = getFormationsV2ByCategorie("secteur");
+  const seminaire = getSeminairesV2()[0];
+  const metiersMeta = FORMATION_CATEGORIES_META.find((c) => c.id === "metier");
+  const secteursMeta = FORMATION_CATEGORIES_META.find((c) => c.id === "secteur");
+  const { minEur } = getFormationCatalogPriceRange();
+  // `formatAmount` non-compact porte déjà « € HT » — ne jamais resuffixer.
+  const minPriceLabel = formatAmount(minEur, "fr");
 
-  // Adaptateur durée — dérive du catalogue V2 (17 formations) la même forme que
-  // l'ancien DurationDef collectives, pour garder le JSX du design strictement
-  // identique. Mono-axe durée (décision Will 2026-06-11) : la gamme reste un
-  // simple badge sur les cartes, pas d'axe de navigation séparé.
-  const DURATIONS = FORMATION_DUREES_META.map((m) => ({
-    id: m.id,
-    slug: m.slug,
-    labelFr: m.labelFr,
-    labelEn: m.labelFr,
-    shortFr: m.shortFr,
-    shortEn: m.shortFr,
-    durationDetailFr: m.heuresFr,
-    durationDetailEn: m.heuresFr,
-    // Les 4 paliers ont des formations catalogue réelles (4h:4 · 1j:6 · 2j:4 ·
-    // 3j:3 = 17). Aucun palier « sur devis » : chaque carte est une carte
-    // peuplée (le sur-mesure est proposé sur la page durée elle-même).
-    isQuoteOnly: false,
-    iso8601Duration: formationDureeIso(m.id),
-    pathFr: `/formations/duree/${m.slug}`,
-    pathEn: `/formations/duree/${m.slug}`,
-  }));
+  /** « 4 heures » · « 1 journée » · « 2 journées (scindable 2×1j) ». */
+  const dureeLabelFr = (f: {
+    duree: keyof typeof FORMATION_DUREE_FACTS;
+    scindable?: boolean;
+  }): string => {
+    const d = FORMATION_DUREE_FACTS[f.duree];
+    const base = f.duree === "4h" ? d.heuresLabelFr : d.joursLabelFr;
+    return f.scindable ? `${base} — scindable 2×1j` : base;
+  };
 
   // Photos illustratives de la page — SSOT centralisée `@/lib/seo/page-images`
   // (`PAGE_IMAGES_MANIFEST["/formations"]`). Le MÊME manifeste alimente le rendu
@@ -155,59 +150,50 @@ export default async function FormationsHub({ params }: Props) {
   // license CC BY 4.0, creator/copyrightHolder Axion-IA `#organization`.
   const photosImageObjectJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/formations" });
 
-  // Features par palier durée — Sprint 14.10.7 (Will 2026-05-11) : enrichir
-  // les cards pour qu'elles soient parlantes (3 points de positionnement par
-  // palier). Évite le rendu trop simpliste « badge + compteur ».
-  const FEATURES_BY_DURATION: Record<
-    (typeof DURATIONS)[number]["id"],
-    { fr: ReadonlyArray<string>; en: ReadonlyArray<string> }
-  > = {
-    "4h": {
-      fr: ["Demi-journée express", "Découverte ciblée", "Quick-wins immédiats"],
-      en: ["Express half-day", "Targeted discovery", "Immediate quick-wins"],
-    },
-    "1j": {
-      fr: ["Cadrage du matin", "Ateliers pratiques", "Plan d'action le soir"],
-      en: ["Morning framing", "Hands-on workshops", "Action plan by evening"],
-    },
-    "2j": {
-      fr: ["Approfondissement", "Cas réels de l'équipe", "Transfert IA-fluence"],
-      en: ["Deep dive", "Real team cases", "AI-fluency transfer"],
-    },
-    "3j": {
-      fr: ["Séminaires dirigeants", "Off-sites équipe", "Programmes multi-sites"],
-      en: ["Executive seminars", "Team off-sites", "Multi-site programmes"],
-    },
-  };
-
-  // Détail de chaque palier durée pour affichage en grid.
-  const durationRows = DURATIONS.map((d) => {
-    const count = d.isQuoteOnly ? 0 : getFormationsV2ByDuree(d.id).length;
-    const href = d.pathFr;
-    let metaFr: string;
-    let metaEn: string;
-    if (d.isQuoteOnly) {
-      metaFr = "Sur devis — cadrage personnalisé";
-      metaEn = "On request — bespoke framing";
-    } else if (count === 0) {
-      metaFr = "Formations en préparation";
-      metaEn = "Trainings coming soon";
-    } else if (count === 1) {
-      metaFr = "1 formation disponible";
-      metaEn = "1 training available";
-    } else {
-      metaFr = `${count} formations disponibles`;
-      metaEn = `${count} trainings available`;
-    }
-    return {
-      duration: d,
-      href,
-      count,
-      metaFr,
-      metaEn,
-      features: FEATURES_BY_DURATION[d.id],
-    };
-  });
+  // Les 3 cartes « offres générales » du hub. « IA pour bien commencer » existe
+  // en 2 formats (condensé 4 h / journée complète) → la carte pointe la fiche
+  // 4 h et propose le second format en lien secondaire.
+  const offresGenerales = [
+    ...(bienCommencerFormats.length > 0
+      ? [
+          {
+            key: "bien-commencer",
+            titreFr: "IA pour bien commencer",
+            benefitFr: "Comprendre l'IA et l'utiliser dès aujourd'hui",
+            pitchFr:
+              "Le point d'entrée naturel : lever les blocages, connaître les bons outils, repartir avec des usages applicables dès le lendemain.",
+            formats: bienCommencerFormats,
+            featured: true,
+          },
+        ]
+      : []),
+    ...(equipes
+      ? [
+          {
+            key: "equipes",
+            titreFr: equipes.titreFr,
+            benefitFr: "Gagner du temps au quotidien",
+            pitchFr:
+              "Transformer des usages dispersés en pratique commune : rédaction, synthèse, recherche et prompts réutilisables, sur vos vraies tâches.",
+            formats: [equipes],
+            featured: false,
+          },
+        ]
+      : []),
+    ...(automatisation
+      ? [
+          {
+            key: "automatisation",
+            titreFr: automatisation.titreFr,
+            benefitFr: "Vos premières automatisations concrètes",
+            pitchFr:
+              "Identifier ce qui vous fait perdre du temps et construire une première automatisation, testée sur un cas réel de votre entreprise.",
+            formats: [automatisation],
+            featured: false,
+          },
+        ]
+      : []),
+  ];
 
   // Service JSON-LD — le `speakable` a été DÉPLACÉ sur le nœud CollectionPage
   // ci-dessous (2026-07-01) : `speakable` est une propriété de WebPage/CreativeWork,
@@ -217,11 +203,11 @@ export default async function FormationsHub({ params }: Props) {
     locale: loc,
     path: "/formations",
     name: isFr
-      ? "Formations IA équipe · 4 durées · Axion-IA"
-      : "Team AI trainings · 4 durations · Axion-IA",
+      ? "Formations IA équipe · générales, métiers, secteurs · Axion-IA"
+      : "Team AI trainings · general, role and industry offers · Axion-IA",
     description: isFr
-      ? "Formations IA opérationnelles pour vos équipes sur site, 4 paliers durée de 4 h à 3 j+, sur devis (tarifé par groupe)."
-      : "Operational AI trainings for your teams on site, 4 duration tiers from 4 h to 3 d+, on quote (priced per group).",
+      ? `Formations IA opérationnelles pour vos équipes (2 à 15 personnes) : ${offresGenerales.length} offres générales, ${metiers.length} formations par métier, ${secteurs.length} formations par secteur d'activité. Prix par groupe, dès ${minPriceLabel}.`
+      : `Operational AI trainings for your teams (2-15 people): general offers plus ${metiers.length} role-specific and ${secteurs.length} industry-specific programmes, priced per group.`,
     serviceType: "AI training",
     areasServed: buildServiceAreasServed(loc),
   });
@@ -233,38 +219,33 @@ export default async function FormationsHub({ params }: Props) {
     locale: loc,
     path: "/formations",
     name: isFr
-      ? "Formations IA en entreprise — 4 durées, sur site"
-      : "Corporate AI trainings — 4 durations, on site",
+      ? "Formations IA en entreprise — générales, par métier, par secteur"
+      : "Corporate AI trainings — general, by role, by industry",
     description: isFr
-      ? "Hub des formations IA opérationnelles Axion-IA pour vos équipes sur site : 4 paliers durée de 4 h à 3 j+, formule mensuelle récurrente, sur devis."
-      : "Hub of Axion-IA operational AI trainings for your teams on site: 4 duration tiers from 4 h to 3 d+, recurring monthly programme, on quote.",
+      ? `Hub des formations IA opérationnelles Axion-IA : ${offresGenerales.length} offres générales, ${metiers.length} formations par métier, ${secteurs.length} formations par secteur d'activité, séminaire entreprise et formule mensuelle. Prix par groupe (2 à 15 pers.), dès ${minPriceLabel}.`
+      : "Hub of Axion-IA operational AI trainings: general offers, role-specific and industry-specific programmes, company seminar and recurring monthly formula. Priced per group (2-15 people).",
     speakable: true,
     ...(buildPrimaryImageOfPage("/formations")
       ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/formations") } }
       : {}),
   });
 
-  // Course JSON-LD ×4 — Sprint perfection AEO 2026-05-28 (Will). Un Course
-  // par palier durée. Permet citation Google AI Overviews / Perplexity /
-  // Claude pour requêtes « formation IA 4h », « formation IA 1 jour », etc.
-  // Pattern réutilisé depuis `CollectiveDurationListing` (sous-pages) mais
-  // émis aussi sur le hub avec `@id` unique pour indexation listing.
-  const courseJsonLdArray = DURATIONS.filter((d) => !d.isQuoteOnly).map((d) =>
+  // Course JSON-LD — un Course par offre générale (les fiches métier/secteur
+  // émettent le leur sur leur propre page). Permet citation Google AI
+  // Overviews / Perplexity / Claude pour « formation IA débutant entreprise »,
+  // « formation IA équipe », « formation automatisation IA ».
+  const courseJsonLdArray = generales.map((f) =>
     buildCourseJsonLd({
       locale: loc,
-      path: loc === "fr" ? d.pathFr : d.pathEn,
-      name: isFr
-        ? `Formation IA opérationnelle ${d.labelFr}`
-        : `Operational AI training — ${d.labelEn}`,
-      description: isFr
-        ? `Formation IA opérationnelle sur ${d.labelFr.toLowerCase()} pour TPE, PME, ETI et grandes entreprises. Format Axion-IA sur site, ChatGPT, Claude et Gemini, création d'assistants IA. Groupe intra-entreprise.`
-        : `Operational AI training over ${d.labelEn.toLowerCase()} for SMEs, mid-caps and large enterprises. Axion-IA on-site format, ChatGPT, Claude and Gemini, building AI assistants. In-house group.`,
+      path: `/formations/${f.slugFr}`,
+      name: f.titreFr,
+      description: f.metaDescriptionFr,
       courseMode: ["Onsite"],
-      ...(d.iso8601Duration ? { duration: d.iso8601Duration } : {}),
+      duration: formationDureeIso(f.duree),
       audienceType: isFr
         ? "Décideurs, managers, équipes opérationnelles TPE PME ETI grandes entreprises (B2B)"
         : "Decision-makers, managers, operational teams SME mid-cap large enterprise (B2B)",
-      about: "IA opérationnelle (ChatGPT, Claude, Gemini, assistants IA, méthode AXION)",
+      about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION, méthode CRFE)",
     }),
   );
 
@@ -304,17 +285,17 @@ export default async function FormationsHub({ params }: Props) {
     ],
   });
 
-  // ItemList JSON-LD — 4 paliers durée. Factory centralisée seo.ts
-  // (audit perfection 2026-05-12).
+  // ItemList JSON-LD — le catalogue complet (générales + métiers + secteurs),
+  // chaque item pointant sa fiche. Factory centralisée seo.ts.
   const itemListJsonLd = buildItemListJsonLd({
     locale: loc,
     path: "/formations",
-    name: isFr ? "Paliers durée — Formations équipe" : "Duration tiers — Team trainings",
-    items: durationRows.map((row, idx) => ({
+    name: isFr ? "Catalogue des formations IA Axion-IA" : "Axion-IA AI training catalogue",
+    items: [...generales, ...metiers, ...secteurs].map((f, idx) => ({
       position: idx + 1,
-      name: isFr ? row.duration.labelFr : row.duration.labelEn,
-      url: `${SITE_URL}/${locale}${row.href}`,
-      description: isFr ? row.duration.durationDetailFr : row.duration.durationDetailEn,
+      name: f.titreFr,
+      url: `${SITE_URL}/${locale}/formations/${f.slugFr}`,
+      description: f.accrocheFr,
     })),
   });
 
@@ -437,161 +418,103 @@ export default async function FormationsHub({ params }: Props) {
         </a>
       </div>
 
-      {/* 4 CARDS PALIER DURÉE */}
+      {/* CATALOGUE — Refonte 2026-07-19 (Will) : l'axe durée disparaît. Le hub
+          présente les 3 OFFRES GÉNÉRALES (cartes riches, prix publics par
+          groupe) puis 2 grandes cartes CTA vers les listings « par métier »
+          et « par secteur d'activité ». La durée reste un badge par carte. */}
       <Section
         id="formats"
-        eyebrow={isFr ? "Formation ponctuelle one-shot" : "One-shot training"}
-        title={isFr ? "Choisissez la durée" : "Choose the duration"}
-        titleEm={isFr ? "de votre formation" : "of your training"}
+        eyebrow={isFr ? "Offres générales" : "General offers"}
+        title={isFr ? "Trois offres pour" : "Three offers to"}
+        titleEm={isFr ? "commencer et accélérer" : "start and accelerate"}
         description={
           isFr
-            ? "Que vous découvriez l'IA ou que vous l'utilisiez quotidiennement, chaque journée d'intervention sera un bond en avant et un déclic évolutif. Pour un programme durable, voir la formation régulière mensuelle plus bas."
-            : "Whether you're discovering AI or using it daily, each training day will be a leap forward and an evolutionary trigger. For a sustained programme, see the monthly recurring training below."
+            ? `Des formations 100 % pratiques, construites à partir de vos propres outils et cas d'usage — chaque participant repart avec des méthodes et des prompts immédiatement applicables. Prix par groupe (2 à 15 personnes), dès ${minPriceLabel}.`
+            : "100% hands-on trainings, built on your own tools and use cases — every participant leaves with methods and prompts they can apply immediately. Priced per group (2-15 people)."
         }
         contentClassName={TIGHT_X}
       >
-        {/* PHOTOS FORMATION — 5 photos illustratives en grid 3 cols desktop
-            (3+2 = 2 lignes), 2 cols mobile (2+2+1 = 3 lignes). Optimisation
-            top mai 2026 : Next.js Image auto AVIF/WebP au runtime, sizes
-            responsive, loading lazy (sous fold), aspect ratio fixe → CLS=0.
-            Pas de zoom/lightbox (Will : « sans possibilité de grossir »).
-            JSON-LD ImageObject array émis plus bas pour Google Images + AEO. */}
-        {/* Sprint 14.10.7 (Will 2026-05-11) — cards portrait, plus hautes
-            que larges sur desktop. Badge palier XXL agrandi, padding y
-            étendu, min-h pour forcer une silhouette rectangle vertical
-            cohérente entre les 4 cards même quand le contenu varie.
-            Grid mobile-first : 1 col → 4 sur 1 ligne dès sm (640px).
-            Will (2026-05-11) : forcer 4 cards sur 1 ligne même sur écrans
-            moyens où la sidebar VSCode/DevTools réduit la zone utile. */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 sm:gap-3 md:gap-4 lg:gap-6">
-          {durationRows.map(({ duration: d, href, count, metaFr, metaEn, features }) => {
-            const isQuote = d.isQuoteOnly === true;
-            const isEmpty = !isQuote && count === 0;
-            const featureLabels = isFr ? features.fr : features.en;
-            const ctaLabelFr = isQuote
-              ? "Demander un devis"
-              : isEmpty
-                ? "Nous contacter"
-                : "Voir les formations";
-            const ctaLabelEn = isQuote
-              ? "Request a quote"
-              : isEmpty
-                ? "Contact us"
-                : "See trainings";
+        {/* 3 CARTES OFFRES GÉNÉRALES */}
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3 lg:gap-6">
+          {offresGenerales.map((offre) => {
+            const primary = offre.formats[0]!;
+            const secondary = offre.formats[1];
             return (
               <article
-                key={d.id}
-                className={cn(
-                  "group/duration shadow-subtle relative flex h-full flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 sm:min-h-[460px] md:min-h-[520px] lg:min-h-[560px]",
-                  isQuote
-                    ? "bg-sand border-terracotta-deep/40 hover:border-terracotta-deep hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(180,80,40,0.30)]"
-                    : "bg-paper border-terracotta/30 hover:border-terracotta hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(205,107,72,0.30)]",
-                )}
+                key={offre.key}
+                className="group/offre bg-paper border-terracotta/30 hover:border-terracotta shadow-subtle relative flex h-full flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(205,107,72,0.30)]"
               >
-                <Link
-                  href={href as never}
-                  aria-label={`${isFr ? d.labelFr : d.labelEn} — ${isFr ? ctaLabelFr : ctaLabelEn}`}
-                  className="focus-visible:ring-terracotta absolute inset-0 z-[1] rounded-3xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <span className="sr-only">{isFr ? ctaLabelFr : ctaLabelEn}</span>
-                </Link>
+                {/* Badge « point d'entrée » sur l'offre recommandée */}
+                {offre.featured ? (
+                  <span className="bg-terracotta text-mocha-fg absolute top-5 right-5 z-[2] inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
+                    {isFr ? "Pour bien démarrer" : "Best starting point"}
+                  </span>
+                ) : null}
 
                 {/* Filet couleur en haut */}
-                <span
-                  aria-hidden="true"
-                  className={cn(
-                    "block h-2 w-full",
-                    isQuote ? "bg-terracotta-deep" : "bg-terracotta",
-                  )}
-                />
+                <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
 
-                {/* Badge palier XXL — accroche visuelle dominante.
-                    Padding réduit sur sm (4 cards serrées) pour économiser
-                    la verticale, étendu sur md+ pour silhouette portrait. */}
-                <div
-                  className={cn(
-                    "relative flex items-center justify-center py-8 sm:py-9 md:py-14",
-                    isQuote ? "bg-terracotta-soft/65" : "bg-terracotta-soft/45",
-                  )}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "font-display text-[clamp(3.75rem,8vw,6rem)] leading-none font-bold tracking-tight tabular-nums transition-transform duration-200 group-hover/duration:scale-110",
-                      isQuote ? "text-terracotta-deep" : "text-terracotta-deep",
-                    )}
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {d.shortFr}
-                  </span>
-                </div>
-
-                {/* Contenu textuel — enrichi de 3 features pour donner de
-                    la consistance au-delà du simple badge + compteur. */}
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <h2 className="text-fg text-lg leading-tight font-semibold sm:text-xl">
-                    {isFr ? d.labelFr : d.labelEn}
+                  <h2 className="text-fg pr-8 text-xl leading-tight font-semibold sm:text-2xl">
+                    {offre.titreFr}
                   </h2>
-                  <p className="text-fg-soft mt-2 text-[13.5px] leading-relaxed">
-                    {isFr ? d.durationDetailFr : d.durationDetailEn}
+                  <p className="text-terracotta-deep mt-1.5 text-[14px] leading-snug font-semibold">
+                    {offre.benefitFr}
+                  </p>
+                  <p className="text-fg-soft mt-3 text-[13.5px] leading-relaxed">{offre.pitchFr}</p>
+
+                  {/* Formats & prix — dérivés de la matrice (jamais en dur).
+                      `formatAmount` NON-compact porte déjà « € HT ». */}
+                  <ul className="border-border mt-5 space-y-2 border-t pt-4">
+                    {offre.formats.map((f) => {
+                      const price = getFormationV2EntryPrice(f);
+                      return (
+                        <li
+                          key={f.id}
+                          className="text-fg flex items-baseline justify-between gap-3 text-[13.5px]"
+                        >
+                          <span className="text-fg-soft font-medium">{dureeLabelFr(f)}</span>
+                          <span className="font-semibold tabular-nums">
+                            {typeof price === "number"
+                              ? formatAmount(price, "fr")
+                              : isFr
+                                ? "Sur devis"
+                                : "On quote"}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <p className="text-fg-muted mt-2 text-[12px]">
+                    {isFr
+                      ? "Prix par groupe · jusqu'à 15 participants"
+                      : "Per group · up to 15 people"}
                   </p>
 
-                  {/* 3 features visuelles — point coloré + texte court.
-                      Donnent une idée concrète de « ce qu'on y fait ». */}
-                  <ul className="mt-5 space-y-2">
-                    {featureLabels.map((feat, i) => (
-                      <li
-                        key={i}
-                        className="text-fg flex items-start gap-2.5 text-[13px] leading-snug"
-                      >
-                        <span
-                          aria-hidden="true"
-                          className={cn(
-                            "mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
-                            isQuote ? "bg-terracotta-deep" : "bg-terracotta",
-                          )}
-                        />
-                        <span className="font-medium">{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Métadonnée compteur — pill séparée, ressort comme indicateur de stock */}
-                  <div
-                    className={cn(
-                      "mt-5 inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[12px] font-semibold",
-                      isQuote
-                        ? "bg-terracotta-soft text-terracotta-deep"
-                        : isEmpty
-                          ? "bg-paper border-border text-fg-muted border"
-                          : "bg-terracotta-soft text-terracotta-deep",
-                    )}
-                  >
-                    {isQuote ? (
-                      <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
-                    ) : (
-                      <Users aria-hidden="true" className="h-3.5 w-3.5" />
-                    )}
-                    <span>{isFr ? metaFr : metaEn}</span>
-                  </div>
-
-                  {/* Bouton CTA plein large — fait clairement "BLOC CLIQUABLE" */}
-                  <div className="relative z-[2] mt-auto pt-6">
+                  {/* CTA fiche (+ lien 2ᵉ format pour « bien commencer ») */}
+                  <div className="mt-auto pt-6">
                     <Link
-                      href={href as never}
-                      className={cn(
-                        "inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors",
-                        isQuote
-                          ? "bg-terracotta-deep text-mocha-fg hover:bg-terracotta-deep/85"
-                          : "bg-terracotta text-mocha-fg hover:bg-terracotta-deep",
-                      )}
+                      href={`/formations/${primary.slugFr}` as never}
+                      className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors"
                     >
-                      <span>{isFr ? ctaLabelFr : ctaLabelEn}</span>
+                      <span>{isFr ? "Découvrir la formation" : "See the training"}</span>
                       <ArrowRight
                         aria-hidden="true"
-                        className="h-4 w-4 transition-transform duration-200 group-hover/duration:translate-x-1"
+                        className="h-4 w-4 transition-transform duration-200 group-hover/offre:translate-x-1"
                       />
                     </Link>
+                    {secondary ? (
+                      <p className="mt-3 text-center text-[12.5px]">
+                        <Link
+                          href={`/formations/${secondary.slugFr}` as never}
+                          className="text-terracotta hover:text-terracotta-deep font-semibold underline-offset-4 hover:underline"
+                        >
+                          {isFr
+                            ? "Existe aussi en journée complète"
+                            : "Also available as a full day"}
+                        </Link>
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </article>
@@ -599,24 +522,90 @@ export default async function FormationsHub({ params }: Props) {
           })}
         </div>
 
-        {/* Lien grille tarifaire — Will 2026-07-17. Le hub annonce « dès X € »
-            (hero + FAQ prix) sans porter la matrice gamme × durée × effectif :
-            elle vit sur /formations/tarifs. Ce lien est aussi le seul lien HTML
-            entrant de cette page depuis que « Voir les tarifs » du méga-menu
-            pointe sur le récap multi-modules /tarifs — sans lui, elle est
-            orpheline (sitemap/llms.txt seuls). Posé sous les 4 cards durée, là
-            où la question « combien ça coûte ? » se pose.
-            href littéral typé (routing.ts) — pas de cast `as never`. */}
+        {/* 2 CTA CATÉGORIES — formations par métier / par secteur d'activité.
+            Chaque carte ouvre la page listing dédiée (toutes les formations de
+            la catégorie), qui elle-même mène aux fiches. */}
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6">
+          {(
+            [
+              {
+                key: "metiers",
+                href: "/formations/metiers",
+                count: metiers.length,
+                labelFr: metiersMeta?.labelFr ?? "Formations par métier",
+                taglineFr:
+                  metiersMeta?.taglineFr ?? "L'IA appliquée aux tâches réelles de chaque fonction.",
+                axes: metiers,
+                ctaFr: "Voir les formations par métier",
+                ctaEn: "See role-specific trainings",
+              },
+              {
+                key: "secteurs",
+                href: "/formations/secteurs",
+                count: secteurs.length,
+                labelFr: secteursMeta?.labelFr ?? "Formations par secteur d'activité",
+                taglineFr:
+                  secteursMeta?.taglineFr ?? "L'IA appliquée aux réalités de votre secteur.",
+                axes: secteurs,
+                ctaFr: "Voir les formations par secteur",
+                ctaEn: "See industry-specific trainings",
+              },
+            ] as const
+          ).map((cat) => (
+            <article
+              key={cat.key}
+              className="group/cat bg-sand border-terracotta-deep/40 hover:border-terracotta-deep shadow-subtle relative flex h-full flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(180,80,40,0.30)]"
+            >
+              <span aria-hidden="true" className="bg-terracotta-deep block h-2 w-full" />
+              <div className="flex flex-1 flex-col p-6 sm:p-7">
+                <div className="bg-terracotta-soft text-terracotta-deep inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[12px] font-semibold">
+                  <Users aria-hidden="true" className="h-3.5 w-3.5" />
+                  <span>
+                    {cat.count} {isFr ? "formations" : "trainings"}
+                  </span>
+                </div>
+                <h2 className="text-fg mt-4 text-xl leading-tight font-semibold sm:text-2xl">
+                  {cat.labelFr}
+                </h2>
+                <p className="text-fg-soft mt-2 text-[13.5px] leading-relaxed">{cat.taglineFr}</p>
+
+                {/* Axes couverts — pills dérivées du catalogue (axeLabelFr) */}
+                <ul className="mt-4 flex flex-wrap gap-1.5">
+                  {cat.axes.map((f) => (
+                    <li
+                      key={f.id}
+                      className="bg-paper border-border text-fg rounded-full border px-2.5 py-1 text-[11.5px] font-medium"
+                    >
+                      {f.axeLabelFr ?? f.titreFr}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="relative z-[2] mt-auto pt-6">
+                  <Link
+                    href={cat.href as never}
+                    className="bg-terracotta-deep text-mocha-fg hover:bg-terracotta-deep/85 inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors"
+                  >
+                    <span>{isFr ? cat.ctaFr : cat.ctaEn}</span>
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="h-4 w-4 transition-transform duration-200 group-hover/cat:translate-x-1"
+                    />
+                  </Link>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Lien grille tarifaire — la page /formations/tarifs porte les 3
+            tableaux (catégorie × durée). href littéral typé (routing.ts). */}
         <p className="mt-8 text-center">
           <Link
             href="/formations/tarifs"
             className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
           >
-            {/* `essentielleEntry` est un formatAmount() NON-compact : il porte
-                déjà « € HT » / « (excl. VAT) ». Ne pas resuffixer. */}
-            {isFr
-              ? "Formations sur devis — comprendre notre tarification"
-              : "Trainings on quote — how our pricing works"}
+            {isFr ? "Voir tous les tarifs en détail" : "See all prices in detail"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </p>
@@ -888,6 +877,53 @@ export default async function FormationsHub({ params }: Props) {
         </Container>
       </Section>
 
+      {/* SÉMINAIRE — À PART (décision Will 2026-07-19) : conservé hors des
+          catégories du catalogue, rubrique dédiée. Fiche et offre inchangées
+          (seminaire-ia-toute-l-entreprise-1j, jusqu'à 50 participants). */}
+      {seminaire ? (
+        <Section
+          eyebrow={isFr ? "Et pour toute l'entreprise ?" : "For the whole company?"}
+          title={isFr ? "Le séminaire IA" : "The AI seminar"}
+          titleEm={isFr ? "qui fédère toutes vos équipes" : "that unites all your teams"}
+          contentClassName={TIGHT_X}
+        >
+          <Container>
+            <article className="bg-paper border-primary/30 hover:border-primary shadow-subtle hover:shadow-card mx-auto flex max-w-3xl flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
+              <span aria-hidden="true" className="bg-primary block h-2 w-full" />
+              <div className="flex flex-col gap-4 p-7 sm:p-8">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="bg-primary-soft text-primary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[12px] font-semibold">
+                    <Users aria-hidden="true" className="h-3.5 w-3.5" />
+                    {isFr ? "Jusqu'à 50 participants" : "Up to 50 participants"}
+                  </span>
+                  <span className="bg-primary-soft text-primary inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-semibold">
+                    {isFr ? "1 journée · présentiel · sur devis" : "1 day · on site · on quote"}
+                  </span>
+                </div>
+                <h3 className="text-fg text-2xl leading-tight font-semibold tracking-tight">
+                  {seminaire.titreFr}
+                </h3>
+                <p className="text-fg-soft text-[15px] leading-relaxed">{seminaire.accrocheFr}</p>
+                <p className="text-fg-soft text-[14px] leading-relaxed">
+                  {isFr
+                    ? "Distinct des formations en groupe de 15 : une journée pour poser un socle commun, cartographier les usages réels de l'entreprise et repartir avec des règles et des engagements par service."
+                    : "Distinct from the 15-person trainings: one day to build a common base, map real usage across the company and leave with rules and commitments per department."}
+                </p>
+                <div className="pt-2">
+                  <Link
+                    href={`/formations/${seminaire.slugFr}` as never}
+                    className="bg-primary text-primary-fg hover:bg-primary-hover inline-flex items-center gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors"
+                  >
+                    {isFr ? "Découvrir le séminaire" : "Discover the seminar"}
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </article>
+          </Container>
+        </Section>
+      ) : null}
+
       {/* SECTION FORMATEUR — Sprint 2026-05-28 (Will). Pattern home « Section
           Fondateur » adapté formation IA : crédibilité du formateur (Williams
           ou un membre de son équipe) placé juste après le bloc Formation
@@ -1155,27 +1191,29 @@ export default async function FormationsHub({ params }: Props) {
               isFr
                 ? [
                     {
-                      // Prix dérivé du SSOT catalogue (getFormationCatalogPriceRange),
-                      // JAMAIS hardcodé — même valeur que le « Dès … » du hero pour
-                      // rester cohérent sur la page (audit FAQ prix 2026-07-06).
+                      // Prix dérivés du SSOT catalogue (matrice pricing.ts),
+                      // JAMAIS hardcodés — cohérents avec les cartes plus haut.
                       id: "prix-formation-ia",
                       question: "Combien coûte une formation IA en entreprise ?",
-                      // Will 2026-07-17 — disait « la grille complète figure plus
-                      // haut sur cette page » : faux, le hub ne porte aucune
-                      // grille (elle vit sur /formations/tarifs).
-                      answer: `Toutes nos formations sont sur devis, tarifé par groupe — jamais par personne. Le devis dépend de la durée (de ${dureeShortFirst} à ${dureeShortLast}), de la gamme (${gammesList}) et de la taille du groupe. Il est établi sous 24-48 h après un premier échange, et validé avant toute inscription.`,
+                      answer: `Nos prix sont publics et tarifés par groupe (2 à 15 participants) — jamais par personne. Offres générales dès ${minPriceLabel} (4 h) ; formations par métier dès ${formatAmount(1900, "fr")} la journée ; formations par secteur d'activité dès ${formatAmount(2200, "fr")} la journée. Le détail complet figure sur la page tarifs.`,
                     },
                     {
                       id: "effectif",
                       question: "Combien de participants par session ?",
                       answer:
-                        "Selon le palier : le format 1 jour accueille 2-30 personnes en 3 tranches tarifaires (2-8, 9-15, 16-30). Le format 2 jours idem. Format 4 h : 2-20 personnes prix fixe. Au-delà de 30 personnes, on bascule sur conférence (sur devis).",
+                        "Jusqu'à 15 participants par groupe, au même prix — le tarif est par groupe, pas par personne. Pour réunir toute l'entreprise le même jour (jusqu'à 50 personnes), c'est le séminaire IA, présenté plus haut, qui prend le relais.",
                     },
                     {
-                      id: "duree",
-                      question: "Quelle durée choisir ?",
+                      id: "quelle-formation",
+                      question: "Quelle formation choisir ?",
                       answer:
-                        "4 h pour découvrir l'IA ou cadrer 1 cas d'usage. 1 jour pour une découverte opérationnelle. 1 jour productivité pour des automatisations métier ciblées. 2 jours pour aller en profondeur. 3 jours+ pour multi-sites ou contenus ultra-spécifiques.",
+                        "Si vous ne savez pas par où commencer : « IA pour bien commencer » est le point d'entrée naturel (4 h ou 1 journée). Ensuite, choisissez selon votre besoin : « IA pour les équipes » pour installer une pratique commune, « IA pour l'automatisation » pour vos premières automatisations, ou une formation dédiée à votre métier (RH, marketing, commercial…) ou à votre secteur (santé, BTP, industrie…).",
+                    },
+                    {
+                      id: "scindable",
+                      question: "Les formations de 2 jours sont-elles scindables ?",
+                      answer:
+                        "Oui : toutes les formations de 2 jours (automatisation, production, IT, industrie) sont scindables en 2 sessions d'une journée — par exemple à une ou deux semaines d'intervalle, ce qui laisse le temps de pratiquer entre les deux.",
                     },
                     {
                       id: "outils",
@@ -1188,7 +1226,7 @@ export default async function FormationsHub({ params }: Props) {
                       question:
                         "Vos formations IA sont-elles disponibles à Paris et en Île-de-France ?",
                       answer:
-                        "Oui. Paris et l'Île-de-France sont notre premier terrain d'intervention. Les 4 formats durée (4 h, 1 jour, 2 jours, 3 jours+) sont accessibles dans les arrondissements parisiens et la première couronne (La Défense, Issy, Boulogne, Levallois, Neuilly). Même tarif public qu'en région.",
+                        "Oui. Paris et l'Île-de-France sont notre premier terrain d'intervention. Toutes les formations du catalogue (générales, par métier, par secteur) sont accessibles dans les arrondissements parisiens et la première couronne (La Défense, Issy, Boulogne, Levallois, Neuilly). Même tarif public qu'en région.",
                     },
                     {
                       id: "couverture-france",
@@ -1218,23 +1256,28 @@ export default async function FormationsHub({ params }: Props) {
                   ]
                 : [
                     {
-                      // Price derived from the catalogue SSOT, never hardcoded —
-                      // same value as the hero "From …" (2026-07-06 price-FAQ audit).
+                      // Price derived from the catalogue SSOT, never hardcoded.
                       id: "prix-formation-ia",
                       question: "How much does corporate AI training cost?",
-                      answer: `All our trainings are on quote, priced per group — never per person. The quote depends on the format (${nbDureeFormats} durations from ${dureeShortFirst} to ${dureeShortLast}), the track (${gammesList}) and the group size. It is issued within 24-48 h after a first call, and validated before any enrolment.`,
+                      answer: `Our prices are public and set per group (2-15 participants) — never per person. General offers from ${formatAmount(getFormationCatalogPriceRange().minEur, "en")} (4 h); role-specific trainings from ${formatAmount(1900, "en")} per day; industry-specific trainings from ${formatAmount(2200, "en")} per day. Full details on the pricing page.`,
                     },
                     {
                       id: "headcount",
                       question: "How many participants per session?",
                       answer:
-                        "Depending on the tier: the one-day format hosts 2-30 people in 3 price brackets (2-8, 9-15, 16-30). The two-day format same. 4 h format: 2-20 people flat price. Beyond 30, we switch to conference (on quote).",
+                        "Up to 15 participants per group, same price — pricing is per group, not per person. To gather the whole company on the same day (up to 50 people), the AI seminar takes over.",
                     },
                     {
-                      id: "duration",
-                      question: "Which duration to choose?",
+                      id: "which-training",
+                      question: "Which training to choose?",
                       answer:
-                        "4 h to discover AI or frame 1 use case. 1 day for operational discovery. 1 day productivity for targeted business automations. 2 days for depth. 3+ days for multi-site or ultra-specific content.",
+                        "If you don't know where to start: 'AI for getting started' is the natural entry point (4 h or a full day). Then pick by need: 'AI for teams' for a shared practice, 'AI for automation' for your first automations, or a training dedicated to your role (HR, marketing, sales…) or your industry (healthcare, construction, industry…).",
+                    },
+                    {
+                      id: "splittable",
+                      question: "Can the 2-day trainings be split?",
+                      answer:
+                        "Yes: all 2-day trainings (automation, operations, IT, industry) can be split into two 1-day sessions — for instance one or two weeks apart, leaving time to practice in between.",
                     },
                     {
                       id: "tools",
@@ -1246,7 +1289,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "coverage-paris",
                       question: "Are your AI trainings available in Paris and Greater Paris?",
                       answer:
-                        "Yes. Paris and Greater Paris are our top engagement ground. The 4 duration formats (4 h, 1 day, 2 days, 3 days+) are accessible in Paris arrondissements and inner suburbs (La Défense, Issy, Boulogne, Levallois, Neuilly). Same public pricing as regions.",
+                        "Yes. Paris and Greater Paris are our top engagement ground. Every training in the catalogue (general, role-specific, industry-specific) is accessible in Paris arrondissements and inner suburbs (La Défense, Issy, Boulogne, Levallois, Neuilly). Same public pricing as regions.",
                     },
                     {
                       id: "coverage-france",

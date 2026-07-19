@@ -114,9 +114,7 @@ export const GRILLE_V2_CRITERES: GrilleCriteres = [
 
 // ── Seed ──────────────────────────────────────────────────────────────────────
 
-export async function seedGrilleV2(
-  prisma: Prisma.TransactionClient | PrismaClient,
-): Promise<void> {
+export async function seedGrilleV2(prisma: Prisma.TransactionClient | PrismaClient): Promise<void> {
   const CLE = "grille_qualite_v2";
 
   const existing = await prisma.grilleQualiteConfig.findUnique({

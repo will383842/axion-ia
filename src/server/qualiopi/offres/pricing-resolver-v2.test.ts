@@ -1,12 +1,15 @@
 /**
- * Croisement offres catalogue V2 ✕ resolver ✕ matrice prix.
- * Chaque formation du catalogue résout un prix « À partir de … » via le resolver
- * (gamme + durée → FORMATION_PRICE_MATRIX). Garantit que le seed offres-v2 (qui
- * dérive du même catalogue) aura toujours un prix résoluble en admin/fiche.
+ * Croisement offres catalogue ✕ resolver ✕ matrice prix (refonte 2026-07-19).
+ * Chaque formation catégorisée résout un prix FIXE via le resolver — la colonne
+ * DB `OffreSite.gamme` porte la CATÉGORIE (« generale » | « metier » |
+ * « secteur ») + `dureeCode` → FORMATION_PRICE_MATRIX. Garantit que le seed
+ * offres-v2 (qui dérive du même catalogue) aura toujours un prix résoluble en
+ * admin/fiche. Les offres archivées (anciennes gammes « ia-standard »…) ne
+ * résolvent plus → « Sur devis ».
  */
 
 import { describe, it, expect } from "vitest";
-import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
+import { getFormationsV2, getSeminairesV2 } from "@/content/formations/catalog-v2";
 import { formatAmount, getFormationEntryPrice } from "@/content/pricing";
 import {
   resolveOffrePrice,
@@ -15,26 +18,31 @@ import {
   verifyOffreCoherence,
 } from "@/server/qualiopi/offres/pricing-resolver";
 
-describe("resolver V2 — prix catalogue dérivé de la matrice", () => {
-  it("chaque formation résout « À partir de X € HT » via gamme+durée", () => {
-    for (const f of FORMATIONS_V2) {
-      const entry = getFormationEntryPrice(f.gamme, f.duree);
+describe("resolver — prix catalogue dérivé de la matrice (catégorie + durée)", () => {
+  it("chaque formation catégorisée résout son prix fixe « X € HT »", () => {
+    for (const f of getFormationsV2()) {
+      const entry = getFormationEntryPrice(f.categorie!, f.duree);
       expect(entry, `${f.id}`).toBeGreaterThan(0);
-      const label = resolveOffrePriceLabelV2(f.gamme, f.duree, "fr");
-      expect(label, f.id).toBe(`À partir de ${formatAmount(entry!, "fr")}`);
+      const label = resolveOffrePriceLabelV2(f.categorie!, f.duree, "fr");
+      expect(label, f.id).toBe(formatAmount(entry!, "fr"));
       // formatAmount inclut déjà « € HT » → jamais de double suffixe « HT HT ».
       expect(label, f.id).not.toContain("HT HT");
     }
   });
 
-  it("resolveOffrePrice route les offres V2 (tierId null) vers la matrice", () => {
-    for (const f of FORMATIONS_V2) {
+  it("resolveOffrePrice route les offres catalogue (tierId null) vers la matrice", () => {
+    for (const f of getFormationsV2()) {
       const viaOffre = resolveOffrePrice(
-        { tierId: null, gamme: f.gamme, dureeCode: f.duree },
+        { tierId: null, gamme: f.categorie!, dureeCode: f.duree },
         "fr",
       );
-      expect(viaOffre, f.id).toBe(resolveOffrePriceLabelV2(f.gamme, f.duree, "fr"));
+      expect(viaOffre, f.id).toBe(resolveOffrePriceLabelV2(f.categorie!, f.duree, "fr"));
     }
+  });
+
+  it("les anciennes gammes (offres archivées) ne résolvent plus → Sur devis", () => {
+    expect(resolveOffrePriceLabelV2("ia-standard", "1j", "fr")).toBe("Sur devis");
+    expect(resolveOffrePriceLabelV2("claude", "2j", "fr")).toBe("Sur devis");
   });
 
   it("resolveOffrePrice route les offres legacy (gamme null) vers tierId/pricing.ts", () => {
@@ -53,32 +61,43 @@ describe("resolver V2 — prix catalogue dérivé de la matrice", () => {
     );
   });
 
-  it("gamme/durée inconnus = Sur devis", () => {
+  it("catégorie/durée inconnues = Sur devis", () => {
     expect(resolveOffrePriceLabelV2("inexistant", "9j", "fr")).toBe("Sur devis");
   });
 
-  it("tarifType sur_devis PRIME sur la matrice (offre AXION)", () => {
-    for (const f of FORMATIONS_V2) {
+  it("tarifType sur_devis PRIME sur la matrice (séminaire)", () => {
+    for (const s of getSeminairesV2()) {
       const label = resolveOffrePrice(
-        { tierId: null, gamme: f.gamme, dureeCode: f.duree, tarifType: "sur_devis" },
+        { tierId: null, gamme: "seminaire", dureeCode: s.duree, tarifType: "sur_devis" },
         "fr",
       );
-      expect(label, f.id).toBe("Sur devis");
+      expect(label, s.id).toBe("Sur devis");
     }
     expect(
       resolveOffrePrice(
-        { tierId: null, gamme: "ia-standard", dureeCode: "1j", tarifType: "sur_devis" },
+        { tierId: null, gamme: "generale", dureeCode: "1j", tarifType: "sur_devis" },
         "en",
       ),
     ).toBe("On quote");
   });
 
-  it("verifyOffreCoherence : sur_devis = cohérent sans exigence matrice", () => {
+  it("verifyOffreCoherence : catégorie+durée résolubles = cohérent ; sur_devis toujours cohérent", () => {
+    for (const f of getFormationsV2()) {
+      expect(
+        verifyOffreCoherence({
+          tierId: null,
+          tarifType: "fixe",
+          gamme: f.categorie!,
+          dureeCode: f.duree,
+        }).ok,
+        f.id,
+      ).toBe(true);
+    }
     expect(
       verifyOffreCoherence({
         tierId: null,
         tarifType: "sur_devis",
-        gamme: "ia-standard",
+        gamme: "seminaire",
         dureeCode: "1j",
       }).ok,
     ).toBe(true);

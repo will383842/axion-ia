@@ -27,11 +27,13 @@ import {
   MAINTENANCE_TIERS,
   formatPrice,
   formatAmount,
+  getFormationCatalogPriceRange,
   getTierById,
   getEntryPriceEur,
   type PricingTier,
   formatTierPrice,
 } from "@/content/pricing";
+import { getFormationsV2 } from "@/content/formations/catalog-v2";
 
 // Sprint Header refonte 2026-05-24 (Will). Page récap tarifs multi-modules.
 // Source de vérité unique = `pricing.ts` — aucun prix hardcodé ici. Tout
@@ -135,8 +137,8 @@ export default async function PricingPage({ params }: Props) {
   const heroTitle = isFr ? "Nos tarifs IA en" : "Our AI pricing in";
   const heroTitleEm = isFr ? "clair" : "plain sight";
   const heroDesc = isFr
-    ? "Audits, Implémentations et 1-to-1 à prix publics HT, sans étoile ni surprise — et des formations sur devis, tarifées par groupe, avec un devis clair sous 24-48 h."
-    : "Audits, Implementations and 1-to-1 at public prices excl. VAT, no asterisk, no surprise — and trainings on quote, priced per group, with a clear quote within 24-48 h.";
+    ? "Formations, Audits, Implémentations et 1-to-1 à prix publics HT, sans étoile ni surprise. Les formations sont tarifées par groupe (2 à 15 participants), jamais par personne."
+    : "Trainings, Audits, Implementations and 1-to-1 at public prices excl. VAT, no asterisk, no surprise. Trainings are priced per group (2-15 people), never per person.";
 
   // — Séparation nette collectif vs 1-to-1 (parité /fr/formations vs /fr/un-a-un).
   // `INTERVENTION_TIERS` mélange les formats collectifs ET le coaching 1-to-1
@@ -192,22 +194,29 @@ export default async function PricingPage({ params }: Props) {
     },
   ];
 
-  // Module formations — 100 % SUR DEVIS depuis la refonte AXION (PR 327 et 339) :
-  // les 15 fiches sont `surDevis`, cette page ne doit plus afficher les anciens
-  // tiers chiffrés (décision Will 2026-07-17). Même patron que la plateforme.
+  // Module formations — PRIX PUBLICS depuis la refonte catalogue 2026-07-19
+  // (décision Will) : prix fixes par groupe (2 à 15 participants), dérivés de
+  // la matrice catégorie × durée (getFormationCatalogPriceRange — jamais en dur).
+  const formationsRange = getFormationCatalogPriceRange();
+  const formationsCount = getFormationsV2().length;
   const formationsSection = {
     id: "formations",
     href: "/formations",
     eyebrow: isFr ? "Montée en compétence" : "Upskilling",
     title: isFr ? "Formations IA en entreprise" : "Corporate AI trainings",
     description: isFr
-      ? "15 formations, de 4 h à 3 jours, générales et métier — intra-entreprise, dans vos locaux ou à distance, jusqu\u2019à 15 participants (séminaire : 50)."
-      : "15 trainings, 4 h to 3 days, general and role-specific — in-house, on site or remote, up to 15 participants (seminar: 50).",
-    quoteLabel: isFr ? "Sur devis · tarifé par groupe" : "On quote · priced per group",
+      ? `${formationsCount} formations, de 4 h à 2 jours — offres générales, par métier et par secteur d'activité. Intra-entreprise, dans vos locaux ou à distance, jusqu'à 15 participants (séminaire : 50).`
+      : `${formationsCount} trainings, 4 h to 2 days — general, role-specific and industry-specific. In-house, on site or remote, up to 15 participants (seminar: 50).`,
+    // `formatAmount` non-compact porte déjà « € HT » — ne pas resuffixer.
+    quoteLabel: isFr
+      ? `De ${formatAmount(formationsRange.minEur, "fr")} à ${formatAmount(formationsRange.maxEur, "fr")} · par groupe`
+      : `From ${formatAmount(formationsRange.minEur, "en")} to ${formatAmount(formationsRange.maxEur, "en")} · per group`,
     detail: isFr
-      ? "Le tarif se construit sur trois facteurs — la durée, la gamme et la taille du groupe — jamais par personne. Devis détaillé sous 24-48 h après un premier échange, validé avant toute inscription."
-      : "Pricing is built on three factors — duration, track and group size — never per person. Detailed quote within 24-48 h after a first call, validated before any enrolment.",
-    ctaLabel: isFr ? "Voir les 15 formations" : "See the 15 trainings",
+      ? "Prix fixes et publics, par groupe de 2 à 15 participants — jamais par personne. La grille complète (générales, métiers, secteurs) est sur la page tarifs formations ; le séminaire (jusqu'à 50 personnes) est sur devis."
+      : "Fixed public prices, per group of 2-15 participants — never per person. The full grid (general, roles, industries) is on the training pricing page; the seminar (up to 50 people) is on quote.",
+    ctaLabel: isFr
+      ? `Voir les ${formationsCount} formations`
+      : `See the ${formationsCount} trainings`,
   };
 
   // Module plateforme web/SaaS — sur devis pur (pas de tiers pricing.ts).
@@ -242,8 +251,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer:
-            "Toutes nos formations sont sur devis, tarifé par groupe — jamais par personne. Le devis dépend de la durée (4 h à 3 jours), de la gamme et de la taille du groupe (jusqu\u2019à 15 participants). Il est établi sous 24-48 h après un premier échange, et validé avant toute inscription.",
+          answer: `Nos prix formations sont publics et fixes, par groupe de 2 à 15 participants — jamais par personne : de ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} (offre générale 4 h) à ${formatAmount(getFormationCatalogPriceRange().maxEur, "fr")} (formation sectorielle 2 jours). La grille complète par catégorie est sur la page tarifs formations ; le séminaire (jusqu'à 50 personnes) est sur devis.`,
         },
         {
           id: "tarifs-publics",
@@ -274,8 +282,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
-          answer:
-            "All our trainings are on quote, priced per group — never per person. The quote depends on duration (4 h to 3 days), track and group size (up to 15 participants). It is issued within 24-48 h after a first call, and validated before any enrolment.",
+          answer: `Our training prices are public and fixed, per group of 2-15 participants — never per person: from ${formatAmount(getFormationCatalogPriceRange().minEur, "en")} (general 4 h offer) to ${formatAmount(getFormationCatalogPriceRange().maxEur, "en")} (2-day industry training). The full grid is on the training pricing page; the seminar (up to 50 people) is on quote.`,
         },
         {
           id: "tarifs-publics",

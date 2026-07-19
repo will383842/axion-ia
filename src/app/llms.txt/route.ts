@@ -16,7 +16,12 @@
 // Preuve & méthode, Connaissances & contenu, Implantations géographiques,
 // Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import {
+  INTERVENTION_TIERS,
+  formatAmount,
+  getFormationCatalogPriceRange,
+  getTierById,
+} from "@/content/pricing";
 import { SERVICE_BY_ID } from "@/content/services";
 import { SITE_URL } from "@/lib/seo";
 
@@ -25,15 +30,14 @@ export const runtime = "edge";
 // HTTP `Cache-Control` (1h fresh + 24h SWR) below for CDN caching.
 
 export function GET() {
-  const essentiellePrice = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-    "fr",
-    { compact: true },
-  );
   const coachingPrice = formatAmount(
     getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
     "fr",
   );
+  // Prix d'entrée catalogue formations — dérivé de la matrice (jamais en dur).
+  const formationsMinPrice = formatAmount(getFormationCatalogPriceRange().minEur, "fr", {
+    compact: true,
+  });
   // Phase B (divulgation publique OF). Route edge sans DB → on lit l'env flag
   // OF_PUBLIC_DISCLOSURE_ENABLED directement (le helper serveur dédié n'est pas
   // importable ici : edge runtime + cloisonnement). Bloc omis tant que la Phase A
@@ -57,7 +61,7 @@ export function GET() {
 
 ## Modules — 4 prestations
 
-- [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — 17 formations intra-entreprise sur site (4 h à 3 jours), à partir de ${essentiellePrice}. Tarifs HT par groupe : ${SITE_URL}/fr/formations/tarifs.
+- [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — formations intra-entreprise sur site ou à distance : offres générales, par métier (${SITE_URL}/fr/formations/metiers) et par secteur d'activité (${SITE_URL}/fr/formations/secteurs), 4 h à 2 jours, dès ${formationsMinPrice} par groupe (2-15 pers.). Tarifs HT : ${SITE_URL}/fr/formations/tarifs.
 - [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
 - [${SERVICE_BY_ID.implementation.officialFr}](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
 - [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.${qualiopiSection}

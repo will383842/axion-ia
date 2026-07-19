@@ -1,9 +1,9 @@
-// Server Component — card unitaire pour une formation du catalogue V2.
+// Server Component — card unitaire pour une formation du catalogue.
 // Jumelle visuelle de `InterventionFormatCard` (même design exact : filet
-// couleur, bandeau prix + effectif, badge audience, titre, accroche, CTA),
-// mais alimentée par `FormationV2` (catalog-v2) et NON couplée au calendrier
-// de réservation (les 17 formations ne sont pas encore bookables — task 8).
-// Mono-axe durée : la gamme est rendue comme accent + badge audience.
+// couleur, bandeau prix + effectif, badges, titre, accroche, CTA), alimentée
+// par `FormationV2` (catalog-v2), NON couplée au calendrier de réservation.
+// Refonte 2026-07-19 : prix FIXE public par groupe (plus de « À partir de »),
+// badge = axe métier/secteur (ou catégorie), badge durée (scindable inclus).
 
 import type { ReactNode } from "react";
 import { ArrowRight, Check, Mail } from "lucide-react";
@@ -15,7 +15,8 @@ import {
   getFormationV2Brackets,
   getFormationV2EntryPrice,
 } from "@/content/formations/catalog-v2";
-import { getGammeMeta } from "@/content/formations/catalog-v2-meta";
+import { getCategorieMeta, getGammeMeta } from "@/content/formations/catalog-v2-meta";
+import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 
 // Accent visuel par gamme (sous-ensemble de FormatAccent — terracotta / sage /
@@ -92,10 +93,19 @@ export function FormationFormatCard({ formation: f, locale }: Props): ReactNode 
   const href = `/formations/${f.slugFr}`;
   const ctaLabel = isFr ? "Voir le programme" : "See the programme";
 
+  // Prix FIXE public par groupe (refonte 2026-07-19) — `formatAmount`
+  // non-compact porte déjà « € HT », ne pas resuffixer.
   const entryPrice = getFormationV2EntryPrice(f);
-  const priceLabel = entryPrice ? `À partir de ${formatAmount(entryPrice, "fr")}` : "Sur devis";
+  const priceLabel = entryPrice ? formatAmount(entryPrice, "fr") : "Sur devis";
   const groupSize = groupSizeLabel(getFormationV2Brackets(f));
-  const topBadge = f.featured ? "À la une" : gamme.labelFr;
+  // Badge principal : axe métier/secteur (« RH », « Santé »…), sinon catégorie.
+  const axeBadge = f.axeLabelFr ?? (f.categorie ? getCategorieMeta(f.categorie).shortFr : null);
+  const topBadge = f.featured ? "À la une" : (axeBadge ?? gamme.labelFr);
+  const dureeFacts = FORMATION_DUREE_FACTS[f.duree];
+  const dureeBadge =
+    f.duree === "4h"
+      ? dureeFacts.heuresLabelFr
+      : `${dureeFacts.joursLabelFr}${f.scindable ? " · scindable 2×1j" : ""}`;
 
   return (
     <article
@@ -152,7 +162,7 @@ export function FormationFormatCard({ formation: f, locale }: Props): ReactNode 
             acc.badge,
           )}
         >
-          {gamme.labelFr}
+          {dureeBadge}
         </span>
 
         <h3 className="text-fg mt-4 text-[clamp(1.4rem,2.2vw,1.875rem)] leading-tight font-semibold tracking-tight">

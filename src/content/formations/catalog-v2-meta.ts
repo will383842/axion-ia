@@ -6,7 +6,7 @@
 // page tarifs. Aucun prix en dur (les pages dérivent via les helpers pricing).
 // ============================================================================
 
-import type { FormationDuree, FormationGamme } from "../pricing";
+import type { FormationCategorie, FormationDuree, FormationGamme } from "../pricing";
 
 /**
  * Durée ISO 8601 par durée catalogue — pour `Course.hasCourseInstance.courseWorkload`.
@@ -23,7 +23,57 @@ export function formationDureeIso(duree: FormationDuree): string {
   return FORMATION_DUREE_ISO[duree];
 }
 
-// ── Durées (axe 1) ──────────────────────────────────────────────────────────
+// ── Catégories (axe de navigation principal — refonte 2026-07-19) ───────────
+
+export interface CategorieMeta {
+  id: FormationCategorie;
+  /** Segment d'URL du listing (`/formations/metiers`, `/formations/secteurs`).
+   *  `null` = pas de page listing dédiée (les générales vivent sur le hub). */
+  slug: "metiers" | "secteurs" | null;
+  labelFr: string;
+  /** Libellé court pour badges de carte. */
+  shortFr: string;
+  taglineFr: string;
+}
+
+export const FORMATION_CATEGORIES_META: ReadonlyArray<CategorieMeta> = [
+  {
+    id: "generale",
+    slug: null,
+    labelFr: "Offres générales",
+    shortFr: "Générale",
+    taglineFr:
+      "Le socle pour toute l'équipe : bien commencer, gagner du temps au quotidien, poser ses premières automatisations.",
+  },
+  {
+    id: "metier",
+    slug: "metiers",
+    labelFr: "Formations par métier",
+    shortFr: "Métier",
+    taglineFr:
+      "RH, marketing, commerciaux, finance, juridique, production, achats, relation client, IT : l'IA appliquée aux tâches réelles de chaque fonction.",
+  },
+  {
+    id: "secteur",
+    slug: "secteurs",
+    labelFr: "Formations par secteur d'activité",
+    shortFr: "Secteur",
+    taglineFr:
+      "Santé, BTP, immobilier, commerce, hôtellerie-restauration, industrie, transport, banque-assurance : l'IA appliquée aux réalités de votre secteur.",
+  },
+];
+
+export function getCategorieMeta(categorie: FormationCategorie): CategorieMeta {
+  const m = FORMATION_CATEGORIES_META.find((c) => c.id === categorie);
+  if (!m) throw new Error(`[catalog-v2-meta] catégorie inconnue : "${categorie}"`);
+  return m;
+}
+
+export function getCategorieMetaBySlug(slug: string): CategorieMeta | undefined {
+  return FORMATION_CATEGORIES_META.find((c) => c.slug === slug);
+}
+
+// ── Durées (badges / ISO JSON-LD — plus un axe de navigation) ───────────────
 
 export interface DureeMeta {
   id: FormationDuree;
@@ -194,27 +244,11 @@ export const SUR_MESURE: ReadonlyArray<SurMesureMeta> = [
       "Le programme complet bâti avec votre direction : multi-équipes, multi-sites, objectifs chiffrés.",
   },
   {
-    id: "automatisations-sur-mesure",
-    labelFr: "Automatisations Sur Mesure",
-    dureeFr: "2 à 3 jours",
-    gamme: "agents-automatisations",
-    descriptionFr:
-      "Vos automatisations prioritaires définies ensemble — que vos équipes construisent en formation, guidées pas à pas.",
-  },
-  {
-    id: "claude-sur-mesure",
-    labelFr: "Claude Sur Mesure",
-    dureeFr: "1 à 3 jours",
-    gamme: "claude",
-    descriptionFr:
-      "Votre déploiement Claude conçu avec vous : équipes, usages, configuration entreprise.",
-  },
-  {
     id: "formation-100-sur-mesure",
     labelFr: "Formation 100 % sur mesure",
-    dureeFr: "toute durée, toute gamme",
+    dureeFr: "toute durée, tout thème",
     descriptionFr:
-      "Nous construisons votre formation de A à Z : contenu, durée, format, équipes concernées — de la TPE au grand compte. Combinaisons de gammes possibles, multi-sites, secteurs réglementés.",
+      "Nous construisons votre formation de A à Z : contenu, durée, format, équipes concernées — de la TPE au grand compte. Combinaisons métier × secteur possibles, multi-sites, secteurs réglementés.",
   },
 ];
 

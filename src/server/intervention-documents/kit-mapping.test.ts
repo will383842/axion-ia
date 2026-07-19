@@ -240,19 +240,19 @@ describe("kit-mapping — 1-to-1 (un_a_un, kits AXION 16/17)", () => {
 describe("kit-mapping — kit AXION 2026 (arborescence par type)", () => {
   it("résout le dossier vers le slug V2 via le NUMÉRO du catalogue", () => {
     expect(resolveAxionSlug("01_Formation_Bien_demarrer_avec_lIA_4h")).toBe(
-      "bien-demarrer-avec-l-ia-4h",
+      "ia-pour-bien-commencer",
     );
-    expect(resolveAxionSlug("07_Formation_Claude_Code_Creer_un_projet_3j")).toBe(
-      "claude-code-creer-un-projet-3j",
+    expect(resolveAxionSlug("07_Formation_IA_pour_les_commerciaux_1j")).toBe(
+      "ia-pour-les-commerciaux",
     );
-    expect(resolveAxionSlug("15_Seminaire_IA_Toute_lentreprise_50pers")).toBe(
+    expect(resolveAxionSlug("22_Seminaire_IA_Toute_lentreprise_50pers")).toBe(
       "seminaire-ia-toute-l-entreprise-1j",
     );
   });
 
-  it("résout les 18 dossiers du catalogue réel vers un slug EXISTANT", () => {
-    // Le lien est le numéro : chaque dossier 01→18 doit tomber sur une formation.
-    for (let n = 1; n <= 18; n++) {
+  it("résout les 22 dossiers du catalogue réel vers un slug EXISTANT", () => {
+    // Le lien est le numéro : chaque dossier 01→22 doit tomber sur une formation.
+    for (let n = 1; n <= 22; n++) {
       const folder = `${String(n).padStart(2, "0")}_Formation_Peu_importe_le_nom`;
       const slug = resolveAxionSlug(folder);
       expect(slug, `dossier ${folder}`).toBeTruthy();
@@ -261,20 +261,20 @@ describe("kit-mapping — kit AXION 2026 (arborescence par type)", () => {
   });
 
   it("ne résout pas un dossier hors catalogue", () => {
-    // 99 = numéro hors plage catalogue (les numéros 16/17/18 sont désormais des
-    // formations : Supply chain, Conduite du changement, Déployer l'IA).
+    // 99 = numéro hors plage catalogue (refonte 2026-07-19 : numéros 1-21 =
+    // nouvelles formations, 22 = séminaire).
     expect(resolveAxionSlug("99_Formation_Inexistante")).toBeNull();
     expect(resolveAxionSlug("Formation_IA_Express")).toBeNull();
   });
 
   it("classe les documents d'une formation réelle vers les bons slots", () => {
-    const f = "04_Formation_Gagner_du_temps_au_quotidien_7h";
-    const slug = "gagner-du-temps-au-quotidien-avec-l-ia-7h";
+    const f = "04_Formation_IA_pour_lautomatisation_2j";
+    const slug = "ia-pour-l-automatisation";
     const cases: ReadonlyArray<[string, string, "source" | "pdf"]> = [
-      [`${f}/00_Programme/04_Gagner_du_temps_au_quotidien_7h.docx`, "programme", "source"],
+      [`${f}/00_Programme/04_IA_pour_lautomatisation_2j.docx`, "programme", "source"],
       [`${f}/00_Programme/Methode_AXION.docx`, "ressources", "source"],
       [
-        `${f}/01_Support_de_presentation/Axion-IA_Support_04_Gagner_du_temps_au_quotidien_7h.pptx`,
+        `${f}/01_Support_de_presentation/Axion-IA_Support_04_IA_pour_lautomatisation_2j.pptx`,
         "diaporama",
         "source",
       ],
@@ -286,7 +286,7 @@ describe("kit-mapping — kit AXION 2026 (arborescence par type)", () => {
       ],
       [`${f}/02_Documents_formateur/Axion-IA_Exercices_et_corriges_04.docx`, "corriges", "source"],
       [
-        `${f}/03_Documents_stagiaire/Axion-IA_Livret_stagiaire_04_Gagner_du_temps_au_quotidien.docx`,
+        `${f}/03_Documents_stagiaire/Axion-IA_Livret_stagiaire_04_IA_pour_lautomatisation.docx`,
         "livret_apprenant",
         "source",
       ],
@@ -300,7 +300,7 @@ describe("kit-mapping — kit AXION 2026 (arborescence par type)", () => {
   it("classe le carnet participant du séminaire comme un livret", () => {
     expect(
       classifyEntry(
-        "15_Seminaire_IA_Toute_lentreprise_50pers/03_Documents_participant/Axion-IA_Carnet_participant_Seminaire.docx",
+        "22_Seminaire_IA_Toute_lentreprise_50pers/03_Documents_participant/Axion-IA_Carnet_participant_Seminaire.docx",
       ),
     ).toMatchObject({ slugs: ["seminaire-ia-toute-l-entreprise-1j"], slot: "livret_apprenant" });
   });
@@ -352,7 +352,7 @@ describe("kit-mapping — kit AXION 2026 (arborescence par type)", () => {
 });
 
 describe("kit-mapping — livrables partagés (kit AXION)", () => {
-  const F = "04_Formation_Gagner_du_temps_au_quotidien_7h/03_Documents_stagiaire";
+  const F = "04_Formation_IA_pour_lautomatisation_2j/03_Documents_stagiaire";
   it("classe les 4 livrables universels vers leurs slots", () => {
     const cases: ReadonlyArray<[string, string]> = [
       [`${F}/Axion-IA_Charte_IA_et_guide_securite.docx`, "charte_ia"],
@@ -362,19 +362,19 @@ describe("kit-mapping — livrables partagés (kit AXION)", () => {
     ];
     for (const [path, slot] of cases) {
       expect(classifyEntry(path), path).toMatchObject({
-        slugs: ["gagner-du-temps-au-quotidien-avec-l-ia-7h"],
+        slugs: ["ia-pour-l-automatisation"],
         slot,
       });
     }
   });
 
-  it("la bibliothèque MARKETING (formation 12) prime sur la générale", () => {
+  it("la bibliothèque MARKETING (formation 6) prime sur la générale", () => {
     expect(
       classifyEntry(
-        "12_Formation_IA_Marketing_Contenus_SEO_7h/03_Documents_stagiaire/Axion-IA_Bibliotheque_prompts_marketing.docx",
+        "06_Formation_IA_pour_le_marketing_1j/03_Documents_stagiaire/Axion-IA_Bibliotheque_prompts_marketing.docx",
       ),
     ).toMatchObject({
-      slugs: ["ia-marketing-contenus-seo-image-de-marque-7h"],
+      slugs: ["ia-pour-le-marketing"],
       slot: "bibliotheque_prompts",
     });
   });

@@ -68,7 +68,8 @@ export function getFormationCourseModes(f: FormationV2): ReadonlyArray<"Onsite" 
 }
 
 // ── Matériel ────────────────────────────────────────────────────────────────
-export const FORMATION_MATERIEL_DEFAUT = "Un ordinateur avec connexion internet";
+export const FORMATION_MATERIEL_DEFAUT =
+  "Ordinateur portable, connexion internet, accès aux outils IA (comptes préparés en amont avec vous si besoin)";
 
 export function getFormationMateriel(f: FormationV2): string {
   return f.materielFr ?? FORMATION_MATERIEL_DEFAUT;
@@ -177,14 +178,14 @@ export function getFormationDelaiAcces(f: FormationV2): string {
 }
 
 export const FORMATION_METHODES_DEFAUT =
-  "La formation alterne apports méthodologiques, démonstrations commentées et ateliers pratiques : chaque notion est illustrée sur des cas réels, puis mise en application par les participants sur leurs propres situations professionnelles. Les acquis sont consolidés par des exercices individuels et collectifs et des livrables réutilisables.";
+  "Pédagogie active : chaque notion fait l'objet d'une démonstration courte suivie d'une pratique immédiate sur les tâches réelles apportées par les participants. La méthode AXION est appliquée aux cas, la méthode de formulation CRFE structure les demandes à l'IA. Exercices différenciés par profil, travail en binômes, livrables réutilisables.";
 
 export function getFormationMethodes(f: FormationV2): string {
   return f.methodesFr ?? FORMATION_METHODES_DEFAUT;
 }
 
 export const FORMATION_EVALUATION_DEFAUT =
-  "L'acquisition des compétences est évaluée tout au long de la formation par des exercices pratiques et une évaluation formative continue. Un quiz de positionnement est réalisé en amont et une évaluation à chaud est conduite à l'issue de la formation. Une attestation de fin de formation est délivrée à l'issue du parcours. Délivrée conformément aux articles L.6353-1 et D.6353-1 du Code du travail.";
+  "L'acquisition des compétences est évaluée tout au long de la formation par des exercices pratiques, puis par un quiz individuel de 10 questions (seuil de réussite : 7/10). Une attestation individuelle mentionnant les compétences acquises et un certificat de réalisation sont délivrés à l'issue du parcours, conformément aux articles L.6353-1 et D.6353-1 du Code du travail.";
 
 export function getFormationEvaluation(f: FormationV2): string {
   return f.modalitesEvaluationFr ?? FORMATION_EVALUATION_DEFAUT;

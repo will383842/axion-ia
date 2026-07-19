@@ -32,13 +32,14 @@ const STATIC_LEGACY_REDIRECTS: ReadonlyMap<string, string> = new Map([
   // Fusion codage-developpement → sites-web-augmentes.
   ["/codage-developpement/web-digital", "/sites-web-augmentes"],
   ["/codage-developpement", "/sites-web-augmentes"],
-  // Refonte /interventions (collectives) → /formations.
+  // Refonte /interventions (collectives) → /formations. Refonte 2026-07-19 :
+  // les listings durée /formations/duree/* sont supprimés → cible = hub.
   ["/interventions", "/formations"],
   ["/interventions/collectives", "/formations"],
-  ["/interventions/collectives/4h", "/formations/duree/4-heures"],
-  ["/interventions/collectives/1-jour", "/formations/duree/1-jour"],
-  ["/interventions/collectives/2-jours", "/formations/duree/2-jours"],
-  ["/interventions/collectives/3-jours-plus", "/formations/duree/3-jours"],
+  ["/interventions/collectives/4h", "/formations"],
+  ["/interventions/collectives/1-jour", "/formations"],
+  ["/interventions/collectives/2-jours", "/formations"],
+  ["/interventions/collectives/3-jours-plus", "/formations"],
   ["/interventions/essentielle", "/formations"],
   ["/interventions/approfondie", "/formations"],
   ["/interventions/gagner-du-temps", "/formations"],
@@ -47,7 +48,7 @@ const STATIC_LEGACY_REDIRECTS: ReadonlyMap<string, string> = new Map([
   ["/interventions/conference", "/formations"],
   ["/interventions/conference-pleniere", "/formations"],
   ["/interventions/conference-keynote", "/formations"],
-  ["/interventions/atelier-ia-cible", "/formations/duree/4-heures"],
+  ["/interventions/atelier-ia-cible", "/formations"],
   // Formats Claude 1-to-1 retirés → prestation équivalente.
   ["/interventions/claude-dirigeant", "/interventions/dirigeant-vision-strategique"],
   ["/interventions/claude-implementation-individuel", "/interventions/coaching-decouverte"],

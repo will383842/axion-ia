@@ -44,11 +44,7 @@ import {
   getFormationV2EntryPrice,
   getFormationV2Price,
 } from "@/content/formations/catalog-v2";
-import {
-  formationDureeIso,
-  getDureeMeta,
-  getGammeMeta,
-} from "@/content/formations/catalog-v2-meta";
+import { formationDureeIso, getCategorieMeta } from "@/content/formations/catalog-v2-meta";
 import {
   FORMATION_EFFECTIF_DEFAUT,
   formatDureeFr,
@@ -86,8 +82,10 @@ interface Props {
 
 export function FormationDetailPage({ formation: f, locale }: Props): ReactNode {
   const isFr = locale === "fr";
-  const gamme = getGammeMeta(f.gamme);
-  const duree = getDureeMeta(f.duree);
+  // Refonte 2026-07-19 : l'axe de rattachement est la CATÉGORIE (générale /
+  // métier / secteur) — le séminaire n'en a pas (rubrique à part).
+  const categorieMeta = f.categorie ? getCategorieMeta(f.categorie) : null;
+  const axeLabel = f.axeLabelFr ?? categorieMeta?.shortFr ?? (f.seminaire ? "Séminaire" : null);
   const path = `/formations/${f.slugFr}`;
   const entryPrice = getFormationV2EntryPrice(f);
   const brackets = getFormationV2Brackets(f);
@@ -132,9 +130,11 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       reponse: getFormationOutils(f),
     },
     {
-      question: "La formation est-elle adaptée à notre métier ?",
+      question: "La formation est-elle adaptée à notre entreprise ?",
       reponse:
-        "Oui. Le programme est standardisé et transversal : les cas d'usage travaillés (mails, comptes-rendus, notes, présentations…) valent dans tout secteur, sans personnalisation préalable. Vous appliquez ensuite la méthode à vos propres situations pendant les exercices.",
+        f.categorie === "metier" || f.categorie === "secteur"
+          ? `Oui : le programme cadre est celui ${f.categorie === "metier" ? "du métier" : "du secteur"} (${f.axeLabelFr ?? f.titreFr}), et les ateliers travaillent sur les documents et cas réels apportés par vos participants — préparés en amont avec vous lors du cadrage.`
+          : "Oui. Les cas d'usage travaillés (mails, comptes-rendus, notes, présentations…) valent dans tout secteur, et vous appliquez la méthode à vos propres situations pendant les exercices. Pour aller plus loin sur une fonction ou un secteur précis, voyez nos formations par métier et par secteur d'activité.",
     },
     {
       question: "Que se passe-t-il après la formation ?",
@@ -261,14 +261,22 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         })
       : null;
 
-  const siblings = FORMATIONS_V2.filter(
-    (x) => x.id !== f.id && (x.gamme === f.gamme || x.duree === f.duree),
-  ).slice(0, 4);
+  // Formations liées : même catégorie d'abord, puis même durée (jamais le séminaire).
+  const siblings = [
+    ...FORMATIONS_V2.filter(
+      (x) => x.id !== f.id && !x.seminaire && f.categorie && x.categorie === f.categorie,
+    ),
+    ...FORMATIONS_V2.filter(
+      (x) => x.id !== f.id && !x.seminaire && x.categorie !== f.categorie && x.duree === f.duree,
+    ),
+  ].slice(0, 4);
   const villes = getVillesIndexableNow().slice(0, 48);
 
   const breadcrumbItems = [
     { href: "/formations", label: "Formations IA" },
-    { href: `/formations/duree/${duree.slug}`, label: duree.labelFr },
+    ...(categorieMeta?.slug
+      ? [{ href: `/formations/${categorieMeta.slug}`, label: categorieMeta.labelFr }]
+      : []),
     { href: path, label: f.titreFr },
   ];
 
@@ -288,7 +296,9 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {gamme.labelFr} · {formatDureeFr(f)}
+                {axeLabel ? `${axeLabel} · ` : ""}
+                {formatDureeFr(f)}
+                {f.scindable ? " · scindable 2×1j" : ""}
               </p>
               <p className="text-terracotta-deep mt-4 text-lg font-bold tracking-tight md:text-xl">
                 Formation « {f.titreFr} »
@@ -617,7 +627,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           eyebrow="Tarif"
           title={brackets.length > 1 ? "Un tarif selon" : "Tarif pour"}
           titleEm={brackets.length > 1 ? "votre effectif" : "votre équipe"}
-          description="Programme identique quelle que soit la tranche. Le prix dépend uniquement du nombre de participants. Intra-entreprise, dans vos locaux."
+          description="Prix fixe par groupe — jamais par personne. Intra-entreprise, dans vos locaux ou à distance."
         >
           <Container className="max-w-5xl">
             <ul className="grid gap-5 md:gap-6 lg:grid-cols-2">
@@ -769,7 +779,9 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                 className="border-border bg-bg shadow-card hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition hover:-translate-y-1"
               >
                 <span className="text-terracotta-deep text-[11px] font-bold tracking-wide uppercase">
-                  {getGammeMeta(s.gamme).labelFr} · {formatDureeFr(s)}
+                  {s.axeLabelFr ?? (s.categorie ? getCategorieMeta(s.categorie).shortFr : "")}
+                  {" · "}
+                  {formatDureeFr(s)}
                 </span>
                 <p className="text-fg mt-2.5 text-[15px] leading-snug font-semibold">{s.titreFr}</p>
                 <p className="text-fg-soft mt-2 line-clamp-2 flex-1 text-sm leading-relaxed">

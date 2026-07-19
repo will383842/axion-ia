@@ -9,7 +9,15 @@ import { FORMATIONS_V2 } from "./catalog-v2";
 import { FORMATION_DUREES_META, FORMATION_GAMMES_META } from "./catalog-v2-meta";
 
 /** Segments statiques sous /formations/ (prioritaires sur [slug]). */
-const RESERVED_SEGMENTS = new Set(["tarifs", "duree", "gamme"]);
+const RESERVED_SEGMENTS = new Set([
+  "tarifs",
+  "duree",
+  "gamme",
+  "metiers",
+  "secteurs",
+  "entreprise",
+  "par-ville",
+]);
 
 describe("routes /formations — anti-collision", () => {
   const formationSlugs = new Set(FORMATIONS_V2.flatMap((f) => [f.slugFr, f.slugEn]));

@@ -1,46 +1,55 @@
 "use client";
 // use-client: le shell `HeaderMegaMenu` attend un render-prop `children({close})`
 // (non sérialisable à travers la frontière RSC). Ce composant reste néanmoins
-// « data-in » : toutes les données (durées, compteurs, prix d'entrée) sont
+// « data-in » : toutes les données (offres générales, compteurs, prix) sont
 // calculées côté serveur dans `Header.tsx` et passées en props → le catalogue
-// (catalog-v2, ~1600 lignes) N'ENTRE PAS dans le bundle client (budget First
-// Load JS ≤ 75 KB/route). Le contenu du panel = uniquement des <Link> next-intl.
+// (catalog-v2) N'ENTRE PAS dans le bundle client (budget First Load JS ≤ 75 KB).
 //
-// Méga-menu de l'onglet « Formations IA » (2026-07-05). Au survol : bloc phare
-// « Toutes nos formations entreprises » (→ landing catalogue) + les 4 raccourcis
-// par durée (4 h / 1 j / 2 j / 3 j et +). Le clic sur le trigger lui-même reste
-// dirigé vers le hub `/formations` (inchangé, cohérent avec le SSOT services.ts).
+// Méga-menu de l'onglet « Formations IA » — refonte 2026-07-19 (Will) : l'axe
+// durée disparaît. Panel = bloc phare « Toutes nos formations » + les 3 offres
+// générales + 2 entrées catégorie (par métier / par secteur d'activité) +
+// séminaire. Le clic sur le trigger reste dirigé vers le hub `/formations`.
 
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { HeaderMegaMenu } from "./HeaderMegaMenu";
 
-export interface FormationsDurationItem {
-  /** Pathname next-intl (ex `/formations/duree/4-heures`). */
+export interface FormationsMenuItem {
+  /** Pathname next-intl (ex `/formations/ia-pour-bien-commencer`). */
   href: string;
-  /** Libellé court (ex « Formats 4 heures »). */
+  /** Libellé (ex « IA pour bien commencer »). */
   label: string;
-  /** Heures pédagogiques (ex « 4 heures », « 1 journée (6-8 h) »). */
-  hours: string;
-  /** Nombre de formations dans ce palier. */
-  count: number;
+  /** Sous-titre (durée · prix — calculé côté serveur, jamais en dur ici). */
+  sub: string;
+}
+
+export interface FormationsCategorieItem {
+  /** Pathname du listing (`/formations/metiers` | `/formations/secteurs`). */
+  href: string;
+  label: string;
+  /** Sous-titre (ex « 9 formations · RH, marketing, commercial… »). */
+  sub: string;
 }
 
 interface HeaderFormationsMenuProps {
   isFr: boolean;
   /** Pathname de la landing catalogue phare. */
   allHref: string;
-  /** Nombre total de formations au catalogue. */
+  /** Nombre total de formations au catalogue (hors séminaire). */
   totalCount: number;
-  durations: ReadonlyArray<FormationsDurationItem>;
+  /** Les 3 offres générales (avec « bien commencer » vers la fiche 4 h). */
+  generales: ReadonlyArray<FormationsMenuItem>;
+  /** Les 2 entrées catégorie (par métier / par secteur d'activité). */
+  categories: ReadonlyArray<FormationsCategorieItem>;
 }
 
 export function HeaderFormationsMenu({
   isFr,
   allHref,
   totalCount,
-  durations,
+  generales,
+  categories,
 }: HeaderFormationsMenuProps): ReactNode {
   return (
     <HeaderMegaMenu
@@ -53,7 +62,7 @@ export function HeaderFormationsMenu({
     >
       {({ close }) => (
         <div className="p-4">
-          {/* Bloc phare — « Toutes nos formations entreprises » (plus visible) */}
+          {/* Bloc phare — « Toutes nos formations entreprises » */}
           <Link
             href={allHref as never}
             onClick={close}
@@ -65,8 +74,8 @@ export function HeaderFormationsMenu({
               </span>
               <span className="text-fg-soft mt-0.5 block text-[13px]">
                 {isFr
-                  ? `Le catalogue complet · ${totalCount} formations · sur devis`
-                  : `Full catalogue · ${totalCount} trainings · on quote`}
+                  ? `Le catalogue complet · ${totalCount} formations · prix par groupe`
+                  : `Full catalogue · ${totalCount} trainings · priced per group`}
               </span>
             </span>
             <ArrowRight
@@ -75,80 +84,53 @@ export function HeaderFormationsMenu({
             />
           </Link>
 
-          {/* Raccourcis par durée */}
+          {/* Offres générales */}
           <p className="text-fg-muted mt-4 mb-2 px-1 text-[11px] font-semibold tracking-[0.16em] uppercase">
-            {isFr ? "Par durée" : "By duration"}
+            {isFr ? "Offres générales" : "General offers"}
           </p>
-          <ul className="xs:grid-cols-2 grid grid-cols-1 gap-1.5">
-            {durations.map((d) => (
-              <li key={d.href}>
+          <ul className="grid grid-cols-1 gap-1.5">
+            {generales.map((g) => (
+              <li key={g.href}>
                 <Link
-                  href={d.href as never}
+                  href={g.href as never}
                   onClick={close}
                   className="hover:bg-sand focus-visible:ring-terracotta block rounded-lg px-3 py-2 transition focus-visible:ring-2 focus-visible:outline-none"
                 >
                   <span className="text-fg block text-sm font-semibold tracking-tight">
-                    {d.label}
+                    {g.label}
                   </span>
-                  <span className="text-fg-muted block text-[12px]">
-                    {d.hours}
-                    {d.count > 0 ? ` · ${d.count} formation${d.count > 1 ? "s" : ""}` : ""}
-                  </span>
+                  <span className="text-fg-muted block text-[12px]">{g.sub}</span>
                 </Link>
               </li>
             ))}
           </ul>
 
-          {/* Raccourcis par métier */}
+          {/* Par métier / par secteur d'activité */}
           <p className="text-fg-muted mt-4 mb-2 px-1 text-[11px] font-semibold tracking-[0.16em] uppercase">
-            {isFr ? "Par métier" : "By role"}
+            {isFr ? "Selon votre profil" : "By profile"}
           </p>
           <ul className="xs:grid-cols-2 grid grid-cols-1 gap-1.5">
-            {(
-              [
-                [
-                  "/formations/ia-rh-recrutement-talents-7h",
-                  isFr ? "RH & recrutement" : "HR & recruitment",
-                ],
-                [
-                  "/formations/ia-vente-prospection-developpement-commercial-7h",
-                  isFr ? "Vente & prospection" : "Sales & prospecting",
-                ],
-                [
-                  "/formations/ia-marketing-contenus-seo-image-de-marque-7h",
-                  isFr ? "Marketing & SEO" : "Marketing & SEO",
-                ],
-                [
-                  "/formations/ia-finance-reporting-analyses-pilotage-7h",
-                  isFr ? "Finance & pilotage" : "Finance & reporting",
-                ],
-                [
-                  "/formations/ia-assistanat-mails-comptes-rendus-documents-7h",
-                  isFr ? "Assistanat & bureau" : "Office support",
-                ],
-                [
-                  "/formations/ia-supply-chain-achats-stocks-7h",
-                  isFr ? "Supply chain & achats" : "Supply chain & procurement",
-                ],
-                [
-                  "/formations/conduite-du-changement-ia-7h",
-                  isFr ? "Conduite du changement" : "Change management",
-                ],
-              ] as ReadonlyArray<readonly [string, string]>
-            ).map(([href, label]) => (
-              <li key={href}>
+            {categories.map((c) => (
+              <li key={c.href}>
                 <Link
-                  href={href as never}
+                  href={c.href as never}
                   onClick={close}
-                  className="hover:bg-sand focus-visible:ring-terracotta text-fg block rounded-lg px-3 py-2 text-sm font-semibold tracking-tight transition focus-visible:ring-2 focus-visible:outline-none"
+                  className="group bg-paper hover:bg-terracotta-soft border-border hover:border-terracotta block rounded-xl border px-3 py-2.5 transition"
                 >
-                  {label}
+                  <span className="text-fg flex items-center justify-between text-sm font-semibold tracking-tight">
+                    {c.label}
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="text-terracotta h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-0.5"
+                    />
+                  </span>
+                  <span className="text-fg-muted mt-0.5 block text-[12px]">{c.sub}</span>
                 </Link>
               </li>
             ))}
           </ul>
 
-          {/* Séminaire — rubrique dédiée */}
+          {/* Séminaire — rubrique dédiée (conservé à part, décision Will 2026-07-19) */}
           <Link
             href={"/formations/seminaire-ia-toute-l-entreprise-1j" as never}
             onClick={close}
@@ -173,11 +155,9 @@ export function HeaderFormationsMenu({
             >
               {isFr ? "Comment ça se passe" : "How it works"}
             </Link>
-            {/* Will 2026-07-17 — pointait sur /formations/tarifs (matrices
-                formations only) ; « Voir les tarifs » doit mener au récap
-                multi-modules /tarifs, cible de l'onglet Tarifs du header. Le
-                lien entrant vers /formations/tarifs est repris par le hub
-                /formations (sous les cards durée) pour ne pas l'orpheliner. */}
+            {/* « Voir les tarifs » → récap multi-modules /tarifs (cible de
+                l'onglet Tarifs du header). /formations/tarifs est relié depuis
+                le hub /formations (sous les cartes offres). */}
             <Link
               href={"/tarifs" as never}
               onClick={close}

@@ -42,8 +42,6 @@ import {
   type FormationDuree,
   type FormationGamme,
   formatAmount,
-  getFormationBrackets,
-  getFormationEntryPrice,
   getTierById,
 } from "@/content/pricing";
 
@@ -160,16 +158,6 @@ const recurring = {
 // (gamme, durée) hardcodés = miroir de catalog-v2 (vérifié) ; on n'importe PAS
 // catalog-v2 ici (budget bundle /reserver). Verrouillé par booking-catalog.test.
 // ============================================================================
-
-/** « À partir de <prix d'entrée matrice> » d'une (gamme, durée). */
-function fromFormation(gamme: FormationGamme, duree: FormationDuree): { fr: string; en: string } {
-  const p = getFormationEntryPrice(gamme, duree);
-  if (typeof p !== "number") return surDevis;
-  return {
-    fr: `À partir de ${formatAmount(p, "fr", { compact: true })}`,
-    en: `Starting at ${formatAmount(p, "en", { compact: true })}`,
-  };
-}
 
 const FORMATION_DUREE_BOOKING: Record<
   FormationDuree,
@@ -419,9 +407,12 @@ export const FORMATION_DUREE_BY_SLUG: Readonly<Record<string, FormationDuree>> =
 export type { FormationDuree };
 
 const FORMATION_BOOKING_FORMATS: ReadonlyArray<BookingFormat> = FORMATION_DEFS.map((f) => {
+  // Slugs legacy (pré-refonte 2026-07-19) : l'ancienne matrice gamme × durée
+  // n'existe plus — tout résout « sur devis » (aucune nouvelle réservation,
+  // /reserver est supprimé ; ces defs ne servent plus qu'aux labels/durées).
   const d = FORMATION_DUREE_BOOKING[f.duree];
-  const price = d.bookable ? fromFormation(f.gamme, f.duree) : surDevis;
-  const tiered = getFormationBrackets(f.gamme, f.duree).length > 1;
+  const price = surDevis;
+  const tiered = false;
   return {
     slug: f.slug,
     labelFr: f.labelFr,

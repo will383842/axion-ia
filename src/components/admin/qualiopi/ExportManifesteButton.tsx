@@ -93,8 +93,7 @@ export function ExportManifesteButton(): React.ReactElement {
       // [C3] Dossier incomplet : ALERTER explicitement. Un ZIP remis à l'auditeur
       //   peut ne contenir aucune preuve stagiaire (R2 absent / clés introuvables).
       if (incomplet) {
-        const details =
-          avertissements.length > 0 ? `\n\n- ${avertissements.join("\n- ")}` : "";
+        const details = avertissements.length > 0 ? `\n\n- ${avertissements.join("\n- ")}` : "";
         window.alert(
           `⚠️ Dossier d'audit INCOMPLET — ${nbPreuvesJointes}/${nbPreuvesAttendues} preuve(s) jointe(s).` +
             ` Vérifiez le fichier AVERTISSEMENTS.txt dans le ZIP avant de le remettre à l'auditeur.` +

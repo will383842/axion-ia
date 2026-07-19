@@ -16,7 +16,7 @@ import {
   QUALIOPI_CONFIG_KEY_PREFIX,
 } from "../../../src/server/qualiopi/config/registry";
 import { seedOffresSite, reconcileOffresFromSkeleton } from "./offres";
-import { seedOffresV2, reconcileOffresV2 } from "./offres-v2";
+import { seedOffresV2, reconcileOffresV2, archiveReplacedCatalogue } from "./offres-v2";
 import { seedCatalogFormations } from "./catalog-formations";
 import { seedGrilleQualite } from "./grille";
 import { seedGrilleV2 } from "./grille-v2";
@@ -61,6 +61,10 @@ async function main(): Promise<void> {
   await reconcileOffresFromSkeleton(prisma);
   await seedOffresV2(prisma);
   await reconcileOffresV2(prisma);
+  // Refonte catalogue 2026-07-19 — désactive/archive l'offre AXION remplacée
+  // (le séminaire est conservé), APRÈS le seed des nouvelles offres et AVANT
+  // l'import des nouvelles formations (session-ready).
+  await archiveReplacedCatalogue(prisma);
   await seedCatalogFormations(prisma);
   await seedGrilleQualite(prisma);
   await seedGrilleV2(prisma);
