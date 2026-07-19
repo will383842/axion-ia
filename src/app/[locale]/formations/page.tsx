@@ -33,7 +33,7 @@ import {
 } from "@/content/formations/catalog-v2-facts";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
-import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
+import { formatAmount, getFormationCatalogPriceRange, getFormationPrice } from "@/content/pricing";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -1257,7 +1257,7 @@ export default async function FormationsHub({ params }: Props) {
                       // JAMAIS hardcodés — cohérents avec les cartes plus haut.
                       id: "prix-formation-ia",
                       question: "Combien coûte une formation IA en entreprise ?",
-                      answer: `Nos prix sont publics et tarifés par groupe (2 à 15 participants) — jamais par personne. Offres générales dès ${minPriceLabel} (4 h) ; formations par métier dès ${formatAmount(1900, "fr")} la journée ; formations par secteur d'activité dès ${formatAmount(2200, "fr")} la journée. Le détail complet figure sur la page tarifs.`,
+                      answer: `Nos prix sont publics et tarifés par groupe (2 à 15 participants) — jamais par personne. Offres générales dès ${minPriceLabel} (4 h) ; formations par métier dès ${formatAmount(getFormationPrice("metier", "1j") ?? Number.NaN, "fr")} la journée ; formations par secteur d'activité dès ${formatAmount(getFormationPrice("secteur", "1j") ?? Number.NaN, "fr")} la journée. Le détail complet figure sur la page tarifs.`,
                     },
                     {
                       id: "effectif",
@@ -1321,7 +1321,7 @@ export default async function FormationsHub({ params }: Props) {
                       // Price derived from the catalogue SSOT, never hardcoded.
                       id: "prix-formation-ia",
                       question: "How much does corporate AI training cost?",
-                      answer: `Our prices are public and set per group (2-15 participants) — never per person. General offers from ${formatAmount(getFormationCatalogPriceRange().minEur, "en")} (4 h); role-specific trainings from ${formatAmount(1900, "en")} per day; industry-specific trainings from ${formatAmount(2200, "en")} per day. Full details on the pricing page.`,
+                      answer: `Our prices are public and set per group (2-15 participants) — never per person. General offers from ${formatAmount(getFormationCatalogPriceRange().minEur, "en")} (4 h); role-specific trainings from ${formatAmount(getFormationPrice("metier", "1j") ?? Number.NaN, "en")} per day; industry-specific trainings from ${formatAmount(getFormationPrice("secteur", "1j") ?? Number.NaN, "en")} per day. Full details on the pricing page.`,
                     },
                     {
                       id: "headcount",

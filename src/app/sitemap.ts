@@ -143,8 +143,8 @@ type StaticSitemapId =
   // outils/trimestre sans refactor.
   | "stack-ia-tools"
   // Catalogue Formations V2 (Qualiopi, déploiement phasé) — hub /formations,
-  // /formations/tarifs, /formations/duree/<slug>, /formations/gamme/<slug> et
-  // les 17 fiches /formations/<slug>. GATÉ par OF_PUBLIC_DISCLOSURE_ENABLED :
+  // /formations/tarifs, /formations/metiers, /formations/secteurs et
+  // les 22 fiches /formations/<slug>. GATÉ par OF_PUBLIC_DISCLOSURE_ENABLED :
   // l'ID n'est même pas déclaré dans generateSitemaps() en Phase A, et le
   // builder retourne [] par sécurité (defense-in-depth).
   | "formations";
@@ -380,7 +380,7 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   ];
 
   // Catalogue Formations V2 — PUBLIC/live (décision Will 2026-06-11) : le
-  // sub-sitemap `formations` (hub + tarifs + 4 durées + 17 fiches) est toujours
+  // sub-sitemap `formations` (hub + tarifs + métiers/secteurs + 22 fiches) est toujours
   // déclaré. Les pages sont des pages marketing publiques (ZÉRO mention Qualiopi
   // côté public) ; la divulgation Qualiopi légale reste une couche DB séparée.
   staticIds.push("formations");
@@ -1118,9 +1118,7 @@ function buildStackIaToolsSitemap(now: Date): MetadataRoute.Sitemap {
  *   - le hub `/formations` (priority 0.8)
  *   - la page tarifs `/formations/tarifs` (priority 0.7)
  *   - les 2 listings par catégorie `/formations/metiers` + `/formations/secteurs`
- *   - les gammes thématiques `/formations/gamme/<slug>` (getGammesThematiques :
- *     Agents & Automatisations, Claude)
- *   - les 17 fiches `/formations/<slug>` (FORMATIONS_V2, slug FR canonique +
+ *   - les 22 fiches `/formations/<slug>` (FORMATIONS_V2, slug FR canonique +
  *     slug EN miroir routing-only)
  *
  * Slugs EN = mapping de route uniquement (contenu 100 % FR, EN désactivé
@@ -1132,7 +1130,7 @@ function buildStackIaToolsSitemap(now: Date): MetadataRoute.Sitemap {
  */
 function buildFormationsSitemap(now: Date): MetadataRoute.Sitemap {
   // Public/live (décision Will 2026-06-11) — pages marketing publiques
-  // (hub + tarifs + 4 durées + 17 fiches), ZÉRO mention Qualiopi côté public.
+  // (hub + tarifs + métiers/secteurs + 22 fiches), ZÉRO mention Qualiopi côté public.
   const entries: MetadataRoute.Sitemap = [];
 
   // Hub /formations · /training et page tarifs /formations/tarifs · /training/pricing.
