@@ -1124,6 +1124,77 @@ export default async function FormationsHub({ params }: Props) {
         </Container>
       </section>
 
+      {/* TÉLÉCHARGER LE CATALOGUE + RÉSERVER (ajout 2026-07-19, Will) :
+          PDF du catalogue en public/ + réservation d'appel (URL + QR). */}
+      <section className="py-14 sm:py-16">
+        <Container>
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Télécharger le catalogue */}
+            <div className="bg-paper shadow-subtle flex flex-col justify-between rounded-2xl border border-black/10 p-7">
+              <div>
+                <p className="text-terracotta mb-2 text-[12px] font-semibold tracking-[0.16em] uppercase">
+                  {isFr ? "Le catalogue complet" : "The full catalogue"}
+                </p>
+                <h2
+                  className="text-fg text-2xl font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "Recevez le catalogue en PDF" : "Get the catalogue as a PDF"}
+                </h2>
+                <p className="text-fg-soft mt-2 text-sm leading-relaxed">
+                  {isFr
+                    ? "24 pages : 21 formations + 1 séminaire, prix publics par groupe, financement OPCO et méthode AXION."
+                    : "24 pages: 21 trainings + 1 seminar, public prices per group, OPCO funding and the AXION method."}
+                </p>
+              </div>
+              <a
+                href="/catalogue-formations-ia-axion-ia.pdf"
+                download
+                className="bg-primary text-primary-fg hover:bg-primary-hover shadow-subtle mt-5 inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-base font-semibold"
+              >
+                {isFr ? "Télécharger le catalogue (PDF)" : "Download the catalogue (PDF)"}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </a>
+            </div>
+            {/* Réserver un appel — URL + QR */}
+            <div className="bg-paper shadow-subtle flex items-center gap-6 rounded-2xl border border-black/10 p-7">
+              <div className="flex-1">
+                <p className="text-terracotta mb-2 text-[12px] font-semibold tracking-[0.16em] uppercase">
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                </p>
+                <h2
+                  className="text-fg text-2xl font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "30 min, sans engagement" : "30 min, no commitment"}
+                </h2>
+                <p className="text-fg-soft mt-2 text-sm leading-relaxed">
+                  {isFr ? "Scannez le QR code ou rendez-vous sur :" : "Scan the QR code or go to:"}
+                </p>
+                <p className="text-fg mt-1 text-base font-semibold">axion-ia.com/fr/appel</p>
+                <Cta
+                  href="/appel"
+                  size="lg"
+                  className="bg-primary text-primary-fg hover:bg-primary-hover shadow-subtle mt-4"
+                  track="collectives-catalogue-band-call"
+                >
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </Cta>
+              </div>
+              <Image
+                src="/qr-reserver-appel.svg"
+                alt={isFr ? "QR code — réserver un appel" : "QR code — book a call"}
+                width={128}
+                height={128}
+                unoptimized
+                className="hidden h-32 w-32 shrink-0 rounded-xl border border-black/10 bg-white p-2 sm:block"
+              />
+            </div>
+          </div>
+        </Container>
+      </section>
+
       {/* BANDEAU TERRACOTTA compact — pattern aligné sur la home (line 1288 de
           `/[locale]/page.tsx`) : section py-16 sm:py-20 flex horizontal
           (texte gauche, CTAs droite). Will 2026-05-28 — wording d'orientation
