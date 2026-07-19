@@ -102,10 +102,10 @@ export async function alertProviderDown30min(
     await sendTelegram({
       tag: "INCIDENT",
       body:
-        `*[🔴 PROVIDER LONG DOWN]* ${provider} down 30 min.\n` +
-        `${fallbackSaturated ? "Fallback saturé (rate-limit). " : ""}Pause batch recommandée.\n` +
+        `*[🔴 FOURNISSEUR IA HORS SERVICE]* ${provider} hors service depuis 30 min.\n` +
+        `${fallbackSaturated ? "Secours saturé (limite de débit atteinte). " : ""}Pause de la génération recommandée.\n` +
         `→ ${adminUrl("/coverage")}\n` +
-        `Runbook : \`R11\` (provider down — escalade L1 Will si > 30 min)`,
+        `Runbook : \`R11\` (fournisseur hors service — escalade Will si > 30 min)`,
     });
   } catch {
     // best-effort
@@ -144,12 +144,14 @@ export async function alertBatchFail(
 ): Promise<void> {
   try {
     await sendTelegram({
-      tag: "INCIDENT",
+      // 2026-07-19 : rétrogradé INCIDENT → MONITORING (opérationnel, pas un
+      // incident serveur). Réserve « 🔴 Incident » aux vraies pannes.
+      tag: "MONITORING",
       body:
-        `*[🔴 BATCH FAIL]* ${failedCount} jobs failed sur ${contentType}.\n` +
-        `Pause auto recommandée.\n` +
+        `*[⚠️ ÉCHECS EN SÉRIE]* ${failedCount} générations échouées sur le type « ${contentType} ».\n` +
+        `Pause automatique recommandée.\n` +
         `→ ${adminUrl(campaignId ? `/coverage/${campaignId}` : "/jobs?status=failed")}\n` +
-        `Runbooks : \`R05\` (workers down) · \`R11\` (provider circuit) · \`R12\` (quality runaway)`,
+        `Runbooks : \`R05\` (workers arrêtés) · \`R11\` (fournisseur) · \`R12\` (qualité)`,
     });
   } catch {
     // best-effort
@@ -343,9 +345,9 @@ export async function alertQueueStuck(
     await sendTelegram({
       tag: "INCIDENT",
       body:
-        `*[⚠️ QUEUE STUCK]* ${queueName} : ${waitingCount} jobs waiting depuis ${minutesStuck} min ` +
+        `*[🔴 FILE BLOQUÉE]* ${queueName} : ${waitingCount} tâches en attente depuis ${minutesStuck} min ` +
         `sans progression.\n` +
-        `Vérifier workers Coolify.\n` +
+        `Vérifier les workers sur Coolify.\n` +
         `→ ${adminUrl("/jobs?status=waiting")}\n` +
         `Runbook : \`R05\` (docs/runbooks/R05-workers-down.md)`,
     });
@@ -424,12 +426,14 @@ export async function alertIndexNowFailStreak(
 ): Promise<void> {
   try {
     await sendTelegram({
-      tag: "INCIDENT",
+      // 2026-07-19 : rétrogradé INCIDENT → MONITORING (opérationnel, pas un
+      // incident serveur). Réserve « 🔴 Incident » aux vraies pannes.
+      tag: "MONITORING",
       body:
-        `*[🔴 INDEXNOW FAIL]* ${consecutiveFails} échecs consécutifs sur api.indexnow.org.\n` +
+        `*[⚠️ INDEXNOW EN ÉCHEC]* ${consecutiveFails} échecs consécutifs sur api.indexnow.org.\n` +
         `Dernier message : ${lastError}.\n` +
-        `Impact : Bing/Yandex/Naver/Seznam ne reçoivent plus les pings — découverte naturelle ~7-14j.\n` +
-        `Vérifier connectivité origin + status api.indexnow.org.\n` +
+        `Impact : Bing/Yandex/Naver/Seznam ne reçoivent plus les pings — découverte naturelle ~7-14 j.\n` +
+        `Vérifier la connectivité et le statut de api.indexnow.org.\n` +
         `→ ${adminUrl("/jobs?queue=content-indexnow&status=failed")}\n` +
         `Runbook : \`R14\` (docs/runbooks/R14-indexnow-down.md si présent)`,
     });

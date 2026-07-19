@@ -90,6 +90,26 @@ function formatKV(label: string, value: string | number | null | undefined): str
   return `• *${escapeMarkdownV2(label)}* : ${escapeMarkdownV2(String(value))}`;
 }
 
+/**
+ * Extrait le corps texte des call-sites legacy passés via `sendTelegram()`
+ * (`@/lib/telegram`), dont le payload a la forme `{ kind, details: { legacyBody } }`.
+ * Retourne null si ce shape est absent.
+ *
+ * Sans ça, la branche INCIDENT_DETECTED (qui ne lit que title/url/statusCode/error)
+ * rendait un message **vide** pour tout appel legacy `sendTelegram({ tag: "INCIDENT" })`,
+ * et MONITORING_ALERT affichait le JSON brut `{"legacyBody":"…"}` illisible.
+ */
+function legacyBodyOf(payload: unknown): string | null {
+  if (payload && typeof payload === "object" && "details" in payload) {
+    const details = (payload as { details?: unknown }).details;
+    if (details && typeof details === "object" && "legacyBody" in details) {
+      const lb = (details as { legacyBody?: unknown }).legacyBody;
+      if (typeof lb === "string" && lb.trim().length > 0) return lb;
+    }
+  }
+  return null;
+}
+
 function formatBody(event: NotificationEvent): string {
   switch (event.category) {
     case "CONTACT_FORM_SUBMITTED":
@@ -267,15 +287,18 @@ function formatBody(event: NotificationEvent): string {
     }
     case "INCIDENT_DETECTED": {
       const p = event.payload;
-      return [
+      const structured = [
         formatKV("Titre", p.title),
         formatKV("URL", p.url),
         formatKV("Statut HTTP", p.statusCode),
         formatKV("User", p.userId),
         formatKV("Erreur", p.error?.slice(0, 500)),
-      ]
-        .filter((v): v is string => v !== null)
-        .join("\n");
+      ].filter((v): v is string => v !== null);
+      if (structured.length > 0) return structured.join("\n");
+      // Fallback legacy : `sendTelegram({ tag: "INCIDENT", body })` fournit
+      // `{ details: { legacyBody } }` — sans ceci le message partait VIDE.
+      const legacy = legacyBodyOf(p);
+      return legacy ? escapeMarkdownV2(legacy) : "";
     }
     case "SECURITY_ALERT": {
       const p = event.payload;
@@ -303,6 +326,10 @@ function formatBody(event: NotificationEvent): string {
     }
     case "MONITORING_ALERT": {
       const p = event.payload;
+      // Priorité au corps lisible legacy (sendTelegram) — évite d'afficher le
+      // JSON brut `{"legacyBody":"…"}` que voyaient les alertes web-vitals/review.
+      const legacy = legacyBodyOf(p);
+      if (legacy) return escapeMarkdownV2(legacy);
       return [
         formatKV("Type", p.kind),
         formatKV("Détails", JSON.stringify(p.details).slice(0, 800)),
