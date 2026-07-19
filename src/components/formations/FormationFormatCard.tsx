@@ -6,8 +6,10 @@
 // badge = axe métier/secteur (ou catégorie), badge durée (scindable inclus).
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { ArrowRight, Check, Mail } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 import {
@@ -16,7 +18,11 @@ import {
   getFormationV2EntryPrice,
 } from "@/content/formations/catalog-v2";
 import { getCategorieMeta, getGammeMeta } from "@/content/formations/catalog-v2-meta";
-import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
+import {
+  FORMATION_DUREE_FACTS,
+  getFormationImage,
+  getFormationImageCredit,
+} from "@/content/formations/catalog-v2-facts";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 
 // Accent visuel par gamme (sous-ensemble de FormatAccent — terracotta / sage /
@@ -126,6 +132,37 @@ export function FormationFormatCard({ formation: f, locale }: Props): ReactNode 
       </Link>
 
       <span aria-hidden="true" className={`block h-1.5 w-full ${acc.line}`} />
+
+      {/* BANDEAU IMAGE — photo dédiée par formation (Unsplash locale, SSOT
+          catalog-v2-photos). Aspect fixe 16/9 → CLS=0, lazy (sous fold),
+          crédit photographe en overlay (CGU §9), cliquable au-dessus du
+          Link-overlay de la carte (z-[2]). */}
+      {(() => {
+        const img = getFormationImage(f);
+        const credit = getFormationImageCredit(f);
+        return (
+          <div className="relative">
+            <Image
+              src={img.src}
+              alt={img.altFr}
+              width={1280}
+              height={800}
+              loading="lazy"
+              decoding="async"
+              sizes="(max-width: 768px) 100vw, 560px"
+              className="aspect-[16/9] w-full object-cover"
+              quality={78}
+            />
+            {credit ? (
+              <UnsplashCredit
+                photographerName={credit.name}
+                photographerUrl={credit.url}
+                className="bg-paper/85 absolute right-2 bottom-2 z-[2] !mt-0 rounded-full px-2 py-0.5 !text-[9.5px]"
+              />
+            ) : null}
+          </div>
+        );
+      })()}
 
       {/* Bandeau prix + effectif */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-7 pt-6 sm:px-8">

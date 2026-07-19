@@ -14,6 +14,7 @@
 
 import type { FormationDuree, FormationGamme } from "../pricing";
 import type { FormationCasUsage, FormationV2 } from "./catalog-v2";
+import { FORMATION_CARD_PHOTOS } from "./catalog-v2-photos";
 import { type ModalitePedagogique, PRESENTIEL_DISTANCIEL } from "./modalites";
 
 // ── Durée canonique en NOMBRES (heures d'horloge + jours) ───────────────────
@@ -124,7 +125,28 @@ export const FORMATION_GAMME_IMAGE: Record<FormationGamme, { src: string; altFr:
 
 export function getFormationImage(f: FormationV2): { src: string; altFr: string } {
   if (f.imageSrc) return { src: f.imageSrc, altFr: f.imageAltFr ?? f.titreFr };
+  // Photo Unsplash dédiée par formation (SSOT catalog-v2-photos.ts, refonte
+  // 2026-07-19 — « chaque encart de formation porte une image ») ; alt densifié
+  // SEO par le titre. Fallback : image générique de la gamme.
+  const photo = FORMATION_CARD_PHOTOS[f.slugFr];
+  if (photo) {
+    return {
+      src: photo.src,
+      altFr:
+        f.imageAltFr ?? `Formation « ${f.titreFr} » — Axion-IA, intra-entreprise (${photo.alt})`,
+    };
+  }
   return FORMATION_GAMME_IMAGE[f.gamme];
+}
+
+/**
+ * Crédit photographe de l'image de la formation (CGU Unsplash §9 — attribution
+ * obligatoire au rendu). `null` si l'image n'est pas une photo Unsplash
+ * (fallback gamme = photos maison).
+ */
+export function getFormationImageCredit(f: FormationV2): { name: string; url: string } | null {
+  if (f.imageSrc) return f.imageCredit ?? null;
+  return FORMATION_CARD_PHOTOS[f.slugFr]?.credit ?? null;
 }
 
 // Photos « scène » (bank) réutilisées pour aérer la fiche (objectifs + bandeau).

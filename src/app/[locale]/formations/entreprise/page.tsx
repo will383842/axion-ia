@@ -57,7 +57,11 @@ import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
 import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
-import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
+import {
+  FORMATION_DUREE_FACTS,
+  getFormationImage,
+  getFormationImageCredit,
+} from "@/content/formations/catalog-v2-facts";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import {
@@ -382,6 +386,8 @@ export default async function FormationsEntreprise({ params }: Props) {
     const p = getFormationV2EntryPrice(f);
     const facts = FORMATION_DUREE_FACTS[f.duree];
     const dureeBase = f.duree === "4h" ? facts.heuresLabelFr : facts.joursLabelFr;
+    const image = getFormationImage(f);
+    const credit = getFormationImageCredit(f);
     return {
       slugFr: f.slugFr,
       titreFr: f.titreFr,
@@ -392,6 +398,9 @@ export default async function FormationsEntreprise({ params }: Props) {
       featured: f.featured ?? false,
       priceLabel: p !== undefined ? formatAmount(p, loc) : isFr ? "Sur devis" : "On quote",
       fixedPrice: p !== undefined,
+      imageSrc: image.src,
+      imageAlt: image.altFr,
+      ...(credit ? { creditName: credit.name, creditUrl: credit.url } : {}),
     };
   });
 
