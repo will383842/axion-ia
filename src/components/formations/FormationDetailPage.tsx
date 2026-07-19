@@ -466,53 +466,35 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       <ClientLogosMarqueeBand isFr={isFr} />
 
       {/* ── OBJECTIFS & CAS D'USAGE (fusionnés — cartes + images) ────────── */}
-      {casUsage.length > 0 ? (
-        <Section
-          id="cas-usage"
-          className="scroll-mt-28"
-          tone="sand"
-          eyebrow="Objectifs & cas d'usage"
-          title="Ce que chacun saura faire —"
-          titleEm="cas d'usage concret"
-          description="Des compétences directement applicables à votre quotidien, travaillées en atelier."
-        >
-          <ul className="xs:grid-cols-2 mx-auto grid max-w-5xl gap-4 lg:grid-cols-3">
-            {casUsage.map((c) => (
-              <li
-                key={c.texteFr}
-                className="border-border bg-bg shadow-card flex flex-col overflow-hidden rounded-2xl border"
-              >
-                {c.imageSrc ? (
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <Image
-                      src={c.imageSrc}
-                      alt={c.texteFr}
-                      fill
-                      sizes="(min-width: 1024px) 30vw, (min-width: 479px) 50vw, 100vw"
-                      loading="lazy"
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="bg-terracotta/10 flex aspect-[16/10] items-center justify-center">
-                    <Sparkles aria-hidden="true" className="text-terracotta h-8 w-8" />
-                  </div>
-                )}
-                <div className="flex flex-1 flex-col gap-2 p-5">
-                  <p className="text-fg flex-1 text-sm leading-relaxed font-medium">{c.texteFr}</p>
-                  {c.imageCredit ? (
-                    <UnsplashCredit
-                      photographerName={c.imageCredit.name}
-                      photographerUrl={c.imageCredit.url}
-                      className="text-[10px]"
-                    />
-                  ) : null}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      ) : null}
+      {/* Objectifs pédagogiques en CHECKLIST compacte (décision Will 2026-07-19 :
+          les cartes cas-d'usage sans image faisaient du remplissage — on affiche
+          les objectifs Qualiopi, exigés publics par l'indicateur 1, en 2 colonnes).
+          Les cas d'usage marketing restent visibles sur les cartes du catalogue. */}
+      <Section
+        id="cas-usage"
+        className="scroll-mt-28"
+        tone="sand"
+        eyebrow="Objectifs pédagogiques"
+        title="À l'issue, chaque participant"
+        titleEm="est capable de…"
+        description="Des compétences directement applicables au quotidien, travaillées en atelier sur vos cas réels."
+      >
+        <ul className="mx-auto grid max-w-4xl gap-3 md:grid-cols-2">
+          {f.objectifsFr.map((o) => (
+            <li
+              key={o}
+              className="border-border bg-bg shadow-subtle flex items-start gap-3 rounded-2xl border p-4"
+            >
+              <CheckCircle2
+                aria-hidden="true"
+                className="text-terracotta mt-0.5 h-5 w-5 shrink-0"
+                strokeWidth={2.25}
+              />
+              <span className="text-fg text-[14.5px] leading-relaxed font-medium">{o}</span>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/* ── PROGRAMME DÉTAILLÉ — disposition type fiche référence : modules
           riches à GAUCHE (numéro, points, QCM, « Livrable inclus » mis en
