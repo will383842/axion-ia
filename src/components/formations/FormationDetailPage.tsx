@@ -97,6 +97,9 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
 
   // formatAmount renvoie déjà « … € HT » → NE PAS re-suffixer « HT ».
   const priceValue = typeof entryPrice === "number" ? formatAmount(entryPrice, "fr") : "Sur devis";
+  // Prix FIXE public par groupe (refonte 2026-07 : plus de « À partir de »).
+  // « Tarif » pour le sur-devis (séminaire) → jamais « À partir de / Sur devis ».
+  const priceEyebrow = typeof entryPrice === "number" ? "Prix par groupe" : "Tarif";
   const modalitesLabel = formatModalitesFr(getFormationModalites(f));
   const materiel = getFormationMateriel(f);
   const effectif = getFormationEffectif(f);
@@ -363,7 +366,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               <div className="p-6 pt-5 lg:p-7 lg:pt-5">
                 <div className="border-border border-b pb-5">
                   <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
-                    À partir de
+                    {priceEyebrow}
                   </p>
                   <p
                     className="text-terracotta mt-1 text-[2.5rem] leading-none font-medium tabular-nums"
@@ -599,7 +602,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
             </dl>
             <div className="bg-canvas rounded-2xl p-4 text-center">
               <p className="text-fg-muted text-[11.5px] font-semibold tracking-wide uppercase">
-                Prix par groupe
+                {priceEyebrow}
               </p>
               <p
                 className="text-terracotta mt-1 text-[2rem] leading-none font-medium tabular-nums"
