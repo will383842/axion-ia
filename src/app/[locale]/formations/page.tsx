@@ -32,6 +32,7 @@ import {
   getFormationImageCredit,
 } from "@/content/formations/catalog-v2-facts";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import {
   buildProductMetadata,
@@ -1382,6 +1383,10 @@ export default async function FormationsHub({ params }: Props) {
           />
         </Container>
       </Section>
+
+      {/* AVIS CLIENTS RÉELS — DB, hide-if-empty, stub-safe (jamais d'avis
+          fabriqué). Même section que les autres pages service. */}
+      <ServiceReviewsSection serviceLine="interventions_formations" />
 
       {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="interventions-formations" />

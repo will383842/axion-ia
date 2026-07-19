@@ -67,6 +67,8 @@ import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
 import { buildCourseJsonLd, buildHowToJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
+import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
 
@@ -436,9 +438,10 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           {(
             [
               ["#programme", "Programme"],
-              ["#cas-usage", "Cas d'usage"],
+              ["#cas-usage", "Objectifs"],
               ["#tarif", "Tarif"],
               ["#infos-pratiques", "Infos pratiques"],
+              ["#devis", "Devis express"],
               ["#faq", "FAQ"],
             ] as const
           ).map(([href, label]) => (
@@ -623,7 +626,13 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               Nous écrire
             </Cta>
             <p className="text-fg-muted text-center text-[11.5px]">
-              Renseignements sans engagement — réponse sous 24-48 h
+              Renseignements sans engagement — ou{" "}
+              <a
+                href="#devis"
+                className="text-terracotta font-semibold underline underline-offset-2"
+              >
+                devis express en 30 secondes
+              </a>
             </p>
           </aside>
         </div>
@@ -675,6 +684,10 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           </div>
         </div>
       </Section>
+
+      {/* ── AVIS CLIENTS RÉELS — DB, hide-if-empty, stub-safe (jamais d'avis
+          fabriqué, doctrine E-E-A-T). Même section que audit/implementation. */}
+      <ServiceReviewsSection serviceLine="interventions_formations" />
 
       {/* ── MODALITÉS — cartes à icônes (AVANT les secteurs) ─────────────── */}
       <Section
@@ -830,6 +843,31 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           </Container>
         </Section>
       ) : null}
+
+      {/* ── DEVIS EXPRESS — formulaire intégré à la fiche, type verrouillé
+          « formation », pré-rempli avec la formation (disposition type fiche
+          référence « Votre devis en 30 secondes »). Îlot client
+          UnifiedContactForm — même formulaire éprouvé que /contact et
+          /demande-devis (validation, anti-spam, server action inclus). */}
+      <Section
+        id="devis"
+        className="scroll-mt-28"
+        tone="sand"
+        eyebrow="Devis express"
+        title="Votre devis"
+        titleEm="en 30 secondes"
+        description="Dites-nous l'essentiel : nous revenons vers vous sous 24-48 h ouvrées avec un devis personnalisé pour cette formation — sans engagement."
+      >
+        <Container className="max-w-2xl">
+          <UnifiedContactForm
+            defaultType="formation"
+            lockType
+            defaultSubType={f.slugFr}
+            defaultMessage={`Bonjour, je souhaite un devis pour la formation « ${f.titreFr} » (${formatDureeFr(f)}) pour notre équipe.`}
+            source={path}
+          />
+        </Container>
+      </Section>
 
       {/* ── FAQ (FaqAccordion centralisé — spécifiques + génériques SSOT) ── */}
       {allFaqs.length > 0 ? (
