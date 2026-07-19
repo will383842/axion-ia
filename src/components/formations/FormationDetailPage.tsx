@@ -56,6 +56,7 @@ import {
   getFormationEffectif,
   getFormationEvaluation,
   getFormationImage,
+  getFormationImageCredit,
   getFormationMateriel,
   getFormationMethodes,
   getFormationModalites,
@@ -99,6 +100,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const effectif = getFormationEffectif(f);
   const prerequis = f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.";
   const image = getFormationImage(f);
+  const imageCredit = getFormationImageCredit(f);
   const casUsage = getFormationCasUsage(f);
   // Mentions indicateur 1 (délai d'accès, méthodes, évaluation, accessibilité) —
   // obligations Code du travail génériques, NON gatées Qualiopi (aucun claim de
@@ -334,71 +336,131 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               </div>
             </div>
 
-            {/* CARTE INFOS-CLÉS */}
-            <aside className="border-terracotta/25 bg-canvas shadow-card rounded-3xl border-2 p-6 lg:sticky lg:top-24 lg:mt-8 lg:p-7">
-              <div className="border-border border-b pb-5">
-                <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
-                  À partir de
-                </p>
-                <p
-                  className="text-terracotta mt-1 text-[2.5rem] leading-none font-medium tabular-nums"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {priceValue}
-                </p>
-                <p className="text-fg-muted mt-2 text-[13px]">{groupSizeLabel}</p>
+            {/* CARTE INFOS-CLÉS — photo de la formation en tête (disposition
+                type fiche référence : carte média + récap + CTA), crédit CGU §9. */}
+            <aside className="border-terracotta/25 bg-canvas shadow-card overflow-hidden rounded-3xl border-2 lg:sticky lg:top-24 lg:mt-8">
+              <div className="relative">
+                <Image
+                  src={image.src}
+                  alt={image.altFr}
+                  width={1280}
+                  height={800}
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 460px"
+                  className="aspect-[16/9] w-full object-cover"
+                  quality={80}
+                />
+                {imageCredit ? (
+                  <UnsplashCredit
+                    photographerName={imageCredit.name}
+                    photographerUrl={imageCredit.url}
+                    className="bg-paper/85 absolute right-2 bottom-2 !mt-0 rounded-full px-2 py-0.5 !text-[9.5px]"
+                  />
+                ) : null}
+              </div>
+              <div className="p-6 pt-5 lg:p-7 lg:pt-5">
+                <div className="border-border border-b pb-5">
+                  <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+                    À partir de
+                  </p>
+                  <p
+                    className="text-terracotta mt-1 text-[2.5rem] leading-none font-medium tabular-nums"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {priceValue}
+                  </p>
+                  <p className="text-fg-muted mt-2 text-[13px]">{groupSizeLabel}</p>
+                  {ofPublic ? (
+                    <div className="bg-terracotta text-mocha-fg mt-4 flex items-start gap-2 rounded-xl p-3">
+                      <Wallet aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
+                      <span className="text-[13px] leading-snug font-bold">{financeMention}</span>
+                    </div>
+                  ) : null}
+                </div>
+                <dl className="divide-border flex flex-col divide-y">
+                  {factRows.map((row) => (
+                    <div key={row.label} className="flex items-start gap-3 py-3">
+                      <span className="bg-terracotta/10 text-terracotta mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+                        <row.icon aria-hidden="true" className="h-4 w-4" />
+                      </span>
+                      <div className="flex min-w-0 flex-col">
+                        <dt className="text-fg-muted text-[11.5px] font-semibold tracking-wide uppercase">
+                          {row.label}
+                        </dt>
+                        <dd className="text-fg text-[14px] leading-snug font-medium">
+                          {row.value}
+                        </dd>
+                      </div>
+                    </div>
+                  ))}
+                </dl>
                 {ofPublic ? (
-                  <div className="bg-terracotta text-mocha-fg mt-4 flex items-start gap-2 rounded-xl p-3">
-                    <Wallet aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
-                    <span className="text-[13px] leading-snug font-bold">{financeMention}</span>
+                  <div className="border-border mt-5 flex flex-col items-center gap-2 border-t pt-5">
+                    <Image
+                      src="/qualiopi/qualiopi-actions-de-formation-axion-ia.webp"
+                      alt="Logo Qualiopi — Axion-IA, organisme de formation certifié : la certification qualité a été délivrée au titre des actions de formation."
+                      width={700}
+                      height={423}
+                      className="h-auto w-full max-w-[220px] object-contain"
+                    />
+                    <p className="text-fg-muted text-center text-[12px] leading-relaxed">
+                      <Link
+                        href={"/certification-qualiopi" as never}
+                        className="text-terracotta underline"
+                      >
+                        Certifié Qualiopi
+                      </Link>{" "}
+                      ·{" "}
+                      <Link
+                        href={"/financement-opco-france-travail" as never}
+                        className="text-terracotta underline"
+                      >
+                        Financer cette formation
+                      </Link>
+                    </p>
                   </div>
                 ) : null}
               </div>
-              <dl className="divide-border flex flex-col divide-y">
-                {factRows.map((row) => (
-                  <div key={row.label} className="flex items-start gap-3 py-3">
-                    <span className="bg-terracotta/10 text-terracotta mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
-                      <row.icon aria-hidden="true" className="h-4 w-4" />
-                    </span>
-                    <div className="flex min-w-0 flex-col">
-                      <dt className="text-fg-muted text-[11.5px] font-semibold tracking-wide uppercase">
-                        {row.label}
-                      </dt>
-                      <dd className="text-fg text-[14px] leading-snug font-medium">{row.value}</dd>
-                    </div>
-                  </div>
-                ))}
-              </dl>
-              {ofPublic ? (
-                <div className="border-border mt-5 flex flex-col items-center gap-2 border-t pt-5">
-                  <Image
-                    src="/qualiopi/qualiopi-actions-de-formation-axion-ia.webp"
-                    alt="Logo Qualiopi — Axion-IA, organisme de formation certifié : la certification qualité a été délivrée au titre des actions de formation."
-                    width={700}
-                    height={423}
-                    className="h-auto w-full max-w-[220px] object-contain"
-                  />
-                  <p className="text-fg-muted text-center text-[12px] leading-relaxed">
-                    <Link
-                      href={"/certification-qualiopi" as never}
-                      className="text-terracotta underline"
-                    >
-                      Certifié Qualiopi
-                    </Link>{" "}
-                    ·{" "}
-                    <Link
-                      href={"/financement-opco-france-travail" as never}
-                      className="text-terracotta underline"
-                    >
-                      Financer cette formation
-                    </Link>
-                  </p>
-                </div>
-              ) : null}
             </aside>
           </div>
         </Container>
       </section>
+
+      {/* ── NAV ANCRES — accès direct aux sections clés (disposition type
+          fiche référence : « Programme · Tarifs · Infos pratiques · FAQ »). */}
+      <nav
+        aria-label="Sections de la fiche formation"
+        className="border-border bg-paper/95 sticky top-16 z-30 border-y backdrop-blur-sm"
+      >
+        <Container className="flex items-center gap-1 overflow-x-auto py-2.5">
+          {(
+            [
+              ["#programme", "Programme"],
+              ["#cas-usage", "Cas d'usage"],
+              ["#tarif", "Tarif"],
+              ["#infos-pratiques", "Infos pratiques"],
+              ["#faq", "FAQ"],
+            ] as const
+          ).map(([href, label]) => (
+            <a
+              key={href}
+              href={href}
+              className="text-fg-soft hover:text-terracotta hover:bg-terracotta-soft shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-semibold whitespace-nowrap transition"
+            >
+              {label}
+            </a>
+          ))}
+          <span className="ml-auto hidden shrink-0 md:block">
+            <Cta
+              href="/appel"
+              size="sm"
+              className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep"
+            >
+              Réserver un appel
+            </Cta>
+          </span>
+        </Container>
+      </nav>
 
       {/* ── PREUVE SOCIALE (logos) ───────────────────────────────────────── */}
       <ClientLogosMarqueeBand isFr={isFr} />
@@ -406,6 +468,8 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       {/* ── OBJECTIFS & CAS D'USAGE (fusionnés — cartes + images) ────────── */}
       {casUsage.length > 0 ? (
         <Section
+          id="cas-usage"
+          className="scroll-mt-28"
           tone="sand"
           eyebrow="Objectifs & cas d'usage"
           title="Ce que chacun saura faire —"
@@ -450,39 +514,136 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* ── PROGRAMME (SANS horaires) ────────────────────────────────────── */}
+      {/* ── PROGRAMME DÉTAILLÉ — disposition type fiche référence : modules
+          riches à GAUCHE (numéro, points, QCM, « Livrable inclus » mis en
+          valeur), carte RÉCAP STICKY à DROITE (durée/format/effectif/prix/CTA).
+          Server-only : sticky en CSS pur, aucun JS. */}
       <Section
+        id="programme"
+        className="scroll-mt-28"
         tone="sand"
         eyebrow="Le programme"
-        title="Le déroulé"
-        titleEm="de la formation"
+        title="Programme"
+        titleEm="détaillé"
         description="La trame reste celle-ci ; le contenu s'adapte à vos outils, votre secteur et vos cas réels. Cadrage en amont par un appel."
       >
-        <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-2">
-          {f.programme.map((sectionDay, idx) => (
-            <div
-              key={idx}
-              className="border-border bg-bg shadow-card flex flex-col gap-3 rounded-2xl border p-6"
-            >
-              <p className="text-terracotta-deep text-[13px] font-bold tracking-[0.12em] uppercase">
-                {sectionDay.titreFr}
-              </p>
-              <ul className="flex flex-col gap-2.5">
-                {sectionDay.steps
-                  .filter((st) => st.titre !== "Pause")
-                  .map((st) => (
-                    <li key={st.titre} className="text-fg-soft flex items-start gap-2.5 text-sm">
-                      <ArrowRight
-                        aria-hidden="true"
-                        className="text-terracotta mt-1 h-3.5 w-3.5 shrink-0"
-                        strokeWidth={2.5}
-                      />
-                      <span className="leading-relaxed">{st.titre}</span>
-                    </li>
+        <div className="mx-auto grid max-w-6xl items-start gap-6 lg:grid-cols-[1fr_340px] lg:gap-8">
+          {/* Colonne modules */}
+          <div className="flex flex-col gap-5">
+            {f.programme.map((sectionDay, idx) => {
+              // « Module 2 — Titre » / « Jour 1 — Titre » → badge + titre.
+              const dash = sectionDay.titreFr.indexOf("—");
+              const badge =
+                dash > 0 ? sectionDay.titreFr.slice(0, dash).trim() : `Module ${idx + 1}`;
+              const titre =
+                dash > 0 ? sectionDay.titreFr.slice(dash + 1).trim() : sectionDay.titreFr;
+              const livrables = sectionDay.steps.filter((st) => st.temps === "Livrable");
+              const hasQcm = sectionDay.steps.some((st) => /qcm|quiz/i.test(st.titre));
+              const steps = sectionDay.steps.filter(
+                (st) =>
+                  st.titre !== "Pause" && st.temps !== "Livrable" && !/^qcm|^quiz/i.test(st.titre),
+              );
+              return (
+                <article
+                  key={idx}
+                  className="border-border bg-bg shadow-card flex flex-col gap-4 rounded-2xl border p-6 sm:p-7"
+                >
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="bg-terracotta text-mocha-fg inline-flex items-center rounded-full px-3 py-1 text-[11.5px] font-bold tracking-wide uppercase">
+                      {badge}
+                    </span>
+                    {hasQcm ? (
+                      <span className="border-border text-fg-muted inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold">
+                        <CheckCircle2 aria-hidden="true" className="h-3 w-3" />
+                        Quiz de validation des acquis
+                      </span>
+                    ) : null}
+                  </div>
+                  <h3 className="text-fg text-lg leading-snug font-semibold tracking-tight">
+                    {titre}
+                  </h3>
+                  <ul className="flex flex-col gap-2.5">
+                    {steps.map((st) => (
+                      <li key={st.titre} className="text-fg-soft flex items-start gap-2.5 text-sm">
+                        <ArrowRight
+                          aria-hidden="true"
+                          className="text-terracotta mt-1 h-3.5 w-3.5 shrink-0"
+                          strokeWidth={2.5}
+                        />
+                        <span className="leading-relaxed">{st.titre}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {livrables.map((liv) => (
+                    <p
+                      key={liv.titre}
+                      className="bg-terracotta-soft border-terracotta/25 text-terracotta-deep flex items-start gap-2.5 rounded-xl border p-3.5 text-[13.5px] leading-snug font-semibold"
+                    >
+                      <Sparkles aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+                      <span>
+                        <span className="mr-1 font-bold uppercase">Livrable inclus :</span>
+                        {liv.titre}
+                      </span>
+                    </p>
                   ))}
-              </ul>
+                </article>
+              );
+            })}
+          </div>
+
+          {/* Carte récap sticky (à droite du programme) */}
+          <aside className="border-terracotta/25 bg-paper shadow-card flex flex-col gap-4 rounded-3xl border-2 p-6 lg:sticky lg:top-32">
+            <p className="text-fg text-lg leading-snug font-semibold tracking-tight">{f.titreFr}</p>
+            <dl className="divide-border flex flex-col divide-y">
+              {(
+                [
+                  ["Durée", `${formatDureeFr(f)}${f.scindable ? " — scindable 2×1j" : ""}`],
+                  ["Format", modalitesLabel],
+                  ["Participants", groupSizeLabel],
+                ] as const
+              ).map(([label, value]) => (
+                <div key={label} className="flex items-baseline justify-between gap-3 py-2.5">
+                  <dt className="text-fg-muted shrink-0 text-[11.5px] font-semibold tracking-wide uppercase">
+                    {label}
+                  </dt>
+                  <dd className="text-fg text-right text-[13.5px] leading-snug font-medium">
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <div className="bg-canvas rounded-2xl p-4 text-center">
+              <p className="text-fg-muted text-[11.5px] font-semibold tracking-wide uppercase">
+                Prix par groupe
+              </p>
+              <p
+                className="text-terracotta mt-1 text-[2rem] leading-none font-medium tabular-nums"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {priceValue}
+              </p>
             </div>
-          ))}
+            {ofPublic ? (
+              <p className="text-fg-soft flex items-start gap-2 text-[12.5px] leading-snug">
+                <Wallet aria-hidden="true" className="text-terracotta mt-0.5 h-4 w-4 shrink-0" />
+                {financeMention}
+              </p>
+            ) : null}
+            <Cta
+              href="/appel"
+              size="lg"
+              className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta w-full justify-center"
+            >
+              <Phone aria-hidden="true" className="h-4 w-4" />
+              Réserver un appel
+            </Cta>
+            <Cta href="/contact" variant="outline" size="lg" className="w-full justify-center">
+              Nous écrire
+            </Cta>
+            <p className="text-fg-muted text-center text-[11.5px]">
+              Renseignements sans engagement — réponse sous 24-48 h
+            </p>
+          </aside>
         </div>
       </Section>
 
@@ -534,7 +695,14 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       </Section>
 
       {/* ── MODALITÉS — cartes à icônes (AVANT les secteurs) ─────────────── */}
-      <Section tone="paper" eyebrow="Modalités" title="Toutes les informations" titleEm="pratiques">
+      <Section
+        id="infos-pratiques"
+        className="scroll-mt-28"
+        tone="paper"
+        eyebrow="Modalités"
+        title="Toutes les informations"
+        titleEm="pratiques"
+      >
         <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {modalitesRows.map((row) => (
             <div
@@ -624,6 +792,8 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       {/* ── TARIF (tranches par effectif) ────────────────────────────────── */}
       {brackets.length > 0 ? (
         <Section
+          id="tarif"
+          className="scroll-mt-28"
           eyebrow="Tarif"
           title={brackets.length > 1 ? "Un tarif selon" : "Tarif pour"}
           titleEm={brackets.length > 1 ? "votre effectif" : "votre équipe"}
@@ -681,7 +851,13 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
 
       {/* ── FAQ (FaqAccordion centralisé — spécifiques + génériques SSOT) ── */}
       {allFaqs.length > 0 ? (
-        <Section eyebrow="FAQ" title="Questions" titleEm="fréquentes">
+        <Section
+          id="faq"
+          className="scroll-mt-28"
+          eyebrow="FAQ"
+          title="Questions"
+          titleEm="fréquentes"
+        >
           <div className="mx-auto max-w-3xl">
             <FaqAccordion
               items={allFaqs.map((q, i) => ({
