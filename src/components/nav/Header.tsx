@@ -75,17 +75,11 @@ export async function Header() {
 
   // Données du méga-menu « Formations IA » calculées CÔTÉ SERVEUR (le catalogue
   // catalog-v2 reste hors du bundle client) et passées en props au composant
-  // client `HeaderFormationsMenu`. Refonte 2026-07-19 : 3 offres générales +
-  // 2 entrées catégorie (métiers / secteurs) — l'axe durée disparaît.
+  // client `HeaderFormationsMenu`. Refonte 2026-07-19 : les 4 offres générales
+  // (les 2 formats « bien commencer » séparés — Will) + 2 entrées catégorie
+  // (métiers / secteurs) — l'axe durée disparaît.
   // Prix dérivés de la matrice (`formatAmount` non-compact porte déjà « € HT »).
-  const generalesAll = getFormationsV2ByCategorie("generale");
-  const bienCommencer4h = generalesAll.find((f) => f.id === "ia-pour-bien-commencer");
-  const menuGenerales = [
-    ...(bienCommencer4h ? [bienCommencer4h] : []),
-    ...generalesAll.filter(
-      (f) => f.id === "ia-pour-les-equipes" || f.id === "ia-pour-l-automatisation",
-    ),
-  ].map((f) => {
+  const menuGenerales = getFormationsV2ByCategorie("generale").map((f) => {
     const facts = FORMATION_DUREE_FACTS[f.duree];
     const dureeLbl = f.duree === "4h" ? facts.heuresLabelFr : facts.joursLabelFr;
     const prix = getFormationV2EntryPrice(f);

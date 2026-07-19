@@ -120,7 +120,6 @@ export default async function FormationsHub({ params }: Props) {
   // Données dérivées du SSOT catalogue (refonte 2026-07-19) — jamais de prix ni
   // de compte en dur : tout suit automatiquement si le catalogue bouge.
   const generales = getFormationsV2ByCategorie("generale");
-  const bienCommencerFormats = generales.filter((f) => f.id.startsWith("ia-pour-bien-commencer"));
   const equipes = generales.find((f) => f.id === "ia-pour-les-equipes");
   const automatisation = generales.find((f) => f.id === "ia-pour-l-automatisation");
   const metiers = getFormationsV2ByCategorie("metier");
@@ -131,6 +130,9 @@ export default async function FormationsHub({ params }: Props) {
   const { minEur } = getFormationCatalogPriceRange();
   // `formatAmount` non-compact porte déjà « € HT » — ne jamais resuffixer.
   const minPriceLabel = formatAmount(minEur, "fr");
+  // Claims certification/financement du héros — gatés Phase B (ISR 1h les
+  // réinjecte au flip du flag, comme la meta).
+  const ofPublicHero = isQualiopiPublicDisclosureEnabled();
 
   /** « 4 heures » · « 1 journée » · « 2 journées (scindable 2×1j) ». */
   const dureeLabelFr = (f: {
@@ -156,20 +158,35 @@ export default async function FormationsHub({ params }: Props) {
   // license CC BY 4.0, creator/copyrightHolder Axion-IA `#organization`.
   const photosImageObjectJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/formations" });
 
-  // Les 3 cartes « offres générales » du hub. « IA pour bien commencer » existe
-  // en 2 formats (condensé 4 h / journée complète) → la carte pointe la fiche
-  // 4 h et propose le second format en lien secondaire.
+  // Les 4 cartes « offres générales » du hub (Will 2026-07-19 : les 2 formats
+  // « bien commencer » sont des cartes SÉPARÉES, avec la différence explicite,
+  // et CHAQUE carte porte un badge sur sa photo).
+  const bienCommencer4h = generales.find((f) => f.id === "ia-pour-bien-commencer");
+  const bienCommencerJournee = generales.find((f) => f.id === "ia-pour-bien-commencer-journee");
   const offresGenerales = [
-    ...(bienCommencerFormats.length > 0
+    ...(bienCommencer4h
       ? [
           {
-            key: "bien-commencer",
+            key: "bien-commencer-4h",
+            f: bienCommencer4h,
             titreFr: "IA pour bien commencer",
+            badgeFr: "Pour bien démarrer · condensé",
             benefitFr: "Comprendre l'IA et l'utiliser dès aujourd'hui",
             pitchFr:
-              "Le point d'entrée naturel : lever les blocages, connaître les bons outils, repartir avec des usages applicables dès le lendemain.",
-            formats: bienCommencerFormats,
-            featured: true,
+              "La découverte en une demi-journée : dense et démonstrative, elle lève les blocages sans désorganiser votre activité. Chacun repart avec des usages applicables dès le lendemain.",
+          },
+        ]
+      : []),
+    ...(bienCommencerJournee
+      ? [
+          {
+            key: "bien-commencer-journee",
+            f: bienCommencerJournee,
+            titreFr: "IA pour bien commencer — journée complète",
+            badgeFr: "Pour bien démarrer · approfondi",
+            benefitFr: "S'approprier l'IA en pratiquant sur ses propres tâches",
+            pitchFr:
+              "La différence avec le condensé : une journée entière avec autant de pratique que de théorie — chaque participant teste plusieurs usages sur son propre travail, en atelier guidé.",
           },
         ]
       : []),
@@ -177,12 +194,12 @@ export default async function FormationsHub({ params }: Props) {
       ? [
           {
             key: "equipes",
+            f: equipes,
             titreFr: equipes.titreFr,
+            badgeFr: "Pour gagner du temps",
             benefitFr: "Gagner du temps au quotidien",
             pitchFr:
-              "Transformer des usages dispersés en pratique commune : rédaction, synthèse, recherche et prompts réutilisables, sur vos vraies tâches.",
-            formats: [equipes],
-            featured: false,
+              "Pour les équipes qui utilisent déjà l'IA : transformer des usages dispersés en pratique commune — rédaction, synthèse, prompts réutilisables, sur vos vraies tâches.",
           },
         ]
       : []),
@@ -190,12 +207,12 @@ export default async function FormationsHub({ params }: Props) {
       ? [
           {
             key: "automatisation",
+            f: automatisation,
             titreFr: automatisation.titreFr,
+            badgeFr: "Pour automatiser",
             benefitFr: "Vos premières automatisations concrètes",
             pitchFr:
               "Identifier ce qui vous fait perdre du temps et construire une première automatisation, testée sur un cas réel de votre entreprise.",
-            formats: [automatisation],
-            featured: false,
           },
         ]
       : []),
@@ -311,21 +328,27 @@ export default async function FormationsHub({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will) */}
+      {/* HERO 2 colonnes — refonte wording Will 2026-07-19 : promesse
+          productivité + ligne de réassurance (claims Qualiopi/OPCO GATÉS
+          Phase B — fallback légal sans certification hors flag) + bonus
+          visibilité sous les CTA. */}
       <ServiceHero
         eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
-        title={isFr ? "Formez vos équipes à l'IA" : "Train your teams in AI"}
-        titleEm={isFr ? "pour un gain de temps immédiat" : "for immediate time savings"}
+        title={isFr ? "Explosez la productivité de vos équipes" : "Boost your teams' productivity"}
+        titleEm={isFr ? "par des formations performantes" : "with high-impact trainings"}
         description={
           isFr
-            ? "Un formateur IA expert vient sur votre site. Vos équipes montent en compétence sur les trois assistants les plus utilisés en entreprise (ChatGPT, Claude, Gemini), apprennent à concevoir leurs assistants IA — et gagnent des heures dès la 1ʳᵉ session."
-            : "An expert AI trainer comes on site. Your teams upskill on the three most widely used business assistants (ChatGPT, Claude, Gemini), learn to build their own AI assistants — and save hours from the very first session."
+            ? ofPublicHero
+              ? "Certifié Qualiopi · jusqu'à 100 % finançable OPCO · 100 % clients satisfaits."
+              : "100 % clients satisfaits · 100 % pratique, sur vos propres outils et cas d'usage · prix publics par groupe."
+            : ofPublicHero
+              ? "Qualiopi-certified · up to 100% OPCO-fundable · 100% satisfied clients."
+              : "100% satisfied clients · 100% hands-on, on your own tools and use cases · public prices per group."
         }
         ctas={
-          // Sprint cohérence CTA 2026-05-28 (Will) — alignés Header (Primary
-          // « Réserver un appel » + Secondary « Nous écrire »). Le scroll hint
-          // « Découvrir les formations » est désormais un bouton séparé visible
-          // centré sous le hero (Will : « plus visible et centré en bas du hero »).
+          // CTA primary « Réserver un appel » (aligné Header) + Secondary
+          // « Nous écrire », puis BONUS VISIBILITÉ (Will 2026-07-19) sous les
+          // CTA — wording aligné sur FormationsLesPlus (offre réelle existante).
           <>
             <Cta
               href="/appel"
@@ -345,6 +368,16 @@ export default async function FormationsHub({ params }: Props) {
             >
               {isFr ? "Nous écrire" : "Email us"}
             </Cta>
+            <p className="text-fg-soft w-full basis-full text-[13.5px] leading-relaxed">
+              <span className="text-fg font-semibold">
+                {isFr
+                  ? "Visibilité offerte à votre entreprise :"
+                  : "Free visibility for your company:"}
+              </span>{" "}
+              {isFr
+                ? "podcast avec le dirigeant · interviews de participants · page web dédiée sur axion-ia.com"
+                : "executive podcast · participant interviews · dedicated page on axion-ia.com"}
+            </p>
           </>
         }
         customVisual={
@@ -440,97 +473,83 @@ export default async function FormationsHub({ params }: Props) {
         }
         contentClassName={TIGHT_X}
       >
-        {/* 3 CARTES OFFRES GÉNÉRALES */}
-        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3 lg:gap-6">
+        {/* 4 CARTES OFFRES GÉNÉRALES — les 2 formats « bien commencer » sont
+            des cartes séparées et CHAQUE carte porte son badge sur la photo
+            (Will 2026-07-19). Grid 2×2 en md, 4 sur 1 ligne en xl. */}
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-4">
           {offresGenerales.map((offre) => {
-            const primary = offre.formats[0]!;
-            const secondary = offre.formats[1];
+            const img = getFormationImage(offre.f);
+            const credit = getFormationImageCredit(offre.f);
+            const price = getFormationV2EntryPrice(offre.f);
             return (
               <article
                 key={offre.key}
                 className="group/offre bg-paper border-terracotta/30 hover:border-terracotta shadow-subtle relative flex h-full flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(205,107,72,0.30)]"
               >
-                {/* Badge « point d'entrée » sur l'offre recommandée */}
-                {offre.featured ? (
-                  <span className="bg-terracotta text-mocha-fg absolute top-5 right-5 z-[2] inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
-                    {isFr ? "Pour bien démarrer" : "Best starting point"}
-                  </span>
-                ) : null}
-
                 {/* Filet couleur en haut */}
                 <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
 
-                {/* BANDEAU IMAGE — photo dédiée (Unsplash locale, SSOT
-                    catalog-v2-photos), aspect fixe → CLS=0, crédit overlay. */}
-                {(() => {
-                  const img = getFormationImage(primary);
-                  const credit = getFormationImageCredit(primary);
-                  return (
-                    <div className="relative">
-                      <Image
-                        src={img.src}
-                        alt={img.altFr}
-                        width={1280}
-                        height={800}
-                        loading="lazy"
-                        decoding="async"
-                        sizes="(max-width: 768px) 100vw, 400px"
-                        className="aspect-[16/9] w-full object-cover"
-                        quality={78}
-                      />
-                      {credit ? (
-                        <UnsplashCredit
-                          photographerName={credit.name}
-                          photographerUrl={credit.url}
-                          className="bg-paper/85 absolute right-2 bottom-2 z-[2] !mt-0 rounded-full px-2 py-0.5 !text-[9.5px]"
-                        />
-                      ) : null}
-                    </div>
-                  );
-                })()}
+                {/* BANDEAU IMAGE — photo dédiée + BADGE de positionnement sur
+                    chaque carte (Unsplash locale, crédit CGU §9, CLS=0). */}
+                <div className="relative">
+                  <Image
+                    src={img.src}
+                    alt={img.altFr}
+                    width={1280}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 320px"
+                    className="aspect-[16/9] w-full object-cover"
+                    quality={78}
+                  />
+                  <span className="bg-terracotta text-mocha-fg absolute top-3 left-3 z-[2] inline-flex items-center rounded-full px-3 py-1 text-[10.5px] font-bold tracking-wide uppercase shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
+                    {offre.badgeFr}
+                  </span>
+                  {credit ? (
+                    <UnsplashCredit
+                      photographerName={credit.name}
+                      photographerUrl={credit.url}
+                      className="bg-paper/85 absolute right-2 bottom-2 z-[2] !mt-0 rounded-full px-2 py-0.5 !text-[9.5px]"
+                    />
+                  ) : null}
+                </div>
 
-                <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <h2 className="text-fg pr-8 text-xl leading-tight font-semibold sm:text-2xl">
-                    {offre.titreFr}
-                  </h2>
-                  <p className="text-terracotta-deep mt-1.5 text-[14px] leading-snug font-semibold">
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                  {/* Le BÉNÉFICE ressort en titre (Will 2026-07-19 : « c'est
+                      "Comprendre l'IA et l'utiliser dès aujourd'hui" qui doit
+                      ressortir, pas "IA pour bien commencer" ») ; le nom de la
+                      formation passe en sous-ligne discrète. */}
+                  <h2 className="text-fg text-lg leading-tight font-semibold sm:text-xl">
                     {offre.benefitFr}
+                  </h2>
+                  <p className="text-fg-muted mt-1.5 text-[12.5px] leading-snug font-medium">
+                    {offre.titreFr}
                   </p>
-                  <p className="text-fg-soft mt-3 text-[13.5px] leading-relaxed">{offre.pitchFr}</p>
+                  <p className="text-fg-soft mt-3 text-[13px] leading-relaxed">{offre.pitchFr}</p>
 
-                  {/* Formats & prix — dérivés de la matrice (jamais en dur).
+                  {/* Durée & prix — dérivés de la matrice (jamais en dur).
                       `formatAmount` NON-compact porte déjà « € HT ». */}
-                  <ul className="border-border mt-5 space-y-2 border-t pt-4">
-                    {offre.formats.map((f) => {
-                      const price = getFormationV2EntryPrice(f);
-                      return (
-                        <li
-                          key={f.id}
-                          className="text-fg flex items-baseline justify-between gap-3 text-[13.5px]"
-                        >
-                          <span className="text-fg-soft font-medium">{dureeLabelFr(f)}</span>
-                          <span className="font-semibold tabular-nums">
-                            {typeof price === "number"
-                              ? formatAmount(price, "fr")
-                              : isFr
-                                ? "Sur devis"
-                                : "On quote"}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                  <p className="text-fg-muted mt-2 text-[12px]">
+                  <div className="border-border mt-5 flex items-baseline justify-between gap-3 border-t pt-4 text-[13.5px]">
+                    <span className="text-fg-soft font-medium">{dureeLabelFr(offre.f)}</span>
+                    <span className="text-fg font-semibold tabular-nums">
+                      {typeof price === "number"
+                        ? formatAmount(price, "fr")
+                        : isFr
+                          ? "Sur devis"
+                          : "On quote"}
+                    </span>
+                  </div>
+                  <p className="text-fg-muted mt-1.5 text-[12px]">
                     {isFr
                       ? "Prix par groupe · jusqu'à 15 participants"
                       : "Per group · up to 15 people"}
                   </p>
 
-                  {/* CTA fiche (+ lien 2ᵉ format pour « bien commencer ») */}
-                  <div className="mt-auto pt-6">
+                  <div className="mt-auto pt-5">
                     <Link
-                      href={`/formations/${primary.slugFr}` as never}
-                      className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors"
+                      href={`/formations/${offre.f.slugFr}` as never}
+                      className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3 text-[13.5px] font-semibold transition-colors"
                     >
                       <span>{isFr ? "Découvrir la formation" : "See the training"}</span>
                       <ArrowRight
@@ -538,18 +557,6 @@ export default async function FormationsHub({ params }: Props) {
                         className="h-4 w-4 transition-transform duration-200 group-hover/offre:translate-x-1"
                       />
                     </Link>
-                    {secondary ? (
-                      <p className="mt-3 text-center text-[12.5px]">
-                        <Link
-                          href={`/formations/${secondary.slugFr}` as never}
-                          className="text-terracotta hover:text-terracotta-deep font-semibold underline-offset-4 hover:underline"
-                        >
-                          {isFr
-                            ? "Existe aussi en journée complète"
-                            : "Also available as a full day"}
-                        </Link>
-                      </p>
-                    ) : null}
                   </div>
                 </div>
               </article>
