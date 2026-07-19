@@ -60,6 +60,19 @@ export function escapeMarkdownV2(text: string): string {
   return text.replace(MD_V2_RESERVED, (c) => `\\${c}`);
 }
 
+// Inverse exacte de `escapeMarkdownV2` : retire le `\` que l'on a ajouté devant
+// chaque caractère réservé. Comme TOUT le texte produit par `formatNotification`
+// est passé par `escapeMarkdownV2`, chaque `\` présent EST un backslash d'échappement
+// → l'inversion est exacte (aucune sur-suppression). Les marqueurs de structure
+// `*label*` (gras) NE sont PAS précédés d'un `\` (ajoutés après échappement) donc
+// ils survivent — et WhatsApp rend nativement `*gras*`.
+const MD_V2_UNESCAPE = /\\([_*[\]()~`>#+\-=|{}.!\\])/g;
+
+/** Convertit un message MarkdownV2 (Telegram) en texte plain lisible par WhatsApp. */
+export function markdownV2ToPlain(text: string): string {
+  return text.replace(MD_V2_UNESCAPE, "$1");
+}
+
 /** Formatte une date ISO/Date en Europe/Paris (style FR humain). */
 export function formatParisDateTime(input: string | Date | undefined): string {
   if (!input) return "—";
@@ -319,4 +332,16 @@ export function formatNotification(
     `🏷️ ${escapeMarkdownV2(event.category)}`,
   ].join(" · ");
   return { text: [header, "", body, "", footer].join("\n") };
+}
+
+/**
+ * Variante plain-text pour WhatsApp (CallMeBot). Dérivée de `formatNotification`
+ * (même corps/mêmes champs) puis « déMarkdownisée » : on retire l'échappement
+ * MarkdownV2, on garde les `*gras*` que WhatsApp rend nativement.
+ */
+export function formatNotificationPlain(
+  event: NotificationEvent,
+  severity: NotificationSeverity,
+): FormattedMessage {
+  return { text: markdownV2ToPlain(formatNotification(event, severity).text) };
 }

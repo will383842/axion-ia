@@ -21,13 +21,15 @@
 import {
   getRouting,
   shouldDispatchAsync,
+  shouldNotifyWhatsApp,
   telegramGroupFor,
   resolveTelegramChatId,
 } from "./routing";
-import { formatNotification } from "./format";
+import { formatNotification, markdownV2ToPlain } from "./format";
 import { sendTelegramRaw } from "./channels/telegram";
 import { sendSentryBreadcrumb } from "./channels/sentry";
 import { sendEmailNotification } from "./channels/email";
+import { sendWhatsAppRaw } from "./channels/whatsapp";
 import { isDuplicate } from "./dedup";
 import { checkCategoryRateLimit } from "./rate-limit";
 import type { NotificationChannel, NotifyInput, NotifyResult, NotificationCategory } from "./types";
@@ -89,6 +91,17 @@ async function dispatchChannels(
             results.email = "failed";
           }),
       );
+    } else if (ch === "whatsapp") {
+      // Même contenu que Telegram, en texte plain (WhatsApp rend `*gras*`).
+      tasks.push(
+        sendWhatsAppRaw({ text: markdownV2ToPlain(formattedText) })
+          .then((status) => {
+            results.whatsapp = status;
+          })
+          .catch(() => {
+            results.whatsapp = "failed";
+          }),
+      );
     }
   }
 
@@ -121,7 +134,14 @@ export async function flushPendingDispatches(): Promise<void> {
 export async function notify(input: NotifyInput): Promise<NotifyResult> {
   const routing = getRouting(input.category);
   const severity = input.severity ?? routing.severity;
-  const channels = input.channels ?? routing.channels;
+  // Canaux du routing par défaut + doublon WhatsApp pour les leads humains.
+  // Si l'appelant force `input.channels`, on respecte exactement sa liste (usage
+  // avancé). Le canal WhatsApp reste no-op tant que la clé CallMeBot est absente.
+  const baseChannels = input.channels ?? routing.channels;
+  const channels: NotificationChannel[] =
+    input.channels === undefined && shouldNotifyWhatsApp(input.category)
+      ? [...baseChannels, "whatsapp"]
+      : baseChannels;
   const payload = input.payload as Record<string, unknown>;
 
   // 0. Aucun canal configuré → skip immédiat (catégorie volontairement muette).

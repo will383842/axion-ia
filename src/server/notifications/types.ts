@@ -7,7 +7,7 @@
 
 export type NotificationSeverity = "info" | "warn" | "error" | "critical";
 
-export type NotificationChannel = "telegram" | "email" | "sentry";
+export type NotificationChannel = "telegram" | "email" | "sentry" | "whatsapp";
 
 export type NotificationEvent =
   // === Formulaires publics ===
