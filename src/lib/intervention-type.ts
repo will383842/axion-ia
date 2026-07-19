@@ -76,12 +76,8 @@ import {
   TEMPS_SUB_TIERS,
   CLAUDE_SUB_TIERS,
   AUDIT_TIERS,
-  type FormationBracket,
   type FormationDuree,
   type FormationGamme,
-  getFormationBrackets,
-  getFormationEntryPrice,
-  getFormationPrice,
 } from "@/content/pricing";
 
 // Refonte Formations V2 2026-06-11 — mapping slug formation → (gamme, durée) pour
@@ -108,20 +104,6 @@ const FORMATION_BOOKING: Partial<Record<string, { gamme: FormationGamme; duree: 
     "claude-createur": { gamme: "claude", duree: "2j" },
     "claude-architecte": { gamme: "claude", duree: "3j" },
   };
-
-/** Tranche d'effectif d'une formation matchant `count` (sinon la dernière). */
-function pickFormationBracket(
-  brackets: ReadonlyArray<FormationBracket>,
-  count: number,
-): FormationBracket | undefined {
-  for (const b of brackets) {
-    const parts = b.split("-");
-    const lo = Number.parseInt(parts[0] ?? "", 10);
-    const hi = Number.parseInt(parts[1] ?? "", 10);
-    if (Number.isFinite(lo) && Number.isFinite(hi) && count >= lo && count <= hi) return b;
-  }
-  return brackets[brackets.length - 1];
-}
 
 /**
  * Map slug UI → id pricing tier (`intervention-<id>`). Partial : les 17 formations
@@ -186,18 +168,14 @@ export function getInterventionPriceCents(
     }
     return { cents: 89000, tierLabel: "Audit Flash terrain" };
   }
-  // Refonte Formations V2 — les 17 formations dérivent leur prix de la matrice
-  // (gamme × durée × tranche d'effectif), pas d'un tier intervention.
+  // Formations legacy (slugs pré-refonte 2026-07-19) : l'ancienne matrice
+  // (gamme × durée × effectif) n'existe plus — le catalogue actuel dérive son
+  // prix par (catégorie × durée) et ne passe plus par le calendrier. Les
+  // bookings passés gardent leur `pricePaidCents` stocké ; un slug legacy
+  // résout désormais « sur devis » (cents null).
   const fb = FORMATION_BOOKING[slug];
   if (fb) {
-    const brackets = getFormationBrackets(fb.gamme, fb.duree);
-    const bracket = pickFormationBracket(brackets, participantsCount);
-    const eur =
-      bracket !== undefined
-        ? getFormationPrice(fb.gamme, fb.duree, bracket)
-        : getFormationEntryPrice(fb.gamme, fb.duree);
-    if (typeof eur === "number") return { cents: eur * 100, tierLabel: `Formation ${fb.duree}` };
-    return { cents: null, tierLabel: null };
+    return { cents: null, tierLabel: `Formation ${fb.duree}` };
   }
   const tierId = SLUG_TO_TIER_ID[slug];
   const tier = INTERVENTION_TIERS.find((t) => t.id === tierId);

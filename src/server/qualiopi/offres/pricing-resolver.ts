@@ -13,8 +13,8 @@ import {
   formatAmount,
   formatPrice,
   getFormationEntryPrice,
+  type FormationCategorie,
   type FormationDuree,
-  type FormationGamme,
   type PricingTier,
 } from "@/content/pricing";
 import type { OffreTarifType } from "@/server/qualiopi/offres/types";
@@ -43,8 +43,13 @@ export function resolveOffrePriceLabel(tierId: string | null, locale: "fr" | "en
 }
 
 /**
- * Libellé prix d'une offre CATALOGUE V2 (tierId null) : dérivé de la matrice
- * `FORMATION_PRICE_MATRIX` via `gamme` + `dureeCode` → « À partir de X € HT ».
+ * Libellé prix d'une offre CATALOGUE (tierId null) : dérivé de la matrice
+ * `FORMATION_PRICE_MATRIX` via `gamme` + `dureeCode` → prix fixe par groupe.
+ *
+ * Refonte 2026-07-19 : la colonne DB `OffreSite.gamme` porte désormais la
+ * CATÉGORIE (« generale » | « metier » | « secteur ») pour les offres du
+ * catalogue actuel. Les offres archivées portent une ancienne gamme
+ * (« ia-standard »…) qui ne résout plus dans la matrice → « Sur devis ».
  */
 export function resolveOffrePriceLabelV2(
   gamme: string | null,
@@ -52,12 +57,11 @@ export function resolveOffrePriceLabelV2(
   locale: "fr" | "en" = "fr",
 ): string {
   if (!gamme || !dureeCode) return locale === "fr" ? "Sur devis" : "On quote";
-  const entry = getFormationEntryPrice(gamme as FormationGamme, dureeCode as FormationDuree);
+  const entry = getFormationEntryPrice(gamme as FormationCategorie, dureeCode as FormationDuree);
   if (entry == null) return locale === "fr" ? "Sur devis" : "On quote";
   // `formatAmount` inclut déjà « € HT » (fr) / « (excl. VAT) » (en) — pas de suffixe.
-  return locale === "fr"
-    ? `À partir de ${formatAmount(entry, "fr")}`
-    : `From ${formatAmount(entry, "en")}`;
+  // Tranche unique 2-15 : prix fixe par groupe, plus de « À partir de ».
+  return formatAmount(entry, locale);
 }
 
 /**
@@ -116,7 +120,7 @@ export function verifyOffreCoherence(input: {
   // FORMATION_PRICE_MATRIX (sinon l'offre afficherait silencieusement « Sur devis »).
   if (input.gamme && input.dureeCode) {
     const entry = getFormationEntryPrice(
-      input.gamme as FormationGamme,
+      input.gamme as FormationCategorie,
       input.dureeCode as FormationDuree,
     );
     if (entry == null) {

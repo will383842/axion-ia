@@ -20,11 +20,9 @@ import { FORMATION_PRICE_MATRIX } from "../pricing";
 
 function matrixValues(): ReadonlySet<number> {
   const out = new Set<number>();
-  for (const gamme of Object.values(FORMATION_PRICE_MATRIX)) {
-    for (const duree of Object.values(gamme)) {
-      for (const v of Object.values(duree)) {
-        if (typeof v === "number") out.add(v);
-      }
+  for (const categorie of Object.values(FORMATION_PRICE_MATRIX)) {
+    for (const v of Object.values(categorie)) {
+      if (typeof v === "number") out.add(v);
     }
   }
   return out;
@@ -52,10 +50,11 @@ describe("Garde anti-dérive — prix prose catalog-v2 ⊆ FORMATION_PRICE_MATRI
       }
     });
 
-    // Offre AXION = 100 % « Sur devis » : AUCUN montant en euros ne doit
-    // apparaître en prose (prix décidés plus tard, hors catalogue). Ce garde
-    // empêche toute réintroduction accidentelle d'un prix en dur.
-    expect(scanned, "offre « Sur devis » : aucun prix € ne doit figurer dans le catalogue").toBe(0);
+    // Refonte 2026-07-19 : les prix sont PUBLICS → des montants € figurent en
+    // prose (metaDescription notamment). Ils doivent tous exister dans la
+    // matrice SSOT ; on vérifie aussi qu'au moins un montant est scanné (si le
+    // scan tombe à 0, le pattern de détection a probablement cassé).
+    expect(scanned, "au moins un prix € attendu en prose (prix publics)").toBeGreaterThan(0);
 
     expect(
       offenders,

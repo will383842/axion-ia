@@ -240,33 +240,69 @@ const nextConfig: NextConfig = {
         destination: "/en/book-a-call",
         permanent: true,
       },
-      // Refonte offre AXION (2026-07) — les 17 anciennes formations sont
-      // remplacées par la nouvelle offre (nouveaux slugs). 301 des anciennes
-      // URLs vers la formation la plus proche, ou vers le hub /formations.
+      // Refonte offre AXION (2026-07, PR #327) PUIS refonte catalogue
+      // 2026-07-19 (générales / métiers / secteurs). Les destinations des
+      // anciens slugs (pré-#327) sont REMAPPÉES directement vers le catalogue
+      // actuel pour éviter les 301 chaînés (ancien → AXION → actuel).
       ...[
-        ["ia-express", "bien-demarrer-avec-l-ia-4h"],
-        ["art-du-prompt", "prompts-avances-et-assistants-ia-4h"],
-        ["ia-securite", "ia-act-conformite-et-securite-7h"],
-        ["ia-conformite", "ia-act-conformite-et-securite-7h"],
-        ["ia-fondamentaux", "bien-demarrer-avec-l-ia-journee-7h"],
-        ["ia-commercial", "ia-vente-prospection-developpement-commercial-7h"],
-        ["ia-au-bureau", "ia-assistanat-mails-comptes-rendus-documents-7h"],
-        ["ia-integration-metier", "gagner-du-temps-au-quotidien-avec-l-ia-7h"],
-        ["ia-commercial-avance", "ia-vente-prospection-developpement-commercial-7h"],
-        ["claude-decouverte", "claude-prise-en-main-complete-7h"],
-        ["claude-createur", "claude-prise-en-main-complete-7h"],
-        ["claude-architecte", "claude-maitrise-avancee-et-autonomie-2j"],
+        ["ia-express", "ia-pour-bien-commencer"],
+        ["art-du-prompt", "ia-pour-les-equipes"],
+        ["ia-securite", "ia-pour-bien-commencer"],
+        ["ia-conformite", ""],
+        ["ia-fondamentaux", "ia-pour-bien-commencer-journee"],
+        ["ia-commercial", "ia-pour-les-commerciaux"],
+        ["ia-au-bureau", "ia-pour-les-equipes"],
+        ["ia-integration-metier", "ia-pour-les-equipes"],
+        ["ia-commercial-avance", "ia-pour-les-commerciaux"],
+        ["claude-decouverte", "ia-pour-bien-commencer"],
+        ["claude-createur", "ia-pour-les-equipes"],
+        ["claude-architecte", "ia-pour-l-automatisation"],
         // Sans équivalent direct → hub /formations
         ["ia-sur-le-terrain", ""],
-        ["automatisations-decouverte", ""],
+        ["automatisations-decouverte", "ia-pour-l-automatisation"],
         ["ia-transformation-equipe", "seminaire-ia-toute-l-entreprise-1j"],
-        ["agents-automatisations", ""],
-        ["agents-automatisations-avance", ""],
+        ["agents-automatisations", "ia-pour-l-automatisation"],
+        ["agents-automatisations-avance", "ia-pour-l-automatisation"],
       ].map(([from, to]) => ({
         source: `/fr/formations/${from}`,
         destination: to ? `/fr/formations/${to}` : "/fr/formations",
         permanent: true,
       })),
+      // Refonte catalogue 2026-07-19 (Will) — les 17 formations AXIONs (hors
+      // séminaire, conservé) sont remplacées par les 21 nouvelles (4 générales,
+      // 9 métiers, 8 secteurs). 301 de chaque ancien slug vers la formation la
+      // plus proche, ou vers le hub.
+      ...[
+        ["bien-demarrer-avec-l-ia-4h", "ia-pour-bien-commencer"],
+        ["bien-demarrer-avec-l-ia-journee-7h", "ia-pour-bien-commencer-journee"],
+        ["prompts-avances-et-assistants-ia-4h", "ia-pour-les-equipes"],
+        ["gagner-du-temps-au-quotidien-avec-l-ia-7h", "ia-pour-les-equipes"],
+        ["claude-prise-en-main-complete-7h", "ia-pour-bien-commencer-journee"],
+        ["claude-maitrise-avancee-et-autonomie-2j", "ia-pour-les-equipes"],
+        ["claude-code-creer-un-projet-3j", "ia-pour-l-it"],
+        ["ia-act-conformite-et-securite-7h", ""],
+        ["referent-ia-piloter-gouvernance-ia-7h", ""],
+        ["ia-rh-recrutement-talents-7h", "ia-pour-les-rh"],
+        ["ia-assistanat-mails-comptes-rendus-documents-7h", "ia-pour-les-equipes"],
+        ["ia-marketing-contenus-seo-image-de-marque-7h", "ia-pour-le-marketing"],
+        ["ia-vente-prospection-developpement-commercial-7h", "ia-pour-les-commerciaux"],
+        ["ia-finance-reporting-analyses-pilotage-7h", "ia-pour-la-finance"],
+        ["ia-supply-chain-achats-stocks-7h", "ia-pour-les-achats"],
+        ["conduite-du-changement-ia-7h", ""],
+        ["deployer-l-ia-en-entreprise-2j", "ia-pour-l-automatisation"],
+      ].map(([from, to]) => ({
+        source: `/:locale(fr|en)/formations/${from}`,
+        destination: to ? `/:locale/formations/${to}` : "/:locale/formations",
+        permanent: true,
+      })),
+      // Refonte 2026-07-19 — l'axe durée disparaît : les 4 listings
+      // /formations/duree/<slug> 301 vers le hub (les 2 listings par catégorie
+      // /formations/metiers et /formations/secteurs les remplacent).
+      {
+        source: "/:locale(fr|en)/formations/duree/:path*",
+        destination: "/:locale/formations",
+        permanent: true,
+      },
       // FAQ — slugs legacy faibles → slugs keyword-rich (perfection FAQ 2026-05-31).
       // 301 pour préserver toute URL déjà connue de Google. Cf. FAQ_GLOBAL ids.
       {
@@ -496,22 +532,22 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/:locale(fr|en)/interventions/collectives/4h",
-        destination: "/:locale/formations/duree/4-heures",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
         source: "/:locale(fr|en)/interventions/collectives/1-jour",
-        destination: "/:locale/formations/duree/1-jour",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
         source: "/:locale(fr|en)/interventions/collectives/2-jours",
-        destination: "/:locale/formations/duree/2-jours",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
         source: "/:locale(fr|en)/interventions/collectives/3-jours-plus",
-        destination: "/:locale/formations/duree/3-jours",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
@@ -581,12 +617,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/:locale(fr|en)/interventions/atelier-ia-cible",
-        destination: "/:locale/formations/duree/4-heures",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
         source: "/en/interventions/targeted-ai-workshop",
-        destination: "/fr/formations/duree/4-heures",
+        destination: "/fr/formations",
         permanent: true,
       },
     ];

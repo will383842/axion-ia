@@ -45,7 +45,6 @@ import { PRESS_RELEASES } from "@/content/press";
 // obtenu (Phase A), AUCUNE URL formation ne doit fuiter dans le sitemap public
 // (afficher Qualiopi/CPF/OPCO avant certification est illégal — cf. flag.ts).
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
-import { FORMATION_DUREES_META } from "@/content/formations/catalog-v2-meta";
 // Phase 3 SEO secteurs (2026-06-21) — hub /secteurs + 10 piliers + 50 croisées.
 // Contenu unique par combo (pain-matrix 50/50) → indexable, anti-doorway.
 import { CLIENT_SECTORS } from "@/content/sectors";
@@ -1118,7 +1117,7 @@ function buildStackIaToolsSitemap(now: Date): MetadataRoute.Sitemap {
  * Contenu (Phase B uniquement) :
  *   - le hub `/formations` (priority 0.8)
  *   - la page tarifs `/formations/tarifs` (priority 0.7)
- *   - les 4 listings par durée `/formations/duree/<slug>` (FORMATION_DUREES_META)
+ *   - les 2 listings par catégorie `/formations/metiers` + `/formations/secteurs`
  *   - les gammes thématiques `/formations/gamme/<slug>` (getGammesThematiques :
  *     Agents & Automatisations, Claude)
  *   - les 17 fiches `/formations/<slug>` (FORMATIONS_V2, slug FR canonique +
@@ -1166,28 +1165,24 @@ function buildFormationsSitemap(now: Date): MetadataRoute.Sitemap {
     }
   }
 
-  // Listings par durée /formations/duree/<slug> (slug FR/EN identique : segment
-  // d'URL « 4-heures », « 1-jour »… n'est pas traduit).
-  const dureeSlugs = FORMATION_DUREES_META.map((d) => d.slug);
+  // Listings par catégorie (refonte 2026-07-19 — l'axe durée est supprimé,
+  // /formations/duree/* 301 → hub). Segments FR/EN identiques (routing fr==en).
   entries.push(
     ...buildDynamic(
       [
         {
-          fr: "/formations/duree/:slug",
-          en: "/training/duration/:slug",
-          slugs: dureeSlugs,
+          fr: "/formations/:slug",
+          en: "/formations/:slug",
+          slugs: ["metiers", "secteurs"],
           changeFrequency: "monthly",
-          priority: 0.6,
+          priority: 0.8,
         },
       ],
       now,
     ),
   );
 
-  // Mono-axe durée (décision Will 2026-06-11) : pas de pages /formations/gamme/*
-  // (la gamme reste un badge sur les cartes). Aucune entrée gamme au sitemap.
-
-  // Les 17 fiches /formations/<slug> (slug FR canonique + slug EN miroir).
+  // Les fiches /formations/<slug> (slug FR canonique + slug EN miroir).
   entries.push(
     ...buildDynamic(
       [

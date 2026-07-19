@@ -1,7 +1,8 @@
 /**
- * Garde-fou — matrice de prix catalogue formations V2 (gamme × durée × effectif).
- * Valeurs FIGÉES sur `50-commercial/catalogue-formations-ia-final.md`. Toute
- * modif accidentelle d'un prix casse ce test. Additif : n'affecte pas
+ * Garde-fou — matrice de prix catalogue formations (catégorie × durée).
+ * Valeurs FIGÉES sur `Downloads/Titres_Formations_Axion-IA.md` (refonte
+ * 2026-07-19, décision Will : prix publics par groupe de 2 à 15 participants).
+ * Toute modif accidentelle d'un prix casse ce test. Additif : n'affecte pas
  * INTERVENTION_TIERS (testé ailleurs).
  */
 
@@ -12,78 +13,67 @@ import {
   getFormationBrackets,
   getFormationEntryPrice,
   formatFormationPrice,
+  getFormationCatalogPriceRange,
 } from "@/content/pricing";
 
-describe("matrice prix V2 — valeurs figées (catalogue 2026-06-11)", () => {
-  it("gamme IA standard", () => {
-    expect(getFormationPrice("ia-standard", "4h", "2-15")).toBe(1200);
-    expect(getFormationPrice("ia-standard", "4h", "16-30")).toBe(1900);
-    expect(getFormationPrice("ia-standard", "1j", "2-15")).toBe(1900);
-    expect(getFormationPrice("ia-standard", "1j", "16-30")).toBe(3200);
-    expect(getFormationPrice("ia-standard", "2j", "2-15")).toBe(3600);
-    expect(getFormationPrice("ia-standard", "2j", "16-30")).toBe(5800);
-    expect(getFormationPrice("ia-standard", "3j", "2-15")).toBe(4900);
-    expect(getFormationPrice("ia-standard", "3j", "16-30")).toBe(7900);
+describe("matrice prix — valeurs figées (catalogue 2026-07-19)", () => {
+  it("offres générales : 4h 1200 · 1j 1900 · 2j 3600", () => {
+    expect(getFormationPrice("generale", "4h")).toBe(1200);
+    expect(getFormationPrice("generale", "1j")).toBe(1900);
+    expect(getFormationPrice("generale", "2j")).toBe(3600);
+    expect(getFormationPrice("generale", "3j")).toBeUndefined();
   });
 
-  it("gamme Agents & Automatisations (groupes 2-12)", () => {
-    expect(getFormationPrice("agents-automatisations", "2j", "2-12")).toBe(3600);
-    expect(getFormationPrice("agents-automatisations", "3j", "2-12")).toBe(4900);
-    // Agents n'existe pas en 4h ni 1j
-    expect(getFormationPrice("agents-automatisations", "4h", "2-15")).toBeUndefined();
-    expect(getFormationPrice("agents-automatisations", "1j", "2-15")).toBeUndefined();
+  it("offres par métier : 1j 1900 · 2j 3600 (pas de 4h)", () => {
+    expect(getFormationPrice("metier", "1j")).toBe(1900);
+    expect(getFormationPrice("metier", "2j")).toBe(3600);
+    expect(getFormationPrice("metier", "4h")).toBeUndefined();
   });
 
-  it("gamme Claude (+20%)", () => {
-    expect(getFormationPrice("claude", "1j", "2-15")).toBe(2300);
-    expect(getFormationPrice("claude", "1j", "16-30")).toBe(3850);
-    expect(getFormationPrice("claude", "2j", "2-12")).toBe(4300);
-    expect(getFormationPrice("claude", "3j", "2-12")).toBe(5900);
+  it("offres par secteur : 1j 2200 · 2j 3900 (pas de 4h)", () => {
+    expect(getFormationPrice("secteur", "1j")).toBe(2200);
+    expect(getFormationPrice("secteur", "2j")).toBe(3900);
+    expect(getFormationPrice("secteur", "4h")).toBeUndefined();
   });
 });
 
-describe("matrice prix V2 — helpers", () => {
-  it("getFormationBrackets renvoie les tranches existantes dans l'ordre", () => {
-    expect(getFormationBrackets("ia-standard", "1j")).toEqual(["2-15", "16-30"]);
-    expect(getFormationBrackets("agents-automatisations", "2j")).toEqual(["2-12"]);
-    expect(getFormationBrackets("claude", "2j")).toEqual(["2-12"]);
-    expect(getFormationBrackets("agents-automatisations", "4h")).toEqual([]);
+describe("matrice prix — helpers", () => {
+  it("getFormationBrackets : tranche unique 2-15 quand la case existe", () => {
+    expect(getFormationBrackets("generale", "1j")).toEqual(["2-15"]);
+    expect(getFormationBrackets("secteur", "2j")).toEqual(["2-15"]);
+    expect(getFormationBrackets("metier", "4h")).toEqual([]);
   });
 
-  it("getFormationEntryPrice = prix le plus bas de la case", () => {
-    expect(getFormationEntryPrice("ia-standard", "4h")).toBe(1200);
-    expect(getFormationEntryPrice("claude", "1j")).toBe(2300);
-    expect(getFormationEntryPrice("agents-automatisations", "3j")).toBe(4900);
-    expect(getFormationEntryPrice("ia-standard", "4h")).toBeLessThan(
-      getFormationEntryPrice("ia-standard", "1j")!,
+  it("getFormationEntryPrice = le prix de la case (tranche unique)", () => {
+    expect(getFormationEntryPrice("generale", "4h")).toBe(1200);
+    expect(getFormationEntryPrice("secteur", "1j")).toBe(2200);
+    expect(getFormationEntryPrice("generale", "4h")).toBeLessThan(
+      getFormationEntryPrice("generale", "1j")!,
     );
   });
 
   it("formatFormationPrice formate (et tombe sur « Sur devis » si absent)", () => {
-    expect(formatFormationPrice("ia-standard", "4h", "2-15", "fr")).toContain("1");
-    expect(formatFormationPrice("agents-automatisations", "4h", "2-15", "fr")).toBe("Sur devis");
+    expect(formatFormationPrice("generale", "4h", "fr")).toContain("1");
+    expect(formatFormationPrice("generale", "4h", "fr")).not.toContain("HT HT");
+    expect(formatFormationPrice("metier", "4h", "fr")).toBe("Sur devis");
   });
 
-  it("intégrité matrice : tous les prix > 0 et cohérents (4h < 1j < 2j < 3j en IA)", () => {
-    for (const gamme of Object.keys(FORMATION_PRICE_MATRIX) as Array<
+  it("fourchette catalogue : min 1200, max 3900", () => {
+    expect(getFormationCatalogPriceRange()).toEqual({ minEur: 1200, maxEur: 3900 });
+  });
+
+  it("intégrité matrice : tous les prix > 0, secteur ≥ métier à durée égale", () => {
+    for (const cat of Object.keys(FORMATION_PRICE_MATRIX) as Array<
       keyof typeof FORMATION_PRICE_MATRIX
     >) {
-      for (const duree of Object.keys(FORMATION_PRICE_MATRIX[gamme])) {
-        const cell = FORMATION_PRICE_MATRIX[gamme][duree as "4h"];
-        for (const v of Object.values(cell ?? {})) {
-          if (typeof v === "number") expect(v).toBeGreaterThan(0);
-        }
+      for (const v of Object.values(FORMATION_PRICE_MATRIX[cat])) {
+        if (typeof v === "number") expect(v).toBeGreaterThan(0);
       }
     }
-    // Progression durée en IA standard (tranche 2-15)
-    expect(getFormationEntryPrice("ia-standard", "4h")!).toBeLessThan(
-      getFormationEntryPrice("ia-standard", "1j")!,
-    );
-    expect(getFormationEntryPrice("ia-standard", "1j")!).toBeLessThan(
-      getFormationEntryPrice("ia-standard", "2j")!,
-    );
-    expect(getFormationEntryPrice("ia-standard", "2j")!).toBeLessThan(
-      getFormationEntryPrice("ia-standard", "3j")!,
-    );
+    expect(getFormationPrice("secteur", "1j")!).toBeGreaterThan(getFormationPrice("metier", "1j")!);
+    expect(getFormationPrice("secteur", "2j")!).toBeGreaterThan(getFormationPrice("metier", "2j")!);
+    // Progression durée (générales) : 4h < 1j < 2j.
+    expect(getFormationPrice("generale", "4h")!).toBeLessThan(getFormationPrice("generale", "1j")!);
+    expect(getFormationPrice("generale", "1j")!).toBeLessThan(getFormationPrice("generale", "2j")!);
   });
 });

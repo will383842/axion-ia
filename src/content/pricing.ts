@@ -1188,92 +1188,84 @@ export const PRICING = {
 } as const;
 
 // ============================================================================
-// CATALOGUE FORMATIONS V2 — matrice de prix (gamme × durée × effectif).
+// CATALOGUE FORMATIONS — matrice de prix (catégorie × durée).
 //
 // ⚠️ ADDITIF STRICT : ne remplace PAS `INTERVENTION_TIERS` (consommé par les
-// 445 pages villes, /reserver, offers-catalog, chatbot — tous LIVE). Cette
-// matrice est lue UNIQUEMENT par le nouveau catalogue formations (gated par
-// `OF_PUBLIC_DISCLOSURE_ENABLED`). SSOT du prix des 17 formations : ici.
+// 445 pages villes, offers-catalog, chatbot — tous LIVE). Cette matrice est lue
+// UNIQUEMENT par le catalogue formations (catalog-v2.ts). SSOT du prix : ici.
 //
-// Le prix dépend de (gamme × durée × tranche d'effectif), identique pour toutes
-// les formations d'une même case (décision Will 2026-06-11). Tarifs HT par
-// groupe, intra-entreprise, hors frais de déplacement. Source :
-// `50-commercial/catalogue-formations-ia-final.md`.
+// Refonte 2026-07-19 (décision Will) : le catalogue est réorganisé en
+// 3 CATÉGORIES (offres générales / par métier / par secteur d'activité) et les
+// PRIX SONT PUBLICS — prix fixe HT par groupe (2 à 15 participants), identique
+// pour toutes les formations d'une même case (catégorie × durée). Fin de l'axe
+// gamme (IA/Claude) et des tranches 16-30 / 2-12. Intra-entreprise, hors frais
+// de déplacement. Source : `Downloads/Titres_Formations_Axion-IA.md`.
 // ============================================================================
 
-/** Gammes (axe thématique du catalogue V2). */
+/**
+ * Gammes historiques (axe thématique de l'ancien catalogue V2). Conservé car
+ * la colonne `OffreSite.gamme` (DB) et les défauts visuels/outils
+ * (catalog-v2-facts.ts) le référencent encore pour les fiches archivées.
+ */
 export type FormationGamme = "ia-standard" | "agents-automatisations" | "claude";
+
+/** Catégories du catalogue (refonte 2026-07-19) — axe principal de navigation. */
+export type FormationCategorie = "generale" | "metier" | "secteur";
 
 /** Durées catalogue (axe durée). `sur-mesure` = devis, hors matrice. */
 export type FormationDuree = "4h" | "1j" | "2j" | "3j";
 
-/** Tranches d'effectif. `2-12` = gammes à groupe limité (Agents, Claude pro). */
-export type FormationBracket = "2-15" | "16-30" | "2-12";
+/** Tranche d'effectif unique : prix par groupe, jusqu'à 15 participants. */
+export type FormationBracket = "2-15";
 
 /**
- * Matrice prix HT par groupe. `gamme → durée → tranche → prix €`.
- * Une case absente = combinaison non proposée (ex. Agents en 4h, ou IA en 2-12).
+ * Matrice prix HT par groupe. `catégorie → durée → prix €`.
+ * Une case absente = combinaison non proposée (ex. métier en 4h).
  */
 export const FORMATION_PRICE_MATRIX: Record<
-  FormationGamme,
-  Partial<Record<FormationDuree, Partial<Record<FormationBracket, number>>>>
+  FormationCategorie,
+  Partial<Record<FormationDuree, number>>
 > = {
-  "ia-standard": {
-    "4h": { "2-15": 1200, "16-30": 1900 },
-    "1j": { "2-15": 1900, "16-30": 3200 },
-    "2j": { "2-15": 3600, "16-30": 5800 },
-    "3j": { "2-15": 4900, "16-30": 7900 },
-  },
-  "agents-automatisations": {
-    "2j": { "2-12": 3600 },
-    "3j": { "2-12": 4900 },
-  },
-  claude: {
-    "1j": { "2-15": 2300, "16-30": 3850 },
-    "2j": { "2-12": 4300 },
-    "3j": { "2-12": 5900 },
-  },
+  generale: { "4h": 1200, "1j": 1900, "2j": 3600 },
+  metier: { "1j": 1900, "2j": 3600 },
+  secteur: { "1j": 2200, "2j": 3900 },
 };
 
 /** Prix HT (€) d'une case, ou `undefined` si la combinaison n'existe pas. */
 export function getFormationPrice(
-  gamme: FormationGamme,
+  categorie: FormationCategorie,
   duree: FormationDuree,
-  bracket: FormationBracket,
 ): number | undefined {
-  return FORMATION_PRICE_MATRIX[gamme]?.[duree]?.[bracket];
+  return FORMATION_PRICE_MATRIX[categorie]?.[duree];
 }
 
-/** Tranches d'effectif disponibles pour une (gamme, durée), dans l'ordre. */
+/**
+ * Tranches d'effectif disponibles pour une (catégorie, durée). Tranche unique
+ * `2-15` depuis la refonte 2026-07-19 — conservé en tableau pour les rendus
+ * tabulaires (fiche, tarifs) qui itèrent sur les tranches.
+ */
 export function getFormationBrackets(
-  gamme: FormationGamme,
+  categorie: FormationCategorie,
   duree: FormationDuree,
 ): ReadonlyArray<FormationBracket> {
-  const cell = FORMATION_PRICE_MATRIX[gamme]?.[duree];
-  if (!cell) return [];
-  const order: ReadonlyArray<FormationBracket> = ["2-15", "16-30", "2-12"];
-  return order.filter((b) => typeof cell[b] === "number");
+  return typeof FORMATION_PRICE_MATRIX[categorie]?.[duree] === "number" ? ["2-15"] : [];
 }
 
-/** Prix d'entrée (le plus bas) d'une (gamme, durée) — pour CTA « à partir de ». */
+/** Prix d'entrée d'une (catégorie, durée) — tranche unique : le prix lui-même. */
 export function getFormationEntryPrice(
-  gamme: FormationGamme,
+  categorie: FormationCategorie,
   duree: FormationDuree,
 ): number | undefined {
-  const cell = FORMATION_PRICE_MATRIX[gamme]?.[duree];
-  if (!cell) return undefined;
-  const vals = Object.values(cell).filter((v): v is number => typeof v === "number");
-  return vals.length ? Math.min(...vals) : undefined;
+  return FORMATION_PRICE_MATRIX[categorie]?.[duree];
 }
 
 /** Prix formaté d'une case (réutilise `formatAmount`). */
 export function formatFormationPrice(
-  gamme: FormationGamme,
+  categorie: FormationCategorie,
   duree: FormationDuree,
-  bracket: FormationBracket,
   locale: "fr" | "en" = "fr",
 ): string {
-  const p = getFormationPrice(gamme, duree, bracket);
+  const p = getFormationPrice(categorie, duree);
   if (p === undefined) return locale === "fr" ? "Sur devis" : "On quote";
   return formatAmount(p, locale);
 }
@@ -1285,13 +1277,11 @@ export function formatFormationPrice(
 export function getFormationCatalogPriceRange(): { minEur: number; maxEur: number } {
   let minEur = Number.POSITIVE_INFINITY;
   let maxEur = 0;
-  for (const gamme of Object.values(FORMATION_PRICE_MATRIX)) {
-    for (const duree of Object.values(gamme)) {
-      for (const v of Object.values(duree)) {
-        if (typeof v === "number") {
-          if (v < minEur) minEur = v;
-          if (v > maxEur) maxEur = v;
-        }
+  for (const categorie of Object.values(FORMATION_PRICE_MATRIX)) {
+    for (const v of Object.values(categorie)) {
+      if (typeof v === "number") {
+        if (v < minEur) minEur = v;
+        if (v > maxEur) maxEur = v;
       }
     }
   }

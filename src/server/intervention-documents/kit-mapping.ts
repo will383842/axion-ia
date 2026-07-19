@@ -144,6 +144,11 @@ const AXION_SKIP_NAMES: ReadonlyArray<RegExp> = [/Grille_evaluation/i];
 
 /** Numéro de dossier AXION (« 07_Formation_… » → 7) → slug du catalogue V2. */
 export function resolveAxionSlug(folder: string): string | null {
+  // ⚠️ Refonte catalogue 2026-07-19 : les numéros 1-21 désignent les NOUVELLES
+  // formations (générales/métiers/secteurs), 22 le séminaire. NE PAS réimporter
+  // un ZIP du kit AXION 2026-07-17 (numéros 01-15 de l'ANCIEN catalogue) : il
+  // résoudrait vers la mauvaise formation. Les kits du nouveau catalogue
+  // doivent être numérotés selon `numero` du catalog-v2 actuel.
   const m = folder.match(/^(\d{2})_/);
   if (!m) return null;
   const numero = Number.parseInt(m[1]!, 10);

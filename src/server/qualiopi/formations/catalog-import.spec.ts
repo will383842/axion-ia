@@ -106,7 +106,7 @@ describe("premierVerbe", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("buildFormationImportData", () => {
-  const pilote = FORMATIONS_V2.find((f) => f.slugFr === "bien-demarrer-avec-l-ia-4h");
+  const pilote = FORMATIONS_V2.find((f) => f.slugFr === "ia-pour-bien-commencer");
 
   it("le catalogue contient bien la formation pilote", () => {
     expect(pilote).toBeDefined();
@@ -115,7 +115,7 @@ describe("buildFormationImportData", () => {
   it("mappe titre, slug, durée et offre", () => {
     const data = buildFormationImportData(pilote!, "offre-x");
     expect(data.titre).toBe(pilote!.titreFr);
-    expect(data.slug).toBe("bien-demarrer-avec-l-ia-4h");
+    expect(data.slug).toBe("ia-pour-bien-commencer");
     expect(data.offreSiteId).toBe("offre-x");
     expect(data.dureeHeures).toBe(4); // 4h → 4
     expect(data.modalite).toBe("presentiel");
@@ -126,7 +126,7 @@ describe("buildFormationImportData", () => {
     expect(data.objectifsPedagogiques).toHaveLength(pilote!.objectifsFr.length);
     expect(data.objectifsPedagogiques[0]).toEqual({
       id: "obj-1",
-      verbe: "Démystifier",
+      verbe: "Décrire",
       description: pilote!.objectifsFr[0],
     });
   });

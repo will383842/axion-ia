@@ -5,9 +5,7 @@ describe("resolveLegacyRedirect — aplatissement des chaînes (audit indexation
   it("résout les slugs exacts vers la cible finale (sans préfixe locale)", () => {
     expect(resolveLegacyRedirect("/interventions")).toBe("/formations");
     expect(resolveLegacyRedirect("/interventions/collectives")).toBe("/formations");
-    expect(resolveLegacyRedirect("/interventions/collectives/4h")).toBe(
-      "/formations/duree/4-heures",
-    );
+    expect(resolveLegacyRedirect("/interventions/collectives/4h")).toBe("/formations");
     expect(resolveLegacyRedirect("/codage-developpement")).toBe("/sites-web-augmentes");
     expect(resolveLegacyRedirect("/codage-developpement/web-digital")).toBe("/sites-web-augmentes");
     expect(resolveLegacyRedirect("/audit/flash")).toBe("/audit/tpe-1-jour");

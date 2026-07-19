@@ -8,8 +8,13 @@ import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
 import { HeaderResourcesMenu } from "./HeaderResourcesMenu";
 import { HeaderFormationsMenu } from "./HeaderFormationsMenu";
-import { FORMATION_DUREES_META } from "@/content/formations/catalog-v2-meta";
-import { FORMATIONS_V2, getFormationsV2ByDuree } from "@/content/formations/catalog-v2";
+import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
+import {
+  getFormationsV2,
+  getFormationsV2ByCategorie,
+  getFormationV2EntryPrice,
+} from "@/content/formations/catalog-v2";
+import { formatAmount } from "@/content/pricing";
 
 // Server Component. Header v5 2026-05-28 (Will) — layout 2026 dual-CTA :
 //   [Logo · Cabinet IA pour entreprises]   nav 6 items     [Nous écrire ghost] [Réserver un appel primary]
@@ -70,14 +75,45 @@ export async function Header() {
 
   // Données du méga-menu « Formations IA » calculées CÔTÉ SERVEUR (le catalogue
   // catalog-v2 reste hors du bundle client) et passées en props au composant
-  // client `HeaderFormationsMenu`. 4 raccourcis durée + compteur + prix d'entrée.
-  const formationsDurations = FORMATION_DUREES_META.map((m) => ({
-    href: `/formations/duree/${m.slug}`,
-    label: m.labelFr,
-    hours: m.heuresFr,
-    count: getFormationsV2ByDuree(m.id).length,
-  }));
-  const formationsTotal = FORMATIONS_V2.length;
+  // client `HeaderFormationsMenu`. Refonte 2026-07-19 : 3 offres générales +
+  // 2 entrées catégorie (métiers / secteurs) — l'axe durée disparaît.
+  // Prix dérivés de la matrice (`formatAmount` non-compact porte déjà « € HT »).
+  const generalesAll = getFormationsV2ByCategorie("generale");
+  const bienCommencer4h = generalesAll.find((f) => f.id === "ia-pour-bien-commencer");
+  const menuGenerales = [
+    ...(bienCommencer4h ? [bienCommencer4h] : []),
+    ...generalesAll.filter(
+      (f) => f.id === "ia-pour-les-equipes" || f.id === "ia-pour-l-automatisation",
+    ),
+  ].map((f) => {
+    const facts = FORMATION_DUREE_FACTS[f.duree];
+    const dureeLbl = f.duree === "4h" ? facts.heuresLabelFr : facts.joursLabelFr;
+    const prix = getFormationV2EntryPrice(f);
+    return {
+      href: `/formations/${f.slugFr}`,
+      label: f.titreFr,
+      sub: typeof prix === "number" ? `${dureeLbl} · ${formatAmount(prix, "fr")}` : dureeLbl,
+    };
+  });
+  const metiersCount = getFormationsV2ByCategorie("metier").length;
+  const secteursCount = getFormationsV2ByCategorie("secteur").length;
+  const menuCategories = [
+    {
+      href: "/formations/metiers",
+      label: isFr ? "Par métier" : "By role",
+      sub: isFr
+        ? `${metiersCount} formations · RH, marketing, commercial, finance…`
+        : `${metiersCount} trainings · HR, marketing, sales, finance…`,
+    },
+    {
+      href: "/formations/secteurs",
+      label: isFr ? "Par secteur d'activité" : "By industry",
+      sub: isFr
+        ? `${secteursCount} formations · santé, BTP, industrie, commerce…`
+        : `${secteursCount} trainings · healthcare, construction, industry…`,
+    },
+  ];
+  const formationsTotal = getFormationsV2().length;
 
   const taglineB2B = isFr ? "Cabinet IA pour entreprises" : "AI consultancy for companies";
 
@@ -174,7 +210,8 @@ export async function Header() {
                 isFr={isFr}
                 allHref="/formations/entreprise"
                 totalCount={formationsTotal}
-                durations={formationsDurations}
+                generales={menuGenerales}
+                categories={menuCategories}
               />
             ) : (
               <NavLink
@@ -291,8 +328,8 @@ export async function Header() {
                     icon={mobileNavEmoji[item.href]}
                   />
                 ))}
-              {/* Sous-liens Formations (parité méga-menu desktop) — accès direct
-                  au catalogue complet + aux 4 paliers durée depuis le drawer. */}
+              {/* Sous-liens Formations (parité méga-menu desktop) — catalogue
+                  complet + 3 offres générales + 2 catégories (refonte 2026-07-19). */}
               <ul className="border-border/70 mt-1 mb-1 ml-6 flex flex-col gap-0.5 border-l pl-3">
                 <li>
                   <Link
@@ -302,13 +339,23 @@ export async function Header() {
                     {isFr ? "Toutes nos formations entreprises" : "All our corporate trainings"}
                   </Link>
                 </li>
-                {formationsDurations.map((d) => (
-                  <li key={d.href}>
+                {menuGenerales.map((g) => (
+                  <li key={g.href}>
                     <Link
-                      href={d.href as never}
+                      href={g.href as never}
                       className="text-fg-soft hover:text-terracotta block rounded-md px-2 py-1.5 text-sm"
                     >
-                      {d.label}
+                      {g.label}
+                    </Link>
+                  </li>
+                ))}
+                {menuCategories.map((c) => (
+                  <li key={c.href}>
+                    <Link
+                      href={c.href as never}
+                      className="text-fg-soft hover:text-terracotta block rounded-md px-2 py-1.5 text-sm font-semibold"
+                    >
+                      {c.label}
                     </Link>
                   </li>
                 ))}
