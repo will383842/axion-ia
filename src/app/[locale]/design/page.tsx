@@ -110,7 +110,7 @@ export default function DesignPage() {
       {/* ── 3 Typographie ── */}
       <Section eyebrow="Typographie · Manrope + Fraunces + Inconsolata">
         <div className="space-y-6">
-          <SpecimenLine label="display-editorial · Fraunces serif · 7rem (112 px)">
+          <SpecimenLine label="display-editorial · Fraunces serif · clamp 2.5–4 rem (40–64 px)">
             <span className="display-editorial">
               Cabinet IA <em className="italic-editorial">qui produit du ROI</em>
             </span>
