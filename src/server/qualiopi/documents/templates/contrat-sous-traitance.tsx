@@ -127,9 +127,9 @@ export function ContratSousTraitancePdf({
         {/* 2. Objet et missions confiées (ind. 27) */}
         <DocSection title="2. Objet et missions confiées">
           <Text style={pdfStyles.paragraph}>
-            L&apos;organisme de formation confie au sous-traitant, qui l&apos;accepte, la réalisation
-            des missions suivantes, dans le respect des référentiels pédagogiques, des méthodes et
-            de la démarche qualité de l&apos;organisme :
+            L&apos;organisme de formation confie au sous-traitant, qui l&apos;accepte, la
+            réalisation des missions suivantes, dans le respect des référentiels pédagogiques, des
+            méthodes et de la démarche qualité de l&apos;organisme :
           </Text>
           <BulletList items={missions} variant="objective" />
         </DocSection>
@@ -138,8 +138,8 @@ export function ContratSousTraitancePdf({
         <DocSection title="3. Durée du contrat">
           <FieldRow label="Période" value={dureeValeur} />
           <Text style={pdfStyles.legalNote}>
-            Chaque mission fait l&apos;objet d&apos;une confirmation écrite (lettre de mission ou bon
-            de commande) précisant l&apos;action, les dates et le lieu ou la modalité.
+            Chaque mission fait l&apos;objet d&apos;une confirmation écrite (lettre de mission ou
+            bon de commande) précisant l&apos;action, les dates et le lieu ou la modalité.
           </Text>
         </DocSection>
 
@@ -147,9 +147,9 @@ export function ContratSousTraitancePdf({
         <DocSection title="4. Rémunération">
           <FieldRow label="Honoraires" value={data.remuneration} required />
           <Text style={pdfStyles.legalNote}>
-            La rémunération est versée sur présentation d&apos;une facture d&apos;honoraires conforme
-            émise par le sous-traitant après réalisation de chaque mission. Les montants sont
-            exprimés hors taxes ; la TVA est appliquée selon le régime fiscal propre au
+            La rémunération est versée sur présentation d&apos;une facture d&apos;honoraires
+            conforme émise par le sous-traitant après réalisation de chaque mission. Les montants
+            sont exprimés hors taxes ; la TVA est appliquée selon le régime fiscal propre au
             sous-traitant.
           </Text>
         </DocSection>
@@ -157,12 +157,12 @@ export function ContratSousTraitancePdf({
         {/* 5. Conformité au Référentiel National Qualité (ind. 27) */}
         <DocSection title="5. Conformité au Référentiel National Qualité (indicateur 27)">
           <Text style={pdfStyles.paragraph}>
-            Conformément à l&apos;indicateur 27 du Référentiel National Qualité et à
-            l&apos;article L.6316-3 du Code du travail, l&apos;organisme de formation s&apos;assure du
-            respect, par le sous-traitant, des exigences du référentiel national qualité pour les
-            missions qui lui sont confiées. Le sous-traitant s&apos;y engage et communique à
-            l&apos;organisme, à première demande, tout justificatif utile (certification, référentiel
-            appliqué, moyens pédagogiques, qualification des intervenants).
+            Conformément à l&apos;indicateur 27 du Référentiel National Qualité et à l&apos;article
+            L.6316-3 du Code du travail, l&apos;organisme de formation s&apos;assure du respect, par
+            le sous-traitant, des exigences du référentiel national qualité pour les missions qui
+            lui sont confiées. Le sous-traitant s&apos;y engage et communique à l&apos;organisme, à
+            première demande, tout justificatif utile (certification, référentiel appliqué, moyens
+            pédagogiques, qualification des intervenants).
           </Text>
           <FieldRow
             label="Conformité RNQ vérifiée le"
@@ -187,10 +187,10 @@ export function ContratSousTraitancePdf({
           </Text>
           <Text style={pdfStyles.paragraph}>
             Lorsqu&apos;il traite des données à caractère personnel pour le compte de
-            l&apos;organisme, le sous-traitant agit conformément au Règlement (UE) 2016/679 (RGPD) et
-            à la loi Informatique et Libertés : traitement limité aux seules finalités des missions
-            confiées, mesures de sécurité appropriées et suppression ou restitution des données au
-            terme de la mission.
+            l&apos;organisme, le sous-traitant agit conformément au Règlement (UE) 2016/679 (RGPD)
+            et à la loi Informatique et Libertés : traitement limité aux seules finalités des
+            missions confiées, mesures de sécurité appropriées et suppression ou restitution des
+            données au terme de la mission.
           </Text>
         </DocSection>
 

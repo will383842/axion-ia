@@ -335,9 +335,7 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
       incomplet: true,
       nbPreuvesAttendues: 0,
       nbPreuvesJointes: 0,
-      avertissements: [
-        "Mode build (stub) — données indisponibles, aucun PDF de preuve inclus.",
-      ],
+      avertissements: ["Mode build (stub) — données indisponibles, aucun PDF de preuve inclus."],
     };
   }
 

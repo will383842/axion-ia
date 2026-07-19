@@ -21,7 +21,10 @@ import { renderPdfToBuffer, storeAndSignPdf } from "@/server/qualiopi/documents/
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import type { NumberingType } from "@/server/qualiopi/numbering/formats";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
-import { assertOrganismeComplet, exigeIdentiteComplete } from "@/server/qualiopi/documents/conformite";
+import {
+  assertOrganismeComplet,
+  exigeIdentiteComplete,
+} from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
