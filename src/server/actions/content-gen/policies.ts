@@ -45,7 +45,10 @@ const BatchSettingsSchema = z
 const MaxPublishPerDaySchema = z.number().int().min(1).max(1000);
 const ContentPoliciesSchema = z
   .object({
-    skipVilleIfCopyExists: z.boolean(),
+    // `skipVilleIfCopyExists` retiré (2026-07-18) : le réglage n'a JAMAIS été lu
+    // par aucun worker — case morte en UI depuis sa création. La dédup réelle est
+    // assurée par le dedup sémantique + topic-fingerprint du content-gen-worker.
+    // Une clé résiduelle en DB est inoffensive (readContentGenConfig ne valide pas).
     rssAutoPublishMinScore: z.number().min(0).max(100),
     plagiarismJaccardInternal: z.number().min(0).max(1),
     plagiarismJaccardRss: z.number().min(0).max(1),
@@ -192,7 +195,6 @@ export async function updateMaxPublishPerDay(value: number): Promise<void> {
 // ────────────────────────────────────────────────────────────────────
 
 export interface ContentPolicies {
-  readonly skipVilleIfCopyExists: boolean;
   readonly rssAutoPublishMinScore: number;
   readonly plagiarismJaccardInternal: number;
   readonly plagiarismJaccardRss: number;
@@ -216,7 +218,6 @@ export interface ContentPolicies {
 }
 
 const POLICIES_DEFAULTS: ContentPolicies = {
-  skipVilleIfCopyExists: true,
   rssAutoPublishMinScore: 75,
   plagiarismJaccardInternal: 0.3,
   plagiarismJaccardRss: 0.1,

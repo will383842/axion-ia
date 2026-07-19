@@ -26,6 +26,8 @@ import {
   msSinceStartOfDay,
 } from "@/server/content-gen/scheduler/anti-burst";
 import { buildWeightedSequence } from "@/server/content-gen/scheduler/type-sequence";
+// Fix 2026-07-18 — resync des compteurs de campagne (failedCount/publishedCount).
+import { syncCampaignCounters } from "@/server/content-gen/campaigns/sync-counters";
 import { isContentTypeRegistered } from "@/server/content-gen/generators/registered-types";
 import { alertCampaignDone } from "@/server/content-gen/shared/content-gen-alerts";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -603,6 +605,22 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   if (killSwitch.active) {
     console.log("[orchestrator] kill switch active, skip tick");
     return;
+  }
+
+  // Fix 2026-07-18 — resynchronise failedCount/publishedCount (personne ne les
+  // écrivait : la console affichait 0/0 sur toutes les campagnes). Placé AVANT
+  // l'early-return « no running campaigns » pour corriger aussi les campagnes
+  // paused/completed. Fail-open : ne bloque jamais l'orchestration.
+  try {
+    const resynced = await syncCampaignCounters();
+    if (resynced > 0) {
+      console.log(`[orchestrator] compteurs de campagne resynchronisés (${resynced})`);
+    }
+  } catch (err) {
+    console.warn(
+      "[orchestrator] sync compteurs échoué (non bloquant):",
+      err instanceof Error ? err.message : err,
+    );
   }
 
   const batchSettings = await readContentGenConfig<BatchSettings>("batches", {
