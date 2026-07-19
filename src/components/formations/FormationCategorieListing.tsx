@@ -24,7 +24,7 @@ import {
   getFormationV2EntryPrice,
 } from "@/content/formations/catalog-v2";
 import { formationDureeIso, getCategorieMeta } from "@/content/formations/catalog-v2-meta";
-import { formatAmount, type FormationCategorie } from "@/content/pricing";
+import { formatAmount, getFormationPrice, type FormationCategorie } from "@/content/pricing";
 import {
   buildCollectionPageJsonLd,
   buildCourseJsonLd,
@@ -36,63 +36,65 @@ const TIGHT_X = "lg:px-6 xl:px-10";
 
 // FAQ Speakable par catégorie — Q/R distinctes pour éviter le duplicate content
 // entre les 2 listings. FaqAccordion injecte FAQPage JSON-LD + Speakable.
-const FAQ_BY_CATEGORIE: Record<
+// Les réponses « prix » DÉRIVENT de la matrice pricing.ts (garde-fou
+// no-hardcoded-prices) — `formatAmount` non-compact porte déjà « € HT ».
+function buildFaqByCategorie(): Record<
   Extract<FormationCategorie, "metier" | "secteur">,
   ReadonlyArray<{ id: string; question: string; answer: string }>
-> = {
-  metier: [
-    {
-      id: "metier-vs-generale",
-      question: "Formation métier ou offre générale : comment choisir ?",
-      answer:
-        "Si l'équipe à former appartient à une même fonction (RH, commercial, finance…), la formation métier va plus loin : chaque atelier porte sur les tâches précises de la fonction. Pour un groupe multi-services ou une première découverte, commencez par « IA pour bien commencer » ou « IA pour les équipes ».",
-    },
-    {
-      id: "metier-melange",
-      question: "Peut-on mélanger plusieurs métiers dans un même groupe ?",
-      answer:
-        "C'est possible, mais on le déconseille pour ces formations : leur valeur vient des cas d'usage propres à chaque fonction. Pour un groupe multi-métiers, l'offre générale « IA pour les équipes » est plus adaptée — même méthode, cas transversaux.",
-    },
-    {
-      id: "metier-prix",
-      question: "Combien coûte une formation par métier ?",
-      answer:
-        "Le prix est fixe et public, par groupe de 2 à 15 participants : 1 900 € HT la journée. Les deux formations de 2 jours (Production/Opérations et IT/Développement) sont à 3 600 € HT, scindables en 2×1 jour.",
-    },
-    {
-      id: "metier-perso",
-      question: "Le programme est-il adapté à notre entreprise ?",
-      answer:
-        "Oui : le programme cadre est celui du métier, mais les ateliers travaillent sur les documents et cas réels apportés par vos participants — préparés en amont avec vous lors du cadrage.",
-    },
-  ],
-  secteur: [
-    {
-      id: "secteur-vs-metier",
-      question: "Formation secteur ou formation métier : quelle différence ?",
-      answer:
-        "La formation secteur couvre l'ensemble de l'activité d'une entreprise de votre secteur (santé, BTP, industrie…) avec ses contraintes propres — confidentialité des données de santé, appels d'offres, réglementation. La formation métier cible une fonction précise (RH, finance…), quel que soit le secteur.",
-    },
-    {
-      id: "secteur-conformite",
-      question: "Les contraintes réglementaires de notre secteur sont-elles prises en compte ?",
-      answer:
-        "Oui, c'est le cœur de ces formations : secret médical et RGPD santé, confidentialité des données financières, réglementation du bâtiment… Chaque programme intègre les règles du secteur et les réflexes à installer — ce qu'on soumet à l'IA, ce qu'on ne soumet jamais.",
-    },
-    {
-      id: "secteur-prix",
-      question: "Combien coûte une formation par secteur d'activité ?",
-      answer:
-        "Le prix est fixe et public, par groupe de 2 à 15 participants : 2 200 € HT la journée. La formation Industrie (2 jours, scindable 2×1j) est à 3 900 € HT.",
-    },
-    {
-      id: "secteur-absent",
-      question: "Notre secteur n'est pas dans la liste — que faire ?",
-      answer:
-        "Réservez un appel : selon votre activité, une formation métier ou une offre générale adaptée à vos cas d'usage couvre très bien le besoin — et nous construisons aussi des programmes sur mesure.",
-    },
-  ],
-};
+> {
+  return {
+    metier: [
+      {
+        id: "metier-vs-generale",
+        question: "Formation métier ou offre générale : comment choisir ?",
+        answer:
+          "Si l'équipe à former appartient à une même fonction (RH, commercial, finance…), la formation métier va plus loin : chaque atelier porte sur les tâches précises de la fonction. Pour un groupe multi-services ou une première découverte, commencez par « IA pour bien commencer » ou « IA pour les équipes ».",
+      },
+      {
+        id: "metier-melange",
+        question: "Peut-on mélanger plusieurs métiers dans un même groupe ?",
+        answer:
+          "C'est possible, mais on le déconseille pour ces formations : leur valeur vient des cas d'usage propres à chaque fonction. Pour un groupe multi-métiers, l'offre générale « IA pour les équipes » est plus adaptée — même méthode, cas transversaux.",
+      },
+      {
+        id: "metier-prix",
+        question: "Combien coûte une formation par métier ?",
+        answer: `Le prix est fixe et public, par groupe de 2 à 15 participants : ${formatAmount(getFormationPrice("metier", "1j") ?? Number.NaN, "fr")} la journée. Les deux formations de 2 jours (Production/Opérations et IT/Développement) sont à ${formatAmount(getFormationPrice("metier", "2j") ?? Number.NaN, "fr")}, scindables en 2×1 jour.`,
+      },
+      {
+        id: "metier-perso",
+        question: "Le programme est-il adapté à notre entreprise ?",
+        answer:
+          "Oui : le programme cadre est celui du métier, mais les ateliers travaillent sur les documents et cas réels apportés par vos participants — préparés en amont avec vous lors du cadrage.",
+      },
+    ],
+    secteur: [
+      {
+        id: "secteur-vs-metier",
+        question: "Formation secteur ou formation métier : quelle différence ?",
+        answer:
+          "La formation secteur couvre l'ensemble de l'activité d'une entreprise de votre secteur (santé, BTP, industrie…) avec ses contraintes propres — confidentialité des données de santé, appels d'offres, réglementation. La formation métier cible une fonction précise (RH, finance…), quel que soit le secteur.",
+      },
+      {
+        id: "secteur-conformite",
+        question: "Les contraintes réglementaires de notre secteur sont-elles prises en compte ?",
+        answer:
+          "Oui, c'est le cœur de ces formations : secret médical et RGPD santé, confidentialité des données financières, réglementation du bâtiment… Chaque programme intègre les règles du secteur et les réflexes à installer — ce qu'on soumet à l'IA, ce qu'on ne soumet jamais.",
+      },
+      {
+        id: "secteur-prix",
+        question: "Combien coûte une formation par secteur d'activité ?",
+        answer: `Le prix est fixe et public, par groupe de 2 à 15 participants : ${formatAmount(getFormationPrice("secteur", "1j") ?? Number.NaN, "fr")} la journée. La formation Industrie (2 jours, scindable 2×1j) est à ${formatAmount(getFormationPrice("secteur", "2j") ?? Number.NaN, "fr")}.`,
+      },
+      {
+        id: "secteur-absent",
+        question: "Notre secteur n'est pas dans la liste — que faire ?",
+        answer:
+          "Réservez un appel : selon votre activité, une formation métier ou une offre générale adaptée à vos cas d'usage couvre très bien le besoin — et nous construisons aussi des programmes sur mesure.",
+      },
+    ],
+  };
+}
 
 interface Props {
   categorie: Extract<FormationCategorie, "metier" | "secteur">;
@@ -255,7 +257,7 @@ export function FormationCategorieListing({ categorie, locale }: Props): ReactNo
         titleEm={isFr ? "votre formation" : "your training"}
       >
         <Container>
-          <FaqAccordion className="mx-auto max-w-3xl" items={FAQ_BY_CATEGORIE[categorie]} />
+          <FaqAccordion className="mx-auto max-w-3xl" items={buildFaqByCategorie()[categorie]} />
         </Container>
       </Section>
 
