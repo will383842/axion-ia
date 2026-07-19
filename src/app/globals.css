@@ -315,12 +315,15 @@
 
   /* Display giant — Fraunces italique + tracking serré (signature Anthropic).
      v3.2 (ADR 0007) : cap 7rem→5.5rem (112→88 px) pour ratio hero/body 4.89× (médiane 2026 = 4.4×).
-     Pré-v3.2 le ratio était 6.2× → ressenti « tout petit sauf hero ». */
+     v3.3 (2026-07-19, Will) : cap 5.5rem→4rem (88→64 px) + slope 7.5vw→4.5vw + min 3rem→2.5rem.
+       Motif : les H1 français (souvent longs) débordaient sur les petits écrans laptop (1280-1366 px)
+       où le clamp saturait dès ~1173 px à 88 px. Nouveau clamp : 40 px mobile → ~58 px @1280 → 64 px cap
+       (atteint @1422 px). Réaligne aussi sur l'intention documentée dans Heading.tsx (« clamp 2.5-4 rem »). */
   .display-editorial {
     font-family: var(--font-serif);
-    font-size: clamp(3rem, 7.5vw, 5.5rem);
-    line-height: 0.98;
-    letter-spacing: -0.035em;
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
     font-weight: 500;
   }
 

@@ -230,9 +230,7 @@ export default async function GuidePiliersPage({ params }: Props) {
                 </span>
               </div>
 
-              <h1 className="display-editorial text-ink text-4xl md:text-5xl lg:text-6xl">
-                {guide.title}
-              </h1>
+              <h1 className="display-editorial text-ink text-4xl md:text-5xl">{guide.title}</h1>
 
               {/* Réponse rapide (AEO) — remplace l'ancien paragraphe excerpt. */}
               {guide.excerpt ? <AnswerCard locale="fr">{guide.excerpt}</AnswerCard> : null}
