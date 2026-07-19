@@ -10,7 +10,18 @@ import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, ChevronDown, Users, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  Users,
+  Sparkles,
+  UserCheck,
+  TrendingUp,
+  Zap,
+  Building2,
+  Bot,
+  LineChart,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/layout/Container";
@@ -703,6 +714,51 @@ export default async function FormationsHub({ params }: Props) {
         contentClassName={TIGHT_X}
       >
         <Container>
+          {/* FRISE panoramique — bande de 3 photos « scène » (maison, sans
+              crédit Unsplash) qui ouvre la section : atmosphère + preuve
+              visuelle avant les formules. Aspect fixe → 0 CLS, lazy-load. */}
+          <div className="mx-auto mb-10 max-w-5xl md:mb-12">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              {[
+                {
+                  src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.avif",
+                  alt: isFr
+                    ? "Salle de formation IA en entreprise, animée sur site par un formateur expert"
+                    : "AI training room on the company's premises, led on site by an expert trainer",
+                },
+                {
+                  src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.avif",
+                  alt: isFr
+                    ? "Équipe en atelier pratique pendant une formation IA sur ses propres cas d'usage"
+                    : "Team in a hands-on workshop during AI training on their own use cases",
+                },
+                {
+                  src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.avif",
+                  alt: isFr
+                    ? "Bilan de formation IA — équipe désormais autonome sur ses nouveaux réflexes"
+                    : "AI training review — team now autonomous with its new reflexes",
+                },
+              ].map((img, i) => (
+                <div
+                  key={i}
+                  className="ring-border/60 relative overflow-hidden rounded-2xl ring-1 sm:rounded-3xl"
+                >
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={640}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 768px) 32vw, 320px"
+                    quality={72}
+                    className="aspect-[3/4] w-full object-cover sm:aspect-[4/3]"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 md:gap-7">
             {/* CARD 1 — Formule mensuelle (la plus mise en avant) */}
             <article className="bg-paper border-terracotta/40 shadow-subtle hover:border-terracotta hover:shadow-card group relative flex flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
@@ -845,16 +901,22 @@ export default async function FormationsHub({ params }: Props) {
             </article>
           </div>
 
-          {/* Bandeau bénéfices SEO sémantique — densifie le contenu avec
-              les mots-clés cibles sans tomber dans le keyword stuffing :
-              chaque ligne est une affirmation utile au lecteur. */}
-          <div className="bg-paper border-border shadow-subtle mx-auto mt-10 max-w-5xl rounded-3xl border p-6 sm:p-8">
-            <h3 className="text-fg text-lg leading-tight font-semibold tracking-tight sm:text-xl">
+          {/* Bénéfices SEO sémantique — densifie le contenu avec les mots-clés
+              cibles sans keyword stuffing ; refonte 2026-07-19 (Will) : grille
+              à icônes chartée (chips terracotta/primary/sage rotatifs) sur le
+              fond sable de la section, au lieu de l'ancien texte plat. */}
+          <div className="mx-auto mt-12 max-w-5xl">
+            <h3 className="text-fg text-center text-xl leading-tight font-semibold tracking-tight text-balance sm:text-2xl">
               {isFr
                 ? "Pourquoi une formation IA récurrente en entreprise ?"
                 : "Why recurring corporate AI training?"}
             </h3>
-            <div className="mt-4 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+            <p className="text-fg-soft mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed">
+              {isFr
+                ? "Un accompagnement dans la durée, pas une intervention ponctuelle — les résultats se cumulent session après session."
+                : "Long-term support, not a one-off intervention — results compound session after session."}
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-5">
               {(isFr
                 ? [
                     {
@@ -908,12 +970,31 @@ export default async function FormationsHub({ params }: Props) {
                       d: "Each session: hours saved, automated tasks, per-participant adoption — transparent review at 3, 6, 12 months.",
                     },
                   ]
-              ).map((row, i) => (
-                <div key={i} className="flex flex-col gap-1.5">
-                  <span className="text-fg text-[14.5px] leading-tight font-semibold">{row.t}</span>
-                  <span className="text-fg-soft text-[13.5px] leading-relaxed">{row.d}</span>
-                </div>
-              ))}
+              ).map((row, i) => {
+                const meta = [
+                  { Icon: UserCheck, chip: "bg-terracotta-soft text-terracotta-deep" },
+                  { Icon: TrendingUp, chip: "bg-primary-soft text-primary" },
+                  { Icon: Zap, chip: "bg-sage-soft text-sage" },
+                  { Icon: Building2, chip: "bg-terracotta-soft text-terracotta-deep" },
+                  { Icon: Bot, chip: "bg-primary-soft text-primary" },
+                  { Icon: LineChart, chip: "bg-sage-soft text-sage" },
+                ][i]!;
+                const Icon = meta.Icon;
+                return (
+                  <div
+                    key={i}
+                    className="bg-paper border-border shadow-subtle hover:shadow-card flex flex-col gap-3 rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-0.5 sm:p-6"
+                  >
+                    <span
+                      className={`inline-flex h-11 w-11 items-center justify-center rounded-xl ${meta.chip}`}
+                    >
+                      <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
+                    </span>
+                    <span className="text-fg text-[15px] leading-tight font-semibold">{row.t}</span>
+                    <span className="text-fg-soft text-[13.5px] leading-relaxed">{row.d}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </Container>
