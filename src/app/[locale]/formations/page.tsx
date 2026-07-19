@@ -251,7 +251,7 @@ export default async function FormationsHub({ params }: Props) {
       audienceType: isFr
         ? "Décideurs, managers, équipes opérationnelles TPE PME ETI grandes entreprises (B2B)"
         : "Decision-makers, managers, operational teams SME mid-cap large enterprise (B2B)",
-      about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION, méthode CRFE)",
+      about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION)",
     }),
   );
 

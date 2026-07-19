@@ -200,7 +200,7 @@ export function getFormationDelaiAcces(f: FormationV2): string {
 }
 
 export const FORMATION_METHODES_DEFAUT =
-  "Pédagogie active : chaque notion fait l'objet d'une démonstration courte suivie d'une pratique immédiate sur les tâches réelles apportées par les participants. La méthode AXION est appliquée aux cas, la méthode de formulation CRFE structure les demandes à l'IA. Exercices différenciés par profil, travail en binômes, livrables réutilisables.";
+  "Pédagogie active : chaque notion fait l'objet d'une démonstration courte suivie d'une pratique immédiate sur les tâches réelles apportées par les participants. La méthode AXION structure les demandes à l’IA et s’applique aux cas réels. Exercices différenciés par profil, travail en binômes, livrables réutilisables.";
 
 export function getFormationMethodes(f: FormationV2): string {
   return f.methodesFr ?? FORMATION_METHODES_DEFAUT;

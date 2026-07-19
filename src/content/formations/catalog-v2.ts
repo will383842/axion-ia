@@ -176,7 +176,7 @@ const BIEN_COMMENCER_4H: FormationV2 = {
   objectifsFr: [
     "Décrire ce qu'est une IA générative, ce qu'elle fait bien et ses limites",
     "Identifier l'outil adapté (ChatGPT, Claude, Gemini) selon la tâche",
-    "Formuler une demande structurée (méthode CRFE) donnant un résultat exploitable",
+    "Formuler une demande structurée (méthode AXION) donnant un résultat exploitable",
     "Réaliser une tâche courante de son poste à l'aide de l'IA",
     "Appliquer les règles de confidentialité : identifier les données à ne pas soumettre",
   ],
@@ -208,12 +208,12 @@ const BIEN_COMMENCER_4H: FormationV2 = {
       ],
     },
     {
-      titreFr: "Module 2 — Bien formuler sa demande : la méthode CRFE",
+      titreFr: "Module 2 — Bien formuler sa demande : la méthode AXION",
       steps: [
         {
           titre: "Pourquoi une demande vague donne une réponse générique — démonstration comparée",
         },
-        { titre: "La méthode de formulation CRFE appliquée pas à pas sur des cas réels" },
+        { titre: "La méthode de formulation AXION appliquée pas à pas sur des cas réels" },
         { titre: "Itérer : préciser, reformuler, faire relire l'IA pour fiabiliser le résultat" },
         { titre: "Exercice : chacun formule une demande structurée sur une tâche de son poste" },
       ],
@@ -237,7 +237,7 @@ const BIEN_COMMENCER_4H: FormationV2 = {
         { titre: "Quiz individuel de validation des acquis (10 questions)" },
         {
           temps: "Livrable",
-          titre: "Mémo de la méthode CRFE + guide des bonnes pratiques de confidentialité",
+          titre: "Mémo de la méthode AXION + guide des bonnes pratiques de confidentialité",
         },
       ],
     },
@@ -298,7 +298,7 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
   objectifsFr: [
     "Décrire ce qu'est une IA générative, ce qu'elle fait bien et ses limites",
     "Identifier l'outil adapté selon la tâche",
-    "Formuler une demande structurée (méthode CRFE) et l'itérer pour fiabiliser le résultat",
+    "Formuler une demande structurée (méthode AXION) et l'itérer pour fiabiliser le résultat",
     "Réaliser plusieurs tâches de son poste à l'aide de l'IA",
     "Analyser un document : synthèse et points de vigilance",
     "Appliquer les règles de confidentialité et vérifier une production avant diffusion",
@@ -327,9 +327,9 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
       ],
     },
     {
-      titreFr: "Module 2 — Formuler, itérer, fiabiliser (méthode CRFE)",
+      titreFr: "Module 2 — Formuler, itérer, fiabiliser (méthode AXION)",
       steps: [
-        { titre: "La méthode de formulation CRFE appliquée pas à pas" },
+        { titre: "La méthode de formulation AXION appliquée pas à pas" },
         {
           titre:
             "Itérer une demande jusqu'au résultat exploitable : préciser, reformuler, faire relire",
@@ -362,7 +362,7 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
         {
           temps: "Livrable",
           titre:
-            "Mémo CRFE + trames réutilisables construites en séance + guide de bonnes pratiques",
+            "Mémo AXION + trames réutilisables construites en séance + guide de bonnes pratiques",
         },
       ],
     },
@@ -419,7 +419,7 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
     { texteFr: "Des ateliers sur les tâches réelles apportées par les participants" },
   ],
   objectifsFr: [
-    "Formuler des demandes structurées avancées (méthode CRFE) adaptées à ses tâches",
+    "Formuler des demandes structurées avancées (méthode AXION) adaptées à ses tâches",
     "Accélérer la rédaction, la synthèse et la recherche d'informations à l'aide de l'IA",
     "Construire et réutiliser des prompts sur ses tâches récurrentes",
     "Vérifier et fiabiliser une production avant diffusion",
@@ -439,7 +439,7 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
       titreFr: "Module 1 — Techniques de formulation avancées",
       steps: [
         { titre: "Ce qui sépare une réponse générique d'un résultat directement exploitable" },
-        { titre: "La méthode CRFE en pratique avancée : contraintes, exemples, itération" },
+        { titre: "La méthode AXION en pratique avancée : contraintes, exemples, itération" },
         {
           titre:
             "Exercice : chacun transforme une demande vague en demande structurée sur sa tâche",
@@ -472,7 +472,7 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
         { titre: "Quiz individuel de validation des acquis (10 questions)" },
         {
           temps: "Livrable",
-          titre: "Bibliothèque de prompts d'équipe construite en séance + mémo CRFE",
+          titre: "Bibliothèque de prompts d'équipe construite en séance + mémo AXION",
         },
       ],
     },
@@ -645,7 +645,7 @@ const IA_POUR_LES_RH: FormationV2 = {
     { texteFr: "Les bons réflexes RGPD sur les données RH" },
   ],
   objectifsFr: [
-    "Rédiger offres et fiches de poste à l'aide de l'IA (méthode CRFE)",
+    "Rédiger offres et fiches de poste à l'aide de l'IA (méthode AXION)",
     "Trier et présynthétiser des candidatures",
     "Produire des supports de communication interne",
     "Appliquer les règles RGPD aux données RH",
@@ -665,7 +665,7 @@ const IA_POUR_LES_RH: FormationV2 = {
       titreFr: "Module 1 — L'IA appliquée à la fonction RH",
       steps: [
         { titre: "Ce que l'IA change pour la fonction RH : panorama des usages qui marchent" },
-        { titre: "La méthode CRFE appliquée aux écrits RH" },
+        { titre: "La méthode AXION appliquée aux écrits RH" },
         { titre: "Rédiger offres d'emploi et fiches de poste : atelier sur vos postes réels" },
       ],
     },
@@ -772,7 +772,7 @@ const IA_POUR_LE_MARKETING: FormationV2 = {
     {
       titreFr: "Module 1 — Générer des contenus qui vous ressemblent",
       steps: [
-        { titre: "La méthode CRFE appliquée au marketing : ton de marque, cibles, formats" },
+        { titre: "La méthode AXION appliquée au marketing : ton de marque, cibles, formats" },
         { titre: "Posts, newsletters, pages : produire un premier jet exploitable en minutes" },
         { titre: "Créer des visuels avec l'IA : possibilités et limites actuelles" },
       ],
@@ -860,7 +860,7 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
   ],
   objectifsFr: [
     "Préparer rendez-vous et argumentaires à l'aide de l'IA",
-    "Rédiger des propositions commerciales structurées (méthode CRFE)",
+    "Rédiger des propositions commerciales structurées (méthode AXION)",
     "Rédiger relances et suivis client",
     "Qualifier des prospects avec l'appui de l'IA",
     "Appliquer les règles de confidentialité",
@@ -878,7 +878,7 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
       titreFr: "Module 1 — Préparer ses rendez-vous en un temps record",
       steps: [
         { titre: "Se renseigner sur un prospect et son secteur en quelques minutes" },
-        { titre: "Construire un argumentaire ciblé : la méthode CRFE appliquée à la vente" },
+        { titre: "Construire un argumentaire ciblé : la méthode AXION appliquée à la vente" },
         { titre: "Atelier : chaque participant prépare un rendez-vous réel de sa semaine" },
       ],
     },
@@ -987,7 +987,7 @@ const IA_POUR_LA_FINANCE: FormationV2 = {
           titre:
             "Le partage des rôles : les chiffres restent dans vos systèmes, l'IA travaille autour",
         },
-        { titre: "La méthode CRFE appliquée aux écrits et analyses financiers" },
+        { titre: "La méthode AXION appliquée aux écrits et analyses financiers" },
         { titre: "Analyser et synthétiser un document financier long : démonstration et pratique" },
       ],
     },
@@ -1103,7 +1103,7 @@ const IA_POUR_LE_JURIDIQUE: FormationV2 = {
           titre:
             "La règle du métier : l'IA prépare la relecture, elle ne remplace ni le juriste ni le conseil",
         },
-        { titre: "La méthode CRFE appliquée aux demandes juridiques" },
+        { titre: "La méthode AXION appliquée aux demandes juridiques" },
       ],
     },
     {
@@ -1225,7 +1225,7 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
       titreFr: "Jour 1 — Suivi, reporting et documentation",
       steps: [
         { titre: "Ce que l'IA change pour les opérations : usages qui marchent en production" },
-        { titre: "La méthode CRFE appliquée aux écrits de production" },
+        { titre: "La méthode AXION appliquée aux écrits de production" },
         { titre: "Comptes-rendus et reporting de production : de vos notes au document propre" },
         {
           titre: "L'IA en appui à la planification : préparer, simuler des scénarios, communiquer",
@@ -1340,7 +1340,7 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
           titre:
             "Le partage des rôles : les données restent dans vos systèmes, l'IA travaille autour",
         },
-        { titre: "La méthode CRFE appliquée aux écrits du service achats" },
+        { titre: "La méthode AXION appliquée aux écrits du service achats" },
       ],
     },
     {
@@ -1453,7 +1453,8 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
       steps: [
         { titre: "Ce que l'IA change pour le support : réactivité, homogénéité, traçabilité" },
         {
-          titre: "La méthode CRFE appliquée aux réponses clients : ton, contexte, personnalisation",
+          titre:
+            "La méthode AXION appliquée aux réponses clients : ton, contexte, personnalisation",
         },
         {
           titre: "Démonstration : d'une demande client réelle à une réponse prête à personnaliser",
@@ -1676,7 +1677,7 @@ const IA_POUR_LA_SANTE: FormationV2 = {
       steps: [
         { titre: "Ce que l'IA peut alléger dans l'activité — et ce qu'elle ne touche jamais" },
         { titre: "La règle absolue posée d'emblée : aucune donnée de santé nominative ne sort" },
-        { titre: "La méthode CRFE appliquée aux écrits de l'établissement" },
+        { titre: "La méthode AXION appliquée aux écrits de l'établissement" },
       ],
     },
     {
@@ -1781,7 +1782,7 @@ const IA_POUR_LE_BTP: FormationV2 = {
       titreFr: "Module 1 — L'IA sur le chantier et au bureau",
       steps: [
         { titre: "Ce que l'IA change pour une entreprise du BTP : les usages à plus fort gain" },
-        { titre: "La méthode CRFE appliquée aux écrits du bâtiment" },
+        { titre: "La méthode AXION appliquée aux écrits du bâtiment" },
         { titre: "Démonstration : de notes de chantier à un compte-rendu diffusable" },
       ],
     },
@@ -1892,7 +1893,7 @@ const IA_POUR_L_IMMOBILIER: FormationV2 = {
       titreFr: "Module 1 — L'IA dans le métier immobilier",
       steps: [
         { titre: "Ce que l'IA change pour une agence : les usages à plus fort gain" },
-        { titre: "La méthode CRFE appliquée aux écrits de l'immobilier" },
+        { titre: "La méthode AXION appliquée aux écrits de l'immobilier" },
         { titre: "Démonstration : des caractéristiques d'un bien à une annonce attractive" },
       ],
     },
@@ -2009,7 +2010,7 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
       titreFr: "Module 1 — L'IA dans le commerce : panorama et méthode",
       steps: [
         { titre: "Ce que l'IA change pour un commerce : les usages à plus fort gain" },
-        { titre: "La méthode CRFE appliquée aux contenus commerciaux" },
+        { titre: "La méthode AXION appliquée aux contenus commerciaux" },
         { titre: "Démonstration : de quelques caractéristiques à une fiche produit complète" },
       ],
     },
@@ -2122,7 +2123,7 @@ const IA_POUR_L_HOTELLERIE_RESTAURATION: FormationV2 = {
         {
           titre: "Ce que l'IA change pour un hôtel ou un restaurant : les usages à plus fort gain",
         },
-        { titre: "La méthode CRFE appliquée à la relation client de l'établissement" },
+        { titre: "La méthode AXION appliquée à la relation client de l'établissement" },
         { titre: "Démonstration : d'un avis client à une réponse soignée en moins d'une minute" },
       ],
     },
@@ -2344,7 +2345,7 @@ const IA_POUR_LE_TRANSPORT_LOGISTIQUE: FormationV2 = {
           titre:
             "Le partage des rôles : le TMS et vos systèmes gardent les données, l'IA travaille autour",
         },
-        { titre: "La méthode CRFE appliquée aux écrits de l'exploitation" },
+        { titre: "La méthode AXION appliquée aux écrits de l'exploitation" },
       ],
     },
     {
@@ -2451,7 +2452,7 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
       steps: [
         { titre: "Ce que l'IA peut accélérer dans le métier — et ce qu'elle ne touche jamais" },
         { titre: "La règle absolue posée d'emblée : aucune donnée client nominative ne sort" },
-        { titre: "La méthode CRFE appliquée aux écrits du secteur" },
+        { titre: "La méthode AXION appliquée aux écrits du secteur" },
       ],
     },
     {

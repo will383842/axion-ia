@@ -144,7 +144,7 @@ export function FormationCategorieListing({ categorie, locale }: Props): ReactNo
       duration: formationDureeIso(f.duree),
       audienceType:
         "Décideurs, managers, équipes opérationnelles TPE PME ETI grandes entreprises (B2B)",
-      about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION, méthode CRFE)",
+      about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION)",
     }),
   );
 
