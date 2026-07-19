@@ -6,8 +6,10 @@
 // hors bundle client. Empreinte JS minime (22 items + logique de filtre).
 
 import { useMemo, useState, type ReactNode } from "react";
+import Image from "next/image";
 import { ArrowRight, Clock, Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { cn } from "@/lib/utils";
 
 export type SlimCategorie = "generale" | "metier" | "secteur" | "seminaire";
@@ -26,6 +28,12 @@ export interface SlimFormation {
   priceLabel: string;
   /** true si le prix est fixe (affichage « Prix groupe » au lieu de « Tarif »). */
   fixedPrice: boolean;
+  /** Photo de la carte (locale, calculée côté serveur — jamais de hotlink). */
+  imageSrc?: string;
+  imageAlt?: string;
+  /** Crédit photographe Unsplash (CGU §9) si la photo en est une. */
+  creditName?: string;
+  creditUrl?: string;
 }
 
 const CATEGORIE_STYLE: Record<SlimCategorie, { label: string; pill: string; bar: string }> = {
@@ -123,12 +131,41 @@ export function FormationsCatalogueFilterable({
           const c = CATEGORIE_STYLE[f.categorie];
           return (
             <li key={f.slugFr}>
-              <Link
-                href={`/formations/${f.slugFr}` as never}
-                data-cta={`formation-card-${f.slugFr}`}
-                className="shadow-subtle hover:shadow-elevated group bg-paper relative flex h-full flex-col overflow-hidden rounded-2xl transition duration-200 hover:-translate-y-1"
-              >
+              {/* Pattern Link-overlay (pas de <a> imbriqués : le crédit photo
+                  Unsplash est un lien, il vit AU-DESSUS de l'overlay en z-[2]). */}
+              <article className="shadow-subtle hover:shadow-elevated group bg-paper relative flex h-full flex-col overflow-hidden rounded-2xl transition duration-200 hover:-translate-y-1">
+                <Link
+                  href={`/formations/${f.slugFr}` as never}
+                  data-cta={`formation-card-${f.slugFr}`}
+                  aria-label={`${f.titreFr} — ${isFr ? "voir la formation" : "view training"}`}
+                  className="focus-visible:ring-terracotta absolute inset-0 z-[1] rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  <span className="sr-only">{f.titreFr}</span>
+                </Link>
                 <span aria-hidden="true" className={cn("block h-1.5 w-full", c.bar)} />
+                {/* Photo de la formation (aspect fixe → CLS=0, lazy, crédit CGU §9) */}
+                {f.imageSrc ? (
+                  <span className="relative block">
+                    <Image
+                      src={f.imageSrc}
+                      alt={f.imageAlt ?? f.titreFr}
+                      width={1280}
+                      height={800}
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+                      className="aspect-[16/9] w-full object-cover"
+                      quality={78}
+                    />
+                    {f.creditName ? (
+                      <UnsplashCredit
+                        photographerName={f.creditName}
+                        photographerUrl={f.creditUrl}
+                        className="bg-paper/85 absolute right-2 bottom-2 z-[2] !mt-0 rounded-full px-2 py-0.5 !text-[9.5px]"
+                      />
+                    ) : null}
+                  </span>
+                ) : null}
                 <div className="flex h-full flex-col p-6">
                   <div className="mb-4 flex flex-wrap items-center gap-2">
                     <span
@@ -177,7 +214,7 @@ export function FormationsCatalogueFilterable({
                     </span>
                   </div>
                 </div>
-              </Link>
+              </article>
             </li>
           );
         })}

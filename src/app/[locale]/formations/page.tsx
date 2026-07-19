@@ -26,7 +26,12 @@ import {
   getSeminairesV2,
 } from "@/content/formations/catalog-v2";
 import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
-import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
+import {
+  FORMATION_DUREE_FACTS,
+  getFormationImage,
+  getFormationImageCredit,
+} from "@/content/formations/catalog-v2-facts";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import {
   buildProductMetadata,
@@ -453,6 +458,35 @@ export default async function FormationsHub({ params }: Props) {
 
                 {/* Filet couleur en haut */}
                 <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
+
+                {/* BANDEAU IMAGE — photo dédiée (Unsplash locale, SSOT
+                    catalog-v2-photos), aspect fixe → CLS=0, crédit overlay. */}
+                {(() => {
+                  const img = getFormationImage(primary);
+                  const credit = getFormationImageCredit(primary);
+                  return (
+                    <div className="relative">
+                      <Image
+                        src={img.src}
+                        alt={img.altFr}
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(max-width: 768px) 100vw, 400px"
+                        className="aspect-[16/9] w-full object-cover"
+                        quality={78}
+                      />
+                      {credit ? (
+                        <UnsplashCredit
+                          photographerName={credit.name}
+                          photographerUrl={credit.url}
+                          className="bg-paper/85 absolute right-2 bottom-2 z-[2] !mt-0 rounded-full px-2 py-0.5 !text-[9.5px]"
+                        />
+                      ) : null}
+                    </div>
+                  );
+                })()}
 
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
                   <h2 className="text-fg pr-8 text-xl leading-tight font-semibold sm:text-2xl">
@@ -890,6 +924,33 @@ export default async function FormationsHub({ params }: Props) {
           <Container>
             <article className="bg-paper border-primary/30 hover:border-primary shadow-subtle hover:shadow-card mx-auto flex max-w-3xl flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
               <span aria-hidden="true" className="bg-primary block h-2 w-full" />
+              {/* BANDEAU IMAGE séminaire (Unsplash locale + crédit CGU §9) */}
+              {(() => {
+                const img = getFormationImage(seminaire);
+                const credit = getFormationImageCredit(seminaire);
+                return (
+                  <div className="relative">
+                    <Image
+                      src={img.src}
+                      alt={img.altFr}
+                      width={1280}
+                      height={800}
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(max-width: 768px) 100vw, 720px"
+                      className="aspect-[21/9] w-full object-cover"
+                      quality={78}
+                    />
+                    {credit ? (
+                      <UnsplashCredit
+                        photographerName={credit.name}
+                        photographerUrl={credit.url}
+                        className="bg-paper/85 absolute right-2 bottom-2 !mt-0 rounded-full px-2 py-0.5 !text-[9.5px]"
+                      />
+                    ) : null}
+                  </div>
+                );
+              })()}
               <div className="flex flex-col gap-4 p-7 sm:p-8">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="bg-primary-soft text-primary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[12px] font-semibold">
