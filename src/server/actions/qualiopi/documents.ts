@@ -35,6 +35,8 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { CvFormateurPdf } from "@/server/qualiopi/documents/templates/cv-formateur";
+import { buildCvFormateurData } from "@/server/qualiopi/documents/cv-formateur-data";
 
 // Templates
 import { ConventionPdf } from "@/server/qualiopi/documents/templates/convention";
@@ -1606,6 +1608,160 @@ export async function genererContratSousTraitanceAction(input: {
     targetType: "SousTraitant",
     targetId: sousTraitantId,
     changes: { documentId: doc.id, numero: doc.numero },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Fiche formateur versée au dossier de preuves (ind. 21)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const trainerIdSchema = z.object({ trainerId: z.string().uuid() });
+
+/**
+ * Verse la fiche formateur au dossier de preuves et ferme la boucle ind. 21.
+ *
+ * À distinguer de `genererCvFormateurAction` (`exports-pdf.ts`), qui produit un
+ * PDF ÉPHÉMÈRE téléchargé par le navigateur, sans numéro ni rétention. Ici le
+ * document est officiel : numéro séquentiel immuable, hash SHA-256, stockage R2,
+ * conservation — et surtout `Trainer.cvUrl` pointe ensuite vers sa route de
+ * téléchargement stable, ce qui rend l'indicateur 21 couvert.
+ *
+ * L'indicateur 21 est à non-conformité MAJEURE même en cas de manquement partiel :
+ * sa couverture (`conformite-service.ts`) exige un formateur actif dont `cvUrl`
+ * est non nul et `cvUploadedAt` de moins de 24 mois. Les deux sont posés ici.
+ *
+ * ⚠️ Le référentiel exige que la MAÎTRISE des compétences soit « vérifiée par le
+ * prestataire », pas seulement qu'un CV existe. Ce document matérialise cette
+ * vérification en rattachant explicitement les compétences aux formations
+ * habilitées ; il ne dispense pas de tenir cette vérification à jour.
+ */
+export async function verserFicheFormateurAction(input: {
+  trainerId: string;
+}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const parsed = trainerIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { trainerId } = parsed.data;
+
+  const trainer = await prisma.trainer.findUnique({
+    where: { id: trainerId },
+    select: {
+      id: true,
+      actif: true,
+      nom: true,
+      prenom: true,
+      email: true,
+      telephone: true,
+      statut: true,
+      cvUrl: true,
+      domainesCompetences: true,
+      formationsHabilitees: true,
+      dateEmbauche: true,
+      afestHabiliteAt: true,
+      sousTraitantNda: true,
+      sousTraitantVerifieAt: true,
+    },
+  });
+  if (!trainer) return { error: "Formateur introuvable" };
+
+  // Un formateur désactivé ne compte pas pour l'indicateur 21 (`conformite-service`
+  // filtre sur `actif: true`) : verser sa fiche ne couvrirait rien et laisserait
+  // une pièce orpheline au dossier.
+  if (!trainer.actif) {
+    return { error: "Formateur désactivé : réactivez-le avant de verser sa fiche." };
+  }
+
+  // Résolution des titres des formations habilitées (ids → titres).
+  let titresHabilitations: string[] = [];
+  if (trainer.formationsHabilitees.length > 0) {
+    const formations = await prisma.formation.findMany({
+      where: { id: { in: trainer.formationsHabilitees } },
+      select: { titre: true },
+      orderBy: { titre: "asc" },
+    });
+    titresHabilitations = formations.map((f) => f.titre);
+  }
+
+  const identite = await getOrganismeIdentite();
+  const maintenant = new Date();
+
+  // `cvJoint` = un CV SOURCE est-il versé au dossier du formateur ?
+  // Surtout PAS `trainer.cvUrl != null` : au premier versement ce champ est encore
+  // nul, la fiche imprimerait donc « CV non joint »… alors qu'elle EST la pièce,
+  // et `cvUrl` pointera vers elle une seconde plus tard. Le même document
+  // affirmerait deux choses opposées selon l'ordre des clics.
+  const nbCvSource = await prisma.trainerDocument.count({
+    where: { trainerId, type: "cv", statutValidation: "valide" },
+  });
+  const data = {
+    ...buildCvFormateurData(trainer, titresHabilitations, maintenant),
+    cvJoint: nbCvSource > 0,
+  };
+
+  let doc: { id: string; numero: string };
+  try {
+    doc = await generateDocument({
+      type: "cv_formateur",
+      buildElement: () => React.createElement(CvFormateurPdf, { data, identite }),
+      identite,
+    });
+  } catch (err) {
+    // `generateDocument` peut lever : identité d'organisme incomplète, échec de
+    // rendu react-pdf, R2 indisponible. Sans ce filet, l'exception remontait
+    // brute au client React et l'admin voyait une erreur générique au lieu de
+    // la cause — alors que toutes les autres actions du fichier retournent
+    // `{ error }`.
+    return {
+      error:
+        err instanceof Error
+          ? `Génération de la fiche impossible : ${err.message}`
+          : "Génération de la fiche impossible.",
+    };
+  }
+
+  // Fermeture de la boucle ind. 21 : `cvUrl` pointe vers la route stable de
+  // téléchargement du document (signature R2 à la demande), et non vers une URL
+  // signée qui expirerait, ni vers une clé R2 brute illisible au manifeste d'audit.
+  //
+  // URL ABSOLUE : `updateTrainerSchema` valide `cvUrl` en `z.string().url()`, et
+  // le manifeste d'audit imprime cette valeur telle quelle pour l'auditeur — un
+  // chemin relatif y serait non résolvable.
+  const baseUrl = (process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com").replace(
+    /\/+$/,
+    "",
+  );
+  try {
+    await prisma.trainer.update({
+      where: { id: trainerId },
+      data: {
+        cvUrl: `${baseUrl}/api/qualiopi/documents/${doc.id}`,
+        cvUploadedAt: maintenant,
+      },
+    });
+  } catch {
+    // Le document EXISTE désormais au dossier (numéro consommé, PDF conservé)
+    // mais la boucle n'est pas fermée : l'indicateur 21 restera non couvert.
+    // On le dit explicitement plutôt que de laisser croire à un succès.
+    return {
+      error: `Fiche générée (${doc.numero}) mais le formateur n'a pas pu être mis à jour. Relancez le versement.`,
+    };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.formateur.fiche.versee",
+    targetType: "Trainer",
+    targetId: trainerId,
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      nbCompetences: data.domainesCompetences.length,
+      nbHabilitations: titresHabilitations.length,
+    },
     session: adminSession,
   });
 

@@ -1,0 +1,27 @@
+-- QUALIOPI — Nouveau type de document : fiche formateur versée au dossier (ind. 21).
+--
+-- Contexte : l'indicateur 21 (« le prestataire détermine, mobilise et évalue les
+-- compétences des intervenants internes et/ou externes ») est à NON-CONFORMITÉ
+-- MAJEURE, même en cas de manquement partiel. Sa couverture est calculée par
+-- `conformite-service.ts` sur `Trainer.cvUrl` non nul et daté de moins de 24 mois.
+--
+-- Or le générateur existant (`exports-pdf.ts`) produit un PDF éphémère téléchargé
+-- par le navigateur : il ne persiste rien et ne renseigne pas `cvUrl`. La boucle
+-- n'était donc jamais fermée, et le seul moyen de couvrir l'indicateur était de
+-- coller à la main l'URL d'un fichier hébergé ailleurs — lien fragile pour une
+-- pièce d'audit.
+--
+-- Ce type permet de verser la fiche formateur comme document OFFICIEL : numéro
+-- séquentiel immuable, hash SHA-256, stockage R2, rétention. `Trainer.cvUrl`
+-- pointera vers `/api/qualiopi/documents/<id>`, route stable qui signe l'accès
+-- à la demande.
+--
+-- Non soumis au garde-fou d'identité (`CHAMPS_OBLIGATOIRES` ne couvre que
+-- facture / convention / contrat) : la génération reste possible tant que le
+-- SIRET et le NDA de l'organisme ne sont pas encore saisis.
+--
+-- Migration ADDITIVE : aucun DROP, aucune colonne modifiée.
+-- `ADD VALUE` est autorisé en transaction depuis PG 12 (prod = PG 16.13) tant que
+-- la valeur n'est PAS consommée dans cette même migration — ce qui est le cas ici.
+
+ALTER TYPE "DocumentType" ADD VALUE IF NOT EXISTS 'cv_formateur';

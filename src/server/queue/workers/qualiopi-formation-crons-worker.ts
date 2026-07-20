@@ -233,6 +233,17 @@ async function handleClotureAuto(): Promise<void> {
         where: { sessionId: decision.sessionId },
       });
       if (totalInscrits > 0) {
+        // ⚠️ `not: null` et NON `> 0`. Le durcissement en `> 0` a été tenté puis
+        // RETIRÉ : `emargementSigneAt` n'est posé que par la grille présentielle
+        // (`saveEmargementAction`), jamais par l'import distanciel ni par la
+        // correction manuelle. Une session 100 % distancielle où personne ne se
+        // connecte — annulation de fait, panne, désistement collectif — devenait
+        // alors DÉFINITIVEMENT non clôturable, ni ici ni manuellement, et
+        // alimentait une alerte critique non résorbable.
+        // Un verrou sans porte de sortie est pire que le trou qu'il ferme.
+        // Le durcissement reste souhaitable, mais suppose d'abord que tous les
+        // chemins de saisie de présence posent une trace, et qu'un administrateur
+        // dispose d'une clôture explicite motivée. À reprendre comme un lot dédié.
         const avecEmargement = await prisma.enrollment.count({
           where: {
             sessionId: decision.sessionId,

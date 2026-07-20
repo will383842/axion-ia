@@ -33,6 +33,7 @@ import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import type { DemiJourneeLabel, PlateformeLabel } from "@/server/qualiopi/presence/types";
+import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -145,13 +146,18 @@ export async function generateSessionCreneauxAction(input: {
 
   if (!trainingSession) return { error: "Session introuvable" };
 
-  const heuresParJour = v.heuresParJour ?? trainingSession.dureeReelleHeures ?? 7;
-
-  // Génération des créneaux via logique pure AGENT A.
+  // Génération des créneaux via logique pure.
+  // ⚠️ `dureeReelleHeures` est la durée TOTALE de la session, PAS une durée
+  // journalière : elle est passée en `dureeTotaleHeures` pour être répartie sur
+  // les jours ouvrés. La passer en `heuresParJour` (bug corrigé) doublait le
+  // dénominateur du taux de présence sur toute session de plus d'un jour.
   const creneaux = genererCreneaux({
     dateDebut: trainingSession.dateDebut,
     dateFin: trainingSession.dateFin,
-    heuresParJour,
+    ...(v.heuresParJour !== undefined ? { heuresParJour: v.heuresParJour } : {}),
+    ...(trainingSession.dureeReelleHeures !== null
+      ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
+      : {}),
   });
 
   if (creneaux.length === 0) return { error: "Aucun créneau généré (dates invalides)" };
@@ -229,10 +235,12 @@ export async function saveEmargementAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
 
-  // Vérification session.
+  // Vérification session. `dateDebut` sert à invalider le cache des indicateurs
+  // de la BONNE année (une session de décembre émargée en janvier invaliderait
+  // sinon la mauvaise clé, et le taux de complétion resterait faux 1 h durant).
   const trainingSession = await prisma.trainingSession.findUnique({
     where: { id: v.sessionId },
-    select: { id: true },
+    select: { id: true, dateDebut: true },
   });
   if (!trainingSession) return { error: "Session introuvable" };
 
@@ -254,7 +262,7 @@ export async function saveEmargementAction(input: {
           demiJournee: toDemiJourneeEnum(entry.demiJournee),
         },
       },
-      select: { id: true, dureePrevueMinutes: true },
+      select: { id: true, dureePrevueMinutes: true, source: true, libelle: true },
     });
 
     // Durée réalisée : si présent et non fournie → dureePrevue du créneau.
@@ -263,8 +271,19 @@ export async function saveEmargementAction(input: {
       dureeRealiseeMinutes = existingCreneau?.dureePrevueMinutes ?? 0;
     }
 
-    // libelle reconstruit pour l'upsert.
-    const libelle = `${entry.date} ${entry.demiJournee === "apres_midi" ? "après-midi" : entry.demiJournee}`;
+    // ⚠️ La PROVENANCE d'un créneau importé ne doit jamais être réécrite.
+    // La grille reçoit TOUS les créneaux de la session, y compris ceux issus d'un
+    // relevé Zoom/Teams/Meet. Un simple clic « Enregistrer », même sans rien
+    // modifier, transformait `import_zoom` en `emargement_presentiel` sur des
+    // enregistrements à valeur probante — et remplaçait leur libellé horodaté.
+    // Le PDF de relevé de connexion et le dossier d'audit lisent ce champ.
+    const sourceImportee = existingCreneau?.source?.startsWith("import_") === true;
+    const source = sourceImportee
+      ? (existingCreneau?.source as "import_zoom" | "import_teams" | "import_meet")
+      : "emargement_presentiel";
+    const libelle = sourceImportee
+      ? (existingCreneau?.libelle ?? "")
+      : `${entry.date} ${entry.demiJournee === "apres_midi" ? "après-midi" : entry.demiJournee}`;
 
     await upsertCreneau({
       enrollmentId: entry.enrollmentId,
@@ -272,7 +291,7 @@ export async function saveEmargementAction(input: {
       demiJournee: toDemiJourneeEnum(entry.demiJournee),
       libelle,
       dureePrevueMinutes: existingCreneau?.dureePrevueMinutes ?? dureeRealiseeMinutes,
-      source: "emargement_presentiel",
+      source,
       present: entry.present,
       dureeRealiseeMinutes,
     });
@@ -291,6 +310,11 @@ export async function saveEmargementAction(input: {
       data: { emargementSigneAt: now },
     });
   }
+
+  // UN SEUL appel, APRÈS la boucle : `invalidateIndicateursCache` fait un
+  // `redis.keys()` (bloquant O(N) sur Redis, partagé avec BullMQ) — l'appeler
+  // par enrollment le déclencherait 15 fois pour une sauvegarde de grille.
+  await invalidateIndicateursCache(trainingSession.dateDebut.getUTCFullYear());
 
   await logQualiopiActivity({
     action: "qualiopi.presence.emargement.save",
@@ -336,6 +360,9 @@ export async function importReleveConnexionAction(input: {
     select: {
       id: true,
       dateDebut: true,
+      // `dateFin` requis pour dériver le nombre de jours retenus et donc la durée
+      // prévue d'UNE journée distancielle (cf. genererCreneaux plus bas).
+      dateFin: true,
       dureeReelleHeures: true,
       enrollments: {
         where: { statut: { notIn: ["abandon", "exclu"] } },
@@ -397,38 +424,88 @@ export async function importReleveConnexionAction(input: {
     select: { id: true },
   });
 
-  // 6. Durée prévue par créneau distanciel.
-  const dureePrevueMinutes = (trainingSession.dureeReelleHeures ?? 7) * 60;
+  // 6. Durée prévue d'UNE journée distancielle.
+  //
+  // ⚠️ Corrigé : on posait ici `dureeReelleHeures * 60`, soit la durée TOTALE de
+  // la session sur un unique créneau. Une session distancielle de 2 jours voyait
+  // donc 14 h attendues sur une seule journée — et les autres jours n'avaient
+  // aucun créneau du tout, donc aucune présence justifiable.
+  // `genererCreneaux` porte déjà la répartition correcte (jours retenus + plafond
+  // horaire) : on en dérive la durée d'une journée pleine = 2 demi-journées.
+  const creneauxSession = genererCreneaux({
+    dateDebut: trainingSession.dateDebut,
+    dateFin: trainingSession.dateFin,
+    ...(trainingSession.dureeReelleHeures !== null
+      ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
+      : {}),
+  });
+  const dureePrevueMinutes =
+    creneauxSession.length > 0 ? (creneauxSession[0]?.dureePrevueMinutes ?? 210) * 2 : 7 * 60;
 
-  // Date civile Paris de dateDebut.
-  const dateCivile = parisDateISO(trainingSession.dateDebut);
-  const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
-  const libelle = `${dateCivile} journée`;
+  // Bornes civiles de la session, pour ne jamais dater un créneau hors plage.
+  const isoDebutSession = parisDateISO(trainingSession.dateDebut);
+  const isoFinSession = parisDateISO(trainingSession.dateFin);
 
-  // 7. Création des créneaux distanciels pour les participants matchés.
-  const matchedEnrollmentIds = new Set<string>();
+  // 7. Création des créneaux distanciels.
+  //
+  // ⚠️ DEUX RÈGLES NON NÉGOCIABLES, chacune corrigeant une manière de FAUSSER le
+  // taux de présence — et donc l'attestation :
+  //
+  // (a) On crée un créneau pour TOUS les inscrits actifs, pas seulement pour ceux
+  //     retrouvés dans le relevé. Ne créer que les présents retirait les absents
+  //     du DÉNOMINATEUR : un stagiaire venu 1 jour sur 2 obtenait 100 % au lieu
+  //     de 50 %, donc une attestation complète au lieu de partielle. Surévaluer la
+  //     présence est bien plus grave que la sous-évaluer : c'est ce qu'un contrôle
+  //     de service fait sanctionne.
+  //
+  // (b) Le réalisé est PLAFONNÉ au prévu. Les parseurs agrègent un participant sur
+  //     toute la plage du fichier (cf. `parse-zoom.ts`) : un export couvrant 2 jours
+  //     produisait 840 min réalisées pour 420 prévues, soit un taux de 200 % écrit
+  //     en base. `computeTauxPresence` n'a aucun plafond.
+  //
+  // La date vient de l'heure de connexion réelle, bornée à la plage de la session :
+  // une connexion de test la veille, un fuseau mal parsé ou un CSV d'une autre
+  // réunion créeraient sinon un créneau HORS session que `recomputeTauxPresence`
+  // compterait quand même (il lit tous les créneaux de l'inscription, sans filtre
+  // de date) — et qu'aucune UI ne permet de supprimer.
+  const enrollmentIdsTouches = new Set<string>();
+  const matchedById = new Map(matched.map((m) => [m.enrollmentId, m.participant]));
 
-  for (const { enrollmentId, participant } of matched) {
+  for (const enrollment of trainingSession.enrollments) {
+    const participant = matchedById.get(enrollment.id);
+
+    const isoBrut = parisDateISO(participant?.joinAt ?? trainingSession.dateDebut);
+    const dateCivile =
+      isoBrut < isoDebutSession || isoBrut > isoFinSession ? isoDebutSession : isoBrut;
+    const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
+
+    const realiseeBrut = participant?.dureeMinutes ?? 0;
+    const dureeRealiseeMinutes = Math.min(realiseeBrut, dureePrevueMinutes);
+
     await upsertCreneau({
-      enrollmentId,
+      enrollmentId: enrollment.id,
       date: dateObj,
       demiJournee: "journee",
-      libelle,
+      libelle: `${dateCivile} journée`,
       dureePrevueMinutes,
       source: toPresenceSource(v.plateforme),
       present: false, // sera mis à jour par recomputeTauxPresence
-      dureeRealiseeMinutes: participant.dureeMinutes,
-      ...(participant.joinAt !== null ? { heureConnexion: participant.joinAt } : {}),
-      ...(participant.leaveAt !== null ? { heureDeconnexion: participant.leaveAt } : {}),
+      dureeRealiseeMinutes,
+      ...(participant?.joinAt != null ? { heureConnexion: participant.joinAt } : {}),
+      ...(participant?.leaveAt != null ? { heureDeconnexion: participant.leaveAt } : {}),
       importId: releveImport.id,
     });
-    matchedEnrollmentIds.add(enrollmentId);
+    enrollmentIdsTouches.add(enrollment.id);
   }
 
   // 8. Recompute taux pour les enrollments touchés.
-  for (const enrollmentId of matchedEnrollmentIds) {
+  for (const enrollmentId of enrollmentIdsTouches) {
     await recomputeTauxPresence(enrollmentId);
   }
+
+  // Cache indicateurs : le taux de complétion dérive de `tauxPresencePct`.
+  // Sans invalidation, un import distanciel reste invisible jusqu'à 1 h.
+  await invalidateIndicateursCache(new Date(trainingSession.dateDebut).getUTCFullYear());
 
   // 9. Génération du PDF relevé de connexion (optionnel — séparé du présent périmètre).
   // Le PDF est généré via generateDocument + ReleveConnexionPdf par l'UI ou un job BullMQ.
@@ -483,7 +560,13 @@ export async function setPresenceCreneauManualAction(input: {
   // Lecture du créneau pour récupérer l'enrollmentId.
   const creneau = await prisma.presenceCreneau.findUnique({
     where: { id: v.creneauId },
-    select: { id: true, enrollmentId: true },
+    // `session.dateDebut` remonté pour invalider le cache indicateurs de la
+    // bonne année (cf. saveEmargementAction).
+    select: {
+      id: true,
+      enrollmentId: true,
+      enrollment: { select: { session: { select: { dateDebut: true } } } },
+    },
   });
   if (!creneau) return { error: "Créneau introuvable" };
 
@@ -498,8 +581,9 @@ export async function setPresenceCreneauManualAction(input: {
     },
   });
 
-  // Recompute taux.
+  // Recompute taux + invalidation du cache indicateurs.
   await recomputeTauxPresence(creneau.enrollmentId);
+  await invalidateIndicateursCache(creneau.enrollment.session.dateDebut.getUTCFullYear());
 
   await logQualiopiActivity({
     action: "qualiopi.presence.creneau.manual",

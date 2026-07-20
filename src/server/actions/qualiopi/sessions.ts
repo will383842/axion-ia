@@ -265,6 +265,11 @@ export async function transitionSessionAction(input: {
     try {
       const totalInscrits = await prisma.enrollment.count({ where: { sessionId: v.id } });
       if (totalInscrits > 0) {
+        // Symétrique de la garde du cron (`qualiopi-formation-crons-worker.ts`),
+        // qui porte le commentaire détaillé. Les deux DOIVENT rester alignées,
+        // sinon clôture automatique et clôture manuelle divergent.
+        // `not: null` volontairement : le durcissement en `> 0` rendait certaines
+        // sessions définitivement non clôturables (cf. commentaire du worker).
         const avecEmargement = await prisma.enrollment.count({
           where: {
             sessionId: v.id,

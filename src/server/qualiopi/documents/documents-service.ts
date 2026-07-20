@@ -56,6 +56,8 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
   inventaire_moyens: "formation",
   // Contrat de sous-traitance (ind. 27) — groupe AXI-FORM.
   contrat_sous_traitance: "formation",
+  // Fiche formateur versée au dossier (ind. 21) — groupe AXI-FORM.
+  cv_formateur: "formation",
 };
 
 export interface GenerateDocumentInput {

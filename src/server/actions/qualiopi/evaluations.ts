@@ -85,6 +85,10 @@ export async function createEvaluationAcquisAction(input: {
         objectifRef?: string;
       }>,
       ...(v.recommandations !== undefined ? { recommandations: v.recommandations } : {}),
+      // Traçabilité de l'auteur : `evalueParId` était une colonne morte, jamais
+      // écrite nulle part. Sans elle, impossible de démontrer qui a évalué —
+      // sans effet avec un formateur unique, déterminant dès qu'ils sont plusieurs.
+      ...(session.userId !== undefined ? { evalueParId: session.userId } : {}),
     });
   } catch (err) {
     return {

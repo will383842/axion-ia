@@ -36,6 +36,7 @@ import {
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 import { genererCvFormateurAction } from "@/server/actions/qualiopi/exports-pdf";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
+import { VerserFicheFormateurButton } from "@/components/admin/qualiopi/VerserFicheFormateurButton";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -138,11 +139,17 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         title={`${trainer.prenom} ${trainer.nom}`}
         description={trainer.email}
         actions={
-          <PdfExportButton
-            label="Fiche formateur CV (PDF)"
-            input={{ trainerId: trainer.id }}
-            action={genererCvFormateurAction}
-          />
+          <div className="flex flex-wrap items-start gap-[var(--space-admin-3)]">
+            <PdfExportButton
+              label="Aperçu de la fiche (PDF)"
+              input={{ trainerId: trainer.id }}
+              action={genererCvFormateurAction}
+            />
+            <VerserFicheFormateurButton
+              trainerId={trainer.id}
+              dejaVersee={trainer.cvUrl !== null}
+            />
+          </div>
         }
       />
 

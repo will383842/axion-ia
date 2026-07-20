@@ -24,10 +24,8 @@ import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
-import {
-  CvFormateurPdf,
-  type DomaineCompetenceData,
-} from "@/server/qualiopi/documents/templates/cv-formateur";
+import { CvFormateurPdf } from "@/server/qualiopi/documents/templates/cv-formateur";
+import { buildCvFormateurData, formatDateFr } from "@/server/qualiopi/documents/cv-formateur-data";
 import { FicheAdaptationPdf } from "@/server/qualiopi/documents/templates/fiche-adaptation";
 import { RegistrePdf, type RegistreData } from "@/server/qualiopi/documents/templates/registre";
 import {
@@ -57,10 +55,6 @@ const STUB = "stub.invalid";
 
 function isStub(): boolean {
   return process.env.DATABASE_URL?.includes(STUB) ?? false;
-}
-
-function formatDateFr(d: Date | null | undefined): string {
-  return d ? d.toLocaleDateString("fr-FR") : "";
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -151,22 +145,6 @@ export async function genererRegistrePdfAction(input: {
 // 2. Fiche formateur — CV + plan de compétences (A15)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Parse le Json Trainer.domainesCompetences en lignes affichables. */
-function parseDomainesCompetences(raw: unknown): DomaineCompetenceData[] {
-  if (!Array.isArray(raw)) return [];
-  return raw
-    .filter((x): x is Record<string, unknown> => x !== null && typeof x === "object")
-    .map((o) => ({
-      domaine: typeof o["domaine"] === "string" ? o["domaine"] : "",
-      niveauMaitrise: typeof o["niveauMaitrise"] === "string" ? o["niveauMaitrise"] : "",
-      verifiedAt:
-        typeof o["verifiedAt"] === "string" && o["verifiedAt"]
-          ? formatDateFr(new Date(o["verifiedAt"]))
-          : "",
-    }))
-    .filter((d) => d.domaine.trim().length > 0);
-}
-
 /**
  * Génère la fiche formateur (CV + compétences + habilitations) en PDF base64.
  */
@@ -218,21 +196,7 @@ export async function genererCvFormateurAction(input: {
   try {
     const rendered = await renderPdfToBuffer(
       React.createElement(CvFormateurPdf, {
-        data: {
-          dateEdition: formatDateFr(now),
-          nom: trainer.nom,
-          prenom: trainer.prenom,
-          email: trainer.email,
-          telephone: trainer.telephone ?? "",
-          statut: trainer.statut,
-          dateEmbauche: formatDateFr(trainer.dateEmbauche),
-          domainesCompetences: parseDomainesCompetences(trainer.domainesCompetences),
-          formationsHabilitees: titresHabilitations,
-          cvJoint: trainer.cvUrl != null,
-          afestHabiliteAt: formatDateFr(trainer.afestHabiliteAt),
-          sousTraitantNda: trainer.sousTraitantNda ?? "",
-          sousTraitantVerifieAt: formatDateFr(trainer.sousTraitantVerifieAt),
-        },
+        data: buildCvFormateurData(trainer, titresHabilitations, now),
         identite,
       }),
     );

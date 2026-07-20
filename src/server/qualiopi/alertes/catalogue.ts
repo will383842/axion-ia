@@ -49,6 +49,18 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Émargement manquant (session réalisée)",
     resolutionAuto: true,
   },
+  /**
+   * Angle mort structurel comblé : `emargement_manquant` ne se déclenche que sur
+   * une session `realisee`, or la clôture automatique REFUSE justement de passer
+   * une session en `realisee` sans trace de présence. Une session totalement non
+   * émargée restait donc bloquée en `en_cours` indéfiniment, invisible du BPF,
+   * des attestations et des indicateurs — sans qu'aucune alerte ne se lève.
+   */
+  session_bloquee_en_cours: {
+    niveau: "critique",
+    titre: "Session non clôturée faute d'émargement",
+    resolutionAuto: true,
+  },
 
   // ── Formateur ──────────────────────────────────────────────────────────────
   session_sans_formateur: {

@@ -63,6 +63,12 @@ vi.mock("@/server/qualiopi/presence/presence-service", () => ({
   recomputeTauxPresence: vi.fn().mockResolvedValue(85),
 }));
 
+vi.mock("@/server/qualiopi/indicateurs/service", () => ({
+  // Le cache indicateurs dérive de tauxPresencePct : toute mutation de présence
+  // doit l'invalider, sinon le taux de complétion reste faux jusqu'à 1 h.
+  invalidateIndicateursCache: vi.fn(),
+}));
+
 vi.mock("@/server/qualiopi/documents/render", () => ({
   storeAndSignCsv: vi.fn().mockResolvedValue(null),
 }));
@@ -78,6 +84,7 @@ import { parseReleveConnexion } from "@/server/qualiopi/presence/parse-releve";
 import { matchParticipants } from "@/server/qualiopi/presence/match";
 import { upsertCreneau, recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
 import { storeAndSignCsv } from "@/server/qualiopi/documents/render";
+import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 
 import {
   generateSessionCreneauxAction,
@@ -105,6 +112,7 @@ const mockMatchParticipants = matchParticipants as ReturnType<typeof vi.fn>;
 const mockUpsertCreneau = upsertCreneau as ReturnType<typeof vi.fn>;
 const mockRecompute = recomputeTauxPresence as ReturnType<typeof vi.fn>;
 const mockStoreAndSignCsv = storeAndSignCsv as ReturnType<typeof vi.fn>;
+const mockInvalidateCache = invalidateIndicateursCache as ReturnType<typeof vi.fn>;
 
 /** Session de base pour les tests */
 function makeSession(overrides = {}) {
@@ -266,8 +274,16 @@ describe("saveEmargementAction", () => {
     vi.clearAllMocks();
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
     mockLogActivity.mockResolvedValue(undefined);
-    mockPrisma.trainingSession.findUnique.mockResolvedValue({ id: "session-test-id" });
-    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({ id: "c1", dureePrevueMinutes: 210 });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue({
+      id: "session-test-id",
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+    });
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      enrollmentId: "enr-1",
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
+    });
     mockUpsertCreneau.mockResolvedValue("upserted-id");
     mockRecompute.mockResolvedValue(85);
     mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 1 });
@@ -285,7 +301,12 @@ describe("saveEmargementAction", () => {
   });
 
   it("utilise dureePrevueMinutes si present=true et dureeRealiseeMinutes absent", async () => {
-    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({ id: "c1", dureePrevueMinutes: 210 });
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      enrollmentId: "enr-1",
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
+    });
 
     const { dureeRealiseeMinutes: _omit, ...entryWithoutDuree } = validEntry;
     await saveEmargementAction({
@@ -315,6 +336,31 @@ describe("saveEmargementAction", () => {
 
     // 2 enrollments différents → 2 appels recompute
     expect(mockRecompute).toHaveBeenCalledTimes(2);
+  });
+
+  it("invalide le cache indicateurs UNE SEULE FOIS, sur l'année de la session", async () => {
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [
+        {
+          enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
+          date: "2026-06-10",
+          demiJournee: "matin",
+          present: true,
+        },
+        {
+          enrollmentId: "550e8400-e29b-41d4-a716-446655440002",
+          date: "2026-06-10",
+          demiJournee: "matin",
+          present: true,
+        },
+      ],
+    });
+    // Sans invalidation, le taux de complétion resterait faux jusqu'à 1 h
+    // (TTL Redis). Et un appel PAR enrollment déclencherait autant de
+    // `redis.keys()`, bloquant O(N) sur un Redis partagé avec BullMQ.
+    expect(mockInvalidateCache).toHaveBeenCalledTimes(1);
+    expect(mockInvalidateCache).toHaveBeenCalledWith(2026);
   });
 
   it("pose emargementSigneAt write-once (updateMany conditionné sur null)", async () => {
@@ -440,6 +486,57 @@ describe("importReleveConnexionAction", () => {
     expect(result.data.unmatched).toHaveLength(0);
   });
 
+  it("rattache chaque relevé au JOUR de connexion réel (session multi-jours)", async () => {
+    // Avant correctif : tous les créneaux étaient posés sur `dateDebut`, avec une
+    // durée prévue égale à la durée TOTALE de la session. Sur une session de 2
+    // jours, le second jour n'avait donc aucun créneau — présence injustifiable —
+    // et le premier attendait 14 h. Le relevé porte l'heure de connexion : on
+    // s'en sert.
+    mockMatchParticipants.mockReturnValue({
+      matched: [
+        {
+          enrollmentId: "enroll-1",
+          participant: {
+            nomBrut: "Alice Dupont",
+            email: "alice@example.com",
+            dureeMinutes: 400,
+            joinAt: new Date("2026-06-10T08:05:00Z"),
+            leaveAt: new Date("2026-06-10T15:00:00Z"),
+          },
+        },
+        {
+          enrollmentId: "enroll-2",
+          participant: {
+            nomBrut: "Bob Martin",
+            email: "bob@example.com",
+            dureeMinutes: 380,
+            joinAt: new Date("2026-06-11T08:10:00Z"),
+            leaveAt: new Date("2026-06-11T15:00:00Z"),
+          },
+        },
+      ],
+      unmatched: [],
+    });
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "participants.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(2);
+    const dates = mockUpsertCreneau.mock.calls.map((c) =>
+      (c[0] as { date: Date }).date.toISOString().slice(0, 10),
+    );
+    // Deux jours DISTINCTS : c'est l'assertion qui tombe si l'on repose tout sur dateDebut.
+    expect(new Set(dates)).toEqual(new Set(["2026-06-10", "2026-06-11"]));
+
+    // Durée prévue = UNE journée (2 demi-journées), pas la session entière.
+    const premier = mockCall<{ dureePrevueMinutes: number }>(mockUpsertCreneau);
+    expect(premier.dureePrevueMinutes).toBe(420);
+  });
+
   it("crée un ReleveConnexionImport avec les bons champs", async () => {
     await importReleveConnexionAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",
@@ -478,7 +575,8 @@ describe("importReleveConnexionAction", () => {
     expect(createCall.data["fichierOriginalPath"]).toBe(r2Key);
   });
 
-  it("crée un créneau 'journee' pour chaque participant matché", async () => {
+  it("crée un créneau pour TOUS les inscrits actifs, absents compris", async () => {
+    // Le mock ne matche qu'un seul des deux inscrits.
     await importReleveConnexionAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",
       plateforme: "zoom",
@@ -486,17 +584,100 @@ describe("importReleveConnexionAction", () => {
       content: CSV_CONTENT,
     });
 
-    expect(mockUpsertCreneau).toHaveBeenCalledOnce();
+    // ⚠️ INVARIANT CENTRAL : ne créer de créneau que pour les PRÉSENTS retirait
+    // les absents du DÉNOMINATEUR du taux. Un stagiaire venu 1 jour sur 2
+    // obtenait 100 % au lieu de 50 %, donc une attestation COMPLÈTE au lieu de
+    // partielle. Surévaluer la présence est bien plus grave que la sous-évaluer.
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(2);
+
+    const calls = mockUpsertCreneau.mock.calls.map(
+      (c) => c[0] as { enrollmentId: string; dureeRealiseeMinutes: number; source: string },
+    );
+    const present = calls.find((c) => c.enrollmentId === "enroll-1");
+    const absent = calls.find((c) => c.enrollmentId === "enroll-2");
+
+    expect(present?.dureeRealiseeMinutes).toBeGreaterThan(0);
+    // L'absent est bien présent au dénominateur, à zéro minute réalisée.
+    expect(absent?.dureeRealiseeMinutes).toBe(0);
+
     const upsertCall = mockCall<{
       demiJournee: string;
       source: string;
-      dureeRealiseeMinutes: number;
       importId: string;
     }>(mockUpsertCreneau);
     expect(upsertCall.demiJournee).toBe("journee");
     expect(upsertCall.source).toBe("import_zoom");
-    expect(upsertCall.dureeRealiseeMinutes).toBe(480);
     expect(upsertCall.importId).toBe("import-new-id");
+  });
+
+  it("plafonne le réalisé au prévu — un relevé agrégé ne peut pas produire 200 %", async () => {
+    // `parse-zoom` agrège un participant sur toute la plage du fichier : un export
+    // couvrant 2 jours renvoie 840 min pour une journée de 420 prévues.
+    mockMatchParticipants.mockReturnValue({
+      matched: [
+        {
+          enrollmentId: "enroll-1",
+          participant: {
+            nomBrut: "Alice Dupont",
+            email: "alice@example.com",
+            dureeMinutes: 840,
+            joinAt: new Date("2026-06-10T08:00:00Z"),
+            leaveAt: new Date("2026-06-11T17:00:00Z"),
+          },
+        },
+      ],
+      unmatched: [],
+    });
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "participants.csv",
+      content: CSV_CONTENT,
+    });
+
+    const call = mockCall<{ dureePrevueMinutes: number; dureeRealiseeMinutes: number }>(
+      mockUpsertCreneau,
+    );
+    // Sans plafond, `computeTauxPresence` écrivait 200 % en base — champ non borné.
+    expect(call.dureeRealiseeMinutes).toBeLessThanOrEqual(call.dureePrevueMinutes);
+  });
+
+  it("borne la date du créneau à la plage de la session", async () => {
+    // Connexion de test la VEILLE (ou CSV d'une autre réunion, ou fuseau mal parsé).
+    mockMatchParticipants.mockReturnValue({
+      matched: [
+        {
+          enrollmentId: "enroll-1",
+          participant: {
+            nomBrut: "Alice Dupont",
+            email: "alice@example.com",
+            dureeMinutes: 120,
+            joinAt: new Date("2026-06-01T22:00:00Z"),
+            leaveAt: new Date("2026-06-01T23:00:00Z"),
+          },
+        },
+      ],
+      unmatched: [],
+    });
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "participants.csv",
+      content: CSV_CONTENT,
+    });
+
+    // Un créneau hors session serait compté par `recomputeTauxPresence` (qui lit
+    // TOUS les créneaux de l'inscription, sans filtre de date) et diluerait le
+    // taux — sans qu'aucune UI ne permette de le supprimer.
+    const dates = mockUpsertCreneau.mock.calls.map((c) =>
+      (c[0] as { date: Date }).date.toISOString().slice(0, 10),
+    );
+    for (const d of dates) {
+      expect(d >= "2026-06-10").toBe(true);
+      expect(d <= "2026-06-11").toBe(true);
+    }
   });
 
   it("recompute le taux pour chaque enrollment matché", async () => {
@@ -623,6 +804,9 @@ describe("setPresenceCreneauManualAction", () => {
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "550e8400-e29b-41d4-a716-446655440010",
       enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
+      // Remonté jusqu'à la session pour invalider le cache indicateurs de la
+      // bonne année après correction manuelle d'un créneau.
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
     mockPrisma.presenceCreneau.update.mockResolvedValue({});
     mockRecompute.mockResolvedValue(75);
