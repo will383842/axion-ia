@@ -224,7 +224,7 @@ export function SousTraitantVerifButton({
         setError(result.error);
       } else {
         setSuccessMsg(
-          `Vérification enregistrée le ${result.data.verifieDataGouvAt.toLocaleDateString("fr-FR")}.`,
+          `Consultation attestée le ${result.data.verifieDataGouvAt.toLocaleDateString("fr-FR")}.`,
         );
         router.refresh();
       }
@@ -233,13 +233,18 @@ export function SousTraitantVerifButton({
 
   return (
     <span className="inline-flex flex-col gap-1">
+      {/* Libellé HONNÊTE : le système ne « vérifie » rien (aucun appel data.gouv.fr).
+          Un administrateur ATTESTE avoir consulté la source — l'auteur est tracé
+          dans ActivityLog. Ne jamais réintroduire « vérifié » ici : ce serait
+          affirmer, dans une pièce d'audit, un contrôle qui n'a pas eu lieu. */}
       <button
         type="button"
         onClick={handleVerif}
         disabled={isPending}
         className="admin-button-secondary"
+        title="Enregistre votre attestation de consultation de data.gouv.fr à la date du jour. Joignez une capture datée dans la fiche pour une preuve opposable."
       >
-        {isPending ? "Vérification…" : "Marquer vérifié data.gouv.fr"}
+        {isPending ? "Enregistrement…" : "J'atteste avoir consulté data.gouv.fr"}
       </button>
       {error && (
         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]">

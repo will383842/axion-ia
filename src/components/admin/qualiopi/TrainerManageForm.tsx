@@ -219,7 +219,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
       {/* Vérification sous-traitant */}
       {props.statut === "sous_traitant" && (
         <section className={sectionCls}>
-          <h2 className={titleCls}>Vérification sous-traitant (data.gouv.fr — off.19/27)</h2>
+          <h2 className={titleCls}>Consultation sous-traitant data.gouv.fr (off.19/27)</h2>
           <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Statut actuel :{" "}
             {props.sousTraitantVerifie ? (
@@ -249,7 +249,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
                 )
               }
             >
-              {isPending ? "…" : "Marquer vérifié"}
+              {isPending ? "Enregistrement…" : "J’atteste avoir consulté data.gouv.fr"}
             </button>
           </div>
         </section>
