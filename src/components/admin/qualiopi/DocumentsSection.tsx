@@ -77,6 +77,7 @@ export interface DocumentsSectionProps {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const DOC_LABELS: Record<DocumentType, string> = {
+  cv_formateur: "Fiche formateur (ind. 21)",
   convention: "Convention de formation (L.6353-1)",
   convention_tripartite: "Convention tripartite (OPCO)",
   contrat: "Contrat de formation (L.6353-3, particulier)",

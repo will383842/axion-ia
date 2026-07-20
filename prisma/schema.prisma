@@ -6173,6 +6173,11 @@ enum DocumentType {
   /// missions confiées + clause de vérification de la conformité RNQ du
   /// sous-traitant. Lié au registre `SousTraitant`.
   contrat_sous_traitance
+  /// Fiche formateur versée au dossier de preuves (ind. 21) : parcours,
+  /// compétences et leur adéquation aux formations habilitées. Distincte de
+  /// l'export éphémère de `exports-pdf.ts` — celle-ci est numérotée, hashée et
+  /// conservée, et `Trainer.cvUrl` pointe vers sa route de téléchargement.
+  cv_formateur
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
