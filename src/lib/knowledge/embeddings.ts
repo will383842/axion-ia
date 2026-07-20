@@ -94,13 +94,16 @@ function alertVoyageAuthFailure(status: number, detail: string): void {
   void (async () => {
     try {
       const { sendTelegram } = await import("@/lib/telegram");
+      // 2026-07-20 : rétrogradé INCIDENT → MONITORING. La recherche vectorielle
+      // tombe mais le système continue en recherche lexicale (repli automatique)
+      // → dégradation, pas panne serveur ; « 🔴 Incident » réservé aux vraies pannes.
       await sendTelegram({
-        tag: "INCIDENT",
+        tag: "MONITORING",
         body:
-          `[VOYAGE ${status}] RAG vectoriel KO — ${reason}.\n` +
-          `Le système retombe en recherche FTS (lexicale) : dégradé mais fonctionnel.\n` +
+          `*[⚠️ RECHERCHE VECTORIELLE HORS SERVICE]* Voyage ${status} — ${reason}.\n` +
+          `Repli automatique sur la recherche lexicale : dégradé mais fonctionnel.\n` +
           `Action : vérifier VOYAGE_API_KEY (Coolify web+worker) + crédits sur dash.voyageai.com.\n` +
-          `Détail: ${detail.slice(0, 200)}`,
+          `Détail : ${detail.slice(0, 200)}`,
       });
     } catch {
       // best-effort — l'alerte ne doit jamais casser le pipeline d'embedding.

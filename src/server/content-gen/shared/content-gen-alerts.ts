@@ -167,7 +167,10 @@ export async function alertNewReview(contentType: string, pendingCount: number):
       tag: "AUTO",
       silent: true,
       body:
-        `*[ℹ️ REVIEW]* ${pendingCount} contenu(s) ${contentType} à valider.\n` +
+        // 2026-07-20 : wording corrigé. « à valider » laissait croire à une action
+        // de Will ; en réalité la file `needs_review` est traitée automatiquement
+        // (dédup sémantique + benefit-gate), aucune validation manuelle attendue.
+        `*[ℹ️ REVUE AUTO]* ${pendingCount} contenu(s) « ${contentType} » en revue (traités automatiquement : dédup + qualité).\n` +
         `→ ${adminUrl("/publications-status")}`,
     });
   } catch {
