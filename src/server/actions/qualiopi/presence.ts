@@ -145,13 +145,18 @@ export async function generateSessionCreneauxAction(input: {
 
   if (!trainingSession) return { error: "Session introuvable" };
 
-  const heuresParJour = v.heuresParJour ?? trainingSession.dureeReelleHeures ?? 7;
-
-  // Génération des créneaux via logique pure AGENT A.
+  // Génération des créneaux via logique pure.
+  // ⚠️ `dureeReelleHeures` est la durée TOTALE de la session, PAS une durée
+  // journalière : elle est passée en `dureeTotaleHeures` pour être répartie sur
+  // les jours ouvrés. La passer en `heuresParJour` (bug corrigé) doublait le
+  // dénominateur du taux de présence sur toute session de plus d'un jour.
   const creneaux = genererCreneaux({
     dateDebut: trainingSession.dateDebut,
     dateFin: trainingSession.dateFin,
-    heuresParJour,
+    ...(v.heuresParJour !== undefined ? { heuresParJour: v.heuresParJour } : {}),
+    ...(trainingSession.dureeReelleHeures !== null
+      ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
+      : {}),
   });
 
   if (creneaux.length === 0) return { error: "Aucun créneau généré (dates invalides)" };
