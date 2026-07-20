@@ -913,8 +913,8 @@ export default async function FormationsHub({ params }: Props) {
             </h3>
             <p className="text-fg-soft mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed">
               {isFr
-                ? "Un accompagnement dans la durée, pas une intervention ponctuelle — les résultats se cumulent session après session."
-                : "Long-term support, not a one-off intervention — results compound session after session."}
+                ? "100 % pratique, sur vos propres outils et cas d'usage · prix publics par groupe."
+                : "100% hands-on, on your own tools and use cases · public prices per group."}
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-5">
               {(isFr
