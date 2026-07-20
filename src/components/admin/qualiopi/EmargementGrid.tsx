@@ -70,7 +70,11 @@ function classifierCouleur(taux: number | null): string {
   if (taux === null) return "text-[color:var(--color-admin-fg-muted)]";
   if (taux >= 80) return "text-[color:var(--color-admin-success)]";
   if (taux >= 60) return "text-[color:var(--color-admin-warning)]";
-  return "text-[color:var(--color-admin-error)]";
+  // `--color-admin-destructive` et non `--color-admin-error` : ce dernier n'est
+  // défini nulle part dans admin.css, la déclaration était donc invalide et la
+  // couleur héritée. Le taux le plus critique — celui qui refuse l'attestation —
+  // s'affichait exactement comme un taux normal.
+  return "text-[color:var(--color-admin-destructive)]";
 }
 
 // Clé unique par (enrollmentId, date, demiJournee)
@@ -106,7 +110,35 @@ export function EmargementGrid({
     return m;
   }, [creneaux]);
 
-  const [cells, setCells] = useState<Map<string, CellState>>(initState);
+  /**
+   * SEULES les cellules modifiées et non encore enregistrées sont en état local.
+   *
+   * L'état affiché est DÉRIVÉ au rendu : `overrides.get(k) ?? initState.get(k)`.
+   *
+   * Pourquoi pas un `useState(initState)` comme avant : `useState` ne lit son
+   * argument qu'au PREMIER montage. Après un `router.refresh()` — déclenché ici
+   * même après chaque sauvegarde, et par Next au retour de focus — la grille
+   * affichait indéfiniment son état initial. Invisible tant que l'admin était
+   * seul à écrire, destructeur dès que la présence peut changer ailleurs (import
+   * de relevé, second administrateur, future signature électronique) : la grille
+   * périmée réécrasait ces valeurs à la sauvegarde suivante.
+   *
+   * Pourquoi pas un `useEffect` de resynchronisation : il corrigerait l'affichage
+   * mais DÉTRUIRAIT la saisie en cours — 60 cases cochées effacées par un
+   * rafraîchissement. Et un `setState` dans un effet est refusé par le linter,
+   * à raison : l'état dérivé est la bonne réponse.
+   *
+   * Résultat : le serveur est toujours la source de vérité, sauf sur les cellules
+   * que l'admin vient de toucher.
+   */
+  const [overrides, setOverrides] = useState<Map<string, CellState>>(new Map());
+
+  const cells = useMemo(() => {
+    if (overrides.size === 0) return initState;
+    const merged = new Map(initState);
+    for (const [k, v] of overrides) merged.set(k, v);
+    return merged;
+  }, [initState, overrides]);
 
   // Colonnes = créneaux distincts (date × demiJournee)
   const colonnes = useMemo(() => {
@@ -124,9 +156,10 @@ export function EmargementGrid({
 
   function togglePresent(enrollmentId: string, date: string, dj: DemiJourneeLabel) {
     const k = creneauKey(enrollmentId, date, dj);
-    setCells((prev) => {
+    setOverrides((prev) => {
       const next = new Map(prev);
-      const cur = next.get(k) ?? { present: false, dureeMinutes: "0" };
+      // Valeur courante = override s'il existe, sinon donnée serveur.
+      const cur = prev.get(k) ?? initState.get(k) ?? { present: false, dureeMinutes: "0" };
       next.set(k, { ...cur, present: !cur.present });
       return next;
     });
@@ -134,9 +167,9 @@ export function EmargementGrid({
 
   function setDuree(enrollmentId: string, date: string, dj: DemiJourneeLabel, value: string) {
     const k = creneauKey(enrollmentId, date, dj);
-    setCells((prev) => {
+    setOverrides((prev) => {
       const next = new Map(prev);
-      const cur = next.get(k) ?? { present: false, dureeMinutes: "0" };
+      const cur = prev.get(k) ?? initState.get(k) ?? { present: false, dureeMinutes: "0" };
       next.set(k, { ...cur, dureeMinutes: value });
       return next;
     });
@@ -181,6 +214,10 @@ export function EmargementGrid({
         setError(result.error);
       } else {
         setSuccessMsg(`${result.data.updated} ligne(s) mise(s) à jour.`);
+        // Les modifications sont persistées : elles cessent d'être « locales ».
+        // Sans ce reset, elles resteraient prioritaires sur toute donnée serveur
+        // ultérieure et la grille ne se resynchroniserait plus jamais.
+        setOverrides(new Map());
         router.refresh();
       }
     });
