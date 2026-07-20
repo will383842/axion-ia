@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 const STATUT_LABELS: Record<string, string> = {
   salarie: "Salarié",
   sous_traitant: "Sous-traitant",
+  dirigeant: "Dirigeant-formateur",
 };
 
 interface PageProps {
@@ -42,7 +43,10 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
   const base = `/${locale}/${adminPrefix}/qualiopi/formateurs`;
   const trainers = await listTrainers();
 
-  const salaries = trainers.filter((t) => t.statut === "salarie").length;
+  // « Internes » = salariés + dirigeant-formateur (l'OF anime lui-même).
+  const salaries = trainers.filter(
+    (t) => t.statut === "salarie" || t.statut === "dirigeant",
+  ).length;
   const sousTraitants = trainers.filter((t) => t.statut === "sous_traitant").length;
   const sousTraitantsAVerifier = trainers.filter(
     (t) => t.statut === "sous_traitant" && !t.sousTraitantVerifieAt,
@@ -56,7 +60,7 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Formateurs"
-        description="Salariés et sous-traitants, habilitations par formation, vérification data.gouv.fr (off.6/19)."
+        description="Salariés, dirigeant-formateur et sous-traitants, habilitations par formation, vérification data.gouv.fr (off.6/19)."
       />
 
       <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
@@ -67,7 +71,7 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
         <AdminStatCard label="Total" value={trainers.length} icon={Hash} />
-        <AdminStatCard label="Salariés" value={salaries} icon={Users} />
+        <AdminStatCard label="Internes (salariés/dirigeant)" value={salaries} icon={Users} />
         <AdminStatCard label="Sous-traitants" value={sousTraitants} icon={Handshake} />
         <AdminStatCard
           label="Sous-traitants à vérifier"

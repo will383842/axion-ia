@@ -31,7 +31,7 @@
  */
 
 /** Miroir de l'enum Prisma `TrainerStatut`. */
-export type TrainerStatutValue = "salarie" | "sous_traitant";
+export type TrainerStatutValue = "salarie" | "sous_traitant" | "dirigeant";
 
 /** Miroir de l'enum Prisma `TrainerDocumentType`. */
 export type TrainerDocumentTypeValue =
@@ -97,6 +97,22 @@ const REQUIS_SOUS_TRAITANT: TrainerDocumentTypeValue[] = [
   "kbis_avis_sirene",
   "contrat_sous_traitance",
 ];
+// Dirigeant-formateur (l'OF lui-même) : aucune pièce bloquante. Ni contrat de
+// travail (il n'est pas salarié), ni pièces de sous-traitance (il n'est pas un
+// tiers). Ses compétences se justifient par le CV + diplômes (alerte CV ci-dessous).
+const REQUIS_DIRIGEANT: TrainerDocumentTypeValue[] = [];
+
+/** Pièces bloquantes exigées selon le statut du formateur. */
+function requisPourStatut(statut: TrainerStatutValue): TrainerDocumentTypeValue[] {
+  switch (statut) {
+    case "salarie":
+      return REQUIS_SALARIE;
+    case "sous_traitant":
+      return REQUIS_SOUS_TRAITANT;
+    case "dirigeant":
+      return REQUIS_DIRIGEANT;
+  }
+}
 
 const LIBELLES: Record<TrainerDocumentTypeValue, string> = {
   contrat_travail: "contrat de travail",
@@ -195,7 +211,7 @@ export function evaluerConformiteFormateur(
   const { statut, documents } = input;
   const manquements: Manquement[] = [];
 
-  const requis = statut === "salarie" ? REQUIS_SALARIE : REQUIS_SOUS_TRAITANT;
+  const requis = requisPourStatut(statut);
 
   for (const type of requis) {
     if (trouverValide(documents, type, now) === null) {

@@ -45,6 +45,9 @@ describe("natureLigne", () => {
   it("salarié → ligne analytique (coût indicatif, jamais payée)", () => {
     expect(natureLigne("salarie")).toBe("analytique");
   });
+  it("dirigeant-formateur → ligne analytique (interne, comme un salarié)", () => {
+    expect(natureLigne("dirigeant")).toBe("analytique");
+  });
   it("indépendant → ligne honoraire_du (dû réel, facturable)", () => {
     expect(natureLigne("sous_traitant")).toBe("honoraire_du");
   });

@@ -16,7 +16,7 @@ import {
 
 export interface TrainerManageFormProps {
   trainerId: string;
-  statut: "salarie" | "sous_traitant";
+  statut: "salarie" | "sous_traitant" | "dirigeant";
   actif: boolean;
   sousTraitantVerifie: boolean;
   sousTraitantNda: string | null;

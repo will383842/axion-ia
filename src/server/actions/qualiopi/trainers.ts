@@ -24,7 +24,7 @@ import { getAllRegionSlugs } from "@/content/regions";
 
 type ActionResult<T> = { data: T } | { error: string };
 
-const TRAINER_STATUTS = ["salarie", "sous_traitant"] as const;
+const TRAINER_STATUTS = ["salarie", "sous_traitant", "dirigeant"] as const;
 
 // Région d'intervention : slug parmi les 13 régions FR + 5 DROM (SSOT regions.ts).
 // Phase 2 calendrier (Will 2026-06-10). "" autorisé = non renseigné → null.

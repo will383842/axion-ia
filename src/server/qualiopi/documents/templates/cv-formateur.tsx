@@ -40,7 +40,7 @@ export interface CvFormateurData {
   prenom: string;
   email: string;
   telephone: string;
-  /** "salarie" | "sous_traitant". */
+  /** "salarie" | "sous_traitant" | "dirigeant". */
   statut: string;
   /** Date d'embauche / de début de collaboration formatée (fr-FR) — "" si absente. */
   dateEmbauche: string;
@@ -65,6 +65,7 @@ export interface CvFormateurData {
 const STATUT_LABELS: Record<string, string> = {
   salarie: "Salarié",
   sous_traitant: "Sous-traitant",
+  dirigeant: "Dirigeant-formateur",
 };
 
 // ============================================================
