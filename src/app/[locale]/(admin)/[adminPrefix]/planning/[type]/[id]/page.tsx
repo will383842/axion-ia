@@ -24,6 +24,13 @@ export const dynamic = "force-dynamic";
 
 const TYPES: PlanningEventType[] = ["formation", "coaching"];
 
+// Libellés en minuscules : rendus entre parenthèses après le nom du formateur.
+const STATUT_FORMATEUR_LABELS: Record<string, string> = {
+  salarie: "salarié",
+  sous_traitant: "indépendant",
+  dirigeant: "dirigeant-formateur",
+};
+
 const FINANCEMENT_LABELS: Record<string, string> = {
   direct: "Direct",
   opco: "OPCO",
@@ -191,7 +198,7 @@ export default async function PlanningDetailPage({
             <Line label="Lieu">{e.lieu ?? "— (non renseigné)"}</Line>
             <Line label="Formateur">
               {e.formateur !== null
-                ? `${e.formateur.nomComplet} (${e.formateur.statut === "sous_traitant" ? "indépendant" : "salarié"})`
+                ? `${e.formateur.nomComplet} (${STATUT_FORMATEUR_LABELS[e.formateur.statut] ?? e.formateur.statut})`
                 : "— non assigné"}
             </Line>
             {e.formateur !== null && (

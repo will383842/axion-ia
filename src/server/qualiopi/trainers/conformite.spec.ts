@@ -135,6 +135,41 @@ describe("vigilancePerimee — validité de 6 mois", () => {
   });
 });
 
+describe("evaluerConformiteFormateur — dirigeant", () => {
+  it("aucun document → CONFORME (aucun bloquant), le CV manquant n'est qu'une alerte", () => {
+    const r = evaluerConformiteFormateur(
+      { statut: "dirigeant", documents: [], montantRetenuCents: 0 },
+      NOW,
+    );
+    // Le dirigeant-formateur (l'OF lui-même) n'est bloqué par aucune pièce : ni
+    // contrat de travail, ni pièces de sous-traitance. Seul le CV manque → alerte.
+    expect(r.conforme).toBe(true);
+    expect(r.manquements.every((m) => m.gravite === "alerte")).toBe(true);
+    expect(r.manquements.map((m) => m.code)).toContain("cv_absent");
+  });
+
+  it("CV récent → conforme, aucun manquement", () => {
+    const r = evaluerConformiteFormateur(
+      { statut: "dirigeant", documents: [doc("cv")], montantRetenuCents: 0 },
+      NOW,
+    );
+    expect(r.conforme).toBe(true);
+    expect(r.manquements).toEqual([]);
+  });
+
+  it("n'exige JAMAIS contrat de travail, vigilance URSSAF ni RC pro, même à montant élevé", () => {
+    const r = evaluerConformiteFormateur(
+      { statut: "dirigeant", documents: [doc("cv")], montantRetenuCents: 10_000_000 },
+      NOW,
+    );
+    const types = r.manquements.map((m) => m.type);
+    expect(types).not.toContain("contrat_travail");
+    expect(types).not.toContain("attestation_vigilance_urssaf");
+    expect(types).not.toContain("assurance_rc_pro");
+    expect(r.conforme).toBe(true);
+  });
+});
+
 describe("evaluerConformiteFormateur — salarié", () => {
   it("contrat de travail valide + CV récent → conforme, aucun manquement", () => {
     const r = evaluerConformiteFormateur(

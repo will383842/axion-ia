@@ -26,7 +26,7 @@
  */
 
 /** Miroir de l'enum Prisma `TrainerStatut` (cf. conformite.ts). */
-export type TrainerStatutValue = "salarie" | "sous_traitant";
+export type TrainerStatutValue = "salarie" | "sous_traitant" | "dirigeant";
 
 /** Modèles de rémunération supportés (miroir enum Prisma `CompensationModel`). */
 export type CompensationModel =
@@ -112,7 +112,9 @@ export const MENTIONS_TVA_HONORAIRES: Record<TvaRegimeHonoraires, string> = {
  * pour figer la nature sur la ligne (voir en-tête : pas de reclassement du passé).
  */
 export function natureLigne(statutFormateur: TrainerStatutValue): FeeLineNature {
-  return statutFormateur === "salarie" ? "analytique" : "honoraire_du";
+  // Seul l'indépendant génère des honoraires réellement dus à un tiers. Salarié ET
+  // dirigeant sont internes à l'OF → coût analytique indicatif (paie/rémunération hors module).
+  return statutFormateur === "sous_traitant" ? "honoraire_du" : "analytique";
 }
 
 /* ──────────────────────────────────────────────────────────────────────────────

@@ -132,7 +132,8 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
   const nbHeuresStagiairesFinal = nbHeuresStagiaires + coaching.nbHeuresStagiaires;
 
   const [nbFormateursInternes, nbFormateursExternes, depenses] = await Promise.all([
-    prisma.trainer.count({ where: { statut: "salarie", actif: true } }),
+    // Internes = salariés + dirigeant-formateur (l'OF anime lui-même). Externes = sous-traitants.
+    prisma.trainer.count({ where: { statut: { in: ["salarie", "dirigeant"] }, actif: true } }),
     prisma.trainer.count({ where: { statut: "sous_traitant", actif: true } }),
     listDepenses(annee),
   ]);
@@ -243,7 +244,7 @@ export function bpfToCsv(bpf: BpfResult): string {
   lignes.push(`Mixte;${centimesEnEuros(bpf.caParFinanceur.mixte)}`);
   lignes.push("");
   lignes.push("Formateurs;Nombre");
-  lignes.push(`Formateurs internes (salariés);${bpf.nbFormateursInternes}`);
+  lignes.push(`Formateurs internes (salariés + dirigeant);${bpf.nbFormateursInternes}`);
   lignes.push(`Formateurs externes (sous-traitants);${bpf.nbFormateursExternes}`);
 
   // Section dépenses

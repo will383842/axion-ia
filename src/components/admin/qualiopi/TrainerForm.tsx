@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { createTrainerAction, updateTrainerAction } from "@/server/actions/qualiopi/trainers";
 import { REGIONS } from "@/content/regions";
 
-type Statut = "salarie" | "sous_traitant";
+type Statut = "salarie" | "sous_traitant" | "dirigeant";
 
 export interface TrainerFormProps {
   mode: "create" | "edit";
@@ -183,6 +183,7 @@ export function TrainerForm({
           >
             <option value="salarie">Salarié</option>
             <option value="sous_traitant">Sous-traitant</option>
+            <option value="dirigeant">Dirigeant-formateur</option>
           </select>
         </div>
         <div className={fieldCls}>

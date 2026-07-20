@@ -5221,6 +5221,10 @@ enum TypeActionQualiopi {
 enum TrainerStatut {
   salarie
   sous_traitant
+  // Dirigeant-formateur : l'OF lui-même anime des formations. Ni salarié (pas de
+  // contrat de travail), ni sous-traitant (pas de vigilance URSSAF/RC pro). Compétences
+  // justifiées par CV + diplômes (ind. 21). Compté « interne » au BPF, comme un salarié.
+  dirigeant
 }
 
 /// Pièces justificatives REÇUES d'un formateur (à ne pas confondre avec
