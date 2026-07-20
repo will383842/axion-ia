@@ -125,7 +125,14 @@ export async function generateMetadata({
   params,
 }: Pick<LocaleLayoutProps, "params">): Promise<Metadata> {
   const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) return {};
+  // Locale invalide → la page appellera `notFound()`. On renvoie quand même
+  // `metadataBase` : `src/app/opengraph-image.tsx` est une convention de fichier
+  // RACINE, donc Next injecte son `openGraph.images` dans toutes les routes
+  // descendantes et doit résoudre cette URL même ici. Un `return {}` nu le
+  // forçait à retomber sur `http://localhost:3000` en émettant au runtime :
+  //   ⚠ metadataBase property in metadata export is not set […]
+  // (cf. le même motif dans `src/app/not-found.tsx` et `src/app/maintenance/layout.tsx`).
+  if (!hasLocale(routing.locales, locale)) return { metadataBase: new URL(SITE_URL) };
   const isFr = locale === "fr";
   return {
     metadataBase: new URL(SITE_URL),
