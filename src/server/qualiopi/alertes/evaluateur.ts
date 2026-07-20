@@ -139,31 +139,51 @@ async function regleEmargementManquant(now: Date): Promise<AlerteCandidate[]> {
  * automatique, pour ne pas doublonner avec elle sur un simple décalage de cron.
  */
 async function regleSessionBloqueeEnCours(now: Date): Promise<AlerteCandidate[]> {
-  const threshold = daysAgo(3, now);
   const sessions = await prisma.trainingSession.findMany({
     where: {
       statut: "en_cours",
-      dateFin: { lte: threshold },
+      // Fenêtre GLISSANTE, pas seulement un plancher : sans borne haute, le
+      // premier passage du cron remonterait d'un coup TOUTES les sessions jamais
+      // clôturées depuis la mise en service — une salve d'alertes critiques qui
+      // noierait les vraies (chaque alerte critique déclenche un e-mail).
+      dateFin: { lte: daysAgo(3, now), gte: daysAgo(365, now) },
+      // Le motif est VÉRIFIÉ, pas supposé : aucun inscrit ne porte de trace de
+      // présence. Sans cette clause, une session restée « en cours » pour une
+      // autre raison (clôture refusée sur le financement, dateFin non mise à
+      // jour, session de démo) déclencherait une alerte qui MENT sur son
+      // diagnostic, et l'administrateur chercherait un émargement qui existe.
+      enrollments: {
+        none: {
+          OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
+        },
+      },
+      // ⚠️ Une session SANS AUCUN inscrit satisfait aussi `enrollments: { none }`.
+      // Elle n'a pourtant rien à émarger — le worker la clôture sans garde.
+      // Prisma ne sait pas filtrer sur un `_count` dans le `where` : le tri se
+      // fait après lecture (voir le `.filter` ci-dessous), sinon le message
+      // afficherait « aucun émargement pour ses 0 inscrit(s) ».
     },
     select: {
       id: true,
       numero: true,
-      dateFin: true,
       _count: { select: { enrollments: true } },
     },
+    take: 50,
   });
 
-  return sessions.map((s) => ({
-    code: "session_bloquee_en_cours",
-    niveau: "critique" as AlerteNiveau,
-    titre: "Session non clôturée faute d'émargement",
-    message:
-      `La session ${s.numero} est terminée depuis plus de 72 h mais reste « en cours » : ` +
-      `aucun émargement n'a été saisi pour ses ${s._count.enrollments} inscrit(s). ` +
-      `Tant qu'elle n'est pas clôturée, elle n'alimente ni le BPF, ni les attestations, ni les indicateurs.`,
-    cibleType: "TrainingSession",
-    cibleId: s.id,
-  }));
+  return sessions
+    .filter((s) => s._count.enrollments > 0)
+    .map((s) => ({
+      code: "session_bloquee_en_cours",
+      niveau: "critique" as AlerteNiveau,
+      titre: "Session non clôturée faute d'émargement",
+      message:
+        `La session ${s.numero} est terminée depuis plus de 72 h mais reste « en cours » : ` +
+        `aucun de ses ${s._count.enrollments} inscrit(s) ne porte de trace de présence. ` +
+        `Tant qu'elle n'est pas clôturée, elle n'alimente ni le BPF, ni les attestations, ni les indicateurs.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    }));
 }
 
 /** R03bis — Session sans formateur : démarre sous 7 jours, aucun formateur principal assigné. */

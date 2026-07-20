@@ -230,7 +230,7 @@ describe("genererCreneaux — jours ouvrés", () => {
     expect(result).toHaveLength(4);
   });
 
-  it("BORNES week-end conservées : samedi → mardi = 4 jours", () => {
+  it("BORNES week-end conservées : samedi → mardi = 3 jours (dimanche intérieur filtré)", () => {
     const result = genererCreneaux({
       dateDebut: new Date("2026-06-13T08:00:00Z"), // samedi (borne)
       dateFin: new Date("2026-06-16T18:00:00Z"), // mardi (borne)

@@ -262,7 +262,7 @@ export async function saveEmargementAction(input: {
           demiJournee: toDemiJourneeEnum(entry.demiJournee),
         },
       },
-      select: { id: true, dureePrevueMinutes: true },
+      select: { id: true, dureePrevueMinutes: true, source: true, libelle: true },
     });
 
     // Durée réalisée : si présent et non fournie → dureePrevue du créneau.
@@ -271,8 +271,19 @@ export async function saveEmargementAction(input: {
       dureeRealiseeMinutes = existingCreneau?.dureePrevueMinutes ?? 0;
     }
 
-    // libelle reconstruit pour l'upsert.
-    const libelle = `${entry.date} ${entry.demiJournee === "apres_midi" ? "après-midi" : entry.demiJournee}`;
+    // ⚠️ La PROVENANCE d'un créneau importé ne doit jamais être réécrite.
+    // La grille reçoit TOUS les créneaux de la session, y compris ceux issus d'un
+    // relevé Zoom/Teams/Meet. Un simple clic « Enregistrer », même sans rien
+    // modifier, transformait `import_zoom` en `emargement_presentiel` sur des
+    // enregistrements à valeur probante — et remplaçait leur libellé horodaté.
+    // Le PDF de relevé de connexion et le dossier d'audit lisent ce champ.
+    const sourceImportee = existingCreneau?.source?.startsWith("import_") === true;
+    const source = sourceImportee
+      ? (existingCreneau?.source as "import_zoom" | "import_teams" | "import_meet")
+      : "emargement_presentiel";
+    const libelle = sourceImportee
+      ? (existingCreneau?.libelle ?? "")
+      : `${entry.date} ${entry.demiJournee === "apres_midi" ? "après-midi" : entry.demiJournee}`;
 
     await upsertCreneau({
       enrollmentId: entry.enrollmentId,
@@ -280,7 +291,7 @@ export async function saveEmargementAction(input: {
       demiJournee: toDemiJourneeEnum(entry.demiJournee),
       libelle,
       dureePrevueMinutes: existingCreneau?.dureePrevueMinutes ?? dureeRealiseeMinutes,
-      source: "emargement_presentiel",
+      source,
       present: entry.present,
       dureeRealiseeMinutes,
     });
@@ -431,35 +442,64 @@ export async function importReleveConnexionAction(input: {
   const dureePrevueMinutes =
     creneauxSession.length > 0 ? (creneauxSession[0]?.dureePrevueMinutes ?? 210) * 2 : 7 * 60;
 
-  // 7. Création des créneaux distanciels pour les participants matchés.
-  //
-  // La date vient de l'heure de CONNEXION réelle du participant, pas de
-  // `dateDebut` : sur une session multi-jours, chaque relevé se rattache ainsi au
-  // bon jour. Repli sur `dateDebut` si la plateforme n'a pas fourni d'horodatage.
-  const matchedEnrollmentIds = new Set<string>();
+  // Bornes civiles de la session, pour ne jamais dater un créneau hors plage.
+  const isoDebutSession = parisDateISO(trainingSession.dateDebut);
+  const isoFinSession = parisDateISO(trainingSession.dateFin);
 
-  for (const { enrollmentId, participant } of matched) {
-    const dateCivile = parisDateISO(participant.joinAt ?? trainingSession.dateDebut);
+  // 7. Création des créneaux distanciels.
+  //
+  // ⚠️ DEUX RÈGLES NON NÉGOCIABLES, chacune corrigeant une manière de FAUSSER le
+  // taux de présence — et donc l'attestation :
+  //
+  // (a) On crée un créneau pour TOUS les inscrits actifs, pas seulement pour ceux
+  //     retrouvés dans le relevé. Ne créer que les présents retirait les absents
+  //     du DÉNOMINATEUR : un stagiaire venu 1 jour sur 2 obtenait 100 % au lieu
+  //     de 50 %, donc une attestation complète au lieu de partielle. Surévaluer la
+  //     présence est bien plus grave que la sous-évaluer : c'est ce qu'un contrôle
+  //     de service fait sanctionne.
+  //
+  // (b) Le réalisé est PLAFONNÉ au prévu. Les parseurs agrègent un participant sur
+  //     toute la plage du fichier (cf. `parse-zoom.ts`) : un export couvrant 2 jours
+  //     produisait 840 min réalisées pour 420 prévues, soit un taux de 200 % écrit
+  //     en base. `computeTauxPresence` n'a aucun plafond.
+  //
+  // La date vient de l'heure de connexion réelle, bornée à la plage de la session :
+  // une connexion de test la veille, un fuseau mal parsé ou un CSV d'une autre
+  // réunion créeraient sinon un créneau HORS session que `recomputeTauxPresence`
+  // compterait quand même (il lit tous les créneaux de l'inscription, sans filtre
+  // de date) — et qu'aucune UI ne permet de supprimer.
+  const enrollmentIdsTouches = new Set<string>();
+  const matchedById = new Map(matched.map((m) => [m.enrollmentId, m.participant]));
+
+  for (const enrollment of trainingSession.enrollments) {
+    const participant = matchedById.get(enrollment.id);
+
+    const isoBrut = parisDateISO(participant?.joinAt ?? trainingSession.dateDebut);
+    const dateCivile =
+      isoBrut < isoDebutSession || isoBrut > isoFinSession ? isoDebutSession : isoBrut;
     const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
 
+    const realiseeBrut = participant?.dureeMinutes ?? 0;
+    const dureeRealiseeMinutes = Math.min(realiseeBrut, dureePrevueMinutes);
+
     await upsertCreneau({
-      enrollmentId,
+      enrollmentId: enrollment.id,
       date: dateObj,
       demiJournee: "journee",
       libelle: `${dateCivile} journée`,
       dureePrevueMinutes,
       source: toPresenceSource(v.plateforme),
       present: false, // sera mis à jour par recomputeTauxPresence
-      dureeRealiseeMinutes: participant.dureeMinutes,
-      ...(participant.joinAt !== null ? { heureConnexion: participant.joinAt } : {}),
-      ...(participant.leaveAt !== null ? { heureDeconnexion: participant.leaveAt } : {}),
+      dureeRealiseeMinutes,
+      ...(participant?.joinAt != null ? { heureConnexion: participant.joinAt } : {}),
+      ...(participant?.leaveAt != null ? { heureDeconnexion: participant.leaveAt } : {}),
       importId: releveImport.id,
     });
-    matchedEnrollmentIds.add(enrollmentId);
+    enrollmentIdsTouches.add(enrollment.id);
   }
 
   // 8. Recompute taux pour les enrollments touchés.
-  for (const enrollmentId of matchedEnrollmentIds) {
+  for (const enrollmentId of enrollmentIdsTouches) {
     await recomputeTauxPresence(enrollmentId);
   }
 

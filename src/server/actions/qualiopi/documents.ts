@@ -1689,21 +1689,68 @@ export async function verserFicheFormateurAction(input: {
 
   const identite = await getOrganismeIdentite();
   const maintenant = new Date();
-  const data = buildCvFormateurData(trainer, titresHabilitations, maintenant);
 
-  const doc = await generateDocument({
-    type: "cv_formateur",
-    buildElement: () => React.createElement(CvFormateurPdf, { data, identite }),
-    identite,
+  // `cvJoint` = un CV SOURCE est-il versé au dossier du formateur ?
+  // Surtout PAS `trainer.cvUrl != null` : au premier versement ce champ est encore
+  // nul, la fiche imprimerait donc « CV non joint »… alors qu'elle EST la pièce,
+  // et `cvUrl` pointera vers elle une seconde plus tard. Le même document
+  // affirmerait deux choses opposées selon l'ordre des clics.
+  const nbCvSource = await prisma.trainerDocument.count({
+    where: { trainerId, type: "cv", statutValidation: "valide" },
   });
+  const data = {
+    ...buildCvFormateurData(trainer, titresHabilitations, maintenant),
+    cvJoint: nbCvSource > 0,
+  };
+
+  let doc: { id: string; numero: string };
+  try {
+    doc = await generateDocument({
+      type: "cv_formateur",
+      buildElement: () => React.createElement(CvFormateurPdf, { data, identite }),
+      identite,
+    });
+  } catch (err) {
+    // `generateDocument` peut lever : identité d'organisme incomplète, échec de
+    // rendu react-pdf, R2 indisponible. Sans ce filet, l'exception remontait
+    // brute au client React et l'admin voyait une erreur générique au lieu de
+    // la cause — alors que toutes les autres actions du fichier retournent
+    // `{ error }`.
+    return {
+      error:
+        err instanceof Error
+          ? `Génération de la fiche impossible : ${err.message}`
+          : "Génération de la fiche impossible.",
+    };
+  }
 
   // Fermeture de la boucle ind. 21 : `cvUrl` pointe vers la route stable de
   // téléchargement du document (signature R2 à la demande), et non vers une URL
   // signée qui expirerait, ni vers une clé R2 brute illisible au manifeste d'audit.
-  await prisma.trainer.update({
-    where: { id: trainerId },
-    data: { cvUrl: `/api/qualiopi/documents/${doc.id}`, cvUploadedAt: maintenant },
-  });
+  //
+  // URL ABSOLUE : `updateTrainerSchema` valide `cvUrl` en `z.string().url()`, et
+  // le manifeste d'audit imprime cette valeur telle quelle pour l'auditeur — un
+  // chemin relatif y serait non résolvable.
+  const baseUrl = (process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com").replace(
+    /\/+$/,
+    "",
+  );
+  try {
+    await prisma.trainer.update({
+      where: { id: trainerId },
+      data: {
+        cvUrl: `${baseUrl}/api/qualiopi/documents/${doc.id}`,
+        cvUploadedAt: maintenant,
+      },
+    });
+  } catch {
+    // Le document EXISTE désormais au dossier (numéro consommé, PDF conservé)
+    // mais la boucle n'est pas fermée : l'indicateur 21 restera non couvert.
+    // On le dit explicitement plutôt que de laisser croire à un succès.
+    return {
+      error: `Fiche générée (${doc.numero}) mais le formateur n'a pas pu être mis à jour. Relancez le versement.`,
+    };
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.formateur.fiche.versee",
