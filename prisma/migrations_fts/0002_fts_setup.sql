@@ -62,8 +62,14 @@ CREATE INDEX IF NOT EXISTS case_study_translations_search_idx
 CREATE INDEX IF NOT EXISTS submissions_email_trgm_idx
   ON submissions USING GIN (contact_email gin_trgm_ops);
 
-CREATE INDEX IF NOT EXISTS testimonials_company_trgm_idx
-  ON testimonials USING GIN (company gin_trgm_ops);
+-- NOTE (2026-07-20) : l'index trgm sur `testimonials` a été RETIRÉ d'ici.
+-- La table a été supprimée par la migration `20260706160000_drop_testimonials`
+-- (le modèle a été remplacé par `customer_reviews`). Le `CREATE INDEX` résiduel
+-- faisait échouer ce fichier à CHAQUE boot depuis le 2026-07-06 :
+--   Error: P1014 — The underlying table for model `testimonials` does not exist.
+-- L'échec était non-fatal (l'entrypoint logge un WARNING et continue), mais il
+-- interrompait le fichier : tout statement placé APRÈS ne s'appliquait plus.
+-- Ne pas réintroduire sans recréer la table.
 
 CREATE INDEX IF NOT EXISTS bookings_options_email_trgm_idx
   ON bookings_options USING GIN (contact_email gin_trgm_ops);
