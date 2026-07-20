@@ -85,7 +85,9 @@ export function TrainerForm({
           nom,
           prenom,
           email,
-          statut,
+          // `statut` VOLONTAIREMENT absent : il n'est plus éditable ici (cf. le
+          // commentaire du champ). L'envoyer réverterait la valeur choisie dans
+          // TrainerManageForm, dont ce composant ignore la mise à jour.
           region,
           ...(telephone ? { telephone } : {}),
           ...(tarifCents !== undefined && !Number.isNaN(tarifCents)
@@ -170,22 +172,31 @@ export function TrainerForm({
             className={inputCls}
           />
         </div>
-        <div className={fieldCls}>
-          <label className={labelCls} htmlFor="t-statut">
-            Statut
-          </label>
-          <select
-            id="t-statut"
-            value={statut}
-            onChange={(e) => setStatut(e.target.value as Statut)}
-            disabled={isPending}
-            className={inputCls}
-          >
-            <option value="salarie">Salarié</option>
-            <option value="sous_traitant">Sous-traitant</option>
-            <option value="dirigeant">Dirigeant-formateur</option>
-          </select>
-        </div>
+        {/* Statut : réglable À LA CRÉATION uniquement. Après création, il se
+            modifie depuis la section « Statut » de TrainerManageForm, qui
+            explique l'effet du choix sur les pièces exigées.
+            ⚠️ NE PAS le réintroduire ici : ce composant fige son état au montage
+            (`useState`), donc deux sélecteurs sur la même page se désynchronisent
+            après un `router.refresh()` et l'enregistrement de l'identité
+            REVERTAIT silencieusement le statut choisi ailleurs. */}
+        {mode === "create" && (
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="t-statut">
+              Statut
+            </label>
+            <select
+              id="t-statut"
+              value={statut}
+              onChange={(e) => setStatut(e.target.value as Statut)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              <option value="salarie">Salarié</option>
+              <option value="sous_traitant">Sous-traitant</option>
+              <option value="dirigeant">Dirigeant-formateur</option>
+            </select>
+          </div>
+        )}
         <div className={fieldCls}>
           <label className={labelCls} htmlFor="t-region">
             Région d&apos;intervention

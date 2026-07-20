@@ -12,6 +12,9 @@ import { parisDateISO, parisDateLabel } from "./time";
 /** Durée journalière par défaut en heures (7 h de formation = 420 min/jour). */
 const HEURES_PAR_JOUR_DEFAUT = 7;
 
+/** Plafond horaire journalier — miroir de la borne Zod de `generateSessionCreneauxSchema`. */
+const HEURES_PAR_JOUR_MAX = 12;
+
 /**
  * Génère la liste des créneaux planifiés pour une session.
  *
@@ -21,14 +24,15 @@ const HEURES_PAR_JOUR_DEFAUT = 7;
  * - Les dates sont calculées en fuseau Europe/Paris pour éviter les décalages
  *   DST autour de minuit UTC.
  *
- * Samedis et dimanches sont exclus par défaut : une session du vendredi au lundi
- * représente 2 jours de formation, pas 4. Sans ce filtre, les créneaux du week-end
- * — jamais cochés — divisaient le taux de présence et déclenchaient des
+ * Les samedis et dimanches **traversés** sont exclus : une session du vendredi au
+ * lundi représente 2 jours de formation, pas 4. Sans ce filtre, les créneaux du
+ * week-end — jamais cochés — divisaient le taux de présence et déclenchaient des
  * attestations « partielles » à tort (seuils 80 % / 60 %, cf. `taux.ts`).
  *
- * Garde-fou : si le filtrage ne laisse AUCUN jour alors que la plage en contenait,
- * c'est que la session se tient volontairement un week-end. On retourne alors la
- * plage complète plutôt que zéro créneau (cf. `inclureWeekends` pour forcer).
+ * Les BORNES sont en revanche toujours conservées, même en week-end : une session
+ * qui commence ou finit un samedi le fait délibérément, et supprimer ces jours
+ * rendrait la présence impossible à prouver sur des journées réellement animées.
+ * `inclureWeekends` force la conservation de toute la plage.
  *
  * Durée : `heuresParJour` prime ; sinon `dureeTotaleHeures` est **répartie sur les
  * jours retenus** ; sinon 7 h/jour. ⚠️ Ne JAMAIS passer une durée totale de session
@@ -115,25 +119,45 @@ function resoudreHeuresParJour(input: {
 }): number {
   if (input.heuresParJour !== undefined) return input.heuresParJour;
   if (input.dureeTotaleHeures !== undefined && input.dureeTotaleHeures > 0 && input.nbJours > 0) {
-    return input.dureeTotaleHeures / input.nbJours;
+    // Plafonné comme l'entrée explicite (`generateSessionCreneauxSchema` borne
+    // `heuresParJour` à 12) : une durée totale saisie sur une plage de dates trop
+    // courte produirait sinon des demi-journées de 10 h et plus sur la feuille
+    // d'émargement — un document à valeur probante ne doit pas afficher ça.
+    return Math.min(input.dureeTotaleHeures / input.nbJours, HEURES_PAR_JOUR_MAX);
   }
   return HEURES_PAR_JOUR_DEFAUT;
 }
 
+/** Vrai pour un samedi ou un dimanche (UTC — la conversion Paris est faite en amont). */
+function estWeekend(iso: string): boolean {
+  const jour = new Date(`${iso}T00:00:00Z`).getUTCDay();
+  return jour === 0 || jour === 6; // 0 = dimanche, 6 = samedi
+}
+
 /**
- * Retire les samedis et dimanches.
+ * Retire les samedis et dimanches **intérieurs** à la plage.
  *
- * Si le filtrage ne laisse rien alors que la plage n'était pas vide, la session
- * se tient entièrement le week-end (cas volontaire : formation samedi). On rend
- * alors la plage intacte — mieux vaut des créneaux week-end assumés que zéro
- * créneau, qui bloquerait l'émargement et la clôture de la session.
+ * Les BORNES sont toujours conservées : `dateDebut` et `dateFin` sont saisies
+ * explicitement par un humain, donc une session qui commence ou finit un samedi
+ * le fait délibérément. Seuls les week-ends *traversés* sont des artefacts de
+ * calendrier — une session du vendredi au lundi représente 2 jours de formation,
+ * pas 4.
+ *
+ * Ce compromis évite les deux défaillances symétriques :
+ *   - filtrer aveuglément supprimerait des journées RÉELLEMENT animées, rendant
+ *     leur présence impossible à prouver (trou de preuve, ind. 12) ;
+ *   - ne rien filtrer laisserait des créneaux jamais cochés diviser le taux de
+ *     présence et déclencher des attestations « partielles » à tort.
+ *
+ * ⚠️ Aucune règle ne peut deviner de façon fiable si un week-end traversé est
+ * travaillé. En cas de doute, l'appelant dispose de `inclureWeekends`.
  */
 function filtrerJoursOuvres(jours: string[]): string[] {
-  const ouvres = jours.filter((iso) => {
-    const jour = new Date(`${iso}T00:00:00Z`).getUTCDay();
-    return jour !== 0 && jour !== 6; // 0 = dimanche, 6 = samedi
-  });
-  return ouvres.length === 0 ? jours : ouvres;
+  if (jours.length <= 2) return jours; // que des bornes : rien à filtrer
+  const premier = jours[0] as string;
+  const dernier = jours[jours.length - 1] as string;
+  const interieurs = jours.slice(1, -1).filter((iso) => !estWeekend(iso));
+  return [premier, ...interieurs, dernier];
 }
 
 /**

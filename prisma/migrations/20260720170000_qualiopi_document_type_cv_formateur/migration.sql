@@ -24,4 +24,4 @@
 -- `ADD VALUE` est autorisé en transaction depuis PG 12 (prod = PG 16.13) tant que
 -- la valeur n'est PAS consommée dans cette même migration — ce qui est le cas ici.
 
-ALTER TYPE "DocumentType" ADD VALUE 'cv_formateur';
+ALTER TYPE "DocumentType" ADD VALUE IF NOT EXISTS 'cv_formateur';

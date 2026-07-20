@@ -21,6 +21,17 @@ const STATUT_LABELS: Record<TrainerStatut, string> = {
   sous_traitant: "Sous-traitant",
 };
 
+/**
+ * Conséquence documentaire de chaque statut, annoncée AVANT enregistrement.
+ * Miroir de `requisPourStatut` (`src/server/qualiopi/trainers/conformite.ts`) :
+ * à mettre à jour si les pièces bloquantes y changent.
+ */
+const CONSEQUENCE_STATUT: Record<TrainerStatut, string> = {
+  dirigeant: "aucune pièce ne sera plus bloquante pour ce formateur.",
+  salarie: "un contrat de travail validé sera exigé.",
+  sous_traitant: "un NDA, un Kbis et un contrat de sous-traitance validés seront exigés.",
+};
+
 type TrainerStatut = "salarie" | "sous_traitant" | "dirigeant";
 
 export interface TrainerManageFormProps {
@@ -79,7 +90,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
       {error && (
         <p
           role="alert"
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          className="rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-destructive-soft)] p-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-destructive-fg)]"
         >
           {error}
         </p>
@@ -93,21 +104,28 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
         </p>
       )}
 
-      {/* Statut — modifiable après création (le statut conditionne les pièces
-          documentaires bloquantes : contrat de travail pour un salarié, NDA +
-          Kbis + contrat de sous-traitance pour un sous-traitant, aucune pour un
-          dirigeant-formateur). Absent jusqu'ici : le statut n'était réglable
-          qu'à la création, ce qui laissait toute fiche existante bloquée. */}
-      <section className={sectionCls}>
+      {/* Statut — SEUL point de modification après création.
+          Le champ existe aussi dans TrainerForm, mais uniquement en mode
+          création : deux sélecteurs sur la même page se désynchronisent après un
+          `router.refresh()` (chacun fige son état au montage via `useState`), et
+          enregistrer l'identité RÉVERTAIT silencieusement le statut choisi ici.
+          Placé en tête du formulaire car il conditionne les pièces exigées, donc
+          le contenu de la carte de conformité en haut de page. */}
+      <section id="statut-formateur" className={sectionCls}>
         <h2 className={titleCls}>Statut</h2>
-        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        <p
+          id="statut-aide"
+          className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+        >
           Détermine les pièces exigées pour la conformité (ind. 21/27). Le dirigeant-formateur est
           l&apos;organisme lui-même : ni salarié, ni sous-traitant.
         </p>
         <div className="flex flex-wrap items-end gap-[var(--space-admin-3)]">
-          <label className="flex flex-col gap-[var(--space-admin-1)]">
+          <label className="flex flex-col gap-[var(--space-admin-1)]" htmlFor="statut-select">
             <span className="admin-label">Statut du formateur</span>
             <select
+              id="statut-select"
+              aria-describedby="statut-aide"
               value={statut}
               onChange={(e) => setStatut(e.target.value as TrainerStatut)}
               disabled={isPending}
@@ -123,14 +141,29 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
           <button
             type="button"
             disabled={isPending || statut === props.statut}
-            className="admin-button"
+            aria-busy={isPending}
+            {...(statut === props.statut && !isPending
+              ? { title: "Choisissez un autre statut pour activer ce bouton" }
+              : {})}
+            className="admin-button w-auto"
             onClick={() =>
-              run(() => updateTrainerAction({ id: props.trainerId, statut }), "Statut enregistré.")
+              run(
+                () => updateTrainerAction({ id: props.trainerId, statut }),
+                `Statut enregistré : ${STATUT_LABELS[statut]}. Conformité recalculée — voir la carte en haut de page.`,
+              )
             }
           >
-            {isPending ? "…" : "Enregistrer le statut"}
+            {isPending ? "Enregistrement…" : "Enregistrer le statut"}
           </button>
         </div>
+        {statut !== props.statut && (
+          <p
+            role="status"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            En enregistrant : {CONSEQUENCE_STATUT[statut]}
+          </p>
+        )}
       </section>
 
       {/* Habilitations */}

@@ -197,29 +197,84 @@ describe("genererCreneaux — jours ouvrés", () => {
     expect(new Set(dates)).toEqual(new Set(["2026-06-12", "2026-06-15"]));
   });
 
-  it("semaine complète lundi → dimanche = 5 jours ouvrés (10 créneaux)", () => {
+  it("lundi → vendredi = 5 jours, aucun week-end traversé", () => {
     const result = genererCreneaux({
       dateDebut: new Date("2026-06-08T08:00:00Z"), // lundi
-      dateFin: new Date("2026-06-14T18:00:00Z"), // dimanche
+      dateFin: new Date("2026-06-12T18:00:00Z"), // vendredi
     });
     expect(result).toHaveLength(10);
   });
 
-  it("garde-fou : session entièrement le week-end → créneaux conservés", () => {
+  it("lundi → dimanche : le dimanche est une BORNE, donc conservé", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-08T08:00:00Z"), // lundi
+      dateFin: new Date("2026-06-14T18:00:00Z"), // dimanche (borne)
+    });
+    // lun→ven (5 j) + dimanche borne = 6 j. Le samedi, lui, est intérieur → filtré.
+    const dates = [...new Set(result.map((c) => c.date))];
+    expect(dates).toContain("2026-06-14"); // dimanche borne conservé
+    expect(dates).not.toContain("2026-06-13"); // samedi intérieur filtré
+    expect(result).toHaveLength(12);
+  });
+
+  it("BORNE samedi conservée : samedi → lundi garde le samedi", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-13T08:00:00Z"), // samedi (borne)
+      dateFin: new Date("2026-06-15T18:00:00Z"), // lundi (borne)
+    });
+    // Un filtrage aveugle ne garderait que le lundi : le samedi, jour de début
+    // explicitement saisi, deviendrait inémargeable (trou de preuve, ind. 12).
+    // Le dimanche, lui, est intérieur → traité comme non travaillé.
+    const dates = [...new Set(result.map((c) => c.date))];
+    expect(dates).toEqual(["2026-06-13", "2026-06-15"]);
+    expect(result).toHaveLength(4);
+  });
+
+  it("BORNES week-end conservées : samedi → mardi = 4 jours", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-13T08:00:00Z"), // samedi (borne)
+      dateFin: new Date("2026-06-16T18:00:00Z"), // mardi (borne)
+    });
+    // Dimanche intérieur → filtré ; samedi borne → conservé.
+    const dates = [...new Set(result.map((c) => c.date))];
+    expect(dates).toEqual(["2026-06-13", "2026-06-15", "2026-06-16"]);
+  });
+
+  it("session entièrement le week-end → créneaux conservés", () => {
     const result = genererCreneaux({
       dateDebut: new Date("2026-06-13T08:00:00Z"), // samedi
       dateFin: new Date("2026-06-14T18:00:00Z"), // dimanche
     });
-    // Filtrer produirait 0 créneau → session inémargeable et non clôturable.
     expect(result).toHaveLength(4);
     expect(result.map((c) => c.date)).toContain("2026-06-13");
   });
 
-  it("garde-fou : samedi seul → 2 créneaux", () => {
+  it("samedi seul → 2 créneaux", () => {
     const d = new Date("2026-06-13T09:00:00Z"); // samedi
     const result = genererCreneaux({ dateDebut: d, dateFin: d });
     expect(result).toHaveLength(2);
     expect(result[0]?.date).toBe("2026-06-13");
+  });
+
+  it("plafond : durée totale sur trop peu de jours ne produit pas de demi-journée absurde", () => {
+    // 21 h sur samedi→lundi. Sans plafond, un filtrage agressif donnait
+    // 21 h/jour → 630 min par demi-journée sur la feuille d'émargement.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-13T08:00:00Z"), // samedi
+      dateFin: new Date("2026-06-15T18:00:00Z"), // lundi
+      dureeTotaleHeures: 21,
+    });
+    expect(result).toHaveLength(4); // samedi (borne) + lundi (borne)
+    expect(result[0]?.dureePrevueMinutes).toBe(315); // 21 h / 2 j = 10,5 h/jour
+    for (const c of result) {
+      expect(c.dureePrevueMinutes).toBeLessThanOrEqual(12 * 30); // ≤ 12 h/jour
+    }
+  });
+
+  it("plafond : 40 h sur une seule journée est borné à 12 h/jour", () => {
+    const d = new Date("2026-06-10T09:00:00Z"); // mercredi
+    const result = genererCreneaux({ dateDebut: d, dateFin: d, dureeTotaleHeures: 40 });
+    expect(result[0]?.dureePrevueMinutes).toBe(360); // 12 h/jour ÷ 2
   });
 
   it("inclureWeekends: true → week-ends conservés", () => {

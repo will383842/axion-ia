@@ -124,7 +124,7 @@ const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   20: [],
 
   // C5 — Qualification
-  21: ["lettre_mission"],
+  21: ["lettre_mission", "cv_formateur"],
   22: [],
 
   // C6 — Environnement

@@ -21,7 +21,10 @@ import type {
 
 /** Formate une date en fr-FR, chaîne vide si absente. */
 export function formatDateFr(d: Date | null | undefined): string {
-  return d ? d.toLocaleDateString("fr-FR") : "";
+  // Une Date invalide est *truthy* : sans ce garde, `new Date("15/01/2026")`
+  // imprimerait littéralement « Invalid Date » dans une pièce d'audit.
+  if (!d || Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("fr-FR");
 }
 
 /**
