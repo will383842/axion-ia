@@ -63,6 +63,12 @@ vi.mock("@/server/qualiopi/presence/presence-service", () => ({
   recomputeTauxPresence: vi.fn().mockResolvedValue(85),
 }));
 
+vi.mock("@/server/qualiopi/indicateurs/service", () => ({
+  // Le cache indicateurs dérive de tauxPresencePct : toute mutation de présence
+  // doit l'invalider, sinon le taux de complétion reste faux jusqu'à 1 h.
+  invalidateIndicateursCache: vi.fn(),
+}));
+
 vi.mock("@/server/qualiopi/documents/render", () => ({
   storeAndSignCsv: vi.fn().mockResolvedValue(null),
 }));
@@ -78,6 +84,7 @@ import { parseReleveConnexion } from "@/server/qualiopi/presence/parse-releve";
 import { matchParticipants } from "@/server/qualiopi/presence/match";
 import { upsertCreneau, recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
 import { storeAndSignCsv } from "@/server/qualiopi/documents/render";
+import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 
 import {
   generateSessionCreneauxAction,
@@ -105,6 +112,7 @@ const mockMatchParticipants = matchParticipants as ReturnType<typeof vi.fn>;
 const mockUpsertCreneau = upsertCreneau as ReturnType<typeof vi.fn>;
 const mockRecompute = recomputeTauxPresence as ReturnType<typeof vi.fn>;
 const mockStoreAndSignCsv = storeAndSignCsv as ReturnType<typeof vi.fn>;
+const mockInvalidateCache = invalidateIndicateursCache as ReturnType<typeof vi.fn>;
 
 /** Session de base pour les tests */
 function makeSession(overrides = {}) {
@@ -266,8 +274,16 @@ describe("saveEmargementAction", () => {
     vi.clearAllMocks();
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
     mockLogActivity.mockResolvedValue(undefined);
-    mockPrisma.trainingSession.findUnique.mockResolvedValue({ id: "session-test-id" });
-    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({ id: "c1", dureePrevueMinutes: 210 });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue({
+      id: "session-test-id",
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+    });
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      enrollmentId: "enr-1",
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
+    });
     mockUpsertCreneau.mockResolvedValue("upserted-id");
     mockRecompute.mockResolvedValue(85);
     mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 1 });
@@ -285,7 +301,12 @@ describe("saveEmargementAction", () => {
   });
 
   it("utilise dureePrevueMinutes si present=true et dureeRealiseeMinutes absent", async () => {
-    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({ id: "c1", dureePrevueMinutes: 210 });
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      enrollmentId: "enr-1",
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
+    });
 
     const { dureeRealiseeMinutes: _omit, ...entryWithoutDuree } = validEntry;
     await saveEmargementAction({
@@ -315,6 +336,31 @@ describe("saveEmargementAction", () => {
 
     // 2 enrollments différents → 2 appels recompute
     expect(mockRecompute).toHaveBeenCalledTimes(2);
+  });
+
+  it("invalide le cache indicateurs UNE SEULE FOIS, sur l'année de la session", async () => {
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [
+        {
+          enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
+          date: "2026-06-10",
+          demiJournee: "matin",
+          present: true,
+        },
+        {
+          enrollmentId: "550e8400-e29b-41d4-a716-446655440002",
+          date: "2026-06-10",
+          demiJournee: "matin",
+          present: true,
+        },
+      ],
+    });
+    // Sans invalidation, le taux de complétion resterait faux jusqu'à 1 h
+    // (TTL Redis). Et un appel PAR enrollment déclencherait autant de
+    // `redis.keys()`, bloquant O(N) sur un Redis partagé avec BullMQ.
+    expect(mockInvalidateCache).toHaveBeenCalledTimes(1);
+    expect(mockInvalidateCache).toHaveBeenCalledWith(2026);
   });
 
   it("pose emargementSigneAt write-once (updateMany conditionné sur null)", async () => {
@@ -623,6 +669,9 @@ describe("setPresenceCreneauManualAction", () => {
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "550e8400-e29b-41d4-a716-446655440010",
       enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
+      // Remonté jusqu'à la session pour invalider le cache indicateurs de la
+      // bonne année après correction manuelle d'un créneau.
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
     mockPrisma.presenceCreneau.update.mockResolvedValue({});
     mockRecompute.mockResolvedValue(75);

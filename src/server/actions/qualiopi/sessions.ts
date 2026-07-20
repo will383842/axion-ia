@@ -265,10 +265,14 @@ export async function transitionSessionAction(input: {
     try {
       const totalInscrits = await prisma.enrollment.count({ where: { sessionId: v.id } });
       if (totalInscrits > 0) {
+        // Symétrique de la garde du cron (`qualiopi-formation-crons-worker.ts`) :
+        // `> 0` et non `not: null`, car `recomputeTauxPresence` écrit toujours ce
+        // champ, 0 compris. Les deux gardes DOIVENT rester alignées, sinon la
+        // clôture automatique et la clôture manuelle divergent.
         const avecEmargement = await prisma.enrollment.count({
           where: {
             sessionId: v.id,
-            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
+            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { gt: 0 } }],
           },
         });
         if (avecEmargement === 0) {

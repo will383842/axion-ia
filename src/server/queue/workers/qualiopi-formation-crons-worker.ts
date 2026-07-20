@@ -233,10 +233,15 @@ async function handleClotureAuto(): Promise<void> {
         where: { sessionId: decision.sessionId },
       });
       if (totalInscrits > 0) {
+        // `tauxPresencePct > 0` et non `not: null` : `recomputeTauxPresence`
+        // écrit TOUJOURS ce champ, y compris 0. Générer les créneaux d'une
+        // session suffisait donc à satisfaire cette garde sans qu'aucun
+        // émargement n'ait été saisi. Un taux à 0 assorti d'un `emargementSigneAt`
+        // reste accepté : c'est une absence constatée, donc une vraie trace.
         const avecEmargement = await prisma.enrollment.count({
           where: {
             sessionId: decision.sessionId,
-            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
+            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { gt: 0 } }],
           },
         });
         if (avecEmargement === 0) {

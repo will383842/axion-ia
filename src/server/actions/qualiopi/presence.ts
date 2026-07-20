@@ -33,6 +33,7 @@ import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import type { DemiJourneeLabel, PlateformeLabel } from "@/server/qualiopi/presence/types";
+import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -234,10 +235,12 @@ export async function saveEmargementAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
 
-  // Vérification session.
+  // Vérification session. `dateDebut` sert à invalider le cache des indicateurs
+  // de la BONNE année (une session de décembre émargée en janvier invaliderait
+  // sinon la mauvaise clé, et le taux de complétion resterait faux 1 h durant).
   const trainingSession = await prisma.trainingSession.findUnique({
     where: { id: v.sessionId },
-    select: { id: true },
+    select: { id: true, dateDebut: true },
   });
   if (!trainingSession) return { error: "Session introuvable" };
 
@@ -296,6 +299,11 @@ export async function saveEmargementAction(input: {
       data: { emargementSigneAt: now },
     });
   }
+
+  // UN SEUL appel, APRÈS la boucle : `invalidateIndicateursCache` fait un
+  // `redis.keys()` (bloquant O(N) sur Redis, partagé avec BullMQ) — l'appeler
+  // par enrollment le déclencherait 15 fois pour une sauvegarde de grille.
+  await invalidateIndicateursCache(trainingSession.dateDebut.getUTCFullYear());
 
   await logQualiopiActivity({
     action: "qualiopi.presence.emargement.save",
@@ -435,6 +443,10 @@ export async function importReleveConnexionAction(input: {
     await recomputeTauxPresence(enrollmentId);
   }
 
+  // Cache indicateurs : le taux de complétion dérive de `tauxPresencePct`.
+  // Sans invalidation, un import distanciel reste invisible jusqu'à 1 h.
+  await invalidateIndicateursCache(new Date(trainingSession.dateDebut).getUTCFullYear());
+
   // 9. Génération du PDF relevé de connexion (optionnel — séparé du présent périmètre).
   // Le PDF est généré via generateDocument + ReleveConnexionPdf par l'UI ou un job BullMQ.
   // Ici on ne génère PAS le PDF pour garder l'action rapide.
@@ -488,7 +500,13 @@ export async function setPresenceCreneauManualAction(input: {
   // Lecture du créneau pour récupérer l'enrollmentId.
   const creneau = await prisma.presenceCreneau.findUnique({
     where: { id: v.creneauId },
-    select: { id: true, enrollmentId: true },
+    // `session.dateDebut` remonté pour invalider le cache indicateurs de la
+    // bonne année (cf. saveEmargementAction).
+    select: {
+      id: true,
+      enrollmentId: true,
+      enrollment: { select: { session: { select: { dateDebut: true } } } },
+    },
   });
   if (!creneau) return { error: "Créneau introuvable" };
 
@@ -503,8 +521,9 @@ export async function setPresenceCreneauManualAction(input: {
     },
   });
 
-  // Recompute taux.
+  // Recompute taux + invalidation du cache indicateurs.
   await recomputeTauxPresence(creneau.enrollmentId);
+  await invalidateIndicateursCache(creneau.enrollment.session.dateDebut.getUTCFullYear());
 
   await logQualiopiActivity({
     action: "qualiopi.presence.creneau.manual",
