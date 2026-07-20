@@ -1,7 +1,7 @@
 /**
  * Qualiopi — Server Actions formateurs (Trainer) — R9 audit E2E 2026-06-06.
  *
- * createTrainerAction       : crée un formateur (salarié ou sous-traitant).
+ * createTrainerAction       : crée un formateur (salarié, dirigeant ou sous-traitant).
  * updateTrainerAction       : met à jour les champs éditoriaux.
  * setTrainerHabilitationsAction : remplace la liste des formations habilitées.
  * verifyTrainerSousTraitantAction : marque la vérification data.gouv.fr (off.19/27).

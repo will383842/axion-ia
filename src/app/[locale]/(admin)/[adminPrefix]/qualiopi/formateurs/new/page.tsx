@@ -34,7 +34,7 @@ export default async function NouveauFormateurPage({ params }: PageProps) {
     <AdminPageShell width="narrow">
       <AdminPageHeader
         title="Nouveau formateur"
-        description="Salarié ou sous-traitant. Les habilitations par formation se définissent ensuite sur la fiche."
+        description="Salarié, dirigeant-formateur ou sous-traitant. Les habilitations par formation se définissent ensuite sur la fiche."
       />
       <TrainerForm mode="create" baseHref={base} />
     </AdminPageShell>
