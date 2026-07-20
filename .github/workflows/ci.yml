@@ -82,7 +82,7 @@ jobs:
       - name: Zod schemas have tests
         run: pnpm zod:check
       - name: gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
