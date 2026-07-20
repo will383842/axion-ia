@@ -12,11 +12,20 @@ import {
   setTrainerHabilitationsAction,
   verifyTrainerSousTraitantAction,
   setTrainerActifAction,
+  updateTrainerAction,
 } from "@/server/actions/qualiopi/trainers";
+
+const STATUT_LABELS: Record<TrainerStatut, string> = {
+  salarie: "Salarié",
+  dirigeant: "Dirigeant-formateur",
+  sous_traitant: "Sous-traitant",
+};
+
+type TrainerStatut = "salarie" | "sous_traitant" | "dirigeant";
 
 export interface TrainerManageFormProps {
   trainerId: string;
-  statut: "salarie" | "sous_traitant" | "dirigeant";
+  statut: TrainerStatut;
   actif: boolean;
   sousTraitantVerifie: boolean;
   sousTraitantNda: string | null;
@@ -34,6 +43,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
 
   const [selected, setSelected] = useState<Set<string>>(new Set(props.habilitations));
   const [nda, setNda] = useState(props.sousTraitantNda ?? "");
+  const [statut, setStatut] = useState<TrainerStatut>(props.statut);
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -82,6 +92,46 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
           {msg}
         </p>
       )}
+
+      {/* Statut — modifiable après création (le statut conditionne les pièces
+          documentaires bloquantes : contrat de travail pour un salarié, NDA +
+          Kbis + contrat de sous-traitance pour un sous-traitant, aucune pour un
+          dirigeant-formateur). Absent jusqu'ici : le statut n'était réglable
+          qu'à la création, ce qui laissait toute fiche existante bloquée. */}
+      <section className={sectionCls}>
+        <h2 className={titleCls}>Statut</h2>
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Détermine les pièces exigées pour la conformité (ind. 21/27). Le dirigeant-formateur est
+          l&apos;organisme lui-même : ni salarié, ni sous-traitant.
+        </p>
+        <div className="flex flex-wrap items-end gap-[var(--space-admin-3)]">
+          <label className="flex flex-col gap-[var(--space-admin-1)]">
+            <span className="admin-label">Statut du formateur</span>
+            <select
+              value={statut}
+              onChange={(e) => setStatut(e.target.value as TrainerStatut)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              {(Object.keys(STATUT_LABELS) as TrainerStatut[]).map((s) => (
+                <option key={s} value={s}>
+                  {STATUT_LABELS[s]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="button"
+            disabled={isPending || statut === props.statut}
+            className="admin-button"
+            onClick={() =>
+              run(() => updateTrainerAction({ id: props.trainerId, statut }), "Statut enregistré.")
+            }
+          >
+            {isPending ? "…" : "Enregistrer le statut"}
+          </button>
+        </div>
+      </section>
 
       {/* Habilitations */}
       <section className={sectionCls}>
