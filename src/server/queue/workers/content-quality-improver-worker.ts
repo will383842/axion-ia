@@ -325,11 +325,14 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       step: "quality_loop_hard_reject",
       message: `LLM-judge HARD REJECT — ${p0Issues.length} P0 issue(s) critiques. Escalade manuelle requise. Score: ${judge.globalScore.toFixed(1)}/10`,
     });
+    // 2026-07-20 : rétrogradé INCIDENT → MONITORING. Le rejet qualité d'UN
+    // article est opérationnel (filtrage normal du content-gen), pas une panne
+    // serveur → « 🔴 Incident » réservé aux vraies pannes.
     void sendTelegram({
-      tag: "INCIDENT",
+      tag: "MONITORING",
       body:
-        `*[🚨 REJECT-P0]* LLM-judge hard reject job \`${contentGenJobId}\`.\n` +
-        `Score: ${judge.globalScore.toFixed(1)}/10 — ${p0Issues.length} P0 issue(s).\n` +
+        `*[⚠️ ARTICLE REJETÉ (qualité)]* L'IA-juge a rejeté le contenu \`${contentGenJobId}\`.\n` +
+        `Score : ${judge.globalScore.toFixed(1)}/10 — ${p0Issues.length} problème(s) bloquant(s).\n` +
         p0Issues.map((i) => `• [${i.section}] ${i.issue}`).join("\n"),
     }).catch(() => {});
   }

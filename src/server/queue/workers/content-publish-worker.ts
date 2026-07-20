@@ -1314,13 +1314,16 @@ export function startPublishWorker(): Worker<PublishJobPayload> {
     const reviewId =
       (job?.data as { readonly reviewQueueId?: string } | undefined)?.reviewQueueId ?? "?";
     if (errMsg !== "kill_switch_active") {
+      // 2026-07-20 : rétrogradé INCIDENT → MONITORING. Un job de publication qui
+      // échoue est opérationnel (pas une panne serveur). Reste visible (risque
+      // d'insertion partielle) mais en jaune, pas en « 🔴 Incident » rouge.
       void sendTelegram({
-        tag: "INCIDENT",
+        tag: "MONITORING",
         body:
-          `*[🔴 PUBLISH FAILED]* content-publish job \`${job?.id ?? "?"}\` ` +
+          `*[⚠️ PUBLICATION ÉCHOUÉE]* Le job de publication \`${job?.id ?? "?"}\` a échoué ` +
           `(reviewQueueId=\`${reviewId}\`).\n` +
           `Erreur : ${errMsg}.\n` +
-          `Article potentiellement inséré partiellement — vérifier prisma.article + GenerationLog.`,
+          `Article peut-être inséré partiellement — vérifier prisma.article + GenerationLog.`,
       }).catch(() => {
         // best-effort
       });
