@@ -278,7 +278,7 @@ describe("getPilotage", () => {
     expect(result.m9_actions_correctives.detail).toContain("2 réclamation(s)");
   });
 
-  it("M11 : requête trainer avec critère cvUrl + preuve datée (OR salarié/sous-traitant)", async () => {
+  it("M11 : requête trainer avec critère cvUrl + preuve datée (OR internes/sous-traitant)", async () => {
     await getPilotage(2026);
 
     const calls = mockP.trainer.count.mock.calls as Array<[{ where: Record<string, unknown> }]>;
@@ -289,7 +289,7 @@ describe("getPilotage", () => {
     };
     expect(whereAJour.cvUrl).toEqual({ not: null });
     expect(whereAJour.OR).toHaveLength(2);
-    expect(whereAJour.OR?.[0]).toMatchObject({ statut: "salarie" });
+    expect(whereAJour.OR?.[0]).toMatchObject({ statut: { in: ["salarie", "dirigeant"] } });
     expect(whereAJour.OR?.[1]).toMatchObject({ statut: "sous_traitant" });
   });
 });

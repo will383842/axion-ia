@@ -244,7 +244,7 @@ export function bpfToCsv(bpf: BpfResult): string {
   lignes.push(`Mixte;${centimesEnEuros(bpf.caParFinanceur.mixte)}`);
   lignes.push("");
   lignes.push("Formateurs;Nombre");
-  lignes.push(`Formateurs internes (salariés);${bpf.nbFormateursInternes}`);
+  lignes.push(`Formateurs internes (salariés + dirigeant);${bpf.nbFormateursInternes}`);
   lignes.push(`Formateurs externes (sous-traitants);${bpf.nbFormateursExternes}`);
 
   // Section dépenses

@@ -611,8 +611,11 @@ export interface ResultatReleve {
  * Relevé mensuel d'un formateur à partir de ses lignes de la période.
  *
  * Trois raisons de ne rien émettre, dont une seule est une anomalie :
- *   - **salarié** → jamais de relevé (ses lignes sont analytiques). Cas normal,
- *     silencieux : un salarié est payé par la paie, pas par une facture.
+ *   - **interne** (salarié ou dirigeant-formateur) → jamais de relevé (ses lignes
+ *     sont analytiques). Cas normal, silencieux : un interne est payé par la paie
+ *     ou sa rémunération de dirigeant, pas par une facture. Le garde teste
+ *     `!== "sous_traitant"` pour rester aligné sur `natureLigne` (cf. calcul.ts) :
+ *     seul un tiers génère un honoraire réellement dû.
  *   - **aucune ligne due** → rien à facturer ce mois-ci (que du prévisionnel, de
  *     l'annulé, ou rien). Cas normal : un relevé à 0 € serait du bruit, et se
  *     heurterait à l'unicité `(trainer, année, mois)` au prochain run.
@@ -629,7 +632,7 @@ export function construireReleve(
   periode: Periode,
   lignes: readonly Pick<LigneAPersister, "nature" | "statut" | "montantHtCents">[],
 ): ResultatReleve {
-  if (formateur.statut === "salarie") return { releve: null, anomalies: [] };
+  if (formateur.statut !== "sous_traitant") return { releve: null, anomalies: [] };
   if (!lignes.some(estLigneDue)) return { releve: null, anomalies: [] };
 
   if (formateur.regimeTva === null) {
