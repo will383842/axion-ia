@@ -258,7 +258,10 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
         actif: true,
         cvUrl: { not: null },
         OR: [
-          { statut: { in: ["salarie", "dirigeant"] }, cvUploadedAt: { gte: cutoff24Mois(plage.lt) } },
+          {
+            statut: { in: ["salarie", "dirigeant"] },
+            cvUploadedAt: { gte: cutoff24Mois(plage.lt) },
+          },
           {
             statut: "sous_traitant",
             OR: [
