@@ -19,6 +19,10 @@ const CODES_ATTENDUS: string[] = [
   "responsable_qualite_absent",
   "emargement_manquant",
   "session_sans_formateur",
+  // Ajouté 2026-07-20 : comble l'angle mort où une session non émargée restait
+  // bloquée en `en_cours` sans qu'aucune alerte ne se lève (R03 exige `realisee`,
+  // que la clôture auto refuse justement de poser sans émargement).
+  "session_bloquee_en_cours",
   "satisfaction_manquante",
   "evaluation_acquis_manquante",
   "attestation_non_envoyee",

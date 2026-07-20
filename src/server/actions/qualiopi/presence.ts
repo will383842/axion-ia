@@ -349,6 +349,9 @@ export async function importReleveConnexionAction(input: {
     select: {
       id: true,
       dateDebut: true,
+      // `dateFin` requis pour dériver le nombre de jours retenus et donc la durée
+      // prévue d'UNE journée distancielle (cf. genererCreneaux plus bas).
+      dateFin: true,
       dureeReelleHeures: true,
       enrollments: {
         where: { statut: { notIn: ["abandon", "exclu"] } },
@@ -410,23 +413,40 @@ export async function importReleveConnexionAction(input: {
     select: { id: true },
   });
 
-  // 6. Durée prévue par créneau distanciel.
-  const dureePrevueMinutes = (trainingSession.dureeReelleHeures ?? 7) * 60;
-
-  // Date civile Paris de dateDebut.
-  const dateCivile = parisDateISO(trainingSession.dateDebut);
-  const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
-  const libelle = `${dateCivile} journée`;
+  // 6. Durée prévue d'UNE journée distancielle.
+  //
+  // ⚠️ Corrigé : on posait ici `dureeReelleHeures * 60`, soit la durée TOTALE de
+  // la session sur un unique créneau. Une session distancielle de 2 jours voyait
+  // donc 14 h attendues sur une seule journée — et les autres jours n'avaient
+  // aucun créneau du tout, donc aucune présence justifiable.
+  // `genererCreneaux` porte déjà la répartition correcte (jours retenus + plafond
+  // horaire) : on en dérive la durée d'une journée pleine = 2 demi-journées.
+  const creneauxSession = genererCreneaux({
+    dateDebut: trainingSession.dateDebut,
+    dateFin: trainingSession.dateFin,
+    ...(trainingSession.dureeReelleHeures !== null
+      ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
+      : {}),
+  });
+  const dureePrevueMinutes =
+    creneauxSession.length > 0 ? (creneauxSession[0]?.dureePrevueMinutes ?? 210) * 2 : 7 * 60;
 
   // 7. Création des créneaux distanciels pour les participants matchés.
+  //
+  // La date vient de l'heure de CONNEXION réelle du participant, pas de
+  // `dateDebut` : sur une session multi-jours, chaque relevé se rattache ainsi au
+  // bon jour. Repli sur `dateDebut` si la plateforme n'a pas fourni d'horodatage.
   const matchedEnrollmentIds = new Set<string>();
 
   for (const { enrollmentId, participant } of matched) {
+    const dateCivile = parisDateISO(participant.joinAt ?? trainingSession.dateDebut);
+    const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
+
     await upsertCreneau({
       enrollmentId,
       date: dateObj,
       demiJournee: "journee",
-      libelle,
+      libelle: `${dateCivile} journée`,
       dureePrevueMinutes,
       source: toPresenceSource(v.plateforme),
       present: false, // sera mis à jour par recomputeTauxPresence

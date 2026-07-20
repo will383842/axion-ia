@@ -486,6 +486,57 @@ describe("importReleveConnexionAction", () => {
     expect(result.data.unmatched).toHaveLength(0);
   });
 
+  it("rattache chaque relevé au JOUR de connexion réel (session multi-jours)", async () => {
+    // Avant correctif : tous les créneaux étaient posés sur `dateDebut`, avec une
+    // durée prévue égale à la durée TOTALE de la session. Sur une session de 2
+    // jours, le second jour n'avait donc aucun créneau — présence injustifiable —
+    // et le premier attendait 14 h. Le relevé porte l'heure de connexion : on
+    // s'en sert.
+    mockMatchParticipants.mockReturnValue({
+      matched: [
+        {
+          enrollmentId: "enroll-1",
+          participant: {
+            nomBrut: "Alice Dupont",
+            email: "alice@example.com",
+            dureeMinutes: 400,
+            joinAt: new Date("2026-06-10T08:05:00Z"),
+            leaveAt: new Date("2026-06-10T15:00:00Z"),
+          },
+        },
+        {
+          enrollmentId: "enroll-2",
+          participant: {
+            nomBrut: "Bob Martin",
+            email: "bob@example.com",
+            dureeMinutes: 380,
+            joinAt: new Date("2026-06-11T08:10:00Z"),
+            leaveAt: new Date("2026-06-11T15:00:00Z"),
+          },
+        },
+      ],
+      unmatched: [],
+    });
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "participants.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(2);
+    const dates = mockUpsertCreneau.mock.calls.map((c) =>
+      (c[0] as { date: Date }).date.toISOString().slice(0, 10),
+    );
+    // Deux jours DISTINCTS : c'est l'assertion qui tombe si l'on repose tout sur dateDebut.
+    expect(new Set(dates)).toEqual(new Set(["2026-06-10", "2026-06-11"]));
+
+    // Durée prévue = UNE journée (2 demi-journées), pas la session entière.
+    const premier = mockCall<{ dureePrevueMinutes: number }>(mockUpsertCreneau);
+    expect(premier.dureePrevueMinutes).toBe(420);
+  });
+
   it("crée un ReleveConnexionImport avec les bons champs", async () => {
     await importReleveConnexionAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",

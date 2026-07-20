@@ -309,6 +309,54 @@ describe("evaluerAlertes — session_sans_formateur", () => {
   });
 });
 
+/**
+ * R03ter — session bloquée en `en_cours`.
+ *
+ * Angle mort comblé : R03 (`emargement_manquant`) exige `statut: "realisee"`,
+ * que la clôture automatique refuse de poser sans trace de présence. Une session
+ * non émargée n'était donc signalée par AUCUNE règle.
+ */
+describe("regleSessionBloqueeEnCours", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("crée une alerte critique par session en_cours terminée depuis +72 h", async () => {
+    mp.trainingSession.findMany.mockImplementation(
+      ({ where }: { where?: { statut?: unknown } }) => {
+        if (where && where.statut === "en_cours") {
+          return Promise.resolve([
+            {
+              id: "ses-099",
+              numero: "SES-2026-099",
+              dateFin: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+              _count: { enrollments: 12 },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_bloquee_en_cours");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("ses-099");
+    expect(a?.message).toContain("SES-2026-099");
+    // Le message doit dire POURQUOI c'est grave, pas seulement constater.
+    expect(a?.message).toContain("12");
+    expect(a?.message).toContain("BPF");
+  });
+
+  it("aucune alerte quand aucune session n'est bloquée", async () => {
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_bloquee_en_cours")).toBeUndefined();
+  });
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Tests règle qualiopi_expiration
 // ─────────────────────────────────────────────────────────────────────────────

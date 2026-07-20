@@ -124,6 +124,48 @@ async function regleEmargementManquant(now: Date): Promise<AlerteCandidate[]> {
   }));
 }
 
+/**
+ * R03ter — Session bloquée en `en_cours` faute d'émargement.
+ *
+ * Comble un angle mort : `regleEmargementManquant` (R03) filtre sur
+ * `session.statut = "realisee"`, mais la clôture automatique
+ * (`qualiopi-formation-crons-worker.ts`) refuse précisément de passer une session
+ * en `realisee` tant qu'aucun inscrit n'a de trace de présence. Une session
+ * totalement non émargée ne pouvait donc déclencher NI la clôture, NI R03 : elle
+ * restait indéfiniment `en_cours`, absente du BPF, des attestations et des
+ * indicateurs, sans le moindre signal.
+ *
+ * Seuil à 72 h après `dateFin` — au-delà de la fenêtre de 24 h de la clôture
+ * automatique, pour ne pas doublonner avec elle sur un simple décalage de cron.
+ */
+async function regleSessionBloqueeEnCours(now: Date): Promise<AlerteCandidate[]> {
+  const threshold = daysAgo(3, now);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "en_cours",
+      dateFin: { lte: threshold },
+    },
+    select: {
+      id: true,
+      numero: true,
+      dateFin: true,
+      _count: { select: { enrollments: true } },
+    },
+  });
+
+  return sessions.map((s) => ({
+    code: "session_bloquee_en_cours",
+    niveau: "critique" as AlerteNiveau,
+    titre: "Session non clôturée faute d'émargement",
+    message:
+      `La session ${s.numero} est terminée depuis plus de 72 h mais reste « en cours » : ` +
+      `aucun émargement n'a été saisi pour ses ${s._count.enrollments} inscrit(s). ` +
+      `Tant qu'elle n'est pas clôturée, elle n'alimente ni le BPF, ni les attestations, ni les indicateurs.`,
+    cibleType: "TrainingSession",
+    cibleId: s.id,
+  }));
+}
+
 /** R03bis — Session sans formateur : démarre sous 7 jours, aucun formateur principal assigné. */
 async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> {
   const horizon = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -707,6 +749,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
+  { nom: "session_bloquee_en_cours", fn: regleSessionBloqueeEnCours },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },
   { nom: "attestation_non_envoyee", fn: regleAttestationNonEnvoyee },

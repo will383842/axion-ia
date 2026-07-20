@@ -95,6 +95,21 @@ describe("createEvaluationAcquisAction", () => {
     expect(result.data.id).toBe("eval-new-id");
   });
 
+  it("trace l'auteur de l'évaluation (evalueParId ← session admin)", async () => {
+    await createEvaluationAcquisAction({
+      enrollmentId: ENROLLMENT_UUID,
+      type: "finale",
+      dateEvaluation: "2026-06-15",
+      competences: COMPETENCES_BASE,
+    });
+
+    // `evalueParId` était une colonne MORTE : jamais écrite, jamais lue. Sans
+    // cette traçabilité, impossible de démontrer qui a évalué — sans effet avec
+    // un formateur unique, déterminant dès qu'ils sont plusieurs.
+    const call = mockCall<{ evalueParId?: string }>(mockCreateEvaluation);
+    expect(call.evalueParId).toBe("admin-test-id");
+  });
+
   it("appelle createEvaluation avec les bons paramètres", async () => {
     await createEvaluationAcquisAction({
       enrollmentId: ENROLLMENT_UUID,

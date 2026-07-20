@@ -31,6 +31,16 @@ export interface CreateEvaluationInput {
     objectifRef?: string;
   }>;
   recommandations?: string;
+  /**
+   * Auteur de l'évaluation (`AdminUser.id`).
+   *
+   * Colonne restée MORTE jusqu'ici : jamais écrite, jamais lue. Sans elle, rien
+   * ne permet de démontrer QUI a évalué — anodin avec un formateur unique,
+   * critique dès que plusieurs intervenants coexistent. Renseignée par l'action
+   * serveur à partir de la session admin ; optionnelle pour ne pas casser les
+   * appelants existants (imports, seeds).
+   */
+  evalueParId?: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -70,6 +80,7 @@ export async function createEvaluation(input: CreateEvaluationInput): Promise<{ 
       reussite,
       competences: input.competences as never,
       ...(input.recommandations !== undefined ? { recommandations: input.recommandations } : {}),
+      ...(input.evalueParId !== undefined ? { evalueParId: input.evalueParId } : {}),
     },
     select: { id: true },
   });
