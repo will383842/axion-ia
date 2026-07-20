@@ -717,6 +717,41 @@ jobs:
             echo "::warning::Revalidation index DB non confirmée (HTTP ${code}) — non bloquant. Vérifie que REVALIDATE_SECRET côté GitHub == côté Coolify (RUN)."
           fi
 
+      # 2026-07-20 — Chauffe PRIORITAIRE des pages stratégiques + de leurs images
+      # LCP. Deux problèmes que le sweep sitemap ci-dessous ne couvre pas :
+      #   1. Ordre : le sweep parcourt ~1122 URLs triées ; si un deploy plus récent
+      #      annule ce job (concurrency cancel-in-progress, fréquent en période de
+      #      merges rapprochés), les hubs critiques (audit, formations, home) peuvent
+      #      rester froids. On les chauffe donc EN PREMIER.
+      #   2. Images : le sweep fait `curl -o /dev/null` sur le HTML uniquement — les
+      #      images optimisées à la volée (`/_next/image`, ex. ~265 sur /fr/audit)
+      #      restent FROIDES → le 1er vrai navigateur paie l'optimisation Sharp →
+      #      LCP p75 catastrophique (mesuré 39 s sur /fr/audit). On pré-chauffe les
+      #      premières variantes above-fold pour que Cloudflare les serve en HIT.
+      # Best-effort strict (`|| true` partout) : ne bloque JAMAIS la pipeline.
+      - name: Warm strategic pages + above-fold LCP images (priority)
+        run: |
+          set -uo pipefail
+          UA="AxionIA-CacheWarmer/1.0"
+          STRATEGIC="/fr /fr/audit /fr/formations /fr/interventions /fr/implementation /fr/cas-concrets /fr/methodologie /fr/comparaisons /fr/stack-ia /fr/guide-ia /fr/connaissances /fr/faq /fr/contact /fr/appel"
+          for p in ${STRATEGIC}; do
+            url="${SITE}${p}"
+            html=$(curl -sS -m 25 -A "${UA}" "${url}" || true)
+            [ -z "${html}" ] && { echo "  ${p} : HTML vide/erreur (skip)"; continue; }
+            # Extrait les 1ères URLs /_next/image (above-fold approx), déséchappe
+            # &amp; → & et chauffe chaque variante (HIT Cloudflare pour les visiteurs).
+            imgs=$(printf '%s' "${html}" | grep -oE '/_next/image\?url=[^"'"'"' ]+' \
+              | sed 's/\&amp;/\&/g' | sort -u | head -12 || true)
+            n=0
+            while IFS= read -r img; do
+              [ -z "${img}" ] && continue
+              curl -sS -o /dev/null -m 20 -A "${UA}" "${SITE}${img}" || true
+              n=$((n + 1))
+            done <<< "${imgs}"
+            echo "  ${p} : HTML + ${n} image(s) LCP chauffées"
+          done
+          echo "::notice::Pages stratégiques + images LCP chauffées (best-effort, prioritaire)."
+
       - name: Warm full indexable surface from sitemap
         run: |
           set -uo pipefail
