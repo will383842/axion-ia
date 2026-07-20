@@ -23,13 +23,31 @@ CREATE INDEX IF NOT EXISTS idx_image_assets_keywords_secondary
 --   B = caption           (search:0.4)
 --   C = description       (search:0.2)
 
+-- ⚠️ NE PAS utiliser `unaccent(...)` ici (2026-07-20).
+--
+-- `unaccent(text)` est déclarée STABLE, pas IMMUTABLE (elle lit le dictionnaire
+-- depuis le catalogue). Postgres REFUSE toute fonction non-IMMUTABLE dans une
+-- colonne `GENERATED ALWAYS AS (...) STORED` :
+--   Error: ERROR: generation expression is not immutable
+-- Ce fichier échouait donc à chaque boot depuis sa création (2026-05-16) et la
+-- colonne `search_vector` n'a JAMAIS existé en prod.
+--
+-- Fix : passer par la CONFIGURATION de recherche `fr_unaccent` (créée par
+-- `docker/postgres/init.sql`) au lieu d'appeler `unaccent()` à la main.
+-- `to_tsvector(regconfig, text)` EST immutable, et la config applique déjà
+-- le filtre unaccent — même désaccentuation, sans casser l'immutabilité.
+-- C'est la convention déjà utilisée par `0002_fts_setup.sql` et `kb_fts_setup.sql`.
+--
+-- ⚠️ Côté requête, toute recherche sur cette colonne DOIT utiliser la MÊME
+-- config, sinon 0 résultat : `websearch_to_tsquery('fr_unaccent', $1)`.
+-- (cf. `src/lib/knowledge/search-fts.ts` pour le motif de référence.)
 ALTER TABLE image_asset_translations
   ADD COLUMN IF NOT EXISTS search_vector tsvector
   GENERATED ALWAYS AS (
-    setweight(to_tsvector('simple', unaccent(coalesce(title, ''))), 'A') ||
-    setweight(to_tsvector('simple', unaccent(coalesce(alt, ''))), 'A') ||
-    setweight(to_tsvector('simple', unaccent(coalesce(caption, ''))), 'B') ||
-    setweight(to_tsvector('simple', unaccent(coalesce(description, ''))), 'C')
+    setweight(to_tsvector('fr_unaccent', coalesce(title, '')), 'A') ||
+    setweight(to_tsvector('fr_unaccent', coalesce(alt, '')), 'A') ||
+    setweight(to_tsvector('fr_unaccent', coalesce(caption, '')), 'B') ||
+    setweight(to_tsvector('fr_unaccent', coalesce(description, '')), 'C')
   ) STORED;
 
 CREATE INDEX IF NOT EXISTS idx_image_asset_translations_search
