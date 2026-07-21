@@ -211,9 +211,20 @@ export function EmargementGrid({
             date: col.date,
             demiJournee: col.demiJournee,
             present: cell.present,
-            ...(cell.present && !isNaN(parsed) && parsed > 0
-              ? { dureeRealiseeMinutes: parsed }
-              : {}),
+            // ⚠️ On envoie TOUJOURS la durée, y compris case décochée.
+            //
+            // Auparavant le champ était omis dès que `present` était faux, et le
+            // serveur le remplaçait alors par 0. Or `present` est DÉRIVÉ pour un
+            // créneau importé (réalisé ≥ 50 % du prévu) : un stagiaire connecté
+            // 100 min sur 420 a `present = false` sans être absent. Un simple
+            // clic « Enregistrer », même sans rien modifier, effaçait ses
+            // 100 minutes — la seule trace de sa connexion, sur un enregistrement
+            // à valeur probante.
+            //
+            // L'état de la cellule porte déjà la valeur serveur pour les cases
+            // non touchées : la renvoyer telle quelle est neutre, et décocher
+            // reste une correction explicite possible.
+            ...(!isNaN(parsed) && parsed >= 0 ? { dureeRealiseeMinutes: parsed } : {}),
           });
         }
       }

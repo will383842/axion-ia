@@ -86,7 +86,13 @@ const emargementEntrySchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Format date invalide (YYYY-MM-DD)"),
   demiJournee: z.enum(DEMI_JOURNEE_VALUES),
   present: z.boolean(),
-  dureeRealiseeMinutes: z.number().int().min(0).optional(),
+  // Plafond absolu de bon sens : un créneau ne peut pas dépasser la journée.
+  // Le vrai plafond — la durée PRÉVUE du créneau — est appliqué côté serveur, où
+  // elle est connue. Sans borne, un taux > 100 % partait en base, et
+  // `documents.ts` en dérivait un certificat de réalisation annonçant PLUS
+  // d'heures que la formation n'en compte. Le champ pourcentage voisin
+  // (`enrollments.ts`) était déjà borné à 100 ; celui-ci ne l'était pas.
+  dureeRealiseeMinutes: z.number().int().min(0).max(1440).optional(),
 });
 
 const saveEmargementSchema = z.object({
@@ -104,7 +110,7 @@ const importReleveConnexionSchema = z.object({
 const setPresenceCreneauManualSchema = z.object({
   creneauId: z.string().uuid(),
   present: z.boolean(),
-  dureeRealiseeMinutes: z.number().int().min(0),
+  dureeRealiseeMinutes: z.number().int().min(0).max(1440),
   commentaire: z.string().optional(),
 });
 
@@ -197,6 +203,17 @@ export async function generateSessionCreneauxAction(input: {
     }
   }
 
+  // ⚠️ Générer des créneaux CHANGE LE DÉNOMINATEUR du taux. Sans recalcul,
+  // `Enrollment.tauxPresencePct` restait figé sur son ancienne valeur pendant que
+  // la base portait déjà les nouveaux créneaux — et le cron d'attestation lit ce
+  // champ (`attestation-service.ts`), émettant donc une attestation sur un taux
+  // périmé. Un seul appel d'invalidation APRÈS la boucle : `redis.keys()` est
+  // bloquant, à ne pas déclencher par inscription.
+  for (const enrollment of trainingSession.enrollments) {
+    await recomputeTauxPresence(enrollment.id);
+  }
+  await invalidateIndicateursCache(trainingSession.dateDebut.getUTCFullYear());
+
   await logQualiopiActivity({
     action: "qualiopi.presence.creneaux.generate",
     targetType: "TrainingSession",
@@ -269,6 +286,14 @@ export async function saveEmargementAction(input: {
     let dureeRealiseeMinutes = entry.dureeRealiseeMinutes ?? 0;
     if (entry.present && entry.dureeRealiseeMinutes === undefined) {
       dureeRealiseeMinutes = existingCreneau?.dureePrevueMinutes ?? 0;
+    }
+
+    // Plafond au PRÉVU du créneau : au-delà, `computeTauxPresence` écrit un taux
+    // supérieur à 100 % en base, dont `documents.ts` dérive un certificat de
+    // réalisation annonçant plus d'heures que la formation n'en compte.
+    const prevuConnu = existingCreneau?.dureePrevueMinutes;
+    if (prevuConnu !== undefined && prevuConnu > 0 && dureeRealiseeMinutes > prevuConnu) {
+      dureeRealiseeMinutes = prevuConnu;
     }
 
     // ⚠️ La PROVENANCE d'un créneau importé ne doit jamais être réécrite.
