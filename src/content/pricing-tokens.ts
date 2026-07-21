@@ -178,6 +178,42 @@ function renderEntry(entry: RegistryEntry, mode: PriceTokenMode, locale: Locale)
 }
 
 /**
+ * Recolle la prose après résolution d'un token en mode `range`/`entry`.
+ *
+ * ⚠️ AUDIT 2026-07-21 — le mode `range` rend « À partir de 1 900 € HT ». Or la
+ * plupart des phrases rédigées autour de ces tokens portent DÉJÀ leur propre
+ * amorce : « le coût commence à … », « l'audit débute à … », « démarre à … ».
+ * Une fois le token résolu, on lisait donc en clair sur le site :
+ *
+ *     « Un audit standard PME commence à À partir de 1 900 € HT »
+ *
+ * Ce défaut était explicitement listé comme interdit dans l'inventaire de purge
+ * (« ❌ Laisser À partir de À partir de »). Mesuré : 10 formulations sur 12.
+ *
+ * On corrige à l'affichage plutôt qu'en base : le contenu reste porteur d'un
+ * token dynamique, et toute rédaction future est couverte sans nouvelle purge.
+ * `à À partir de` n'est jamais du français correct — la collision est donc sûre
+ * à réduire, sans besoin d'analyser la phrase.
+ */
+export function collapsePriceProseDuplicates(text: string): string {
+  if (typeof text !== "string" || !text.includes("partir de")) return text;
+  // ⚠️ Pas de `\b` : en JS il est ASCII, donc « à » y compte comme NON-mot et
+  // `\bà` ne matche jamais. On ancre explicitement sur début/espace/parenthèse.
+  // Ordre important : les motifs les plus longs d'abord.
+  return (
+    text
+      // « à partir de À partir de X » → « à partir de X »
+      .replace(/(^|[\s(])à\s+partir\s+de\s+À\s+partir\s+de\s+/gi, "$1à partir de ")
+      // « compris entre À partir de X » — « entre » attend deux bornes, or le
+      // tier n'en expose qu'une : on retombe sur la formulation correcte.
+      .replace(/(^|[\s(])comprise?\s+entre\s+À\s+partir\s+de\s+/gi, "$1à partir de ")
+      // « commence à À partir de X » → « commence à X ». Sensible à la casse :
+      // c'est la collision préposition minuscule + amorce rendue majuscule.
+      .replace(/(^|[\s(])à\s+À\s+partir\s+de\s+/g, "$1à ")
+  );
+}
+
+/**
  * Remplace tous les tokens `{{price:…}}` d'une chaîne par leur valeur SSOT.
  * Tokens à id ou mode inconnu : laissés en l'état + warning (détectés par le
  * garde-fou CI). Renvoie la chaîne inchangée si aucun token.

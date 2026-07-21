@@ -58,7 +58,7 @@ import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitiz
 import { buildToc } from "@/lib/knowledge/article-enrich";
 // H3 (audit grounding 2026-06-05) — résout les tokens prix {{price:...}} au
 // rendu (no-op si aucun) : filet anti-fuite de token brut + cohérence SSOT.
-import { resolvePriceTokens } from "@/content/pricing-tokens";
+import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 // VIS-09 — articles DB (content-gen, auteur Manon) émis via la factory
 // BlogPosting (type correct + author @id résolu + AI Act + image hero).
 import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
@@ -313,7 +313,13 @@ export default async function BlogArticle({ params }: Props) {
   const authorHref = isDbHtml ? `/equipe/${authorSlug}` : `/blog/auteur/${authorSlug}`;
   const dbBody = isDbHtml ? buildToc(sanitizeContentGenHtml(view.body)) : null;
   // H3 — body DB avec tokens prix résolus (no-op si aucun token).
-  const dbBodyHtml = dbBody ? resolvePriceTokens(dbBody.html, loc) : null;
+  // AUDIT 2026-07-21 — `collapsePriceProseDuplicates` recolle « commence à
+  // À partir de … » (le mode `range` porte sa propre amorce). Défaut
+  // PRÉEXISTANT ici : le corps résolvait déjà les tokens, donc la collision
+  // était visible en clair sur le site avant même le correctif FAQ.
+  const dbBodyHtml = dbBody
+    ? collapsePriceProseDuplicates(resolvePriceTokens(dbBody.html, loc))
+    : null;
   // P3 QW — TOC Featured Snippets : ancres alignées sur les id réellement injectés
   // (VIS-04, fini les ancres mortes). DB → toc de buildToc ; FS → extractTocItems.
   const tocItems: TocItem[] = dbBody
@@ -409,7 +415,7 @@ export default async function BlogArticle({ params }: Props) {
   // VIS-03 — Préfère le directAnswer généré (snippet 0) ; fallback excerpt/body.
   // H3 — tokens prix résolus (no-op si aucun).
   const rawTldr = view.directAnswer ?? deriveTldr(view.excerpt, view.body);
-  const tldrText = rawTldr ? resolvePriceTokens(rawTldr, loc) : null;
+  const tldrText = rawTldr ? collapsePriceProseDuplicates(resolvePriceTokens(rawTldr, loc)) : null;
 
   // V-14 sprint UX 2026-05-22 — Articles connexes : DB+FS merge via helper.
   // Auparavant FS uniquement (3 articles hardcodés) → maintenant inclut articles

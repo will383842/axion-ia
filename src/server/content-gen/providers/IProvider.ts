@@ -85,6 +85,10 @@ export class ProviderError extends Error {
     message: string,
     public readonly code:
       | "rate_limited"
+      // Quota/crédit du COMPTE provider épuisé (≠ `cost_cap_reached`, qui est
+      // notre plafond interne). Non-retryable par nature : réessayer ne peut
+      // pas réussir tant qu'un humain n'a pas rechargé le compte.
+      | "quota_exhausted"
       | "timeout"
       | "down"
       | "auth_failed"
