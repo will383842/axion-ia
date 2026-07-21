@@ -38,6 +38,7 @@
 
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
 
 interface RouteParams {
@@ -190,10 +191,18 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
 }
 
 function buildMarkdown(content: MarkdownContent, slug: string, type: string): string {
-  const bodyMd = htmlToMarkdownLite(content.body);
+  // ⚠️ AUDIT 2026-07-21 — cette route sert `bodyText` (Tiptap plain), qui n'est
+  // résolu NULLE PART, contrairement au `body` HTML rendu par la page publique.
+  // Mesuré en prod : 50 articles publiés exposaient `{{price:…}}` en clair aux
+  // consommateurs LLM de cette API. On résout ici, seul point de passage commun
+  // aux 5 types (blog / actualites / guides / kb / faq), plutôt qu'en base — les
+  // prix restent ainsi dynamiques (cf. `shared/faq-items.ts` pour le même motif).
+  const bodyMd = htmlToMarkdownLite(resolvePriceTokens(content.body, "fr"));
   const canonicalUrl = `${SITE_URL}/fr/${content.canonicalSegment}/${slug}`;
   const lastMod = content.updatedAt.toISOString();
-  const tldrLine = content.excerpt ? `> ${content.excerpt.trim()}\n\n` : "";
+  const tldrLine = content.excerpt
+    ? `> ${resolvePriceTokens(content.excerpt, "fr").trim()}\n\n`
+    : "";
   return `# ${content.title}
 
 ${tldrLine}${bodyMd}
