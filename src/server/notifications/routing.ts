@@ -26,6 +26,10 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   RECRUITMENT_RECEIVED: { channels: ["telegram"], severity: "info" },
   JOB_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   REVIEW_SUBMITTED: { channels: ["telegram"], severity: "info" },
+  // Demande de tournage podcast (2026-07-21) — lead entrant, Telegram groupe
+  // « Messages ». `rateLimitPerHour` volontairement absent : le volume attendu
+  // est faible et le rate-limit IP côté Server Action suffit.
+  PODCAST_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
   SPEAKER_INVITATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   INVESTOR_INQUIRY_RECEIVED: { channels: ["telegram"], severity: "warn" },
   CUSTOMER_SUPPORT_REQUEST: { channels: ["telegram"], severity: "warn" },
@@ -119,6 +123,7 @@ const MESSAGE_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Notificati
   "SPEAKER_INVITATION_RECEIVED",
   "INVESTOR_INQUIRY_RECEIVED",
   "CUSTOMER_SUPPORT_REQUEST",
+  "PODCAST_REQUEST_SUBMITTED",
 ]);
 
 /** Groupe cible d'une catégorie (défaut : 🔔 Système — newsletter, avis, ops…). */
@@ -151,6 +156,10 @@ const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Noti
   // Candidatures
   "JOB_APPLICATION_RECEIVED",
   "RECRUITMENT_RECEIVED",
+  // Demande de tournage podcast (2026-07-21) — un dirigeant qui attend un rappel.
+  // Reste no-op tant que WHATSAPP_CALLMEBOT_APIKEY + WHATSAPP_NOTIFY_PHONE
+  // ne sont pas définis côté Coolify (cf. `channels/whatsapp.ts`).
+  "PODCAST_REQUEST_SUBMITTED",
   // Réservations / RDV (création d'intention)
   "BOOKING_CREATED",
   "OPTION_POSTED",

@@ -9175,3 +9175,60 @@ model QrLink {
   @@index([category])
   @@map("qr_links")
 }
+
+// ============================================================
+// Podcast — demandes de tournage (offre gratuite dirigeants)
+// ============================================================
+
+/// Statut de traitement d'une demande de tournage podcast (console admin).
+/// Valeurs en anglais comme les enums récents (cf. `CustomerReviewStatus`) ;
+/// les libellés FR vivent côté UI (`src/features/admin-podcast-requests/statuses.ts`).
+enum PodcastRequestStatus {
+  new
+  contacted
+  scheduled
+  recorded
+  archived
+  declined
+}
+
+/// Demande de tournage de podcast déposée depuis la page publique `/podcast`.
+/// Axion-IA se déplace dans les locaux du dirigeant — d'où `city` + `postalCode`
+/// obligatoires. Décision Will 2026-07-21.
+///
+/// PII : `leaderName` / `email` / `phone` sont chiffrés au repos via `encryptPii`
+/// (AES-256-GCM → `enc:v1:iv:ct:tag`, 100+ caractères) et stockés en TEXT — même
+/// contrainte que `Submission.contact_name` / `contact_phone`, dont les VARCHAR
+/// débordaient en P2000 dès que `PII_ENCRYPTION_KEY` est active (audit 2026-07-01).
+model PodcastRequest {
+  id String @id @default(uuid()) @db.Uuid
+
+  companyName String @map("company_name") @db.VarChar(200)
+  leaderName  String @map("leader_name") @db.Text
+  email       String @db.Text
+  phone       String @db.Text
+  city        String @db.VarChar(120)
+  postalCode  String @map("postal_code") @db.VarChar(10)
+  /// Quelques mots sur l'activité de l'entreprise (saisie libre, bornée en Zod).
+  activity    String @db.Text
+
+  locale Locale @default(fr)
+  /// Origine du lead : "form" (page /podcast) ou "qr" (flyer papier → /qr/podcast).
+  source String @default("form") @db.VarChar(40)
+
+  status        PodcastRequestStatus @default(new)
+  internalNotes String?              @map("internal_notes") @db.Text
+  handledAt     DateTime?            @map("handled_at")
+
+  /// SHA-256(salt::ip) — anti-spam / audit. Helper `src/lib/security/ip-hash.ts`.
+  ipHash         String? @map("ip_hash") @db.VarChar(64)
+  consentVersion String? @map("consent_version") @db.VarChar(60)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([status, createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@map("podcast_requests")
+}
