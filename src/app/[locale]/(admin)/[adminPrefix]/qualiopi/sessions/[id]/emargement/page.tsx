@@ -22,6 +22,7 @@ import { EmargementGrid } from "@/components/admin/qualiopi/EmargementGrid";
 import { ImportReleveForm } from "@/components/admin/qualiopi/ImportReleveForm";
 import { GenererCreneauxButton } from "@/components/admin/qualiopi/GenererCreneauxButton";
 import { SessionJoursEditor } from "@/components/admin/qualiopi/SessionJoursEditor";
+import { LiensEmargement } from "@/components/admin/qualiopi/LiensEmargement";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import {
   generateSessionCreneauxAction,
@@ -29,6 +30,10 @@ import {
   importReleveConnexionAction,
 } from "@/server/actions/qualiopi/presence";
 import { saveSessionJoursAction } from "@/server/actions/qualiopi/session-jours";
+import {
+  emettreLiensSessionAction,
+  revoquerLiensSessionAction,
+} from "@/server/actions/qualiopi/emargement-liens";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -169,6 +174,14 @@ export default async function EmargementPage({ params }: PageProps) {
         joursInitiaux={jours}
         hasCreneaux={hasCreneaux}
         saveAction={saveSessionJoursAction}
+      />
+
+      {/* Liens de signature — après les journées (dont ils dépendent) et avant
+          la grille : c'est l'ordre dans lequel l'admin travaille. */}
+      <LiensEmargement
+        sessionId={id}
+        emettreAction={emettreLiensSessionAction}
+        revoquerAction={revoquerLiensSessionAction}
       />
 
       {/* Section : Générer les créneaux */}
