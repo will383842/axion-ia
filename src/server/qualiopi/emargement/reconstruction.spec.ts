@@ -14,7 +14,12 @@
 import { describe, it, expect } from "vitest";
 import { calculerSelfHash, verifierChaine, HASH_VERSION_COURANTE } from "./hash";
 import type { TupleSignatureV1 } from "./hash";
-import { tupleDepuisLigne, maillonDepuisLigne, type LigneSignature } from "./reconstruction";
+import {
+  tupleDepuisLigne,
+  maillonDepuisLigne,
+  COLONNES_SCELLEES,
+  type LigneSignature,
+} from "./reconstruction";
 
 /** Ligne telle que la base la rendra, chaînée sur `prevHash`. */
 function ligne(overrides: Partial<LigneSignature> = {}): LigneSignature {
@@ -238,6 +243,68 @@ describe("chaque colonne entre RÉELLEMENT dans l'empreinte", () => {
       .map((c) => (c === "signeAtIso" ? "signeAt" : c === "modules" ? "modulesSnapshot" : c))
       .filter((c) => !couverts.has(c));
     expect(nonCouverts).toEqual([]);
+  });
+});
+
+describe("COLONNES_SCELLEES — la liste est EXACTE, pas déclarative", () => {
+  /** Empreinte d'une ligne dont une colonne porte une autre valeur. */
+  function empreinteAvec(patch: Partial<LigneSignature>): string | null {
+    const t = tupleDepuisLigne({ ...ligne(), ...patch });
+    return t === null ? null : calculerSelfHash(t);
+  }
+
+  const reference = empreinteAvec({});
+
+  /** Une valeur différente, quel que soit le type de la colonne. */
+  const AUTRE_VALEUR: Partial<Record<keyof LigneSignature, unknown>> = {
+    contexteType: "afest_1to1",
+    enrollmentId: "enr-autre",
+    coachingId: "coa-autre",
+    creneauId: "cre-autre",
+    signataireNom: "Quelqu'un d'autre",
+    signataireEmail: null,
+    date: new Date("2026-06-11T00:00:00.000Z"),
+    demiJournee: "apres_midi",
+    heureDebut: "08:00",
+    heureFin: "17:00",
+    formateurNom: "Autre formateur",
+    formationIntitule: "Autre intitulé",
+    modulesSnapshot: ["Autre module"],
+    methode: "papier_scanne",
+    signatureSha256: "f".repeat(64),
+    signeAt: new Date("2026-06-10T10:13:42.124Z"),
+    ipHash: null,
+    userAgentSha256: null,
+    mentionVersion: "v2",
+    prevHash: "9".repeat(64),
+    // Hors tuple : identifiants techniques et scellé lui-même.
+    id: "sig-autre",
+    selfHash: "0".repeat(64),
+    hashVersion: HASH_VERSION_COURANTE,
+  };
+
+  it.each([...COLONNES_SCELLEES])("modifier `%s` CHANGE l'empreinte", (colonne) => {
+    // Une colonne listée comme scellée qui ne changerait pas l'empreinte serait
+    // une fausse promesse : on croirait la protéger sans la protéger.
+    expect(empreinteAvec({ [colonne]: AUTRE_VALEUR[colonne] } as Partial<LigneSignature>)).not.toBe(
+      reference,
+    );
+  });
+
+  it("🔴 la liste couvre EXACTEMENT les colonnes qui entrent dans l'empreinte", () => {
+    // C'est cette assertion qui rend la liste vivante : ajouter une colonne au
+    // tuple sans l'inscrire ici fait échouer le test, et l'effacement RGPD
+    // pourrait alors la détruire en croyant ne rien casser.
+    const horsListe = (Object.keys(ligne()) as Array<keyof LigneSignature>).filter(
+      (c) => !COLONNES_SCELLEES.includes(c),
+    );
+    const scellantSansEtreListees = horsListe.filter(
+      (c) =>
+        c !== "selfHash" &&
+        c !== "hashVersion" &&
+        empreinteAvec({ [c]: AUTRE_VALEUR[c] } as Partial<LigneSignature>) !== reference,
+    );
+    expect(scellantSansEtreListees).toEqual([]);
   });
 });
 

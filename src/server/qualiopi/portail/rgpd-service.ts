@@ -238,21 +238,31 @@ export async function supprimerStagiaire(traineeId: string): Promise<void> {
       },
       data: { revokedAt: now, revokedMotif: "Effacement RGPD" },
     }),
-    // RGPD : purger les PII des signatures d'émargement.
+    // 🔴 AUCUNE écriture sur les colonnes de `emargement_signatures`, et c'est
+    // un correctif, pas un oubli.
     //
-    // ⚠️ `signataireNom` est VOLONTAIREMENT conservé (décision de Will). Il entre
-    // dans le tuple haché : l'écraser invaliderait `selfHash` sur toute la
-    // chaîne, donc détruirait la valeur probante de la feuille. L'article 17 §3 b
-    // du RGPD exclut expressément l'effacement quand le traitement est nécessaire
-    // à la constatation d'un droit en justice — ce qui est exactement le cas
-    // d'une feuille d'émargement opposable à un contrôle de service fait.
+    // Ce code mettait `signataireEmail`, `ipHash` et `userAgentSha256` à `null`
+    // au motif qu'« aucun des trois n'est nécessaire à la preuve ». Les trois
+    // sont dans le tuple haché (cf. `COLONNES_SCELLEES`). Conséquence : après
+    // toute demande d'article 17, `verifierChaine` rendait `empreinte_invalide`
+    // sur CHAQUE signature du stagiaire — c'est-à-dire, dans un dossier remis à
+    // un contrôle, le verdict « ces feuilles ont été modifiées après coup », sur
+    // des pièces parfaitement intactes. Un stagiaire de mauvaise foi n'avait
+    // qu'à demander son effacement avant un contrôle pour rendre ses heures
+    // injustifiables.
     //
-    // Sont en revanche effacés : l'adresse électronique, l'empreinte d'IP et
-    // celle du navigateur. Aucun des trois n'est nécessaire à la preuve.
-    prisma.emargementSignature.updateMany({
-      where: { OR: [{ enrollment: { traineeId } }, { coaching: { traineeId } }] },
-      data: { signataireEmail: null, ipHash: null, userAgentSha256: null },
-    }),
+    // Le raisonnement juste était déjà écrit ici pour `signataireNom` : l'écraser
+    // invaliderait `selfHash` sur toute la chaîne. Il n'avait pas été appliqué à
+    // la ligne suivante. L'article 17 §3 b — traitement nécessaire à la
+    // constatation d'un droit en justice — couvre les quatre colonnes de la même
+    // façon, et couvre a fortiori `ipHash` et `userAgentSha256`, qui sont déjà
+    // des pseudonymes SHA-256. Effacer l'adresse électronique en conservant le
+    // NOM COMPLET de la personne ne protégeait d'ailleurs personne.
+    //
+    // Ce qui EST effacé, parce que ce n'est pas dans le tuple : l'IMAGE du tracé
+    // sur R2, avec `signatureKey`. C'est la donnée la plus sensible du lot — un
+    // tracé manuscrit — et sa destruction n'ôte rien à la vérifiabilité, seul son
+    // condensat `signatureSha256` étant scellé.
   ]);
 
   // 🔴 L'IMAGE du tracé vit sur R2, hors transaction. Sans cet appel elle

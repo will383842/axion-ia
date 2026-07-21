@@ -185,6 +185,49 @@ export type VerrouColonnes = (ligne: PrismaEmargementSignature) => LigneSignatur
 export const verrouColonnes: VerrouColonnes = (ligne) => ligne;
 
 /**
+ * Colonnes qui entrent dans le tuple haché — donc INTOUCHABLES après coup.
+ *
+ * ## Pourquoi cette liste existe
+ *
+ * L'effacement RGPD mettait `signataireEmail`, `ipHash` et `userAgentSha256` à
+ * `null`. Les trois sont dans le tuple. Résultat : après toute demande d'article
+ * 17, `verifierChaine` rendait `empreinte_invalide` sur CHAQUE signature du
+ * stagiaire — c'est-à-dire, dans un dossier présenté à un contrôle, le verdict
+ * « ces feuilles ont été modifiées après coup ». Sur des pièces intactes.
+ *
+ * Le commentaire qui accompagnait ce code tenait pourtant le raisonnement juste
+ * un paragraphe plus haut, pour `signataireNom` : « l'écraser invaliderait
+ * `selfHash` sur toute la chaîne ». Il n'avait simplement pas été appliqué à la
+ * ligne suivante. Et le test censé couvrir le sujet ASSERTAIT le bug.
+ *
+ * Toute écriture ultérieure sur l'une de ces colonnes est une falsification, y
+ * compris quand elle est bien intentionnée. Ce qui peut être détruit sans
+ * toucher à la preuve, c'est l'IMAGE du tracé : `signatureKey` n'est pas ici.
+ */
+export const COLONNES_SCELLEES: ReadonlyArray<keyof LigneSignature> = [
+  "contexteType",
+  "enrollmentId",
+  "coachingId",
+  "creneauId",
+  "signataireNom",
+  "signataireEmail",
+  "date",
+  "demiJournee",
+  "heureDebut",
+  "heureFin",
+  "formateurNom",
+  "formationIntitule",
+  "modulesSnapshot",
+  "methode",
+  "signatureSha256",
+  "signeAt",
+  "ipHash",
+  "userAgentSha256",
+  "mentionVersion",
+  "prevHash",
+];
+
+/**
  * Le même verrou, pour la chaîne des CONTRESIGNATURES formateur.
  *
  * Il manquait : `contresignature-hash.ts` annonçait la garantie sans qu'aucune

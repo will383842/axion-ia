@@ -54,6 +54,7 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 import { prisma } from "@/lib/prisma";
 import { exporterDonneesStagiaire, supprimerStagiaire, creerDemandeRgpd } from "./rgpd-service";
 import { supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
+import { COLONNES_SCELLEES } from "@/server/qualiopi/emargement/reconstruction";
 
 const mockPrisma = prisma as unknown as {
   trainee: {
@@ -396,19 +397,27 @@ describe("RGPD — signatures d'émargement", () => {
     expect(select["expiresAt"]).toBe(true);
   });
 
-  it("🔴 l'effacement CONSERVE `signataireNom` — art. 17 §3 b", async () => {
-    // L'écraser invaliderait `selfHash` sur toute la chaîne, donc détruirait la
-    // valeur probante de la feuille. L'article 17 §3 b exclut l'effacement quand
-    // le traitement est nécessaire à la constatation d'un droit en justice.
+  it("🔴 l'effacement NE TOUCHE À AUCUNE colonne scellée — sinon la chaîne devient « falsifiée »", async () => {
+    // ⚠️ Ce test assertait exactement le bug : il EXIGEAIT que `signataireEmail`,
+    // `ipHash` et `userAgentSha256` soient mis à `null`. Les trois sont dans le
+    // tuple haché. Après toute demande d'article 17, `verifierChaine` rendait
+    // donc `empreinte_invalide` sur chaque signature du stagiaire — le verdict
+    // « ces feuilles ont été modifiées après coup », dans un dossier de contrôle,
+    // sur des pièces intactes.
+    //
+    // L'assertion porte sur la LISTE des colonnes scellées plutôt que sur trois
+    // noms : le jour où le tuple en gagne une, ce test la protège sans qu'on ait
+    // à y penser.
     await supprimerStagiaire("t1");
 
-    const arg = mockPrisma.emargementSignature.updateMany.mock.calls[0]![0] as {
-      data: Record<string, unknown>;
-    };
-    expect(arg.data).not.toHaveProperty("signataireNom");
-    expect(arg.data["signataireEmail"]).toBeNull();
-    expect(arg.data["ipHash"]).toBeNull();
-    expect(arg.data["userAgentSha256"]).toBeNull();
+    const ecritures = [
+      ...mockPrisma.emargementSignature.updateMany.mock.calls,
+      // La purge des images écrit elle aussi sur la table : `signatureKey` et
+      // `imagePurgeeAt` sont hors tuple, et doivent le rester.
+      ...mockPrisma.emargementSignature.update.mock.calls,
+    ].map((c) => (c[0] as { data: Record<string, unknown> }).data);
+    const colonnesEcrites = ecritures.flatMap((d) => Object.keys(d));
+    expect(colonnesEcrites.filter((c) => COLONNES_SCELLEES.includes(c as never))).toEqual([]);
   });
 
   it("l'effacement RÉVOQUE les jetons encore vivants", async () => {
