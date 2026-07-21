@@ -175,6 +175,7 @@ export function LiensEmargement({
                   {/* eslint-disable-next-line @next/next/no-img-element -- data-URL
                       générée à la volée, jamais servie par le pipeline d'images. */}
                   <img
+                    data-clarity-mask="true"
                     src={l.qr}
                     alt={`QR code du lien de signature de ${l.stagiaireNom}`}
                     width={agrandi === l.enrollmentId ? 320 : 96}
@@ -190,7 +191,16 @@ export function LiensEmargement({
                   <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                     Valable jusqu&apos;au {l.expiresAt}
                   </p>
-                  <p className="mt-1 truncate text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                  {/* ⚠️ `data-clarity-mask` : la console admin hérite elle aussi
+                      des scripts du layout racine, et Clarity enregistre le DOM.
+                      Sans ce masque, un admin ayant accepté les cookies fait
+                      archiver N liens de signature rejouables chez Microsoft,
+                      hors UE. Le QR ci-dessus porte la même valeur, d'où le
+                      masque sur le conteneur entier. */}
+                  <p
+                    data-clarity-mask="true"
+                    className="mt-1 truncate text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
+                  >
                     {l.url}
                   </p>
                 </div>

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useReportWebVitals } from "next/web-vitals";
 import { onINP } from "web-vitals/attribution";
 import { usePathname } from "next/navigation";
+import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useLocale } from "next-intl";
 
 const VITALS_ENDPOINT = "/api/vitals";
@@ -270,7 +271,11 @@ function isAdminRoute(pathname: string | null): boolean {
 export function WebVitals() {
   const pathname = usePathname();
   const locale = useLocale();
-  const adminRoute = isAdminRoute(pathname);
+  // 🔴 `href` COMPLET est posté à `/api/vitals`, qui l'écrit dans
+  // `data/vitals/*.ndjson` ET dans la table `WebVitalSample` — deux stockages
+  // qu'aucune purge RGPD ne visite. Sur le portail, ce serait le jeton
+  // d'émargement archivé en clair, côté serveur, sans date de péremption.
+  const adminRoute = isAdminRoute(pathname) || urlPorteUnSecret(pathname);
 
   // P1-21 (audit re-run 2026-05-15) — INP attribution Chrome 124+.
   // `useReportWebVitals` ne supporte pas la prop `attribution` ; on appelle

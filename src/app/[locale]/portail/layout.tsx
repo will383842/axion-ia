@@ -1,35 +1,30 @@
 /**
- * Portail stagiaire — layout isolé.
+ * Portail stagiaire — présentation et `noindex`.
  *
- * ## 🔴 Pourquoi ce fichier existe : le jeton partait chez Plausible et Clarity
+ * ## ⚠️ Ce fichier ne protège RIEN, et c'est important de le savoir
  *
- * Sans layout propre, le portail héritait du layout racine, qui monte
- * `<Plausible />` et `<Clarity />`. Or Plausible envoie `location.pathname` — et
- * nos jetons vivent dans le CHEMIN :
- * `/fr/portail/emarger/<payload>.<signature>`.
+ * Sa première version affirmait « aucune analytique, aucun chat, ni en-tête ni
+ * pied de page ». C'était faux : dans l'App Router, un layout imbriqué s'AJOUTE
+ * à son parent, il ne le remplace jamais. Le portail continuait donc d'hériter
+ * de `<Plausible />`, `<Clarity />`, `<WebVitals />` et du reste — pendant que
+ * ce commentaire assurait le contraire.
  *
- * Conséquence mesurée par la revue : le jeton atterrissait en clair dans le
- * rapport « Top pages », lisible par quiconque a accès au tableau de bord, pour
- * toute la durée de rétention. Il reste valable jusqu'à la fin de session + 48 h
- * et n'est pas à usage unique : n'importe quel lecteur du tableau de bord
- * pouvait donc rejouer le lien et signer à la place du stagiaire. Et si le
- * visiteur avait accepté les cookies, Clarity enregistrait en plus l'URL et le
- * DOM nominatif de la feuille — avec transfert hors UE.
+ * C'est le genre de faux exactement qui traverse une revue : on lit la promesse,
+ * on coche, on passe. Vérifié en production sur une page de structure identique
+ * (`/fr/espace-formateur/connexion`) : le HTML servi contenait bien le script
+ * Plausible, un en-tête et un pied de page publics.
  *
- * Cela annulait purement et simplement le nettoyage Sentry mis en place pour la
- * même raison. Une fuite corrigée sur un canal ne sert à rien si un autre reste
- * ouvert.
+ * ## Où la protection vit réellement
  *
- * ## Ce que ce layout ne rend pas, et pourquoi
+ * Dans `src/lib/analytics/routes-privees.ts` (`urlPorteUnSecret`), appelée par
+ * CHAQUE composant qui transmet l'URL : `Plausible`, `Clarity`,
+ * `RefererTracker`, `WebVitals`, `SpeculationRules`, `ChatWidgetMount`. La
+ * garde ne peut pas être portée côté serveur : appeler `headers()` dans le
+ * layout racine rendrait tout le site dynamique.
  *
- * Aucune analytique, aucun chat, ni en-tête ni pied de page. Un stagiaire qui
- * ouvre sa feuille d'émargement n'a rien à faire d'une navigation marketing, et
- * chaque script en moins est une surface de fuite en moins sur une page qui
- * porte un secret dans son URL.
- *
- * ⚠️ Ne JAMAIS ajouter ici de script tiers recevant l'URL. Si une mesure
- * d'audience devient nécessaire sur le portail, elle devra recevoir un chemin
- * masqué, jamais `location.pathname`.
+ * ⚠️ Tout nouveau script tiers recevant l'URL doit passer par cette garde. Le
+ * jeton vit dans le chemin, reste valable jusqu'à la fin de session + 48 h et
+ * n'est pas à usage unique : qui le lit peut signer à la place du stagiaire.
  */
 
 import type { Metadata } from "next";

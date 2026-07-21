@@ -37,6 +37,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 
 interface SpeculationRulesProps {
   /** Locale courant (fr / en). Passé depuis le Server Layout via prop. */
@@ -136,6 +137,9 @@ export function SpeculationRules({ locale, adminPrefix }: SpeculationRulesProps)
 
     // Skip sur routes admin (RSC stream crash 2026-05-18).
     if (pathname?.startsWith("/admin/")) return;
+    // Pré-charger une URL à jeton la fait entrer dans les journaux du CDN et du
+    // serveur pour une page que le visiteur n'ouvrira peut-être jamais.
+    if (urlPorteUnSecret(pathname)) return;
     if (adminPrefix && pathname?.includes(`/${adminPrefix}/`)) return;
 
     // Feature detection — browsers sans support ignorent + pas d'overhead.

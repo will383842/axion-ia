@@ -23,14 +23,22 @@
 // `NEXT_PUBLIC_CLARITY_PROJECT_ID` absent (preserve dev sans appel réseau).
 
 import Script from "next/script";
+import { usePathname } from "next/navigation";
 import { env } from "@/env";
+import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useAnalyticsConsent } from "./CookieConsent";
 
 export function Clarity() {
   const projectId = env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
   const consent = useAnalyticsConsent();
+  const pathname = usePathname();
   if (!projectId) return null;
   if (consent !== "accepted") return null;
+  // 🔴 Clarity enregistre l'URL ET le DOM, avec transfert hors UE. Sur le
+  // portail, cela signifie le jeton d'émargement en clair plus la feuille
+  // nominative. Le consentement ne couvre pas ça : le stagiaire consent à la
+  // mesure d'audience, pas à la diffusion de son moyen d'authentification.
+  if (urlPorteUnSecret(pathname)) return null;
 
   return (
     <Script
