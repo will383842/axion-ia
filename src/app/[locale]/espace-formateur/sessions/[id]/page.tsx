@@ -15,43 +15,16 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { requireFormateur } from "@/server/formateur/guard";
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
+import {
+  FORMATEUR_SESSIONS_PATH,
+  MODALITE_LABELS,
+  STATUT_SESSION_LABELS,
+  STATUT_INSCRIPTION_LABELS,
+  ROLE_FORMATEUR_LABELS,
+  libelle,
+} from "@/server/formateur/collectif-labels";
 
 export const dynamic = "force-dynamic";
-
-const SESSIONS_PATH = "/fr/espace-formateur/sessions";
-
-const MODALITE_LABELS: Record<string, string> = {
-  presentiel: "Présentiel",
-  distanciel: "Distanciel",
-  hybride: "Hybride",
-};
-
-const STATUT_SESSION_LABELS: Record<string, string> = {
-  planifiee: "Planifiée",
-  en_cours: "En cours",
-  realisee: "Réalisée",
-  annulee: "Annulée",
-  reportee: "Reportée",
-};
-
-const STATUT_INSCRIT_LABELS: Record<string, string> = {
-  planifiee: "Planifié",
-  presente: "Présent",
-  abandon: "Abandon",
-  exclu: "Exclu",
-};
-
-const ROLE_LABELS: Record<string, string> = {
-  principal: "Formateur principal",
-  co_formateur: "Co-formateur",
-  assistant: "Assistant",
-  tuteur_afest: "Tuteur AFEST",
-};
-
-function labelOf(map: Record<string, string>, key: string | null): string {
-  if (key === null) return "—";
-  return map[key] ?? key;
-}
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", {
   weekday: "long",
@@ -78,7 +51,7 @@ export default async function Page({
   return (
     <div className="space-y-6">
       <div>
-        <Link href={SESSIONS_PATH} className="text-terracotta text-xs hover:underline">
+        <Link href={FORMATEUR_SESSIONS_PATH} className="text-terracotta text-xs hover:underline">
           ← Mes formations
         </Link>
         <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -86,7 +59,7 @@ export default async function Page({
           <span className="text-fg-muted text-sm">{session.numero}</span>
         </div>
         <p className="text-fg-muted mt-1 text-sm">
-          {labelOf(STATUT_SESSION_LABELS, session.statut)}
+          {libelle(STATUT_SESSION_LABELS, session.statut)}
         </p>
       </div>
 
@@ -102,7 +75,7 @@ export default async function Page({
         </div>
         <div>
           <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Modalité</dt>
-          <dd className="text-mocha mt-1 text-sm">{labelOf(MODALITE_LABELS, session.modalite)}</dd>
+          <dd className="text-mocha mt-1 text-sm">{libelle(MODALITE_LABELS, session.modalite)}</dd>
         </div>
         {lieu ? (
           <div>
@@ -122,7 +95,7 @@ export default async function Page({
           <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Votre rôle</dt>
           <dd className="mt-1">
             <span className="bg-sand text-mocha inline-block rounded-full px-3 py-1 text-xs font-medium">
-              {labelOf(ROLE_LABELS, session.role)}
+              {libelle(ROLE_FORMATEUR_LABELS, session.role)}
             </span>
           </dd>
         </div>
@@ -132,7 +105,7 @@ export default async function Page({
       <div className="border-border bg-sand rounded-lg border p-4 text-sm">
         <p className="text-mocha">
           Vous consultez cette formation en tant que{" "}
-          <strong>{labelOf(ROLE_LABELS, session.role).toLowerCase()}</strong>.
+          <strong>{libelle(ROLE_FORMATEUR_LABELS, session.role).toLowerCase()}</strong>.
         </p>
         {session.peutCloturerEmargement === false ? (
           <p className="text-fg-muted mt-2">
@@ -182,7 +155,7 @@ export default async function Page({
                         {p.tauxPresencePct !== null ? `${p.tauxPresencePct} %` : "—"}
                       </td>
                       <td className="text-mocha px-4 py-3">
-                        {labelOf(STATUT_INSCRIT_LABELS, p.statut)}
+                        {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
                       </td>
                     </tr>
                   ))}
@@ -199,7 +172,7 @@ export default async function Page({
                       {p.prenom} {p.nom}
                     </span>
                     <span className="text-fg-muted text-xs">
-                      {labelOf(STATUT_INSCRIT_LABELS, p.statut)}
+                      {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
                     </span>
                   </div>
                   {p.situationHandicap ? (
