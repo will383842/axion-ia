@@ -383,7 +383,7 @@ export async function genererContratFormationAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true, email: true, telephone: true } },
+      trainee: { select: { id: true, nom: true, prenom: true, email: true, telephone: true } },
       session: {
         select: {
           id: true,
@@ -438,7 +438,10 @@ export async function genererContratFormationAction(input: {
         },
         identite,
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -474,7 +477,7 @@ export async function genererConvocationAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true, entreprise: true } },
+      trainee: { select: { id: true, nom: true, prenom: true, entreprise: true } },
       session: {
         select: {
           id: true,
@@ -547,7 +550,10 @@ export async function genererConvocationAction(input: {
         },
         identite,
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -753,7 +759,7 @@ export async function genererGrilleEvaluationAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true } },
+      trainee: { select: { id: true, nom: true, prenom: true } },
       session: {
         select: {
           id: true,
@@ -799,7 +805,10 @@ export async function genererGrilleEvaluationAction(input: {
         },
         identite,
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -892,6 +901,7 @@ export async function genererCertificatRealisationAction(input: {
       tauxPresencePct: true,
       trainee: {
         select: {
+          id: true,
           nom: true,
           prenom: true,
           fonction: true,
@@ -982,7 +992,10 @@ export async function genererCertificatRealisationAction(input: {
           dureeHeures,
         },
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -1131,7 +1144,7 @@ export async function genererKitCpfAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true } },
+      trainee: { select: { id: true, nom: true, prenom: true } },
       session: {
         select: {
           id: true,
@@ -1183,7 +1196,10 @@ export async function genererKitCpfAction(input: {
           coutTotalCents: coutTotal,
         },
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -1219,7 +1235,7 @@ export async function genererKitFranceTravailAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true } },
+      trainee: { select: { id: true, nom: true, prenom: true } },
       session: {
         select: {
           id: true,
@@ -1281,7 +1297,10 @@ export async function genererKitFranceTravailAction(input: {
           },
         },
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({

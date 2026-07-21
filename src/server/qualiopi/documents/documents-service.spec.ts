@@ -136,3 +136,130 @@ describe("generateDocument — garde-fou conformité systématique", () => {
     expect(mockPrisma.documentGenere.create).not.toHaveBeenCalled();
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Filigrane « COPIE »
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("generateDocument — détection de régénération", () => {
+  /**
+   * `documentGenere.count` sert DEUX usages : l'allocation du numéro séquentiel
+   * (filtre `numero`) et la détection de régénération (filtre `type`). Les
+   * distinguer est indispensable — les confondre ferait passer les tests pour de
+   * mauvaises raisons.
+   */
+  function simulerDocumentsExistants(nb: number): void {
+    mockPrisma.documentGenere.count.mockImplementation((args: unknown) => {
+      const where = (args as { where: Record<string, unknown> }).where;
+      return Promise.resolve(where["numero"] !== undefined ? 0 : nb);
+    });
+  }
+
+  /** Le `where` utilisé pour décider s'il s'agit d'une régénération. */
+  function whereDeDetection(): Record<string, unknown> | undefined {
+    const appel = mockPrisma.documentGenere.count.mock.calls.find(
+      (c) => (c[0] as { where: Record<string, unknown> }).where["numero"] === undefined,
+    );
+    return appel === undefined
+      ? undefined
+      : (appel[0] as { where: Record<string, unknown> }).where;
+  }
+
+  /** `estCopie` réellement écrit en base. */
+  function estCopiePersiste(): unknown {
+    return (mockPrisma.documentGenere.create.mock.calls[0]![0] as { data: { estCopie: unknown } })
+      .data.estCopie;
+  }
+
+  it("un premier tirage n'est pas une copie", async () => {
+    simulerDocumentsExistants(0);
+    await generateDocument({
+      type: "positionnement",
+      buildElement,
+      refs: { sessionId: "ses-1" },
+    });
+    expect(estCopiePersiste()).toBe(false);
+  });
+
+  it("un second tirage des MÊMES références est une copie", async () => {
+    simulerDocumentsExistants(1);
+    await generateDocument({
+      type: "positionnement",
+      buildElement,
+      refs: { sessionId: "ses-1" },
+    });
+    expect(estCopiePersiste()).toBe(true);
+  });
+
+  it("🔴 deux stagiaires d'une MÊME session ne se marquent pas copie l'un l'autre", async () => {
+    // Le bug : six types sont établis PAR STAGIAIRE mais n'étaient rattachés
+    // qu'à la session. Sur une session de huit personnes, le premier contrat
+    // était un original et les sept suivants étaient enregistrés « copie ».
+    // La correspondance doit donc être EXACTE, références absentes comprises.
+    simulerDocumentsExistants(0);
+    await generateDocument({
+      type: "positionnement",
+      buildElement,
+      refs: { sessionId: "ses-1", traineeId: "sta-2" },
+    });
+
+    const where = whereDeDetection();
+    expect(where).toMatchObject({ sessionId: "ses-1", traineeId: "sta-2" });
+    // Les références NON fournies sont comparées à `null`, pas ignorées : sans
+    // cela, une pièce rattachée à la seule session serait confondue avec une
+    // pièce rattachée à la session ET à un stagiaire.
+    expect(where).toMatchObject({ clientId: null, coachingSessionId: null, formationId: null });
+  });
+
+  it("🔴 SANS aucune référence, on ne conclut pas — pas de compte, pas de copie", async () => {
+    // Quatre types n'en portent aucune (inventaire des moyens, contrat de
+    // sous-traitance, fiche formateur, facture 1-to-1). Le compte dégénérait en
+    // « deuxième document de ce type jamais émis » : le contrat d'un AUTRE
+    // sous-traitant était marqué copie, et la deuxième facture de l'histoire
+    // aussi.
+    simulerDocumentsExistants(42);
+    await generateDocument({ type: "inventaire_moyens", buildElement });
+
+    expect(estCopiePersiste()).toBe(false);
+    expect(whereDeDetection()).toBeUndefined();
+  });
+
+  it("`estCopie: true` explicite l'emporte, sans interroger la base", async () => {
+    simulerDocumentsExistants(0);
+    await generateDocument({ type: "positionnement", buildElement, estCopie: true });
+    expect(estCopiePersiste()).toBe(true);
+    expect(whereDeDetection()).toBeUndefined();
+  });
+
+  it("🔴 le filigrane atteint RÉELLEMENT le gabarit, pas seulement la base", async () => {
+    // ⚠️ Le défaut d'origine : `estCopie` était écrit en base et n'atteignait
+    // jamais le PDF, `buildElement(numero)` ne recevant que le numéro. La base
+    // disait « copie » et la pièce sortait identique à l'original — soit
+    // exactement ce que le filigrane devait empêcher.
+    simulerDocumentsExistants(1);
+    const Gabarit = (_: { data: { numero: string; estCopie?: boolean } }) => null;
+
+    await generateDocument({
+      type: "positionnement",
+      buildElement: (numero) => React.createElement(Gabarit, { data: { numero } }),
+      refs: { sessionId: "ses-1" },
+    });
+
+    const rendu = mockRender.mock.calls[0]![0] as { props: { data: { estCopie?: boolean } } };
+    expect(rendu.props.data.estCopie).toBe(true);
+  });
+
+  it("ne touche pas aux données du gabarit quand ce n'est pas une copie", async () => {
+    simulerDocumentsExistants(0);
+    const Gabarit = (_: { data: { numero: string; estCopie?: boolean } }) => null;
+
+    await generateDocument({
+      type: "positionnement",
+      buildElement: (numero) => React.createElement(Gabarit, { data: { numero } }),
+      refs: { sessionId: "ses-1" },
+    });
+
+    const rendu = mockRender.mock.calls[0]![0] as { props: { data: { estCopie?: boolean } } };
+    expect(rendu.props.data.estCopie).toBeUndefined();
+  });
+});

@@ -587,6 +587,13 @@ describe("importReleveConnexionAction", () => {
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
     mockLogActivity.mockResolvedValue(undefined);
     mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession());
+    // 🔴 `mockGenererCreneaux` manquait ici. Ce bloc s'appuyait silencieusement
+    // sur la valeur laissée par le `beforeEach` d'un AUTRE `describe` :
+    // `clearAllMocks` efface les appels, jamais les valeurs de retour. Lancé en
+    // isolé (`-t "importReleveConnexionAction"`), le bloc échouait sur 11 de ses
+    // 17 tests — « creneauxSession is not iterable ». Onze tests verts par
+    // accident d'ordonnancement.
+    mockGenererCreneaux.mockReturnValue(makeCreneaux());
     // ⚠️ `clearAllMocks` efface les APPELS, pas les valeurs de retour. Sans ce
     // repositionnement, le `true` posé par le test du garde-fou FUIT vers tous
     // les tests suivants du bloc, qui échouent alors pour une raison sans

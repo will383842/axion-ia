@@ -620,3 +620,128 @@ describe("signerCreneau — la ligne écrite est VÉRIFIABLE", () => {
     expect((donneesCreees()["suppressionPrevueAt"] as Date).getUTCFullYear()).toBe(2032);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sessions de PLUSIEURS journées
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("signerCreneau — le snapshot est celui de LA BONNE journée", () => {
+  /**
+   * 🔴 Tous les tests ci-dessus s'appuient sur un fixture à UNE seule journée.
+   * Un fixture mono-journée rend indiscernables « chercher la journée du
+   * créneau » et « prendre la première journée venue » : la mutation
+   * `session.jours.find(...)` → `session.jours[0]` survivait à l'intégralité de
+   * la suite.
+   *
+   * Ce qu'elle coûterait : signer le créneau du troisième jour figerait dans le
+   * tuple HACHÉ les horaires, les modules et le formateur du premier. Une preuve
+   * fausse, et scellée cryptographiquement — donc indéfendable, puisque son
+   * empreinte la déclarerait intacte.
+   *
+   * Or les sessions en entreprise sont majoritairement multi-jours : c'est le
+   * cas NORMAL qui n'était pas testé.
+   */
+  const JOURS = [
+    {
+      date: new Date("2026-06-10T00:00:00.000Z"),
+      heureDebut: "09:00",
+      heureFin: "17:00",
+      modules: ["Module 1 — Cadrage"],
+      trainer: null as { nom: string; prenom: string } | null,
+    },
+    {
+      date: new Date("2026-06-11T00:00:00.000Z"),
+      heureDebut: "08:30",
+      heureFin: "12:30",
+      modules: ["Module 2 — Cas d'usage"],
+      trainer: null as { nom: string; prenom: string } | null,
+    },
+    {
+      date: new Date("2026-06-12T00:00:00.000Z"),
+      heureDebut: "10:00",
+      heureFin: "16:00",
+      modules: ["Module 3 — Passage à l'échelle"],
+      // Désistement du formateur principal sur la dernière journée.
+      trainer: { nom: "Remplaçante", prenom: "Claire" } as { nom: string; prenom: string } | null,
+    },
+  ];
+
+  /** Contexte d'un créneau tombant sur la journée `index`, session à 3 jours. */
+  function contexteMultiJours(index: number) {
+    const base = contexte();
+    return {
+      ...base,
+      date: JOURS[index]!.date,
+      enrollment: {
+        ...base.enrollment,
+        session: { ...base.enrollment.session, jours: JOURS },
+      },
+    };
+  }
+
+  it("🔴 fige les horaires, les modules et le formateur de la journée SIGNÉE", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(contexteMultiJours(2));
+
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: new Date("2026-06-12T14:00:00.000Z"),
+    });
+
+    expect(r.ok).toBe(true);
+    const data = donneesCreees();
+    expect(data["heureDebut"]).toBe("10:00");
+    expect(data["heureFin"]).toBe("16:00");
+    expect(data["modulesSnapshot"]).toEqual(["Module 3 — Passage à l'échelle"]);
+    // Le formateur de la journée prime : c'est lui qui a réellement animé.
+    expect(data["formateurNom"]).toBe("Claire Remplaçante");
+  });
+
+  it("prend la journée du MILIEU quand c'est elle qui est signée", async () => {
+    // Une session de trois jours a deux extrémités : ne tester que la dernière
+    // laisserait passer un `jours[jours.length - 1]`.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(contexteMultiJours(1));
+
+    await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: new Date("2026-06-11T11:00:00.000Z"),
+    });
+
+    const data = donneesCreees();
+    expect(data["heureDebut"]).toBe("08:30");
+    expect(data["heureFin"]).toBe("12:30");
+    expect(data["modulesSnapshot"]).toEqual(["Module 2 — Cas d'usage"]);
+    // Aucun formateur d'exception ce jour-là : le principal reprend la main.
+    expect(data["formateurNom"]).toBe("Williams Jullin");
+  });
+
+  it("REFUSE un créneau dont la journée n'est pas déclarée, même si d'autres le sont", async () => {
+    const base = contexte();
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      ...base,
+      // Le 15 juin n'est pas dans la liste : inventer « 09h00–17h00 » serait
+      // exactement ce que sanctionne CAA Nantes 20/04/2021.
+      date: new Date("2026-06-15T00:00:00.000Z"),
+      enrollment: {
+        ...base.enrollment,
+        session: { ...base.enrollment.session, jours: JOURS },
+      },
+    });
+
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: new Date("2026-06-15T11:00:00.000Z"),
+    });
+
+    expect(r).toMatchObject({ ok: false, raison: "journee_non_declaree" });
+    expect(mockStore).not.toHaveBeenCalled();
+  });
+});
