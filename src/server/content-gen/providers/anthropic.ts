@@ -102,10 +102,37 @@ export function mapAnthropicError(err: unknown): ProviderError {
     if (status === 401 || status === 403) {
       return new ProviderError(`Anthropic auth: ${err.message}`, "auth_failed", "anthropic", false);
     }
-    // Même piège que côté OpenAI (cf. `openai.ts`), avec une nuance : Anthropic
-    // signale le crédit épuisé par un **400** `invalid_request_error` portant
-    // « Your credit balance is too low », pas par un 429. Observé en prod :
-    // 128 jobs échoués sous l'étiquette générique « Anthropic API 400 ».
+    // Un 429 Anthropic est un rate-limit, POINT. Le crédit épuisé arrive en 400
+    // (`invalid_request_error` « Your credit balance is too low ») ou en 402 —
+    // jamais en 429.
+    //
+    // ⚠️ AUDIT 2026-07-21 (2e passe) — ce branchement DOIT précéder le test
+    // quota ci-dessous, qui accepte le simple mot « billing ». Or le message de
+    // rate-limit d'Anthropic renvoie lui-même vers la page « Plans & Billing » :
+    // avec l'ordre inverse, un vrai rate-limit transitoire était classé
+    // `quota_exhausted` NON-retryable et le job mourait alors qu'un simple
+    // retry aurait abouti. C'est le bug corrigé pour OpenAI, à l'envers.
+    // Ici on ne bascule en quota que sur une mention EXPLICITE de crédit.
+    if (status === 429) {
+      const isQuota = /credit balance is too low|insufficient[_-]quota/i.test(err.message);
+      if (isQuota) {
+        return new ProviderError(
+          `Anthropic quota épuisé (compte à recharger) : ${err.message}`,
+          "quota_exhausted",
+          "anthropic",
+          false,
+        );
+      }
+      return new ProviderError(
+        `Anthropic rate limited: ${err.message}`,
+        "rate_limited",
+        "anthropic",
+        true,
+      );
+    }
+    // Hors 429, le motif large reste justifié : c'est là qu'Anthropic signale
+    // réellement le crédit épuisé (400 `invalid_request_error`, 402). Observé en
+    // prod : 128 jobs échoués sous l'étiquette générique « Anthropic API 400 ».
     if (
       /credit balance is too low|billing|insufficient[_-]quota/i.test(err.message) ||
       status === 402
@@ -115,14 +142,6 @@ export function mapAnthropicError(err: unknown): ProviderError {
         "quota_exhausted",
         "anthropic",
         false,
-      );
-    }
-    if (status === 429) {
-      return new ProviderError(
-        `Anthropic rate limited: ${err.message}`,
-        "rate_limited",
-        "anthropic",
-        true,
       );
     }
     if (status && status >= 500) {

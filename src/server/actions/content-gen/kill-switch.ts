@@ -2,8 +2,15 @@
  * Content Generator — Kill switch global.
  *
  * § 12 + § 24.7 master prompt : 1 clic pour stopper toutes les générations
- * en cours. Stocké en DB (`ContentGenConfig.key="kill_switch"`) ET fallback
- * `CONTENT_GEN_KILL_SWITCH` env var.
+ * en cours. Stocké en DB (`ContentGenConfig.key="kill_switch"`).
+ *
+ * ⚠️ AUDIT 2026-07-21 — cet en-tête annonçait un « fallback `CONTENT_GEN_KILL_SWITCH`
+ * env var ». CE FALLBACK N'EXISTE PAS : la variable n'est lue nulle part
+ * (`readContentGenConfig` interroge Prisma et rien d'autre). La poser dans Coolify
+ * ne gèle RIEN tout en donnant l'impression du contraire — sur un dispositif
+ * d'arrêt d'urgence, c'est le pire des comportements possibles. Mention retirée.
+ * La ligne DB est la seule source de vérité ; elle est lue sans cache, donc
+ * l'effet est immédiat au job suivant, sans redémarrage.
  *
  * Comportement worker (Sprint 1 livré) : avant chaque pick de job, lit la
  * valeur et si `true` → throw `KillSwitchActive`, le job est requeue plus

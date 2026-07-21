@@ -121,6 +121,42 @@ describe("mapAnthropicError — crédit épuisé signalé en 400, pas en 429", (
     expect(mapped.retryable).toBe(true);
   });
 
+  it("429 mentionnant « Plans & Billing » reste RETRYABLE (le piège inverse)", () => {
+    // Régression 2026-07-21 : le motif quota acceptait le simple mot « billing »
+    // et était testé AVANT le 429. Or les messages de rate-limit renvoient eux
+    // aussi vers la page « Plans & Billing » → un rate-limit parfaitement
+    // transitoire était classé non-retryable et le job mourait pour rien.
+    const mapped = mapAnthropicError(
+      anthropicError(429, {
+        message:
+          "Rate limit exceeded. For higher limits, see your Plans & Billing page to upgrade.",
+      }),
+    );
+
+    expect(mapped.code).toBe("rate_limited");
+    expect(mapped.retryable).toBe(true);
+  });
+
+  it("429 avec mention EXPLICITE de crédit → quota_exhausted quand même", () => {
+    // Le 429 n'est pas le canal normal du crédit épuisé chez Anthropic, mais si
+    // le message le dit explicitement, on ne retente pas pour rien.
+    const mapped = mapAnthropicError(
+      anthropicError(429, { message: "Your credit balance is too low to access the API." }),
+    );
+
+    expect(mapped.code).toBe("quota_exhausted");
+    expect(mapped.retryable).toBe(false);
+  });
+
+  it("400 « billing » (hors 429) reste quota_exhausted — motif large conservé", () => {
+    const mapped = mapAnthropicError(
+      anthropicError(400, { message: "Please go to Plans & Billing to purchase credits." }),
+    );
+
+    expect(mapped.code).toBe("quota_exhausted");
+    expect(mapped.retryable).toBe(false);
+  });
+
   it("5xx reste down + retryable", () => {
     const mapped = mapAnthropicError(anthropicError(529, { message: "Overloaded" }));
 
