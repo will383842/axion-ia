@@ -60,8 +60,32 @@ function mapOpenAiError(err: unknown): ProviderError {
         false,
       );
     }
+    // ⚠️ AUDIT 2026-07-21 — OpenAI renvoie 429 pour DEUX situations opposées :
+    //   - `rate_limit_exceeded`  → transitoire, le retry a du sens
+    //   - `insufficient_quota`   → crédit du compte épuisé, le retry ne peut
+    //                              JAMAIS réussir tant qu'un humain n'a pas payé
+    // L'ancien code mappait les deux vers `rate_limited` + `retryable: true` ET
+    // écrasait `err.message` par une constante. Conséquences observées en prod :
+    //   - 919 jobs échoués en 2 semaines, tous étiquetés « OpenAI rate limited »
+    //     alors que le compte était en `insufficient_quota` depuis des jours ;
+    //   - retries infinis sur une opération structurellement impossible, chaque
+    //     tentative consommant un slot de couverture (slots monotones = perdus) ;
+    //   - cause réelle invisible en base, en console admin et dans les alertes.
     if (status === 429) {
-      return new ProviderError(`OpenAI rate limited`, "rate_limited", "openai", true);
+      const isQuota =
+        err.code === "insufficient_quota" ||
+        /insufficient[_-]quota|exceeded your current quota|check your plan and billing/i.test(
+          err.message,
+        );
+      if (isQuota) {
+        return new ProviderError(
+          `OpenAI quota épuisé (compte à recharger) : ${err.message}`,
+          "quota_exhausted",
+          "openai",
+          false,
+        );
+      }
+      return new ProviderError(`OpenAI rate limited: ${err.message}`, "rate_limited", "openai", true);
     }
     if (status && status >= 500) {
       return new ProviderError(`OpenAI server error ${status}`, "down", "openai", true);

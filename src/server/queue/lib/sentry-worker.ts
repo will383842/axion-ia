@@ -143,6 +143,32 @@ export function captureWorkerError(
       tags["jobName"] = job.name;
     }
 
+    // ⚠️ AUDIT 2026-07-21 — `Sentry.captureException is not a function` en prod.
+    //
+    // Le worker tourne en Node pur (`tsx src/server/queue/worker.ts`), HORS du
+    // bundler Next. Dans ce contexte `@sentry/nextjs` résout vers un build qui
+    // n'expose que 27 symboles — `init` est présent, `captureException` NON.
+    // Vérifié dans le conteneur worker de prod :
+    //   `typeof S.captureException` → "undefined", `typeof S.init` → "function".
+    //
+    // Conséquence : depuis la mise en place de ce helper, AUCUNE erreur worker
+    // n'a jamais atteint Sentry. Le `catch` ci-dessous les avalait en
+    // `console.warn`, donc l'échec de l'observabilité était lui-même invisible.
+    // C'est ce qui a masqué la panne de quota OpenAI pendant plusieurs jours.
+    //
+    // Correctif complet (à faire, nécessite un changement de lockfile) :
+    // ajouter `@sentry/node` aux dépendances et l'utiliser dans le chemin
+    // worker. En attendant, on DÉTECTE le cas et on le signale bruyamment au
+    // lieu de le taire.
+    const capture = (Sentry as { captureException?: unknown }).captureException;
+    if (typeof capture !== "function") {
+      console.error(
+        `[sentry-worker] ⛔ Sentry INDISPONIBLE dans le worker (captureException absent) — ` +
+          `erreur NON remontée : ${workerName}/${queueName} · ${errName}: ${errMsg}`,
+      );
+      return;
+    }
+
     Sentry.captureException(err, {
       tags,
       extra: {
@@ -157,10 +183,9 @@ export function captureWorkerError(
       fingerprint: [workerName, errName, errMsg],
     });
   } catch (sentryErr) {
-    // Fail-soft : ne pas cascader. Log warn seulement.
-    // (Le worker.on("failed") est lui-même un handler d'erreur — surfacer une
-    // 2e erreur ici masquerait la cause racine.)
-    console.warn(
+    // Fail-soft : ne pas cascader. Mais en `error`, pas en `warn` — un helper
+    // d'observabilité qui échoue en silence est pire que pas d'observabilité.
+    console.error(
       `[sentry-worker] capture failed for ${workerName}/${queueName}:`,
       sentryErr instanceof Error ? sentryErr.message : String(sentryErr),
     );

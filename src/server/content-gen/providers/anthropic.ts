@@ -101,8 +101,28 @@ function mapAnthropicError(err: unknown): ProviderError {
     if (status === 401 || status === 403) {
       return new ProviderError(`Anthropic auth: ${err.message}`, "auth_failed", "anthropic", false);
     }
+    // Même piège que côté OpenAI (cf. `openai.ts`), avec une nuance : Anthropic
+    // signale le crédit épuisé par un **400** `invalid_request_error` portant
+    // « Your credit balance is too low », pas par un 429. Observé en prod :
+    // 128 jobs échoués sous l'étiquette générique « Anthropic API 400 ».
+    if (
+      /credit balance is too low|billing|insufficient[_-]quota/i.test(err.message) ||
+      status === 402
+    ) {
+      return new ProviderError(
+        `Anthropic quota épuisé (compte à recharger) : ${err.message}`,
+        "quota_exhausted",
+        "anthropic",
+        false,
+      );
+    }
     if (status === 429) {
-      return new ProviderError(`Anthropic rate limited`, "rate_limited", "anthropic", true);
+      return new ProviderError(
+        `Anthropic rate limited: ${err.message}`,
+        "rate_limited",
+        "anthropic",
+        true,
+      );
     }
     if (status && status >= 500) {
       return new ProviderError(`Anthropic server ${status}`, "down", "anthropic", true);
