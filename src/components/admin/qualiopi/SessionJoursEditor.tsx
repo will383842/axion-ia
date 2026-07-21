@@ -144,8 +144,15 @@ export function SessionJoursEditor({
       )}
 
       {jours.length === 0 ? (
-        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          Aucune journée déclarée. La session utilise sa plage de dates.
+        // ⚠️ Ce message disait « la session utilise sa plage de dates », ce qui
+        // n'est plus vrai depuis que la feuille d'émargement et les liens de
+        // signature exigent des horaires réels. Une session créée avant cette
+        // évolution n'a aucune journée : il faut le dire, et dire quoi faire.
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
+          <strong>Aucune journée déclarée.</strong> Les créneaux de présence retombent sur la plage
+          de dates de la session, mais ni les liens de signature ni la feuille d&apos;émargement ne
+          peuvent être produits : tous deux exigent des horaires réels. Ajoutez ci-dessous les
+          journées effectivement animées.
         </p>
       ) : (
         <ul className="mb-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-3)]">
