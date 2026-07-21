@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getFormateurSession } from "@/server/formateur/guard";
 import { FormateurLogoutButton } from "@/components/espace-formateur/FormateurLogoutButton";
+import { FormateurNav } from "@/components/espace-formateur/FormateurNav";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default async function EspaceFormateurLayout({
   const session = await getFormateurSession();
   return (
     <div className="bg-bg min-h-screen">
-      <header className="border-border bg-cream border-b">
+      <header className="border-border bg-sand border-b">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <Link href={FORMATEUR_BASE_PATH} className="text-mocha font-serif text-lg font-semibold">
             Espace formateur
@@ -39,6 +40,7 @@ export default async function EspaceFormateurLayout({
             </div>
           ) : null}
         </div>
+        <FormateurNav />
       </header>
       <main className="mx-auto max-w-3xl px-4 py-6">{children}</main>
     </div>

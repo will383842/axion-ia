@@ -23,6 +23,16 @@ export default async function DashboardPage(): Promise<React.ReactElement> {
 
   return (
     <div className="space-y-6">
+      <Link
+        href="/fr/espace-formateur/sessions"
+        className="border-border hover:border-terracotta block rounded-lg border p-4 transition-colors"
+      >
+        <span className="text-mocha font-serif font-semibold">Mes formations collectives</span>
+        <span className="text-fg-muted mt-1 block text-sm">
+          Voir les formations de groupe auxquelles vous êtes affecté
+        </span>
+      </Link>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-mocha font-serif text-2xl font-semibold">Mes séances 1-to-1</h1>
         <NewSessionForm />
@@ -38,7 +48,7 @@ export default async function DashboardPage(): Promise<React.ReactElement> {
             <li key={s.id}>
               <Link
                 href={`/fr/espace-formateur/seances/${s.id}`}
-                className="border-border bg-cream hover:border-terracotta block rounded-lg border p-4 transition-colors"
+                className="border-border bg-sand hover:border-terracotta block rounded-lg border p-4 transition-colors"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="text-mocha font-medium">
