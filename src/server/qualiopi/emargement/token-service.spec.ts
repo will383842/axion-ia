@@ -15,7 +15,7 @@ vi.mock("@/lib/prisma", () => ({
       create: vi.fn(),
     },
     sessionJour: {
-      count: vi.fn(),
+      findMany: vi.fn(),
     },
     $transaction: vi.fn(),
   },
@@ -43,7 +43,7 @@ const mockPrisma = prisma as unknown as {
     updateMany: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
   };
-  sessionJour: { count: ReturnType<typeof vi.fn> };
+  sessionJour: { findMany: ReturnType<typeof vi.fn> };
   $transaction: ReturnType<typeof vi.fn>;
 };
 const mockSign = signMagicToken as ReturnType<typeof vi.fn>;
@@ -55,9 +55,13 @@ beforeEach(() => {
   mockVerify.mockResolvedValue({ ok: true, resourceId: "enr-1" });
   mockPrisma.emargementToken.updateMany.mockResolvedValue({ count: 0 });
   // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour : sans ce
-  // repositionnement, `count` renverrait `undefined` et le garde-fou D14
-  // passerait par accident au lieu de passer par choix.
-  mockPrisma.sessionJour.count.mockResolvedValue(2);
+  // repositionnement, la lecture renverrait `undefined` et les deux garde-fous
+  // passeraient par accident au lieu de passer par choix.
+  // Deux journées déclarées ET confirmées : le cas nominal.
+  mockPrisma.sessionJour.findMany.mockResolvedValue([
+    { horairesConfirmes: true },
+    { horairesConfirmes: true },
+  ]);
   mockPrisma.emargementToken.create.mockResolvedValue({ id: "tok-1" });
   // `$transaction(cb)` → exécute le callback avec le client mocké.
   mockPrisma.$transaction.mockImplementation(async (cb: (tx: unknown) => unknown) =>
@@ -102,7 +106,7 @@ describe("creerTokenInscription", () => {
     // journées déclarées, le service de signature n'aurait d'autre issue que
     // d'inventer un « 09h00–17h00 ». Le refus tombe devant l'ADMIN, qui peut
     // corriger, et non en salle devant le stagiaire, qui ne le peut pas.
-    mockPrisma.sessionJour.count.mockResolvedValue(0);
+    mockPrisma.sessionJour.findMany.mockResolvedValue([]);
 
     await expect(
       creerTokenInscription({
@@ -117,10 +121,39 @@ describe("creerTokenInscription", () => {
   });
 
   it("expose une erreur typée, pas une erreur Prisma brute", async () => {
-    mockPrisma.sessionJour.count.mockResolvedValue(0);
+    mockPrisma.sessionJour.findMany.mockResolvedValue([]);
     await expect(
       creerTokenInscription({ enrollmentId: "enr-1", dateFinSession: new Date() }),
     ).rejects.toBeInstanceOf(TokenEmargementError);
+  });
+
+  it("🔴 REFUSE d'émettre sur des horaires jamais confirmés par un humain", async () => {
+    // `horairesConfirmes` était écrit puis jamais consulté : il n'alimentait
+    // qu'un bandeau. Un admin pouvait donc émettre les liens, faire signer, et
+    // tirer la feuille sur le « 09h00–17h00 » PROPOSÉ par défaut — précisément
+    // ce que ce chantier existe pour supprimer, cette fois scellé dans un tuple
+    // haché que plus personne ne pourra corriger.
+    mockPrisma.sessionJour.findMany.mockResolvedValue([
+      { horairesConfirmes: true },
+      { horairesConfirmes: false },
+    ]);
+
+    await expect(
+      creerTokenInscription({ enrollmentId: "enr-1", dateFinSession: new Date() }),
+    ).rejects.toMatchObject({ motif: "horaires_non_confirmes" });
+
+    // Rien n'a été écrit : le refus arrive AVANT toute mutation.
+    expect(mockPrisma.emargementToken.create).not.toHaveBeenCalled();
+    expect(mockPrisma.emargementToken.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("émet normalement quand TOUTES les journées sont confirmées", async () => {
+    const res = await creerTokenInscription({
+      enrollmentId: "enr-1",
+      dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+    });
+    expect(res.token).toBeTruthy();
+    expect(mockPrisma.emargementToken.create).toHaveBeenCalled();
   });
 
   it("révoque le jeton actif précédent AVANT d'en créer un nouveau", async () => {

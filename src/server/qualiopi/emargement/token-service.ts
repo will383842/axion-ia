@@ -47,9 +47,11 @@ export const FENETRE_APRES_FIN_MS = 48 * 60 * 60 * 1000;
  * Le refus se produit donc à la CRÉATION DU LIEN, c'est-à-dire devant l'admin
  * qui peut corriger, et non devant le stagiaire en salle qui ne le peut pas.
  */
+export type MotifRefusEmission = "journees_non_declarees" | "horaires_non_confirmes";
+
 export class TokenEmargementError extends Error {
-  readonly motif: "journees_non_declarees";
-  constructor(motif: "journees_non_declarees", message: string) {
+  readonly motif: MotifRefusEmission;
+  constructor(motif: MotifRefusEmission, message: string) {
     super(message);
     this.name = "TokenEmargementError";
     this.motif = motif;
@@ -112,14 +114,31 @@ export async function creerTokenInscription(input: {
   const maintenant = input.maintenant ?? new Date();
 
   // Garde-fou D14 — voir `TokenEmargementError`. Une seule requête : les
-  // journées de la session à laquelle appartient cette inscription.
-  const nbJours = await prisma.sessionJour.count({
+  // journées de la session à laquelle appartient cette inscription, avec leur
+  // état de confirmation.
+  const jours = await prisma.sessionJour.findMany({
     where: { session: { enrollments: { some: { id: input.enrollmentId } } } },
+    select: { horairesConfirmes: true },
   });
-  if (nbJours === 0) {
+  if (jours.length === 0) {
     throw new TokenEmargementError(
       "journees_non_declarees",
       "Cette session n'a déclaré aucune journée : renseignez les journées réellement animées et leurs horaires avant d'émettre un lien de signature. Sans horaires réels, la feuille d'émargement serait insuffisamment probante.",
+    );
+  }
+
+  // 🔴 `horairesConfirmes` était écrit puis jamais consulté : il n'alimentait
+  // qu'un bandeau. Un admin pouvait donc émettre les liens, faire signer, et
+  // tirer la feuille sur les horaires PROPOSÉS par défaut — le « 09h00–17h00 »
+  // codé en dur que ce chantier existe pour supprimer, cette fois écrit en base
+  // et scellé dans un tuple haché que plus personne ne pourra corriger.
+  //
+  // Le refus arrive devant l'admin, qui a l'éditeur des journées sous les yeux,
+  // et non devant le stagiaire en salle qui ne peut rien y faire.
+  if (jours.some((j) => !j.horairesConfirmes)) {
+    throw new TokenEmargementError(
+      "horaires_non_confirmes",
+      "Les horaires de cette session sont ceux proposés par défaut : personne ne les a confirmés. Vérifiez-les journée par journée et enregistrez-les avant d'émettre les liens — une signature les fige définitivement.",
     );
   }
 
