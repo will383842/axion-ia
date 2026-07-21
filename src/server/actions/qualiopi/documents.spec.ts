@@ -440,8 +440,9 @@ describe("genererEmargementAction", () => {
     mockSessionFindUnique.mockResolvedValue(sessionEmargeable());
     await genererEmargementAction({ sessionId: SESSION_ID });
 
-    const data =
-      donneesPdf<{ journees: Array<{ horaires: string; formateurNom: string; modules: string[] }> }>();
+    const data = donneesPdf<{
+      journees: Array<{ horaires: string; formateurNom: string; modules: string[] }>;
+    }>();
     expect(data.journees).toHaveLength(1);
     expect(data.journees[0]!.horaires).toBe("08:30–16:45");
     expect(data.journees[0]!.formateurNom).toBe("Williams Jullin");

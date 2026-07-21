@@ -201,8 +201,7 @@ export default async function EmargementPage({ params }: PageProps) {
         <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
           d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de signatures.
-          C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette
-          session ».
+          C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette session ».
         </p>
         <DossierSessionButton sessionId={id} />
       </section>

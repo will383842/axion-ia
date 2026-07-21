@@ -160,9 +160,7 @@ describe("generateDocument — détection de régénération", () => {
     const appel = mockPrisma.documentGenere.count.mock.calls.find(
       (c) => (c[0] as { where: Record<string, unknown> }).where["numero"] === undefined,
     );
-    return appel === undefined
-      ? undefined
-      : (appel[0] as { where: Record<string, unknown> }).where;
+    return appel === undefined ? undefined : (appel[0] as { where: Record<string, unknown> }).where;
   }
 
   /** `estCopie` réellement écrit en base. */
