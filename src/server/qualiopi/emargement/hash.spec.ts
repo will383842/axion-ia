@@ -84,8 +84,15 @@ describe("calculerSelfHash", () => {
     expect(calculerSelfHash(tuple())).toMatch(/^[0-9a-f]{64}$/);
   });
 
-  it("est déterministe", () => {
-    expect(calculerSelfHash(tuple())).toBe(calculerSelfHash(tuple()));
+  it("est déterministe, et sur la valeur FIGÉE", () => {
+    // ⚠️ Comparer deux appels l'un à l'autre passerait avec `() => "x"` : le
+    // test ne prouverait que la pureté de la fonction, jamais la stabilité de la
+    // forme canonique. C'est cette dernière qui compte, puisqu'un changement de
+    // forme rend fausses toutes les empreintes déjà en base.
+    expect(calculerSelfHash(tuple(), 1)).toBe(
+      "1a0ff9e7d1293de4c563d9218f2e884aa9e37c515081866d75a241eb207dcaf5",
+    );
+    expect(calculerSelfHash(tuple(), 1)).toBe(calculerSelfHash(tuple(), 1));
   });
 
   it("ne dépend pas de l'ordre de construction de l'objet", () => {

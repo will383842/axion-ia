@@ -17,30 +17,37 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     presenceCreneau: { findUnique: vi.fn() },
-    emargementSignature: { findFirst: vi.fn(), create: vi.fn() },
+    emargementSignature: { findFirst: vi.fn(), create: vi.fn(), count: vi.fn() },
     $transaction: vi.fn(),
   },
 }));
 
 vi.mock("./storage", () => ({
   storeSignatureImage: vi.fn(),
+  supprimerImageSignature: vi.fn(),
 }));
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
 import { prisma } from "@/lib/prisma";
-import { storeSignatureImage } from "./storage";
+import { storeSignatureImage, supprimerImageSignature } from "./storage";
 import { signerCreneau } from "./signature-service";
 import { calculerSelfHash, verifierChaine, type TupleSignatureV1 } from "./hash";
 import { maillonDepuisLigne, type LigneSignature } from "./reconstruction";
 import { MENTION_VERSION } from "./mentions";
+import { Prisma } from "../../../../prisma/generated/client";
 
 const mockPrisma = prisma as unknown as {
   presenceCreneau: { findUnique: ReturnType<typeof vi.fn> };
-  emargementSignature: { findFirst: ReturnType<typeof vi.fn>; create: ReturnType<typeof vi.fn> };
+  emargementSignature: {
+    findFirst: ReturnType<typeof vi.fn>;
+    create: ReturnType<typeof vi.fn>;
+    count: ReturnType<typeof vi.fn>;
+  };
   $transaction: ReturnType<typeof vi.fn>;
 };
 const mockStore = storeSignatureImage as unknown as ReturnType<typeof vi.fn>;
+const mockSupprimerImage = supprimerImageSignature as unknown as ReturnType<typeof vi.fn>;
 
 /** 10 juin 2026, 10 h 00 Paris (08:00 UTC, heure d'été) — la matinée a commencé. */
 const MAINTENANT = new Date("2026-06-10T08:00:00.000Z");
@@ -524,6 +531,93 @@ describe("signerCreneau — chaînage", () => {
       prevHash: "c".repeat(64),
     };
     expect(d["selfHash"]).toBe(calculerSelfHash(attendu));
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Collision de chaîne (index unique partiel anti-fourche)
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Violation de contrainte unique, telle que Prisma la lève RÉELLEMENT.
+   *
+   * ⚠️ Un `Object.assign(new Error(), { code: "P2002" })` ne suffit pas : le
+   * service teste `instanceof PrismaClientKnownRequestError`, et un faux objet
+   * ferait passer le test par le chemin « erreur inattendue » — donc verdict
+   * vert sur un comportement jamais exercé.
+   */
+  function collisionChaine(): Error {
+    return new Prisma.PrismaClientKnownRequestError("Unique constraint failed", {
+      code: "P2002",
+      clientVersion: "5.22.0",
+    });
+  }
+
+  it("REPREND après une collision de chaîne et finit par écrire", async () => {
+    // Deux stagiaires ne se gênent pas — la chaîne est portée par l'inscription.
+    // Mais deux onglets d'un même stagiaire, si : l'index unique partiel les
+    // sérialise, et la reprise doit relire la nouvelle tête plutôt que rendre
+    // une erreur au visage de quelqu'un qui a simplement signé deux fois vite.
+    let appels = 0;
+    mockPrisma.emargementSignature.create.mockImplementation(
+      async (args: { data: { id: string; selfHash: string } }) => {
+        appels += 1;
+        if (appels === 1) throw collisionChaine();
+        return { id: args.data.id, selfHash: args.data.selfHash };
+      },
+    );
+    mockPrisma.emargementSignature.count.mockResolvedValue(0);
+
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+
+    expect(r.ok).toBe(true);
+    expect(appels).toBe(2);
+  });
+
+  it("🔴 abandonne après 3 tentatives, sans image orpheline", async () => {
+    // ⚠️ Ramener `MAX_REPRISES_CHAINE` de 3 à 1 ne faisait échouer aucun test :
+    // la reprise n'était vérifiée qu'en « ça finit par réussir ». Le nombre est
+    // le compromis entre une contention passagère et une boucle qui tient la
+    // transaction ouverte.
+    mockPrisma.emargementSignature.create.mockRejectedValue(collisionChaine());
+    mockPrisma.emargementSignature.count.mockResolvedValue(0);
+
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+
+    expect(r).toMatchObject({ ok: false, raison: "conflit_concurrent" });
+    expect(mockPrisma.emargementSignature.create).toHaveBeenCalledTimes(3);
+    // L'image a été écrite sur R2 avant la transaction : sans ce nettoyage elle
+    // serait inatteignable par la purge RGPD, qui part de `signature_key`.
+    expect(mockSupprimerImage).toHaveBeenCalled();
+  });
+
+  it("une collision qui cache une signature DÉJÀ posée est nommée pour ce qu'elle est", async () => {
+    // Le message compte : « réessayez » face à une double signature enverrait le
+    // stagiaire recommencer indéfiniment.
+    mockPrisma.emargementSignature.create.mockRejectedValue(collisionChaine());
+    mockPrisma.emargementSignature.count.mockResolvedValue(1);
+
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+
+    expect(r).toMatchObject({ ok: false, raison: "deja_signe" });
+    expect(mockPrisma.emargementSignature.create).toHaveBeenCalledTimes(1);
   });
 });
 

@@ -175,8 +175,16 @@ describe("tupleContresignatureDepuisLigne", () => {
     }
   });
 
-  it("refuse un `modulesSnapshot` mal formé", () => {
-    expect(tupleContresignatureDepuisLigne(ligne({ modulesSnapshot: { a: 1 } }))).toBeNull();
+  it.each([
+    ["un objet", { a: 1 }],
+    ["une chaîne", "Module 1"],
+    // 🔴 Le cas qui manquait, et la mutation qui survivait : un tableau NON
+    // homogène. La garde symétrique existe et est testée côté signatures ; ici
+    // le copier-coller avait emporté le code sans le test.
+    ["un tableau mêlant un nombre", ["Module 1", 42]],
+    ["un tableau contenant `null`", ["Module 1", null]],
+  ])("refuse un `modulesSnapshot` qui est %s", (_, valeur) => {
+    expect(tupleContresignatureDepuisLigne(ligne({ modulesSnapshot: valeur }))).toBeNull();
   });
 });
 

@@ -135,6 +135,32 @@ describe("genererCreneaux — répartition de la durée", () => {
     expect(totalMinutes).toBe(14 * 60);
   });
 
+  it("🔴 le plus grand reste va aux plus GRANDES fractions, minute par minute", () => {
+    // ⚠️ Inverser l'ordre du tri ne faisait échouer aucun test : la SOMME est
+    // conservée dans les deux cas, et c'est elle seule qu'on vérifiait. Il faut
+    // donc un cas qui produise un RÉSIDU, sinon la répartition tombe juste et
+    // les deux ordres sont indiscernables.
+    //
+    // Trois demi-journées d'amplitudes 240 / 240 / 180 minutes, pour 300 à
+    // répartir : les parts brutes valent 109,09 · 109,09 · 81,81. La minute qui
+    // reste doit aller à la plus grande fraction — donc à la troisième.
+    // Triée à l'envers, elle irait à la première : 110 / 109 / 81.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-11T18:00:00Z"),
+      dureeTotaleHeures: 5,
+      jours: [
+        { date: "2026-06-10", heureDebut: "09:00", heureFin: "17:00" },
+        // 09:00–12:00 ne porte qu'une matinée : le pivot est à 13:00.
+        { date: "2026-06-11", heureDebut: "09:00", heureFin: "12:00" },
+      ],
+    });
+
+    expect(result.map((c) => c.dureePrevueMinutes)).toEqual([109, 109, 82]);
+    // Somme exacte : aucun résidu perdu ni inventé.
+    expect(result.reduce((s, c) => s + c.dureePrevueMinutes, 0)).toBe(300);
+  });
+
   it("heuresParJour explicite reste prioritaire sur dureeTotaleHeures", () => {
     const result = genererCreneaux({
       dateDebut: new Date("2026-06-10T08:00:00Z"),

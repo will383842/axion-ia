@@ -68,11 +68,15 @@ beforeEach(() => {
 describe("calculerExpiration", () => {
   const MAINTENANT = new Date("2026-06-10T08:00:00.000Z");
 
-  it("vaut fin de session + 48 h", () => {
+  it("🔴 vaut fin de session + 48 h — la valeur EXACTE de la décision D13", () => {
+    // ⚠️ Comparer à `FENETRE_APRES_FIN_MS` ne prouve rien : ramener la constante
+    // à 24 h laissait passer tous les tests. Or 48 h est une décision arbitrée,
+    // prise contre ma recommandation initiale, et sa mitigation obligatoire est
+    // l'affichage de l'écart sur le PDF — la changer en silence dissocierait les
+    // deux. La date attendue est donc écrite en clair.
     const fin = new Date("2026-06-11T17:00:00.000Z");
-    expect(calculerExpiration(fin, MAINTENANT).getTime()).toBe(
-      fin.getTime() + FENETRE_APRES_FIN_MS,
-    );
+    expect(calculerExpiration(fin, MAINTENANT).toISOString()).toBe("2026-06-13T17:00:00.000Z");
+    expect(FENETRE_APRES_FIN_MS).toBe(48 * 60 * 60 * 1000);
   });
 
   it("ne rend JAMAIS un jeton né expiré, même si la session est finie depuis longtemps", () => {
