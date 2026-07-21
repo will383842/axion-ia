@@ -15,8 +15,10 @@
  * - exactOptionalPropertyTypes respecté.
  */
 
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
+import { supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
 import type { RgpdDemandeType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -67,6 +69,29 @@ export async function exporterDonneesStagiaire(traineeId: string): Promise<objec
           evaluations: true,
           questionnaires: true,
           presences: true,
+          // RGPD art. 15 — les signatures d'émargement SONT des données
+          // personnelles : nom et adresse figés, empreinte d'IP, empreinte de
+          // navigateur, et l'image du tracé manuscrit. Les omettre rendait
+          // l'export incomplet — c'est l'oubli O1 du plan, et cet `include` est
+          // une liste blanche écrite à la main : rien n'itère le modèle.
+          //
+          // `selfHash` et `prevHash` sont volontairement inclus : ils permettent
+          // au stagiaire de faire vérifier l'intégrité de sa propre feuille par
+          // un tiers, sans passer par nous.
+          emargementSignatures: true,
+          // Les jetons SANS leur empreinte : `tokenHash` n'apprendrait rien au
+          // stagiaire et exposerait la seule donnée permettant de retrouver un
+          // lien. On ne remonte que le cycle de vie.
+          emargementTokens: {
+            select: {
+              id: true,
+              createdAt: true,
+              expiresAt: true,
+              usedAt: true,
+              revokedAt: true,
+              revokedMotif: true,
+            },
+          },
         },
       },
       documents: true,
@@ -199,7 +224,72 @@ export async function supprimerStagiaire(traineeId: string): Promise<void> {
       where: { coachingSession: { traineeId } },
       data: { notesConfidentielles: null },
     }),
+    // RGPD : révoquer les jetons d'émargement encore vivants. Un lien valide
+    // survivant à l'effacement permettrait de signer au nom d'une personne
+    // pourtant « supprimée ».
+    prisma.emargementToken.updateMany({
+      where: { enrollment: { traineeId }, revokedAt: null },
+      data: { revokedAt: now, revokedMotif: "Effacement RGPD" },
+    }),
+    // RGPD : purger les PII des signatures d'émargement.
+    //
+    // ⚠️ `signataireNom` est VOLONTAIREMENT conservé (décision de Will). Il entre
+    // dans le tuple haché : l'écraser invaliderait `selfHash` sur toute la
+    // chaîne, donc détruirait la valeur probante de la feuille. L'article 17 §3 b
+    // du RGPD exclut expressément l'effacement quand le traitement est nécessaire
+    // à la constatation d'un droit en justice — ce qui est exactement le cas
+    // d'une feuille d'émargement opposable à un contrôle de service fait.
+    //
+    // Sont en revanche effacés : l'adresse électronique, l'empreinte d'IP et
+    // celle du navigateur. Aucun des trois n'est nécessaire à la preuve.
+    prisma.emargementSignature.updateMany({
+      where: { enrollment: { traineeId } },
+      data: { signataireEmail: null, ipHash: null, userAgentSha256: null },
+    }),
   ]);
+
+  // 🔴 L'IMAGE du tracé vit sur R2, hors transaction. Sans cet appel elle
+  // resterait cinq ans après un effacement RGPD — c'est l'oubli O2 du plan, et
+  // `deleteFromR2` existait sans jamais être appelé.
+  //
+  // Fait APRÈS la transaction, jamais dedans : un appel réseau à l'intérieur la
+  // tiendrait ouverte le temps de N allers-retours.
+  await purgerImagesSignatures(traineeId, now);
+}
+
+/**
+ * Supprime les images de signature d'un stagiaire sur R2, et trace la purge.
+ *
+ * Chaque image est traitée indépendamment : un échec sur l'une ne doit pas
+ * empêcher les autres d'être purgées.
+ *
+ * `imagePurgeeAt` n'est posé que si la suppression a RÉUSSI. Le poser d'office
+ * ferait croire à un effacement qui n'a pas eu lieu — pire que pas d'effacement
+ * du tout, puisque plus personne n'irait vérifier. `signatureKey` est mis à
+ * `null` en même temps : une clé qui ne pointe plus sur rien ferait échouer
+ * toute relecture ultérieure sans expliquer pourquoi.
+ */
+async function purgerImagesSignatures(traineeId: string, now: Date): Promise<void> {
+  const signatures = await prisma.emargementSignature.findMany({
+    where: { enrollment: { traineeId }, signatureKey: { not: null }, imagePurgeeAt: null },
+    select: { id: true, signatureKey: true },
+  });
+
+  for (const signature of signatures) {
+    if (signature.signatureKey === null) continue;
+    try {
+      await supprimerImageSignature(signature.signatureKey);
+      await prisma.emargementSignature.update({
+        where: { id: signature.id },
+        data: { imagePurgeeAt: now, signatureKey: null },
+      });
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { action: "supprimerStagiaire:purgeImage" },
+        extra: { signatureId: signature.id },
+      });
+    }
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
