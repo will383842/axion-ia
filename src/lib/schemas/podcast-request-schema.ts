@@ -14,8 +14,13 @@ import { z } from "zod";
 export const PODCAST_ACTIVITY_MIN = 20;
 export const PODCAST_ACTIVITY_MAX = 800;
 
-/** Téléphone permissif : 8 à 20 caractères, chiffres + séparateurs usuels. */
-const PHONE_RE = /^\+?[0-9][0-9\s.\-()]{6,19}$/;
+// Téléphone : on valide le VOCABULAIRE (chiffres + séparateurs usuels) et le
+// NOMBRE DE CHIFFRES, pas la position des caractères. Un motif positionnel
+// rejetait des saisies parfaitement valides (« (0) 6 12 34 56 78 ») — sur un
+// formulaire de contact, un faux négatif coûte un lead.
+const PHONE_CHARS_RE = /^[+0-9\s.\-()]+$/;
+const PHONE_MIN_DIGITS = 8;
+const countDigits = (v: string): number => (v.match(/\d/g) ?? []).length;
 
 /** Code postal FR (5 chiffres) ou international court (BE/CH/LU/MC…). */
 const POSTAL_CODE_RE = /^[0-9A-Za-z][0-9A-Za-z\s-]{2,9}$/;
@@ -28,7 +33,13 @@ export const podcastRequestSchema = z.object({
   /** Email de contact. Chiffré au repos, jamais publié. */
   email: z.string().trim().email().max(180),
   /** Téléphone de rappel. Chiffré au repos. */
-  phone: z.string().trim().min(8).max(30).regex(PHONE_RE, { message: "téléphone invalide" }),
+  phone: z
+    .string()
+    .trim()
+    .min(8)
+    .max(30)
+    .regex(PHONE_CHARS_RE, { message: "téléphone invalide" })
+    .refine((v) => countDigits(v) >= PHONE_MIN_DIGITS, { message: "téléphone incomplet" }),
   /** Ville du tournage (on se déplace). */
   city: z.string().trim().min(2).max(120),
   /** Code postal du tournage (on se déplace). */

@@ -39,9 +39,21 @@ describe("podcastRequestSchema", () => {
   });
 
   it("accepte les formats de téléphone usuels (international, séparateurs)", () => {
-    for (const phone of ["+33 6 12 34 56 78", "0612345678", "04.76.00.00.00", "(0) 612345678"]) {
+    for (const phone of [
+      "+33 6 12 34 56 78",
+      "0612345678",
+      "04.76.00.00.00",
+      "(0) 6 12 34 56 78",
+      "06-12-34-56-78",
+    ]) {
       expect(podcastRequestSchema.safeParse({ ...validInput, phone }).success).toBe(true);
     }
+  });
+
+  it("refuse un téléphone qui n'a pas assez de chiffres", () => {
+    expect(podcastRequestSchema.safeParse({ ...validInput, phone: "06 12 34" }).success).toBe(
+      false,
+    );
   });
 
   it("exige ville ET code postal (on se déplace sur site)", () => {
