@@ -11,8 +11,13 @@
 
 import type { TauxResult } from "./types";
 
-/** Seuil inférieur de présence partielle (décision Will #7). */
-const SEUIL_PARTIELLE_PCT = 60;
+/**
+ * Seuil inférieur de présence partielle (décision Will #7). Constante métier,
+ * contrairement au seuil de présence « complète » qui est réglable en config
+ * (`seuil_presence_pct`). Exporté pour que les écrans cessent de le redéclarer
+ * en dur — la liste des sessions et la grille d'émargement le dupliquaient.
+ */
+export const SEUIL_PARTIELLE_PCT = 60;
 
 /** Clé de regroupement journalier : date civile ISO (`YYYY-MM-DD`). */
 function cleJour(date: Date | string): string {

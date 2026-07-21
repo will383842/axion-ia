@@ -14,6 +14,7 @@
 import { useState, useTransition, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
+import { SEUIL_PARTIELLE_PCT } from "@/server/qualiopi/presence/taux";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props (serialisables depuis Server Component)
@@ -78,7 +79,7 @@ const DJ_LABELS: Record<DemiJourneeLabel, string> = {
 function classifierCouleur(taux: number | null, seuilCompletePct: number): string {
   if (taux === null) return "text-[color:var(--color-admin-fg-muted)]";
   if (taux >= seuilCompletePct) return "text-[color:var(--color-admin-success)]";
-  if (taux >= 60) return "text-[color:var(--color-admin-warning)]";
+  if (taux >= SEUIL_PARTIELLE_PCT) return "text-[color:var(--color-admin-warning)]";
   // `--color-admin-destructive` et non `--color-admin-error` : ce dernier n'est
   // défini nulle part dans admin.css, la déclaration était donc invalide et la
   // couleur héritée. Le taux le plus critique — celui qui refuse l'attestation —

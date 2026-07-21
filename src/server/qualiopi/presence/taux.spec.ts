@@ -154,6 +154,25 @@ describe("computeTauxPresence — dédoublonnage journée / demi-journées", () 
     expect(result.tauxPct).toBe(100);
   });
 
+  it("VERROU — la journée réellement hybride est sous-évaluée, et c'est assumé", () => {
+    // Matin présentiel émargé (210/210) + après-midi distanciel importé, qui pose
+    // un créneau `journee` couvrant DÉJÀ la journée entière (420 prévues, 210
+    // faites). La vérité métier est 100 % ; on retourne 50 %.
+    //
+    // Ce test EXISTE POUR ÉCHOUER si quelqu'un remplace le `max()` par une somme
+    // partielle « plus intelligente ». Sous-évaluer est le sens sûr : c'est la
+    // SURévaluation que sanctionne un contrôle de service fait. Corriger ce cas
+    // suppose de représenter une journée hybride, ce que le modèle ne sait pas
+    // faire — pas de bricoler l'agrégation.
+    const result = computeTauxPresence([
+      { date: J1, demiJournee: "matin", dureePrevueMinutes: 210, dureeRealiseeMinutes: 210 },
+      { date: J1, demiJournee: "journee", dureePrevueMinutes: 420, dureeRealiseeMinutes: 210 },
+    ]);
+    expect(result.minutesPrevues).toBe(420);
+    expect(result.minutesRealisees).toBe(210);
+    expect(result.tauxPct).toBe(50);
+  });
+
   it("somme normalement des demi-journées sans créneau `journee` concurrent", () => {
     // Non-régression : le cas présentiel pur ne doit rien changer.
     const result = computeTauxPresence([
