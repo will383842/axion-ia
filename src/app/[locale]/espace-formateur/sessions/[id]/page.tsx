@@ -14,6 +14,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { requireFormateur } from "@/server/formateur/guard";
+import { lireFeuilleGroupe } from "@/server/qualiopi/emargement/feuille-groupe";
+import { signerPourStagiaireAction } from "@/server/actions/qualiopi/emargement-formateur";
+import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
 import {
   FORMATEUR_SESSIONS_PATH,
@@ -42,6 +45,10 @@ export default async function Page({
   const { id } = await params;
 
   const session = await getTrainingSessionForFormateur(id, trainerId);
+  // L'instant est résolu UNE fois pour tout le rendu : deux appels séparés
+  // pourraient tomber de part et d'autre d'une bascule de demi-journée et
+  // afficher un état incohérent.
+  const demiJournees = await lireFeuilleGroupe(id, new Date());
   if (session === null) notFound();
 
   const lieu = [session.lieuVille, session.lieuCodePostal]
@@ -198,6 +205,28 @@ export default async function Page({
               ))}
             </ul>
           </>
+        )}
+      </section>
+
+      {/* Émargement du groupe — pour un stagiaire sans téléphone, ou quand le
+          réseau du site client ne permet pas d'ouvrir un lien. Le QR reste
+          préférable quand il marche : les stagiaires signent alors en parallèle
+          sur leur propre appareil, et l'identification ne repose pas sur le
+          formateur. */}
+      <section className="space-y-3">
+        <h2 className="text-espresso font-serif text-xl">Émargement</h2>
+        <p className="text-mocha text-sm">
+          Faites signer un stagiaire qui n&apos;a pas pu utiliser son lien personnel. Vous attestez
+          alors de son identité : votre nom sera enregistré avec la signature.
+        </p>
+        {demiJournees === null ? (
+          <p className="text-mocha text-sm">Feuille d&apos;émargement indisponible.</p>
+        ) : (
+          <EmargementGroupe
+            sessionId={id}
+            demiJournees={demiJournees}
+            signerAction={signerPourStagiaireAction}
+          />
         )}
       </section>
     </div>
