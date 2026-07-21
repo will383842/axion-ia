@@ -23,6 +23,7 @@ import { ImportReleveForm } from "@/components/admin/qualiopi/ImportReleveForm";
 import { GenererCreneauxButton } from "@/components/admin/qualiopi/GenererCreneauxButton";
 import { SessionJoursEditor } from "@/components/admin/qualiopi/SessionJoursEditor";
 import { LiensEmargement } from "@/components/admin/qualiopi/LiensEmargement";
+import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import {
   generateSessionCreneauxAction,
@@ -192,6 +193,18 @@ export default async function EmargementPage({ params }: PageProps) {
           genererAction={generateSessionCreneauxAction}
           hasCreneaux={hasCreneaux}
         />
+      </section>
+
+      {/* Section : Dossier d'audit de la session (oubli M2) */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Dossier d&apos;audit</h2>
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
+          d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de signatures.
+          C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette
+          session ».
+        </p>
+        <DossierSessionButton sessionId={id} />
       </section>
 
       {/* Section : Grille émargement */}
