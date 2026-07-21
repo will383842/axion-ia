@@ -90,6 +90,14 @@ export interface GenerateDocumentInput {
     /** Coaching 1-to-1 AFEST (C1) : rattache le document à son parcours. */
     coachingSessionId?: string;
   };
+  /**
+   * Force le filigrane « COPIE ».
+   *
+   * Laissé vide, il est DÉDUIT : toute régénération d'un document de même type
+   * et de mêmes références en est une. Sans cette déduction, deux originaux non
+   * filigranés circulaient avec deux numéros officiels différents pour la même
+   * prestation — ce qu'un contrôle relève immédiatement.
+   */
   estCopie?: boolean;
   qrToken?: string | null;
   /**
@@ -169,6 +177,23 @@ export async function generateDocument(
     const seq = count + 1;
     const numero = formatDocumentNumber(numberingType, year, seq);
 
+    // 🔴 Une régénération n'est JAMAIS un original. Chaque tirage alloue un
+    // nouveau numéro séquentiel : sans filigrane, deux pièces d'apparence
+    // officielle circuleraient pour la même prestation, avec des numéros
+    // différents. C'est exactement ce qu'un contrôleur remarque.
+    const estUneRegeneration =
+      (await prisma.documentGenere.count({
+        where: {
+          type: input.type,
+          ...(input.refs?.sessionId != null ? { sessionId: input.refs.sessionId } : {}),
+          ...(input.refs?.traineeId != null ? { traineeId: input.refs.traineeId } : {}),
+          ...(input.refs?.clientId != null ? { clientId: input.refs.clientId } : {}),
+          ...(input.refs?.coachingSessionId != null
+            ? { coachingSessionId: input.refs.coachingSessionId }
+            : {}),
+        },
+      })) > 0;
+
     // 1b. Rendu PDF — le numéro alloué est injecté via buildElement si fourni.
     let elementToRender: React.ReactElement;
     if (input.buildElement !== undefined) {
@@ -199,7 +224,7 @@ export async function generateDocument(
           pdfUrl,
           hashSha256,
           sizeBytes,
-          estCopie: input.estCopie ?? false,
+          estCopie: input.estCopie ?? estUneRegeneration,
           suppressionPrevueAt,
           ...(input.qrToken != null ? { qrToken: input.qrToken, qrTokenCreatedAt: now } : {}),
           ...(input.refs?.formationId != null ? { formationId: input.refs.formationId } : {}),
