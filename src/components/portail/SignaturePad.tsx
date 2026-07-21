@@ -72,7 +72,9 @@ export function SignaturePad({
     ctx.lineWidth = EPAISSEUR;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.strokeStyle = "#111111";
+    // `strokeStyle` est l'API Canvas, pas du CSS : un token Tailwind n'y a aucun
+    // effet. Encre sombre stable, rasterisée telle quelle dans le PNG de preuve.
+    ctx.strokeStyle = "#111111"; // hex-ok: couleur d'encre du canvas de signature, hors thème
   }, [contexte]);
 
   /**
