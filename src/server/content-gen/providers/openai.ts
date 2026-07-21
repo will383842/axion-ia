@@ -48,8 +48,12 @@ function computeCost(model: string, tokensInput: number, tokensOutput: number): 
 
 /**
  * Map erreurs SDK OpenAI vers ProviderError typés.
+ *
+ * Exporté uniquement pour les tests : la distinction 429 rate-limit / 429 quota
+ * décide du flag `retryable`, donc du fait qu'un job reboucle indéfiniment ou
+ * échoue net. Cf. `__tests__/provider-error-mapping.spec.ts`.
  */
-function mapOpenAiError(err: unknown): ProviderError {
+export function mapOpenAiError(err: unknown): ProviderError {
   if (err instanceof OpenAI.APIError) {
     const status = err.status;
     if (status === 401 || status === 403) {
@@ -85,7 +89,12 @@ function mapOpenAiError(err: unknown): ProviderError {
           false,
         );
       }
-      return new ProviderError(`OpenAI rate limited: ${err.message}`, "rate_limited", "openai", true);
+      return new ProviderError(
+        `OpenAI rate limited: ${err.message}`,
+        "rate_limited",
+        "openai",
+        true,
+      );
     }
     if (status && status >= 500) {
       return new ProviderError(`OpenAI server error ${status}`, "down", "openai", true);

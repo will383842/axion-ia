@@ -95,7 +95,8 @@ function computeCost(
   );
 }
 
-function mapAnthropicError(err: unknown): ProviderError {
+/** Exporté pour les tests — cf. `mapOpenAiError` dans `openai.ts`. */
+export function mapAnthropicError(err: unknown): ProviderError {
   if (err instanceof Anthropic.APIError) {
     const status = err.status;
     if (status === 401 || status === 403) {
