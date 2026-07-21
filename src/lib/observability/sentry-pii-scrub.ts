@@ -8,13 +8,35 @@
 // Partagé entre `sentry.server.config.ts`, `sentry.edge.config.ts`,
 // `instrumentation-client.ts`. Pas d'import Node-only — Edge-compatible.
 
-import type { ErrorEvent, EventHint } from "@sentry/nextjs";
+import type { ErrorEvent, EventHint, NodeOptions } from "@sentry/nextjs";
+
+/**
+ * Type de l'événement de transaction, DÉRIVÉ de l'option Sentry elle-même.
+ *
+ * `@sentry/nextjs` ne réexporte pas `TransactionEvent`, et l'importer depuis
+ * `@sentry/core` reviendrait à dépendre d'un paquet transitif. Le dériver garde
+ * la signature exacte, quelle que soit la version.
+ */
+type TransactionEvent = Parameters<NonNullable<NodeOptions["beforeSendTransaction"]>>[0];
 
 const EMAIL_RE = /[\w.+-]+@[\w-]+\.[\w.-]+/g;
 const IPV4_RE = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
 const PHONE_RE = /\+?\d[\d\s().-]{8,}\d/g;
 const HEX_TOKEN_RE = /\b[a-f0-9]{32,}\b/gi;
 const JWT_RE = /eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g;
+/**
+ * Jeton maison `<payload>.<signature>` en base64url (`magic-token.ts`).
+ *
+ * 🔴 Il échappait aux DEUX filtres précédents : il n'est pas hexadécimal
+ * (`HEX_TOKEN_RE`) et n'a que deux segments, pas trois (`JWT_RE`). Un jeton
+ * d'émargement reste valable jusqu'à la fin de session + 48 h : le laisser
+ * partir chez Sentry, c'est offrir à un sous-traitant hors UE la capacité de
+ * signer une feuille de présence à la place d'un stagiaire.
+ *
+ * Les bornes exigent au moins 20 caractères par segment pour ne pas mordre sur
+ * du texte ordinaire contenant un point.
+ */
+const MAGIC_TOKEN_RE = /\b[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\b/g;
 
 const SENSITIVE_HEADER_KEYS = new Set([
   "authorization",
@@ -28,10 +50,31 @@ const SENSITIVE_HEADER_KEYS = new Set([
 
 const SENSITIVE_QUERY_KEYS = new Set(["token", "auth", "key", "secret", "code", "pwd", "password"]);
 
+/**
+ * Routes dont un SEGMENT de chemin est un secret.
+ *
+ * Une liste explicite plutôt qu'une heuristique : se tromper ici, c'est soit
+ * exporter un jeton valide, soit rendre les URL illisibles au débogage.
+ */
+const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
+  /(\/portail\/emarger\/)[^/?#]+/gi,
+  /(\/booking\/)[^/?#]+/gi,
+  /(\/verifier-attestation\/)[^/?#]+/gi,
+  /(\/portail\/acces\/)[^/?#]+/gi,
+];
+
+/** Remplace le segment secret de ces routes par `[TOKEN]`, en gardant la route lisible. */
+function masquerSegmentsSensibles(url: string): string {
+  let out = url;
+  for (const re of SEGMENTS_SECRETS) out = out.replace(re, "$1[TOKEN]");
+  return out;
+}
+
 function redactString(input: unknown): unknown {
   if (typeof input !== "string") return input;
   return input
     .replace(JWT_RE, "[JWT]")
+    .replace(MAGIC_TOKEN_RE, "[TOKEN]")
     .replace(EMAIL_RE, "[EMAIL]")
     .replace(IPV4_RE, "[IP]")
     .replace(PHONE_RE, "[PHONE]")
@@ -74,6 +117,14 @@ export function piiScrubBeforeSend(event: ErrorEvent, _hint?: EventHint): ErrorE
 
   // 2. request
   if (event.request) {
+    // 🔴 L'URL n'était pas nettoyée, alors que nos jetons vivent dans le
+    // CHEMIN, pas dans la query : `/portail/emarger/<payload>.<signature>`,
+    // `/booking/<token>/cancel`. `redactString` seul ne suffit pas — un segment
+    // de chemin n'a pas de clé à reconnaître — d'où le masquage structurel des
+    // routes concernées, appliqué AVANT la passe générique.
+    if (typeof event.request.url === "string") {
+      event.request.url = redactString(masquerSegmentsSensibles(event.request.url)) as string;
+    }
     event.request.headers = redactRecord(
       event.request.headers as Record<string, unknown>,
     ) as Record<string, string>;
@@ -124,5 +175,42 @@ export function piiScrubBeforeSend(event: ErrorEvent, _hint?: EventHint): ErrorE
   // 6. server_name (peut contenir hostname interne)
   if (event.server_name) event.server_name = "[server]";
 
+  return event;
+}
+
+/**
+ * Même nettoyage, pour les TRANSACTIONS.
+ *
+ * 🔴 `beforeSend` ne couvre QUE les erreurs. Les transactions de performance
+ * portent elles aussi `request.url` et un nom de transaction dérivé du chemin :
+ * avec un échantillonnage actif, un jeton d'émargement partirait chez Sentry
+ * sans qu'aucune erreur ne se soit produite.
+ *
+ * On ne nettoie ici que ce qui peut contenir un secret — l'URL, le nom de la
+ * transaction et les données jointes. Toucher aux mesures de performance
+ * n'aurait aucun intérêt et rendrait le traçage inutilisable.
+ */
+export function piiScrubBeforeSendTransaction(
+  event: TransactionEvent,
+  _hint?: EventHint,
+): TransactionEvent | null {
+  if (typeof event.transaction === "string") {
+    event.transaction = masquerSegmentsSensibles(event.transaction);
+  }
+  if (event.request) {
+    if (typeof event.request.url === "string") {
+      event.request.url = redactString(masquerSegmentsSensibles(event.request.url)) as string;
+    }
+    if (typeof event.request.query_string === "string") {
+      event.request.query_string = redactString(event.request.query_string) as string;
+    }
+    // `exactOptionalPropertyTypes` : on n'affecte que si le nettoyage a produit
+    // quelque chose, sinon on écraserait une clé absente par `undefined`.
+    const entetes = redactRecord(event.request.headers as Record<string, unknown>);
+    if (entetes !== undefined) event.request.headers = entetes as Record<string, string>;
+    const cookies = redactRecord(event.request.cookies as Record<string, unknown>);
+    if (cookies !== undefined) event.request.cookies = cookies as Record<string, string>;
+  }
+  if (event.extra) event.extra = redactRecord(event.extra) ?? {};
   return event;
 }
