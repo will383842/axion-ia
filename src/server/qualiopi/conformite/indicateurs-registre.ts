@@ -42,9 +42,16 @@ export interface IndicateurRNQ {
   /** Libellé court officiel RNQ V9 (verbatim canonique) */
   readonly libelleOfficiel: string;
   /**
-   * Vrai si NC = NC majeure (échec certification).
-   * +7 et +16 si certifiant — ces deux sont marqués super=false ici (tronc
-   * commun) ; l'évaluation dynamique les passe à true selon typesAction.
+   * Vrai si NC = NC majeure obligatoire (échec certification), même en cas de
+   * non-respect partiel. Faux = indicateur graduable (NC mineure possible).
+   *
+   * Source : liste graduable du RNQ V9 (08/01/2024) = {1,2,3,8,9,12,13,17,18,
+   * 19,23,24,25,28,30} ; tout le reste est à NC majeure. Vérifié par
+   * `indicateurs-registre.spec.ts`.
+   *
+   * 7 et 16 (conditionnels « cert ») portent super=true : quand ils sont
+   * applicables (OF certifiant), ils sont à NC majeure ; sinon ils sont filtrés
+   * par `applicablesNums`, donc leur valeur n'est pas lue.
    */
   readonly super: boolean;
   /** Conditionnel selon le type d'action exercée. undefined = tronc commun. */
@@ -61,13 +68,13 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     numero: 1,
     critere: 1,
     libelleOfficiel: "Information accessible, complète et vérifiable sur les prestations",
-    super: true,
+    super: false,
   },
   {
     numero: 2,
     critere: 1,
     libelleOfficiel: "Indicateurs de résultats adaptés à la nature des prestations",
-    super: true,
+    super: false,
   },
   {
     numero: 3,
@@ -94,13 +101,13 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     numero: 6,
     critere: 2,
     libelleOfficiel: "Contenus et modalités adaptés aux objectifs et publics",
-    super: false,
+    super: true,
   },
   {
     numero: 7,
     critere: 2,
     libelleOfficiel: "Adéquation des contenus aux exigences de la certification visée",
-    super: false, // super si certifiant — évalué dynamiquement
+    super: true,
     conditionnel: "cert",
   },
   {
@@ -115,13 +122,13 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     numero: 9,
     critere: 3,
     libelleOfficiel: "Information sur les conditions de déroulement",
-    super: true,
+    super: false,
   },
   {
     numero: 10,
     critere: 3,
     libelleOfficiel: "Adaptation de la prestation / accompagnement",
-    super: false,
+    super: true,
   },
   {
     numero: 11,
@@ -133,7 +140,7 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     numero: 12,
     critere: 3,
     libelleOfficiel: "Engagement des bénéficiaires / prévention des ruptures",
-    super: true,
+    super: false,
   },
   {
     numero: 13,
@@ -146,21 +153,21 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     numero: 14,
     critere: 3,
     libelleOfficiel: "Exercice de la citoyenneté (apprenti)",
-    super: false,
+    super: true,
     conditionnel: "app",
   },
   {
     numero: 15,
     critere: 3,
     libelleOfficiel: "Information sur les droits et devoirs de l'apprenti",
-    super: false,
+    super: true,
     conditionnel: "app",
   },
   {
     numero: 16,
     critere: 3,
     libelleOfficiel: "Présentation à la certification",
-    super: false, // super si certifiant — évalué dynamiquement
+    super: true,
     conditionnel: "cert",
   },
 
@@ -190,7 +197,7 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     // apprentis) → NON applicable en action de formation continue (AFC).
     // Réf. liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » : colonne AFC vide.
     libelleOfficiel: "Personnels dédiés à l'accompagnement des apprentis",
-    super: false,
+    super: true,
     conditionnel: "app",
   },
 
@@ -205,7 +212,7 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     numero: 22,
     critere: 5,
     libelleOfficiel: "Entretien et développement des compétences (gestion de la compétence)",
-    super: false,
+    super: true,
   },
 
   // Critère 6 — Environnement professionnel
@@ -213,7 +220,7 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     numero: 23,
     critere: 6,
     libelleOfficiel: "Veille légale et réglementaire",
-    super: true,
+    super: false,
   },
   {
     numero: 24,
@@ -253,7 +260,7 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     // applicable en action de formation continue (AFC).
     // Réf. liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » : colonne AFC vide.
     libelleOfficiel: "Insertion professionnelle des apprentis",
-    super: false,
+    super: true,
     conditionnel: "app",
   },
 
@@ -262,7 +269,7 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     numero: 30,
     critere: 7,
     libelleOfficiel: "Recueil des appréciations des parties prenantes",
-    super: true,
+    super: false,
   },
   {
     numero: 31,

@@ -59,7 +59,7 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Sous-traitants"
-        description="Registre des sous-traitants OF (off.27 — indicateur 27). Prestataires auxquels l'OF délègue tout ou partie d'une formation. Vérification NDA data.gouv.fr obligatoire."
+        description="Registre des sous-traitants OF (off.27 — indicateur 27). Prestataires auxquels l'OF délègue tout ou partie d'une formation. Consultation data.gouv.fr à attester par l’administrateur (le système ne vérifie pas automatiquement)."
         actions={
           <PdfExportButton
             label="Exporter le registre (PDF)"
@@ -79,7 +79,7 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
           icon={CheckCircle2}
         />
         <AdminStatCard
-          label="Vérifiés data.gouv"
+          label="Consultation attestée"
           value={verifiesDataGouv}
           tone={
             actifs > 0 && verifiesDataGouv < actifs
@@ -113,7 +113,7 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
                 <th className={headCls}>NDA</th>
                 <th className={headCls}>Prestation</th>
                 <th className={headCls}>Contrat</th>
-                <th className={headCls}>Vérif. data.gouv</th>
+                <th className={headCls}>Consult. data.gouv attestée</th>
                 <th className={headCls}>Statut</th>
                 <th className={headCls}>Action</th>
               </tr>

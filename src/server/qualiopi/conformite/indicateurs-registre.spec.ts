@@ -54,11 +54,18 @@ describe("INDICATEURS_RNQ", () => {
     }
   });
 
-  it("les super-indicateurs TC attendus sont marqués super=true", () => {
-    const superNums = [1, 2, 4, 5, 9, 11, 12, 21, 23, 26, 27, 30, 31, 32];
-    for (const num of superNums) {
-      const ind = INDICATEURS_RNQ.find((i) => i.numero === num);
-      expect(ind?.super, `off.${num} doit être super`).toBe(true);
+  it("super = NC majeure = tout indicateur HORS liste graduable (RNQ V9)", () => {
+    // Liste graduable (NC mineure possible) du référentiel V9 du 08/01/2024,
+    // vérifiée sur 2 miroirs identiques (dont SGS, certificateur accrédité) +
+    // décret 2019-565. Tout indicateur absent de cette liste est à NC MAJEURE
+    // obligatoire, même en cas de non-respect partiel.
+    // ⚠️ L'ancienne liste (1,2,9,12,23,30 marqués super à tort ; 6,7,10,14,15,16,
+    // 20,22,29 manquants) SOUS-ALERTAIT 9 trous éliminatoires : ils s'affichaient
+    // « non critiques » dans la console, invisibles pour le pilote.
+    const GRADUABLES = new Set([1, 2, 3, 8, 9, 12, 13, 17, 18, 19, 23, 24, 25, 28, 30]);
+    for (const ind of INDICATEURS_RNQ) {
+      const attendu = !GRADUABLES.has(ind.numero);
+      expect(ind.super, `off.${ind.numero} super attendu=${attendu}`).toBe(attendu);
     }
   });
 
@@ -189,32 +196,37 @@ describe("indicateursApplicables", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("estSuperIndicateur", () => {
-  it("off.1 est super (TC)", () => {
-    expect(estSuperIndicateur(1, ["classique"])).toBe(true);
+  // off.1 est GRADUABLE (NC mineure possible) → n'est PAS super. L'ancienne
+  // assertion « off.1 super » encodait le modèle de sévérité erroné, corrigé
+  // sur le référentiel V9.
+  it("off.1 n'est PAS super (graduable)", () => {
+    expect(estSuperIndicateur(1, ["classique"])).toBe(false);
   });
 
-  it("off.32 est super (TC)", () => {
+  it("off.32 est super (NC majeure)", () => {
     expect(estSuperIndicateur(32, ["classique"])).toBe(true);
   });
 
-  it("off.6 n'est pas super (TC non-super)", () => {
-    expect(estSuperIndicateur(6, ["classique"])).toBe(false);
+  it("off.6 est super (NC majeure — anciennement sous-alerté)", () => {
+    expect(estSuperIndicateur(6, ["classique"])).toBe(true);
   });
 
-  it("off.7 devient super si certifiant", () => {
+  it("off.10 est super (NC majeure — anciennement sous-alerté)", () => {
+    expect(estSuperIndicateur(10, ["classique"])).toBe(true);
+  });
+
+  // off.7 et off.16 sont à NC majeure quand ils sont APPLICABLES (OF certifiant).
+  // Quand l'OF n'est pas certifiant ils sont non-applicables (filtrés par
+  // indicateursApplicables), donc leur valeur super n'est jamais affichée —
+  // la fonction peut la retourner true sans conséquence.
+  it("off.7 est super", () => {
     expect(estSuperIndicateur(7, ["certifiante"])).toBe(true);
+    expect(estSuperIndicateur(7, ["classique"])).toBe(true);
   });
 
-  it("off.7 n'est PAS super si non certifiant", () => {
-    expect(estSuperIndicateur(7, ["classique"])).toBe(false);
-  });
-
-  it("off.16 devient super si certifiant", () => {
+  it("off.16 est super", () => {
     expect(estSuperIndicateur(16, ["certifiante"])).toBe(true);
-  });
-
-  it("off.16 n'est PAS super si non certifiant", () => {
-    expect(estSuperIndicateur(16, ["classique"])).toBe(false);
+    expect(estSuperIndicateur(16, ["classique"])).toBe(true);
   });
 
   it("indicateur inexistant retourne false", () => {

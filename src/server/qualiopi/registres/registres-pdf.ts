@@ -267,7 +267,7 @@ async function buildSousTraitants(): Promise<Omit<RegistreData, "dateEdition">> 
       "SIRET",
       "NDA",
       "Objet de la prestation",
-      "Vérifié data.gouv",
+      "Consultation data.gouv attestée le",
       "Contrat signé",
       "Statut",
     ],
