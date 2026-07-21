@@ -48,6 +48,10 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 
 vi.mock("@/server/qualiopi/presence/creneaux", () => ({
   genererCreneaux: vi.fn(),
+  // Garde-fou D14. Mocké à `false` par défaut — les sessions de test sont
+  // courtes et contiguës — et repassé à `true` dans le cas qui le teste.
+  sessionTropEtaleePourLeRepli: vi.fn(),
+  ECART_MAX_REPLI_JOURS: 31,
 }));
 
 vi.mock("@/server/qualiopi/presence/parse-releve", () => ({
@@ -79,7 +83,7 @@ vi.mock("@/server/qualiopi/documents/render", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { genererCreneaux } from "@/server/qualiopi/presence/creneaux";
+import { genererCreneaux, sessionTropEtaleePourLeRepli } from "@/server/qualiopi/presence/creneaux";
 import { parseReleveConnexion } from "@/server/qualiopi/presence/parse-releve";
 import { matchParticipants } from "@/server/qualiopi/presence/match";
 import { upsertCreneau, recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
@@ -107,6 +111,7 @@ const mockPrisma = prisma as unknown as {
 const mockRequireAdminWrite = requireAdminWrite as ReturnType<typeof vi.fn>;
 const mockLogActivity = logQualiopiActivity as ReturnType<typeof vi.fn>;
 const mockGenererCreneaux = genererCreneaux as ReturnType<typeof vi.fn>;
+const mockTropEtalee = sessionTropEtaleePourLeRepli as ReturnType<typeof vi.fn>;
 const mockParseReleve = parseReleveConnexion as ReturnType<typeof vi.fn>;
 const mockMatchParticipants = matchParticipants as ReturnType<typeof vi.fn>;
 const mockUpsertCreneau = upsertCreneau as ReturnType<typeof vi.fn>;
@@ -121,6 +126,8 @@ function makeSession(overrides = {}) {
     dateDebut: new Date("2026-06-10T08:00:00.000Z"),
     dateFin: new Date("2026-06-11T17:00:00.000Z"),
     dureeReelleHeures: 7,
+    /// Journées déclarées (D14). Vide par défaut = session en repli sur la plage.
+    jours: [],
     enrollments: [
       {
         id: "enroll-1",
@@ -176,6 +183,10 @@ describe("generateSessionCreneauxAction", () => {
     mockLogActivity.mockResolvedValue(undefined);
     mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession());
     mockGenererCreneaux.mockReturnValue(makeCreneaux());
+    // ⚠️ `clearAllMocks` efface les APPELS, pas les valeurs de retour : sans ce
+    // repositionnement le mock renverrait `undefined` (falsy, donc « pas
+    // étalée ») et le garde-fou passerait par accident plutôt que par choix.
+    mockTropEtalee.mockReturnValue(false);
     // Par défaut : aucun créneau existant → tous créés
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue(null);
     mockUpsertCreneau.mockResolvedValue("new-id");
@@ -245,6 +256,56 @@ describe("generateSessionCreneauxAction", () => {
     const logCall = mockCall<{ action: string; targetType: string }>(mockLogActivity);
     expect(logCall.action).toBe("qualiopi.presence.creneaux.generate");
     expect(logCall.targetType).toBe("TrainingSession");
+  });
+
+  it("REFUSE une session étalée qui n'a déclaré aucune journée (garde-fou D14)", async () => {
+    // Sans journées déclarées, générer les créneaux de tous les jours ouvrés
+    // traversés multiplierait le dénominateur du taux — 66 jours au lieu de 4
+    // sur un parcours de 3 mois, soit un taux à ≈ 3 %. Refuser bruyamment vaut
+    // mieux que produire des dizaines de créneaux faux en silence.
+    mockTropEtalee.mockReturnValue(true);
+
+    const result = await generateSessionCreneauxAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+    });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toContain("journées");
+    // Rien n'a été écrit : c'est l'invariant qui compte, pas le message.
+    expect(mockUpsertCreneau).not.toHaveBeenCalled();
+    expect(mockGenererCreneaux).not.toHaveBeenCalled();
+  });
+
+  it("transmet les journées déclarées à genererCreneaux", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      makeSession({
+        jours: [
+          { date: new Date("2026-06-10T00:00:00.000Z"), heureDebut: "09:00", heureFin: "17:00" },
+          { date: new Date("2026-06-30T00:00:00.000Z"), heureDebut: "09:00", heureFin: "12:30" },
+        ],
+      }),
+    );
+
+    await generateSessionCreneauxAction({ sessionId: "550e8400-e29b-41d4-a716-446655440000" });
+
+    expect(mockGenererCreneaux).toHaveBeenCalledWith(
+      expect.objectContaining({
+        jours: [
+          { date: "2026-06-10", heureDebut: "09:00", heureFin: "17:00" },
+          { date: "2026-06-30", heureDebut: "09:00", heureFin: "12:30" },
+        ],
+      }),
+    );
+  });
+
+  it("n'envoie AUCUNE clé `jours` quand la session n'en déclare pas", async () => {
+    // `exactOptionalPropertyTypes` est actif : passer `jours: undefined` ne
+    // compile pas, et passer `jours: []` ferait croire à une déclaration vide.
+    await generateSessionCreneauxAction({ sessionId: "550e8400-e29b-41d4-a716-446655440000" });
+
+    const arg = mockCall<Record<string, unknown>>(mockGenererCreneaux);
+    expect("jours" in arg).toBe(false);
   });
 
   it("passe heuresParJour optionnel à genererCreneaux", async () => {
@@ -789,6 +850,36 @@ describe("importReleveConnexionAction", () => {
     ).data.hashSha256;
     expect(hash1).toBe(hash2);
     expect(hash1).toHaveLength(64);
+  });
+
+  it("🔴 transmet les journées déclarées à genererCreneaux — sinon 100 % pour 0 h 26", async () => {
+    // Bloquant trouvé en revue : ce second appel à `genererCreneaux` ignorait les
+    // journées déclarées, alors que l'autre chemin les respectait. Sur une session
+    // distancielle de 28 h dont les 4 journées sont réparties sur 3 mois, le repli
+    // retenait 66 jours ouvrés → 0,42 h/jour → 26 MINUTES de durée prévue pour la
+    // journée. Le réalisé étant plafonné au prévu, tout le monde ressortait à
+    // 100 % avec 0 h 26 sur l'attestation. Surévaluer la présence est bien plus
+    // grave que la sous-évaluer : c'est ce qu'un contrôle sanctionne.
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      makeSession({
+        jours: [
+          { date: new Date("2026-06-10T00:00:00.000Z"), heureDebut: "09:00", heureFin: "17:00" },
+        ],
+      }),
+    );
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockGenererCreneaux).toHaveBeenCalledWith(
+      expect.objectContaining({
+        jours: [{ date: "2026-06-10", heureDebut: "09:00", heureFin: "17:00" }],
+      }),
+    );
   });
 });
 

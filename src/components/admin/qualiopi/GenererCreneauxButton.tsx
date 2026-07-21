@@ -15,7 +15,8 @@ export interface GenererCreneauxButtonProps {
   genererAction: (input: {
     sessionId: string;
     heuresParJour?: number;
-  }) => Promise<{ data: { created: number } } | { error: string }>;
+    confirmerSansJournees?: boolean;
+  }) => Promise<{ data: { created: number } } | { error: string; confirmable?: boolean }>;
   hasCreneaux: boolean;
 }
 
@@ -27,15 +28,23 @@ export function GenererCreneauxButton({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [confirmable, setConfirmable] = useState(false);
   const [result, setResult] = useState<{ created: number } | null>(null);
 
-  function handleClick() {
+  function handleClick(confirmerSansJournees = false) {
     setError(null);
+    setConfirmable(false);
     setResult(null);
     startTransition(async () => {
-      const r = await genererAction({ sessionId });
+      const r = await genererAction({
+        sessionId,
+        ...(confirmerSansJournees ? { confirmerSansJournees } : {}),
+      });
       if ("error" in r) {
         setError(r.error);
+        // Refus levable (garde-fou D14) : on propose de confirmer, sans jamais
+        // le faire à la place de l'admin.
+        setConfirmable(r.confirmable === true);
       } else {
         setResult(r.data);
         router.refresh();
@@ -46,7 +55,12 @@ export function GenererCreneauxButton({
   return (
     <div className="flex flex-col gap-[var(--space-admin-2)]">
       <div className="flex items-center gap-[var(--space-admin-3)]">
-        <button type="button" onClick={handleClick} disabled={isPending} className="admin-button">
+        <button
+          type="button"
+          onClick={() => handleClick()}
+          disabled={isPending}
+          className="admin-button"
+        >
           {isPending
             ? "Génération..."
             : hasCreneaux
@@ -66,6 +80,15 @@ export function GenererCreneauxButton({
         >
           Erreur : {error}
         </p>
+      )}
+      {confirmable && !isPending && (
+        <button
+          type="button"
+          onClick={() => handleClick(true)}
+          className="admin-button-ghost self-start"
+        >
+          Générer quand même (session réellement continue)
+        </button>
       )}
       {result && (
         <p

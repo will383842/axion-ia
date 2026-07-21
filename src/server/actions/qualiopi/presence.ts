@@ -18,10 +18,15 @@
 import { createHash } from "node:crypto";
 import React from "react";
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
-import { genererCreneaux } from "@/server/qualiopi/presence/creneaux";
+import {
+  genererCreneaux,
+  sessionTropEtaleePourLeRepli,
+  ECART_MAX_REPLI_JOURS,
+} from "@/server/qualiopi/presence/creneaux";
 import { parseReleveConnexion } from "@/server/qualiopi/presence/parse-releve";
 import { matchParticipants } from "@/server/qualiopi/presence/match";
 import { parisDateISO, formatMinutesToHHhMM } from "@/server/qualiopi/presence/time";
@@ -79,6 +84,14 @@ const PLATEFORME_VALUES = ["zoom", "teams", "meet", "autre"] as const;
 const generateSessionCreneauxSchema = z.object({
   sessionId: z.string().uuid(),
   heuresParJour: z.number().int().min(1).max(12).optional(),
+  /**
+   * Passe outre le garde-fou D14 sur une session étalée sans journées déclarées.
+   *
+   * Il existe de vraies sessions continues de plus d'un mois (reconversion), et
+   * les refuser serait une régression. Mais le geste doit être EXPLICITE : le
+   * défaut est de refuser, et l'admin confirme après avoir lu pourquoi.
+   */
+  confirmerSansJournees: z.boolean().optional(),
 });
 
 const emargementEntrySchema = z.object({
@@ -121,7 +134,8 @@ const setPresenceCreneauManualSchema = z.object({
 export async function generateSessionCreneauxAction(input: {
   sessionId: string;
   heuresParJour?: number;
-}): Promise<ActionResult<{ created: number }>> {
+  confirmerSansJournees?: boolean;
+}): Promise<{ data: { created: number } } | { error: string; confirmable?: boolean }> {
   const session = await requireAdminWrite();
   const parsed = generateSessionCreneauxSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -141,24 +155,70 @@ export async function generateSessionCreneauxAction(input: {
         },
         select: { id: true },
       },
+      /// Journées RÉELLEMENT animées (D14). Vide = repli sur `dateDebut..dateFin`.
+      jours: {
+        select: { date: true, heureDebut: true, heureFin: true },
+        orderBy: { date: "asc" },
+      },
     },
   });
 
   if (!trainingSession) return { error: "Session introuvable" };
 
+  const jours = trainingSession.jours.map((j) => ({
+    date: parisDateISO(j.date),
+    heureDebut: j.heureDebut,
+    heureFin: j.heureFin,
+  }));
+
+  // 🔴 Garde-fou D14. Sans journées déclarées, on ne sait pas quels jours sont
+  // animés : on ne peut que supposer qu'ils se suivent. Sur une session étalée
+  // c'est faux, et générer les créneaux de tous les jours ouvrés traversés
+  // multiplierait le dénominateur du taux — un parcours de 4 journées sur 3 mois
+  // produit 66 jours au lieu de 4, soit un taux à ≈ 3 % et une attestation
+  // refusée à un stagiaire assidu. Refuser bruyamment vaut mieux que produire
+  // des dizaines de créneaux faux en silence.
+  if (
+    v.confirmerSansJournees !== true &&
+    sessionTropEtaleePourLeRepli({
+      dateDebut: trainingSession.dateDebut,
+      dateFin: trainingSession.dateFin,
+      jours,
+    })
+  ) {
+    return {
+      error: `Cette session s'étale sur plus de ${ECART_MAX_REPLI_JOURS} jours sans avoir déclaré ses journées. Renseignez-les dans la section « Journées réellement animées », juste au-dessus : sinon le taux de présence sera calculé sur TOUS les jours ouvrés de la période. Si la session est réellement continue sur toute la plage, confirmez pour générer quand même.`,
+      // Refus levable : une session continue de deux mois est légitime.
+      confirmable: true,
+    };
+  }
+
   // Génération des créneaux via logique pure.
   // ⚠️ `dureeReelleHeures` est la durée TOTALE de la session, PAS une durée
   // journalière : elle est passée en `dureeTotaleHeures` pour être répartie sur
-  // les jours ouvrés. La passer en `heuresParJour` (bug corrigé) doublait le
-  // dénominateur du taux de présence sur toute session de plus d'un jour.
-  const creneaux = genererCreneaux({
-    dateDebut: trainingSession.dateDebut,
-    dateFin: trainingSession.dateFin,
-    ...(v.heuresParJour !== undefined ? { heuresParJour: v.heuresParJour } : {}),
-    ...(trainingSession.dureeReelleHeures !== null
-      ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
-      : {}),
-  });
+  // les demi-journées retenues. La passer en `heuresParJour` (bug corrigé)
+  // doublait le dénominateur du taux sur toute session de plus d'un jour.
+  let creneaux;
+  try {
+    creneaux = genererCreneaux({
+      dateDebut: trainingSession.dateDebut,
+      dateFin: trainingSession.dateFin,
+      ...(jours.length > 0 ? { jours } : {}),
+      ...(v.heuresParJour !== undefined ? { heuresParJour: v.heuresParJour } : {}),
+      ...(trainingSession.dureeReelleHeures !== null
+        ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
+        : {}),
+    });
+  } catch (err) {
+    // `genererCreneaux` lève sur une journée malformée. Le CHECK SQL rend le cas
+    // improbable, mais le laisser remonter en erreur 500 n'apprendrait rien à
+    // l'admin qui doit corriger la saisie.
+    Sentry.captureException(err, {
+      tags: { action: "generateSessionCreneauxAction" },
+      extra: { sessionId: v.sessionId },
+    });
+    return { error: "Une journée déclarée est invalide. Corrigez la saisie des journées." };
+  }
 
   if (creneaux.length === 0) return { error: "Aucun créneau généré (dates invalides)" };
 
@@ -364,6 +424,13 @@ export async function importReleveConnexionAction(input: {
       // prévue d'UNE journée distancielle (cf. genererCreneaux plus bas).
       dateFin: true,
       dureeReelleHeures: true,
+      // 🔴 Journées déclarées (D14) — INDISPENSABLE ici aussi. Les omettre
+      // rendait ce chemin faux exactement comme l'autre : voir le commentaire
+      // du calcul de `dureePrevueMinutes` plus bas.
+      jours: {
+        select: { date: true, heureDebut: true, heureFin: true },
+        orderBy: { date: "asc" },
+      },
       enrollments: {
         where: { statut: { notIn: ["abandon", "exclu"] } },
         select: {
@@ -432,9 +499,24 @@ export async function importReleveConnexionAction(input: {
   // aucun créneau du tout, donc aucune présence justifiable.
   // `genererCreneaux` porte déjà la répartition correcte (jours retenus + plafond
   // horaire) : on en dérive la durée d'une journée pleine = 2 demi-journées.
+  //
+  // 🔴 Les journées déclarées (D14) doivent être passées ICI AUSSI. Sans elles,
+  // ce chemin retombait sur `dateDebut..dateFin` alors que l'autre chemin, lui,
+  // les respectait — et les deux dénominateurs divergeaient. Sur une session
+  // distancielle de 28 h dont les 4 journées sont réparties sur 3 mois, le repli
+  // retenait 66 jours ouvrés, d'où 0,42 h/jour et une durée prévue de 26 MINUTES
+  // pour la journée. Le réalisé étant plafonné au prévu, tout le monde ressortait
+  // à 100 % avec 0 h 26 sur l'attestation. Surévaluer la présence est bien plus
+  // grave que la sous-évaluer : c'est ce qu'un contrôle sanctionne.
+  const joursDeclares = trainingSession.jours.map((j) => ({
+    date: parisDateISO(j.date),
+    heureDebut: j.heureDebut,
+    heureFin: j.heureFin,
+  }));
   const creneauxSession = genererCreneaux({
     dateDebut: trainingSession.dateDebut,
     dateFin: trainingSession.dateFin,
+    ...(joursDeclares.length > 0 ? { jours: joursDeclares } : {}),
     ...(trainingSession.dureeReelleHeures !== null
       ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
       : {}),

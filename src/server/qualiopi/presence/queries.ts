@@ -39,6 +39,13 @@ export interface SessionEmargementRow {
     };
   }>;
   creneaux: PresenceCreneau[];
+  /**
+   * Journées RÉELLEMENT animées (décision D14), ordonnées.
+   *
+   * Tableau vide = la session n'en déclare aucune et retombe sur
+   * `dateDebut..dateFin` — ce qui n'est correct que si les journées se suivent.
+   */
+  jours: Array<{ date: string; heureDebut: string; heureFin: string }>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -67,6 +74,10 @@ export async function getSessionEmargement(
             },
           },
           orderBy: [{ trainee: { nom: "asc" } }, { trainee: { prenom: "asc" } }],
+        },
+        jours: {
+          select: { date: true, heureDebut: true, heureFin: true },
+          orderBy: { date: "asc" },
         },
       },
     });
@@ -105,6 +116,13 @@ export async function getSessionEmargement(
         },
       })),
       creneaux,
+      // `@db.Date` stocké à minuit UTC → `YYYY-MM-DD` sans conversion de fuseau.
+      // Passer par `toLocaleDateString` décalerait la date d'un jour.
+      jours: session.jours.map((j) => ({
+        date: j.date.toISOString().slice(0, 10),
+        heureDebut: j.heureDebut,
+        heureFin: j.heureFin,
+      })),
     };
   } catch {
     return null;

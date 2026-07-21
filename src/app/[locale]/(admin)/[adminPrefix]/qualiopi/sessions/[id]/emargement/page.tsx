@@ -21,12 +21,14 @@ import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { EmargementGrid } from "@/components/admin/qualiopi/EmargementGrid";
 import { ImportReleveForm } from "@/components/admin/qualiopi/ImportReleveForm";
 import { GenererCreneauxButton } from "@/components/admin/qualiopi/GenererCreneauxButton";
+import { SessionJoursEditor } from "@/components/admin/qualiopi/SessionJoursEditor";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import {
   generateSessionCreneauxAction,
   saveEmargementAction,
   importReleveConnexionAction,
 } from "@/server/actions/qualiopi/presence";
+import { saveSessionJoursAction } from "@/server/actions/qualiopi/session-jours";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -77,7 +79,7 @@ export default async function EmargementPage({ params }: PageProps) {
   const data = await getSessionEmargement(id);
   if (!data) notFound();
 
-  const { session, enrollments, creneaux } = data;
+  const { session, enrollments, creneaux, jours } = data;
 
   // Prépare les props pour EmargementGrid (clés sérialisables)
   // c.date est un DateTime Prisma (Date JS) → on extrait la partie ISO date (Europe/Paris).
@@ -157,6 +159,17 @@ export default async function EmargementPage({ params }: PageProps) {
           </p>
         </div>
       </div>
+
+      {/* Section : Journées réellement animées (D14) — AVANT la génération des
+          créneaux, parce qu'elle en dépend : sans journées déclarées, les
+          créneaux sont déduits de la plage de dates, ce qui est faux dès que les
+          journées ne se suivent pas. */}
+      <SessionJoursEditor
+        sessionId={id}
+        joursInitiaux={jours}
+        hasCreneaux={hasCreneaux}
+        saveAction={saveSessionJoursAction}
+      />
 
       {/* Section : Générer les créneaux */}
       <section className="mb-[var(--space-admin-8)]">

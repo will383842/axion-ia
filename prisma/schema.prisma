@@ -5738,6 +5738,8 @@ model TrainingSession {
   incidents           Incident[]
   /// Contresignatures formateur, au grain (date × demi-journée) — T13.
   emargementContresignatures EmargementContresignature[]
+  /// Journées RÉELLEMENT animées (décision D14). Vide = repli sur `dateDebut..dateFin`.
+  jours                      SessionJour[]
 
   @@index([formationId])
   @@index([clientId])
@@ -5935,6 +5937,47 @@ model SessionFormateur {
   @@unique([sessionId, trainerId], map: "session_formateur_unique")
   @@index([trainerId, sessionId])
   @@map("session_formateurs")
+}
+
+/// Journée RÉELLEMENT animée d'une session (décision D14).
+///
+/// `dateDebut..dateFin` ne décrit PAS les jours d'une session : « c'est possible
+/// que ça se suive ou pas ». Déduire les journées de cette plage est faux dès
+/// qu'un parcours est étalé — un parcours de 4 journées réparties sur 3 mois
+/// produit 66 jours ouvrés au lieu de 4, soit un dénominateur multiplié par 16
+/// et un taux de présence à ≈ 3 % : attestation refusée à un stagiaire assidu.
+///
+/// Une seule table pour trois problèmes distincts :
+///   1. le dénominateur du taux (jours réels, non déduits) ;
+///   2. l'import distanciel multi-jours, aujourd'hui faux ;
+///   3. les horaires RÉELS du PDF d'émargement et de la convocation, aujourd'hui
+///      codés en dur en « 09h00–17h00 » — exigence jurisprudentielle
+///      (CAA Nantes 20/04/2021), donc prérequis du tuple signé et de l'étape D.
+///
+/// Rétrocompatible : une session sans journée déclarée retombe sur
+/// `dateDebut..dateFin`. Aucun backfill (prod = 1 session).
+model SessionJour {
+  id         String          @id @default(uuid()) @db.Uuid
+  sessionId  String          @map("session_id") @db.Uuid
+  session    TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  /// Jour civil (heure de Paris), même convention que `PresenceCreneau.date`.
+  date       DateTime        @db.Date
+  /// Horaires RÉELS de la journée, `HH:MM`. Format garanti par un CHECK SQL :
+  /// ce sont eux qui figureront sur une pièce à valeur probante.
+  heureDebut String          @map("heure_debut") @db.VarChar(5)
+  heureFin   String          @map("heure_fin") @db.VarChar(5)
+  /// Intitulés des modules couverts ce jour-là, pour la feuille d'émargement.
+  /// Vide = repli sur le programme de la formation.
+  modules    Json            @default("[]")
+  commentaire String?        @db.Text
+  createdAt  DateTime        @default(now()) @map("created_at")
+  updatedAt  DateTime        @updatedAt @map("updated_at")
+
+  // Pas de `@@index([sessionId, date])` : il serait STRICTEMENT redondant avec
+  // l'index unique ci-dessus — mêmes colonnes, même ordre. Un B-tree unique sert
+  // déjà les lectures par session et par (session, date).
+  @@unique([sessionId, date], map: "session_jour_unique")
+  @@map("session_jours")
 }
 
 /// Stagiaire. PII ; détails handicap chiffrés AES-256-GCM (pii-crypto).
