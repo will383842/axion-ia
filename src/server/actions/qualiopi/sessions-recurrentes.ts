@@ -24,7 +24,9 @@
 "use server";
 
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { revoquerTokensInscription } from "@/server/qualiopi/emargement/token-service";
 import type { ModaliteFormation, FinancementType } from "@/server/qualiopi/formations/types";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
@@ -475,6 +477,27 @@ export async function reportSessionAction(
       return { error: "Conflit de numéro détecté, veuillez réessayer" };
     }
     return { error: "Erreur lors du report de la session" };
+  }
+
+  // 🔴 O7 (volet report) — les jetons d'émargement suivent l'INSCRIPTION, qui a
+  // migré vers la nouvelle session. Sans révocation, un lien émis pour les dates
+  // reportées resterait valide alors que la garde `reportee` du service ne
+  // s'applique plus (l'inscription appartient désormais à une session
+  // `planifiee`). On révoque : le stagiaire recevra un nouveau lien pour les
+  // nouvelles dates. Hors transaction (échec non bloquant), avec trace.
+  try {
+    for (const e of ancienne.enrollments) {
+      await revoquerTokensInscription({
+        enrollmentId: e.id,
+        motif: `Session reportée (${ancienne.numero})`,
+        parAdminId: adminSession.userId,
+      });
+    }
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "reporterSessionAction:revocation_jetons" },
+      extra: { ancienneSessionId: ancienne.id, nouvelleSessionId },
+    });
   }
 
   await logQualiopiActivity({

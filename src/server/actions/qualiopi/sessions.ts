@@ -14,7 +14,9 @@
 "use server";
 
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { revoquerTokensInscription } from "@/server/qualiopi/emargement/token-service";
 import type {
   TrainingSessionStatut,
   TransitionTriggeredBy,
@@ -350,6 +352,36 @@ export async function transitionSessionAction(input: {
       return { data: { id: v.id } };
     }
     return { error: "Erreur lors de la transition de la session" };
+  }
+
+  // 🔴 O7 — révocation AUTOMATIQUE des jetons d'émargement à l'annulation ou au
+  // report. Sans cela, les liens restaient valides jusqu'à leur expiration
+  // (fin + 48 h) : un stagiaire pouvait signer une session qui n'a pas eu lieu,
+  // et la signature aurait été cryptographiquement valide — pire qu'inutile.
+  // La garde du service de signature refuse déjà `annulee`/`reportee`, mais elle
+  // ne ferme qu'une porte : on ferme aussi celle des jetons, dès la transition,
+  // sans dépendre d'un clic manuel de l'admin sur « révoquer les liens ».
+  if (toStatus === "annulee" || toStatus === "reportee") {
+    try {
+      const inscriptions = await prisma.enrollment.findMany({
+        where: { sessionId: v.id },
+        select: { id: true },
+      });
+      for (const i of inscriptions) {
+        await revoquerTokensInscription({
+          enrollmentId: i.id,
+          motif: `Session ${toStatus} (${trigger})`,
+          parAdminId: session.userId,
+        });
+      }
+    } catch (err) {
+      // Ne pas faire échouer la transition sur un échec de révocation : la garde
+      // du service de signature reste le filet de sécurité. Mais le signaler.
+      Sentry.captureException(err, {
+        tags: { action: `transitionSessionAction:revocation_jetons` },
+        extra: { sessionId: v.id, toStatus },
+      });
+    }
   }
 
   await logQualiopiActivity({
