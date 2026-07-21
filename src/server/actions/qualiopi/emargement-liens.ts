@@ -54,7 +54,7 @@ export interface LienEmargement {
  */
 export async function emettreLiensSessionAction(input: {
   sessionId: string;
-}): Promise<ActionResult<{ liens: LienEmargement[] }>> {
+}): Promise<ActionResult<{ liens: LienEmargement[]; erreurPartielle: string | null }>> {
   const session = await requireAdminWrite();
 
   const formation = await prisma.trainingSession.findUnique({
@@ -77,6 +77,7 @@ export async function emettreLiensSessionAction(input: {
   // Même convention que le reste du dépôt (`indexnow.ts`, `same-origin.ts`).
   const base = (process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com").replace(/\/+$/, "");
   const liens: LienEmargement[] = [];
+  let erreurPartielle: string | null = null;
 
   for (const inscription of formation.enrollments) {
     try {
@@ -93,26 +94,43 @@ export async function emettreLiensSessionAction(input: {
         expiresAt,
       });
     } catch (err) {
-      // Le refus « journées non déclarées » est actionnable : il vaut pour toute
-      // la session, inutile de le répéter par stagiaire.
-      if (err instanceof TokenEmargementError) return { error: err.message };
-      Sentry.captureException(err, {
-        tags: { action: "emettreLiensSessionAction" },
-        extra: { sessionId: input.sessionId },
-      });
-      return { error: "Impossible d'émettre les liens de signature." };
+      // 🔴 NE PAS jeter le travail déjà fait.
+      //
+      // `creerTokenInscription` révoque le jeton précédent DANS LA MÊME
+      // transaction que la création du nouveau. Un `return { error }` au 8ᵉ
+      // inscrit sur 20 laissait donc les 7 premiers avec un jeton neuf dont le
+      // clair partait à la poubelle avec la valeur de retour — et leur ancien
+      // lien révoqué. Sept stagiaires ne pouvaient plus signer, l'admin lisait
+      // « impossible d'émettre » et croyait qu'il ne s'était rien passé.
+      //
+      // On retourne donc ce qui a été émis, avec l'avertissement.
+      if (err instanceof TokenEmargementError) {
+        erreurPartielle = err.message;
+      } else {
+        Sentry.captureException(err, {
+          tags: { action: "emettreLiensSessionAction" },
+          extra: { sessionId: input.sessionId, deja: liens.length },
+        });
+        erreurPartielle =
+          "Une erreur est survenue en cours d'émission. Les liens ci-dessus sont valides ; relancez pour les manquants.";
+      }
+      break;
     }
+  }
+
+  if (liens.length === 0) {
+    return { error: erreurPartielle ?? "Impossible d'émettre les liens de signature." };
   }
 
   await logQualiopiActivity({
     action: "qualiopi.emargement.liens.emettre",
     targetType: "TrainingSession",
     targetId: input.sessionId,
-    changes: { nbLiens: liens.length },
+    changes: { nbLiens: liens.length, partiel: erreurPartielle !== null },
     session,
   });
 
-  return { data: { liens } };
+  return { data: { liens, erreurPartielle } };
 }
 
 /**

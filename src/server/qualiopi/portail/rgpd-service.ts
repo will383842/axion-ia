@@ -228,7 +228,14 @@ export async function supprimerStagiaire(traineeId: string): Promise<void> {
     // survivant à l'effacement permettrait de signer au nom d'une personne
     // pourtant « supprimée ».
     prisma.emargementToken.updateMany({
-      where: { enrollment: { traineeId }, revokedAt: null },
+      // Les DEUX contextes : `enrollmentId` est nullable, `coachingId` porte
+      // l'AFEST 1-to-1 (polymorphisme D9). Ne filtrer que sur l'inscription
+      // raterait silencieusement toutes les signatures de coaching le jour où
+      // ce chemin existera.
+      where: {
+        OR: [{ enrollment: { traineeId } }, { coaching: { traineeId } }],
+        revokedAt: null,
+      },
       data: { revokedAt: now, revokedMotif: "Effacement RGPD" },
     }),
     // RGPD : purger les PII des signatures d'émargement.
@@ -243,7 +250,7 @@ export async function supprimerStagiaire(traineeId: string): Promise<void> {
     // Sont en revanche effacés : l'adresse électronique, l'empreinte d'IP et
     // celle du navigateur. Aucun des trois n'est nécessaire à la preuve.
     prisma.emargementSignature.updateMany({
-      where: { enrollment: { traineeId } },
+      where: { OR: [{ enrollment: { traineeId } }, { coaching: { traineeId } }] },
       data: { signataireEmail: null, ipHash: null, userAgentSha256: null },
     }),
   ]);
@@ -269,12 +276,17 @@ export async function supprimerStagiaire(traineeId: string): Promise<void> {
  * `null` en même temps : une clé qui ne pointe plus sur rien ferait échouer
  * toute relecture ultérieure sans expliquer pourquoi.
  */
-async function purgerImagesSignatures(traineeId: string, now: Date): Promise<void> {
+export async function purgerImagesSignatures(traineeId: string, now: Date): Promise<void> {
   const signatures = await prisma.emargementSignature.findMany({
-    where: { enrollment: { traineeId }, signatureKey: { not: null }, imagePurgeeAt: null },
+    where: {
+      OR: [{ enrollment: { traineeId } }, { coaching: { traineeId } }],
+      signatureKey: { not: null },
+      imagePurgeeAt: null,
+    },
     select: { id: true, signatureKey: true },
   });
 
+  let echecs = 0;
   for (const signature of signatures) {
     if (signature.signatureKey === null) continue;
     try {
@@ -284,11 +296,28 @@ async function purgerImagesSignatures(traineeId: string, now: Date): Promise<voi
         data: { imagePurgeeAt: now, signatureKey: null },
       });
     } catch (err) {
+      echecs += 1;
       Sentry.captureException(err, {
         tags: { action: "supprimerStagiaire:purgeImage" },
         extra: { signatureId: signature.id },
       });
     }
+  }
+
+  // 🔴 LÈVE si une seule image n'a pas pu être supprimée.
+  //
+  // Avaler l'échec faisait retourner `supprimerStagiaire` normalement, donc
+  // passer la demande RGPD en « traitée » — et le garde qui exige le statut
+  // « demandée » rendait alors tout rejeu IMPOSSIBLE. L'image restait cinq ans
+  // avec `imagePurgeeAt` à null, et rien ne balaie cette colonne.
+  //
+  // En levant, la demande reste « demandée » et l'admin peut relancer. Les
+  // images déjà purgées ne le seront pas deux fois : la requête filtre sur
+  // `imagePurgeeAt: null`.
+  if (echecs > 0) {
+    throw new Error(
+      `Effacement RGPD incomplet : ${echecs} image(s) de signature n'ont pas pu être supprimées. La demande reste ouverte, relancez-la.`,
+    );
   }
 }
 

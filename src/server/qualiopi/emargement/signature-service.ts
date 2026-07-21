@@ -83,6 +83,8 @@ export type PorteurSignature =
 export type RefusSignature =
   | "creneau_introuvable"
   | "porteur_non_autorise"
+  | "session_close"
+  | "inscription_inactive"
   | "pas_encore_commence"
   | "deja_signe"
   | "journee_non_declaree"
@@ -162,10 +164,12 @@ async function lireContexte(creneauId: string) {
       enrollment: {
         select: {
           id: true,
+          statut: true,
           trainee: { select: { nom: true, prenom: true, email: true } },
           session: {
             select: {
               id: true,
+              statut: true,
               titreSession: true,
               formateurPrincipal: { select: { nom: true, prenom: true } },
               jours: {
@@ -237,6 +241,34 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
   }
 
   const session = ctx.enrollment.session;
+
+  // 🔴 Une session ANNULÉE ou REPORTÉE ne se signe pas.
+  //
+  // La révocation des jetons ne fermait qu'une porte sur deux : elle rendait le
+  // lien du stagiaire inopérant, mais l'écran formateur, lui, ne consulte aucun
+  // jeton. Il aurait donc continué à produire des signatures cryptographiquement
+  // valides sur une session qui n'a pas eu lieu — ce qui est pire qu'inutile.
+  // La garde vit ici, à côté des autres, pour valoir sur les DEUX porteurs.
+  if (session.statut === "annulee" || session.statut === "reportee") {
+    return {
+      ok: false,
+      raison: "session_close",
+      message: "Cette session est annulée ou reportée : elle ne peut plus être émargée.",
+    };
+  }
+
+  // Symétrie avec l'émission des liens, qui exclut déjà abandons et exclus.
+  // ⚠️ Cela n'invalide RIEN de ce qui a déjà été signé : ces heures ont été
+  // réellement suivies et restent facturables (oubli O3). On empêche seulement
+  // d'en ajouter de nouvelles.
+  if (ctx.enrollment.statut === "abandon" || ctx.enrollment.statut === "exclu") {
+    return {
+      ok: false,
+      raison: "inscription_inactive",
+      message: "Cette inscription est close : aucune nouvelle signature ne peut être ajoutée.",
+    };
+  }
+
   const jourIso = parisDateISO(ctx.date);
   const jour = session.jours.find((j) => parisDateISO(j.date) === jourIso);
 

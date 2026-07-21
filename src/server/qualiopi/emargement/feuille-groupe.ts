@@ -17,6 +17,7 @@ import { prisma } from "@/lib/prisma";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import { demiJourneeCommencee } from "./creneaux-signables";
+import { mentionComplete } from "./mentions";
 
 export interface LigneGroupe {
   creneauId: string;
@@ -36,6 +37,15 @@ export interface DemiJourneeGroupe {
   horaires: string;
   formateurNom: string;
   commencee: boolean;
+  /**
+   * Texte présenté au signataire pour CETTE demi-journée.
+   *
+   * 🔴 L'écran formateur n'en affichait aucune, alors que la base enregistre
+   * `mentionVersion` : elle affirmait un texte que personne n'avait jamais vu.
+   * L'information RGPD (art. 13) est due au moment où l'on collecte le tracé et
+   * les empreintes d'IP et de navigateur.
+   */
+  mentions: string[];
   lignes: LigneGroupe[];
 }
 
@@ -64,12 +74,15 @@ function jourLisible(iso: string): string {
 export async function lireFeuilleGroupe(
   sessionId: string,
   maintenant: Date,
+  organisme: string,
 ): Promise<DemiJourneeGroupe[] | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
     select: {
+      titreSession: true,
+      statut: true,
       formateurPrincipal: { select: { nom: true, prenom: true } },
       jours: {
         select: {
@@ -118,6 +131,7 @@ export async function lireFeuilleGroupe(
 
       const dj = creneau.demiJournee as DemiJourneeLabel;
       const cle = `${iso}|${dj}`;
+      const horaires = `${jour.heureDebut}–${jour.heureFin}`;
 
       let groupe = groupes.get(cle);
       if (groupe === undefined) {
@@ -128,7 +142,7 @@ export async function lireFeuilleGroupe(
           demiJournee: dj,
           jourLisible: jourLisible(iso),
           demiJourneeLisible: LIBELLE_DEMI[dj],
-          horaires: `${jour.heureDebut}–${jour.heureFin}`,
+          horaires,
           formateurNom: formateur === null ? "" : `${formateur.prenom} ${formateur.nom}`.trim(),
           commencee: demiJourneeCommencee(
             {
@@ -139,6 +153,13 @@ export async function lireFeuilleGroupe(
             },
             maintenant,
           ),
+          mentions: mentionComplete({
+            formationIntitule: session.titreSession,
+            jourLisible: jourLisible(iso),
+            demiJourneeLisible: LIBELLE_DEMI[dj].toLowerCase(),
+            horaires,
+            organisme,
+          }),
           lignes: [],
         };
         groupes.set(cle, groupe);

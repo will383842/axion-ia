@@ -97,6 +97,14 @@ export default async function EmargerPage({ params }: PageProps) {
     ]),
   );
 
+  // 🔴 Les mentions sont calculées PAR CRÉNEAU.
+  //
+  // Elles étaient construites à partir du premier créneau signable et
+  // réaffichées telles quelles dans chaque panneau : en ouvrant l'après-midi du
+  // 11 juin, le stagiaire lisait « j'atteste avoir suivi la matinée du 10 juin ».
+  // La ligne scellée porte `mentionVersion` et prétend prouver ce qui était à
+  // l'écran — c'était faux, et devant un contrôle la pièce aurait dit le
+  // contraire de ce que le signataire avait lu.
   const creneaux: CreneauAffiche[] = feuille.creneaux.map((c) => ({
     id: c.id,
     jourLisible: c.jourLisible,
@@ -104,22 +112,14 @@ export default async function EmargerPage({ params }: PageProps) {
     horaires: c.horaires,
     formateurNom: c.formateurNom,
     etat: etats.get(c.id) ?? "pas_encore_commence",
+    mentions: mentionComplete({
+      formationIntitule: feuille.formationIntitule,
+      jourLisible: c.jourLisible,
+      demiJourneeLisible: c.demiJourneeLisible,
+      horaires: c.horaires,
+      organisme: feuille.organisme,
+    }),
   }));
-
-  // Les mentions sont construites à partir du PREMIER créneau signable : elles
-  // ne varient que par la date et l'horaire, et le formulaire les réaffiche à
-  // chaque ouverture. Une feuille sans créneau signable n'en a pas besoin.
-  const reference = feuille.creneaux.find((c) => etats.get(c.id) === "signable");
-  const mentions =
-    reference === undefined
-      ? []
-      : mentionComplete({
-          formationIntitule: feuille.formationIntitule,
-          jourLisible: reference.jourLisible,
-          demiJourneeLisible: reference.demiJourneeLisible,
-          horaires: reference.horaires,
-          organisme: feuille.organisme,
-        });
 
   return (
     <EmargementForm
@@ -128,7 +128,6 @@ export default async function EmargerPage({ params }: PageProps) {
       formationIntitule={feuille.formationIntitule}
       organisme={feuille.organisme}
       creneaux={creneaux}
-      mentions={mentions}
       signerAction={signerDepuisPortailAction}
     />
   );

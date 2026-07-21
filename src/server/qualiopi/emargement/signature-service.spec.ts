@@ -55,9 +55,11 @@ function contexte(over: Record<string, unknown> = {}) {
     enrollmentId: "enr-1",
     enrollment: {
       id: "enr-1",
+      statut: "inscrit",
       trainee: { nom: "Dupont", prenom: "Alice", email: "alice@example.test" },
       session: {
         id: "ses-1",
+        statut: "en_cours",
         titreSession: "Bien démarrer avec l'IA",
         formation: { titre: "Titre catalogue" },
         formateurPrincipal: { nom: "Jullin", prenom: "Williams" } as {
@@ -279,6 +281,48 @@ describe("signerCreneau — garde d'autorisation", () => {
     });
     expect(r.ok).toBe(true);
   });
+});
+
+describe("signerCreneau — sessions et inscriptions closes", () => {
+  it.each(["annulee", "reportee"])("🔴 REFUSE de signer une session %s", async (statut) => {
+    // La révocation des jetons ne fermait qu'une porte sur deux : l'écran
+    // formateur ne consulte aucun jeton et aurait continué à produire des
+    // signatures valides sur une session qui n'a pas eu lieu.
+    const ctx = contexte();
+    ctx.enrollment.session.statut = statut;
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(ctx);
+
+    const r = await signerCreneau({
+      porteur: { type: "formateur", sessionId: "ses-1", trainerId: "tr-1" },
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect(r).toMatchObject({ ok: false, raison: "session_close" });
+    expect(mockStore).not.toHaveBeenCalled();
+  });
+
+  it.each(["abandon", "exclu"])(
+    "refuse une NOUVELLE signature pour une inscription %s",
+    async (statut) => {
+      // ⚠️ N'invalide rien de ce qui a déjà été signé : ces heures ont été
+      // réellement suivies et restent facturables (oubli O3).
+      const ctx = contexte();
+      ctx.enrollment.statut = statut;
+      mockPrisma.presenceCreneau.findUnique.mockResolvedValue(ctx);
+
+      const r = await signerCreneau({
+        porteur: { type: "formateur", sessionId: "ses-1", trainerId: "tr-1" },
+        creneauId: "cre-1",
+        methode: "canvas",
+        imageDataUrl: IMAGE,
+        maintenant: MAINTENANT,
+      });
+      expect(r).toMatchObject({ ok: false, raison: "inscription_inactive" });
+      expect(mockStore).not.toHaveBeenCalled();
+    },
+  );
 });
 
 describe("signerCreneau — écriture", () => {

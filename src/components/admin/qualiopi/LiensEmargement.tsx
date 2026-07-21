@@ -31,10 +31,13 @@ export interface LienAffiche {
 
 export interface LiensEmargementProps {
   sessionId: string;
-  emettreAction: (input: {
-    sessionId: string;
-  }) => Promise<
-    | { data: { liens: Array<Omit<LienAffiche, "expiresAt"> & { expiresAt: Date }> } }
+  emettreAction: (input: { sessionId: string }) => Promise<
+    | {
+        data: {
+          liens: Array<Omit<LienAffiche, "expiresAt"> & { expiresAt: Date }>;
+          erreurPartielle: string | null;
+        };
+      }
     | { error: string }
   >;
   revoquerAction: (input: {

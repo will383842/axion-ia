@@ -51,6 +51,21 @@ const SENSITIVE_HEADER_KEYS = new Set([
 const SENSITIVE_QUERY_KEYS = new Set(["token", "auth", "key", "secret", "code", "pwd", "password"]);
 
 /**
+ * Nettoie `contexts.trace.data`, où Sentry range les attributs de span.
+ *
+ * 🔴 `@sentry/nextjs` y recopie `http.target` — le CHEMIN BRUT de la requête,
+ * jeton compris. La docstring de ce module annonçait `contexts` comme nettoyé ;
+ * il ne l'était ni dans les erreurs, ni dans les transactions. Le jeton partait
+ * donc chez Sentry malgré le nettoyage de `request.url`.
+ */
+function nettoyerContexts(event: { contexts?: Record<string, unknown> | undefined }): void {
+  const trace = event.contexts?.["trace"] as { data?: Record<string, unknown> } | undefined;
+  if (trace?.data !== undefined) {
+    trace.data = redactRecord(trace.data) ?? {};
+  }
+}
+
+/**
  * Routes dont un SEGMENT de chemin est un secret.
  *
  * Une liste explicite plutôt qu'une heuristique : se tromper ici, c'est soit
@@ -72,7 +87,7 @@ function masquerSegmentsSensibles(url: string): string {
 
 function redactString(input: unknown): unknown {
   if (typeof input !== "string") return input;
-  return input
+  return masquerSegmentsSensibles(input)
     .replace(JWT_RE, "[JWT]")
     .replace(MAGIC_TOKEN_RE, "[TOKEN]")
     .replace(EMAIL_RE, "[EMAIL]")
@@ -172,7 +187,11 @@ export function piiScrubBeforeSend(event: ErrorEvent, _hint?: EventHint): ErrorE
   if (event.tags)
     event.tags = redactRecord(event.tags as Record<string, unknown>) as Record<string, string>;
 
-  // 6. server_name (peut contenir hostname interne)
+  // 6. contexts — `contexts.trace.data` porte `http.target`, c'est-à-dire le
+  // CHEMIN BRUT de la requête, jeton compris.
+  nettoyerContexts(event);
+
+  // 7. server_name (peut contenir hostname interne)
   if (event.server_name) event.server_name = "[server]";
 
   return event;
@@ -212,5 +231,6 @@ export function piiScrubBeforeSendTransaction(
     if (cookies !== undefined) event.request.cookies = cookies as Record<string, string>;
   }
   if (event.extra) event.extra = redactRecord(event.extra) ?? {};
+  nettoyerContexts(event);
   return event;
 }

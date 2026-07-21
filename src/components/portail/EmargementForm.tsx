@@ -27,6 +27,8 @@ export interface CreneauAffiche {
   horaires: string;
   formateurNom: string;
   etat: "signable" | "deja_signe" | "pas_encore_commence";
+  /** Mentions propres À CE créneau — jamais celles d'un autre. */
+  mentions: string[];
 }
 
 export interface EmargementFormProps {
@@ -35,7 +37,6 @@ export interface EmargementFormProps {
   formationIntitule: string;
   organisme: string;
   creneaux: CreneauAffiche[];
-  mentions: string[];
   signerAction: (input: {
     token: string;
     creneauId: string;
@@ -51,7 +52,6 @@ export function EmargementForm({
   formationIntitule,
   organisme,
   creneaux,
-  mentions,
   signerAction,
 }: EmargementFormProps): React.ReactElement {
   const router = useRouter();
@@ -149,8 +149,8 @@ export function EmargementForm({
             {ouvert === c.id && (
               <div className="mt-4 border-t border-gray-200 pt-4">
                 <div className="mb-4 flex flex-col gap-2 text-xs text-gray-700">
-                  {mentions.map((m, i) => (
-                    <p key={i}>{m}</p>
+                  {c.mentions.map((m) => (
+                    <p key={m.slice(0, 40)}>{m}</p>
                   ))}
                 </div>
 

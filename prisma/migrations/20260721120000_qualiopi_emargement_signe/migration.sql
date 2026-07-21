@@ -118,6 +118,7 @@ CREATE TABLE "emargement_contresignatures" (
     "trainer_id" UUID NOT NULL,
     "date" DATE NOT NULL,
     "demi_journee" "DemiJournee" NOT NULL,
+    "formation_intitule" VARCHAR(300) NOT NULL,
     "heure_debut" VARCHAR(5) NOT NULL,
     "heure_fin" VARCHAR(5) NOT NULL,
     "modules_snapshot" JSONB NOT NULL,
@@ -186,6 +187,10 @@ CREATE INDEX "emargement_contresignatures_coaching_id_idx" ON "emargement_contre
 
 -- CreateIndex
 CREATE INDEX "emargement_contresignatures_trainer_id_idx" ON "emargement_contresignatures"("trainer_id");
+
+-- CreateIndex
+-- CreateIndex
+CREATE INDEX "emargement_contresignatures_session_id_trainer_id_created_a_idx" ON "emargement_contresignatures"("session_id", "trainer_id", "created_at");
 
 -- AddForeignKey
 ALTER TABLE "emargement_tokens" ADD CONSTRAINT "emargement_tokens_enrollment_id_fkey" FOREIGN KEY ("enrollment_id") REFERENCES "enrollments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -309,6 +314,17 @@ CREATE UNIQUE INDEX "emargement_signature_coaching_active"
 CREATE UNIQUE INDEX "emargement_signature_chaine_lineaire"
   ON "emargement_signatures" ("enrollment_id", "prev_hash") NULLS NOT DISTINCT
   WHERE "revoked_at" IS NULL AND "enrollment_id" IS NOT NULL;
+
+-- Même garde-fou pour la chaîne des CONTRESIGNATURES.
+--
+-- La portée est ici (session × formateur) : chaque formateur a sa propre chaîne
+-- sur une session, ce qui permet à deux co-animateurs de contresigner la même
+-- demi-journée sans se gêner. Sans cet index, deux contresignatures pouvaient
+-- sceller la même empreinte précédente et forker le registre — la table portait
+-- `prev_hash` et `self_hash` sans que rien ne garantisse la linéarité.
+CREATE UNIQUE INDEX "emargement_contresignature_chaine_lineaire"
+  ON "emargement_contresignatures" ("session_id", "trainer_id", "prev_hash") NULLS NOT DISTINCT
+  WHERE "revoked_at" IS NULL AND "session_id" IS NOT NULL;
 
 -- Un formateur ne contresigne qu'une fois par (session × jour × demi-journée).
 -- `trainer_id` fait partie de la clé : en co-animation, deux formateurs peuvent

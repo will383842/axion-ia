@@ -62,6 +62,20 @@ describe("piiScrubBeforeSend — jeton dans le chemin", () => {
     expect(nettoye?.request?.url).toBe("https://axion-ia.com/fr/portail/emarger/[TOKEN]");
   });
 
+  it("🔴 masque le jeton dans `contexts.trace.data['http.target']`", () => {
+    // Sentry pour Next y recopie le CHEMIN BRUT de la requête. La docstring du
+    // module annonçait `contexts` comme nettoyé ; il ne l'était pas, ni dans les
+    // erreurs ni dans les transactions. Le jeton partait donc malgré le
+    // nettoyage de `request.url`.
+    const nettoye = piiScrubBeforeSend({
+      contexts: { trace: { data: { "http.target": `/fr/portail/emarger/${JETON}` } } },
+    } as never);
+    const cible = (nettoye?.contexts?.["trace"] as { data?: Record<string, unknown> } | undefined)
+      ?.data?.["http.target"];
+    expect(String(cible)).not.toContain(JETON);
+    expect(String(cible)).toContain("[TOKEN]");
+  });
+
   it("n'abîme pas une URL sans secret", () => {
     const url = "https://axion-ia.com/fr/formations/bien-demarrer-avec-l-ia";
     expect(piiScrubBeforeSend({ request: { url } } as never)?.request?.url).toBe(url);
@@ -80,6 +94,15 @@ describe("piiScrubBeforeSendTransaction — le hook qui manquait", () => {
     expect(nettoye?.request?.url).not.toContain(JETON);
     expect(nettoye?.transaction).not.toContain(JETON);
     expect(nettoye?.transaction).toContain("[TOKEN]");
+  });
+
+  it("masque aussi `http.target` sur une TRANSACTION", () => {
+    const nettoye = piiScrubBeforeSendTransaction({
+      contexts: { trace: { data: { "http.target": `/fr/portail/emarger/${JETON}` } } },
+    } as never);
+    const cible = (nettoye?.contexts?.["trace"] as { data?: Record<string, unknown> } | undefined)
+      ?.data?.["http.target"];
+    expect(String(cible)).not.toContain(JETON);
   });
 
   it("retourne bien la transaction — la jeter perdrait tout le traçage", () => {

@@ -7775,6 +7775,10 @@ model EmargementContresignature {
   /// Jour civil (heure de Paris), même convention que `PresenceCreneau.date`.
   date            DateTime           @db.Date
   demiJournee     DemiJournee        @map("demi_journee")
+  /// Intitulé de la formation, FIGÉ — même raison que côté stagiaire : il peut
+  /// être renommé après la session, et le reconstruire par jointure casserait
+  /// rétroactivement toutes les empreintes déjà émises.
+  formationIntitule String           @map("formation_intitule") @db.VarChar(300)
   /// 🔴 EXIGENCES JURISPRUDENTIELLES, non optionnelles : horaires RÉELS du
   /// créneau — surtout pas un « 09h00–17h00 » codé en dur — et intitulés des
   /// modules couverts. Leur absence est précisément ce que sanctionne
@@ -7808,6 +7812,10 @@ model EmargementContresignature {
   @@index([sessionId, date])
   @@index([coachingId])
   @@index([trainerId])
+  /// Relecture d'une chaîne de contresignatures : toutes celles d'un formateur
+  /// sur une session, dans l'ordre d'INSERTION. Même doctrine que côté
+  /// stagiaire — jamais `signeAt`, qui est figé avant l'écriture de l'image.
+  @@index([sessionId, trainerId, createdAt])
   @@map("emargement_contresignatures")
 }
 

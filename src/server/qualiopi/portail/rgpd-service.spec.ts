@@ -441,20 +441,34 @@ describe("RGPD — signatures d'émargement", () => {
     ]);
     mockSupprimerImage.mockRejectedValue(new Error("R2 500"));
 
-    await supprimerStagiaire("t1");
+    await expect(supprimerStagiaire("t1")).rejects.toThrow(/incomplet/);
 
     expect(mockPrisma.emargementSignature.update).not.toHaveBeenCalled();
   });
 
-  it("un échec sur une image n'empêche pas de purger les suivantes", async () => {
+  it("🔴 LÈVE si une purge échoue — sinon la demande passe en « traitée » et le rejeu devient impossible", async () => {
+    // Avaler l'échec faisait retourner normalement, donc marquer la demande RGPD
+    // « traitée » — et le garde qui exige « demandée » rendait tout rejeu
+    // impossible. L'image restait 5 ans, et rien ne balaie `imagePurgeeAt`.
+    mockPrisma.emargementSignature.findMany.mockResolvedValue([
+      { id: "s1", signatureKey: "emargement/2026/signatures/a.png" },
+    ]);
+    mockSupprimerImage.mockRejectedValue(new Error("R2 500"));
+
+    await expect(supprimerStagiaire("t1")).rejects.toThrow();
+  });
+
+  it("un échec sur une image n'empêche pas de tenter les suivantes", async () => {
     mockPrisma.emargementSignature.findMany.mockResolvedValue([
       { id: "s1", signatureKey: "emargement/2026/signatures/a.png" },
       { id: "s2", signatureKey: "emargement/2026/signatures/b.png" },
     ]);
     mockSupprimerImage.mockRejectedValueOnce(new Error("R2 500")).mockResolvedValue(undefined);
 
-    await supprimerStagiaire("t1");
+    await expect(supprimerStagiaire("t1")).rejects.toThrow();
 
+    // Les deux ont été tentées, la seconde a réussi : le rejeu ne reprendra que
+    // ce qui reste, grâce au filtre `imagePurgeeAt: null`.
     expect(mockSupprimerImage).toHaveBeenCalledTimes(2);
     expect(mockPrisma.emargementSignature.update).toHaveBeenCalledTimes(1);
   });

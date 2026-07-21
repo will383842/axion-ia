@@ -15,6 +15,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { requireFormateur } from "@/server/formateur/guard";
 import { lireFeuilleGroupe } from "@/server/qualiopi/emargement/feuille-groupe";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { signerPourStagiaireAction } from "@/server/actions/qualiopi/emargement-formateur";
 import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
@@ -45,11 +46,16 @@ export default async function Page({
   const { id } = await params;
 
   const session = await getTrainingSessionForFormateur(id, trainerId);
+  // La garde de propriété passe AVANT toute autre lecture : sinon n'importe quel
+  // formateur authentifié fait exécuter une requête complète — noms de tous les
+  // inscrits, tous les créneaux — sur n'importe quel identifiant de session.
+  if (session === null) notFound();
+
   // L'instant est résolu UNE fois pour tout le rendu : deux appels séparés
   // pourraient tomber de part et d'autre d'une bascule de demi-journée et
   // afficher un état incohérent.
-  const demiJournees = await lireFeuilleGroupe(id, new Date());
-  if (session === null) notFound();
+  const identite = await getOrganismeIdentite();
+  const demiJournees = await lireFeuilleGroupe(id, new Date(), identite.raisonSociale);
 
   const lieu = [session.lieuVille, session.lieuCodePostal]
     .filter((v): v is string => Boolean(v))

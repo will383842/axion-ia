@@ -37,6 +37,8 @@ export interface DemiJourneeAffichee {
   horaires: string;
   formateurNom: string;
   commencee: boolean;
+  /** Texte présenté au signataire pour CETTE demi-journée. */
+  mentions: string[];
   lignes: LigneGroupeAffichee[];
 }
 
@@ -68,6 +70,10 @@ export function EmargementGroupe({
       null,
   );
   const [signataire, setSignataire] = useState<LigneGroupeAffichee | null>(null);
+  // La demi-journée dont relève le signataire courant : c'est elle qui porte les
+  // mentions à afficher, jamais celles d'une autre.
+  const [mentions, setMentions] = useState<string[]>([]);
+  const [atteste, setAtteste] = useState(false);
   const [mode, setMode] = useState<"trace" | "accessible" | "papier">("trace");
   const [image, setImage] = useState<string | null>(null);
   const [nom, setNom] = useState("");
@@ -76,13 +82,17 @@ export function EmargementGroupe({
 
   function fermer() {
     setSignataire(null);
+    setMentions([]);
+    setAtteste(false);
     setMode("trace");
     setImage(null);
     setNom("");
     setErreur(null);
   }
 
-  const pret = mode === "accessible" ? nom.trim() !== "" : image !== null;
+  // L'attestation est exigée dans TOUTES les modalités : c'est elle qui donne
+  // son sens à la signature, pas le tracé.
+  const pret = atteste && (mode === "accessible" ? nom.trim() !== "" : image !== null);
 
   /**
    * Convertit la photo en data-URL.
@@ -200,6 +210,7 @@ export function EmargementGroupe({
                           onClick={() => {
                             fermer();
                             setSignataire(l);
+                            setMentions(d.mentions);
                           }}
                           className="rounded-md bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white"
                         >
@@ -229,6 +240,28 @@ export function EmargementGroupe({
           <p className="mb-3 font-medium text-neutral-900">
             Passez l&apos;appareil à {signataire.stagiaireNom}
           </p>
+
+          {/* 🔴 Les mentions étaient absentes de cet écran, alors que la base
+              enregistre `mentionVersion` : elle affirmait un texte que personne
+              n'avait jamais vu. L'information RGPD (art. 13) est due au moment
+              où l'on collecte le tracé et les empreintes d'IP et de navigateur. */}
+          <div className="mb-4 flex flex-col gap-2 text-xs text-neutral-700">
+            {mentions.map((m) => (
+              <p key={m.slice(0, 40)}>{m}</p>
+            ))}
+          </div>
+
+          <label className="mb-3 flex items-start gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={atteste}
+              onChange={(e) => setAtteste(e.target.checked)}
+              className="mt-1"
+            />
+            <span>
+              {signataire.stagiaireNom} atteste avoir suivi cette demi-journée de formation.
+            </span>
+          </label>
 
           {mode === "accessible" && (
             <label className="flex flex-col gap-1 text-sm">

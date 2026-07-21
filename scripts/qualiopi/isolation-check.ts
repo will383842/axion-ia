@@ -41,8 +41,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // une fuite. Il n'importe que des lectures et l'action de signature ; la
   // politique de champs stagiaire (jamais d'e-mail, jamais de détail handicap)
   // est portée par `src/server/formateur/collectif-queries.ts`.
-  /^src\/app\/\[locale\]\/espace-formateur\//,
-  /^src\/components\/espace-formateur\//,
+  // Restreint aux SESSIONS : c'est le seul usage réel. Ouvrir tout l'espace
+  // formateur au domaine qualiopi serait plus large que nécessaire.
+  /^src\/app\/\[locale\]\/espace-formateur\/sessions\//,
+  /^src\/components\/espace-formateur\/Emargement/,
   /^src\/app\/\[locale\]\/verifier-attestation\//,
   /^src\/app\/api\/qualiopi\//,
   /^src\/components\/admin\/qualiopi\//,
