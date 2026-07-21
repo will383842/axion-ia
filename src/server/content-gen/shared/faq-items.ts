@@ -24,7 +24,11 @@
  * changement de grille tarifaire.
  */
 
-import { resolvePriceTokens } from "@/content/pricing-tokens";
+import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
+
+/** Résout les tokens puis recolle la prose (« commence à À partir de … »). */
+const renderPrice = (s: string, locale: "fr" | "en"): string =>
+  collapsePriceProseDuplicates(resolvePriceTokens(s, locale));
 
 export interface FaqItem {
   readonly question: string;
@@ -87,8 +91,8 @@ export function parseFaqItems(raw: unknown, opts: ParseFaqOptions = {}): Readonl
       // Résolution AVANT la validation stricte : sinon un token légitime mais
       // non encore résolu ferait échouer `FAQ_PLACEHOLDER_RE` (qui rejette
       // `{{`/`}}`) et supprimerait silencieusement une FAQ parfaitement valide.
-      const question = resolvePriceTokens(q.trim(), locale);
-      const answer = resolvePriceTokens(a.trim(), locale);
+      const question = renderPrice(q.trim(), locale);
+      const answer = renderPrice(a.trim(), locale);
       if (opts.strict) {
         if (!validateFaqItem(question, answer).ok) continue;
         // Anti-doublon : deux réponses identiques (normalisées) = FAQ gonflée.

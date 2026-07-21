@@ -38,7 +38,7 @@
 
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { resolvePriceTokens } from "@/content/pricing-tokens";
+import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
 
 interface RouteParams {
@@ -197,12 +197,11 @@ function buildMarkdown(content: MarkdownContent, slug: string, type: string): st
   // consommateurs LLM de cette API. On résout ici, seul point de passage commun
   // aux 5 types (blog / actualites / guides / kb / faq), plutôt qu'en base — les
   // prix restent ainsi dynamiques (cf. `shared/faq-items.ts` pour le même motif).
-  const bodyMd = htmlToMarkdownLite(resolvePriceTokens(content.body, "fr"));
+  const render = (s: string) => collapsePriceProseDuplicates(resolvePriceTokens(s, "fr"));
+  const bodyMd = htmlToMarkdownLite(render(content.body));
   const canonicalUrl = `${SITE_URL}/fr/${content.canonicalSegment}/${slug}`;
   const lastMod = content.updatedAt.toISOString();
-  const tldrLine = content.excerpt
-    ? `> ${resolvePriceTokens(content.excerpt, "fr").trim()}\n\n`
-    : "";
+  const tldrLine = content.excerpt ? `> ${render(content.excerpt).trim()}\n\n` : "";
   return `# ${content.title}
 
 ${tldrLine}${bodyMd}

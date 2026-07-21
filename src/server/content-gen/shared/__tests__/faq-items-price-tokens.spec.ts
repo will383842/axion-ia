@@ -71,8 +71,12 @@ describe("parseFaqItems — résolution des tokens de prix", () => {
       [
         {
           question: LONG("Quels sont les tarifs pratiqués pour un audit IA en PME ?"),
+          // Volontairement long : la résolution PUIS le recollage de prose
+          // raccourcissent la chaîne, et `validateFaqItem` exige ≥ 60 caractères.
+          // Une réponse trop courte ferait échouer le test pour une raison sans
+          // rapport avec ce qu'il vérifie.
           answer: LONG(
-            "Un audit standard commence à {{price:audit-strategique-pme|range}} selon la taille.",
+            "Un audit standard pour une PME commence à {{price:audit-strategique-pme|range}}, selon la taille de la structure et le nombre de cas d'usage retenus.",
           ),
         },
       ],
