@@ -28,6 +28,27 @@ import { canonicalJson, type CanonicalValue } from "./canonical";
 export const HASH_VERSION_COURANTE = 1;
 
 /**
+ * Versions que ce code sait ENCORE recalculer.
+ *
+ * 🔴 Sans ce registre, `hashVersion` était une pierre tombale, pas un mécanisme
+ * de migration : le jour où la version passerait à 2, TOUT l'historique en
+ * version 1 serait remonté en `version_inconnue` et toutes les chaînes
+ * déclarées invalides — l'inverse exact de ce que la colonne promet.
+ *
+ * La règle : quand la forme change, on INCRÉMENTE `HASH_VERSION_COURANTE`, on
+ * fige l'ancienne fonction de sérialisation sous son numéro ici, et on ne la
+ * touche plus jamais. Une empreinte émise reste vérifiable pour toujours.
+ */
+const SERIALISEURS: Readonly<Record<number, (t: TupleSignatureV1) => CanonicalValue>> = {
+  1: versCanonicalV1,
+};
+
+/** Vrai si ce code sait recalculer une empreinte de cette version. */
+export function versionRecalculable(version: number): boolean {
+  return Object.prototype.hasOwnProperty.call(SERIALISEURS, version);
+}
+
+/**
  * Données figées au moment de la signature.
  *
  * Tous les champs sont OBLIGATOIRES, `null` compris : un champ absent et un
@@ -77,11 +98,11 @@ export interface TupleSignatureV1 {
 }
 
 /** Convertit le tuple en objet canonicalisable, en fixant l'ordre des champs. */
-function versCanonical(t: TupleSignatureV1): CanonicalValue {
+function versCanonicalV1(t: TupleSignatureV1): CanonicalValue {
   // L'ordre littéral ci-dessous n'a aucune importance — `canonicalJson` trie les
   // clés. Il est écrit dans l'ordre de lecture humaine, pas machine.
   return {
-    v: HASH_VERSION_COURANTE,
+    v: 1,
     contexteType: t.contexteType,
     enrollmentId: t.enrollmentId,
     creneauId: t.creneauId,
@@ -106,13 +127,17 @@ function versCanonical(t: TupleSignatureV1): CanonicalValue {
 }
 
 /** Représentation canonique exacte qui sera hachée. Exposée pour l'audit et les tests. */
-export function tupleCanonique(t: TupleSignatureV1): string {
-  return canonicalJson(versCanonical(t));
+export function tupleCanonique(t: TupleSignatureV1, version = HASH_VERSION_COURANTE): string {
+  const serialiseur = SERIALISEURS[version];
+  if (serialiseur === undefined) {
+    throw new Error(`[hash] Version de tuple inconnue : ${version}`);
+  }
+  return canonicalJson(serialiseur(t));
 }
 
 /** Empreinte SHA-256 hex (64 caractères) du tuple. */
-export function calculerSelfHash(t: TupleSignatureV1): string {
-  return createHash("sha256").update(tupleCanonique(t), "utf8").digest("hex");
+export function calculerSelfHash(t: TupleSignatureV1, version = HASH_VERSION_COURANTE): string {
+  return createHash("sha256").update(tupleCanonique(t, version), "utf8").digest("hex");
 }
 
 /**
@@ -137,8 +162,14 @@ export interface MaillonChaine {
   selfHash: string;
   hashVersion: number;
   recalculer: () => string | null;
-  /** Version attendue par le code qui sait recalculer ce type de maillon. */
-  versionAttendue?: number;
+  /**
+   * Prédicat de recalculabilité, propre à ce type de chaîne.
+   *
+   * Défaut : celui des signatures stagiaires. Les contresignatures ont leur
+   * propre registre de versions — sans ce point d'extension, la version 1 des
+   * unes serait comparée à celle des autres.
+   */
+  versionRecalculable?: (version: number) => boolean;
 }
 
 export type AnomalieChaine =
@@ -219,12 +250,15 @@ export function verifierChaine(maillons: MaillonChaine[]): ResultatVerification 
         });
       }
 
-      const attendue = m.versionAttendue ?? HASH_VERSION_COURANTE;
-      if (m.hashVersion !== attendue) {
+      // On accepte TOUTE version que ce code sait encore recalculer, pas
+      // seulement la courante : sinon une évolution du tuple invaliderait
+      // rétroactivement tout l'historique.
+      const recalculable = m.versionRecalculable ?? versionRecalculable;
+      if (!recalculable(m.hashVersion)) {
         anomalies.push({
           type: "version_inconnue",
           id: m.id,
-          detail: `tuple en version ${m.hashVersion}, ce code ne sait recalculer que la version ${attendue}`,
+          detail: `tuple en version ${m.hashVersion}, que ce code ne sait plus recalculer`,
         });
       } else {
         const attendu = m.recalculer();

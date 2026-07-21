@@ -28,6 +28,20 @@ import type { MaillonChaine } from "./hash";
 export const HASH_VERSION_CONTRESIGNATURE = 1;
 
 /**
+ * Versions encore recalculables — même doctrine que côté stagiaire : quand la
+ * forme change, on incrémente et on FIGE l'ancien sérialiseur ici, pour que les
+ * empreintes déjà émises restent vérifiables.
+ */
+const SERIALISEURS: Readonly<Record<number, (t: TupleContresignatureV1) => CanonicalValue>> = {
+  1: versCanonicalV1,
+};
+
+/** Vrai si ce code sait recalculer une empreinte de contresignature de cette version. */
+export function versionContresignatureRecalculable(version: number): boolean {
+  return Object.prototype.hasOwnProperty.call(SERIALISEURS, version);
+}
+
+/**
  * Données figées au moment de la contresignature.
  *
  * Tous les champs sont OBLIGATOIRES, `null` compris : un champ absent et un
@@ -62,10 +76,10 @@ export interface TupleContresignatureV1 {
   prevHash: string | null;
 }
 
-function versCanonical(t: TupleContresignatureV1): CanonicalValue {
+function versCanonicalV1(t: TupleContresignatureV1): CanonicalValue {
   // L'ordre littéral n'a aucune importance : `canonicalJson` trie les clés.
   return {
-    v: HASH_VERSION_CONTRESIGNATURE,
+    v: 1,
     contexteType: t.contexteType,
     sessionId: t.sessionId,
     coachingId: t.coachingId,
@@ -88,13 +102,25 @@ function versCanonical(t: TupleContresignatureV1): CanonicalValue {
 }
 
 /** Représentation canonique exacte qui sera hachée. Exposée pour l'audit et les tests. */
-export function tupleContresignatureCanonique(t: TupleContresignatureV1): string {
-  return canonicalJson(versCanonical(t));
+export function tupleContresignatureCanonique(
+  t: TupleContresignatureV1,
+  version = HASH_VERSION_CONTRESIGNATURE,
+): string {
+  const serialiseur = SERIALISEURS[version];
+  if (serialiseur === undefined) {
+    throw new Error(`[contresignature-hash] Version de tuple inconnue : ${version}`);
+  }
+  return canonicalJson(serialiseur(t));
 }
 
 /** Empreinte SHA-256 hex (64 caractères) du tuple. */
-export function calculerSelfHashContresignature(t: TupleContresignatureV1): string {
-  return createHash("sha256").update(tupleContresignatureCanonique(t), "utf8").digest("hex");
+export function calculerSelfHashContresignature(
+  t: TupleContresignatureV1,
+  version = HASH_VERSION_CONTRESIGNATURE,
+): string {
+  return createHash("sha256")
+    .update(tupleContresignatureCanonique(t, version), "utf8")
+    .digest("hex");
 }
 
 /**
@@ -139,7 +165,7 @@ export interface LigneContresignature {
 export function tupleContresignatureDepuisLigne(
   ligne: LigneContresignature,
 ): TupleContresignatureV1 | null {
-  if (ligne.hashVersion !== HASH_VERSION_CONTRESIGNATURE) return null;
+  if (!versionContresignatureRecalculable(ligne.hashVersion)) return null;
   if (
     ligne.date.getUTCHours() !== 0 ||
     ligne.date.getUTCMinutes() !== 0 ||
@@ -187,10 +213,10 @@ export function maillonContresignatureDepuisLigne(ligne: LigneContresignature): 
     prevHash: ligne.prevHash,
     selfHash: ligne.selfHash,
     hashVersion: ligne.hashVersion,
-    versionAttendue: HASH_VERSION_CONTRESIGNATURE,
+    versionRecalculable: versionContresignatureRecalculable,
     recalculer: () => {
       const tuple = tupleContresignatureDepuisLigne(ligne);
-      return tuple === null ? null : calculerSelfHashContresignature(tuple);
+      return tuple === null ? null : calculerSelfHashContresignature(tuple, ligne.hashVersion);
     },
   };
 }

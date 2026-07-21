@@ -28,6 +28,7 @@ import {
   type TupleSignatureV1,
   HASH_VERSION_COURANTE,
   calculerSelfHash,
+  versionRecalculable,
 } from "./hash";
 
 /**
@@ -103,7 +104,7 @@ function modules(valeur: unknown): string[] | null {
 export function tupleDepuisLigne(ligne: LigneSignature): TupleSignatureV1 | null {
   // Une version inconnue ne se recalcule pas avec ce code : le dire ici évite de
   // produire une empreinte qui ne correspondrait à rien.
-  if (ligne.hashVersion !== HASH_VERSION_COURANTE) return null;
+  if (!versionRecalculable(ligne.hashVersion)) return null;
 
   // Une date qui n'est pas à minuit UTC signale que l'invariant d'écriture a été
   // rompu quelque part : recalculer une empreinte dessus produirait un faux
@@ -151,10 +152,12 @@ export function maillonDepuisLigne(ligne: LigneSignature): MaillonChaine {
     prevHash: ligne.prevHash,
     selfHash: ligne.selfHash,
     hashVersion: ligne.hashVersion,
-    versionAttendue: HASH_VERSION_COURANTE,
+    versionRecalculable,
     recalculer: () => {
       const tuple = tupleDepuisLigne(ligne);
-      return tuple === null ? null : calculerSelfHash(tuple);
+      // On recalcule avec la version DE LA LIGNE, pas la courante : c'est tout
+      // l'objet du registre de sérialiseurs.
+      return tuple === null ? null : calculerSelfHash(tuple, ligne.hashVersion);
     },
   };
 }

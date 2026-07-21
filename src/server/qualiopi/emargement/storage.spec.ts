@@ -98,6 +98,8 @@ beforeEach(() => {
   // ⚠️ `clearAllMocks` efface les APPELS, pas les valeurs de retour : chaque
   // valeur est reposée ici, sinon elle fuit d'un `describe` à l'autre.
   mockIsR2Configured.mockReturnValue(true);
+  // `etag: null` = fournisseur qui n'en renvoie pas : la vérification est alors
+  // sautée plutôt que de refuser une signature valide.
   mockUploadToR2.mockResolvedValue({ key: "k", etag: null, sizeBytes: 0 });
   mockDeleteFromR2.mockResolvedValue(undefined);
   mockExistsInR2.mockResolvedValue(false);
@@ -403,6 +405,51 @@ describe("storeSignatureImage", () => {
       id: ID_A,
     });
     expect(res.key).toBe(`emargement/2026/signatures/${ID_A}.png`);
+  });
+
+  it("🔴 REFUSE si l'objet écrit ne correspond pas à ce qui a été envoyé", async () => {
+    // Sans ce contrôle, une troncature en transit ne serait découverte qu'au
+    // contrôle — et ressemblerait alors à une falsification, puisque l'objet ne
+    // correspondrait plus au `signatureSha256` scellé dans l'empreinte.
+    mockUploadToR2.mockResolvedValue({ key: "k", etag: '"' + "0".repeat(32) + '"', sizeBytes: 0 });
+
+    await expect(
+      storeSignatureImage({
+        dataUrl: await dataUrlPng(),
+        genre: "signatures",
+        signeAt: SIGNE_AT,
+        id: ID_A,
+      }),
+    ).rejects.toMatchObject({ motif: "upload_echoue" });
+    expect(mockCapture).toHaveBeenCalled();
+  });
+
+  it("accepte un ETag correct", async () => {
+    const { createHash } = await import("node:crypto");
+    mockUploadToR2.mockImplementation(async (_k: string, buf: Buffer) => ({
+      key: "k",
+      etag: createHash("md5").update(buf).digest("hex"),
+      sizeBytes: buf.byteLength,
+    }));
+
+    const r = await storeSignatureImage({
+      dataUrl: await dataUrlPng(),
+      genre: "signatures",
+      signeAt: SIGNE_AT,
+      id: ID_A,
+    });
+    expect(r.sha256).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("n'exige PAS d'ETag — certains fournisseurs n'en renvoient pas", async () => {
+    mockUploadToR2.mockResolvedValue({ key: "k", etag: "abc-multipart", sizeBytes: 0 });
+    const r = await storeSignatureImage({
+      dataUrl: await dataUrlPng(),
+      genre: "signatures",
+      signeAt: SIGNE_AT,
+      id: ID_A,
+    });
+    expect(r.key).toContain(ID_A);
   });
 
   it("réutilise l'identifiant fourni — l'objet et la future ligne doivent se retrouver", async () => {

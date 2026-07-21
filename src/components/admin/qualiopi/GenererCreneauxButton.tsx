@@ -16,7 +16,10 @@ export interface GenererCreneauxButtonProps {
     sessionId: string;
     heuresParJour?: number;
     confirmerSansJournees?: boolean;
-  }) => Promise<{ data: { created: number } } | { error: string; confirmable?: boolean }>;
+  }) => Promise<
+    | { data: { created: number; reconcilies: number; horsPlan: number } }
+    | { error: string; confirmable?: boolean }
+  >;
   hasCreneaux: boolean;
 }
 
@@ -29,7 +32,11 @@ export function GenererCreneauxButton({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [confirmable, setConfirmable] = useState(false);
-  const [result, setResult] = useState<{ created: number } | null>(null);
+  const [result, setResult] = useState<{
+    created: number;
+    reconcilies: number;
+    horsPlan: number;
+  } | null>(null);
 
   function handleClick(confirmerSansJournees = false) {
     setError(null);
@@ -95,7 +102,19 @@ export function GenererCreneauxButton({
           role="status"
           className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
-          {result.created} créneau(x) créé(s).
+          {result.created} créneau(x) créé(s)
+          {result.reconcilies > 0 && `, ${result.reconcilies} durée(s) corrigée(s)`}.
+          {result.horsPlan > 0 && (
+            <>
+              {" "}
+              <strong>
+                {result.horsPlan} créneau(x) ne correspondent à aucune journée déclarée.
+              </strong>{" "}
+              Ils comptent encore dans le taux de présence. Ils ne sont pas supprimés
+              automatiquement : l&apos;un d&apos;eux peut porter une signature, et rien ne distingue
+              en base une absence émargée d&apos;un créneau vierge.
+            </>
+          )}
         </p>
       )}
     </div>

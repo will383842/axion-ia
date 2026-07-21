@@ -360,13 +360,42 @@ export async function storeSignatureImage(input: {
   }
 
   try {
-    await uploadToR2(key, normalise, MIME_SIGNATURE, {
+    const resultat = await uploadToR2(key, normalise, MIME_SIGNATURE, {
       // Métadonnées d'OBJET R2 (hors image) : permettent de recouper un objet
       // isolé avec sa ligne sans requête, si la base venait à manquer.
       sha256,
       signeAt: input.signeAt.toISOString(),
     });
+
+    // 🔴 Vérifier que R2 a bien reçu CE QU'ON A ENVOYÉ.
+    //
+    // Sans ce contrôle, une troncature ou une corruption en transit ne serait
+    // découverte qu'au contrôle, des mois plus tard — et se présenterait alors
+    // comme une FALSIFICATION, puisque l'objet ne correspondrait plus à son
+    // `signatureSha256` scellé dans l'empreinte. Mieux vaut refuser la signature
+    // tout de suite.
+    //
+    // Sur un PUT simple (non multipart), l'`ETag` de R2 est le MD5 hexadécimal
+    // du contenu. Certains fournisseurs ne le renvoient pas ou le suffixent :
+    // on ne vérifie donc QUE si la forme est reconnaissable, plutôt que de
+    // refuser une signature valide sur une différence de convention.
+    const etag = (resultat.etag ?? "").replaceAll('"', "");
+    if (/^[0-9a-f]{32}$/i.test(etag)) {
+      const md5 = createHash("md5").update(normalise).digest("hex");
+      if (etag.toLowerCase() !== md5) {
+        const err = new SignatureStockageError(
+          "upload_echoue",
+          "L'objet écrit sur le stockage ne correspond pas à ce qui a été envoyé.",
+        );
+        Sentry.captureException(err, {
+          tags: { action: "storeSignatureImage:etag" },
+          extra: { key, etag, md5 },
+        });
+        throw err;
+      }
+    }
   } catch (err) {
+    if (err instanceof SignatureStockageError) throw err;
     Sentry.captureException(err, {
       tags: { action: "storeSignatureImage:upload" },
       extra: { key, sizeBytes: normalise.byteLength },

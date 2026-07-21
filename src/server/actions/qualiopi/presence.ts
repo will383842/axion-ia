@@ -143,7 +143,10 @@ export async function generateSessionCreneauxAction(input: {
   sessionId: string;
   heuresParJour?: number;
   confirmerSansJournees?: boolean;
-}): Promise<{ data: { created: number } } | { error: string; confirmable?: boolean }> {
+}): Promise<
+  | { data: { created: number; reconcilies: number; horsPlan: number } }
+  | { error: string; confirmable?: boolean }
+> {
   const session = await requireAdminWrite();
   const parsed = generateSessionCreneauxSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -235,6 +238,7 @@ export async function generateSessionCreneauxAction(input: {
   if (creneaux.length === 0) return { error: "Aucun créneau généré (dates invalides)" };
 
   let created = 0;
+  let reconcilies = 0;
 
   // Upsert de chaque créneau pour chaque enrollment.
   for (const enrollment of trainingSession.enrollments) {
@@ -242,7 +246,7 @@ export async function generateSessionCreneauxAction(input: {
       // Date ISO Paris → Date UTC pour la colonne @db.Date (date civile).
       const dateObj = new Date(`${creneau.date}T00:00:00+00:00`);
 
-      const existingId = await prisma.presenceCreneau.findUnique({
+      const existant = await prisma.presenceCreneau.findUnique({
         where: {
           enrollmentId_date_demiJournee: {
             enrollmentId: enrollment.id,
@@ -250,10 +254,10 @@ export async function generateSessionCreneauxAction(input: {
             demiJournee: toDemiJourneeEnum(creneau.demiJournee),
           },
         },
-        select: { id: true },
+        select: { id: true, dureePrevueMinutes: true, libelle: true },
       });
 
-      if (!existingId) {
+      if (existant === null) {
         await upsertCreneau({
           enrollmentId: enrollment.id,
           date: dateObj,
@@ -265,9 +269,51 @@ export async function generateSessionCreneauxAction(input: {
           dureeRealiseeMinutes: 0,
         });
         created++;
+        continue;
+      }
+
+      // 🔴 RÉCONCILIATION — et uniquement de la DURÉE PRÉVUE.
+      //
+      // L'action ne faisait que créer les manquants : corriger les journées
+      // d'une session après coup ne recalculait donc RIEN, et le dénominateur
+      // restait faux à vie. Un stagiaire présent à 100 % pouvait plafonner à
+      // 60 % parce que des créneaux d'une plage erronée traînaient encore.
+      //
+      // ⚠️ On ne touche NI `present`, NI `dureeRealiseeMinutes`, NI la source.
+      // Ce sont les données de PREUVE : en base, une absence émargée et un
+      // créneau vierge sont indiscernables, et « nettoyer ce qui ne correspond
+      // plus » détruirait des feuilles signées. C'est exactement l'erreur qui a
+      // fait jeter un correctif précédent sur ce même domaine.
+      //
+      // Et on ne SUPPRIME jamais : les créneaux devenus hors plan sont comptés
+      // et signalés à l'admin, qui décide.
+      if (
+        existant.dureePrevueMinutes !== creneau.dureePrevueMinutes ||
+        existant.libelle !== creneau.libelle
+      ) {
+        await prisma.presenceCreneau.update({
+          where: { id: existant.id },
+          data: {
+            dureePrevueMinutes: creneau.dureePrevueMinutes,
+            libelle: creneau.libelle,
+          },
+        });
+        reconcilies++;
       }
     }
   }
+
+  // Créneaux présents en base mais ABSENTS du plan courant : ils gonflent le
+  // dénominateur sans correspondre à une journée déclarée. On ne les supprime
+  // pas — ils peuvent porter une signature — mais l'admin doit savoir.
+  const clesDuPlan = new Set(creneaux.map((c) => `${c.date}|${toDemiJourneeEnum(c.demiJournee)}`));
+  const tousLesCreneaux = await prisma.presenceCreneau.findMany({
+    where: { enrollmentId: { in: trainingSession.enrollments.map((e) => e.id) } },
+    select: { date: true, demiJournee: true },
+  });
+  const horsPlan = tousLesCreneaux.filter(
+    (c) => !clesDuPlan.has(`${parisDateISO(c.date)}|${c.demiJournee}`),
+  ).length;
 
   await logQualiopiActivity({
     action: "qualiopi.presence.creneaux.generate",
@@ -277,11 +323,13 @@ export async function generateSessionCreneauxAction(input: {
       nbCreneaux: creneaux.length,
       nbEnrollments: trainingSession.enrollments.length,
       created,
+      reconcilies,
+      horsPlan,
     },
     session,
   });
 
-  return { data: { created } };
+  return { data: { created, reconcilies, horsPlan } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

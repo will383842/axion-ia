@@ -30,6 +30,7 @@ vi.mock("@/lib/prisma", () => ({
     },
     presenceCreneau: {
       findUnique: vi.fn(),
+      findMany: vi.fn(),
       update: vi.fn(),
     },
     enrollment: {
@@ -103,7 +104,11 @@ import {
 
 const mockPrisma = prisma as unknown as {
   trainingSession: { findUnique: ReturnType<typeof vi.fn> };
-  presenceCreneau: { findUnique: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
+  presenceCreneau: {
+    findUnique: ReturnType<typeof vi.fn>;
+    findMany: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+  };
   enrollment: { updateMany: ReturnType<typeof vi.fn> };
   releveConnexionImport: { create: ReturnType<typeof vi.fn> };
 };
@@ -189,6 +194,10 @@ describe("generateSessionCreneauxAction", () => {
     mockTropEtalee.mockReturnValue(false);
     // Par défaut : aucun créneau existant → tous créés
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue(null);
+    // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour : sans ce
+    // repositionnement, la détection des créneaux hors plan reçoit `undefined`.
+    mockPrisma.presenceCreneau.findMany.mockResolvedValue([]);
+    mockPrisma.presenceCreneau.update.mockResolvedValue({});
     mockUpsertCreneau.mockResolvedValue("new-id");
   });
 
@@ -256,6 +265,64 @@ describe("generateSessionCreneauxAction", () => {
     const logCall = mockCall<{ action: string; targetType: string }>(mockLogActivity);
     expect(logCall.action).toBe("qualiopi.presence.creneaux.generate");
     expect(logCall.targetType).toBe("TrainingSession");
+  });
+
+  it("🔴 RÉCONCILIE la durée d'un créneau existant au lieu de l'ignorer", async () => {
+    // L'action ne créait que les manquants : corriger les journées après coup ne
+    // recalculait donc rien, et le dénominateur restait faux à vie.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "cre-existant",
+      dureePrevueMinutes: 999,
+      libelle: "ancien libellé",
+    });
+
+    const r = await generateSessionCreneauxAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+    });
+
+    expect("data" in r).toBe(true);
+    if (!("data" in r)) return;
+    expect(r.data.created).toBe(0);
+    expect(r.data.reconcilies).toBeGreaterThan(0);
+    const maj = mockPrisma.presenceCreneau.update.mock.calls[0]?.[0] as {
+      data: { dureePrevueMinutes: number };
+    };
+    expect(maj.data.dureePrevueMinutes).toBe(210);
+  });
+
+  it("⚠️ la réconciliation ne touche NI `present` NI `dureeRealiseeMinutes`", async () => {
+    // Ce sont les données de PREUVE. En base, une absence émargée et un créneau
+    // vierge sont indiscernables : les écraser détruirait des feuilles signées.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "cre-existant",
+      dureePrevueMinutes: 999,
+      libelle: "x",
+    });
+
+    await generateSessionCreneauxAction({ sessionId: "550e8400-e29b-41d4-a716-446655440000" });
+
+    const maj = mockPrisma.presenceCreneau.update.mock.calls[0]?.[0] as {
+      data: Record<string, unknown>;
+    };
+    expect(maj.data).not.toHaveProperty("present");
+    expect(maj.data).not.toHaveProperty("dureeRealiseeMinutes");
+    expect(maj.data).not.toHaveProperty("source");
+  });
+
+  it("SIGNALE les créneaux hors plan sans jamais les supprimer", async () => {
+    mockPrisma.presenceCreneau.findMany.mockResolvedValue([
+      { date: new Date("2026-06-10T00:00:00.000Z"), demiJournee: "matin" },
+      // Journée qui n'est plus au plan : elle gonfle le dénominateur.
+      { date: new Date("2026-05-01T00:00:00.000Z"), demiJournee: "matin" },
+    ]);
+
+    const r = await generateSessionCreneauxAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+    });
+
+    expect("data" in r).toBe(true);
+    if (!("data" in r)) return;
+    expect(r.data.horsPlan).toBe(1);
   });
 
   it("REFUSE une session étalée qui n'a déclaré aucune journée (garde-fou D14)", async () => {
