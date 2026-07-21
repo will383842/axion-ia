@@ -8,6 +8,7 @@ import { requireFormateur } from "@/server/formateur/guard";
 import { listMySessions } from "@/server/formateur/queries";
 import { NewSessionForm } from "@/components/espace-formateur/NewSessionForm";
 import { coachingInterventionLabel, sessionStatutLabel } from "@/server/formateur/coaching-options";
+import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
@@ -24,7 +25,7 @@ export default async function DashboardPage(): Promise<React.ReactElement> {
   return (
     <div className="space-y-6">
       <Link
-        href="/fr/espace-formateur/sessions"
+        href={FORMATEUR_SESSIONS_PATH}
         className="border-border hover:border-terracotta block rounded-lg border p-4 transition-colors"
       >
         <span className="text-mocha font-serif font-semibold">Mes formations collectives</span>

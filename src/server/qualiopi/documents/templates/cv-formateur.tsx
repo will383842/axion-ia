@@ -145,7 +145,7 @@ export function CvFormateurPdf({
           <DocSection title="Sous-traitance (ind. 27)">
             <FieldRow label="NDA du sous-traitant" value={data.sousTraitantNda} required />
             <FieldRow
-              label="Vérification data.gouv.fr"
+              label="Consultation data.gouv.fr attestée le"
               value={
                 data.sousTraitantVerifieAt
                   ? `Vérifié le ${data.sousTraitantVerifieAt}`
