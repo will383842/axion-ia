@@ -68,8 +68,17 @@ export const MIME_SIGNATURE = "image/png";
  */
 export const TAILLE_MAX_ENTREE_OCTETS = 2 * 1024 * 1024;
 
-/** Garde-fous de décodage : une image « décompression-bombe » ne doit pas passer. */
-const LIMITES_SHARP = { limitInputPixels: 40_000_000, sequentialRead: true } as const;
+/**
+ * Garde-fous de décodage : une image « décompression-bombe » ne doit pas passer.
+ *
+ * 16 Mpx couvre toute photo de téléphone (une feuille papier scannée), et reste
+ * 16× la sortie utile (1200×800 ≈ 0,96 Mpx). Le défaut de sharp est à 268 Mpx :
+ * un PNG uniforme de 6000×6000 pèse quelques dizaines de kilo-octets, passe donc
+ * sous le plafond de 2 Mio, et alloue ~144 Mo de RGBA au décodage. Quelques
+ * requêtes simultanées suffisaient à mettre le conteneur à genoux — et à priver
+ * de signature toute une salle.
+ */
+const LIMITES_SHARP = { limitInputPixels: 16_000_000, sequentialRead: true } as const;
 
 /** Largeur de normalisation. Au-delà, on stocke du bruit de capteur, pas du tracé. */
 const LARGEUR_MAX = 1200;
@@ -255,6 +264,16 @@ function anneeParis(d: Date): number {
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
+ * Forme EXACTE d'une clé produite par `cleImageSignature`.
+ *
+ * Utilisée pour la suppression : le bucket est partagé avec les factures, et
+ * accepter tout ce qui commence par « emargement/ » laisserait passer une
+ * remontée de chemin. Reconnaître la forme complète est la seule garde sûre.
+ */
+const CLE_SIGNATURE_RE =
+  /^emargement\/\d{4}\/(signatures|contresignatures)\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.png$/i;
+
+/**
  * Écrit l'image de signature sur R2 et retourne son empreinte.
  *
  * 🔴 LÈVE toujours en cas d'échec — voir l'en-tête du fichier. Ne jamais
@@ -362,6 +381,20 @@ export async function storeSignatureImage(input: {
  * clé absente, donc re-purger ne lève pas.
  */
 export async function supprimerImageSignature(key: string): Promise<void> {
+  // 🔴 Le bucket est PARTAGÉ avec les factures, devis et contrats
+  // (`r2-storage.ts`), et `deleteFromR2` ne filtre rien. Sans ce préfixe, une
+  // purge RGPD recevant une clé mal recoupée effacerait
+  // `invoices/2026/AXION-2026-0042.pdf`. La fonction se présente comme sûre :
+  // elle doit l'être.
+  // ⚠️ Le préfixe seul ne suffit PAS : « emargement/../invoices/… » le respecte
+  // et sort pourtant du domaine. Les clés légitimes sont produites par
+  // `cleImageSignature`, dont la forme est entièrement connue — on l'exige.
+  if (!CLE_SIGNATURE_RE.test(key)) {
+    throw new SignatureStockageError(
+      "charge_utile_invalide",
+      `Refus de supprimer un objet qui n'est pas une image de signature : ${key}`,
+    );
+  }
   if (!isR2Configured()) {
     const err = new SignatureStockageError(
       "r2_absent",

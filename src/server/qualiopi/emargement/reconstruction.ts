@@ -34,6 +34,8 @@ import { type MaillonChaine, type TupleSignatureV1, HASH_VERSION_COURANTE } from
 export interface LigneSignature {
   id: string;
   contexteType: "collectif" | "afest_1to1";
+  /** Portée de la chaîne (D12). Haché : voir `TupleSignatureV1.enrollmentId`. */
+  enrollmentId: string | null;
   creneauId: string | null;
   coachingId: string | null;
   /**
@@ -115,6 +117,7 @@ export function tupleDepuisLigne(ligne: LigneSignature): TupleSignatureV1 | null
 
   return {
     contexteType: ligne.contexteType,
+    enrollmentId: ligne.enrollmentId,
     creneauId: ligne.creneauId,
     coachingId: ligne.coachingId,
     date: jourCivil(ligne.date),

@@ -457,14 +457,31 @@ describe("storeSignatureImage", () => {
 });
 
 describe("supprimerImageSignature", () => {
+  const CLE_VALIDE = `emargement/2025/signatures/${ID_A}.png`;
+
+  it.each([
+    ["une facture", "invoices/2026/AXION-2026-0042.pdf"],
+    ["une remontée de chemin", "emargement/../invoices/2026/AXION-2026-0042.pdf"],
+    ["la racine du bucket", "backups/dump.sql"],
+    ["une clé au bon préfixe mais mal formée", "emargement/2025/signatures/pas-un-uuid.png"],
+  ])("REFUSE de supprimer %s — le bucket est partagé", async (_, cle) => {
+    // `deleteFromR2` ne filtre rien et le bucket porte aussi les factures, devis
+    // et contrats. Une purge RGPD recevant une clé mal recoupée effacerait une
+    // pièce comptable.
+    await expect(supprimerImageSignature(cle)).rejects.toMatchObject({
+      motif: "charge_utile_invalide",
+    });
+    expect(mockDeleteFromR2).not.toHaveBeenCalled();
+  });
+
   it("supprime l'objet demandé", async () => {
-    await supprimerImageSignature("emargement/2025/signatures/a.png");
-    expect(mockDeleteFromR2).toHaveBeenCalledWith("emargement/2025/signatures/a.png");
+    await supprimerImageSignature(CLE_VALIDE);
+    expect(mockDeleteFromR2).toHaveBeenCalledWith(CLE_VALIDE);
   });
 
   it("LÈVE si R2 est absent — un effacement RGPD cru fait mais non fait est pire que rien", async () => {
     mockIsR2Configured.mockReturnValue(false);
-    await expect(supprimerImageSignature("k")).rejects.toMatchObject({ motif: "r2_absent" });
+    await expect(supprimerImageSignature(CLE_VALIDE)).rejects.toMatchObject({ motif: "r2_absent" });
     expect(mockCapture).toHaveBeenCalledTimes(1);
   });
 
@@ -472,7 +489,7 @@ describe("supprimerImageSignature", () => {
     // Distinct d'`upload_echoue` : sinon un tableau de bord filtrant sur ce
     // motif mélangerait des écritures ratées et des purges RGPD non faites.
     mockDeleteFromR2.mockRejectedValue(new Error("R2 500"));
-    await expect(supprimerImageSignature("k")).rejects.toMatchObject({
+    await expect(supprimerImageSignature(CLE_VALIDE)).rejects.toMatchObject({
       motif: "suppression_echouee",
     });
     expect(mockCapture).toHaveBeenCalledTimes(1);

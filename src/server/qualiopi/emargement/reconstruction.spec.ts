@@ -21,6 +21,7 @@ function ligne(overrides: Partial<LigneSignature> = {}): LigneSignature {
   const base: LigneSignature = {
     id: "sig-1",
     contexteType: "collectif",
+    enrollmentId: "enr-1",
     creneauId: "cre-1",
     coachingId: null,
     date: new Date("2026-06-10T00:00:00.000Z"),
@@ -189,7 +190,14 @@ describe("chaque colonne entre RÉELLEMENT dans l'empreinte", () => {
   // `verifierChaine`, sinon on retombe dans la tautologie du helper.
   const variations: Array<[string, Partial<LigneSignature>]> = [
     ["prevHash", { prevHash: "9".repeat(64) }],
-    ["contexteType", { contexteType: "afest_1to1", creneauId: null, coachingId: "coa-1" }],
+    // 🔴 Sans ce champ dans le tuple, réattribuer la chaîne d'un stagiaire
+    // assidu à un absent par un simple UPDATE laissait `verifierChaine`
+    // déclarer les DEUX chaînes valides.
+    ["enrollmentId", { enrollmentId: "enr-autre" }],
+    [
+      "contexteType",
+      { contexteType: "afest_1to1", creneauId: null, coachingId: "coa-1", enrollmentId: null },
+    ],
     ["creneauId", { creneauId: "cre-autre" }],
     ["date", { date: new Date("2026-06-11T00:00:00.000Z") }],
     ["demiJournee", { demiJournee: "apres_midi" }],

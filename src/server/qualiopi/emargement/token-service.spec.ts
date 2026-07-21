@@ -236,6 +236,42 @@ describe("verifierToken", () => {
   });
 });
 
+describe("verifierToken — ancrages de sécurité", () => {
+  it("passe TOUJOURS le scope `emargement` à la vérification HMAC", async () => {
+    // C'est la seule chose qui empêche un jeton `formateur_login` ou
+    // `booking_cancel` d'être rejoué sur la page publique d'émargement.
+    // Sans cette assertion, retirer l'argument laissait tous les tests verts.
+    mockPrisma.emargementToken.findUnique.mockResolvedValue({
+      id: "tok-1",
+      enrollmentId: "enr-1",
+      coachingId: null,
+      expiresAt: new Date(Date.now() + 3_600_000),
+      revokedAt: null,
+      usedAt: new Date(),
+    });
+
+    await verifierToken("tok.en");
+
+    expect(mockVerify).toHaveBeenCalledWith("tok.en", { scope: "emargement" });
+  });
+
+  it("ignore le `resourceId` du jeton et fait autorité sur la LIGNE", async () => {
+    // Sinon un jeton signé pourrait revendiquer l'inscription d'un autre.
+    mockVerify.mockResolvedValue({ ok: true, resourceId: "enr-USURPEE" });
+    mockPrisma.emargementToken.findUnique.mockResolvedValue({
+      id: "tok-1",
+      enrollmentId: "enr-REELLE",
+      coachingId: null,
+      expiresAt: new Date(Date.now() + 3_600_000),
+      revokedAt: null,
+      usedAt: new Date(),
+    });
+
+    const res = await verifierToken("tok.en");
+    expect(res).toMatchObject({ ok: true, enrollmentId: "enr-REELLE" });
+  });
+});
+
 describe("revoquerTokensInscription", () => {
   it("ne révoque que les jetons ACTIFS et retourne leur nombre", async () => {
     mockPrisma.emargementToken.updateMany.mockResolvedValue({ count: 2 });

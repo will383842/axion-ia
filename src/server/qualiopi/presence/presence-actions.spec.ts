@@ -520,6 +520,11 @@ describe("importReleveConnexionAction", () => {
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
     mockLogActivity.mockResolvedValue(undefined);
     mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession());
+    // ⚠️ `clearAllMocks` efface les APPELS, pas les valeurs de retour. Sans ce
+    // repositionnement, le `true` posé par le test du garde-fou FUIT vers tous
+    // les tests suivants du bloc, qui échouent alors pour une raison sans
+    // rapport avec ce qu'ils vérifient.
+    mockTropEtalee.mockReturnValue(false);
     mockParseReleve.mockReturnValue(parsedReleve);
     mockMatchParticipants.mockReturnValue({
       matched: [{ enrollmentId: "enroll-1", participant: parsedReleve.participants[0] }],
@@ -850,6 +855,84 @@ describe("importReleveConnexionAction", () => {
     ).data.hashSha256;
     expect(hash1).toBe(hash2);
     expect(hash1).toHaveLength(64);
+  });
+
+  it("🔴 durée prévue = SOMME des créneaux de LA journée, pas `[0] × 2`", async () => {
+    // Régression stricte trouvée en audit : 3 matinées déclarées 09:00–13:00
+    // pour 12 h. Avant D14 le stagiaire assidu sortait à 100 % ; avec le `× 2`
+    // il tombait à 50 % et perdait son attestation — PARCE QUE l'organisme
+    // avait correctement saisi ses journées.
+    mockGenererCreneaux.mockReturnValue([
+      {
+        date: "2026-06-10",
+        demiJournee: "matin" as const,
+        libelle: "2026-06-10 matin",
+        dureePrevueMinutes: 240,
+      },
+    ]);
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    const premier = mockCall<{ dureePrevueMinutes: number }>(mockUpsertCreneau);
+    // 240, pas 480 : la journée ne produit qu'UN créneau.
+    expect(premier.dureePrevueMinutes).toBe(240);
+  });
+
+  it("prend la durée de la journée du RELEVÉ, pas celle du premier jour", async () => {
+    // Le `[0]` désignait toujours le premier jour de la session, alors que le
+    // créneau est daté sur l'heure de connexion réelle.
+    mockGenererCreneaux.mockReturnValue([
+      {
+        date: "2026-06-09",
+        demiJournee: "journee" as const,
+        libelle: "2026-06-09",
+        dureePrevueMinutes: 120,
+      },
+      {
+        date: "2026-06-10",
+        demiJournee: "matin" as const,
+        libelle: "2026-06-10 matin",
+        dureePrevueMinutes: 300,
+      },
+      {
+        date: "2026-06-10",
+        demiJournee: "apres_midi" as const,
+        libelle: "2026-06-10 après-midi",
+        dureePrevueMinutes: 180,
+      },
+    ]);
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    // Le participant se connecte le 2026-06-10 → 300 + 180 = 480.
+    const premier = mockCall<{ dureePrevueMinutes: number }>(mockUpsertCreneau);
+    expect(premier.dureePrevueMinutes).toBe(480);
+  });
+
+  it("🔴 REFUSE l'import sur une session étalée sans journées déclarées", async () => {
+    // Le garde-fou n'était appliqué qu'à la génération : un chemin refusait
+    // bruyamment, l'autre écrivait en silence le même dénominateur faux.
+    mockTropEtalee.mockReturnValue(true);
+
+    const result = await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect("error" in result).toBe(true);
+    expect(mockUpsertCreneau).not.toHaveBeenCalled();
   });
 
   it("🔴 transmet les journées déclarées à genererCreneaux — sinon 100 % pour 0 h 26", async () => {

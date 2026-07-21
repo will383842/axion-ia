@@ -513,6 +513,25 @@ export async function importReleveConnexionAction(input: {
     heureDebut: j.heureDebut,
     heureFin: j.heureFin,
   }));
+
+  // 🔴 Le MÊME garde-fou que `generateSessionCreneauxAction`. Le passer ici
+  // seulement était une incohérence dangereuse : un chemin refusait bruyamment,
+  // l'autre écrivait en silence. Sans journées déclarées — l'état par défaut de
+  // toute session existante — l'import retombait sur les 66 jours ouvrés d'un
+  // parcours de 3 mois, soit 26 minutes de durée prévue et TOUT LE MONDE à 100 %
+  // avec 0 h 26 sur l'attestation.
+  if (
+    sessionTropEtaleePourLeRepli({
+      dateDebut: trainingSession.dateDebut,
+      dateFin: trainingSession.dateFin,
+      jours: joursDeclares,
+    })
+  ) {
+    return {
+      error: `Cette session s'étale sur plus de ${ECART_MAX_REPLI_JOURS} jours sans avoir déclaré ses journées. Renseignez-les avant d'importer un relevé : sinon la durée attendue serait calculée sur tous les jours ouvrés de la période, et le taux de présence de tous les stagiaires serait faux.`,
+    };
+  }
+
   const creneauxSession = genererCreneaux({
     dateDebut: trainingSession.dateDebut,
     dateFin: trainingSession.dateFin,
@@ -521,12 +540,28 @@ export async function importReleveConnexionAction(input: {
       ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
       : {}),
   });
-  const dureePrevueMinutes =
-    creneauxSession.length > 0 ? (creneauxSession[0]?.dureePrevueMinutes ?? 210) * 2 : 7 * 60;
-
-  // Bornes civiles de la session, pour ne jamais dater un créneau hors plage.
-  const isoDebutSession = parisDateISO(trainingSession.dateDebut);
-  const isoFinSession = parisDateISO(trainingSession.dateFin);
+  // 🔴 La durée prévue d'une journée est la SOMME des créneaux de CETTE journée.
+  //
+  // L'ancien `creneauxSession[0].dureePrevueMinutes * 2` postulait « une journée
+  // = 2 demi-journées de durée égale ». D14 casse les deux moitiés du postulat :
+  // une journée déclarée peut produire UN seul créneau, et les créneaux ont
+  // désormais des durées différentes entre eux. Le `[0]` désignait de surcroît
+  // toujours le PREMIER jour de la session, alors que le créneau créé est daté
+  // sur l'heure de connexion réelle.
+  //
+  // Conséquence mesurée : 3 matinées déclarées 09:00–13:00 pour 12 h. Avant D14
+  // le stagiaire assidu sortait à 100 % ; avec le `× 2` il tombait à 50 % et
+  // perdait son attestation — PARCE QUE l'organisme avait correctement saisi ses
+  // journées. Déclarer la vérité rendait le résultat faux.
+  const minutesParJour = new Map<string, number>();
+  for (const c of creneauxSession) {
+    minutesParJour.set(c.date, (minutesParJour.get(c.date) ?? 0) + c.dureePrevueMinutes);
+  }
+  // Journée de repli : la première du plan. Elle remplace l'ancien bornage sur
+  // `dateDebut..dateFin`, plus faible — une connexion un samedi non planifié
+  // créait un créneau sur un jour sans durée prévue, gonflant le dénominateur.
+  const premierJourPlan = creneauxSession[0]?.date ?? parisDateISO(trainingSession.dateDebut);
+  const DUREE_JOURNEE_DEFAUT_MINUTES = 7 * 60;
 
   // 7. Création des créneaux distanciels.
   //
@@ -556,11 +591,13 @@ export async function importReleveConnexionAction(input: {
   for (const enrollment of trainingSession.enrollments) {
     const participant = matchedById.get(enrollment.id);
 
+    // La date doit être une journée RÉELLEMENT PLANIFIÉE : sinon le créneau créé
+    // n'a pas de durée prévue de référence et fausse le dénominateur.
     const isoBrut = parisDateISO(participant?.joinAt ?? trainingSession.dateDebut);
-    const dateCivile =
-      isoBrut < isoDebutSession || isoBrut > isoFinSession ? isoDebutSession : isoBrut;
+    const dateCivile = minutesParJour.has(isoBrut) ? isoBrut : premierJourPlan;
     const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
 
+    const dureePrevueMinutes = minutesParJour.get(dateCivile) ?? DUREE_JOURNEE_DEFAUT_MINUTES;
     const realiseeBrut = participant?.dureeMinutes ?? 0;
     const dureeRealiseeMinutes = Math.min(realiseeBrut, dureePrevueMinutes);
 

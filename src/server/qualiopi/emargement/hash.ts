@@ -36,6 +36,16 @@ export const HASH_VERSION_COURANTE = 1;
  */
 export interface TupleSignatureV1 {
   contexteType: "collectif" | "afest_1to1";
+  /**
+   * Inscription à laquelle appartient la chaîne (D12).
+   *
+   * 🔴 HACHÉ, et ce n'est pas facultatif. Sans lui, un simple
+   * `UPDATE emargement_signatures SET enrollment_id = <autre>` réattribue la
+   * chaîne complète d'un stagiaire assidu à un absent : aucun `selfHash` ne
+   * bouge, et `verifierChaine` déclare les deux chaînes valides. Le tuple
+   * contient bien `signataireNom`, mais rien ne le confronte à l'inscription.
+   */
+  enrollmentId: string | null;
   /** Créneau signé (collectif) ou séance de coaching (AFEST). Un seul est non nul. */
   creneauId: string | null;
   coachingId: string | null;
@@ -73,6 +83,7 @@ function versCanonical(t: TupleSignatureV1): CanonicalValue {
   return {
     v: HASH_VERSION_COURANTE,
     contexteType: t.contexteType,
+    enrollmentId: t.enrollmentId,
     creneauId: t.creneauId,
     coachingId: t.coachingId,
     date: t.date,
@@ -119,7 +130,8 @@ export type AnomalieChaine =
   | { type: "rupture_chainage"; id: string; detail: string }
   | { type: "empreinte_invalide"; id: string; detail: string }
   | { type: "version_inconnue"; id: string; detail: string }
-  | { type: "tuple_irrecalculable"; id: string; detail: string };
+  | { type: "tuple_irrecalculable"; id: string; detail: string }
+  | { type: "maillon_illisible"; id: string; detail: string };
 
 export interface ResultatVerification {
   valide: boolean;
@@ -143,47 +155,83 @@ export function verifierChaine(maillons: MaillonChaine[]): ResultatVerification 
   const anomalies: AnomalieChaine[] = [];
   let precedent: MaillonChaine | null = null;
 
-  for (const m of maillons) {
-    if (precedent === null) {
-      if (m.prevHash !== null) {
-        anomalies.push({
-          type: "premier_maillon_chaine",
-          id: m.id,
-          detail:
-            "le premier maillon référence une signature antérieure — une ligne a été supprimée en tête de chaîne",
-        });
-      }
-    } else if (m.prevHash !== precedent.selfHash) {
-      anomalies.push({
-        type: "rupture_chainage",
-        id: m.id,
-        detail: `prevHash attendu ${precedent.selfHash.slice(0, 12)}…, trouvé ${
-          m.prevHash === null ? "null" : `${m.prevHash.slice(0, 12)}…`
-        }`,
-      });
-    }
+  // ⚠️ L'invariant « ne lève jamais » était documenté sans être implémenté :
+  // un tableau non itérable, un maillon nul, un `selfHash` absent ou un tuple
+  // partiel faisaient remonter une `TypeError` ou une `CanonicalisationError`
+  // hors de la fonction — exactement devant la personne qui doit constater
+  // l'anomalie. Il est désormais tenu, maillon par maillon.
+  if (!Array.isArray(maillons)) {
+    return {
+      valide: false,
+      anomalies: [{ type: "maillon_illisible", id: "?", detail: "chaîne absente ou non itérable" }],
+      nbVerifies: 0,
+    };
+  }
 
-    if (m.hashVersion !== HASH_VERSION_COURANTE) {
+  for (const m of maillons) {
+    if (m === null || typeof m !== "object") {
       anomalies.push({
-        type: "version_inconnue",
-        id: m.id,
-        detail: `tuple en version ${m.hashVersion}, ce code ne sait recalculer que la version ${HASH_VERSION_COURANTE}`,
+        type: "maillon_illisible",
+        id: "?",
+        detail: "entrée de chaîne nulle ou non exploitable",
       });
-    } else if (m.tuple === null) {
-      anomalies.push({
-        type: "tuple_irrecalculable",
-        id: m.id,
-        detail: "données insuffisantes en base pour reconstruire le tuple signé",
-      });
-    } else {
-      const attendu = calculerSelfHash(m.tuple);
-      if (attendu !== m.selfHash) {
+      continue;
+    }
+    try {
+      if (precedent === null) {
+        if (m.prevHash !== null) {
+          anomalies.push({
+            type: "premier_maillon_chaine",
+            id: m.id,
+            detail:
+              "le premier maillon référence une signature antérieure — une ligne a été supprimée en tête de chaîne",
+          });
+        }
+      } else if (typeof precedent.selfHash !== "string") {
         anomalies.push({
-          type: "empreinte_invalide",
+          type: "maillon_illisible",
           id: m.id,
-          detail: "le contenu ne correspond plus à son empreinte — donnée modifiée après signature",
+          detail: "le maillon précédent n'a pas d'empreinte exploitable",
+        });
+      } else if (m.prevHash !== precedent.selfHash) {
+        anomalies.push({
+          type: "rupture_chainage",
+          id: m.id,
+          detail: `prevHash attendu ${precedent.selfHash.slice(0, 12)}…, trouvé ${
+            m.prevHash === null ? "null" : `${m.prevHash.slice(0, 12)}…`
+          }`,
         });
       }
+
+      if (m.hashVersion !== HASH_VERSION_COURANTE) {
+        anomalies.push({
+          type: "version_inconnue",
+          id: m.id,
+          detail: `tuple en version ${m.hashVersion}, ce code ne sait recalculer que la version ${HASH_VERSION_COURANTE}`,
+        });
+      } else if (m.tuple === null) {
+        anomalies.push({
+          type: "tuple_irrecalculable",
+          id: m.id,
+          detail: "données insuffisantes en base pour reconstruire le tuple signé",
+        });
+      } else {
+        const attendu = calculerSelfHash(m.tuple);
+        if (attendu !== m.selfHash) {
+          anomalies.push({
+            type: "empreinte_invalide",
+            id: m.id,
+            detail:
+              "le contenu ne correspond plus à son empreinte — donnée modifiée après signature",
+          });
+        }
+      }
+    } catch (err) {
+      anomalies.push({
+        type: "maillon_illisible",
+        id: typeof m.id === "string" ? m.id : "?",
+        detail: `maillon inexploitable : ${err instanceof Error ? err.message : String(err)}`,
+      });
     }
 
     precedent = m;

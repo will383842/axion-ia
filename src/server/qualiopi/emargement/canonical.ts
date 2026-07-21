@@ -88,7 +88,20 @@ function serialiser(valeur: unknown, chemin: string): string {
     );
   }
 
-  // Objet simple.
+  // 🔴 Objet SIMPLE uniquement. `Map`, `Set`, `RegExp`, `new Number`, `Buffer`…
+  // n'ont pas de clés énumérables propres (ou en ont d'indexées) : `Object.keys`
+  // les réduisait tous à `{}`, donc à la MÊME chaîne canonique et à la même
+  // empreinte. Quatre types distincts entraient en collision, en silence.
+  // TypeScript ferme la porte via `CanonicalValue`, mais `modules` vient d'une
+  // colonne `Json` typée `unknown` : un appelant qui caste perd la garde.
+  const proto: unknown = Object.getPrototypeOf(valeur);
+  if (proto !== Object.prototype && proto !== null) {
+    throw new CanonicalisationError(
+      chemin,
+      `objet de type ${(valeur as object).constructor?.name ?? "inconnu"} — seuls les objets simples et les tableaux sont canonicalisables`,
+    );
+  }
+
   const obj = valeur as Record<string, unknown>;
   const cles = Object.keys(obj).sort();
   const paires = cles.map((k) => {

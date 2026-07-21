@@ -19,6 +19,7 @@ import {
 function tuple(overrides: Partial<TupleSignatureV1> = {}): TupleSignatureV1 {
   return {
     contexteType: "collectif",
+    enrollmentId: "22222222-2222-4222-8222-222222222222",
     creneauId: "11111111-1111-4111-8111-111111111111",
     coachingId: null,
     date: "2026-06-10",
@@ -40,6 +41,38 @@ function tuple(overrides: Partial<TupleSignatureV1> = {}): TupleSignatureV1 {
     ...overrides,
   };
 }
+
+describe("VECTEUR D'OR — la forme canonique est figée", () => {
+  // 🔴 Le test le plus important du module, et il manquait.
+  //
+  // Sans lui, QUATRE mutations changeant la forme canonique passaient les 88
+  // tests : renommer la clé `signeAt` en `signeAtIso`, hacher en `latin1` au
+  // lieu d'`utf8`, formater la date en heure locale, accepter un `prevHash` nul
+  // en milieu de chaîne. Chacune rend DÉFINITIVEMENT fausses toutes les
+  // empreintes déjà en base — sur une table append-only conservée 5 ans.
+  //
+  // Ces deux littéraux sont donc un contrat. S'ils changent, ce n'est jamais un
+  // test à mettre à jour : c'est `HASH_VERSION_COURANTE` à incrémenter, avec un
+  // chemin de recalcul pour l'historique.
+  // Littéral gabarit : la chaîne contient des apostrophes ET des guillemets.
+  const CANONIQUE_ATTENDUE = `{"coachingId":null,"contexteType":"collectif","creneauId":"11111111-1111-4111-8111-111111111111","date":"2026-06-10","demiJournee":"matin","enrollmentId":"22222222-2222-4222-8222-222222222222","formateurNom":"Williams Jullin","formationIntitule":"Bien démarrer avec l'IA","heureDebut":"09:00","heureFin":"12:30","ipHash":"0123456789abcdef","mentionVersion":"v1","methode":"canvas","modules":["Module 1 — Fondamentaux","Module 2 — Prompts"],"prevHash":null,"signataireEmail":"alice@example.com","signataireNom":"Alice Dupont","signatureSha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","signeAt":"2026-06-10T10:15:30.123Z","userAgentSha256":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","v":1}`;
+  const HASH_ATTENDU = "1a0ff9e7d1293de4c563d9218f2e884aa9e37c515081866d75a241eb207dcaf5";
+
+  it("produit EXACTEMENT cette chaîne canonique", () => {
+    expect(tupleCanonique(tuple())).toBe(CANONIQUE_ATTENDUE);
+  });
+
+  it("produit EXACTEMENT cette empreinte", () => {
+    expect(calculerSelfHash(tuple())).toBe(HASH_ATTENDU);
+  });
+
+  it("les clés sont triées par point de code, pas par locale", () => {
+    // `localeCompare` placerait « é » avant « z ». La RFC 8785 impose l'ordre
+    // des points de code UTF-16, celui de `Array.prototype.sort()` par défaut.
+    const clefs = [...tupleCanonique(tuple()).matchAll(/"([a-zA-Z]+)":/g)].map((m) => m[1]);
+    expect(clefs).toEqual([...clefs].sort());
+  });
+});
 
 describe("calculerSelfHash", () => {
   it("produit un SHA-256 hex de 64 caractères", () => {

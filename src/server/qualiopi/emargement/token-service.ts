@@ -159,8 +159,13 @@ export async function creerTokenInscription(input: {
  * créneaux. Horodate le premier usage à titre de trace.
  *
  * Le motif de refus est différencié — « votre lien a expiré » est une
- * information utile au stagiaire, et n'apprend rien à un attaquant : le jeton
- * fait 256 bits, il n'est pas énumérable.
+ * information utile au stagiaire, et n'apprend rien à un attaquant : ces motifs ne
+ * sont atteignables qu'APRÈS validation du HMAC, donc seulement par qui détient
+ * déjà un lien signé — et l'oracle ne renseigne alors que sur ce lien-là.
+ *
+ * ⚠️ L'entropie non devinable n'est PAS la longueur du jeton : tout le reste du
+ * payload se reconstitue depuis la base. C'est le `jti` seul, soit 96 bits
+ * (`magic-token.ts`). Hors de portée, mais l'argument doit être le bon.
  */
 export async function verifierToken(token: string): Promise<VerificationToken> {
   if (estStub()) return { ok: false, raison: "inconnu" };

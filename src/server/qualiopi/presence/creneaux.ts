@@ -132,12 +132,12 @@ export function genererCreneaux(input: {
   const declarees = input.jours !== undefined && input.jours.length > 0;
 
   // ── Quelles demi-journées existent, et avec quels horaires réels ? ──
-  const plan: Array<{ iso: string; demiJournee: DemiJourneeLabel; jour: JourSession | null }> = [];
+  const plan: EntreePlan[] = [];
 
   if (declarees) {
     for (const jour of trierEtDedupliquer(input.jours as JourSession[])) {
-      for (const demiJournee of demiJourneesDe(jour)) {
-        plan.push({ iso: jour.date, demiJournee, jour });
+      for (const { demiJournee, amplitudeMinutes } of demiJourneesDe(jour)) {
+        plan.push({ iso: jour.date, demiJournee, jour, amplitudeMinutes });
       }
     }
   } else {
@@ -151,8 +151,8 @@ export function genererCreneaux(input: {
     const joursRetenus =
       input.inclureWeekends === true ? tousLesJours : filtrerJoursOuvres(tousLesJours);
     for (const iso of joursRetenus) {
-      plan.push({ iso, demiJournee: "matin", jour: null });
-      plan.push({ iso, demiJournee: "apres_midi", jour: null });
+      plan.push({ iso, demiJournee: "matin", jour: null, amplitudeMinutes: null });
+      plan.push({ iso, demiJournee: "apres_midi", jour: null, amplitudeMinutes: null });
     }
   }
 
@@ -188,7 +188,13 @@ export function genererCreneaux(input: {
   }));
 }
 
-type EntreePlan = { iso: string; demiJournee: DemiJourneeLabel; jour: JourSession | null };
+type EntreePlan = {
+  iso: string;
+  demiJournee: DemiJourneeLabel;
+  jour: JourSession | null;
+  /** Amplitude RÉELLE de cette demi-journée, en minutes. `null` en repli. */
+  amplitudeMinutes: number | null;
+};
 
 /** Minutes écoulées depuis minuit pour un `HH:MM`. */
 function minutesDe(heure: string): number {
@@ -198,13 +204,29 @@ function minutesDe(heure: string): number {
 /**
  * Durée prévue de chaque entrée du plan, dans l'ordre.
  *
- * Trois régimes, du plus fidèle au moins :
- *   1. journées déclarées + durée totale → **prorata des amplitudes déclarées** ;
- *   2. `heuresParJour` explicite, ou repli → durée uniforme par demi-journée ;
- *   3. rien → 7 h/jour.
+ * Deux régimes :
+ *   1. **Journées déclarées** → prorata des AMPLITUDES RÉELLES de chaque
+ *      demi-journée, plafonné par ces mêmes amplitudes.
+ *   2. **Repli** → durée uniforme, comportement historique inchangé.
  *
- * Le régime 1 est le seul qui garantisse que la durée affichée sur la feuille
- * soit cohérente avec l'horaire affiché juste à côté.
+ * ⚠️ Trois garde-fous, chacun corrigeant une manière de produire une feuille
+ * d'émargement qui se contredit elle-même :
+ *
+ * - **Plafond d'amplitude.** Une demi-journée ne peut pas prévoir plus de
+ *   minutes qu'elle n'en déclare. Sans lui, une saisie erronée de
+ *   `dureeReelleHeures` (35 h sur une session d'un jour) écrivait « 09:00–17:00 »
+ *   en face de « 17 h 30 » par demi-journée. Le plafond du repli
+ *   (`HEURES_PAR_JOUR_MAX`) ne s'appliquait plus ici : il avait été perdu.
+ * - **Plancher à 1 minute.** Un créneau à 0 min ne peut jamais être validé
+ *   (`present` exige réalisé ≥ 50 % du prévu, mais 0 le rend indécidable) et une
+ *   durée négative diminuerait le dénominateur.
+ * - **Plus grand reste** pour l'arrondi, au lieu de verser tout le résidu sur la
+ *   dernière entrée — ce qui pouvait la ramener à 0 ou l'amputer de 23 %.
+ *
+ * Quand un plafond mord, la somme ne vaut plus la durée totale : c'est VOULU, et
+ * l'appelant doit le signaler. Gonfler une demi-journée au-delà de son amplitude
+ * réduirait artificiellement le dénominateur, donc surévaluerait la présence —
+ * la direction que sanctionne un contrôle de service fait.
  */
 function repartirDurees(input: {
   plan: EntreePlan[];
@@ -214,30 +236,41 @@ function repartirDurees(input: {
   const { plan } = input;
   if (plan.length === 0) return [];
 
-  const declarees = plan.every((e) => e.jour !== null);
-  const totalMinutes =
-    input.dureeTotaleHeures !== undefined && input.dureeTotaleHeures > 0
-      ? Math.round(input.dureeTotaleHeures * 60)
-      : null;
+  const amplitudes = plan.map((e) => e.amplitudeMinutes);
+  const declarees = amplitudes.every((a): a is number => a !== null && a > 0);
 
-  if (declarees && totalMinutes !== null && input.heuresParJour === undefined) {
-    // Amplitude déclarée de chaque entrée : celle de sa journée, divisée par le
-    // nombre de demi-journées que cette journée produit.
-    const amplitudes = plan.map((e) => {
-      const jour = e.jour as JourSession;
-      const span = minutesDe(jour.heureFin) - minutesDe(jour.heureDebut);
-      return span / demiJourneesDe(jour).length;
-    });
-    const sommeAmplitudes = amplitudes.reduce((s, a) => s + a, 0);
-    if (sommeAmplitudes > 0) {
-      // Le reste d'arrondi est versé sur la DERNIÈRE entrée, pour que la somme
-      // vaille exactement la durée de la session. Répartir des minutes entières
-      // sans ce rattrapage ferait dériver le dénominateur du taux.
-      const durees = amplitudes.map((a) => Math.round((totalMinutes * a) / sommeAmplitudes));
-      const ecart = totalMinutes - durees.reduce((s, d) => s + d, 0);
-      durees[durees.length - 1] = (durees[durees.length - 1] as number) + ecart;
-      return durees;
+  if (declarees) {
+    const nbJoursDeclares = new Set(plan.map((e) => e.iso)).size;
+    // Le prorata doit s'appliquer MÊME sans durée totale : `dureeReelleHeures`
+    // est nullable, et retomber sur « 7 h par demi-journée » recréait la
+    // contradiction qu'on corrige (2 matinées de 3 h annoncées à 3 h 30 chacune).
+    const heuresJour = input.heuresParJour ?? HEURES_PAR_JOUR_DEFAUT;
+    const totalMinutes =
+      input.dureeTotaleHeures !== undefined && input.dureeTotaleHeures > 0
+        ? Math.round(input.dureeTotaleHeures * 60)
+        : Math.round(heuresJour * 60 * nbJoursDeclares);
+
+    const somme = amplitudes.reduce((s, a) => s + a, 0);
+    const plafondJour = HEURES_PAR_JOUR_MAX * 60;
+    const brutes = amplitudes.map((a) => (totalMinutes * a) / somme);
+
+    // Plus grand reste : les parties entières d'abord, puis les minutes
+    // restantes aux entrées dont la partie fractionnaire est la plus grande.
+    const entieres = brutes.map((b) => Math.floor(b));
+    let reste = Math.round(totalMinutes - entieres.reduce((s, e) => s + e, 0));
+    const ordre = brutes
+      .map((b, i) => ({ i, frac: b - Math.floor(b) }))
+      .sort((x, y) => y.frac - x.frac);
+    for (const { i } of ordre) {
+      if (reste <= 0) break;
+      entieres[i] = (entieres[i] as number) + 1;
+      reste -= 1;
     }
+
+    return entieres.map((minutes, i) => {
+      const amplitude = amplitudes[i] as number;
+      return Math.max(1, Math.min(minutes, amplitude, plafondJour));
+    });
   }
 
   const heuresParJour = resoudreHeuresParJour({
@@ -252,16 +285,31 @@ function repartirDurees(input: {
 // ─── Journées déclarées (D14) ───────────────────────────────────────────────
 
 /**
- * Demi-journées produites par une journée, d'après ses horaires RÉELS.
+ * Demi-journées produites par une journée, avec l'amplitude RÉELLE de chacune.
  *
  * C'est ici que se joue la moitié du gain de D14 : une journée déclarée
  * 09:00–12:30 ne doit pas produire de créneau d'après-midi. Sinon ce créneau
  * jamais signé divise le taux par deux — le bug même qu'on corrige, déplacé.
+ *
+ * ⚠️ L'amplitude est découpée AU PIVOT, jamais 50/50. Une journée 12:30–18:00
+ * a une matinée de 30 minutes et une après-midi de 5 heures : les couper en
+ * deux parts égales de 2 h 45 annonçait, sur la feuille, 2 h 45 pour une
+ * matinée qui en dure une demie — et rendait ce créneau structurellement
+ * impossible à valider (le seuil de présence est un pourcentage du prévu).
  */
-function demiJourneesDe(jour: JourSession): DemiJourneeLabel[] {
-  if (jour.heureFin <= PIVOT_DEMI_JOURNEE) return ["matin"];
-  if (jour.heureDebut >= PIVOT_DEMI_JOURNEE) return ["apres_midi"];
-  return ["matin", "apres_midi"];
+function demiJourneesDe(
+  jour: JourSession,
+): Array<{ demiJournee: DemiJourneeLabel; amplitudeMinutes: number }> {
+  const debut = minutesDe(jour.heureDebut);
+  const fin = minutesDe(jour.heureFin);
+  const pivot = minutesDe(PIVOT_DEMI_JOURNEE);
+
+  if (fin <= pivot) return [{ demiJournee: "matin", amplitudeMinutes: fin - debut }];
+  if (debut >= pivot) return [{ demiJournee: "apres_midi", amplitudeMinutes: fin - debut }];
+  return [
+    { demiJournee: "matin", amplitudeMinutes: pivot - debut },
+    { demiJournee: "apres_midi", amplitudeMinutes: fin - pivot },
+  ];
 }
 
 /**
