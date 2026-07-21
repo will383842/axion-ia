@@ -235,17 +235,21 @@ describe("captureWorkerError", () => {
     captureExceptionMock.mockImplementationOnce(() => {
       throw new Error("Sentry DSN unreachable");
     });
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    // AUDIT 2026-07-21 — ce chemin logue désormais en `error`, plus en `warn` :
+    // un helper d'observabilité qui échoue en silence est pire que pas
+    // d'observabilité du tout (c'est ce qui a masqué la panne de quota OpenAI).
+    // Le comportement fail-soft lui-même est inchangé : on ne cascade pas.
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
     expect(() => {
       captureWorkerError("orchestrator", "content-orchestrator", undefined, new Error("inner"));
     }).not.toThrow();
-    expect(warnSpy).toHaveBeenCalledWith(
+    expect(errorSpy).toHaveBeenCalledWith(
       expect.stringContaining(
         "[sentry-worker] capture failed for orchestrator/content-orchestrator",
       ),
       expect.any(String),
     );
-    warnSpy.mockRestore();
+    errorSpy.mockRestore();
   });
 
   it("produces stable fingerprint for grouping (idempotent on same error)", () => {
