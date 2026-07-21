@@ -71,8 +71,21 @@ export async function getSessionEmargement(
       where: { id: sessionId },
       include: {
         enrollments: {
+          // 🔴 OUBLI O3 DU PLAN — dissocier le filtre de LECTURE de celui
+          // d'ÉCRITURE.
+          //
+          // Filtrer les abandons et exclus ici faisait DISPARAÎTRE de la grille
+          // les créneaux et les signatures déjà apposés. C'est le cas le plus
+          // fréquent en formation collective : quelqu'un suit deux jours sur
+          // trois puis abandonne. Ces heures ont été réellement suivies, elles
+          // sont facturables à l'OPCO, et leur preuve existe — la masquer revient
+          // à s'en priver.
+          //
+          // On garde donc en lecture toute inscription qui a DÉJÀ un créneau,
+          // quel que soit son statut. Le filtre d'écriture, lui, reste : on ne
+          // crée pas de nouveaux créneaux pour quelqu'un qui a abandonné.
           where: {
-            statut: { notIn: ["abandon", "exclu"] },
+            OR: [{ statut: { notIn: ["abandon", "exclu"] } }, { presences: { some: {} } }],
           },
           include: {
             trainee: {

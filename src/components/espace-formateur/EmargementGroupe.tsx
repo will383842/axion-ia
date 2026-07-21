@@ -46,7 +46,9 @@ export interface EmargementGroupeProps {
   signerAction: (input: {
     sessionId: string;
     creneauId: string;
-    methode: "canvas" | "confirmation_accessible";
+    // `papier_scanne` : repli de continuité (D11), disponible côté formateur
+    // uniquement — le stagiaire, lui, n'a pas de feuille papier à photographier.
+    methode: "canvas" | "confirmation_accessible" | "papier_scanne";
     imageDataUrl?: string;
     nomConfirme?: string;
   }) => Promise<{ ok: true; signatureId: string } | { ok: false; raison: string; message: string }>;
@@ -66,7 +68,7 @@ export function EmargementGroupe({
       null,
   );
   const [signataire, setSignataire] = useState<LigneGroupeAffichee | null>(null);
-  const [accessible, setAccessible] = useState(false);
+  const [mode, setMode] = useState<"trace" | "accessible" | "papier">("trace");
   const [image, setImage] = useState<string | null>(null);
   const [nom, setNom] = useState("");
   const [erreur, setErreur] = useState<string | null>(null);
@@ -74,13 +76,34 @@ export function EmargementGroupe({
 
   function fermer() {
     setSignataire(null);
-    setAccessible(false);
+    setMode("trace");
     setImage(null);
     setNom("");
     setErreur(null);
   }
 
-  const pret = accessible ? nom.trim() !== "" : image !== null;
+  const pret = mode === "accessible" ? nom.trim() !== "" : image !== null;
+
+  /**
+   * Convertit la photo en data-URL.
+   *
+   * Le plafond côté serveur est de 2 Mio DÉCODÉS ; on refuse ici au-delà pour
+   * éviter d'envoyer inutilement plusieurs mégaoctets depuis un réseau de
+   * chantier, et pour dire pourquoi plutôt que de laisser échouer l'envoi.
+   */
+  async function chargerPhoto(fichier: File | null) {
+    setErreur(null);
+    setImage(null);
+    if (fichier === null) return;
+    if (fichier.size > 2 * 1024 * 1024) {
+      setErreur("Photo trop lourde (2 Mo maximum). Réduisez la définition de l'appareil photo.");
+      return;
+    }
+    const lecteur = new FileReader();
+    lecteur.onload = () => setImage(typeof lecteur.result === "string" ? lecteur.result : null);
+    lecteur.onerror = () => setErreur("Photo illisible. Réessayez.");
+    lecteur.readAsDataURL(fichier);
+  }
 
   function envoyer() {
     if (signataire === null) return;
@@ -89,8 +112,13 @@ export function EmargementGroupe({
       const r = await signerAction({
         sessionId,
         creneauId: signataire.creneauId,
-        methode: accessible ? "confirmation_accessible" : "canvas",
-        ...(accessible ? { nomConfirme: nom } : { imageDataUrl: image ?? "" }),
+        methode:
+          mode === "accessible"
+            ? "confirmation_accessible"
+            : mode === "papier"
+              ? "papier_scanne"
+              : "canvas",
+        ...(mode === "accessible" ? { nomConfirme: nom } : { imageDataUrl: image ?? "" }),
       });
       if (!r.ok) {
         setErreur(r.message);
@@ -202,7 +230,7 @@ export function EmargementGroupe({
             Passez l&apos;appareil à {signataire.stagiaireNom}
           </p>
 
-          {accessible ? (
+          {mode === "accessible" && (
             <label className="flex flex-col gap-1 text-sm">
               <span>{signataire.stagiaireNom} saisit ses prénom et nom</span>
               <input
@@ -213,17 +241,76 @@ export function EmargementGroupe({
                 className="rounded-md border border-neutral-400 px-3 py-2"
               />
             </label>
-          ) : (
+          )}
+
+          {mode === "papier" && (
+            <div className="flex flex-col gap-2">
+              <label className="flex flex-col gap-1 text-sm">
+                <span>Photo de la feuille signée</span>
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg"
+                  capture="environment"
+                  onChange={(e) => void chargerPhoto(e.target.files?.[0] ?? null)}
+                  className="text-sm"
+                />
+              </label>
+              <p className="text-xs text-neutral-600">
+                Cadrez la signature de {signataire.stagiaireNom}. Seule l&apos;image est conservée ;
+                elle est ré-encodée à l&apos;enregistrement, sans aucune métadonnée.
+              </p>
+              {image !== null && (
+                <p role="status" className="text-sm text-green-700">
+                  Photo prête à être enregistrée.
+                </p>
+              )}
+            </div>
+          )}
+
+          {mode === "trace" && (
             <SignaturePad
               onChange={setImage}
               onBasculerAccessible={() => {
-                setAccessible(true);
+                setMode("accessible");
                 setImage(null);
               }}
               disabled={isPending}
               label={`Signature de ${signataire.stagiaireNom}`}
             />
           )}
+
+          {/* Repli de continuité (décision D11). ⚠️ Aucun texte n'impose ce
+              repli : il se justifie comme continuité de service et de preuve,
+              jamais comme une obligation juridique. Mais sur un site client sans
+              réseau, c'est le seul mode qui marche — et une salle qui sort sans
+              feuille est un problème bien réel. */}
+          <div className="mt-3 flex flex-wrap gap-4 text-sm">
+            {mode !== "trace" && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("trace");
+                  setImage(null);
+                }}
+                className="underline underline-offset-4"
+              >
+                Revenir au tracé
+              </button>
+            )}
+            {mode !== "papier" && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("papier");
+                  setImage(null);
+                  setNom("");
+                }}
+                className="underline underline-offset-4"
+              >
+                Photographier une feuille papier
+              </button>
+            )}
+          </div>
 
           {erreur !== null && (
             <p role="alert" className="mt-3 text-sm text-red-700">

@@ -158,6 +158,10 @@ export async function generateSessionCreneauxAction(input: {
       dateFin: true,
       dureeReelleHeures: true,
       enrollments: {
+        // Filtre d'ÉCRITURE : on ne crée pas de nouveaux créneaux pour qui a
+        // abandonné. Le filtre de LECTURE, lui, a été dissocié (oubli O3) —
+        // masquer en grille les créneaux DÉJÀ signés d'un abandon revenait à se
+        // priver d'heures réellement suivies et facturables à l'OPCO.
         where: {
           statut: { notIn: ["abandon", "exclu"] },
         },
