@@ -115,14 +115,30 @@ export function calculerSelfHash(t: TupleSignatureV1): string {
   return createHash("sha256").update(tupleCanonique(t), "utf8").digest("hex");
 }
 
-/** Un maillon tel que relu depuis la base, dans l'ordre de signature. */
+/**
+ * Un maillon tel que relu depuis la base, dans l'ordre d'INSERTION.
+ *
+ * ⚠️ L'ordre est celui de `createdAt`, jamais de `signeAt` : ce dernier est figé
+ * avant l'écriture de l'image sur R2, et deux signatures peuvent donc commiter
+ * dans l'ordre inverse de leurs `signeAt`. Trier dessus produirait un verdict
+ * « chaîne corrompue » faux et définitif.
+ *
+ * `recalculer` est une FONCTION plutôt qu'un tuple : c'est ce qui rend cette
+ * vérification utilisable par les deux chaînes du domaine — celle des
+ * stagiaires et celle des contresignatures formateur — sans dupliquer la
+ * logique. Dupliquer une vérification d'intégrité est précisément l'endroit où
+ * une divergence se cacherait.
+ *
+ * Retourne `null` quand le tuple n'est pas reconstructible.
+ */
 export interface MaillonChaine {
   id: string;
   prevHash: string | null;
   selfHash: string;
   hashVersion: number;
-  /** Tuple reconstruit depuis les colonnes. `null` si non recalculable. */
-  tuple: TupleSignatureV1 | null;
+  recalculer: () => string | null;
+  /** Version attendue par le code qui sait recalculer ce type de maillon. */
+  versionAttendue?: number;
 }
 
 export type AnomalieChaine =
@@ -203,21 +219,22 @@ export function verifierChaine(maillons: MaillonChaine[]): ResultatVerification 
         });
       }
 
-      if (m.hashVersion !== HASH_VERSION_COURANTE) {
+      const attendue = m.versionAttendue ?? HASH_VERSION_COURANTE;
+      if (m.hashVersion !== attendue) {
         anomalies.push({
           type: "version_inconnue",
           id: m.id,
-          detail: `tuple en version ${m.hashVersion}, ce code ne sait recalculer que la version ${HASH_VERSION_COURANTE}`,
-        });
-      } else if (m.tuple === null) {
-        anomalies.push({
-          type: "tuple_irrecalculable",
-          id: m.id,
-          detail: "données insuffisantes en base pour reconstruire le tuple signé",
+          detail: `tuple en version ${m.hashVersion}, ce code ne sait recalculer que la version ${attendue}`,
         });
       } else {
-        const attendu = calculerSelfHash(m.tuple);
-        if (attendu !== m.selfHash) {
+        const attendu = m.recalculer();
+        if (attendu === null) {
+          anomalies.push({
+            type: "tuple_irrecalculable",
+            id: m.id,
+            detail: "données insuffisantes en base pour reconstruire le tuple signé",
+          });
+        } else if (attendu !== m.selfHash) {
           anomalies.push({
             type: "empreinte_invalide",
             id: m.id,

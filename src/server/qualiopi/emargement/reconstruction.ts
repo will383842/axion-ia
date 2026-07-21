@@ -23,7 +23,12 @@
  */
 
 import type { EmargementSignature as PrismaEmargementSignature } from "../../../../prisma/generated/client";
-import { type MaillonChaine, type TupleSignatureV1, HASH_VERSION_COURANTE } from "./hash";
+import {
+  type MaillonChaine,
+  type TupleSignatureV1,
+  HASH_VERSION_COURANTE,
+  calculerSelfHash,
+} from "./hash";
 
 /**
  * Miroir des colonnes scalaires d'`emargement_signatures`.
@@ -146,7 +151,11 @@ export function maillonDepuisLigne(ligne: LigneSignature): MaillonChaine {
     prevHash: ligne.prevHash,
     selfHash: ligne.selfHash,
     hashVersion: ligne.hashVersion,
-    tuple: tupleDepuisLigne(ligne),
+    versionAttendue: HASH_VERSION_COURANTE,
+    recalculer: () => {
+      const tuple = tupleDepuisLigne(ligne);
+      return tuple === null ? null : calculerSelfHash(tuple);
+    },
   };
 }
 

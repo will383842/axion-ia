@@ -140,6 +140,25 @@ describe("calculerSelfHash", () => {
 
 describe("verifierChaine", () => {
   /** Construit une chaîne saine de n maillons. */
+  /** Tuple du i-ème maillon de `chaineSaine`, reconstruit à l'identique. */
+  function tupleDuMaillon(i: number): TupleSignatureV1 {
+    let prev: string | null = null;
+    for (let k = 0; k < i; k++) {
+      prev = calculerSelfHash(
+        tuple({
+          prevHash: prev,
+          signeAtIso: `2026-06-10T1${k}:00:00.000Z`,
+          creneauId: `1111111${k}-1111-4111-8111-111111111111`,
+        }),
+      );
+    }
+    return tuple({
+      prevHash: prev,
+      signeAtIso: `2026-06-10T1${i}:00:00.000Z`,
+      creneauId: `1111111${i}-1111-4111-8111-111111111111`,
+    });
+  }
+
   function chaineSaine(n: number): MaillonChaine[] {
     const maillons: MaillonChaine[] = [];
     let prev: string | null = null;
@@ -150,7 +169,13 @@ describe("verifierChaine", () => {
         creneauId: `1111111${i}-1111-4111-8111-111111111111`,
       });
       const self = calculerSelfHash(t);
-      maillons.push({ id: `sig-${i}`, prevHash: prev, selfHash: self, hashVersion: 1, tuple: t });
+      maillons.push({
+        id: `sig-${i}`,
+        prevHash: prev,
+        selfHash: self,
+        hashVersion: 1,
+        recalculer: () => calculerSelfHash(t),
+      });
       prev = self;
     }
     return maillons;
@@ -171,7 +196,10 @@ describe("verifierChaine", () => {
   it("détecte une donnée MODIFIÉE après signature", () => {
     const c = chaineSaine(3);
     // L'heure de fin est repoussée : on facture une demi-journée plus longue.
-    c[1] = { ...c[1]!, tuple: tuple({ ...c[1]!.tuple!, heureFin: "13:30" }) };
+    // On altère le CONTENU sans toucher au `selfHash` déjà stocké : c'est
+    // exactement ce que ferait un UPDATE en base.
+    const altere = tuple({ ...tupleDuMaillon(1), heureFin: "13:30" });
+    c[1] = { ...c[1]!, recalculer: () => calculerSelfHash(altere) };
     const r = verifierChaine(c);
     expect(r.valide).toBe(false);
     expect(r.anomalies.some((a) => a.type === "empreinte_invalide" && a.id === "sig-1")).toBe(true);
@@ -201,7 +229,7 @@ describe("verifierChaine", () => {
       prevHash: c[0]!.selfHash,
       selfHash: calculerSelfHash(intrus),
       hashVersion: 1,
-      tuple: intrus,
+      recalculer: () => calculerSelfHash(intrus),
     });
     const r = verifierChaine(c);
     // Le maillon suivant pointe toujours sur l'ancien précédent → rupture.
@@ -219,14 +247,14 @@ describe("verifierChaine", () => {
 
   it("signale un tuple non reconstructible sans le confondre avec une fraude", () => {
     const c = chaineSaine(1);
-    c[0] = { ...c[0]!, tuple: null };
+    c[0] = { ...c[0]!, recalculer: () => null };
     const r = verifierChaine(c);
     expect(r.anomalies[0]?.type).toBe("tuple_irrecalculable");
   });
 
   it("NE LÈVE JAMAIS — une chaîne corrompue est un résultat, pas une panne", () => {
     const pourri: MaillonChaine[] = [
-      { id: "x", prevHash: "zzz", selfHash: "", hashVersion: 0, tuple: null },
+      { id: "x", prevHash: "zzz", selfHash: "", hashVersion: 0, recalculer: () => null },
     ];
     expect(() => verifierChaine(pourri)).not.toThrow();
     expect(verifierChaine(pourri).valide).toBe(false);
