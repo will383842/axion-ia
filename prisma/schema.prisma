@@ -5800,6 +5800,8 @@ model Trainer {
   coachingSessions     CoachingSession[]
   /// Affectations normalisées aux sessions (principal + co-animateurs).
   sessionFormateurs    SessionFormateur[]
+  /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
+  sessionJours         SessionJour[]
   /// Pièces justificatives reçues (contrat, vigilance URSSAF, NDA, RC pro…).
   documents            TrainerDocument[]
   /// Régime de TVA de SES honoraires (indépendant). Renseigné par un humain,
@@ -5966,9 +5968,30 @@ model SessionJour {
   /// ce sont eux qui figureront sur une pièce à valeur probante.
   heureDebut String          @map("heure_debut") @db.VarChar(5)
   heureFin   String          @map("heure_fin") @db.VarChar(5)
+  /// Formateur de CETTE journée — EXCEPTION, pas règle.
+  ///
+  /// `null` = le formateur principal de la session, ce qui est le cas normal :
+  /// sur les 62 formations de 7 h et 14 h du catalogue, c'est la même personne
+  /// tous les jours, et la faire ressaisir ligne par ligne serait absurde.
+  ///
+  /// On ne renseigne cette colonne que lorsqu'elle DIFFÈRE : désistement en
+  /// cours de session, ou co-animation. Sans elle, remplacer un formateur qui se
+  /// désiste écrasait l'affectation de la session et faisait perdre l'
+  /// information « qui a animé les journées déjà passées » pour tout ce qui
+  /// n'avait pas encore été signé — convocation, PDF, relevé.
+  trainerId   String?        @map("trainer_id") @db.Uuid
+  trainer     Trainer?       @relation(fields: [trainerId], references: [id], onDelete: Restrict)
   /// Intitulés des modules couverts ce jour-là, pour la feuille d'émargement.
   /// Vide = repli sur le programme de la formation.
   modules    Json            @default("[]")
+  /// Faux tant que les horaires sont ceux PROPOSÉS à la création de la session.
+  ///
+  /// La génération automatique évite de saisir 52 fois les mêmes journées, mais
+  /// une valeur par défaut reste une valeur par défaut : ce drapeau permet de
+  /// l'afficher comme telle, et de ne jamais la présenter comme un horaire
+  /// constaté. C'est la même doctrine que pour D13 — un défaut visible et assumé
+  /// se défend, le même défaut muet ne se défend pas.
+  horairesConfirmes Boolean  @default(false) @map("horaires_confirmes")
   commentaire String?        @db.Text
   createdAt  DateTime        @default(now()) @map("created_at")
   updatedAt  DateTime        @updatedAt @map("updated_at")

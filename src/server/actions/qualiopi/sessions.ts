@@ -21,6 +21,8 @@ import type {
 } from "@/server/qualiopi/formations/types";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
+import { genererJoursParDefaut } from "@/server/qualiopi/presence/jours-defaut";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
@@ -168,6 +170,30 @@ export async function createSessionAction(
           },
           select: { id: true, numero: true },
         });
+
+        // Journées PROPOSÉES (D14), dérivées de la durée de la formation.
+        //
+        // Volontairement calculées depuis `dateDebut` et `dureeHeures`, SANS
+        // tenir compte de `dateFin` : c'est tout le propos de D14, la plage de
+        // dates ne décrit pas les journées. Une session étalée sur 3 mois pour
+        // 4 journées produirait sinon 66 jours ouvrés. Si le résultat déborde
+        // `dateFin`, l'admin le voit à l'écran et corrige.
+        //
+        // `horairesConfirmes` reste à `false` : ce sont des propositions.
+        const joursProposes = genererJoursParDefaut({
+          dateDebutIso: parisDateISO(v.dateDebut),
+          dureeHeures: formation.dureeHeures,
+        });
+        if (joursProposes.length > 0) {
+          await tx.sessionJour.createMany({
+            data: joursProposes.map((j) => ({
+              sessionId: newSession.id,
+              date: new Date(`${j.date}T00:00:00.000Z`),
+              heureDebut: j.heureDebut,
+              heureFin: j.heureFin,
+            })),
+          });
+        }
 
         // Transition initiale null → planifiee
         await writeSessionTransition(tx, {

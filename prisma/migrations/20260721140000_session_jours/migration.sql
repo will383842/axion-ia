@@ -31,7 +31,7 @@
 --
 -- Migration ADDITIVE : aucun DROP, aucune colonne ajoutée à une table existante.
 
--- CreateTable
+-- AddForeignKey
 -- CreateTable
 CREATE TABLE "session_jours" (
     "id" UUID NOT NULL,
@@ -39,7 +39,9 @@ CREATE TABLE "session_jours" (
     "date" DATE NOT NULL,
     "heure_debut" VARCHAR(5) NOT NULL,
     "heure_fin" VARCHAR(5) NOT NULL,
+    "trainer_id" UUID,
     "modules" JSONB NOT NULL DEFAULT '[]',
+    "horaires_confirmes" BOOLEAN NOT NULL DEFAULT false,
     "commentaire" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -47,13 +49,17 @@ CREATE TABLE "session_jours" (
     CONSTRAINT "session_jours_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
+-- AddForeignKey
 -- CreateIndex
 CREATE UNIQUE INDEX "session_jour_unique" ON "session_jours"("session_id", "date");
 
 -- AddForeignKey
 -- AddForeignKey
 ALTER TABLE "session_jours" ADD CONSTRAINT "session_jours_session_id_fkey" FOREIGN KEY ("session_id") REFERENCES "training_sessions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+-- AddForeignKey
+ALTER TABLE "session_jours" ADD CONSTRAINT "session_jours_trainer_id_fkey" FOREIGN KEY ("trainer_id") REFERENCES "trainers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Contraintes NON exprimables dans `schema.prisma`

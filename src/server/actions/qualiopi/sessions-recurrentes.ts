@@ -28,6 +28,9 @@ import { prisma } from "@/lib/prisma";
 import type { ModaliteFormation, FinancementType } from "@/server/qualiopi/formations/types";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
+import { genererJoursParDefaut } from "@/server/qualiopi/presence/jours-defaut";
+import type { JourSession } from "@/server/qualiopi/presence/creneaux";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
@@ -83,6 +86,20 @@ const reportSessionSchema = z.object({
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Ajoute `deltaMs` à une date et retourne la nouvelle date UTC. */
+/**
+ * Fin d'une session : le DERNIER jour généré, à son heure de fin.
+ *
+ * Repli sur `dateDebut + durée` quand aucune journée n'a pu être générée
+ * (durée absente ou absurde) — comportement historique, conservé pour ne pas
+ * créer de session sans date de fin.
+ */
+function finDepuisJours(dateDebut: Date, jours: JourSession[], dureeHeures: number): Date {
+  const dernier = jours[jours.length - 1];
+  if (dernier === undefined) return addMs(dateDebut, dureeHeures * 60 * 60 * 1000);
+  const [h, m] = dernier.heureFin.split(":");
+  return new Date(`${dernier.date}T${h}:${m}:00.000Z`);
+}
+
 function addMs(d: Date, deltaMs: number): Date {
   return new Date(d.getTime() + deltaMs);
 }
@@ -157,7 +174,13 @@ export async function createRecurringSessionsAction(
   // partagent la même prestation vendue au moment de la planification).
   const formationSnapshot = buildFormationSnapshot(formation, new Date());
   const deltaMs = v.frequence === "hebdomadaire" ? HEBDO_MS : MENSUEL_MS;
-  const dureeDeltaMs = v.dureeHeures * 60 * 60 * 1000;
+  // ⚠️ `dateFin` NE PEUT PAS être `dateDebut + dureeHeures`. C'était le calcul
+  // précédent, et il pliait toute session de plus d'une journée sur un seul jour
+  // civil : une formation de 14 h partant le 10 juin à 09:00 « finissait » le
+  // 10 juin à 23:00. Une formation de 2 jours était donc enregistrée comme
+  // tenant sur un seul — et la feuille d'émargement l'aurait montré ainsi.
+  //
+  // La fin dérive maintenant des journées réellement générées (D14).
 
   // Pré-allouer les numéros avant la transaction (count+1 hors tx, acceptable car
   // @unique numéro reste le garde-fou final — collision P2002 → retry côté action).
@@ -178,7 +201,11 @@ export async function createRecurringSessionsAction(
 
       for (let i = 0; i < v.occurrences; i++) {
         const dateDebut = addMs(v.premiereDateDebut, i * deltaMs);
-        const dateFin = addMs(dateDebut, dureeDeltaMs);
+        const joursOccurrence = genererJoursParDefaut({
+          dateDebutIso: parisDateISO(dateDebut),
+          dureeHeures: v.dureeHeures,
+        });
+        const dateFin = finDepuisJours(dateDebut, joursOccurrence, v.dureeHeures);
         const numero = numeros[i]!;
 
         // Construire data de façon explicite pour éviter TS7022 (spread conditionnel
@@ -209,6 +236,21 @@ export async function createRecurringSessionsAction(
           data: createData,
           select: { id: true, numero: true },
         });
+
+        // Journées PROPOSÉES (D14). Sans elles, `session_jours` resterait vide
+        // pour les 52 occurrences et le formateur devrait les saisir 52 fois.
+        // `horairesConfirmes` reste à `false` : ce sont des propositions, et
+        // l'écran de saisie les présente comme telles.
+        if (joursOccurrence.length > 0) {
+          await tx.sessionJour.createMany({
+            data: joursOccurrence.map((j) => ({
+              sessionId: created.id,
+              date: new Date(`${j.date}T00:00:00.000Z`),
+              heureDebut: j.heureDebut,
+              heureFin: j.heureFin,
+            })),
+          });
+        }
 
         // FormationTransition initiale null → planifiee pour chaque occurrence.
         await writeSessionTransition(tx, {

@@ -100,6 +100,10 @@ export async function saveSessionJoursAction(input: {
           date: new Date(`${j.date}T00:00:00.000Z`),
           heureDebut: j.heureDebut,
           heureFin: j.heureFin,
+          // Passer par cet écran EST la confirmation : l'admin a vu les horaires
+          // et les a validés ou corrigés. C'est ce qui distingue une proposition
+          // générée à la création d'un horaire assumé.
+          horairesConfirmes: true,
         })),
       });
     }

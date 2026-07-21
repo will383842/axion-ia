@@ -24,9 +24,14 @@ export interface JourSaisi {
   heureFin: string;
 }
 
+export interface JourInitial extends JourSaisi {
+  /** Faux tant que ce sont les horaires PROPOSÉS à la création de la session. */
+  horairesConfirmes: boolean;
+}
+
 export interface SessionJoursEditorProps {
   sessionId: string;
-  joursInitiaux: JourSaisi[];
+  joursInitiaux: JourInitial[];
   /** Vrai si des créneaux ont déjà été générés — change ce qu'il faut avertir. */
   hasCreneaux: boolean;
   saveAction: (input: {
@@ -55,7 +60,13 @@ export function SessionJoursEditor({
   saveAction,
 }: SessionJoursEditorProps): React.ReactElement {
   const router = useRouter();
-  const [jours, setJours] = useState<JourSaisi[]>(joursInitiaux);
+  const [jours, setJours] = useState<JourSaisi[]>(() =>
+    joursInitiaux.map((j) => ({ date: j.date, heureDebut: j.heureDebut, heureFin: j.heureFin })),
+  );
+  // Des horaires seulement PROPOSÉS ne doivent jamais être présentés comme
+  // constatés : c'est ce qui sépare cette génération automatique du
+  // « 09h00–17h00 » codé en dur que ce chantier supprime.
+  const aDesHorairesNonConfirmes = joursInitiaux.some((j) => !j.horairesConfirmes);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [succes, setSucces] = useState<string | null>(null);
@@ -120,6 +131,17 @@ export function SessionJoursEditor({
         suivent pas, et fausse alors le taux de présence. Les horaires figureront sur la feuille
         d&apos;émargement.
       </p>
+
+      {aDesHorairesNonConfirmes && (
+        <p
+          role="status"
+          className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
+        >
+          Ces journées ont été <strong>proposées automatiquement</strong> à partir de la durée de la
+          formation. Vérifiez les dates et les horaires réels, puis enregistrez : ils figureront
+          tels quels sur la feuille d&apos;émargement, qui est une pièce à valeur probante.
+        </p>
+      )}
 
       {jours.length === 0 ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">

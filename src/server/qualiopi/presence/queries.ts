@@ -45,7 +45,13 @@ export interface SessionEmargementRow {
    * Tableau vide = la session n'en déclare aucune et retombe sur
    * `dateDebut..dateFin` — ce qui n'est correct que si les journées se suivent.
    */
-  jours: Array<{ date: string; heureDebut: string; heureFin: string }>;
+  jours: Array<{
+    date: string;
+    heureDebut: string;
+    heureFin: string;
+    /** Faux tant que ce sont les horaires PROPOSÉS à la création de la session. */
+    horairesConfirmes: boolean;
+  }>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -76,7 +82,7 @@ export async function getSessionEmargement(
           orderBy: [{ trainee: { nom: "asc" } }, { trainee: { prenom: "asc" } }],
         },
         jours: {
-          select: { date: true, heureDebut: true, heureFin: true },
+          select: { date: true, heureDebut: true, heureFin: true, horairesConfirmes: true },
           orderBy: { date: "asc" },
         },
       },
@@ -122,6 +128,7 @@ export async function getSessionEmargement(
         date: j.date.toISOString().slice(0, 10),
         heureDebut: j.heureDebut,
         heureFin: j.heureFin,
+        horairesConfirmes: j.horairesConfirmes,
       })),
     };
   } catch {
