@@ -15,6 +15,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    trainerDocument: {
+      findMany: vi.fn(),
+    },
     documentGenere: {
       groupBy: vi.fn(),
       findMany: vi.fn(),
@@ -61,6 +64,7 @@ import { INDICATEURS_RNQ } from "./indicateurs-registre";
 import JSZip from "jszip";
 
 const mockPrisma = prisma as unknown as {
+  trainerDocument: { findMany: ReturnType<typeof vi.fn> };
   documentGenere: { groupBy: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   veille: { count: ReturnType<typeof vi.fn> };
   appreciation: { count: ReturnType<typeof vi.fn> };
@@ -101,6 +105,9 @@ describe("genererManifesteAudit", () => {
     vi.clearAllMocks();
     mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
     mockPrisma.documentGenere.groupBy.mockResolvedValue([]);
+    // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour : sans ce
+    // repositionnement, l'export des pièces formateur reçoit `undefined`.
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
     mockPrisma.documentGenere.findMany.mockResolvedValue([]);
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);

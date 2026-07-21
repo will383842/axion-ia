@@ -21,12 +21,20 @@ import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { EmargementGrid } from "@/components/admin/qualiopi/EmargementGrid";
 import { ImportReleveForm } from "@/components/admin/qualiopi/ImportReleveForm";
 import { GenererCreneauxButton } from "@/components/admin/qualiopi/GenererCreneauxButton";
+import { SessionJoursEditor } from "@/components/admin/qualiopi/SessionJoursEditor";
+import { LiensEmargement } from "@/components/admin/qualiopi/LiensEmargement";
+import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import {
   generateSessionCreneauxAction,
   saveEmargementAction,
   importReleveConnexionAction,
 } from "@/server/actions/qualiopi/presence";
+import { saveSessionJoursAction } from "@/server/actions/qualiopi/session-jours";
+import {
+  emettreLiensSessionAction,
+  revoquerLiensSessionAction,
+} from "@/server/actions/qualiopi/emargement-liens";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -77,7 +85,7 @@ export default async function EmargementPage({ params }: PageProps) {
   const data = await getSessionEmargement(id);
   if (!data) notFound();
 
-  const { session, enrollments, creneaux } = data;
+  const { session, enrollments, creneaux, jours } = data;
 
   // Prépare les props pour EmargementGrid (clés sérialisables)
   // c.date est un DateTime Prisma (Date JS) → on extrait la partie ISO date (Europe/Paris).
@@ -158,6 +166,25 @@ export default async function EmargementPage({ params }: PageProps) {
         </div>
       </div>
 
+      {/* Section : Journées réellement animées (D14) — AVANT la génération des
+          créneaux, parce qu'elle en dépend : sans journées déclarées, les
+          créneaux sont déduits de la plage de dates, ce qui est faux dès que les
+          journées ne se suivent pas. */}
+      <SessionJoursEditor
+        sessionId={id}
+        joursInitiaux={jours}
+        hasCreneaux={hasCreneaux}
+        saveAction={saveSessionJoursAction}
+      />
+
+      {/* Liens de signature — après les journées (dont ils dépendent) et avant
+          la grille : c'est l'ordre dans lequel l'admin travaille. */}
+      <LiensEmargement
+        sessionId={id}
+        emettreAction={emettreLiensSessionAction}
+        revoquerAction={revoquerLiensSessionAction}
+      />
+
       {/* Section : Générer les créneaux */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Créneaux de présence</h2>
@@ -166,6 +193,17 @@ export default async function EmargementPage({ params }: PageProps) {
           genererAction={generateSessionCreneauxAction}
           hasCreneaux={hasCreneaux}
         />
+      </section>
+
+      {/* Section : Dossier d'audit de la session (oubli M2) */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Dossier d&apos;audit</h2>
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
+          d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de signatures.
+          C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette session ».
+        </p>
+        <DossierSessionButton sessionId={id} />
       </section>
 
       {/* Section : Grille émargement */}

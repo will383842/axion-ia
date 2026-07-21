@@ -90,6 +90,14 @@ export interface GenerateDocumentInput {
     /** Coaching 1-to-1 AFEST (C1) : rattache le document à son parcours. */
     coachingSessionId?: string;
   };
+  /**
+   * Force le filigrane « COPIE ».
+   *
+   * Laissé vide, il est DÉDUIT : toute régénération d'un document de même type
+   * et de mêmes références en est une. Sans cette déduction, deux originaux non
+   * filigranés circulaient avec deux numéros officiels différents pour la même
+   * prestation — ce qu'un contrôle relève immédiatement.
+   */
   estCopie?: boolean;
   qrToken?: string | null;
   /**
@@ -105,6 +113,76 @@ export interface GenerateDocumentResult {
   numero: string;
   pdfUrl: string | null;
   hashSha256: string;
+}
+
+/**
+ * Ce tirage reprend-il une pièce DÉJÀ émise ?
+ *
+ * ## Le piège que cette fonction évite
+ *
+ * Sa première version filtrait sur les seules références FOURNIES. Or six types
+ * de documents sont établis PAR STAGIAIRE mais rattachés à la seule session
+ * (contrat de formation, convocation, grille d'évaluation, certificat de
+ * réalisation, kits CPF et France Travail). Sur une session de huit personnes,
+ * le premier contrat était un original et les sept suivants étaient enregistrés
+ * « copie ». Un certificat de réalisation marqué copie, c'est une pièce
+ * affaiblie devant un financeur.
+ *
+ * Deux règles corrigent ça.
+ *
+ * **La correspondance est EXACTE.** Les références absentes sont comparées à
+ * `null`, pas ignorées : une pièce rattachée à une session ET à un stagiaire ne
+ * peut plus être confondue avec une pièce rattachée à la seule session.
+ *
+ * **Sans aucune référence, on ne conclut pas.** Quatre types n'en portent
+ * aucune (inventaire des moyens, contrat de sous-traitance, fiche formateur,
+ * facture 1-to-1) : le compte dégénérait alors en « deuxième document de ce type
+ * jamais émis » — et marquait copie le contrat d'un AUTRE sous-traitant, ou la
+ * deuxième facture de l'histoire. Mieux vaut ne pas savoir que se tromper : un
+ * appelant qui veut le filigrane passe `estCopie: true`.
+ */
+async function estUneRegenerationDe(input: GenerateDocumentInput): Promise<boolean> {
+  const refs = input.refs;
+  const identifiants = [
+    refs?.formationId,
+    refs?.sessionId,
+    refs?.traineeId,
+    refs?.clientId,
+    refs?.coachingSessionId,
+  ];
+  if (identifiants.every((v) => v == null)) return false;
+
+  const count = await prisma.documentGenere.count({
+    where: {
+      type: input.type,
+      formationId: refs?.formationId ?? null,
+      sessionId: refs?.sessionId ?? null,
+      traineeId: refs?.traineeId ?? null,
+      clientId: refs?.clientId ?? null,
+      coachingSessionId: refs?.coachingSessionId ?? null,
+    },
+  });
+  return count > 0;
+}
+
+/**
+ * Injecte le filigrane « COPIE » dans les données du gabarit.
+ *
+ * ⚠️ Sans ce passage, `estCopie` était écrit en base et n'atteignait JAMAIS le
+ * PDF : `buildElement(numero)` ne reçoit que le numéro. La base disait « copie »
+ * et la pièce sortait identique à l'original — soit très exactement ce que le
+ * filigrane devait empêcher.
+ *
+ * Fait ici plutôt que dans les 43 appelants : les 26 gabarits concernés lisent
+ * tous `data.estCopie`, et un oubli dans un seul appelant serait invisible.
+ */
+function avecFiligraneCopie(element: React.ReactElement, estCopie: boolean): React.ReactElement {
+  if (!estCopie) return element;
+  const props = element.props as { data?: unknown };
+  if (typeof props.data !== "object" || props.data === null) return element;
+  return React.cloneElement(element, {
+    data: { ...(props.data as Record<string, unknown>), estCopie: true },
+  } as Partial<unknown>);
 }
 
 /**
@@ -169,6 +247,12 @@ export async function generateDocument(
     const seq = count + 1;
     const numero = formatDocumentNumber(numberingType, year, seq);
 
+    // 🔴 Une régénération n'est JAMAIS un original. Chaque tirage alloue un
+    // nouveau numéro séquentiel : sans filigrane, deux pièces d'apparence
+    // officielle circuleraient pour la même prestation, avec des numéros
+    // différents. C'est exactement ce qu'un contrôleur remarque.
+    const estUneRegeneration = input.estCopie ?? (await estUneRegenerationDe(input));
+
     // 1b. Rendu PDF — le numéro alloué est injecté via buildElement si fourni.
     let elementToRender: React.ReactElement;
     if (input.buildElement !== undefined) {
@@ -180,6 +264,7 @@ export async function generateDocument(
         "[generateDocument] L'un des champs `element` ou `buildElement` est obligatoire.",
       );
     }
+    elementToRender = avecFiligraneCopie(elementToRender, estUneRegeneration);
     const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);
 
     // 2. Upload R2 (fail-soft).
@@ -199,7 +284,7 @@ export async function generateDocument(
           pdfUrl,
           hashSha256,
           sizeBytes,
-          estCopie: input.estCopie ?? false,
+          estCopie: estUneRegeneration,
           suppressionPrevueAt,
           ...(input.qrToken != null ? { qrToken: input.qrToken, qrTokenCreatedAt: now } : {}),
           ...(input.refs?.formationId != null ? { formationId: input.refs.formationId } : {}),

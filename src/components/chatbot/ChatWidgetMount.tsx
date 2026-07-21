@@ -20,6 +20,7 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
+import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 
 const ChatWidgetLazy = dynamic(
   () =>
@@ -90,5 +91,11 @@ export function ChatWidgetMount() {
 
   if (!config?.enabled) return null;
   if (!isPageAllowed(config.pages)) return null;
+  // Un widget de support sur une page dont l'URL est un secret : la
+  // conversation, comme toute capture d'écran qu'un stagiaire enverrait, porte
+  // le jeton. Et le portail n'a de toute façon rien à faire d'un chat marketing.
+  if (urlPorteUnSecret(typeof window === "undefined" ? null : window.location.pathname)) {
+    return null;
+  }
   return <ChatWidgetLazy />;
 }

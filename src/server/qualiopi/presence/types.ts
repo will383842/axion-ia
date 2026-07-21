@@ -23,6 +23,20 @@ export interface CreneauPlan {
   libelle: string;
   /** Durée planifiée en minutes pour ce créneau. */
   dureePrevueMinutes: number;
+  /**
+   * Horaires RÉELS de la JOURNÉE dont ce créneau fait partie, `HH:MM`.
+   *
+   * Présents uniquement si la session a déclaré ses journées (`session_jours`,
+   * décision D14). Absents = la session est en repli sur `dateDebut..dateFin`,
+   * et l'appelant ne doit alors afficher AUCUN horaire plutôt qu'un horaire
+   * inventé : c'est précisément le « 09h00–17h00 » codé en dur que sanctionne
+   * CAA Nantes 20/04/2021 sur une pièce à valeur probante.
+   *
+   * ⚠️ Horaires de la journée, pas du créneau : la table ne descend pas au grain
+   * de la demi-journée.
+   */
+  jourHeureDebut?: string;
+  jourHeureFin?: string;
 }
 
 /**

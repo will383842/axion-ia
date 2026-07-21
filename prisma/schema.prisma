@@ -5736,6 +5736,10 @@ model TrainingSession {
   sessionFormateurs   SessionFormateur[]
   /// Incidents rattachés à la session (registre des incidents — LOT 4).
   incidents           Incident[]
+  /// Contresignatures formateur, au grain (date × demi-journée) — T13.
+  emargementContresignatures EmargementContresignature[]
+  /// Journées RÉELLEMENT animées (décision D14). Vide = repli sur `dateDebut..dateFin`.
+  jours                      SessionJour[]
 
   @@index([formationId])
   @@index([clientId])
@@ -5796,6 +5800,10 @@ model Trainer {
   coachingSessions     CoachingSession[]
   /// Affectations normalisées aux sessions (principal + co-animateurs).
   sessionFormateurs    SessionFormateur[]
+  /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
+  sessionJours         SessionJour[]
+  /// Signatures qu'il a recueillies sur son poste (stagiaire sans téléphone).
+  signaturesRecueillies EmargementSignature[] @relation("SignatureRecueillie")
   /// Pièces justificatives reçues (contrat, vigilance URSSAF, NDA, RC pro…).
   documents            TrainerDocument[]
   /// Régime de TVA de SES honoraires (indépendant). Renseigné par un humain,
@@ -5808,6 +5816,8 @@ model Trainer {
   indisponibilites     TrainerAvailability[]
   auditMissions        AuditMission[]            @relation("AuditMissionFormateur")
   developmentActions   TrainerDevelopmentAction[]
+  /// Contresignatures d'émargement apposées par ce formateur (T13).
+  emargementContresignatures EmargementContresignature[]
 
   @@index([statut])
   @@index([actif])
@@ -5933,6 +5943,68 @@ model SessionFormateur {
   @@map("session_formateurs")
 }
 
+/// Journée RÉELLEMENT animée d'une session (décision D14).
+///
+/// `dateDebut..dateFin` ne décrit PAS les jours d'une session : « c'est possible
+/// que ça se suive ou pas ». Déduire les journées de cette plage est faux dès
+/// qu'un parcours est étalé — un parcours de 4 journées réparties sur 3 mois
+/// produit 66 jours ouvrés au lieu de 4, soit un dénominateur multiplié par 16
+/// et un taux de présence à ≈ 3 % : attestation refusée à un stagiaire assidu.
+///
+/// Une seule table pour trois problèmes distincts :
+///   1. le dénominateur du taux (jours réels, non déduits) ;
+///   2. l'import distanciel multi-jours, aujourd'hui faux ;
+///   3. les horaires RÉELS du PDF d'émargement et de la convocation, aujourd'hui
+///      codés en dur en « 09h00–17h00 » — exigence jurisprudentielle
+///      (CAA Nantes 20/04/2021), donc prérequis du tuple signé et de l'étape D.
+///
+/// Rétrocompatible : une session sans journée déclarée retombe sur
+/// `dateDebut..dateFin`. Aucun backfill (prod = 1 session).
+model SessionJour {
+  id         String          @id @default(uuid()) @db.Uuid
+  sessionId  String          @map("session_id") @db.Uuid
+  session    TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  /// Jour civil (heure de Paris), même convention que `PresenceCreneau.date`.
+  date       DateTime        @db.Date
+  /// Horaires RÉELS de la journée, `HH:MM`. Format garanti par un CHECK SQL :
+  /// ce sont eux qui figureront sur une pièce à valeur probante.
+  heureDebut String          @map("heure_debut") @db.VarChar(5)
+  heureFin   String          @map("heure_fin") @db.VarChar(5)
+  /// Formateur de CETTE journée — EXCEPTION, pas règle.
+  ///
+  /// `null` = le formateur principal de la session, ce qui est le cas normal :
+  /// sur les 62 formations de 7 h et 14 h du catalogue, c'est la même personne
+  /// tous les jours, et la faire ressaisir ligne par ligne serait absurde.
+  ///
+  /// On ne renseigne cette colonne que lorsqu'elle DIFFÈRE : désistement en
+  /// cours de session, ou co-animation. Sans elle, remplacer un formateur qui se
+  /// désiste écrasait l'affectation de la session et faisait perdre l'
+  /// information « qui a animé les journées déjà passées » pour tout ce qui
+  /// n'avait pas encore été signé — convocation, PDF, relevé.
+  trainerId   String?        @map("trainer_id") @db.Uuid
+  trainer     Trainer?       @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  /// Intitulés des modules couverts ce jour-là, pour la feuille d'émargement.
+  /// Vide = repli sur le programme de la formation.
+  modules    Json            @default("[]")
+  /// Faux tant que les horaires sont ceux PROPOSÉS à la création de la session.
+  ///
+  /// La génération automatique évite de saisir 52 fois les mêmes journées, mais
+  /// une valeur par défaut reste une valeur par défaut : ce drapeau permet de
+  /// l'afficher comme telle, et de ne jamais la présenter comme un horaire
+  /// constaté. C'est la même doctrine que pour D13 — un défaut visible et assumé
+  /// se défend, le même défaut muet ne se défend pas.
+  horairesConfirmes Boolean  @default(false) @map("horaires_confirmes")
+  commentaire String?        @db.Text
+  createdAt  DateTime        @default(now()) @map("created_at")
+  updatedAt  DateTime        @updatedAt @map("updated_at")
+
+  // Pas de `@@index([sessionId, date])` : il serait STRICTEMENT redondant avec
+  // l'index unique ci-dessus — mêmes colonnes, même ordre. Un B-tree unique sert
+  // déjà les lectures par session et par (session, date).
+  @@unique([sessionId, date], map: "session_jour_unique")
+  @@map("session_jours")
+}
+
 /// Stagiaire. PII ; détails handicap chiffrés AES-256-GCM (pii-crypto).
 model Trainee {
   id                     String    @id @default(uuid()) @db.Uuid
@@ -6007,6 +6079,10 @@ model Enrollment {
   evaluations       EvaluationAcquis[]
   questionnaires    Questionnaire[]
   facturesFormation FactureFormation[]
+  /// Jetons de signature d'émargement remis au stagiaire (T13).
+  emargementTokens  EmargementToken[]
+  /// Signatures d'émargement — porte la CHAÎNE de cet inscrit (D12).
+  emargementSignatures EmargementSignature[]
 
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
   @@index([sessionId])
@@ -6293,6 +6369,10 @@ model PresenceCreneau {
   @@unique([enrollmentId, date, demiJournee], map: "presence_creneau_unique")
   @@index([enrollmentId])
   @@index([importId])
+  /// Signatures électroniques apposées sur ce créneau (T13). `Restrict` :
+  /// une preuve légale ne se supprime jamais en cascade.
+  emargementSignatures EmargementSignature[]
+
   /// Heatmap « demi-journées réalisées » par mois (cockpit). `date` n'avait aucun index.
   @@index([date, present])
   @@map("presence_creneaux")
@@ -7466,6 +7546,280 @@ model ReleveConnexionImport {
 }
 
 // ============================================================================
+// QUALIOPI — T13 : ÉMARGEMENT ÉLECTRONIQUE SIGNÉ (étape C)
+//
+// Preuve d'assiduité opposable (art. R.6313-3 : « tout élément probant »).
+// Signature électronique SIMPLE horodatée — l'art. 1366 C. civ. (identification
+// + intégrité) suffit à la VALIDITÉ ; le qualifié eIDAS n'apporte que la
+// présomption de fiabilité, non exigée ici (décision D1).
+//
+// Jurisprudence structurante (CAA Nantes 14/06/2022 n° 20NT01403 et 01/06/2021
+// n° 19NT02559) : signature par DEMI-JOURNÉE, par le stagiaire ET le formateur,
+// avec HORAIRES et MODULES, et le NOM du formateur. Une feuille incomplète vaut
+// redressement AU PRORATA, pas un rejet binaire.
+//
+// 🔴 RGPD art. 9 — la CNIL qualifie la DYNAMIQUE DE TRACÉ (pression, timing,
+// ordre des traits) de caractéristique biométrique comportementale. On ne
+// persiste QUE l'image rasterisée ; `pressure` / `timeStamp` / `tilt` des
+// Pointer Events sont écartés CÔTÉ CLIENT avant transmission.
+//
+// Polymorphe dès la V1 (décision D9) : `contexteType` distingue la formation
+// COLLECTIVE de l'AFEST 1-to-1, pour ne pas créer une 5ᵉ façon de signer dans
+// trois mois. Migration ADDITIVE : aucun DROP.
+// ============================================================================
+
+/// Contexte d'une signature. Polymorphisme assumé (D9) : collectif aujourd'hui,
+/// AFEST 1-to-1 sans nouvelle migration demain. Les FK correspondantes sont
+/// nullables et gardées par un CHECK « exactement une renseignée » (SQL brut).
+enum EmargementContexte {
+  collectif
+  afest_1to1
+}
+
+/// Modalité de recueil.
+/// `canvas` = tracé au doigt ou à la souris.
+/// `confirmation_accessible` = case à cocher + saisie du nom : chemin CLAVIER et
+/// lecteur d'écran, qu'un canvas n'offre pas. Sert aussi de preuve d'adaptation
+/// (ind. 26).
+/// `papier_scanne` = repli de continuité (décision D11) : pas de smartphone,
+/// batterie vide, pas de réseau, refus de signer. ⚠️ Aucun texte n'impose ce
+/// repli — il se justifie comme continuité de service et de preuve, jamais
+/// comme une obligation juridique.
+enum EmargementMethode {
+  canvas
+  confirmation_accessible
+  papier_scanne
+}
+
+/// Jeton de signature remis au stagiaire. Portée = UNE inscription.
+///
+/// Modèle calqué sur `FormateurMagicLink` : le token en clair n'est JAMAIS
+/// stocké, seul son SHA-256. ⚠️ NE PAS copier `PortailAcces`, qui le stocke en
+/// clair — c'est de la dette, pas un précédent.
+///
+/// Fenêtre : jusqu'à la fin de session + 48 h (décision D13, prise CONTRE la
+/// recommandation « créneau ± 2 h »). Mitigation obligatoire : l'écart entre
+/// `signeAt` et les horaires du créneau doit APPARAÎTRE sur le PDF d'émargement.
+/// Un écart de 40 h visible et assumé se défend ; le même écart muet non — cf.
+/// CAA Nantes 20/04/2021, qui sanctionne les signatures aux dates impossibles.
+model EmargementToken {
+  id            String             @id @default(uuid()) @db.Uuid
+  contexteType  EmargementContexte @map("contexte_type")
+  /// Contexte collectif : l'inscription visée.
+  enrollmentId  String?            @map("enrollment_id") @db.Uuid
+  enrollment    Enrollment?        @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  /// Contexte AFEST 1-to-1.
+  coachingId    String?            @map("coaching_id") @db.Uuid
+  coaching      CoachingSession?   @relation(fields: [coachingId], references: [id], onDelete: Restrict)
+  /// SHA-256 hex du token. Le clair ne vit que dans l'URL remise au stagiaire.
+  tokenHash     String             @unique @map("token_hash") @db.VarChar(64)
+  expiresAt     DateTime           @map("expires_at")
+  /// Premier usage. Le jeton reste valide ensuite : un stagiaire signe plusieurs
+  /// demi-journées avec le même lien.
+  usedAt        DateTime?          @map("used_at")
+  /// Révocation : session annulée ou reportée, erreur de destinataire, demande
+  /// RGPD. Un token révoqué ne signe plus, mais la ligne reste — c'est une trace.
+  revokedAt     DateTime?          @map("revoked_at")
+  revokedById   String?            @map("revoked_by_id") @db.Uuid
+  revokedMotif  String?            @map("revoked_motif") @db.Text
+  /// IP de création, HASHÉE (jamais en clair — cf. `security/ip-hash.ts`).
+  createdIpHash String?            @map("created_ip_hash") @db.VarChar(64)
+  createdAt     DateTime           @default(now()) @map("created_at")
+
+  signatures EmargementSignature[]
+
+  @@index([enrollmentId])
+  @@index([coachingId])
+  @@index([expiresAt])
+  @@map("emargement_tokens")
+}
+
+/// Signature d'un stagiaire, au grain du créneau (demi-journée).
+///
+/// APPEND-ONLY : pas d'`updatedAt`. Une correction passe par révocation puis
+/// nouvelle signature, jamais par écrasement. L'index unique est PARTIEL
+/// (`WHERE revoked_at IS NULL`, en SQL brut) précisément pour rendre cette
+/// correction possible : une clé unique totale l'aurait interdite à jamais.
+///
+/// Chaînage par INSCRIPTION (décision D12) : `prevHash` scelle le `selfHash` de
+/// la signature précédente DU MÊME stagiaire. Toute insertion ou suppression a
+/// posteriori devient détectable, sans horodatage qualifié ni prestataire — et
+/// sans advisory lock, donc 15 signatures simultanées en salle ne se
+/// sérialisent pas les unes derrière les autres.
+model EmargementSignature {
+  id                  String             @id @default(uuid()) @db.Uuid
+  contexteType        EmargementContexte @map("contexte_type")
+  /// Contexte collectif : le créneau signé.
+  creneauId           String?            @map("creneau_id") @db.Uuid
+  creneau             PresenceCreneau?   @relation(fields: [creneauId], references: [id], onDelete: Restrict)
+  /// Contexte AFEST 1-to-1.
+  coachingId          String?            @map("coaching_id") @db.Uuid
+  coaching            CoachingSession?   @relation(fields: [coachingId], references: [id], onDelete: Restrict)
+  tokenId             String?            @map("token_id") @db.Uuid
+  token               EmargementToken?   @relation(fields: [tokenId], references: [id], onDelete: Restrict)
+  /// PORTÉE DE LA CHAÎNE (D12 : chaînage par inscription). Sans cette colonne il
+  /// fallait joindre par le créneau pour relire une chaîne — et surtout rien
+  /// n'empêchait deux signatures concurrentes de sceller le MÊME prédécesseur,
+  /// forkant silencieusement le registre. Un index unique partiel l'interdit.
+  enrollmentId        String?            @map("enrollment_id") @db.Uuid
+  enrollment          Enrollment?        @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  /// Formateur ayant RECUEILLI la signature sur son propre poste, pour un
+  /// stagiaire sans téléphone. `null` = le stagiaire a signé depuis son appareil
+  /// via son lien. Dans le premier cas, c'est le formateur qui porte
+  /// l'identification du signataire — comme avec une feuille papier qu'il fait
+  /// circuler — et une ligne qui ne dirait pas qui atteste ne prouverait rien.
+  recueilliParTrainerId String?          @map("recueilli_par_trainer_id") @db.Uuid
+  recueilliPar          Trainer?         @relation("SignatureRecueillie", fields: [recueilliParTrainerId], references: [id], onDelete: Restrict)
+
+  // ── SNAPSHOT — ce qui a été signé, figé au moment de la signature ──
+  //
+  // 🔴 Ces colonnes ne sont PAS de la dénormalisation de confort : elles sont la
+  // condition pour que `selfHash` soit recalculable, donc pour que le chaînage
+  // serve à quelque chose. Sans elles, `verifierChaine` retourne
+  // `tuple_irrecalculable` sur CHAQUE ligne et le registre est décoratif.
+  //
+  // Et les reconstruire par jointure serait pire que de ne rien avoir : le
+  // créneau, l'intitulé de la formation, son programme et l'affectation du
+  // formateur sont tous MODIFIABLES après coup. Renommer une formation ou
+  // remplacer un formateur casserait rétroactivement, silencieusement, toutes
+  // les empreintes déjà émises.
+  /// Jour civil signé (heure de Paris), figé.
+  date                DateTime           @db.Date
+  demiJournee         DemiJournee        @map("demi_journee")
+  /// Horaires RÉELS du créneau, `HH:MM`. Viennent de `session_jours` (D14) —
+  /// jamais d'un « 09h00–17h00 » par défaut. Leur absence de la feuille est un
+  /// motif de redressement à elle seule (CAA Nantes 20/04/2021).
+  heureDebut          String             @map("heure_debut") @db.VarChar(5)
+  heureFin            String             @map("heure_fin") @db.VarChar(5)
+  /// Intitulé de la formation, figé : il peut être renommé après la session.
+  formationIntitule   String             @map("formation_intitule") @db.VarChar(300)
+  /// Modules couverts, figés : ["Module 1 — …", …]. Le programme est modifiable.
+  /// ⚠️ PAS de `@default` : cette colonne entre dans le tuple haché. Un défaut
+  /// transformerait un oubli d'insertion en `[]` silencieux, et `selfHash` ne
+  /// correspondrait plus à son contenu — sur 100 % des lignes, dans une table
+  /// append-only donc non corrigeable. Mieux vaut que l'insertion échoue.
+  modulesSnapshot     Json               @map("modules_snapshot")
+  /// Nom du formateur, figé. `SessionFormateur` est mutable, et son absence de
+  /// la feuille est elle aussi un motif de redressement.
+  formateurNom        String             @map("formateur_nom") @db.VarChar(200)
+
+  methode             EmargementMethode
+  /// Clé R2 de l'image rasterisée (PNG normalisé par sharp). Null pour
+  /// `confirmation_accessible`, qui n'a pas d'image par construction.
+  signatureKey        String?            @map("signature_key") @db.Text
+  /// SHA-256 de l'IMAGE elle-même — et non de sa clé R2. C'est le seul moyen de
+  /// détecter la substitution d'un objet de stockage sans toucher à la base.
+  signatureSha256     String?            @map("signature_sha256") @db.VarChar(64)
+  mimeType            String?            @map("mime_type") @db.VarChar(60)
+  sizeBytes           Int?               @map("size_bytes")
+  /// Identité du signataire FIGÉE au moment de la signature : un UUID n'identifie
+  /// personne devant un juge, et le stagiaire peut être anonymisé plus tard.
+  signataireNom       String             @map("signataire_nom") @db.VarChar(200)
+  signataireEmail     String?            @map("signataire_email") @db.VarChar(255)
+  /// Horodatage de la signature, à la milliseconde.
+  signeAt             DateTime           @map("signe_at")
+  /// ⚠️ DISTINCT de `signeAt` : l'écart entre les deux révèle une insertion
+  /// tardive. Les confondre reviendrait à se priver du seul signal disponible.
+  createdAt           DateTime           @default(now()) @map("created_at")
+  /// IP et user-agent HASHÉS : ne jamais figer une donnée personnelle en clair
+  /// dans un hash immuable, qu'un effacement RGPD ne pourrait plus atteindre.
+  ipHash              String?            @map("ip_hash") @db.VarChar(64)
+  userAgentSha256     String?            @map("user_agent_sha256") @db.VarChar(64)
+  /// Chaînage append-only, par inscription.
+  prevHash            String?            @map("prev_hash") @db.VarChar(64)
+  selfHash            String             @map("self_hash") @db.VarChar(64)
+  /// Version du tuple canonique haché (JSON RFC 8785, clés triées, ISO-8601 UTC
+  /// à la ms). Sans elle, un changement de format rendrait TOUTE la chaîne
+  /// invérifiable rétroactivement.
+  hashVersion         Int                @default(1) @map("hash_version")
+  /// Versions des textes affichés au signataire : prouver ce qui a été signé
+  /// suppose de savoir ce qui était écrit à l'écran ce jour-là.
+  mentionVersion      String             @map("mention_version") @db.VarChar(20)
+  consentementVersion String?            @map("consentement_version") @db.VarChar(20)
+  /// RGPD : échéance de purge programmée (base contractuelle CDC 5 ans) et date
+  /// de purge effective de l'IMAGE. La ligne de preuve, elle, survit à la purge.
+  suppressionPrevueAt DateTime?          @map("suppression_prevue_at")
+  imagePurgeeAt       DateTime?          @map("image_purgee_at")
+  revokedAt           DateTime?          @map("revoked_at")
+  revokedById         String?            @map("revoked_by_id") @db.Uuid
+  revokedMotif        String?            @map("revoked_motif") @db.Text
+
+  @@index([creneauId])
+  @@index([coachingId])
+  @@index([tokenId])
+  /// Relecture d'une chaîne : toutes les signatures d'un inscrit, dans l'ordre.
+  @@index([enrollmentId, signeAt])
+  @@index([signeAt])
+  @@map("emargement_signatures")
+}
+
+/// Contresignature du formateur, au grain (session × date × demi-journée) —
+/// PAS par stagiaire : le formateur signe UNE fois pour tout le groupe. C'est ce
+/// décalage de grain qui impose une table distincte des signatures stagiaires ;
+/// les loger ensemble était l'erreur de conception de la v2 du plan.
+///
+/// ⚠️ Décision D10 : cette contresignature N'ALIMENTE PAS `heuresAnimees`.
+/// Sinon le formateur attesterait les heures qui déterminent sa PROPRE
+/// rémunération (et sa part en co-animation) — un conflit d'intérêts qu'un
+/// auditeur ou un financeur peut soulever seul. Acte de preuve pédagogique,
+/// sans aucun effet sur la paie.
+model EmargementContresignature {
+  id              String             @id @default(uuid()) @db.Uuid
+  contexteType    EmargementContexte @map("contexte_type")
+  sessionId       String?            @map("session_id") @db.Uuid
+  session         TrainingSession?   @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  coachingId      String?            @map("coaching_id") @db.Uuid
+  coaching        CoachingSession?   @relation(fields: [coachingId], references: [id], onDelete: Restrict)
+  trainerId       String             @map("trainer_id") @db.Uuid
+  trainer         Trainer            @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  /// Jour civil (heure de Paris), même convention que `PresenceCreneau.date`.
+  date            DateTime           @db.Date
+  demiJournee     DemiJournee        @map("demi_journee")
+  /// Intitulé de la formation, FIGÉ — même raison que côté stagiaire : il peut
+  /// être renommé après la session, et le reconstruire par jointure casserait
+  /// rétroactivement toutes les empreintes déjà émises.
+  formationIntitule String           @map("formation_intitule") @db.VarChar(300)
+  /// 🔴 EXIGENCES JURISPRUDENTIELLES, non optionnelles : horaires RÉELS du
+  /// créneau — surtout pas un « 09h00–17h00 » codé en dur — et intitulés des
+  /// modules couverts. Leur absence est précisément ce que sanctionne
+  /// CAA Nantes 20/04/2021.
+  heureDebut      String             @map("heure_debut") @db.VarChar(5)
+  heureFin        String             @map("heure_fin") @db.VarChar(5)
+  /// Snapshot des modules : ["Module 1 — …", …]. Figé, car le programme de la
+  /// formation peut être modifié après la session.
+  /// ⚠️ PAS de `@default` : colonne hachée, cf. `EmargementSignature`.
+  modulesSnapshot Json               @map("modules_snapshot")
+  /// Nom du formateur FIGÉ. Son absence de la feuille est un motif de
+  /// redressement à elle seule.
+  formateurNom    String             @map("formateur_nom") @db.VarChar(200)
+  methode         EmargementMethode
+  signatureKey    String?            @map("signature_key") @db.Text
+  signatureSha256 String?            @map("signature_sha256") @db.VarChar(64)
+  mimeType        String?            @map("mime_type") @db.VarChar(60)
+  sizeBytes       Int?               @map("size_bytes")
+  signeAt         DateTime           @map("signe_at")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  ipHash          String?            @map("ip_hash") @db.VarChar(64)
+  userAgentSha256 String?            @map("user_agent_sha256") @db.VarChar(64)
+  prevHash        String?            @map("prev_hash") @db.VarChar(64)
+  selfHash        String             @map("self_hash") @db.VarChar(64)
+  hashVersion     Int                @default(1) @map("hash_version")
+  mentionVersion  String             @map("mention_version") @db.VarChar(20)
+  revokedAt       DateTime?          @map("revoked_at")
+  revokedById     String?            @map("revoked_by_id") @db.Uuid
+  revokedMotif    String?            @map("revoked_motif") @db.Text
+
+  @@index([sessionId, date])
+  @@index([coachingId])
+  @@index([trainerId])
+  /// Relecture d'une chaîne de contresignatures : toutes celles d'un formateur
+  /// sur une session, dans l'ordre d'INSERTION. Même doctrine que côté
+  /// stagiaire — jamais `signeAt`, qui est figé avant l'écriture de l'image.
+  @@index([sessionId, trainerId, createdAt])
+  @@map("emargement_contresignatures")
+}
+
+// ============================================================================
 // OFFRES D'EMPLOI — système carrières DB-piloté (hub /carrieres + page/offre +
 // candidature). Voir _AUDIT/PLAN-OFFRES-EMPLOI-2026-06-08. Clone archi FAQ.
 // ============================================================================
@@ -7773,6 +8127,10 @@ model CoachingSession {
   transitions      CoachingTransition[]
   appreciations    Appreciation[]         @relation("CoachingAppreciations")
   reclamations     Reclamation[]          @relation("CoachingReclamations")
+  /// Émargement signé — contexte AFEST 1-to-1 (T13, modèle polymorphe D9).
+  emargementTokens          EmargementToken[]
+  emargementSignatures      EmargementSignature[]
+  emargementContresignatures EmargementContresignature[]
 
   @@index([trainerId])
   @@index([traineeId])

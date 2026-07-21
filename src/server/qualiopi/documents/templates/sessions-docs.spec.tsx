@@ -91,15 +91,57 @@ describe("EmargementPdf", () => {
     const data: EmargementData = {
       numero: "EMAR-2026-001",
       intituleFormation: "IA Générative pour professionnels",
-      date: "10 juin 2026 (mercredi)",
-      horaires: "09h00–17h00",
+      numeroSession: "AXI-SESS-2026-001",
       lieu: "Paris — Salle Innovation",
-      nomFormateur: "Sophie Martin",
       nda: "11960000000",
-      participants: [
-        { nom: "Jean Dupont", entreprise: "Dupont & Associés" },
-        { nom: "Marie Lefebvre", entreprise: "Lefebvre SAS" },
+      // Deux journées avec des horaires DIFFÉRENTS : c'est précisément ce que
+      // l'ancien modèle (une date, un horaire codé en dur) ne savait pas rendre.
+      journees: [
+        {
+          dateLisible: "mercredi 10 juin 2026",
+          horaires: "09:00–17:00",
+          formateurNom: "Sophie Martin",
+          modules: ["Module 1 — Cadrage"],
+          entetes: ["Matin", "Après-midi"],
+          lignes: [
+            {
+              nom: "Jean Dupont",
+              entreprise: "Dupont & Associés",
+              cases: ["Signé 12h45", "Signé 17h02 (+ 2 min)"],
+              ancrage: "2 · a1b2c3d4e5",
+            },
+            {
+              nom: "Marie Lefebvre",
+              entreprise: "Lefebvre SAS",
+              cases: ["Signé 12h50 — poste formateur", ""],
+              ancrage: "1 · f6e5d4c3b2",
+            },
+          ],
+          // Journée contresignée matin ET après-midi par le formateur.
+          contresignatures: [
+            "Matin — Sophie Martin, signé 13h05",
+            "Après-midi — Sophie Martin, signé 17h10",
+          ],
+        },
+        {
+          dateLisible: "jeudi 11 juin 2026",
+          horaires: "09:00–12:30",
+          formateurNom: "Claire Remplaçante",
+          modules: [],
+          entetes: ["Matin"],
+          lignes: [
+            {
+              nom: "Jean Dupont",
+              entreprise: "Dupont & Associés",
+              cases: ["Signé 12h20"],
+              ancrage: "3 · 9988776655",
+            },
+          ],
+          // Journée NON contresignée : la feuille doit le dire, pas le masquer.
+          contresignatures: [],
+        },
       ],
+      totalSignatures: 3,
       lignesVides: 2,
     };
 

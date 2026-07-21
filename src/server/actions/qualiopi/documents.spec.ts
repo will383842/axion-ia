@@ -22,6 +22,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 const mockSessionFindUnique = vi.fn();
 const mockEnrollmentFindUnique = vi.fn();
 const mockTrainerFindUnique = vi.fn();
+const mockSessionJourFindMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -33,6 +34,11 @@ vi.mock("@/lib/prisma", () => ({
     },
     trainer: {
       findUnique: (...args: unknown[]) => mockTrainerFindUnique(...args),
+    },
+    // La convocation lit les horaires RÉELS des journées déclarées plutôt que
+    // d'annoncer un « 09h00–17h00 » qui contredirait la feuille d'émargement.
+    sessionJour: {
+      findMany: (...args: unknown[]) => mockSessionJourFindMany(...args),
     },
   },
 }));
@@ -158,14 +164,33 @@ function makeEnrollment(overrides: Record<string, unknown> = {}) {
   };
 }
 
+/**
+ * Données réellement transmises au gabarit PDF du PREMIER document généré.
+ *
+ * ⚠️ Elles ne sont PAS au sommet de l'appel : `generateDocument` reçoit un
+ * `buildElement(numero)`, et c'est l'élément React produit qui les porte. Lire
+ * `calls[0][0].data` renvoie `undefined` — donc une assertion qui ne prouve rien.
+ */
+function donneesPdf<T>(): T {
+  const call = mockGenerateDocument.mock.calls[0]?.[0] as
+    | { buildElement: (n: string) => { props: { data: T } } }
+    | undefined;
+  if (call === undefined) throw new Error("generateDocument n'a pas été appelé");
+  return call.buildElement("AXI-TEST-2026-001").props.data;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Setup
 // ─────────────────────────────────────────────────────────────────────────────
 
 beforeEach(() => {
+  // ⚠️ `clearAllMocks` efface les APPELS, pas les `mockResolvedValue` : toute
+  // valeur par défaut doit être reposée ICI, sinon elle fuit d'un `describe` au
+  // suivant et des tests passent par accident.
   vi.clearAllMocks();
   mockGetOrganismeIdentite.mockResolvedValue(IDENTITE_MOCK);
   mockGenerateDocument.mockResolvedValue(DOC_RESULT_MOCK);
+  mockSessionJourFindMany.mockResolvedValue([]);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -302,6 +327,46 @@ describe("genererConvocationAction", () => {
     expect(call.refs.sessionId).toBe(SESSION_ID);
   });
 
+  it("🔴 annonce les horaires RÉELS des journées déclarées", async () => {
+    // La convocation et la feuille d'émargement doivent dire la MÊME chose :
+    // CAA Nantes 20/04/2021 sanctionne les horaires divergents entre documents.
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment());
+    mockSessionJourFindMany.mockResolvedValue([
+      { heureDebut: "08:30", heureFin: "16:45" },
+      { heureDebut: "08:30", heureFin: "16:45" },
+    ]);
+
+    await genererConvocationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const data = donneesPdf<{ horaires: string }>();
+    // Deux journées identiques → une seule plage, pas « 08:30–16:45, 08:30–16:45 ».
+    expect(data.horaires).toBe("08:30–16:45");
+  });
+
+  it("liste les plages quand les journées ont des horaires DIFFÉRENTS", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment());
+    mockSessionJourFindMany.mockResolvedValue([
+      { heureDebut: "09:00", heureFin: "17:00" },
+      { heureDebut: "09:00", heureFin: "12:30" },
+    ]);
+
+    await genererConvocationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const data = donneesPdf<{ horaires: string }>();
+    expect(data.horaires).toBe("09:00–17:00, 09:00–12:30");
+  });
+
+  it("🔴 n'INVENTE pas d'horaires quand aucune journée n'est déclarée", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment());
+    mockSessionJourFindMany.mockResolvedValue([]);
+
+    await genererConvocationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const data = donneesPdf<{ horaires: string }>();
+    expect(data.horaires).not.toMatch(/\d{2}:\d{2}/);
+    expect(data.horaires).toContain("communiqués");
+  });
+
   it("retourne error si enrollment introuvable", async () => {
     mockEnrollmentFindUnique.mockResolvedValue(null);
     const result = await genererConvocationAction({ enrollmentId: ENROLLMENT_ID });
@@ -314,14 +379,42 @@ describe("genererConvocationAction", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("genererEmargementAction", () => {
-  it("génère la feuille d'émargement avec les stagiaires de la session", async () => {
-    const session = makeSession({
-      enrollments: [
-        { trainee: { nom: "Dupont", prenom: "Marie", entreprise: "Tech" } },
-        { trainee: { nom: "Martin", prenom: "Paul", entreprise: null } },
+  /**
+   * L'action interroge la session DEUX fois : une fois pour elle-même, une fois
+   * via `construireFeuillePdf`. Les deux passent par le même mock, donc l'objet
+   * doit porter la réunion des deux `select` — dont `jours`.
+   */
+  function sessionEmargeable(overrides: Record<string, unknown> = {}) {
+    return makeSession({
+      formateurPrincipal: { nom: "Jullin", prenom: "Williams" },
+      jours: [
+        {
+          date: new Date("2026-09-01T00:00:00.000Z"),
+          heureDebut: "08:30",
+          heureFin: "16:45",
+          modules: ["Module 1 — Cadrage"],
+          trainer: null,
+        },
       ],
+      enrollments: [
+        {
+          id: "enr-1",
+          trainee: { nom: "Dupont", prenom: "Marie", entreprise: "Tech" },
+          emargementSignatures: [],
+        },
+        {
+          id: "enr-2",
+          trainee: { nom: "Martin", prenom: "Paul", entreprise: null },
+          emargementSignatures: [],
+        },
+      ],
+      emargementContresignatures: [],
+      ...overrides,
     });
-    mockSessionFindUnique.mockResolvedValue(session);
+  }
+
+  it("génère la feuille d'émargement avec les stagiaires de la session", async () => {
+    mockSessionFindUnique.mockResolvedValue(sessionEmargeable());
 
     const result = await genererEmargementAction({ sessionId: SESSION_ID });
 
@@ -331,12 +424,41 @@ describe("genererEmargementAction", () => {
       type: string;
       buildElement: (n: string) => unknown;
       refs: { sessionId: string };
+      data: { journees: Array<{ horaires: string; formateurNom: string }> };
     };
     expect(call.type).toBe("emargement");
     // buildElement reçoit le numéro
     const element = call.buildElement("AXI-SESS-2026-002");
     expect(element).toBeDefined();
     expect(call.refs.sessionId).toBe(SESSION_ID);
+  });
+
+  it("🔴 porte les horaires RÉELS de la journée, jamais un « 09h00–17h00 » codé en dur", async () => {
+    // CAA Nantes 20/04/2021 : une feuille dont les horaires ne correspondent pas
+    // à la réalité est insuffisamment probante. C'est tout l'objet du passage par
+    // `session_jours`.
+    mockSessionFindUnique.mockResolvedValue(sessionEmargeable());
+    await genererEmargementAction({ sessionId: SESSION_ID });
+
+    const data = donneesPdf<{
+      journees: Array<{ horaires: string; formateurNom: string; modules: string[] }>;
+    }>();
+    expect(data.journees).toHaveLength(1);
+    expect(data.journees[0]!.horaires).toBe("08:30–16:45");
+    expect(data.journees[0]!.formateurNom).toBe("Williams Jullin");
+    expect(data.journees[0]!.modules).toEqual(["Module 1 — Cadrage"]);
+  });
+
+  it("🔴 REFUSE de produire la feuille quand aucune journée n'est déclarée", async () => {
+    // Mieux vaut pas de pièce qu'une pièce fausse : sans horaires réels, la
+    // feuille ne prouve rien et exposerait à un redressement au prorata.
+    mockSessionFindUnique.mockResolvedValue(sessionEmargeable({ jours: [] }));
+
+    const result = await genererEmargementAction({ sessionId: SESSION_ID });
+
+    expect(result).toHaveProperty("error");
+    expect((result as { error: string }).error).toContain("journées");
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 
   it("retourne error si session introuvable", async () => {

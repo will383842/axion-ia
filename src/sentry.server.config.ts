@@ -1,5 +1,8 @@
 import * as Sentry from "@sentry/nextjs";
-import { piiScrubBeforeSend } from "./lib/observability/sentry-pii-scrub";
+import {
+  piiScrubBeforeSend,
+  piiScrubBeforeSendTransaction,
+} from "./lib/observability/sentry-pii-scrub";
 
 const dsn = process.env["SENTRY_DSN"];
 
@@ -33,5 +36,8 @@ if (dsn) {
     // Audit E2E 2026-05-11 P0-CONF-06 — RGPD Art. 32.
     sendDefaultPii: false,
     beforeSend: piiScrubBeforeSend,
+    // Les transactions portent elles aussi `request.url` : sans ce hook, un
+    // jeton partirait chez Sentry sans qu'aucune erreur ne se soit produite.
+    beforeSendTransaction: piiScrubBeforeSendTransaction,
   });
 }

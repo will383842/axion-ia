@@ -31,7 +31,8 @@ export type MagicScope =
   | "reschedule"
   | "portal"
   | "formateur_login"
-  | "ressources_login";
+  | "ressources_login"
+  | "emargement";
 
 /** TTL par scope, en millisecondes. */
 const TTL_MS: Record<MagicScope, number> = {
@@ -40,6 +41,12 @@ const TTL_MS: Record<MagicScope, number> = {
   portal: 30 * 60 * 1000, // 30 min
   formateur_login: 15 * 60 * 1000, // 15 min (lien de connexion court, sécurité)
   ressources_login: 15 * 60 * 1000, // 15 min — connexion espace ressources (commercial/formateur)
+  // Émargement (T13) : garde-fou ABSOLU, pas la vraie fenêtre. Celle-ci est
+  // « fin de session + 48 h » (décision D13), donc dynamique : elle est portée
+  // par `EmargementToken.expiresAt` en base et passée en `ttlMs` à la signature.
+  // Ce plafond de 90 j n'existe que pour qu'un appel oubliant `ttlMs` ne crée
+  // pas un lien éternel.
+  emargement: 90 * 24 * 60 * 60 * 1000,
 };
 
 interface MagicPayload {

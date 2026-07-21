@@ -1,3 +1,7 @@
+"use client";
+// use-client: la garde `urlPorteUnSecret` a besoin du pathname courant — le
+// layout racine ne peut pas appeler `headers()` sans rendre tout le site
+// dynamique (budget Web Vitals).
 // Plausible analytics integration (Sprint 23 / M11).
 //
 // Self-hosted privacy-first analytics, GDPR-compliant sans cookies (CNIL OK
@@ -7,7 +11,9 @@
 // pas defini (preserve dev sans appel reseau parasite).
 
 import Script from "next/script";
+import { usePathname } from "next/navigation";
 import { env } from "@/env";
+import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 
 // Re-export pour préserver l'API publique historique. La SSOT est dans
 // `src/lib/analytics/plausible-tracker.ts` (helper pur). Voir A3.2.
@@ -16,8 +22,14 @@ export { trackEvent } from "@/lib/analytics/plausible-tracker";
 export function Plausible() {
   const domain = env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
   const apiUrl = env.NEXT_PUBLIC_PLAUSIBLE_API_URL ?? "https://plausible.axion-ia.com";
+  const pathname = usePathname();
 
   if (!domain) return null;
+  // 🔴 Le portail stagiaire porte son jeton d'authentification DANS le chemin,
+  // et Plausible transmet `location.pathname` : sans cette garde, le lien
+  // atterrit en clair dans le rapport « Top pages », rejouable pendant 48 h par
+  // quiconque a accès au tableau de bord. Cf. `routes-privees.ts`.
+  if (urlPorteUnSecret(pathname)) return null;
 
   // strategy="afterInteractive" → script chargé après hydration (n'impacte pas LCP).
   // Script étendu (ordre alphabétique requis par Plausible) :
