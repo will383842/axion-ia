@@ -76,6 +76,7 @@ CREATE TABLE "emargement_signatures" (
     "coaching_id" UUID,
     "token_id" UUID,
     "enrollment_id" UUID,
+    "recueilli_par_trainer_id" UUID,
     "date" DATE NOT NULL,
     "demi_journee" "DemiJournee" NOT NULL,
     "heure_debut" VARCHAR(5) NOT NULL,
@@ -172,6 +173,10 @@ CREATE INDEX "emargement_signatures_enrollment_id_signe_at_idx" ON "emargement_s
 -- AddForeignKey
 -- AddForeignKey
 ALTER TABLE "emargement_signatures" ADD CONSTRAINT "emargement_signatures_enrollment_id_fkey" FOREIGN KEY ("enrollment_id") REFERENCES "enrollments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+-- AddForeignKey
+ALTER TABLE "emargement_signatures" ADD CONSTRAINT "emargement_signatures_recueilli_par_trainer_id_fkey" FOREIGN KEY ("recueilli_par_trainer_id") REFERENCES "trainers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- CreateIndex
 CREATE INDEX "emargement_contresignatures_session_id_date_idx" ON "emargement_contresignatures"("session_id", "date");

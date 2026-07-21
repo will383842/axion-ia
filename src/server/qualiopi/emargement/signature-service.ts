@@ -38,7 +38,7 @@ import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { calculerSelfHash, HASH_VERSION_COURANTE, type TupleSignatureV1 } from "./hash";
 import { demiJourneeCommencee } from "./creneaux-signables";
 import { MENTION_VERSION } from "./mentions";
-import { storeSignatureImage } from "./storage";
+import { storeSignatureImage, supprimerImageSignature } from "./storage";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, c'est autre chose qu'une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -71,6 +71,12 @@ export type PorteurSignature =
       type: "formateur";
       /** Session dont le formateur est membre, déjà vérifiée par l'appelant. */
       sessionId: string;
+      /**
+       * Formateur qui recueille la signature. TRACÉ en base : dans ce mode,
+       * c'est lui — et lui seul — qui porte l'identification du signataire. Une
+       * ligne qui ne dirait pas qui atteste ne prouverait pas grand-chose devant
+       * un contrôle.
+       */
       trainerId: string;
     };
 
@@ -84,6 +90,7 @@ export type RefusSignature =
   | "image_requise"
   | "nom_requis"
   | "nom_non_concordant"
+  | "modules_invalides"
   | "conflit_concurrent";
 
 export type ResultatSignature =
@@ -109,6 +116,29 @@ export interface EntreeSignature {
   consentementVersion?: string | null | undefined;
   /** Injectable pour les tests. Jamais `new Date()` en dur dans la logique. */
   maintenant?: Date | undefined;
+}
+
+/**
+ * Supprime une image déjà écrite quand la ligne ne sera finalement pas créée.
+ *
+ * 🔴 Sans ce nettoyage, l'objet reste sur R2 SANS ligne qui le référence. La
+ * purge RGPD part de `signature_key` : un objet orphelin est donc introuvable et
+ * ineffaçable, conservé cinq ans par la règle de cycle de vie. Or le tracé
+ * rasterisé est une donnée personnelle (art. 6).
+ *
+ * ⚠️ N'échoue JAMAIS bruyamment : un nettoyage raté ne doit pas masquer le refus
+ * qui l'a déclenché, qui est l'information utile à l'appelant.
+ */
+async function nettoyerImageOrpheline(image: { key: string } | null): Promise<void> {
+  if (image === null) return;
+  try {
+    await supprimerImageSignature(image.key);
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "signerCreneau:nettoyage_orphelin" },
+      extra: { key: image.key },
+    });
+  }
 }
 
 function estStub(): boolean {
@@ -137,7 +167,6 @@ async function lireContexte(creneauId: string) {
             select: {
               id: true,
               titreSession: true,
-              formation: { select: { titre: true } },
               formateurPrincipal: { select: { nom: true, prenom: true } },
               jours: {
                 select: {
@@ -177,17 +206,9 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
   const maintenant = input.maintenant ?? new Date();
   const ctx = await lireContexte(input.creneauId);
 
-  if (ctx === null || ctx.enrollment === null) {
+  if (ctx === null) {
     return { ok: false, raison: "creneau_introuvable", message: "Créneau introuvable." };
   }
-  if (ctx.emargementSignatures.length > 0) {
-    return {
-      ok: false,
-      raison: "deja_signe",
-      message: "Cette demi-journée a déjà été signée.",
-    };
-  }
-
   // 🔴 GARDE D'AUTORISATION — avant toute autre vérification métier.
   //
   // Le jeton atteste d'une INSCRIPTION, le créneau appartient à une inscription :
@@ -207,6 +228,12 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
       raison: "porteur_non_autorise",
       message: "Ce lien ne permet pas de signer cette feuille.",
     };
+  }
+
+  // Placé APRÈS l'autorisation, et pas avant : sinon un porteur de jeton valide
+  // qui devine un identifiant de créneau apprend si un AUTRE stagiaire a signé.
+  if (ctx.emargementSignatures.length > 0) {
+    return { ok: false, raison: "deja_signe", message: "Cette demi-journée a déjà été signée." };
   }
 
   const session = ctx.enrollment.session;
@@ -272,6 +299,23 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
     return { ok: false, raison: "image_requise", message: "Aucune signature n'a été tracée." };
   }
 
+  // ⚠️ Le CHECK SQL n'exige qu'un tableau JSON. Amputer en silence un programme
+  // mal formé scellerait une liste de modules incomplète sans que personne ne le
+  // sache — dans un domaine dont la doctrine est de refuser plutôt que fabriquer.
+  const modulesBruts: unknown[] = Array.isArray(jour.modules) ? (jour.modules as unknown[]) : [];
+  if (!modulesBruts.every((m): m is string => typeof m === "string")) {
+    Sentry.captureException(new Error("modulesSnapshot non conforme"), {
+      tags: { action: "signerCreneau:modules_invalides" },
+      extra: { creneauId: input.creneauId },
+    });
+    return {
+      ok: false,
+      raison: "modules_invalides",
+      message: "Le programme de cette journée est mal renseigné. L'organisme doit le corriger.",
+    };
+  }
+  const modules: string[] = modulesBruts;
+
   // ── Identifiant généré ICI : il sert de clé primaire ET de clé R2 ──
   const signatureId = randomUUID();
 
@@ -286,10 +330,6 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
     });
   }
 
-  const modules = Array.isArray(jour.modules)
-    ? (jour.modules as unknown[]).filter((m): m is string => typeof m === "string")
-    : [];
-
   const suppressionPrevueAt = new Date(maintenant);
   suppressionPrevueAt.setFullYear(suppressionPrevueAt.getFullYear() + DOCUMENT_RETENTION_YEARS);
 
@@ -301,7 +341,8 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
     demiJournee: ctx.demiJournee,
     heureDebut: jour.heureDebut,
     heureFin: jour.heureFin,
-    formationIntitule: session.titreSession ?? session.formation.titre,
+    // `titreSession` est NOT NULL en base : aucun repli à prévoir.
+    formationIntitule: session.titreSession,
     modules,
     formateurNom: `${formateur.prenom} ${formateur.nom}`.trim(),
     signataireNom,
@@ -318,13 +359,24 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
   for (let essai = 0; essai < MAX_REPRISES_CHAINE; essai++) {
     try {
       const cree = await prisma.$transaction(async (tx) => {
-        // Relecture DANS la transaction : c'est ce qui rend le chaînage juste.
-        // L'ordre `(signeAt, id)` est déterministe — deux signatures à la même
-        // milliseconde donneraient sinon un ordre arbitraire, donc une rupture
-        // de chaînage fantôme à la vérification.
+        // 🔴 L'ordre de la chaîne est celui de l'INSERTION (`createdAt`), jamais
+        // celui de `signeAt`.
+        //
+        // `signeAt` est figé AVANT l'écriture de l'image sur R2 — sharp plus un
+        // aller-retour réseau, soit 100 à 500 ms. Deux signatures du même
+        // stagiaire lancées depuis deux onglets peuvent donc commiter dans
+        // l'ordre INVERSE de leurs `signeAt`. Le chaînage resterait juste, mais
+        // un lecteur triant sur `signeAt` verrait une tête de chaîne avec un
+        // `prevHash` non nul puis une rupture : « chaîne corrompue », à tort, et
+        // définitivement — la table est append-only.
+        //
+        // `created_at` est posé par PostgreSQL (`DEFAULT CURRENT_TIMESTAMP`),
+        // donc cohérent avec l'ordre de commit.
+        //
+        // ⚠️ TOUT vérificateur — étape D comprise — doit trier À L'IDENTIQUE.
         const precedente = await tx.emargementSignature.findFirst({
           where: { enrollmentId: ctx.enrollmentId, revokedAt: null },
-          orderBy: [{ signeAt: "desc" }, { id: "desc" }],
+          orderBy: [{ createdAt: "desc" }, { id: "desc" }],
           select: { selfHash: true },
         });
         const prevHash = precedente?.selfHash ?? null;
@@ -346,6 +398,8 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
             // la distinction « appareil du stagiaire » / « poste du formateur »
             // est ainsi tracée sans colonne supplémentaire.
             tokenId: input.porteur.type === "stagiaire" ? input.porteur.tokenId : null,
+            recueilliParTrainerId:
+              input.porteur.type === "formateur" ? input.porteur.trainerId : null,
             date: new Date(`${jourIso}T00:00:00.000Z`),
             demiJournee: ctx.demiJournee,
             heureDebut: jour.heureDebut,
@@ -377,14 +431,25 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
       return { ok: true, signatureId: cree.id, selfHash: cree.selfHash };
     } catch (err) {
       const conflit = err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002";
-      if (!conflit) throw err;
+      if (!conflit) {
+        await nettoyerImageOrpheline(image);
+        throw err;
+      }
 
       // Deux causes possibles, et une seule se réessaie : une course sur la
       // chaîne (le même inscrit signe depuis deux onglets) se résout en relisant
       // l'empreinte précédente ; une signature déjà posée sur ce créneau est
       // définitive.
-      const cible = String((err as Prisma.PrismaClientKnownRequestError).meta?.["target"] ?? "");
-      if (cible.includes("creneau")) {
+      // ⚠️ On NE lit PAS `err.meta.target` : sa forme pour un index unique
+      // PARTIEL créé en SQL brut n'est garantie nulle part, et un `undefined`
+      // ferait passer une signature déjà posée pour une course — trois
+      // transactions inutiles et un message faux. On interroge la base, qui
+      // répond sans ambiguïté.
+      const dejaPose = await prisma.emargementSignature.count({
+        where: { creneauId: ctx.id, revokedAt: null },
+      });
+      if (dejaPose > 0) {
+        await nettoyerImageOrpheline(image);
         return {
           ok: false,
           raison: "deja_signe",
@@ -396,6 +461,7 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
           tags: { action: "signerCreneau:conflit_chaine" },
           extra: { creneauId: input.creneauId, essais: MAX_REPRISES_CHAINE },
         });
+        await nettoyerImageOrpheline(image);
         return {
           ok: false,
           raison: "conflit_concurrent",

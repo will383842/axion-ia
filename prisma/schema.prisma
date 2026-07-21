@@ -5802,6 +5802,8 @@ model Trainer {
   sessionFormateurs    SessionFormateur[]
   /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
   sessionJours         SessionJour[]
+  /// Signatures qu'il a recueillies sur son poste (stagiaire sans téléphone).
+  signaturesRecueillies EmargementSignature[] @relation("SignatureRecueillie")
   /// Pièces justificatives reçues (contrat, vigilance URSSAF, NDA, RC pro…).
   documents            TrainerDocument[]
   /// Régime de TVA de SES honoraires (indépendant). Renseigné par un humain,
@@ -7661,6 +7663,13 @@ model EmargementSignature {
   /// forkant silencieusement le registre. Un index unique partiel l'interdit.
   enrollmentId        String?            @map("enrollment_id") @db.Uuid
   enrollment          Enrollment?        @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  /// Formateur ayant RECUEILLI la signature sur son propre poste, pour un
+  /// stagiaire sans téléphone. `null` = le stagiaire a signé depuis son appareil
+  /// via son lien. Dans le premier cas, c'est le formateur qui porte
+  /// l'identification du signataire — comme avec une feuille papier qu'il fait
+  /// circuler — et une ligne qui ne dirait pas qui atteste ne prouverait rien.
+  recueilliParTrainerId String?          @map("recueilli_par_trainer_id") @db.Uuid
+  recueilliPar          Trainer?         @relation("SignatureRecueillie", fields: [recueilliParTrainerId], references: [id], onDelete: Restrict)
 
   // ── SNAPSHOT — ce qui a été signé, figé au moment de la signature ──
   //

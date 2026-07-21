@@ -31,7 +31,8 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 import { prisma } from "@/lib/prisma";
 import { storeSignatureImage } from "./storage";
 import { signerCreneau } from "./signature-service";
-import { calculerSelfHash, type TupleSignatureV1 } from "./hash";
+import { calculerSelfHash, verifierChaine, type TupleSignatureV1 } from "./hash";
+import { maillonDepuisLigne, type LigneSignature } from "./reconstruction";
 import { MENTION_VERSION } from "./mentions";
 
 const mockPrisma = prisma as unknown as {
@@ -438,7 +439,11 @@ describe("signerCreneau — chaînage", () => {
       orderBy: unknown;
     };
     expect(arg.where).toEqual({ enrollmentId: "enr-1", revokedAt: null });
-    expect(arg.orderBy).toEqual([{ signeAt: "desc" }, { id: "desc" }]);
+    // 🔴 L'ordre est celui de l'INSERTION, pas de `signeAt`. `signeAt` est figé
+    // avant l'écriture R2 (sharp + réseau) : deux onglets peuvent commiter dans
+    // l'ordre inverse de leurs `signeAt`, et un lecteur triant dessus verrait une
+    // chaîne « corrompue » à tort, définitivement.
+    expect(arg.orderBy).toEqual([{ createdAt: "desc" }, { id: "desc" }]);
   });
 
   it("⭐ l'empreinte écrite est bien celle du tuple — recalcul indépendant", async () => {
@@ -475,5 +480,99 @@ describe("signerCreneau — chaînage", () => {
       prevHash: "c".repeat(64),
     };
     expect(d["selfHash"]).toBe(calculerSelfHash(attendu));
+  });
+});
+
+describe("signerCreneau — la ligne écrite est VÉRIFIABLE", () => {
+  it("⭐ le round-trip complet passe : ligne → tuple reconstruit → chaîne valide", () => {
+    // LE test qui manquait. Rien ne gardait la cohérence entre le tuple haché et
+    // les colonnes écrites : un renommage de colonne l'aurait cassée sur 100 %
+    // des lignes, en silence, dans une table append-only donc non corrigeable.
+    return (async () => {
+      await signerCreneau({
+        porteur: PORTEUR_STAGIAIRE,
+        creneauId: "cre-1",
+        methode: "canvas",
+        imageDataUrl: IMAGE,
+        maintenant: MAINTENANT,
+      });
+
+      const d = donneesCreees();
+      // ⚠️ `create` n'émet PAS de clé `coachingId` (elle vaut `undefined`, pas
+      // `null`). La relecture en base la rendrait `null` : on la simule, sinon
+      // la canonicalisation lève et l'on obtient `maillon_illisible`.
+      const ligne = { coachingId: null, ...d } as unknown as LigneSignature;
+
+      const res = verifierChaine([maillonDepuisLigne(ligne)]);
+      expect(res.anomalies).toEqual([]);
+      expect(res.valide).toBe(true);
+    })();
+  });
+
+  it("écrit la colonne `date` exactement à MINUIT UTC", async () => {
+    // C'est l'invariant dont dépend la garde de `tupleDepuisLigne` : une date
+    // décalée rend le tuple irrecalculable, donc la chaîne invérifiable.
+    await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect((donneesCreees()["date"] as Date).toISOString()).toBe("2026-06-10T00:00:00.000Z");
+  });
+
+  it("trace le formateur qui a recueilli la signature sur son poste", async () => {
+    // Dans ce mode c'est lui, et lui seul, qui porte l'identification du
+    // signataire. Une ligne qui ne dirait pas qui atteste ne prouverait rien.
+    await signerCreneau({
+      porteur: { type: "formateur", sessionId: "ses-1", trainerId: "tr-42" },
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect(donneesCreees()["recueilliParTrainerId"]).toBe("tr-42");
+  });
+
+  it("ne trace aucun formateur quand le stagiaire signe depuis son appareil", async () => {
+    await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect(donneesCreees()["recueilliParTrainerId"]).toBeNull();
+  });
+
+  it("REFUSE un programme mal formé plutôt que de sceller une liste amputée", async () => {
+    const ctx = contexte();
+    ctx.enrollment.session.jours[0]!.modules = ["Module 1", { titre: "objet" }] as never;
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(ctx);
+
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect(r).toMatchObject({ ok: false, raison: "modules_invalides" });
+    expect(mockStore).not.toHaveBeenCalled();
+  });
+
+  it("l'horloge injectée est bien celle utilisée — pas `new Date()`", async () => {
+    // Sans cette assertion, « purge à 5 ans » passerait aussi si le service
+    // ignorait `maintenant` (2026 + 5 = 2031 dans les deux cas).
+    await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: new Date("2027-03-04T09:00:00.000Z"),
+    });
+    expect((donneesCreees()["signeAt"] as Date).toISOString()).toBe("2027-03-04T09:00:00.000Z");
+    expect((donneesCreees()["suppressionPrevueAt"] as Date).getUTCFullYear()).toBe(2032);
   });
 });
