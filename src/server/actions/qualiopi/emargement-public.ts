@@ -31,10 +31,28 @@ import { verifierToken } from "@/server/qualiopi/emargement/token-service";
 import { signerCreneau, type RefusSignature } from "@/server/qualiopi/emargement/signature-service";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 
-/** Quelques signatures par minute suffisent : un stagiaire signe 2 fois par jour. */
+/**
+ * Par JETON — donc par stagiaire. Il signe deux fois par jour ; 12 tentatives
+ * par minute laissent largement la place aux reprises après une erreur de tracé.
+ */
 const LIMITE_PAR_JETON = { limit: 12, windowSec: 60 } as const;
-/** Garde-fou large contre un balayage depuis l'extérieur, sans gêner une salle. */
-const LIMITE_PAR_IP = { limit: 120, windowSec: 60 } as const;
+
+/**
+ * Par IP — donc, en salle, pour TOUT LE GROUPE derrière le NAT du client.
+ *
+ * Le dimensionnement doit partir de la plus grande salle possible, pas d'un
+ * chiffre confortable : le catalogue contient un séminaire déclaré « jusqu'à 50
+ * participants ». Cinquante personnes qui scannent le QR en même temps, avec
+ * quelques reprises, dépassent 120 requêtes par minute — et le garde-fou censé
+ * arrêter un balayage extérieur bloquerait alors la salle entière.
+ *
+ * 600/min laisse passer 50 personnes faisant chacune une dizaine de tentatives,
+ * et reste très en dessous de ce qu'un balayage automatisé produirait.
+ *
+ * ⚠️ Ce plafond ne protège pas grand-chose à lui seul : la vraie barrière est la
+ * limite PAR JETON, qu'aucun nombre de participants ne dilue.
+ */
+const LIMITE_PAR_IP = { limit: 600, windowSec: 60 } as const;
 
 export type RefusPublic = RefusSignature | "lien_invalide" | "trop_de_tentatives" | "stockage";
 

@@ -80,6 +80,20 @@ export const TAILLE_MAX_ENTREE_OCTETS = 2 * 1024 * 1024;
  */
 const LIMITES_SHARP = { limitInputPixels: 16_000_000, sequentialRead: true } as const;
 
+/**
+ * Borne le nombre de décodages simultanés.
+ *
+ * Par défaut, `sharp` dimensionne son pool sur le nombre de cœurs et traite donc
+ * autant d'images en parallèle. Or une salle entière signe en même temps — le
+ * catalogue va jusqu'à 50 participants — et chaque décodage peut allouer
+ * plusieurs dizaines de mégaoctets. Sans borne, le pic mémoire d'une fin de
+ * demi-journée met le conteneur à genoux, et personne ne peut plus signer.
+ *
+ * 2 suffit : une signature pèse quelques kilo-octets, la file s'écoule en
+ * millisecondes. Mieux vaut faire patienter que tomber.
+ */
+sharp.concurrency(2);
+
 /** Largeur de normalisation. Au-delà, on stocke du bruit de capteur, pas du tracé. */
 const LARGEUR_MAX = 1200;
 const HAUTEUR_MAX = 800;

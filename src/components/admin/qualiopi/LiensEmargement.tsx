@@ -107,9 +107,11 @@ export function LiensEmargement({
         Liens de signature
       </h2>
       <p className="mt-[var(--space-admin-1)] mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-        Un lien personnel par stagiaire, valable jusqu&apos;à 48 h après la fin de session. Projetez
-        le QR en salle : chacun scanne et signe sur son propre téléphone, en même temps. En
-        distanciel, copiez le lien dans le chat de la visio.
+        Un lien personnel par stagiaire, valable jusqu&apos;à 48 h après la fin de session.
+        Envoyez-les <strong>avant</strong> la session : chacun arrive avec son lien et signe sur son
+        propre téléphone, tous en même temps. Le QR sert de rattrapage pour qui a perdu le sien — il
+        est personnel, il ne se projette pas pour toute la salle. En distanciel, copiez le lien dans
+        le chat de la visio.
       </p>
 
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
