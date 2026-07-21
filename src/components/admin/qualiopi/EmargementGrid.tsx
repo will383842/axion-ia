@@ -43,6 +43,8 @@ export interface EmargementGridProps {
   sessionId: string;
   enrollments: EnrollmentRow[];
   creneaux: CreneauRow[];
+  /** Seuil « présence complète » (config `seuil_presence_pct`, défaut 80). */
+  seuilCompletePct: number;
   /** Appelée lors du submit. Doit matcher la signature AGENT B. */
   saveAction: (input: {
     sessionId: string;
@@ -66,9 +68,16 @@ const DJ_LABELS: Record<DemiJourneeLabel, string> = {
   journee: "Journée",
 };
 
-function classifierCouleur(taux: number | null): string {
+/**
+ * Couleur du taux. `seuilCompletePct` vient de la config Qualiopi
+ * (`seuil_presence_pct`) : il était figé à 80 ici alors que l'attestation et le
+ * récapitulatif de la page classifient avec le seuil configuré. Réglé à 90, un
+ * taux de 85 % s'affichait vert dans la grille et « partielle » dix lignes plus
+ * bas. Le plancher 60 % (« partielle ») est une constante métier, pas un réglage.
+ */
+function classifierCouleur(taux: number | null, seuilCompletePct: number): string {
   if (taux === null) return "text-[color:var(--color-admin-fg-muted)]";
-  if (taux >= 80) return "text-[color:var(--color-admin-success)]";
+  if (taux >= seuilCompletePct) return "text-[color:var(--color-admin-success)]";
   if (taux >= 60) return "text-[color:var(--color-admin-warning)]";
   // `--color-admin-destructive` et non `--color-admin-error` : ce dernier n'est
   // défini nulle part dans admin.css, la déclaration était donc invalide et la
@@ -90,6 +99,7 @@ export function EmargementGrid({
   sessionId,
   enrollments,
   creneaux,
+  seuilCompletePct,
   saveAction,
 }: EmargementGridProps): React.ReactElement {
   const router = useRouter();
@@ -317,7 +327,7 @@ export function EmargementGrid({
 
                 {/* Taux présence */}
                 <td className={tdCls}>
-                  <span className={classifierCouleur(enrollment.tauxPresencePct)}>
+                  <span className={classifierCouleur(enrollment.tauxPresencePct, seuilCompletePct)}>
                     {enrollment.tauxPresencePct !== null ? `${enrollment.tauxPresencePct} %` : "—"}
                   </span>
                 </td>

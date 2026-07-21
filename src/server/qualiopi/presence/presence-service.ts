@@ -121,6 +121,11 @@ export async function recomputeTauxPresence(enrollmentId: string): Promise<numbe
       id: true,
       dureePrevueMinutes: true,
       dureeRealiseeMinutes: true,
+      // Requis par `computeTauxPresence` pour ne pas additionner les deux
+      // représentations d'un même jour (`journee` distancielle vs demi-journées
+      // présentielles) — sans quoi le dénominateur double.
+      date: true,
+      demiJournee: true,
     },
   });
 
@@ -154,6 +159,8 @@ export async function recomputeTauxPresence(enrollmentId: string): Promise<numbe
     creneaux.map((c) => ({
       dureePrevueMinutes: c.dureePrevueMinutes,
       dureeRealiseeMinutes: c.dureeRealiseeMinutes,
+      date: c.date,
+      demiJournee: c.demiJournee,
     })),
   );
 
