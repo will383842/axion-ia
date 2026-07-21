@@ -103,12 +103,18 @@ const ROLE_TO_PROVIDERS = {
   // ── DÉCISION Will 2026-07-09 : génération de contenu = OpenAI UNIQUEMENT ──
   //   Le fallback Claude (ajouté A-P1-01 2026-06-05) drainait le crédit Anthropic
   //   à l'insu du propriétaire : dès qu'OpenAI renvoyait un 429 (rate-limit OU
-  //   quota épuisé — mappé `rate_limited` retryable dans openai.ts:63), TOUTE la
-  //   génération texte basculait sur claude-sonnet-4-6 (2× plus cher). Bilan
-  //   cost_ledger : 754 appels Claude = 51,75 $. Le fallback est donc RETIRÉ.
+  //   quota épuisé — les deux étaient alors mappés `rate_limited` retryable),
+  //   TOUTE la génération texte basculait sur claude-sonnet-4-6 (2× plus cher).
+  //   Bilan cost_ledger : 754 appels Claude = 51,75 $. Le fallback est donc RETIRÉ.
   //   Conséquence assumée : une panne/quota OpenAI fait ÉCHOUER le job (retry
   //   BullMQ attempts:3) plutôt que de dépenser sur Anthropic.
   //   ⚠️ NE PAS remettre `anthropicProvider` ici sans accord explicite de Will.
+  //
+  //   MISE À JOUR 2026-07-21 — le mauvais mapping décrit ci-dessus est CORRIGÉ :
+  //   `insufficient_quota` produit désormais `quota_exhausted` non-retryable
+  //   (cf. `openai.ts`). La confusion 429-quota/429-rate-limit n'existe donc plus.
+  //   Cela ne rouvre PAS la question du fallback : la décision de ne pas dépenser
+  //   sur Anthropic reste entière et indépendante de ce bug.
   text: [openaiProvider],
   image: [openaiProvider], // V1 = OpenAI image (V2 = gpt_image + fallback Unsplash)
   data: [perplexityProvider],
