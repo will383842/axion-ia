@@ -22,11 +22,14 @@
  * généré, et les tests n'ont pas à instancier une base.
  */
 
-import type { EmargementSignature as PrismaEmargementSignature } from "../../../../prisma/generated/client";
+import type {
+  EmargementSignature as PrismaEmargementSignature,
+  EmargementContresignature as PrismaEmargementContresignature,
+} from "../../../../prisma/generated/client";
+import type { LigneContresignature } from "./contresignature-hash";
 import {
   type MaillonChaine,
   type TupleSignatureV1,
-  HASH_VERSION_COURANTE,
   calculerSelfHash,
   versionRecalculable,
 } from "./hash";
@@ -174,9 +177,22 @@ export function maillonDepuisLigne(ligne: LigneSignature): MaillonChaine {
  * `prisma generate` tourne avant `tsc` en CI (Gate A), donc l'incohérence est
  * détectée à la compilation, pas en production.
  *
- * Exporté plutôt que gardé privé : le service de signature s'en sert pour
- * convertir une ligne Prisma en `LigneSignature`, ce qui fait du verrou un
- * passage obligé plutôt qu'une déclaration décorative.
+ * ⚠️ Un verrou n'a de valeur que s'il est TRAVERSÉ. Tout code qui convertit une
+ * ligne Prisma en `LigneSignature` doit passer par ici — un `as unknown as
+ * LigneSignature` le contourne et rend cette garantie décorative.
  */
 export type VerrouColonnes = (ligne: PrismaEmargementSignature) => LigneSignature;
 export const verrouColonnes: VerrouColonnes = (ligne) => ligne;
+
+/**
+ * Le même verrou, pour la chaîne des CONTRESIGNATURES formateur.
+ *
+ * Il manquait : `contresignature-hash.ts` annonçait la garantie sans qu'aucune
+ * ligne ne la porte. Elle coûte deux lignes et vaut le jour où quelqu'un
+ * renomme une colonne du snapshot — un renommage qui, sans elle, ne casserait
+ * rien avant le contrôle.
+ */
+export type VerrouColonnesContresignature = (
+  ligne: PrismaEmargementContresignature,
+) => LigneContresignature;
+export const verrouColonnesContresignature: VerrouColonnesContresignature = (ligne) => ligne;

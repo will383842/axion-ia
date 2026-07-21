@@ -8,13 +8,14 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { verifierChaine } from "./hash";
+import { verifierChaine, versionRecalculable } from "./hash";
 import {
   tupleContresignatureCanonique,
   calculerSelfHashContresignature,
   tupleContresignatureDepuisLigne,
   maillonContresignatureDepuisLigne,
   HASH_VERSION_CONTRESIGNATURE,
+  versionContresignatureRecalculable,
   type TupleContresignatureV1,
   type LigneContresignature,
 } from "./contresignature-hash";
@@ -79,12 +80,14 @@ describe("VECTEUR D'OR — la forme canonique est figée", () => {
   const CANONIQUE_ATTENDUE = `{"coachingId":null,"contexteType":"collectif","date":"2026-06-10","demiJournee":"matin","formateurNom":"Williams Jullin","formationIntitule":"Bien démarrer avec l'IA","heureDebut":"09:00","heureFin":"12:30","ipHash":"0123456789abcdef","mentionVersion":"v1","methode":"canvas","modules":["Module 1 — Fondamentaux"],"prevHash":null,"sessionId":"33333333-3333-4333-8333-333333333333","signatureSha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","signeAt":"2026-06-10T12:35:00.000Z","trainerId":"44444444-4444-4444-8444-444444444444","userAgentSha256":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","v":1}`;
   const HASH_ATTENDU = "c50cb07242a192f33382c246877d4e2c4db712fd55fb2f4dc3fd97451ab7497f";
 
-  it("produit EXACTEMENT cette chaîne canonique", () => {
-    expect(tupleContresignatureCanonique(tuple())).toBe(CANONIQUE_ATTENDUE);
+  // Version passée EXPLICITEMENT : cf. la même note dans `hash.spec.ts`. Un
+  // vecteur d'or qui suit la version courante ne fige plus rien.
+  it("produit EXACTEMENT cette chaîne canonique en version 1", () => {
+    expect(tupleContresignatureCanonique(tuple(), 1)).toBe(CANONIQUE_ATTENDUE);
   });
 
-  it("produit EXACTEMENT cette empreinte", () => {
-    expect(calculerSelfHashContresignature(tuple())).toBe(HASH_ATTENDU);
+  it("produit EXACTEMENT cette empreinte en version 1", () => {
+    expect(calculerSelfHashContresignature(tuple(), 1)).toBe(HASH_ATTENDU);
   });
 
   it("les clés sont triées par point de code, pas par locale", () => {
@@ -158,6 +161,20 @@ describe("tupleContresignatureDepuisLigne", () => {
     expect(tupleContresignatureDepuisLigne(ligne({ hashVersion: 99 }))).toBeNull();
   });
 
+  it("🔴 lit le jour civil en UTC, même sur un serveur à l'OUEST de Greenwich", () => {
+    // Même trou que côté signatures : formater en heure locale passait sous
+    // `TZ=UTC` et `TZ=Europe/Paris`, et datait de la VEILLE à New York.
+    const tzOriginal = process.env.TZ;
+    try {
+      process.env.TZ = "America/New_York";
+      const t = tupleContresignatureDepuisLigne(ligne({ date: new Date("2026-06-10T00:00:00Z") }));
+      expect(t?.date).toBe("2026-06-10");
+    } finally {
+      if (tzOriginal === undefined) delete process.env.TZ;
+      else process.env.TZ = tzOriginal;
+    }
+  });
+
   it("refuse un `modulesSnapshot` mal formé", () => {
     expect(tupleContresignatureDepuisLigne(ligne({ modulesSnapshot: { a: 1 } }))).toBeNull();
   });
@@ -202,10 +219,19 @@ describe("verifierChaine — réutilisée telle quelle pour les contresignatures
     expect(res.anomalies.map((a) => a.type)).toContain("rupture_chainage");
   });
 
-  it("ne confond pas une version de contresignature avec celle des signatures", () => {
-    // `versionAttendue` est propre à chaque chaîne : sans lui, la version 1 des
-    // contresignatures serait comparée à celle des signatures stagiaires.
+  it("refuse une version que SON registre ne connaît pas", () => {
     const res = verifierChaine([maillonContresignatureDepuisLigne(ligne({ hashVersion: 99 }))]);
     expect(res.anomalies.map((a) => a.type)).toContain("version_inconnue");
+  });
+
+  it("🔴 porte SON PROPRE prédicat de version, pas celui des signatures", () => {
+    // ⚠️ Une assertion sur `hashVersion: 99` ne prouve RIEN ici : 99 est inconnue
+    // des DEUX registres, donc le test passerait à l'identique avec le prédicat
+    // des signatures stagiaires. Les deux registres partageant aujourd'hui le
+    // numéro 1, seule l'identité du prédicat discrimine — et c'est elle qui
+    // protège le jour où l'une des deux formes évoluera sans l'autre.
+    const maillon = maillonContresignatureDepuisLigne(ligne());
+    expect(maillon.versionRecalculable).toBe(versionContresignatureRecalculable);
+    expect(maillon.versionRecalculable).not.toBe(versionRecalculable);
   });
 });

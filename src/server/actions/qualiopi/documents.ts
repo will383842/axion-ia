@@ -586,8 +586,6 @@ export async function genererEmargementAction(input: {
       titreSession: true,
       dateDebut: true,
       modalite: true,
-      coFormateurs: true,
-      formateurPrincipalId: true,
       enrollments: {
         where: { statut: { notIn: ["exclu", "abandon"] } },
         select: {
@@ -599,10 +597,11 @@ export async function genererEmargementAction(input: {
   if (!session) return { error: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
-  const formateurNom = await resolveFormateurNom(
-    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
-    identite.raisonSociale,
-  );
+  // ⚠️ Pas de `resolveFormateurNom` ici : le formateur est désormais porté
+  // JOURNÉE PAR JOURNÉE par `construireFeuillePdf` (désistement, co-animation).
+  // Un nom unique en tête de feuille contredirait le tableau qui suit, et
+  // CAA Nantes 20/04/2021 sanctionne précisément les feuilles dont le formateur
+  // annoncé ne correspond pas à celui qui a animé.
 
   const participants = session.enrollments.map((e) => ({
     nom: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),

@@ -58,12 +58,17 @@ describe("VECTEUR D'OR — la forme canonique est figée", () => {
   const CANONIQUE_ATTENDUE = `{"coachingId":null,"contexteType":"collectif","creneauId":"11111111-1111-4111-8111-111111111111","date":"2026-06-10","demiJournee":"matin","enrollmentId":"22222222-2222-4222-8222-222222222222","formateurNom":"Williams Jullin","formationIntitule":"Bien démarrer avec l'IA","heureDebut":"09:00","heureFin":"12:30","ipHash":"0123456789abcdef","mentionVersion":"v1","methode":"canvas","modules":["Module 1 — Fondamentaux","Module 2 — Prompts"],"prevHash":null,"signataireEmail":"alice@example.com","signataireNom":"Alice Dupont","signatureSha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","signeAt":"2026-06-10T10:15:30.123Z","userAgentSha256":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","v":1}`;
   const HASH_ATTENDU = "1a0ff9e7d1293de4c563d9218f2e884aa9e37c515081866d75a241eb207dcaf5";
 
-  it("produit EXACTEMENT cette chaîne canonique", () => {
-    expect(tupleCanonique(tuple())).toBe(CANONIQUE_ATTENDUE);
+  // ⚠️ La version est passée EXPLICITEMENT (`1`), jamais laissée par défaut.
+  // Sans cela, le jour où `HASH_VERSION_COURANTE` passe à 2, ces deux tests
+  // échouent — et le réflexe naturel est de mettre à jour les littéraux, c'est-
+  // à-dire de perdre le contrat de la v1 exactement quand il devient précieux :
+  // c'est lui qui permet de revérifier les empreintes déjà en base.
+  it("produit EXACTEMENT cette chaîne canonique en version 1", () => {
+    expect(tupleCanonique(tuple(), 1)).toBe(CANONIQUE_ATTENDUE);
   });
 
-  it("produit EXACTEMENT cette empreinte", () => {
-    expect(calculerSelfHash(tuple())).toBe(HASH_ATTENDU);
+  it("produit EXACTEMENT cette empreinte en version 1", () => {
+    expect(calculerSelfHash(tuple(), 1)).toBe(HASH_ATTENDU);
   });
 
   it("les clés sont triées par point de code, pas par locale", () => {

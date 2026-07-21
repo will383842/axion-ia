@@ -255,4 +255,22 @@ describe("invariant « date à minuit UTC »", () => {
   it("accepte minuit UTC pile", () => {
     expect(tupleDepuisLigne(ligne({ date: new Date("2026-06-10T00:00:00.000Z") }))).not.toBeNull();
   });
+
+  it("🔴 lit le jour civil en UTC, même sur un serveur à l'OUEST de Greenwich", () => {
+    // ⚠️ Ce test manquait, et le trou était invisible : minuit UTC tombe le même
+    // jour civil partout à l'est de Greenwich, donc formater en heure LOCALE
+    // passait sous `TZ=UTC` (la CI) comme sous `TZ=Europe/Paris`. Un serveur à
+    // New York aurait daté toutes les signatures de la VEILLE — et un jour de
+    // décalage dans un tuple haché est une empreinte définitivement fausse, sur
+    // une table conservée 5 ans.
+    const tzOriginal = process.env.TZ;
+    try {
+      process.env.TZ = "America/New_York";
+      const t = tupleDepuisLigne(ligne({ date: new Date("2026-06-10T00:00:00.000Z") }));
+      expect(t?.date).toBe("2026-06-10");
+    } finally {
+      if (tzOriginal === undefined) delete process.env.TZ;
+      else process.env.TZ = tzOriginal;
+    }
+  });
 });

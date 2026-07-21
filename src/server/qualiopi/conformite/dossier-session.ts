@@ -29,10 +29,7 @@ import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
-import {
-  maillonDepuisLigne,
-  type LigneSignature,
-} from "@/server/qualiopi/emargement/reconstruction";
+import { maillonDepuisLigne, verrouColonnes } from "@/server/qualiopi/emargement/reconstruction";
 import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
 
 export interface DossierSessionResult {
@@ -98,10 +95,11 @@ export async function genererDossierSessionZip(
   let nbChainesAnormales = 0;
 
   for (const inscription of session.enrollments) {
+    // ⚠️ `verrouColonnes` plutôt qu'un `as unknown as` : la conversion est
+    // vérifiée à la compilation, donc retirer une colonne du snapshot casse le
+    // build au lieu de produire ici, silencieusement, un rapport d'intégrité faux.
     const res = verifierChaine(
-      inscription.emargementSignatures.map((s) =>
-        maillonDepuisLigne(s as unknown as LigneSignature),
-      ),
+      inscription.emargementSignatures.map((s) => maillonDepuisLigne(verrouColonnes(s))),
     );
     if (!res.valide) nbChainesAnormales += 1;
 

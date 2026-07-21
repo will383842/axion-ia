@@ -126,8 +126,11 @@ export function calculerSelfHashContresignature(
 /**
  * Miroir des colonnes scalaires d'`emargement_contresignatures`.
  *
- * Volontairement structurel : si une colonne disparaissait du schéma, l'appelant
- * qui remplit cette interface cesserait de compiler.
+ * Volontairement structurel. Le verrou qui rend ce miroir contraignant vit dans
+ * `reconstruction.ts` (`verrouColonnesContresignature`) : ce module-ci reste
+ * pur, et c'est là-bas que la confrontation au type Prisma a lieu. Sans ce
+ * verrou, retirer une colonne du schéma laisserait passer `tsc` et l'on
+ * découvrirait à l'audit que la chaîne n'est plus vérifiable.
  */
 export interface LigneContresignature {
   id: string;
