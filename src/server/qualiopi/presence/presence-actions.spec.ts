@@ -591,16 +591,30 @@ describe("importReleveConnexionAction", () => {
       content: CSV_CONTENT,
     });
 
-    expect(mockUpsertCreneau).toHaveBeenCalledTimes(2);
+    // 2 inscrits × 2 demi-journées : le distanciel pose désormais un créneau par
+    // demi-journée, comme le présentiel. Une feuille signée une seule fois par
+    // jour est précisément ce que CAA Nantes 14/06/2022 juge insuffisamment
+    // probant.
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(4);
     const dates = mockUpsertCreneau.mock.calls.map((c) =>
       (c[0] as { date: Date }).date.toISOString().slice(0, 10),
     );
     // Deux jours DISTINCTS : c'est l'assertion qui tombe si l'on repose tout sur dateDebut.
     expect(new Set(dates)).toEqual(new Set(["2026-06-10", "2026-06-11"]));
 
-    // Durée prévue = UNE journée (2 demi-journées), pas la session entière.
-    const premier = mockCall<{ dureePrevueMinutes: number }>(mockUpsertCreneau);
-    expect(premier.dureePrevueMinutes).toBe(420);
+    // Durée prévue = celle de la DEMI-JOURNÉE, plus de la journée entière.
+    const premier = mockCall<{ dureePrevueMinutes: number; demiJournee: string }>(
+      mockUpsertCreneau,
+    );
+    expect(premier.dureePrevueMinutes).toBe(210);
+    expect(premier.demiJournee).toBe("matin");
+
+    // ⭐ L'invariant qui protège le taux : la somme des durées prévues d'un jour
+    // vaut la journée entière, pas le double.
+    const jour10 = mockUpsertCreneau.mock.calls
+      .map((c) => c[0] as { date: Date; dureePrevueMinutes: number })
+      .filter((a) => a.date.toISOString().startsWith("2026-06-10"));
+    expect(jour10.reduce((s, a) => s + a.dureePrevueMinutes, 0)).toBe(420);
   });
 
   it("crée un ReleveConnexionImport avec les bons champs", async () => {
@@ -654,15 +668,18 @@ describe("importReleveConnexionAction", () => {
     // les absents du DÉNOMINATEUR du taux. Un stagiaire venu 1 jour sur 2
     // obtenait 100 % au lieu de 50 %, donc une attestation COMPLÈTE au lieu de
     // partielle. Surévaluer la présence est bien plus grave que la sous-évaluer.
-    expect(mockUpsertCreneau).toHaveBeenCalledTimes(2);
+    // 2 inscrits × 2 demi-journées (le distanciel est aligné sur le présentiel).
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(4);
 
     const calls = mockUpsertCreneau.mock.calls.map(
       (c) => c[0] as { enrollmentId: string; dureeRealiseeMinutes: number; source: string },
     );
-    const present = calls.find((c) => c.enrollmentId === "enroll-1");
+    const totalPar = (id: string) =>
+      calls.filter((c) => c.enrollmentId === id).reduce((s, c) => s + c.dureeRealiseeMinutes, 0);
     const absent = calls.find((c) => c.enrollmentId === "enroll-2");
 
-    expect(present?.dureeRealiseeMinutes).toBeGreaterThan(0);
+    expect(totalPar("enroll-1")).toBeGreaterThan(0);
+    expect(totalPar("enroll-2")).toBe(0);
     // L'absent est bien présent au dénominateur, à zéro minute réalisée.
     expect(absent?.dureeRealiseeMinutes).toBe(0);
 
@@ -671,7 +688,12 @@ describe("importReleveConnexionAction", () => {
       source: string;
       importId: string;
     }>(mockUpsertCreneau);
-    expect(upsertCall.demiJournee).toBe("journee");
+    // ⭐ Le grain distanciel est désormais celui du présentiel : matin /
+    // après-midi, jamais une case « journée » unique.
+    expect(upsertCall.demiJournee).toBe("matin");
+    expect(
+      mockUpsertCreneau.mock.calls.map((c) => (c[0] as { demiJournee: string }).demiJournee),
+    ).not.toContain("journee");
     expect(upsertCall.source).toBe("import_zoom");
     expect(upsertCall.importId).toBe("import-new-id");
   });
@@ -914,9 +936,15 @@ describe("importReleveConnexionAction", () => {
       content: CSV_CONTENT,
     });
 
-    // Le participant se connecte le 2026-06-10 → 300 + 180 = 480.
-    const premier = mockCall<{ dureePrevueMinutes: number }>(mockUpsertCreneau);
-    expect(premier.dureePrevueMinutes).toBe(480);
+    // Le participant se connecte le 2026-06-10 : ses deux demi-journées valent
+    // 300 + 180 = 480 min au total, réparties sur DEUX créneaux — plus un seul
+    // créneau « journée » de 480.
+    const duJour = mockUpsertCreneau.mock.calls
+      .map((c) => c[0] as { date: Date; dureePrevueMinutes: number })
+      .filter((a) => a.date.toISOString().startsWith("2026-06-10"));
+    expect(duJour).toHaveLength(4); // 2 inscrits × 2 demi-journées
+    const parInscrit = duJour.reduce((s, a) => s + a.dureePrevueMinutes, 0) / 2;
+    expect(parInscrit).toBe(480);
   });
 
   it("🔴 REFUSE l'import sur une session étalée sans journées déclarées", async () => {

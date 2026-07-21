@@ -29,7 +29,15 @@ import {
 } from "@/server/qualiopi/presence/creneaux";
 import { parseReleveConnexion } from "@/server/qualiopi/presence/parse-releve";
 import { matchParticipants } from "@/server/qualiopi/presence/match";
-import { parisDateISO, formatMinutesToHHhMM } from "@/server/qualiopi/presence/time";
+import {
+  parisDateISO,
+  formatMinutesToHHhMM,
+  parisMinutesDuJour,
+} from "@/server/qualiopi/presence/time";
+import {
+  repartirMinutesConnexion,
+  fenetreDemiJournee,
+} from "@/server/qualiopi/presence/repartition-distanciel";
 import { upsertCreneau, recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
 import { storeAndSignCsv } from "@/server/qualiopi/documents/render";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -553,15 +561,16 @@ export async function importReleveConnexionAction(input: {
   // le stagiaire assidu sortait à 100 % ; avec le `× 2` il tombait à 50 % et
   // perdait son attestation — PARCE QUE l'organisme avait correctement saisi ses
   // journées. Déclarer la vérité rendait le résultat faux.
-  const minutesParJour = new Map<string, number>();
+  const creneauxParJour = new Map<string, typeof creneauxSession>();
   for (const c of creneauxSession) {
-    minutesParJour.set(c.date, (minutesParJour.get(c.date) ?? 0) + c.dureePrevueMinutes);
+    const liste = creneauxParJour.get(c.date);
+    if (liste === undefined) creneauxParJour.set(c.date, [c]);
+    else liste.push(c);
   }
   // Journée de repli : la première du plan. Elle remplace l'ancien bornage sur
   // `dateDebut..dateFin`, plus faible — une connexion un samedi non planifié
   // créait un créneau sur un jour sans durée prévue, gonflant le dénominateur.
   const premierJourPlan = creneauxSession[0]?.date ?? parisDateISO(trainingSession.dateDebut);
-  const DUREE_JOURNEE_DEFAUT_MINUTES = 7 * 60;
 
   // 7. Création des créneaux distanciels.
   //
@@ -594,26 +603,61 @@ export async function importReleveConnexionAction(input: {
     // La date doit être une journée RÉELLEMENT PLANIFIÉE : sinon le créneau créé
     // n'a pas de durée prévue de référence et fausse le dénominateur.
     const isoBrut = parisDateISO(participant?.joinAt ?? trainingSession.dateDebut);
-    const dateCivile = minutesParJour.has(isoBrut) ? isoBrut : premierJourPlan;
+    const dateCivile = creneauxParJour.has(isoBrut) ? isoBrut : premierJourPlan;
     const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
+    const creneauxDuJour = creneauxParJour.get(dateCivile) ?? [];
 
-    const dureePrevueMinutes = minutesParJour.get(dateCivile) ?? DUREE_JOURNEE_DEFAUT_MINUTES;
-    const realiseeBrut = participant?.dureeMinutes ?? 0;
-    const dureeRealiseeMinutes = Math.min(realiseeBrut, dureePrevueMinutes);
+    // 🔴 (c) UN CRÉNEAU PAR DEMI-JOURNÉE, comme en présentiel.
+    //
+    // On posait ici un unique créneau « journée ». Deux conséquences : sur une
+    // session hybride la même journée portait matin + après-midi + journée, soit
+    // 14 h attendues pour 7 h réelles et un stagiaire assidu à 50 % ; et surtout
+    // la feuille n'était signée qu'UNE fois par jour — exactement la forme que
+    // CAA Nantes 14/06/2022 juge « insuffisamment probante », avec redressement
+    // au prorata. Aligner le grain traite la cause, pas le symptôme.
+    const cibles = creneauxDuJour.map((c) => ({
+      demiJournee: c.demiJournee,
+      dureePrevueMinutes: c.dureePrevueMinutes,
+      ...(c.jourHeureDebut !== undefined && c.jourHeureFin !== undefined
+        ? fenetreDemiJournee(c.jourHeureDebut, c.jourHeureFin, c.demiJournee)
+        : { debutMin: 0, finMin: 0 }),
+    }));
 
-    await upsertCreneau({
-      enrollmentId: enrollment.id,
-      date: dateObj,
-      demiJournee: "journee",
-      libelle: `${dateCivile} journée`,
-      dureePrevueMinutes,
-      source: toPresenceSource(v.plateforme),
-      present: false, // sera mis à jour par recomputeTauxPresence
-      dureeRealiseeMinutes,
-      ...(participant?.joinAt != null ? { heureConnexion: participant.joinAt } : {}),
-      ...(participant?.leaveAt != null ? { heureDeconnexion: participant.leaveAt } : {}),
-      importId: releveImport.id,
+    // Sans horaires déclarés, la fenêtre de chaque demi-journée est inconnue :
+    // on n'invente pas de bornes, on répartit au prorata du prévu.
+    const horairesConnus = creneauxDuJour.every((c) => c.jourHeureDebut !== undefined);
+    const joinMin =
+      horairesConnus && participant?.joinAt != null ? parisMinutesDuJour(participant.joinAt) : null;
+    const leaveMin =
+      horairesConnus && participant?.leaveAt != null
+        ? parisMinutesDuJour(participant.leaveAt)
+        : null;
+
+    const parts = repartirMinutesConnexion({
+      creneaux: cibles,
+      dureeMinutes: participant?.dureeMinutes ?? 0,
+      joinMin,
+      leaveMin,
     });
+
+    for (const [index, creneau] of creneauxDuJour.entries()) {
+      await upsertCreneau({
+        enrollmentId: enrollment.id,
+        date: dateObj,
+        demiJournee: toDemiJourneeEnum(creneau.demiJournee),
+        libelle: creneau.libelle,
+        dureePrevueMinutes: creneau.dureePrevueMinutes,
+        source: toPresenceSource(v.plateforme),
+        present: false, // sera mis à jour par recomputeTauxPresence
+        dureeRealiseeMinutes: parts[index] ?? 0,
+        // Horodatages bruts du relevé, portés sur chaque demi-journée du jour :
+        // c'est l'enveloppe de connexion de la journée, la seule que le relevé
+        // fournisse. Les répartir serait inventer une donnée.
+        ...(participant?.joinAt != null ? { heureConnexion: participant.joinAt } : {}),
+        ...(participant?.leaveAt != null ? { heureDeconnexion: participant.leaveAt } : {}),
+        importId: releveImport.id,
+      });
+    }
     enrollmentIdsTouches.add(enrollment.id);
   }
 
