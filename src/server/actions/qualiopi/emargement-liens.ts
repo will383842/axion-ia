@@ -24,6 +24,7 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { qrDataUrl } from "@/server/qualiopi/documents/qr";
+import { z } from "zod";
 import {
   creerTokenInscription,
   revoquerTokensInscription,
@@ -42,6 +43,18 @@ export interface LienEmargement {
 }
 
 /**
+ * Validation d'entrée — alignée sur les 42 autres actions Qualiopi, qui la font
+ * toutes. Un `sessionId` non validé finit tel quel dans un `where` Prisma.
+ */
+const sessionIdSchema = z.object({ sessionId: z.string().uuid() });
+
+/** Le motif est repris dans `revokedMotif` : il est borné, jamais libre à l'infini. */
+const revoquerSchema = z.object({
+  sessionId: z.string().uuid(),
+  motif: z.string().min(1).max(500),
+});
+
+/**
  * Émet un lien de signature pour CHAQUE inscrit actif d'une session.
  *
  * Idempotent au sens utile : réémettre remplace les liens précédents, dans la
@@ -56,6 +69,9 @@ export async function emettreLiensSessionAction(input: {
   sessionId: string;
 }): Promise<ActionResult<{ liens: LienEmargement[]; erreurPartielle: string | null }>> {
   const session = await requireAdminWrite();
+
+  const parse = sessionIdSchema.safeParse(input);
+  if (!parse.success) return { error: "Données invalides" };
 
   const formation = await prisma.trainingSession.findUnique({
     where: { id: input.sessionId },
@@ -145,6 +161,9 @@ export async function revoquerLiensSessionAction(input: {
   motif: string;
 }): Promise<ActionResult<{ revoques: number }>> {
   const session = await requireAdminWrite();
+
+  const parse = revoquerSchema.safeParse(input);
+  if (!parse.success) return { error: "Données invalides" };
 
   const inscriptions = await prisma.enrollment.findMany({
     where: { sessionId: input.sessionId },

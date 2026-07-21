@@ -30,12 +30,29 @@ import { requireFormateurAction } from "@/server/formateur/guard";
 import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
 import { signerCreneau, type RefusSignature } from "@/server/qualiopi/emargement/signature-service";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
+import { z } from "zod";
 
 export type RefusFormateur = RefusSignature | "non_membre" | "stockage";
 
 export type ResultatSignatureFormateur =
   | { ok: true; signatureId: string }
   | { ok: false; raison: RefusFormateur; message: string };
+
+/**
+ * ⚠️ Le formateur est authentifié, mais ses arguments ne le sont pas.
+ *
+ * `methode` entre dans le tuple HACHÉ : une valeur hors énumération y serait
+ * scellée définitivement. `papier_scanne` est admis ICI et nulle part ailleurs —
+ * c'est le mode dégradé de la décision D11, et il n'a de sens que sur un poste
+ * tenu par le formateur.
+ */
+const signerPourStagiaireSchema = z.object({
+  sessionId: z.string().uuid(),
+  creneauId: z.string().uuid(),
+  methode: z.enum(["canvas", "confirmation_accessible", "papier_scanne"]),
+  imageDataUrl: z.string().max(3_000_000).optional(),
+  nomConfirme: z.string().max(200).optional(),
+});
 
 /**
  * Fait signer un stagiaire sur le poste du formateur.
@@ -54,8 +71,18 @@ export async function signerPourStagiaireAction(input: {
 }): Promise<ResultatSignatureFormateur> {
   const formateur = await requireFormateurAction();
 
+  const parse = signerPourStagiaireSchema.safeParse(input);
+  if (!parse.success) {
+    return {
+      ok: false,
+      raison: "creneau_introuvable",
+      message: "Cette demande n'est pas valide. Rechargez la page.",
+    };
+  }
+  const donnees = parse.data;
+
   const session = await prisma.trainingSession.findUnique({
-    where: { id: input.sessionId },
+    where: { id: donnees.sessionId },
     select: {
       formateurPrincipalId: true,
       sessionFormateurs: {
@@ -77,7 +104,7 @@ export async function signerPourStagiaireAction(input: {
   if (!appartenance.estMembre) {
     Sentry.captureException(new Error("Signature tentée sur une session non animée"), {
       tags: { action: "signerPourStagiaireAction:non_membre" },
-      extra: { sessionId: input.sessionId },
+      extra: { sessionId: donnees.sessionId },
     });
     return {
       ok: false,

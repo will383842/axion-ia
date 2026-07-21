@@ -23,6 +23,7 @@
 "use server";
 
 import { createHash } from "node:crypto";
+import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -65,6 +66,32 @@ function sha256Hex(v: string): string {
 }
 
 /**
+ * 🔴 Validation d'entrée — c'est la SEULE action non authentifiée du domaine, et
+ * elle était la seule des 45 actions Qualiopi à ne pas valider ses arguments.
+ *
+ * Les types TypeScript ne sont pas une garde : ils disparaissent à la
+ * compilation. Un appel forgé pouvait donc poser `methode: "papier_scanne"`
+ * depuis le portail public — et `methode` entre dans le tuple HACHÉ. La pièce
+ * était alors scellée sur un fait faux, « photo de feuille papier » pour une
+ * signature au doigt, et définitivement : son empreinte la déclarerait intacte.
+ *
+ * Le plafond de taille est ici, avant tout décodage. `decoderDataUrl` en pose un
+ * aussi, mais après que Next a bufferisé jusqu'à 10 Mo (`bodySizeLimit`) : la
+ * mémoire est déjà consommée à ce stade.
+ */
+const signerDepuisPortailSchema = z.object({
+  token: z.string().min(1).max(2048),
+  creneauId: z.string().uuid(),
+  // Volontairement limité à ce que la page publique sait produire. Les autres
+  // modalités (`papier_scanne`, recueil sur le poste du formateur) passent par
+  // des chemins authentifiés, et c'est leur seule garantie d'être vraies.
+  methode: z.enum(["canvas", "confirmation_accessible"]),
+  // 2 Mio en base64 ≈ 2,8 Mo de chaîne. Au-delà, ce n'est plus une signature.
+  imageDataUrl: z.string().max(3_000_000).optional(),
+  nomConfirme: z.string().max(200).optional(),
+});
+
+/**
  * Signe une demi-journée depuis la page publique.
  *
  * @param token       Jeton en clair, tel qu'il figure dans l'URL.
@@ -78,7 +105,18 @@ export async function signerDepuisPortailAction(input: {
   imageDataUrl?: string;
   nomConfirme?: string;
 }): Promise<ResultatSignaturePublique> {
-  const tokenHash = sha256Hex(input.token);
+  const parse = signerDepuisPortailSchema.safeParse(input);
+  if (!parse.success) {
+    // Message unique et neutre : détailler ce qui ne va pas renseignerait un
+    // appelant forgé sur la forme attendue.
+    return {
+      ok: false,
+      raison: "lien_invalide",
+      message: "Cette demande n'est pas valide. Rouvrez le lien reçu par courriel.",
+    };
+  }
+  const donnees = parse.data;
+  const tokenHash = sha256Hex(donnees.token);
 
   // ── 1. Rate-limit, AVANT tout travail coûteux ──
   const parJeton = await checkRateLimit(`emargement:sig:${tokenHash}`, LIMITE_PAR_JETON);
@@ -108,7 +146,7 @@ export async function signerDepuisPortailAction(input: {
   }
 
   // ── 2. Jeton ──
-  const verif = await verifierToken(input.token);
+  const verif = await verifierToken(donnees.token);
   if (!verif.ok || verif.enrollmentId === null) {
     // Message unique : distinguer « expiré » de « révoqué » est utile au
     // stagiaire sur la PAGE (où le motif est déjà connu), pas ici, où l'appel
@@ -123,15 +161,15 @@ export async function signerDepuisPortailAction(input: {
   // ── 3. Signature ──
   try {
     const res = await signerCreneau({
-      creneauId: input.creneauId,
+      creneauId: donnees.creneauId,
       porteur: {
         type: "stagiaire",
         enrollmentId: verif.enrollmentId,
         tokenId: verif.tokenId,
       },
-      methode: input.methode,
-      imageDataUrl: input.imageDataUrl,
-      nomConfirme: input.nomConfirme,
+      methode: donnees.methode,
+      imageDataUrl: donnees.imageDataUrl,
+      nomConfirme: donnees.nomConfirme,
       ipHash,
       // Le user-agent est HACHÉ : ne jamais figer une donnée personnelle en
       // clair dans une empreinte immuable qu'un effacement ne pourrait plus
