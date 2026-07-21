@@ -655,6 +655,11 @@ export async function genererEmargementAction(input: {
       ancrage:
         l.empreinteTete === null ? "—" : `${l.nbSignatures} · ${l.empreinteTete.slice(0, 10)}`,
     })),
+    // Une ligne par demi-journée contresignée : « Matin — Williams Jullin,
+    // signé 12h05 ». Le nom du formateur figuré est celui qui a CONTRESIGNÉ.
+    contresignatures: j.contresignatures.map(
+      (c) => `${LIBELLE_DEMI[c.demiJournee]} — ${c.formateurNom}, signé ${c.signeAHeure}`,
+    ),
   }));
 
   const doc = await generateDocument({

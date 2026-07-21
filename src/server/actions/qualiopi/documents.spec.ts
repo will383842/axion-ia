@@ -408,6 +408,7 @@ describe("genererEmargementAction", () => {
           emargementSignatures: [],
         },
       ],
+      emargementContresignatures: [],
       ...overrides,
     });
   }

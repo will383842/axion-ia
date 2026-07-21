@@ -63,6 +63,7 @@ function sessionAvecSignature(signeAt: Date | null) {
               ],
       },
     ],
+    emargementContresignatures: [],
   };
 }
 

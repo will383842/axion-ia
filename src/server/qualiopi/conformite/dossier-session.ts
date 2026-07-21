@@ -29,7 +29,12 @@ import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
-import { maillonDepuisLigne, verrouColonnes } from "@/server/qualiopi/emargement/reconstruction";
+import {
+  maillonDepuisLigne,
+  verrouColonnes,
+  verrouColonnesContresignature,
+} from "@/server/qualiopi/emargement/reconstruction";
+import { maillonContresignatureDepuisLigne } from "@/server/qualiopi/emargement/contresignature-hash";
 import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
 
 export interface DossierSessionResult {
@@ -81,6 +86,12 @@ export async function genererDossierSessionZip(
           },
         },
       },
+      // Contresignatures du formateur — leur chaîne (portée session × formateur)
+      // se vérifie comme celle des stagiaires. Même ordre d'insertion.
+      emargementContresignatures: {
+        where: { revokedAt: null },
+        orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+      },
     },
   });
 
@@ -115,13 +126,50 @@ export async function genererDossierSessionZip(
     });
   }
 
-  zip.file("verification-integrite.json", JSON.stringify(rapports, null, 2));
+  // Chaînes de CONTRESIGNATURES, une par formateur (portée session × formateur).
+  // Sans cette vérification, la machinerie anti-fork des contresignatures serait
+  // écrite mais jamais contrôlée à l'audit — un registre dont personne ne lit le
+  // sceau.
+  const parFormateur = new Map<string, typeof session.emargementContresignatures>();
+  for (const c of session.emargementContresignatures) {
+    const lot = parFormateur.get(c.trainerId) ?? [];
+    lot.push(c);
+    parFormateur.set(c.trainerId, lot);
+  }
+  const rapportsContresignatures: Array<Record<string, unknown>> = [];
+  let nbChainesContresignAnormales = 0;
+  for (const [trainerId, lignes] of parFormateur) {
+    const res = verifierChaine(
+      lignes.map((c) => maillonContresignatureDepuisLigne(verrouColonnesContresignature(c))),
+    );
+    if (!res.valide) nbChainesContresignAnormales += 1;
+    rapportsContresignatures.push({
+      formateur: lignes[0]?.formateurNom ?? trainerId,
+      nbContresignatures: lignes.length,
+      empreinteTete: lignes[lignes.length - 1]?.selfHash ?? null,
+      integrite: res.valide ? "OK" : "ANOMALIE",
+      anomalies: res.anomalies,
+    });
+  }
+
+  zip.file(
+    "verification-integrite.json",
+    JSON.stringify({ signatures: rapports, contresignatures: rapportsContresignatures }, null, 2),
+  );
   index.push(
     `Intégrité des chaînes de signatures : ${session.enrollments.length - nbChainesAnormales}/${session.enrollments.length} conformes.`,
+  );
+  index.push(
+    `Intégrité des chaînes de contresignatures : ${parFormateur.size - nbChainesContresignAnormales}/${parFormateur.size} conformes.`,
   );
   if (nbChainesAnormales > 0) {
     avertissements.push(
       `⚠️ ${nbChainesAnormales} chaîne(s) de signatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
+    );
+  }
+  if (nbChainesContresignAnormales > 0) {
+    avertissements.push(
+      `⚠️ ${nbChainesContresignAnormales} chaîne(s) de contresignatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
     );
   }
 

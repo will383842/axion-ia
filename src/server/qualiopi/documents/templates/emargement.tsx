@@ -69,6 +69,13 @@ export interface EmargementJournee {
     /** Ancrage de chaîne — voir `feuille-pdf.ts`. */
     ancrage: string;
   }>;
+  /**
+   * Contresignatures du formateur pour la journée, une ligne lisible par
+   * demi-journée contresignée. Exigence « stagiaire ET formateur »
+   * (CAA Nantes 20/04/2021). Vide = journée non contresignée, affichée comme
+   * telle plutôt que masquée.
+   */
+  contresignatures: string[];
 }
 
 export interface EmargementData {
@@ -165,6 +172,20 @@ export function EmargementPdf({
               emptyRows={lignesVides}
               minRowHeight={32}
             />
+            {/* Signature du formateur, exigée EN PLUS de celle des stagiaires
+                (CAA Nantes 20/04/2021). Absence dite explicitement : une feuille
+                dont le formateur n'a pas signé est insuffisamment probante. */}
+            {journee.contresignatures.length > 0 ? (
+              journee.contresignatures.map((c) => (
+                <FieldRow key={c} label="Contresignature formateur" value={c} />
+              ))
+            ) : (
+              <FieldRow
+                label="Contresignature formateur"
+                value="Non contresignée par le formateur — feuille incomplète."
+                required
+              />
+            )}
           </DocSection>
         ))}
 
@@ -175,13 +196,16 @@ export function EmargementPdf({
           </Text>
         </View>
 
-        {/* Zone de signatures */}
+        {/* Zone de signatures. La signature du formateur est portée PAR JOURNÉE
+            ci-dessus (contresignature électronique, horodatée). Cet encadré
+            recueille le visa du responsable pédagogique et sert de repli manuel
+            si une journée n'a pas pu être contresignée électroniquement. */}
         <SignatureZone
           parties={[
             {
-              titre: "Signature du formateur / de la formatrice",
+              titre: "Contresignature du formateur / de la formatrice",
               nom: `Nom : ${data.journees[0]?.formateurNom ?? ""}`,
-              mention: "Date :",
+              mention: "Contresignée par journée ci-dessus, ou à défaut ici — Date :",
             },
             {
               titre: "Visa du responsable pédagogique",

@@ -117,6 +117,11 @@ describe("EmargementPdf", () => {
               ancrage: "1 · f6e5d4c3b2",
             },
           ],
+          // Journée contresignée matin ET après-midi par le formateur.
+          contresignatures: [
+            "Matin — Sophie Martin, signé 13h05",
+            "Après-midi — Sophie Martin, signé 17h10",
+          ],
         },
         {
           dateLisible: "jeudi 11 juin 2026",
@@ -132,6 +137,8 @@ describe("EmargementPdf", () => {
               ancrage: "3 · 9988776655",
             },
           ],
+          // Journée NON contresignée : la feuille doit le dire, pas le masquer.
+          contresignatures: [],
         },
       ],
       totalSignatures: 3,

@@ -38,6 +38,15 @@ export interface DemiJourneeGroupe {
   formateurNom: string;
   commencee: boolean;
   /**
+   * Le formateur CONNECTÉ a-t-il déjà contresigné cette demi-journée ?
+   *
+   * La contresignature est la signature du formateur exigée EN PLUS de celle du
+   * stagiaire (CAA Nantes 20/04/2021) : sans elle, la feuille est insuffisamment
+   * probante. Propre à chaque formateur — en co-animation, chacun contresigne la
+   * sienne.
+   */
+  contresigneeParMoi: boolean;
+  /**
    * Texte présenté au signataire pour CETTE demi-journée.
    *
    * 🔴 L'écran formateur n'en affichait aucune, alors que la base enregistre
@@ -75,6 +84,8 @@ export async function lireFeuilleGroupe(
   sessionId: string,
   maintenant: Date,
   organisme: string,
+  /** Formateur connecté : sert à savoir quelles demi-journées LUI reste à contresigner. */
+  trainerId: string,
 ): Promise<DemiJourneeGroupe[] | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
 
@@ -92,6 +103,12 @@ export async function lireFeuilleGroupe(
           trainer: { select: { nom: true, prenom: true } },
         },
         orderBy: { date: "asc" },
+      },
+      // Contresignatures DÉJÀ posées par CE formateur — pour afficher « contresigné »
+      // plutôt qu'un bouton qui échouerait sur l'index unique.
+      emargementContresignatures: {
+        where: { trainerId, revokedAt: null },
+        select: { date: true, demiJournee: true },
       },
       enrollments: {
         // Un stagiaire EFFACÉ (droit à l'effacement) disparaît ; un abandon
@@ -118,6 +135,10 @@ export async function lireFeuilleGroupe(
   if (session === null) return null;
 
   const parJour = new Map(session.jours.map((j) => [parisDateISO(j.date), j] as const));
+  // Ensemble des `date|demi-journée` que ce formateur a déjà contresignées.
+  const contresigneesParMoi = new Set(
+    session.emargementContresignatures.map((c) => `${parisDateISO(c.date)}|${c.demiJournee}`),
+  );
 
   // Regroupement par (date, demi-journée) : c'est le grain auquel on travaille
   // en salle, pas le grain « un stagiaire, toutes ses dates ».
@@ -153,6 +174,7 @@ export async function lireFeuilleGroupe(
             },
             maintenant,
           ),
+          contresigneeParMoi: contresigneesParMoi.has(cle),
           mentions: mentionComplete({
             formationIntitule: session.titreSession,
             jourLisible: jourLisible(iso),

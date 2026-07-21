@@ -119,6 +119,7 @@ function session(over: Record<string, unknown> = {}) {
         emargementSignatures: chaineSaine(),
       },
     ],
+    emargementContresignatures: [],
     ...over,
   };
 }
@@ -163,7 +164,7 @@ describe("genererDossierSessionZip", () => {
     expect(res?.avertissements).toEqual([]);
 
     const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
-    expect(JSON.parse(rapport!)[0]).toMatchObject({ integrite: "OK", nbSignatures: 2 });
+    expect(JSON.parse(rapport!).signatures[0]).toMatchObject({ integrite: "OK", nbSignatures: 2 });
   });
 
   it("🔴 DÉTECTE une signature modifiée après coup", async () => {
@@ -190,7 +191,7 @@ describe("genererDossierSessionZip", () => {
     // dont les empreintes ne concordent pas ne doit pas avoir l'air normal.
     expect(res?.avertissements.join(" ")).toContain("intégrité");
     const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
-    expect(JSON.parse(rapport!)[0].integrite).toBe("ANOMALIE");
+    expect(JSON.parse(rapport!).signatures[0].integrite).toBe("ANOMALIE");
   });
 
   it("🔴 DÉTECTE la suppression d'un maillon du milieu", async () => {

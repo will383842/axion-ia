@@ -16,7 +16,10 @@ import Link from "next/link";
 import { requireFormateur } from "@/server/formateur/guard";
 import { lireFeuilleGroupe } from "@/server/qualiopi/emargement/feuille-groupe";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { signerPourStagiaireAction } from "@/server/actions/qualiopi/emargement-formateur";
+import {
+  signerPourStagiaireAction,
+  contresignerDemiJourneeAction,
+} from "@/server/actions/qualiopi/emargement-formateur";
 import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
 import {
@@ -55,7 +58,7 @@ export default async function Page({
   // pourraient tomber de part et d'autre d'une bascule de demi-journée et
   // afficher un état incohérent.
   const identite = await getOrganismeIdentite();
-  const demiJournees = await lireFeuilleGroupe(id, new Date(), identite.raisonSociale);
+  const demiJournees = await lireFeuilleGroupe(id, new Date(), identite.raisonSociale, trainerId);
 
   const lieu = [session.lieuVille, session.lieuCodePostal]
     .filter((v): v is string => Boolean(v))
@@ -223,7 +226,9 @@ export default async function Page({
         <h2 className="text-espresso font-serif text-xl">Émargement</h2>
         <p className="text-mocha text-sm">
           Faites signer un stagiaire qui n&apos;a pas pu utiliser son lien personnel. Vous attestez
-          alors de son identité : votre nom sera enregistré avec la signature.
+          alors de son identité : votre nom sera enregistré avec la signature. Puis contresignez
+          chaque demi-journée : c&apos;est la signature du formateur, exigée en plus de celle des
+          stagiaires pour que la feuille soit probante.
         </p>
         {demiJournees === null ? (
           <p className="text-mocha text-sm">Feuille d&apos;émargement indisponible.</p>
@@ -232,6 +237,7 @@ export default async function Page({
             sessionId={id}
             demiJournees={demiJournees}
             signerAction={signerPourStagiaireAction}
+            contresignerAction={contresignerDemiJourneeAction}
           />
         )}
       </section>

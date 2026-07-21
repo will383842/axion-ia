@@ -307,6 +307,7 @@ async function main() {
                 cases: ["", ""],
                 ancrage: "—",
               })),
+              contresignatures: [],
             },
           ],
           totalSignatures: 0,

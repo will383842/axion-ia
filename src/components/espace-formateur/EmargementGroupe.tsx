@@ -32,11 +32,16 @@ export interface LigneGroupeAffichee {
 
 export interface DemiJourneeAffichee {
   cle: string;
+  /** Jour civil `YYYY-MM-DD` — passé tel quel à la contresignature. */
+  date: string;
+  demiJournee: "matin" | "apres_midi" | "journee";
   jourLisible: string;
   demiJourneeLisible: string;
   horaires: string;
   formateurNom: string;
   commencee: boolean;
+  /** Le formateur connecté a-t-il déjà contresigné cette demi-journée ? */
+  contresigneeParMoi: boolean;
   /** Texte présenté au signataire pour CETTE demi-journée. */
   mentions: string[];
   lignes: LigneGroupeAffichee[];
@@ -54,12 +59,23 @@ export interface EmargementGroupeProps {
     imageDataUrl?: string;
     nomConfirme?: string;
   }) => Promise<{ ok: true; signatureId: string } | { ok: false; raison: string; message: string }>;
+  contresignerAction: (input: {
+    sessionId: string;
+    date: string;
+    demiJournee: "matin" | "apres_midi" | "journee";
+    methode: "canvas" | "confirmation_accessible" | "papier_scanne";
+    imageDataUrl?: string;
+    nomConfirme?: string;
+  }) => Promise<
+    { ok: true; contresignatureId: string } | { ok: false; raison: string; message: string }
+  >;
 }
 
 export function EmargementGroupe({
   sessionId,
   demiJournees,
   signerAction,
+  contresignerAction,
 }: EmargementGroupeProps): React.ReactElement {
   const router = useRouter();
   // La première demi-journée commencée et incomplète : c'est celle sur laquelle
@@ -178,6 +194,7 @@ export function EmargementGroupe({
               <span className="text-sm text-neutral-700">
                 {signes}/{d.lignes.length} signé{signes > 1 ? "s" : ""}
                 {!d.commencee && " · pas encore commencé"}
+                {d.contresigneeParMoi && " · contresigné"}
               </span>
             </button>
 
@@ -225,6 +242,17 @@ export function EmargementGroupe({
                     Tout le groupe a signé cette demi-journée.
                   </li>
                 )}
+
+                {/* 🔴 Contresignature du formateur — exigée EN PLUS des signatures
+                    stagiaires (CAA Nantes 20/04/2021). Sans elle, la feuille est
+                    insuffisamment probante. Découplée de la paie (décision D10). */}
+                <li className="border-t border-neutral-200 px-4 py-3">
+                  <ContresignatureControl
+                    sessionId={sessionId}
+                    demiJournee={d}
+                    contresignerAction={contresignerAction}
+                  />
+                </li>
               </ul>
             )}
           </section>
@@ -371,6 +399,238 @@ export function EmargementGroupe({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Contresignature d'UNE demi-journée par le formateur connecté.
+ *
+ * Autonome — son propre état de signature, pour ne pas se mêler du flux
+ * stagiaire. Trois modalités comme côté stagiaire : tracé, saisie accessible
+ * (O10, chemin clavier/lecteur d'écran) et photo d'une feuille papier (D11).
+ */
+function ContresignatureControl({
+  sessionId,
+  demiJournee,
+  contresignerAction,
+}: {
+  sessionId: string;
+  demiJournee: DemiJourneeAffichee;
+  contresignerAction: EmargementGroupeProps["contresignerAction"];
+}): React.ReactElement {
+  const router = useRouter();
+  const [ouvert, setOuvert] = useState(false);
+  const [atteste, setAtteste] = useState(false);
+  const [mode, setMode] = useState<"trace" | "accessible" | "papier">("trace");
+  const [image, setImage] = useState<string | null>(null);
+  const [nom, setNom] = useState("");
+  const [erreur, setErreur] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  if (demiJournee.contresigneeParMoi) {
+    return (
+      <p role="status" className="text-sm font-medium text-green-700">
+        Vous avez contresigné cette demi-journée.
+      </p>
+    );
+  }
+
+  if (!demiJournee.commencee) {
+    return (
+      <p className="text-sm text-neutral-500">
+        Vous pourrez contresigner cette demi-journée une fois qu&apos;elle aura commencé.
+      </p>
+    );
+  }
+
+  function reinit() {
+    setOuvert(false);
+    setAtteste(false);
+    setMode("trace");
+    setImage(null);
+    setNom("");
+    setErreur(null);
+  }
+
+  async function chargerPhoto(fichier: File | null) {
+    setErreur(null);
+    setImage(null);
+    if (fichier === null) return;
+    if (fichier.size > 2 * 1024 * 1024) {
+      setErreur("Photo trop lourde (2 Mo maximum). Réduisez la définition de l'appareil photo.");
+      return;
+    }
+    const lecteur = new FileReader();
+    lecteur.onload = () => setImage(typeof lecteur.result === "string" ? lecteur.result : null);
+    lecteur.onerror = () => setErreur("Photo illisible. Réessayez.");
+    lecteur.readAsDataURL(fichier);
+  }
+
+  const pret = atteste && (mode === "accessible" ? nom.trim() !== "" : image !== null);
+
+  function envoyer() {
+    setErreur(null);
+    startTransition(async () => {
+      const r = await contresignerAction({
+        sessionId,
+        date: demiJournee.date,
+        demiJournee: demiJournee.demiJournee,
+        methode:
+          mode === "accessible"
+            ? "confirmation_accessible"
+            : mode === "papier"
+              ? "papier_scanne"
+              : "canvas",
+        ...(mode === "accessible" ? { nomConfirme: nom } : { imageDataUrl: image ?? "" }),
+      });
+      if (!r.ok) {
+        setErreur(r.message);
+        return;
+      }
+      reinit();
+      router.refresh();
+    });
+  }
+
+  if (!ouvert) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOuvert(true)}
+        className="rounded-md border border-neutral-900 px-3 py-1.5 text-sm font-medium text-neutral-900"
+      >
+        Contresigner cette demi-journée (formateur)
+      </button>
+    );
+  }
+
+  return (
+    <div
+      role="dialog"
+      aria-label={`Contresignature — ${demiJournee.jourLisible} ${demiJournee.demiJourneeLisible}`}
+      className="rounded-lg border border-neutral-900 bg-white p-4"
+    >
+      <p className="mb-3 font-medium text-neutral-900">
+        Votre contresignature — {demiJournee.jourLisible}{" "}
+        {demiJournee.demiJourneeLisible.toLowerCase()}
+      </p>
+
+      <div className="mb-4 flex flex-col gap-2 text-xs text-neutral-700">
+        {demiJournee.mentions.map((m) => (
+          <p key={m.slice(0, 40)}>{m}</p>
+        ))}
+      </div>
+
+      <label className="mb-3 flex items-start gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={atteste}
+          onChange={(e) => setAtteste(e.target.checked)}
+          className="mt-1"
+        />
+        <span>
+          J&apos;atteste avoir animé cette demi-journée de formation devant le groupe présent.
+        </span>
+      </label>
+
+      {mode === "accessible" && (
+        <label className="flex flex-col gap-1 text-sm">
+          <span>Saisissez vos prénom et nom</span>
+          <input
+            type="text"
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
+            autoComplete="off"
+            className="rounded-md border border-neutral-400 px-3 py-2"
+          />
+        </label>
+      )}
+
+      {mode === "papier" && (
+        <div className="flex flex-col gap-2">
+          <label className="flex flex-col gap-1 text-sm">
+            <span>Photo de la feuille signée</span>
+            <input
+              type="file"
+              accept="image/png,image/jpeg"
+              capture="environment"
+              onChange={(e) => void chargerPhoto(e.target.files?.[0] ?? null)}
+              className="text-sm"
+            />
+          </label>
+          {image !== null && (
+            <p role="status" className="text-sm text-green-700">
+              Photo prête à être enregistrée.
+            </p>
+          )}
+        </div>
+      )}
+
+      {mode === "trace" && (
+        <SignaturePad
+          onChange={setImage}
+          onBasculerAccessible={() => {
+            setMode("accessible");
+            setImage(null);
+          }}
+          disabled={isPending}
+          label="Votre signature de formateur"
+        />
+      )}
+
+      <div className="mt-3 flex flex-wrap gap-4 text-sm">
+        {mode !== "trace" && (
+          <button
+            type="button"
+            onClick={() => {
+              setMode("trace");
+              setImage(null);
+            }}
+            className="underline underline-offset-4"
+          >
+            Revenir au tracé
+          </button>
+        )}
+        {mode !== "papier" && (
+          <button
+            type="button"
+            onClick={() => {
+              setMode("papier");
+              setImage(null);
+              setNom("");
+            }}
+            className="underline underline-offset-4"
+          >
+            Photographier une feuille papier
+          </button>
+        )}
+      </div>
+
+      {erreur !== null && (
+        <p role="alert" className="mt-3 text-sm text-red-700">
+          {erreur}
+        </p>
+      )}
+
+      <div className="mt-4 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={envoyer}
+          disabled={!pret || isPending}
+          className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+        >
+          {isPending ? "Enregistrement…" : "Valider ma contresignature"}
+        </button>
+        <button
+          type="button"
+          onClick={reinit}
+          disabled={isPending}
+          className="text-sm underline underline-offset-4"
+        >
+          Annuler
+        </button>
+      </div>
     </div>
   );
 }

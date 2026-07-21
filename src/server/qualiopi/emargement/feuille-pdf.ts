@@ -61,6 +61,15 @@ export interface LignePdf {
   empreinteTete: string | null;
 }
 
+export interface ContresignatureCase {
+  demiJournee: DemiJourneeLabel;
+  /** Formateur qui a contresigné cette demi-journée. */
+  formateurNom: string;
+  /** Heure de la contresignature (heure de Paris), pour l'écart D13 côté formateur. */
+  signeAHeure: string;
+  methode: string;
+}
+
 export interface JourneePdf {
   dateLisible: string;
   horaires: string;
@@ -68,6 +77,14 @@ export interface JourneePdf {
   modules: string[];
   demiJournees: DemiJourneeLabel[];
   lignes: LignePdf[];
+  /**
+   * Contresignatures du formateur pour cette journée, par demi-journée.
+   *
+   * Exigence « stagiaire ET formateur » (CAA Nantes 20/04/2021) : une feuille
+   * sans la signature du formateur est insuffisamment probante. Vide tant que le
+   * formateur n'a pas contresigné — la feuille le montre alors comme incomplet.
+   */
+  contresignatures: ContresignatureCase[];
 }
 
 export interface FeuillePdf {
@@ -178,6 +195,13 @@ export async function construireFeuillePdf(sessionId: string): Promise<FeuillePd
           },
         },
       },
+      // La signature du formateur (contresignature), au grain demi-journée. Même
+      // ordre d'insertion que les signatures stagiaires — jamais `signeAt`.
+      emargementContresignatures: {
+        where: { revokedAt: null },
+        orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+        select: { date: true, demiJournee: true, formateurNom: true, signeAt: true, methode: true },
+      },
     },
   });
 
@@ -236,6 +260,15 @@ export async function construireFeuillePdf(sessionId: string): Promise<FeuillePd
 
     totalSignatures += lignes.reduce((s, l) => s + l.nbSignatures, 0);
 
+    const contresignatures: ContresignatureCase[] = session.emargementContresignatures
+      .filter((c) => parisDateISO(c.date) === iso)
+      .map((c) => ({
+        demiJournee: c.demiJournee as DemiJourneeLabel,
+        formateurNom: c.formateurNom,
+        signeAHeure: hhmm(c.signeAt),
+        methode: c.methode,
+      }));
+
     return {
       dateLisible: dateLisible(iso),
       horaires: `${jour.heureDebut}–${jour.heureFin}`,
@@ -243,6 +276,7 @@ export async function construireFeuillePdf(sessionId: string): Promise<FeuillePd
       modules,
       demiJournees,
       lignes,
+      contresignatures,
     };
   });
 
