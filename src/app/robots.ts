@@ -72,7 +72,15 @@ const COMMON_DISALLOW = [
 // `/api/avis/photo/` : photos publiques optimisées des avis clients. `Disallow:
 // /api/` bloquerait Googlebot-Image de les crawler → même correctif que `/api/og`
 // (longest-match `Allow` débloque). Indispensable pour l'indexation Google Images.
-const COMMON_ALLOW = ["/", "/api/og", "/api/avis/photo", "/_next/image"];
+// AUDIT 2026-07-21 — `/_next/static` AJOUTÉ.
+// `Disallow: /_next/` bloquait aussi `/_next/static/**`, c'est-à-dire le **CSS et
+// le JS** de toutes les pages. Google demande explicitement de ne pas bloquer ces
+// ressources : Googlebot rend la page pour l'évaluer, et sans feuille de style ni
+// script il la voit cassée (mise en page, contenu injecté, Core Web Vitals).
+// C'est un risque bien plus documenté et bien plus concret que la question
+// `Google-Extended` (cf. commentaire l.13-14). Longest-match : cet `Allow`
+// l'emporte sur le `Disallow: /_next/`, sans rouvrir `/_next/data` ni le reste.
+const COMMON_ALLOW = ["/", "/api/og", "/api/avis/photo", "/_next/image", "/_next/static"];
 
 const AI_BOTS_ALLOWED = [
   // SEARCH / CITATION uniquement (ces UA citent, ils n'entraînent pas) :

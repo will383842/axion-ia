@@ -63,10 +63,20 @@ ARG NEXT_PUBLIC_CALENDLY_APPEL_URL
 # → verifyTurnstile fail-closed en prod → « Captcha échoué. » sur tous les forms
 # publics (contact/audit/presse/…). Cf. build externalisé ADR 0026.
 ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY
+# Plausible (analytics self-hosted) — MÊME PIÈGE que Turnstile ci-dessus.
+# AUDIT 2026-07-21 : ces deux vars étaient posées au RUNTIME dans Coolify mais
+# absentes du build → `env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN` valait `undefined` au
+# bake, `<Plausible />` rendait `null`, et le script était totalement absent du
+# HTML de prod (`curl … | grep -c plausible` → 0). Résultat : 0 event analytics
+# depuis la mise en ligne. Les poser au runtime ne sert à RIEN pour un NEXT_PUBLIC_*.
+ARG NEXT_PUBLIC_PLAUSIBLE_DOMAIN
+ARG NEXT_PUBLIC_PLAUSIBLE_API_URL
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 ENV NEXT_PUBLIC_APP_ENV=${NEXT_PUBLIC_APP_ENV:-production}
 ENV NEXT_PUBLIC_CALENDLY_APPEL_URL=${NEXT_PUBLIC_CALENDLY_APPEL_URL}
 ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+ENV NEXT_PUBLIC_PLAUSIBLE_DOMAIN=${NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+ENV NEXT_PUBLIC_PLAUSIBLE_API_URL=${NEXT_PUBLIC_PLAUSIBLE_API_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Bypass Zod env.ts validation au build (option F.1 recovery 2026-05-16).

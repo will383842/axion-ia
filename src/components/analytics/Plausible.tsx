@@ -21,20 +21,25 @@ export function Plausible() {
 
   // strategy="afterInteractive" → script chargé après hydration (n'impacte pas LCP).
   // Script étendu (ordre alphabétique requis par Plausible) :
-  //   404            — 404 error pages tracking
   //   file-downloads — clics sur .pdf/.docx/.csv (mentions, sous-processeurs)
   //   outbound-links — clics vers domaines externes
   //   tagged-events  — Custom events via window.plausible(name, opts)
   //                    Requis pour trackEvent("Booking Submitted") etc.
-  //   web-vitals     — Active la collecte LCP/INP/CLS côté Plausible (Audit
-  //                    2026-05-15 P0 §8.8). Émet un event "Web Vital" custom
-  //                    auto + accepte les emit manuels via WebVitals.tsx.
-  //                    Permet un dashboard Plausible séparé du RUM /api/vitals.
+  //
+  // ⚠️ AUDIT 2026-07-21 — NE PAS réintroduire `404.` ni `.web-vitals` :
+  // ces deux extensions N'EXISTENT PAS dans plausible/community-edition:v3.0.1.
+  // L'URL précédente (`script.404.file-downloads.outbound-links.tagged-events.web-vitals.js`)
+  // renvoyait un **404**, donc aucun event n'a jamais été émis depuis la mise en
+  // ligne (11 events en base ClickHouse, tous datés du 2026-05-13, 0 sur 30 j).
+  // Vérifié en live : seules `script.js`, `script.tagged-events.js`,
+  // `script.file-downloads.outbound-links.tagged-events.js` (et variantes) → 200.
+  // La collecte Web Vitals reste assurée par le RUM maison `/api/vitals`
+  // (table `web_vital_samples`, ~65 000 échantillons) — aucune perte.
   return (
     <Script
       defer
       data-domain={domain}
-      src={`${apiUrl}/js/script.404.file-downloads.outbound-links.tagged-events.web-vitals.js`}
+      src={`${apiUrl}/js/script.file-downloads.outbound-links.tagged-events.js`}
       strategy="afterInteractive"
     />
   );
