@@ -467,6 +467,13 @@ export async function importReleveConnexionAction(input: {
     nbMatched: number;
     nbUnmatched: number;
     unmatched: Array<{ nom: string; email: string | null; dureeMinutes: number }>;
+    /** Créneaux « journée » hérités remplacés par leurs demi-journées. */
+    nbJourneesHeriteesRemplacees: number;
+    /**
+     * Créneaux « journée » CONSERVÉS parce qu'ils portent une trace explicite.
+     * Ils doublent le dénominateur du jour : un humain doit trancher.
+     */
+    journeesConflictuelles: Array<{ enrollmentId: string; date: string; motif: string }>;
   }>
 > {
   const session = await requireAdminWrite();
@@ -648,6 +655,10 @@ export async function importReleveConnexionAction(input: {
   // de date) — et qu'aucune UI ne permet de supprimer.
   const enrollmentIdsTouches = new Set<string>();
   const matchedById = new Map(matched.map((m) => [m.enrollmentId, m.participant]));
+  /** Créneaux « journée » d'un import antérieur, retirés au profit des demi-journées. */
+  let nbJourneesHeriteesRemplacees = 0;
+  /** Ceux qu'on n'a PAS touchés parce qu'ils portent une trace explicite. */
+  const journeesConflictuelles: Array<{ enrollmentId: string; date: string; motif: string }> = [];
 
   for (const enrollment of trainingSession.enrollments) {
     const participant = matchedById.get(enrollment.id);
@@ -691,6 +702,59 @@ export async function importReleveConnexionAction(input: {
       joinMin,
       leaveMin,
     });
+
+    // 🔴 Le créneau « journée » d'un import ANTÉRIEUR doit disparaître, sinon il
+    // s'ajoute aux deux demi-journées : 420 + 210 + 210 = 840 minutes attendues
+    // pour 420 réelles, soit un stagiaire pleinement assidu affiché à 50 %.
+    // C'est la classe de bug de l'étape A, qu'on ne va pas réintroduire par la
+    // porte de derrière.
+    //
+    // ⚠️ Mais on n'efface JAMAIS une trace explicite. Un créneau qui porte une
+    // signature, une présence cochée à la main ou une correction manuelle est
+    // une donnée que personne n'a le droit de perdre à l'occasion d'un import —
+    // et une absence émargée est indiscernable d'un créneau vierge une fois la
+    // ligne supprimée. Dans ce cas on ne touche à rien et on le SIGNALE, pour
+    // qu'un humain tranche.
+    const journeeHeritee = await prisma.presenceCreneau.findUnique({
+      where: {
+        enrollmentId_date_demiJournee: {
+          enrollmentId: enrollment.id,
+          date: dateObj,
+          demiJournee: "journee",
+        },
+      },
+      select: {
+        id: true,
+        present: true,
+        source: true,
+        commentaire: true,
+        _count: { select: { emargementSignatures: true } },
+      },
+    });
+
+    if (journeeHeritee !== null) {
+      const porteUneTrace =
+        journeeHeritee._count.emargementSignatures > 0 ||
+        journeeHeritee.present ||
+        journeeHeritee.source === "manuel" ||
+        journeeHeritee.commentaire !== null;
+
+      if (porteUneTrace) {
+        journeesConflictuelles.push({
+          enrollmentId: enrollment.id,
+          date: dateCivile,
+          motif:
+            journeeHeritee._count.emargementSignatures > 0
+              ? "signature"
+              : journeeHeritee.present
+                ? "presence_cochee"
+                : "saisie_manuelle",
+        });
+      } else {
+        await prisma.presenceCreneau.delete({ where: { id: journeeHeritee.id } });
+        nbJourneesHeriteesRemplacees += 1;
+      }
+    }
 
     for (const [index, creneau] of creneauxDuJour.entries()) {
       await upsertCreneau({
@@ -749,6 +813,8 @@ export async function importReleveConnexionAction(input: {
         email: u.email,
         dureeMinutes: u.dureeMinutes,
       })),
+      nbJourneesHeriteesRemplacees,
+      journeesConflictuelles,
     },
   };
 }

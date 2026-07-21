@@ -32,6 +32,7 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       findMany: vi.fn(),
       update: vi.fn(),
+      delete: vi.fn(),
     },
     enrollment: {
       updateMany: vi.fn(),
@@ -108,6 +109,7 @@ const mockPrisma = prisma as unknown as {
     findUnique: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
   };
   enrollment: { updateMany: ReturnType<typeof vi.fn> };
   releveConnexionImport: { create: ReturnType<typeof vi.fn> };
@@ -608,6 +610,9 @@ describe("importReleveConnexionAction", () => {
     mockPrisma.releveConnexionImport.create.mockResolvedValue({ id: "import-new-id" });
     mockUpsertCreneau.mockResolvedValue("creneau-new-id");
     mockRecompute.mockResolvedValue(90);
+    // Par défaut : aucun créneau « journée » hérité d'un import antérieur.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(null);
+    mockPrisma.presenceCreneau.delete.mockResolvedValue({});
   });
 
   it("retourne { data } avec importId, nbMatched, nbUnmatched", async () => {
@@ -1065,6 +1070,87 @@ describe("importReleveConnexionAction", () => {
         jours: [{ date: "2026-06-10", heureDebut: "09:00", heureFin: "17:00" }],
       }),
     );
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Créneaux « journée » hérités d'un import antérieur
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * 🔴 L'import posait autrefois UN créneau « journée » par jour ; il en pose
+   * maintenant un par demi-journée. La clé d'unicité étant
+   * `(enrollment, date, demi-journée)`, un ré-import laisse l'ancien en place :
+   * 420 + 210 + 210 = 840 minutes attendues pour 420 réelles, soit un stagiaire
+   * pleinement assidu affiché à 50 %.
+   *
+   * ⚠️ Mais on n'efface jamais une trace explicite. Une signature, une présence
+   * cochée ou une correction manuelle sont des données que personne n'a le droit
+   * de perdre à l'occasion d'un import — et une fois la ligne supprimée, une
+   * absence émargée est indiscernable d'un créneau vierge.
+   */
+  function journeeHeritee(over: Record<string, unknown> = {}) {
+    return {
+      id: "creneau-journee-legacy",
+      present: false,
+      source: "import_zoom",
+      commentaire: null,
+      _count: { emargementSignatures: 0 },
+      ...over,
+    };
+  }
+
+  it("🔴 retire le créneau « journée » hérité qui ne porte aucune trace", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(journeeHeritee());
+
+    const res = await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockPrisma.presenceCreneau.delete).toHaveBeenCalledWith({
+      where: { id: "creneau-journee-legacy" },
+    });
+    assert("data" in res);
+    expect(res.data.nbJourneesHeriteesRemplacees).toBeGreaterThan(0);
+    expect(res.data.journeesConflictuelles).toEqual([]);
+  });
+
+  it.each([
+    ["une SIGNATURE", { _count: { emargementSignatures: 1 } }, "signature"],
+    ["une présence COCHÉE", { present: true }, "presence_cochee"],
+    ["une correction MANUELLE", { source: "manuel" }, "saisie_manuelle"],
+    ["un COMMENTAIRE d'admin", { commentaire: "arrivée tardive" }, "saisie_manuelle"],
+  ])("🔴 CONSERVE et signale le créneau hérité qui porte %s", async (_, patch, motif) => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(journeeHeritee(patch));
+
+    const res = await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockPrisma.presenceCreneau.delete).not.toHaveBeenCalled();
+    assert("data" in res);
+    expect(res.data.nbJourneesHeriteesRemplacees).toBe(0);
+    expect(res.data.journeesConflictuelles[0]).toMatchObject({ motif });
+  });
+
+  it("ne supprime rien quand aucun créneau « journée » n'existe", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(null);
+
+    const res = await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockPrisma.presenceCreneau.delete).not.toHaveBeenCalled();
+    assert("data" in res);
+    expect(res.data.nbJourneesHeriteesRemplacees).toBe(0);
   });
 });
 
