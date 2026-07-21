@@ -34,6 +34,28 @@ import { signMagicToken, verifyMagicToken } from "@/lib/magic-token";
  */
 export const FENETRE_APRES_FIN_MS = 48 * 60 * 60 * 1000;
 
+/**
+ * Refus de créer un lien de signature.
+ *
+ * 🔴 Les colonnes `heure_debut` / `heure_fin` d'`emargement_signatures` sont NOT
+ * NULL, et c'est voulu : une feuille sans horaires réels est insuffisamment
+ * probante (CAA Nantes 20/04/2021). Mais il faut alors rendre IMPOSSIBLE
+ * d'arriver au moment de signer sans ces horaires — sinon le service n'aurait
+ * d'autre issue que d'inventer un « 09h00–17h00 », ce que tout le reste de ce
+ * chantier s'attache à supprimer.
+ *
+ * Le refus se produit donc à la CRÉATION DU LIEN, c'est-à-dire devant l'admin
+ * qui peut corriger, et non devant le stagiaire en salle qui ne le peut pas.
+ */
+export class TokenEmargementError extends Error {
+  readonly motif: "journees_non_declarees";
+  constructor(motif: "journees_non_declarees", message: string) {
+    super(message);
+    this.name = "TokenEmargementError";
+    this.motif = motif;
+  }
+}
+
 /** Motifs de refus. Différenciés : « lien expiré » est actionnable, « lien invalide » ne l'est pas. */
 export type RefusToken = "signature_invalide" | "inconnu" | "expire" | "revoque";
 
@@ -75,6 +97,11 @@ export function calculerExpiration(dateFinSession: Date, maintenant: Date): Date
  * `emargement_token_enrollment_actif` l'impose, et c'est voulu. Deux liens en
  * circulation signifieraient qu'en révoquer un donne une fausse impression de
  * sécurité. Toute création révoque donc le précédent, dans la même transaction.
+ *
+ * @throws {TokenEmargementError} Si la session n'a déclaré aucune journée
+ *         (`session_jours`, décision D14) : sans horaires réels, la signature
+ *         qui suivrait serait insuffisamment probante. Refuser ici, devant
+ *         l'admin, plutôt qu'en salle devant le stagiaire.
  */
 export async function creerTokenInscription(input: {
   enrollmentId: string;
@@ -83,6 +110,19 @@ export async function creerTokenInscription(input: {
   maintenant?: Date;
 }): Promise<{ token: string; tokenId: string; expiresAt: Date }> {
   const maintenant = input.maintenant ?? new Date();
+
+  // Garde-fou D14 — voir `TokenEmargementError`. Une seule requête : les
+  // journées de la session à laquelle appartient cette inscription.
+  const nbJours = await prisma.sessionJour.count({
+    where: { session: { enrollments: { some: { id: input.enrollmentId } } } },
+  });
+  if (nbJours === 0) {
+    throw new TokenEmargementError(
+      "journees_non_declarees",
+      "Cette session n'a déclaré aucune journée : renseignez les journées réellement animées et leurs horaires avant d'émettre un lien de signature. Sans horaires réels, la feuille d'émargement serait insuffisamment probante.",
+    );
+  }
+
   const expiresAt = calculerExpiration(input.dateFinSession, maintenant);
 
   const token = await signMagicToken({

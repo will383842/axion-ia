@@ -6056,6 +6056,8 @@ model Enrollment {
   facturesFormation FactureFormation[]
   /// Jetons de signature d'émargement remis au stagiaire (T13).
   emargementTokens  EmargementToken[]
+  /// Signatures d'émargement — porte la CHAÎNE de cet inscrit (D12).
+  emargementSignatures EmargementSignature[]
 
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
   @@index([sessionId])
@@ -7630,6 +7632,45 @@ model EmargementSignature {
   coaching            CoachingSession?   @relation(fields: [coachingId], references: [id], onDelete: Restrict)
   tokenId             String?            @map("token_id") @db.Uuid
   token               EmargementToken?   @relation(fields: [tokenId], references: [id], onDelete: Restrict)
+  /// PORTÉE DE LA CHAÎNE (D12 : chaînage par inscription). Sans cette colonne il
+  /// fallait joindre par le créneau pour relire une chaîne — et surtout rien
+  /// n'empêchait deux signatures concurrentes de sceller le MÊME prédécesseur,
+  /// forkant silencieusement le registre. Un index unique partiel l'interdit.
+  enrollmentId        String?            @map("enrollment_id") @db.Uuid
+  enrollment          Enrollment?        @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+
+  // ── SNAPSHOT — ce qui a été signé, figé au moment de la signature ──
+  //
+  // 🔴 Ces colonnes ne sont PAS de la dénormalisation de confort : elles sont la
+  // condition pour que `selfHash` soit recalculable, donc pour que le chaînage
+  // serve à quelque chose. Sans elles, `verifierChaine` retourne
+  // `tuple_irrecalculable` sur CHAQUE ligne et le registre est décoratif.
+  //
+  // Et les reconstruire par jointure serait pire que de ne rien avoir : le
+  // créneau, l'intitulé de la formation, son programme et l'affectation du
+  // formateur sont tous MODIFIABLES après coup. Renommer une formation ou
+  // remplacer un formateur casserait rétroactivement, silencieusement, toutes
+  // les empreintes déjà émises.
+  /// Jour civil signé (heure de Paris), figé.
+  date                DateTime           @db.Date
+  demiJournee         DemiJournee        @map("demi_journee")
+  /// Horaires RÉELS du créneau, `HH:MM`. Viennent de `session_jours` (D14) —
+  /// jamais d'un « 09h00–17h00 » par défaut. Leur absence de la feuille est un
+  /// motif de redressement à elle seule (CAA Nantes 20/04/2021).
+  heureDebut          String             @map("heure_debut") @db.VarChar(5)
+  heureFin            String             @map("heure_fin") @db.VarChar(5)
+  /// Intitulé de la formation, figé : il peut être renommé après la session.
+  formationIntitule   String             @map("formation_intitule") @db.VarChar(300)
+  /// Modules couverts, figés : ["Module 1 — …", …]. Le programme est modifiable.
+  /// ⚠️ PAS de `@default` : cette colonne entre dans le tuple haché. Un défaut
+  /// transformerait un oubli d'insertion en `[]` silencieux, et `selfHash` ne
+  /// correspondrait plus à son contenu — sur 100 % des lignes, dans une table
+  /// append-only donc non corrigeable. Mieux vaut que l'insertion échoue.
+  modulesSnapshot     Json               @map("modules_snapshot")
+  /// Nom du formateur, figé. `SessionFormateur` est mutable, et son absence de
+  /// la feuille est elle aussi un motif de redressement.
+  formateurNom        String             @map("formateur_nom") @db.VarChar(200)
+
   methode             EmargementMethode
   /// Clé R2 de l'image rasterisée (PNG normalisé par sharp). Null pour
   /// `confirmation_accessible`, qui n'a pas d'image par construction.
@@ -7674,6 +7715,8 @@ model EmargementSignature {
   @@index([creneauId])
   @@index([coachingId])
   @@index([tokenId])
+  /// Relecture d'une chaîne : toutes les signatures d'un inscrit, dans l'ordre.
+  @@index([enrollmentId, signeAt])
   @@index([signeAt])
   @@map("emargement_signatures")
 }
@@ -7708,7 +7751,8 @@ model EmargementContresignature {
   heureFin        String             @map("heure_fin") @db.VarChar(5)
   /// Snapshot des modules : ["Module 1 — …", …]. Figé, car le programme de la
   /// formation peut être modifié après la session.
-  modulesSnapshot Json               @default("[]") @map("modules_snapshot")
+  /// ⚠️ PAS de `@default` : colonne hachée, cf. `EmargementSignature`.
+  modulesSnapshot Json               @map("modules_snapshot")
   /// Nom du formateur FIGÉ. Son absence de la feuille est un motif de
   /// redressement à elle seule.
   formateurNom    String             @map("formateur_nom") @db.VarChar(200)
