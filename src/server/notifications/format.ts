@@ -26,6 +26,7 @@ const TITLES: Record<NotificationCategory, string> = {
   RECRUITMENT_RECEIVED: "👤 Candidature reçue",
   JOB_APPLICATION_RECEIVED: "📨 Candidature emploi reçue",
   REVIEW_SUBMITTED: "⭐ Nouvel avis client (à modérer)",
+  PODCAST_REQUEST_SUBMITTED: "🎙️ Demande de tournage podcast",
   SPEAKER_INVITATION_RECEIVED: "🎤 Invitation conférence",
   INVESTOR_INQUIRY_RECEIVED: "💼 Demande investisseur / M&A",
   CUSTOMER_SUPPORT_REQUEST: "🛟 Support client",
@@ -181,6 +182,21 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Photo", p.hasPhoto ? "jointe ✅" : "aucune"),
         p.excerpt ? formatKV("Extrait", p.excerpt.slice(0, 160)) : null,
         formatKV("Modérer en console", `${SITE_URL}${adminPath("fr", "avis")}/${p.reviewId}`),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "PODCAST_REQUEST_SUBMITTED": {
+      const p = event.payload;
+      return [
+        formatKV("Entreprise", p.companyName),
+        formatKV("Dirigeant", p.leaderName),
+        formatKV("Email", p.contactEmail),
+        formatKV("Téléphone", p.contactPhone),
+        formatKV("Lieu du tournage", `${p.city} (${p.postalCode})`),
+        p.activityExcerpt ? formatKV("Activité", p.activityExcerpt.slice(0, 200)) : null,
+        p.source ? formatKV("Source", p.source) : null,
+        formatKV("Voir en console", `${SITE_URL}${adminPath("fr", "podcast")}/${p.requestId}`),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");

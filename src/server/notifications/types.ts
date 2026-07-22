@@ -154,6 +154,26 @@ export type NotificationEvent =
       };
     }
   | {
+      // Demande de tournage podcast dirigeant (page publique `/podcast`).
+      // Offre gratuite, sans lien avec l'achat d'une formation (décision Will
+      // 2026-07-21) — c'est un lead d'entrée, pas une commande.
+      category: "PODCAST_REQUEST_SUBMITTED";
+      payload: {
+        requestId: string;
+        companyName: string;
+        leaderName: string;
+        contactEmail: string;
+        contactPhone: string;
+        /** Ville + code postal : on se déplace, la géo pilote la faisabilité. */
+        city: string;
+        postalCode: string;
+        /** Début de la description d'activité (aperçu). */
+        activityExcerpt?: string;
+        source?: string;
+        locale: "fr" | "en";
+      };
+    }
+  | {
       category: "SPEAKER_INVITATION_RECEIVED";
       payload: {
         submissionId: string;

@@ -58,7 +58,9 @@ describe("buildAdminNav SSOT", () => {
     // (facturation/plans), écrans du Hub facturation, groupe qualiopi / commercial. = 141.
     // +1 (2026-07-18) : « QR codes & liens » — QR dynamiques pilotables
     // (/qr/<slug> → redirection éditable + scans), groupe ops. = 142.
-    expect(items.length).toBe(142);
+    // +1 (2026-07-21) : « Demandes de podcast » — demandes de tournage déposées
+    // sur la page publique /podcast (+ QR du flyer), groupe contacts. = 143.
+    expect(items.length).toBe(143);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
