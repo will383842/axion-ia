@@ -49,6 +49,13 @@
     --color-admin-destructive: #b13a2b; /* rouge-brique destructive (vs --color-error site) */
     --color-admin-destructive-soft: #f7e1dd;
     --color-admin-destructive-fg: #6a1c10;
+    /* Alias historique : ~84 composants (dont les alertes d'erreur de l'émargement,
+       B6/L6/L7) référencent `--color-admin-error`, jamais défini → les messages
+       d'échec s'affichaient en couleur héritée (texte normal) au lieu de rouge.
+       Un alias unique les répare tous plutôt que 84 remplacements. */
+    --color-admin-error: var(--color-admin-destructive);
+    --color-admin-error-soft: var(--color-admin-destructive-soft);
+    --color-admin-error-fg: var(--color-admin-destructive-fg);
 
     --color-admin-terracotta: #c24a1b; /* terracotta éditoriale — brand Axion-IA, CTA admin */
 

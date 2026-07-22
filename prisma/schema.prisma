@@ -7747,7 +7747,12 @@ model EmargementSignature {
   @@index([creneauId])
   @@index([coachingId])
   @@index([tokenId])
-  /// Relecture d'une chaîne : toutes les signatures d'un inscrit, dans l'ordre.
+  /// Filtre par inscription. ⚠️ L'ORDRE de la chaîne est `createdAt`, jamais
+  /// `signeAt` (cf. signature-service.ts) : cet index accélère le FILTRE, pas le
+  /// tri, fait en mémoire sur les quelques signatures d'une inscription. Un index
+  /// `[enrollmentId, createdAt]` le servirait mieux — optimisation différée, sans
+  /// effet sur la correction (l'index partiel `chaine_lineaire` sérialise déjà
+  /// les écritures d'une même inscription).
   @@index([enrollmentId, signeAt])
   @@index([signeAt])
   @@map("emargement_signatures")

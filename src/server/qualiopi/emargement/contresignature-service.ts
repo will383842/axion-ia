@@ -43,8 +43,12 @@ import { storeSignatureImage, supprimerImageSignature } from "./storage";
 const MAX_REPRISES_CHAINE = 3;
 
 export type RefusContresignature =
+  // `base_indisponible` (stub SSG) et `session_introuvable` (vraie absence) sont
+  // distincts : les confondre faisait passer une panne DB pour une session
+  // disparue en télémétrie (L10). `non_membre` N'appartient PAS ici — l'appartenance
+  // est une garde de l'ACTION, jamais atteinte par le service (L3).
+  | "base_indisponible"
   | "session_introuvable"
-  | "non_membre"
   | "session_close"
   | "journee_non_declaree"
   | "formateur_introuvable"
@@ -114,7 +118,7 @@ export async function contresignerDemiJournee(
   input: EntreeContresignature,
 ): Promise<ResultatContresignature> {
   if (estStub()) {
-    return { ok: false, raison: "session_introuvable", message: "Base indisponible." };
+    return { ok: false, raison: "base_indisponible", message: "Base indisponible." };
   }
 
   const maintenant = input.maintenant ?? new Date();

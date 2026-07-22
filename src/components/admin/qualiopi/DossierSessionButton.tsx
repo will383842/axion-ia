@@ -52,14 +52,24 @@ export function DossierSessionButton({ sessionId }: { sessionId: string }): Reac
         return;
       }
 
-      const { base64, filename, incomplet, nbChainesAnormales, avertissements } = res.data;
+      const {
+        base64,
+        filename,
+        incomplet,
+        nbChainesAnormales,
+        nbChainesContresignAnormales,
+        avertissements,
+      } = res.data;
       telechargerZip(base64, filename);
 
       // 🔴 L'anomalie d'intégrité passe AVANT le reste : c'est la seule qui
-      // signifie « une signature a été modifiée après coup ».
-      if (nbChainesAnormales > 0) {
+      // signifie « une signature a été modifiée après coup ». Une contresignature
+      // FORMATEUR falsifiée compte tout autant (elle est exigée CAA Nantes
+      // 20/04/2021) — l'alerte rouge se déclenche sur l'un OU l'autre (M6).
+      const anomaliesIntegrite = nbChainesAnormales + nbChainesContresignAnormales;
+      if (anomaliesIntegrite > 0) {
         window.alert(
-          `🔴 ${nbChainesAnormales} chaîne(s) de signatures présentent une ANOMALIE D'INTÉGRITÉ.\n\n` +
+          `🔴 ${anomaliesIntegrite} chaîne(s) de signatures/contresignatures présentent une ANOMALIE D'INTÉGRITÉ.\n\n` +
             `Ouvrez « verification-integrite.json » dans le ZIP AVANT de remettre ce dossier à ` +
             `un auditeur : une empreinte qui ne concorde pas signifie qu'une signature a été ` +
             `modifiée après avoir été apposée.`,

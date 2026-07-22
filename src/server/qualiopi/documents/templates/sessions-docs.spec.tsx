@@ -122,6 +122,7 @@ describe("EmargementPdf", () => {
             "Matin — Sophie Martin, signé 13h05",
             "Après-midi — Sophie Martin, signé 17h10",
           ],
+          contresignaturesManquantes: [],
         },
         {
           dateLisible: "jeudi 11 juin 2026",
@@ -139,6 +140,7 @@ describe("EmargementPdf", () => {
           ],
           // Journée NON contresignée : la feuille doit le dire, pas le masquer.
           contresignatures: [],
+          contresignaturesManquantes: ["Matin"],
         },
       ],
       totalSignatures: 3,

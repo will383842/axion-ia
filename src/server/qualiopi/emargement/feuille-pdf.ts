@@ -156,7 +156,14 @@ export function ecartLisible(
  * et trier dessus produirait une empreinte de tête incohérente avec celle que
  * `verifierChaine` attend.
  */
-export async function construireFeuillePdf(sessionId: string): Promise<FeuillePdf | null> {
+export async function construireFeuillePdf(
+  sessionId: string,
+  // 🔴 H3 — le dossier d'audit inclut les inscriptions sous droit à l'effacement
+  // (nom déjà anonymisé « [supprime] », signatures CONSERVÉES art. 17 §3 b) : leurs
+  // heures signées doivent rester justifiables. La feuille admin courante, elle,
+  // les exclut (minimisation) — d'où le drapeau, faux par défaut.
+  inclureEffaces = false,
+): Promise<FeuillePdf | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
 
   const session = await prisma.trainingSession.findUnique({
@@ -176,11 +183,11 @@ export async function construireFeuillePdf(sessionId: string): Promise<FeuillePd
         orderBy: { date: "asc" },
       },
       enrollments: {
-        where: { trainee: { deletedAt: null } },
+        where: inclureEffaces ? {} : { trainee: { deletedAt: null } },
         orderBy: { trainee: { nom: "asc" } },
         select: {
           id: true,
-          trainee: { select: { nom: true, prenom: true, entreprise: true } },
+          trainee: { select: { nom: true, prenom: true, entreprise: true, deletedAt: true } },
           emargementSignatures: {
             where: { revokedAt: null },
             orderBy: [{ createdAt: "asc" }, { id: "asc" }],
@@ -222,6 +229,17 @@ export async function construireFeuillePdf(sessionId: string): Promise<FeuillePd
       const f = fenetreDemiJournee(jour.heureDebut, jour.heureFin, dj);
       if (f.finMin > f.debutMin) demiJournees.push(dj);
     }
+    // 🔴 M4 — un créneau au grain « journee » (hérité d'un import distanciel,
+    // préservé s'il porte une signature) était SIGNÉ mais rendu par des cases
+    // vides, alors que l'ancrage le comptait : grille et ancrage se
+    // contredisaient sur la pièce remise à l'auditeur. On rend sa colonne dès
+    // qu'une signature « journee » existe ce jour-là.
+    const aSignatureJournee = session.enrollments.some((e) =>
+      e.emargementSignatures.some(
+        (s) => parisDateISO(s.date) === iso && s.demiJournee === "journee",
+      ),
+    );
+    if (aSignatureJournee) demiJournees.push("journee");
 
     const lignes: LignePdf[] = session.enrollments.map((inscription) => {
       const signatures = inscription.emargementSignatures;
@@ -248,7 +266,10 @@ export async function construireFeuillePdf(sessionId: string): Promise<FeuillePd
 
       return {
         stagiaireNom: `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim(),
-        entreprise: inscription.trainee.entreprise,
+        // L-A — `supprimerStagiaire` anonymise nom/prénom/email mais PAS l'entreprise.
+        // Sur le dossier d'audit incluant les effacés, on la masque quand même : une
+        // raison sociale peut identifier un travailleur indépendant.
+        entreprise: inscription.trainee.deletedAt !== null ? null : inscription.trainee.entreprise,
         cases,
         // Ancrage : ces deux valeurs figées dans un document numéroté rendent
         // détectable la suppression des DERNIÈRES signatures, que le chaînage

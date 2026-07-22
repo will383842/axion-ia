@@ -84,6 +84,9 @@ function ligne(t: TupleSignatureV1, id: string, selfHash: string) {
     formationIntitule: t.formationIntitule,
     modulesSnapshot: t.modules,
     methode: t.methode,
+    // Colonne toujours présente en base (null en modalité accessible). Sans elle,
+    // la re-vérification d'image (M2) tenterait un download sur `undefined`.
+    signatureKey: null as string | null,
     signatureSha256: t.signatureSha256,
     signeAt: new Date(t.signeAtIso),
     ipHash: t.ipHash,
@@ -115,7 +118,7 @@ function session(over: Record<string, unknown> = {}) {
       {
         id: "enr-1",
         tauxPresencePct: 100,
-        trainee: { nom: "Dupont", prenom: "Alice" },
+        trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
         emargementSignatures: chaineSaine(),
       },
     ],
@@ -284,5 +287,67 @@ describe("genererDossierSessionZip", () => {
       if (original === undefined) delete process.env["DATABASE_URL"];
       else process.env["DATABASE_URL"] = original;
     }
+  });
+
+  it("🔴 H3 — n'exclut PAS l'inscription sous droit à l'effacement (ne filtre pas deletedAt)", async () => {
+    await genererDossierSessionZip("ses-1");
+    const arg = mockFindUnique.mock.calls[0]![0] as {
+      select: { enrollments: { where?: unknown } };
+    };
+    // La requête ne doit PAS porter de filtre `trainee.deletedAt: null` :
+    // les signatures conservées (art. 17 §3 b) restent justifiables à l'audit.
+    expect(arg.select.enrollments.where).toBeUndefined();
+  });
+
+  it("🔴 H3 — inclut la chaîne d'un stagiaire effacé (nom anonymisé) et le SIGNALE", async () => {
+    mockFindUnique.mockResolvedValue(
+      session({
+        enrollments: [
+          {
+            id: "enr-1",
+            tauxPresencePct: 100,
+            // Anonymisé par supprimerStagiaire + deletedAt posé.
+            trainee: { nom: "[supprime]", prenom: "[supprime]", deletedAt: new Date() },
+            emargementSignatures: chaineSaine(),
+          },
+        ],
+      }),
+    );
+    const res = await genererDossierSessionZip("ses-1");
+    expect(res?.nbChainesAnormales).toBe(0);
+    const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
+    const parsed = JSON.parse(rapport!);
+    expect(parsed.signatures[0].effaceRgpd).toBe(true);
+    expect(parsed.signatures[0].integrite).toBe("OK");
+    // Aucune PII fuitée (nom déjà anonymisé), mais l'inscription est bien comptée.
+    expect(parsed.signatures[0].stagiaire).toContain("effacement");
+  });
+
+  it("🔴 M2 — signale une IMAGE de signature qui ne correspond plus à son condensat scellé", async () => {
+    const chaine = chaineSaine();
+    // Une signature avec image sur R2 (clé non nulle) : M2 doit re-télécharger.
+    chaine[0] = { ...chaine[0]!, signatureKey: "emargement/2026/signatures/sig-1.png" };
+    mockFindUnique.mockResolvedValue(
+      session({
+        enrollments: [
+          {
+            id: "enr-1",
+            tauxPresencePct: 100,
+            trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+            emargementSignatures: chaine,
+          },
+        ],
+      }),
+    );
+    // R2 renvoie des octets dont le SHA-256 ≠ signature_sha256 scellé.
+    mockGetBuffer.mockImplementation(async (cle: string) =>
+      cle.includes("signatures/") ? Buffer.from("octets-falsifies") : Buffer.from("%PDF-"),
+    );
+
+    const res = await genererDossierSessionZip("ses-1");
+    expect(res?.incomplet).toBe(true);
+    expect(res?.avertissements.join(" ")).toContain("condensat scellé");
+    const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
+    expect(JSON.parse(rapport!).signatures[0].imagesAlterees).toBeDefined();
   });
 });

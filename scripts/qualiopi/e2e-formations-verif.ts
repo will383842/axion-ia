@@ -308,6 +308,7 @@ async function main() {
                 ancrage: "—",
               })),
               contresignatures: [],
+              contresignaturesManquantes: ["Matin", "Après-midi"],
             },
           ],
           totalSignatures: 0,

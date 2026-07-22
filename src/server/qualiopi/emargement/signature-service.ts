@@ -39,6 +39,8 @@ import { calculerSelfHash, HASH_VERSION_COURANTE, type TupleSignatureV1 } from "
 import { demiJourneeCommencee } from "./creneaux-signables";
 import { MENTION_VERSION } from "./mentions";
 import { storeSignatureImage, supprimerImageSignature } from "./storage";
+import { recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
+import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, c'est autre chose qu'une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -160,6 +162,13 @@ async function lireContexte(creneauId: string) {
       id: true,
       date: true,
       demiJournee: true,
+      // H4 — la signature d'un créneau vaut PRÉSENCE : on lit la durée prévue
+      // pour la reporter en durée réalisée, et `importId` pour NE PAS écraser un
+      // créneau distanciel (dont la vérité reste le relevé de connexion). On
+      // discrimine sur `importId` et NON sur `source` : `toPresenceSource("autre")`
+      // rend `emargement_presentiel`, donc `source` mentirait sur un distanciel « autre ».
+      dureePrevueMinutes: true,
+      importId: true,
       enrollmentId: true,
       enrollment: {
         select: {
@@ -171,6 +180,7 @@ async function lireContexte(creneauId: string) {
               id: true,
               statut: true,
               titreSession: true,
+              dateDebut: true,
               formateurPrincipal: { select: { nom: true, prenom: true } },
               jours: {
                 select: {
@@ -420,7 +430,7 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
         };
         const selfHash = calculerSelfHash(tuple);
 
-        return tx.emargementSignature.create({
+        const sig = await tx.emargementSignature.create({
           data: {
             id: signatureId,
             contexteType: "collectif",
@@ -458,7 +468,50 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
           },
           select: { id: true, selfHash: true },
         });
+
+        // 🔴 H4 — SIGNER, C'EST ÊTRE PRÉSENT. Sans ce report, une session
+        // pleinement émargée sortait une attestation à 0 % tant qu'un admin
+        // n'avait pas re-coché la présence à la main (grille aveugle aux
+        // signatures). La signature d'une demi-journée VAUT présence pleine sur
+        // ce créneau — dans la même transaction que la preuve elle-même.
+        //
+        // ⚠️ EXCEPTION distanciel : un créneau ISSU D'UN IMPORT tient sa vérité
+        // du relevé de connexion (D.6313-3-1). Une signature ne doit pas gonfler
+        // une durée de connexion plus courte : on l'enregistre comme preuve,
+        // mais on NE touche pas à la durée réalisée d'un créneau distanciel.
+        if (ctx.importId === null) {
+          await tx.presenceCreneau.update({
+            where: { id: ctx.id },
+            data: { dureeRealiseeMinutes: ctx.dureePrevueMinutes, present: true },
+          });
+        }
+        return sig;
       });
+
+      // 🔴 Effets post-commit — la signature EST déjà persistée et immuable. Ils
+      // vivent dans LEUR PROPRE try/catch, JAMAIS celui du dessous : ce dernier
+      // appelle `nettoyerImageOrpheline`, qui SUPPRIMERAIT l'image d'une signature
+      // pourtant committée si `recomputeTauxPresence` levait (course, deadlock
+      // P2034 en salle) — une preuve détruite, que M2 signalerait ensuite comme
+      // « image absente » à chaque audit. Le taux, lui, est recalculable : un
+      // échec ici est best-effort et tracé, pas fatal.
+      //
+      // `recomputeTauxPresence` re-dérive `present` + pose `tauxPresencePct` ;
+      // `emargementSigneAt` write-once → off.12 reconnaît l'émargement électronique
+      // (M5) ; le cache d'indicateurs est invalidé pour l'année de la session.
+      try {
+        await recomputeTauxPresence(ctx.enrollmentId);
+        await prisma.enrollment.updateMany({
+          where: { id: ctx.enrollmentId, emargementSigneAt: null },
+          data: { emargementSigneAt: maintenant },
+        });
+        await invalidateIndicateursCache(ctx.enrollment.session.dateDebut.getUTCFullYear());
+      } catch (postErr) {
+        Sentry.captureException(postErr, {
+          tags: { action: "signerCreneau:post_presence" },
+          extra: { enrollmentId: ctx.enrollmentId },
+        });
+      }
 
       return { ok: true, signatureId: cree.id, selfHash: cree.selfHash };
     } catch (err) {

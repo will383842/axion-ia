@@ -660,6 +660,16 @@ export async function genererEmargementAction(input: {
     contresignatures: j.contresignatures.map(
       (c) => `${LIBELLE_DEMI[c.demiJournee]} — ${c.formateurNom}, signé ${c.signeAHeure}`,
     ),
+    // 🔴 H2 — demi-journées de CE jour SANS contresignature formateur. Une
+    // journée où seule la matinée est contresignée (co-animation « chacun la
+    // sienne ») était rendue comme complète : le trou de l'après-midi (signature
+    // formateur exigée, CAA Nantes 20/04/2021) était invisible à l'auditeur.
+    contresignaturesManquantes: j.demiJournees
+      // Le grain « journee » (créneau hérité d'un import, M4) n'est jamais
+      // contresigné — la contresignature se fait par demi-journée. Ne pas le
+      // compter comme « manquant », sinon faux « feuille incomplète » (L-C).
+      .filter((dj) => dj !== "journee" && !j.contresignatures.some((c) => c.demiJournee === dj))
+      .map((dj) => LIBELLE_DEMI[dj]),
   }));
 
   const doc = await generateDocument({
