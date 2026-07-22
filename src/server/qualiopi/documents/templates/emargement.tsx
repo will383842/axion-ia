@@ -76,6 +76,12 @@ export interface EmargementJournee {
    * telle plutôt que masquée.
    */
   contresignatures: string[];
+  /**
+   * Demi-journées de ce jour SANS contresignature formateur (libellés). Non
+   * vide → la journée est INCOMPLÈTE, y compris si d'autres demi-journées le
+   * sont : une journée à moitié contresignée ne doit pas passer pour complète.
+   */
+  contresignaturesManquantes: string[];
 }
 
 export interface EmargementData {
@@ -173,16 +179,17 @@ export function EmargementPdf({
               minRowHeight={32}
             />
             {/* Signature du formateur, exigée EN PLUS de celle des stagiaires
-                (CAA Nantes 20/04/2021). Absence dite explicitement : une feuille
-                dont le formateur n'a pas signé est insuffisamment probante. */}
-            {journee.contresignatures.length > 0 ? (
-              journee.contresignatures.map((c) => (
-                <FieldRow key={c} label="Contresignature formateur" value={c} />
-              ))
-            ) : (
+                (CAA Nantes 20/04/2021). Chaque demi-journée doit être
+                contresignée : on liste celles qui le sont ET on signale
+                nommément celles qui manquent — une journée à moitié contresignée
+                reste INCOMPLÈTE (H2). */}
+            {journee.contresignatures.map((c) => (
+              <FieldRow key={c} label="Contresignature formateur" value={c} />
+            ))}
+            {journee.contresignaturesManquantes.length > 0 && (
               <FieldRow
                 label="Contresignature formateur"
-                value="Non contresignée par le formateur — feuille incomplète."
+                value={`Non contresignée (${journee.contresignaturesManquantes.join(", ")}) — feuille incomplète.`}
                 required
               />
             )}
@@ -204,7 +211,11 @@ export function EmargementPdf({
           parties={[
             {
               titre: "Contresignature du formateur / de la formatrice",
-              nom: `Nom : ${data.journees[0]?.formateurNom ?? ""}`,
+              // Nom laissé VIDE (L11) : cette case est le repli manuel de N'IMPORTE
+              // quelle journée non contresignée électroniquement. Y pré-imprimer le
+              // formateur du 1er jour contredisait le signataire réel dès qu'un
+              // autre jour (co-animation) l'utilisait.
+              nom: "Nom :",
               mention: "Contresignée par journée ci-dessus, ou à défaut ici — Date :",
             },
             {

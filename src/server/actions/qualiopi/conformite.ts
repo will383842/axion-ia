@@ -165,6 +165,7 @@ export async function exporterDossierSessionAction(input: { sessionId: string })
     nbDocuments: number;
     nbDocumentsJoints: number;
     nbChainesAnormales: number;
+    nbChainesContresignAnormales: number;
     avertissements: string[];
   }>
 > {
@@ -188,6 +189,7 @@ export async function exporterDossierSessionAction(input: { sessionId: string })
       // Tracé volontairement : une anomalie d'intégrité constatée doit laisser
       // une trace datée, indépendamment de ce que l'admin fera du ZIP.
       nbChainesAnormales: dossier.nbChainesAnormales,
+      nbChainesContresignAnormales: dossier.nbChainesContresignAnormales,
     },
     session,
   });

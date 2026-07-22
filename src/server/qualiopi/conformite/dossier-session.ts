@@ -25,6 +25,7 @@
  * Stub-safe.
  */
 
+import { createHash } from "node:crypto";
 import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
@@ -43,8 +44,15 @@ export interface DossierSessionResult {
   incomplet: boolean;
   nbDocuments: number;
   nbDocumentsJoints: number;
-  /** Chaînes de signatures dont la vérification a relevé une anomalie. */
+  /** Chaînes de signatures stagiaires dont la vérification a relevé une anomalie. */
   nbChainesAnormales: number;
+  /**
+   * Chaînes de CONTRESIGNATURES formateur anormales (M6). Exposé séparément :
+   * une contresignature falsifiée est une signature « modifiée après coup » au
+   * même titre qu'une signature stagiaire, et l'UI doit pouvoir déclencher
+   * l'alerte ROUGE sur l'un OU l'autre compteur — pas la noyer dans le jaune.
+   */
+  nbChainesContresignAnormales: number;
   avertissements: string[];
 }
 
@@ -70,12 +78,18 @@ export async function genererDossierSessionZip(
         orderBy: { createdAt: "asc" },
       },
       enrollments: {
-        where: { trainee: { deletedAt: null } },
+        // 🔴 H3 — NE PAS filtrer les inscriptions sous droit à l'effacement.
+        // `supprimerStagiaire` ANONYMISE le nom (« [supprime] ») mais CONSERVE
+        // délibérément les colonnes de signature (art. 17 §3 b) pour justifier
+        // les heures. Les écarter ici rendait ces preuves — intactes et retenues
+        // exprès — invisibles et injustifiables : la faille que rgpd-service
+        // ferme au niveau colonnes, rouverte au niveau dossier. Le nom étant déjà
+        // anonymisé, les inclure ne divulgue aucune PII.
         orderBy: { trainee: { nom: "asc" } },
         select: {
           id: true,
           tauxPresencePct: true,
-          trainee: { select: { nom: true, prenom: true } },
+          trainee: { select: { nom: true, prenom: true, deletedAt: true } },
           emargementSignatures: {
             where: { revokedAt: null },
             // ⚠️ Ordre d'INSERTION, jamais `signeAt` : ce dernier est figé avant
@@ -101,9 +115,14 @@ export async function genererDossierSessionZip(
   const avertissements: string[] = [];
   const index: string[] = [`Dossier d'audit — session ${session.numero}`, session.titreSession, ""];
 
+  // R2 requis dès la vérification d'intégrité (M2 confronte les octets d'image).
+  const r2Ok = isR2Configured();
+
   // ── 1. Vérification d'intégrité des chaînes ──
   const rapports: Array<Record<string, unknown>> = [];
   let nbChainesAnormales = 0;
+  let nbEffaces = 0;
+  let nbImagesAlterees = 0;
 
   for (const inscription of session.enrollments) {
     // ⚠️ `verrouColonnes` plutôt qu'un `as unknown as` : la conversion est
@@ -114,8 +133,37 @@ export async function genererDossierSessionZip(
     );
     if (!res.valide) nbChainesAnormales += 1;
 
+    const efface = inscription.trainee.deletedAt !== null;
+    if (efface) nbEffaces += 1;
+
+    // 🔴 M2 — le chaînage scelle le CONDENSAT de l'image, mais rien ne confrontait
+    // ce condensat aux octets réels sur R2 : un objet PNG remplacé sans toucher la
+    // colonne `signature_sha256` passait « OK ». On re-télécharge et on re-hache.
+    const imagesAlterees: string[] = [];
+    if (r2Ok) {
+      for (const s of inscription.emargementSignatures) {
+        if (s.signatureKey === null || s.signatureSha256 === null) continue;
+        const buf = await getObjectBufferR2(s.signatureKey);
+        if (buf === null) {
+          imagesAlterees.push(`image absente sur R2 : ${s.signatureKey}`);
+          nbImagesAlterees += 1;
+          continue;
+        }
+        const shaReel = createHash("sha256").update(buf).digest("hex");
+        if (shaReel !== s.signatureSha256) {
+          imagesAlterees.push(`condensat divergent : ${s.signatureKey}`);
+          nbImagesAlterees += 1;
+        }
+      }
+    }
+
     rapports.push({
-      stagiaire: `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim(),
+      // Nom déjà anonymisé (« [supprime] ») pour un effacé ; on l'étiquette
+      // explicitement pour que l'auditeur sache pourquoi il est là.
+      stagiaire: efface
+        ? "[inscription sous droit à l'effacement — signatures conservées, art. 17 §3 b]"
+        : `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim(),
+      effaceRgpd: efface,
       tauxPresencePct: inscription.tauxPresencePct,
       nbSignatures: inscription.emargementSignatures.length,
       empreinteTete:
@@ -123,6 +171,7 @@ export async function genererDossierSessionZip(
         null,
       integrite: res.valide ? "OK" : "ANOMALIE",
       anomalies: res.anomalies,
+      ...(imagesAlterees.length > 0 ? { imagesAlterees } : {}),
     });
   }
 
@@ -172,9 +221,23 @@ export async function genererDossierSessionZip(
       `⚠️ ${nbChainesContresignAnormales} chaîne(s) de contresignatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
     );
   }
+  if (nbImagesAlterees > 0) {
+    avertissements.push(
+      `⚠️ ${nbImagesAlterees} image(s) de signature ne correspondent plus à leur condensat scellé (substitution ou absence sur R2). Voir « imagesAlterees » dans verification-integrite.json.`,
+    );
+  }
+  if (nbEffaces > 0) {
+    // Informationnel, PAS un avertissement : le dossier est COMPLET justement
+    // parce qu'il inclut ces preuves conservées. On le dit à l'auditeur.
+    index.push(
+      `Dont ${nbEffaces} inscription(s) sous droit à l'effacement RGPD — signatures conservées et vérifiées (art. 17 §3 b).`,
+    );
+  }
 
   // ── 2. Feuille d'émargement telle qu'elle serait tirée ──
-  const feuille = await construireFeuillePdf(sessionId);
+  // `inclureEffaces=true` : le dossier d'audit conserve les inscriptions effacées
+  // (nom anonymisé, signatures retenues art. 17 §3 b), cohérent avec la vérif ci-dessus.
+  const feuille = await construireFeuillePdf(sessionId, true);
   if (feuille === null || feuille.journees.length === 0) {
     avertissements.push(
       "⚠️ Les journées de cette session ne sont pas déclarées : aucune feuille d'émargement conforme ne peut être produite (horaires réels manquants).",
@@ -187,8 +250,7 @@ export async function genererDossierSessionZip(
     );
   }
 
-  // ── 3. Documents générés de la session ──
-  const r2Ok = isR2Configured();
+  // ── 3. Documents générés de la session ── (`r2Ok` déjà calculé plus haut)
   if (!r2Ok) {
     avertissements.push(
       "⚠️ Stockage R2 non configuré : aucun PDF n'est restituable. Le dossier ne contient que les registres.",
@@ -233,6 +295,7 @@ export async function genererDossierSessionZip(
     nbDocuments: session.documents.length,
     nbDocumentsJoints: joints,
     nbChainesAnormales,
+    nbChainesContresignAnormales,
     avertissements,
   };
 }
