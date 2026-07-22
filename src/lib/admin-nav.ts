@@ -447,6 +447,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🧑‍💼",
       group: "contacts",
     },
+    // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
+    // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
+    // layout Contacts impose son propre AdminPageShell), mais rangée ici dans
+    // la sidebar : c'est un formulaire entrant comme les autres.
+    {
+      href: `${base}/podcast`,
+      label: "Demandes de podcast",
+      icon: "🎙️",
+      group: "contacts",
+    },
     // ── Rendez-vous — APPELS (Calendly ≠ messages écrits) ───────────────────
     {
       href: `${base}/contacts/rendez-vous`,

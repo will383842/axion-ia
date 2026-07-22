@@ -93,6 +93,7 @@ describe("shouldNotifyWhatsApp", () => {
       "JOB_APPLICATION_RECEIVED",
       "BOOKING_CREATED",
       "CALENDLY_INVITEE_CREATED",
+      "PODCAST_REQUEST_SUBMITTED",
     ] as const) {
       expect(shouldNotifyWhatsApp(c), c).toBe(true);
     }

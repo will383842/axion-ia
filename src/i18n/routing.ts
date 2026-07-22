@@ -210,6 +210,12 @@ export const routing = defineRouting({
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307.
     "/visibilite-entreprise": { fr: "/visibilite-entreprise", en: "/visibilite-entreprise" },
 
+    // Podcast dirigeant — tournage gratuit dans les locaux du client (2026-07-21).
+    // Cible du flyer papier + du QR dynamique `/qr/podcast`. Offre indépendante
+    // des formations. fr==en : EN redirigé 301→FR (proxy), évite le bug
+    // next-intl 307 self-loop des mappings fr≠en.
+    "/podcast": { fr: "/podcast", en: "/podcast" },
+
     // Certification Qualiopi — page de réassurance (agrément, qualité, sérieux)
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307.
     "/certification-qualiopi": { fr: "/certification-qualiopi", en: "/certification-qualiopi" },

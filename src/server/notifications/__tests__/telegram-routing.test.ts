@@ -33,6 +33,7 @@ describe("telegramGroupFor", () => {
       "SPEAKER_INVITATION_RECEIVED",
       "INVESTOR_INQUIRY_RECEIVED",
       "CUSTOMER_SUPPORT_REQUEST",
+      "PODCAST_REQUEST_SUBMITTED",
     ];
     for (const c of cats) expect(telegramGroupFor(c), c).toBe("messages");
   });
