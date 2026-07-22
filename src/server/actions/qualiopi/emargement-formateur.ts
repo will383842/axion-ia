@@ -43,7 +43,11 @@ export type ResultatSignatureFormateur =
   | { ok: true; signatureId: string }
   | { ok: false; raison: RefusFormateur; message: string };
 
-export type RefusContresignatureFormateur = RefusContresignature | "non_membre" | "stockage";
+export type RefusContresignatureFormateur =
+  | RefusContresignature
+  | "non_membre"
+  | "stockage"
+  | "requete_invalide";
 
 export type ResultatContresignatureFormateur =
   | { ok: true; contresignatureId: string }
@@ -200,7 +204,7 @@ export async function contresignerDemiJourneeAction(input: {
   if (!parse.success) {
     return {
       ok: false,
-      raison: "session_introuvable",
+      raison: "requete_invalide",
       message: "Cette demande n'est pas valide. Rechargez la page.",
     };
   }

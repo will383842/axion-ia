@@ -341,6 +341,7 @@ export async function reportSessionAction(
     clientId: string | null;
     financementType: string | null;
     sessionParentId: string | null;
+    formation: { dureeHeures: number };
     enrollments: Array<{ id: string; traineeId: string; statut: string }>;
   } | null;
 
@@ -363,6 +364,9 @@ export async function reportSessionAction(
         clientId: true,
         financementType: true,
         sessionParentId: true,
+        // L5 — durée du catalogue, pour proposer les journées de la session
+        // reportée (sinon aucun jour → aucun lien d'émargement émissible).
+        formation: { select: { dureeHeures: true } },
         enrollments: {
           select: { id: true, traineeId: true, statut: true },
         },
@@ -418,6 +422,26 @@ export async function reportSessionAction(
         select: { id: true, numero: true },
       });
 
+      // 🔴 L5 — proposer les journées de la session reportée, comme à la création.
+      // Sans elles, `emettreLiensSessionAction` échoue (`journees_non_declarees`)
+      // et l'admin ne peut pas émettre les liens sans re-saisir les jours à la
+      // main, sans indication que le report en est la cause. `horairesConfirmes`
+      // reste false : ce sont des propositions à vérifier.
+      const joursReport = genererJoursParDefaut({
+        dateDebutIso: parisDateISO(v.nouvelleDateDebut),
+        dureeHeures: ancienne!.formation.dureeHeures,
+      });
+      if (joursReport.length > 0) {
+        await tx.sessionJour.createMany({
+          data: joursReport.map((j) => ({
+            sessionId: nouvelle.id,
+            date: new Date(`${j.date}T00:00:00.000Z`),
+            heureDebut: j.heureDebut,
+            heureFin: j.heureFin,
+          })),
+        });
+      }
+
       // FormationTransition initiale pour la nouvelle session (null → planifiee)
       await writeSessionTransition(tx, {
         sessionId: nouvelle.id,
@@ -446,8 +470,9 @@ export async function reportSessionAction(
 
       // 3. Migrer les enrollments
       // @@unique [sessionId, traineeId] — si le stagiaire est déjà inscrit à la
-      // nouvelle session (cas rare : inscription manuelle préalable), on supprime
-      // l'enrollment source pour éviter le doublon. Sinon on transfère.
+      // nouvelle session (cas rare : inscription manuelle préalable), on LAISSE
+      // l'inscription source sur la session reportée (L12 : elle peut porter une
+      // preuve, non supprimable). Sinon on la transfère.
       for (const enrollment of ancienne!.enrollments) {
         try {
           await tx.enrollment.update({
@@ -457,9 +482,13 @@ export async function reportSessionAction(
         } catch (enrollErr) {
           const code = (enrollErr as { code?: string })?.code;
           if (code === "P2002") {
-            // Doublons : stagiaire déjà inscrit dans la nouvelle session.
-            // On supprime l'enrollment source (l'enrollment cible reste).
-            await tx.enrollment.delete({ where: { id: enrollment.id } });
+            // Doublon : le stagiaire est DÉJÀ inscrit à la nouvelle session.
+            // 🔴 L12 — on ne SUPPRIME PAS l'inscription source : elle peut porter
+            // une signature ou un jeton d'émargement (FK `Restrict` de T13), et le
+            // delete lèverait alors un P2003 non rattrapé qui ferait échouer tout
+            // le report. On la LAISSE sur la session reportée : ses preuves y
+            // restent rattachées à la session qui a réellement eu lieu, ce qui est
+            // correct. Le stagiaire poursuit via son inscription à la nouvelle.
           } else {
             throw enrollErr;
           }

@@ -383,6 +383,16 @@ export async function storeSignatureImage(input: {
     if (/^[0-9a-f]{32}$/i.test(etag)) {
       const md5 = createHash("md5").update(normalise).digest("hex");
       if (etag.toLowerCase() !== md5) {
+        // 🔴 L4 — l'objet vient d'être écrit mais ne sera JAMAIS référencé (la
+        // transaction ne tournera pas) : sans ce nettoyage, un tracé rasterisé
+        // (donnée personnelle art. 6) reste orphelin sur R2, introuvable et
+        // ineffaçable par la purge RGPD qui part de `signature_key`. Best-effort :
+        // ne pas masquer l'erreur d'intégrité qui l'a déclenché.
+        try {
+          await supprimerImageSignature(key);
+        } catch {
+          // avalé volontairement : le refus ci-dessous est l'information utile.
+        }
         const err = new SignatureStockageError(
           "upload_echoue",
           "L'objet écrit sur le stockage ne correspond pas à ce qui a été envoyé.",

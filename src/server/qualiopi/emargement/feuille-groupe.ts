@@ -64,11 +64,24 @@ const LIBELLE_DEMI: Record<DemiJourneeLabel, string> = {
   journee: "Journée",
 };
 
+// 🔴 M3 — forme PHRASE de la demi-journée, pour la MENTION scellée (≠ l'en-tête
+// d'écran, en casse titre). DOIT être IDENTIQUE à `portail-queries.ts` : la même
+// `mention_version` (v1) ne peut pas correspondre à deux textes différents selon
+// que le stagiaire signe sur son téléphone ou sur le poste du formateur.
+const PHRASE_DEMI: Record<DemiJourneeLabel, string> = {
+  matin: "la matinée",
+  apres_midi: "l'après-midi",
+  journee: "la journée",
+};
+
+// Avec l'ANNÉE, comme le portail : une mention sans année n'est pas restituable
+// à l'identique.
 function jourLisible(iso: string): string {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString("fr-FR", {
     weekday: "long",
     day: "numeric",
     month: "long",
+    year: "numeric",
     timeZone: "UTC",
   });
 }
@@ -178,7 +191,8 @@ export async function lireFeuilleGroupe(
           mentions: mentionComplete({
             formationIntitule: session.titreSession,
             jourLisible: jourLisible(iso),
-            demiJourneeLisible: LIBELLE_DEMI[dj].toLowerCase(),
+            // Forme phrase alignée sur le portail (M3), pas l'en-tête d'écran.
+            demiJourneeLisible: PHRASE_DEMI[dj],
             horaires,
             organisme,
           }),
