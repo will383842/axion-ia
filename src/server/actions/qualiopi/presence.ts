@@ -239,6 +239,10 @@ export async function generateSessionCreneauxAction(input: {
 
   let created = 0;
   let reconcilies = 0;
+  // Inscriptions dont la DURÉE PRÉVUE d'un créneau a changé : leur dénominateur
+  // a bougé, il faut recalculer leur taux (oubli H1). Un simple changement de
+  // libellé n'y entre pas — il n'affecte pas le taux.
+  const aRecalculer = new Set<string>();
 
   // Upsert de chaque créneau pour chaque enrollment.
   for (const enrollment of trainingSession.enrollments) {
@@ -291,6 +295,9 @@ export async function generateSessionCreneauxAction(input: {
         existant.dureePrevueMinutes !== creneau.dureePrevueMinutes ||
         existant.libelle !== creneau.libelle
       ) {
+        if (existant.dureePrevueMinutes !== creneau.dureePrevueMinutes) {
+          aRecalculer.add(enrollment.id);
+        }
         await prisma.presenceCreneau.update({
           where: { id: existant.id },
           data: {
@@ -301,6 +308,18 @@ export async function generateSessionCreneauxAction(input: {
         reconcilies++;
       }
     }
+  }
+
+  // 🔴 H1 — le dénominateur corrigé doit atteindre l'agrégat stocké. Sans ce
+  // recalcul, `Enrollment.tauxPresencePct` et les flags `present` restaient sur
+  // l'ancienne durée → présence SURÉVALUÉE sur une pièce probante, jusqu'à un
+  // save d'émargement ultérieur sans rapport. Le commentaire ci-dessus promettait
+  // « recalcule », sans jamais l'exécuter.
+  for (const enrollmentId of aRecalculer) {
+    await recomputeTauxPresence(enrollmentId);
+  }
+  if (aRecalculer.size > 0) {
+    await invalidateIndicateursCache(trainingSession.dateDebut.getUTCFullYear());
   }
 
   // Créneaux présents en base mais ABSENTS du plan courant : ils gonflent le
@@ -757,10 +776,48 @@ export async function importReleveConnexionAction(input: {
     }
 
     for (const [index, creneau] of creneauxDuJour.entries()) {
+      const dj = toDemiJourneeEnum(creneau.demiJournee);
+
+      // 🔴 M1 — ne PAS écraser une demi-journée PRÉSENTIELLE déjà émargée.
+      // La protection `journeeHeritee` ci-dessus ne couvrait que le créneau
+      // « journee » ; les demi-journées matin/après-midi étaient upsertées
+      // aveuglément, basculant `present` à false et écrasant une durée SIGNÉE par
+      // la répartition distancielle — une preuve d'émargement présentiel détruite
+      // en silence sur une session hybride. On saute la demi-journée protégée (et
+      // on la signale), sans bloquer l'import de l'autre.
+      const existantDemi = await prisma.presenceCreneau.findUnique({
+        where: {
+          enrollmentId_date_demiJournee: {
+            enrollmentId: enrollment.id,
+            date: dateObj,
+            demiJournee: dj,
+          },
+        },
+        select: {
+          present: true,
+          // Discriminant présentiel/distanciel : `importId` (et non `source`, que
+          // `toPresenceSource("autre")` rend « emargement_presentiel » à tort).
+          importId: true,
+          _count: { select: { emargementSignatures: true } },
+        },
+      });
+      const protegePresentiel =
+        existantDemi !== null &&
+        existantDemi.importId === null &&
+        (existantDemi._count.emargementSignatures > 0 || existantDemi.present);
+      if (protegePresentiel) {
+        journeesConflictuelles.push({
+          enrollmentId: enrollment.id,
+          date: dateCivile,
+          motif: existantDemi._count.emargementSignatures > 0 ? "signature" : "presence_cochee",
+        });
+        continue;
+      }
+
       await upsertCreneau({
         enrollmentId: enrollment.id,
         date: dateObj,
-        demiJournee: toDemiJourneeEnum(creneau.demiJournee),
+        demiJournee: dj,
         libelle: creneau.libelle,
         dureePrevueMinutes: creneau.dureePrevueMinutes,
         source: toPresenceSource(v.plateforme),

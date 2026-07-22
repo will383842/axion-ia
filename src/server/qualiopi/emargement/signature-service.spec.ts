@@ -16,8 +16,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    presenceCreneau: { findUnique: vi.fn() },
+    presenceCreneau: { findUnique: vi.fn(), update: vi.fn() },
     emargementSignature: { findFirst: vi.fn(), create: vi.fn(), count: vi.fn() },
+    enrollment: { updateMany: vi.fn() },
     $transaction: vi.fn(),
   },
 }));
@@ -29,6 +30,11 @@ vi.mock("./storage", () => ({
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
+// H4 — le service reporte la présence après signature ; isolé ici pour ne tester
+// que la logique de signature (le calcul du taux a ses propres tests).
+vi.mock("@/server/qualiopi/presence/presence-service", () => ({ recomputeTauxPresence: vi.fn() }));
+vi.mock("@/server/qualiopi/indicateurs/service", () => ({ invalidateIndicateursCache: vi.fn() }));
+
 import { prisma } from "@/lib/prisma";
 import { storeSignatureImage, supprimerImageSignature } from "./storage";
 import { signerCreneau } from "./signature-service";
@@ -38,12 +44,13 @@ import { MENTION_VERSION } from "./mentions";
 import { Prisma } from "../../../../prisma/generated/client";
 
 const mockPrisma = prisma as unknown as {
-  presenceCreneau: { findUnique: ReturnType<typeof vi.fn> };
+  presenceCreneau: { findUnique: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
   emargementSignature: {
     findFirst: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
     count: ReturnType<typeof vi.fn>;
   };
+  enrollment: { updateMany: ReturnType<typeof vi.fn> };
   $transaction: ReturnType<typeof vi.fn>;
 };
 const mockStore = storeSignatureImage as unknown as ReturnType<typeof vi.fn>;
@@ -59,6 +66,8 @@ function contexte(over: Record<string, unknown> = {}) {
     id: "cre-1",
     date: new Date("2026-06-10T00:00:00.000Z"),
     demiJournee: "matin",
+    dureePrevueMinutes: 210,
+    importId: null,
     enrollmentId: "enr-1",
     enrollment: {
       id: "enr-1",
@@ -68,6 +77,7 @@ function contexte(over: Record<string, unknown> = {}) {
         id: "ses-1",
         statut: "en_cours",
         titreSession: "Bien démarrer avec l'IA",
+        dateDebut: new Date("2026-06-10T09:00:00.000Z"),
         formation: { titre: "Titre catalogue" },
         formateurPrincipal: { nom: "Jullin", prenom: "Williams" } as {
           nom: string;
@@ -93,6 +103,8 @@ beforeEach(() => {
   vi.clearAllMocks();
   // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour.
   mockPrisma.presenceCreneau.findUnique.mockResolvedValue(contexte());
+  mockPrisma.presenceCreneau.update.mockResolvedValue({ id: "cre-1" });
+  mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 1 });
   mockPrisma.emargementSignature.findFirst.mockResolvedValue(null);
   mockPrisma.emargementSignature.create.mockImplementation(
     async (args: { data: { id: string; selfHash: string } }) => ({
@@ -118,6 +130,69 @@ function donneesCreees(): Record<string, unknown> {
     mockPrisma.emargementSignature.create.mock.calls[0]?.[0] as { data: Record<string, unknown> }
   ).data;
 }
+
+describe("signerCreneau — H4 : signer vaut présence", () => {
+  it("reporte la présence PLEINE d'un créneau présentiel et recalcule le taux", async () => {
+    const { recomputeTauxPresence } = await import("@/server/qualiopi/presence/presence-service");
+    const { invalidateIndicateursCache } = await import("@/server/qualiopi/indicateurs/service");
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect(r.ok).toBe(true);
+    // Durée réalisée = durée prévue (210), present=true, dans la transaction.
+    expect(mockPrisma.presenceCreneau.update).toHaveBeenCalledWith({
+      where: { id: "cre-1" },
+      data: { dureeRealiseeMinutes: 210, present: true },
+    });
+    // Agrégat recalculé + émargement horodaté write-once + cache invalidé.
+    expect(recomputeTauxPresence).toHaveBeenCalledWith("enr-1");
+    expect(mockPrisma.enrollment.updateMany).toHaveBeenCalledWith({
+      where: { id: "enr-1", emargementSigneAt: null },
+      data: { emargementSigneAt: MAINTENANT },
+    });
+    expect(invalidateIndicateursCache).toHaveBeenCalledWith(2026);
+  });
+
+  it("NE gonfle PAS la durée d'un créneau distanciel (le relevé de connexion reste la vérité)", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(
+      contexte({ importId: "imp-1", dureePrevueMinutes: 210 }),
+    );
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect(r.ok).toBe(true);
+    // La preuve est écrite, mais la durée du créneau distanciel n'est PAS touchée.
+    expect(mockPrisma.presenceCreneau.update).not.toHaveBeenCalled();
+    // Le taux est tout de même recalculé et l'émargement horodaté.
+    const { recomputeTauxPresence } = await import("@/server/qualiopi/presence/presence-service");
+    expect(recomputeTauxPresence).toHaveBeenCalledWith("enr-1");
+  });
+
+  it("ne touche NI présence NI taux quand la signature est REFUSÉE", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(
+      contexte({ emargementSignatures: [{ id: "deja" }] }),
+    );
+    const { recomputeTauxPresence } = await import("@/server/qualiopi/presence/presence-service");
+    const r = await signerCreneau({
+      porteur: PORTEUR_STAGIAIRE,
+      creneauId: "cre-1",
+      methode: "canvas",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect(r.ok).toBe(false);
+    expect(mockPrisma.presenceCreneau.update).not.toHaveBeenCalled();
+    expect(recomputeTauxPresence).not.toHaveBeenCalled();
+  });
+});
 
 describe("signerCreneau — refus sans AUCUNE écriture", () => {
   it("refuse un créneau introuvable", async () => {
