@@ -5936,6 +5936,8 @@ model Trainer {
   developmentActions         TrainerDevelopmentAction[]
   /// Contresignatures d'émargement apposées par ce formateur (T13).
   emargementContresignatures EmargementContresignature[]
+  /// Signatures AFEST 1-to-1 recueillies sur son poste (méthode A).
+  signaturesSeanceRecueillies CoachingSeanceSignature[] @relation("SeanceSignatureRecueillie")
 
   @@index([statut])
   @@index([actif])
@@ -7741,9 +7743,21 @@ model EmargementToken {
   revokedMotif  String?            @map("revoked_motif") @db.Text
   /// IP de création, HASHÉE (jamais en clair — cf. `security/ip-hash.ts`).
   createdIpHash String?            @map("created_ip_hash") @db.VarChar(64)
+  /// Rôle du destinataire en contexte AFEST 1-to-1. NOT NULL dans ce contexte,
+  /// NULL ailleurs (CHECK `ck_emargement_token_coaching_role`). Sans lui, la
+  /// garde d'autorisation « porteur ↔ rôle » n'aurait aucune source fiable et
+  /// un lien tuteur pourrait écrire une signature de bénéficiaire.
+  coachingRole  CoachingSignataireRole? @map("coaching_role")
+  /// 🔴 SHA-256 de l'adresse à laquelle le lien a été ENVOYÉ. `verifyMagicToken`
+  /// ne lie PAS le porteur à un destinataire (il ne contrôle que `scope` +
+  /// `resourceId`, et se contente d'un « @ » dans l'e-mail du payload) : sans
+  /// cette colonne, un lien transféré signe au nom du destinataire initial.
+  /// Hashée, jamais en clair : la ligne survit cinq ans.
+  destinataireEmailSha256 String?    @map("destinataire_email_sha256") @db.VarChar(64)
   createdAt     DateTime           @default(now()) @map("created_at")
 
-  signatures EmargementSignature[]
+  signatures        EmargementSignature[]
+  seanceSignatures  CoachingSeanceSignature[]
 
   @@index([enrollmentId])
   @@index([coachingId])
@@ -8205,14 +8219,36 @@ model CoachingSession {
   /// Null = parcours legacy sans document émis → repli lecture LIVE.
   coachingSnapshot         Json?                 @map("coaching_snapshot")
   conventionSigneeAt       DateTime?             @map("convention_signee_at")
-  /// Cache des heures réellement réalisées = Σ CompteRenduSeance.dureeMinutes / 60.
-  /// Recalculé à la clôture du parcours. Source de vérité OPCO/attestation.
+  /// Cache des heures réellement réalisées, en heures décimales.
+  ///
+  /// ⚠️ CACHE, jamais source de vérité : la source est `heuresReellesSignees()`,
+  /// recalculée à la demande. Écrivain UNIQUE = le chemin de CLÔTURE (émission
+  /// de l'attestation / du certificat). La transaction de signature ne l'écrit
+  /// PAS : un cache posé à chaque signature oscillerait selon l'ordre des
+  /// opérations, et le commentaire d'origine (« recalculé à la clôture »)
+  /// décrivait une intention que personne n'implémentait.
   dureeReelleHeures        Decimal?              @map("duree_reelle_heures") @db.Decimal(6, 2)
+  /// Régime de preuve du parcours (voir `CoachingRegimePreuve`).
+  regimePreuve             CoachingRegimePreuve  @default(legacy_boolean) @map("regime_preuve")
+  /// Heures signées FIGÉES à la clôture, et leur horodatage.
+  ///
+  /// 🔴 Distinctes de `coachingSnapshot` : ce dernier est un snapshot
+  /// ON-FIRST-EMIT, et le premier document d'un parcours AFEST est le protocole
+  /// EX-ANTE (cadrage D.6313-3-1), émis AVANT toute séance. Y figer des heures
+  /// scellerait 0 h, et l'attestation finale relirait 0 → « aucune » sur TOUS
+  /// les parcours. Les heures ex-post ont donc leur propre colonne.
+  heuresSigneesCloture     Decimal?              @map("heures_signees_cloture") @db.Decimal(6, 2)
+  heuresSigneesClotureAt   DateTime?             @map("heures_signees_cloture_at")
   /// Heures prévues à la convention (dénominateur des seuils d'attestation).
   heuresPrevuesConvention  Decimal?              @map("heures_prevues_convention") @db.Decimal(6, 2)
   // Tuteur entreprise AFEST (optionnel — enforcement gated par flag SiteSetting).
   tuteurEntrepriseNom      String?               @map("tuteur_entreprise_nom") @db.VarChar(200)
   tuteurEntrepriseEmail    String?               @map("tuteur_entreprise_email") @db.Citext
+  /// ⚠️ SUPERSÉDÉ — colonne PARCOURS-SCALAIRE, conservée pour l'historique mais
+  /// PLUS ÉCRITE. Elle ne peut pas refléter N signatures tuteur (une par
+  /// séance) : lui faire prétendre le contraire produisait un « tuteur a signé »
+  /// vrai pour une séance et faux pour douze. L'information se DÉRIVE désormais
+  /// en lecture des lignes `CoachingSeanceSignature` de rôle `tuteur`.
   tuteurEntrepriseSigneeAt DateTime?             @map("tuteur_entreprise_signee_at")
   // Protocole AFEST émis (idempotence — pas de doublon à la re-génération).
   protocoleDocumentId      String?               @map("protocole_document_id") @db.Uuid
@@ -8339,18 +8375,203 @@ model CompteRenduSeance {
   planRemis            Boolean         @default(false) @map("plan_remis")
   suite                String?         @db.VarChar(120)
   notesConfidentielles String?         @map("notes_confidentielles") @db.Text
-  // Traçabilité de présence AFEST (émargement signé par séance) — additif.
+  /// Statut de la séance.
+  ///
+  /// 🔴 Sans lui, une absence LÉGITIME (séance reportée, annulée, arrêt de
+  /// travail) bloquait l'attestation à vie : le gate exige que TOUTES les
+  /// séances portent une présence signée, et une séance jamais tenue n'est
+  /// jamais signée. `annulee` / `absence_justifiee` sont NEUTRALISÉES — ni
+  /// bloquantes pour l'attestation, ni comptées dans les heures.
+  statut               CoachingSeanceStatut @default(realisee)
+  // ── Cache d'affichage dérivé des lignes `CoachingSeanceSignature` ──
+  //
+  // 🔴 CES COLONNES NE SONT PLUS UNE PREUVE. Elles étaient posées par un simple
+  // clic admin, sans acte signataire, sans image et sans empreinte, puis
+  // rendues « signé » sur le PDF : un faux positif de preuve. Elles sont
+  // conservées (additif, pas de DROP) mais RÉTROGRADÉES en cache d'affichage,
+  // écrit uniquement par `signerSeanceAfest` dans la MÊME transaction que la
+  // ligne de signature. La source de vérité est la ligne, jamais ce cache.
   beneficiairePresent  Boolean         @default(false) @map("beneficiaire_present")
   beneficiaireSigneAt  DateTime?       @map("beneficiaire_signe_at")
   formateurSigneAt     DateTime?       @map("formateur_signe_at")
   tuteurSigneAt        DateTime?       @map("tuteur_signe_at")
-  /// Date à laquelle la présence de la séance a été validée/signée (preuve audit).
+  /// Cache dérivé : horodatage de la signature de présence du BÉNÉFICIAIRE.
   presenceSigneeAt     DateTime?       @map("presence_signee_at")
   createdAt            DateTime        @default(now()) @map("created_at")
 
+  signatures CoachingSeanceSignature[]
+
+  /// Clé candidate pour la FK COMPOSITE de `coaching_seance_signatures`.
+  /// Sans elle, un `coachingId` erroné placerait la chaîne d'un parcours sur un
+  /// autre sans qu'aucune empreinte ne bouge — et `verifierChaine` déclarerait
+  /// les DEUX chaînes valides.
+  @@unique([id, coachingSessionId], map: "coaching_comptes_rendus_id_session_key")
   @@index([coachingSessionId])
   @@index([dateSeance])
   @@map("coaching_comptes_rendus")
+}
+
+/// Rôle d'un signataire d'émargement AFEST 1-to-1.
+///
+/// ⚠️ Distinction à tenir dans toute communication : bénéficiaire et formateur
+/// apposent une SIGNATURE-PRÉSENCE ; le tuteur entreprise apporte une
+/// CO-ATTESTATION DE RÉALITÉ. Le second est un tiers, et sa ligne n'a pas la
+/// même portée probante.
+enum CoachingSignataireRole {
+  beneficiaire
+  formateur
+  tuteur
+
+  @@map("coaching_signataire_role")
+}
+
+/// Modalité de recueil d'une signature AFEST.
+///
+/// Volontairement DISTINCTE d'`EmargementMethode` : coupler les deux ferait
+/// qu'une évolution du collectif toucherait des tuples AFEST déjà scellés.
+/// Les TROIS valent présence probante — une confirmation accessible (chemin
+/// clavier / lecteur d'écran, ind. 26) n'est pas moins probante qu'un tracé.
+enum CoachingSignatureMethode {
+  trace
+  papier_scanne
+  confirmation_accessible
+
+  @@map("coaching_signature_methode")
+}
+
+/// Statut d'une séance de coaching (neutralisation des absences légitimes).
+enum CoachingSeanceStatut {
+  planifiee
+  realisee
+  annulee
+  absence_justifiee
+
+  @@map("coaching_seance_statut")
+}
+
+/// Régime de preuve d'un parcours, PAR PARCOURS et non par flag global.
+///
+/// 🔴 `legacy_boolean` par DÉFAUT, et ce n'est pas de la prudence décorative :
+/// basculer un flag global appliquerait le filtre « heures réellement signées »
+/// à TOUS les parcours, y compris ceux déjà attestés et déjà facturés à un
+/// OPCO. Une attestation « complète » rétrogradée en « aucune » après coup est
+/// un incident, pas une amélioration. Le passage en `signature_reelle` est une
+/// décision explicite, parcours par parcours.
+enum CoachingRegimePreuve {
+  legacy_boolean
+  signature_reelle
+
+  @@map("coaching_regime_preuve")
+}
+
+/// Signature d'émargement AFEST 1-to-1, au grain (séance × rôle).
+///
+/// APPEND-ONLY : pas d'`updatedAt`. Une correction passe par révocation puis
+/// nouvelle signature, jamais par écrasement — et l'index unique est PARTIEL
+/// (`WHERE revoked_at IS NULL`, SQL brut) précisément pour la rendre possible.
+///
+/// Chaînage scopé (parcours × rôle) : `prevHash` scelle le `selfHash` de la
+/// signature précédente DU MÊME RÔLE sur le MÊME parcours. Les trois rôles ont
+/// donc trois chaînes indépendantes et ne se sérialisent pas les uns derrière
+/// les autres.
+///
+/// ⚠️ PLAFOND PROBANT ASSUMÉ. En méthode A (le poste du formateur), les trois
+/// lignes portent le même `recueilliParTrainerId` : la chaîne prouve
+/// l'INTÉGRITÉ, pas l'INDÉPENDANCE des signataires. On revendique donc
+/// « émargement à 3 rôles, recueil attesté par l'OF », jamais « 3 signataires
+/// indépendants ». L'indépendance n'est défendable que par le canal B
+/// (appareil et adresse distincts, avec binding e-mail réel).
+model CoachingSeanceSignature {
+  id                   String                   @id @default(uuid()) @db.Uuid
+  /// Grain réel de la preuve : UNE séance.
+  compteRenduSeanceId  String                   @map("compte_rendu_seance_id") @db.Uuid
+  /// Portée de la CHAÎNE, dénormalisée. Cohérence garantie par la FK COMPOSITE
+  /// ci-dessous — sans elle, un `coachingId` erroné réattribuerait
+  /// silencieusement la chaîne d'un parcours à un autre.
+  coachingId           String                   @map("coaching_id") @db.Uuid
+  compteRendu          CompteRenduSeance        @relation(fields: [compteRenduSeanceId, coachingId], references: [id, coachingSessionId], onDelete: Restrict, map: "css_cr_coaching_coherent_fkey")
+  role                 CoachingSignataireRole
+
+  // ── SNAPSHOT — ce qui a été signé, figé au moment de la signature ──
+  //
+  // 🔴 Condition pour que `selfHash` soit RECALCULABLE, donc pour que le
+  // chaînage prouve quelque chose. Les reconstruire par jointure serait pire
+  // que de ne rien avoir : renommer une intervention invaliderait
+  // rétroactivement, et en silence, toutes les empreintes déjà émises.
+  /// Jour civil PARIS de la séance. `@db.Date` : Prisma la rend TOUJOURS à
+  /// minuit UTC, et l'écriture doit respecter le même invariant
+  /// (`new Date(jourParis + "T00:00:00.000Z")`). `seance-reconstruction.ts`
+  /// REFUSE toute date non alignée : une séance du 10 juin à 23h30 Paris
+  /// (donc le 10 en UTC-jour-civil-Paris mais le 10 à 21h30 UTC) doit être
+  /// relue à l'identique, faute de quoi l'empreinte est définitivement fausse.
+  seanceDate           DateTime                 @map("seance_date") @db.Date
+  /// ⚠️ Affichage seulement — VOLONTAIREMENT hors du tuple haché : redondante
+  /// avec (heureDebut, heureFin), une contradiction figée entre les deux serait
+  /// indétectable. La référence collective ne hache jamais la durée non plus.
+  dureeMinutes         Int                      @map("duree_minutes")
+  /// Horaires RÉELS `HH:MM` dérivés de `dateSeance` + `dureeMinutes` en heure de
+  /// Paris. NOT NULL : sans horaires, la feuille est insuffisamment probante
+  /// (CAA Nantes 20/04/2021). ⚠️ JAMAIS dérivés de `CoachingSession.dateSeanceFin`,
+  /// qui est le parent AGRÉGEANT N séances — les horaires y seraient faux et
+  /// identiques pour toutes.
+  heureDebut           String                   @map("heure_debut") @db.VarChar(5)
+  heureFin             String                   @map("heure_fin") @db.VarChar(5)
+  formationIntitule    String                   @map("formation_intitule") @db.VarChar(300)
+  /// ⚠️ PAS de `@default` : colonne hachée, cf. `EmargementSignature`.
+  modulesSnapshot      Json                     @map("modules_snapshot")
+  formateurNom         String                   @map("formateur_nom") @db.VarChar(200)
+
+  /// Identité du signataire FIGÉE : un UUID n'identifie personne devant un juge.
+  signataireNom        String                   @map("signataire_nom") @db.VarChar(200)
+  /// Nullable : le tuteur entreprise est un tiers externe, sans compte.
+  signataireEmail      String?                  @map("signataire_email") @db.VarChar(255)
+
+  /// Méthode A — le signataire signe sur le poste du formateur, qui porte alors
+  /// l'identification, comme une feuille papier qu'il fait circuler.
+  recueilliParTrainerId String?                 @map("recueilli_par_trainer_id") @db.Uuid
+  recueilliPar          Trainer?                @relation("SeanceSignatureRecueillie", fields: [recueilliParTrainerId], references: [id], onDelete: Restrict)
+  /// Méthode B — lien propre, à distance (binding e-mail réel obligatoire).
+  tokenId              String?                  @map("token_id") @db.Uuid
+  token                EmargementToken?         @relation(fields: [tokenId], references: [id], onDelete: Restrict)
+  methode              CoachingSignatureMethode
+
+  signatureKey         String?                  @map("signature_key") @db.Text
+  /// SHA-256 de l'IMAGE — et non de sa clé R2 : un objet de stockage est
+  /// remplaçable sans que la base bouge.
+  signatureSha256      String?                  @map("signature_sha256") @db.VarChar(64)
+  mimeType             String?                  @map("mime_type") @db.VarChar(60)
+  sizeBytes            Int?                     @map("size_bytes")
+
+  signeAt              DateTime                 @map("signe_at")
+  /// ⚠️ DISTINCT de `signeAt` : l'écart révèle une insertion tardive. C'est
+  /// aussi `createdAt` qui ORDONNE la chaîne — jamais `signeAt`, figé avant
+  /// l'écriture de l'image sur R2.
+  createdAt            DateTime                 @default(now()) @map("created_at")
+
+  /// NON scellés (hors tuple) : effaçables au titre de l'art. 17 RGPD sans
+  /// invalider une seule empreinte. Doctrine « seule l'IMAGE se détruit ».
+  ipHash               String?                  @map("ip_hash") @db.VarChar(64)
+  userAgentSha256      String?                  @map("user_agent_sha256") @db.VarChar(64)
+
+  prevHash             String?                  @map("prev_hash") @db.VarChar(64)
+  selfHash             String                   @map("self_hash") @db.VarChar(64)
+  /// Version DU TUPLE AFEST (`HASH_VERSION_SEANCE`), indépendante du collectif.
+  hashVersion          Int                      @default(1) @map("hash_version")
+  /// Version du texte présenté au signataire (`MENTION_VERSION_AFEST`), SCELLÉE.
+  mentionVersion       String                   @map("mention_version") @db.VarChar(20)
+
+  suppressionPrevueAt  DateTime?                @map("suppression_prevue_at")
+  imagePurgeeAt        DateTime?                @map("image_purgee_at")
+  revokedAt            DateTime?                @map("revoked_at")
+  revokedById          String?                  @map("revoked_by_id") @db.Uuid
+  revokedMotif         String?                  @map("revoked_motif") @db.Text
+
+  /// ⚠️ `createdAt`, jamais `signeAt` : tout vérificateur doit trier À L'IDENTIQUE.
+  @@index([coachingId, role, createdAt])
+  @@index([compteRenduSeanceId])
+  @@index([tokenId])
+  @@index([recueilliParTrainerId])
+  @@map("coaching_seance_signatures")
 }
 
 /// Journal de progression / plan inter-séances (suivi régulier) — N par parcours.
