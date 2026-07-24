@@ -73,6 +73,8 @@
     "image-bank:isolation-check": "tsx scripts/image-bank/isolation-check.ts",
     "qualiopi:seed": "tsx prisma/seeds/qualiopi/index.ts",
     "qualiopi:seed-demo": "tsx prisma/seeds/qualiopi/demo.ts",
+    "qualiopi:purge-demo": "tsx prisma/scripts/purge-demo-qualiopi.ts",
+    "qualiopi:nettoyer-catalogue": "tsx prisma/scripts/nettoyer-catalogue.ts",
     "qualiopi:isolation-check": "tsx scripts/qualiopi/isolation-check.ts",
     "villes:import": "tsx scripts/import-insee-villes.ts",
     "posts:check": "tsx scripts/check-posts.ts",
