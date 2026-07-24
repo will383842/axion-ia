@@ -103,9 +103,13 @@ export async function genererFactureParInscriptionAction(
 
   // 🔴 Anti-DOUBLE ÉMISSION : une inscription déjà facturée (facture non annulée)
   // ne doit pas en générer une seconde — chacune consomme un NUMÉRO LÉGAL et
-  // facturerait le participant deux fois. Il n'existe aucune contrainte `@@unique`
-  // en base (enrollmentId nullable + cas original/avoir), d'où cette garde
-  // applicative. Une facture annulée, elle, autorise une réémission.
+  // facturerait le participant deux fois. Une facture annulée autorise une réémission.
+  // ⚠️ LIMITE : cette garde applicative (lecture puis écriture, hors transaction)
+  // ferme le DOUBLE-CLIC séquentiel mais PAS une course concurrente stricte (deux
+  // requêtes simultanées lisent `null` avant que l'une commite). La fermeture
+  // complète exige un INDEX UNIQUE PARTIEL Postgres sur `enrollment_id WHERE statut
+  // <> 'annulee'` — migration + confirmation métier (une inscription a-t-elle
+  // toujours au plus UNE facture active ?). Voir _AUDIT/QUALIOPI-RESTE-WILL-2026-07-24.md.
   const dejaFacturee = await prisma.factureFormation.findFirst({
     where: { enrollmentId: enrollment.id, statut: { not: "annulee" } },
     select: { numero: true },
@@ -135,16 +139,13 @@ export async function genererFactureParInscriptionAction(
     destinataireAdresse = payeur?.adresse ?? undefined;
   }
 
-  // 🔴 Facture sans ACHETEUR identifié = irrégulière (art. 242 nonies A ann. II
-  // du CGI). Pour un destinataire « entreprise », un employeur payeur DOIT être
-  // résolu : sans lui, `readiness.ok` restait vrai et la facture partait avec
-  // « Entreprise » sans raison sociale, et un numéro légal consommé pour rien.
-  if (destinataire === "entreprise" && (payeur?.raisonSociale ?? "").trim() === "") {
-    return {
-      error:
-        "Aucun employeur payeur identifié pour cette inscription. Rattachez un client (raison sociale) à l'inscription ou à la session avant de facturer.",
-    };
-  }
+  // ⚠️ NOTE (constat #5, NON corrigé ici — risque de régression) : pour un
+  // financement `direct`/`mixte`, `destinataireFacture` renvoie « entreprise » même
+  // pour un PARTICULIER en auto-financement (sans employeur). Un garde-fou « refuser
+  // si pas de raison sociale » bloquait donc à tort une facture nominative légale.
+  // Le vrai correctif est dans le MAPPING `destinataireFacture` (distinguer un
+  // particulier auto-financé → destinataire « stagiaire ») — arbitrage métier/juriste,
+  // pas un simple garde. Voir _AUDIT/QUALIOPI-RESTE-WILL-2026-07-24.md.
 
   // Garde-fou conformité : facture inter illégale si identité OF incomplète.
   const identite = await getOrganismeIdentite();

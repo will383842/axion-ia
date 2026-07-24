@@ -966,11 +966,20 @@ export async function genererCertificatRealisationAction(input: {
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const dureePrevue = formationDoc.dureeHeures ?? session.formation.dureeHeures;
 
-  // Durée réelle (R.6313-3) : préférer dureeReelleHeures, sinon durée prévue
-  // pondérée par le taux de présence si disponible, sinon durée prévue.
-  let dureeHeures = session.dureeReelleHeures ?? dureePrevue;
-  if (session.dureeReelleHeures === null && enrollment.tauxPresencePct !== null) {
-    dureeHeures = Math.round((enrollment.tauxPresencePct * dureePrevue) / 100);
+  // Durée RÉALISÉE PAR CE STAGIAIRE (R.6313-3) : base = durée réelle de la session
+  // si déclarée, sinon durée prévue ; puis TOUJOURS pondérée par le taux de présence
+  // individuel quand il est connu.
+  //
+  // 🔴 #2 — avant, la pondération par le taux ne s'appliquait QUE si `dureeReelleHeures`
+  // était null : un stagiaire à 50 % d'une session de 16 h réelles obtenait un
+  // certificat « 16 h réalisées » (durée SESSION) alors que son attestation portait
+  // « 8 h suivies » (durée INDIVIDUELLE). Deux pièces du même dossier divergeaient, et
+  // le certificat SUR-DÉCLARAIT les heures à l'OPCO. Les deux mesurent désormais les
+  // heures réellement suivies par le bénéficiaire = taux × (durée réelle ?? prévue).
+  const baseDuree = session.dureeReelleHeures ?? dureePrevue;
+  let dureeHeures = baseDuree;
+  if (enrollment.tauxPresencePct !== null) {
+    dureeHeures = Math.round((enrollment.tauxPresencePct * baseDuree) / 100);
   }
 
   const dirigeant = await getQualiopiConfig("dirigeant_nom");
