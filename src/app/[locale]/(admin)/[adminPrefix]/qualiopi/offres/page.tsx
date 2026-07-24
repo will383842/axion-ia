@@ -16,6 +16,11 @@ import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { OffreRowActions } from "@/components/admin/qualiopi/OffreRowActions";
 import {
+  ARCHIVE_FILTER_PARAM,
+  ArchiveFilterTabs,
+  parseArchiveFilter,
+} from "@/components/admin/qualiopi/ArchiveFilterTabs";
+import {
   toggleOffreActifAction,
   verifyAllOffresCoherenceAction,
 } from "@/server/actions/qualiopi/offres";
@@ -46,9 +51,10 @@ const GAMME_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function QualiopiOffresPage({ params }: PageProps) {
+export default async function QualiopiOffresPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
   const role = session?.user?.role;
@@ -56,8 +62,16 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const offres = await listOffres();
-  const actives = offres.filter((o) => o.offre.actif).length;
+  const vue = parseArchiveFilter((await searchParams)[ARCHIVE_FILTER_PARAM]);
+
+  // Tout est chargé (67 lignes en prod) : les compteurs restent justes quelle que
+  // soit la vue. Une offre désactivée reste rattachée à des formations archivées
+  // et à leur historique → jamais supprimée, seulement masquée par défaut.
+  const toutes = await listOffres();
+  const offresActives = toutes.filter((o) => o.offre.actif);
+  const offresInactives = toutes.filter((o) => !o.offre.actif);
+
+  const offres = vue === "toutes" ? toutes : vue === "archivees" ? offresInactives : offresActives;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -72,19 +86,32 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Offres au catalogue" value={offres.length} icon={FileText} />
-        <AdminStatCard label="Offres actives" value={actives} tone="success" icon={CheckCircle2} />
+        <AdminStatCard label="Offres au catalogue" value={toutes.length} icon={FileText} />
         <AdminStatCard
-          label="Inactives"
-          value={offres.length - actives}
-          tone={offres.length - actives > 0 ? "warning" : "default"}
-          icon={AlertTriangle}
+          label="Offres actives"
+          value={offresActives.length}
+          tone="success"
+          icon={CheckCircle2}
         />
+        <AdminStatCard label="Inactives" value={offresInactives.length} icon={AlertTriangle} />
       </div>
+
+      <ArchiveFilterTabs
+        current={vue}
+        basePath={`/${locale}/${adminPrefix}/qualiopi/offres`}
+        counts={{ actives: offresActives.length, archivees: offresInactives.length }}
+        nomEntite="offre"
+      />
 
       {offres.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucune offre. Lancez <code>pnpm qualiopi:seed</code> pour initialiser le référentiel.
+          {toutes.length === 0 ? (
+            <>
+              Aucune offre. Lancez <code>pnpm qualiopi:seed</code> pour initialiser le référentiel.
+            </>
+          ) : (
+            <>Aucune offre dans cette vue.</>
+          )}
         </p>
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
