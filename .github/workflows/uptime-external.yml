@@ -1,0 +1,144 @@
+name: Uptime externe (prod) → Telegram
+
+# POURQUOI CE WORKFLOW
+# --------------------
+# Le monitoring d'incident d'Axion-IA (alertes Telegram) tourne DANS le
+# conteneur applicatif, sur le VPS. Lors de la panne réseau du 2026-07-24
+# (Cloudflare 522/523, VPS injoignable ~5 h), ces alertes étaient AVEUGLES :
+# le processus qui aurait dû prévenir était lui-même coupé du réseau.
+#
+# Ce workflow ferme cet angle mort. Il tourne sur les runners GitHub (hors du
+# VPS, hors de Cloudflare-vers-origine), pinge la prod toutes les 5 min et
+# prévient sur Telegram QUAND L'ÉTAT CHANGE — pas à chaque tick.
+#
+# CE QU'IL DÉTECTE (là où le monitoring interne est aveugle) :
+#   - VPS éteint / détaché du réseau (timeout tous ports)
+#   - Cloudflare 5xx (522 origine injoignable, 523, 521…)
+#   - conteneur mort / app qui 5xx
+#   - certificat expiré, DNS cassé (curl échoue)
+#
+# ANTI-SPAM (état persisté entre runs via cache GitHub Actions) :
+#   - alerte DOWN uniquement à la BASCULE up→down, après N échecs consécutifs
+#     (anti-flap : un 5xx isolé ne réveille personne)
+#   - alerte RECOVERY uniquement à la bascule down→up
+#   - silence total tant que l'état ne change pas
+#
+# SECRETS GITHUB REQUIS (déjà présents dans ce dépôt depuis 2026-06-03) :
+#   - TELEGRAM_BOT_TOKEN
+#   - TELEGRAM_CHAT_ID
+# Absents → le workflow reste vert mais n'envoie rien (fail-soft, jamais bloquant).
+#
+# COÛT : ~288 runs/jour × quelques secondes. Négligeable (quota Actions large).
+
+on:
+  schedule:
+    # Toutes les 5 minutes. GitHub peut décaler de quelques minutes en pic de
+    # charge : acceptable pour de l'uptime (on n'exige pas la seconde).
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {} # Déclenchement manuel (test).
+
+# Un seul run à la fois : deux runs concurrents corromptraient l'état en cache.
+concurrency:
+  group: uptime-external
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  # URL sondée — page légère, servie derrière Cloudflare comme un vrai visiteur.
+  TARGET_URL: "https://axion-ia.com/fr"
+  # Nombre d'échecs consécutifs avant de crier DOWN (anti-flap).
+  FAIL_THRESHOLD: "3"
+  # Timeout par requête (s).
+  CURL_TIMEOUT: "20"
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      # État persisté d'un run à l'autre : `state/status` = "up" | "down",
+      # `state/fails` = compteur d'échecs consécutifs. Le cache GitHub Actions
+      # survit entre les runs planifiés. La clé porte le run_id pour écrire une
+      # nouvelle entrée à chaque fois ; `restore-keys` relit la plus récente.
+      - name: Restaurer l'état précédent
+        id: cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: state
+          key: uptime-state-${{ github.run_id }}
+          restore-keys: |
+            uptime-state-
+
+      - name: Sonder la prod + décider de l'alerte
+        id: probe
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -uo pipefail
+          mkdir -p state
+          prev_status="$(cat state/status 2>/dev/null || echo up)"
+          prev_fails="$(cat state/fails 2>/dev/null || echo 0)"
+
+          # Sonde : on veut le code HTTP. curl échoue (code 000) si timeout, DNS
+          # ou TLS cassé — c'est un DOWN au même titre qu'un 5xx.
+          http="$(curl -sS -o /dev/null -m "${CURL_TIMEOUT}" -w '%{http_code}' "${TARGET_URL}" 2>/dev/null || echo 000)"
+          echo "HTTP=${http} (précédent: ${prev_status}, échecs: ${prev_fails})"
+
+          # Sain = 2xx ou 3xx. Tout le reste (000, 5xx, 4xx) = échec.
+          if [ "${http}" -ge 200 ] 2>/dev/null && [ "${http}" -lt 400 ] 2>/dev/null; then
+            healthy=1
+          else
+            healthy=0
+          fi
+
+          send() {
+            # $1 = texte Markdown. Fail-soft : jamais bloquant.
+            if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
+              curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+                -d "chat_id=${TELEGRAM_CHAT_ID}" \
+                --data-urlencode "text=$1" \
+                -d "parse_mode=Markdown" \
+                -d "disable_web_page_preview=true" > /dev/null || true
+            else
+              echo "::warning::Secrets Telegram absents — alerte non envoyée."
+            fi
+          }
+
+          if [ "${healthy}" -eq 1 ]; then
+            # La prod répond. Si on était DOWN → alerte de rétablissement.
+            if [ "${prev_status}" = "down" ]; then
+              send "*[✅ RÉTABLI]* axion-ia.com répond à nouveau (HTTP ${http}). La prod était injoignable depuis l'extérieur."
+              echo "::notice::Rétablissement détecté."
+            fi
+            echo "up" > state/status
+            echo "0" > state/fails
+          else
+            # Échec. On incrémente ; on n'alerte qu'au franchissement du seuil,
+            # et une seule fois (à la bascule up→down).
+            fails=$(( prev_fails + 1 ))
+            echo "${fails}" > state/fails
+            if [ "${prev_status}" != "down" ] && [ "${fails}" -ge "${FAIL_THRESHOLD}" ]; then
+              send "*[🔴 PROD DOWN]* axion-ia.com injoignable depuis l'extérieur — ${fails} échecs consécutifs (dernier code: ${http}). Le monitoring interne (VPS) est peut-être aveugle. Vérifier la console Hetzner."
+              echo "down" > state/status
+              echo "::error::Prod DOWN (${fails} échecs, code ${http})."
+            elif [ "${prev_status}" = "down" ]; then
+              # Déjà signalé, on reste down sans re-spammer.
+              echo "down" > state/status
+              echo "::warning::Toujours DOWN (code ${http})."
+            else
+              # Sous le seuil : on patiente (flap possible), pas d'alerte.
+              echo "up" > state/status
+              echo "::warning::Échec ${fails}/${FAIL_THRESHOLD} (code ${http}) — sous le seuil, pas d'alerte."
+            fi
+          fi
+
+      # Nouvelle entrée de cache à chaque run (les clés sont immuables) → le
+      # prochain run relira celle-ci via restore-keys.
+      - name: Sauvegarder l'état
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: state
+          key: uptime-state-${{ github.run_id }}
