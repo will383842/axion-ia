@@ -18,13 +18,26 @@
 import { createHash } from "node:crypto";
 import React from "react";
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
-import { genererCreneaux } from "@/server/qualiopi/presence/creneaux";
+import {
+  genererCreneaux,
+  sessionTropEtaleePourLeRepli,
+  ECART_MAX_REPLI_JOURS,
+} from "@/server/qualiopi/presence/creneaux";
 import { parseReleveConnexion } from "@/server/qualiopi/presence/parse-releve";
 import { matchParticipants } from "@/server/qualiopi/presence/match";
-import { parisDateISO, formatMinutesToHHhMM } from "@/server/qualiopi/presence/time";
+import {
+  parisDateISO,
+  formatMinutesToHHhMM,
+  parisMinutesDuJour,
+} from "@/server/qualiopi/presence/time";
+import {
+  repartirMinutesConnexion,
+  fenetreDemiJournee,
+} from "@/server/qualiopi/presence/repartition-distanciel";
 import { upsertCreneau, recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
 import { storeAndSignCsv } from "@/server/qualiopi/documents/render";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -79,6 +92,14 @@ const PLATEFORME_VALUES = ["zoom", "teams", "meet", "autre"] as const;
 const generateSessionCreneauxSchema = z.object({
   sessionId: z.string().uuid(),
   heuresParJour: z.number().int().min(1).max(12).optional(),
+  /**
+   * Passe outre le garde-fou D14 sur une session étalée sans journées déclarées.
+   *
+   * Il existe de vraies sessions continues de plus d'un mois (reconversion), et
+   * les refuser serait une régression. Mais le geste doit être EXPLICITE : le
+   * défaut est de refuser, et l'admin confirme après avoir lu pourquoi.
+   */
+  confirmerSansJournees: z.boolean().optional(),
 });
 
 const emargementEntrySchema = z.object({
@@ -127,7 +148,11 @@ const setPresenceCreneauManualSchema = z.object({
 export async function generateSessionCreneauxAction(input: {
   sessionId: string;
   heuresParJour?: number;
-}): Promise<ActionResult<{ created: number }>> {
+  confirmerSansJournees?: boolean;
+}): Promise<
+  | { data: { created: number; reconcilies: number; horsPlan: number } }
+  | { error: string; confirmable?: boolean }
+> {
   const session = await requireAdminWrite();
   const parsed = generateSessionCreneauxSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -142,33 +167,88 @@ export async function generateSessionCreneauxAction(input: {
       dateFin: true,
       dureeReelleHeures: true,
       enrollments: {
+        // Filtre d'ÉCRITURE : on ne crée pas de nouveaux créneaux pour qui a
+        // abandonné. Le filtre de LECTURE, lui, a été dissocié (oubli O3) —
+        // masquer en grille les créneaux DÉJÀ signés d'un abandon revenait à se
+        // priver d'heures réellement suivies et facturables à l'OPCO.
         where: {
           statut: { notIn: ["abandon", "exclu"] },
         },
         select: { id: true },
+      },
+      /// Journées RÉELLEMENT animées (D14). Vide = repli sur `dateDebut..dateFin`.
+      jours: {
+        select: { date: true, heureDebut: true, heureFin: true },
+        orderBy: { date: "asc" },
       },
     },
   });
 
   if (!trainingSession) return { error: "Session introuvable" };
 
+  const jours = trainingSession.jours.map((j) => ({
+    date: parisDateISO(j.date),
+    heureDebut: j.heureDebut,
+    heureFin: j.heureFin,
+  }));
+
+  // 🔴 Garde-fou D14. Sans journées déclarées, on ne sait pas quels jours sont
+  // animés : on ne peut que supposer qu'ils se suivent. Sur une session étalée
+  // c'est faux, et générer les créneaux de tous les jours ouvrés traversés
+  // multiplierait le dénominateur du taux — un parcours de 4 journées sur 3 mois
+  // produit 66 jours au lieu de 4, soit un taux à ≈ 3 % et une attestation
+  // refusée à un stagiaire assidu. Refuser bruyamment vaut mieux que produire
+  // des dizaines de créneaux faux en silence.
+  if (
+    v.confirmerSansJournees !== true &&
+    sessionTropEtaleePourLeRepli({
+      dateDebut: trainingSession.dateDebut,
+      dateFin: trainingSession.dateFin,
+      jours,
+    })
+  ) {
+    return {
+      error: `Cette session s'étale sur plus de ${ECART_MAX_REPLI_JOURS} jours sans avoir déclaré ses journées. Renseignez-les dans la section « Journées réellement animées », juste au-dessus : sinon le taux de présence sera calculé sur TOUS les jours ouvrés de la période. Si la session est réellement continue sur toute la plage, confirmez pour générer quand même.`,
+      // Refus levable : une session continue de deux mois est légitime.
+      confirmable: true,
+    };
+  }
+
   // Génération des créneaux via logique pure.
   // ⚠️ `dureeReelleHeures` est la durée TOTALE de la session, PAS une durée
   // journalière : elle est passée en `dureeTotaleHeures` pour être répartie sur
-  // les jours ouvrés. La passer en `heuresParJour` (bug corrigé) doublait le
-  // dénominateur du taux de présence sur toute session de plus d'un jour.
-  const creneaux = genererCreneaux({
-    dateDebut: trainingSession.dateDebut,
-    dateFin: trainingSession.dateFin,
-    ...(v.heuresParJour !== undefined ? { heuresParJour: v.heuresParJour } : {}),
-    ...(trainingSession.dureeReelleHeures !== null
-      ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
-      : {}),
-  });
+  // les demi-journées retenues. La passer en `heuresParJour` (bug corrigé)
+  // doublait le dénominateur du taux sur toute session de plus d'un jour.
+  let creneaux;
+  try {
+    creneaux = genererCreneaux({
+      dateDebut: trainingSession.dateDebut,
+      dateFin: trainingSession.dateFin,
+      ...(jours.length > 0 ? { jours } : {}),
+      ...(v.heuresParJour !== undefined ? { heuresParJour: v.heuresParJour } : {}),
+      ...(trainingSession.dureeReelleHeures !== null
+        ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
+        : {}),
+    });
+  } catch (err) {
+    // `genererCreneaux` lève sur une journée malformée. Le CHECK SQL rend le cas
+    // improbable, mais le laisser remonter en erreur 500 n'apprendrait rien à
+    // l'admin qui doit corriger la saisie.
+    Sentry.captureException(err, {
+      tags: { action: "generateSessionCreneauxAction" },
+      extra: { sessionId: v.sessionId },
+    });
+    return { error: "Une journée déclarée est invalide. Corrigez la saisie des journées." };
+  }
 
   if (creneaux.length === 0) return { error: "Aucun créneau généré (dates invalides)" };
 
   let created = 0;
+  let reconcilies = 0;
+  // Inscriptions dont la DURÉE PRÉVUE d'un créneau a changé : leur dénominateur
+  // a bougé, il faut recalculer leur taux (oubli H1). Un simple changement de
+  // libellé n'y entre pas — il n'affecte pas le taux.
+  const aRecalculer = new Set<string>();
 
   // Upsert de chaque créneau pour chaque enrollment.
   for (const enrollment of trainingSession.enrollments) {
@@ -176,7 +256,7 @@ export async function generateSessionCreneauxAction(input: {
       // Date ISO Paris → Date UTC pour la colonne @db.Date (date civile).
       const dateObj = new Date(`${creneau.date}T00:00:00+00:00`);
 
-      const existingId = await prisma.presenceCreneau.findUnique({
+      const existant = await prisma.presenceCreneau.findUnique({
         where: {
           enrollmentId_date_demiJournee: {
             enrollmentId: enrollment.id,
@@ -184,10 +264,10 @@ export async function generateSessionCreneauxAction(input: {
             demiJournee: toDemiJourneeEnum(creneau.demiJournee),
           },
         },
-        select: { id: true },
+        select: { id: true, dureePrevueMinutes: true, libelle: true },
       });
 
-      if (!existingId) {
+      if (existant === null) {
         await upsertCreneau({
           enrollmentId: enrollment.id,
           date: dateObj,
@@ -199,20 +279,73 @@ export async function generateSessionCreneauxAction(input: {
           dureeRealiseeMinutes: 0,
         });
         created++;
+        continue;
+      }
+
+      // 🔴 RÉCONCILIATION — et uniquement de la DURÉE PRÉVUE.
+      //
+      // L'action ne faisait que créer les manquants : corriger les journées
+      // d'une session après coup ne recalculait donc RIEN, et le dénominateur
+      // restait faux à vie. Un stagiaire présent à 100 % pouvait plafonner à
+      // 60 % parce que des créneaux d'une plage erronée traînaient encore.
+      //
+      // ⚠️ On ne touche NI `present`, NI `dureeRealiseeMinutes`, NI la source.
+      // Ce sont les données de PREUVE : en base, une absence émargée et un
+      // créneau vierge sont indiscernables, et « nettoyer ce qui ne correspond
+      // plus » détruirait des feuilles signées. C'est exactement l'erreur qui a
+      // fait jeter un correctif précédent sur ce même domaine.
+      //
+      // Et on ne SUPPRIME jamais : les créneaux devenus hors plan sont comptés
+      // et signalés à l'admin, qui décide.
+      if (
+        existant.dureePrevueMinutes !== creneau.dureePrevueMinutes ||
+        existant.libelle !== creneau.libelle
+      ) {
+        if (existant.dureePrevueMinutes !== creneau.dureePrevueMinutes) {
+          aRecalculer.add(enrollment.id);
+        }
+        await prisma.presenceCreneau.update({
+          where: { id: existant.id },
+          data: {
+            dureePrevueMinutes: creneau.dureePrevueMinutes,
+            libelle: creneau.libelle,
+          },
+        });
+        reconcilies++;
       }
     }
   }
 
-  // ⚠️ Générer des créneaux CHANGE LE DÉNOMINATEUR du taux. Sans recalcul,
-  // `Enrollment.tauxPresencePct` restait figé sur son ancienne valeur pendant que
-  // la base portait déjà les nouveaux créneaux — et le cron d'attestation lit ce
-  // champ (`attestation-service.ts`), émettant donc une attestation sur un taux
-  // périmé. Un seul appel d'invalidation APRÈS la boucle : `redis.keys()` est
-  // bloquant, à ne pas déclencher par inscription.
-  for (const enrollment of trainingSession.enrollments) {
-    await recomputeTauxPresence(enrollment.id);
+  // 🔴 H1 — le dénominateur corrigé doit atteindre l'agrégat stocké. Sans ce
+  // recalcul, `Enrollment.tauxPresencePct` et les flags `present` restaient sur
+  // l'ancienne durée → présence SURÉVALUÉE sur une pièce probante, jusqu'à un
+  // save d'émargement ultérieur sans rapport. Le commentaire ci-dessus promettait
+  // « recalcule », sans jamais l'exécuter.
+  //
+  // NB (merge #382) : le recalcul est limité à `aRecalculer` (enrollments dont la
+  // durée prévue a changé). Un créneau fraîchement CRÉÉ porte present:false /
+  // réalisé:0 → taux 0 %, aucun recalcul utile ; c'est la RÉCONCILIATION d'une
+  // durée qui déplace le dénominateur. Le fix du doublage hybride journée/demi-
+  // journées vit dans `taux.ts` (computeTauxPresence) et s'applique à chaque
+  // recomputeTauxPresence.
+  for (const enrollmentId of aRecalculer) {
+    await recomputeTauxPresence(enrollmentId);
   }
-  await invalidateIndicateursCache(trainingSession.dateDebut.getUTCFullYear());
+  if (aRecalculer.size > 0) {
+    await invalidateIndicateursCache(trainingSession.dateDebut.getUTCFullYear());
+  }
+
+  // Créneaux présents en base mais ABSENTS du plan courant : ils gonflent le
+  // dénominateur sans correspondre à une journée déclarée. On ne les supprime
+  // pas — ils peuvent porter une signature — mais l'admin doit savoir.
+  const clesDuPlan = new Set(creneaux.map((c) => `${c.date}|${toDemiJourneeEnum(c.demiJournee)}`));
+  const tousLesCreneaux = await prisma.presenceCreneau.findMany({
+    where: { enrollmentId: { in: trainingSession.enrollments.map((e) => e.id) } },
+    select: { date: true, demiJournee: true },
+  });
+  const horsPlan = tousLesCreneaux.filter(
+    (c) => !clesDuPlan.has(`${parisDateISO(c.date)}|${c.demiJournee}`),
+  ).length;
 
   await logQualiopiActivity({
     action: "qualiopi.presence.creneaux.generate",
@@ -222,11 +355,13 @@ export async function generateSessionCreneauxAction(input: {
       nbCreneaux: creneaux.length,
       nbEnrollments: trainingSession.enrollments.length,
       created,
+      reconcilies,
+      horsPlan,
     },
     session,
   });
 
-  return { data: { created } };
+  return { data: { created, reconcilies, horsPlan } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -372,6 +507,13 @@ export async function importReleveConnexionAction(input: {
     nbMatched: number;
     nbUnmatched: number;
     unmatched: Array<{ nom: string; email: string | null; dureeMinutes: number }>;
+    /** Créneaux « journée » hérités remplacés par leurs demi-journées. */
+    nbJourneesHeriteesRemplacees: number;
+    /**
+     * Créneaux « journée » CONSERVÉS parce qu'ils portent une trace explicite.
+     * Ils doublent le dénominateur du jour : un humain doit trancher.
+     */
+    journeesConflictuelles: Array<{ enrollmentId: string; date: string; motif: string }>;
   }>
 > {
   const session = await requireAdminWrite();
@@ -389,6 +531,13 @@ export async function importReleveConnexionAction(input: {
       // prévue d'UNE journée distancielle (cf. genererCreneaux plus bas).
       dateFin: true,
       dureeReelleHeures: true,
+      // 🔴 Journées déclarées (D14) — INDISPENSABLE ici aussi. Les omettre
+      // rendait ce chemin faux exactement comme l'autre : voir le commentaire
+      // du calcul de `dureePrevueMinutes` plus bas.
+      jours: {
+        select: { date: true, heureDebut: true, heureFin: true },
+        orderBy: { date: "asc" },
+      },
       enrollments: {
         where: { statut: { notIn: ["abandon", "exclu"] } },
         select: {
@@ -457,19 +606,70 @@ export async function importReleveConnexionAction(input: {
   // aucun créneau du tout, donc aucune présence justifiable.
   // `genererCreneaux` porte déjà la répartition correcte (jours retenus + plafond
   // horaire) : on en dérive la durée d'une journée pleine = 2 demi-journées.
+  //
+  // 🔴 Les journées déclarées (D14) doivent être passées ICI AUSSI. Sans elles,
+  // ce chemin retombait sur `dateDebut..dateFin` alors que l'autre chemin, lui,
+  // les respectait — et les deux dénominateurs divergeaient. Sur une session
+  // distancielle de 28 h dont les 4 journées sont réparties sur 3 mois, le repli
+  // retenait 66 jours ouvrés, d'où 0,42 h/jour et une durée prévue de 26 MINUTES
+  // pour la journée. Le réalisé étant plafonné au prévu, tout le monde ressortait
+  // à 100 % avec 0 h 26 sur l'attestation. Surévaluer la présence est bien plus
+  // grave que la sous-évaluer : c'est ce qu'un contrôle sanctionne.
+  const joursDeclares = trainingSession.jours.map((j) => ({
+    date: parisDateISO(j.date),
+    heureDebut: j.heureDebut,
+    heureFin: j.heureFin,
+  }));
+
+  // 🔴 Le MÊME garde-fou que `generateSessionCreneauxAction`. Le passer ici
+  // seulement était une incohérence dangereuse : un chemin refusait bruyamment,
+  // l'autre écrivait en silence. Sans journées déclarées — l'état par défaut de
+  // toute session existante — l'import retombait sur les 66 jours ouvrés d'un
+  // parcours de 3 mois, soit 26 minutes de durée prévue et TOUT LE MONDE à 100 %
+  // avec 0 h 26 sur l'attestation.
+  if (
+    sessionTropEtaleePourLeRepli({
+      dateDebut: trainingSession.dateDebut,
+      dateFin: trainingSession.dateFin,
+      jours: joursDeclares,
+    })
+  ) {
+    return {
+      error: `Cette session s'étale sur plus de ${ECART_MAX_REPLI_JOURS} jours sans avoir déclaré ses journées. Renseignez-les avant d'importer un relevé : sinon la durée attendue serait calculée sur tous les jours ouvrés de la période, et le taux de présence de tous les stagiaires serait faux.`,
+    };
+  }
+
   const creneauxSession = genererCreneaux({
     dateDebut: trainingSession.dateDebut,
     dateFin: trainingSession.dateFin,
+    ...(joursDeclares.length > 0 ? { jours: joursDeclares } : {}),
     ...(trainingSession.dureeReelleHeures !== null
       ? { dureeTotaleHeures: trainingSession.dureeReelleHeures }
       : {}),
   });
-  const dureePrevueMinutes =
-    creneauxSession.length > 0 ? (creneauxSession[0]?.dureePrevueMinutes ?? 210) * 2 : 7 * 60;
-
-  // Bornes civiles de la session, pour ne jamais dater un créneau hors plage.
-  const isoDebutSession = parisDateISO(trainingSession.dateDebut);
-  const isoFinSession = parisDateISO(trainingSession.dateFin);
+  // 🔴 La durée prévue d'une journée est la SOMME des créneaux de CETTE journée.
+  //
+  // L'ancien `creneauxSession[0].dureePrevueMinutes * 2` postulait « une journée
+  // = 2 demi-journées de durée égale ». D14 casse les deux moitiés du postulat :
+  // une journée déclarée peut produire UN seul créneau, et les créneaux ont
+  // désormais des durées différentes entre eux. Le `[0]` désignait de surcroît
+  // toujours le PREMIER jour de la session, alors que le créneau créé est daté
+  // sur l'heure de connexion réelle.
+  //
+  // Conséquence mesurée : 3 matinées déclarées 09:00–13:00 pour 12 h. Avant D14
+  // le stagiaire assidu sortait à 100 % ; avec le `× 2` il tombait à 50 % et
+  // perdait son attestation — PARCE QUE l'organisme avait correctement saisi ses
+  // journées. Déclarer la vérité rendait le résultat faux.
+  const creneauxParJour = new Map<string, typeof creneauxSession>();
+  for (const c of creneauxSession) {
+    const liste = creneauxParJour.get(c.date);
+    if (liste === undefined) creneauxParJour.set(c.date, [c]);
+    else liste.push(c);
+  }
+  // Journée de repli : la première du plan. Elle remplace l'ancien bornage sur
+  // `dateDebut..dateFin`, plus faible — une connexion un samedi non planifié
+  // créait un créneau sur un jour sans durée prévue, gonflant le dénominateur.
+  const premierJourPlan = creneauxSession[0]?.date ?? parisDateISO(trainingSession.dateDebut);
 
   // 7. Création des créneaux distanciels.
   //
@@ -495,31 +695,163 @@ export async function importReleveConnexionAction(input: {
   // de date) — et qu'aucune UI ne permet de supprimer.
   const enrollmentIdsTouches = new Set<string>();
   const matchedById = new Map(matched.map((m) => [m.enrollmentId, m.participant]));
+  /** Créneaux « journée » d'un import antérieur, retirés au profit des demi-journées. */
+  let nbJourneesHeriteesRemplacees = 0;
+  /** Ceux qu'on n'a PAS touchés parce qu'ils portent une trace explicite. */
+  const journeesConflictuelles: Array<{ enrollmentId: string; date: string; motif: string }> = [];
 
   for (const enrollment of trainingSession.enrollments) {
     const participant = matchedById.get(enrollment.id);
 
+    // La date doit être une journée RÉELLEMENT PLANIFIÉE : sinon le créneau créé
+    // n'a pas de durée prévue de référence et fausse le dénominateur.
     const isoBrut = parisDateISO(participant?.joinAt ?? trainingSession.dateDebut);
-    const dateCivile =
-      isoBrut < isoDebutSession || isoBrut > isoFinSession ? isoDebutSession : isoBrut;
+    const dateCivile = creneauxParJour.has(isoBrut) ? isoBrut : premierJourPlan;
     const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
+    const creneauxDuJour = creneauxParJour.get(dateCivile) ?? [];
 
-    const realiseeBrut = participant?.dureeMinutes ?? 0;
-    const dureeRealiseeMinutes = Math.min(realiseeBrut, dureePrevueMinutes);
+    // 🔴 (c) UN CRÉNEAU PAR DEMI-JOURNÉE, comme en présentiel.
+    //
+    // On posait ici un unique créneau « journée ». Deux conséquences : sur une
+    // session hybride la même journée portait matin + après-midi + journée, soit
+    // 14 h attendues pour 7 h réelles et un stagiaire assidu à 50 % ; et surtout
+    // la feuille n'était signée qu'UNE fois par jour — exactement la forme que
+    // CAA Nantes 14/06/2022 juge « insuffisamment probante », avec redressement
+    // au prorata. Aligner le grain traite la cause, pas le symptôme.
+    const cibles = creneauxDuJour.map((c) => ({
+      demiJournee: c.demiJournee,
+      dureePrevueMinutes: c.dureePrevueMinutes,
+      ...(c.jourHeureDebut !== undefined && c.jourHeureFin !== undefined
+        ? fenetreDemiJournee(c.jourHeureDebut, c.jourHeureFin, c.demiJournee)
+        : { debutMin: 0, finMin: 0 }),
+    }));
 
-    await upsertCreneau({
-      enrollmentId: enrollment.id,
-      date: dateObj,
-      demiJournee: "journee",
-      libelle: `${dateCivile} journée`,
-      dureePrevueMinutes,
-      source: toPresenceSource(v.plateforme),
-      present: false, // sera mis à jour par recomputeTauxPresence
-      dureeRealiseeMinutes,
-      ...(participant?.joinAt != null ? { heureConnexion: participant.joinAt } : {}),
-      ...(participant?.leaveAt != null ? { heureDeconnexion: participant.leaveAt } : {}),
-      importId: releveImport.id,
+    // Sans horaires déclarés, la fenêtre de chaque demi-journée est inconnue :
+    // on n'invente pas de bornes, on répartit au prorata du prévu.
+    const horairesConnus = creneauxDuJour.every((c) => c.jourHeureDebut !== undefined);
+    const joinMin =
+      horairesConnus && participant?.joinAt != null ? parisMinutesDuJour(participant.joinAt) : null;
+    const leaveMin =
+      horairesConnus && participant?.leaveAt != null
+        ? parisMinutesDuJour(participant.leaveAt)
+        : null;
+
+    const parts = repartirMinutesConnexion({
+      creneaux: cibles,
+      dureeMinutes: participant?.dureeMinutes ?? 0,
+      joinMin,
+      leaveMin,
     });
+
+    // 🔴 Le créneau « journée » d'un import ANTÉRIEUR doit disparaître, sinon il
+    // s'ajoute aux deux demi-journées : 420 + 210 + 210 = 840 minutes attendues
+    // pour 420 réelles, soit un stagiaire pleinement assidu affiché à 50 %.
+    // C'est la classe de bug de l'étape A, qu'on ne va pas réintroduire par la
+    // porte de derrière.
+    //
+    // ⚠️ Mais on n'efface JAMAIS une trace explicite. Un créneau qui porte une
+    // signature, une présence cochée à la main ou une correction manuelle est
+    // une donnée que personne n'a le droit de perdre à l'occasion d'un import —
+    // et une absence émargée est indiscernable d'un créneau vierge une fois la
+    // ligne supprimée. Dans ce cas on ne touche à rien et on le SIGNALE, pour
+    // qu'un humain tranche.
+    const journeeHeritee = await prisma.presenceCreneau.findUnique({
+      where: {
+        enrollmentId_date_demiJournee: {
+          enrollmentId: enrollment.id,
+          date: dateObj,
+          demiJournee: "journee",
+        },
+      },
+      select: {
+        id: true,
+        present: true,
+        source: true,
+        commentaire: true,
+        _count: { select: { emargementSignatures: true } },
+      },
+    });
+
+    if (journeeHeritee !== null) {
+      const porteUneTrace =
+        journeeHeritee._count.emargementSignatures > 0 ||
+        journeeHeritee.present ||
+        journeeHeritee.source === "manuel" ||
+        journeeHeritee.commentaire !== null;
+
+      if (porteUneTrace) {
+        journeesConflictuelles.push({
+          enrollmentId: enrollment.id,
+          date: dateCivile,
+          motif:
+            journeeHeritee._count.emargementSignatures > 0
+              ? "signature"
+              : journeeHeritee.present
+                ? "presence_cochee"
+                : "saisie_manuelle",
+        });
+      } else {
+        await prisma.presenceCreneau.delete({ where: { id: journeeHeritee.id } });
+        nbJourneesHeriteesRemplacees += 1;
+      }
+    }
+
+    for (const [index, creneau] of creneauxDuJour.entries()) {
+      const dj = toDemiJourneeEnum(creneau.demiJournee);
+
+      // 🔴 M1 — ne PAS écraser une demi-journée PRÉSENTIELLE déjà émargée.
+      // La protection `journeeHeritee` ci-dessus ne couvrait que le créneau
+      // « journee » ; les demi-journées matin/après-midi étaient upsertées
+      // aveuglément, basculant `present` à false et écrasant une durée SIGNÉE par
+      // la répartition distancielle — une preuve d'émargement présentiel détruite
+      // en silence sur une session hybride. On saute la demi-journée protégée (et
+      // on la signale), sans bloquer l'import de l'autre.
+      const existantDemi = await prisma.presenceCreneau.findUnique({
+        where: {
+          enrollmentId_date_demiJournee: {
+            enrollmentId: enrollment.id,
+            date: dateObj,
+            demiJournee: dj,
+          },
+        },
+        select: {
+          present: true,
+          // Discriminant présentiel/distanciel : `importId` (et non `source`, que
+          // `toPresenceSource("autre")` rend « emargement_presentiel » à tort).
+          importId: true,
+          _count: { select: { emargementSignatures: true } },
+        },
+      });
+      const protegePresentiel =
+        existantDemi !== null &&
+        existantDemi.importId === null &&
+        (existantDemi._count.emargementSignatures > 0 || existantDemi.present);
+      if (protegePresentiel) {
+        journeesConflictuelles.push({
+          enrollmentId: enrollment.id,
+          date: dateCivile,
+          motif: existantDemi._count.emargementSignatures > 0 ? "signature" : "presence_cochee",
+        });
+        continue;
+      }
+
+      await upsertCreneau({
+        enrollmentId: enrollment.id,
+        date: dateObj,
+        demiJournee: dj,
+        libelle: creneau.libelle,
+        dureePrevueMinutes: creneau.dureePrevueMinutes,
+        source: toPresenceSource(v.plateforme),
+        present: false, // sera mis à jour par recomputeTauxPresence
+        dureeRealiseeMinutes: parts[index] ?? 0,
+        // Horodatages bruts du relevé, portés sur chaque demi-journée du jour :
+        // c'est l'enveloppe de connexion de la journée, la seule que le relevé
+        // fournisse. Les répartir serait inventer une donnée.
+        ...(participant?.joinAt != null ? { heureConnexion: participant.joinAt } : {}),
+        ...(participant?.leaveAt != null ? { heureDeconnexion: participant.leaveAt } : {}),
+        importId: releveImport.id,
+      });
+    }
     enrollmentIdsTouches.add(enrollment.id);
   }
 
@@ -559,6 +891,8 @@ export async function importReleveConnexionAction(input: {
         email: u.email,
         dureeMinutes: u.dureeMinutes,
       })),
+      nbJourneesHeriteesRemplacees,
+      journeesConflictuelles,
     },
   };
 }

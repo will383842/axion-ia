@@ -14,13 +14,17 @@
 "use server";
 
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { revoquerTokensInscription } from "@/server/qualiopi/emargement/token-service";
 import type {
   TrainingSessionStatut,
   TransitionTriggeredBy,
 } from "@/server/qualiopi/formations/types";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
+import { genererJoursParDefaut } from "@/server/qualiopi/presence/jours-defaut";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
@@ -168,6 +172,30 @@ export async function createSessionAction(
           },
           select: { id: true, numero: true },
         });
+
+        // Journées PROPOSÉES (D14), dérivées de la durée de la formation.
+        //
+        // Volontairement calculées depuis `dateDebut` et `dureeHeures`, SANS
+        // tenir compte de `dateFin` : c'est tout le propos de D14, la plage de
+        // dates ne décrit pas les journées. Une session étalée sur 3 mois pour
+        // 4 journées produirait sinon 66 jours ouvrés. Si le résultat déborde
+        // `dateFin`, l'admin le voit à l'écran et corrige.
+        //
+        // `horairesConfirmes` reste à `false` : ce sont des propositions.
+        const joursProposes = genererJoursParDefaut({
+          dateDebutIso: parisDateISO(v.dateDebut),
+          dureeHeures: formation.dureeHeures,
+        });
+        if (joursProposes.length > 0) {
+          await tx.sessionJour.createMany({
+            data: joursProposes.map((j) => ({
+              sessionId: newSession.id,
+              date: new Date(`${j.date}T00:00:00.000Z`),
+              heureDebut: j.heureDebut,
+              heureFin: j.heureFin,
+            })),
+          });
+        }
 
         // Transition initiale null → planifiee
         await writeSessionTransition(tx, {
@@ -324,6 +352,36 @@ export async function transitionSessionAction(input: {
       return { data: { id: v.id } };
     }
     return { error: "Erreur lors de la transition de la session" };
+  }
+
+  // 🔴 O7 — révocation AUTOMATIQUE des jetons d'émargement à l'annulation ou au
+  // report. Sans cela, les liens restaient valides jusqu'à leur expiration
+  // (fin + 48 h) : un stagiaire pouvait signer une session qui n'a pas eu lieu,
+  // et la signature aurait été cryptographiquement valide — pire qu'inutile.
+  // La garde du service de signature refuse déjà `annulee`/`reportee`, mais elle
+  // ne ferme qu'une porte : on ferme aussi celle des jetons, dès la transition,
+  // sans dépendre d'un clic manuel de l'admin sur « révoquer les liens ».
+  if (toStatus === "annulee" || toStatus === "reportee") {
+    try {
+      const inscriptions = await prisma.enrollment.findMany({
+        where: { sessionId: v.id },
+        select: { id: true },
+      });
+      for (const i of inscriptions) {
+        await revoquerTokensInscription({
+          enrollmentId: i.id,
+          motif: `Session ${toStatus} (${trigger})`,
+          parAdminId: session.userId,
+        });
+      }
+    } catch (err) {
+      // Ne pas faire échouer la transition sur un échec de révocation : la garde
+      // du service de signature reste le filet de sécurité. Mais le signaler.
+      Sentry.captureException(err, {
+        tags: { action: `transitionSessionAction:revocation_jetons` },
+        extra: { sessionId: v.id, toStatus },
+      });
+    }
   }
 
   await logQualiopiActivity({

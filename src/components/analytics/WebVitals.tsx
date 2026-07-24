@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useReportWebVitals } from "next/web-vitals";
 import { onINP } from "web-vitals/attribution";
 import { usePathname } from "next/navigation";
+import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useLocale } from "next-intl";
 
 const VITALS_ENDPOINT = "/api/vitals";
@@ -127,10 +128,15 @@ interface NavigatorWithExtras extends Navigator {
 /**
  * Plausible Web Vitals plugin emission (audit 2026-05-15 P0 monitoring §8.8).
  *
- * Le script Plausible étend l'API `window.plausible(name, opts)` quand on
- * inclut `.web-vitals.js` (cf. `Plausible.tsx`). On émet un event canonique
- * "Web Vital" avec props ajustés pour pouvoir agréger en custom dashboard
- * Plausible (filter par metric, rating, page).
+ * On émet un event custom canonique "Web Vital" via `window.plausible(name, opts)`,
+ * avec props ajustés pour pouvoir agréger en custom dashboard Plausible (filter
+ * par metric, rating, page).
+ *
+ * ⚠️ AUDIT 2026-07-21 — ce chemin repose sur l'extension `tagged-events`, PAS sur
+ * `.web-vitals.js` : cette dernière n'existe pas dans community-edition v3.0.1 et
+ * a été retirée de l'URL du script (elle la faisait 404 en entier, cf.
+ * `Plausible.tsx`). L'émission manuelle ci-dessous est donc inchangée et reste
+ * fonctionnelle. La source de vérité des Web Vitals demeure le RUM `/api/vitals`.
  *
  * Fail-soft : si `window.plausible` absent (script bloqué adblock, env dev
  * sans NEXT_PUBLIC_PLAUSIBLE_DOMAIN), on swallow silencieusement.
@@ -270,7 +276,11 @@ function isAdminRoute(pathname: string | null): boolean {
 export function WebVitals() {
   const pathname = usePathname();
   const locale = useLocale();
-  const adminRoute = isAdminRoute(pathname);
+  // 🔴 `href` COMPLET est posté à `/api/vitals`, qui l'écrit dans
+  // `data/vitals/*.ndjson` ET dans la table `WebVitalSample` — deux stockages
+  // qu'aucune purge RGPD ne visite. Sur le portail, ce serait le jeton
+  // d'émargement archivé en clair, côté serveur, sans date de péremption.
+  const adminRoute = isAdminRoute(pathname) || urlPorteUnSecret(pathname);
 
   // P1-21 (audit re-run 2026-05-15) — INP attribution Chrome 124+.
   // `useReportWebVitals` ne supporte pas la prop `attribution` ; on appelle

@@ -44,6 +44,7 @@ import { ConventionTripartitePdf } from "@/server/qualiopi/documents/templates/c
 import { ContratFormationPdf } from "@/server/qualiopi/documents/templates/contrat-formation";
 import { ConvocationPdf } from "@/server/qualiopi/documents/templates/convocation";
 import { EmargementPdf } from "@/server/qualiopi/documents/templates/emargement";
+import { construireFeuillePdf, LIBELLE_DEMI } from "@/server/qualiopi/emargement/feuille-pdf";
 import { PositionnementPdf } from "@/server/qualiopi/documents/templates/positionnement";
 import { GrilleEvaluationPdf } from "@/server/qualiopi/documents/templates/grille-evaluation";
 import { SatisfactionPdf } from "@/server/qualiopi/documents/templates/satisfaction";
@@ -382,7 +383,7 @@ export async function genererContratFormationAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true, email: true, telephone: true } },
+      trainee: { select: { id: true, nom: true, prenom: true, email: true, telephone: true } },
       session: {
         select: {
           id: true,
@@ -437,7 +438,10 @@ export async function genererContratFormationAction(input: {
         },
         identite,
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -473,7 +477,7 @@ export async function genererConvocationAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true, entreprise: true } },
+      trainee: { select: { id: true, nom: true, prenom: true, entreprise: true } },
       session: {
         select: {
           id: true,
@@ -506,6 +510,17 @@ export async function genererConvocationAction(input: {
   const nomStagiaire = `${trainee.prenom} ${trainee.nom}`.trim();
   const financement = session.financementType ?? undefined;
 
+  // Horaires réels : un seul créneau si toutes les journées ont les mêmes, la
+  // liste sinon. Rien n'est inventé — sans journées déclarées, on le dit.
+  const joursConvocation = await prisma.sessionJour.findMany({
+    where: { sessionId: session.id },
+    select: { heureDebut: true, heureFin: true },
+    orderBy: { date: "asc" },
+  });
+  const plages = [...new Set(joursConvocation.map((j) => `${j.heureDebut}–${j.heureFin}`))];
+  const horairesReels =
+    plages.length === 0 ? "horaires communiqués par l'organisme" : plages.join(", ");
+
   const doc = await generateDocument({
     type: "convocation",
     buildElement: (numero) =>
@@ -515,7 +530,11 @@ export async function genererConvocationAction(input: {
           intituleFormation: session.titreSession,
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
-          horaires: "09h00–17h00",
+          // Horaires RÉELS des journées déclarées, jamais un « 09h00–17h00 »
+          // codé en dur : la convocation et la feuille d'émargement doivent dire
+          // la même chose, et CAA Nantes 20/04/2021 sanctionne précisément les
+          // intitulés et horaires divergents entre documents.
+          horaires: horairesReels,
           dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
           modalite: modaliteLabelLower(session.modalite),
           nomFormateur: formateurNom,
@@ -531,7 +550,10 @@ export async function genererConvocationAction(input: {
         },
         identite,
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -570,8 +592,6 @@ export async function genererEmargementAction(input: {
       titreSession: true,
       dateDebut: true,
       modalite: true,
-      coFormateurs: true,
-      formateurPrincipalId: true,
       enrollments: {
         where: { statut: { notIn: ["exclu", "abandon"] } },
         select: {
@@ -583,10 +603,11 @@ export async function genererEmargementAction(input: {
   if (!session) return { error: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
-  const formateurNom = await resolveFormateurNom(
-    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
-    identite.raisonSociale,
-  );
+  // ⚠️ Pas de `resolveFormateurNom` ici : le formateur est désormais porté
+  // JOURNÉE PAR JOURNÉE par `construireFeuillePdf` (désistement, co-animation).
+  // Un nom unique en tête de feuille contredirait le tableau qui suit, et
+  // CAA Nantes 20/04/2021 sanctionne précisément les feuilles dont le formateur
+  // annoncé ne correspond pas à celui qui a animé.
 
   const participants = session.enrollments.map((e) => ({
     nom: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
@@ -595,10 +616,61 @@ export async function genererEmargementAction(input: {
       : {}),
   }));
 
-  const dateStr = formatDate(new Date(session.dateDebut));
-  const jourSemaine = new Date(session.dateDebut).toLocaleDateString("fr-FR", {
-    weekday: "long",
-  });
+  // 🔴 Les données viennent désormais de `session_jours` : horaires RÉELS,
+  // multi-jours, modules, formateur par journée, écart de signature et ancrage
+  // de chaîne. Le « 09h00–17h00 » codé en dur produisait une pièce fausse dès
+  // qu'une session durait plus d'un jour.
+  const feuille = await construireFeuillePdf(sessionId);
+  if (feuille === null || feuille.journees.length === 0) {
+    return {
+      error:
+        "Les journées de cette session ne sont pas déclarées. Renseignez-les avec leurs horaires réels : une feuille d'émargement sans horaires exacts est insuffisamment probante.",
+    };
+  }
+
+  const journees = feuille.journees.map((j) => ({
+    dateLisible: j.dateLisible,
+    horaires: j.horaires,
+    formateurNom: j.formateurNom,
+    modules: j.modules,
+    entetes: j.demiJournees.map((dj) => LIBELLE_DEMI[dj]),
+    lignes: j.lignes.map((l) => ({
+      nom: l.stagiaireNom,
+      entreprise: l.entreprise ?? "",
+      cases: l.cases.map((c) =>
+        c.signeAHeure === null
+          ? ""
+          : [
+              `Signé ${c.signeAHeure}`,
+              // Mitigation obligatoire de D13 : un écart de 40 h visible et
+              // assumé se défend, le même écart muet ne se défend pas.
+              c.ecart === null ? "" : `(${c.ecart})`,
+              c.surPosteFormateur ? "— poste formateur" : "",
+            ]
+              .filter(Boolean)
+              .join(" "),
+      ),
+      // Empreinte tronquée : de quoi recouper le registre sans rendre la
+      // feuille illisible.
+      ancrage:
+        l.empreinteTete === null ? "—" : `${l.nbSignatures} · ${l.empreinteTete.slice(0, 10)}`,
+    })),
+    // Une ligne par demi-journée contresignée : « Matin — Williams Jullin,
+    // signé 12h05 ». Le nom du formateur figuré est celui qui a CONTRESIGNÉ.
+    contresignatures: j.contresignatures.map(
+      (c) => `${LIBELLE_DEMI[c.demiJournee]} — ${c.formateurNom}, signé ${c.signeAHeure}`,
+    ),
+    // 🔴 H2 — demi-journées de CE jour SANS contresignature formateur. Une
+    // journée où seule la matinée est contresignée (co-animation « chacun la
+    // sienne ») était rendue comme complète : le trou de l'après-midi (signature
+    // formateur exigée, CAA Nantes 20/04/2021) était invisible à l'auditeur.
+    contresignaturesManquantes: j.demiJournees
+      // Le grain « journee » (créneau hérité d'un import, M4) n'est jamais
+      // contresigné — la contresignature se fait par demi-journée. Ne pas le
+      // compter comme « manquant », sinon faux « feuille incomplète » (L-C).
+      .filter((dj) => dj !== "journee" && !j.contresignatures.some((c) => c.demiJournee === dj))
+      .map((dj) => LIBELLE_DEMI[dj]),
+  }));
 
   const doc = await generateDocument({
     type: "emargement",
@@ -606,13 +678,12 @@ export async function genererEmargementAction(input: {
       React.createElement(EmargementPdf, {
         data: {
           numero,
-          intituleFormation: session.titreSession,
-          date: `${dateStr} (${jourSemaine})`,
-          horaires: "09h00–17h00",
+          intituleFormation: feuille.intituleFormation,
+          numeroSession: feuille.numeroSession,
           lieu: identite.adresseExercice || identite.adresseSiege || "—",
-          nomFormateur: formateurNom,
           nda: identite.nda,
-          participants,
+          journees,
+          totalSignatures: feuille.totalSignatures,
         },
         identite,
       }),
@@ -703,7 +774,7 @@ export async function genererGrilleEvaluationAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true } },
+      trainee: { select: { id: true, nom: true, prenom: true } },
       session: {
         select: {
           id: true,
@@ -749,7 +820,10 @@ export async function genererGrilleEvaluationAction(input: {
         },
         identite,
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -842,6 +916,7 @@ export async function genererCertificatRealisationAction(input: {
       tauxPresencePct: true,
       trainee: {
         select: {
+          id: true,
           nom: true,
           prenom: true,
           fonction: true,
@@ -891,11 +966,20 @@ export async function genererCertificatRealisationAction(input: {
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const dureePrevue = formationDoc.dureeHeures ?? session.formation.dureeHeures;
 
-  // Durée réelle (R.6313-3) : préférer dureeReelleHeures, sinon durée prévue
-  // pondérée par le taux de présence si disponible, sinon durée prévue.
-  let dureeHeures = session.dureeReelleHeures ?? dureePrevue;
-  if (session.dureeReelleHeures === null && enrollment.tauxPresencePct !== null) {
-    dureeHeures = Math.round((enrollment.tauxPresencePct * dureePrevue) / 100);
+  // Durée RÉALISÉE PAR CE STAGIAIRE (R.6313-3) : base = durée réelle de la session
+  // si déclarée, sinon durée prévue ; puis TOUJOURS pondérée par le taux de présence
+  // individuel quand il est connu.
+  //
+  // 🔴 #2 — avant, la pondération par le taux ne s'appliquait QUE si `dureeReelleHeures`
+  // était null : un stagiaire à 50 % d'une session de 16 h réelles obtenait un
+  // certificat « 16 h réalisées » (durée SESSION) alors que son attestation portait
+  // « 8 h suivies » (durée INDIVIDUELLE). Deux pièces du même dossier divergeaient, et
+  // le certificat SUR-DÉCLARAIT les heures à l'OPCO. Les deux mesurent désormais les
+  // heures réellement suivies par le bénéficiaire = taux × (durée réelle ?? prévue).
+  const baseDuree = session.dureeReelleHeures ?? dureePrevue;
+  let dureeHeures = baseDuree;
+  if (enrollment.tauxPresencePct !== null) {
+    dureeHeures = Math.round((enrollment.tauxPresencePct * baseDuree) / 100);
   }
 
   const dirigeant = await getQualiopiConfig("dirigeant_nom");
@@ -925,14 +1009,20 @@ export async function genererCertificatRealisationAction(input: {
               ? { fonction: trainee.fonction }
               : {}),
           },
-          intituleAction: formationDoc.titre ?? session.formation.titre,
+          // #9 — intitulé de la SESSION (comme convention/convocation/émargement/
+          // attestation), pas le titre catalogue : sinon un certificat de
+          // réalisation portait un intitulé divergent des autres pièces du dossier.
+          intituleAction: session.titreSession ?? formationDoc.titre ?? session.formation.titre,
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           // ⚠️ dureeHeures en décimal — formatHeuresCentiemes appelé dans le template
           dureeHeures,
         },
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -1081,7 +1171,7 @@ export async function genererKitCpfAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true } },
+      trainee: { select: { id: true, nom: true, prenom: true } },
       session: {
         select: {
           id: true,
@@ -1133,7 +1223,10 @@ export async function genererKitCpfAction(input: {
           coutTotalCents: coutTotal,
         },
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -1169,7 +1262,7 @@ export async function genererKitFranceTravailAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { nom: true, prenom: true } },
+      trainee: { select: { id: true, nom: true, prenom: true } },
       session: {
         select: {
           id: true,
@@ -1231,7 +1324,10 @@ export async function genererKitFranceTravailAction(input: {
           },
         },
       }),
-    refs: { sessionId: session.id },
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
   });
 
   await logQualiopiActivity({
@@ -1698,6 +1794,24 @@ export async function verserFicheFormateurAction(input: {
   const nbCvSource = await prisma.trainerDocument.count({
     where: { trainerId, type: "cv", statutValidation: "valide" },
   });
+
+  // 🔴 #1 — off.21 est une NON-CONFORMITÉ MAJEURE : « la maîtrise des compétences
+  // des intervenants est VÉRIFIÉE ». Verser une fiche VIDE (aucune compétence, aucune
+  // habilitation, aucun CV source) posait quand même `cvUrl` → l'indicateur passait
+  // VERT sur un clic, sans rien prouver. On refuse : une fiche qui ne documente rien
+  // ne peut pas attester d'une maîtrise. ⚠️ NOTE JURISTE : que des compétences
+  // SAISIES constituent une maîtrise « vérifiée » reste un arbitrage (le contrôle
+  // peut exiger des pièces sources) — cette garde n'écarte que le cas totalement vide.
+  const aDesCompetences =
+    Array.isArray(trainer.domainesCompetences) && trainer.domainesCompetences.length > 0;
+  const aDesHabilitations = trainer.formationsHabilitees.length > 0;
+  if (!aDesCompetences && !aDesHabilitations && nbCvSource === 0) {
+    return {
+      error:
+        "Fiche non versée : ce formateur n'a ni domaine de compétence, ni habilitation, ni CV source. Renseignez sa maîtrise (indicateur 21) avant de verser sa fiche au dossier.",
+    };
+  }
+
   const data = {
     ...buildCvFormateurData(trainer, titresHabilitations, maintenant),
     cvJoint: nbCvSource > 0,

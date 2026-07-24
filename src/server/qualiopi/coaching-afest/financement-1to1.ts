@@ -75,6 +75,17 @@ export function validateCoachingFinancement(c: CoachingFinancementFields): strin
         return "POEI : les 3 pièces sont requises (n° offre d'emploi, accord de financement, engagement signé).";
       }
     }
+    // 🔴 Reste à charge France Travail : la facture 1-to-1 dérive UN destinataire
+    // unique et lui facture le total plein. Or France Travail ne finance que
+    // l'aide (total − reste à charge) ; le reste à charge est dû par le
+    // bénéficiaire/l'entreprise. Facturer le total plein à France Travail
+    // sur-facturerait un financeur public. La facturation en deux volets (aide FT
+    // + reste à charge) n'est pas encore automatisée → on bloque plutôt que
+    // d'émettre une facture erronée. Cas courant (FT 100 % financé, reste à
+    // charge nul/absent) : inchangé.
+    if ((c.resteAChargeCents ?? 0) > 0) {
+      return "France Travail avec reste à charge : la facturation en deux volets (aide France Travail + reste à charge bénéficiaire) n'est pas encore automatisée. Émettez séparément la facture de l'aide France Travail et celle du reste à charge.";
+    }
   }
   return null;
 }

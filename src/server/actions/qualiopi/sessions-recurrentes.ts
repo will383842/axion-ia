@@ -24,10 +24,15 @@
 "use server";
 
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { revoquerTokensInscription } from "@/server/qualiopi/emargement/token-service";
 import type { ModaliteFormation, FinancementType } from "@/server/qualiopi/formations/types";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
+import { genererJoursParDefaut } from "@/server/qualiopi/presence/jours-defaut";
+import type { JourSession } from "@/server/qualiopi/presence/creneaux";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
@@ -83,6 +88,20 @@ const reportSessionSchema = z.object({
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Ajoute `deltaMs` à une date et retourne la nouvelle date UTC. */
+/**
+ * Fin d'une session : le DERNIER jour généré, à son heure de fin.
+ *
+ * Repli sur `dateDebut + durée` quand aucune journée n'a pu être générée
+ * (durée absente ou absurde) — comportement historique, conservé pour ne pas
+ * créer de session sans date de fin.
+ */
+function finDepuisJours(dateDebut: Date, jours: JourSession[], dureeHeures: number): Date {
+  const dernier = jours[jours.length - 1];
+  if (dernier === undefined) return addMs(dateDebut, dureeHeures * 60 * 60 * 1000);
+  const [h, m] = dernier.heureFin.split(":");
+  return new Date(`${dernier.date}T${h}:${m}:00.000Z`);
+}
+
 function addMs(d: Date, deltaMs: number): Date {
   return new Date(d.getTime() + deltaMs);
 }
@@ -157,7 +176,13 @@ export async function createRecurringSessionsAction(
   // partagent la même prestation vendue au moment de la planification).
   const formationSnapshot = buildFormationSnapshot(formation, new Date());
   const deltaMs = v.frequence === "hebdomadaire" ? HEBDO_MS : MENSUEL_MS;
-  const dureeDeltaMs = v.dureeHeures * 60 * 60 * 1000;
+  // ⚠️ `dateFin` NE PEUT PAS être `dateDebut + dureeHeures`. C'était le calcul
+  // précédent, et il pliait toute session de plus d'une journée sur un seul jour
+  // civil : une formation de 14 h partant le 10 juin à 09:00 « finissait » le
+  // 10 juin à 23:00. Une formation de 2 jours était donc enregistrée comme
+  // tenant sur un seul — et la feuille d'émargement l'aurait montré ainsi.
+  //
+  // La fin dérive maintenant des journées réellement générées (D14).
 
   // Pré-allouer les numéros avant la transaction (count+1 hors tx, acceptable car
   // @unique numéro reste le garde-fou final — collision P2002 → retry côté action).
@@ -178,7 +203,11 @@ export async function createRecurringSessionsAction(
 
       for (let i = 0; i < v.occurrences; i++) {
         const dateDebut = addMs(v.premiereDateDebut, i * deltaMs);
-        const dateFin = addMs(dateDebut, dureeDeltaMs);
+        const joursOccurrence = genererJoursParDefaut({
+          dateDebutIso: parisDateISO(dateDebut),
+          dureeHeures: v.dureeHeures,
+        });
+        const dateFin = finDepuisJours(dateDebut, joursOccurrence, v.dureeHeures);
         const numero = numeros[i]!;
 
         // Construire data de façon explicite pour éviter TS7022 (spread conditionnel
@@ -209,6 +238,21 @@ export async function createRecurringSessionsAction(
           data: createData,
           select: { id: true, numero: true },
         });
+
+        // Journées PROPOSÉES (D14). Sans elles, `session_jours` resterait vide
+        // pour les 52 occurrences et le formateur devrait les saisir 52 fois.
+        // `horairesConfirmes` reste à `false` : ce sont des propositions, et
+        // l'écran de saisie les présente comme telles.
+        if (joursOccurrence.length > 0) {
+          await tx.sessionJour.createMany({
+            data: joursOccurrence.map((j) => ({
+              sessionId: created.id,
+              date: new Date(`${j.date}T00:00:00.000Z`),
+              heureDebut: j.heureDebut,
+              heureFin: j.heureFin,
+            })),
+          });
+        }
 
         // FormationTransition initiale null → planifiee pour chaque occurrence.
         await writeSessionTransition(tx, {
@@ -297,6 +341,7 @@ export async function reportSessionAction(
     clientId: string | null;
     financementType: string | null;
     sessionParentId: string | null;
+    formation: { dureeHeures: number };
     enrollments: Array<{ id: string; traineeId: string; statut: string }>;
   } | null;
 
@@ -319,6 +364,9 @@ export async function reportSessionAction(
         clientId: true,
         financementType: true,
         sessionParentId: true,
+        // L5 — durée du catalogue, pour proposer les journées de la session
+        // reportée (sinon aucun jour → aucun lien d'émargement émissible).
+        formation: { select: { dureeHeures: true } },
         enrollments: {
           select: { id: true, traineeId: true, statut: true },
         },
@@ -374,6 +422,26 @@ export async function reportSessionAction(
         select: { id: true, numero: true },
       });
 
+      // 🔴 L5 — proposer les journées de la session reportée, comme à la création.
+      // Sans elles, `emettreLiensSessionAction` échoue (`journees_non_declarees`)
+      // et l'admin ne peut pas émettre les liens sans re-saisir les jours à la
+      // main, sans indication que le report en est la cause. `horairesConfirmes`
+      // reste false : ce sont des propositions à vérifier.
+      const joursReport = genererJoursParDefaut({
+        dateDebutIso: parisDateISO(v.nouvelleDateDebut),
+        dureeHeures: ancienne!.formation.dureeHeures,
+      });
+      if (joursReport.length > 0) {
+        await tx.sessionJour.createMany({
+          data: joursReport.map((j) => ({
+            sessionId: nouvelle.id,
+            date: new Date(`${j.date}T00:00:00.000Z`),
+            heureDebut: j.heureDebut,
+            heureFin: j.heureFin,
+          })),
+        });
+      }
+
       // FormationTransition initiale pour la nouvelle session (null → planifiee)
       await writeSessionTransition(tx, {
         sessionId: nouvelle.id,
@@ -402,8 +470,9 @@ export async function reportSessionAction(
 
       // 3. Migrer les enrollments
       // @@unique [sessionId, traineeId] — si le stagiaire est déjà inscrit à la
-      // nouvelle session (cas rare : inscription manuelle préalable), on supprime
-      // l'enrollment source pour éviter le doublon. Sinon on transfère.
+      // nouvelle session (cas rare : inscription manuelle préalable), on LAISSE
+      // l'inscription source sur la session reportée (L12 : elle peut porter une
+      // preuve, non supprimable). Sinon on la transfère.
       for (const enrollment of ancienne!.enrollments) {
         try {
           await tx.enrollment.update({
@@ -413,9 +482,13 @@ export async function reportSessionAction(
         } catch (enrollErr) {
           const code = (enrollErr as { code?: string })?.code;
           if (code === "P2002") {
-            // Doublons : stagiaire déjà inscrit dans la nouvelle session.
-            // On supprime l'enrollment source (l'enrollment cible reste).
-            await tx.enrollment.delete({ where: { id: enrollment.id } });
+            // Doublon : le stagiaire est DÉJÀ inscrit à la nouvelle session.
+            // 🔴 L12 — on ne SUPPRIME PAS l'inscription source : elle peut porter
+            // une signature ou un jeton d'émargement (FK `Restrict` de T13), et le
+            // delete lèverait alors un P2003 non rattrapé qui ferait échouer tout
+            // le report. On la LAISSE sur la session reportée : ses preuves y
+            // restent rattachées à la session qui a réellement eu lieu, ce qui est
+            // correct. Le stagiaire poursuit via son inscription à la nouvelle.
           } else {
             throw enrollErr;
           }
@@ -433,6 +506,27 @@ export async function reportSessionAction(
       return { error: "Conflit de numéro détecté, veuillez réessayer" };
     }
     return { error: "Erreur lors du report de la session" };
+  }
+
+  // 🔴 O7 (volet report) — les jetons d'émargement suivent l'INSCRIPTION, qui a
+  // migré vers la nouvelle session. Sans révocation, un lien émis pour les dates
+  // reportées resterait valide alors que la garde `reportee` du service ne
+  // s'applique plus (l'inscription appartient désormais à une session
+  // `planifiee`). On révoque : le stagiaire recevra un nouveau lien pour les
+  // nouvelles dates. Hors transaction (échec non bloquant), avec trace.
+  try {
+    for (const e of ancienne.enrollments) {
+      await revoquerTokensInscription({
+        enrollmentId: e.id,
+        motif: `Session reportée (${ancienne.numero})`,
+        parAdminId: adminSession.userId,
+      });
+    }
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "reporterSessionAction:revocation_jetons" },
+      extra: { ancienneSessionId: ancienne.id, nouvelleSessionId },
+    });
   }
 
   await logQualiopiActivity({

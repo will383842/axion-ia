@@ -9,7 +9,26 @@
  *
  * Centralisé ici pour être réutilisé par les loaders blog ET guides (et tout
  * futur loader d'article) sans dupliquer la logique.
+ *
+ * ⚠️ AUDIT 2026-07-21 — résolution des tokens `{{price:…}}` AJOUTÉE ici.
+ * Le corps d'article était déjà résolu au rendu (`blog/[slug]/page.tsx` appelle
+ * `resolvePriceTokens` sur `dbBody.html`), mais la FAQ vient d'un champ SÉPARÉ
+ * (`Article.faqJson`) qui ne passait par aucun résolveur. Résultat mesuré en
+ * prod : 25 articles publiés affichaient `{{price:audit-strategique-pme|range}}`
+ * en clair, à la fois dans le HTML visible ET dans le JSON-LD `FAQPage` envoyé
+ * à Google.
+ *
+ * On résout ICI plutôt que d'écrire les prix en base : `parseFaqItems` est le
+ * point de passage unique (blog + guides), et surtout les prix restent
+ * DYNAMIQUES — les figer en base créerait une dérive silencieuse au prochain
+ * changement de grille tarifaire.
  */
+
+import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
+
+/** Résout les tokens puis recolle la prose (« commence à À partir de … »). */
+const renderPrice = (s: string, locale: "fr" | "en"): string =>
+  collapsePriceProseDuplicates(resolvePriceTokens(s, locale));
 
 export interface FaqItem {
   readonly question: string;
@@ -44,9 +63,12 @@ export function validateFaqItem(
 export interface ParseFaqOptions {
   /** Applique validateFaqItem + anti-doublon. Réservé au gate publish (P0). */
   readonly strict?: boolean;
+  /** Locale de résolution des tokens `{{price:…}}`. Défaut `"fr"`. */
+  readonly locale?: "fr" | "en";
 }
 
 export function parseFaqItems(raw: unknown, opts: ParseFaqOptions = {}): ReadonlyArray<FaqItem> {
+  const locale = opts.locale ?? "fr";
   // Tolère les générateurs qui enveloppent la FAQ dans un objet audit-trail :
   // `guide-pilier.ts` persiste `faqJson: { outline, sectionFailures, faq: [...] }`
   // (un OBJET), donc sans ce déballage parseFaqItems retournait toujours `[]`
@@ -66,8 +88,11 @@ export function parseFaqItems(raw: unknown, opts: ParseFaqOptions = {}): Readonl
     const q = typeof o.question === "string" ? o.question : typeof o.q === "string" ? o.q : null;
     const a = typeof o.answer === "string" ? o.answer : typeof o.a === "string" ? o.a : null;
     if (q && a && q.trim().length > 0 && a.trim().length > 0) {
-      const question = q.trim();
-      const answer = a.trim();
+      // Résolution AVANT la validation stricte : sinon un token légitime mais
+      // non encore résolu ferait échouer `FAQ_PLACEHOLDER_RE` (qui rejette
+      // `{{`/`}}`) et supprimerait silencieusement une FAQ parfaitement valide.
+      const question = renderPrice(q.trim(), locale);
+      const answer = renderPrice(a.trim(), locale);
       if (opts.strict) {
         if (!validateFaqItem(question, answer).ok) continue;
         // Anti-doublon : deux réponses identiques (normalisées) = FAQ gonflée.

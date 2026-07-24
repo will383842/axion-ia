@@ -14,10 +14,12 @@
  * 012-028, offre AXION 101-118). Le séminaire garde son offre existante
  * (AXI-OFF-115, résolue par slug).
  *
- * `archiveReplacedCatalogue` désactive les offres AXION remplacées (actif=false)
- * et archive leurs lignes `Formation` (statut='archive') — JAMAIS de DELETE :
- * l'historique sessions/documents/factures est préservé (même procédure que la
- * refonte #327).
+ * L'archivage des générations remplacées n'est PLUS traité ici : il relevait
+ * d'une liste de slugs en dur (`REPLACED_AXION_SLUGS`) qui n'attrapait que la
+ * génération que son auteur avait pensé à lister — la refonte du 2026-07-15
+ * n'ayant touché aucun seed, 17 formations sont restées actives. La règle est
+ * désormais générique et dérivée du SSOT :
+ * `src/server/qualiopi/formations/catalogue-cleanup.ts`, appelée par `index.ts`.
  */
 
 import type { OffreFormatPedagogique, OffreTarifType, PrismaClient } from "../../generated/client";
@@ -157,48 +159,4 @@ export async function reconcileOffresV2(prisma: PrismaClient): Promise<void> {
     updated += 1;
   }
   console.log(`✅ [qualiopi:seed] offres catalogue — réconciliation : ${updated} alignée(s).`);
-}
-
-/**
- * Slugs de l'offre AXION 2026-07 (PR #327/#339/#349) REMPLACÉS par la refonte
- * 2026-07-19. Le séminaire (`seminaire-ia-toute-l-entreprise-1j`) n'y est PAS :
- * il est conservé tel quel.
- */
-const REPLACED_AXION_SLUGS: ReadonlyArray<string> = [
-  "bien-demarrer-avec-l-ia-4h",
-  "bien-demarrer-avec-l-ia-journee-7h",
-  "prompts-avances-et-assistants-ia-4h",
-  "gagner-du-temps-au-quotidien-avec-l-ia-7h",
-  "claude-prise-en-main-complete-7h",
-  "claude-maitrise-avancee-et-autonomie-2j",
-  "claude-code-creer-un-projet-3j",
-  "ia-act-conformite-et-securite-7h",
-  "referent-ia-piloter-gouvernance-ia-7h",
-  "ia-rh-recrutement-talents-7h",
-  "ia-assistanat-mails-comptes-rendus-documents-7h",
-  "ia-marketing-contenus-seo-image-de-marque-7h",
-  "ia-vente-prospection-developpement-commercial-7h",
-  "ia-finance-reporting-analyses-pilotage-7h",
-  "ia-supply-chain-achats-stocks-7h",
-  "conduite-du-changement-ia-7h",
-  "deployer-l-ia-en-entreprise-2j",
-];
-
-/**
- * Désactive les offres remplacées (actif=false) et archive leurs formations
- * (statut='archive'). Idempotent, non destructif — même procédure que #327 :
- * l'historique (sessions, documents, factures) reste intact.
- */
-export async function archiveReplacedCatalogue(prisma: PrismaClient): Promise<void> {
-  const offres = await prisma.offreSite.updateMany({
-    where: { slug: { in: [...REPLACED_AXION_SLUGS] }, actif: true },
-    data: { actif: false },
-  });
-  const formations = await prisma.formation.updateMany({
-    where: { slug: { in: [...REPLACED_AXION_SLUGS] }, statut: { not: "archive" } },
-    data: { statut: "archive" },
-  });
-  console.log(
-    `✅ [qualiopi:seed] refonte 2026-07-19 — ${offres.count} offre(s) désactivée(s), ${formations.count} formation(s) archivée(s).`,
-  );
 }

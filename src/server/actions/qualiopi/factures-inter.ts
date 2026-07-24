@@ -101,6 +101,25 @@ export async function genererFactureParInscriptionAction(
   });
   if (!readiness.ok) return { error: `Facture impossible : ${readiness.raison}` };
 
+  // 🔴 Anti-DOUBLE ÉMISSION : une inscription déjà facturée (facture non annulée)
+  // ne doit pas en générer une seconde — chacune consomme un NUMÉRO LÉGAL et
+  // facturerait le participant deux fois. Une facture annulée autorise une réémission.
+  // ⚠️ LIMITE : cette garde applicative (lecture puis écriture, hors transaction)
+  // ferme le DOUBLE-CLIC séquentiel mais PAS une course concurrente stricte (deux
+  // requêtes simultanées lisent `null` avant que l'une commite). La fermeture
+  // complète exige un INDEX UNIQUE PARTIEL Postgres sur `enrollment_id WHERE statut
+  // <> 'annulee'` — migration + confirmation métier (une inscription a-t-elle
+  // toujours au plus UNE facture active ?). Voir _AUDIT/QUALIOPI-RESTE-WILL-2026-07-24.md.
+  const dejaFacturee = await prisma.factureFormation.findFirst({
+    where: { enrollmentId: enrollment.id, statut: { not: "annulee" } },
+    select: { numero: true },
+  });
+  if (dejaFacturee !== null) {
+    return {
+      error: `Cette inscription est déjà facturée (${dejaFacturee.numero}). Annulez la facture existante avant d'en émettre une nouvelle.`,
+    };
+  }
+
   const destinataire = destinataireFacture(resolved.financementType);
   const payeur = enrollment.client ?? enrollment.session.client;
   const traineeNom = `${enrollment.trainee.prenom} ${enrollment.trainee.nom}`;
@@ -119,6 +138,14 @@ export async function genererFactureParInscriptionAction(
     destinataireSiret = payeur?.siret ?? undefined;
     destinataireAdresse = payeur?.adresse ?? undefined;
   }
+
+  // ⚠️ NOTE (constat #5, NON corrigé ici — risque de régression) : pour un
+  // financement `direct`/`mixte`, `destinataireFacture` renvoie « entreprise » même
+  // pour un PARTICULIER en auto-financement (sans employeur). Un garde-fou « refuser
+  // si pas de raison sociale » bloquait donc à tort une facture nominative légale.
+  // Le vrai correctif est dans le MAPPING `destinataireFacture` (distinguer un
+  // particulier auto-financé → destinataire « stagiaire ») — arbitrage métier/juriste,
+  // pas un simple garde. Voir _AUDIT/QUALIOPI-RESTE-WILL-2026-07-24.md.
 
   // Garde-fou conformité : facture inter illégale si identité OF incomplète.
   const identite = await getOrganismeIdentite();

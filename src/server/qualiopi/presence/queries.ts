@@ -39,6 +39,19 @@ export interface SessionEmargementRow {
     };
   }>;
   creneaux: PresenceCreneau[];
+  /**
+   * Journées RÉELLEMENT animées (décision D14), ordonnées.
+   *
+   * Tableau vide = la session n'en déclare aucune et retombe sur
+   * `dateDebut..dateFin` — ce qui n'est correct que si les journées se suivent.
+   */
+  jours: Array<{
+    date: string;
+    heureDebut: string;
+    heureFin: string;
+    /** Faux tant que ce sont les horaires PROPOSÉS à la création de la session. */
+    horairesConfirmes: boolean;
+  }>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -58,8 +71,21 @@ export async function getSessionEmargement(
       where: { id: sessionId },
       include: {
         enrollments: {
+          // 🔴 OUBLI O3 DU PLAN — dissocier le filtre de LECTURE de celui
+          // d'ÉCRITURE.
+          //
+          // Filtrer les abandons et exclus ici faisait DISPARAÎTRE de la grille
+          // les créneaux et les signatures déjà apposés. C'est le cas le plus
+          // fréquent en formation collective : quelqu'un suit deux jours sur
+          // trois puis abandonne. Ces heures ont été réellement suivies, elles
+          // sont facturables à l'OPCO, et leur preuve existe — la masquer revient
+          // à s'en priver.
+          //
+          // On garde donc en lecture toute inscription qui a DÉJÀ un créneau,
+          // quel que soit son statut. Le filtre d'écriture, lui, reste : on ne
+          // crée pas de nouveaux créneaux pour quelqu'un qui a abandonné.
           where: {
-            statut: { notIn: ["abandon", "exclu"] },
+            OR: [{ statut: { notIn: ["abandon", "exclu"] } }, { presences: { some: {} } }],
           },
           include: {
             trainee: {
@@ -67,6 +93,10 @@ export async function getSessionEmargement(
             },
           },
           orderBy: [{ trainee: { nom: "asc" } }, { trainee: { prenom: "asc" } }],
+        },
+        jours: {
+          select: { date: true, heureDebut: true, heureFin: true, horairesConfirmes: true },
+          orderBy: { date: "asc" },
         },
       },
     });
@@ -105,6 +135,14 @@ export async function getSessionEmargement(
         },
       })),
       creneaux,
+      // `@db.Date` stocké à minuit UTC → `YYYY-MM-DD` sans conversion de fuseau.
+      // Passer par `toLocaleDateString` décalerait la date d'un jour.
+      jours: session.jours.map((j) => ({
+        date: j.date.toISOString().slice(0, 10),
+        heureDebut: j.heureDebut,
+        heureFin: j.heureFin,
+        horairesConfirmes: j.horairesConfirmes,
+      })),
     };
   } catch {
     return null;

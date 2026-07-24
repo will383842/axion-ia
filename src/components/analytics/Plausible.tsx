@@ -1,3 +1,7 @@
+"use client";
+// use-client: la garde `urlPorteUnSecret` a besoin du pathname courant — le
+// layout racine ne peut pas appeler `headers()` sans rendre tout le site
+// dynamique (budget Web Vitals).
 // Plausible analytics integration (Sprint 23 / M11).
 //
 // Self-hosted privacy-first analytics, GDPR-compliant sans cookies (CNIL OK
@@ -7,7 +11,9 @@
 // pas defini (preserve dev sans appel reseau parasite).
 
 import Script from "next/script";
+import { usePathname } from "next/navigation";
 import { env } from "@/env";
+import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 
 // Re-export pour préserver l'API publique historique. La SSOT est dans
 // `src/lib/analytics/plausible-tracker.ts` (helper pur). Voir A3.2.
@@ -16,25 +22,36 @@ export { trackEvent } from "@/lib/analytics/plausible-tracker";
 export function Plausible() {
   const domain = env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
   const apiUrl = env.NEXT_PUBLIC_PLAUSIBLE_API_URL ?? "https://plausible.axion-ia.com";
+  const pathname = usePathname();
 
   if (!domain) return null;
+  // 🔴 Le portail stagiaire porte son jeton d'authentification DANS le chemin,
+  // et Plausible transmet `location.pathname` : sans cette garde, le lien
+  // atterrit en clair dans le rapport « Top pages », rejouable pendant 48 h par
+  // quiconque a accès au tableau de bord. Cf. `routes-privees.ts`.
+  if (urlPorteUnSecret(pathname)) return null;
 
   // strategy="afterInteractive" → script chargé après hydration (n'impacte pas LCP).
   // Script étendu (ordre alphabétique requis par Plausible) :
-  //   404            — 404 error pages tracking
   //   file-downloads — clics sur .pdf/.docx/.csv (mentions, sous-processeurs)
   //   outbound-links — clics vers domaines externes
   //   tagged-events  — Custom events via window.plausible(name, opts)
   //                    Requis pour trackEvent("Booking Submitted") etc.
-  //   web-vitals     — Active la collecte LCP/INP/CLS côté Plausible (Audit
-  //                    2026-05-15 P0 §8.8). Émet un event "Web Vital" custom
-  //                    auto + accepte les emit manuels via WebVitals.tsx.
-  //                    Permet un dashboard Plausible séparé du RUM /api/vitals.
+  //
+  // ⚠️ AUDIT 2026-07-21 — NE PAS réintroduire `404.` ni `.web-vitals` :
+  // ces deux extensions N'EXISTENT PAS dans plausible/community-edition:v3.0.1.
+  // L'URL précédente (`script.404.file-downloads.outbound-links.tagged-events.web-vitals.js`)
+  // renvoyait un **404**, donc aucun event n'a jamais été émis depuis la mise en
+  // ligne (11 events en base ClickHouse, tous datés du 2026-05-13, 0 sur 30 j).
+  // Vérifié en live : seules `script.js`, `script.tagged-events.js`,
+  // `script.file-downloads.outbound-links.tagged-events.js` (et variantes) → 200.
+  // La collecte Web Vitals reste assurée par le RUM maison `/api/vitals`
+  // (table `web_vital_samples`, ~65 000 échantillons) — aucune perte.
   return (
     <Script
       defer
       data-domain={domain}
-      src={`${apiUrl}/js/script.404.file-downloads.outbound-links.tagged-events.web-vitals.js`}
+      src={`${apiUrl}/js/script.file-downloads.outbound-links.tagged-events.js`}
       strategy="afterInteractive"
     />
   );

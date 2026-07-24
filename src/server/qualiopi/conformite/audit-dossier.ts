@@ -354,7 +354,60 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   zip.file("manifeste.json", JSON.stringify(manifeste.json, null, 2));
   zip.file("manifeste.md", manifeste.markdown);
 
+  // 🔴 OUBLI M3 — les pièces FORMATEUR n'étaient jamais exportées : ni CV, ni
+  // Kbis, ni NDA, ni contrat de sous-traitance. Le manifeste ne portait qu'une
+  // URL en clair dans un Markdown. Or les indicateurs 21 (maîtrise VÉRIFIÉE des
+  // intervenants) et 27 (sous-traitance) sont à non-conformité MAJEURE, et le
+  // plan les présente comme le gain principal du chantier. Ils n'étaient pas
+  // outillés du tout.
+  const piecesFormateurs = await prisma.trainerDocument.findMany({
+    select: {
+      type: true,
+      numeroPiece: true,
+      fichierUrl: true,
+      dateEmission: true,
+      dateExpiration: true,
+      statutValidation: true,
+      trainer: { select: { nom: true, prenom: true } },
+    },
+    orderBy: [{ trainer: { nom: "asc" } }, { type: "asc" }],
+  });
+
+  zip.file(
+    "formateurs/pieces.json",
+    JSON.stringify(
+      piecesFormateurs.map((p) => ({
+        formateur: `${p.trainer.prenom} ${p.trainer.nom}`.trim(),
+        type: p.type,
+        numeroPiece: p.numeroPiece,
+        fichierUrl: p.fichierUrl,
+        dateEmission: p.dateEmission,
+        dateExpiration: p.dateExpiration,
+        statutValidation: p.statutValidation,
+        // ⚠️ Une pièce expirée reste dans l'export, signalée : la retirer
+        // donnerait l'illusion d'un dossier complet.
+        expiree:
+          p.dateExpiration !== null && p.dateExpiration.getTime() < Date.now() ? true : false,
+      })),
+      null,
+      2,
+    ),
+  );
+
   const indexLines: string[] = [`Dossier d'audit Qualiopi — ${horodatage}`, ""];
+  indexLines.push(
+    `Pièces formateurs (ind. 21 / 27) : ${piecesFormateurs.length} → formateurs/pieces.json`,
+  );
+  const sansFichier = piecesFormateurs.filter((p) => p.fichierUrl === null).length;
+  const expirees = piecesFormateurs.filter(
+    (p) => p.dateExpiration !== null && p.dateExpiration.getTime() < Date.now(),
+  ).length;
+  if (sansFichier > 0) {
+    indexLines.push(`  ⚠️ ${sansFichier} pièce(s) sans fichier joint — référence sans preuve.`);
+  }
+  if (expirees > 0) {
+    indexLines.push(`  ⚠️ ${expirees} pièce(s) EXPIRÉE(S).`);
+  }
 
   // [P1] Alerte NON silencieuse : si R2 n'est pas configuré, AUCUN PDF de preuve
   //   ne sera restituable — le dossier serait livré vide sans avertissement.
@@ -415,6 +468,13 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
         `[OMIS] registres/${type} — erreur de rendu (${err instanceof Error ? err.message : String(err)})`,
       );
       nbOmis++;
+      // 🔴 #3 — un registre réglementaire manquant DOIT rendre le dossier INCOMPLET.
+      // Avant, l'échec n'était que dans index.txt et `incomplet` ne dépendait que des
+      // preuves R2 → un dossier privé de son registre sous-traitants (ind. 27) ou revue
+      // de direction (ind. 32) était remis à l'auditeur COFRAC comme « complet ».
+      avertissements.push(
+        `⚠️ Registre réglementaire « ${type} » absent du dossier (erreur de rendu). Corrigez-le avant de remettre ce dossier à un auditeur.`,
+      );
     }
   }
 

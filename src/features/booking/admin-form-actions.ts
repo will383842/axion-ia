@@ -34,11 +34,10 @@ function pathsToRevalidate(adminPrefix: string, bookingId: string): string[] {
     `/fr/${adminPrefix}/reservations`,
     `/fr/${adminPrefix}/reservations/${bookingId}`,
     `/fr/${adminPrefix}/calendrier`,
-    // Modèle multi-demandes (2026-06-10) : valider/déplacer/annuler une demande
-    // change les compteurs « déjà X demandes » côté public → on rafraîchit aussi
-    // la page de réservation publique (cohérent avec admin-calendar/actions.ts).
-    "/fr/reserver",
-    "/en/book",
+    // La page publique de réservation (`/fr/reserver`, `/en/book`) était
+    // rafraîchie ici pour ses compteurs « déjà X demandes ». Elle a été
+    // supprimée le 2026-06-26 (funnel unifié sur /appel) et ne survit qu'en 301
+    // edge → ces `revalidatePath` étaient des no-op. Retirés.
   ];
 }
 

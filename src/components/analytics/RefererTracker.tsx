@@ -15,17 +15,24 @@
  */
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { trackRefererSource } from "@/lib/tracking";
+import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 
 export function RefererTracker() {
   const tracked = useRef(false);
+  const pathname = usePathname();
+  const secret = urlPorteUnSecret(pathname);
   useEffect(() => {
+    // Un événement Plausible émis depuis le portail y attache la page courante,
+    // donc le jeton. Aucune mesure sur ces pages.
+    if (secret) return;
     if (tracked.current) return;
     tracked.current = true;
     // document.referrer est défini au premier paint client. Plausible script
     // est chargé en `afterInteractive` donc window.plausible peut ne pas être
     // prêt — trackEvent fait un guard typeof === "function".
     trackRefererSource(typeof document !== "undefined" ? document.referrer : null);
-  }, []);
+  }, [secret]);
   return null;
 }

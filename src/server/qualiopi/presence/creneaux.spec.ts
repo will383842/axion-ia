@@ -12,7 +12,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { genererCreneaux } from "./creneaux";
+import { genererCreneaux, sessionTropEtaleePourLeRepli } from "./creneaux";
 
 describe("genererCreneaux", () => {
   it("1 jour → 2 créneaux (matin + après-midi)", () => {
@@ -133,6 +133,32 @@ describe("genererCreneaux — répartition de la durée", () => {
     expect(result[0]?.dureePrevueMinutes).toBe(210);
     const totalMinutes = result.reduce((s, c) => s + c.dureePrevueMinutes, 0);
     expect(totalMinutes).toBe(14 * 60);
+  });
+
+  it("🔴 le plus grand reste va aux plus GRANDES fractions, minute par minute", () => {
+    // ⚠️ Inverser l'ordre du tri ne faisait échouer aucun test : la SOMME est
+    // conservée dans les deux cas, et c'est elle seule qu'on vérifiait. Il faut
+    // donc un cas qui produise un RÉSIDU, sinon la répartition tombe juste et
+    // les deux ordres sont indiscernables.
+    //
+    // Trois demi-journées d'amplitudes 240 / 240 / 180 minutes, pour 300 à
+    // répartir : les parts brutes valent 109,09 · 109,09 · 81,81. La minute qui
+    // reste doit aller à la plus grande fraction — donc à la troisième.
+    // Triée à l'envers, elle irait à la première : 110 / 109 / 81.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-11T18:00:00Z"),
+      dureeTotaleHeures: 5,
+      jours: [
+        { date: "2026-06-10", heureDebut: "09:00", heureFin: "17:00" },
+        // 09:00–12:00 ne porte qu'une matinée : le pivot est à 13:00.
+        { date: "2026-06-11", heureDebut: "09:00", heureFin: "12:00" },
+      ],
+    });
+
+    expect(result.map((c) => c.dureePrevueMinutes)).toEqual([109, 109, 82]);
+    // Somme exacte : aucun résidu perdu ni inventé.
+    expect(result.reduce((s, c) => s + c.dureePrevueMinutes, 0)).toBe(300);
   });
 
   it("heuresParJour explicite reste prioritaire sur dureeTotaleHeures", () => {
@@ -313,5 +339,296 @@ describe("genererCreneaux — jours ouvrés", () => {
       return j === 0 || j === 6;
     });
     expect(samedisOuDimanches).toHaveLength(0);
+  });
+});
+
+describe("genererCreneaux — journées DÉCLARÉES (D14)", () => {
+  const JOUR = (date: string, heureDebut = "09:00", heureFin = "17:00") => ({
+    date,
+    heureDebut,
+    heureFin,
+  });
+
+  it("⭐ le parcours étalé passe de 132 créneaux à 8 — le bug qui mettait le taux à 3 %", () => {
+    // Même session que le test de volumétrie du repli : 4 journées réparties sur
+    // 3 mois. Le repli en retenait 66 (tous les jours ouvrés traversés), d'où un
+    // dénominateur ×16 et une attestation refusée à un stagiaire assidu.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-08-31T18:00:00Z"),
+      jours: [JOUR("2026-06-02"), JOUR("2026-06-30"), JOUR("2026-07-28"), JOUR("2026-08-25")],
+    });
+    expect(result).toHaveLength(8);
+    expect([...new Set(result.map((c) => c.date))]).toEqual([
+      "2026-06-02",
+      "2026-06-30",
+      "2026-07-28",
+      "2026-08-25",
+    ]);
+  });
+
+  it("conserve un samedi DÉCLARÉ — le filtre jours ouvrés ne s'applique plus", () => {
+    // 2026-06-13 est un samedi. Le repli l'aurait écarté ; déclaré, il est animé
+    // par définition, et l'écarter rendrait sa présence impossible à prouver.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-20T18:00:00Z"),
+      jours: [JOUR("2026-06-13")],
+    });
+    expect(result).toHaveLength(2);
+    expect(result[0]?.date).toBe("2026-06-13");
+  });
+
+  it("une matinée seule ne produit PAS de créneau d'après-midi", () => {
+    // Sinon ce créneau, jamais signé, diviserait le taux par deux : le bug
+    // qu'on corrige, simplement déplacé.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-10T18:00:00Z"),
+      jours: [JOUR("2026-06-10", "09:00", "12:30")],
+    });
+    expect(result).toHaveLength(1);
+    expect(result[0]?.demiJournee).toBe("matin");
+  });
+
+  it("une après-midi seule ne produit PAS de créneau du matin", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-10T18:00:00Z"),
+      jours: [JOUR("2026-06-10", "14:00", "17:30")],
+    });
+    expect(result).toHaveLength(1);
+    expect(result[0]?.demiJournee).toBe("apres_midi");
+  });
+
+  it("une journée à cheval sur midi produit les deux demi-journées", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-10T18:00:00Z"),
+      jours: [JOUR("2026-06-10", "11:00", "15:00")],
+    });
+    expect(result.map((c) => c.demiJournee)).toEqual(["matin", "apres_midi"]);
+  });
+
+  it("porte les horaires RÉELS de la journée sur chaque créneau", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-10T18:00:00Z"),
+      jours: [JOUR("2026-06-10", "08:30", "16:45")],
+    });
+    expect(result[0]?.jourHeureDebut).toBe("08:30");
+    expect(result[0]?.jourHeureFin).toBe("16:45");
+    expect(result[1]?.jourHeureDebut).toBe("08:30");
+  });
+
+  it("n'invente AUCUN horaire en repli — absent vaut mieux que faux", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-10T18:00:00Z"),
+    });
+    expect(result[0]?.jourHeureDebut).toBeUndefined();
+    expect(result[0]?.jourHeureFin).toBeUndefined();
+  });
+
+  it("répartit la durée totale AU PRORATA des amplitudes déclarées", () => {
+    // 3 journées 09:00–17:00 (480 min d'amplitude, 2 demi-journées → 240 chacune)
+    // + 1 matinée 09:00–12:30 (210 min sur 1 demi-journée). Une répartition
+    // uniforme donnerait 210 min à la matinée comme aux autres — soit la même
+    // durée pour une amplitude deux fois moindre.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-06-04T18:00:00Z"),
+      dureeTotaleHeures: 24.5,
+      jours: [
+        JOUR("2026-06-01"),
+        JOUR("2026-06-02"),
+        JOUR("2026-06-03"),
+        JOUR("2026-06-04", "09:00", "12:30"),
+      ],
+    });
+    expect(result).toHaveLength(7);
+    const matinee = result.filter((c) => c.date === "2026-06-04");
+    expect(matinee).toHaveLength(1);
+    expect((matinee[0] as (typeof result)[number]).dureePrevueMinutes).toBeLessThan(210);
+    // ⭐ L'invariant qui protège le taux : le total prévu vaut EXACTEMENT la
+    // durée réelle de la session, malgré les arrondis à la minute.
+    expect(result.reduce((s, c) => s + c.dureePrevueMinutes, 0)).toBe(24.5 * 60);
+  });
+
+  it("la durée prévue ne contredit pas l'horaire affiché à côté d'elle", () => {
+    // Régression : avec une répartition uniforme, cette matinée de 3 h recevait
+    // 6 h de durée prévue. La feuille d'émargement aurait affiché « 09:00–12:00 »
+    // en face de « 6 h » — elle se serait contredite elle-même, sur une pièce à
+    // valeur probante.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-06-02T18:00:00Z"),
+      dureeTotaleHeures: 18,
+      jours: [JOUR("2026-06-01", "07:00", "22:00"), JOUR("2026-06-02", "09:00", "12:00")],
+    });
+    const jour2 = result.filter((c) => c.date === "2026-06-02");
+    const minutesJour2 = jour2.reduce((s, c) => s + c.dureePrevueMinutes, 0);
+    // 3 h d'amplitude déclarée → la durée prévue ne peut pas la dépasser.
+    expect(minutesJour2).toBeLessThanOrEqual(3 * 60);
+    expect(result.reduce((s, c) => s + c.dureePrevueMinutes, 0)).toBe(18 * 60);
+  });
+
+  it("`heuresParJour` fixe le TOTAL, le prorata en fait la répartition", () => {
+    // Avant : `heuresParJour` court-circuitait le prorata et posait 180 min
+    // partout — donc la même durée pour une matinée de 6 h et une de 4 h.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-06-02T18:00:00Z"),
+      heuresParJour: 6,
+      jours: [JOUR("2026-06-01", "07:00", "22:00"), JOUR("2026-06-02")],
+    });
+    expect(result.reduce((s, c) => s + c.dureePrevueMinutes, 0)).toBe(6 * 60 * 2);
+    // Les durées ne sont plus uniformes : elles suivent les amplitudes.
+    expect(new Set(result.map((c) => c.dureePrevueMinutes)).size).toBeGreaterThan(1);
+  });
+
+  it("répartit au prorata MÊME sans durée totale — `dureeReelleHeures` est nullable", () => {
+    // Sans ce chemin, deux matinées de 3 h recevaient 210 min chacune (défaut
+    // 7 h), en face d'un horaire affiché de 3 h. La feuille se contredisait.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-06-02T18:00:00Z"),
+      jours: [JOUR("2026-06-01", "09:00", "12:00"), JOUR("2026-06-02", "09:00", "12:00")],
+    });
+    expect(result).toHaveLength(2);
+    for (const c of result) expect(c.dureePrevueMinutes).toBeLessThanOrEqual(180);
+  });
+
+  it("découpe l'amplitude AU PIVOT, jamais 50/50", () => {
+    // 12:30–18:00 : la matinée dure 30 min, l'après-midi 5 h. Un partage égal
+    // annonçait 2 h 45 pour cette matinée — un créneau structurellement
+    // impossible à valider, le seuil de présence étant un % du prévu.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-06-01T18:00:00Z"),
+      dureeTotaleHeures: 5.5,
+      jours: [JOUR("2026-06-01", "12:30", "18:00")],
+    });
+    const matin = result.find((c) => c.demiJournee === "matin");
+    expect(matin?.dureePrevueMinutes).toBeLessThanOrEqual(30);
+  });
+
+  it("PLAFONNE à l'amplitude déclarée — une saisie absurde ne produit pas 17 h 30", () => {
+    // `dureeReelleHeures` = 35 sur une session d'un jour : le plafond du repli
+    // (12 h/jour) ne s'appliquait plus au régime déclaré, et la feuille
+    // affichait « 09:00–17:00 » en face de 17 h 30 par demi-journée.
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-06-01T18:00:00Z"),
+      dureeTotaleHeures: 35,
+      jours: [JOUR("2026-06-01", "09:00", "17:00")],
+    });
+    const matin = result.find((c) => c.demiJournee === "matin");
+    expect(matin?.dureePrevueMinutes).toBeLessThanOrEqual(240);
+  });
+
+  it("ne produit JAMAIS une durée nulle ou négative", () => {
+    // L'ancien versement du résidu sur la dernière entrée pouvait la ramener à
+    // 0 : un créneau à 0 min ne peut jamais être validé, et une durée négative
+    // diminuerait le dénominateur.
+    const jours = Array.from({ length: 20 }, (_, i) =>
+      JOUR(`2026-06-${String(i + 1).padStart(2, "0")}`),
+    );
+    jours.push(JOUR("2026-06-22", "09:00", "09:01"));
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-06-22T18:00:00Z"),
+      dureeTotaleHeures: 140,
+      jours,
+    });
+    for (const c of result) expect(c.dureePrevueMinutes).toBeGreaterThan(0);
+  });
+
+  it("trie les journées et LÈVE sur une date répétée", () => {
+    // Écraser le doublon en silence contredirait la doctrine du module et
+    // avalerait une journée sans que personne ne le voie.
+    expect(() =>
+      genererCreneaux({
+        dateDebut: new Date("2026-06-01T08:00:00Z"),
+        dateFin: new Date("2026-06-30T18:00:00Z"),
+        jours: [JOUR("2026-06-15"), JOUR("2026-06-02"), JOUR("2026-06-15")],
+      }),
+    ).toThrow(/deux fois/);
+  });
+
+  it("trie les journées saisies dans le désordre", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-01T08:00:00Z"),
+      dateFin: new Date("2026-06-30T18:00:00Z"),
+      jours: [JOUR("2026-06-15"), JOUR("2026-06-02")],
+    });
+    expect([...new Set(result.map((c) => c.date))]).toEqual(["2026-06-02", "2026-06-15"]);
+    expect(result).toHaveLength(4);
+  });
+
+  it("un tableau de journées VIDE retombe sur le repli, sans lever", () => {
+    const result = genererCreneaux({
+      dateDebut: new Date("2026-06-10T08:00:00Z"),
+      dateFin: new Date("2026-06-10T18:00:00Z"),
+      jours: [],
+    });
+    expect(result).toHaveLength(2);
+  });
+
+  it.each([
+    ["date invalide", { date: "10/06/2026", heureDebut: "09:00", heureFin: "17:00" }],
+    ["heure sans zéro", { date: "2026-06-10", heureDebut: "9:00", heureFin: "17:00" }],
+    ["fin avant début", { date: "2026-06-10", heureDebut: "17:00", heureFin: "09:00" }],
+    ["fin égale au début", { date: "2026-06-10", heureDebut: "09:00", heureFin: "09:00" }],
+  ])("LÈVE sur une journée malformée (%s) plutôt que de l'écarter en silence", (_, jour) => {
+    // Une journée silencieusement ignorée fausserait le dénominateur sans que
+    // personne ne le voie — exactement la classe de bug qu'on corrige.
+    expect(() =>
+      genererCreneaux({
+        dateDebut: new Date("2026-06-10T08:00:00Z"),
+        dateFin: new Date("2026-06-10T18:00:00Z"),
+        jours: [jour],
+      }),
+    ).toThrow();
+  });
+});
+
+describe("sessionTropEtaleePourLeRepli", () => {
+  it("alerte sur un parcours étalé qui n'a déclaré aucune journée", () => {
+    expect(
+      sessionTropEtaleePourLeRepli({
+        dateDebut: new Date("2026-06-01T08:00:00Z"),
+        dateFin: new Date("2026-08-31T18:00:00Z"),
+      }),
+    ).toBe(true);
+  });
+
+  it("n'alerte pas dès lors que les journées sont déclarées", () => {
+    expect(
+      sessionTropEtaleePourLeRepli({
+        dateDebut: new Date("2026-06-01T08:00:00Z"),
+        dateFin: new Date("2026-08-31T18:00:00Z"),
+        jours: [{ date: "2026-06-02", heureDebut: "09:00", heureFin: "17:00" }],
+      }),
+    ).toBe(false);
+  });
+
+  it("n'alerte pas sur une session courte et contiguë", () => {
+    expect(
+      sessionTropEtaleePourLeRepli({
+        dateDebut: new Date("2026-06-01T08:00:00Z"),
+        dateFin: new Date("2026-06-05T18:00:00Z"),
+      }),
+    ).toBe(false);
+  });
+
+  it("borne exacte : 31 jours passe, 32 alerte", () => {
+    const debut = new Date("2026-06-01T08:00:00Z");
+    expect(
+      sessionTropEtaleePourLeRepli({ dateDebut: debut, dateFin: new Date("2026-07-02T18:00:00Z") }),
+    ).toBe(false);
+    expect(
+      sessionTropEtaleePourLeRepli({ dateDebut: debut, dateFin: new Date("2026-07-03T18:00:00Z") }),
+    ).toBe(true);
   });
 });

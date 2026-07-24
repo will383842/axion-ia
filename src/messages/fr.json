@@ -503,6 +503,60 @@
     "leadSuccess": "Merci ! Nous vous recontactons rapidement.",
     "leadError": "Envoi impossible. Vérifiez vos informations et réessayez."
   },
+  "podcast": {
+    "meta": {
+      "title": "Podcast dirigeant · tournage gratuit dans vos locaux",
+      "description": "Axion-IA vient tourner un épisode de podcast avec vous, dans vos locaux. Gratuit, sans contrepartie. Vous repartez avec la vidéo et l'audio, libres d'usage."
+    },
+    "breadcrumb": "Podcast",
+    "hero": {
+      "eyebrow": "Podcast dirigeants",
+      "title": "Votre podcast d'entreprise,",
+      "titleEm": "tourné chez vous",
+      "description": "Nous venons filmer un épisode avec vous, dans vos locaux. Vous parlez de votre métier, de votre parcours et de votre entreprise. C'est gratuit et sans contrepartie."
+    },
+    "intro": {
+      "title": "Pourquoi nous le faisons",
+      "body": "Nous aimons donner la parole aux dirigeants qui font tourner l'économie réelle. Vous repartez avec un contenu vidéo et audio que vous utilisez comme bon vous semble : site, réseaux sociaux, recrutement, relations commerciales. Aucun achat, aucun engagement."
+    },
+    "how": {
+      "title": "Comment ça se passe",
+      "step1Title": "1. Vous remplissez le formulaire",
+      "step1Body": "Quelques informations sur votre entreprise et la ville où vous êtes installé.",
+      "step2Title": "2. Nous convenons d'une date",
+      "step2Body": "Nous vous rappelons pour caler un créneau qui vous arrange et préparer les sujets ensemble.",
+      "step3Title": "3. Nous venons tourner",
+      "step3Body": "L'équipe se déplace dans vos locaux avec le matériel. Comptez environ une heure sur place."
+    },
+    "included": {
+      "title": "Ce qui est compris",
+      "item1": "Le déplacement de l'équipe dans vos locaux",
+      "item2": "Le tournage et la prise de son",
+      "item3": "Le montage de l'épisode",
+      "item4": "Les fichiers vidéo et audio, libres d'usage"
+    },
+    "form": {
+      "title": "Demander un tournage",
+      "intro": "Deux minutes suffisent. Nous revenons vers vous pour convenir d'une date.",
+      "companyName": "Entreprise",
+      "leaderName": "Nom du dirigeant",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "city": "Ville",
+      "postalCode": "Code postal",
+      "locationHint": "Nous nous déplaçons : dites-nous où vous êtes installé.",
+      "activity": "En quelques mots, votre activité",
+      "activityPlaceholder": "Ce que fait votre entreprise, depuis quand, combien vous êtes…",
+      "consent": "J'accepte qu'Axion-IA conserve ces informations pour me recontacter au sujet de ce tournage, conformément au RGPD.",
+      "submit": "Envoyer ma demande",
+      "submitting": "Envoi…",
+      "privacyNote": "Vos coordonnées servent uniquement à organiser le tournage. Elles ne sont ni publiées ni transmises à des tiers.",
+      "successTitle": "Demande reçue",
+      "successBody": "Merci. Nous vous recontactons rapidement pour convenir d'une date de tournage.",
+      "errorConsent": "Merci d'accepter le traitement de vos données.",
+      "errorGeneric": "Une erreur est survenue. Réessayez."
+    }
+  },
   "observatoire": {
     "meta": {
       "resultsTitle": "L'Observatoire de l'IA dans les entreprises françaises 2026",

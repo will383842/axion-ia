@@ -503,6 +503,60 @@
     "leadSuccess": "Thank you! We'll get back to you shortly.",
     "leadError": "Could not send. Please check your details and try again."
   },
+  "podcast": {
+    "meta": {
+      "title": "Founder podcast · free shoot at your offices",
+      "description": "Axion-IA comes to your offices to film a podcast episode with you. Free, no strings attached. You keep the video and audio files, yours to use."
+    },
+    "breadcrumb": "Podcast",
+    "hero": {
+      "eyebrow": "Founder podcast",
+      "title": "Your company podcast,",
+      "titleEm": "filmed at your offices",
+      "description": "We come and film an episode with you, at your offices. You talk about your trade, your journey and your company. It's free, with nothing expected in return."
+    },
+    "intro": {
+      "title": "Why we do it",
+      "body": "We like giving a voice to the business owners who keep the real economy running. You leave with video and audio content you can use however you like: website, social media, hiring, client relationships. No purchase, no commitment."
+    },
+    "how": {
+      "title": "How it works",
+      "step1Title": "1. You fill in the form",
+      "step1Body": "A few details about your company and the town where you are based.",
+      "step2Title": "2. We agree on a date",
+      "step2Body": "We call you back to find a slot that suits you and prepare the topics together.",
+      "step3Title": "3. We come and film",
+      "step3Body": "The team travels to your offices with the equipment. Expect about an hour on site."
+    },
+    "included": {
+      "title": "What's included",
+      "item1": "The team travelling to your offices",
+      "item2": "Filming and sound recording",
+      "item3": "Editing of the episode",
+      "item4": "The video and audio files, yours to use"
+    },
+    "form": {
+      "title": "Request a shoot",
+      "intro": "Two minutes is enough. We'll get back to you to agree on a date.",
+      "companyName": "Company",
+      "leaderName": "Owner's name",
+      "email": "Email",
+      "phone": "Phone",
+      "city": "Town",
+      "postalCode": "Postcode",
+      "locationHint": "We travel to you — tell us where you are based.",
+      "activity": "In a few words, what you do",
+      "activityPlaceholder": "What your company does, how long you've been going, how many of you there are…",
+      "consent": "I agree that Axion-IA may keep these details to contact me about this shoot, in accordance with GDPR.",
+      "submit": "Send my request",
+      "submitting": "Sending…",
+      "privacyNote": "Your details are used only to organise the shoot. They are never published or passed on to third parties.",
+      "successTitle": "Request received",
+      "successBody": "Thank you. We'll be in touch shortly to agree on a shooting date.",
+      "errorConsent": "Please accept the processing of your data.",
+      "errorGeneric": "Something went wrong. Please try again."
+    }
+  },
   "observatoire": {
     "meta": {
       "resultsTitle": "The 2026 AI in French Companies Observatory",

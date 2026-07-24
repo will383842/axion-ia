@@ -56,9 +56,16 @@ export function hasRecognizedCta(bodyHtml: string): boolean {
   return RECOGNIZED_CTA_RE.test(bodyHtml);
 }
 
-/** CTA de repli injecté quand l'intent transactional n'en a aucun. */
+/**
+ * CTA de repli injecté quand l'intent transactional n'en a aucun.
+ *
+ * Pointe sur `/appel` (funnel unifié depuis 2026-06-26), PAS sur `/reserver` :
+ * cette page a été supprimée et n'existe plus que comme 301 edge, destinée aux
+ * liens ENTRANTS (favoris, backlinks). Un lien INTERNE ne doit jamais s'appuyer
+ * dessus — il gaspillerait un saut de redirection sur chaque article généré.
+ */
 const FALLBACK_CTA_HTML =
-  '\n<p class="cta-primary"><a href="/reserver">Réserver une intervention avec Axion-IA</a></p>';
+  '\n<p class="cta-primary"><a href="/appel">Réserver un appel avec Axion-IA</a></p>';
 
 /**
  * Compte les liens externes d'autorité (URL absolue http(s) hors axion-ia.com).

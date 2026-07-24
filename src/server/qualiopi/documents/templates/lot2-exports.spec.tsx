@@ -261,4 +261,27 @@ describe("FicheAdaptationPdf", () => {
     );
     expect(text).toMatch(/Aucune adaptation renseignée/);
   });
+
+  it("scénario prod : référent handicap = Williams Jullin + contact@axion-ia.com, téléphone masqué", () => {
+    // Reproduit l'état prod (off.26) : email renseigné, téléphone volontairement
+    // non publié. Le nom + l'email doivent s'afficher ; la ligne « Téléphone »
+    // doit disparaître (pas de champ vide sur la fiche).
+    const text = collectPdfTextNormalized(
+      React.createElement(FicheAdaptationPdf, {
+        data: {
+          ...data,
+          referentHandicapNom: "Williams Jullin",
+          referentHandicapEmail: "contact@axion-ia.com",
+          referentHandicapTelephone: "",
+        },
+        identite: IDENTITE,
+      }),
+    );
+    expect(text).toContain("Williams Jullin");
+    expect(text).toContain("contact@axion-ia.com");
+    expect(text).toMatch(/Email/);
+    expect(text).toContain("48 heures");
+    // Téléphone non publié → la ligne (label inclus) ne doit PAS apparaître.
+    expect(text).not.toMatch(/Téléphone/);
+  });
 });

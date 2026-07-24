@@ -46,7 +46,10 @@ export async function withRetry<T>(fn: () => Promise<T>, opts: RetryOptions = {}
       lastError = err instanceof Error ? err : new Error(String(err));
 
       if (err instanceof ProviderError && !err.retryable) {
-        throw err; // auth_failed, cost_cap_reached, content_filter → no retry
+        // auth_failed, cost_cap_reached, content_filter, quota_exhausted → no retry
+        // (`quota_exhausted` ajouté 2026-07-21 : réessayer un compte provider sans
+        // crédit ne peut pas aboutir tant qu'un humain n'a pas rechargé.)
+        throw err;
       }
       if (attempt >= maxAttempts) {
         break;

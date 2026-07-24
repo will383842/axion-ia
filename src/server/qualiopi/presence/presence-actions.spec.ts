@@ -30,7 +30,9 @@ vi.mock("@/lib/prisma", () => ({
     },
     presenceCreneau: {
       findUnique: vi.fn(),
+      findMany: vi.fn(),
       update: vi.fn(),
+      delete: vi.fn(),
     },
     enrollment: {
       updateMany: vi.fn(),
@@ -48,6 +50,10 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 
 vi.mock("@/server/qualiopi/presence/creneaux", () => ({
   genererCreneaux: vi.fn(),
+  // Garde-fou D14. Mocké à `false` par défaut — les sessions de test sont
+  // courtes et contiguës — et repassé à `true` dans le cas qui le teste.
+  sessionTropEtaleePourLeRepli: vi.fn(),
+  ECART_MAX_REPLI_JOURS: 31,
 }));
 
 vi.mock("@/server/qualiopi/presence/parse-releve", () => ({
@@ -79,7 +85,7 @@ vi.mock("@/server/qualiopi/documents/render", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { genererCreneaux } from "@/server/qualiopi/presence/creneaux";
+import { genererCreneaux, sessionTropEtaleePourLeRepli } from "@/server/qualiopi/presence/creneaux";
 import { parseReleveConnexion } from "@/server/qualiopi/presence/parse-releve";
 import { matchParticipants } from "@/server/qualiopi/presence/match";
 import { upsertCreneau, recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
@@ -99,7 +105,12 @@ import {
 
 const mockPrisma = prisma as unknown as {
   trainingSession: { findUnique: ReturnType<typeof vi.fn> };
-  presenceCreneau: { findUnique: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
+  presenceCreneau: {
+    findUnique: ReturnType<typeof vi.fn>;
+    findMany: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
+  };
   enrollment: { updateMany: ReturnType<typeof vi.fn> };
   releveConnexionImport: { create: ReturnType<typeof vi.fn> };
 };
@@ -107,6 +118,7 @@ const mockPrisma = prisma as unknown as {
 const mockRequireAdminWrite = requireAdminWrite as ReturnType<typeof vi.fn>;
 const mockLogActivity = logQualiopiActivity as ReturnType<typeof vi.fn>;
 const mockGenererCreneaux = genererCreneaux as ReturnType<typeof vi.fn>;
+const mockTropEtalee = sessionTropEtaleePourLeRepli as ReturnType<typeof vi.fn>;
 const mockParseReleve = parseReleveConnexion as ReturnType<typeof vi.fn>;
 const mockMatchParticipants = matchParticipants as ReturnType<typeof vi.fn>;
 const mockUpsertCreneau = upsertCreneau as ReturnType<typeof vi.fn>;
@@ -121,6 +133,8 @@ function makeSession(overrides = {}) {
     dateDebut: new Date("2026-06-10T08:00:00.000Z"),
     dateFin: new Date("2026-06-11T17:00:00.000Z"),
     dureeReelleHeures: 7,
+    /// Journées déclarées (D14). Vide par défaut = session en repli sur la plage.
+    jours: [],
     enrollments: [
       {
         id: "enroll-1",
@@ -176,8 +190,16 @@ describe("generateSessionCreneauxAction", () => {
     mockLogActivity.mockResolvedValue(undefined);
     mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession());
     mockGenererCreneaux.mockReturnValue(makeCreneaux());
+    // ⚠️ `clearAllMocks` efface les APPELS, pas les valeurs de retour : sans ce
+    // repositionnement le mock renverrait `undefined` (falsy, donc « pas
+    // étalée ») et le garde-fou passerait par accident plutôt que par choix.
+    mockTropEtalee.mockReturnValue(false);
     // Par défaut : aucun créneau existant → tous créés
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue(null);
+    // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour : sans ce
+    // repositionnement, la détection des créneaux hors plan reçoit `undefined`.
+    mockPrisma.presenceCreneau.findMany.mockResolvedValue([]);
+    mockPrisma.presenceCreneau.update.mockResolvedValue({});
     mockUpsertCreneau.mockResolvedValue("new-id");
   });
 
@@ -207,14 +229,23 @@ describe("generateSessionCreneauxAction", () => {
   });
 
   it("recalcule le taux et invalide le cache — le dénominateur vient de changer", async () => {
-    // Générer des créneaux modifie le PRÉVU. Sans recalcul, `tauxPresencePct`
-    // restait figé sur son ancienne valeur, et le cron d'attestation
+    // Le recalcul est ciblé sur les inscrits RÉCONCILIÉS (durée prévue modifiée),
+    // pas déclenché sur une simple création (present:false/réalisé:0 → taux 0,
+    // rien à recalculer). Ici on force la réconciliation des 2 inscrits : un
+    // créneau existant avec une durée DIFFÉRENTE de celle générée → `aRecalculer`.
+    // Sans recalcul, `tauxPresencePct` restait figé et le cron d'attestation
     // (`attestation-service.ts`) émettait une attestation sur un taux périmé.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "cre-existant",
+      dureePrevueMinutes: 999,
+      libelle: "ancien libellé",
+    });
+
     await generateSessionCreneauxAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",
     });
 
-    expect(mockRecompute).toHaveBeenCalledTimes(2); // 2 inscrits
+    expect(mockRecompute).toHaveBeenCalledTimes(2); // 2 inscrits réconciliés
     expect(mockRecompute.mock.calls.map((c) => c[0]).sort()).toEqual(["enroll-1", "enroll-2"]);
 
     // UN SEUL appel, après la boucle : `redis.keys()` est bloquant O(N).
@@ -262,6 +293,114 @@ describe("generateSessionCreneauxAction", () => {
     const logCall = mockCall<{ action: string; targetType: string }>(mockLogActivity);
     expect(logCall.action).toBe("qualiopi.presence.creneaux.generate");
     expect(logCall.targetType).toBe("TrainingSession");
+  });
+
+  it("🔴 RÉCONCILIE la durée d'un créneau existant au lieu de l'ignorer", async () => {
+    // L'action ne créait que les manquants : corriger les journées après coup ne
+    // recalculait donc rien, et le dénominateur restait faux à vie.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "cre-existant",
+      dureePrevueMinutes: 999,
+      libelle: "ancien libellé",
+    });
+
+    const r = await generateSessionCreneauxAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+    });
+
+    expect("data" in r).toBe(true);
+    if (!("data" in r)) return;
+    expect(r.data.created).toBe(0);
+    expect(r.data.reconcilies).toBeGreaterThan(0);
+    const maj = mockPrisma.presenceCreneau.update.mock.calls[0]?.[0] as {
+      data: { dureePrevueMinutes: number };
+    };
+    expect(maj.data.dureePrevueMinutes).toBe(210);
+  });
+
+  it("⚠️ la réconciliation ne touche NI `present` NI `dureeRealiseeMinutes`", async () => {
+    // Ce sont les données de PREUVE. En base, une absence émargée et un créneau
+    // vierge sont indiscernables : les écraser détruirait des feuilles signées.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "cre-existant",
+      dureePrevueMinutes: 999,
+      libelle: "x",
+    });
+
+    await generateSessionCreneauxAction({ sessionId: "550e8400-e29b-41d4-a716-446655440000" });
+
+    const maj = mockPrisma.presenceCreneau.update.mock.calls[0]?.[0] as {
+      data: Record<string, unknown>;
+    };
+    expect(maj.data).not.toHaveProperty("present");
+    expect(maj.data).not.toHaveProperty("dureeRealiseeMinutes");
+    expect(maj.data).not.toHaveProperty("source");
+  });
+
+  it("SIGNALE les créneaux hors plan sans jamais les supprimer", async () => {
+    mockPrisma.presenceCreneau.findMany.mockResolvedValue([
+      { date: new Date("2026-06-10T00:00:00.000Z"), demiJournee: "matin" },
+      // Journée qui n'est plus au plan : elle gonfle le dénominateur.
+      { date: new Date("2026-05-01T00:00:00.000Z"), demiJournee: "matin" },
+    ]);
+
+    const r = await generateSessionCreneauxAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+    });
+
+    expect("data" in r).toBe(true);
+    if (!("data" in r)) return;
+    expect(r.data.horsPlan).toBe(1);
+  });
+
+  it("REFUSE une session étalée qui n'a déclaré aucune journée (garde-fou D14)", async () => {
+    // Sans journées déclarées, générer les créneaux de tous les jours ouvrés
+    // traversés multiplierait le dénominateur du taux — 66 jours au lieu de 4
+    // sur un parcours de 3 mois, soit un taux à ≈ 3 %. Refuser bruyamment vaut
+    // mieux que produire des dizaines de créneaux faux en silence.
+    mockTropEtalee.mockReturnValue(true);
+
+    const result = await generateSessionCreneauxAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+    });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toContain("journées");
+    // Rien n'a été écrit : c'est l'invariant qui compte, pas le message.
+    expect(mockUpsertCreneau).not.toHaveBeenCalled();
+    expect(mockGenererCreneaux).not.toHaveBeenCalled();
+  });
+
+  it("transmet les journées déclarées à genererCreneaux", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      makeSession({
+        jours: [
+          { date: new Date("2026-06-10T00:00:00.000Z"), heureDebut: "09:00", heureFin: "17:00" },
+          { date: new Date("2026-06-30T00:00:00.000Z"), heureDebut: "09:00", heureFin: "12:30" },
+        ],
+      }),
+    );
+
+    await generateSessionCreneauxAction({ sessionId: "550e8400-e29b-41d4-a716-446655440000" });
+
+    expect(mockGenererCreneaux).toHaveBeenCalledWith(
+      expect.objectContaining({
+        jours: [
+          { date: "2026-06-10", heureDebut: "09:00", heureFin: "17:00" },
+          { date: "2026-06-30", heureDebut: "09:00", heureFin: "12:30" },
+        ],
+      }),
+    );
+  });
+
+  it("n'envoie AUCUNE clé `jours` quand la session n'en déclare pas", async () => {
+    // `exactOptionalPropertyTypes` est actif : passer `jours: undefined` ne
+    // compile pas, et passer `jours: []` ferait croire à une déclaration vide.
+    await generateSessionCreneauxAction({ sessionId: "550e8400-e29b-41d4-a716-446655440000" });
+
+    const arg = mockCall<Record<string, unknown>>(mockGenererCreneaux);
+    expect("jours" in arg).toBe(false);
   });
 
   it("passe heuresParJour optionnel à genererCreneaux", async () => {
@@ -525,6 +664,18 @@ describe("importReleveConnexionAction", () => {
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
     mockLogActivity.mockResolvedValue(undefined);
     mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession());
+    // 🔴 `mockGenererCreneaux` manquait ici. Ce bloc s'appuyait silencieusement
+    // sur la valeur laissée par le `beforeEach` d'un AUTRE `describe` :
+    // `clearAllMocks` efface les appels, jamais les valeurs de retour. Lancé en
+    // isolé (`-t "importReleveConnexionAction"`), le bloc échouait sur 11 de ses
+    // 17 tests — « creneauxSession is not iterable ». Onze tests verts par
+    // accident d'ordonnancement.
+    mockGenererCreneaux.mockReturnValue(makeCreneaux());
+    // ⚠️ `clearAllMocks` efface les APPELS, pas les valeurs de retour. Sans ce
+    // repositionnement, le `true` posé par le test du garde-fou FUIT vers tous
+    // les tests suivants du bloc, qui échouent alors pour une raison sans
+    // rapport avec ce qu'ils vérifient.
+    mockTropEtalee.mockReturnValue(false);
     mockParseReleve.mockReturnValue(parsedReleve);
     mockMatchParticipants.mockReturnValue({
       matched: [{ enrollmentId: "enroll-1", participant: parsedReleve.participants[0] }],
@@ -542,6 +693,9 @@ describe("importReleveConnexionAction", () => {
     mockGenererCreneaux.mockReturnValue(makeCreneaux());
     mockUpsertCreneau.mockResolvedValue("creneau-new-id");
     mockRecompute.mockResolvedValue(90);
+    // Par défaut : aucun créneau « journée » hérité d'un import antérieur.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(null);
+    mockPrisma.presenceCreneau.delete.mockResolvedValue({});
   });
 
   it("retourne { data } avec importId, nbMatched, nbUnmatched", async () => {
@@ -599,16 +753,30 @@ describe("importReleveConnexionAction", () => {
       content: CSV_CONTENT,
     });
 
-    expect(mockUpsertCreneau).toHaveBeenCalledTimes(2);
+    // 2 inscrits × 2 demi-journées : le distanciel pose désormais un créneau par
+    // demi-journée, comme le présentiel. Une feuille signée une seule fois par
+    // jour est précisément ce que CAA Nantes 14/06/2022 juge insuffisamment
+    // probant.
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(4);
     const dates = mockUpsertCreneau.mock.calls.map((c) =>
       (c[0] as { date: Date }).date.toISOString().slice(0, 10),
     );
     // Deux jours DISTINCTS : c'est l'assertion qui tombe si l'on repose tout sur dateDebut.
     expect(new Set(dates)).toEqual(new Set(["2026-06-10", "2026-06-11"]));
 
-    // Durée prévue = UNE journée (2 demi-journées), pas la session entière.
-    const premier = mockCall<{ dureePrevueMinutes: number }>(mockUpsertCreneau);
-    expect(premier.dureePrevueMinutes).toBe(420);
+    // Durée prévue = celle de la DEMI-JOURNÉE, plus de la journée entière.
+    const premier = mockCall<{ dureePrevueMinutes: number; demiJournee: string }>(
+      mockUpsertCreneau,
+    );
+    expect(premier.dureePrevueMinutes).toBe(210);
+    expect(premier.demiJournee).toBe("matin");
+
+    // ⭐ L'invariant qui protège le taux : la somme des durées prévues d'un jour
+    // vaut la journée entière, pas le double.
+    const jour10 = mockUpsertCreneau.mock.calls
+      .map((c) => c[0] as { date: Date; dureePrevueMinutes: number })
+      .filter((a) => a.date.toISOString().startsWith("2026-06-10"));
+    expect(jour10.reduce((s, a) => s + a.dureePrevueMinutes, 0)).toBe(420);
   });
 
   it("crée un ReleveConnexionImport avec les bons champs", async () => {
@@ -662,15 +830,18 @@ describe("importReleveConnexionAction", () => {
     // les absents du DÉNOMINATEUR du taux. Un stagiaire venu 1 jour sur 2
     // obtenait 100 % au lieu de 50 %, donc une attestation COMPLÈTE au lieu de
     // partielle. Surévaluer la présence est bien plus grave que la sous-évaluer.
-    expect(mockUpsertCreneau).toHaveBeenCalledTimes(2);
+    // 2 inscrits × 2 demi-journées (le distanciel est aligné sur le présentiel).
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(4);
 
     const calls = mockUpsertCreneau.mock.calls.map(
       (c) => c[0] as { enrollmentId: string; dureeRealiseeMinutes: number; source: string },
     );
-    const present = calls.find((c) => c.enrollmentId === "enroll-1");
+    const totalPar = (id: string) =>
+      calls.filter((c) => c.enrollmentId === id).reduce((s, c) => s + c.dureeRealiseeMinutes, 0);
     const absent = calls.find((c) => c.enrollmentId === "enroll-2");
 
-    expect(present?.dureeRealiseeMinutes).toBeGreaterThan(0);
+    expect(totalPar("enroll-1")).toBeGreaterThan(0);
+    expect(totalPar("enroll-2")).toBe(0);
     // L'absent est bien présent au dénominateur, à zéro minute réalisée.
     expect(absent?.dureeRealiseeMinutes).toBe(0);
 
@@ -679,7 +850,12 @@ describe("importReleveConnexionAction", () => {
       source: string;
       importId: string;
     }>(mockUpsertCreneau);
-    expect(upsertCall.demiJournee).toBe("journee");
+    // ⭐ Le grain distanciel est désormais celui du présentiel : matin /
+    // après-midi, jamais une case « journée » unique.
+    expect(upsertCall.demiJournee).toBe("matin");
+    expect(
+      mockUpsertCreneau.mock.calls.map((c) => (c[0] as { demiJournee: string }).demiJournee),
+    ).not.toContain("journee");
     expect(upsertCall.source).toBe("import_zoom");
     expect(upsertCall.importId).toBe("import-new-id");
   });
@@ -863,6 +1039,201 @@ describe("importReleveConnexionAction", () => {
     ).data.hashSha256;
     expect(hash1).toBe(hash2);
     expect(hash1).toHaveLength(64);
+  });
+
+  it("🔴 durée prévue = SOMME des créneaux de LA journée, pas `[0] × 2`", async () => {
+    // Régression stricte trouvée en audit : 3 matinées déclarées 09:00–13:00
+    // pour 12 h. Avant D14 le stagiaire assidu sortait à 100 % ; avec le `× 2`
+    // il tombait à 50 % et perdait son attestation — PARCE QUE l'organisme
+    // avait correctement saisi ses journées.
+    mockGenererCreneaux.mockReturnValue([
+      {
+        date: "2026-06-10",
+        demiJournee: "matin" as const,
+        libelle: "2026-06-10 matin",
+        dureePrevueMinutes: 240,
+      },
+    ]);
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    const premier = mockCall<{ dureePrevueMinutes: number }>(mockUpsertCreneau);
+    // 240, pas 480 : la journée ne produit qu'UN créneau.
+    expect(premier.dureePrevueMinutes).toBe(240);
+  });
+
+  it("prend la durée de la journée du RELEVÉ, pas celle du premier jour", async () => {
+    // Le `[0]` désignait toujours le premier jour de la session, alors que le
+    // créneau est daté sur l'heure de connexion réelle.
+    mockGenererCreneaux.mockReturnValue([
+      {
+        date: "2026-06-09",
+        demiJournee: "journee" as const,
+        libelle: "2026-06-09",
+        dureePrevueMinutes: 120,
+      },
+      {
+        date: "2026-06-10",
+        demiJournee: "matin" as const,
+        libelle: "2026-06-10 matin",
+        dureePrevueMinutes: 300,
+      },
+      {
+        date: "2026-06-10",
+        demiJournee: "apres_midi" as const,
+        libelle: "2026-06-10 après-midi",
+        dureePrevueMinutes: 180,
+      },
+    ]);
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    // Le participant se connecte le 2026-06-10 : ses deux demi-journées valent
+    // 300 + 180 = 480 min au total, réparties sur DEUX créneaux — plus un seul
+    // créneau « journée » de 480.
+    const duJour = mockUpsertCreneau.mock.calls
+      .map((c) => c[0] as { date: Date; dureePrevueMinutes: number })
+      .filter((a) => a.date.toISOString().startsWith("2026-06-10"));
+    expect(duJour).toHaveLength(4); // 2 inscrits × 2 demi-journées
+    const parInscrit = duJour.reduce((s, a) => s + a.dureePrevueMinutes, 0) / 2;
+    expect(parInscrit).toBe(480);
+  });
+
+  it("🔴 REFUSE l'import sur une session étalée sans journées déclarées", async () => {
+    // Le garde-fou n'était appliqué qu'à la génération : un chemin refusait
+    // bruyamment, l'autre écrivait en silence le même dénominateur faux.
+    mockTropEtalee.mockReturnValue(true);
+
+    const result = await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect("error" in result).toBe(true);
+    expect(mockUpsertCreneau).not.toHaveBeenCalled();
+  });
+
+  it("🔴 transmet les journées déclarées à genererCreneaux — sinon 100 % pour 0 h 26", async () => {
+    // Bloquant trouvé en revue : ce second appel à `genererCreneaux` ignorait les
+    // journées déclarées, alors que l'autre chemin les respectait. Sur une session
+    // distancielle de 28 h dont les 4 journées sont réparties sur 3 mois, le repli
+    // retenait 66 jours ouvrés → 0,42 h/jour → 26 MINUTES de durée prévue pour la
+    // journée. Le réalisé étant plafonné au prévu, tout le monde ressortait à
+    // 100 % avec 0 h 26 sur l'attestation. Surévaluer la présence est bien plus
+    // grave que la sous-évaluer : c'est ce qu'un contrôle sanctionne.
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      makeSession({
+        jours: [
+          { date: new Date("2026-06-10T00:00:00.000Z"), heureDebut: "09:00", heureFin: "17:00" },
+        ],
+      }),
+    );
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockGenererCreneaux).toHaveBeenCalledWith(
+      expect.objectContaining({
+        jours: [{ date: "2026-06-10", heureDebut: "09:00", heureFin: "17:00" }],
+      }),
+    );
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Créneaux « journée » hérités d'un import antérieur
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * 🔴 L'import posait autrefois UN créneau « journée » par jour ; il en pose
+   * maintenant un par demi-journée. La clé d'unicité étant
+   * `(enrollment, date, demi-journée)`, un ré-import laisse l'ancien en place :
+   * 420 + 210 + 210 = 840 minutes attendues pour 420 réelles, soit un stagiaire
+   * pleinement assidu affiché à 50 %.
+   *
+   * ⚠️ Mais on n'efface jamais une trace explicite. Une signature, une présence
+   * cochée ou une correction manuelle sont des données que personne n'a le droit
+   * de perdre à l'occasion d'un import — et une fois la ligne supprimée, une
+   * absence émargée est indiscernable d'un créneau vierge.
+   */
+  function journeeHeritee(over: Record<string, unknown> = {}) {
+    return {
+      id: "creneau-journee-legacy",
+      present: false,
+      source: "import_zoom",
+      commentaire: null,
+      _count: { emargementSignatures: 0 },
+      ...over,
+    };
+  }
+
+  it("🔴 retire le créneau « journée » hérité qui ne porte aucune trace", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(journeeHeritee());
+
+    const res = await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockPrisma.presenceCreneau.delete).toHaveBeenCalledWith({
+      where: { id: "creneau-journee-legacy" },
+    });
+    assert("data" in res);
+    expect(res.data.nbJourneesHeriteesRemplacees).toBeGreaterThan(0);
+    expect(res.data.journeesConflictuelles).toEqual([]);
+  });
+
+  it.each([
+    ["une SIGNATURE", { _count: { emargementSignatures: 1 } }, "signature"],
+    ["une présence COCHÉE", { present: true }, "presence_cochee"],
+    ["une correction MANUELLE", { source: "manuel" }, "saisie_manuelle"],
+    ["un COMMENTAIRE d'admin", { commentaire: "arrivée tardive" }, "saisie_manuelle"],
+  ])("🔴 CONSERVE et signale le créneau hérité qui porte %s", async (_, patch, motif) => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(journeeHeritee(patch));
+
+    const res = await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockPrisma.presenceCreneau.delete).not.toHaveBeenCalled();
+    assert("data" in res);
+    expect(res.data.nbJourneesHeriteesRemplacees).toBe(0);
+    expect(res.data.journeesConflictuelles[0]).toMatchObject({ motif });
+  });
+
+  it("ne supprime rien quand aucun créneau « journée » n'existe", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue(null);
+
+    const res = await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "releve.csv",
+      content: CSV_CONTENT,
+    });
+
+    expect(mockPrisma.presenceCreneau.delete).not.toHaveBeenCalled();
+    assert("data" in res);
+    expect(res.data.nbJourneesHeriteesRemplacees).toBe(0);
   });
 });
 

@@ -28,6 +28,14 @@ vi.mock("@/lib/prisma", () => ({
     rgpdDemande: {
       create: vi.fn(),
     },
+    emargementToken: {
+      updateMany: vi.fn(),
+    },
+    emargementSignature: {
+      updateMany: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+    },
     // Forme tableau : exécute les opérations passées (update + updateMany).
     $transaction: vi.fn((ops: unknown[]) => Promise.all(ops)),
   },
@@ -37,8 +45,16 @@ vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: vi.fn((v: string | null) => (v === null ? null : `decrypted:${v}`)),
 }));
 
+vi.mock("@/server/qualiopi/emargement/storage", () => ({
+  supprimerImageSignature: vi.fn(),
+}));
+
+vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
+
 import { prisma } from "@/lib/prisma";
 import { exporterDonneesStagiaire, supprimerStagiaire, creerDemandeRgpd } from "./rgpd-service";
+import { supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
+import { COLONNES_SCELLEES } from "@/server/qualiopi/emargement/reconstruction";
 
 const mockPrisma = prisma as unknown as {
   trainee: {
@@ -56,6 +72,12 @@ const mockPrisma = prisma as unknown as {
   };
   rgpdDemande: {
     create: ReturnType<typeof vi.fn>;
+  };
+  emargementToken: { updateMany: ReturnType<typeof vi.fn> };
+  emargementSignature: {
+    updateMany: ReturnType<typeof vi.fn>;
+    findMany: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
   };
 };
 
@@ -145,7 +167,13 @@ describe("exporterDonneesStagiaire", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("supprimerStagiaire", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour : sans ce
+    // repositionnement, la purge des images d'émargement reçoit `undefined` au
+    // lieu d'un tableau et fait échouer des tests sans rapport.
+    mockPrisma.emargementSignature.findMany.mockResolvedValue([]);
+  });
 
   it("appelle prisma.trainee.update avec les champs anonymises et deletedAt", async () => {
     mockPrisma.trainee.update.mockResolvedValue({});
@@ -297,5 +325,160 @@ describe("creerDemandeRgpd", () => {
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Émargement — oublis O1 (export) et O2 (effacement + purge R2)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const mockSupprimerImage = supprimerImageSignature as unknown as ReturnType<typeof vi.fn>;
+
+describe("RGPD — signatures d'émargement", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour.
+    mockPrisma.emargementSignature.findMany.mockResolvedValue([]);
+    mockPrisma.emargementSignature.updateMany.mockResolvedValue({ count: 0 });
+    mockPrisma.emargementSignature.update.mockResolvedValue({});
+    mockPrisma.emargementToken.updateMany.mockResolvedValue({ count: 0 });
+    mockPrisma.trainee.update.mockResolvedValue({});
+    mockPrisma.portailAcces.updateMany.mockResolvedValue({ count: 0 });
+    mockPrisma.coachingSession.updateMany.mockResolvedValue({ count: 0 });
+    mockPrisma.compteRenduSeance.updateMany.mockResolvedValue({ count: 0 });
+    mockSupprimerImage.mockResolvedValue(undefined);
+  });
+
+  it("🔴 l'export REMONTE les signatures — l'`include` est une liste blanche", async () => {
+    mockPrisma.trainee.findUnique.mockResolvedValue({
+      id: "t1",
+      nom: "Dupont",
+      prenom: "Alice",
+      email: "a@b.test",
+      handicapDetailsChiffre: null,
+      enrollments: [],
+      documents: [],
+      appreciations: [],
+      rgpdDemandes: [],
+      coachingSessions: [],
+    });
+
+    await exporterDonneesStagiaire("t1");
+
+    const arg = mockPrisma.trainee.findUnique.mock.calls[0]![0] as {
+      include: { enrollments: { include: Record<string, unknown> } };
+    };
+    expect(arg.include.enrollments.include["emargementSignatures"]).toBe(true);
+    expect(arg.include.enrollments.include["emargementTokens"]).toBeDefined();
+  });
+
+  it("l'export ne remonte JAMAIS l'empreinte du jeton", async () => {
+    mockPrisma.trainee.findUnique.mockResolvedValue({
+      id: "t1",
+      nom: "D",
+      prenom: "A",
+      email: "a@b.test",
+      handicapDetailsChiffre: null,
+      enrollments: [],
+      documents: [],
+      appreciations: [],
+      rgpdDemandes: [],
+      coachingSessions: [],
+    });
+    await exporterDonneesStagiaire("t1");
+
+    const arg = mockPrisma.trainee.findUnique.mock.calls[0]![0] as {
+      include: {
+        enrollments: { include: { emargementTokens: { select: Record<string, unknown> } } };
+      };
+    };
+    const select = arg.include.enrollments.include.emargementTokens.select;
+    expect(select["tokenHash"]).toBeUndefined();
+    expect(select["expiresAt"]).toBe(true);
+  });
+
+  it("🔴 l'effacement NE TOUCHE À AUCUNE colonne scellée — sinon la chaîne devient « falsifiée »", async () => {
+    // ⚠️ Ce test assertait exactement le bug : il EXIGEAIT que `signataireEmail`,
+    // `ipHash` et `userAgentSha256` soient mis à `null`. Les trois sont dans le
+    // tuple haché. Après toute demande d'article 17, `verifierChaine` rendait
+    // donc `empreinte_invalide` sur chaque signature du stagiaire — le verdict
+    // « ces feuilles ont été modifiées après coup », dans un dossier de contrôle,
+    // sur des pièces intactes.
+    //
+    // L'assertion porte sur la LISTE des colonnes scellées plutôt que sur trois
+    // noms : le jour où le tuple en gagne une, ce test la protège sans qu'on ait
+    // à y penser.
+    await supprimerStagiaire("t1");
+
+    const ecritures = [
+      ...mockPrisma.emargementSignature.updateMany.mock.calls,
+      // La purge des images écrit elle aussi sur la table : `signatureKey` et
+      // `imagePurgeeAt` sont hors tuple, et doivent le rester.
+      ...mockPrisma.emargementSignature.update.mock.calls,
+    ].map((c) => (c[0] as { data: Record<string, unknown> }).data);
+    const colonnesEcrites = ecritures.flatMap((d) => Object.keys(d));
+    expect(colonnesEcrites.filter((c) => COLONNES_SCELLEES.includes(c as never))).toEqual([]);
+  });
+
+  it("l'effacement RÉVOQUE les jetons encore vivants", async () => {
+    // Un lien valide survivant permettrait de signer au nom d'une personne
+    // pourtant « supprimée ».
+    await supprimerStagiaire("t1");
+    const arg = mockPrisma.emargementToken.updateMany.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+    };
+    expect(arg.where["revokedAt"]).toBeNull();
+  });
+
+  it("🔴 l'effacement SUPPRIME les images sur R2 — l'oubli O2", async () => {
+    mockPrisma.emargementSignature.findMany.mockResolvedValue([
+      { id: "s1", signatureKey: "emargement/2026/signatures/a.png" },
+      { id: "s2", signatureKey: "emargement/2026/signatures/b.png" },
+    ]);
+
+    await supprimerStagiaire("t1");
+
+    expect(mockSupprimerImage).toHaveBeenCalledTimes(2);
+    expect(mockPrisma.emargementSignature.update).toHaveBeenCalledTimes(2);
+  });
+
+  it("ne pose `imagePurgeeAt` que si la suppression a RÉUSSI", async () => {
+    // Le poser d'office ferait croire à un effacement qui n'a pas eu lieu —
+    // pire que pas d'effacement, puisque plus personne n'irait vérifier.
+    mockPrisma.emargementSignature.findMany.mockResolvedValue([
+      { id: "s1", signatureKey: "emargement/2026/signatures/a.png" },
+    ]);
+    mockSupprimerImage.mockRejectedValue(new Error("R2 500"));
+
+    await expect(supprimerStagiaire("t1")).rejects.toThrow(/incomplet/);
+
+    expect(mockPrisma.emargementSignature.update).not.toHaveBeenCalled();
+  });
+
+  it("🔴 LÈVE si une purge échoue — sinon la demande passe en « traitée » et le rejeu devient impossible", async () => {
+    // Avaler l'échec faisait retourner normalement, donc marquer la demande RGPD
+    // « traitée » — et le garde qui exige « demandée » rendait tout rejeu
+    // impossible. L'image restait 5 ans, et rien ne balaie `imagePurgeeAt`.
+    mockPrisma.emargementSignature.findMany.mockResolvedValue([
+      { id: "s1", signatureKey: "emargement/2026/signatures/a.png" },
+    ]);
+    mockSupprimerImage.mockRejectedValue(new Error("R2 500"));
+
+    await expect(supprimerStagiaire("t1")).rejects.toThrow();
+  });
+
+  it("un échec sur une image n'empêche pas de tenter les suivantes", async () => {
+    mockPrisma.emargementSignature.findMany.mockResolvedValue([
+      { id: "s1", signatureKey: "emargement/2026/signatures/a.png" },
+      { id: "s2", signatureKey: "emargement/2026/signatures/b.png" },
+    ]);
+    mockSupprimerImage.mockRejectedValueOnce(new Error("R2 500")).mockResolvedValue(undefined);
+
+    await expect(supprimerStagiaire("t1")).rejects.toThrow();
+
+    // Les deux ont été tentées, la seconde a réussi : le rejeu ne reprendra que
+    // ce qui reste, grâce au filtre `imagePurgeeAt: null`.
+    expect(mockSupprimerImage).toHaveBeenCalledTimes(2);
+    expect(mockPrisma.emargementSignature.update).toHaveBeenCalledTimes(1);
   });
 });

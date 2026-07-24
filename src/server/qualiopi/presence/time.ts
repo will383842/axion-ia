@@ -51,3 +51,24 @@ export function parisDateLabel(iso: string, dj: DemiJourneeLabel): string {
   };
   return `${iso} ${labelDj[dj]}`;
 }
+
+/**
+ * Minutes écoulées depuis minuit, en heure de PARIS.
+ *
+ * Utilisé pour situer une connexion distancielle dans la journée : le relevé
+ * porte des horodatages UTC, les horaires déclarés d'une session sont en heure
+ * de Paris. Comparer les deux sans conversion décalerait tout d'une ou deux
+ * heures selon la saison, et attribuerait la présence à la mauvaise
+ * demi-journée.
+ */
+export function parisMinutesDuJour(d: Date): number {
+  const parties = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: FUSEAU_PARIS,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(d);
+  const heure = Number(parties.find((p) => p.type === "hour")?.value ?? "0");
+  const minute = Number(parties.find((p) => p.type === "minute")?.value ?? "0");
+  return heure * 60 + minute;
+}

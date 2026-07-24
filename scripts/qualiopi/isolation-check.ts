@@ -34,6 +34,17 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/formations\//,
   /^src\/app\/\[locale\]\/formations\//,
   /^src\/app\/\[locale\]\/portail\//,
+  // Espace formateur collectif (étapes B et C du chantier émargement) : le
+  // formateur consulte ses sessions de formation et recueille les signatures
+  // des stagiaires sans téléphone, sur son propre poste. C'est un consommateur
+  // ASSUMÉ du domaine qualiopi, au même titre que le portail stagiaire — pas
+  // une fuite. Il n'importe que des lectures et l'action de signature ; la
+  // politique de champs stagiaire (jamais d'e-mail, jamais de détail handicap)
+  // est portée par `src/server/formateur/collectif-queries.ts`.
+  // Restreint aux SESSIONS : c'est le seul usage réel. Ouvrir tout l'espace
+  // formateur au domaine qualiopi serait plus large que nécessaire.
+  /^src\/app\/\[locale\]\/espace-formateur\/sessions\//,
+  /^src\/components\/espace-formateur\/Emargement/,
   /^src\/app\/\[locale\]\/verifier-attestation\//,
   /^src\/app\/api\/qualiopi\//,
   /^src\/components\/admin\/qualiopi\//,

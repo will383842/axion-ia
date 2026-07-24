@@ -393,7 +393,7 @@ export default async function BlogCategoryPage({ params }: Props) {
               {activityCta.label}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href="/reserver" variant="outline" size="lg">
+            <Cta href="/appel" variant="outline" size="lg">
               {isFr ? "Réserver un appel" : "Book a call"}
             </Cta>
           </>
