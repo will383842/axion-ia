@@ -126,6 +126,32 @@ describe("validateCoachingFinancement", () => {
       ),
     ).toBeNull();
   });
+
+  it("France Travail AIF avec reste à charge > 0 → bloque (deux volets non automatisés)", () => {
+    expect(
+      validateCoachingFinancement(
+        base({
+          financementType: "france_travail",
+          ftDispositif: "aif",
+          ftAifPrescriptionDate: new Date(),
+          resteAChargeCents: 15000,
+        }),
+      ),
+    ).toMatch(/reste à charge/i);
+  });
+
+  it("France Travail AIF sans reste à charge (100 % financé) → OK", () => {
+    expect(
+      validateCoachingFinancement(
+        base({
+          financementType: "france_travail",
+          ftDispositif: "aif",
+          ftAifPrescriptionDate: new Date(),
+          resteAChargeCents: 0,
+        }),
+      ),
+    ).toBeNull();
+  });
 });
 
 describe("computeCoachingFacturation", () => {

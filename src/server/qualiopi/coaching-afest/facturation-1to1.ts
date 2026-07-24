@@ -29,6 +29,8 @@ import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { validateCoachingFinancement, computeCoachingFacturation } from "./financement-1to1";
+import { sumHeuresReelles } from "./heures";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 
 export interface GenererFactureCoachingResult {
   factureId: string;
@@ -39,14 +41,18 @@ export interface GenererFactureCoachingResult {
 const MAX_ATTEMPTS = 5;
 const PREFIX_FACT = "AXI-FACT";
 
-/** Heures réelles d'un contrat = Σ CompteRenduSeance.dureeMinutes des séances liées. */
+/**
+ * Heures réelles d'un contrat = Σ CompteRenduSeance.dureeMinutes des séances liées.
+ * Délègue à `sumHeuresReelles` pour appliquer la MÊME règle de présence que
+ * l'attestation (exclusion des seules absences actées) — sinon la facture
+ * porterait des heures que l'attestation d'assiduité ne compte pas.
+ */
 async function heuresReellesContrat(coachingContractId: string): Promise<number> {
   const crs = await prisma.compteRenduSeance.findMany({
     where: { coachingSession: { coachingContractId } },
-    select: { dureeMinutes: true },
+    select: { dureeMinutes: true, presenceSigneeAt: true, beneficiairePresent: true },
   });
-  const minutes = crs.reduce((acc, c) => acc + (c.dureeMinutes ?? 0), 0);
-  return Math.round((minutes / 60) * 100) / 100;
+  return sumHeuresReelles(crs);
 }
 
 export async function genererFactureCoaching(
@@ -78,7 +84,10 @@ export async function genererFactureCoaching(
   let destinataireSiret: string | undefined;
   let destinataireAdresse: string | undefined;
   if (calc.destinataire === "opco") {
-    destinataireNom = contrat.client?.opcoIdentifie ?? "OPCO";
+    // Nom LISIBLE de l'OPCO (« Atlas » plutôt que le slug « atlas ») — parité collectif.
+    destinataireNom = contrat.client?.opcoIdentifie
+      ? opcoLabel(contrat.client.opcoIdentifie)
+      : "OPCO (à préciser)";
   } else if (calc.destinataire === "france_travail") {
     destinataireNom = "France Travail";
   } else if (contrat.client) {
@@ -149,8 +158,11 @@ export async function genererFactureCoaching(
       docResult = await generateDocument({
         type: "facture",
         identite,
-        buildElement: (docNumero) =>
-          React.createElement(FacturePdf, { data: { ...factureData, numero: docNumero } }),
+        // 🔴 Le numéro de facture est déjà alloué sur la séquence FactureFormation
+        // (ligne `numero` ci-dessus). NE PAS le remplacer par le numéro de Document
+        // générique renvoyé par generateDocument — sinon le PDF affiche un numéro
+        // différent de celui enregistré en base (facture ↔ PDF désynchronisés).
+        buildElement: () => React.createElement(FacturePdf, { data: factureData }),
       });
     } catch {
       // fail-soft : facture créée sans PDF si le renderer échoue

@@ -27,12 +27,23 @@ type ActionResult<T> = { data: T } | { error: string };
 
 const CATEGORIES_MOYEN = ["salle", "materiel", "plateforme", "humain"] as const;
 
+// Une vérification de moyen atteste un contrôle DÉJÀ effectué : une date dans le
+// futur n'a pas de sens et fausserait la preuve Qualiopi (off.17/18/19). On
+// borne au présent, évalué à chaque requête.
+const dateVerificationSchema = z.coerce
+  .date()
+  .nullable()
+  .optional()
+  .refine((d) => d == null || d.getTime() <= Date.now(), {
+    message: "La date de vérification ne peut pas être dans le futur.",
+  });
+
 const creerMoyenSchema = z.object({
   categorie: z.enum(CATEGORIES_MOYEN),
   libelle: z.string().min(1).max(300),
   description: z.string().max(5000).optional(),
   localisation: z.string().max(250).optional(),
-  dateVerification: z.coerce.date().nullable().optional(),
+  dateVerification: dateVerificationSchema,
 });
 
 const updateMoyenSchema = z.object({
@@ -41,7 +52,7 @@ const updateMoyenSchema = z.object({
   libelle: z.string().min(1).max(300).optional(),
   description: z.string().max(5000).optional(),
   localisation: z.string().max(250).optional(),
-  dateVerification: z.coerce.date().nullable().optional(),
+  dateVerification: dateVerificationSchema,
 });
 
 const setMoyenActifSchema = z.object({
