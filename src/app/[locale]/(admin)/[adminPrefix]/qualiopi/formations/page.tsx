@@ -9,7 +9,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Archive, CheckCircle2, GraduationCap, Hourglass } from "lucide-react";
+import { CheckCircle2, GraduationCap, Hourglass } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -18,9 +18,9 @@ import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ImportCatalogFormationsButton } from "@/components/admin/qualiopi/ImportCatalogFormationsButton";
 import {
   ARCHIVE_FILTER_PARAM,
-  ArchiveFilterTabs,
+  applyArchiveFilter,
   parseArchiveFilter,
-} from "@/components/admin/qualiopi/ArchiveFilterTabs";
+} from "@/components/admin/qualiopi/archive-filter";
 import { listFormations } from "@/server/qualiopi/formations/formations";
 
 export const dynamic = "force-dynamic";
@@ -64,18 +64,18 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
 
   const vue = parseArchiveFilter((await searchParams)[ARCHIVE_FILTER_PARAM]);
 
-  // On charge TOUT (57 lignes en prod — aucun enjeu de volume) : les compteurs
-  // des onglets et des cartes doivent rester justes quelle que soit la vue.
-  const toutes = await listFormations();
-
   // Une formation « vivante » n'est pas archivée. Attention : le statut porté par
   // les formations en service est `actif` (posé par l'import catalogue), PAS
   // `publie` — compter `publie` renvoyait 0 alors que 22 formations tournent.
+  const toutes = await listFormations();
   const actives = toutes.filter((f) => f.statut !== "archive");
   const archivees = toutes.filter((f) => f.statut === "archive");
-  const brouillons = actives.filter((f) => f.statutGeneration !== "publie").length;
 
-  const formations = vue === "toutes" ? toutes : vue === "archivees" ? archivees : actives;
+  const formations = applyArchiveFilter(vue, actives, archivees);
+
+  // Compteurs sur la SEULE offre vivante : les archives sont hors console
+  // (décision Will), les afficher dans une carte les remettrait sous les yeux.
+  const brouillons = actives.filter((f) => f.statutGeneration !== "publie").length;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -99,10 +99,9 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
         }
       />
 
-      <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={toutes.length} icon={GraduationCap} />
+      <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
+        <AdminStatCard label="Total" value={actives.length} icon={GraduationCap} />
         <AdminStatCard label="Actives" value={actives.length} tone="success" icon={CheckCircle2} />
-        <AdminStatCard label="Archivées" value={archivees.length} icon={Archive} />
         <AdminStatCard
           label="Brouillons / en cours"
           value={brouillons}
@@ -111,18 +110,11 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
         />
       </div>
 
-      <ArchiveFilterTabs
-        current={vue}
-        basePath={`/${locale}/${adminPrefix}/qualiopi/formations`}
-        counts={{ actives: actives.length, archivees: archivees.length }}
-        nomEntite="formation"
-      />
-
       {formations.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          {toutes.length === 0 ? (
+          {actives.length === 0 ? (
             <>
-              Aucune formation en base. Cliquez sur <strong>« Importer le catalogue »</strong> pour
+              Aucune formation active. Cliquez sur <strong>« Importer le catalogue »</strong> pour
               créer d&apos;un coup les formations du catalogue public (prêtes pour sessions,
               conventions et factures), ou lancez une génération depuis le Formation Engine.
             </>

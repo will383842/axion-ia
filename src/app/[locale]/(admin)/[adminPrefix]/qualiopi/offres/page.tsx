@@ -17,14 +17,14 @@ import { listOffres } from "@/server/qualiopi/offres/offres";
 import { OffreRowActions } from "@/components/admin/qualiopi/OffreRowActions";
 import {
   ARCHIVE_FILTER_PARAM,
-  ArchiveFilterTabs,
+  applyArchiveFilter,
   parseArchiveFilter,
-} from "@/components/admin/qualiopi/ArchiveFilterTabs";
+} from "@/components/admin/qualiopi/archive-filter";
 import {
   toggleOffreActifAction,
   verifyAllOffresCoherenceAction,
 } from "@/server/actions/qualiopi/offres";
-import { FileText, CheckCircle2, AlertTriangle } from "lucide-react";
+import { FileText } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -64,14 +64,13 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
 
   const vue = parseArchiveFilter((await searchParams)[ARCHIVE_FILTER_PARAM]);
 
-  // Tout est chargé (67 lignes en prod) : les compteurs restent justes quelle que
-  // soit la vue. Une offre désactivée reste rattachée à des formations archivées
-  // et à leur historique → jamais supprimée, seulement masquée par défaut.
+  // Une offre désactivée reste rattachée à des formations archivées et à leur
+  // historique → jamais supprimée, seulement masquée de la console.
   const toutes = await listOffres();
   const offresActives = toutes.filter((o) => o.offre.actif);
   const offresInactives = toutes.filter((o) => !o.offre.actif);
 
-  const offres = vue === "toutes" ? toutes : vue === "archivees" ? offresInactives : offresActives;
+  const offres = applyArchiveFilter(vue, offresActives, offresInactives);
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -85,27 +84,21 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
         actions={<OffreRowActions mode="verify" verifyAction={verifyAllOffresCoherenceAction} />}
       />
 
+      {/* Une seule mesure a du sens ici : les offres rattachables. Les offres
+          désactivées sont hors console (décision Will 2026-07-24) — les compter
+          dans une carte les remettrait sous les yeux. */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Offres au catalogue" value={toutes.length} icon={FileText} />
         <AdminStatCard
           label="Offres actives"
           value={offresActives.length}
           tone="success"
-          icon={CheckCircle2}
+          icon={FileText}
         />
-        <AdminStatCard label="Inactives" value={offresInactives.length} icon={AlertTriangle} />
       </div>
-
-      <ArchiveFilterTabs
-        current={vue}
-        basePath={`/${locale}/${adminPrefix}/qualiopi/offres`}
-        counts={{ actives: offresActives.length, archivees: offresInactives.length }}
-        nomEntite="offre"
-      />
 
       {offres.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          {toutes.length === 0 ? (
+          {offresActives.length === 0 ? (
             <>
               Aucune offre. Lancez <code>pnpm qualiopi:seed</code> pour initialiser le référentiel.
             </>
