@@ -73,12 +73,24 @@ export async function SubmissionDetailContent({
           </a>
         }
         actions={
-          <ReplyComposer
-            submissionId={submission.id}
-            contactName={submission.contactName}
-            contactEmail={submission.contactEmail}
-            defaultSubject={`Re: votre demande ${typeLabel}`}
-          />
+          <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+            {/* Raccourci CRM : pré-remplit le formulaire « nouveau client » avec
+                les coordonnées de ce lead (déchiffrées côté serveur sur la page
+                cible). Évite la re-saisie manuelle inbox → CRM Qualiopi. L'URL
+                ne porte que l'id — aucune PII n'y transite. */}
+            <a
+              href={`/fr/${adminPrefix}/qualiopi/clients/new?fromSubmission=${submission.id}`}
+              className="admin-button"
+            >
+              Convertir en client
+            </a>
+            <ReplyComposer
+              submissionId={submission.id}
+              contactName={submission.contactName}
+              contactEmail={submission.contactEmail}
+              defaultSubject={`Re: votre demande ${typeLabel}`}
+            />
+          </div>
         }
       />
       <div className="admin-detail-grid">
