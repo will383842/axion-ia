@@ -16,8 +16,9 @@ import {
   QUALIOPI_CONFIG_KEY_PREFIX,
 } from "../../../src/server/qualiopi/config/registry";
 import { seedOffresSite, reconcileOffresFromSkeleton } from "./offres";
-import { seedOffresV2, reconcileOffresV2, archiveReplacedCatalogue } from "./offres-v2";
+import { seedOffresV2, reconcileOffresV2 } from "./offres-v2";
 import { seedCatalogFormations } from "./catalog-formations";
+import { cleanupCatalogue } from "../../../src/server/qualiopi/formations/catalogue-cleanup";
 import { seedGrilleQualite } from "./grille";
 import { seedGrilleV2 } from "./grille-v2";
 
@@ -55,17 +56,45 @@ async function seedQualiopiConfig(): Promise<void> {
   );
 }
 
+/**
+ * Aligne le référentiel Formation/OffreSite sur le catalogue public courant.
+ * Idempotent et non destructif (archivage/désactivation, jamais de suppression).
+ */
+async function runCatalogueCleanup(): Promise<void> {
+  const res = await cleanupCatalogue(prisma, { apply: true });
+  for (const f of res.formationsToArchive) {
+    console.log(`↻ [qualiopi:seed] archivée — ${f.numero} « ${f.titre} » (${f.slug})`);
+  }
+  for (const o of res.offresToDeactivate) {
+    console.log(`↻ [qualiopi:seed] offre désactivée — ${o.code} (${o.slug})`);
+  }
+  for (const f of res.formationsArchiveesRevenuesAuCatalogue) {
+    console.warn(
+      `⚠️  [qualiopi:seed] ${f.numero} (${f.slug}) est archivée mais son slug est revenu ` +
+        `au catalogue — réactivation NON automatique, à arbitrer en console.`,
+    );
+  }
+  console.log(
+    `✅ [qualiopi:seed] catalogue — ${res.formationsArchivedCount} formation(s) archivée(s), ` +
+      `${res.offresDeactivatedCount} offre(s) désactivée(s), ` +
+      `${res.formationsSurMesureKept.length} sur-mesure conservée(s).`,
+  );
+}
+
 async function main(): Promise<void> {
   await seedQualiopiConfig();
   await seedOffresSite(prisma);
   await reconcileOffresFromSkeleton(prisma);
   await seedOffresV2(prisma);
   await reconcileOffresV2(prisma);
-  // Refonte catalogue 2026-07-19 — désactive/archive l'offre AXION remplacée
-  // (le séminaire est conservé), APRÈS le seed des nouvelles offres et AVANT
-  // l'import des nouvelles formations (session-ready).
-  await archiveReplacedCatalogue(prisma);
   await seedCatalogFormations(prisma);
+  // Nettoyage GÉNÉRIQUE du référentiel (remplace `archiveReplacedCatalogue` et
+  // sa liste de slugs en dur, qui n'attrapait que la génération listée à la
+  // main — d'où les 17 formations de juillet restées actives 9 jours). La règle
+  // est dérivée du SSOT : hors de `FORMATIONS_V2` ⇒ archivée (sauf sur-mesure).
+  // Exécuté APRÈS l'import pour que les formations du catalogue courant existent
+  // déjà en base et ne soient jamais candidates à l'archivage.
+  await runCatalogueCleanup();
   await seedGrilleQualite(prisma);
   await seedGrilleV2(prisma);
 }
