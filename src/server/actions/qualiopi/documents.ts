@@ -1785,6 +1785,24 @@ export async function verserFicheFormateurAction(input: {
   const nbCvSource = await prisma.trainerDocument.count({
     where: { trainerId, type: "cv", statutValidation: "valide" },
   });
+
+  // 🔴 #1 — off.21 est une NON-CONFORMITÉ MAJEURE : « la maîtrise des compétences
+  // des intervenants est VÉRIFIÉE ». Verser une fiche VIDE (aucune compétence, aucune
+  // habilitation, aucun CV source) posait quand même `cvUrl` → l'indicateur passait
+  // VERT sur un clic, sans rien prouver. On refuse : une fiche qui ne documente rien
+  // ne peut pas attester d'une maîtrise. ⚠️ NOTE JURISTE : que des compétences
+  // SAISIES constituent une maîtrise « vérifiée » reste un arbitrage (le contrôle
+  // peut exiger des pièces sources) — cette garde n'écarte que le cas totalement vide.
+  const aDesCompetences =
+    Array.isArray(trainer.domainesCompetences) && trainer.domainesCompetences.length > 0;
+  const aDesHabilitations = trainer.formationsHabilitees.length > 0;
+  if (!aDesCompetences && !aDesHabilitations && nbCvSource === 0) {
+    return {
+      error:
+        "Fiche non versée : ce formateur n'a ni domaine de compétence, ni habilitation, ni CV source. Renseignez sa maîtrise (indicateur 21) avant de verser sa fiche au dossier.",
+    };
+  }
+
   const data = {
     ...buildCvFormateurData(trainer, titresHabilitations, maintenant),
     cvJoint: nbCvSource > 0,

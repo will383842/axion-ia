@@ -468,6 +468,13 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
         `[OMIS] registres/${type} — erreur de rendu (${err instanceof Error ? err.message : String(err)})`,
       );
       nbOmis++;
+      // 🔴 #3 — un registre réglementaire manquant DOIT rendre le dossier INCOMPLET.
+      // Avant, l'échec n'était que dans index.txt et `incomplet` ne dépendait que des
+      // preuves R2 → un dossier privé de son registre sous-traitants (ind. 27) ou revue
+      // de direction (ind. 32) était remis à l'auditeur COFRAC comme « complet ».
+      avertissements.push(
+        `⚠️ Registre réglementaire « ${type} » absent du dossier (erreur de rendu). Corrigez-le avant de remettre ce dossier à un auditeur.`,
+      );
     }
   }
 
