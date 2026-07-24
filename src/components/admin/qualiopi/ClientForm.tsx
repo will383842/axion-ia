@@ -16,27 +16,57 @@ import type { CompanySize } from "@/server/qualiopi/crm/types";
 
 type ClientType = "entreprise" | "particulier";
 
+/** Valeurs de pré-remplissage (conversion d'une demande de contact en client). */
+export interface ClientFormInitialValues {
+  type?: ClientType;
+  raisonSociale?: string;
+  contactNom?: string;
+  contactEmail?: string;
+  contactTelephone?: string;
+  contactFonction?: string;
+  secteur?: string;
+  adresse?: string;
+  taille?: string;
+  /** Contexte métier (message du lead) transmis au Formation Engine. */
+  contexteIa?: string;
+  /** Traçabilité (persistée dans `Client.source`). */
+  source?: string;
+}
+
 export interface ClientFormProps {
   /** Base href admin clients pour la redirection après création. */
   baseHref: string;
+  /** Valeurs pré-remplies (ex. conversion d'une Submission). Optionnel. */
+  initialValues?: ClientFormInitialValues;
+  /** Bannière « pré-rempli depuis … » affichée en tête. Optionnel. */
+  prefillNotice?: string;
 }
 
-export function ClientForm({ baseHref }: ClientFormProps): React.ReactElement {
+export function ClientForm({
+  baseHref,
+  initialValues,
+  prefillNotice,
+}: ClientFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const [type, setType] = useState<ClientType>("entreprise");
-  const [raisonSociale, setRaisonSociale] = useState("");
+  const iv = initialValues ?? {};
+  const [type, setType] = useState<ClientType>(iv.type ?? "entreprise");
+  const [raisonSociale, setRaisonSociale] = useState(iv.raisonSociale ?? "");
   const [siret, setSiret] = useState("");
   const [nafCode, setNafCode] = useState("");
-  const [taille, setTaille] = useState<string>("");
+  const [taille, setTaille] = useState<string>(iv.taille ?? "");
   const [idcc, setIdcc] = useState("");
-  const [adresse, setAdresse] = useState("");
-  const [contactNom, setContactNom] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactTelephone, setContactTelephone] = useState("");
-  const [contactFonction, setContactFonction] = useState("");
+  const [adresse, setAdresse] = useState(iv.adresse ?? "");
+  const [contactNom, setContactNom] = useState(iv.contactNom ?? "");
+  const [contactEmail, setContactEmail] = useState(iv.contactEmail ?? "");
+  const [contactTelephone, setContactTelephone] = useState(iv.contactTelephone ?? "");
+  const [contactFonction, setContactFonction] = useState(iv.contactFonction ?? "");
+  // Champs non éditables dans ce formulaire mais transmis à l'action.
+  const secteur = iv.secteur ?? "";
+  const contexteIa = iv.contexteIa ?? "";
+  const source = iv.source ?? "";
 
   const isParticulier = type === "particulier";
 
@@ -52,6 +82,10 @@ export function ClientForm({ baseHref }: ClientFormProps): React.ReactElement {
         ...(contactTelephone ? { contactTelephone } : {}),
         ...(contactFonction ? { contactFonction } : {}),
         ...(adresse ? { adresse } : {}),
+        // Champs pré-remplis non éditables ici, propagés tels quels.
+        ...(secteur ? { secteur } : {}),
+        ...(contexteIa ? { contexteIa } : {}),
+        ...(source ? { source } : {}),
         // Champs entreprise uniquement
         ...(!isParticulier && siret ? { siret } : {}),
         ...(!isParticulier && nafCode ? { nafCode } : {}),
@@ -77,6 +111,12 @@ export function ClientForm({ baseHref }: ClientFormProps): React.ReactElement {
       onSubmit={handleSubmit}
       className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]"
     >
+      {prefillNotice ? (
+        <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-bg)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+          {prefillNotice} Vérifiez les champs et complétez le SIRET / code NAF (absents du
+          formulaire de contact) avant de créer le client.
+        </p>
+      ) : null}
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
         <div className={fieldCls}>
           <label className={labelCls} htmlFor="c-type">
