@@ -101,6 +101,21 @@ export async function genererFactureParInscriptionAction(
   });
   if (!readiness.ok) return { error: `Facture impossible : ${readiness.raison}` };
 
+  // 🔴 Anti-DOUBLE ÉMISSION : une inscription déjà facturée (facture non annulée)
+  // ne doit pas en générer une seconde — chacune consomme un NUMÉRO LÉGAL et
+  // facturerait le participant deux fois. Il n'existe aucune contrainte `@@unique`
+  // en base (enrollmentId nullable + cas original/avoir), d'où cette garde
+  // applicative. Une facture annulée, elle, autorise une réémission.
+  const dejaFacturee = await prisma.factureFormation.findFirst({
+    where: { enrollmentId: enrollment.id, statut: { not: "annulee" } },
+    select: { numero: true },
+  });
+  if (dejaFacturee !== null) {
+    return {
+      error: `Cette inscription est déjà facturée (${dejaFacturee.numero}). Annulez la facture existante avant d'en émettre une nouvelle.`,
+    };
+  }
+
   const destinataire = destinataireFacture(resolved.financementType);
   const payeur = enrollment.client ?? enrollment.session.client;
   const traineeNom = `${enrollment.trainee.prenom} ${enrollment.trainee.nom}`;
@@ -118,6 +133,17 @@ export async function genererFactureParInscriptionAction(
     destinataireNom = payeur?.raisonSociale ?? "Entreprise";
     destinataireSiret = payeur?.siret ?? undefined;
     destinataireAdresse = payeur?.adresse ?? undefined;
+  }
+
+  // 🔴 Facture sans ACHETEUR identifié = irrégulière (art. 242 nonies A ann. II
+  // du CGI). Pour un destinataire « entreprise », un employeur payeur DOIT être
+  // résolu : sans lui, `readiness.ok` restait vrai et la facture partait avec
+  // « Entreprise » sans raison sociale, et un numéro légal consommé pour rien.
+  if (destinataire === "entreprise" && (payeur?.raisonSociale ?? "").trim() === "") {
+    return {
+      error:
+        "Aucun employeur payeur identifié pour cette inscription. Rattachez un client (raison sociale) à l'inscription ou à la session avant de facturer.",
+    };
   }
 
   // Garde-fou conformité : facture inter illégale si identité OF incomplète.
