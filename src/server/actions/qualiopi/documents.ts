@@ -1000,7 +1000,10 @@ export async function genererCertificatRealisationAction(input: {
               ? { fonction: trainee.fonction }
               : {}),
           },
-          intituleAction: formationDoc.titre ?? session.formation.titre,
+          // #9 — intitulé de la SESSION (comme convention/convocation/émargement/
+          // attestation), pas le titre catalogue : sinon un certificat de
+          // réalisation portait un intitulé divergent des autres pièces du dossier.
+          intituleAction: session.titreSession ?? formationDoc.titre ?? session.formation.titre,
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           // ⚠️ dureeHeures en décimal — formatHeuresCentiemes appelé dans le template
