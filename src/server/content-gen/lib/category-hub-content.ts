@@ -587,7 +587,9 @@ export function getCategoryCta(slug: string, locale: Locale): { href: string; la
   const c = CATEGORY_CTA[slug];
   if (!c) {
     return {
-      href: "/reserver",
+      // `/appel` (funnel unifié 2026-06-26). `/reserver` est supprimée et ne
+      // survit qu'en 301 edge pour les liens entrants — jamais pour un lien interne.
+      href: "/appel",
       label: locale === "fr" ? "Réserver un appel" : "Book a call",
     };
   }

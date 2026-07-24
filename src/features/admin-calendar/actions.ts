@@ -240,9 +240,6 @@ export async function blockDateAction(
   }
 
   revalidatePath(adminPath("fr", "calendrier"));
-  // Sprint 24 / C1 — bloquer une date retire le slot des dispos public.
-  revalidatePath("/fr/reserver");
-  revalidatePath("/en/book");
   return { ok: true };
 }
 
@@ -393,8 +390,6 @@ export async function cancelBookingAction(
 
   revalidatePath(adminPath("fr", "calendrier"));
   revalidatePath(adminPath("fr", "options"));
-  revalidatePath("/fr/reserver");
-  revalidatePath("/en/book");
   return { ok: true };
 }
 
@@ -447,8 +442,5 @@ export async function unblockDateAction(
   ]);
 
   revalidatePath(adminPath("fr", "calendrier"));
-  // Sprint 24 / C1 — débloquer un slot le rend visible cote public.
-  revalidatePath("/fr/reserver");
-  revalidatePath("/en/book");
   return { ok: true };
 }

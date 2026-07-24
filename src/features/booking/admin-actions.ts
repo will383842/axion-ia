@@ -606,7 +606,6 @@ export async function assignTrainerToBookingAction(
       }),
     ]);
 
-    revalidatePath("/fr/reserver");
     return { ok: true };
   } catch (err) {
     console.error("[assignTrainerToBookingAction]", err);
