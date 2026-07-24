@@ -16,6 +16,11 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ImportCatalogFormationsButton } from "@/components/admin/qualiopi/ImportCatalogFormationsButton";
+import {
+  ARCHIVE_FILTER_PARAM,
+  applyArchiveFilter,
+  parseArchiveFilter,
+} from "@/components/admin/qualiopi/archive-filter";
 import { listFormations } from "@/server/qualiopi/formations/formations";
 
 export const dynamic = "force-dynamic";
@@ -46,9 +51,10 @@ const STATUT_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function QualiopiFormationsPage({ params }: PageProps) {
+export default async function QualiopiFormationsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
   const role = session?.user?.role;
@@ -56,11 +62,20 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const formations = await listFormations();
-  const publiees = formations.filter((f) => f.statut === "publie").length;
-  const brouillons = formations.filter(
-    (f) => f.statut !== "publie" && f.statut !== "archive",
-  ).length;
+  const vue = parseArchiveFilter((await searchParams)[ARCHIVE_FILTER_PARAM]);
+
+  // Une formation « vivante » n'est pas archivée. Attention : le statut porté par
+  // les formations en service est `actif` (posé par l'import catalogue), PAS
+  // `publie` — compter `publie` renvoyait 0 alors que 22 formations tournent.
+  const toutes = await listFormations();
+  const actives = toutes.filter((f) => f.statut !== "archive");
+  const archivees = toutes.filter((f) => f.statut === "archive");
+
+  const formations = applyArchiveFilter(vue, actives, archivees);
+
+  // Compteurs sur la SEULE offre vivante : les archives sont hors console
+  // (décision Will), les afficher dans une carte les remettrait sous les yeux.
+  const brouillons = actives.filter((f) => f.statutGeneration !== "publie").length;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -85,8 +100,8 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Total formations" value={formations.length} icon={GraduationCap} />
-        <AdminStatCard label="Publiées" value={publiees} tone="success" icon={CheckCircle2} />
+        <AdminStatCard label="Total" value={actives.length} icon={GraduationCap} />
+        <AdminStatCard label="Actives" value={actives.length} tone="success" icon={CheckCircle2} />
         <AdminStatCard
           label="Brouillons / en cours"
           value={brouillons}
@@ -97,9 +112,15 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
 
       {formations.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucune formation en base. Cliquez sur <strong>« Importer le catalogue »</strong> pour
-          créer d&apos;un coup les 17 formations du catalogue (prêtes pour sessions, conventions et
-          factures), ou lancez une génération depuis le Formation Engine.
+          {actives.length === 0 ? (
+            <>
+              Aucune formation active. Cliquez sur <strong>« Importer le catalogue »</strong> pour
+              créer d&apos;un coup les formations du catalogue public (prêtes pour sessions,
+              conventions et factures), ou lancez une génération depuis le Formation Engine.
+            </>
+          ) : (
+            <>Aucune formation dans cette vue.</>
+          )}
         </p>
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
