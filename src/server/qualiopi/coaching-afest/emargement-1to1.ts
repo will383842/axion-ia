@@ -1,9 +1,10 @@
 /**
  * Qualiopi 1-to-1 / AFEST — génération de la feuille d'émargement signée (C1).
  *
- * Matérialise la preuve de présence par séance (date, durée, signatures
- * bénéficiaire/formateur/tuteur) à partir des CompteRenduSeance. Réutilise
- * generateDocument (type `emargement`, refs coachingSessionId). Idempotent.
+ * Matérialise la présence par séance (date, durée, présence DÉCLARÉE par
+ * l'organisme) à partir des CompteRenduSeance. Le PDF NE porte PAS de signature
+ * électronique des parties (voir chantier fondation signature AFEST, différé).
+ * Réutilise generateDocument (type `emargement`, refs coachingSessionId). Idempotent.
  */
 
 import React from "react";
@@ -48,9 +49,8 @@ export async function genererEmargement1to1(
           dateSeance: true,
           dureeMinutes: true,
           beneficiairePresent: true,
-          beneficiaireSigneAt: true,
-          formateurSigneAt: true,
-          tuteurSigneAt: true,
+          // Requis par sumHeuresReelles pour exclure les absences ACTÉES du total.
+          presenceSigneeAt: true,
         },
       },
     },
@@ -86,9 +86,6 @@ export async function genererEmargement1to1(
     date: formatDate(new Date(cr.dateSeance)),
     dureeLabel: cr.dureeMinutes != null ? `${cr.dureeMinutes} min` : "—",
     present: cr.beneficiairePresent,
-    beneficiaireSigne: cr.beneficiaireSigneAt != null,
-    formateurSigne: cr.formateurSigneAt != null,
-    tuteurSigne: cr.tuteurSigneAt != null,
   }));
   const totalHeures = sumHeuresReelles(cs.comptesRendus).toLocaleString("fr-FR", {
     maximumFractionDigits: 2,

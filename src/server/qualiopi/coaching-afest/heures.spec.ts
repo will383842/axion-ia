@@ -31,6 +31,24 @@ describe("sumHeuresReelles", () => {
   it("450 min = 7,5 h (centièmes 7,50)", () => {
     expect(sumHeuresReelles([{ dureeMinutes: 450 }])).toBe(7.5);
   });
+
+  it("exclut une absence ACTÉE (présence signée + bénéficiaire absent)", () => {
+    // Séance 1 présente (120) comptée ; séance 2 absence signée exclue.
+    expect(
+      sumHeuresReelles([
+        { dureeMinutes: 120, presenceSigneeAt: new Date("2026-01-01"), beneficiairePresent: true },
+        { dureeMinutes: 180, presenceSigneeAt: new Date("2026-01-02"), beneficiairePresent: false },
+      ]),
+    ).toBe(2);
+  });
+
+  it("compte une séance NON encore signée (présence en attente ≠ absence)", () => {
+    // beneficiairePresent=false SANS presenceSigneeAt = pas encore signée → comptée
+    // (ne pas régresser en mettant à 0 les séances en attente de signature).
+    expect(
+      sumHeuresReelles([{ dureeMinutes: 120, presenceSigneeAt: null, beneficiairePresent: false }]),
+    ).toBe(2);
+  });
 });
 
 describe("computeTaux1to1", () => {
