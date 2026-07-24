@@ -83,8 +83,14 @@ export function FicheAdaptationPdf({
         {/* Référent handicap */}
         <DocSection title="Référent handicap">
           <FieldRow label="Nom" value={data.referentHandicapNom} required />
-          <FieldRow label="Email" value={data.referentHandicapEmail} />
-          <FieldRow label="Téléphone" value={data.referentHandicapTelephone} />
+          {/* Email/Téléphone : ne rendre la ligne que si renseignée — évite un
+              champ « Téléphone : » vide (téléphone volontairement non publié). */}
+          {data.referentHandicapEmail.trim().length > 0 ? (
+            <FieldRow label="Email" value={data.referentHandicapEmail} />
+          ) : null}
+          {data.referentHandicapTelephone.trim().length > 0 ? (
+            <FieldRow label="Téléphone" value={data.referentHandicapTelephone} />
+          ) : null}
           <FieldRow
             label="Délai de réponse"
             value={`${data.referentHandicapDelaiReponseH} heures`}
