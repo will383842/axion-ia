@@ -28,7 +28,6 @@
 //     `markNoShowAction` et `markForceMajeureAction` qui exigent super_admin.
 
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
@@ -606,7 +605,6 @@ export async function assignTrainerToBookingAction(
       }),
     ]);
 
-    revalidatePath("/fr/reserver");
     return { ok: true };
   } catch (err) {
     console.error("[assignTrainerToBookingAction]", err);

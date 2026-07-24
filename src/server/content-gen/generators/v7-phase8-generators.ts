@@ -187,8 +187,8 @@ const FAQ_GEO_CONFIG = buildConfig(
 8-10 questions/réponses ciblées sur un topic IA × une ville française.
 Speakable JSON-LD émis par template render. Réponses 80-150 mots chacune.
 Pas de body long, juste FAQ.`,
-  "/reserver",
-  "Réserver une intervention locale",
+  "/appel",
+  "Réserver un appel",
 );
 
 const CASE_STUDY_LOCAL_CONFIG = buildConfig(

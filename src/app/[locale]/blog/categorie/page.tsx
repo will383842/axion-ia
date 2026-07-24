@@ -219,7 +219,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
               {isFr ? "Voir tous les articles" : "See all articles"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href="/reserver" variant="outline" size="lg">
+            <Cta href="/appel" variant="outline" size="lg">
               {isFr ? "Réserver un appel" : "Book a call"}
             </Cta>
           </>
@@ -341,7 +341,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
         }
         cta={
           <>
-            <Cta href="/reserver" size="lg">
+            <Cta href="/appel" size="lg">
               {isFr ? "Réserver un appel" : "Book a call"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
