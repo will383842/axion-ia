@@ -966,11 +966,20 @@ export async function genererCertificatRealisationAction(input: {
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const dureePrevue = formationDoc.dureeHeures ?? session.formation.dureeHeures;
 
-  // Durée réelle (R.6313-3) : préférer dureeReelleHeures, sinon durée prévue
-  // pondérée par le taux de présence si disponible, sinon durée prévue.
-  let dureeHeures = session.dureeReelleHeures ?? dureePrevue;
-  if (session.dureeReelleHeures === null && enrollment.tauxPresencePct !== null) {
-    dureeHeures = Math.round((enrollment.tauxPresencePct * dureePrevue) / 100);
+  // Durée RÉALISÉE PAR CE STAGIAIRE (R.6313-3) : base = durée réelle de la session
+  // si déclarée, sinon durée prévue ; puis TOUJOURS pondérée par le taux de présence
+  // individuel quand il est connu.
+  //
+  // 🔴 #2 — avant, la pondération par le taux ne s'appliquait QUE si `dureeReelleHeures`
+  // était null : un stagiaire à 50 % d'une session de 16 h réelles obtenait un
+  // certificat « 16 h réalisées » (durée SESSION) alors que son attestation portait
+  // « 8 h suivies » (durée INDIVIDUELLE). Deux pièces du même dossier divergeaient, et
+  // le certificat SUR-DÉCLARAIT les heures à l'OPCO. Les deux mesurent désormais les
+  // heures réellement suivies par le bénéficiaire = taux × (durée réelle ?? prévue).
+  const baseDuree = session.dureeReelleHeures ?? dureePrevue;
+  let dureeHeures = baseDuree;
+  if (enrollment.tauxPresencePct !== null) {
+    dureeHeures = Math.round((enrollment.tauxPresencePct * baseDuree) / 100);
   }
 
   const dirigeant = await getQualiopiConfig("dirigeant_nom");
@@ -1000,7 +1009,10 @@ export async function genererCertificatRealisationAction(input: {
               ? { fonction: trainee.fonction }
               : {}),
           },
-          intituleAction: formationDoc.titre ?? session.formation.titre,
+          // #9 — intitulé de la SESSION (comme convention/convocation/émargement/
+          // attestation), pas le titre catalogue : sinon un certificat de
+          // réalisation portait un intitulé divergent des autres pièces du dossier.
+          intituleAction: session.titreSession ?? formationDoc.titre ?? session.formation.titre,
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           // ⚠️ dureeHeures en décimal — formatHeuresCentiemes appelé dans le template
@@ -1782,6 +1794,24 @@ export async function verserFicheFormateurAction(input: {
   const nbCvSource = await prisma.trainerDocument.count({
     where: { trainerId, type: "cv", statutValidation: "valide" },
   });
+
+  // 🔴 #1 — off.21 est une NON-CONFORMITÉ MAJEURE : « la maîtrise des compétences
+  // des intervenants est VÉRIFIÉE ». Verser une fiche VIDE (aucune compétence, aucune
+  // habilitation, aucun CV source) posait quand même `cvUrl` → l'indicateur passait
+  // VERT sur un clic, sans rien prouver. On refuse : une fiche qui ne documente rien
+  // ne peut pas attester d'une maîtrise. ⚠️ NOTE JURISTE : que des compétences
+  // SAISIES constituent une maîtrise « vérifiée » reste un arbitrage (le contrôle
+  // peut exiger des pièces sources) — cette garde n'écarte que le cas totalement vide.
+  const aDesCompetences =
+    Array.isArray(trainer.domainesCompetences) && trainer.domainesCompetences.length > 0;
+  const aDesHabilitations = trainer.formationsHabilitees.length > 0;
+  if (!aDesCompetences && !aDesHabilitations && nbCvSource === 0) {
+    return {
+      error:
+        "Fiche non versée : ce formateur n'a ni domaine de compétence, ni habilitation, ni CV source. Renseignez sa maîtrise (indicateur 21) avant de verser sa fiche au dossier.",
+    };
+  }
+
   const data = {
     ...buildCvFormateurData(trainer, titresHabilitations, maintenant),
     cvJoint: nbCvSource > 0,

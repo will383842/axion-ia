@@ -89,6 +89,12 @@ export async function genererAttestationPourEnrollment(
       session: {
         select: {
           id: true,
+          // Intitulé de l'ACTION (personnalisable) et durée RÉELLE : mêmes sources
+          // que le certificat de réalisation et la convention, pour que toutes les
+          // pièces d'un même dossier annoncent la même formation et la même durée
+          // (constats #3 et #9 de l'audit Qualiopi — divergence = refus au contrôle).
+          titreSession: true,
+          dureeReelleHeures: true,
           dateDebut: true,
           dateFin: true,
           modalite: true,
@@ -188,7 +194,11 @@ export async function genererAttestationPourEnrollment(
   const verifyUrl = `${identite.site}/fr/verifier-attestation/${token}`;
   const qrUrl = await qrDataUrl(verifyUrl);
 
-  const dureeHeures = formation.dureeHeures ?? 0;
+  // #3 — base = durée RÉELLE de la session si déclarée (comme le certificat de
+  // réalisation), sinon durée catalogue. Sans ça, une session animée 16 h au lieu
+  // des 14 h prévues sortait une attestation à « 14 h » et un certificat à « 16 h »
+  // pour le même stagiaire — divergence rejetée par un contrôle OPCO/France Travail.
+  const dureeHeures = session.dureeReelleHeures ?? formation.dureeHeures ?? 0;
   const heuresSuivies = Math.round((tauxPct * dureeHeures) / 100);
 
   // Formateur principal : FK formateurPrincipalId prioritaire (fiable), repli sur
@@ -256,7 +266,9 @@ export async function genererAttestationPourEnrollment(
   };
 
   const formationData = {
-    intitule: formation.titre ?? "",
+    // #9 — intitulé de la SESSION (personnalisable), comme convention/convocation/
+    // émargement/certificat. `titreSession` vaut par défaut `formation.titre`.
+    intitule: session.titreSession ?? formation.titre ?? "",
     objectifs: objectifsStr,
     dureeHeures,
     dateDebut: session.dateDebut ? formatDate(new Date(session.dateDebut)) : "",

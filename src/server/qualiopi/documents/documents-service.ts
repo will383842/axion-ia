@@ -142,6 +142,15 @@ export interface GenerateDocumentResult {
  * appelant qui veut le filigrane passe `estCopie: true`.
  */
 async function estUneRegenerationDe(input: GenerateDocumentInput): Promise<boolean> {
+  // 🔴 #8 — Les FACTURES, AVOIRS et DEVIS sont MULTIPLES par session/client (facture
+  // OPCO + reste-à-charge stagiaire, une facture par participant inter-entreprises,
+  // un avoir rectificatif, plusieurs devis distincts pour un même client…). Chacun
+  // est un ORIGINAL unique, pas une réédition. Les soumettre à l'heuristique « même
+  // ref = régénération » estampillait « COPIE » toute pièce distincte après la
+  // première — un devis/facture qu'un client rejette. Une vraie réédition passe par
+  // `estCopie: true` explicite.
+  if (input.type === "facture" || input.type === "avoir" || input.type === "devis") return false;
+
   const refs = input.refs;
   const identifiants = [
     refs?.formationId,

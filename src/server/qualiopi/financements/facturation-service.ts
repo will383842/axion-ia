@@ -225,16 +225,21 @@ export async function genererFactureFormation(
       ...(rib !== null ? { rib } : {}),
     };
 
-    // Génération PDF (stub-aware internellement).
-    // buildElement injecte le numéro DocumentGenere alloué dans l'en-tête.
-    // La FacturePdf affiche le numéro passé par buildElement (registre doc).
+    // 🔴 #7 — Le PDF affiche le NUMÉRO DE FACTURE (`factureData.numero`, celui
+    // enregistré dans `factureFormation` et exporté au FEC/compta), et NON le
+    // numéro DocumentGenere alloué indépendamment par `generateDocument`. Avant,
+    // le PDF remis au client portait un numéro (compteur documentGenere) absent
+    // du registre comptable (compteur factureFormation) : facture introuvable
+    // dans les livres, refus au contrôle. On IGNORE donc `docNumero`.
+    // (Le DocumentGenere garde son propre numéro pour le classement interne R2 —
+    // artefact de stockage, sans valeur comptable ; unification complète = chantier
+    // à part, l'historique des deux séquences se chevauche.)
     let docResult: { id: string } | null = null;
     try {
       docResult = await generateDocument({
         type: "facture",
         identite,
-        buildElement: (docNumero) =>
-          React.createElement(FacturePdf, { data: { ...factureData, numero: docNumero } }),
+        buildElement: () => React.createElement(FacturePdf, { data: factureData }),
         refs: { sessionId: input.sessionId },
       });
     } catch {
