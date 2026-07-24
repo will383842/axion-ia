@@ -76,3 +76,23 @@ describe("registre Qualiopi — clés booléennes (z.preprocess)", () => {
     expect(boolSchema.safeParse(null).success).toBe(false);
   });
 });
+
+describe("registre Qualiopi — clés string (z.string().trim())", () => {
+  const emailSchema = QUALIOPI_CONFIG_REGISTRY["referent_handicap_email"].schema;
+
+  it("supprime les espaces de bord (une valeur « ␣contact@… » casserait un mailto)", () => {
+    const r = emailSchema.safeParse(" contact@axion-ia.com ");
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data).toBe("contact@axion-ia.com");
+  });
+
+  it("préserve le contenu interne (trim = bords seuls)", () => {
+    const r = emailSchema.safeParse("a b c");
+    expect(r.success && r.data).toBe("a b c");
+  });
+
+  it("une valeur uniquement blanche devient vide (téléphone non publié → masqué)", () => {
+    const r = emailSchema.safeParse("   ");
+    expect(r.success && r.data).toBe("");
+  });
+});
