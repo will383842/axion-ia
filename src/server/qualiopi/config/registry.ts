@@ -47,7 +47,11 @@ const boolSchema = z.preprocess(
   z.boolean(),
 );
 
-const str = (def = "") => ({ schema: z.string(), default: def });
+// `.trim()` : normalise les bords à la LECTURE (safeParse nettoie une valeur déjà
+// stockée avec une espace parasite, ex. « ␣contact@axion-ia.com » → casse un mailto)
+// comme à l'ÉCRITURE (setQualiopiConfig valide via ce schéma → ne re-stocke jamais
+// d'espace de bord). Le texte multi-ligne interne est préservé (trim = bords seuls).
+const str = (def = "") => ({ schema: z.string().trim(), default: def });
 const num = (def: number) => ({ schema: numSchema, default: def });
 const bool = (def: boolean) => ({ schema: boolSchema, default: def });
 
