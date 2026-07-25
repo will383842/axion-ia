@@ -52,7 +52,10 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
 import { IndicateursResultatsPublic } from "@/components/qualiopi/IndicateursResultatsPublic";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import {
+  isQualiopiPublicDisclosureEnabled,
+  isQualiopiCertificationObtenue,
+} from "@/server/qualiopi/config/flag";
 import {
   formatMentionMarqueQualiopi,
   LEGAL_MENTIONS,
@@ -81,7 +84,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   // Phase A : la page n'existe pas publiquement → pas de metadata indexable.
-  if (!isQualiopiPublicDisclosureEnabled()) return {};
+  if (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue()) return {};
   const isFr = locale === "fr";
   const title = isFr
     ? "Organisme de formation IA certifié Qualiopi | Axion-IA"
@@ -99,7 +102,9 @@ export default async function CertificationQualiopiPage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   // Garde PRIMAIRE Phase A : aucune surface publique Qualiopi tant que non certifié.
-  if (!isQualiopiPublicDisclosureEnabled()) notFound();
+  // Audit F13 (2026-07-25) : Page entierement consacree a l'affirmation de certification.
+  // Elle exige donc la certification REELLE, pas seulement la visibilite des pages.
+  if (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue()) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";

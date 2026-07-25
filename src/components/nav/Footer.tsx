@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
 import { SERVICES, serviceFooter } from "@/content/services";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
 
@@ -12,8 +12,10 @@ export async function Footer() {
   const locale = await getLocale();
   const isFr = locale === "fr";
   const year = new Date().getFullYear();
-  // Divulgation OF (Qualiopi/financement) — Phase B uniquement (pages gatées).
-  const ofPublic = isQualiopiPublicDisclosureEnabled();
+  // Mention « organisme de formation certifié Qualiopi » du pied de page.
+  // Découplé le 2026-07-25 (audit F13) : la visibilité des pages OF ne vaut plus
+  // attestation de certification — cette mention exige la certification RÉELLE.
+  const ofPublic = isQualiopiCertificationObtenue();
 
   // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
   // `src/content/services.ts` (libellé `footer*` — variante courte voulue par

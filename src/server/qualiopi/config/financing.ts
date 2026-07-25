@@ -39,7 +39,10 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import {
+  isQualiopiPublicDisclosureEnabled,
+  isQualiopiCertificationObtenue,
+} from "@/server/qualiopi/config/flag";
 
 /** Le CPF n'est PAS mobilisable (pas de RNCP/RS + EDOF). Verrou doctrinal. */
 export const CPF_ELIGIBLE = false as const;
@@ -141,12 +144,17 @@ export function pickFinancingMicro(seed: string): string {
  */
 export function getPublicFinancingBlurb(seed: string): string | null {
   if (!isQualiopiPublicDisclosureEnabled()) return null;
+  // Le financement mutualise (OPCO / France Travail) SUPPOSE la certification :
+  // l'annoncer avant de l'avoir, c'est promettre une eligibilite inexistante.
+  // Decouple le 2026-07-25 (audit F13).
+  if (!isQualiopiCertificationObtenue()) return null;
   return pickFinancingBlurb(seed);
 }
 
 /** Idem, variante courte. */
 export function getPublicFinancingMicro(seed: string): string | null {
   if (!isQualiopiPublicDisclosureEnabled()) return null;
+  if (!isQualiopiCertificationObtenue()) return null;
   return pickFinancingMicro(seed);
 }
 

@@ -18,9 +18,12 @@ import {
 } from "./financing";
 
 const ORIGINAL = process.env.OF_PUBLIC_DISCLOSURE_ENABLED;
+const ORIGINAL_CERT = process.env.QUALIOPI_CERTIFICATION_OBTENUE;
 afterEach(() => {
   if (ORIGINAL === undefined) delete process.env.OF_PUBLIC_DISCLOSURE_ENABLED;
   else process.env.OF_PUBLIC_DISCLOSURE_ENABLED = ORIGINAL;
+  if (ORIGINAL_CERT === undefined) delete process.env.QUALIOPI_CERTIFICATION_OBTENUE;
+  else process.env.QUALIOPI_CERTIFICATION_OBTENUE = ORIGINAL_CERT;
 });
 
 const ALL_TEXT = [...FINANCING_BLURBS, ...FINANCING_MICRO].join("\n").toLowerCase();
@@ -73,8 +76,17 @@ describe("SSOT financing — gating Phase A/B", () => {
     expect(getFinancingPromptFact()).toBe("");
   });
 
-  it("Phase B (flag=true) → formulation + fait prompt (sans CPF)", () => {
+  it("🚨 Phase B sans certification → aucune mention de financement (F13)", () => {
+    // Le financement mutualisé (OPCO / France Travail) suppose la certification.
+    // L'annoncer avant de l'avoir, c'est promettre une éligibilité inexistante.
     process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
+    delete process.env.QUALIOPI_CERTIFICATION_OBTENUE;
+    expect(getPublicFinancingBlurb("x")).toBeNull();
+  });
+
+  it("Phase B + certification obtenue → formulation + fait prompt (sans CPF)", () => {
+    process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
+    process.env.QUALIOPI_CERTIFICATION_OBTENUE = "true";
     expect(getPublicFinancingBlurb("x")).toBeTruthy();
     const fact = getFinancingPromptFact();
     expect(fact).toContain("OPCO");
