@@ -26,7 +26,7 @@ const FORMATION_ID = "11111111-1111-1111-1111-111111111111";
 function makeTrainer(overrides: Record<string, unknown> = {}) {
   return {
     statut: "salarie" as const,
-    formationsHabilitees: [FORMATION_ID],
+    formationIdsHabilites: [FORMATION_ID],
     sousTraitantVerifieAt: null as Date | null,
     actif: true,
     ...overrides,
@@ -45,9 +45,28 @@ describe("isTrainerHabilite", () => {
   });
 
   it("refuse si la formation n'est pas dans les habilitations", () => {
-    const r = isTrainerHabilite(makeTrainer({ formationsHabilitees: [] }), FORMATION_ID);
+    const r = isTrainerHabilite(makeTrainer({ formationIdsHabilites: [] }), FORMATION_ID);
     expect(r.ok).toBe(false);
     expect(r.raison).toContain("non habilité");
+  });
+
+  it("🔴 la garde compare des IDS DE FORMATION, jamais des slugs", () => {
+    // Audit certification 2026-07-25 (F11). En production la colonne legacy
+    // `formationsHabilitees` contenait des SLUGS (`ia-pour-bien-commencer`) alors
+    // que la garde recevait un UUID de formation : `includes()` ne pouvait jamais
+    // être vrai, donc TOUT formateur était « non habilité » et aucune session ne
+    // pouvait recevoir de formateur — pendant que la liste affichait « 33 ».
+    const avecSlugs = isTrainerHabilite(
+      makeTrainer({ formationIdsHabilites: ["ia-pour-bien-commencer"] }),
+      FORMATION_ID,
+    );
+    expect(avecSlugs.ok).toBe(false);
+
+    const avecIds = isTrainerHabilite(
+      makeTrainer({ formationIdsHabilites: [FORMATION_ID] }),
+      FORMATION_ID,
+    );
+    expect(avecIds.ok).toBe(true);
   });
 
   it("refuse un sous-traitant non vérifié même habilité", () => {
@@ -76,7 +95,7 @@ describe("listTrainers / getTrainer (stub-safe)", () => {
   });
 
   it("listTrainers retourne les lignes", async () => {
-    mockFindMany.mockResolvedValue([{ id: "t1", _count: { habilitations: 0 } }]);
+    mockFindMany.mockResolvedValue([{ id: "t1", habilitations: [] }]);
     expect(await listTrainers()).toHaveLength(1);
   });
 
@@ -89,7 +108,7 @@ describe("listTrainers / getTrainer (stub-safe)", () => {
       {
         id: "t1",
         formationsHabilitees: ["slug-a", "slug-b", "slug-c"],
-        _count: { habilitations: 1 },
+        habilitations: [{ formationId: "f-1" }],
       },
     ]);
     const [t] = await listTrainers();
@@ -101,7 +120,7 @@ describe("listTrainers / getTrainer (stub-safe)", () => {
     await listTrainers();
     expect(mockFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        include: { _count: { select: { habilitations: true } } },
+        include: { habilitations: { select: { formationId: true } } },
       }),
     );
   });

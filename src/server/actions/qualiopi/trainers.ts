@@ -341,16 +341,24 @@ export async function assignTrainerToSessionAction(
   let tarifSnapshot: number | null = null;
 
   if (trainerId !== null) {
-    let trainer: (TrainerHabilitationFields & { tarifJourneeHtCents: number | null }) | null;
+    // Les habilitations viennent de `TrainerHabilitation`, jamais de la colonne
+    // legacy `formationsHabilitees` : celle-ci contenait des slugs en production
+    // et la garde y comparait des UUID, donc refusait tout le monde (F11).
+    let trainer:
+      | (Omit<TrainerHabilitationFields, "formationIdsHabilites"> & {
+          tarifJourneeHtCents: number | null;
+          habilitations: { formationId: string }[];
+        })
+      | null;
     try {
       trainer = await prisma.trainer.findUnique({
         where: { id: trainerId },
         select: {
           actif: true,
           statut: true,
-          formationsHabilitees: true,
           sousTraitantVerifieAt: true,
           tarifJourneeHtCents: true,
+          habilitations: { select: { formationId: true } },
         },
       });
     } catch {
@@ -358,7 +366,10 @@ export async function assignTrainerToSessionAction(
     }
     if (!trainer) return { error: "Formateur introuvable" };
 
-    const check = isTrainerHabilite(trainer, trainingSession.formationId);
+    const check = isTrainerHabilite(
+      { ...trainer, formationIdsHabilites: trainer.habilitations.map((h) => h.formationId) },
+      trainingSession.formationId,
+    );
     if (!check.ok) {
       return { error: `Assignation refusée : ${check.raison}` };
     }
