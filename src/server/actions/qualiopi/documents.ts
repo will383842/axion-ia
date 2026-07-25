@@ -1772,16 +1772,21 @@ export async function verserFicheFormateurAction(input: {
     return { error: "Formateur désactivé : réactivez-le avant de verser sa fiche." };
   }
 
-  // Résolution des titres des formations habilitées (ids → titres).
-  let titresHabilitations: string[] = [];
-  if (trainer.formationsHabilitees.length > 0) {
-    const formations = await prisma.formation.findMany({
-      where: { id: { in: trainer.formationsHabilitees } },
-      select: { titre: true },
-      orderBy: { titre: "asc" },
-    });
-    titresHabilitations = formations.map((f) => f.titre);
-  }
+  // Titres des formations habilitées, lus depuis `TrainerHabilitation` — la source
+  // qui fait foi pour la garde d'assignation.
+  //
+  // 🔴 Audit certification 2026-07-25 (F11) : cette résolution interrogeait
+  // `formation.id IN trainer.formationsHabilitees`, or la colonne legacy contient
+  // des SLUGS en production. Elle ne résolvait donc RIEN, et le CV formateur —
+  // pièce de preuve de l'indicateur 21 — sortait sans aucune habilitation, pendant
+  // que la liste des formateurs en annonçait 33. Deux pièces du même dossier se
+  // contredisaient.
+  const habilitations = await prisma.trainerHabilitation.findMany({
+    where: { trainerId: trainer.id },
+    select: { formation: { select: { titre: true } } },
+    orderBy: { formation: { titre: "asc" } },
+  });
+  const titresHabilitations: string[] = habilitations.map((h) => h.formation.titre);
 
   const identite = await getOrganismeIdentite();
   const maintenant = new Date();

@@ -24,6 +24,9 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 export interface ConventionData {
   numero: string;
   estCopie?: boolean;
+  /** Injecte par `generateDocument` quand l'identite de l'OF est incomplete. */
+  estSpecimen?: boolean;
+  specimenMotif?: string;
   // Partie cliente
   client: {
     raisonSociale: string;
@@ -116,6 +119,8 @@ export function ConventionPdf({
         docNumber={data.numero}
         identite={identite}
         {...(data.estCopie ? { estCopie: true as const } : {})}
+        {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
+        {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* Mention légale de tête */}
         <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.convention}</Text>

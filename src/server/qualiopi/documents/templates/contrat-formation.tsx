@@ -30,6 +30,9 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 export interface ContratFormationData {
   numero: string;
   estCopie?: boolean;
+  /** Injecte par `generateDocument` quand l'identite de l'OF est incomplete. */
+  estSpecimen?: boolean;
+  specimenMotif?: string;
   // Stagiaire (personne physique signataire et financeur)
   stagiaire: {
     nomPrenom: string;
@@ -126,6 +129,8 @@ export function ContratFormationPdf({
         docNumber={data.numero}
         identite={identite}
         {...(data.estCopie ? { estCopie: true as const } : {})}
+        {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
+        {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* Mention légale de tête */}
         <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.contratParticulier}</Text>

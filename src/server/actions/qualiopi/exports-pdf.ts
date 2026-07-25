@@ -178,16 +178,16 @@ export async function genererCvFormateurAction(input: {
   });
   if (!trainer) return { error: "Formateur introuvable" };
 
-  // Résolution des titres des formations habilitées (ids → titres).
-  let titresHabilitations: string[] = [];
-  if (trainer.formationsHabilitees.length > 0) {
-    const formations = await prisma.formation.findMany({
-      where: { id: { in: trainer.formationsHabilitees } },
-      select: { titre: true },
-      orderBy: { titre: "asc" },
-    });
-    titresHabilitations = formations.map((f) => f.titre);
-  }
+  // Titres des formations habilitées, lus depuis `TrainerHabilitation`.
+  // Cf. audit certification 2026-07-25 (F11) : la colonne legacy
+  // `formationsHabilitees` contient des slugs en production et ne résolvait plus
+  // rien face à un `id IN (...)`.
+  const habilitations = await prisma.trainerHabilitation.findMany({
+    where: { trainerId: trainer.id },
+    select: { formation: { select: { titre: true } } },
+    orderBy: { formation: { titre: "asc" } },
+  });
+  const titresHabilitations: string[] = habilitations.map((h) => h.formation.titre);
 
   const identite = await getOrganismeIdentite();
   const now = new Date();

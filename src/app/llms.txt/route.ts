@@ -42,7 +42,13 @@ export function GET() {
   // OF_PUBLIC_DISCLOSURE_ENABLED directement (le helper serveur dédié n'est pas
   // importable ici : edge runtime + cloisonnement). Bloc omis tant que la Phase A
   // est active. Catégorie = défaut SSOT du registre de config.
-  const qualiopiCertified = process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true";
+  // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
+  // IA, qui la relaient ensuite. Il exige donc la certification RÉELLE, pas la
+  // simple visibilité des pages OF. Lecture env directe conservée (convention
+  // de ce fichier), mais sur le drapeau de certification.
+  const qualiopiCertified =
+    process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true" &&
+    process.env.QUALIOPI_CERTIFICATION_OBTENUE === "true";
   const qualiopiSection = qualiopiCertified
     ? `
 

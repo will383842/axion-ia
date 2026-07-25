@@ -28,6 +28,7 @@ import { computeQualiopiPublicIdentity } from "./public-identity";
 const mockFindUnique = prisma.siteSetting.findUnique as unknown as ReturnType<typeof vi.fn>;
 
 const ORIGINAL = process.env.OF_PUBLIC_DISCLOSURE_ENABLED;
+const ORIGINAL_CERT = process.env.QUALIOPI_CERTIFICATION_OBTENUE;
 
 /** Branche un magasin clé→valeur sur le mock findUnique (clés préfixées `qualiopi.`). */
 function seedConfig(store: Record<string, string>) {
@@ -46,6 +47,8 @@ beforeEach(() => {
 afterEach(() => {
   if (ORIGINAL === undefined) delete process.env.OF_PUBLIC_DISCLOSURE_ENABLED;
   else process.env.OF_PUBLIC_DISCLOSURE_ENABLED = ORIGINAL;
+  if (ORIGINAL_CERT === undefined) delete process.env.QUALIOPI_CERTIFICATION_OBTENUE;
+  else process.env.QUALIOPI_CERTIFICATION_OBTENUE = ORIGINAL_CERT;
 });
 
 describe("computeQualiopiPublicIdentity — gate Phase A/B", () => {
@@ -59,21 +62,31 @@ describe("computeQualiopiPublicIdentity — gate Phase A/B", () => {
     expect(mockFindUnique).not.toHaveBeenCalled();
   });
 
-  it("Phase B sans certificat → identité affichée (n° optionnel, jamais public)", async () => {
+  it("🚨 Phase B SANS certification obtenue → null (découplage F13)", async () => {
+    // Audit de certification 2026-07-25. Jusqu'ici, basculer en Phase B valait
+    // attestation que « NDA + Qualiopi » étaient obtenus. En production, le flag
+    // était à true alors que la certification n'était pas obtenue : le site
+    // affirmait « la certification qualité a été délivrée ». Les deux notions
+    // sont désormais séparées — la visibilité des pages ne prouve rien.
     process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
-    seedConfig({ "qualiopi.nda_numero": "11380490538" }); // pas de qualiopi_numero
+    delete process.env.QUALIOPI_CERTIFICATION_OBTENUE;
+    seedConfig({ "qualiopi.nda_numero": "11380490538" });
 
-    const res = await computeQualiopiPublicIdentity();
-
-    // Nouveau contrat : le flag Phase B suffit (attestation délibérée). On affiche
-    // la version texte conforme même sans n° — le numéro n'est jamais public.
-    expect(res).not.toBeNull();
-    expect(res?.qualiopiNumero).toBe("");
-    expect(res?.categoriesCertifiees).toBe("Actions de formation");
+    expect(await computeQualiopiPublicIdentity()).toBeNull();
   });
 
-  it("Phase B + certificat renseigné → identité complète", async () => {
+  it("🚨 QUALIOPI_CERTIFICATION_OBTENUE seul ne suffit pas non plus", async () => {
+    // Symétrie : sans divulgation publique, rien ne sort, certifié ou non.
+    delete process.env.OF_PUBLIC_DISCLOSURE_ENABLED;
+    process.env.QUALIOPI_CERTIFICATION_OBTENUE = "true";
+    seedConfig({ "qualiopi.qualiopi_numero": "CERT-001" });
+
+    expect(await computeQualiopiPublicIdentity()).toBeNull();
+  });
+
+  it("Phase B + certification obtenue → identité complète", async () => {
     process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
+    process.env.QUALIOPI_CERTIFICATION_OBTENUE = "true";
     seedConfig({
       "qualiopi.qualiopi_numero": "CERT-2026-001",
       "qualiopi.nda_numero": "11380490538",

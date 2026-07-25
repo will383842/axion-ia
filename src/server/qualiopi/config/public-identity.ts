@@ -8,9 +8,11 @@
  * Contrat de sûreté (Phase A) :
  *  - Tant que `OF_PUBLIC_DISCLOSURE_ENABLED !== "true"` → renvoie `null`
  *    IMMÉDIATEMENT, sans AUCUN appel DB (coût nul sur les pages publiques).
- *  - Même en Phase B, si le n° de certificat Qualiopi n'est pas renseigné →
- *    `null` : on ne revendique JAMAIS « certifié Qualiopi » sans certificat
+ *  - Même en Phase B, tant que `QUALIOPI_CERTIFICATION_OBTENUE !== "true"` →
+ *    `null` : on ne revendique JAMAIS « certifié Qualiopi » sans certification
  *    (ce serait une tromperie + une non-conformité d'usage de la marque).
+ *    Découplé le 2026-07-25 (audit F13) : la visibilité des pages ne vaut plus
+ *    attestation de certification.
  *
  * Build `stub.invalid` : `getQualiopiConfig` renvoie les défauts (vides) → le
  * n° de certificat est vide → `null`. Les surfaces publiques se peuplent au
@@ -22,7 +24,10 @@
  */
 
 import { cache } from "react";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import {
+  isQualiopiPublicDisclosureEnabled,
+  isQualiopiCertificationObtenue,
+} from "@/server/qualiopi/config/flag";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
@@ -55,6 +60,16 @@ export interface QualiopiPublicIdentity {
 export async function computeQualiopiPublicIdentity(): Promise<QualiopiPublicIdentity | null> {
   // Phase A : aucune divulgation, aucun accès DB.
   if (!isQualiopiPublicDisclosureEnabled()) return null;
+
+  // 🚨 Garde de certification (audit 2026-07-25, F13). Cette fonction alimente
+  // le badge, le bandeau et la section « mentions légales » — c'est-à-dire les
+  // surfaces qui AFFIRMENT la certification. Elles exigent que le certificat
+  // soit réellement obtenu, ce que la visibilité des pages ne prouve pas.
+  //
+  // Le contrat annoncé en tête de ce fichier (« on ne revendique JAMAIS certifié
+  // Qualiopi sans certificat ») avait été retiré de l'implémentation : la
+  // Phase B était considérée comme valant attestation. Elle ne l'est plus.
+  if (!isQualiopiCertificationObtenue()) return null;
 
   const [org, qualiopiOrganisme, qualiopiDateObtention, qualiopiValidite, categories, logoPath] =
     await Promise.all([

@@ -40,10 +40,27 @@ const LABELS: Record<ChampIdentite, string> = {
 const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
   // Facture : mentions vendeur obligatoires (identité + adresse + SIRET).
   facture: ["raisonSociale", "siret", "nda", "adresseSiege"],
-  // Convention / contrat : OF identifié + certifié pour une action finançable.
-  convention: ["raisonSociale", "siret", "nda", "qualiopi", "adresseSiege"],
-  convention_tripartite: ["raisonSociale", "siret", "nda", "qualiopi", "adresseSiege"],
-  contrat: ["raisonSociale", "siret", "nda", "qualiopi", "adresseSiege"],
+  // Convention / contrat : identité de l'OF prestataire.
+  //
+  // 🔴 `qualiopi` a été RETIRÉ de ces trois listes (audit certification
+  // 2026-07-25). Motif : le numéro de certification n'est pas une mention
+  // obligatoire de la convention ou du contrat de formation — les art.
+  // L.6353-1/-2 C. trav. en régissent le CONTENU (nature, durée, effectif,
+  // prix, modalités), pas la certification du prestataire. Qualiopi conditionne
+  // l'accès aux FONDS MUTUALISÉS (OPCO, CPF, France Travail), ce que l'OPCO
+  // vérifie de son côté.
+  //
+  // L'exiger ici créait une impasse : l'arrêté du 6 juin 2019 impose d'avoir
+  // mis en œuvre une action de formation pour déclencher l'audit initial ;
+  // délivrer cette action suppose une convention ; la convention était refusée
+  // faute d'un numéro qui n'existe qu'APRÈS la certification. Un organisme
+  // nouvellement créé ne pouvait donc jamais démarrer.
+  //
+  // Le numéro reste imprimé sur les documents dès qu'il est renseigné
+  // (cf. `QualiopiPage`, en-tête et pied de page).
+  convention: ["raisonSociale", "siret", "nda", "adresseSiege"],
+  convention_tripartite: ["raisonSociale", "siret", "nda", "adresseSiege"],
+  contrat: ["raisonSociale", "siret", "nda", "adresseSiege"],
 };
 
 /** Un champ est « renseigné » s'il est une chaîne non vide après trim. */
@@ -88,10 +105,46 @@ export class OrganismeIncompletError extends Error {
  * Lève `OrganismeIncompletError` si l'identité de l'OF est incomplète pour un
  * document à valeur juridique/fiscale (facture, convention, tripartite,
  * contrat). No-op pour les autres types. À appeler AVANT le rendu PDF.
+ *
+ * ⚠️ La chaîne de génération principale (`generateDocument`) n'appelle PLUS
+ * cette fonction : elle utilise `evaluerIdentite` et déclasse le document en
+ * SPÉCIMEN plutôt que de refuser. Conservée pour les appelants qui veulent un
+ * refus dur (facturation 1-to-1) et pour les tests.
  */
 export function assertOrganismeComplet(identite: OrganismeIdentite, type: DocumentType): void {
   const manquants = champsIdentiteManquants(identite, type);
   if (manquants.length > 0) {
     throw new OrganismeIncompletError(type, manquants);
   }
+}
+
+/**
+ * Verdict de conformité d'identité, sans exception.
+ *
+ * Remplace le couple « bloquer ou laisser passer en silence » par un troisième
+ * état : le document est produit, mais **déclassé en SPÉCIMEN** et marqué comme
+ * tel (filigrane + bandeau listant les champs manquants + `metadata.specimen`
+ * en base). Deux propriétés en découlent :
+ *
+ *   1. plus rien ne bloque — toute la chaîne reste exerçable, y compris avant
+ *      l'obtention du SIRET, du NDA ou de la certification ;
+ *   2. aucun document incomplet ne peut être confondu avec une pièce valable,
+ *      ce qui était le risque que ce module existe pour écarter.
+ *
+ * `conforme: true` ⇒ document officiel normal.
+ */
+export function evaluerIdentite(
+  identite: OrganismeIdentite,
+  type: DocumentType,
+): { conforme: boolean; manquants: string[]; motif: string | null } {
+  const manquants = champsIdentiteManquants(identite, type);
+  if (manquants.length === 0) return { conforme: true, manquants: [], motif: null };
+  return {
+    conforme: false,
+    manquants,
+    motif:
+      `Identité de l'organisme incomplète — ${manquants.join(", ")}. ` +
+      `Document émis en SPÉCIMEN, sans valeur juridique. ` +
+      `Renseignez ces valeurs dans Qualiopi › Configuration pour émettre un document officiel.`,
+  };
 }

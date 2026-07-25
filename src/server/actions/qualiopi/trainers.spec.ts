@@ -202,7 +202,7 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "salarie",
-      formationsHabilitees: [FORMATION_ID],
+      habilitations: [{ formationId: FORMATION_ID }],
       sousTraitantVerifieAt: null,
     });
     mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
@@ -217,7 +217,7 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "salarie",
-      formationsHabilitees: [FORMATION_ID],
+      habilitations: [{ formationId: FORMATION_ID }],
       sousTraitantVerifieAt: null,
       tarifJourneeHtCents: 90000,
     });
@@ -250,7 +250,7 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "salarie",
-      formationsHabilitees: [], // pas habilité
+      habilitations: [], // pas habilité
       sousTraitantVerifieAt: null,
     });
     const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
@@ -264,7 +264,7 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "sous_traitant",
-      formationsHabilitees: [FORMATION_ID],
+      habilitations: [{ formationId: FORMATION_ID }],
       sousTraitantVerifieAt: null,
     });
     const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
@@ -290,7 +290,7 @@ describe("assignTrainerToSessionAction — conformité : avertit, ne bloque JAMA
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "sous_traitant",
-      formationsHabilitees: [FORMATION_ID],
+      habilitations: [{ formationId: FORMATION_ID }],
       sousTraitantVerifieAt: new Date(),
       tarifJourneeHtCents: 90_000,
     });

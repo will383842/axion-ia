@@ -67,13 +67,30 @@ describe("champsIdentiteManquants", () => {
     expect(manquants).toHaveLength(1);
   });
 
-  it("convention exige aussi le numéro Qualiopi", () => {
+  it("🔴 le numéro Qualiopi n'est JAMAIS exigé — ni convention, ni contrat, ni facture", () => {
+    // Audit certification 2026-07-25 : l'exiger créait une impasse. L'arrêté du
+    // 6 juin 2019 impose d'avoir réalisé une action pour déclencher l'audit
+    // initial ; cette action suppose une convention ; la convention était
+    // refusée faute d'un numéro qui n'existe qu'APRÈS la certification.
+    // Qualiopi conditionne le financement mutualisé, pas la validité de la
+    // convention (art. L.6353-1/-2 C. trav. en régissent le contenu).
     const sansQualiopi = { ...IDENTITE_COMPLETE, qualiopi: "" };
-    expect(champsIdentiteManquants(sansQualiopi, "convention")).toContain(
-      "numéro de certification Qualiopi",
+    for (const type of ["convention", "convention_tripartite", "contrat", "facture"] as const) {
+      expect(champsIdentiteManquants(sansQualiopi, type)).toEqual([]);
+    }
+  });
+
+  it("convention exige l'identité légale de l'OF (raison sociale, SIRET, NDA, adresse)", () => {
+    const manquants = champsIdentiteManquants(IDENTITE_VIDE, "convention");
+    expect(manquants).toEqual(
+      expect.arrayContaining([
+        "raison sociale",
+        "SIRET",
+        "numéro de déclaration d'activité (NDA)",
+        "adresse du siège",
+      ]),
     );
-    // La facture n'exige pas Qualiopi.
-    expect(champsIdentiteManquants(sansQualiopi, "facture")).toEqual([]);
+    expect(manquants).not.toContain("numéro de certification Qualiopi");
   });
 
   it("type non soumis au garde-fou → jamais de manque", () => {
@@ -101,7 +118,7 @@ describe("assertOrganismeComplet", () => {
       const e = err as OrganismeIncompletError;
       expect(e.type).toBe("convention");
       expect(e.manquants).toEqual(
-        expect.arrayContaining(["SIRET", "numéro de certification Qualiopi"]),
+        expect.arrayContaining(["SIRET", "numéro de déclaration d'activité (NDA)"]),
       );
       expect(e.message).toMatch(/refusée/i);
     }

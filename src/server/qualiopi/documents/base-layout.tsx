@@ -268,6 +268,39 @@ export const pdfStyles = StyleSheet.create({
     fontWeight: "bold",
   },
 
+  watermarkSpecimen: {
+    position: "absolute",
+    top: "40%",
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    fontSize: 68,
+    color: brandColor("terracotta"),
+    opacity: 0.16,
+    transform: "rotate(-45deg)",
+    fontFamily: QUALIOPI_BRAND_FONTS.serif,
+    fontWeight: "bold",
+  },
+  specimenBanner: {
+    borderWidth: 1,
+    borderColor: brandColor("terracotta"),
+    backgroundColor: brandColor("terracotta-soft"),
+    borderRadius: 4,
+    padding: S.md,
+    marginBottom: S.lg,
+  },
+  specimenBannerTitle: {
+    fontSize: T.sm,
+    fontWeight: "bold",
+    color: brandColor("terracotta-deep"),
+    marginBottom: 2,
+  },
+  specimenBannerText: {
+    fontSize: T.xs,
+    color: brandColor("fg-soft"),
+    lineHeight: T.lineNormal,
+  },
+
   // ---- Pied de page (identité + adresse postale, répété par page) ----
   footer: {
     position: "absolute",
@@ -311,6 +344,14 @@ interface QualiopiPageProps {
   docNumber: string;
   identite: OrganismeIdentite;
   estCopie?: boolean;
+  /**
+   * Document déclassé faute d'identité complète : filigrane « SPÉCIMEN » et
+   * bandeau d'explication en tête. Injecté par `generateDocument`, jamais
+   * par les appelants (cf. `avecMarquageSpecimen`).
+   */
+  estSpecimen?: boolean;
+  /** Motif du déclassement, affiché dans le bandeau (champs manquants). */
+  specimenMotif?: string;
   /** Sur-titre optionnel au-dessus de la raison sociale (ex. « Organisme de formation »). */
   eyebrow?: string;
   children: React.ReactNode;
@@ -333,6 +374,8 @@ export function QualiopiPage({
   docNumber,
   identite,
   estCopie = false,
+  estSpecimen = false,
+  specimenMotif,
   eyebrow = "Organisme de formation",
   children,
 }: QualiopiPageProps): React.ReactElement {
@@ -351,6 +394,11 @@ export function QualiopiPage({
       {/* Filigrane COPIE */}
       {estCopie && <Text style={pdfStyles.watermark}>COPIE</Text>}
 
+      {/* Filigrane SPÉCIMEN — identité de l'OF incomplète (art. L.6353-1 C. trav.,
+          L441-9 C. com.). Le document reste produit pour que la chaîne soit
+          exerçable, mais ne peut pas être confondu avec une pièce valable. */}
+      {estSpecimen && <Text style={pdfStyles.watermarkSpecimen}>SPÉCIMEN</Text>}
+
       {/* En-tête */}
       <View style={pdfStyles.header} fixed>
         <View style={pdfStyles.headerLeft}>
@@ -366,6 +414,19 @@ export function QualiopiPage({
           <Text style={pdfStyles.headerDocNumber}>{docNumber}</Text>
         </View>
       </View>
+
+      {/* Bandeau SPÉCIMEN — dit explicitement pourquoi le document est déclassé
+          et ce qu'il faut renseigner. Le filigrane seul ne suffit pas : le
+          lecteur doit savoir quoi corriger. */}
+      {estSpecimen && (
+        <View style={pdfStyles.specimenBanner}>
+          <Text style={pdfStyles.specimenBannerTitle}>SPÉCIMEN — sans valeur juridique</Text>
+          <Text style={pdfStyles.specimenBannerText}>
+            {specimenMotif ??
+              "Identité de l'organisme incomplète : ce document ne peut pas être remis à un client, un financeur ou un auditeur."}
+          </Text>
+        </View>
+      )}
 
       {/* Contenu */}
       {children}

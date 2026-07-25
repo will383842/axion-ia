@@ -30,6 +30,37 @@ export function isQualiopiPublicDisclosureEnabled(): boolean {
 }
 
 /**
+ * `true` uniquement si la certification Qualiopi est RÉELLEMENT OBTENUE.
+ *
+ * 🚨 Découplage du 2026-07-25 (audit de certification, F13). Jusqu'ici, un seul
+ * drapeau portait deux sens : « les pages publiques de l'OF sont visibles » ET
+ * « nous sommes certifiés Qualiopi ». Le second était traité comme un corollaire
+ * du premier — le commentaire de `public-identity.ts` disait que basculer en
+ * Phase B valait attestation que « NDA + Qualiopi » étaient obtenus.
+ *
+ * En production, `OF_PUBLIC_DISCLOSURE_ENABLED=true` était posé alors que la
+ * certification n'était PAS obtenue (audit initial pas même déclenchable, SIRET
+ * et NDA vides). Résultat : le site affirmait publiquement, dans la formulation
+ * officielle réservée aux organismes certifiés, « la certification qualité a été
+ * délivrée ». C'est précisément ce que l'en-tête de ce fichier qualifie
+ * d'ILLÉGAL.
+ *
+ * Les deux notions sont désormais séparées :
+ *   - `isQualiopiPublicDisclosureEnabled()` → les pages OF sont VISIBLES ;
+ *   - `isQualiopiCertificationObtenue()`    → on peut AFFIRMER la certification.
+ *
+ * Le catalogue reste donc public sans qu'aucune mention Qualiopi, CPF ou OPCO
+ * ne soit émise. Défaut sécurisé : `false` — le correctif s'applique au
+ * déploiement, sans intervention côté Coolify.
+ *
+ * À passer à `"true"` **le jour où le certificat est délivré**, pas avant, et
+ * renseigner alors le numéro, la date et le certificateur dans la configuration.
+ */
+export function isQualiopiCertificationObtenue(): boolean {
+  return process.env.QUALIOPI_CERTIFICATION_OBTENUE === "true";
+}
+
+/**
  * Hub facturation unifié (5 activités) — rollout progressif, même convention
  * raw `process.env` (hors schéma t3-env). `FACTURATION_HUB_ENABLED=true` côté
  * Coolify (run scope) + restart pour activer l'écran. Défaut sécurisé : false

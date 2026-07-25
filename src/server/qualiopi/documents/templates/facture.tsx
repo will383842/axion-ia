@@ -166,6 +166,9 @@ export interface FactureData {
   subrogationOpco?: SubrogationOpco;
   rib?: RibFacture;
   estCopie?: boolean;
+  /** Injecte par `generateDocument` quand l'identite de l'OF est incomplete. */
+  estSpecimen?: boolean;
+  specimenMotif?: string;
   /** Avoir (facture rectificative, montants négatifs) — change le titre du document. */
   estAvoir?: boolean;
   /** Numéro de la facture d'origine rectifiée (obligatoire sur un avoir). */
@@ -198,6 +201,8 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
         docNumber={`N° ${data.numero}`}
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
+        {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
+        {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* Identifiants de facturation — SIRET/NDA en `required` (jamais masqués) */}
         <DocSection title="Informations de facturation">

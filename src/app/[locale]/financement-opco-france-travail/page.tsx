@@ -43,7 +43,10 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import {
+  isQualiopiPublicDisclosureEnabled,
+  isQualiopiCertificationObtenue,
+} from "@/server/qualiopi/config/flag";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesIndexableNow } from "@/content/villes";
 import {
@@ -68,7 +71,7 @@ export const revalidate = 3600;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  if (!isQualiopiPublicDisclosureEnabled()) return {};
+  if (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue()) return {};
   const isFr = locale === "fr";
   const title = isFr
     ? "Formations IA financées : OPCO & France Travail · Axion-IA"
@@ -86,7 +89,9 @@ export default async function FinancementPage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   // Garde PRIMAIRE Phase A : aucune surface publique financement tant que non certifié.
-  if (!isQualiopiPublicDisclosureEnabled()) notFound();
+  // Audit F13 (2026-07-25) : Page qui promet un financement mutualise conditionne a la certification.
+  // Elle exige donc la certification REELLE, pas seulement la visibilite des pages.
+  if (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue()) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";

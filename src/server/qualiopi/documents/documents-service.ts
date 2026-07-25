@@ -21,10 +21,7 @@ import { renderPdfToBuffer, storeAndSignPdf } from "@/server/qualiopi/documents/
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import type { NumberingType } from "@/server/qualiopi/numbering/formats";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
-import {
-  assertOrganismeComplet,
-  exigeIdentiteComplete,
-} from "@/server/qualiopi/documents/conformite";
+import { evaluerIdentite, exigeIdentiteComplete } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
@@ -195,6 +192,28 @@ function avecFiligraneCopie(element: React.ReactElement, estCopie: boolean): Rea
 }
 
 /**
+ * Injecte le marquage SPÉCIMEN dans `data` (même mécanique que le filigrane
+ * COPIE, et pour la même raison : le faire ici plutôt que dans les 43
+ * appelants). `QualiopiPage` lit `estSpecimen` / `specimenMotif` et rend le
+ * filigrane plus le bandeau d'explication.
+ */
+function avecMarquageSpecimen(
+  element: React.ReactElement,
+  specimen: { manquants: string[]; motif: string } | null,
+): React.ReactElement {
+  if (!specimen) return element;
+  const props = element.props as { data?: unknown };
+  if (typeof props.data !== "object" || props.data === null) return element;
+  return React.cloneElement(element, {
+    data: {
+      ...(props.data as Record<string, unknown>),
+      estSpecimen: true,
+      specimenMotif: specimen.motif,
+    },
+  } as Partial<unknown>);
+}
+
+/**
  * Génère un document officiel Qualiopi (PDF + DB + R2).
  *
  * Stub-aware : si DATABASE_URL contient "stub.invalid", retourne un objet
@@ -226,11 +245,19 @@ export async function generateDocument(
   // Qualiopi vides) plutôt que de masquer la ligne en silence. Systématique
   // pour ces types : si l'appelant ne fournit pas `identite`, on la relit depuis
   // la config (le `??` évite la lecture DB quand elle est déjà passée).
+  // Audit certification 2026-07-25 : on ne REFUSE plus, on DÉCLASSE. Un refus
+  // rendait toute la chaîne inexerçable avant l'obtention du SIRET/NDA — et
+  // remontait à l'utilisateur sous forme d'écran de plantage générique, sans
+  // jamais lui dire ce qui manquait. Le document est désormais produit, marqué
+  // SPÉCIMEN (filigrane + bandeau + `metadata.specimen`), donc impossible à
+  // confondre avec une pièce valable.
+  let specimen: { manquants: string[]; motif: string } | null = null;
   if (exigeIdentiteComplete(input.type)) {
     const identite = input.identite ?? (await getOrganismeIdentite());
-    assertOrganismeComplet(identite, input.type);
-  } else if (input.identite) {
-    assertOrganismeComplet(input.identite, input.type);
+    const verdict = evaluerIdentite(identite, input.type);
+    if (!verdict.conforme && verdict.motif) {
+      specimen = { manquants: verdict.manquants, motif: verdict.motif };
+    }
   }
 
   // 1. Allocation numéro séquentiel + rendu PDF (retry sur P2002 contrainte unique).
@@ -274,6 +301,7 @@ export async function generateDocument(
       );
     }
     elementToRender = avecFiligraneCopie(elementToRender, estUneRegeneration);
+    elementToRender = avecMarquageSpecimen(elementToRender, specimen);
     const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);
 
     // 2. Upload R2 (fail-soft).
@@ -295,6 +323,11 @@ export async function generateDocument(
           sizeBytes,
           estCopie: estUneRegeneration,
           suppressionPrevueAt,
+          // Traçabilité du déclassement : un document SPÉCIMEN doit rester
+          // identifiable comme tel en base, pas seulement à l'impression.
+          ...(specimen
+            ? { metadata: { specimen: true, champsManquants: specimen.manquants } }
+            : {}),
           ...(input.qrToken != null ? { qrToken: input.qrToken, qrTokenCreatedAt: now } : {}),
           ...(input.refs?.formationId != null ? { formationId: input.refs.formationId } : {}),
           ...(input.refs?.sessionId != null ? { sessionId: input.refs.sessionId } : {}),
