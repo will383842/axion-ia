@@ -38,7 +38,6 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
 import { prisma } from "@/lib/prisma";
 import { renderPdfToBuffer, storeAndSignPdf } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { OrganismeIncompletError } from "@/server/qualiopi/documents/conformite";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 
 const mockPrisma = prisma as unknown as {
@@ -92,16 +91,47 @@ afterEach(() => {
 });
 
 describe("generateDocument — garde-fou conformité systématique", () => {
-  it("refuse une facture SANS identite quand la config OF est incomplète", async () => {
+  it("🔴 DÉCLASSE en spécimen (au lieu de refuser) quand la config OF est incomplète", async () => {
+    // Audit certification 2026-07-25 — changement de contrat assumé.
+    // Refuser rendait la chaîne inexerçable avant l'obtention du SIRET/NDA, et
+    // remontait à l'utilisateur en écran de plantage générique. On produit
+    // désormais le document, marqué SPÉCIMEN : rien ne bloque, et rien
+    // d'incomplet ne peut passer pour une pièce valable.
     mockGetIdentite.mockResolvedValue(IDENTITE_VIDE);
 
-    await expect(generateDocument({ type: "facture", buildElement })).rejects.toBeInstanceOf(
-      OrganismeIncompletError,
-    );
+    const res = await generateDocument({ type: "facture", buildElement });
+    expect(res.numero).toMatch(/^AXI-FACT-/);
+
     // La relecture config a bien eu lieu (identite non fournie).
     expect(mockGetIdentite).toHaveBeenCalledOnce();
-    // Aucun document persisté.
-    expect(mockPrisma.documentGenere.create).not.toHaveBeenCalled();
+
+    // Le document est persisté ET tracé comme spécimen.
+    expect(mockPrisma.documentGenere.create).toHaveBeenCalledOnce();
+    const payload = mockPrisma.documentGenere.create.mock.calls[0]?.[0] as {
+      data: { metadata?: { specimen?: boolean; champsManquants?: string[] } };
+    };
+    expect(payload.data.metadata?.specimen).toBe(true);
+    expect(payload.data.metadata?.champsManquants).toEqual(
+      expect.arrayContaining(["SIRET", "numéro de déclaration d'activité (NDA)"]),
+    );
+  });
+
+  it("🔴 le marquage SPÉCIMEN atteint RÉELLEMENT le gabarit, pas seulement la base", async () => {
+    // Même piège que le filigrane COPIE : une trace en base sans marquage sur
+    // le PDF laisserait circuler un document d'apparence officielle.
+    mockGetIdentite.mockResolvedValue(IDENTITE_VIDE);
+    const Gabarit = (_: { data: { numero: string; estSpecimen?: boolean } }) => null;
+
+    await generateDocument({
+      type: "facture",
+      buildElement: (numero) => React.createElement(Gabarit, { data: { numero } }),
+    });
+
+    const rendu = mockRender.mock.calls[0]![0] as {
+      props: { data: { estSpecimen?: boolean; specimenMotif?: string } };
+    };
+    expect(rendu.props.data.estSpecimen).toBe(true);
+    expect(rendu.props.data.specimenMotif).toMatch(/SPÉCIMEN/i);
   });
 
   it("ne relit pas la config quand identite complète est fournie", async () => {
