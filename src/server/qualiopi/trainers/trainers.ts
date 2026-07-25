@@ -22,18 +22,34 @@ export interface ListTrainersOpts {
   offset?: number;
 }
 
+/**
+ * Formateur enrichi du NOMBRE RÉEL d'habilitations, lu depuis
+ * `TrainerHabilitation` — la seule source qui fasse foi pour la garde
+ * d'assignation.
+ *
+ * 🔴 Audit certification 2026-07-25 : la liste affichait
+ * `formationsHabilitees.length` (colonne legacy `String[]`). En production cette
+ * colonne contenait 33 SLUGS d'un catalogue depuis archivé, dans un format que
+ * plus aucun lecteur ne sait résoudre (le code attend des UUID). L'écran
+ * annonçait donc « 33 habilitations » pendant que la garde en voyait 0 et
+ * refusait toute assignation. Compter la relation supprime la contradiction.
+ */
+export type TrainerAvecHabilitations = Trainer & { nbHabilitations: number };
+
 /** Tous les formateurs, triés par nom. Stub-safe → [] au build. */
-export async function listTrainers(opts?: ListTrainersOpts): Promise<Trainer[]> {
+export async function listTrainers(opts?: ListTrainersOpts): Promise<TrainerAvecHabilitations[]> {
   try {
     const where: { statut?: TrainerStatut; actif?: boolean } = {};
     if (opts?.statut) where.statut = opts.statut;
     if (opts?.actifOnly) where.actif = true;
-    return await prisma.trainer.findMany({
+    const rows = await prisma.trainer.findMany({
       ...(Object.keys(where).length > 0 ? { where } : {}),
       orderBy: [{ nom: "asc" }, { prenom: "asc" }],
       ...(opts?.limit !== undefined ? { take: opts.limit } : {}),
       ...(opts?.offset !== undefined ? { skip: opts.offset } : {}),
+      include: { _count: { select: { habilitations: true } } },
     });
+    return rows.map(({ _count, ...t }) => ({ ...t, nbHabilitations: _count.habilitations }));
   } catch {
     return [];
   }

@@ -76,8 +76,34 @@ describe("listTrainers / getTrainer (stub-safe)", () => {
   });
 
   it("listTrainers retourne les lignes", async () => {
-    mockFindMany.mockResolvedValue([{ id: "t1" }]);
+    mockFindMany.mockResolvedValue([{ id: "t1", _count: { habilitations: 0 } }]);
     expect(await listTrainers()).toHaveLength(1);
+  });
+
+  it("🔴 nbHabilitations vient de la RELATION, jamais de la colonne legacy", async () => {
+    // Audit certification 2026-07-25 (F11). En production, `formationsHabilitees`
+    // contenait 33 slugs d'un catalogue archivé pendant que `TrainerHabilitation`
+    // était vide : la liste affichait « 33 » et la garde d'assignation refusait
+    // tout le monde. Le compte doit venir de la table qui fait foi.
+    mockFindMany.mockResolvedValue([
+      {
+        id: "t1",
+        formationsHabilitees: ["slug-a", "slug-b", "slug-c"],
+        _count: { habilitations: 1 },
+      },
+    ]);
+    const [t] = await listTrainers();
+    expect(t?.nbHabilitations).toBe(1);
+  });
+
+  it("listTrainers demande bien le compte des habilitations à Prisma", async () => {
+    mockFindMany.mockResolvedValue([]);
+    await listTrainers();
+    expect(mockFindMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        include: { _count: { select: { habilitations: true } } },
+      }),
+    );
   });
 
   it("listTrainers retourne [] si la DB jette (stub build)", async () => {

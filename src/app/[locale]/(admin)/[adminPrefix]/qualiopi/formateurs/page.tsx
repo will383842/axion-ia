@@ -114,7 +114,11 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
                     <span className="text-[length:var(--text-admin-xs)]">{t.email}</span>
                   </td>
                   <td className={cellCls}>{STATUT_LABELS[t.statut] ?? t.statut}</td>
-                  <td className={cellCls}>{t.formationsHabilitees.length}</td>
+                  {/* Nombre RÉEL d'habilitations (table TrainerHabilitation), pas la
+                      longueur de la colonne legacy : celle-ci contenait des slugs d'un
+                      catalogue archivé et affichait un compte que la garde d'assignation
+                      contredisait. Cf. audit certification 2026-07-25 (F11). */}
+                  <td className={cellCls}>{t.nbHabilitations}</td>
                   <td className={cellCls}>
                     {t.statut !== "sous_traitant" ? (
                       <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
