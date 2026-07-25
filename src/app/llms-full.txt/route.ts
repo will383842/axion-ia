@@ -42,7 +42,13 @@ export function GET() {
   );
   // Phase B (divulgation publique OF) — route edge sans DB, lecture env flag
   // inline (cf. llms.txt). Bloc omis tant que la Phase A est active.
-  const qualiopiCertified = process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true";
+  // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
+  // IA, qui la relaient ensuite. Il exige donc la certification RÉELLE, pas la
+  // simple visibilité des pages OF. Lecture env directe conservée (convention
+  // de ce fichier), mais sur le drapeau de certification.
+  const qualiopiCertified =
+    process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true" &&
+    process.env.QUALIOPI_CERTIFICATION_OBTENUE === "true";
   const qualiopiBlock = qualiopiCertified
     ? `
 
