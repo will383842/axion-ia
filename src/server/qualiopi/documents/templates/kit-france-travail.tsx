@@ -74,6 +74,21 @@ const styles = StyleSheet.create({
 // Types de données
 // ============================================================
 
+
+/**
+ * Pied de kit financeur : NDA, et le n° Qualiopi UNIQUEMENT s'il existe.
+ *
+ * 🔴 F29 — « à renseigner » est une note de chantier destinée à Will. Elle
+ * s'imprimait telle quelle sur un document adressé à un financeur, où elle se
+ * lit comme un dossier bâclé. Un organisme non encore certifié n'a pas de numéro
+ * Qualiopi : on omet la mention au lieu d'annoncer qu'elle manque.
+ */
+function qualiopiLigne(identite: OrganismeIdentite): string {
+  const nda = identite.nda ? `NDA : ${identite.nda}` : "";
+  const qualiopi = identite.qualiopi ? `Certification Qualiopi : ${identite.qualiopi}` : "";
+  return [nda, qualiopi].filter((p) => p !== "").join(" — ");
+}
+
 export type DispositifFranceTravail = "AIF" | "POEI" | "CSP";
 
 export interface BeneficiaireFT {
@@ -250,7 +265,7 @@ export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): R
         <View style={pdfStyles.section}>
           <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
           <Text style={pdfStyles.legalNote}>
-            {`NDA : ${identite.nda || "à renseigner"} — Qualiopi : ${identite.qualiopi || "à renseigner"}`}
+            {qualiopiLigne(identite)}
           </Text>
         </View>
       </QualiopiPage>
