@@ -68,7 +68,7 @@ import { ServiceHero } from "@/components/sections/ServiceHero";
 // brand SVG inline + animations CSS subtiles. Remplace HeroMatrix (trop dense)
 // et l'orbital générique (pas assez travaillé).
 import { HeroOrbital } from "@/components/sections/HeroOrbital";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -89,7 +89,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   // Claim Qualiopi/OPCO gaté Phase B — il fuyait en SERP alors que tout le reste
   // de la page est gaté (purge du flag 2026-07-14). ISR 1h le réinjecte au flip.
-  const qualiopiSerp = isQualiopiPublicDisclosureEnabled()
+  // Audit F13 (2026-07-25) : ce drapeau gate une AFFIRMATION de certification,
+  // pas la visibilité de la page. Il exige donc la certification réelle.
+  const qualiopiSerp = isQualiopiCertificationObtenue()
     ? "certifié Qualiopi, finançables OPCO"
     : "générales, par métier ou par secteur d'activité";
   return buildProductMetadata({
@@ -143,7 +145,7 @@ export default async function FormationsHub({ params }: Props) {
   const minPriceLabel = formatAmount(minEur, "fr");
   // Claims certification/financement du héros — gatés Phase B (ISR 1h les
   // réinjecte au flip du flag, comme la meta).
-  const ofPublicHero = isQualiopiPublicDisclosureEnabled();
+  const ofPublicHero = isQualiopiCertificationObtenue();
 
   /** « 4 heures » · « 1 journée » · « 2 journées (scindable 2×1j) ». */
   const dureeLabelFr = (f: {

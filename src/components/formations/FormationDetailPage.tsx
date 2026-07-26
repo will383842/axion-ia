@@ -69,7 +69,7 @@ import { buildCourseJsonLd, buildHowToJsonLd, buildServiceJsonLd, SITE_URL } fro
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
 
 /** « 2-15 » → « 2 à 15 personnes ». */
@@ -92,7 +92,9 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const path = `/formations/${f.slugFr}`;
   const entryPrice = getFormationV2EntryPrice(f);
   const brackets = getFormationV2Brackets(f);
-  const ofPublic = isQualiopiPublicDisclosureEnabled();
+  // Audit F13 (2026-07-25) : ce drapeau gate une AFFIRMATION de certification,
+  // pas la visibilité de la page. Il exige donc la certification réelle.
+  const ofPublic = isQualiopiCertificationObtenue();
   const mentionMarque = formatMentionMarqueQualiopi("Actions de formation");
 
   // formatAmount renvoie déjà « … € HT » → NE PAS re-suffixer « HT ».

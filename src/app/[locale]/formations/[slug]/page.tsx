@@ -18,7 +18,10 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildCourseJsonLd, buildProductMetadata } from "@/lib/seo";
 import { routing, type Locale } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import {
+  isQualiopiPublicDisclosureEnabled,
+  isQualiopiCertificationObtenue,
+} from "@/server/qualiopi/config/flag";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
@@ -65,7 +68,7 @@ export async function generateMetadata({
   if (cat) {
     // Suffixe Qualiopi/finançable — GATED Phase B (claim illégal avant agrément).
     // Flag lu au runtime ; l'ISR régénère la meta en Phase B (sinon suffixe absent).
-    const qualiopiSuffix = isQualiopiPublicDisclosureEnabled()
+    const qualiopiSuffix = isQualiopiCertificationObtenue()
       ? " · Certifié Qualiopi, finançable OPCO et France Travail."
       : "";
     return buildProductMetadata({
