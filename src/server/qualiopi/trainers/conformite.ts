@@ -150,12 +150,31 @@ export function estPerime(doc: DocumentConformite, now: Date): boolean {
 }
 
 /** Première pièce valide du type demandé, sinon null. */
+/**
+ * Retient la pièce valide la PLUS RÉCENTE d'un type donné.
+ *
+ * 🔴 Constaté le 2026-07-26 : c'était un `find`, donc « la première de la
+ * liste », c'est-à-dire l'ordre de chargement. Avec deux CV valides — le cas dès
+ * qu'on en verse un actualisé sans supprimer l'ancien — la conformité pouvait
+ * retenir le périmé et afficher une alerte alors que la pièce à jour était là.
+ * Le contraire est tout aussi faux : retenir le récent quand seul l'ancien
+ * compte n'arrive pas, mais l'indéterminisme, si.
+ *
+ * Une pièce sans date d'émission passe en dernier : on ne peut rien prouver de
+ * sa fraîcheur, elle ne doit donc jamais primer sur une pièce datée.
+ */
 function trouverValide(
   documents: DocumentConformite[],
   type: TrainerDocumentTypeValue,
   now: Date,
 ): DocumentConformite | null {
-  return documents.find((d) => d.type === type && estValide(d, now)) ?? null;
+  const candidates = documents.filter((d) => d.type === type && estValide(d, now));
+  if (candidates.length === 0) return null;
+  return candidates.reduce((meilleur, d) => {
+    if (d.dateEmission === null) return meilleur;
+    if (meilleur.dateEmission === null) return d;
+    return d.dateEmission > meilleur.dateEmission ? d : meilleur;
+  });
 }
 
 /**
@@ -266,10 +285,16 @@ export function evaluerConformiteFormateur(
       code: cv === null ? "cv_absent" : "cv_obsolete",
       type: "cv",
       gravite: "alerte",
+      // Le message distinguait mal deux situations très différentes : un CV
+      // périmé, et un CV dont la date d'émission n'a simplement pas été saisie.
+      // Annoncer « de plus de 12 mois » sur une pièce sans date envoie chercher
+      // un document à refaire alors qu'il suffit de renseigner un champ.
       message:
         cv === null
           ? "CV absent ou non validé."
-          : `CV de plus de ${config.cvValiditeMois} mois : à actualiser.`,
+          : cv.dateEmission === null
+            ? "CV sans date d'émission : renseignez-la pour prouver sa fraîcheur."
+            : `CV de plus de ${config.cvValiditeMois} mois : à actualiser.`,
     });
   }
 

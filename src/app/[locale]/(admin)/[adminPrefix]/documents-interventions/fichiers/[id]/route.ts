@@ -29,6 +29,20 @@ export async function GET(
   const doc = await getConsoleDocForDownload(id);
   if (!doc) return new NextResponse("Not found", { status: 404 });
 
+  // 🔴 Constaté le 2026-07-26 en versant le CV du dirigeant. Cette route
+  // acceptait `editor` — un rôle éditorial — pour TOUS les documents, y compris
+  // ceux marqués `sensitive`, qui sont précisément les données personnelles :
+  // CV, diplômes, pièces d'identité des formateurs. La fiche formateur qui
+  // publie ces liens exige, elle, `admin` ou `super_admin` : la route était donc
+  // PLUS permissive que la page qui y mène.
+  //
+  // Aucun compte `editor` n'existe aujourd'hui (un seul admin en base), mais
+  // c'est exactement le genre de porte qu'on ouvre sans y penser en créant un
+  // rôle de rédaction. Un document sensible reste donc réservé à l'admin.
+  if (doc.sensitive && role !== "super_admin" && role !== "admin") {
+    return new NextResponse("Forbidden", { status: 403 });
+  }
+
   let buf: Buffer;
   try {
     buf = await readConsoleDoc(doc.storagePath);
