@@ -161,7 +161,7 @@ export default async function QualiopiConformitePage({ params }: PageProps) {
                       Statut
                     </th>
                     <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left font-semibold text-[color:var(--color-admin-fg-muted)]">
-                      Preuves disponibles
+                      Éléments constatés
                     </th>
                   </tr>
                 </thead>
@@ -199,7 +199,14 @@ export default async function QualiopiConformitePage({ params }: PageProps) {
                         <StatutBadge statut={ind.statut} />
                       </td>
 
-                      {/* Preuves */}
+                      {/* 🔴 Constat F15, 2026-07-26 — même défaut que sur le
+                          mode auditeur : chaque ligne portait un ✓ vert sous un
+                          en-tête « Preuves disponibles », y compris les constats
+                          d'ABSENCE que le même code produit (« 0 réclamation
+                          enregistrée », « Responsable qualité : non renseigné »).
+                          `preuves: string[]` ne porte aucune polarité : on cesse
+                          donc d'affirmer ce qu'on ne sait pas. Le statut de
+                          couverture reste dit par sa colonne dédiée. */}
                       <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
                         {ind.preuves.length > 0 ? (
                           <ul className="list-none space-y-0.5">
@@ -210,9 +217,9 @@ export default async function QualiopiConformitePage({ params }: PageProps) {
                               >
                                 <span
                                   aria-hidden="true"
-                                  className="text-xs text-[color:var(--color-admin-success)]"
+                                  className="text-xs text-[color:var(--color-admin-fg-muted)]"
                                 >
-                                  ✓
+                                  •
                                 </span>
                                 <span className="text-[length:var(--text-admin-xs)]">{preuve}</span>
                               </li>
@@ -220,7 +227,7 @@ export default async function QualiopiConformitePage({ params }: PageProps) {
                           </ul>
                         ) : (
                           <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] italic">
-                            Aucune preuve enregistrée
+                            Aucun élément enregistré
                           </span>
                         )}
                       </td>
