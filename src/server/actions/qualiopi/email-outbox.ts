@@ -104,25 +104,51 @@ export async function approuverEmailAction(
     ? (email.attachments as Array<{ filename: string; r2Key: string; contentType?: string }>)
     : undefined;
 
-  const res = await enqueueEmail(
-    email.template as EmailJobName,
-    email.recipient,
-    email.locale === "en" ? "en" : "fr",
-    payload,
-    {
-      // 🔴 INDISPENSABLE : sans lui, l'email approuvé serait re-garé et la
-      // corbeille se remplirait d'elle-même à l'infini.
-      bypassValidation: true,
-      ...(email.entityType ? { entityType: email.entityType } : {}),
-      ...(email.entityId ? { entityId: email.entityId } : {}),
-      ...(attachments && attachments.length > 0 ? { attachments } : {}),
-    },
-  );
+  // `enqueueEmail` peut lever (Redis coupé en cours d'appel) : sans ce filet, la
+  // ligne resterait en `approuve` — le même tombeau, par une autre porte.
+  let res: { enqueued: boolean };
+  try {
+    res = await enqueueEmail(
+      email.template as EmailJobName,
+      email.recipient,
+      email.locale === "en" ? "en" : "fr",
+      payload,
+      {
+        // 🔴 INDISPENSABLE : sans lui, l'email approuvé serait re-garé et la
+        // corbeille se remplirait d'elle-même à l'infini.
+        bypassValidation: true,
+        ...(email.entityType ? { entityType: email.entityType } : {}),
+        ...(email.entityId ? { entityId: email.entityId } : {}),
+        ...(attachments && attachments.length > 0 ? { attachments } : {}),
+      },
+    );
+  } catch {
+    await prisma.emailOutbox.updateMany({
+      where: { id: v.id, statut: "approuve" },
+      data: { statut: "a_valider", approuveAt: null, approuveById: null },
+    });
+    return { error: "L'envoi a échoué : l'email est retourné dans la corbeille, réessayez." };
+  }
 
+  // 🔴 Contre-vérification 2026-07-26. La transition `a_valider → approuve` est
+  // commitée AVANT la mise en file. Si celle-ci échoue — Redis injoignable —
+  // la ligne restait bloquée en `approuve` : invisible de la liste « en
+  // attente », invisible de « traités », ré-approbation refusée, refus
+  // impossible, aucun sweeper. Un état TOMBEAU : l'email n'était ni envoyé, ni
+  // garé, ni rejouable.
+  //
+  // On remet donc en `a_valider` : l'email retourne dans la corbeille, l'admin
+  // le voit et peut réessayer. Perdre un email en silence est le seul défaut
+  // qu'une corbeille de validation n'a pas le droit d'avoir.
   if (res.enqueued) {
     await prisma.emailOutbox.update({
       where: { id: v.id },
       data: { statut: "envoye", envoyeAt: new Date() },
+    });
+  } else {
+    await prisma.emailOutbox.updateMany({
+      where: { id: v.id, statut: "approuve" },
+      data: { statut: "a_valider", approuveAt: null, approuveById: null },
     });
   }
 

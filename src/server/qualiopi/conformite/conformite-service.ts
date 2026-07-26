@@ -273,12 +273,17 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     }),
     // off.19 : supports RÉELLEMENT produits (statut=genere ET pdfKey non null), pas un brouillon.
     prisma.supportFormation.count({ where: { statut: "genere", pdfKey: { not: null } } }),
-    // off.19 [audit 2026-07-26] : COUVERTURE, pas volumétrie. Compter les supports
-    // laissait passer 13 supports concentrés sur 2 formations pendant que 20 des 22
-    // formations actives n'en avaient aucun — l'indicateur affichait « couvert ».
-    // L'auditeur ne demande pas « combien de supports ? » mais « montrez-moi les
-    // ressources de CETTE formation ». On mesure donc le nombre de formations
-    // ACTIVES réellement dotées, rapporté au nombre de formations actives.
+    // off.19 — COUVERTURE, pas volumétrie : combien de formations ACTIVES portent
+    // au moins un support finalisé, et non combien de supports existent.
+    //
+    // 🔴 Corrigé le 2026-07-26 après contre-vérification. La version précédente
+    // de ce commentaire affirmait « 13 supports concentrés sur 2 formations
+    // suffisaient à masquer que 20 des 22 formations actives n'avaient aucune
+    // ressource ». C'était faux, et dans le sens qui MINIMISE : les deux
+    // formations qui portent ces supports sont toutes deux ARCHIVÉES. La
+    // couverture réelle du catalogue actif est de 0 sur 22, pas 2 sur 22.
+    // Vérifié en base le 2026-07-26 : jointure formations × supports_formation
+    // groupée par statut → archive : 2, actif : 0.
     prisma.supportFormation
       .findMany({
         where: { statut: "genere", pdfKey: { not: null }, formation: { statut: "actif" } },

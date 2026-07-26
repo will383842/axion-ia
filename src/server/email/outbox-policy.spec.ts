@@ -7,7 +7,10 @@
  */
 
 import { describe, it, expect } from "vitest";
+import type { EmailJobName } from "@/server/queue/types";
 import {
+  EMAILS_A_VALIDER_PAR_DEFAUT,
+  EMAILS_AUTOMATIQUES_PAR_DEFAUT,
   resoudreModeEnvoi,
   modeParDefaut,
   estEmailQualiopiAutomatique,
@@ -17,8 +20,8 @@ import {
 describe("modeParDefaut", () => {
   it("soumet les emails commerciaux à validation", () => {
     expect(modeParDefaut("qualiopi-relance-impayee")).toBe("validation");
-    expect(modeParDefaut("devis-envoye")).toBe("validation");
-    expect(modeParDefaut("facture-envoyee")).toBe("validation");
+    expect(modeParDefaut("devis-envoi")).toBe("validation");
+    expect(modeParDefaut("facture-envoi")).toBe("validation");
   });
 
   // 🔴 Le cas qui compte le plus. Retenir une convocation expose un stagiaire à
@@ -68,17 +71,17 @@ describe("resoudreModeEnvoi — précédence", () => {
 
   it("le réglage du client prime sur le réglage global", () => {
     const regles = [global(null, "validation"), client(null, "auto")];
-    expect(resoudreModeEnvoi("devis-envoye", regles)).toBe("auto");
+    expect(resoudreModeEnvoi("devis-envoi", regles)).toBe("auto");
   });
 
   it("le template exact du client prime sur tout le reste", () => {
     const regles = [
       global(null, "auto"),
-      global("devis-envoye", "auto"),
+      global("devis-envoi", "auto"),
       client(null, "auto"),
-      client("devis-envoye", "validation"),
+      client("devis-envoi", "validation"),
     ];
-    expect(resoudreModeEnvoi("devis-envoye", regles)).toBe("validation");
+    expect(resoudreModeEnvoi("devis-envoi", regles)).toBe("validation");
   });
 
   it("permet de RÉACTIVER l'automatique sur un email commercial, par client", () => {
@@ -97,5 +100,50 @@ describe("estEmailQualiopiAutomatique", () => {
   it("identifie la chaîne Qualiopi", () => {
     expect(estEmailQualiopiAutomatique("qualiopi-convocation")).toBe(true);
     expect(estEmailQualiopiAutomatique("qualiopi-relance-impayee")).toBe(false);
+  });
+});
+
+// 🔴 Contre-vérification 2026-07-26. Les deux listes portaient « devis-envoye »
+// et « facture-envoyee » ; les vrais noms de jobs sont « devis-envoi » et
+// « facture-envoi ». Deux caractères — et la corbeille ne pouvait JAMAIS se
+// remplir pour les deux envois qu'elle existe pour faire relire.
+//
+// Une liste explicite protège d'un motif trop large. Elle ne protège pas d'une
+// faute de frappe. Ce test-ci le fait : toute entrée qui n'est pas un
+// `EmailJobName` réel casse la compilation ET l'assertion.
+describe("Cohérence avec les noms de jobs réels", () => {
+  // Recensement des templates réellement enfilables, tiré de l'union de types.
+  const TEMPLATES_REELS: readonly EmailJobName[] = [
+    "qualiopi-convocation",
+    "qualiopi-rappel-j7",
+    "qualiopi-satisfaction-j1",
+    "qualiopi-suivi-j30",
+    "qualiopi-attestation-disponible",
+    "qualiopi-portail-acces",
+    "qualiopi-alerte-interne",
+    "qualiopi-relance-impayee",
+    "devis-envoi",
+    "facture-envoi",
+    "contract-sent",
+    "contract-reminder",
+  ];
+
+  it("chaque email « à valider » correspond à un job réel", () => {
+    for (const t of EMAILS_A_VALIDER_PAR_DEFAUT) {
+      expect(TEMPLATES_REELS).toContain(t as EmailJobName);
+    }
+  });
+
+  it("chaque email « automatique » correspond à un job réel", () => {
+    for (const t of EMAILS_AUTOMATIQUES_PAR_DEFAUT) {
+      expect(TEMPLATES_REELS).toContain(t as EmailJobName);
+    }
+  });
+
+  it("les deux listes ne se chevauchent pas", () => {
+    const croisement = EMAILS_A_VALIDER_PAR_DEFAUT.filter((t) =>
+      EMAILS_AUTOMATIQUES_PAR_DEFAUT.includes(t),
+    );
+    expect(croisement).toHaveLength(0);
   });
 });

@@ -21,14 +21,22 @@
  * Emails soumis à validation par défaut : ceux qui engagent la relation
  * commerciale ou l'argent.
  *
+ * 🔴 Audit certification 2026-07-26 (contre-vérification). Cette liste portait
+ * « devis-envoye » et « facture-envoyee » ; les vrais noms de jobs sont
+ * « devis-envoi » et « facture-envoi ». Deux caractères — et la corbeille ne
+ * pouvait littéralement JAMAIS se remplir pour les deux envois qu'elle existe
+ * pour faire relire. Une liste explicite protège d'un motif trop large ; elle
+ * ne protège pas d'une faute de frappe. D'où le test qui suit, qui confronte
+ * désormais chaque entrée à l'union `EmailJobName`.
+ *
  * ⚠️ Liste volontairement EXPLICITE plutôt qu'un motif sur le nom. Un template
  * ajouté demain doit être classé sciemment : le défaut silencieux serait soit de
  * bloquer une convocation, soit de laisser partir une relance non relue.
  */
 export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   "qualiopi-relance-impayee",
-  "devis-envoye",
-  "facture-envoyee",
+  "devis-envoi",
+  "facture-envoi",
   "contract-sent",
   "contract-reminder",
 ] as const;

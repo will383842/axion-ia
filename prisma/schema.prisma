@@ -945,7 +945,7 @@ model EmailAutomationSetting {
   createdAt DateTime             @default(now()) @map("created_at")
   updatedAt DateTime             @updatedAt @map("updated_at")
 
-  @@unique([scope, clientId, template], name: "email_automation_unique")
+  @@unique([scope, clientId, template], map: "email_automation_unique")
   @@index([clientId])
   @@map("email_automation_settings")
 }
