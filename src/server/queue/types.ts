@@ -79,6 +79,7 @@ export type EmailJobName =
   | "qualiopi-satisfaction-j1"
   | "qualiopi-suivi-j30"
   | "qualiopi-attestation-disponible"
+  | "qualiopi-relance-impayee"
   | "qualiopi-portail-acces"
   | "qualiopi-alerte-interne"
   // Documents interventions — notification de nouvelle version publiée

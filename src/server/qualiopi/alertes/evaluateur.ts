@@ -642,12 +642,18 @@ async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
   const j60 = daysAgo(60, now);
   const alertes: AlerteCandidate[] = [];
 
+  // 🔴 Audit certification 2026-07-26 (F59). La règle ne regardait que le statut
+  // `emise`. Or une facture partiellement réglée reste due pour son solde — et
+  // c'est précisément le cas du RESTE À CHARGE : l'OPCO verse sa part, la facture
+  // bascule en `partiellement_payee`, et si l'entreprise ne règle jamais la
+  // sienne, AUCUNE alerte ne tombe. Jamais. Le trou portait exactement sur le
+  // scénario de financement mixte, le plus fréquent en formation professionnelle.
   const factures = await prisma.factureFormation.findMany({
     where: {
-      statut: "emise",
+      statut: { in: ["emise", "partiellement_payee"] },
       echeanceAt: { not: null, lte: j30 },
     },
-    select: { id: true, numero: true, echeanceAt: true },
+    select: { id: true, numero: true, echeanceAt: true, statut: true },
   });
 
   for (const f of factures) {
@@ -657,7 +663,7 @@ async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
         code: "facture_impayee_j60",
         niveau: "critique",
         titre: "Facture impayée depuis +60 jours",
-        message: `La facture ${f.numero} est impayée depuis plus de 60 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
+        message: `${f.statut === "partiellement_payee" ? `Le solde de la facture ${f.numero} est impayé` : `La facture ${f.numero} est impayée`} depuis plus de 60 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
         cibleType: "FactureFormation",
         cibleId: f.id,
       });
@@ -666,7 +672,7 @@ async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
         code: "facture_impayee_j30",
         niveau: "important",
         titre: "Facture impayée depuis +30 jours",
-        message: `La facture ${f.numero} est impayée depuis plus de 30 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
+        message: `${f.statut === "partiellement_payee" ? `Le solde de la facture ${f.numero} est impayé` : `La facture ${f.numero} est impayée`} depuis plus de 30 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
         cibleType: "FactureFormation",
         cibleId: f.id,
       });
