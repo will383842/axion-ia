@@ -41,6 +41,7 @@ import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { isDocusealConfigured, createContractSubmission } from "@/lib/docuseal";
 import { enqueueEmail } from "@/server/queue/queues";
+import { genererConventionAction } from "@/server/actions/qualiopi/documents";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -539,6 +540,43 @@ export async function transformDevisToConventionAction(
     return { error: "Seul un devis accepté peut être transformé en convention." };
   }
 
+  // 🔴 Constat F7, audit de certification 2026-07-26.
+  //
+  // Cette action ne « transformait » rien : elle basculait le statut du devis à
+  // `transforme_convention` et s'arrêtait là. AUCUNE convention n'était générée.
+  // Le devis affichait donc « transformé en convention » alors qu'aucune pièce
+  // n'existait — et c'est précisément la pièce que l'auditrice réclame ensuite.
+  // Un état faux dans la piste d'audit est pire qu'un état manquant : il fait
+  // croire que l'obligation est remplie et fait chercher un document qui
+  // n'existe pas (L6353-1, indicateur 9).
+  //
+  // Une convention ne peut pas être produite depuis un devis seul : elle porte
+  // des dates, une modalité, un effectif et un formateur — c'est-à-dire une
+  // SESSION. On exige donc qu'une session soit rattachée à ce devis, et on
+  // génère la convention pour elle. Le statut ne bascule QUE si le document a
+  // réellement été produit.
+  const sessionLiee = await prisma.trainingSession.findFirst({
+    where: { devisId: idParsed.data },
+    select: { id: true, numero: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  if (!sessionLiee) {
+    return {
+      error:
+        "Aucune session n'est rattachée à ce devis. Créez la session de formation depuis ce devis, puis relancez la transformation : une convention porte des dates, une modalité et un effectif, qu'un devis seul ne fournit pas.",
+    };
+  }
+
+  const convention = await genererConventionAction({ sessionId: sessionLiee.id });
+  if ("error" in convention) {
+    // On ne bascule PAS le statut : mieux vaut un devis « accepté » sur lequel on
+    // peut réessayer qu'un devis qui se déclare transformé sans sa convention.
+    return {
+      error: `La convention n'a pas pu être générée pour la session ${sessionLiee.numero} — ${convention.error}. Le devis reste « accepté ».`,
+    };
+  }
+
   await prisma.devis.update({
     where: { id: idParsed.data },
     data: { statut: "transforme_convention" },
@@ -548,7 +586,11 @@ export async function transformDevisToConventionAction(
     action: "qualiopi.devis.transform_convention",
     targetType: "Devis",
     targetId: idParsed.data,
-    changes: { statut: "transforme_convention" },
+    changes: {
+      statut: "transforme_convention",
+      sessionId: sessionLiee.id,
+      conventionNumero: convention.data.numero,
+    },
     session,
   });
 

@@ -730,8 +730,18 @@ async function regleConventionFormation(now: Date): Promise<AlerteCandidate[]> {
   const limite = daysFromNow(5, now);
   const sessions = await prisma.trainingSession.findMany({
     where: {
-      statut: "planifiee",
-      dateDebut: { gte: now, lte: limite },
+      // 🔴 Constat F7, 2026-07-26 — la règle ne regardait QUE les sessions
+      // `planifiee` démarrant dans les 5 jours. Une session DÉJÀ DÉMARRÉE sans
+      // convention était donc parfaitement silencieuse, alors que c'est le cas
+      // le plus grave : l'obligation est dépassée, plus seulement imminente.
+      // Vérifié en production : `AXI-SESS-2026-001` est `en_cours` depuis le
+      // 08/07, sans convention, et un certificat de réalisation a même été émis
+      // — sans qu'aucune alerte ne se lève.
+      //
+      // Borne basse d'un an : sans elle, le premier passage du cron déverserait
+      // une salve sur tout l'historique (piège déjà rencontré sur R03bis).
+      statut: { in: ["planifiee", "en_cours", "realisee"] },
+      dateDebut: { lte: limite, gte: daysAgo(365, now) },
       // 🔴 Vérification E2E 2026-07-26 — la règle n'acceptait que la convention.
       // Vendue à un particulier, la pièce exigée par le code du travail est un
       // CONTRAT de formation (L6353-3), type `contrat` : une session
@@ -742,16 +752,27 @@ async function regleConventionFormation(now: Date): Promise<AlerteCandidate[]> {
         none: { type: { in: ["convention", "convention_tripartite", "contrat"] } },
       },
     },
-    select: { id: true, numero: true, dateDebut: true },
+    select: { id: true, numero: true, dateDebut: true, statut: true },
   });
-  return sessions.map((s) => ({
-    code: "convention_formation_manquante",
-    niveau: "critique" as AlerteNiveau,
-    titre: "Convention de formation manquante avant démarrage",
-    message: `Aucune convention (L.6353-1) ni contrat de formation (L.6353-3) n'est généré pour la session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}). Obligatoire avant démarrage (ind.9⭐).`,
-    cibleType: "TrainingSession",
-    cibleId: s.id,
-  }));
+  return sessions.map((s) => {
+    // Le message doit dire au lecteur où il en est : « à produire avant le
+    // démarrage » et « la session a démarré sans » n'appellent pas la même
+    // urgence, même si le niveau reste critique dans les deux cas.
+    const dejaDemarree = s.statut !== "planifiee";
+    const dateFr = s.dateDebut.toLocaleDateString("fr-FR");
+    return {
+      code: "convention_formation_manquante",
+      niveau: "critique" as AlerteNiveau,
+      titre: dejaDemarree
+        ? "Session démarrée SANS convention de formation"
+        : "Convention de formation manquante avant démarrage",
+      message: dejaDemarree
+        ? `La session ${s.numero} a démarré le ${dateFr} sans convention (L.6353-1) ni contrat de formation (L.6353-3). L'obligation n'est plus imminente, elle est dépassée : régulariser et documenter le retard (ind.9⭐).`
+        : `Aucune convention (L.6353-1) ni contrat de formation (L.6353-3) n'est généré pour la session ${s.numero} (début le ${dateFr}). Obligatoire avant démarrage (ind.9⭐).`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    };
+  });
 }
 
 /** R18 (LOT 4) — Revue trimestrielle à réaliser (info, non bloquante — décision B4).
