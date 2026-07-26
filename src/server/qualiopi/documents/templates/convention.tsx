@@ -221,6 +221,16 @@ export function ConventionPdf({
           <Text style={local.listItem}>
             • Annulation à moins de 8 jours ouvrés avant le début : 100 % du prix HT
           </Text>
+          {/*
+            🔴 F51 — le report gratuit était promis par les CGV et absent de la
+            convention, alors que les deux sont signées ensemble. Les CGV ont été
+            alignées sur ce barème (jours ouvrés) ; la promesse de report, elle,
+            devait remonter ici pour que les deux textes disent la même chose.
+          */}
+          <Text style={local.listItem}>
+            • Dans tous les cas, la prestation est reportable une fois sans frais à une date
+            convenue entre les parties, le report se substituant alors à l&apos;annulation.
+          </Text>
         </DocSection>
 
         {/* 5. Annexes */}

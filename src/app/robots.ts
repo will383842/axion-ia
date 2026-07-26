@@ -33,9 +33,6 @@ const COMMON_DISALLOW = [
   "/components",
   "/fr/components",
   "/en/components",
-  "/sections",
-  "/fr/sections",
-  "/en/sections",
   // Brand-fix 2026-06-20 — logos CLIENTS (Jardiland, Gedimat, Safti…) servis
   // sous /logos/clients/*.svg. Affichés via le bandeau preuve-sociale
   // (ClientLogosBand) haut de page, Google Images les indexait comme image

@@ -474,7 +474,7 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   {
     id: "web-049",
     text: "Les 5 sites web augmentés livrés par Axion-IA en 2024-2025 affichent en moyenne un score Lighthouse Performance de 94/100 sur mobile et 98/100 sur desktop — avec des Core Web Vitals tous dans le vert (LCP ≤ 1,8s, INP ≤ 80ms, CLS = 0).",
-    source: "Axion-IA — Bilan performances techniques projets web 2025",
+    source: "Axion-IA — Bilan performances techniques projets web 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
     verifiedAt: "2026-05-22",
     verticales: ["sites_web_augmentes"],
@@ -517,7 +517,7 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Un chatbot IA connecté au CRM qualifie automatiquement les leads sur cinq dimensions (budget, autorité, besoin, calendrier, taille), allégeant d'autant la qualification initiale des prospects entrants par les commerciaux.",
-    source: "Axion-IA — Étude de cas chatbot + CRM lead qualification 2025",
+    source: "Axion-IA — Étude de cas chatbot + CRM lead qualification 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
     verifiedAt: "2026-05-22",
     verticales: ["sites_web_augmentes"],

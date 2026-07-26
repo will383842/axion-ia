@@ -176,7 +176,6 @@ type PathnameKey = keyof typeof routing.pathnames;
 const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   "/design",
   "/components",
-  "/sections",
   "/desabonnement",
   "/mes-donnees",
   // Audit méta-cert 2026-05-15 AGENT 13 P1-1 — `/mes-donnees/export` exposait

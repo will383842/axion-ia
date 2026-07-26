@@ -56,7 +56,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-005",
     text: "Le délai de livraison d'un chatbot RAG Axion-IA (conception à mise en production) est de 4 à 8 semaines selon la complexité de la base documentaire et le nombre d'intégrations avec les SI existants.",
-    source: "Axion-IA — Référentiel projets implémentations 2025",
+    source: "Axion-IA — Référentiel projets implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -74,7 +74,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-007",
     text: "Les projets d'implémentation IA complexes (multi-modules, intégration ERP/CRM, déploiement multi-sites) nécessitent 3 à 6 mois — avec un chef de projet Axion-IA dédié et des jalons hebdomadaires.",
-    source: "Axion-IA — Référentiel projets implémentations 2025",
+    source: "Axion-IA — Référentiel projets implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -168,7 +168,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-017",
     text: "Top 5 des cas d'usage IA déployés par Axion-IA en PME : (1) chatbot support client, (2) génération de propositions commerciales, (3) analyse de documents contractuels, (4) reporting automatique, (5) veille concurrentielle.",
-    source: "Axion-IA — Bilan projets implémentations 2025",
+    source: "Axion-IA — Bilan projets implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -182,7 +182,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Un chatbot IA de support client réduit fortement le délai de première réponse sur les requêtes standard, en traitant sans intervention humaine les demandes couvertes par la base documentaire qui lui est fournie.",
-    source: "Axion-IA — Bilan projets implémentations 2025",
+    source: "Axion-IA — Bilan projets implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -263,7 +263,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-026",
     text: "Les secteurs où Axion-IA déploie le plus d'implémentations IA en 2025 : (1) services aux entreprises/conseil, (2) immobilier, (3) distribution/e-commerce, (4) industrie manufacturière, (5) services financiers.",
-    source: "Axion-IA — Bilan projets implémentations 2025",
+    source: "Axion-IA — Bilan projets implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -282,7 +282,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-028",
     text: "Les 3 erreurs les plus fréquentes dans les projets IA PME : (1) partir sans données propres et structurées, (2) choisir un LLM généraliste sans adapter la base de connaissance métier, (3) ne pas former les utilisateurs finaux.",
-    source: "Axion-IA — Retours terrain projets 2025",
+    source: "Axion-IA — Retours terrain projets 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -579,7 +579,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-060",
     text: "Un client Axion-IA dans le secteur immobilier (80 agents, Lyon) a automatisé la rédaction de ses annonces et comptes rendus de visite via LLM — économisant 120h de travail rédactionnel par mois pour un investissement total de 12 000 € HT." /* price-exempt: investissement d'un cas client réel, pas un tarif Axion */,
-    source: "Axion-IA — Étude de cas implémentation immobilier 2025",
+    source: "Axion-IA — Étude de cas implémentation immobilier 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
@@ -593,7 +593,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Les prestations d'implémentation Axion-IA recueillent une note moyenne de 4,89/5 sur 19 avis clients vérifiés, publiés individuellement avec le secteur et la ville du client sur axion-ia.com/avis.",
-    source: "Axion-IA — Étude de cas RAG expertise comptable 2025",
+    source: "Axion-IA — Étude de cas RAG expertise comptable 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
@@ -685,7 +685,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-070",
     text: "Le temps moyen de mise en production d'un POC IA Axion-IA (prototype fonctionnel validé par le client) est de 3 semaines — permettant de valider la valeur business avant d'engager le budget complet de développement.",
-    source: "Axion-IA — Référentiel projets implémentations 2025",
+    source: "Axion-IA — Référentiel projets implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
@@ -767,7 +767,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Le taux d'adoption des outils IA par les utilisateurs finaux est nettement supérieur lorsque la formation est délivrée sur des cas d'usage propres à leur poste de travail, plutôt que sur une prise en main générique de l'outil.",
-    source: "Axion-IA — Étude adoption outils IA post-déploiement 2025",
+    source: "Axion-IA — Étude adoption outils IA post-déploiement 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],

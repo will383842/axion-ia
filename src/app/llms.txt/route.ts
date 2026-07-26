@@ -150,7 +150,7 @@ export function GET() {
 
 - \`/admin/*\` — espace privé staff Axion-IA (Auth.js JWT + 2FA TOTP).
 - \`/fr/mes-donnees\` — espace utilisateur authentifié (RGPD self-service).
-- \`/fr/design\`, \`/fr/components\`, \`/fr/sections\` — pages design system / preview internes.
+- \`/fr/design\`, \`/fr/components\` — pages design system / preview internes.
 - \`/api/*\` (sauf \`/api/og\`) — endpoints serveur (auth, admin, GDPR, webhooks).
 - \`/en/*\` — locale EN temporairement désactivée (redirect 301 → équivalent FR, voir AGENTS.md).
 `;

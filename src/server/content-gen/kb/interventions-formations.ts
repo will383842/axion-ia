@@ -85,7 +85,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-008",
     text: "Les participants aux formations IA Axion-IA gagnent en moyenne 2 à 4 heures de travail hebdomadaire après 4 semaines de pratique — principalement sur la rédaction, le résumé de documents et la préparation de réunions.",
-    source: "Axion-IA — Retours participants formations 2025",
+    source: "Axion-IA — Retours participants formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -200,7 +200,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Les interventions ponctuelles (conférences, keynotes, tables rondes) constituent un format court adapté à la sensibilisation des COMEX et instances dirigeantes, en amont d'un programme de formation structuré.",
-    source: "Axion-IA — Reporting activité 2025",
+    source: "Axion-IA — Reporting activité 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -268,7 +268,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-027",
     text: "3 mois après une formation IA complète, 68 % des équipes formées intègrent l'IA dans au moins un processus quotidien — le taux monte à 89 % si un « champion IA » interne a été désigné.",
-    source: "Axion-IA — Bilan qualité formations 2025",
+    source: "Axion-IA — Bilan qualité formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -668,7 +668,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Les bénéficiaires des programmes de formation Axion-IA évaluent la prestation à 4,88/5 en moyenne. Les retours détaillés, publiés avec le secteur et la ville de chaque client, sont consultables sur axion-ia.com/avis." /* price-exempt: économie réalisée par le client, pas un tarif Axion */,
-    source: "Axion-IA — Étude impact économique formations 2025",
+    source: "Axion-IA — Étude impact économique formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],
@@ -677,7 +677,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-077",
     text: "Les prestations de formation Axion-IA recueillent une note moyenne de 4,88/5 sur 17 avis clients vérifiés — dont 15 notes maximales. Chaque avis est publié individuellement et consultable sur axion-ia.com/avis.",
-    source: "Axion-IA — Bilan qualité et satisfaction 2025",
+    source: "Axion-IA — Bilan qualité et satisfaction 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],

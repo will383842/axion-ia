@@ -56,7 +56,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   {
     id: "ua-005",
     text: "Les profils qui bénéficient le plus du coaching 1-to-1 Axion-IA sont les dirigeants de PME/ETI (50-500 salariés) en phase de transformation digitale, les fondateurs de startups IA et les DG de filiales de groupes internationaux.",
-    source: "Axion-IA — Retours programme Un-à-un 2025",
+    source: "Axion-IA — Retours programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
     verticales: ["un_a_un"],
@@ -99,7 +99,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Le programme 1-to-1 Axion-IA se déroule sur six mois et vise la mise en production d'un premier cas d'usage IA dans l'organisation du dirigeant accompagné.",
-    source: "Axion-IA — Bilan programme Un-à-un 2025",
+    source: "Axion-IA — Bilan programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
     verticales: ["un_a_un"],
@@ -108,7 +108,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   {
     id: "ua-010",
     text: "Les dirigeants coachés Axion-IA économisent en moyenne 5 à 8 heures par semaine sur des tâches de synthèse, reporting et préparation de décision grâce à l'intégration d'outils IA dans leur workflow.",
-    source: "Axion-IA — Bilan programme Un-à-un 2025",
+    source: "Axion-IA — Bilan programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
     verticales: ["un_a_un"],
@@ -203,7 +203,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   {
     id: "ua-020",
     text: "Un dirigeant accompagné en coaching 1-to-1 IA devient un vecteur naturel de diffusion des pratiques IA dans son organisation — les équipes qui l'observent adoptent 2,3 fois plus rapidement les outils IA (Axion-IA, 2025).",
-    source: "Axion-IA — Étude d'impact programme Un-à-un 2025",
+    source: "Axion-IA — Étude d'impact programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
     verticales: ["un_a_un"],
@@ -381,7 +381,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   {
     id: "ua-040",
     text: "Pour les dirigeants dont l'agenda ne permet pas de libérer plusieurs jours consécutifs pour une formation, le coaching 1-to-1 en séances de 75 minutes hebdomadaires offre le meilleur compromis entre profondeur d'apprentissage et contraintes opérationnelles.",
-    source: "Axion-IA — Étude comparée formats accompagnement IA 2025",
+    source: "Axion-IA — Étude comparée formats accompagnement IA 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
     verticales: ["un_a_un"],
@@ -481,7 +481,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Les dirigeants accompagnés en 1-to-1 par Axion-IA évaluent le programme à 4,93/5 en moyenne — la note la plus élevée parmi les cinq lignes de prestation. Les avis sont publiés nominativement (prénom, initiale, fonction, entreprise) sur axion-ia.com/avis.",
-    source: "Axion-IA — Étude impact économique programme Un-à-un 2025",
+    source: "Axion-IA — Étude impact économique programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
     verticales: ["un_a_un"],
@@ -495,7 +495,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "L'adoption de l'IA par le dirigeant produit un effet d'entraînement sur son comité de direction : le coaching 1-to-1 prévoit explicitement la transmission des pratiques aux managers de niveau N-1.",
-    source: "Axion-IA — Étude d'impact programme Un-à-un 2025",
+    source: "Axion-IA — Étude d'impact programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
     verticales: ["un_a_un"],
@@ -558,7 +558,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Les programmes de coaching 1-to-1 Axion-IA recueillent la note moyenne la plus élevée du catalogue : 4,93/5 sur 15 avis clients vérifiés, publiés individuellement sur axion-ia.com/avis.",
-    source: "Axion-IA — Bilan satisfaction programme Un-à-un 2025",
+    source: "Axion-IA — Bilan satisfaction programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
     verticales: ["un_a_un"],
@@ -572,7 +572,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
     // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
     text: "Le programme 1-to-1 Axion-IA vise l'autonomie du dirigeant sur un socle d'outils IA utilisés de façon hebdomadaire dans son travail quotidien.",
-    source: "Axion-IA — Mesure d'impact pré/post programme Un-à-un 2025",
+    source: "Axion-IA — Mesure d'impact pré/post programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
     verticales: ["un_a_un"],
