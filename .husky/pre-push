@@ -23,11 +23,14 @@ pnpm test
 #   - avis réellement présents  → push BLOQUÉ (le garde-fou fait son travail) ;
 #   - audit injoignable/illisible → une seconde tentative, puis AVERTISSEMENT sans
 #     blocage, en disant clairement que l'audit n'a pas pu s'exécuter.
-audit_json=$(pnpm audit --prod --audit-level high --json 2>/dev/null)
+# `|| true` INDISPENSABLE : en sh, `var=$(cmd)` prend le code de sortie de cmd.
+# Sans lui, l'echec de pnpm audit fait sortir le hook en 1 AVANT meme d'afficher
+# quoi que ce soit — exactement ce que ce correctif cherche a eviter.
+audit_json=$(pnpm audit --prod --audit-level high --json 2>/dev/null || true)
 if ! printf '%s' "$audit_json" | head -c 1 | grep -q '{'; then
   # Sortie non-JSON = l'audit lui-même a échoué. Une seconde chance avant d'abandonner.
   sleep 3
-  audit_json=$(pnpm audit --prod --audit-level high --json 2>/dev/null)
+  audit_json=$(pnpm audit --prod --audit-level high --json 2>/dev/null || true)
 fi
 
 if printf '%s' "$audit_json" | head -c 1 | grep -q '{'; then
