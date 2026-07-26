@@ -25,6 +25,12 @@ vi.mock("@/lib/prisma", () => ({
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid-1" }),
+  // 🔴 F45 — `traiterDemandeRgpdAction` exige désormais `requireAdminPublish`
+  // (admin / super_admin) et non plus `requireAdminWrite` (qui laissait passer
+  // le rôle `editor`) : clore une demande RGPD engage la responsabilité du
+  // responsable de traitement. Sans ce mock, l'action lève et les 11 cas de ce
+  // fichier échouent.
+  requireAdminPublish: vi.fn().mockResolvedValue({ userId: "admin-uuid-1" }),
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));
 
@@ -51,7 +57,11 @@ vi.mock("@/server/qualiopi/portail/rgpd-service", () => ({
 // Imports (apres mocks)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireAdminPublish,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-service";
 import {
   exporterDonneesStagiaire,
@@ -74,6 +84,7 @@ function mockCall<T>(fn: ReturnType<typeof vi.fn>, callIndex = 0): T {
 }
 
 const mockRequireAdminWrite = requireAdminWrite as ReturnType<typeof vi.fn>;
+const mockRequireAdminPublish = requireAdminPublish as ReturnType<typeof vi.fn>;
 const mockLogActivity = logQualiopiActivity as ReturnType<typeof vi.fn>;
 const mockCreerAppreciation = creerAppreciation as ReturnType<typeof vi.fn>;
 const mockExporterDonnees = exporterDonneesStagiaire as ReturnType<typeof vi.fn>;
@@ -99,6 +110,7 @@ describe("creerAppreciationAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid-1" });
+    mockRequireAdminPublish.mockResolvedValue({ userId: "admin-uuid-1" });
     mockLogActivity.mockResolvedValue(undefined);
     mockCreerAppreciation.mockResolvedValue({ id: APP_UUID });
   });
@@ -202,6 +214,7 @@ describe("traiterDemandeRgpdAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid-1" });
+    mockRequireAdminPublish.mockResolvedValue({ userId: "admin-uuid-1" });
     mockLogActivity.mockResolvedValue(undefined);
     mockPrisma.rgpdDemande.update.mockResolvedValue({});
   });
