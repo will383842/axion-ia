@@ -163,8 +163,28 @@ export async function getFinaleResultats(enrollmentId: string): Promise<Resultat
   });
   if (finale === null) return null;
 
-  const brut: unknown = finale.competences;
-  const lignes: CompetenceStockee[] = Array.isArray(brut) ? (brut as CompetenceStockee[]) : [];
+  return repartirCompetences(finale);
+}
+
+/**
+ * Répartit les compétences d'une évaluation par note. Partagé entre la voie
+ * collective et la voie AFEST 1-to-1.
+ *
+ * 🔴 Ce partage n'est pas une commodité : c'est la garantie que les deux
+ * familles d'attestation restituent les résultats de la MÊME façon. Mon premier
+ * correctif F21 n'avait touché que la voie collective, et l'AFEST a continué
+ * pendant ce temps à imprimer le programme sous « Compétences acquises ».
+ * Dupliquer la logique aurait reproduit la divergence.
+ */
+function repartirCompetences(finale: {
+  reussite: boolean;
+  scorePct: number;
+  niveauGlobal: unknown;
+  competences: unknown;
+}): ResultatsFinale {
+  const lignes: CompetenceStockee[] = Array.isArray(finale.competences)
+    ? (finale.competences as CompetenceStockee[])
+    : [];
 
   const acquis: string[] = [];
   const partiels: string[] = [];
@@ -190,6 +210,28 @@ export async function getFinaleResultats(enrollmentId: string): Promise<Resultat
     nonAcquis,
     nonEvalues,
   };
+}
+
+/**
+ * Même chose pour un parcours AFEST 1-to-1, indexé par `coachingSessionId`.
+ *
+ * L'AFEST est le dispositif où l'évaluation individuelle est le cœur du sujet au
+ * regard de L6353-1 : y restituer le programme au lieu des résultats est plus
+ * grave encore qu'en collectif.
+ */
+export async function getFinaleResultats1to1(
+  coachingSessionId: string,
+): Promise<ResultatsFinale | null> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return null;
+  }
+  const finale = await prisma.evaluationAcquis.findFirst({
+    where: { coachingSessionId, type: "finale" },
+    orderBy: { dateEvaluation: "desc" },
+    select: { reussite: true, scorePct: true, niveauGlobal: true, competences: true },
+  });
+  if (finale === null) return null;
+  return repartirCompetences(finale);
 }
 
 /**

@@ -181,7 +181,11 @@ export async function createDevisAction(
 
   // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
   const created = await withNumberRetry(async () => {
-    const count = await prisma.devis.count();
+    // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
+    // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
+    const count = await prisma.devis.count({
+      where: { numero: { startsWith: `AXI-DEV-${year}-` } },
+    });
     const numero = formatDocumentNumber("devis", year, count + 1);
     return prisma.devis.create({
       data: {
@@ -619,7 +623,11 @@ export async function reviseDevisAction(
 
   // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
   const created = await withNumberRetry(async () => {
-    const count = await prisma.devis.count();
+    // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
+    // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
+    const count = await prisma.devis.count({
+      where: { numero: { startsWith: `AXI-DEV-${year}-` } },
+    });
     const numero = formatDocumentNumber("devis", year, count + 1);
     return prisma.devis.create({
       data: {

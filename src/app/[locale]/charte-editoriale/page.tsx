@@ -272,13 +272,13 @@ export default async function CharteEditorialePage({ params }: Props) {
         <Container className="text-fg max-w-3xl space-y-5 text-lg leading-relaxed">
           <p>
             {isFr
-              ? "Nos contenus éditoriaux sont rédigés avec assistance d'IA générative (OpenAI GPT, Anthropic Claude, Perplexity Sonar, Mistral) sous le nom de plume « Manon » — persona éditoriale d'Axion-IA. Chaque article est supervisé par l'équipe Axion-IA avant publication (validation Will via review-queue admin)."
-              : 'Our editorial content is drafted with generative AI assistance (OpenAI GPT, Anthropic Claude, Perplexity Sonar, Mistral) under the pen-name "Manon" — Axion-IA\'s editorial persona. Every article is supervised by the Axion-IA team before publication (Will validation via admin review-queue).'}
+              ? "Nos contenus éditoriaux sont rédigés par une IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle) sous le nom de plume « Manon » — persona éditoriale d'Axion-IA. Chaque article passe par des contrôles automatisés avant publication ; la relecture humaine intervient sur les contenus sensibles, sans être systématique."
+              : 'Our editorial content is written by generative AI (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking) under the pen-name "Manon" — Axion-IA\'s editorial persona. Every article goes through automated checks before publication; human review applies to sensitive content but is not systematic.'}
           </p>
           <p>
             {isFr
-              ? "Cette politique est conforme au règlement européen sur l'IA (AI Act EU 2024/1689 art. 50, applicable août 2026). Les contenus IA-assistés sont machine-readable disclosés (Article.aiGenerated:true + disambiguatingDescription dans le JSON-LD) et humain-readable indiqués sur la page auteur dédiée."
-              : "This policy complies with the EU AI regulation (EU AI Act 2024/1689 art. 50, applicable August 2026). AI-assisted content is machine-readable disclosed (Article.aiGenerated:true + disambiguatingDescription in JSON-LD) and human-readable indicated on the dedicated author page."}
+              ? "Cette politique est conforme au règlement européen sur l'IA (AI Act EU 2024/1689, art. 50). L'origine IA des contenus est déclarée de façon lisible par une machine dans les données structurées de chaque page (JSON-LD : créateur, description désambiguïsante, conditions d'usage) et de façon lisible par un humain via le bandeau affiché sur l'article et la page auteur dédiée."
+              : "This policy complies with the EU AI regulation (EU AI Act 2024/1689, art. 50). The AI origin of content is machine-readable in each page's structured data (JSON-LD: creator, disambiguating description, usage info) and human-readable via the banner shown on the article and the dedicated author page."}
           </p>
           <p>
             <Link

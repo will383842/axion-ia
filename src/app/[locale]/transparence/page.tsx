@@ -82,8 +82,8 @@ export default async function TransparencePage({ params }: Props) {
       icon: Sparkles,
       title: isFr ? "Contenus IA-assistés" : "AI-assisted content",
       body: isFr
-        ? "Une partie des contenus éditoriaux du site (articles signés Manon, fiches villes, FAQ, guides) est rédigée avec l'assistance de modèles d'IA générative (OpenAI GPT-4o, Anthropic Claude Sonnet 4.6, Perplexity Sonar pour le fact-checking). Chaque contenu est ensuite supervisé par l'équipe Axion-IA avant publication — relecture éditoriale, vérification factuelle, alignement doctrine."
-        : "Part of the site's editorial content (articles signed by Manon, city pages, FAQs, guides) is drafted with the assistance of generative AI models (OpenAI GPT-4o, Anthropic Claude Sonnet 4.6, Perplexity Sonar for fact-checking). Each content piece is then supervised by the Axion-IA team prior to publication — editorial review, factual verification, doctrine alignment.",
+        ? "Une partie des contenus éditoriaux du site (articles signés Manon, fiches villes, FAQ, guides) est rédigée par des modèles d'IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle). Chaque contenu passe ensuite par des contrôles AUTOMATISÉS avant publication — vérification factuelle, contrôle éditorial et alignement doctrine, sans relecture humaine systématique."
+        : "Part of the site's editorial content (articles signed by Manon, city pages, FAQs, guides) is written by generative AI models (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking). Each piece then goes through AUTOMATED checks before publication — fact-checking, editorial control and doctrine alignment, without systematic human review.",
       links: [
         {
           href: "/equipe/manon",
@@ -171,8 +171,13 @@ export default async function TransparencePage({ params }: Props) {
         {
           id: "supervision-humaine",
           question: "Les contenus IA sont-ils relus par un humain ?",
+          // 🔴 F62 — la réponse était « Oui ». Le worker de publication porte
+          // pourtant « décision Will "full auto" — publication automatique de
+          // TOUS les types de contenu, SANS relecture humaine ». Répondre oui à
+          // cette question précise, sur une page dédiée à la transparence,
+          // était l'écart le plus difficile à défendre de tout l'audit.
           answer:
-            "Oui. Chaque contenu IA-assisté (persona Manon) est supervisé par l'équipe Axion-IA avant publication : relecture éditoriale, vérification factuelle et alignement avec notre charte éditoriale.",
+            "Pas systématiquement. Chaque contenu passe par des contrôles automatisés avant publication — vérification factuelle par un modèle tiers, contrôle éditorial et alignement avec notre charte. Une relecture humaine intervient sur les contenus sensibles et à la demande, mais elle n'est pas systématique sur l'ensemble de la production. Vous pouvez nous signaler toute erreur à contact@axion-ia.com : nous corrigeons sous 5 jours ouvrés.",
         },
       ]
     : [

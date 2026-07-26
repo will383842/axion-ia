@@ -472,7 +472,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "IA générative et transparence (AI Act EU)",
-          body: "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés avec l'assistance de modèles d'IA générative (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar pour le fact-checking) puis supervisés par l'équipe Axion-IA avant publication. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon. Les prompts envoyés à ces modèles ne contiennent aucune donnée personnelle de visiteur (helper `pii-safe` + hard gate code sur la base de connaissances). Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
+          body: "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés par des modèles d'IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle) puis soumis à des contrôles automatisés avant publication — vérification factuelle, contrôle éditorial et alignement doctrine. La relecture humaine n'est pas systématique. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon. Les prompts envoyés à ces modèles ne contiennent aucune donnée personnelle de visiteur (helper `pii-safe` + hard gate code sur la base de connaissances). Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
         },
       ],
       metaSeo: {
@@ -521,7 +521,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Generative AI and transparency (EU AI Act)",
-          body: "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is drafted with the assistance of generative AI models (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar for fact-checking) and then supervised by the Axion-IA team before publication. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon. Prompts sent to these models contain no visitor personal data (`pii-safe` helper + code-level hard gate on the knowledge base). You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
+          body: "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is written by generative AI models (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking) and then subjected to automated checks before publication — fact-checking, editorial control and doctrine alignment. Human review is not systematic. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon. Prompts sent to these models contain no visitor personal data (`pii-safe` helper + code-level hard gate on the knowledge base). You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
         },
       ],
       metaSeo: {
