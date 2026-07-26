@@ -255,7 +255,6 @@ export async function genererAttestationPourEnrollment(
   // y compris ceux notés « non acquis ». L6353-1 exige les résultats de
   // l'évaluation ; le document restituait le programme.
   const resultatsFinale = await getFinaleResultats(enrollmentId);
-  const finaleReussite = resultatsFinale?.reussite ?? null;
   const evaluationObtenue =
     resultatsFinale === null
       ? undefined
