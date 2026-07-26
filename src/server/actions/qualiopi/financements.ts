@@ -704,17 +704,26 @@ export async function genererFacturePdfAction(input: {
       : {}),
   };
 
-  // Génération PDF via le service central.
-  // buildElement injecte le numéro DocumentGenere alloué dans l'en-tête.
-  // Note : facture.numero (FactureFormation) et DocumentGenere.numero sont
-  // deux séquences distinctes ; l'en-tête affiche le numéro du document
-  // officiel (DocumentGenere) pour la traçabilité registre.
+  // 🔴 Audit certification 2026-07-26 (F64). Ce chemin injectait le numéro
+  // DocumentGenere dans l'en-tête du PDF, alors que la facture est enregistrée —
+  // et exportée au FEC — sous le numéro `factureFormation`. Deux compteurs
+  // `count+1` indépendants sur deux tables distinctes : ils partent ensemble et
+  // divergent dès la première régénération de PDF, le premier échec de rendu, ou
+  // la première facture de plan récurrent.
+  //
+  // Conséquence : le PDF remis au client porte un numéro ABSENT du registre
+  // comptable. Facture introuvable dans les livres, refus au contrôle.
+  //
+  // Le défaut était DÉJÀ corrigé dans l'autre chemin de facturation
+  // (`facturation-service.ts:228`), avec ce raisonnement écrit noir sur blanc.
+  // Quelqu'un l'a vu une fois et n'a corrigé qu'un des deux appels. On ignore
+  // donc `docNumero` ici aussi : le DocumentGenere garde son propre numéro pour
+  // le classement interne R2 — artefact de stockage, sans valeur comptable.
   let documentId: string;
   try {
     const docResult = await generateDocument({
       type: "facture",
-      buildElement: (numero) =>
-        React.createElement(FacturePdf, { data: { ...factureData, numero } }),
+      buildElement: () => React.createElement(FacturePdf, { data: factureData }),
       refs: facture.sessionId != null ? { sessionId: facture.sessionId } : {},
     });
     documentId = docResult.id;

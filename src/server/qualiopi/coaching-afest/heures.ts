@@ -43,12 +43,24 @@ export function sumHeuresReelles(
 
 /**
  * Taux d'assiduité 1-to-1 = heures réalisées / heures prévues à la convention.
- * Si aucune durée prévue n'est renseignée, on considère 100 % dès lors qu'au
- * moins une heure a été réalisée (le parcours s'apprécie sur le réalisé).
+ *
+ * 🔴 Audit certification 2026-07-26 (F65). Sans durée conventionnelle, la
+ * fonction retournait **100 %** dès qu'une seule heure était réalisée — et ce
+ * taux partait sur l'attestation. Un parcours de 2 h sur 30 prévues aurait été
+ * attesté « 100 % d'assiduité » du seul fait qu'aucune durée n'était renseignée.
+ *
+ * Un taux d'assiduité SANS référence n'est pas 100 %, c'est un taux
+ * **incalculable**. On retourne donc `null`, à charge de l'appelant d'afficher
+ * « non calculable » plutôt qu'un chiffre flatteur et faux.
+ *
+ * @returns Le taux en %, ou `null` si aucune durée prévue n'est renseignée.
  */
-export function computeTaux1to1(heuresReelles: number, heuresPrevues: number | null): number {
+export function computeTaux1to1(
+  heuresReelles: number,
+  heuresPrevues: number | null,
+): number | null {
   if (heuresPrevues == null || heuresPrevues <= 0) {
-    return heuresReelles > 0 ? 100 : 0;
+    return null;
   }
   return Math.round((heuresReelles / heuresPrevues) * 100);
 }

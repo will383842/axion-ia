@@ -66,7 +66,27 @@ async function checkAfestEnforcement(
     getQualiopiConfig("afest_formateur_habilitation_requise"),
     getQualiopiConfig("afest_perimetre_certifie"),
   ]);
-  if (!tuteurRequis && !habilitationRequise && !perimetreCertifie) return null;
+  // 🔴 Audit certification 2026-07-26 (F65). Ce garde sortait ici quand les trois
+  // drapeaux étaient à `false` — ce qui est le cas en production. Une attestation
+  // AFEST était donc émissible sans cartographie de l'activité, sans une seule
+  // phase réflexive tracée et sans aucun émargement signé.
+  //
+  // Or ces éléments ne sont pas des OPTIONS d'organisation : l'article
+  // D.6313-3-1 les rend CONSTITUTIFS de l'AFEST — analyse de l'activité, mises
+  // en situation, phases réflexives, évaluations. Sans eux, ce n'est pas une
+  // action de formation en situation de travail, et l'attester est une
+  // affirmation fausse.
+  //
+  // On distingue donc désormais :
+  //   - les contrôles CONSTITUTIFS, appliqués à toute attestation AFEST quels
+  //     que soient les drapeaux (ci-dessous, bloc `kind === "attestation"`) ;
+  //   - les exigences ORGANISATIONNELLES — tuteur d'entreprise, habilitation
+  //     formateur — qui restent pilotées par drapeau, car elles relèvent d'un
+  //     arbitrage avec le certificateur.
+  const controlesConstitutifs = kind === "attestation";
+  if (!tuteurRequis && !habilitationRequise && !perimetreCertifie && !controlesConstitutifs) {
+    return null;
+  }
 
   const cs = await prisma.coachingSession.findUnique({
     where: { id: coachingSessionId },
@@ -92,7 +112,11 @@ async function checkAfestEnforcement(
   if (habilitationRequise && cs.trainer.afestHabiliteAt == null) {
     return "Le formateur n'a pas d'habilitation AFEST tracée (exigence activée).";
   }
-  if (perimetreCertifie) {
+  // Cartographie : exigée dès le périmètre certifié, ou pour toute attestation —
+  // l'analyse préalable de l'activité est le point de départ de l'AFEST
+  // (D.6313-3-1 §1). Attester sans elle revient à attester un accompagnement
+  // qui n'est pas une AFEST.
+  if (perimetreCertifie || controlesConstitutifs) {
     const taches = cs.cartographie?.taches;
     if (!Array.isArray(taches) || taches.length === 0) {
       return "Cartographie de l'activité incomplète : au moins une tâche doit être identifiée (analyse préalable AFEST, D.6313-3-1 §1).";

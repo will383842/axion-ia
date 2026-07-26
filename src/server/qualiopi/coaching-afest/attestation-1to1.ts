@@ -27,6 +27,14 @@ import { getFinaleResultats1to1 } from "@/server/qualiopi/evaluations/evaluation
 export interface AttestationResult {
   resultat: "complete" | "partielle" | "aucune";
   documentId: string | null;
+  /**
+   * Raison d'un refus d'émission, à afficher à l'admin (F65).
+   *
+   * Un « aucune » silencieux est indiscernable d'un bug : l'admin clique, rien
+   * ne se passe, et il recommence. Le motif dit ce qui manque et comment le
+   * corriger.
+   */
+  motif?: string;
 }
 
 const formatDate = (d: Date) =>
@@ -118,6 +126,20 @@ export async function genererAttestation1to1(
 
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
   const seuilHeuresMin = await getQualiopiConfig("afest_seuil_heures_min");
+
+  // 🔴 F65 — un taux `null` signifie « aucune durée conventionnelle renseignée »,
+  // donc assiduité INCALCULABLE. On refuse d'attester plutôt que de retenir un
+  // taux par défaut : attester une assiduité qu'on ne sait pas mesurer est
+  // exactement ce qu'un contrôle de service fait sanctionne.
+  if (taux === null) {
+    return {
+      resultat: "aucune",
+      documentId: null,
+      motif:
+        "Durée conventionnelle du parcours non renseignée : l'assiduité n'est pas calculable, l'attestation ne peut pas être émise. Renseignez les heures prévues à la convention.",
+    };
+  }
+
   let resultat = classifierPresence(taux, seuilPresencePct);
   // Plancher absolu d'heures (optionnel, gated). En dessous → aucune.
   if (seuilHeuresMin > 0 && heuresReelles < seuilHeuresMin) {
