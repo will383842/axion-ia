@@ -32,6 +32,7 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { listFaqs } from "@/lib/knowledge/readers";
+import { resolvePriceTokensDeep } from "@/content/pricing-tokens";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
 
@@ -81,7 +82,12 @@ export default async function FaqPage({ params }: Props) {
 
   // KB-6.3 : lecture via reader unifié (FAQ_GLOBAL en mode legacy, knowledge_entries
   // si KB_BACKEND_UNIFIED_FAQ=1).
-  const faqs = await listFaqs();
+  // 🔴 Audit 2026-07-25 : la page servait en clair `{{price:audit-flash|flat}}` et
+  // `{{price:audit-strategique-pme|range}}` en production. Le contenu FAQ provient de la
+  // base (knowledge_entries / FAQ_GLOBAL) et porte des tokens de prix ; cette page ne les
+  // résolvait pas. Le résolveur SSOT existait déjà — il manquait l'appel.
+  // Règle du dépôt : on résout depuis la SSOT, on n'invente JAMAIS un prix.
+  const faqs = resolvePriceTokensDeep(await listFaqs(), loc);
   const items = faqs.map((entry) => ({
     id: entry.slug,
     question: isFr ? entry.questionFr : entry.questionEn,

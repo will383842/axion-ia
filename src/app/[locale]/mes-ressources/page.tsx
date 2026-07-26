@@ -36,7 +36,13 @@ export default async function MesRessourcesPage({ params }: Props) {
   // Sprint KB-17 : raffinement magic-token client-only.
   const session = await auth();
   if (!session?.user) {
-    redirect(`/${locale}/connexion?next=/${locale}/mes-ressources`);
+    // 🔴 Audit 2026-07-25 : cette redirection pointait vers `/${locale}/connexion`,
+    // une route qui N'EXISTE PAS — tout visiteur non connecté atterrissait sur un 404
+    // au lieu d'un écran de connexion. Constaté en production sur les 119 routes
+    // publiques auditées. La page de connexion des ressources est
+    // `/espace-ressources/connexion` (cf. `src/proxy.ts`, qui protège
+    // `/espace-ressources/*` en laissant passer `/connexion`).
+    redirect(`/${locale}/espace-ressources/connexion?next=/${locale}/mes-ressources`);
   }
 
   const loc = locale as Locale;

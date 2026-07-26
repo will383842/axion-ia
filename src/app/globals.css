@@ -32,7 +32,11 @@
   --color-primary-soft: #e8efff; /* halo bleu très doux pour fonds d'icônes */
 
   /* ----- Accent éditorial : terracotta brique ----- */
-  --color-terracotta: #c24a1b; /* brique chaude — accents éditoriaux, italiques */
+  --color-terracotta: #b23f16; /* brique chaude — accents éditoriaux, italiques.
+     Audit a11y 2026-07-26 : #c24a1b donnait 4,42:1 avec --color-mocha-fg (seuil AA
+     4,5), et 4,09:1 dans le header qui l'applique à 95 % d'opacité (bg-terracotta/95
+     → mélange #c55326). 45 nœuds en échec sur 5 pages. #b23f16 : 5,24 en plein,
+     4,82 à 95 %. Miroir obligatoire dans brand-tokens.ts (test de parité). */
   --color-terracotta-soft: #f5e3d8; /* halo terracotta doux */
   --color-terracotta-deep: #8c3010; /* terracotta foncé — hover */
 
