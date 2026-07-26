@@ -929,6 +929,8 @@ export async function genererCertificatRealisationAction(input: {
           dateDebut: true,
           dateFin: true,
           dureeReelleHeures: true,
+          // F30 — portée sur le certificat de réalisation (arrêté 21/12/2018).
+          modalite: true,
           formationSnapshot: true,
           formation: {
             select: {
@@ -1017,6 +1019,11 @@ export async function genererCertificatRealisationAction(input: {
           dateFin: formatDate(new Date(session.dateFin)),
           // ⚠️ dureeHeures en décimal — formatHeuresCentiemes appelé dans le template
           dureeHeures,
+          // F30 — modalité réelle de la session. Le modèle annexé à l'arrêté du
+          // 21 décembre 2018 distingue présentiel et distanciel, et un contrôle
+          // de service fait porte précisément là-dessus. La nature de l'action
+          // prend son défaut « action de formation » dans le template.
+          modalite: session.modalite,
         },
       }),
     // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
