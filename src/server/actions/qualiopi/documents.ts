@@ -987,6 +987,46 @@ export async function genererCertificatRealisationAction(input: {
     };
   }
 
+  // 🔴 Constaté EN PRODUCTION le 2026-07-26 — et déjà matérialisé.
+  //
+  // Le statut d'abandon était la SEULE garde. Plus bas, la durée n'est pondérée
+  // par le taux de présence que `if (tauxPresencePct !== null)` : quand le taux
+  // est inconnu, le certificat atteste donc la durée PRÉVUE comme si elle avait
+  // été réalisée. Rien n'exigeait qu'une seule heure ait été constatée.
+  //
+  // Ce n'est pas théorique : un `certificat_realisation` a été émis le 22/07 en
+  // production alors que `emargement_signatures` comptait ZÉRO ligne. La pièce
+  // que l'auditrice contrôle en premier attestait d'heures que rien ne prouvait.
+  //
+  // R.6313-3 : un certificat de réalisation atteste d'heures RÉELLEMENT suivies.
+  // Deux conditions, donc, et elles sont distinctes :
+  //   1. le taux de présence doit avoir été MESURÉ — un taux inconnu n'est pas un
+  //      taux de 100 % ;
+  //   2. il doit reposer sur une TRACE — au moins une signature d'émargement
+  //      rattachée à cette inscription. Un taux saisi à la main sans émargement
+  //      est une déclaration, pas une preuve, et c'est précisément ce qu'un
+  //      contrôle de service fait sanctionne.
+  //
+  // On refuse plutôt que d'émettre une pièce fausse : un certificat manquant se
+  // rattrape en émargeant, un certificat surdéclaré engage l'organisme devant le
+  // financeur.
+  if (enrollment.tauxPresencePct === null) {
+    return {
+      error:
+        "Certificat refusé : le taux de présence n'a pas été calculé. Un certificat de réalisation atteste d'heures réellement suivies (R.6313-3) — il ne peut pas reposer sur la durée prévue.",
+    };
+  }
+
+  const signatures = await prisma.emargementSignature.count({
+    where: { enrollmentId: enrollment.id },
+  });
+  if (signatures === 0) {
+    return {
+      error:
+        "Certificat refusé : aucune signature d'émargement n'est rattachée à cette inscription. Le taux de présence doit reposer sur une trace vérifiable, pas sur une saisie (R.6313-3, indicateurs 9 et 11).",
+    };
+  }
+
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;
   const trainee = enrollment.trainee;

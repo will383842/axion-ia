@@ -14,6 +14,7 @@ import {
   FieldRow,
   SignatureZone,
   pdfStyles,
+  assainirEspacesPdf,
 } from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -102,12 +103,20 @@ const local = StyleSheet.create({
 // Helpers
 // ============================================================
 
+// 🔴 Correctif glyphes 2026-07-26. `Intl` fr-FR emet U+202F (fine insecable)
+// comme separateur de milliers ; aucune police du projet ne possede ce glyphe,
+// @react-pdf bascule sur Helvetica/WinAnsi et ecrit l'octet 0x2F, soit « / ».
+// Tout montant >= 1 000 EUR sortait donc « 1/440,00 € ». Detail mesure dans
+// `assainirEspacesPdf` (base-layout.tsx). Ce duplicat local echappait au
+// correctif du helper partage : il doit assainir lui aussi.
 function formatEur(montant: number): string {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-  }).format(montant);
+  return assainirEspacesPdf(
+    new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+    }).format(montant),
+  );
 }
 
 // ============================================================
