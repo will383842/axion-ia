@@ -30,7 +30,7 @@ vi.mock("@/lib/prisma", () => ({
     enrollment: { count: vi.fn() },
     documentGenere: { count: vi.fn() },
     revueDirection: { count: vi.fn() },
-    supportFormation: { count: vi.fn() },
+    supportFormation: { count: vi.fn(), findMany: vi.fn() },
     coachingSession: { findMany: vi.fn() },
     moyenPedagogique: { groupBy: vi.fn() },
   },
@@ -60,7 +60,7 @@ type MockPrisma = {
   enrollment: { count: ReturnType<typeof vi.fn> };
   documentGenere: { count: ReturnType<typeof vi.fn> };
   revueDirection: { count: ReturnType<typeof vi.fn> };
-  supportFormation: { count: ReturnType<typeof vi.fn> };
+  supportFormation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   coachingSession: { findMany: ReturnType<typeof vi.fn> };
   moyenPedagogique: { groupBy: ReturnType<typeof vi.fn> };
 };
@@ -92,6 +92,9 @@ function setupEmpty() {
   mockP.documentGenere.count.mockResolvedValue(0);
   mockP.revueDirection.count.mockResolvedValue(0);
   mockP.supportFormation.count.mockResolvedValue(0);
+  // off.19 mesure desormais la COUVERTURE (formations actives dotees), pas le
+  // volume de supports — cf. audit 2026-07-26.
+  mockP.supportFormation.findMany.mockResolvedValue([]);
   mockP.coachingSession.findMany.mockResolvedValue([]);
   mockP.moyenPedagogique.groupBy.mockResolvedValue([]);
   // Par défaut : référent handicap + responsable qualité vides.

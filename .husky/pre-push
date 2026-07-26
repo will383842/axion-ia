@@ -9,8 +9,36 @@ pnpm test
 # (cron 03:00 UTC) ne les signale jusqu'à 24h plus tard. --audit-level
 # high pour rester silencieux sur les moderate/low (déjà couverts par
 # dependabot weekly).
-pnpm audit --prod --audit-level high || {
-  echo "🚨 pnpm audit: CVE high/critical détectée — push bloqué"
-  echo "   → résoudre via pnpm.overrides ou upgrade du package coupable"
-  exit 1
-}
+#
+# 🔴 Audit certification 2026-07-26 (F16) — le `||` d'origine traitait TOUT code de
+# sortie non nul comme une faille détectée. Or `pnpm audit` sort aussi en 1 quand il
+# ÉCHOUE À S'EXÉCUTER : le registre npm renvoie parfois une réponse que pnpm ne sait
+# pas parser (« Unexpected token, ... is not valid JSON »). Constaté trois fois le
+# 2026-07-26, bloquant tous les push du dépôt avec le message « CVE high/critical
+# détectée » — un diagnostic FAUX, qui envoie chercher une vulnérabilité inexistante
+# et pousse à contourner par --no-verify, donc à désarmer la garde le jour où elle
+# servirait vraiment.
+#
+# On distingue désormais les deux cas :
+#   - avis réellement présents  → push BLOQUÉ (le garde-fou fait son travail) ;
+#   - audit injoignable/illisible → une seconde tentative, puis AVERTISSEMENT sans
+#     blocage, en disant clairement que l'audit n'a pas pu s'exécuter.
+audit_json=$(pnpm audit --prod --audit-level high --json 2>/dev/null)
+if ! printf '%s' "$audit_json" | head -c 1 | grep -q '{'; then
+  # Sortie non-JSON = l'audit lui-même a échoué. Une seconde chance avant d'abandonner.
+  sleep 3
+  audit_json=$(pnpm audit --prod --audit-level high --json 2>/dev/null)
+fi
+
+if printf '%s' "$audit_json" | head -c 1 | grep -q '{'; then
+  if printf '%s' "$audit_json" | grep -q '"severity":"\(high\|critical\)"'; then
+    echo "🚨 pnpm audit: CVE high/critical détectée — push bloqué"
+    echo "   → résoudre via pnpm.overrides ou upgrade du package coupable"
+    exit 1
+  fi
+  echo "✓ pnpm audit: aucune CVE high/critical en production"
+else
+  echo "⚠️  pnpm audit n'a PAS pu s'exécuter (registre injoignable ou réponse illisible)."
+  echo "   Le push n'est PAS bloqué : aucune faille n'a été détectée, l'audit a échoué."
+  echo "   → relancer 'pnpm audit --prod --audit-level high' quand le registre répond."
+fi
