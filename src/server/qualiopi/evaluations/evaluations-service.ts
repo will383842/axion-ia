@@ -112,6 +112,87 @@ export async function listEvaluationsForEnrollment(
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * Résultats détaillés de l'évaluation finale, objectif par objectif.
+ *
+ * 🔴 Audit certification 2026-07-26 (F21). `getFinaleReussite` ne remontait
+ * qu'un booléen, et l'attestation imprimait donc sous « Compétences acquises »
+ * la liste COMPLÈTE des objectifs du catalogue — un stagiaire noté « non
+ * acquis » sur trois objectifs sur cinq était attesté sur les cinq. L'article
+ * L6353-1 exige les RÉSULTATS de l'évaluation des acquis, pas le programme.
+ *
+ * On remonte donc le détail, et c'est à l'appelant de ne pas le recopier.
+ */
+export interface ResultatsFinale {
+  reussite: boolean;
+  scorePct: number;
+  niveauGlobal: string;
+  /** Libellés répartis par note. Une compétence non notée n'est dans aucune. */
+  acquis: string[];
+  partiels: string[];
+  nonAcquis: string[];
+  /** Compétences attendues mais laissées sans note — à signaler, jamais à taire. */
+  nonEvalues: string[];
+}
+
+/** Forme d'une compétence telle que stockée dans la colonne Json `competences`. */
+interface CompetenceStockee {
+  libelle?: unknown;
+  note?: unknown;
+}
+
+/**
+ * Retourne le détail de l'évaluation finale la plus récente, ou `null`.
+ *
+ * `competences` est une colonne `Json` : son contenu n'est pas garanti par le
+ * typage. On la lit défensivement — un libellé manquant est ignoré plutôt que
+ * de faire échouer la génération de l'attestation.
+ */
+export async function getFinaleResultats(enrollmentId: string): Promise<ResultatsFinale | null> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return null;
+  }
+  const finale = await prisma.evaluationAcquis.findFirst({
+    where: { enrollmentId, type: "finale" },
+    orderBy: { dateEvaluation: "desc" },
+    select: {
+      reussite: true,
+      scorePct: true,
+      niveauGlobal: true,
+      competences: true,
+    },
+  });
+  if (finale === null) return null;
+
+  const brut: unknown = finale.competences;
+  const lignes: CompetenceStockee[] = Array.isArray(brut) ? (brut as CompetenceStockee[]) : [];
+
+  const acquis: string[] = [];
+  const partiels: string[] = [];
+  const nonAcquis: string[] = [];
+  const nonEvalues: string[] = [];
+
+  for (const c of lignes) {
+    if (c === null || typeof c !== "object") continue;
+    const libelle = typeof c.libelle === "string" ? c.libelle.trim() : "";
+    if (libelle === "") continue;
+    if (c.note === 3) acquis.push(libelle);
+    else if (c.note === 2) partiels.push(libelle);
+    else if (c.note === 1) nonAcquis.push(libelle);
+    else nonEvalues.push(libelle);
+  }
+
+  return {
+    reussite: finale.reussite,
+    scorePct: finale.scorePct,
+    niveauGlobal: String(finale.niveauGlobal),
+    acquis,
+    partiels,
+    nonAcquis,
+    nonEvalues,
+  };
+}
+
+/**
  * Retourne la réussite de l'évaluation finale la plus récente.
  * Retourne `null` si aucune évaluation finale n'existe.
  */

@@ -3,7 +3,7 @@
  *
  * Stratégie : mock @/lib/prisma, generateDocument, getOrganismeIdentite,
  * makeQrToken, qrDataUrl, getQualiopiConfig, classifierPresence,
- * getFinaleReussite.
+ * getFinaleResultats.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -64,7 +64,7 @@ vi.mock("@/server/qualiopi/documents/qr", () => ({
 }));
 
 vi.mock("./evaluations-service", () => ({
-  getFinaleReussite: vi.fn().mockResolvedValue(null),
+  getFinaleResultats: vi.fn().mockResolvedValue(null),
 }));
 
 vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
@@ -75,7 +75,7 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
-import { getFinaleReussite } from "./evaluations-service";
+import { getFinaleResultats } from "./evaluations-service";
 import { envoyerAttestationDisponible } from "@/server/qualiopi/notifications/notifications-service";
 import { genererAttestationPourEnrollment } from "./attestation-service";
 
@@ -95,7 +95,21 @@ const mockPrisma = prisma as unknown as {
 const mockClassifier = classifierPresence as ReturnType<typeof vi.fn>;
 const mockGenDoc = generateDocument as ReturnType<typeof vi.fn>;
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
-const mockGetFinale = getFinaleReussite as ReturnType<typeof vi.fn>;
+const mockGetFinale = getFinaleResultats as ReturnType<typeof vi.fn>;
+
+/** Résultats d'évaluation finale, forme complète attendue par le service (F21). */
+function resultatsFinale(over: Record<string, unknown> = {}): Record<string, unknown> {
+  return {
+    reussite: true,
+    scorePct: 100,
+    niveauGlobal: "acquis",
+    acquis: [],
+    partiels: [],
+    nonAcquis: [],
+    nonEvalues: [],
+    ...over,
+  };
+}
 const mockEnvoyerAttestation = envoyerAttestationDisponible as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -319,32 +333,79 @@ describe("genererAttestationPourEnrollment", () => {
 
   // ── Évaluation finale ───────────────────────────────────────────────────────
 
-  it("inclut evaluationObtenue='Évaluation finale : Réussite' si finale réussie", async () => {
-    mockGetFinale.mockResolvedValue(true);
-
+  /** Rend le PDF et retourne le bloc « resultats » de ses props. */
+  async function resultatsRendus(): Promise<Record<string, unknown>> {
     await genererAttestationPourEnrollment("enroll-1");
-
-    // buildElement reçoit le numéro alloué → on l'appelle pour inspecter les props.
     const docCall = mockGenDoc.mock.calls[0]![0] as {
       buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
     };
     const rendered = docCall.buildElement("AXI-ATT-2026-001");
-    const resultats = rendered.props.data["resultats"] as Record<string, unknown>;
-    expect(resultats["evaluationObtenue"]).toBe("Évaluation finale : Réussite");
+    return rendered.props.data["resultats"] as Record<string, unknown>;
+  }
+
+  it("inclut le verdict ET le score si une évaluation finale existe", async () => {
+    mockGetFinale.mockResolvedValue(resultatsFinale({ scorePct: 87 }));
+
+    expect((await resultatsRendus())["evaluationObtenue"]).toBe("Réussite — score 87 %");
   });
 
   it("n'inclut pas evaluationObtenue si pas d'évaluation finale (null)", async () => {
     mockGetFinale.mockResolvedValue(null);
 
-    await genererAttestationPourEnrollment("enroll-1");
+    expect("evaluationObtenue" in (await resultatsRendus())).toBe(false);
+  });
 
-    // buildElement reçoit le numéro alloué → on l'appelle pour inspecter les props.
-    const docCall = mockGenDoc.mock.calls[0]![0] as {
-      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
-    };
-    const rendered = docCall.buildElement("AXI-ATT-2026-001");
-    const resultats = rendered.props.data["resultats"] as Record<string, unknown>;
-    expect("evaluationObtenue" in resultats).toBe(false);
+  // ── F21 — l'attestation restitue les RÉSULTATS, jamais le programme ──────────
+  //
+  // Le service recopiait la liste complète des objectifs du catalogue sous
+  // « Compétences acquises », sans jamais lire l'évaluation : un stagiaire noté
+  // « non acquis » sur trois objectifs sur cinq était attesté sur les cinq.
+  // L6353-1 exige les résultats de l'évaluation des acquis (ind. 11, NON
+  // graduable). Ces tests verrouillent la correction.
+
+  it("F21 : n'imprime QUE les objectifs réellement notés « acquis »", async () => {
+    mockGetFinale.mockResolvedValue(
+      resultatsFinale({ acquis: ["Rédiger un prompt"], nonAcquis: ["Évaluer un biais"] }),
+    );
+
+    const resultats = await resultatsRendus();
+    expect(resultats["competencesAcquises"]).toBe("Rédiger un prompt");
+    // L'objectif non acquis ne doit apparaître QUE dans les réserves.
+    expect(resultats["competencesAcquises"]).not.toContain("Évaluer un biais");
+    expect(resultats["competencesReserves"]).toContain("Non acquis : Évaluer un biais");
+  });
+
+  it("F21 : le dit explicitement quand aucun objectif n'est acquis", async () => {
+    mockGetFinale.mockResolvedValue(resultatsFinale({ nonAcquis: ["Évaluer un biais"] }));
+
+    expect((await resultatsRendus())["competencesAcquises"]).toBe(
+      "Aucun objectif évalué comme acquis",
+    );
+  });
+
+  it("F21 : sans évaluation, n'affirme AUCUNE acquisition", async () => {
+    mockGetFinale.mockResolvedValue(null);
+
+    const resultats = await resultatsRendus();
+    expect(resultats["competencesAcquises"]).toBe("Évaluation des acquis non réalisée");
+    // Une attestation muette sur ce point se lirait comme une acquisition.
+    expect(resultats["competencesReserves"]).toBeUndefined();
+  });
+
+  it("F22 : une compétence non notée est signalée, pas comptée comme échouée", async () => {
+    mockGetFinale.mockResolvedValue(
+      resultatsFinale({ acquis: ["Rédiger un prompt"], nonEvalues: ["Citer ses sources"] }),
+    );
+
+    expect((await resultatsRendus())["competencesReserves"]).toBe(
+      "Non évalués : Citer ses sources",
+    );
+  });
+
+  it("F21 : pas de rubrique « Réserves » quand tout est acquis", async () => {
+    mockGetFinale.mockResolvedValue(resultatsFinale({ acquis: ["Rédiger un prompt"] }));
+
+    expect((await resultatsRendus())["competencesReserves"]).toBeUndefined();
   });
 
   // ── Seuil config ────────────────────────────────────────────────────────────

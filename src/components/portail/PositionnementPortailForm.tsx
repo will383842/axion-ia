@@ -26,12 +26,26 @@ import { useState, useTransition } from "react";
 
 type ActionResult<T> = { data: T } | { error: string };
 
-/** Échelle de maîtrise déclarée, alignée sur les 4 niveaux usuels en formation. */
+/**
+ * Échelle de maîtrise déclarée — VOLONTAIREMENT identique à celle de
+ * l'évaluation des acquis (`scoring.ts` : 1 non acquis, 2 en cours, 3 acquis).
+ *
+ * 🔴 Audit certification 2026-07-26 (F24). Ce formulaire notait d'abord sur
+ * QUATRE niveaux. Chaque indicateur tenait isolément — le 8 comme le 11 — mais
+ * l'auditrice ne demande pas « avez-vous un positionnement ? » puis « avez-vous
+ * une évaluation ? » : elle demande de montrer la PROGRESSION entre l'entrée et
+ * la sortie. Avec deux échelles différentes, cette démonstration se refaisait à
+ * la main, dossier par dossier.
+ *
+ * Les libellés restent formulés à la première personne (c'est une
+ * auto-évaluation, pas une notation), mais les valeurs sont les mêmes, et la
+ * clé est le libellé de l'objectif des deux côtés : entrée et sortie se
+ * superposent objectif par objectif.
+ */
 const NIVEAUX = [
   { valeur: 1, label: "Je découvre" },
-  { valeur: 2, label: "Notions" },
-  { valeur: 3, label: "À l'aise" },
-  { valeur: 4, label: "Je maîtrise" },
+  { valeur: 2, label: "Quelques notions" },
+  { valeur: 3, label: "Je maîtrise" },
 ] as const;
 
 const FREQUENCES = [
