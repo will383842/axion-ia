@@ -10,6 +10,7 @@
 
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { resolveLegalIdentity } from "@/lib/legal-identity";
+import { isRegimeTva, mentionTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 
 /** Identité complète de l'organisme de formation. */
 export interface OrganismeIdentite {
@@ -50,6 +51,23 @@ export interface OrganismeIdentite {
    * ne doivent pas être forcés de les fournir — les rendre obligatoires
    * n'ajouterait aucune garantie, juste un champ `null` recopié partout.
    */
+  /**
+   * Mention légale de TVA correspondant au régime CONFIGURÉ, ou `null` si le
+   * régime est « assujetti » (aucune mention à porter).
+   *
+   * 🔴 Audit certification 2026-07-26 (F25, complément). Six templates —
+   * convention, convention tripartite, contrat de formation et les trois kits
+   * financeurs — imprimaient `LEGAL_MENTIONS.factureExonerationTva` EN DUR,
+   * c'est-à-dire l'exonération 261-4-4°, alors que `regime_tva` vaut
+   * « assujetti » en production. Mon premier correctif n'avait couvert que le
+   * devis et les pages publiques : ces six-là passaient encore.
+   *
+   * C'est plus grave sur ces pièces que sur une page marketing : la convention
+   * et le contrat engagent contractuellement, et les kits partent chez un
+   * financeur (OPCO, CPF, France Travail). Annoncer une exonération qu'on ne
+   * détient pas y a une portée directe.
+   */
+  mentionTvaRegime?: string | null;
   formeJuridique?: string | null;
   capitalSocial?: string | null;
   rcsVille?: string | null;
@@ -90,6 +108,11 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     getQualiopiConfig("dpo_contact_email"),
   ]);
 
+  // F25 — la mention TVA se LIT dans la config, elle ne se décrète pas dans un
+  // template. `null` pour « assujetti » : rien à porter, et les blocs sont omis.
+  const regimeConfig = await getQualiopiConfig("regime_tva");
+  const mentionTvaRegime = mentionTva(isRegimeTva(regimeConfig) ? regimeConfig : REGIME_TVA_DEFAUT);
+
   const emailOrganisme = email || "";
 
   // F26 — identité commerciale lue depuis `legal_overrides`, la MÊME clé que les
@@ -116,6 +139,7 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     referentHandicapEmail: referentHandicapEmail || "",
     // DPO non renseigné → on retombe sur le contact général de l'OF (jamais le handicap).
     dpoEmail: dpoEmail || emailOrganisme,
+    mentionTvaRegime,
     formeJuridique: legal?.legalForm ?? null,
     capitalSocial: legal?.capitalSocial ?? null,
     rcsVille: legal?.rcsVille ?? null,

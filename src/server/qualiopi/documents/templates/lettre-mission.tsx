@@ -89,9 +89,7 @@ export function LettreMissionPdf({
             n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
             aucune raison d'exister. Même traitement que la facture et le devis.
           */}
-          {identite.qualiopi ? (
-            <FieldRow label="Qualiopi" value={identite.qualiopi} />
-          ) : null}
+          {identite.qualiopi ? <FieldRow label="Qualiopi" value={identite.qualiopi} /> : null}
           <FieldRow label="Adresse" value={identite.adresseSiege} required />
 
           <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>

@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
 // Types de données
 // ============================================================
 
-
 /**
  * Pied de kit financeur : NDA, et le n° Qualiopi UNIQUEMENT s'il existe.
  *
@@ -201,10 +200,17 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
 
         {/* Mentions légales */}
         <View style={pdfStyles.section}>
-          <Text style={pdfStyles.legalNote}>
-            {qualiopiLigne(identite)}
-          </Text>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
+          <Text style={pdfStyles.legalNote}>{qualiopiLigne(identite)}</Text>
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+          ) : null}
         </View>
       </QualiopiPage>
     </Document>

@@ -171,8 +171,8 @@ export function ReglementInterieurPdf({
             préalable des griefs retenus contre lui (art. R6352-4).
           </Text>
           <Text style={local.articleBody}>
-            Lorsqu&apos;une sanction susceptible d&apos;avoir une incidence, immédiate ou non, sur sa
-            présence dans la formation est envisagée, la procédure suivante s&apos;applique :
+            Lorsqu&apos;une sanction susceptible d&apos;avoir une incidence, immédiate ou non, sur
+            sa présence dans la formation est envisagée, la procédure suivante s&apos;applique :
           </Text>
           <BulletList
             items={[
@@ -184,8 +184,8 @@ export function ReglementInterieurPdf({
           />
           <Text style={local.articleBody}>
             Lorsqu&apos;un agissement rend indispensable une mesure conservatoire d&apos;exclusion
-            temporaire à effet immédiat, aucune sanction définitive ne peut être prise sans que cette
-            procédure ait été observée (art. R6352-7).
+            temporaire à effet immédiat, aucune sanction définitive ne peut être prise sans que
+            cette procédure ait été observée (art. R6352-7).
           </Text>
           <Text style={local.articleBody}>
             Lorsque le stagiaire est un salarié envoyé par son employeur ou que la formation est

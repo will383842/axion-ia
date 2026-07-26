@@ -217,7 +217,16 @@ export function ConventionTripartitePdf({
             <Text style={local.amountLabel}>Reste à charge client</Text>
             <Text style={local.amountValue}>{formatEur(data.resteAChargeClient)}</Text>
           </View>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+          ) : null}
         </DocSection>
 
         {/* 4. Conditions d'annulation */}
