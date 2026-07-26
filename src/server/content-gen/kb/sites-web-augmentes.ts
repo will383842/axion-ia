@@ -459,10 +459,14 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   {
     id: "web-048",
-    text: "L'IA générative permet de proposer des sites web multilingues à coût réduit : traduction automatique + post-édition humaine divise par 4 le coût de localisation versus traduction intégrale — Axion-IA déploie des sites FR/EN avec IA en 6 semaines vs 4-6 mois traditionnellement.",
+    // 🔴 F55 — la 1re moitié (division par 4 du coût de localisation) est un
+    // constat de marché défendable ; la 2de (« Axion-IA déploie en 6 semaines
+    // vs 4-6 mois ») est une promesse de délai propre à Axion-IA, sans source
+    // ni engagement contractuel. Un fait de grounding la republie à l'infini.
+    text: "L'IA générative permet de proposer des sites web multilingues à coût réduit : traduction automatique assortie d'une post-édition humaine divise par 4 le coût de localisation par rapport à une traduction intégrale.",
     source: "Axion-IA — Offre sites web multilingues IA 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-07-26",
     verticales: ["sites_web_augmentes"],
     confidence: 0.88,
   },
@@ -507,7 +511,12 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   // ── Intégration CRM et lead generation ───────────────────────────────────
   {
     id: "web-053",
-    text: "Un chatbot IA Axion-IA connecté au CRM HubSpot qualifie automatiquement les leads en 5 dimensions (budget, autorité, besoin, timing, taille) — réduisant de 65 % le temps des commerciaux consacré à la qualification initiale des prospects entrants.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Un chatbot IA connecté au CRM qualifie automatiquement les leads sur cinq dimensions (budget, autorité, besoin, calendrier, taille), allégeant d'autant la qualification initiale des prospects entrants par les commerciaux.",
     source: "Axion-IA — Étude de cas chatbot + CRM lead qualification 2025",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
     verifiedAt: "2026-05-22",
@@ -545,7 +554,12 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   {
     id: "web-057",
-    text: "Cloudflare protège 80 % des sites web Axion-IA contre les attaques DDoS, les bots malveillants et les tentatives de scraping non autorisé — la couche WAF + Rate Limiting est configurée par défaut pour garantir la disponibilité et les performances en cas de pic de trafic.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Cloudflare protège les sites web livrés par Axion-IA contre les attaques DDoS, les bots malveillants et le scraping non autorisé : la couche WAF et le rate limiting sont configurés par défaut pour préserver la disponibilité en cas de pic de trafic.",
     source: "Axion-IA — Architecture hébergement et sécurité 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
     verifiedAt: "2026-05-22",

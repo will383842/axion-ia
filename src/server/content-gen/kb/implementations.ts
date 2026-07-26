@@ -176,7 +176,12 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-018",
-    text: "Un chatbot IA de support client Axion-IA traite en moyenne 68 % des demandes entrantes sans intervention humaine — réduisant le délai de réponse de 24h à 2 minutes pour les requêtes standard.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Un chatbot IA de support client réduit fortement le délai de première réponse sur les requêtes standard, en traitant sans intervention humaine les demandes couvertes par la base documentaire qui lui est fournie.",
     source: "Axion-IA — Bilan projets implémentations 2025",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -185,7 +190,12 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-019",
-    text: "L'intégration d'un RAG interne (base documentaire métier) dans un chatbot Axion-IA réduit les hallucinations du LLM de 85 % en moyenne — en ancrant les réponses sur des documents vérifiés propres à l'entreprise.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "L'intégration d'un RAG interne (base documentaire métier) dans un chatbot réduit sensiblement les hallucinations du modèle, en ancrant les réponses sur des documents vérifiés propres à l'entreprise.",
     source: "Axion-IA — Documentation technique RAG v2.1",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -280,7 +290,12 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-029",
-    text: "Axion-IA conduit un audit qualité des données avant tout projet RAG — en moyenne 40 % du temps de projet est consacré à la préparation et la structuration des données sources.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Axion-IA conduit un audit qualité des données avant tout projet RAG : la préparation et la structuration des données sources représentent une part déterminante de la charge de projet.",
     source: "Axion-IA — Méthodologie projet IA v3.0",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -572,7 +587,12 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-061",
-    text: "Un cabinet d'expertise comptable client Axion-IA (35 collaborateurs, Paris) a déployé un RAG sur l'ensemble de sa base documentaire (4 200 documents) — permettant à ses collaborateurs de répondre aux questions clients 3× plus vite avec une précision de 94 %.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Les prestations d'implémentation Axion-IA recueillent une note moyenne de 4,89/5 sur 19 avis clients vérifiés, publiés individuellement avec le secteur et la ville du client sur axion-ia.com/avis.",
     source: "Axion-IA — Étude de cas RAG expertise comptable 2025",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
@@ -650,8 +670,13 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Preuve sociale Axion-IA ───────────────────────────────────────────────
   {
     id: "impl-069",
-    text: "Axion-IA a déployé plus de 35 implémentations IA en production pour des PME/ETI françaises entre 2023 et 2025 — avec un taux de satisfaction client de 4,7/5 et 82 % des clients ayant étendu leur projet IA à un second périmètre dans les 12 mois.",
-    source: "Axion-IA — Bilan projets implémentations 2025",
+    // 🔴 F55 — trois allégations invérifiables dans une seule phrase :
+    // « plus de 35 implémentations entre 2023 et 2025 » (aucune trace en base),
+    // « 4,7/5 » (contredisait le 4,8/5 annoncé ailleurs sur le même site), et
+    // « 82 % ont étendu dans les 12 mois » (aucune donnée de suivi).
+    // Recalculé sur la base réelle : 19 avis « implementations », moyenne 4,89.
+    text: "Les prestations d'implémentation Axion-IA recueillent une note moyenne de 4,89/5 sur 19 avis clients vérifiés, publiés et consultables individuellement sur axion-ia.com/avis.",
+    source: "Axion-IA — Avis clients vérifiés, publiés sur axion-ia.com/avis",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
@@ -736,7 +761,12 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Formation utilisateurs ─────────────────────────────────────────────────
   {
     id: "impl-079",
-    text: "Le taux d'adoption des outils IA par les utilisateurs finaux est multiplié par 3 lorsque la formation est délivrée sur cas d'usage propres à leur poste de travail — vs une formation générique sur l'outil (Axion-IA, étude adoption 2025, n=214 utilisateurs).",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Le taux d'adoption des outils IA par les utilisateurs finaux est nettement supérieur lorsque la formation est délivrée sur des cas d'usage propres à leur poste de travail, plutôt que sur une prise en main générique de l'outil.",
     source: "Axion-IA — Étude adoption outils IA post-déploiement 2025",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",

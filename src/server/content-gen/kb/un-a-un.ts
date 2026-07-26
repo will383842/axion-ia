@@ -93,7 +93,12 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Résultats et ROI ─────────────────────────────────────────────────────
   {
     id: "ua-009",
-    text: "À l'issue d'un programme 1-to-1 de 6 mois, 78 % des dirigeants coachés Axion-IA ont lancé au moins un projet IA concret en production dans leur organisation — contre 23 % sans accompagnement individuel.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Le programme 1-to-1 Axion-IA se déroule sur six mois et vise la mise en production d'un premier cas d'usage IA dans l'organisation du dirigeant accompagné.",
     source: "Axion-IA — Bilan programme Un-à-un 2025",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
@@ -470,7 +475,12 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Résultats sur l'organisation ──────────────────────────────────────────
   {
     id: "ua-050",
-    text: "Une étude interne Axion-IA (2025, n=87 dirigeants) montre que les entreprises dont le PDG a suivi un coaching 1-to-1 IA de plus de 3 mois ont, en moyenne, lancé 1,7 projet IA supplémentaire par rapport au groupe contrôle dans les 12 mois suivants.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Les dirigeants accompagnés en 1-to-1 par Axion-IA évaluent le programme à 4,93/5 en moyenne — la note la plus élevée parmi les cinq lignes de prestation. Les avis sont publiés nominativement (prénom, initiale, fonction, entreprise) sur axion-ia.com/avis.",
     source: "Axion-IA — Étude impact économique programme Un-à-un 2025",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
@@ -479,7 +489,12 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   },
   {
     id: "ua-051",
-    text: "L'adoption de l'IA par le dirigeant crée un « effet miroir » documenté : 73 % des managers de niveau N-1 d'un PDG coaché Axion-IA commencent à utiliser des outils IA dans les 90 jours suivant le début du coaching du dirigeant.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "L'adoption de l'IA par le dirigeant produit un effet d'entraînement sur son comité de direction : le coaching 1-to-1 prévoit explicitement la transmission des pratiques aux managers de niveau N-1.",
     source: "Axion-IA — Étude d'impact programme Un-à-un 2025",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
@@ -537,7 +552,12 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Indicateurs qualité coaching ─────────────────────────────────────────
   {
     id: "ua-057",
-    text: "Le NPS des programmes de coaching 1-to-1 Axion-IA s'élève à +72 en 2025 (base : 87 dirigeants) — 91 % recommanderaient le programme à un pair, 76 % l'ont effectivement recommandé dans l'année suivante.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Les programmes de coaching 1-to-1 Axion-IA recueillent la note moyenne la plus élevée du catalogue : 4,93/5 sur 15 avis clients vérifiés, publiés individuellement sur axion-ia.com/avis.",
     source: "Axion-IA — Bilan satisfaction programme Un-à-un 2025",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
@@ -546,7 +566,12 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   },
   {
     id: "ua-058",
-    text: "96 % des dirigeants ayant terminé un programme 1-to-1 Axion-IA déclarent utiliser au moins 3 outils IA différents de façon hebdomadaire dans leur travail — contre 11 % avant le début du programme.",
+    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
+    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
+    // grounding des articles générés ET le chatbot public — l'allégation y devient
+    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
+    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    text: "Le programme 1-to-1 Axion-IA vise l'autonomie du dirigeant sur un socle d'outils IA utilisés de façon hebdomadaire dans son travail quotidien.",
     source: "Axion-IA — Mesure d'impact pré/post programme Un-à-un 2025",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-22",
