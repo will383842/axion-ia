@@ -445,14 +445,17 @@ describe("evaluerAlertes — BPF", () => {
     expect(bpf).toHaveLength(0);
   });
 
-  it("crée bpf_a_deposer si BPF non déposé + date > 1er avril", async () => {
+  it("crée bpf_a_deposer si BPF non déposé + date > 1er avril + ORGANISME DÉCLARÉ", async () => {
     const now = new Date();
     const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
     // BPF non déposé (année 0) → l'alerte BPF dépend de la date courante.
+    // 🔴 F56 — le NDA est désormais INDISPENSABLE : sans déclaration d'activité,
+    // aucun BPF n'est dû et la règle ne doit rien lever (cf. cas suivant).
     mockGetConfig.mockImplementation((key: string) => {
       if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
       if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
       if (key === "bpf_annee_deposee") return Promise.resolve(0);
+      if (key === "nda_numero") return Promise.resolve("84691234567");
       return Promise.resolve("");
     });
 
@@ -467,6 +470,24 @@ describe("evaluerAlertes — BPF", () => {
     } else {
       expect(bpf.length).toBeGreaterThanOrEqual(1);
     }
+  });
+
+  // 🔴 F56 — l'obligation de déposer un BPF (art. L6352-11) ne naît qu'avec la
+  // DÉCLARATION D'ACTIVITÉ. Sans NDA, l'organisme n'en est pas un au sens du code
+  // du travail : il ne doit aucun bilan. La règle affichait pourtant « BPF en
+  // retard — régularisation urgente auprès de la DREETS » en CRITIQUE, sur un
+  // écran qu'un certificateur peut ouvrir. Constaté en production le 2026-07-26.
+  it("F56 : ne crée AUCUNE alerte BPF si l'organisme n'a pas de NDA", async () => {
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "bpf_annee_deposee") return Promise.resolve(0);
+      if (key === "nda_numero") return Promise.resolve("");
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+
+    expect(alertes.filter((x) => x.code.startsWith("bpf_"))).toHaveLength(0);
   });
 });
 

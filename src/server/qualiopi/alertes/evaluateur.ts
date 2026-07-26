@@ -382,6 +382,21 @@ async function regleQualiopiExpiration(now: Date): Promise<AlerteCandidate[]> {
 async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
   const annee = now.getFullYear();
   const anneeBpf = annee - 1; // BPF de l'année N-1, à déposer avant le 31 mai de l'année N.
+
+  // 🔴 Audit certification 2026-07-26 (F56). L'obligation de déposer un BPF
+  // (art. L6352-11) ne naît qu'avec la DÉCLARATION D'ACTIVITÉ. Sans NDA,
+  // l'organisme n'est pas encore un organisme de formation au sens du code du
+  // travail : il ne doit aucun bilan.
+  //
+  // La règle concluait à un manquement à partir de la seule absence de dépôt, et
+  // affichait « BPF en retard — régularisation urgente auprès de la DREETS » en
+  // CRITIQUE à un organisme qui n'était pas déclaré. Sur un écran qu'un
+  // certificateur peut ouvrir, l'alerte l'amène à une conclusion fausse et
+  // défavorable. Et deux faux positifs en critique apprennent à ignorer le
+  // niveau critique — le jour où une vraie alerte tombe, elle se noie.
+  const nda = await getQualiopiConfig("nda_numero");
+  if (typeof nda !== "string" || nda.trim() === "") return [];
+
   const anneeDeposee = await getQualiopiConfig("bpf_annee_deposee");
   const bpfDepose = typeof anneeDeposee === "number" && anneeDeposee >= anneeBpf;
   if (bpfDepose) return [];
@@ -565,12 +580,23 @@ async function regleOpco(now: Date): Promise<AlerteCandidate[]> {
     });
   }
 
-  // Sessions démarrées sans accord (en_cours avec opcoStatut non_demande ou demande)
+  // Sessions démarrées sans accord OPCO.
+  //
+  // 🔴 F56 — `opcoStatut` vaut `non_demande` PAR DÉFAUT (schema.prisma). Filtrer
+  // dessus seul faisait donc lever une alerte CRITIQUE « formation démarrée sans
+  // accord OPCO » sur TOUTE session passée en `en_cours`, y compris celles qu'aucun
+  // OPCO ne finance — vérifié en production : 0 dossier de financement,
+  // `opcoSubrogation = false`, et l'alerte tombait quand même.
+  //
+  // Un OPCO n'est concerné que si un dossier de financement existe, ou si la
+  // subrogation de paiement a été demandée. Sans l'un des deux, il n'y a pas
+  // d'accord à obtenir, donc pas de manquement.
   const demarreeSansAccord = await prisma.trainingSession.findMany({
     where: {
       statut: "en_cours",
       dateDebut: { lte: now },
       opcoStatut: { in: ["non_demande", "demande_en_cours"] },
+      OR: [{ opcoSubrogation: true }, { dossiersFinancement: { some: {} } }],
     },
     select: { id: true, numero: true },
   });
