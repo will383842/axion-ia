@@ -120,6 +120,22 @@ ENV BULLMQ_DISABLED=true
 ARG BUILD_SSG_VILLES_INDEXABLE_ONLY
 ENV BUILD_SSG_VILLES_INDEXABLE_ONLY=${BUILD_SSG_VILLES_INDEXABLE_ONLY:-false}
 
+# 🔴 Audit certification 2026-07-26 (F32) — drapeaux de visibilité OF.
+#
+# Ces deux drapeaux sont lus par des pages en SSG (`revalidate = 3600`), donc
+# ÉVALUÉS AU BUILD. Absents ici, `notFound()` était figé dans l'image : la page
+# /certification-qualiopi renvoyait 404 en production alors que
+# OF_PUBLIC_DISCLOSURE_ENABLED=true était bien posé côté Coolify. Le régler au
+# runtime ne pouvait rien y faire — le 404 était déjà compilé.
+#
+# Conséquence directe pour QUALIOPI_CERTIFICATION_OBTENUE : le jour où le
+# certificat arrive, le passer à "true" dans Coolify ne suffira PAS. Il faut un
+# nouveau build, c'est-à-dire un `git push` — trivial, mais il faut le savoir.
+ARG OF_PUBLIC_DISCLOSURE_ENABLED
+ENV OF_PUBLIC_DISCLOSURE_ENABLED=${OF_PUBLIC_DISCLOSURE_ENABLED:-false}
+ARG QUALIOPI_CERTIFICATION_OBTENUE
+ENV QUALIOPI_CERTIFICATION_OBTENUE=${QUALIOPI_CERTIFICATION_OBTENUE:-false}
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
