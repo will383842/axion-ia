@@ -58,6 +58,28 @@ const bool = (def: boolean) => ({ schema: boolSchema, default: def });
 export const QUALIOPI_CONFIG_REGISTRY = {
   // ── Identité organisme (placeholders légaux — à renseigner par Will) ──
   nda_numero: { ...str(), description: "N° de déclaration d'activité (NDA, 11 chiffres)." },
+  // ── Médiation de la consommation (obligatoire dès qu'un PARTICULIER contracte) ──
+  //
+  // 🔴 Audit certification 2026-07-26 (F50). Le code génère des contrats de
+  // formation individuels (art. L.6353-3), donc pour des consommateurs. Or
+  // l'article L.612-1 du Code de la consommation impose au professionnel
+  // d'adhérer à un médiateur agréé et d'en publier les coordonnées AVANT toute
+  // vente à un particulier. Amende administrative jusqu'à 15 000 € pour une
+  // personne morale.
+  //
+  // Ces deux clés sont vides par défaut : tant qu'elles le restent, la
+  // génération du contrat individuel est REFUSÉE (cf.
+  // `genererContratFormationAction`). Rien ne bloque l'activité B2B.
+  mediateur_consommation_nom: {
+    ...str(),
+    description:
+      "Nom du médiateur de la consommation agréé CECMC. OBLIGATOIRE avant toute vente à un particulier (art. L.612-1 C. conso).",
+  },
+  mediateur_consommation_url: {
+    ...str(),
+    description:
+      "Site ou adresse postale de saisine du médiateur. Publié dans les CGV et sur le contrat de formation individuel.",
+  },
   qualiopi_numero: { ...str(), description: "N° du certificat Qualiopi." },
   qualiopi_organisme: { ...str(), description: "Organisme certificateur Qualiopi (COFRAC)." },
   qualiopi_validite: { ...str(), description: "Date d'expiration Qualiopi (ISO YYYY-MM-DD)." },
