@@ -15,11 +15,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import {
-  requireAdminRead,
-  requireAdminWrite,
-  logQualiopiActivity,
-} from "@/server/actions/qualiopi/_guards";
+import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   genererFactureLibre,
   genererAvoirFacture,

@@ -21,7 +21,6 @@ import {
   formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================

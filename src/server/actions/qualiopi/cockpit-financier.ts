@@ -12,7 +12,7 @@
 "use server";
 
 import { z } from "zod";
-import { requireAdminRead, requireAdminWrite } from "@/server/actions/qualiopi/_guards";
+import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
 import { getMargeParSession, margeSessionsToCsv } from "@/server/qualiopi/remuneration/marge";
 import { periodeKey, type PilotagePeriode } from "@/server/qualiopi/conformite/periode";
 
