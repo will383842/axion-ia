@@ -28,7 +28,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
-import { getFinaleResultats } from "./evaluations-service";
+import { getFinaleResultats, evaluationSansAucuneNote } from "./evaluations-service";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
 import { envoyerAttestationDisponible } from "@/server/qualiopi/notifications/notifications-service";
@@ -255,8 +255,15 @@ export async function genererAttestationPourEnrollment(
   // y compris ceux notés « non acquis ». L6353-1 exige les résultats de
   // l'évaluation ; le document restituait le programme.
   const resultatsFinale = await getFinaleResultats(enrollmentId);
+  // 🔴 Vérification E2E 2026-07-26. Une évaluation existante mais dont AUCUNE
+  // compétence n'est notée doit être traitée comme « non réalisée », pas comme
+  // un échec : `scorePct = 0` et `reussite = false` y sont des artefacts de
+  // saisie vide, pas un résultat. Sans ce test, l'attestation portait
+  // « Non validée — score 0 % » — le faux échec que F22 ferme au niveau du
+  // calcul, réintroduit au niveau du document.
+  const sansAucuneNote = resultatsFinale !== null && evaluationSansAucuneNote(resultatsFinale);
   const evaluationObtenue =
-    resultatsFinale === null
+    resultatsFinale === null || sansAucuneNote
       ? undefined
       : `${resultatsFinale.reussite ? "Réussite" : "Non validée"} — score ${resultatsFinale.scorePct} %`;
 
@@ -269,7 +276,7 @@ export async function genererAttestationPourEnrollment(
   //   - pas d'évaluation  → l'annoncer explicitement. Une attestation muette sur
   //                         ce point serait interprétée comme une acquisition.
   const competencesAcquisesStr =
-    resultatsFinale === null
+    resultatsFinale === null || sansAucuneNote
       ? "Évaluation des acquis non réalisée"
       : resultatsFinale.acquis.length > 0
         ? resultatsFinale.acquis.join(", ")

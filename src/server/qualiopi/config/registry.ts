@@ -219,8 +219,14 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description:
       "Délai de paiement des financeurs publics/OPCO (jours) — seuil de retard distinct des entreprises.",
   },
-  // F61 — défauts d'acompte. Surchargés par client (`Client.tauxAcomptePct`,
-  // `Client.modeFacturation`) : le spécifique prime sur le général.
+  // F61 — défauts d'acompte.
+  //
+  // 🔴 Vérification E2E 2026-07-26 : ce commentaire affirmait que ces clés sont
+  // « surchargées par client ». La surcharge par client EXISTE bien
+  // (`resoudreConditions`, colonnes `Client.tauxAcomptePct` / `modeFacturation`),
+  // mais aucun chemin de facturation ne l'appelle encore — les 4 émetteurs
+  // (`facturation-service`, `facture-libre`, `plan-recurrent`,
+  // `facturation-1to1`) lisent uniquement le réglage global. Voir RESTE-A-FAIRE.
   taux_acompte_defaut_pct: {
     ...num(30),
     description:

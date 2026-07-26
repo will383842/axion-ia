@@ -22,7 +22,10 @@ import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestatio
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
 import { ensureCoachingSnapshot, COACHING_SNAPSHOT_SELECT } from "./coaching-snapshot";
 import { getHeuresReelles1to1, computeTaux1to1 } from "./heures";
-import { getFinaleResultats1to1 } from "@/server/qualiopi/evaluations/evaluations-service";
+import {
+  getFinaleResultats1to1,
+  evaluationSansAucuneNote,
+} from "@/server/qualiopi/evaluations/evaluations-service";
 
 export interface AttestationResult {
   resultat: "complete" | "partielle" | "aucune";
@@ -187,15 +190,22 @@ export async function genererAttestation1to1(
   // C'est d'autant plus grave que l'AFEST est précisément le dispositif où
   // l'évaluation individuelle est le cœur du sujet au regard de L6353-1.
   const resultatsFinale = await getFinaleResultats1to1(coachingSessionId);
+  // 🔴 Vérification E2E 2026-07-26. Une évaluation existante mais dont AUCUNE
+  // compétence n'est notée doit être traitée comme « non réalisée », pas comme
+  // un échec : `scorePct = 0` et `reussite = false` y sont des artefacts de
+  // saisie vide, pas un résultat. Sans ce test, l'attestation portait
+  // « Non validée — score 0 % » — le faux échec que F22 ferme au niveau du
+  // calcul, réintroduit au niveau du document.
+  const sansAucuneNote = resultatsFinale !== null && evaluationSansAucuneNote(resultatsFinale);
   const evaluationObtenue =
-    resultatsFinale === null
+    resultatsFinale === null || sansAucuneNote
       ? undefined
       : `${resultatsFinale.reussite ? "Réussite" : "Non validée"} — score ${resultatsFinale.scorePct} %`;
 
   // Ce qui s'imprime sous « Compétences acquises » : les objectifs RÉELLEMENT
   // notés acquis, jamais le programme.
   const competencesAcquisesStr =
-    resultatsFinale === null
+    resultatsFinale === null || sansAucuneNote
       ? "Évaluation des acquis non réalisée"
       : resultatsFinale.acquis.length > 0
         ? resultatsFinale.acquis.join(", ")

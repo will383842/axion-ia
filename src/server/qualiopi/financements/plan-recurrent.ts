@@ -28,6 +28,7 @@ import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { resoudreConditions } from "./conditions-client";
 import {
   normaliserLignesPourActivite,
   calculerProchaineGeneration,
@@ -168,7 +169,9 @@ export async function emettreFactureBrouillon(
 
   const facture = await prisma.factureFormation.findUniqueOrThrow({
     where: { id: factureId },
-    include: { client: { select: { contactEmail: true, adresse: true } } },
+    include: {
+      client: { select: { contactEmail: true, adresse: true, delaiPaiementJours: true } },
+    },
   });
   if (facture.statut !== "brouillon") {
     throw new Error("Seule une facture en brouillon s'émet.");
@@ -196,10 +199,19 @@ export async function emettreFactureBrouillon(
       : lignesBrutes;
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
-  const [delaiClient, rib] = await Promise.all([
+  // 🔴 Vérification E2E 2026-07-26 — délai propre au client, non lu jusqu'ici.
+  const [delaiGlobal, rib] = await Promise.all([
     getQualiopiConfig("delai_paiement_jours"),
     resolveRibFacture(),
   ]);
+  const delaiClient = resoudreConditions(
+    {
+      delaiPaiementJours: facture.client?.delaiPaiementJours ?? null,
+      tauxAcomptePct: null,
+      modeFacturation: null,
+    },
+    { delaiPaiementJours: delaiGlobal, tauxAcomptePct: 0, modeFacturation: "acompte_solde" },
+  ).delaiPaiementJours;
   const now = new Date();
   const echeance = new Date(now);
   echeance.setDate(

@@ -762,3 +762,122 @@ describe("evaluerAlertes — bareme_opco_perime", () => {
     expect(alertes.filter((a) => a.code === "bareme_opco_perime")).toHaveLength(0);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Faux positifs corrigés — vérification E2E 2026-07-26
+//
+// Quatre règles concluaient au manquement sans vérifier quelle obligation
+// s'applique. Sur un tableau de bord d'audit, une alerte CRITIQUE fausse coûte
+// plus cher qu'une alerte manquante : elle envoie Will corriger un problème qui
+// n'existe pas, et décrédibilise les vraies.
+//
+// Le harnais de mock ne rejoue pas le filtrage Prisma : pour les règles dont le
+// tri est fait EN BASE, on assère donc la forme du `where` émis — c'est lui qui
+// porte le correctif. Pour R12, dont la logique est en JS après la lecture, on
+// assère le comportement.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Faux positifs — gardes sur le where émis", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function whereEmis(predicat: (w: Record<string, unknown>) => boolean): Record<string, unknown> {
+    const appels = mp.trainingSession.findMany.mock.calls as Array<
+      [{ where?: Record<string, unknown> }]
+    >;
+    const trouve = appels.map((c) => c[0]?.where ?? {}).find(predicat);
+    expect(trouve).toBeDefined();
+    return trouve!;
+  }
+
+  it("R13 J-7 — n'interroge que les sessions qu'un OPCO finance réellement", async () => {
+    await evaluerAlertes();
+    // `opcoStatut: "non_demande"` est la valeur PAR DÉFAUT du schéma : filtrer
+    // dessus seul faisait lever l'alerte sur toute session sans financement.
+    const w = whereEmis((x) => x["opcoStatut"] === "non_demande" && x["statut"] === "planifiee");
+    expect(w["OR"]).toEqual([{ opcoSubrogation: true }, { dossiersFinancement: { some: {} } }]);
+  });
+
+  it("R03bis — borne basse d'un an, sinon « démarre le » affiche une date passée", async () => {
+    await evaluerAlertes();
+    const w = whereEmis((x) => x["formateurPrincipalId"] === null);
+    const d = w["dateDebut"] as { lte?: Date; gte?: Date };
+    expect(d.gte).toBeInstanceOf(Date);
+    expect(d.gte!.getTime()).toBeLessThan(Date.now());
+    expect(d.lte!.getTime()).toBeGreaterThan(d.gte!.getTime());
+  });
+
+  it("R17 — un contrat de formation (particulier, L6353-3) satisfait l'obligation", async () => {
+    await evaluerAlertes();
+    const w = whereEmis((x) => x["documents"] !== undefined);
+    const docs = w["documents"] as { none: { type: { in: string[] } } };
+    expect(docs.none.type.in).toContain("contrat");
+    expect(docs.none.type.in).toContain("convention");
+  });
+});
+
+describe("R12 — vérification Qualiopi d'un sous-traitant", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function sousTraitantVerifieIlYA(jours: number) {
+    mp.trainer.findMany.mockImplementation(({ where }: { where?: { statut?: string } }) => {
+      if (where?.statut === "sous_traitant") {
+        return Promise.resolve([
+          {
+            id: "tr-001",
+            nom: "Durand",
+            prenom: "Paul",
+            sousTraitantVerifieAt: new Date(Date.now() - jours * 24 * 60 * 60 * 1000),
+          },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  // 🔴 Le faux positif d'origine. `sousTraitantVerifieAt` est la date à laquelle
+  // la vérification a été FAITE : la règle la comparait à `now + 60 j`, donc
+  // toute date passée déclenchait « expiré » en CRITIQUE. La preuve de
+  // conformité servait à conclure au manquement.
+  it("vérifié hier → aucune alerte", async () => {
+    sousTraitantVerifieIlYA(1);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((a) => a.code.startsWith("sous_traitant_qualiopi"))).toHaveLength(0);
+  });
+
+  it("vérifié il y a 13 mois → expiré, critique", async () => {
+    sousTraitantVerifieIlYA(400);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "sous_traitant_qualiopi_expire");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+  });
+
+  it("vérifié il y a 11 mois → préavis 60 jours, important", async () => {
+    sousTraitantVerifieIlYA(330);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "sous_traitant_qualiopi_expire_j60");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toMatch(/dans \d+ jours/);
+  });
+
+  it("jamais vérifié → critique (comportement conservé)", async () => {
+    mp.trainer.findMany.mockImplementation(({ where }: { where?: { statut?: string } }) => {
+      if (where?.statut === "sous_traitant") {
+        return Promise.resolve([
+          { id: "tr-002", nom: "Leroy", prenom: "Anne", sousTraitantVerifieAt: null },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "sous_traitant_qualiopi_expire");
+    expect(a?.niveau).toBe("critique");
+  });
+});

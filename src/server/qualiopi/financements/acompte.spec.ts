@@ -156,3 +156,103 @@ describe("Robustesse — ne lève jamais", () => {
     expect(r.echeancier).toHaveLength(0);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Vérification E2E 2026-07-26 — deux défauts trouvés par contre-vérification.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("CPF avec un titulaire particulier", () => {
+  // 🔴 La branche CPF s'exécutait avant le test sur `nature`. Le reste à charge
+  // CPF est un cas métier DÉCLARÉ (`qualiopi.cpf_reste_a_charge = 103,20 €` en
+  // production) : il ressortait en règlement unique, sans rétractation, sans
+  // échelonnement, sans mention L6353-6. Le CPF retire l'acompte, pas les
+  // protections du particulier sur ce qu'il paie lui-même.
+  const ctx = {
+    montantTotalHtCents: 200_000,
+    priseEnChargeCents: 189_680,
+    nature: "particulier" as const,
+    tauxAcomptePct: 30,
+    cpf: true,
+    subrogation: false,
+    dateSignature: new Date("2026-09-01T00:00:00Z"),
+  };
+
+  it("ne demande aucun acompte", () => {
+    expect(calculerAcompte(ctx).acompteCents).toBe(0);
+  });
+
+  it("échelonne le reste à charge et cite L6353-6", () => {
+    const r = calculerAcompte(ctx);
+    expect(r.echeancier).toHaveLength(1);
+    expect(r.echeancier[0]!.libelle).toContain("L6353-6");
+    expect(r.echeancier[0]!.montantCents).toBe(10_320);
+  });
+
+  it("ouvre l'encaissement après le délai de rétractation", () => {
+    const r = calculerAcompte(ctx);
+    expect(r.encaissableAPartirDu).toBeInstanceOf(Date);
+    expect(r.encaissableAPartirDu!.getTime()).toBeGreaterThan(ctx.dateSignature.getTime());
+  });
+
+  it("sans reste à charge, revient au cas CPF pur", () => {
+    const r = calculerAcompte({ ...ctx, priseEnChargeCents: 200_000 });
+    expect(r.echeancier).toHaveLength(0);
+    expect(r.motif).toContain("Caisse des Dépôts");
+  });
+});
+
+describe("Entrées non numériques", () => {
+  // 🔴 Le JSDoc promettait des bornes sûres ; `Math.trunc(NaN)` vaut `NaN`, qui
+  // traversait tout le calcul. `if (acompte > 0)` étant faux pour NaN,
+  // l'échéancier ressortait VIDE et l'invariante « somme = reste à charge » ne
+  // détectait rien.
+  const base = {
+    montantTotalHtCents: 200_000,
+    priseEnChargeCents: 0,
+    nature: "entreprise" as const,
+    tauxAcomptePct: 30,
+    cpf: false,
+    subrogation: false,
+  };
+
+  for (const [nom, ctx] of [
+    ["montant NaN", { ...base, montantTotalHtCents: NaN }],
+    ["montant Infinity", { ...base, montantTotalHtCents: Infinity }],
+    ["prise en charge NaN", { ...base, priseEnChargeCents: NaN }],
+    ["taux NaN", { ...base, tauxAcomptePct: NaN }],
+  ] as const) {
+    it(`${nom} → aucun montant NaN en sortie`, () => {
+      const r = calculerAcompte(ctx);
+      for (const v of [r.acompteCents, r.soldeCents, r.resteAChargeCents]) {
+        expect(Number.isFinite(v)).toBe(true);
+      }
+      expect(r.motif).not.toContain("NaN");
+      for (const e of r.echeancier) expect(Number.isFinite(e.montantCents)).toBe(true);
+    });
+  }
+
+  it("un taux NaN vaut 0, et l'objet reste cohérent avec lui-même", () => {
+    const r = calculerAcompte({ ...base, tauxAcomptePct: NaN });
+    expect(r.acompteCents).toBe(0);
+    expect(r.soldeCents).toBe(r.resteAChargeCents);
+    expect(r.echeancier.reduce((t, e) => t + e.montantCents, 0)).toBe(r.resteAChargeCents);
+  });
+});
+
+describe("Message de plafonnement", () => {
+  // Annonçait « le taux de 100 % a été ramené à 30 % » quand on avait demandé
+  // 500 : il lisait la valeur déjà bornée à 100.
+  it("cite le taux réellement saisi", () => {
+    const r = calculerAcompte({
+      montantTotalHtCents: 100_000,
+      priseEnChargeCents: 0,
+      nature: "particulier",
+      tauxAcomptePct: 500,
+      cpf: false,
+      subrogation: false,
+    });
+    expect(r.plafonne).toBe(true);
+    expect(r.motif).toContain("500 %");
+    expect(r.motif).toContain("ramené à 30 %");
+  });
+});

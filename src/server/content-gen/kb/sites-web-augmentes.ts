@@ -223,7 +223,13 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   {
     id: "web-023",
-    text: "Axion-IA développe avec des outils IA-augmentés (Claude Code, Cursor) permettant de livrer des projets web complets 2 à 3× plus vite qu'une agence traditionnelle — répercuté sur le prix final client.",
+    // 🔴 Vérification E2E 2026-07-26 (F55, 2e passage). Le premier passage avait
+    // laissé cette auto-déclaration chiffrée, de la même classe que les 17
+    // réécrites : un résultat annoncé sans mesure ni source tierce. Ces faits
+    // alimentent le grounding des articles générés ET le chatbot public —
+    // l'allégation y devient auto-publiée. Reformulé sur ce qui est réellement
+    // vérifiable : la méthode, pas un résultat inventé.
+    text: "Axion-IA développe avec des outils IA-augmentés (Claude Code, Cursor). Le gain de productivité qu'ils apportent est répercuté sur le prix final client plutôt que sur la marge.",
     source: "Axion-IA — Méthodologie développement 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
     verifiedAt: "2026-05-01",
@@ -473,7 +479,13 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   // ── Preuve sociale et résultats ────────────────────────────────────────────
   {
     id: "web-049",
-    text: "Les 5 sites web augmentés livrés par Axion-IA en 2024-2025 affichent en moyenne un score Lighthouse Performance de 94/100 sur mobile et 98/100 sur desktop — avec des Core Web Vitals tous dans le vert (LCP ≤ 1,8s, INP ≤ 80ms, CLS = 0).",
+    // 🔴 Vérification E2E 2026-07-26 (F55, 2e passage). Le premier passage avait
+    // laissé cette auto-déclaration chiffrée, de la même classe que les 17
+    // réécrites : un résultat annoncé sans mesure ni source tierce. Ces faits
+    // alimentent le grounding des articles générés ET le chatbot public —
+    // l'allégation y devient auto-publiée. Reformulé sur ce qui est réellement
+    // vérifiable : la méthode, pas un résultat inventé.
+    text: "Les sites livrés par Axion-IA sont soumis à un budget de performance contrôlé automatiquement à chaque mise en ligne : LCP ≤ 1,8 s, INP ≤ 100 ms, CLS = 0. Une livraison qui dépasse ces seuils est bloquée avant déploiement.",
     source: "Axion-IA — Bilan performances techniques projets web 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
     verifiedAt: "2026-05-22",

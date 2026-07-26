@@ -34,6 +34,12 @@ import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { resoudreConditions, type ModeFacturation } from "./conditions-client";
+
+/** Garde de type : la colonne est un enum Prisma, la config une chaîne libre. */
+function estModeFacturation(v: unknown): v is ModeFacturation {
+  return v === "acompte_solde" || v === "solde_unique";
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -171,12 +177,39 @@ export async function genererFactureFormation(
 
   // Échéance : délai configurable (SiteSetting) — financeur (subrogation OPCO)
   // vs client direct. RIB depuis legal_overrides (null → bloc omis du PDF).
-  const [delaiClient, delaiFinanceur, rib] = await Promise.all([
-    getQualiopiConfig("delai_paiement_jours"),
-    getQualiopiConfig("delai_paiement_financeur_jours"),
-    resolveRibFacture(),
-  ]);
-  const delaiJours = session.opcoSubrogation ? delaiFinanceur : delaiClient;
+  const [delaiClientGlobal, delaiFinanceur, tauxAcompteGlobal, modeFacturationGlobal, rib] =
+    await Promise.all([
+      getQualiopiConfig("delai_paiement_jours"),
+      getQualiopiConfig("delai_paiement_financeur_jours"),
+      getQualiopiConfig("taux_acompte_defaut_pct"),
+      getQualiopiConfig("mode_facturation_defaut"),
+      resolveRibFacture(),
+    ]);
+
+  // 🔴 Vérification E2E 2026-07-26 — F61 était livré en dormance : les colonnes
+  // `Client.delaiPaiementJours` / `tauxAcomptePct` / `modeFacturation` et le
+  // résolveur `resoudreConditions` existaient, mais AUCUN émetteur de facture
+  // ne les lisait. Le réglage par client, demandé explicitement, n'avait donc
+  // aucun effet. Branché ici — subrogation OPCO exceptée : c'est alors le
+  // financeur qui paie, pas le client, et son délai propre s'applique.
+  const conditions = resoudreConditions(
+    {
+      delaiPaiementJours: session.client?.delaiPaiementJours ?? null,
+      tauxAcomptePct: session.client?.tauxAcomptePct ?? null,
+      modeFacturation: estModeFacturation(session.client?.modeFacturation)
+        ? session.client.modeFacturation
+        : null,
+    },
+    {
+      delaiPaiementJours: delaiClientGlobal,
+      tauxAcomptePct: tauxAcompteGlobal,
+      modeFacturation: estModeFacturation(modeFacturationGlobal)
+        ? modeFacturationGlobal
+        : "acompte_solde",
+    },
+  );
+
+  const delaiJours = session.opcoSubrogation ? delaiFinanceur : conditions.delaiPaiementJours;
   const now = new Date();
   const echeance = new Date(now);
   echeance.setDate(

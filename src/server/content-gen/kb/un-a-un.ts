@@ -107,7 +107,13 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   },
   {
     id: "ua-010",
-    text: "Les dirigeants coachés Axion-IA économisent en moyenne 5 à 8 heures par semaine sur des tâches de synthèse, reporting et préparation de décision grâce à l'intégration d'outils IA dans leur workflow.",
+    // 🔴 Vérification E2E 2026-07-26 (F55, 2e passage). Le premier passage avait
+    // laissé cette auto-déclaration chiffrée, de la même classe que les 17
+    // réécrites : un résultat annoncé sans mesure ni source tierce. Ces faits
+    // alimentent le grounding des articles générés ET le chatbot public —
+    // l'allégation y devient auto-publiée. Reformulé sur ce qui est réellement
+    // vérifiable : la méthode, pas un résultat inventé.
+    text: "Le coaching 1-to-1 Axion-IA porte sur les tâches où un dirigeant passe le plus de temps sans valeur ajoutée : synthèse, reporting et préparation de décision. Le gain se constate poste par poste, il n'est pas garanti à l'avance.",
     source: "Axion-IA — Bilan programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
@@ -202,7 +208,13 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Impact sur l'organisation ────────────────────────────────────────────
   {
     id: "ua-020",
-    text: "Un dirigeant accompagné en coaching 1-to-1 IA devient un vecteur naturel de diffusion des pratiques IA dans son organisation — les équipes qui l'observent adoptent 2,3 fois plus rapidement les outils IA (Axion-IA, 2025).",
+    // 🔴 Vérification E2E 2026-07-26 (F55, 2e passage). Le premier passage avait
+    // laissé cette auto-déclaration chiffrée, de la même classe que les 17
+    // réécrites : un résultat annoncé sans mesure ni source tierce. Ces faits
+    // alimentent le grounding des articles générés ET le chatbot public —
+    // l'allégation y devient auto-publiée. Reformulé sur ce qui est réellement
+    // vérifiable : la méthode, pas un résultat inventé.
+    text: "Un dirigeant accompagné en coaching 1-to-1 IA devient un vecteur de diffusion des pratiques dans son organisation : l'exemplarité du dirigeant est l'un des leviers d'adoption les plus cités par les équipes.",
     source: "Axion-IA — Étude d'impact programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",

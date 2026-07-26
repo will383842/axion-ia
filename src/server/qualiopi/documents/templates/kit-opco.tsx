@@ -19,7 +19,7 @@ import {
   formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { LEGAL_MENTIONS, formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
+import { formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
@@ -158,7 +158,7 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
             // pièces à fournir. La note ne s'affiche que si le régime la porte.
             {
               label: "Facture",
-              note: identite.mentionTvaRegime ?? "Régime de TVA applicable",
+              note: identite.mentionTvaRegime ?? "",
             },
           ].map((piece, idx) => (
             <View key={idx} style={styles.pieceRow}>

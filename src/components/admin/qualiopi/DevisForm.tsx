@@ -7,7 +7,7 @@
  * - Sélection du client (liste CRM).
  * - Lignes : designation / quantité / prixUnitaireHtCents / offreTierId optionnel.
  * - Financement suggéré + options OPCO si sélectionné.
- * - Mention TVA affichée en lecture seule (exonération 261-4-4° CGI).
+ * - Mention TVA affichée en lecture seule, dérivée de `qualiopi.regime_tva`.
  * - Date de validité auto (+30 j) — affiché en informatif.
  * - Appelle `createDevisAction` puis redirige vers `/[basePath]/[id]`.
  */
@@ -462,9 +462,10 @@ export function DevisForm({
       {/* ── Mention TVA ── */}
       <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
         <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          <span className="font-semibold tracking-wide uppercase">Mention TVA</span> — Formation
-          professionnelle exonérée de TVA en application de l&apos;article 261-4-4° du CGI. La date
-          de validité sera fixée automatiquement à 30 jours à compter de la création du devis.
+          <span className="font-semibold tracking-wide uppercase">Mention TVA</span> — appliquée
+          selon le régime configuré (Paramètres → Qualiopi → Régime de TVA) ; le devis porte la
+          mention correspondante. La date de validité sera fixée automatiquement à 30 jours à
+          compter de la création du devis.
         </p>
       </section>
 

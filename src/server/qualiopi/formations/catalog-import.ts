@@ -395,7 +395,15 @@ async function createFormationWithNumero(
   // catalogue exact à l'import (cf. reconcileFormationFields).
   const catalogSnapshot = toCatalogSnapshot(data);
   for (let attempt = 0; attempt < 5; attempt++) {
-    const count = await db.formation.count();
+    // 🔴 Vérification E2E 2026-07-26 — F63 n'avait pas été propagé ici. Ce
+    // `count()` portait sur TOUTE la table alors que le numéro produit estampille
+    // l'année (`AXI-FORM-{year}-NNN`), donc les deux allocateurs de formation
+    // divergeaient : `numbering.ts` compte l'année, celui-ci comptait tout. Sans
+    // effet visible aujourd'hui (les 57 formations sont toutes en 2026), la
+    // divergence apparaît au 1er janvier — 001 d'un côté, 058 de l'autre.
+    const count = await db.formation.count({
+      where: { numero: { startsWith: `AXI-FORM-${year}-` } },
+    });
     const numero = formatDocumentNumber("formation", year, count + 1);
     try {
       const created = await db.formation.create({

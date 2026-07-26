@@ -54,7 +54,7 @@ export interface ContratFormationData {
   dateFin: string;
   modalite: "Présentiel" | "Distanciel" | "Mixte";
   lieu: string;
-  // Conditions financières (prix net — formation exonérée de TVA)
+  // Conditions financières (la mention TVA suit `qualiopi.regime_tva`)
   prixNet: number;
   /** Pourcentage d'acompte après le délai de rétractation (plafonné à 30 % — L.6353-6). */
   acomptePercent?: number;

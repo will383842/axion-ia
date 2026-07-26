@@ -167,6 +167,24 @@ export async function getFinaleResultats(enrollmentId: string): Promise<Resultat
 }
 
 /**
+ * Vrai si l'évaluation ne comporte AUCUNE compétence notée.
+ *
+ * 🔴 Vérification E2E 2026-07-26. F22 avait sorti les compétences non notées du
+ * calcul, mais la conséquence n'était pas propagée : une évaluation enregistrée
+ * avec toutes les cases vides donne `scoreMax = 0`, donc `scorePct = 0`, donc
+ * `reussite = false` — et ces trois valeurs sont PERSISTÉES. L'attestation
+ * imprimait alors « Non validée — score 0 % », c'est-à-dire exactement le faux
+ * échec que F22 prétendait fermer, un étage plus haut.
+ *
+ * Un commentaire de test affirmait même le contraire (« l'attestation porte
+ * alors "Évaluation des acquis non réalisée" ») : c'était faux, cette branche
+ * n'était atteinte que sans AUCUNE ligne en base.
+ */
+export function evaluationSansAucuneNote(r: ResultatsFinale): boolean {
+  return r.acquis.length === 0 && r.partiels.length === 0 && r.nonAcquis.length === 0;
+}
+
+/**
  * Répartit les compétences d'une évaluation par note. Partagé entre la voie
  * collective et la voie AFEST 1-to-1.
  *

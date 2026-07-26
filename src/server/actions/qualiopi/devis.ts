@@ -438,7 +438,7 @@ export async function sendDevisAction(
   let emailEnvoye = false;
   let note: string | undefined;
   if (contactEmail && fichierPdfUrl !== null) {
-    const { enqueued } = await enqueueEmail(
+    const { enqueued, garePourValidation = false } = await enqueueEmail(
       "devis-envoi",
       contactEmail,
       "fr",
@@ -454,9 +454,19 @@ export async function sendDevisAction(
       },
     );
     emailEnvoye = enqueued;
-    if (!enqueued)
+    // 🔴 Vérification E2E 2026-07-26. Un email garé pour validation n'est PAS
+    // enfilé — `enqueued` est donc faux. Sans distinguer les deux cas, l'admin
+    // lisait « file d'attente indisponible, réessayer » alors que l'email
+    // l'attendait sagement dans la corbeille de validation : le message
+    // l'envoyait diagnostiquer une panne inexistante, et réessayer aurait garé
+    // un doublon.
+    if (garePourValidation) {
+      note =
+        "Devis marqué envoyé. L'email attend votre validation dans Emails → À valider ; il partira une fois approuvé.";
+    } else if (!enqueued) {
       note =
         "File d'attente email indisponible : le devis est marqué envoyé, mais l'email n'a pas pu être expédié — réessayer plus tard.";
+    }
   } else if (!contactEmail) {
     note = "Aucun email de contact client : le devis est marqué envoyé, mais rien n'a été expédié.";
   } else {

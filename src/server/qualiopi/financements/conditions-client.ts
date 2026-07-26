@@ -60,31 +60,51 @@ export function resoudreConditions(
 ): ConditionsResolues {
   const avertissements: string[] = [];
 
-  let delai = defauts.delaiPaiementJours;
-  let origineDelai: "client" | "global" = "global";
-  if (client?.delaiPaiementJours != null) {
-    origineDelai = "client";
-    delai = client.delaiPaiementJours;
-    if (delai > DELAI_PAIEMENT_MAX_JOURS) {
-      avertissements.push(
-        `Délai de paiement de ${delai} jours ramené à ${DELAI_PAIEMENT_MAX_JOURS} : au-delà, la clause est illicite entre professionnels (art. L441-10 du code de commerce).`,
-      );
-      delai = DELAI_PAIEMENT_MAX_JOURS;
-    }
-    if (delai < 0) {
-      avertissements.push("Délai de paiement négatif ramené à 0.");
-      delai = 0;
-    }
+  const origineDelai: "client" | "global" =
+    client?.delaiPaiementJours != null ? "client" : "global";
+  const delaiSaisi =
+    client?.delaiPaiementJours != null ? client.delaiPaiementJours : defauts.delaiPaiementJours;
+
+  // 🔴 Vérification E2E 2026-07-26 — deux trous dans le bornage.
+  //
+  // 1. Le clamp L441-10 ne s'appliquait QU'À la valeur du client. Un défaut
+  //    global aberrant (365 jours, 900 %) sortait tel quel, sans un mot : la
+  //    protection couvrait la saisie exceptionnelle et laissait passer celle qui
+  //    s'applique à TOUS les clients.
+  // 2. `NaN > 60` et `NaN < 0` sont tous deux faux : un délai NaN ressortait NaN
+  //    SANS avertissement, et un taux NaN ressortait NaN AVEC l'avertissement
+  //    « ramené dans l'intervalle 0–100 % » — un message qui mentait, puisque
+  //    rien n'avait été ramené.
+  let delai = Number.isFinite(delaiSaisi) ? Math.trunc(delaiSaisi) : 0;
+  if (!Number.isFinite(delaiSaisi)) {
+    avertissements.push(
+      `Délai de paiement non numérique (valeur reçue : ${String(delaiSaisi)}) ramené à 0 jour.`,
+    );
+  } else if (delai > DELAI_PAIEMENT_MAX_JOURS) {
+    avertissements.push(
+      `Délai de paiement de ${delai} jours ramené à ${DELAI_PAIEMENT_MAX_JOURS} : au-delà, la clause est illicite entre professionnels (art. L441-10 du code de commerce).`,
+    );
+    delai = DELAI_PAIEMENT_MAX_JOURS;
+  } else if (delai < 0) {
+    avertissements.push("Délai de paiement négatif ramené à 0.");
+    delai = 0;
   }
 
-  let acompte = defauts.tauxAcomptePct;
-  let origineAcompte: "client" | "global" = "global";
-  if (client?.tauxAcomptePct != null) {
-    origineAcompte = "client";
-    acompte = Math.max(0, Math.min(100, client.tauxAcomptePct));
-    if (acompte !== client.tauxAcomptePct) {
+  const origineAcompte: "client" | "global" = client?.tauxAcomptePct != null ? "client" : "global";
+  const acompteSaisi =
+    client?.tauxAcomptePct != null ? client.tauxAcomptePct : defauts.tauxAcomptePct;
+
+  let acompte: number;
+  if (!Number.isFinite(acompteSaisi)) {
+    avertissements.push(
+      `Taux d'acompte non numérique (valeur reçue : ${String(acompteSaisi)}) ramené à 0 %.`,
+    );
+    acompte = 0;
+  } else {
+    acompte = Math.max(0, Math.min(100, acompteSaisi));
+    if (acompte !== acompteSaisi) {
       avertissements.push(
-        `Taux d'acompte ramené dans l'intervalle 0–100 % (valeur reçue : ${client.tauxAcomptePct}).`,
+        `Taux d'acompte ramené dans l'intervalle 0–100 % (valeur reçue : ${acompteSaisi}).`,
       );
     }
   }

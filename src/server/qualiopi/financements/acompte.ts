@@ -88,6 +88,20 @@ function arrondirCentimes(cents: number): number {
 }
 
 /**
+ * Ramene une entree numerique a un entier sur.
+ *
+ * VERIF E2E 2026-07-26. Le JSDoc promettait qu'« un contexte incoherent est
+ * ramene a des bornes sures », mais `Math.max(0, Math.trunc(NaN))` vaut `NaN` :
+ * un montant, une prise en charge ou un taux non numerique traversait tout le
+ * calcul en silence. `if (acompte > 0)` etant faux pour NaN, l'echeancier
+ * ressortait VIDE et l'unique invariante testee (somme = reste a charge) ne
+ * detectait rien — le devis partait avec des montants NaN.
+ */
+function entierSur(valeur: number): number {
+  return Number.isFinite(valeur) ? Math.trunc(valeur) : 0;
+}
+
+/**
  * Calcule l'acompte, le solde et l'échéancier.
  *
  * Ne lève jamais : un contexte incohérent (prise en charge supérieure au total,
@@ -95,8 +109,8 @@ function arrondirCentimes(cents: number): number {
  * création d'un devis, ce qui est pire qu'un acompte à zéro.
  */
 export function calculerAcompte(ctx: ContexteAcompte): ResultatAcompte {
-  const total = Math.max(0, Math.trunc(ctx.montantTotalHtCents));
-  const priseEnCharge = Math.min(total, Math.max(0, Math.trunc(ctx.priseEnChargeCents)));
+  const total = Math.max(0, entierSur(ctx.montantTotalHtCents));
+  const priseEnCharge = Math.min(total, Math.max(0, entierSur(ctx.priseEnChargeCents)));
   const resteACharge = total - priseEnCharge;
 
   const aucun = (motif: string): ResultatAcompte => ({
@@ -113,7 +127,23 @@ export function calculerAcompte(ctx: ContexteAcompte): ResultatAcompte {
   });
 
   // 1. CPF — la Caisse des Dépôts règle l'organisme, pas le titulaire.
+  //
+  // 🔴 Vérification E2E 2026-07-26. Cette branche s'exécutait AVANT le test sur
+  // `nature`, donc un titulaire particulier gardant un reste à charge (cas réel :
+  // `qualiopi.cpf_reste_a_charge = 103,20 €` est configuré en production)
+  // ressortait avec un règlement UNIQUE, sans délai de rétractation, sans
+  // échelonnement et sans mention L6353-6. Le CPF supprime l'acompte ; il ne
+  // supprime pas les protections dues au particulier sur ce qu'il paie lui-même.
   if (ctx.cpf) {
+    if (ctx.nature === "particulier" && resteACharge > 0) {
+      return resultatParticulier({
+        resteACharge,
+        tauxSaisi: 0,
+        dateSignature: ctx.dateSignature ?? null,
+        motif:
+          "Financement CPF : la Caisse des Dépôts règle l'organisme après service fait, aucun acompte ne peut être demandé au titulaire. Le reste à charge suit le régime du particulier : encaissable après le délai de rétractation et obligatoirement échelonné (art. L6353-6).",
+      });
+    }
     return aucun(
       "Financement CPF : la Caisse des Dépôts règle l'organisme après service fait. Aucun acompte ne peut être demandé au titulaire.",
     );
@@ -130,50 +160,16 @@ export function calculerAcompte(ctx: ContexteAcompte): ResultatAcompte {
     return aucun("Prise en charge intégrale : aucun reste à charge, donc aucun acompte.");
   }
 
-  const tauxDemande = Math.max(0, Math.min(100, ctx.tauxAcomptePct));
+  const tauxSaisi = entierSur(ctx.tauxAcomptePct);
+  const tauxDemande = Math.max(0, Math.min(100, tauxSaisi));
 
   // 3. Particulier — plafond dur et échelonnement obligatoire.
   if (ctx.nature === "particulier") {
-    const plafonne = tauxDemande > PLAFOND_ACOMPTE_PARTICULIER_PCT;
-    const taux = Math.min(tauxDemande, PLAFOND_ACOMPTE_PARTICULIER_PCT);
-    const acompte = arrondirCentimes((resteACharge * taux) / 100);
-    const solde = resteACharge - acompte;
-
-    const encaissableAPartirDu = ctx.dateSignature
-      ? new Date(
-          ctx.dateSignature.getTime() + DELAI_RETRACTATION_PARTICULIER_JOURS * 24 * 60 * 60 * 1000,
-        )
-      : null;
-
-    const echeancier: Echeance[] = [];
-    if (acompte > 0) {
-      echeancier.push({
-        libelle: `Acompte (${taux} %) — encaissable après le délai de rétractation de ${DELAI_RETRACTATION_PARTICULIER_JOURS} jours`,
-        montantCents: acompte,
-        dueLe: encaissableAPartirDu,
-      });
-    }
-    if (solde > 0) {
-      // L'échelonnement est une OBLIGATION (L6353-6), pas une facilité : on ne
-      // propose donc jamais un solde en une fois pour un particulier.
-      echeancier.push({
-        libelle: "Solde échelonné au fur et à mesure du déroulement de l'action (art. L6353-6)",
-        montantCents: solde,
-        dueLe: null,
-      });
-    }
-
-    return {
-      acompteCents: acompte,
-      resteAChargeCents: resteACharge,
-      soldeCents: solde,
-      motif: plafonne
-        ? `Contrat avec un particulier : l'acompte est plafonné à ${PLAFOND_ACOMPTE_PARTICULIER_PCT} % par l'article L6353-6, le taux de ${tauxDemande} % a été ramené à ${taux} %.`
-        : `Contrat avec un particulier : acompte de ${taux} %, encaissable après le délai de rétractation, solde obligatoirement échelonné.`,
-      plafonne,
-      encaissableAPartirDu,
-      echeancier,
-    };
+    return resultatParticulier({
+      resteACharge,
+      tauxSaisi,
+      dateSignature: ctx.dateSignature ?? null,
+    });
   }
 
   // 4. Entreprise — le taux porte sur le RESTE À CHARGE.
@@ -205,6 +201,71 @@ export function calculerAcompte(ctx: ContexteAcompte): ResultatAcompte {
         : `Acompte de ${tauxDemande} % du montant total.`,
     plafonne: false,
     encaissableAPartirDu: ctx.dateSignature ?? null,
+    echeancier,
+  };
+}
+
+/**
+ * Régime du particulier — appliqué à tout reste à charge qu'il paie lui-même,
+ * y compris sous financement CPF.
+ *
+ * Trois obligations, non négociables : plafond d'acompte (30 %), délai de
+ * rétractation avant tout encaissement (L6353-5), et échelonnement du solde
+ * (L6353-6). Aucune n'est une facilité commerciale.
+ */
+function resultatParticulier(arg: {
+  resteACharge: number;
+  tauxSaisi: number;
+  dateSignature: Date | null;
+  motif?: string;
+}): ResultatAcompte {
+  const { resteACharge, dateSignature } = arg;
+  const tauxSaisi = Math.max(0, entierSur(arg.tauxSaisi));
+  const plafonne = tauxSaisi > PLAFOND_ACOMPTE_PARTICULIER_PCT;
+  const taux = Math.min(tauxSaisi, PLAFOND_ACOMPTE_PARTICULIER_PCT);
+  const acompte = arrondirCentimes((resteACharge * taux) / 100);
+  const solde = resteACharge - acompte;
+
+  const encaissableAPartirDu = dateSignature
+    ? new Date(dateSignature.getTime() + DELAI_RETRACTATION_PARTICULIER_JOURS * 24 * 60 * 60 * 1000)
+    : null;
+
+  const echeancier: Echeance[] = [];
+  if (acompte > 0) {
+    echeancier.push({
+      libelle: `Acompte (${taux} %) — encaissable après le délai de rétractation de ${DELAI_RETRACTATION_PARTICULIER_JOURS} jours`,
+      montantCents: acompte,
+      dueLe: encaissableAPartirDu,
+    });
+  }
+  if (solde > 0) {
+    // L'échelonnement est une OBLIGATION (L6353-6), pas une facilité : on ne
+    // propose donc jamais un solde en une fois pour un particulier.
+    echeancier.push({
+      libelle: "Solde échelonné au fur et à mesure du déroulement de l'action (art. L6353-6)",
+      montantCents: solde,
+      dueLe: null,
+    });
+  }
+
+  // Le message affiche le taux RÉELLEMENT saisi. Il annonçait auparavant
+  // « le taux de 100 % a été ramené à 30 % » quand on avait demandé 500, parce
+  // qu'il lisait la valeur déjà bornée à 100.
+  const motifDefaut = plafonne
+    ? `Contrat avec un particulier : l'acompte est plafonné à ${PLAFOND_ACOMPTE_PARTICULIER_PCT} % par l'article L6353-6, le taux de ${tauxSaisi} % a été ramené à ${taux} %.`
+    : `Contrat avec un particulier : acompte de ${taux} %, ${
+        dateSignature
+          ? "encaissable après le délai de rétractation"
+          : "encaissable après le délai de rétractation — date de signature à renseigner"
+      }, solde obligatoirement échelonné.`;
+
+  return {
+    acompteCents: acompte,
+    resteAChargeCents: resteACharge,
+    soldeCents: solde,
+    motif: arg.motif ?? motifDefaut,
+    plafonne,
+    encaissableAPartirDu,
     echeancier,
   };
 }

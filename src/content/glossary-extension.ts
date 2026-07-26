@@ -476,13 +476,13 @@ const NEW_TERMS_EXTENDED: readonly GlossaryTermExtended[] = [
   {
     slug: "sonnet-model",
     term: "Sonnet (Claude)",
-    fr: "Modèle Claude intermédiaire (entre Haiku rapide et Opus premium). Sweet spot prix/qualité en 2026. ~3 €/Mtok input. Choix par défaut Axion-IA pour content-gen.",
-    en: "Intermediate Claude model (between fast Haiku and premium Opus). Price/quality sweet spot in 2026. ~3 €/Mtok input. Axion-IA default for content-gen.",
+    fr: "Modèle Claude intermédiaire (entre Haiku rapide et Opus premium). Sweet spot prix/qualité en 2026. ~3 €/Mtok input.",
+    en: "Intermediate Claude model (between fast Haiku and premium Opus). Price/quality sweet spot in 2026. ~3 €/Mtok input.",
     category: "models",
     relatedSlugs: ["claude-anthropic", "opus-model", "haiku-model", "llm"],
     aliases: ["Claude Sonnet"],
     examples: [
-      "En pratique : Claude Sonnet 4.6 est utilisé pour 80 % de la génération de contenu pSEO d'Axion-IA.",
+      "En pratique : Sonnet est le palier que la plupart des équipes retiennent quand Haiku ne suffit plus et qu'Opus coûte trop cher.",
     ],
   },
   {

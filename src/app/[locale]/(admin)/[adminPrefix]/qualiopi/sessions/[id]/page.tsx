@@ -40,6 +40,8 @@ import {
   saisirReponsesQuestionnaireAction,
 } from "@/server/actions/qualiopi/satisfaction";
 import { prisma } from "@/lib/prisma";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { mentionTva } from "@/server/qualiopi/legal/tva";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -155,6 +157,8 @@ export default async function SessionHubPage({ params }: PageProps) {
   });
 
   if (!trainingSession) notFound();
+
+  const mentionTvaSession = mentionTva(await getQualiopiConfig("regime_tva"));
 
   // ── Formateurs assignables (R9) — habilitation calculée sur la formation ───
   const allTrainers = await listTrainers({ actifOnly: true });
@@ -370,9 +374,15 @@ export default async function SessionHubPage({ params }: PageProps) {
                 currency: "EUR",
               })}
             </p>
-            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              Exonéré TVA (261-4-4° CGI)
-            </p>
+            {/* 🔴 Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
+                en dur, juste sous un Montant HT que le PDF facture à 20 %. La
+                mention suit désormais `qualiopi.regime_tva` et disparaît en
+                régime assujetti, comme sur les documents. */}
+            {mentionTvaSession !== null && (
+              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {mentionTvaSession}
+              </p>
+            )}
           </div>
 
           {/* Client */}

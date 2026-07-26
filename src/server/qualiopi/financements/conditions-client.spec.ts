@@ -120,3 +120,82 @@ describe("Cohérence mode / acompte", () => {
     expect(r.avertissements).toHaveLength(0);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Vérification E2E 2026-07-26 — le bornage ne couvrait que la saisie client.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Bornage des défauts globaux", () => {
+  // 🔴 Le clamp L441-10 ne s'appliquait qu'à la valeur du client. Un défaut
+  // global aberrant sortait tel quel, sans un mot — alors qu'il s'applique à
+  // TOUS les clients, pas à un seul.
+  it("un délai global de 365 jours est ramené à 60 et signalé", () => {
+    const r = resoudreConditions(null, {
+      delaiPaiementJours: 365,
+      tauxAcomptePct: 30,
+      modeFacturation: "acompte_solde",
+    });
+    expect(r.delaiPaiementJours).toBe(60);
+    expect(r.avertissements.join(" ")).toContain("L441-10");
+  });
+
+  it("un taux global de 900 % est ramené à 100 et signalé", () => {
+    const r = resoudreConditions(null, {
+      delaiPaiementJours: 30,
+      tauxAcomptePct: 900,
+      modeFacturation: "acompte_solde",
+    });
+    expect(r.tauxAcomptePct).toBe(100);
+    expect(r.avertissements.join(" ")).toContain("0–100 %");
+  });
+});
+
+describe("Entrées non numériques", () => {
+  // 🔴 `NaN > 60` et `NaN < 0` sont faux : un délai NaN sortait NaN SANS
+  // avertissement ; un taux NaN sortait NaN AVEC un avertissement qui affirmait
+  // l'avoir ramené — il n'avait rien ramené.
+  const defauts = {
+    delaiPaiementJours: 30,
+    tauxAcomptePct: 30,
+    modeFacturation: "acompte_solde" as const,
+  };
+
+  const clientVide = { delaiPaiementJours: null, tauxAcomptePct: null, modeFacturation: null };
+
+  it("un délai NaN vaut 0 et le dit", () => {
+    const r = resoudreConditions({ ...clientVide, delaiPaiementJours: NaN }, defauts);
+    expect(r.delaiPaiementJours).toBe(0);
+    expect(r.avertissements.join(" ")).toContain("non numérique");
+  });
+
+  it("un taux NaN vaut 0 et le dit, sans prétendre l'avoir borné", () => {
+    const r = resoudreConditions({ ...clientVide, tauxAcomptePct: NaN }, defauts);
+    expect(r.tauxAcomptePct).toBe(0);
+    expect(r.avertissements.join(" ")).toContain("non numérique");
+  });
+
+  it("aucune sortie NaN, quelle que soit l'entrée", () => {
+    for (const c of [
+      { ...clientVide, delaiPaiementJours: NaN },
+      { ...clientVide, tauxAcomptePct: NaN },
+      { ...clientVide, delaiPaiementJours: Infinity },
+      { ...clientVide, tauxAcomptePct: -Infinity },
+    ]) {
+      const r = resoudreConditions(c, defauts);
+      expect(Number.isFinite(r.delaiPaiementJours)).toBe(true);
+      expect(Number.isFinite(r.tauxAcomptePct)).toBe(true);
+    }
+  });
+
+  it("0 reste une valeur explicite du client, pas une absence", () => {
+    const r = resoudreConditions(
+      { ...clientVide, delaiPaiementJours: 0, tauxAcomptePct: 0 },
+      defauts,
+    );
+    expect(r.delaiPaiementJours).toBe(0);
+    expect(r.tauxAcomptePct).toBe(0);
+    expect(r.origine.delai).toBe("client");
+    expect(r.origine.acompte).toBe("client");
+    expect(r.avertissements).toEqual([]);
+  });
+});

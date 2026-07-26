@@ -141,6 +141,19 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
+  // ── Emails en attente de validation ───────────────────────────────────────
+  //
+  // 🔴 Vérification E2E 2026-07-26. La corbeille de validation retient les
+  // emails commerciaux (devis, facture, relance d'impayé) jusqu'à approbation.
+  // Rien ne signalait qu'un email y dormait : un devis pouvait être « marqué
+  // envoyé » côté admin sans jamais partir. `compterEnAttente()` existait sans
+  // aucun appelant — c'est ici qu'il sert.
+  emails_en_attente_validation: {
+    niveau: "important",
+    titre: "Des emails attendent votre validation",
+    resolutionAuto: true,
+  },
+
   // ── Formateurs ────────────────────────────────────────────────────────────
   cv_formateur_perime: {
     niveau: "important",

@@ -262,7 +262,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Secteurs où Axion-IA intervient ─────────────────────────────────────
   {
     id: "impl-026",
-    text: "Les secteurs où Axion-IA déploie le plus d'implémentations IA en 2025 : (1) services aux entreprises/conseil, (2) immobilier, (3) distribution/e-commerce, (4) industrie manufacturière, (5) services financiers.",
+    text: "Les secteurs où Axion-IA déploie le plus d'implémentations IA en 2026 : (1) services aux entreprises/conseil, (2) immobilier, (3) distribution/e-commerce, (4) industrie manufacturière, (5) services financiers.",
     source: "Axion-IA — Bilan projets implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -578,7 +578,13 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Témoignages et études de cas ──────────────────────────────────────────
   {
     id: "impl-060",
-    text: "Un client Axion-IA dans le secteur immobilier (80 agents, Lyon) a automatisé la rédaction de ses annonces et comptes rendus de visite via LLM — économisant 120h de travail rédactionnel par mois pour un investissement total de 12 000 € HT." /* price-exempt: investissement d'un cas client réel, pas un tarif Axion */,
+    // 🔴 Vérification E2E 2026-07-26 (F55, 2e passage). Le premier passage avait
+    // laissé cette auto-déclaration chiffrée, de la même classe que les 17
+    // réécrites : un résultat annoncé sans mesure ni source tierce. Ces faits
+    // alimentent le grounding des articles générés ET le chatbot public —
+    // l'allégation y devient auto-publiée. Reformulé sur ce qui est réellement
+    // vérifiable : la méthode, pas un résultat inventé.
+    text: "L'automatisation de la rédaction d'annonces et de comptes rendus de visite par LLM est l'un des cas d'usage les plus directs du secteur immobilier : le volume rédactionnel y est élevé, répétitif et fortement structuré.",
     source: "Axion-IA — Étude de cas implémentation immobilier 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",

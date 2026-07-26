@@ -41,6 +41,7 @@ import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { resoudreConditions } from "./conditions-client";
 import { marquerPaiementRecuSiSoldee } from "@/server/qualiopi/financements/dossier-financement";
 import {
   normaliserLignesPourActivite,
@@ -137,6 +138,7 @@ export async function genererFactureLibre(
       adresseVille: true,
       contactEmail: true,
       estPublic: true,
+      delaiPaiementJours: true,
     },
   });
 
@@ -156,10 +158,21 @@ export async function genererFactureLibre(
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
   // Échéance (délai client — une facture libre n'est pas subrogée) + RIB.
-  const [delaiClient, rib] = await Promise.all([
+  //
+  // 🔴 Vérification E2E 2026-07-26 — le délai propre au client n'était pas lu :
+  // F61 posait la colonne et le résolveur, mais aucun émetteur ne les branchait.
+  const [delaiGlobal, rib] = await Promise.all([
     getQualiopiConfig("delai_paiement_jours"),
     resolveRibFacture(),
   ]);
+  const delaiClient = resoudreConditions(
+    {
+      delaiPaiementJours: client.delaiPaiementJours ?? null,
+      tauxAcomptePct: null,
+      modeFacturation: null,
+    },
+    { delaiPaiementJours: delaiGlobal, tauxAcomptePct: 0, modeFacturation: "acompte_solde" },
+  ).delaiPaiementJours;
   const now = new Date();
   const echeance = new Date(now);
   echeance.setDate(
