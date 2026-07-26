@@ -133,15 +133,24 @@ const DISPOSITIF_LABELS: Record<DispositifFranceTravail, string> = {
   CSP: "CSP — Contrat de Sécurisation Professionnelle",
 };
 
+/**
+ * Pièces à joindre au dossier France Travail.
+ *
+ * 🔴 F25 (3e passage) — `mentionTvaRegime` est un PARAMÈTRE, il n'est pas
+ * déduit ici. La checklist annonçait l'exonération 261-4-4° en dur alors que le
+ * pied de page avait déjà été corrigé : on continuait donc à annoncer à France
+ * Travail une exonération non détenue, dans la liste même des pièces à fournir.
+ */
 function getPiecesRequises(
   dispositif: DispositifFranceTravail,
+  mentionTvaRegime: string | null,
 ): Array<{ label: string; condition: string | null }> {
   const commun: Array<{ label: string; condition: string | null }> = [
     { label: "Accord de financement France Travail", condition: null },
     { label: "Engagement du bénéficiaire / Protocole de formation", condition: null },
     { label: "Attestation de fin de formation (ou certificat de réalisation)", condition: null },
     { label: "Feuilles d'émargement ou relevés de connexion", condition: null },
-    { label: "Facture exonérée de TVA (Art. 261-4-4° CGI)", condition: null },
+    { label: "Facture", condition: mentionTvaRegime },
   ];
   if (dispositif === "POEI") {
     commun.unshift({
@@ -169,7 +178,7 @@ function getPiecesRequises(
 export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): React.ReactElement {
   const { identite } = data;
   const prenomNom = `${data.beneficiaire.prenom} ${data.beneficiaire.nom}`.trim();
-  const pieces = getPiecesRequises(data.dispositif);
+  const pieces = getPiecesRequises(data.dispositif, identite.mentionTvaRegime ?? null);
 
   return (
     <Document>

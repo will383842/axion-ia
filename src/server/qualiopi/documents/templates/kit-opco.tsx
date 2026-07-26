@@ -152,7 +152,14 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
               label: "Relevés de connexion (distanciel)",
               note: "Connexion/déconnexion horodatés",
             },
-            { label: "Facture exonérée de TVA", note: "Art. 261-4-4° CGI" },
+            // 🔴 F25 (3e passage) — la mention TVA de la CHECKLIST était restée en
+            // dur alors que le pied de page avait été corrigé. On annonçait donc
+            // encore une exonération non détenue à l'OPCO, dans la liste même des
+            // pièces à fournir. La note ne s'affiche que si le régime la porte.
+            {
+              label: "Facture",
+              note: identite.mentionTvaRegime ?? "Régime de TVA applicable",
+            },
           ].map((piece, idx) => (
             <View key={idx} style={styles.pieceRow}>
               <Text style={styles.pieceCheck}>☐</Text>

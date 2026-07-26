@@ -756,7 +756,15 @@ const ExporterFecSchema = z.object({ annee: z.number().int().min(2020).max(2100)
 /**
  * Exporte le FEC de l'exercice (factures CRM émises + encaissements).
  * Retourne le contenu texte (TAB-séparé) — le client télécharge en
- * `AXIONIA_FEC_{annee}.txt`. Lecture seule : accessible dès requireAdminRead
+ * `AXIONIA_FEC_{annee}.txt`.
+ *
+ * 🔴 Audit certification 2026-07-26 (F46). C'était `requireAdminRead`, qui ne
+ * filtre RIEN : n'importe quelle session admin passait, y compris un rôle
+ * `reader` — et `_guards.ts` retombe précisément sur `reader` quand le jeton ne
+ * porte pas de claim de rôle, or c'est la valeur par défaut de `AdminUser.role`.
+ * Le FEC est le grand livre comptable intégral. `exportComptaCsvAction` et
+ * `exportPilotageCsvAction`, dans le même fichier, exigeaient déjà
+ * `requireAdminWrite` : il n'y avait pas de doctrine, juste une omission.
  * (rôle comptable).
  */
 export async function exporterFecAction(
@@ -765,7 +773,7 @@ export async function exporterFecAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminRead();
+  const session = await requireAdminWrite();
   const parsed = ExporterFecSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Année invalide." };
   const annee = parsed.data.annee;

@@ -6,7 +6,9 @@
  *   - SIRET / NDA / Qualiopi (en-tête + bloc facturation, `required`).
  *   - Date d'émission, date d'échéance, date de réalisation de la prestation
  *     (art. 242 nonies A CGI).
- *   - TVA : exonération art. 261-4-4° CGI (formation professionnelle continue).
+ *   - TVA : mention DÉRIVÉE du régime configuré (`regime_tva`), jamais figée.
+ *     Assujetti → aucune mention ; exonération 261-4-4° ou franchise 293 B →
+ *     mention correspondante. Voir F25.
  *   - Pénalités de retard (art. L.441-10), indemnité forfaitaire 40 €
  *     (art. D.441-5), absence d'escompte (art. L.441-9) — C. commerce, B2B.
  *

@@ -10,7 +10,11 @@
 
 "use server";
 
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireAdminPublish,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { z } from "zod";
 import {
   genererManifesteAudit,
@@ -105,7 +109,12 @@ export async function exporterDossierZipAction(): Promise<
     avertissements: string[];
   }>
 > {
-  const session = await requireAdminWrite();
+  // 🔴 Audit certification 2026-07-26 (F45). C'était `requireAdminWrite`, donc
+  // accessible au rôle `editor`. Exporter un dossier de stagiaires est un
+  // traitement de données personnelles à haut risque : il sort du système
+  // l'identité, les évaluations et les signatures de personnes physiques.
+  // `requireAdminPublish` le réserve à `admin` et `super_admin`.
+  const session = await requireAdminPublish();
 
   const dossier = await genererDossierAuditZip();
 
@@ -169,7 +178,12 @@ export async function exporterDossierSessionAction(input: { sessionId: string })
     avertissements: string[];
   }>
 > {
-  const session = await requireAdminWrite();
+  // 🔴 Audit certification 2026-07-26 (F45). C'était `requireAdminWrite`, donc
+  // accessible au rôle `editor`. Exporter un dossier de stagiaires est un
+  // traitement de données personnelles à haut risque : il sort du système
+  // l'identité, les évaluations et les signatures de personnes physiques.
+  // `requireAdminPublish` le réserve à `admin` et `super_admin`.
+  const session = await requireAdminPublish();
 
   const parsed = dossierSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };

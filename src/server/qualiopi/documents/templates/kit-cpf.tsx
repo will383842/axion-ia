@@ -131,7 +131,13 @@ export function KitCpfPdf({ data }: { data: KitCpfData }): React.ReactElement {
           {[
             { label: "Accord de prise en charge EDOF / Mon Compte Formation" },
             { label: "Attestation de fin de formation (ou partielle)" },
-            { label: "Facture exonérée de TVA (Art. 261-4-4° CGI)" },
+            // 🔴 F25 (3e passage) — voir kit-opco : la checklist annonçait encore
+            // l'exonération 261-4-4° en dur, sur une pièce adressée à un financeur.
+            {
+              label: identite.mentionTvaRegime
+                ? `Facture — ${identite.mentionTvaRegime}`
+                : "Facture",
+            },
             { label: "Feuilles d'émargement ou relevés de connexion" },
           ].map((piece, idx) => (
             <View key={idx} style={styles.pieceRow}>
