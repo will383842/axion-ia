@@ -219,6 +219,18 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description:
       "Délai de paiement des financeurs publics/OPCO (jours) — seuil de retard distinct des entreprises.",
   },
+  // F61 — défauts d'acompte. Surchargés par client (`Client.tauxAcomptePct`,
+  // `Client.modeFacturation`) : le spécifique prime sur le général.
+  taux_acompte_defaut_pct: {
+    ...num(30),
+    description:
+      "Taux d'acompte par défaut, appliqué au RESTE À CHARGE (%). Plafonné à 30 % pour un particulier (art. L6353-6), sans limite entre professionnels.",
+  },
+  mode_facturation_defaut: {
+    ...str("acompte_solde"),
+    description:
+      "Mode de facturation par défaut : « acompte_solde » (acompte à la signature puis solde) ou « solde_unique » (tout à l'issue).",
+  },
 
   // ── Seuils réclamations ──
   seuil_reclamation_jours: {

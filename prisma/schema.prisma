@@ -5117,6 +5117,12 @@ enum ClientType {
 /// Activité facturée — transversale aux 5 métiers d'Axion-IA. Pré-remplit le
 /// régime TVA et les mentions du document (formation/un_a_un exonérables
 /// 261-4-4° CGI si attestation ; audit/implementation/site_web = taxables 20 %).
+/// Mode de facturation retenu pour un client (F61).
+enum ModeFacturationClient {
+  acompte_solde
+  solde_unique
+}
+
 enum ActiviteFacturation {
   formation
   un_a_un
@@ -5189,14 +5195,25 @@ model Client {
   formations          Formation[]
   sessions            TrainingSession[]
   documents           DocumentGenere[]
-  enrollmentsFinances Enrollment[]             @relation("EnrollmentClient")
+  enrollmentsFinances Enrollment[]           @relation("EnrollmentClient")
   coachingContracts   CoachingContract[]
   auditMissions       AuditMission[]
   facturesFormation   FactureFormation[]
   dossiersFinancement DossierFinancement[]
   plansRecurrents     PlanRecurrent[]
-  emailsEnAttente     EmailOutbox[]
-  reglesEmail         EmailAutomationSetting[]
+  // ── Conditions de paiement propres au client (F61) ──
+  //
+  // `null` = suivre le réglage global. La nuance compte : un client sans
+  // condition particulière et un client réglé explicitement sur la même
+  // valeur se comportent pareil AUJOURD'HUI, mais divergeront le jour où le
+  // défaut global changera.
+  delaiPaiementJours  Int?                   @map("delai_paiement_jours")
+  /// Taux appliqué au RESTE À CHARGE, pas au montant total.
+  tauxAcomptePct      Int?                   @map("taux_acompte_pct")
+  modeFacturation     ModeFacturationClient? @map("mode_facturation")
+
+  emailsEnAttente EmailOutbox[]
+  reglesEmail     EmailAutomationSetting[]
 
   @@index([statut])
   @@index([nafCode])

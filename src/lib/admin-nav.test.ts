@@ -60,7 +60,11 @@ describe("buildAdminNav SSOT", () => {
     // (/qr/<slug> → redirection éditable + scans), groupe ops. = 142.
     // +1 (2026-07-21) : « Demandes de podcast » — demandes de tournage déposées
     // sur la page publique /podcast (+ QR du flyer), groupe contacts. = 143.
-    expect(items.length).toBe(143);
+    // +1 (2026-07-26, audit certification F60) : « Emails à valider » — corbeille
+    // de relecture des emails commerciaux avant envoi (relance d'impayé, devis,
+    // facture, contrat). Groupe qualiopi / sous-groupe administration, à côté
+    // des Alertes. = 144.
+    expect(items.length).toBe(144);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
