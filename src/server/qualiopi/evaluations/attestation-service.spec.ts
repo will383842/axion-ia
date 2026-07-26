@@ -65,6 +65,12 @@ vi.mock("@/server/qualiopi/documents/qr", () => ({
 
 vi.mock("./evaluations-service", () => ({
   getFinaleResultats: vi.fn().mockResolvedValue(null),
+  // Implémentation RÉELLE, pas un stub : c'est elle qui décide si une
+  // évaluation vide doit être présentée comme « non réalisée » plutôt que comme
+  // un échec. Un `vi.fn()` renvoyant `undefined` ferait passer les tests F21/F22
+  // tout en désactivant silencieusement le comportement qu'ils vérifient.
+  evaluationSansAucuneNote: (r: { acquis: unknown[]; partiels: unknown[]; nonAcquis: unknown[] }) =>
+    r.acquis.length === 0 && r.partiels.length === 0 && r.nonAcquis.length === 0,
 }));
 
 vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
@@ -344,7 +350,12 @@ describe("genererAttestationPourEnrollment", () => {
   }
 
   it("inclut le verdict ET le score si une évaluation finale existe", async () => {
-    mockGetFinale.mockResolvedValue(resultatsFinale({ scorePct: 87 }));
+    // La compétence notée n'est pas décorative : un score de 87 % sans aucune
+    // compétence notée est arithmétiquement impossible, et c'est désormais le
+    // signe d'une saisie vide (cf. le test « aucune compétence notée » plus bas).
+    mockGetFinale.mockResolvedValue(
+      resultatsFinale({ scorePct: 87, acquis: ["Rédiger un prompt"] }),
+    );
 
     expect((await resultatsRendus())["evaluationObtenue"]).toBe("Réussite — score 87 %");
   });
@@ -353,6 +364,20 @@ describe("genererAttestationPourEnrollment", () => {
     mockGetFinale.mockResolvedValue(null);
 
     expect("evaluationObtenue" in (await resultatsRendus())).toBe(false);
+  });
+
+  // 🔴 Vérification E2E 2026-07-26. Une évaluation EXISTANTE mais dont aucune
+  // compétence n'est notée sortait « Non validée — score 0 % » : un oubli de
+  // saisie devenait un échec écrit sur l'attestation du stagiaire. F22 avait
+  // fermé ce défaut au niveau du CALCUL, pas au niveau du document.
+  it("une évaluation sans aucune compétence notée n'est pas un échec", async () => {
+    mockGetFinale.mockResolvedValue(
+      resultatsFinale({ reussite: false, scorePct: 0, niveauGlobal: "non_acquis" }),
+    );
+
+    const r = await resultatsRendus();
+    expect("evaluationObtenue" in r).toBe(false);
+    expect(r["competencesAcquises"]).toBe("Évaluation des acquis non réalisée");
   });
 
   // ── F21 — l'attestation restitue les RÉSULTATS, jamais le programme ──────────

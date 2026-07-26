@@ -78,21 +78,80 @@ describe("registre Qualiopi — clés booléennes (z.preprocess)", () => {
 });
 
 describe("registre Qualiopi — clés string (z.string().trim())", () => {
-  const emailSchema = QUALIOPI_CONFIG_REGISTRY["referent_handicap_email"].schema;
+  // Clé de texte libre : c'est elle qui doit démontrer le comportement générique
+  // du `trim()`. Elle portait auparavant sur `referent_handicap_email`, devenue
+  // une clé validée — un email n'est justement PAS du texte libre.
+  const texteLibre = QUALIOPI_CONFIG_REGISTRY["referent_handicap_nom"].schema;
 
-  it("supprime les espaces de bord (une valeur « ␣contact@… » casserait un mailto)", () => {
-    const r = emailSchema.safeParse(" contact@axion-ia.com ");
+  it("supprime les espaces de bord", () => {
+    const r = texteLibre.safeParse(" Williams Jullin ");
     expect(r.success).toBe(true);
-    if (r.success) expect(r.data).toBe("contact@axion-ia.com");
+    if (r.success) expect(r.data).toBe("Williams Jullin");
   });
 
   it("préserve le contenu interne (trim = bords seuls)", () => {
-    const r = emailSchema.safeParse("a b c");
+    const r = texteLibre.safeParse("a b c");
     expect(r.success && r.data).toBe("a b c");
   });
 
-  it("une valeur uniquement blanche devient vide (téléphone non publié → masqué)", () => {
-    const r = emailSchema.safeParse("   ");
+  it("une valeur uniquement blanche devient vide", () => {
+    const r = texteLibre.safeParse("   ");
     expect(r.success && r.data).toBe("");
+  });
+});
+
+// 🔴 Vérification E2E 2026-07-26. Relevé en PRODUCTION :
+// `qualiopi.responsable_qualite_email` valait « Williams Jullin » — un NOM dans
+// un champ email, accepté sans broncher. Les champs « nom » et « email » se
+// suivent dans le formulaire ; rien ne les distinguait à l'enregistrement.
+describe("registre Qualiopi — clés email", () => {
+  const CLES_EMAIL = [
+    "email_organisme",
+    "dpo_contact_email",
+    "referent_handicap_email",
+    "responsable_qualite_email",
+  ] as const;
+
+  it("refuse un nom là où un email est attendu", () => {
+    for (const cle of CLES_EMAIL) {
+      const r = QUALIOPI_CONFIG_REGISTRY[cle].schema.safeParse("Williams Jullin");
+      expect(r.success, `${cle} devrait refuser un nom`).toBe(false);
+    }
+  });
+
+  it("accepte un email, espaces de bord retirés", () => {
+    for (const cle of CLES_EMAIL) {
+      const r = QUALIOPI_CONFIG_REGISTRY[cle].schema.safeParse(" contact@axion-ia.com ");
+      expect(r.success).toBe(true);
+      if (r.success) expect(r.data).toBe("contact@axion-ia.com");
+    }
+  });
+
+  // Ces clés sont facultatives : refuser le vide empêcherait d'effacer une
+  // valeur, et une valeur uniquement blanche doit valoir « non renseigné ».
+  it("accepte le vide, et ramène une valeur blanche à vide", () => {
+    for (const cle of CLES_EMAIL) {
+      expect(QUALIOPI_CONFIG_REGISTRY[cle].schema.safeParse("").success).toBe(true);
+      const r = QUALIOPI_CONFIG_REGISTRY[cle].schema.safeParse("   ");
+      expect(r.success && r.data).toBe("");
+    }
+  });
+});
+
+describe("registre Qualiopi — clés téléphone", () => {
+  // `qualiopi.responsable_qualite_telephone` portait « ␣+33743331201 » : l'espace
+  // de tête survivait à la lecture comme à l'écriture.
+  const CLES_TEL = [
+    "telephone_organisme",
+    "referent_handicap_telephone",
+    "responsable_qualite_telephone",
+  ] as const;
+
+  it("retire l'espace de tête sans imposer de format", () => {
+    for (const cle of CLES_TEL) {
+      const r = QUALIOPI_CONFIG_REGISTRY[cle].schema.safeParse(" +33 7 43 33 12 01");
+      expect(r.success).toBe(true);
+      if (r.success) expect(r.data).toBe("+33 7 43 33 12 01");
+    }
   });
 });

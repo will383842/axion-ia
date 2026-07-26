@@ -52,6 +52,38 @@ const boolSchema = z.preprocess(
 // comme à l'ÉCRITURE (setQualiopiConfig valide via ce schéma → ne re-stocke jamais
 // d'espace de bord). Le texte multi-ligne interne est préservé (trim = bords seuls).
 const str = (def = "") => ({ schema: z.string().trim(), default: def });
+
+/**
+ * Champ email — vide autorisé, mais si renseigné il DOIT être un email.
+ *
+ * 🔴 Vérification E2E 2026-07-26. Relevé en production :
+ * `qualiopi.responsable_qualite_email` valait « Williams Jullin » — un NOM dans
+ * un champ email, accepté sans broncher par `z.string().trim()`. Ce n'est pas
+ * une faute de frappe isolée : les champs « nom » et « email » se suivent dans
+ * le formulaire, et rien ne les distinguait au moment d'enregistrer.
+ *
+ * La chaîne vide reste valide : ces clés sont facultatives, et refuser le vide
+ * empêcherait d'effacer une valeur.
+ */
+const email = (def = "") => ({
+  // `trim()` d'abord, puis la validation : une valeur uniquement blanche doit
+  // devenir vide (= « non renseigné », masqué à l'affichage), pas être rejetée.
+  schema: z
+    .string()
+    .trim()
+    .pipe(z.union([z.literal(""), z.string().email()])),
+  default: def,
+});
+
+/**
+ * Champ téléphone — vide autorisé, espaces de tête/queue retirés.
+ *
+ * `qualiopi.responsable_qualite_telephone` portait « ␣+33743331201 » : l'espace
+ * de tête survivait à la lecture comme à l'écriture. `trim()` suffit ici — on
+ * ne normalise pas le format, un OF peut légitimement écrire un numéro
+ * international ou un poste interne.
+ */
+const tel = (def = "") => ({ schema: z.string().trim(), default: def });
 const num = (def: number) => ({ schema: numSchema, default: def });
 const bool = (def: boolean) => ({ schema: boolSchema, default: def });
 
@@ -146,20 +178,20 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   // ── Contact général de l'organisme (≠ référent handicap, ≠ DPO) ──
   // Imprimé comme coordonnées de l'OF prestataire sur convention/facture/réclamations.
   email_organisme: {
-    ...str(),
+    ...email(),
     description: "Email de contact général de l'OF (convention, facture, réclamations).",
   },
-  telephone_organisme: { ...str(), description: "Téléphone de contact général de l'OF." },
+  telephone_organisme: { ...tel(), description: "Téléphone de contact général de l'OF." },
   // Délégué/point de contact protection des données (RGPD art. 13). Fallback = email_organisme.
   dpo_contact_email: {
-    ...str(),
+    ...email(),
     description: "Email du DPO / contact RGPD (exercice des droits).",
   },
 
   // ── Référent handicap (indicateur 26 ⭐) ──
   referent_handicap_nom: { ...str("Williams Jullin"), description: "Nom du référent handicap." },
-  referent_handicap_email: { ...str(), description: "Email du référent handicap." },
-  referent_handicap_telephone: { ...str(), description: "Téléphone du référent handicap." },
+  referent_handicap_email: { ...email(), description: "Email du référent handicap." },
+  referent_handicap_telephone: { ...tel(), description: "Téléphone du référent handicap." },
   referent_handicap_delai_reponse_h: {
     ...num(48),
     description: "Délai de réponse référent handicap (heures).",
@@ -173,8 +205,8 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...str("Williams Jullin"),
     description: "Nom du responsable/référent qualité (pilote le référentiel, prépare les audits).",
   },
-  responsable_qualite_email: { ...str(), description: "Email du responsable qualité." },
-  responsable_qualite_telephone: { ...str(), description: "Téléphone du responsable qualité." },
+  responsable_qualite_email: { ...email(), description: "Email du responsable qualité." },
+  responsable_qualite_telephone: { ...tel(), description: "Téléphone du responsable qualité." },
 
   // ── Paramètres financiers (modifiables) ──
   smic_horaire_brut: {

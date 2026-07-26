@@ -18,8 +18,28 @@ import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { EmailOutboxItem } from "@/components/admin/qualiopi/EmailOutboxItem";
-import { approuverEmailAction, refuserEmailAction } from "@/server/actions/qualiopi/email-outbox";
-import { EMAILS_A_VALIDER_PAR_DEFAUT } from "@/server/email/outbox-policy";
+import { EmailAutomationSettings } from "@/components/admin/qualiopi/EmailAutomationSettings";
+import {
+  approuverEmailAction,
+  refuserEmailAction,
+  definirReglageEmailAction,
+  supprimerReglageEmailAction,
+} from "@/server/actions/qualiopi/email-outbox";
+import {
+  EMAILS_A_VALIDER_PAR_DEFAUT,
+  EMAILS_AUTOMATIQUES_PAR_DEFAUT,
+} from "@/server/email/outbox-policy";
+
+/**
+ * Natures d'email réglables. On expose les deux listes plutôt que la seule
+ * liste « à valider » : le réglage doit permettre les DEUX sens — passer une
+ * relance en automatique, mais aussi soumettre une convocation à validation si
+ * Will le décide un jour.
+ */
+const TEMPLATES_REGLABLES: readonly string[] = [
+  ...EMAILS_A_VALIDER_PAR_DEFAUT,
+  ...EMAILS_AUTOMATIQUES_PAR_DEFAUT,
+];
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -67,7 +87,7 @@ export default async function EmailsAValiderPage({
   const session = await auth();
   if (!session?.user?.id) redirect(`/fr/${adminPrefix}/login`);
 
-  const [enAttente, traitesRecents, reglages] = await Promise.all([
+  const [enAttente, traitesRecents, reglages, clients] = await Promise.all([
     prisma.emailOutbox.findMany({
       where: { statut: "a_valider" },
       orderBy: { createdAt: "asc" },
@@ -106,6 +126,10 @@ export default async function EmailsAValiderPage({
         mode: true,
         client: { select: { raisonSociale: true } },
       },
+    }),
+    prisma.client.findMany({
+      orderBy: { raisonSociale: "asc" },
+      select: { id: true, raisonSociale: true },
     }),
   ]);
 
@@ -166,36 +190,19 @@ export default async function EmailsAValiderPage({
             client prime sur le réglage global.
           </p>
 
-          {reglages.length === 0 ? (
-            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Aucune règle personnalisée : le comportement par défaut s&apos;applique.
-            </p>
-          ) : (
-            <ul className="flex flex-col gap-[var(--space-admin-2)]">
-              {reglages.map((r) => (
-                <li
-                  key={r.id}
-                  className="flex flex-wrap items-baseline gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
-                >
-                  <span className="font-medium text-[color:var(--color-admin-fg)]">
-                    {r.scope === "global" ? "Tous les clients" : (r.client?.raisonSociale ?? "—")}
-                  </span>
-                  <span className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {r.template ?? "toutes natures d'email"}
-                  </span>
-                  <span
-                    className={
-                      r.mode === "auto"
-                        ? "text-[color:var(--color-admin-success)]"
-                        : "text-[color:var(--color-admin-warning)]"
-                    }
-                  >
-                    {r.mode === "auto" ? "envoi automatique" : "validation requise"}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
+          <EmailAutomationSettings
+            reglages={reglages.map((r) => ({
+              id: r.id,
+              scope: r.scope,
+              clientNom: r.client?.raisonSociale ?? null,
+              template: r.template,
+              mode: r.mode,
+            }))}
+            clients={clients}
+            templates={TEMPLATES_REGLABLES}
+            definirAction={definirReglageEmailAction}
+            supprimerAction={supprimerReglageEmailAction}
+          />
         </div>
       </section>
 
