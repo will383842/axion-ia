@@ -1,7 +1,9 @@
 /**
  * Qualiopi — Règlement intérieur des stagiaires.
  *
- * Conforme L.6352-3 et suivants du Code du travail.
+ * Conforme aux articles L6352-3 et R6352-1 à R6352-15 du code du travail :
+ * hygiène et sécurité, échelle des sanctions, droits de la défense du stagiaire,
+ * et représentation des stagiaires pour les formations de plus de 500 heures.
  * Rendu serveur exclusif — NE PAS "use client".
  */
 
@@ -131,8 +133,64 @@ export function ReglementInterieurPdf({
             ]}
           />
           <Text style={local.articleBody}>
-            Tout manquement grave aux règles de discipline peut entraîner l'exclusion définitive du
-            stagiaire sans remboursement des frais de formation déjà engagés.
+            Constitue une sanction toute mesure, autre que les observations verbales, prise à la
+            suite d&apos;un agissement du stagiaire considéré comme fautif, qu&apos;elle affecte ou
+            non immédiatement sa présence dans la formation (art. R6352-3 du code du travail).
+          </Text>
+          <Text style={local.articleBody}>
+            Échelle des sanctions applicables, par ordre de gravité croissante :
+          </Text>
+          <BulletList
+            items={[
+              "L'avertissement écrit.",
+              "Le blâme, notifié par écrit et versé au dossier du stagiaire.",
+              "L'exclusion temporaire de la formation.",
+              "L'exclusion définitive de la formation.",
+            ]}
+          />
+          <Text style={local.articleBody}>
+            Les amendes et autres sanctions pécuniaires sont interdites (art. R6352-3). L&apos;issue
+            financière d&apos;une exclusion relève des seules conditions contractuelles convenues
+            avec le financeur ou l&apos;entreprise, et non d&apos;une sanction disciplinaire.
+          </Text>
+        </DocSection>
+
+        {/* Article 3 bis — Procédure disciplinaire (droits de la défense) */}
+        {/*
+          🔴 Audit certification 2026-07-26 (F31). Le règlement annonçait
+          l'exclusion définitive sans énoncer ni l'échelle des sanctions
+          (art. R6352-3) ni les droits de la défense (art. R6352-4 à R6352-8) —
+          alors que ces deux contenus sont le cœur de ce que la loi exige d'un
+          règlement intérieur d'organisme de formation. Un règlement qui prévoit
+          la sanction sans la procédure est inopposable au stagiaire, et c'est
+          l'une des premières pièces que lit un auditeur.
+        */}
+        <DocSection title="Article 3 bis — Procédure disciplinaire et droits de la défense">
+          <Text style={local.articleBody}>
+            Aucune sanction ne peut être infligée au stagiaire sans qu&apos;il ait été informé au
+            préalable des griefs retenus contre lui (art. R6352-4).
+          </Text>
+          <Text style={local.articleBody}>
+            Lorsqu&apos;une sanction susceptible d&apos;avoir une incidence, immédiate ou non, sur sa
+            présence dans la formation est envisagée, la procédure suivante s&apos;applique :
+          </Text>
+          <BulletList
+            items={[
+              "Le stagiaire est convoqué à un entretien par lettre remise en main propre ou adressée en recommandé, indiquant l'objet de la convocation.",
+              "Lors de l'entretien, le stagiaire expose ses explications et peut se faire assister par la personne de son choix, stagiaire ou salarié de l'organisme.",
+              "La sanction ne peut intervenir moins d'un jour franc ni plus de quinze jours après l'entretien (art. R6352-6).",
+              "Elle est notifiée par écrit et motivée.",
+            ]}
+          />
+          <Text style={local.articleBody}>
+            Lorsqu&apos;un agissement rend indispensable une mesure conservatoire d&apos;exclusion
+            temporaire à effet immédiat, aucune sanction définitive ne peut être prise sans que cette
+            procédure ait été observée (art. R6352-7).
+          </Text>
+          <Text style={local.articleBody}>
+            Lorsque le stagiaire est un salarié envoyé par son employeur ou que la formation est
+            financée par un tiers, l&apos;organisme informe l&apos;employeur et, le cas échéant, le
+            financeur de la sanction prise (art. R6352-8).
           </Text>
         </DocSection>
 
