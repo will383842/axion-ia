@@ -227,6 +227,31 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
           />
           <FieldRow label="Date d'échéance" value={data.dateEcheance} required />
           <FieldRow label="SIRET de l'organisme" value={identite.siret} required />
+          {/*
+            🔴 F26 — mentions obligatoires de toute société commerciale :
+            forme juridique, capital social et RCS + ville (art. R123-238 C. com.),
+            n° de TVA intracommunautaire dès 150 € (art. 242 nonies A CGI).
+            Elles manquaient : la facture n'était pas régulière.
+
+            Chaque bloc est conditionnel — tant que `legal_overrides` n'est pas
+            complété, on omet plutôt que d'imprimer un libellé vide, qui se lirait
+            comme une donnée perdue.
+          */}
+          {identite.formeJuridique ? (
+            <FieldRow label="Forme juridique" value={identite.formeJuridique} />
+          ) : null}
+          {identite.capitalSocial ? (
+            <FieldRow label="Capital social" value={identite.capitalSocial} />
+          ) : null}
+          {identite.rcsVille ? (
+            <FieldRow
+              label="RCS"
+              value={identite.siren ? `${identite.rcsVille} ${identite.siren}` : identite.rcsVille}
+            />
+          ) : null}
+          {identite.tvaIntracom ? (
+            <FieldRow label="N° TVA intracommunautaire" value={identite.tvaIntracom} />
+          ) : null}
           <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
           {identite.qualiopi ? (
             <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />

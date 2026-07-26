@@ -9,6 +9,7 @@
  */
 
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { resolveLegalIdentity } from "@/lib/legal-identity";
 
 /** Identité complète de l'organisme de formation. */
 export interface OrganismeIdentite {
@@ -26,6 +27,34 @@ export interface OrganismeIdentite {
   referentHandicapEmail?: string;
   /** Contact DPO / RGPD (exercice des droits). Fallback = email général. Optionnel. */
   dpoEmail?: string;
+  /**
+   * Identité COMMERCIALE — mentions obligatoires des factures.
+   *
+   * 🔴 Audit certification 2026-07-26 (F26). La facture ne recevait que
+   * `raisonSociale`, `siret`, `nda` et les adresses. Il manquait quatre mentions
+   * que la loi impose à toute société commerciale :
+   *   - forme juridique, capital social, RCS + ville  → art. R123-238 C. com. ;
+   *   - n° de TVA intracommunautaire dès 150 €        → art. 242 nonies A CGI.
+   *
+   * La donnée existait déjà dans `LegalIdentity` (`src/lib/legal-identity.ts`),
+   * qui alimente les mentions légales publiques : deux structures coexistaient
+   * sans se parler, et la facture utilisait la plus pauvre. On lit désormais la
+   * MÊME source (`legal_overrides`) — une seule saisie, aucune divergence
+   * possible entre le site et les pièces comptables.
+   *
+   * `null` tant que Will n'a pas renseigné le champ : les blocs correspondants
+   * sont alors omis du PDF plutôt qu'affichés vides.
+   *
+   * FACULTATIFS au sens du type, et c'est délibéré : seule la facture porte ces
+   * mentions. Les convocations, attestations et supports n'en ont pas l'usage et
+   * ne doivent pas être forcés de les fournir — les rendre obligatoires
+   * n'ajouterait aucune garantie, juste un champ `null` recopié partout.
+   */
+  formeJuridique?: string | null;
+  capitalSocial?: string | null;
+  rcsVille?: string | null;
+  siren?: string | null;
+  tvaIntracom?: string | null;
 }
 
 /**
@@ -63,6 +92,17 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
 
   const emailOrganisme = email || "";
 
+  // F26 — identité commerciale lue depuis `legal_overrides`, la MÊME clé que les
+  // mentions légales publiques. Enveloppée : une facture ne doit pas échouer
+  // parce que le bloc légal est absent, elle doit sortir avec ce qu'on a — les
+  // champs manquants sont simplement omis du PDF.
+  let legal: Awaited<ReturnType<typeof resolveLegalIdentity>> | null = null;
+  try {
+    legal = await resolveLegalIdentity();
+  } catch {
+    legal = null;
+  }
+
   return {
     raisonSociale: raisonSociale || "",
     nda: nda || "",
@@ -76,5 +116,10 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     referentHandicapEmail: referentHandicapEmail || "",
     // DPO non renseigné → on retombe sur le contact général de l'OF (jamais le handicap).
     dpoEmail: dpoEmail || emailOrganisme,
+    formeJuridique: legal?.legalForm ?? null,
+    capitalSocial: legal?.capitalSocial ?? null,
+    rcsVille: legal?.rcsVille ?? null,
+    siren: legal?.siren ?? null,
+    tvaIntracom: legal?.vatNumber ?? null,
   };
 }
