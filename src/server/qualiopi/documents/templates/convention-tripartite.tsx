@@ -142,7 +142,19 @@ export function ConventionTripartitePdf({
           <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
           <FieldRow label="SIRET" value={identite.siret} required />
           <FieldRow label="NDA" value={identite.nda} required />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          {/*
+            🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
+            Marquée `required`, elle imprimait « Non renseigné » dans le style
+            des champs manquants sur chaque convention, contrat et certificat —
+            c'est-à-dire précisément les pièces qui partent chez le client, chez
+            l'OPCO et chez le certificateur. Attirer l'œil en rouge sur une
+            absence est pire que l'omettre : un organisme non encore certifié
+            n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
+            aucune raison d'exister. Même traitement que la facture et le devis.
+          */}
+          {identite.qualiopi ? (
+            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
+          ) : null}
           <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow label="Email" value={identite.email || "—"} />
 
@@ -205,7 +217,16 @@ export function ConventionTripartitePdf({
             <Text style={local.amountLabel}>Reste à charge client</Text>
             <Text style={local.amountValue}>{formatEur(data.resteAChargeClient)}</Text>
           </View>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+          ) : null}
         </DocSection>
 
         {/* 4. Conditions d'annulation */}

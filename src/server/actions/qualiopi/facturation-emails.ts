@@ -30,7 +30,9 @@ const EnvoyerDevisSchema = z.object({
 
 export async function envoyerDevisEmailAction(
   rawInput: unknown,
-): Promise<{ data: { enqueued: boolean; to: string } } | { error: string }> {
+): Promise<
+  { data: { enqueued: boolean; garePourValidation: boolean; to: string } } | { error: string }
+> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
@@ -56,7 +58,7 @@ export async function envoyerDevisEmailAction(
     return { error: "PDF absent : envoyer le devis (génération du PDF) avant l'envoi par email." };
   }
 
-  const { enqueued } = await enqueueEmail(
+  const { enqueued, garePourValidation = false } = await enqueueEmail(
     "devis-envoi",
     to,
     "fr",
@@ -74,9 +76,23 @@ export async function envoyerDevisEmailAction(
     },
     {
       attachments: [{ filename: `${devis.numero}.pdf`, r2Key: devis.fichierPdfUrl }],
+      // 🔴 Vérification E2E 2026-07-26. Sans `clientId`, aucune règle
+      // d'automatisation PAR CLIENT ne peut jamais s'appliquer : le `where` de
+      // `resoudreMode` se réduit aux règles globales. L'écran affichait donc des
+      // réglages par client structurellement inertes.
+      clientId: devis.clientId,
+      sujet: `Devis ${devis.numero} — Axion-IA`,
     },
   );
-  if (!enqueued) return { error: "File d'envoi indisponible — réessayer." };
+
+  // 🔴 `enqueued: false` ne signifie PAS un échec : c'est aussi ce que renvoie
+  // un email correctement GARÉ en corbeille de validation. Le traiter comme une
+  // erreur affichait « File d'envoi indisponible — réessayer » sur un succès,
+  // sautait la journalisation, et invitait l'admin à recliquer — chaque reclic
+  // créant une ligne de plus en corbeille, sans déduplication.
+  if (!enqueued && !garePourValidation) {
+    return { error: "File d'envoi indisponible — réessayer." };
+  }
 
   await logQualiopiActivity({
     action: "facturation.email.devis",
@@ -85,7 +101,7 @@ export async function envoyerDevisEmailAction(
     changes: { to, numero: devis.numero },
     session,
   });
-  return { data: { enqueued, to } };
+  return { data: { enqueued, garePourValidation, to } };
 }
 
 const EnvoyerFactureSchema = z.object({
@@ -96,7 +112,9 @@ const EnvoyerFactureSchema = z.object({
 
 export async function envoyerFactureEmailAction(
   rawInput: unknown,
-): Promise<{ data: { enqueued: boolean; to: string } } | { error: string }> {
+): Promise<
+  { data: { enqueued: boolean; garePourValidation: boolean; to: string } } | { error: string }
+> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
@@ -134,7 +152,7 @@ export async function envoyerFactureEmailAction(
 
   const estAvoir = facture.avoirDeId !== null;
   const montantDu = facture.montantTtcCents ?? facture.montantHtCents;
-  const { enqueued } = await enqueueEmail(
+  const { enqueued, garePourValidation = false } = await enqueueEmail(
     "facture-envoi",
     to,
     "fr",
@@ -152,9 +170,15 @@ export async function envoyerFactureEmailAction(
     },
     {
       attachments: [{ filename: `${facture.numero}.pdf`, r2Key }],
+      // Voir le commentaire de l'envoi de devis : sans `clientId`, les règles
+      // par client sont inertes ; et `enqueued: false` peut signifier « garé ».
+      ...(facture.clientId !== null ? { clientId: facture.clientId } : {}),
+      sujet: `${estAvoir ? "Avoir" : "Facture"} ${facture.numero} — Axion-IA`,
     },
   );
-  if (!enqueued) return { error: "File d'envoi indisponible — réessayer." };
+  if (!enqueued && !garePourValidation) {
+    return { error: "File d'envoi indisponible — réessayer." };
+  }
 
   await logQualiopiActivity({
     action: "facturation.email.facture",
@@ -163,5 +187,5 @@ export async function envoyerFactureEmailAction(
     changes: { to, numero: facture.numero, estAvoir, pdfHash: doc.hashSha256 },
     session,
   });
-  return { data: { enqueued, to } };
+  return { data: { enqueued, garePourValidation, to } };
 }

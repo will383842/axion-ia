@@ -18,7 +18,11 @@
 "use server";
 
 import { z } from "zod";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireAdminPublish,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   creerAppreciation,
   listAppreciations,
@@ -120,7 +124,10 @@ export async function creerAppreciationAction(input: {
 export async function traiterDemandeRgpdAction(input: {
   demandeId: string;
 }): Promise<ActionResult<{ type: string; exportData?: object }>> {
-  const session = await requireAdminWrite();
+  // 🔴 F45 — clore une demande RGPD (accès ou effacement) engage la
+  // responsabilité du responsable de traitement : ce n'est pas une opération
+  // d'édition courante. Réservé à `admin` / `super_admin`.
+  const session = await requireAdminPublish();
 
   const parsed = traiterDemandeRgpdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };

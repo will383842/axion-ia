@@ -52,12 +52,66 @@ const boolSchema = z.preprocess(
 // comme à l'ÉCRITURE (setQualiopiConfig valide via ce schéma → ne re-stocke jamais
 // d'espace de bord). Le texte multi-ligne interne est préservé (trim = bords seuls).
 const str = (def = "") => ({ schema: z.string().trim(), default: def });
+
+/**
+ * Champ email — vide autorisé, mais si renseigné il DOIT être un email.
+ *
+ * 🔴 Vérification E2E 2026-07-26. Relevé en production :
+ * `qualiopi.responsable_qualite_email` valait « Williams Jullin » — un NOM dans
+ * un champ email, accepté sans broncher par `z.string().trim()`. Ce n'est pas
+ * une faute de frappe isolée : les champs « nom » et « email » se suivent dans
+ * le formulaire, et rien ne les distinguait au moment d'enregistrer.
+ *
+ * La chaîne vide reste valide : ces clés sont facultatives, et refuser le vide
+ * empêcherait d'effacer une valeur.
+ */
+const email = (def = "") => ({
+  // `trim()` d'abord, puis la validation : une valeur uniquement blanche doit
+  // devenir vide (= « non renseigné », masqué à l'affichage), pas être rejetée.
+  schema: z
+    .string()
+    .trim()
+    .pipe(z.union([z.literal(""), z.string().email()])),
+  default: def,
+});
+
+/**
+ * Champ téléphone — vide autorisé, espaces de tête/queue retirés.
+ *
+ * `qualiopi.responsable_qualite_telephone` portait « ␣+33743331201 » : l'espace
+ * de tête survivait à la lecture comme à l'écriture. `trim()` suffit ici — on
+ * ne normalise pas le format, un OF peut légitimement écrire un numéro
+ * international ou un poste interne.
+ */
+const tel = (def = "") => ({ schema: z.string().trim(), default: def });
 const num = (def: number) => ({ schema: numSchema, default: def });
 const bool = (def: boolean) => ({ schema: boolSchema, default: def });
 
 export const QUALIOPI_CONFIG_REGISTRY = {
   // ── Identité organisme (placeholders légaux — à renseigner par Will) ──
   nda_numero: { ...str(), description: "N° de déclaration d'activité (NDA, 11 chiffres)." },
+  // ── Médiation de la consommation (obligatoire dès qu'un PARTICULIER contracte) ──
+  //
+  // 🔴 Audit certification 2026-07-26 (F50). Le code génère des contrats de
+  // formation individuels (art. L.6353-3), donc pour des consommateurs. Or
+  // l'article L.612-1 du Code de la consommation impose au professionnel
+  // d'adhérer à un médiateur agréé et d'en publier les coordonnées AVANT toute
+  // vente à un particulier. Amende administrative jusqu'à 15 000 € pour une
+  // personne morale.
+  //
+  // Ces deux clés sont vides par défaut : tant qu'elles le restent, la
+  // génération du contrat individuel est REFUSÉE (cf.
+  // `genererContratFormationAction`). Rien ne bloque l'activité B2B.
+  mediateur_consommation_nom: {
+    ...str(),
+    description:
+      "Nom du médiateur de la consommation agréé CECMC. OBLIGATOIRE avant toute vente à un particulier (art. L.612-1 C. conso).",
+  },
+  mediateur_consommation_url: {
+    ...str(),
+    description:
+      "Site ou adresse postale de saisine du médiateur. Publié dans les CGV et sur le contrat de formation individuel.",
+  },
   qualiopi_numero: { ...str(), description: "N° du certificat Qualiopi." },
   qualiopi_organisme: { ...str(), description: "Organisme certificateur Qualiopi (COFRAC)." },
   qualiopi_validite: { ...str(), description: "Date d'expiration Qualiopi (ISO YYYY-MM-DD)." },
@@ -124,20 +178,20 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   // ── Contact général de l'organisme (≠ référent handicap, ≠ DPO) ──
   // Imprimé comme coordonnées de l'OF prestataire sur convention/facture/réclamations.
   email_organisme: {
-    ...str(),
+    ...email(),
     description: "Email de contact général de l'OF (convention, facture, réclamations).",
   },
-  telephone_organisme: { ...str(), description: "Téléphone de contact général de l'OF." },
+  telephone_organisme: { ...tel(), description: "Téléphone de contact général de l'OF." },
   // Délégué/point de contact protection des données (RGPD art. 13). Fallback = email_organisme.
   dpo_contact_email: {
-    ...str(),
+    ...email(),
     description: "Email du DPO / contact RGPD (exercice des droits).",
   },
 
   // ── Référent handicap (indicateur 26 ⭐) ──
   referent_handicap_nom: { ...str("Williams Jullin"), description: "Nom du référent handicap." },
-  referent_handicap_email: { ...str(), description: "Email du référent handicap." },
-  referent_handicap_telephone: { ...str(), description: "Téléphone du référent handicap." },
+  referent_handicap_email: { ...email(), description: "Email du référent handicap." },
+  referent_handicap_telephone: { ...tel(), description: "Téléphone du référent handicap." },
   referent_handicap_delai_reponse_h: {
     ...num(48),
     description: "Délai de réponse référent handicap (heures).",
@@ -151,8 +205,8 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...str("Williams Jullin"),
     description: "Nom du responsable/référent qualité (pilote le référentiel, prépare les audits).",
   },
-  responsable_qualite_email: { ...str(), description: "Email du responsable qualité." },
-  responsable_qualite_telephone: { ...str(), description: "Téléphone du responsable qualité." },
+  responsable_qualite_email: { ...email(), description: "Email du responsable qualité." },
+  responsable_qualite_telephone: { ...tel(), description: "Téléphone du responsable qualité." },
 
   // ── Paramètres financiers (modifiables) ──
   smic_horaire_brut: {
@@ -196,6 +250,24 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...num(45),
     description:
       "Délai de paiement des financeurs publics/OPCO (jours) — seuil de retard distinct des entreprises.",
+  },
+  // F61 — défauts d'acompte.
+  //
+  // 🔴 Vérification E2E 2026-07-26 : ce commentaire affirmait que ces clés sont
+  // « surchargées par client ». La surcharge par client EXISTE bien
+  // (`resoudreConditions`, colonnes `Client.tauxAcomptePct` / `modeFacturation`),
+  // mais aucun chemin de facturation ne l'appelle encore — les 4 émetteurs
+  // (`facturation-service`, `facture-libre`, `plan-recurrent`,
+  // `facturation-1to1`) lisent uniquement le réglage global. Voir RESTE-A-FAIRE.
+  taux_acompte_defaut_pct: {
+    ...num(30),
+    description:
+      "Taux d'acompte par défaut, appliqué au RESTE À CHARGE (%). Plafonné à 30 % pour un particulier (art. L6353-6), sans limite entre professionnels.",
+  },
+  mode_facturation_defaut: {
+    ...str("acompte_solde"),
+    description:
+      "Mode de facturation par défaut : « acompte_solde » (acompte à la signature puis solde) ou « solde_unique » (tout à l'issue).",
   },
 
   // ── Seuils réclamations ──

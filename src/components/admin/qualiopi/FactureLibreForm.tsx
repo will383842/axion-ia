@@ -185,7 +185,7 @@ export function FactureLibreForm({ clients, basePath }: FactureLibreFormProps): 
               ))}
             </select>
             <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              L&apos;activité pilote le régime de TVA (formation / 1-to-1 exonérables 261-4-4°).
+              L&apos;activité détermine si le régime de TVA configuré s&apos;applique.
             </p>
           </div>
 

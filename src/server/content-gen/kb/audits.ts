@@ -106,7 +106,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   {
     id: "audit-010",
     text: "Un audit IA révèle en moyenne 3 à 7 non-conformités majeures dans les PME qui n'ont pas de politique IA formalisée, principalement sur la traçabilité des décisions automatisées.",
-    source: "Axion-IA — Retours terrain audits 2025",
+    source: "Axion-IA — Retours terrain audits 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-01",
     verticales: ["audits"],
@@ -152,7 +152,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   {
     id: "audit-015",
     text: "Un audit de gouvernance données IA identifie en moyenne 12 à 18 jeux de données critiques non documentés dans les PME, principalement issus de scraping ou de partenariats commerciaux non encadrés.",
-    source: "Axion-IA — Retours terrain audits gouvernance 2025",
+    source: "Axion-IA — Retours terrain audits gouvernance 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
@@ -356,7 +356,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   {
     id: "audit-037",
     text: "L'audit ROI IA mesure 4 leviers : gain de productivité (heures économisées × coût horaire), réduction des erreurs (coût/erreur évitée), accélération du time-to-market et création de revenus nouveaux.",
-    source: "Axion-IA — Méthodologie ROI IA 2025",
+    source: "Axion-IA — Méthodologie ROI IA 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
@@ -562,7 +562,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   {
     id: "audit-059",
     text: "Les principaux signaux justifiant un audit IA prioritaire : incident en production (drift, biais détecté), audit RGPD échoué, ouverture d'un appel d'offre public, levée de fonds (due diligence), passage d'un cap réglementaire AI Act.",
-    source: "Axion-IA — Déclencheurs audit observés 2025",
+    source: "Axion-IA — Déclencheurs audit observés 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
@@ -571,7 +571,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   {
     id: "audit-060",
     text: "Le délai moyen entre la première discussion d'audit IA et la livraison du rapport final est de 8 à 12 semaines chez Axion-IA : 2 semaines de cadrage, 4-6 semaines d'instruction, 2-4 semaines de restitution et plan d'action.",
-    source: "Axion-IA — Délai moyen audits livrés 2025",
+    source: "Axion-IA — Délai moyen audits livrés 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],

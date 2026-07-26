@@ -65,8 +65,17 @@ export async function createAuditMissionAction(
   try {
     created = await prisma.$transaction(async (tx) => {
       await tx.$executeRawUnsafe(`SELECT pg_advisory_xact_lock(hashtext('audit_seq_${year}'))`);
+      // 🔴 Vérification E2E 2026-07-26 — la borne HAUTE manquait : toute mission
+      // datée d'une année future était comptée dans la séquence de l'année
+      // courante, qui sautait donc des numéros. Fenêtre fermée, comme
+      // `reclamations.ts`.
       const count = await tx.auditMission.count({
-        where: { dateDebut: { gte: new Date(Date.UTC(year, 0, 1)) } },
+        where: {
+          dateDebut: {
+            gte: new Date(Date.UTC(year, 0, 1)),
+            lt: new Date(Date.UTC(year + 1, 0, 1)),
+          },
+        },
       });
       const numero = formatDocumentNumber("audit", year, count + 1);
       const row = await tx.auditMission.create({

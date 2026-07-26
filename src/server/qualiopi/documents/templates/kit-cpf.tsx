@@ -19,7 +19,6 @@ import {
   formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
@@ -62,6 +61,20 @@ const styles = StyleSheet.create({
 // ============================================================
 // Types de données
 // ============================================================
+
+/**
+ * Pied de kit financeur : NDA, et le n° Qualiopi UNIQUEMENT s'il existe.
+ *
+ * 🔴 F29 — « à renseigner » est une note de chantier destinée à Will. Elle
+ * s'imprimait telle quelle sur un document adressé à un financeur, où elle se
+ * lit comme un dossier bâclé. Un organisme non encore certifié n'a pas de numéro
+ * Qualiopi : on omet la mention au lieu d'annoncer qu'elle manque.
+ */
+function qualiopiLigne(identite: OrganismeIdentite): string {
+  const nda = identite.nda ? `NDA : ${identite.nda}` : "";
+  const qualiopi = identite.qualiopi ? `Certification Qualiopi : ${identite.qualiopi}` : "";
+  return [nda, qualiopi].filter((p) => p !== "").join(" — ");
+}
 
 export interface BeneficiaireCpf {
   nom: string;
@@ -117,7 +130,13 @@ export function KitCpfPdf({ data }: { data: KitCpfData }): React.ReactElement {
           {[
             { label: "Accord de prise en charge EDOF / Mon Compte Formation" },
             { label: "Attestation de fin de formation (ou partielle)" },
-            { label: "Facture exonérée de TVA (Art. 261-4-4° CGI)" },
+            // 🔴 F25 (3e passage) — voir kit-opco : la checklist annonçait encore
+            // l'exonération 261-4-4° en dur, sur une pièce adressée à un financeur.
+            {
+              label: identite.mentionTvaRegime
+                ? `Facture — ${identite.mentionTvaRegime}`
+                : "Facture",
+            },
             { label: "Feuilles d'émargement ou relevés de connexion" },
           ].map((piece, idx) => (
             <View key={idx} style={styles.pieceRow}>
@@ -158,10 +177,17 @@ export function KitCpfPdf({ data }: { data: KitCpfData }): React.ReactElement {
 
         {/* Mentions légales */}
         <View style={[pdfStyles.section, { marginTop: 16 }]}>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
-          <Text style={pdfStyles.legalNote}>
-            {`NDA : ${identite.nda || "à renseigner"} — Qualiopi : ${identite.qualiopi || "à renseigner"}`}
-          </Text>
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+          ) : null}
+          <Text style={pdfStyles.legalNote}>{qualiopiLigne(identite)}</Text>
         </View>
       </QualiopiPage>
     </Document>

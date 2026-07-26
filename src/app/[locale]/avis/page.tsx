@@ -29,7 +29,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { cn } from "@/lib/utils";
 import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
 import type { ServiceId } from "@/content/services";
@@ -236,7 +236,9 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
 
   // Section Qualiopi/financement : composants auto-gatés Phase B ; on ne rend la
   // Section entière que si la divulgation OF est activée (évite une section vide).
-  const disclosureEnabled = isQualiopiPublicDisclosureEnabled();
+  // Audit F13 : les composants internes sont gates sur la certification ; sans le
+  // meme drapeau ici, la section se rendrait VIDE au lieu de disparaitre.
+  const disclosureEnabled = isQualiopiCertificationObtenue();
 
   const heroMedia = (
     <figure className="shadow-card m-0 overflow-hidden rounded-2xl">

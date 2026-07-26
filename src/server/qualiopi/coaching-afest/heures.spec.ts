@@ -60,13 +60,23 @@ describe("computeTaux1to1", () => {
     expect(computeTaux1to1(14, 14)).toBe(100);
   });
 
-  it("sans heures prévues + heures réalisées > 0 → 100 %", () => {
-    expect(computeTaux1to1(9.5, null)).toBe(100);
-    expect(computeTaux1to1(9.5, 0)).toBe(100);
+  // 🔴 F65 — ces deux cas retournaient 100 % et 0 %. Sans durée conventionnelle,
+  // il n'y a AUCUNE référence : le taux n'est pas 100 %, il est incalculable.
+  // Un parcours de 2 h sur 30 prévues aurait été attesté « 100 % d'assiduité »
+  // du seul fait qu'aucune durée n'était renseignée — et ce taux partait sur
+  // l'attestation. `null` force l'appelant à refuser d'attester.
+  it("F65 : sans heures prévues, le taux est INCALCULABLE, pas 100 %", () => {
+    expect(computeTaux1to1(9.5, null)).toBeNull();
+    expect(computeTaux1to1(9.5, 0)).toBeNull();
   });
 
-  it("sans heures prévues + aucune heure réalisée → 0 %", () => {
-    expect(computeTaux1to1(0, null)).toBe(0);
+  it("F65 : incalculable aussi quand rien n'a été réalisé", () => {
+    expect(computeTaux1to1(0, null)).toBeNull();
+  });
+
+  it("reste calculable dès qu'une durée conventionnelle existe", () => {
+    expect(computeTaux1to1(0, 14)).toBe(0);
+    expect(computeTaux1to1(7, 14)).toBe(50);
   });
 
   it("parcours partiel (9,5 h / 20 h prévues) → 48 %", () => {

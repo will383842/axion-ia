@@ -48,7 +48,6 @@ export interface IndexabilityResult {
 const NOINDEX_STATIC_PATHS: ReadonlySet<string> = new Set([
   "/design",
   "/components",
-  "/sections",
   "/desabonnement",
   "/mes-donnees",
   "/mes-donnees/export",

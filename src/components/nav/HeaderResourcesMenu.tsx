@@ -74,7 +74,9 @@ export function HeaderResourcesMenu({ isFr }: { isFr: boolean }): ReactNode {
       triggerHref="/guide-ia"
       triggerTrackingId="header_megamenu_resources"
       panelLabel={isFr ? "Ressources" : "Resources"}
-      panelAlign="left"
+      // Dernier declencheur du header : ancre a DROITE, sinon les 720 px du panneau
+      // sortent de la fenetre (audit 2026-07-26, 223 px de debordement mesures).
+      panelAlign="right"
     >
       {({ close }) => (
         <div className="grid grid-cols-3 gap-6 p-6">

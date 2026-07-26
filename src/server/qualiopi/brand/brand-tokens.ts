@@ -33,7 +33,7 @@ export const QUALIOPI_BRAND_COLORS = {
   "primary-hover": "#0f3aae",
   "primary-fg": "#ffffff",
   "primary-soft": "#e8efff",
-  terracotta: "#c24a1b",
+  terracotta: "#b23f16",
   "terracotta-soft": "#f5e3d8",
   "terracotta-deep": "#8c3010",
   sage: "#5e6c54",

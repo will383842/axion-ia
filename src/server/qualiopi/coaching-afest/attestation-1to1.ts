@@ -22,10 +22,22 @@ import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestatio
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
 import { ensureCoachingSnapshot, COACHING_SNAPSHOT_SELECT } from "./coaching-snapshot";
 import { getHeuresReelles1to1, computeTaux1to1 } from "./heures";
+import {
+  getFinaleResultats1to1,
+  evaluationSansAucuneNote,
+} from "@/server/qualiopi/evaluations/evaluations-service";
 
 export interface AttestationResult {
   resultat: "complete" | "partielle" | "aucune";
   documentId: string | null;
+  /**
+   * Raison d'un refus d'émission, à afficher à l'admin (F65).
+   *
+   * Un « aucune » silencieux est indiscernable d'un bug : l'admin clique, rien
+   * ne se passe, et il recommence. Le motif dit ce qui manque et comment le
+   * corriger.
+   */
+  motif?: string;
 }
 
 const formatDate = (d: Date) =>
@@ -117,6 +129,20 @@ export async function genererAttestation1to1(
 
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
   const seuilHeuresMin = await getQualiopiConfig("afest_seuil_heures_min");
+
+  // 🔴 F65 — un taux `null` signifie « aucune durée conventionnelle renseignée »,
+  // donc assiduité INCALCULABLE. On refuse d'attester plutôt que de retenir un
+  // taux par défaut : attester une assiduité qu'on ne sait pas mesurer est
+  // exactement ce qu'un contrôle de service fait sanctionne.
+  if (taux === null) {
+    return {
+      resultat: "aucune",
+      documentId: null,
+      motif:
+        "Durée conventionnelle du parcours non renseignée : l'assiduité n'est pas calculable, l'attestation ne peut pas être émise. Renseignez les heures prévues à la convention.",
+    };
+  }
+
   let resultat = classifierPresence(taux, seuilPresencePct);
   // Plancher absolu d'heures (optionnel, gated). En dessous → aucune.
   if (seuilHeuresMin > 0 && heuresReelles < seuilHeuresMin) {
@@ -150,18 +176,54 @@ export async function genererAttestation1to1(
       .join(", ");
   }
 
-  // Évaluation finale 1-to-1 (si présente).
-  const finale = await prisma.evaluationAcquis.findFirst({
-    where: { coachingSessionId, type: "finale" },
-    orderBy: { dateEvaluation: "desc" },
-    select: { reussite: true },
-  });
+  // 🔴 Audit certification 2026-07-26 (F21, SECOND passage). Ce fichier est le
+  // miroir de `attestation-service.ts` et reproduisait le même défaut : la liste
+  // COMPLÈTE des objectifs du parcours s'imprimait sous « Compétences acquises »,
+  // sans que rien ne consulte l'évaluation. Mon premier correctif n'avait touché
+  // que la voie collective — la famille AFEST passait encore.
+  //
+  // Le défaut était même plus visible ici : le code lisait bien l'évaluation,
+  // mais SEULEMENT le booléen de réussite. Une attestation AFEST pouvait donc
+  // afficher « Évaluation finale : Non validée » et, juste en dessous,
+  // l'intégralité des objectifs comme acquis.
+  //
+  // C'est d'autant plus grave que l'AFEST est précisément le dispositif où
+  // l'évaluation individuelle est le cœur du sujet au regard de L6353-1.
+  const resultatsFinale = await getFinaleResultats1to1(coachingSessionId);
+  // 🔴 Vérification E2E 2026-07-26. Une évaluation existante mais dont AUCUNE
+  // compétence n'est notée doit être traitée comme « non réalisée », pas comme
+  // un échec : `scorePct = 0` et `reussite = false` y sont des artefacts de
+  // saisie vide, pas un résultat. Sans ce test, l'attestation portait
+  // « Non validée — score 0 % » — le faux échec que F22 ferme au niveau du
+  // calcul, réintroduit au niveau du document.
+  const sansAucuneNote = resultatsFinale !== null && evaluationSansAucuneNote(resultatsFinale);
   const evaluationObtenue =
-    finale == null
+    resultatsFinale === null || sansAucuneNote
       ? undefined
-      : finale.reussite
-        ? "Évaluation finale : Réussite"
-        : "Évaluation finale : Non validée";
+      : `${resultatsFinale.reussite ? "Réussite" : "Non validée"} — score ${resultatsFinale.scorePct} %`;
+
+  // Ce qui s'imprime sous « Compétences acquises » : les objectifs RÉELLEMENT
+  // notés acquis, jamais le programme.
+  const competencesAcquisesStr =
+    resultatsFinale === null || sansAucuneNote
+      ? "Évaluation des acquis non réalisée"
+      : resultatsFinale.acquis.length > 0
+        ? resultatsFinale.acquis.join(", ")
+        : "Aucun objectif évalué comme acquis";
+
+  const reservesStr = [
+    resultatsFinale && resultatsFinale.partiels.length > 0
+      ? `Partiellement acquis : ${resultatsFinale.partiels.join(", ")}`
+      : null,
+    resultatsFinale && resultatsFinale.nonAcquis.length > 0
+      ? `Non acquis : ${resultatsFinale.nonAcquis.join(", ")}`
+      : null,
+    resultatsFinale && resultatsFinale.nonEvalues.length > 0
+      ? `Non évalués : ${resultatsFinale.nonEvalues.join(", ")}`
+      : null,
+  ]
+    .filter((l): l is string => l !== null)
+    .join(" · ");
 
   // Dates : 1re et dernière séance avec compte-rendu (sinon dateSeance du parcours).
   const dates = cs.comptesRendus
@@ -206,7 +268,8 @@ export async function genererAttestation1to1(
                 heuresSuivies: heuresReelles,
                 heuresTotales,
                 ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-                competencesAcquises: objectifsStr,
+                competencesAcquises: competencesAcquisesStr,
+                ...(reservesStr !== "" ? { competencesReserves: reservesStr } : {}),
               },
               qrToken: token,
               qrDataUrl: qrUrl,
@@ -223,7 +286,8 @@ export async function genererAttestation1to1(
                 heuresSuivies: heuresReelles,
                 heuresTotales,
                 ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-                competencesPartiellesValidees: objectifsStr,
+                competencesPartiellesValidees: competencesAcquisesStr,
+                ...(reservesStr !== "" ? { competencesReserves: reservesStr } : {}),
               },
               qrToken: token,
               qrDataUrl: qrUrl,

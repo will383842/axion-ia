@@ -135,4 +135,49 @@ describe("CertificatRealisationPdf — contenu", () => {
     );
     expect(t).toContain("Non renseigné");
   });
+
+  // 🔴 F30 — le modèle annexé à l'arrêté du 21 décembre 2018 impose de qualifier
+  // l'action. Sans nature, un OPCO ne sait pas au titre de quel dispositif il
+  // rembourse ; sans modalité, un contrôle de service fait n'a rien à vérifier.
+  it("F30 : qualifie la nature de l'action, même sans valeur explicite", () => {
+    expect(text).toContain("Nature de l'action");
+    expect(text).toContain("Action de formation");
+  });
+
+  it("F30 : porte la modalité d'exécution quand elle est connue", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(CertificatRealisationPdf, {
+        data: { ...CERTIFICAT, modalite: "hybride" },
+      }),
+    );
+    expect(t).toContain("Modalité d'exécution");
+    expect(t).toContain("Mixte (présentiel et à distance)");
+  });
+
+  it("F30 : un bilan de compétences n'est pas annoncé comme une formation", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(CertificatRealisationPdf, {
+        data: { ...CERTIFICAT, natureAction: "bilan_competences" },
+      }),
+    );
+    expect(t).toContain("Bilan de compétences");
+    // Assertion en MIROIR plutôt qu'en négatif : « Action de formation » est
+    // aussi le titre de la section (« Action de formation réalisée »), donc un
+    // `not.toContain` échouerait sans rien prouver. Ce qui compte est que le
+    // libellé n'apparaisse QUE lorsqu'il est la nature retenue.
+    expect(text).not.toContain("Bilan de compétences");
+  });
+
+  // 🔴 F29 — la ligne Qualiopi était `required` : sans numéro, le certificat
+  // imprimait « Non renseigné » dans le style des champs manquants, sur la pièce
+  // même qui part chez l'OPCO. Un OF non encore certifié n'a pas de numéro à
+  // porter — la ligne disparaît, elle ne s'excuse pas.
+  it("F29 : n'annonce PAS l'absence de certification Qualiopi", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(CertificatRealisationPdf, {
+        data: { ...CERTIFICAT, identite: { ...IDENTITE, qualiopi: "" } },
+      }),
+    );
+    expect(t).not.toContain("Certification Qualiopi");
+  });
 });

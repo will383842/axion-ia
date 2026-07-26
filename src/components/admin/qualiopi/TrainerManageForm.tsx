@@ -53,6 +53,8 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
   const [error, setError] = useState<string | null>(null);
 
   const [selected, setSelected] = useState<Set<string>>(new Set(props.habilitations));
+  const tousCoches =
+    props.formations.length > 0 && props.formations.every((f) => selected.has(f.id));
   const [nda, setNda] = useState(props.sousTraitantNda ?? "");
   const [statut, setStatut] = useState<TrainerStatut>(props.statut);
 
@@ -170,8 +172,35 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
       <section className={sectionCls}>
         <h2 className={titleCls}>Formations habilitées</h2>
         <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          Un formateur ne peut être assigné qu&apos;aux formations cochées ici (garde off.6/19).
+          Une habilitation vaut pour <strong>une formation précise</strong> : cocher 20 formations
+          crée 20 habilitations datées. C&apos;est ce couple formateur/formation que
+          l&apos;auditrice contrôle (ind. 21). Un formateur ne peut être assigné qu&apos;aux
+          formations cochées ici.
         </p>
+        {props.formations.length > 0 && (
+          <div className="mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-3)]">
+            <button
+              type="button"
+              disabled={isPending || tousCoches}
+              onClick={() => setSelected(new Set(props.formations.map((f) => f.id)))}
+              className="text-[length:var(--text-admin-sm)] underline disabled:opacity-40"
+            >
+              Tout sélectionner
+            </button>
+            <button
+              type="button"
+              disabled={isPending || selected.size === 0}
+              onClick={() => setSelected(new Set())}
+              className="text-[length:var(--text-admin-sm)] underline disabled:opacity-40"
+            >
+              Tout décocher
+            </button>
+            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              {selected.size} / {props.formations.length} sélectionnée
+              {selected.size > 1 ? "s" : ""}
+            </span>
+          </div>
+        )}
         {props.formations.length === 0 ? (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Aucune formation au catalogue.

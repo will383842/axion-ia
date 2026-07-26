@@ -28,7 +28,17 @@ import type { Prisma } from "../../../../prisma/generated/client";
 export async function allocateFormationNumero(tx?: Prisma.TransactionClient): Promise<string> {
   const year = new Date().getFullYear();
   const db = tx ?? prisma;
-  const count = await db.formation.count();
+  // 🔴 Audit certification 2026-07-26 (F63). Le comptage portait sur la table
+  // ENTIÈRE, sans filtre d'année, tout en estampillant l'année courante. Avec 57
+  // formations numérotées AXI-FORM-2026-001 → -057, la première formation créée
+  // le 1er janvier 2027 aurait reçu AXI-FORM-2027-058 : la séquence 2027
+  // n'aurait jamais eu de 001 à 057.
+  //
+  // L'incohérence était interne au module : la numérotation des factures filtre
+  // correctement par année (`startsWith AXI-FACT-{annee}-`). On aligne.
+  const count = await db.formation.count({
+    where: { numero: { startsWith: `AXI-FORM-${year}-` } },
+  });
   return formatDocumentNumber("formation", year, count + 1);
 }
 
@@ -53,6 +63,9 @@ export interface AllocateSessionNumeroOpts {
 export async function allocateSessionNumero(opts?: AllocateSessionNumeroOpts): Promise<string> {
   const year = new Date().getFullYear();
   const db = opts?.tx ?? prisma;
-  const count = await db.trainingSession.count();
+  // F63 — même défaut que pour les formations : le comptage ignorait l'année.
+  const count = await db.trainingSession.count({
+    where: { numero: { startsWith: `AXI-SESS-${year}-` } },
+  });
   return formatDocumentNumber("session", year, count + 1, opts?.recurrence);
 }

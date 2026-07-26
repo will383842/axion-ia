@@ -133,7 +133,19 @@ export function ConventionPdf({
           <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
           <FieldRow label="SIRET" value={identite.siret} required />
           <FieldRow label="NDA" value={identite.nda} required />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          {/*
+            🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
+            Marquée `required`, elle imprimait « Non renseigné » dans le style
+            des champs manquants sur chaque convention, contrat et certificat —
+            c'est-à-dire précisément les pièces qui partent chez le client, chez
+            l'OPCO et chez le certificateur. Attirer l'œil en rouge sur une
+            absence est pire que l'omettre : un organisme non encore certifié
+            n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
+            aucune raison d'exister. Même traitement que la facture et le devis.
+          */}
+          {identite.qualiopi ? (
+            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
+          ) : null}
           <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow label="Email" value={identite.email || "—"} />
           <FieldRow label="Téléphone" value={identite.telephone || "—"} />
@@ -183,7 +195,16 @@ export function ConventionPdf({
             <Text style={local.amountLabel}>Solde à la fin de la formation</Text>
             <Text style={local.amountValue}>{formatEur(solde)}</Text>
           </View>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+          ) : null}
         </DocSection>
 
         {/* 4. Conditions d'annulation */}
@@ -199,6 +220,16 @@ export function ConventionPdf({
           </Text>
           <Text style={local.listItem}>
             • Annulation à moins de 8 jours ouvrés avant le début : 100 % du prix HT
+          </Text>
+          {/*
+            🔴 F51 — le report gratuit était promis par les CGV et absent de la
+            convention, alors que les deux sont signées ensemble. Les CGV ont été
+            alignées sur ce barème (jours ouvrés) ; la promesse de report, elle,
+            devait remonter ici pour que les deux textes disent la même chose.
+          */}
+          <Text style={local.listItem}>
+            • Dans tous les cas, la prestation est reportable une fois sans frais à une date
+            convenue entre les parties, le report se substituant alors à l&apos;annulation.
           </Text>
         </DocSection>
 

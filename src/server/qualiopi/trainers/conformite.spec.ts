@@ -340,3 +340,65 @@ describe("evaluerConformiteFormateur — CV (Qualiopi off.21)", () => {
     expect(r.manquements.find((x) => x.code === "cv_absent")?.gravite).toBe("alerte");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Constaté sur la fiche du dirigeant, en production, le 2026-07-26.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Plusieurs pièces valides du même type", () => {
+  const base = { statutValidation: "valide" as const, dateExpiration: null };
+
+  // 🔴 `trouverValide` était un `find` : « la première de la liste », donc
+  // l'ordre de chargement. Verser un CV actualisé sans supprimer l'ancien
+  // pouvait laisser la conformité sur le périmé — alerte affichée alors que la
+  // pièce à jour était bien là.
+  it("retient le CV le plus récent, quel que soit l'ordre de la liste", () => {
+    const ancien = { ...base, type: "cv" as const, dateEmission: new Date("2020-01-01") };
+    const recent = { ...base, type: "cv" as const, dateEmission: new Date("2026-07-01") };
+
+    for (const docs of [
+      [ancien, recent],
+      [recent, ancien],
+    ]) {
+      const r = evaluerConformiteFormateur(
+        { statut: "dirigeant", documents: docs, montantRetenuCents: 0 },
+        new Date("2026-07-26"),
+      );
+      expect(r.manquements.some((m) => m.code === "cv_obsolete")).toBe(false);
+    }
+  });
+
+  // Une pièce sans date ne prouve rien de sa fraîcheur : elle ne doit jamais
+  // primer sur une pièce datée.
+  it("une pièce datée prime sur une pièce sans date", () => {
+    const sansDate = { ...base, type: "cv" as const, dateEmission: null };
+    const date = { ...base, type: "cv" as const, dateEmission: new Date("2026-07-01") };
+
+    for (const docs of [
+      [sansDate, date],
+      [date, sansDate],
+    ]) {
+      const r = evaluerConformiteFormateur(
+        { statut: "dirigeant", documents: docs, montantRetenuCents: 0 },
+        new Date("2026-07-26"),
+      );
+      expect(r.manquements.some((m) => m.type === "cv")).toBe(false);
+    }
+  });
+
+  // Le message envoyait chercher un document à refaire, alors qu'il suffisait
+  // de renseigner un champ.
+  it("distingue « sans date » de « périmé »", () => {
+    const r = evaluerConformiteFormateur(
+      {
+        statut: "dirigeant",
+        documents: [{ ...base, type: "cv", dateEmission: null }],
+        montantRetenuCents: 0,
+      },
+      new Date("2026-07-26"),
+    );
+    const m = r.manquements.find((x) => x.type === "cv");
+    expect(m?.message).toContain("sans date d'émission");
+    expect(m?.message).not.toContain("plus de");
+  });
+});

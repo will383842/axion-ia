@@ -1052,6 +1052,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "administration",
     },
+    // F60 — corbeille de validation : les emails commerciaux attendent une
+    // relecture avant de partir. Placée près des Alertes : ce sont les deux
+    // écrans qu'on ouvre en début de journée.
+    {
+      href: `${base}/qualiopi/emails`,
+      label: "Emails à valider",
+      icon: "✉️",
+      group: "qualiopi",
+      subGroup: "administration",
+    },
     // ── Documents (hub à 2 niveaux : Activités + Autres) ─────────────────
     //   Activités : Formations / 1-to-1 / Audit (kits pédagogiques Qualiopi,
     //   InterventionDocument) + Implémentations / Sites web (buckets de fichiers

@@ -268,7 +268,26 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         sousTraitantVerifie={trainer.sousTraitantVerifieAt != null}
         sousTraitantNda={trainer.sousTraitantNda}
         formations={formations}
-        habilitations={trainer.formationsHabilitees}
+        // 🔴 Constaté EN PRODUCTION le 2026-07-26 — l'écran était en impasse
+        // fermée, et l'indicateur 21 structurellement inatteignable.
+        //
+        // `formationsHabilitees` est le tableau legacy : il tolère des ids de
+        // formations supprimées. Celui du dirigeant en portait 33, tous
+        // orphelins (formations de génération 1, remplacées à la refonte du
+        // catalogue). Le formulaire s'initialisait avec ces 33 ids, ne pouvait
+        // pas les AFFICHER — aucune case n'existe pour une formation supprimée —
+        // et les renvoyait quand même à l'enregistrement. La clé étrangère de
+        // `trainer_habilitations` les rejetait, toute la transaction était
+        // annulée, et le `catch` avalait l'erreur : plus aucune habilitation ne
+        // pouvait être enregistrée, pour personne, sans aucun moyen de s'en
+        // sortir par l'interface.
+        //
+        // On ne transmet donc que les ids qui existent réellement au catalogue.
+        // Effet de bord voulu : le premier enregistrement réécrit le tableau
+        // legacy sans les orphelins, ce qui nettoie la donnée au passage.
+        habilitations={trainer.formationsHabilitees.filter((id) =>
+          formations.some((f) => f.id === id),
+        )}
       />
     </AdminPageShell>
   );

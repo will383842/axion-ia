@@ -72,6 +72,10 @@ import {
   qualiopiAttestationDisponibleSubject,
 } from "./qualiopi-attestation-disponible";
 import {
+  QualiopiRelanceImpayeeEmail,
+  qualiopiRelanceImpayeeSubject,
+} from "./qualiopi-relance-impayee";
+import {
   QualiopiAlerteInterneEmail,
   qualiopiAlerteInterneSubject,
 } from "./qualiopi-alerte-interne";
@@ -259,6 +263,12 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-attestation-disponible": {
     subject: qualiopiAttestationDisponibleSubject,
     component: QualiopiAttestationDisponibleEmail,
+  },
+  // F59 — relance d'impayé. Passe par la corbeille de validation : jamais
+  // envoyée sans relecture (cf. `outbox-policy.ts`).
+  "qualiopi-relance-impayee": {
+    subject: qualiopiRelanceImpayeeSubject,
+    component: QualiopiRelanceImpayeeEmail,
   },
   "qualiopi-portail-acces": {
     subject: qualiopiPortailAccesSubject,

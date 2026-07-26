@@ -146,11 +146,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Conditions",
       titleEm: "générales",
       intro:
-        "Conditions générales de vente et d'utilisation (CGV/CGU) régissant les services d'Axion-IA SAS : formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Prestations réservées aux clients professionnels (B2B). Elles intègrent les dispositions propres aux actions de formation professionnelle (articles L.6313-1 et suivants du Code du travail). La version applicable est celle en vigueur à la date de dernière mise à jour indiquée ci-dessous.",
+        "Conditions générales de vente et d'utilisation (CGV/CGU) régissant les services d'Axion-IA SAS : formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Prestations principalement destinées aux clients professionnels ; les dispositions propres aux particuliers figurent dans une section dédiée. Elles intègrent les dispositions propres aux actions de formation professionnelle (articles L.6313-1 et suivants du Code du travail). La version applicable est celle en vigueur à la date de dernière mise à jour indiquée ci-dessous.",
       sections: [
         {
           title: "Objet et champ d'application",
-          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent exclusivement à des clients professionnels (B2B) agissant dans le cadre de leur activité ; elles ne constituent pas une vente à des consommateurs.",
+          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent principalement à des clients professionnels agissant dans le cadre de leur activité. Lorsqu'une formation est souscrite par une personne physique pour son propre compte, les dispositions de la section « Dispositions applicables au particulier (consommateur) » s'appliquent et prévalent sur toute clause contraire.",
         },
         {
           title: "Dispositions propres à la formation professionnelle",
@@ -217,8 +217,32 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Aucune partie ne peut être tenue responsable d'un manquement résultant d'un cas de force majeure au sens de l'article 1218 du Code civil et de la jurisprudence française (notamment grève, panne majeure, catastrophe, épidémie, défaillance d'un fournisseur essentiel). La partie empêchée en informe l'autre sans délai ; les obligations sont suspendues pendant la durée de l'empêchement, et le contrat peut être résolu si l'empêchement devient définitif.",
         },
         {
+          // 🔴 Audit certification 2026-07-26 (F51). Le barème des CGV (7 j / 2 j
+          // calendaires) contredisait celui des conventions de formation
+          // (15 j / 8 j OUVRÉS). Les deux documents sont signés ensemble — la
+          // convention liste les CGV en annexe — et donnaient donc deux chiffres
+          // différents sur le même fait : une annulation à 10 jours coûtait 0 %
+          // d'un côté, 50 % de l'autre. En cas de litige, l'ambiguïté
+          // s'interprète contre le rédacteur (art. 1190 C. civ.).
+          // Aligné sur la convention, qui est le document signé par action et
+          // celui que lit un financeur. Le report gratuit, promesse publique des
+          // CGV, est conservé et repris dans la convention.
           title: "Annulation, report et remboursement",
-          body: "Toute annulation à l'initiative du Client : plus de 7 jours avant la date prévue, remboursement intégral des sommes versées ; entre 7 et 2 jours, 50 % du prix restent dus ; à moins de 2 jours, le prix reste dû en totalité, le créneau étant reportable une fois sans frais. Lorsque la prestation prend la forme d'une action de formation, les modalités spécifiques (convention ou contrat de formation, conditions de dédit et d'abandon, financement éventuel) sont précisées au devis ou dans la convention applicable.",
+          body: "Toute annulation à l'initiative du Client s'apprécie en jours ouvrés avant la date de début de la prestation : à plus de 15 jours ouvrés, aucune somme n'est due et les acomptes versés sont intégralement remboursés ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité. Dans tous les cas, la prestation est reportable une fois sans frais à une date convenue entre les parties, le report se substituant alors à l'annulation. Ce barème est identique à celui figurant dans la convention et dans le contrat de formation. Les conditions de dédit et d'abandon en cours d'exécution sont précisées ci-après.",
+        },
+        {
+          // F53 — le renvoi « conditions de dédit et d'abandon précisées dans la
+          // convention » pointait vers une convention qui n'en contenait aucune :
+          // un abandon en cours de session n'était régi par aucun texte.
+          title: "Dédit et abandon en cours d'exécution",
+          body: "En cas d'abandon en cours d'exécution à l'initiative du Client ou du bénéficiaire, les prestations effectivement réalisées à la date de l'abandon restent dues au prorata. Lorsque l'action est financée par un tiers (OPCO, France Travail, autre financeur), la part non réalisée n'est pas facturée au financeur et ne peut être réclamée au Client au-delà de ce prorata. Lorsque l'abandon résulte d'un cas de force majeure dûment constaté, le contrat est résilié et seules les prestations effectivement dispensées sont dues, conformément à l'article L.6353-7 du Code du travail.",
+        },
+        {
+          // F53 — aucune clause de sous-traitance n'existait, alors que
+          // l'indicateur Qualiopi 27 en fait un point d'audit et que le dépôt
+          // génère déjà des contrats de sous-traitance.
+          title: "Sous-traitance",
+          body: "Axion-IA peut confier tout ou partie de l'exécution d'une prestation à un intervenant externe qualifié, sous-traitant au sens de l'article 1er de la loi n° 75-1334 du 31 décembre 1975. Axion-IA demeure seule responsable de la bonne exécution de la prestation vis-à-vis du Client et se porte garante du respect, par ses sous-traitants, des engagements de confidentialité, de protection des données personnelles et de qualité applicables. Le Client est informé de l'identité de l'intervenant avant le début de l'action.",
         },
         {
           title: "Réversibilité et restitution",
@@ -233,12 +257,47 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Sauf opposition écrite du Client, Axion-IA peut mentionner le nom et le logo du Client ainsi qu'une description générale de la prestation à titre de référence commerciale, dans le respect de la confidentialité des informations sensibles.",
         },
         {
-          title: "Absence de droit de rétractation",
-          body: "Les prestations étant conclues entre professionnels, le droit de rétractation prévu par le Code de la consommation ne s'applique pas. Par exception, le Client professionnel employant cinq salariés au plus bénéficie d'un délai de rétractation de 14 jours pour les contrats conclus hors établissement dont l'objet n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
+          title: "Rétractation du Client professionnel",
+          body: "Les prestations conclues entre professionnels ne relèvent pas du droit de rétractation prévu par le Code de la consommation. Par exception, le Client professionnel employant cinq salariés au plus bénéficie d'un délai de rétractation de 14 jours pour les contrats conclus hors établissement dont l'objet n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
+        },
+        {
+          // 🔴 Audit certification 2026-07-26 (F50). Les CGV affirmaient être
+          // réservées aux professionnels, tout en prévoyant six lignes plus haut
+          // le contrat de formation pour « un particulier à titre individuel » —
+          // que le code génère effectivement (genererContratFormationAction).
+          // Un particulier se voyait donc opposer des CGV qui n'énonçaient ni
+          // l'interdiction de paiement avant rétractation, ni le plafond de 30 %
+          // (L6353-6), qui ÉCARTAIENT la médiation de la consommation — laquelle
+          // est une obligation d'adhésion (L612-1, amende jusqu'à 15 000 € pour
+          // une personne morale) — et qui imposaient une clause attributive de
+          // juridiction inopposable à un consommateur (R631-3 C. conso).
+          title: "Dispositions applicables au particulier (consommateur)",
+          body: "Lorsqu'une formation est souscrite par une personne physique pour son propre compte, en dehors de toute activité professionnelle, les dispositions suivantes s'appliquent et prévalent sur toute clause contraire des présentes. La relation est régie par un contrat de formation professionnelle conforme aux articles L.6353-3 à L.6353-7 du Code du travail. Ce contrat mentionne l'objet, la nature, la durée, les effectifs, le prix et les modalités de règlement, ainsi que les sanctions applicables et les titres des intervenants.",
+        },
+        {
+          title: "Particulier — délai de rétractation et interdiction de paiement",
+          body: "Le particulier dispose d'un délai de dix jours à compter de la signature du contrat pour se rétracter, par lettre recommandée avec accusé de réception (art. L.6353-5 du Code du travail). Aucune somme ne peut être exigée ni versée avant l'expiration de ce délai de dix jours (art. L.6353-6). À l'issue de ce délai, il ne peut être exigé plus de 30 % du prix convenu ; le solde est échelonné au fur et à mesure du déroulement de l'action. Lorsque le contrat est en outre conclu à distance ou hors établissement, le particulier bénéficie du délai de quatorze jours prévu à l'article L.221-18 du Code de la consommation ; en cas de concours des deux régimes, le délai le plus favorable au particulier s'applique.",
+        },
+        {
+          title: "Particulier — abandon et force majeure",
+          body: "Si le particulier est empêché de suivre la formation par un cas de force majeure dûment reconnu, le contrat est résilié de plein droit et seules les prestations effectivement dispensées sont dues, à due proportion de leur valeur prévue au contrat (art. L.6353-7 du Code du travail). Aucune pénalité ni indemnité de dédit ne peut lui être réclamée à ce titre.",
+        },
+        {
+          // ⚠️ BLOQUANT AVANT TOUTE VENTE À UN PARTICULIER — l'adhésion à un
+          // médiateur agréé est une obligation légale (L612-1), pas une option.
+          // Le nom et l'adresse du médiateur doivent figurer ici et sur le site
+          // dès qu'un particulier peut contracter. Tant qu'Axion-IA n'a pas
+          // adhéré, la vente à un particulier n'est pas conforme.
+          title: "Particulier — médiation de la consommation",
+          body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, le particulier a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à Axion-IA, après avoir tenté de le résoudre directement par une réclamation écrite. Les coordonnées du médiateur compétent lui sont communiquées avec la confirmation d'inscription et figurent au contrat de formation. Le particulier conserve la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
+        },
+        {
+          title: "Particulier — juridiction compétente",
+          body: "La clause attributive de compétence prévue aux présentes n'est pas opposable au particulier. Celui-ci peut saisir, à son choix, la juridiction du lieu où il demeurait au moment de la conclusion du contrat, celle du lieu de survenance du fait dommageable, ou l'une des juridictions territorialement compétentes en application du Code de procédure civile (art. R.631-3 du Code de la consommation).",
         },
         {
           title: "Réclamations et règlement des litiges",
-          body: "Toute réclamation est adressée à contact@axion-ia.com ; les parties s'efforcent de résoudre amiablement tout différend avant toute action contentieuse. La clientèle étant exclusivement professionnelle, le dispositif de médiation de la consommation n'est pas applicable.",
+          body: "Toute réclamation est adressée à contact@axion-ia.com ; les parties s'efforcent de résoudre amiablement tout différend avant toute action contentieuse. Entre professionnels, le dispositif de médiation de la consommation n'est pas applicable. Lorsque le Client est un particulier, la médiation de la consommation s'applique dans les conditions énoncées à la section qui lui est consacrée.",
         },
         {
           title: "Indépendance des clauses",
@@ -413,7 +472,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "IA générative et transparence (AI Act EU)",
-          body: "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés avec l'assistance de modèles d'IA générative (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar pour le fact-checking) puis supervisés par l'équipe Axion-IA avant publication. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon. Les prompts envoyés à ces modèles ne contiennent aucune donnée personnelle de visiteur (helper `pii-safe` + hard gate code sur la base de connaissances). Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
+          body: "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés par des modèles d'IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle) puis soumis à des contrôles automatisés avant publication — vérification factuelle, contrôle éditorial et alignement doctrine. La relecture humaine n'est pas systématique. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon. Les prompts envoyés à ces modèles ne contiennent aucune donnée personnelle de visiteur (helper `pii-safe` + hard gate code sur la base de connaissances). Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
         },
       ],
       metaSeo: {
@@ -462,7 +521,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Generative AI and transparency (EU AI Act)",
-          body: "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is drafted with the assistance of generative AI models (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar for fact-checking) and then supervised by the Axion-IA team before publication. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon. Prompts sent to these models contain no visitor personal data (`pii-safe` helper + code-level hard gate on the knowledge base). You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
+          body: "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is written by generative AI models (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking) and then subjected to automated checks before publication — fact-checking, editorial control and doctrine alignment. Human review is not systematic. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon. Prompts sent to these models contain no visitor personal data (`pii-safe` helper + code-level hard gate on the knowledge base). You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
         },
       ],
       metaSeo: {

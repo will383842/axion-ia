@@ -168,7 +168,18 @@ export async function createSessionAction(
             statut: "planifiee",
             ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
             ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
-            ...(v.financementType !== undefined ? { financementType: v.financementType } : {}),
+            // 🔴 Audit certification 2026-07-26 (F58). `financementType` était
+            // facultatif ET sans valeur par défaut : une session créée sans le
+            // préciser restait à NULL. Le BPF s'en sortait par un repli
+            // silencieux (`?? "direct"`), donc le chiffre d'affaires n'était pas
+            // perdu — mais une session réellement financée par un OPCO et laissée
+            // à NULL était comptée en « financement direct » dans un bilan
+            // déclaré à la DREETS, sans qu'aucun écran ne le signale.
+            //
+            // Le défaut explicite vaut mieux que le repli caché : « direct » est
+            // le cas majoritaire, il est visible en base, et il se corrige d'un
+            // clic si un OPCO entre en jeu.
+            financementType: v.financementType ?? "direct",
           },
           select: { id: true, numero: true },
         });

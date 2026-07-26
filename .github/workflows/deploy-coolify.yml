@@ -251,6 +251,13 @@ jobs:
             DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
             REDIS_URL=redis://stub.invalid:6379
             BUILD_SSG_VILLES_INDEXABLE_ONLY=true
+            # F32 — lus par des pages SSG, donc évalués AU BUILD. Sans eux,
+            # `notFound()` est figé dans l'image et aucun réglage Coolify ne peut
+            # le lever. Pilotés par des variables de dépôt pour rester
+            # modifiables sans toucher au code ; défaut `false` = rien n'est
+            # affirmé.
+            OF_PUBLIC_DISCLOSURE_ENABLED=${{ vars.OF_PUBLIC_DISCLOSURE_ENABLED || 'false' }}
+            QUALIOPI_CERTIFICATION_OBTENUE=${{ vars.QUALIOPI_CERTIFICATION_OBTENUE || 'false' }}
           # Secret BuildKit (jamais baké dans l'image GHCR publique) — clé de
           # chiffrement des Server Actions. Si le secret GH `NEXT_SERVER_ACTIONS_
           # ENCRYPTION_KEY` est absent → chaîne vide → build INERTE (Next génère

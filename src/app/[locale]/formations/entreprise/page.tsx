@@ -63,7 +63,7 @@ import {
   getFormationImageCredit,
 } from "@/content/formations/catalog-v2-facts";
 import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -96,7 +96,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Compteur dérivé du SSOT : ajouter/retirer une formation dans FORMATIONS_V2
   // met à jour tous les libellés (titre, meta, JSON-LD, chips…) automatiquement.
   const total = FORMATIONS_V2.length;
-  const ofPublic = isQualiopiPublicDisclosureEnabled();
+  const ofPublic = isQualiopiCertificationObtenue();
   const finBit = ofPublic
     ? isFr
       ? " Certifié Qualiopi, finançable OPCO."
@@ -120,7 +120,7 @@ export default async function FormationsEntreprise({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
-  const ofPublic = isQualiopiPublicDisclosureEnabled();
+  const ofPublic = isQualiopiCertificationObtenue();
 
   // Compteur dérivé du SSOT (auto-maj si on ajoute/retire une formation).
   const total = FORMATIONS_V2.length;

@@ -94,6 +94,14 @@ export interface ResultatsFormationData {
   heuresTotales: number;
   evaluationObtenue?: string;
   competencesAcquises: string;
+  /**
+   * Réserves : partiellement acquis, non acquis, non évalués (F21).
+   *
+   * Absent quand tout est acquis — une rubrique « Non acquis : — » attire l'œil
+   * sur un vide sans rien signifier. L6353-1 impose de restituer les RÉSULTATS
+   * de l'évaluation ; les taire rendrait l'attestation inexacte.
+   */
+  competencesReserves?: string;
 }
 
 export interface AttestationData {
@@ -195,6 +203,12 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
             <Text style={styles.resultLabel}>Compétences acquises</Text>
             <Text style={styles.resultValue}>{data.resultats.competencesAcquises}</Text>
           </View>
+          {data.resultats.competencesReserves ? (
+            <View style={styles.resultRow}>
+              <Text style={styles.resultLabel}>Réserves</Text>
+              <Text style={styles.resultValue}>{data.resultats.competencesReserves}</Text>
+            </View>
+          ) : null}
         </DocSection>
 
         {/* QR de vérification */}

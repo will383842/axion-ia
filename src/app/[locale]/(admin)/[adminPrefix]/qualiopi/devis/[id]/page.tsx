@@ -263,7 +263,15 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Mention TVA</h2>
         <p className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          {devis.mentionTva}
+          {/*
+            🔴 F25 — un devis sans mention n'est pas un devis sans régime : c'est
+            le régime « assujetti », qui n'appelle aucune mention d'exonération.
+            Laisser l'encart vide se lirait comme une donnée manquante, et
+            pousserait à « corriger » en ajoutant une exonération non détenue.
+          */}
+          {devis.mentionTva !== null && devis.mentionTva !== ""
+            ? devis.mentionTva
+            : "Assujetti à la TVA au taux standard — aucune mention d'exonération applicable."}
         </p>
       </section>
 

@@ -14,6 +14,10 @@ const mockSessionFormateurDeleteMany = vi.fn();
 const mockSessionFormateurUpsert = vi.fn();
 const mockHabilitationDeleteMany = vi.fn();
 const mockHabilitationCreateMany = vi.fn();
+// 🔴 2026-07-26 — la garde anti-orphelins interroge le catalogue avant d'écrire.
+// Par défaut, toute formation demandée est réputée exister : les tests
+// historiques décrivent un catalogue sain, et c'est le cas nominal.
+const mockFormationFindMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => {
   const sessionFormateur = {
@@ -40,6 +44,9 @@ vi.mock("@/lib/prisma", () => {
       trainingSession: {
         findUnique: (...args: unknown[]) => mockSessionFindUnique(...args),
         update: (...args: unknown[]) => mockSessionUpdate(...args),
+      },
+      formation: {
+        findMany: (...args: unknown[]) => mockFormationFindMany(...args),
       },
       sessionFormateur,
       trainerHabilitation,
@@ -78,6 +85,13 @@ beforeEach(() => {
   mockSessionUpdate.mockReset();
   mockSessionFormateurDeleteMany.mockReset();
   mockSessionFormateurUpsert.mockReset();
+  mockHabilitationDeleteMany.mockReset();
+  mockHabilitationCreateMany.mockReset();
+  // Catalogue sain par défaut : chaque id demandé existe.
+  mockFormationFindMany.mockReset();
+  mockFormationFindMany.mockImplementation(({ where }: { where: { id: { in: string[] } } }) =>
+    where.id.in.map((id) => ({ id })),
+  );
 });
 
 describe("createTrainerAction", () => {
@@ -338,5 +352,69 @@ describe("assignTrainerToSessionAction — conformité : avertit, ne bloque JAMA
   it("le retrait d'un formateur n'interroge pas la conformité", async () => {
     await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: null });
     expect(mockGetTrainerConformite).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Blocage constaté EN PRODUCTION le 2026-07-26.
+//
+// Le tableau legacy `formationsHabilitees` du dirigeant portait 33 ids de
+// formations SUPPRIMÉES (génération 1, remplacées à la refonte du catalogue).
+// La fiche formateur initialisait le formulaire avec, ne pouvait pas les
+// afficher — une formation supprimée n'a pas de case à cocher — et les
+// renvoyait quand même. La clé étrangère de `trainer_habilitations` les
+// rejetait, la transaction entière était annulée, et le `catch` avalait
+// l'erreur : plus AUCUNE habilitation ne pouvait être enregistrée, pour
+// personne, sans aucune issue par l'interface.
+//
+// Conséquence Qualiopi : l'indicateur 21 était structurellement inatteignable.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("setTrainerHabilitationsAction — ids de formations disparues", () => {
+  const VIVANTE = "11111111-1111-4111-8111-111111111111";
+  const ORPHELINE = "22222222-2222-4222-8222-222222222222";
+
+  beforeEach(() => {
+    mockFormationFindMany.mockReset();
+    // Le catalogue ne connaît QUE la formation vivante.
+    mockFormationFindMany.mockResolvedValue([{ id: VIVANTE }]);
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+    mockHabilitationDeleteMany.mockResolvedValue({ count: 0 });
+    mockHabilitationCreateMany.mockResolvedValue({ count: 1 });
+  });
+
+  it("enregistre malgré la présence d'ids disparus, au lieu de tout annuler", async () => {
+    const r = await setTrainerHabilitationsAction({
+      id: TRAINER_ID,
+      formationsHabilitees: [VIVANTE, ORPHELINE],
+    });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+  });
+
+  it("n'insère QUE les formations qui existent — sinon la FK annule tout", async () => {
+    await setTrainerHabilitationsAction({
+      id: TRAINER_ID,
+      formationsHabilitees: [VIVANTE, ORPHELINE],
+    });
+    const data = mockHabilitationCreateMany.mock.calls[0]![0].data as { formationId: string }[];
+    expect(data.map((d) => d.formationId)).toEqual([VIVANTE]);
+  });
+
+  it("nettoie aussi le tableau legacy — c'est lui qui portait les orphelins", async () => {
+    await setTrainerHabilitationsAction({
+      id: TRAINER_ID,
+      formationsHabilitees: [VIVANTE, ORPHELINE],
+    });
+    expect(mockUpdate.mock.calls[0]![0].data).toEqual({ formationsHabilitees: [VIVANTE] });
+  });
+
+  it("une liste entièrement orpheline vide les habilitations sans échouer", async () => {
+    mockFormationFindMany.mockResolvedValue([]);
+    const r = await setTrainerHabilitationsAction({
+      id: TRAINER_ID,
+      formationsHabilitees: [ORPHELINE],
+    });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+    expect(mockHabilitationCreateMany).not.toHaveBeenCalled();
   });
 });

@@ -76,7 +76,7 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
 
       <AdminPageHeader
         title="Nouveau devis"
-        description="Créez un devis commercial formation. Le numéro est alloué automatiquement (AXI-DEV-AAAA-NNN). TVA exonérée 261-4-4° CGI."
+        description="Créez un devis commercial formation. Le numéro est alloué automatiquement (AXI-DEV-AAAA-NNN). La TVA suit le régime configuré."
       />
 
       <DevisForm

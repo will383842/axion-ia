@@ -28,6 +28,17 @@ export const LEGAL_MENTIONS = {
     "Exonéré de TVA en application de l'article 261-4-4° du Code Général des Impôts — Prestations de formation professionnelle continue.",
   /** Facture — franchise en base de TVA (art. 293 B CGI, sous les seuils de CA). */
   factureFranchiseTva: "TVA non applicable, article 293 B du Code Général des Impôts.",
+  /**
+   * Facture/devis — régime assujetti, aucune exonération.
+   *
+   * Le droit n'impose AUCUNE mention dans ce cas : `mentionTva()` rend donc
+   * `null`, et les PDF n'affichent rien. Ce texte n'existe que pour les colonnes
+   * NOT NULL qui figent le régime d'une pièce (`Devis.mentionTva`) : y laisser
+   * une chaîne vide rendrait indiscernables « assujetti » et « régime non
+   * renseigné » des années plus tard.
+   */
+  factureTvaAssujetti:
+    "TVA au taux standard en vigueur — aucune exonération ni franchise applicable.",
   /** Facture B2B — pénalités de retard (art. L.441-10 C. com.). OBLIGATOIRE. */
   facturePenalitesRetard:
     "Tout retard de paiement entraîne de plein droit, sans qu'un rappel soit nécessaire, l'application de pénalités de retard calculées au taux de trois fois le taux d'intérêt légal en vigueur (article L.441-10 du Code de commerce).",

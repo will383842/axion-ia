@@ -375,6 +375,32 @@ export async function genererContratFormationAction(input: {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
+  // 🔴 Audit certification 2026-07-26 (F50) — GARDE MÉDIATION.
+  //
+  // Le contrat de formation de l'article L.6353-3 s'adresse à une personne
+  // physique agissant pour son propre compte, donc à un CONSOMMATEUR. L'article
+  // L.612-1 du Code de la consommation impose alors d'avoir adhéré à un
+  // médiateur agréé et d'en publier les coordonnées — amende administrative
+  // jusqu'à 15 000 € pour une personne morale.
+  //
+  // La garde est posée ICI plutôt que dans le template : refuser au moment de
+  // générer, devant l'admin qui peut agir, vaut mieux que sortir un contrat
+  // irrégulier qu'on découvrira signé. Même logique que le refus d'émettre un
+  // lien d'émargement sans horaires confirmés.
+  //
+  // ⚠️ N'affecte QUE le contrat individuel. La convention B2B, elle, ne relève
+  // pas du droit de la consommation et reste générable sans médiateur.
+  const [mediateurNom, mediateurUrl] = await Promise.all([
+    getQualiopiConfig("mediateur_consommation_nom"),
+    getQualiopiConfig("mediateur_consommation_url"),
+  ]);
+  if (!mediateurNom?.trim() || !mediateurUrl?.trim()) {
+    return {
+      error:
+        "Contrat individuel bloqué : aucun médiateur de la consommation n'est renseigné. Vendre une formation à un particulier impose d'avoir adhéré à un médiateur agréé CECMC et d'en publier les coordonnées (art. L.612-1 du Code de la consommation). Renseignez « mediateur_consommation_nom » et « mediateur_consommation_url » dans la configuration Qualiopi. Les conventions B2B ne sont pas concernées.",
+    };
+  }
+
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId } = parsed.data;
@@ -929,6 +955,8 @@ export async function genererCertificatRealisationAction(input: {
           dateDebut: true,
           dateFin: true,
           dureeReelleHeures: true,
+          // F30 — portée sur le certificat de réalisation (arrêté 21/12/2018).
+          modalite: true,
           formationSnapshot: true,
           formation: {
             select: {
@@ -1017,6 +1045,11 @@ export async function genererCertificatRealisationAction(input: {
           dateFin: formatDate(new Date(session.dateFin)),
           // ⚠️ dureeHeures en décimal — formatHeuresCentiemes appelé dans le template
           dureeHeures,
+          // F30 — modalité réelle de la session. Le modèle annexé à l'arrêté du
+          // 21 décembre 2018 distingue présentiel et distanciel, et un contrôle
+          // de service fait porte précisément là-dessus. La nature de l'action
+          // prend son défaut « action de formation » dans le template.
+          modalite: session.modalite,
         },
       }),
     // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont

@@ -149,7 +149,7 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
               }
             >
               {isFr ? "Tout" : "All"}{" "}
-              <span className="tabular-nums opacity-70">{items.length}</span>
+              <span className="text-fg-muted tabular-nums">{items.length}</span>
             </button>
             {categories.map((c) => {
               const n = countByCat.get(c.slug) ?? 0;
@@ -168,7 +168,7 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
                       : "border-border bg-bg text-fg-soft hover:border-terracotta/60")
                   }
                 >
-                  {c.label} <span className="tabular-nums opacity-70">{n}</span>
+                  {c.label} <span className="text-fg-muted tabular-nums">{n}</span>
                 </button>
               );
             })}

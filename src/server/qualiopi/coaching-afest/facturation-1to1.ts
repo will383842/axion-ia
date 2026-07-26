@@ -28,6 +28,7 @@ import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { resoudreConditions } from "@/server/qualiopi/financements/conditions-client";
 import { validateCoachingFinancement, computeCoachingFacturation } from "./financement-1to1";
 import { sumHeuresReelles } from "./heures";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
@@ -103,11 +104,20 @@ export async function genererFactureCoaching(
   const annee = new Date().getFullYear();
   // Échéance : délai configurable — financeur (OPCO subrogé / France Travail)
   // vs client direct. RIB depuis legal_overrides (null → bloc omis du PDF).
-  const [delaiClient, delaiFinanceur, rib] = await Promise.all([
+  // 🔴 Vérification E2E 2026-07-26 — délai propre au client, non lu jusqu'ici.
+  const [delaiGlobal, delaiFinanceur, rib] = await Promise.all([
     getQualiopiConfig("delai_paiement_jours"),
     getQualiopiConfig("delai_paiement_financeur_jours"),
     resolveRibFacture(),
   ]);
+  const delaiClient = resoudreConditions(
+    {
+      delaiPaiementJours: contrat.client?.delaiPaiementJours ?? null,
+      tauxAcomptePct: null,
+      modeFacturation: null,
+    },
+    { delaiPaiementJours: delaiGlobal, tauxAcomptePct: 0, modeFacturation: "acompte_solde" },
+  ).delaiPaiementJours;
   const delaiJours =
     calc.destinataire === "opco" || calc.destinataire === "france_travail"
       ? delaiFinanceur
