@@ -21,7 +21,10 @@ name: Nightly · Gate D
 # Pré-requis VPS / config :
 #   - STAGING_URL (variable repo) : URL staging si déployée, sinon prod.
 #   - DATABASE_URL_TEST_RESTORE (secret) : DB jetable pour restore-drill.
-#   - PLAYWRIGHT_BASE_URL passe via env.
+#   - E2E_BASE_URL passe via env (nom lu par playwright.config.ts — voir F18 :
+#     ce job a envoye PLAYWRIGHT_BASE_URL pendant au moins 10 nuits, ce qui le
+#     faisait retomber sur localhost:3000 sans build et echouer en connexion
+#     refusee, gate a11y comprise).
 
 on:
   schedule:
@@ -51,7 +54,13 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Run E2E flows (chromium) vs prod
         env:
-          PLAYWRIGHT_BASE_URL: ${{ vars.STAGING_URL || 'https://axion-ia.com' }}
+          # 🔴 Audit 2026-07-26 (F18) : playwright.config.ts lit E2E_BASE_URL, pas
+          # PLAYWRIGHT_BASE_URL. Avec le mauvais nom, Playwright retombait sur
+          # http://localhost:3000, demarrait son webServer (aucun build en CI) et
+          # TOUS les tests echouaient en ERR_CONNECTION_REFUSED — dont la gate a11y
+          # « 0 serious/critical ». Le job s'appelait « vs prod » sans jamais
+          # atteindre la prod.
+          E2E_BASE_URL: ${{ vars.STAGING_URL || 'https://axion-ia.com' }}
         run: pnpm test:e2e --project=chromium
 
   pnpm-audit:
