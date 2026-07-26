@@ -9,7 +9,7 @@
  * declineDevisAction : bascule statut → refusé.
  * reviseDevisAction  : crée une NOUVELLE version brouillon (replacesDevisId).
  *
- * TVA : exonéré 261-4-4° CGI → mentionTva = LEGAL_MENTIONS.factureExonerationTva.
+ * TVA : régime lu dans la config (`regime_tva`), JAMAIS codé en dur.
  * Montants : TOUJOURS en CENTIMES (Int). Zéro valeur en dur.
  */
 
@@ -21,13 +21,14 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
   isRegimeTva,
+  mentionTva,
   REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
@@ -99,7 +100,7 @@ const createDevisSchema = z.object({
  * Crée un devis brouillon.
  * - Numéro : AXI-DEV-<année>-NNN (count+1 zero-paddé 3).
  * - montantTotalHtCents = Σ lignes.quantite × lignes.prixUnitaireHtCents.
- * - mentionTva = LEGAL_MENTIONS.factureExonerationTva.
+ * - mentionTva : dérivée du régime configuré (`null` si assujetti).
  * - dateValidite = maintenant + 30 jours.
  * - Si financementSuggere==="opco" et nbParticipants/dureeHeures/modaliteOpco fournis
  *   → estimateOpcoCoverage renseigne montantOpcoEstimeCents/resteAChargeCents.
@@ -157,6 +158,27 @@ export async function createDevisAction(
     resteAChargeCents = coverage.resteAChargeCents;
   }
 
+  // 🔴 Audit certification 2026-07-26 (F25) — le régime de TVA se LIT, il ne se
+  // décrète pas ici.
+  //
+  // `mentionTva` était figé à l'exonération 261-4-4° à la création, quel que
+  // soit `regime_tva`. La production est pourtant configurée en « assujetti », et
+  // le PDF, lui, calcule bien la mention depuis le régime : l'écran du devis
+  // affichait donc « Exonéré de TVA » pendant que le PDF facturait 20 %. Les deux
+  // devis émis portent cette mention en base.
+  //
+  // L'exonération 261-4-4° exige l'attestation DREETS (Cerfa 3511) ; l'afficher
+  // sans l'avoir engage l'organisme sur un régime qu'il ne détient pas — et un
+  // devis accepté fait foi de l'offre.
+  const regimeTvaCreation = await getQualiopiConfig("regime_tva");
+  // `Devis.mentionTva` est NOT NULL et fige le régime de la pièce. `mentionTva()`
+  // rend `null` pour « assujetti » — c'est correct pour un PDF, qui n'a alors
+  // rien à afficher, mais pas pour une colonne d'archive : une chaîne vide
+  // rendrait « assujetti » et « non renseigné » indiscernables plus tard.
+  const mentionTvaCreation =
+    mentionTva(isRegimeTva(regimeTvaCreation) ? regimeTvaCreation : REGIME_TVA_DEFAUT) ??
+    LEGAL_MENTIONS.factureTvaAssujetti;
+
   // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
   const created = await withNumberRetry(async () => {
     const count = await prisma.devis.count();
@@ -167,7 +189,7 @@ export async function createDevisAction(
         clientId: v.clientId,
         lignes: v.lignes as never,
         montantTotalHtCents,
-        mentionTva: LEGAL_MENTIONS.factureExonerationTva,
+        mentionTva: mentionTvaCreation,
         statut: "brouillon",
         dateValidite,
         ...(v.activite !== undefined ? { activite: v.activite } : {}),

@@ -25,6 +25,8 @@ import {
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { isRegimeTva, mentionTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
 import { FORMATIONS_V2, getFormationV2 } from "@/content/formations/catalog-v2";
 import { FormationDetailPage } from "@/components/formations/FormationDetailPage";
@@ -89,8 +91,7 @@ export async function generateMetadata({
   const title = `${f.titre} — Formation IA · Axion-IA`;
   const description =
     `Formation professionnelle continue dispensée par Axion-IA — ${f.dureeHeures} h, ` +
-    `${f.modalite === "presentiel" ? "présentiel" : f.modalite === "distanciel" ? "distanciel" : "hybride"}. ` +
-    `Exonérée de TVA (art. 261-4-4° CGI).`;
+    `${f.modalite === "presentiel" ? "présentiel" : f.modalite === "distanciel" ? "distanciel" : "hybride"}.`;
 
   return buildProductMetadata({
     locale: loc,
@@ -194,6 +195,20 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
   if (!f) notFound();
 
   const prixLabel = resolveOffrePriceLabel(f.offreSite.tierId, locale === "en" ? "en" : "fr");
+
+  // 🔴 Audit certification 2026-07-26 (F25). Ces pages affirmaient « Exonérée de
+  // TVA (art. 261-4-4° CGI) » en dur, sur les 22 formations du catalogue, alors
+  // que `regime_tva` vaut « assujetti » en production. L'exonération 261-4-4°
+  // suppose l'attestation DREETS (Cerfa 3511) ; l'annoncer publiquement sans la
+  // détenir est une affirmation commerciale fausse — et un prix annoncé hors
+  // taxes sans TVA due engage sur le montant final.
+  //
+  // `mentionTva` rend `null` pour le régime assujetti : aucune mention à porter,
+  // ce qui est correct — un prix HT assujetti n'appelle pas de mention spéciale.
+  const regimeTvaConfig = await getQualiopiConfig("regime_tva");
+  const mentionTvaPublique = mentionTva(
+    isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT,
+  );
 
   // Modalités : fusion modalite Formation + modalites[] OffreSite.
   const modalitesOffreSite: string[] = Array.isArray(f.offreSite.modalites)
@@ -304,10 +319,12 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                 </p>
                 <p className="text-fg text-2xl font-semibold">{prixLabel}</p>
               </div>
-              <div className="border-border hidden h-10 border-l sm:block" />
-              <p className="text-fg-muted text-sm leading-snug">
-                {LEGAL_MENTIONS.factureExonerationTva}
-              </p>
+              {mentionTvaPublique !== null && (
+                <>
+                  <div className="border-border hidden h-10 border-l sm:block" />
+                  <p className="text-fg-muted text-sm leading-snug">{mentionTvaPublique}</p>
+                </>
+              )}
             </div>
           </div>
         </Container>
@@ -467,9 +484,11 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
               {/* 10. Tarif + exonération TVA (rappel latéral) */}
               <SectionBlock title="Tarif">
                 <p className="text-fg text-2xl font-semibold">{prixLabel}</p>
-                <p className="text-fg-muted mt-1 text-[12px] leading-snug">
-                  {LEGAL_MENTIONS.factureExonerationTva}
-                </p>
+                {mentionTvaPublique !== null && (
+                  <p className="text-fg-muted mt-1 text-[12px] leading-snug">
+                    {mentionTvaPublique}
+                  </p>
+                )}
               </SectionBlock>
 
               {/* 10b. Certification RS/RNCP (T18 — affiché si certifiante) */}
