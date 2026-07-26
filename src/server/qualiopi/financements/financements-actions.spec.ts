@@ -1215,3 +1215,56 @@ describe("setPriseEnChargeAction", () => {
     expect(logCall.targetId).toBe(SESSION_UUID);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 V20 étape 0 — le dénominateur de la série AXI-FACT.
+//
+// `genererNumeroFacture` comptait TOUTES les lignes de `factures_formation`
+// créées dans l'année, par `createdAt`. Or cette table héberge QUATRE séries :
+// les factures `AXI-FACT-`, les AVOIRS `AXI-AVO-` (série légale distincte), les
+// brouillons `BROUILLON-<uuid>` des plans récurrents, et les reprises
+// d'historique dont le `createdAt` est la date d'IMPORT.
+//
+// Deux clics suffisaient : facture 001 → avoir 001 → la facture suivante voyait
+// 2 lignes et sortait 003. Le 002 n'existait jamais — rupture de la séquence
+// continue exigée par l'art. 242 nonies A ann. II du CGI. Et les cinq AUTRES
+// allocateurs de la même série comptent, eux, par préfixe : ils voyaient 2
+// factures, réémettaient 003, et prenaient un P2002 sur une pièce comptable.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Numérotation des factures — dénominateur de la série", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
+    mockLogActivity.mockResolvedValue(undefined);
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession());
+    mockPrisma.factureFormation.create.mockResolvedValue({
+      id: FACTURE_UUID,
+      numero: "AXI-FACT-2026-001",
+      documentId: null,
+    });
+  });
+
+  it("compte par PRÉFIXE de série, jamais par fenêtre de création", async () => {
+    const wheres: Array<Record<string, unknown>> = [];
+    mockPrisma.factureFormation.count.mockImplementation(
+      (args: { where?: Record<string, unknown> }) => {
+        wheres.push(args?.where ?? {});
+        return Promise.resolve(0);
+      },
+    );
+
+    await genererFactureFormationAction({
+      sessionId: SESSION_UUID,
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+
+    expect(wheres.length).toBeGreaterThan(0);
+    for (const w of wheres) {
+      // Un AVOIR (AXI-AVO-) ou un BROUILLON ne doit jamais entrer au dénominateur.
+      expect(w["createdAt"]).toBeUndefined();
+      expect(JSON.stringify(w["numero"])).toContain("AXI-FACT-");
+    }
+  });
+});
