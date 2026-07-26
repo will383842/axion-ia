@@ -32,6 +32,7 @@ import {
   quitterPortailAction,
 } from "@/server/actions/qualiopi/portail";
 import { SatisfactionPortailForm } from "@/components/portail/SatisfactionPortailForm";
+import { PositionnementPortailForm } from "@/components/portail/PositionnementPortailForm";
 import { HandicapDeclarationForm } from "@/components/portail/HandicapDeclarationForm";
 import { RgpdActions } from "@/components/portail/RgpdActions";
 import { QuitterPortailButton } from "@/components/portail/QuitterPortailButton";
@@ -185,19 +186,32 @@ export default async function PortailMonEspacePage({ params }: PageProps) {
           </p>
         </Section>
 
-        {/* Questionnaires de satisfaction */}
+        {/* Questionnaires : positionnement (avant) et satisfaction (à chaud / à froid) */}
         {questionnairesNonRepondus.length > 0 && (
-          <Section titre="Évaluations à remplir">
+          <Section titre="Questionnaires à remplir">
             <ul className="space-y-4">
               {questionnairesNonRepondus.map((q) => (
                 <li key={q.token} className="rounded-lg border border-gray-200 bg-white p-4">
                   <p className="mb-3 text-sm font-medium text-gray-900">
                     {QUESTIONNAIRE_TYPE_LABELS[q.type] ?? q.type}
                   </p>
-                  <SatisfactionPortailForm
-                    questionnaireToken={q.token}
-                    soumettreSatisfactionAction={soumettreSatisfactionPortailAction}
-                  />
+                  {/* 🔴 Audit F17 (2026-07-26) : ce bloc rendait SatisfactionPortailForm
+                      pour les TROIS types, sans tester q.type — le bénéficiaire devait
+                      donc noter sa satisfaction /5 AVANT la formation, et aucune analyse
+                      du besoin n'était collectée (off.4 ⭐ et off.8 non couvrables, même
+                      en remplissant la base). L'aiguillage sur le type est le correctif. */}
+                  {q.type === "positionnement" ? (
+                    <PositionnementPortailForm
+                      questionnaireToken={q.token}
+                      objectifs={q.objectifs}
+                      soumettreAction={soumettreSatisfactionPortailAction}
+                    />
+                  ) : (
+                    <SatisfactionPortailForm
+                      questionnaireToken={q.token}
+                      soumettreSatisfactionAction={soumettreSatisfactionPortailAction}
+                    />
+                  )}
                 </li>
               ))}
             </ul>

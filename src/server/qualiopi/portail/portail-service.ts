@@ -58,6 +58,15 @@ export interface QuestionnaireResume {
   type: QuestionnaireType;
   token: string;
   reponduAt: Date | null;
+  /** Titre de la session rattachée — affiché en tête du questionnaire. */
+  sessionTitre: string;
+  /**
+   * Objectifs pédagogiques de la formation. Le questionnaire de POSITIONNEMENT
+   * demande au bénéficiaire de s'auto-évaluer sur chacun : c'est ce qui en fait
+   * une évaluation des acquis à l'entrée (off.8) et non un simple déclaratif,
+   * et ce qui rend la progression mesurable face à l'évaluation finale.
+   */
+  objectifs: string[];
 }
 
 /** Espace stagiaire complet retourné par getEspaceStagiaire. */
@@ -79,6 +88,28 @@ export interface EspaceStagiaire {
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers internes
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * `objectifsPedagogiques` est un `Json` : selon l'origine (import catalogue, moteur
+ * de génération, saisie manuelle) il peut être un tableau de chaînes, un tableau
+ * d'objets `{ objectif }`, ou une chaîne unique. On normalise en `string[]` plutôt
+ * que de supposer une forme — un `.map()` sur un objet ferait planter le portail.
+ */
+function normaliserObjectifs(valeur: unknown): string[] {
+  if (typeof valeur === "string") return valeur.trim() ? [valeur.trim()] : [];
+  if (!Array.isArray(valeur)) return [];
+  return valeur
+    .map((o) => {
+      if (typeof o === "string") return o.trim();
+      if (o !== null && typeof o === "object") {
+        const rec = o as Record<string, unknown>;
+        const v = rec["objectif"] ?? rec["libelle"] ?? rec["label"] ?? rec["titre"];
+        return typeof v === "string" ? v.trim() : "";
+      }
+      return "";
+    })
+    .filter((o) => o.length > 0);
+}
 
 /** Génère un token portail : 32 bytes → 64 chars hex. */
 function genererTokenPortail(): string {
@@ -281,6 +312,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               titreSession: true,
               dateDebut: true,
               dateFin: true,
+              formation: { select: { objectifsPedagogiques: true } },
             },
           },
         },
@@ -326,13 +358,19 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       }),
   );
 
-  const questionnaires: QuestionnaireResume[] = trainee.enrollments
-    .flatMap((e) => e.questionnaires)
-    .map((q) => ({
+  // On repart de l'inscription (et non des seuls questionnaires) pour rattacher a
+  // chacun le titre de sa session et les objectifs de sa formation — necessaires au
+  // questionnaire de POSITIONNEMENT (off.8).
+  const questionnaires: QuestionnaireResume[] = trainee.enrollments.flatMap((e) => {
+    const objectifs = normaliserObjectifs(e.session?.formation?.objectifsPedagogiques);
+    return e.questionnaires.map((q) => ({
       type: q.type,
       token: q.token,
       reponduAt: q.reponduAt ?? null,
+      sessionTitre: e.session?.titreSession ?? "",
+      objectifs,
     }));
+  });
 
   const detailsChiffre = trainee.handicapDetailsChiffre ?? null;
   const details = detailsChiffre !== null ? decryptPii(detailsChiffre) : null;
